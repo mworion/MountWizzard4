@@ -22,10 +22,32 @@ from mw4.base.loggerMW import setupLogging
 from mw4.gui.mainWaddon.tabEnviron_Seeing import EnvironSeeing
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
+from PySide6.QtWidgets import QTableWidgetItem
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 setupLogging()
+
+HOURLY = {
+    "hour": [10] * 96,
+    "date": ["2022-01-01"] * 96,
+    "high_clouds": [50] * 96,
+    "mid_clouds": [50] * 96,
+    "low_clouds": [50] * 96,
+    "seeing_arcsec": [1.5] * 96,
+    "seeing1": [1] * 96,
+    "seeing1_color": ["#404040"] * 96,
+    "seeing2": [1] * 96,
+    "seeing2_color": ["#404040"] * 96,
+    "temperature": [15] * 96,
+    "relative_humidity": [60] * 96,
+    "badlayer_top": ["1500"] * 96,
+    "badlayer_bottom": ["500"] * 96,
+    "badlayer_gradient": ["1"] * 96,
+    "jetstream": [20] * 96,
+}
+
+META = {"last_model_update": "2022-01-01"}
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -52,6 +74,95 @@ def test_addSkyfieldTimeObject(function):
     assert "time" in data
 
 
+def test_applyColumnStyle_j0(function):
+    data = dict(HOURLY)
+    function.addSkyfieldTimeObject(data)
+    item = QTableWidgetItem()
+    t = function.applyColumnStyle(item, 0, "time", data, 0, "#111", "#222", "#333")
+    assert len(t) > 0
+
+
+def test_applyColumnStyle_j1(function):
+    data = dict(HOURLY)
+    function.addSkyfieldTimeObject(data)
+    item = QTableWidgetItem()
+    t = function.applyColumnStyle(item, 1, "time", data, 0, "#111", "#222", "#333")
+    assert ":" in t
+
+
+def test_applyColumnStyle_j2(function):
+    data = dict(HOURLY)
+    item = QTableWidgetItem()
+    t = function.applyColumnStyle(
+        item, 2, "high_clouds", data, 0, "#404040", "#222", "#333"
+    )
+    assert t == "50"
+
+
+def test_applyColumnStyle_j6(function):
+    data = dict(HOURLY)
+    item = QTableWidgetItem()
+    t = function.applyColumnStyle(
+        item, 6, "seeing1", data, 0, "#111", "#404040", "#333"
+    )
+    assert t == "1"
+
+
+def test_applyColumnStyle_j7(function):
+    data = dict(HOURLY)
+    item = QTableWidgetItem()
+    t = function.applyColumnStyle(
+        item, 7, "seeing2", data, 0, "#111", "#404040", "#333"
+    )
+    assert t == "1"
+
+
+def test_applyColumnStyle_j10(function):
+    data = dict(HOURLY)
+    item = QTableWidgetItem()
+    t = function.applyColumnStyle(
+        item, 10, "badlayer_top", data, 0, "#111", "#222", "#333"
+    )
+    assert t == "1.5"
+
+
+def test_applyColumnStyle_j11(function):
+    data = dict(HOURLY)
+    item = QTableWidgetItem()
+    t = function.applyColumnStyle(
+        item, 11, "badlayer_bottom", data, 0, "#111", "#222", "#333"
+    )
+    assert t == "0.5"
+
+
+def test_applyColumnStyle_default(function):
+    data = dict(HOURLY)
+    item = QTableWidgetItem()
+    t = function.applyColumnStyle(
+        item, 5, "seeing_arcsec", data, 0, "#111", "#222", "#333"
+    )
+    assert t == "1.5"
+
+
+def test_buildSeeingItem(function):
+    data = dict(HOURLY)
+    function.addSkyfieldTimeObject(data)
+    item = function.buildSeeingItem(
+        5, "seeing_arcsec", data, 0, "#404040", "#404040", "#404040"
+    )
+    assert item.text() == "1.5"
+
+
+def test_markActualColumn(function):
+    function.app.seeingWeather.data = {"meta": META, "hourly": dict(HOURLY)}
+    data = dict(HOURLY)
+    item = QTableWidgetItem()
+    result = function.markActualColumn(item, data, 3)
+    assert result == 3
+    assert function.ui.limitForecast.text() == "1.5"
+    assert function.ui.limitForecastDate.text() == "2022-01-01"
+
+
 def test_updateSeeingEntries_1(function):
     function.app.seeingWeather.data = {
         "test": {"hour": [10, 11], "date": ["2022-01-01", "2022-01-01"]}
@@ -61,27 +172,8 @@ def test_updateSeeingEntries_1(function):
 
 def test_updateSeeingEntries_2(function):
     function.app.seeingWeather.data = {
-        "meta": {
-            "last_model_update": "2022-01-01",
-        },
-        "hourly": {
-            "hour": [10] * 96,
-            "date": ["2022-01-01"] * 96,
-            "high_clouds": [1] * 96,
-            "mid_clouds": [1] * 96,
-            "low_clouds": [1] * 96,
-            "seeing_arcsec": [1] * 96,
-            "seeing1": [1] * 96,
-            "seeing1_color": ["#404040"] * 96,
-            "seeing2": [1] * 96,
-            "seeing2_color": ["#404040"] * 96,
-            "temperature": [1] * 96,
-            "relative_humidity": [1] * 96,
-            "badlayer_top": ["1"] * 96,
-            "badlayer_bottom": ["1"] * 96,
-            "badlayer_gradient": ["1"] * 96,
-            "jetstream": [1] * 96,
-        },
+        "meta": META,
+        "hourly": dict(HOURLY),
     }
     t = function.app.mount.obsSite.ts.utc(2022, 1, 1, 10, 0, 0)
     with mock.patch.object(function.app.mount.obsSite.ts, "now", return_value=t):
@@ -90,27 +182,8 @@ def test_updateSeeingEntries_2(function):
 
 def test_updateSeeingEntries_3(function):
     function.app.seeingWeather.data = {
-        "meta": {
-            "last_model_update": "2022-01-01",
-        },
-        "hourly": {
-            "hour": [10] * 96,
-            "date": ["2022-01-01"] * 96,
-            "high_clouds": [1] * 96,
-            "mid_clouds": [1] * 96,
-            "low_clouds": [1] * 96,
-            "seeing_arcsec": [1] * 96,
-            "seeing1": [1] * 96,
-            "seeing1_color": ["#404040"] * 96,
-            "seeing2": [1] * 96,
-            "seeing2_color": ["#404040"] * 96,
-            "temperature": [1] * 96,
-            "relative_humidity": [1] * 96,
-            "badlayer_top": ["1"] * 96,
-            "badlayer_bottom": ["1"] * 96,
-            "badlayer_gradient": ["1"] * 96,
-            "jetstream": [1] * 96,
-        },
+        "meta": META,
+        "hourly": dict(HOURLY),
     }
     t = function.app.mount.obsSite.ts.utc(2023, 1, 1, 10, 0, 0)
     with mock.patch.object(function.app.mount.obsSite.ts, "now", return_value=t):

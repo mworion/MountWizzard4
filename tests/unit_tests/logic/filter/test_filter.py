@@ -20,7 +20,7 @@ from mw4.logic.filter.filter import Filter
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     func = Filter(app=App())
     yield func

@@ -21,7 +21,7 @@ from unittest import mock
 from websocket import WebSocketApp
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     class Signals(QObject):
         textRow = Signal(object, object)

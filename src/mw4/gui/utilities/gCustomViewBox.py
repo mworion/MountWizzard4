@@ -97,40 +97,35 @@ class CustomViewBox(pg.ViewBox):
         self.updateData(x=x, y=y)
         return True
 
+    @staticmethod
+    def clampToRange(value: float, limits: list) -> float:
+        if None not in limits:
+            return float(np.clip(value, limits[0], limits[1]))
+        return value
+
+    def clampXToNeighbors(
+        self, x: np.ndarray, index: int, px: float
+    ) -> float:
+        if index == 0:
+            return float(np.minimum(px, x[index + 1]))
+        if index == len(x) - 1:
+            return float(np.maximum(x[index - 1], px))
+        return float(np.clip(px, x[index - 1], x[index + 1]))
+
     def checkLimits(
-        self, data: (float, float), index: int, pos: pg.Point
-    ) -> (np.array, np.array):
+        self, data: tuple[float, float], index: int, pos: pg.Point
+    ) -> tuple[float, float]:
         xRange = self.state["limits"]["xLimits"]
         yRange = self.state["limits"]["yLimits"]
-        px = pos.x()
-        py = pos.y()
-        if None not in xRange:
-            if pos.x() > xRange[1]:
-                px = xRange[1]
-            elif pos.x() < xRange[0]:
-                px = xRange[0]
-        if None not in yRange:
-            if pos.y() > yRange[1]:
-                py = yRange[1]
-            elif pos.y() < yRange[0]:
-                py = yRange[0]
-
+        px = self.clampToRange(pos.x(), xRange)
+        py = self.clampToRange(pos.y(), yRange)
         x = data[0]
         y = data[1]
         x[index] = px
         y[index] = py
         if not self.enableLimitX:
             return x, y
-
-        if index == 0:
-            x[index] = np.minimum(px, x[index + 1])
-        elif index == len(x) - 1:
-            x[index] = np.maximum(x[index - 1], px)
-        else:
-            if px < x[index - 1]:
-                x[index] = x[index - 1]
-            elif px > x[index + 1]:
-                x[index] = x[index + 1]
+        x[index] = self.clampXToNeighbors(x, index, px)
         return x, y
 
     def posInViewRange(self, pos: pg.Point) -> bool:

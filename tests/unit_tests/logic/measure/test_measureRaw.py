@@ -20,7 +20,7 @@ import unittest.mock as mock
 from mw4.logic.measure.measureRaw import MeasureDataRaw
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     class Test1:
         CYCLE_UPDATE_TASK = 1000

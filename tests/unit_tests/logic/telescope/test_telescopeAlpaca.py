@@ -30,7 +30,7 @@ class Parent:
     updateRate = 1000
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     with mock.patch.object(PySide6.QtCore.QTimer, "start"):
         func = TelescopeAlpaca(parent=Parent())

@@ -1,3 +1,4 @@
+import pytest
 import time
 from PySide6.QtCore import QCoreApplication
 
@@ -13,6 +14,7 @@ def ensure_qt_app() -> None:
         QCoreApplication([])
 
 
+@pytest.mark.slow
 def test_mainThreadSleep_sleeps_at_least_specified_time():
     from mw4.base.threadUtils import mainThreadSleep
 

@@ -22,7 +22,7 @@ from PySide6.QtNetwork import QAbstractSocket, QHostAddress, QTcpSocket
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     func = Remote(app=App())
     yield func

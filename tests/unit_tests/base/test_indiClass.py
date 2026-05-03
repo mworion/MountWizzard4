@@ -290,7 +290,7 @@ def test_processRxQueue_emptyQueueThenStop(function):
     function.commandRunning = True
 
     def stopper():
-        time.sleep(0.15)
+        time.sleep(0.01)
         function.commandRunning = False
 
     t = threading.Thread(target=stopper)
@@ -308,7 +308,7 @@ def test_processRxQueue_deviceNotInSnapshot(function):
     function.rxQ.put(item)
 
     def stopper():
-        time.sleep(0.15)
+        time.sleep(0.01)
         function.commandRunning = False
 
     t = threading.Thread(target=stopper)
@@ -332,7 +332,7 @@ def test_processRxQueue_connectionOn(function):
     function.rxQ.put(item)
 
     def stopper():
-        time.sleep(0.15)
+        time.sleep(0.01)
         function.commandRunning = False
 
     t = threading.Thread(target=stopper)
@@ -357,7 +357,7 @@ def test_processRxQueue_connectionOff(function):
     function.rxQ.put(item)
 
     def stopper():
-        time.sleep(0.15)
+        time.sleep(0.01)
         function.commandRunning = False
 
     t = threading.Thread(target=stopper)
@@ -379,7 +379,7 @@ def test_processRxQueue_devicenameMismatch(function):
     function.rxQ.put(item)
 
     def stopper():
-        time.sleep(0.15)
+        time.sleep(0.01)
         function.commandRunning = False
 
     t = threading.Thread(target=stopper)
@@ -407,7 +407,7 @@ def test_processRxQueue_withVectors(function):
     function.rxQ.put(item)
 
     def stopper():
-        time.sleep(0.15)
+        time.sleep(0.01)
         function.commandRunning = False
 
     t = threading.Thread(target=stopper)
@@ -431,7 +431,7 @@ def test_processRxQueue_noVectors(function):
     function.rxQ.put(item)
 
     def stopper():
-        time.sleep(0.15)
+        time.sleep(0.01)
         function.commandRunning = False
 
     t = threading.Thread(target=stopper)
@@ -461,7 +461,7 @@ def test_processRxQueue_messageEvent(function):
     original_msg, function.msg = function.msg, mock_msg
 
     def stopper():
-        time.sleep(0.15)
+        time.sleep(0.01)
         function.commandRunning = False
 
     t = threading.Thread(target=stopper)

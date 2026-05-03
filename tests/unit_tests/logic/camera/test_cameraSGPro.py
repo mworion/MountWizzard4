@@ -47,7 +47,7 @@ class Parent:
     updateImageFitsHeaderPointing = mock.Mock()
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     camera = Camera(App())
     camera.exposureTime = 1

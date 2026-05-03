@@ -212,6 +212,57 @@ def test_CustomViewBox_16():
         assert suc
 
 
+def test_CustomViewBoxclampToRange_1():
+    vb = CustomViewBox()
+    assert vb.clampToRange(5.0, [None, None]) == 5.0
+
+
+def test_CustomViewBoxclampToRange_2():
+    vb = CustomViewBox()
+    assert vb.clampToRange(5.0, [0.0, 3.0]) == 3.0
+
+
+def test_CustomViewBoxclampToRange_3():
+    vb = CustomViewBox()
+    assert vb.clampToRange(-5.0, [0.0, 3.0]) == 0.0
+
+
+def test_CustomViewBoxclampToRange_4():
+    vb = CustomViewBox()
+    assert vb.clampToRange(2.0, [0.0, 3.0]) == 2.0
+
+
+def test_CustomViewBoxclampXToNeighbors_1():
+    import numpy as np
+
+    vb = CustomViewBox()
+    x = np.array([0.0, 1.0, 2.0])
+    # index 0: result = min(px, x[1])
+    assert vb.clampXToNeighbors(x, 0, -1.0) == -1.0
+    assert vb.clampXToNeighbors(x, 0, 3.0) == 1.0
+
+
+def test_CustomViewBoxclampXToNeighbors_2():
+    import numpy as np
+
+    vb = CustomViewBox()
+    x = np.array([0.0, 1.0, 2.0])
+    # last index: result = max(x[index-1], px)
+    assert vb.clampXToNeighbors(x, 2, 3.0) == 3.0
+    assert vb.clampXToNeighbors(x, 2, 0.5) == 1.0
+
+
+def test_CustomViewBoxclampXToNeighbors_3():
+    import numpy as np
+
+    vb = CustomViewBox()
+    x = np.array([0.0, 1.0, 2.0])
+    # middle index: clipped between neighbors
+    assert vb.clampXToNeighbors(x, 1, -1.0) == 0.0
+    assert vb.clampXToNeighbors(x, 1, 3.0) == 2.0
+    assert vb.clampXToNeighbors(x, 1, 0.5) == 0.5
+
+
 def test_CustomViewBox_checkLimits_1():
     class Pos:
         @staticmethod

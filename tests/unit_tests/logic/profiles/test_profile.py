@@ -28,7 +28,7 @@ from mw4.logic.profiles.profile import (
 from pathlib import Path
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def setup():
     files = glob.glob("tests/work/config/*.yaml")
     for f in files:

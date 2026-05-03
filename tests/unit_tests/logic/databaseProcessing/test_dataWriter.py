@@ -213,7 +213,7 @@ def test_writeAsteroidMPC_3(function):
 
 
 def test_writeAsteroidMPC_4(function):
-    with open("tests/testData/nea_extended_test.json") as f:
+    with open("tests/testData/nea_extended_mini.json") as f:
         data = json.load(f)
 
     testData = [data[0]]
@@ -221,13 +221,16 @@ def test_writeAsteroidMPC_4(function):
 
     with open("tests/work/temp/asteroids.mpc") as f:
         testLine = f.readline()
-    with open("tests/testData/nea_extended_test.txt") as f:
+    with open("tests/testData/nea_extended_mini.txt") as f:
         refLine = f.readline()
     assert testLine[:202] == refLine[:202]
 
 
 def test_writeAsteroidMPC_5(function):
-    with open("tests/testData/nea_extended_test.json") as f:
+    # Uses a 3-entry mini fixture instead of the full 20250-entry file
+    # to keep the test fast while still covering named, unnamed and
+    # PLS-prefixed entries.
+    with open("tests/testData/nea_extended_mini.json") as f:
         data = json.load(f)
 
     with mock.patch.object(function, "generateEpochPacked", return_value=" 1985"):
@@ -235,7 +238,7 @@ def test_writeAsteroidMPC_5(function):
 
     with open("tests/work/temp/asteroids.mpc") as f:
         testLines = f.readlines()
-    with open("tests/testData/nea_extended_test.txt") as f:
+    with open("tests/testData/nea_extended_mini.txt") as f:
         refLines = f.readlines()
     for test, ref in zip(testLines, refLines):
         if ref[0:3] in ["PLS"]:

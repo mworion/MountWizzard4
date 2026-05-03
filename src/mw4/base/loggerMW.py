@@ -15,8 +15,8 @@
 ###########################################################
 import datetime
 import logging
-import time
 import sys
+import time
 from collections.abc import Callable
 from functools import partial, partialmethod
 from logging.handlers import RotatingFileHandler

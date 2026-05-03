@@ -13,15 +13,13 @@
 # Licence APL2.0
 #
 ###########################################################
-import importlib
 import pytest
 import unittest.mock as mock
-import mw4.logic.lightPanel.lightPanel as lp_module
 from mw4.logic.lightPanel.lightPanel import LightPanel
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     func = LightPanel(app=App())
     yield func

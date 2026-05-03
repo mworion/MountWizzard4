@@ -113,9 +113,16 @@ dev = [
 minversion = "9.0"
 pythonpath = ["src"]
 testpaths = ["tests"]
-addopts = ["--import-mode=importlib", "--cov-append", "--cov=src/mw4",]
+addopts = ["--import-mode=importlib"]
 qt_api = "pyside6"
 filterwarnings = ["ignore::DeprecationWarning"]
+markers = [
+    "slow: marks tests that are intentionally slow (deselect with -m 'not slow')",
+    "gui: marks tests that require a running Qt application",
+    "logic: marks tests for business-logic modules only",
+    "base: marks tests for base framework utilities",
+    "integration: marks tests requiring external resources or real file I/O",
+]
 
 [tool.coverage.run]
 source = ["src/mw4/"]
@@ -144,12 +151,8 @@ no-sections = true
 max-complexity = 10
 
 [tool.ruff.lint.per-file-ignores]
-"src/mw4/gui/utilities/gCustomViewBox.py" = ["C901"]
-"src/mw4/gui/utilities/gNormalScatter.py" = ["C901"]
 "src/mw4/gui/styles/gradients.py" = ["E501"]
-"src/mw4/gui/mainWaddon/tabEnviron_Seeing.py" = ["C901"]
 "src/mw4/gui/extWindows/uploadPopupW.py" = ["SIM115"]
-"src/mw4/logic/powerswitch/pegasusUPBIndi.py" = ["C901"]
 "src/mw4/logic/measure/measureCSV.py" = ["SIM115"]
 "tests/unit_tests/logic/environment/test_boltwoodWeather.py" = ["E501"]
 "tests/unit_tests/gui/styles/test_styles.py" = ["E501"]

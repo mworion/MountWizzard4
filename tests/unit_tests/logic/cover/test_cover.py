@@ -20,7 +20,7 @@ from mw4.logic.cover.cover import Cover
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     func = Cover(app=App())
     yield func

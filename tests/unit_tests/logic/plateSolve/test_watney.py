@@ -24,7 +24,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     files = glob.glob("tests/work/image/*.fit*")
     for f in files:

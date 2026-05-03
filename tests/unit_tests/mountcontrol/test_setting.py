@@ -13,10 +13,16 @@
 # Licence APL2.0
 #
 ###########################################################
+import pytest
 import unittest.mock as mock
 from mw4.mountcontrol.setting import Setting
 from packaging.version import Version
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+
+
+@pytest.fixture(autouse=True, scope="module")
+def function():
+    yield Setting(App().mount)
 
 #
 #
@@ -25,269 +31,226 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 #
 
 
-def test_webInterfaceStat_1():
-    sett = Setting(App().mount)
-    sett.webInterfaceStat = False
-    assert not sett.webInterfaceStat
+def test_webInterfaceStat_1(function):
+    function.webInterfaceStat = False
+    assert not function.webInterfaceStat
 
 
-def test_webInterfaceStat_2():
-    sett = Setting(App().mount)
-    sett.webInterfaceStat = True
-    assert sett.webInterfaceStat
+def test_webInterfaceStat_2(function):
+    function.webInterfaceStat = True
+    assert function.webInterfaceStat
 
 
-def test_Setting_slewRate():
-    sett = Setting(App().mount)
-    sett.slewRate = 67
-    assert sett.slewRate == 67
+def test_Setting_slewRate(function):
+    function.slewRate = 67
+    assert function.slewRate == 67
 
 
-def test_Setting_slewRateMin():
-    sett = Setting(App().mount)
-    sett.slewRateMin = 67
-    assert sett.slewRateMin == 67
+def test_Setting_slewRateMin(function):
+    function.slewRateMin = 67
+    assert function.slewRateMin == 67
 
 
-def test_Setting_slewRateMax():
-    sett = Setting(App().mount)
-    sett.slewRateMax = 67
-    assert sett.slewRateMax == 67
+def test_Setting_slewRateMax(function):
+    function.slewRateMax = 67
+    assert function.slewRateMax == 67
 
 
-def test_Setting_timeToFlip():
-    sett = Setting(App().mount)
-    sett.timeToFlip = 67
-    assert sett.timeToFlip == 67
+def test_Setting_timeToFlip(function):
+    function.timeToFlip = 67
+    assert function.timeToFlip == 67
 
 
-def test_Setting_meridianLimitTrack():
-    sett = Setting(App().mount)
-    sett.meridianLimitTrack = 67
-    assert sett.meridianLimitTrack == 67
+def test_Setting_meridianLimitTrack(function):
+    function.meridianLimitTrack = 67
+    assert function.meridianLimitTrack == 67
 
 
-def test_Setting_meridianLimitSlew():
-    sett = Setting(App().mount)
-    sett.meridianLimitSlew = 67
-    assert sett.meridianLimitSlew == 67
+def test_Setting_meridianLimitSlew(function):
+    function.meridianLimitSlew = 67
+    assert function.meridianLimitSlew == 67
 
 
-def test_Setting_timeToMeridian1():
-    sett = Setting(App().mount)
-    sett.timeToFlip = 10
-    sett.meridianLimitTrack = 5
-    assert sett.timeToMeridian() == -10
+def test_Setting_timeToMeridian1(function):
+    function.timeToFlip = 10
+    function.meridianLimitTrack = 5
+    assert function.timeToMeridian() == -10
 
 
-def test_Setting_timeToMeridian2():
-    sett = Setting(App().mount)
-    sett.timeToFlip = 0
-    sett.meridianLimitTrack = 5
-    assert sett.timeToMeridian() == -20
+def test_Setting_timeToMeridian2(function):
+    function.timeToFlip = 0
+    function.meridianLimitTrack = 5
+    assert function.timeToMeridian() == -20
 
 
-def test_Setting_refractionTemp():
-    sett = Setting(App().mount)
-    sett.refractionTemp = 67
-    assert sett.refractionTemp == 67
+def test_Setting_refractionTemp(function):
+    function.refractionTemp = 67
+    assert function.refractionTemp == 67
 
 
-def test_Setting_refractionPress():
-    sett = Setting(App().mount)
-    sett.refractionPress = 67
-    assert sett.refractionPress == 67
+def test_Setting_refractionPress(function):
+    function.refractionPress = 67
+    assert function.refractionPress == 67
 
 
-def test_Setting_telescopeTempDEC():
-    sett = Setting(App().mount)
-    sett.telescopeTempDEC = 67
-    assert sett.telescopeTempDEC == 67
+def test_Setting_telescopeTempDEC(function):
+    function.telescopeTempDEC = 67
+    assert function.telescopeTempDEC == 67
 
 
-def test_Setting_statusRefraction():
-    sett = Setting(App().mount)
-    sett.statusRefraction = 1
-    assert sett.statusRefraction
+def test_Setting_statusRefraction(function):
+    function.statusRefraction = 1
+    assert function.statusRefraction
 
 
-def test_Setting_statusUnattendedFlip():
-    sett = Setting(App().mount)
-    sett.statusUnattendedFlip = 1
-    assert sett.statusUnattendedFlip
+def test_Setting_statusUnattendedFlip(function):
+    function.statusUnattendedFlip = 1
+    assert function.statusUnattendedFlip
 
 
-def test_Setting_statusDualAxisTracking():
-    sett = Setting(App().mount)
-    sett.statusDualAxisTracking = 1
-    assert sett.statusDualAxisTracking
+def test_Setting_statusDualAxisTracking(function):
+    function.statusDualAxisTracking = 1
+    assert function.statusDualAxisTracking
 
 
-def test_Setting_horizonLimitHigh():
-    sett = Setting(App().mount)
-    sett.horizonLimitHigh = 67
-    assert sett.horizonLimitHigh == 67
+def test_Setting_horizonLimitHigh(function):
+    function.horizonLimitHigh = 67
+    assert function.horizonLimitHigh == 67
 
 
-def test_Setting_horizonLimitLow():
-    sett = Setting(App().mount)
-    sett.horizonLimitLow = 67
-    assert sett.horizonLimitLow == 67
+def test_Setting_horizonLimitLow(function):
+    function.horizonLimitLow = 67
+    assert function.horizonLimitLow == 67
 
 
-def test_Setting_UTCValid():
-    sett = Setting(App().mount)
-    sett.UTCValid = 1
-    assert sett.UTCValid
+def test_Setting_UTCValid(function):
+    function.UTCValid = 1
+    assert function.UTCValid
 
 
-def test_Setting_UTCExpire():
-    sett = Setting(App().mount)
-    sett.UTCExpire = 67
-    assert sett.UTCExpire == 67
+def test_Setting_UTCExpire(function):
+    function.UTCExpire = 67
+    assert function.UTCExpire == 67
 
 
-def test_Setting_typeConnection_1():
-    sett = Setting(App().mount)
-    sett.typeConnection = 5
-    assert sett.typeConnection == 0
+def test_Setting_typeConnection_1(function):
+    function.typeConnection = 5
+    assert function.typeConnection == 0
 
 
-def test_Setting_typeConnection_2():
-    sett = Setting(App().mount)
-    sett.typeConnection = 3
+def test_Setting_typeConnection_2(function):
+    function.typeConnection = 3
 
 
-def test_Setting_typeConnection_3():
-    sett = Setting(App().mount)
-    sett.typeConnection = -6
-    assert sett.typeConnection == 0
+def test_Setting_typeConnection_3(function):
+    function.typeConnection = -6
+    assert function.typeConnection == 0
 
 
-def test_Setting_gpsSynced_1():
-    sett = Setting(App().mount)
-    sett.gpsSynced = True
-    assert sett.gpsSynced
+def test_Setting_gpsSynced_1(function):
+    function.gpsSynced = True
+    assert function.gpsSynced
 
 
-def test_Setting_addressLanMAC_1():
-    sett = Setting(App().mount)
+def test_Setting_addressLanMAC_1(function):
     value = "00:00:00:00:00:00"
-    sett.addressLanMAC = "00:00:00:00:00:00"
-    assert sett.addressLanMAC == value
+    function.addressLanMAC = "00:00:00:00:00:00"
+    assert function.addressLanMAC == value
 
 
-def test_Setting_addressWirelessMAC_1():
-    sett = Setting(App().mount)
+def test_Setting_addressWirelessMAC_1(function):
     value = "00:00:00:00:00:00"
-    sett.addressWirelessMAC = "00:00:00:00:00:00"
-    assert sett.addressWirelessMAC == value
+    function.addressWirelessMAC = "00:00:00:00:00:00"
+    assert function.addressWirelessMAC == value
 
 
-def test_Setting_wakeOnLan_1():
-    sett = Setting(App().mount)
-    sett.wakeOnLan = "N"
-    assert sett.wakeOnLan == "None"
+def test_Setting_wakeOnLan_1(function):
+    function.wakeOnLan = "N"
+    assert function.wakeOnLan == "None"
 
 
-def test_Setting_wakeOnLan_2():
-    sett = Setting(App().mount)
-    sett.wakeOnLan = "0"
-    assert sett.wakeOnLan == "OFF"
+def test_Setting_wakeOnLan_2(function):
+    function.wakeOnLan = "0"
+    assert function.wakeOnLan == "OFF"
 
 
-def test_Setting_wakeOnLan_3():
-    sett = Setting(App().mount)
-    sett.wakeOnLan = "1"
-    assert sett.wakeOnLan == "ON"
+def test_Setting_wakeOnLan_3(function):
+    function.wakeOnLan = "1"
+    assert function.wakeOnLan == "ON"
 
 
-def test_Setting_wakeOnLan_4():
-    sett = Setting(App().mount)
-    sett.wakeOnLan = "E"
-    assert sett.wakeOnLan == "None"
+def test_Setting_wakeOnLan_4(function):
+    function.wakeOnLan = "E"
+    assert function.wakeOnLan == "None"
 
 
-def test_Setting_autoPowerOn_1():
-    sett = Setting(App().mount)
-    sett.autoPowerOn = "N"
-    assert sett.autoPowerOn == "None"
+def test_Setting_autoPowerOn_1(function):
+    function.autoPowerOn = "N"
+    assert function.autoPowerOn == "None"
 
 
-def test_Setting_autoPowerOn_2():
-    sett = Setting(App().mount)
-    sett.autoPowerOn = "0"
-    assert sett.autoPowerOn == "OFF"
+def test_Setting_autoPowerOn_2(function):
+    function.autoPowerOn = "0"
+    assert function.autoPowerOn == "OFF"
 
 
-def test_Setting_autoPowerOn_3():
-    sett = Setting(App().mount)
-    sett.autoPowerOn = "1"
-    assert sett.autoPowerOn == "ON"
+def test_Setting_autoPowerOn_3(function):
+    function.autoPowerOn = "1"
+    assert function.autoPowerOn == "ON"
 
 
-def test_Setting_autoPowerOn_4():
-    sett = Setting(App().mount)
-    sett.autoPowerOn = "E"
-    assert sett.autoPowerOn == "None"
+def test_Setting_autoPowerOn_4(function):
+    function.autoPowerOn = "E"
+    assert function.autoPowerOn == "None"
 
 
-def test_Setting_weatherStatus_1():
-    sett = Setting(App().mount)
-    sett.weatherStatus = None
-    assert sett.weatherStatus == 0
-    assert sett._weatherStatus == 0
+def test_Setting_weatherStatus_1(function):
+    function.weatherStatus = None
+    assert function.weatherStatus == 0
+    assert function._weatherStatus == 0
 
 
-def test_Setting_weatherStatus_2():
-    sett = Setting(App().mount)
-    sett.weatherStatus = 0
-    assert sett.weatherStatus == 0
-    assert sett._weatherStatus == 0
+def test_Setting_weatherStatus_2(function):
+    function.weatherStatus = 0
+    assert function.weatherStatus == 0
+    assert function._weatherStatus == 0
 
 
-def test_Setting_weatherStatus_3():
-    sett = Setting(App().mount)
-    sett.weatherStatus = 5
-    assert sett.weatherStatus == 0
-    assert sett._weatherStatus == 0
+def test_Setting_weatherStatus_3(function):
+    function.weatherStatus = 5
+    assert function.weatherStatus == 0
+    assert function._weatherStatus == 0
 
 
-def test_Setting_weatherTemperature():
-    sett = Setting(App().mount)
-    sett.weatherTemperature = 1
-    assert sett.weatherTemperature == 1
+def test_Setting_weatherTemperature(function):
+    function.weatherTemperature = 1
+    assert function.weatherTemperature == 1
 
 
-def test_Setting_weatherPressure():
-    sett = Setting(App().mount)
-    sett.weatherPressure = 1
-    assert sett.weatherPressure == 1
+def test_Setting_weatherPressure(function):
+    function.weatherPressure = 1
+    assert function.weatherPressure == 1
 
 
-def test_Setting_weatherHumidity():
-    sett = Setting(App().mount)
-    sett.weatherHumidity = 1
-    assert sett.weatherHumidity == 1
+def test_Setting_weatherHumidity(function):
+    function.weatherHumidity = 1
+    assert function.weatherHumidity == 1
 
 
-def test_Setting_weatherDewPoint():
-    sett = Setting(App().mount)
-    sett.weatherDewPoint = 1
-    assert sett.weatherDewPoint == 1
+def test_Setting_weatherDewPoint(function):
+    function.weatherDewPoint = 1
+    assert function.weatherDewPoint == 1
 
 
-def test_Setting_weatherAge():
-    sett = Setting(App().mount)
-    sett.weatherAge = 1
-    assert sett.weatherAge == 1
-    assert sett.weatherAge == 1
+def test_Setting_weatherAge(function):
+    function.weatherAge = 1
+    assert function.weatherAge == 1
+    assert function.weatherAge == 1
 
 
-def test_Setting_settleTime():
-    sett = Setting(App().mount)
-    sett.settleTime = 1
-    assert sett.settleTime == 1
+def test_Setting_settleTime(function):
+    function.settleTime = 1
+    assert function.settleTime == 1
 
 
 #
@@ -297,8 +260,7 @@ def test_Setting_settleTime():
 #
 
 
-def test_Setting_parse_ok():
-    sett = Setting(App().mount)
+def test_Setting_parse_ok(function):
     response = [
         "15",
         "1",
@@ -328,12 +290,11 @@ def test_Setting_parse_ok():
         "A,G,N,H",
         "1",
     ]
-    suc = sett.parseSetting(response, 27)
+    suc = function.parseSetting(response, 27)
     assert suc
 
 
-def test_Setting_parse_ok_1():
-    sett = Setting(App().mount)
+def test_Setting_parse_ok_1(function):
     response = [
         "15",
         "1",
@@ -363,11 +324,11 @@ def test_Setting_parse_ok_1():
         "A,G,N,H",
         "1",
     ]
-    suc = sett.parseSetting(response, 27)
+    suc = function.parseSetting(response, 27)
     assert suc
 
 
-def test_Setting_parse_ok_2():
+def test_Setting_parse_ok_2(function):
     mount = App().mount
     mount.firmware.vString = Version("2.16.00")
     sett = Setting(mount)
@@ -402,8 +363,7 @@ def test_Setting_parse_ok_2():
         assert suc
 
 
-def test_Setting_parse_not_ok0():
-    sett = Setting(App().mount)
+def test_Setting_parse_not_ok0(function):
     response = [
         "15",
         "1",
@@ -429,12 +389,11 @@ def test_Setting_parse_not_ok0():
         "A,G,N,H",
         "1",
     ]
-    suc = sett.parseSetting(response, 27)
+    suc = function.parseSetting(response, 27)
     assert not suc
 
 
-def test_Setting_parse_not_ok1():
-    sett = Setting(App().mount)
+def test_Setting_parse_not_ok1(function):
     response = [
         "15",
         "1",
@@ -464,12 +423,11 @@ def test_Setting_parse_not_ok1():
         "A,G,N,H",
         "1",
     ]
-    suc = sett.parseSetting(response, 27)
+    suc = function.parseSetting(response, 27)
     assert suc
 
 
-def test_Setting_parse_not_ok2():
-    sett = Setting(App().mount)
+def test_Setting_parse_not_ok2(function):
     response = [
         "15",
         "1",
@@ -499,12 +457,11 @@ def test_Setting_parse_not_ok2():
         "A,G,N,H",
         "1",
     ]
-    suc = sett.parseSetting(response, 27)
+    suc = function.parseSetting(response, 27)
     assert suc
 
 
-def test_Setting_parse_not_ok3():
-    sett = Setting(App().mount)
+def test_Setting_parse_not_ok3(function):
     response = [
         "15",
         "1",
@@ -535,12 +492,11 @@ def test_Setting_parse_not_ok3():
         "1",
     ]
 
-    suc = sett.parseSetting(response, 27)
+    suc = function.parseSetting(response, 27)
     assert suc
 
 
-def test_Setting_parse_not_ok4():
-    sett = Setting(App().mount)
+def test_Setting_parse_not_ok4(function):
     response = [
         "15",
         "1",
@@ -571,12 +527,11 @@ def test_Setting_parse_not_ok4():
         "1",
     ]
 
-    suc = sett.parseSetting(response, 27)
+    suc = function.parseSetting(response, 27)
     assert suc
 
 
-def test_Setting_poll_ok1():
-    sett = Setting(App().mount)
+def test_Setting_poll_ok1(function):
 
     response = [
         "15",
@@ -610,12 +565,11 @@ def test_Setting_poll_ok1():
 
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, response, 27
-        suc = sett.pollSetting()
+        suc = function.pollSetting()
         assert suc
 
 
-def test_Setting_poll_ok2():
-    sett = Setting(App().mount)
+def test_Setting_poll_ok2(function):
 
     response = [
         "15",
@@ -649,12 +603,11 @@ def test_Setting_poll_ok2():
 
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, response, 27
-        suc = sett.pollSetting()
+        suc = function.pollSetting()
         assert suc
 
 
-def test_Setting_poll_not_ok1():
-    sett = Setting(App().mount)
+def test_Setting_poll_not_ok1(function):
 
     response = [
         "15",
@@ -688,12 +641,11 @@ def test_Setting_poll_not_ok1():
 
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = False, response, 27
-        suc = sett.pollSetting()
+        suc = function.pollSetting()
         assert not suc
 
 
-def test_Setting_poll_not_ok2():
-    sett = Setting(App().mount)
+def test_Setting_poll_not_ok2(function):
 
     response = [
         "15",
@@ -725,7 +677,7 @@ def test_Setting_poll_not_ok2():
 
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = False, response, 6
-        suc = sett.pollSetting()
+        suc = function.pollSetting()
         assert not suc
 
 
@@ -736,7 +688,7 @@ def test_Setting_poll_not_ok2():
 #
 
 
-def test_Setting_setDualAxisTracking_ok():
+def test_Setting_setDualAxisTracking_ok(function):
     setting = Setting(App().mount)
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -745,7 +697,7 @@ def test_Setting_setDualAxisTracking_ok():
         assert suc
 
 
-def test_Setting_setWOL_ok():
+def test_Setting_setWOL_ok(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -762,7 +714,7 @@ def test_Setting_setWOL_ok():
 #
 
 
-def test_Setting_setMeridianLimitTrack_ok():
+def test_Setting_setMeridianLimitTrack_ok(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -772,7 +724,7 @@ def test_Setting_setMeridianLimitTrack_ok():
         assert suc
 
 
-def test_Setting_setMeridianLimitTrack_not_ok1():
+def test_Setting_setMeridianLimitTrack_not_ok1(function):
     setting = Setting(App().mount)
 
     response = ["0"]
@@ -782,7 +734,7 @@ def test_Setting_setMeridianLimitTrack_not_ok1():
         assert not suc
 
 
-def test_Setting_setMeridianLimitTrack_not_ok2():
+def test_Setting_setMeridianLimitTrack_not_ok2(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -799,7 +751,7 @@ def test_Setting_setMeridianLimitTrack_not_ok2():
 #
 
 
-def test_Setting_setMeridianLimitSlew_ok():
+def test_Setting_setMeridianLimitSlew_ok(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -809,7 +761,7 @@ def test_Setting_setMeridianLimitSlew_ok():
         assert suc
 
 
-def test_Setting_setMeridianLimitSlew_not_ok1():
+def test_Setting_setMeridianLimitSlew_not_ok1(function):
     setting = Setting(App().mount)
 
     response = ["0"]
@@ -819,7 +771,7 @@ def test_Setting_setMeridianLimitSlew_not_ok1():
         assert not suc
 
 
-def test_Setting_setMeridianLimitSlew_not_ok2():
+def test_Setting_setMeridianLimitSlew_not_ok2(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -836,7 +788,7 @@ def test_Setting_setMeridianLimitSlew_not_ok2():
 #
 
 
-def test_Setting_setHorizonLimitLow_ok():
+def test_Setting_setHorizonLimitLow_ok(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -846,7 +798,7 @@ def test_Setting_setHorizonLimitLow_ok():
         assert suc
 
 
-def test_Setting_setHorizonLimitLow_not_ok3():
+def test_Setting_setHorizonLimitLow_not_ok3(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -856,7 +808,7 @@ def test_Setting_setHorizonLimitLow_not_ok3():
         assert not suc
 
 
-def test_Setting_setHorizonLimitLow_not_ok4():
+def test_Setting_setHorizonLimitLow_not_ok4(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -873,7 +825,7 @@ def test_Setting_setHorizonLimitLow_not_ok4():
 #
 
 
-def test_Setting_setHorizonLimitHigh_ok():
+def test_Setting_setHorizonLimitHigh_ok(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -883,7 +835,7 @@ def test_Setting_setHorizonLimitHigh_ok():
         assert suc
 
 
-def test_Setting_setHorizonLimitHigh_not_ok3():
+def test_Setting_setHorizonLimitHigh_not_ok3(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -893,7 +845,7 @@ def test_Setting_setHorizonLimitHigh_not_ok3():
         assert not suc
 
 
-def test_Setting_setHorizonLimitHigh_not_ok4():
+def test_Setting_setHorizonLimitHigh_not_ok4(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -910,7 +862,7 @@ def test_Setting_setHorizonLimitHigh_not_ok4():
 #
 
 
-def test_Setting_setRefractionTemp_ok():
+def test_Setting_setRefractionTemp_ok(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -920,7 +872,7 @@ def test_Setting_setRefractionTemp_ok():
         assert suc
 
 
-def test_Setting_setRefractionTemp_not_ok3():
+def test_Setting_setRefractionTemp_not_ok3(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -930,7 +882,7 @@ def test_Setting_setRefractionTemp_not_ok3():
         assert not suc
 
 
-def test_Setting_setRefractionTemp_not_ok4():
+def test_Setting_setRefractionTemp_not_ok4(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -947,7 +899,7 @@ def test_Setting_setRefractionTemp_not_ok4():
 #
 
 
-def test_Setting_setRefractionPress_ok():
+def test_Setting_setRefractionPress_ok(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -957,7 +909,7 @@ def test_Setting_setRefractionPress_ok():
         assert suc
 
 
-def test_Setting_setRefractionPress_not_ok3():
+def test_Setting_setRefractionPress_not_ok3(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -967,7 +919,7 @@ def test_Setting_setRefractionPress_not_ok3():
         assert not suc
 
 
-def test_Setting_setRefractionPress_not_ok4():
+def test_Setting_setRefractionPress_not_ok4(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -984,7 +936,7 @@ def test_Setting_setRefractionPress_not_ok4():
 #
 
 
-def test_Setting_setRefraction_ok():
+def test_Setting_setRefraction_ok(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -1001,7 +953,7 @@ def test_Setting_setRefraction_ok():
 #
 
 
-def test_Setting_setRefractionParam_ok():
+def test_Setting_setRefractionParam_ok(function):
     setting = Setting(App().mount)
 
     response = ["11"]
@@ -1010,7 +962,7 @@ def test_Setting_setRefractionParam_ok():
         setting.setRefractionParam(temperature=5, pressure=800)
 
 
-def test_Setting_setRefractionParam_not_ok4():
+def test_Setting_setRefractionParam_not_ok4(function):
     setting = Setting(App().mount)
 
     response = ["11"]
@@ -1020,7 +972,7 @@ def test_Setting_setRefractionParam_not_ok4():
         assert not suc
 
 
-def test_Setting_setRefractionParam_not_ok5():
+def test_Setting_setRefractionParam_not_ok5(function):
     setting = Setting(App().mount)
 
     response = ["11"]
@@ -1030,7 +982,7 @@ def test_Setting_setRefractionParam_not_ok5():
         assert not suc
 
 
-def test_Setting_setRefractionParam_not_ok6():
+def test_Setting_setRefractionParam_not_ok6(function):
     setting = Setting(App().mount)
 
     response = ["11"]
@@ -1040,7 +992,7 @@ def test_Setting_setRefractionParam_not_ok6():
         assert not suc
 
 
-def test_Setting_setRefractionParam_not_ok7():
+def test_Setting_setRefractionParam_not_ok7(function):
     setting = Setting(App().mount)
 
     response = ["11"]
@@ -1057,7 +1009,7 @@ def test_Setting_setRefractionParam_not_ok7():
 #
 
 
-def test_Setting_setSlewRate_ok():
+def test_Setting_setSlewRate_ok(function):
     setting = Setting(App().mount)
 
     response = ["10"]
@@ -1067,7 +1019,7 @@ def test_Setting_setSlewRate_ok():
         assert suc
 
 
-def test_Setting_setSlewRate_not_ok3():
+def test_Setting_setSlewRate_not_ok3(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -1077,7 +1029,7 @@ def test_Setting_setSlewRate_not_ok3():
         assert not suc
 
 
-def test_Setting_setSlewRate_not_ok4():
+def test_Setting_setSlewRate_not_ok4(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -1087,7 +1039,7 @@ def test_Setting_setSlewRate_not_ok4():
         assert not suc
 
 
-def test_setSlewSpeedMax_1():
+def test_setSlewSpeedMax_1(function):
     setting = Setting(App().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1096,7 +1048,7 @@ def test_setSlewSpeedMax_1():
         assert suc
 
 
-def test_setSlewSpeedMax_2():
+def test_setSlewSpeedMax_2(function):
     setting = Setting(App().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1105,7 +1057,7 @@ def test_setSlewSpeedMax_2():
         assert not suc
 
 
-def test_setSlewSpeedHigh_1():
+def test_setSlewSpeedHigh_1(function):
     setting = Setting(App().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1114,7 +1066,7 @@ def test_setSlewSpeedHigh_1():
         assert suc
 
 
-def test_setSlewSpeedHigh_2():
+def test_setSlewSpeedHigh_2(function):
     setting = Setting(App().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1123,7 +1075,7 @@ def test_setSlewSpeedHigh_2():
         assert not suc
 
 
-def test_setSlewSpeedMed_1():
+def test_setSlewSpeedMed_1(function):
     setting = Setting(App().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1132,7 +1084,7 @@ def test_setSlewSpeedMed_1():
         assert suc
 
 
-def test_setSlewSpeedMed_2():
+def test_setSlewSpeedMed_2(function):
     setting = Setting(App().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1141,7 +1093,7 @@ def test_setSlewSpeedMed_2():
         assert not suc
 
 
-def test_setSlewSpeedLow_1():
+def test_setSlewSpeedLow_1(function):
     setting = Setting(App().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1150,7 +1102,7 @@ def test_setSlewSpeedLow_1():
         assert suc
 
 
-def test_setSlewSpeedLow_2():
+def test_setSlewSpeedLow_2(function):
     setting = Setting(App().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1166,7 +1118,7 @@ def test_setSlewSpeedLow_2():
 #
 
 
-def test_ObsSite_setUnattendedFlip_ok():
+def test_ObsSite_setUnattendedFlip_ok(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -1176,7 +1128,7 @@ def test_ObsSite_setUnattendedFlip_ok():
         assert suc
 
 
-def test_ObsSite_setUnattendedFlip_not_ok1():
+def test_ObsSite_setUnattendedFlip_not_ok1(function):
     setting = Setting(App().mount)
 
     response = []
@@ -1193,7 +1145,7 @@ def test_ObsSite_setUnattendedFlip_not_ok1():
 #
 
 
-def test_setDirectWeatherUpdateType_3():
+def test_setDirectWeatherUpdateType_3(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -1203,7 +1155,7 @@ def test_setDirectWeatherUpdateType_3():
         assert suc
 
 
-def test_setDirectWeatherUpdateType_4():
+def test_setDirectWeatherUpdateType_4(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -1213,7 +1165,7 @@ def test_setDirectWeatherUpdateType_4():
         assert not suc
 
 
-def test_setDirectWeatherUpdateType_5():
+def test_setDirectWeatherUpdateType_5(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -1230,7 +1182,7 @@ def test_setDirectWeatherUpdateType_5():
 #
 
 
-def test_ObsSite_setLunarTracking_ok():
+def test_ObsSite_setLunarTracking_ok(function):
     setting = Setting(App().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1239,7 +1191,7 @@ def test_ObsSite_setLunarTracking_ok():
         assert suc
 
 
-def test_ObsSite_setLunarTracking_not_ok1():
+def test_ObsSite_setLunarTracking_not_ok1(function):
     setting = Setting(App().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1255,7 +1207,7 @@ def test_ObsSite_setLunarTracking_not_ok1():
 #
 
 
-def test_ObsSite_setSiderealTracking_ok():
+def test_ObsSite_setSiderealTracking_ok(function):
     setting = Setting(App().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1264,7 +1216,7 @@ def test_ObsSite_setSiderealTracking_ok():
         assert suc
 
 
-def test_ObsSite_setSiderealTracking_not_ok1():
+def test_ObsSite_setSiderealTracking_not_ok1(function):
     setting = Setting(App().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1280,7 +1232,7 @@ def test_ObsSite_setSiderealTracking_not_ok1():
 #
 
 
-def test_ObsSite_setSolarTracking_ok():
+def test_ObsSite_setSolarTracking_ok(function):
     setting = Setting(App().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1289,7 +1241,7 @@ def test_ObsSite_setSolarTracking_ok():
         assert suc
 
 
-def test_ObsSite_setSolarTracking_not_ok1():
+def test_ObsSite_setSolarTracking_not_ok1(function):
     setting = Setting(App().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1298,7 +1250,7 @@ def test_ObsSite_setSolarTracking_not_ok1():
         assert not suc
 
 
-def test_Checking_trackingRate1():
+def test_Checking_trackingRate1(function):
     setting = Setting(App().mount)
     setting.trackingRate = 62.4
     assert setting.checkRateLunar()
@@ -1306,7 +1258,7 @@ def test_Checking_trackingRate1():
     assert not setting.checkRateSolar()
 
 
-def test_Checking_trackingRate2():
+def test_Checking_trackingRate2(function):
     setting = Setting(App().mount)
     setting.trackingRate = 60.2
     assert not setting.checkRateLunar()
@@ -1314,7 +1266,7 @@ def test_Checking_trackingRate2():
     assert not setting.checkRateSolar()
 
 
-def test_Checking_trackingRate3():
+def test_Checking_trackingRate3(function):
     setting = Setting(App().mount)
     setting.trackingRate = 60.3
     assert not setting.checkRateLunar()
@@ -1322,7 +1274,7 @@ def test_Checking_trackingRate3():
     assert setting.checkRateSolar()
 
 
-def test_Checking_trackingRate4():
+def test_Checking_trackingRate4(function):
     setting = Setting(App().mount)
     setting.trackingRate = 6
     assert not setting.checkRateLunar()
@@ -1330,13 +1282,13 @@ def test_Checking_trackingRate4():
     assert not setting.checkRateSolar()
 
 
-def test_ObsSite_trackingRate():
+def test_ObsSite_trackingRate(function):
     setting = Setting(App().mount)
     setting.trackingRate = 67
     assert setting.trackingRate == 67
 
 
-def test_setWebInterface_ok():
+def test_setWebInterface_ok(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -1346,7 +1298,7 @@ def test_setWebInterface_ok():
         assert suc
 
 
-def test_setSettleTime_ok():
+def test_setSettleTime_ok(function):
     setting = Setting(App().mount)
 
     response = ["1"]
@@ -1356,7 +1308,7 @@ def test_setSettleTime_ok():
         assert suc
 
 
-def test_setAutoPower_ok():
+def test_setAutoPower_ok(function):
     setting = Setting(App().mount)
 
     response = ["1"]

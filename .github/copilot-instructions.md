@@ -116,6 +116,7 @@ def test_myFunction(app):
   return types.
 - Do not take `src/mw4/gui/widgets` into account, as those files are
   automatically generated.
+- no local methods and functions with leading underscore (e.g., `_myFunction`) should be used
 - When adding comments, check the line length – it must not exceed the limit
   defined in `pyproject.toml`; split long comments into multiple lines.
 - stay close with the task description and do not add any additional features or changes that are not

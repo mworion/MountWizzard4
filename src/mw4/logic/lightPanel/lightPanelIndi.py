@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-from indipyclient.queclient import EventItem
 from mw4.base.indiClass import IndiClass
 from typing import Any
 

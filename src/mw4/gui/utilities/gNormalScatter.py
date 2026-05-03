@@ -27,56 +27,67 @@ class NormalScatter(PlotBase):
         self.col = None
         self.p[0].setVisible(True)
 
-    def plot(self, x: int, y: int, **kwargs) -> None:
-        self.p[0].clear()
-        self.p[0].showAxes(True, showValues=True)
-        self.scatterItem = pg.ScatterPlotItem(hoverable=True, hoverSize=10, hoverPen=self.pen)
-        self.p[0].addItem(self.scatterItem)
+    def setupRangeLimits(
+        self, x: np.ndarray, y: np.ndarray, kwargs: dict
+    ) -> None:
         self.defRange = kwargs.get("range", {})
-
         xMin = self.defRange.get("xMin", np.min(x))
         yMin = self.defRange.get("yMin", np.min(y))
         xMax = self.defRange.get("xMax", np.max(x))
         yMax = self.defRange.get("yMax", np.max(y))
+        if not kwargs.get("limits", True):
+            return
+        if xMin is not None and xMax is not None:
+            self.p[0].setLimits(
+                xMin=xMin,
+                xMax=xMax,
+                minXRange=(xMax - xMin) / 4,
+                maxXRange=(xMax - xMin),
+            )
+            self.p[0].setXRange(xMin, xMax)
+        if yMin is not None and yMax is not None:
+            self.p[0].setLimits(
+                yMin=yMin,
+                yMax=yMax,
+                minYRange=(yMax - yMin) / 4,
+                maxYRange=(yMax - yMin),
+            )
+            self.p[0].setYRange(yMin, yMax)
 
-        if kwargs.get("limits", True):
-            if xMin is not None and xMax is not None:
-                self.p[0].setLimits(
-                    xMin=xMin,
-                    xMax=xMax,
-                    minXRange=(xMax - xMin) / 4,
-                    maxXRange=(xMax - xMin),
-                )
-                self.p[0].setXRange(xMin, xMax)
-            if yMin is not None and yMax is not None:
-                self.p[0].setLimits(
-                    yMin=yMin,
-                    yMax=yMax,
-                    minYRange=(yMax - yMin) / 4,
-                    maxYRange=(yMax - yMin),
-                )
-                self.p[0].setYRange(yMin, yMax)
-        self.p[0].getViewBox().rightMouseRange()
+    def computeZColorMap(
+        self, z: np.ndarray
+    ) -> tuple[np.ndarray, float, float]:
+        err = np.abs(z)
+        minE = float(np.min(err))
+        maxE = float(np.max(err))
+        divisor = max((maxE - minE), 0.1)
+        colorInx = (err - minE) / divisor
+        return colorInx, minE, maxE
 
-        dataVal = kwargs.get("data", y)
+    def setupColorData(
+        self, x: np.ndarray, kwargs: dict
+    ) -> tuple[float, float]:
         self.col = kwargs.get("color", self.M_PRIM)
         if isinstance(self.col, str | QColor):
             self.col = [self.col] * len(x)
-
+        minE, maxE = 0.0, 0.0
         if "z" in kwargs:
-            z = kwargs.get("z")
-            err = np.abs(z)
-            minE = np.min(err)
-            maxE = np.max(err)
-            divisor = max((maxE - minE), 0.1)
-            self.colorInx = (err - minE) / divisor
+            self.colorInx, minE, maxE = self.computeZColorMap(kwargs["z"])
+        return minE, maxE
 
-        hasBar = kwargs.get("bar", False)
-        if hasBar and "z" in kwargs:
-            self.barItem.setVisible(True)
-            self.barItem.setLevels(values=(minE, maxE))
-            self.barItem.setColorMap(self.cMapGYR)
+    def setupBarItem(
+        self, kwargs: dict, minE: float, maxE: float
+    ) -> None:
+        if not (kwargs.get("bar", False) and "z" in kwargs):
+            return
+        self.barItem.setVisible(True)
+        self.barItem.setLevels(values=(minE, maxE))
+        self.barItem.setColorMap(self.cMapGYR)
 
+    def buildSpots(
+        self, x: np.ndarray, y: np.ndarray, kwargs: dict
+    ) -> list:
+        dataVal = kwargs.get("data", y)
         spots = []
         for i in range(len(x)):
             if "z" in kwargs:
@@ -92,12 +103,28 @@ class NormalScatter(PlotBase):
                     "size": 6,
                 }
             )
+        return spots
+
+    def addScatterPoints(self, spots: list, kwargs: dict) -> None:
         tip = kwargs.get("tip")
         if tip is None:
             self.scatterItem.addPoints(spots)
         else:
             self.scatterItem.addPoints(spots, tip=tip)
 
+    def plot(self, x: np.ndarray, y: np.ndarray, **kwargs) -> None:
+        self.p[0].clear()
+        self.p[0].showAxes(True, showValues=True)
+        self.scatterItem = pg.ScatterPlotItem(
+            hoverable=True, hoverSize=10, hoverPen=self.pen
+        )
+        self.p[0].addItem(self.scatterItem)
+        self.setupRangeLimits(x, y, kwargs)
+        self.p[0].getViewBox().rightMouseRange()
+        minE, maxE = self.setupColorData(x, kwargs)
+        self.setupBarItem(kwargs, minE, maxE)
+        spots = self.buildSpots(x, y, kwargs)
+        self.addScatterPoints(spots, kwargs)
         isoLevels = kwargs.get("isoLevels", 0)
         if isoLevels != 0 and "z" in kwargs:
-            self.addIsoItemHorizon(x, y, z, levels=isoLevels)
+            self.addIsoItemHorizon(x, y, kwargs["z"], levels=isoLevels)

@@ -34,7 +34,7 @@ from pathlib import Path
 setupLogging()
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def module_setup_teardown():
     files = glob.glob("tests/work/config/*.cfg")
     for f in files:

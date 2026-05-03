@@ -14,277 +14,293 @@
 #
 ###########################################################
 
-import unittest
 import unittest.mock as mock
 from mw4.mountcontrol.dome import Dome
 from skyfield.api import Angle
 
 
-class TestConfigData(unittest.TestCase):
-    def setUp(self):
-        pass
+def test_property_1():
+    class Parent:
+        host = None
 
-    def test_property_1(self):
-        class Parent:
-            host = None
+    dome = Dome(parent=Parent())
 
-        dome = Dome(parent=Parent())
+    dome.shutterState = "1"
+    dome.flapState = "1"
+    dome.slew = "1"
+    dome.azimuth = "1800"
 
-        dome.shutterState = "1"
-        dome.flapState = "1"
-        dome.slew = "1"
-        dome.azimuth = "1800"
+    assert dome.shutterState == 1
+    assert dome.flapState == 1
+    assert dome.slew
+    assert dome.azimuth == 180
 
-        self.assertEqual(dome.shutterState, 1)
-        self.assertEqual(dome.flapState, 1)
-        self.assertTrue(dome.slew)
-        self.assertEqual(dome.azimuth, 180)
 
-    def test_property_2(self):
-        class Parent:
-            host = None
+def test_property_2():
+    class Parent:
+        host = None
 
-        dome = Dome(parent=Parent())
+    dome = Dome(parent=Parent())
 
-        dome.shutterState = "-1"
-        dome.flapState = "-1"
-        dome.slew = "-1"
-        dome.azimuth = "5400"
+    dome.shutterState = "-1"
+    dome.flapState = "-1"
+    dome.slew = "-1"
+    dome.azimuth = "5400"
 
-        self.assertTrue(dome.slew)
-        self.assertEqual(dome.azimuth, 180)
+    assert dome.slew
+    assert dome.azimuth == 180
 
-    def test_property_3(self):
-        class Parent:
-            host = None
 
-        dome = Dome(parent=Parent())
+def test_property_3():
+    class Parent:
+        host = None
 
-        dome.shutterState = "5"
-        dome.flapState = "5"
-        dome.slew = "e"
-        dome.azimuth = "e"
+    dome = Dome(parent=Parent())
 
-    def test_property_4(self):
-        class Parent:
-            host = None
+    dome.shutterState = "5"
+    dome.flapState = "5"
+    dome.slew = "e"
+    dome.azimuth = "e"
 
-        dome = Dome(parent=Parent())
 
-        dome.shutterState = "e"
-        dome.flapState = "e"
+def test_property_4():
+    class Parent:
+        host = None
 
-    def test_Dome_parse_1(self):
-        class Parent:
-            host = None
+    dome = Dome(parent=Parent())
 
-        dome = Dome(parent=Parent())
+    dome.shutterState = "e"
+    dome.flapState = "e"
 
-        response = ["0", "0", "0", "1800"]
-        suc = dome.parse(response, 4)
-        self.assertTrue(suc)
-        self.assertEqual(dome.shutterState, 0)
-        self.assertEqual(dome.flapState, 0)
-        self.assertFalse(dome.slew)
-        self.assertEqual(dome.azimuth, 180)
 
-    def test_Dome_parse_2(self):
-        class Parent:
-            host = None
+def test_Dome_parse_1():
+    class Parent:
+        host = None
 
-        dome = Dome(parent=Parent())
+    dome = Dome(parent=Parent())
 
-        response = ["1", "2", "1", "5400"]
-        suc = dome.parse(response, 4)
-        self.assertTrue(suc)
-        self.assertEqual(dome.shutterState, 1)
-        self.assertEqual(dome.flapState, 2)
-        self.assertTrue(dome.slew)
-        self.assertEqual(dome.azimuth, 180)
+    response = ["0", "0", "0", "1800"]
+    suc = dome.parse(response, 4)
+    assert suc
+    assert dome.shutterState == 0
+    assert dome.flapState == 0
+    assert not dome.slew
+    assert dome.azimuth == 180
 
-    def test_Dome_parse_3(self):
-        class Parent:
-            host = None
 
-        dome = Dome(parent=Parent())
+def test_Dome_parse_2():
+    class Parent:
+        host = None
 
-        response = ["1", "2", "1"]
-        suc = dome.parse(response, 4)
-        self.assertFalse(suc)
+    dome = Dome(parent=Parent())
 
-    def test_Dome_parse_4(self):
-        class Parent:
-            host = None
+    response = ["1", "2", "1", "5400"]
+    suc = dome.parse(response, 4)
+    assert suc
+    assert dome.shutterState == 1
+    assert dome.flapState == 2
+    assert dome.slew
+    assert dome.azimuth == 180
 
-        dome = Dome(parent=Parent())
 
-        response = ["e", "e", "e", "e"]
-        suc = dome.parse(response, 4)
-        self.assertTrue(suc)
+def test_Dome_parse_3():
+    class Parent:
+        host = None
 
-    def test_Dome_parse_5(self):
-        class Parent:
-            host = None
+    dome = Dome(parent=Parent())
 
-        dome = Dome(parent=Parent())
+    response = ["1", "2", "1"]
+    suc = dome.parse(response, 4)
+    assert not suc
 
-        response = ["5", "-1", "1", "5400"]
-        suc = dome.parse(response, 4)
-        self.assertTrue(suc)
-        self.assertTrue(dome.slew)
 
-    def test_Dome_poll_1(self):
-        class Parent:
-            host = None
+def test_Dome_parse_4():
+    class Parent:
+        host = None
 
-        dome = Dome(parent=Parent())
-        response = ["0", "0", "0", "1800"]
+    dome = Dome(parent=Parent())
 
-        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
-            mConn.return_value.communicate.return_value = False, response, 4
-            suc = dome.poll()
-            self.assertFalse(suc)
+    response = ["e", "e", "e", "e"]
+    suc = dome.parse(response, 4)
+    assert suc
 
-    def test_Dome_poll_2(self):
-        class Parent:
-            host = None
 
-        dome = Dome(parent=Parent())
-        response = ["0", "0", "0", "1800"]
+def test_Dome_parse_5():
+    class Parent:
+        host = None
 
-        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
-            mConn.return_value.communicate.return_value = True, response, 4
-            suc = dome.poll()
-            self.assertTrue(suc)
+    dome = Dome(parent=Parent())
 
-    def test_openShutter_1(self):
-        class Parent:
-            host = None
+    response = ["5", "-1", "1", "5400"]
+    suc = dome.parse(response, 4)
+    assert suc
+    assert dome.slew
 
-        dome = Dome(parent=Parent())
 
-        response = ["1"]
-        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
-            mConn.return_value.communicate.return_value = False, response, 0
-            suc = dome.openShutter()
-            self.assertFalse(suc)
+def test_Dome_poll_1():
+    class Parent:
+        host = None
 
-    def test_openShutter_3(self):
-        class Parent:
-            host = None
+    dome = Dome(parent=Parent())
+    response = ["0", "0", "0", "1800"]
 
-        dome = Dome(parent=Parent())
+    with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
+        mConn.return_value.communicate.return_value = False, response, 4
+        suc = dome.poll()
+        assert not suc
 
-        response = ["1"]
-        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
-            mConn.return_value.communicate.return_value = True, response, 0
-            suc = dome.openShutter()
-            self.assertTrue(suc)
 
-    def test_closeShutter_1(self):
-        class Parent:
-            host = None
+def test_Dome_poll_2():
+    class Parent:
+        host = None
 
-        dome = Dome(parent=Parent())
+    dome = Dome(parent=Parent())
+    response = ["0", "0", "0", "1800"]
 
-        response = ["1"]
-        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
-            mConn.return_value.communicate.return_value = False, response, 0
-            suc = dome.closeShutter()
-            self.assertFalse(suc)
+    with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
+        mConn.return_value.communicate.return_value = True, response, 4
+        suc = dome.poll()
+        assert suc
 
-    def test_closeShutter_3(self):
-        class Parent:
-            host = None
 
-        dome = Dome(parent=Parent())
+def test_openShutter_1():
+    class Parent:
+        host = None
 
-        response = ["1"]
-        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
-            mConn.return_value.communicate.return_value = True, response, 0
-            suc = dome.closeShutter()
-            self.assertTrue(suc)
+    dome = Dome(parent=Parent())
 
-    def test_openFlap_1(self):
-        class Parent:
-            host = None
+    response = ["1"]
+    with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
+        mConn.return_value.communicate.return_value = False, response, 0
+        suc = dome.openShutter()
+        assert not suc
 
-        dome = Dome(parent=Parent())
 
-        response = ["1"]
-        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
-            mConn.return_value.communicate.return_value = False, response, 0
-            suc = dome.openFlap()
-            self.assertFalse(suc)
+def test_openShutter_3():
+    class Parent:
+        host = None
 
-    def test_openFlap_3(self):
-        class Parent:
-            host = None
+    dome = Dome(parent=Parent())
 
-        dome = Dome(parent=Parent())
+    response = ["1"]
+    with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
+        mConn.return_value.communicate.return_value = True, response, 0
+        suc = dome.openShutter()
+        assert suc
 
-        response = ["1"]
-        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
-            mConn.return_value.communicate.return_value = True, response, 0
-            suc = dome.openFlap()
-            self.assertTrue(suc)
 
-    def test_closeFlap_1(self):
-        class Parent:
-            host = None
+def test_closeShutter_1():
+    class Parent:
+        host = None
 
-        dome = Dome(parent=Parent())
+    dome = Dome(parent=Parent())
 
-        response = ["1"]
-        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
-            mConn.return_value.communicate.return_value = False, response, 0
-            suc = dome.closeFlap()
-            self.assertFalse(suc)
+    response = ["1"]
+    with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
+        mConn.return_value.communicate.return_value = False, response, 0
+        suc = dome.closeShutter()
+        assert not suc
 
-    def test_closeFlap_3(self):
-        class Parent:
-            host = None
 
-        dome = Dome(parent=Parent())
+def test_closeShutter_3():
+    class Parent:
+        host = None
 
-        response = ["1"]
-        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
-            mConn.return_value.communicate.return_value = True, response, 0
-            suc = dome.closeFlap()
-            self.assertTrue(suc)
+    dome = Dome(parent=Parent())
 
-    def test_slewDome_2(self):
-        class Parent:
-            host = None
+    response = ["1"]
+    with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
+        mConn.return_value.communicate.return_value = True, response, 0
+        suc = dome.closeShutter()
+        assert suc
 
-        dome = Dome(parent=Parent())
 
-        response = ["1"]
-        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
-            mConn.return_value.communicate.return_value = False, response, 1
-            suc = dome.slewDome(azimuth=Angle(degrees=100))
-            self.assertFalse(suc)
+def test_openFlap_1():
+    class Parent:
+        host = None
 
-    def test_enableInternalDomeControl_1(self):
-        class Parent:
-            host = None
+    dome = Dome(parent=Parent())
 
-        dome = Dome(parent=Parent())
+    response = ["1"]
+    with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
+        mConn.return_value.communicate.return_value = False, response, 0
+        suc = dome.openFlap()
+        assert not suc
 
-        response = ["1"]
-        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
-            mConn.return_value.communicate.return_value = False, response, 0
-            suc = dome.enableInternalDomeControl()
-            self.assertFalse(suc)
 
-    def test_enableInternalDomeControl_2(self):
-        class Parent:
-            host = None
+def test_openFlap_3():
+    class Parent:
+        host = None
 
-        dome = Dome(parent=Parent())
+    dome = Dome(parent=Parent())
 
-        response = ["0"]
-        with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
-            mConn.return_value.communicate.return_value = True, response, 0
-            suc = dome.enableInternalDomeControl()
-            self.assertTrue(suc)
+    response = ["1"]
+    with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
+        mConn.return_value.communicate.return_value = True, response, 0
+        suc = dome.openFlap()
+        assert suc
+
+
+def test_closeFlap_1():
+    class Parent:
+        host = None
+
+    dome = Dome(parent=Parent())
+
+    response = ["1"]
+    with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
+        mConn.return_value.communicate.return_value = False, response, 0
+        suc = dome.closeFlap()
+        assert not suc
+
+
+def test_closeFlap_3():
+    class Parent:
+        host = None
+
+    dome = Dome(parent=Parent())
+
+    response = ["1"]
+    with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
+        mConn.return_value.communicate.return_value = True, response, 0
+        suc = dome.closeFlap()
+        assert suc
+
+
+def test_slewDome_2():
+    class Parent:
+        host = None
+
+    dome = Dome(parent=Parent())
+
+    response = ["1"]
+    with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
+        mConn.return_value.communicate.return_value = False, response, 1
+        suc = dome.slewDome(azimuth=Angle(degrees=100))
+        assert not suc
+
+
+def test_enableInternalDomeControl_1():
+    class Parent:
+        host = None
+
+    dome = Dome(parent=Parent())
+
+    response = ["1"]
+    with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
+        mConn.return_value.communicate.return_value = False, response, 0
+        suc = dome.enableInternalDomeControl()
+        assert not suc
+
+
+def test_enableInternalDomeControl_2():
+    class Parent:
+        host = None
+
+    dome = Dome(parent=Parent())
+
+    response = ["0"]
+    with mock.patch("mw4.mountcontrol.dome.Connection") as mConn:
+        mConn.return_value.communicate.return_value = True, response, 0
+        suc = dome.enableInternalDomeControl()
+        assert suc

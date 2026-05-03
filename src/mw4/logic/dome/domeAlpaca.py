@@ -37,9 +37,7 @@ class DomeAlpaca(AlpacaClass):
 
         shutterStates = ["Open", "Closed", "Opening", "Closing", "Error"]
         azimuth = self.getDeviceProp("Azimuth")
-        self.storePropertyToData(
-            azimuth, "ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION"
-        )
+        self.storePropertyToData(azimuth, "ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION")
         self.signals.azimuth.emit(azimuth)
         self.getAndStoreDeviceProp("Slewing", "Slewing")
 

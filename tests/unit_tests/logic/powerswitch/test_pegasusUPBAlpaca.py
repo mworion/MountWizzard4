@@ -52,9 +52,7 @@ def test_workerPollData_2(function):
 def test_workerPollData_3(function):
     function.deviceConnected = True
     with mock.patch.object(function, "getDeviceProp", return_value=21):
-        with mock.patch.object(
-            function, "callDeviceMethod", return_value=1.0
-        ):
+        with mock.patch.object(function, "callDeviceMethod", return_value=1.0):
             with mock.patch.object(function, "storePropertyToData"):
                 function.workerPollData()
 

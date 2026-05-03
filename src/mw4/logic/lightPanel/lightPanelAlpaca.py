@@ -27,9 +27,7 @@ class LightPanelAlpaca(AlpacaClass):
     def workerPollData(self) -> None:
 
         brightness = self.getDeviceProp("Brightness")
-        self.storePropertyToData(
-            brightness, "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"
-        )
+        self.storePropertyToData(brightness, "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
         maxBrightness = self.getDeviceProp("MaxBrightness")
         self.storePropertyToData(
             maxBrightness, "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX"

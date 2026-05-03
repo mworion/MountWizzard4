@@ -129,9 +129,7 @@ def test_getDeviceProp_4(function):
 def test_getDeviceProp_5(function):
     function.propertyExceptions = []
     function.device = mock.MagicMock()
-    type(function.device).TestProp = mock.PropertyMock(
-        side_effect=Exception("error")
-    )
+    type(function.device).TestProp = mock.PropertyMock(side_effect=Exception("error"))
     result = function.getDeviceProp("TestProp")
     assert result is None
 
@@ -267,28 +265,20 @@ def test_discoverAPIVersion_3(function):
 
 
 def test_discoverAlpacaDevices_1(function):
-    with mock.patch.object(
-        alpacaMgmt, "configureddevices", side_effect=Exception()
-    ):
+    with mock.patch.object(alpacaMgmt, "configureddevices", side_effect=Exception()):
         val = function.discoverAlpacaDevices()
         assert val == []
 
 
 def test_discoverAlpacaDevices_2(function):
-    with mock.patch.object(
-        alpacaMgmt, "configureddevices", return_value=[]
-    ):
+    with mock.patch.object(alpacaMgmt, "configureddevices", return_value=[]):
         val = function.discoverAlpacaDevices()
         assert val == []
 
 
 def test_discoverAlpacaDevices_3(function):
-    devices = [
-        {"DeviceName": "cam", "DeviceType": "Camera", "DeviceNumber": 0}
-    ]
-    with mock.patch.object(
-        alpacaMgmt, "configureddevices", return_value=devices
-    ):
+    devices = [{"DeviceName": "cam", "DeviceType": "Camera", "DeviceNumber": 0}]
+    with mock.patch.object(alpacaMgmt, "configureddevices", return_value=devices):
         val = function.discoverAlpacaDevices()
         assert val == devices
 
@@ -306,15 +296,9 @@ def test_workerConnectDevice_2(function):
     function.serverConnected = False
     function.deviceConnected = False
     with mock.patch.object(time, "sleep"):
-        with mock.patch.object(
-            function, "createAlpacaDevice", return_value=True
-        ):
-            with mock.patch.object(
-                function, "setDeviceProp"
-            ):
-                with mock.patch.object(
-                    function, "getDeviceProp", return_value=False
-                ):
+        with mock.patch.object(function, "createAlpacaDevice", return_value=True):
+            with mock.patch.object(function, "setDeviceProp"):
+                with mock.patch.object(function, "getDeviceProp", return_value=False):
                     function.workerConnectDevice()
                     assert not function.serverConnected
                     assert not function.deviceConnected
@@ -324,13 +308,9 @@ def test_workerConnectDevice_3(function):
     function.serverConnected = False
     function.deviceConnected = False
     with mock.patch.object(time, "sleep"):
-        with mock.patch.object(
-            function, "createAlpacaDevice", return_value=True
-        ):
+        with mock.patch.object(function, "createAlpacaDevice", return_value=True):
             with mock.patch.object(function, "setDeviceProp"):
-                with mock.patch.object(
-                    function, "getDeviceProp", return_value=True
-                ):
+                with mock.patch.object(function, "getDeviceProp", return_value=True):
                     function.workerConnectDevice()
                     assert function.serverConnected
                     assert function.deviceConnected
@@ -433,9 +413,7 @@ def test_discoverDevices_1(function):
         {"DeviceName": "test", "DeviceNumber": 1, "DeviceType": "Dome"},
         {"DeviceName": "test1", "DeviceNumber": 3, "DeviceType": "Dome"},
     ]
-    with mock.patch.object(
-        function, "discoverAlpacaDevices", return_value=devices
-    ):
+    with mock.patch.object(function, "discoverAlpacaDevices", return_value=devices):
         val = function.discoverDevices("dome")
         assert val == ["test:dome:1", "test1:dome:3"]
 

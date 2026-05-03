@@ -25,22 +25,10 @@ class SensorWeatherAlpaca(AlpacaClass):
 
     def workerPollData(self) -> None:
 
-        self.getAndStoreDeviceProp(
-            "Temperature", "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
-        )
-        self.getAndStoreDeviceProp(
-            "Pressure", "WEATHER_PARAMETERS.WEATHER_PRESSURE"
-        )
-        self.getAndStoreDeviceProp(
-            "DewPoint", "WEATHER_PARAMETERS.WEATHER_DEWPOINT"
-        )
-        self.getAndStoreDeviceProp(
-            "Humidity", "WEATHER_PARAMETERS.WEATHER_HUMIDITY"
-        )
-        self.getAndStoreDeviceProp(
-            "CloudCover", "WEATHER_PARAMETERS.CloudCover"
-        )
+        self.getAndStoreDeviceProp("Temperature", "WEATHER_PARAMETERS.WEATHER_TEMPERATURE")
+        self.getAndStoreDeviceProp("Pressure", "WEATHER_PARAMETERS.WEATHER_PRESSURE")
+        self.getAndStoreDeviceProp("DewPoint", "WEATHER_PARAMETERS.WEATHER_DEWPOINT")
+        self.getAndStoreDeviceProp("Humidity", "WEATHER_PARAMETERS.WEATHER_HUMIDITY")
+        self.getAndStoreDeviceProp("CloudCover", "WEATHER_PARAMETERS.CloudCover")
         self.getAndStoreDeviceProp("RainRate", "WEATHER_PARAMETERS.RainVol")
-        self.getAndStoreDeviceProp(
-            "SkyQuality", "SKY_QUALITY.SKY_BRIGHTNESS"
-        )
+        self.getAndStoreDeviceProp("SkyQuality", "SKY_QUALITY.SKY_BRIGHTNESS")

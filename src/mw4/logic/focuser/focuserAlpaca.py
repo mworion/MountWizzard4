@@ -24,9 +24,7 @@ class FocuserAlpaca(AlpacaClass):
         self.data = parent.data
 
     def workerPollData(self) -> None:
-        self.getAndStoreDeviceProp(
-            "Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION"
-        )
+        self.getAndStoreDeviceProp("Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION")
 
     def move(self, position: int) -> None:
         self.callDeviceMethod("Move", Position=position)

@@ -66,12 +66,8 @@ def test_workerExpose_1(function):
         with mock.patch.object(function, "setDeviceProp"):
             with mock.patch.object(function, "callDeviceMethod"):
                 with mock.patch.object(function.parent, "waitExposed"):
-                    with mock.patch.object(
-                        function.parent, "retrieveImage"
-                    ):
-                        with mock.patch.object(
-                            function.parent, "writeImageFitsHeader"
-                        ):
+                    with mock.patch.object(function.parent, "retrieveImage"):
+                        with mock.patch.object(function.parent, "writeImageFitsHeader"):
                             with mock.patch.object(fits.HDUList, "writeto"):
                                 function.workerExpose()
 

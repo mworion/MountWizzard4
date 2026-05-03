@@ -150,15 +150,11 @@ class AlpacaClass(DriverData):
         try:
             return getattr(self.device, attr)
         except AlpycaNotImplError:
-            self.log.warning(
-                f"[{self.deviceName}] [{attr}] not implemented"
-            )
+            self.log.warning(f"[{self.deviceName}] [{attr}] not implemented")
             self.propertyExceptions.append(attr)
             return None
         except Exception as e:
-            self.log.error(
-                f"[{self.deviceName}] get [{attr}] exception: [{e}]"
-            )
+            self.log.error(f"[{self.deviceName}] get [{attr}] exception: [{e}]")
             return None
 
     def setDeviceProp(self, attr: str, value: Any) -> bool:
@@ -169,15 +165,11 @@ class AlpacaClass(DriverData):
             setattr(self.device, attr, value)
             return True
         except AlpycaNotImplError:
-            self.log.warning(
-                f"[{self.deviceName}] [{attr}] not implemented"
-            )
+            self.log.warning(f"[{self.deviceName}] [{attr}] not implemented")
             self.propertyExceptions.append(attr)
             return False
         except Exception as e:
-            self.log.error(
-                f"[{self.deviceName}] set [{attr}] exception: [{e}]"
-            )
+            self.log.error(f"[{self.deviceName}] set [{attr}] exception: [{e}]")
             return False
 
     def callDeviceMethod(self, method: str, **kwargs: Any) -> Any:
@@ -189,15 +181,11 @@ class AlpacaClass(DriverData):
         try:
             return getattr(self.device, method)(**kwargs)
         except AlpycaNotImplError:
-            self.log.warning(
-                f"[{self.deviceName}] [{method}] not implemented"
-            )
+            self.log.warning(f"[{self.deviceName}] [{method}] not implemented")
             self.propertyExceptions.append(method)
             return None
         except Exception as e:
-            self.log.error(
-                f"[{self.deviceName}] call [{method}] exception: [{e}]"
-            )
+            self.log.error(f"[{self.deviceName}] call [{method}] exception: [{e}]")
             return None
 
     def getAndStoreDeviceProp(self, attr: str, element: str) -> None:
@@ -271,9 +259,7 @@ class AlpacaClass(DriverData):
 
     def workerGetInitialConfig(self) -> None:
         self.data["DRIVER_INFO.DRIVER_NAME"] = self.getDeviceProp("Name")
-        self.data["DRIVER_INFO.DRIVER_VERSION"] = self.getDeviceProp(
-            "DriverVersion"
-        )
+        self.data["DRIVER_INFO.DRIVER_VERSION"] = self.getDeviceProp("DriverVersion")
         self.data["DRIVER_INFO.DRIVER_EXEC"] = self.getDeviceProp("DriverInfo")
 
     def workerPollStatus(self) -> None:
@@ -334,8 +320,5 @@ class AlpacaClass(DriverData):
             return []
 
         temp = [x for x in devices if x["DeviceType"].lower() == deviceType]
-        discoverList = [
-            f"{x['DeviceName']}:{deviceType}:{x['DeviceNumber']}"
-            for x in temp
-        ]
+        discoverList = [f"{x['DeviceName']}:{deviceType}:{x['DeviceNumber']}" for x in temp]
         return discoverList

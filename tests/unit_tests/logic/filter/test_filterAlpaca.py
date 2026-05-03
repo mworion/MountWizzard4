@@ -41,18 +41,14 @@ def test_workerGetInitialConfig_1(function):
 
 
 def test_workerGetInitialConfig_2(function):
-    with mock.patch.object(
-        function, "getDeviceProp", return_value=["test", "test1"]
-    ):
+    with mock.patch.object(function, "getDeviceProp", return_value=["test", "test1"]):
         function.workerGetInitialConfig()
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_0"] == "test"
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_1"] == "test1"
 
 
 def test_workerGetInitialConfig_3(function):
-    with mock.patch.object(
-        function, "getDeviceProp", return_value=["test", None]
-    ):
+    with mock.patch.object(function, "getDeviceProp", return_value=["test", None]):
         function.workerGetInitialConfig()
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_0"] == "test"
 

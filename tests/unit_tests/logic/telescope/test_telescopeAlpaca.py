@@ -43,9 +43,7 @@ def test_workerGetInitialConfig_1(function):
 
 
 def test_workerGetInitialConfig_2(function):
-    with mock.patch.object(
-        function, "getAndStoreDeviceProp"
-    ) as m:
+    with mock.patch.object(function, "getAndStoreDeviceProp") as m:
         function.workerGetInitialConfig()
         calls = m.call_args_list
         attrs = [c.args[0] for c in calls]

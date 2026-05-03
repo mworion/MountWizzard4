@@ -34,9 +34,7 @@ class CameraAlpaca(AlpacaClass):
         self.getAndStoreDeviceProp("CameraYSize", "CCD_INFO.CCD_MAX_Y")
         self.getAndStoreDeviceProp("CanFastReadout", "CAN_FAST")
         self.getAndStoreDeviceProp("CanAbortExposure", "CAN_ABORT")
-        self.getAndStoreDeviceProp(
-            "CanSetCCDTemperature", "CAN_SET_CCD_TEMPERATURE"
-        )
+        self.getAndStoreDeviceProp("CanSetCCDTemperature", "CAN_SET_CCD_TEMPERATURE")
         self.getAndStoreDeviceProp("CanGetCoolerPower", "CAN_GET_COOLER_POWER")
         self.getAndStoreDeviceProp("PixelSizeX", "CCD_INFO.CCD_PIXEL_SIZE_X")
         self.getAndStoreDeviceProp("PixelSizeY", "CCD_INFO.CCD_PIXEL_SIZE_Y")
@@ -59,13 +57,9 @@ class CameraAlpaca(AlpacaClass):
         self.getAndStoreDeviceProp("Gain", "CCD_GAIN.GAIN")
         self.getAndStoreDeviceProp("Offset", "CCD_OFFSET.OFFSET")
         self.getAndStoreDeviceProp("FastReadout", "READOUT_QUALITY.QUALITY_LOW")
-        self.getAndStoreDeviceProp(
-            "CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"
-        )
+        self.getAndStoreDeviceProp("CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE")
         self.getAndStoreDeviceProp("CoolerOn", "CCD_COOLER.COOLER_ON")
-        self.getAndStoreDeviceProp(
-            "CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE"
-        )
+        self.getAndStoreDeviceProp("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
 
     def sendDownloadMode(self) -> None:
         if self.data.get("CAN_FAST", False):

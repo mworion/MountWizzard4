@@ -29,7 +29,7 @@ class DownloadPopup(MWidget):
     signalStatus = Signal(object)
     signalProgressBarColor = Signal(object)
 
-    def __init__(self, parentWidget: MWidget, url: Path, dest: Path, unzip: bool = False):
+    def __init__(self, parentWidget: MWidget, url: str, dest: Path, unzip: bool = False):
         super().__init__()
         self.parentWidget = parentWidget
         self.msg = parentWidget.app.msg
@@ -65,8 +65,8 @@ class DownloadPopup(MWidget):
     def setStatusTextToValue(self, statusText: str) -> None:
         self.ui.statusText.setText(statusText)
 
-    def getFileFromUrl(self, url: Path, dest: Path) -> bool:
-        r = requests.get(str(url), stream=True, timeout=3)
+    def getFileFromUrl(self, url: str, dest: Path) -> bool:
+        r = requests.get(url, stream=True, timeout=3)
         totalSizeBytes = int(r.headers.get("content-length", 1))
         if r.status_code != 200:
             return False
@@ -86,7 +86,7 @@ class DownloadPopup(MWidget):
             shutil.copyfileobj(f_in, f_out)
         downloadDest.unlink()
 
-    def downloadFileWorker(self, url: Path, dest: Path, unzip: bool = False) -> bool:
+    def downloadFileWorker(self, url: str, dest: Path, unzip: bool = False) -> bool:
         downloadDest = dest.parent / f"{dest.stem}.zip" if unzip else dest
 
         try:

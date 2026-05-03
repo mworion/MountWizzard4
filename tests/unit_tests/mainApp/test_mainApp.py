@@ -91,9 +91,11 @@ def test_quit(app):
 
 
 def test_getActiveDrivers(app):
-    """getActiveDrivers() returns the drivers dict from the SettDevice addon."""
+    """getActiveDrivers() returns the drivers dict from the DeviceRegistry."""
+    drivers = {"camera": {"class": object()}}
+    app.deviceRegistry.update(drivers)
     result = app.getActiveDrivers()
-    assert result is app.mainW.mainWindowAddons.addons["SettDevice"].drivers
+    assert result is drivers
 
 
 # ---------------------------------------------------------------------------

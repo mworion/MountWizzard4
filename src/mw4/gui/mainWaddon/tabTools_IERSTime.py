@@ -112,7 +112,7 @@ class IERSTime:
         urlMain = self.iersSourceURLs[sourceURL]
 
         source = "finals.data"
-        url = Path(urlMain + source)
+        url = urlMain + source
         dest = self.app.mwGlob["dataDir"] / source
         self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
         self.downloadPopup.show()
@@ -125,11 +125,11 @@ class IERSTime:
         if not self.ui.isOnline.isChecked():
             return
 
-        sourceURL = self.ui.iersSource.currentText()
-        urlMain = self.iersSourceURLs[sourceURL]
-        self.msg.emit(1, "IERS", "Download", f"Source: [{sourceURL}]")
+        sourceKey = self.ui.iersSource.currentText()
+        urlMain = self.iersSourceURLs[sourceKey]
+        self.msg.emit(1, "IERS", "Download", f"Source: [{sourceKey}, {urlMain}]")
         source = "finals2000A.all"
-        url = Path(urlMain + source)
+        url = urlMain + source
         dest = self.app.mwGlob["dataDir"] / source
         self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
         self.downloadPopup.show()

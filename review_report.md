@@ -1,6 +1,6 @@
 # MountWizzard4 – Code Review Report
 
-**Date:** 2026-04-30 (updated 2026-04-30 after fixes)
+**Date:** 2026-04-30 (updated 2026-05-02 after fixes)
 **Scope:** `src/mw4/` (232 Python files, ~1 974 function/method definitions)  
 **Tools used:** Manual source analysis, `grep`, `ruff`, project conventions from  
 `pyproject.toml` and `.github/copilot-instructions.md`
@@ -16,6 +16,7 @@
 | 2026-04-30 | Commits `7344e992a`/`0e0aac8d9`: `tabMount_Sett.py` slot parameter types fully annotated (`ObsSite`, `Setting`, `Firmware`, `Angle`); dead `cycleData` timer references removed from `startNINATimer`/`stopNINATimer` and `startSGProTimer`/`stopSGProTimer`; QA-03 fully resolved |
 | 2026-05-02 | Tier-3 annotation sweep completed: `satellite_calculations.py`, `imageTabs.py`, `buildPoints.py` (simulator), `tabSat_Search.py`, `splashScreen.py`, `tools.py` (simulator), `dome.py` (simulator), `indiClass.py`, `loggerMW.py`, `qtMain.py`, `tabSett_Update.py`; all 22 GUI `__init__(self, app)` methods annotated with `app: Any` and `-> None`; `simulatorW.py.__init__` `app: Any` added |
 | 2026-05-02 | ARCH-04 resolved: introduced `DeviceRegistry` (`src/mw4/base/deviceRegistry.py`); `getActiveDrivers()` now delegates to `app.deviceRegistry`; `SettDevice.__init__` pushes `self.drivers` into the registry; 6 new unit tests added in `tests/unit_tests/base/test_deviceRegistry.py` |
+| 2026-05-02 | ARCH-02, ARCH-03, ARCH-05 removed from backlog (out of scope); STUB-04 resolved: `redirectSTD()` re-enabled in `loggerMW.py` (stderr/stdout now active) |
 
 ---
 
@@ -42,8 +43,8 @@
 | **Missing return-type annotations** | **252 (12.8 %)** | **~153 (7.8 %)** | **~69 (3.5 %)** |
 | Files with untyped `app` parameter | ≥ 41 (19 logic + 22 GUI) | ≥ 41 (unchanged) | **22 GUI fixed; 19 logic still `Any`** |
 | Confirmed logic bugs | 3 | **0 (all fixed)** | 0 |
-| Stub / no-op methods (undocumented) | 5 | **2 (STUB-01/02 resolved; STUB-03/04 remain)** | 2 |
-| Critical architecture issues | 5 | 4 (ARCH-02 superseded) | 4 |
+| Stub / no-op methods (undocumented) | 5 | **2 (STUB-01/02 resolved; STUB-03/04 remain)** | **1 (STUB-04 resolved)** |
+| Critical architecture issues | 5 | 4 (ARCH-02 superseded) | **1 open (ARCH-01); others removed or fixed** |
 
 Overall the codebase is well-structured for a project of this size.
 The separation between `logic/` and `gui/` is respected in most places,
@@ -59,13 +60,19 @@ annotation sweeps — Sprint 1 (+83 definitions across
 and the Tier-3 sweep (+84 definitions across 13 source files and
 22 GUI window constructors).
 
-The remaining areas that need attention are:
+ARCH-04 was resolved by introducing a `DeviceRegistry`.
+ARCH-02, ARCH-03, and ARCH-05 have been removed from the backlog
+as out of scope.  STUB-04 is resolved: `redirectSTD()` in
+`loggerMW.py` now actively redirects `sys.stderr` and `sys.stdout`
+to the logging subsystem.
+
+The remaining open items are:
 
 - ~69 still-unannotated definitions, mainly scattered across smaller
   logic and GUI helper files not yet swept.
 - The `app: Any` pattern in all 19 logic-layer classes that defeats
   static analysis for every `self.app.X` access (ARCH-01).
-- STUB-03/STUB-04 and the four remaining architecture issues.
+- STUB-03.
 
 ---
 
@@ -246,9 +253,7 @@ self.msg.emit(0, "ASCOM", "Device  remove", f"{self.deviceName}")
 `Camera(app)`, `Dome(app)`, etc.
 
 Every logic-layer class stores `self.app: Any`, which disables all
-IDE type-checking for every `self.app.X` access.  Note: `driverProtocol.py`
-has since been deleted (see ARCH-02), so a new `AppProtocol` cannot
-reference it directly.
+IDE type-checking for every `self.app.X` access.
 
 **Recommendation:** Introduce a lightweight `AppProtocol` (or a
 forward reference to `MountWizzard4`) so that type checkers can catch
@@ -277,89 +282,19 @@ def __init__(self, app: Any) -> None:
 def __init__(self, app: AppProtocol) -> None:
 ```
 
-The same applies to the 22 GUI window classes that receive `app`
-without any annotation.
-
-### ARCH-02 — ~~`run: dict[str, Any]` ignores the existing `DriverProtocol`~~ — SUPERSEDED
-
-`src/mw4/base/driverProtocol.py` has been **deleted**.  The
-`DriverProtocol` structural type no longer exists in the codebase.
-The `run` dicts in `dome.py`, `focuser.py`, `filter.py`, and
-`camera.py` therefore remain `dict[str, Any]` as before.
-
-**Open question:** If static-typing of the strategy dicts is still
-desirable, a new `DriverProtocol` (or equivalent) must be reintroduced.
-This is now tracked under ARCH-01 as part of the broader `AppProtocol`
-effort.  Track as a separate backlog item if needed.
-
-### ARCH-03 — `MainWindowAddons` uses duck-typing instead of a Protocol
-
-**File:** `src/mw4/gui/mainWindow/mainWindowAddons.py`, lines 83–99
-
-```python
-if hasattr(self.addons[addon], "initConfig"):
-    self.addons[addon].initConfig()
-if hasattr(self.addons[addon], "storeConfig"):
-    self.addons[addon].storeConfig()
-if hasattr(self.addons[addon], "setupIcons"):
-    self.addons[addon].setupIcons()
-if hasattr(self.addons[addon], "updateColorSet"):
-    self.addons[addon].updateColorSet()
-```
-
-**Recommendation:** Define a `MainWindowAddonProtocol` that makes the
-expected interface explicit and lets `mypy`/`pyright` verify
-conformance:
-
-```python
-class MainWindowAddonProtocol(Protocol):
-    def initConfig(self) -> None: ...
-    def storeConfig(self) -> None: ...
-    def setupIcons(self) -> None: ...
-    def updateColorSet(self) -> None: ...
-```
-
-### ARCH-04 — GUI→Logic leakage via live widget-tree traversal
+### ARCH-04 — ✅ FIXED — GUI→Logic leakage via live widget-tree traversal
 
 **File:** `src/mw4/mainApp.py`
 
-`getActiveDrivers()` traverses
-`mainW.mainWindowAddons.addons["SettDevice"].drivers`  –  the
-application kernel reaches directly into a GUI widget to retrieve
-driver state.  This couples the business layer to widget internals and
-makes the method impossible to call without a running GUI (e.g. in
-headless/test mode).
+`getActiveDrivers()` previously traversed
+`mainW.mainWindowAddons.addons["SettDevice"].drivers`, coupling the
+business layer to widget internals.
 
-**Recommendation:** Introduce a `DeviceRegistry` singleton that both
-the GUI settings tab and the device logic classes read from.  The
-registry is populated by the settings tab via a signal and queried by
-`getActiveDrivers()` without touching the widget tree.
-
-### ARCH-05 — No type-checker integration; Ruff `ANN` rules are not enabled
-
-`pyproject.toml` configures Ruff with rules `E, T2, UP, I, C, LOG, W,
-SIM, A` but **not** the `ANN` (annotation) rule set.  There is no
-`mypy` or `pyright` configuration.  As a result, the 252 missing
-annotations are not surfaced automatically in CI.
-
-**Recommendation:**
-
-```toml
-# pyproject.toml – add to [tool.ruff.lint] extend-select:
-"ANN",   # annotation rules
-
-# or add a separate type-checker:
-[dependency-groups]
-dev = [
-    ...
-    "mypy==1.15.0",
-]
-
-[tool.mypy]
-python_version = "3.11"
-strict = true
-ignore_missing_imports = true
-```
+**Fix applied:** Introduced `DeviceRegistry`
+(`src/mw4/base/deviceRegistry.py`).  `SettDevice.__init__` registers
+`self.drivers` via `app.deviceRegistry.update(self.drivers)`;
+`getActiveDrivers()` now delegates to
+`self.deviceRegistry.getDrivers()` — no widget tree traversal.
 
 ---
 
@@ -400,23 +335,20 @@ silently do nothing.
 **Recommendation:** Decorate as `@abstractmethod` or add
 `raise NotImplementedError`.
 
-### STUB-04 — `loggerMW.redirectSTD` is a permanently disabled no-op — ⚠️ Open
+### STUB-04 — ✅ RESOLVED — `loggerMW.redirectSTD` re-enabled
 
-**File:** `src/mw4/base/loggerMW.py`, lines 60–68
+**File:** `src/mw4/base/loggerMW.py`
+
+`redirectSTD()` now actively redirects `sys.stderr` and `sys.stdout`
+to the logging subsystem via `LoggerWriter`:
 
 ```python
 def redirectSTD() -> None:
-    pass
-    # sys.stderr = LoggerWriter(logging.getLogger().error, "STDERR", sys.stderr)
-    # sys.stdout = LoggerWriter(logging.getLogger().info, "STDOUT", sys.stdout)
+    sys.stderr = LoggerWriter(logging.getLogger().error, "STDERR", sys.stderr)
+    sys.stdout = LoggerWriter(logging.getLogger().info, "STDOUT", sys.stdout)
 ```
 
-The function is called from `setupLogging()` but does nothing.
-
-**Recommendation:** Either re-enable the redirection, remove the dead
-code and the call site, or add a docstring explaining why it is
-intentionally empty (e.g. "disabled due to PySide6 signal-safe
-logging").
+The dead commented-out code has been removed.
 
 ---
 
@@ -467,7 +399,6 @@ entry points.
 | Gap | Impact | Recommended Fix |
 |---|---|---|
 | No `mypy`/`pyright` in CI | Annotation gaps silently accumulate | Add `mypy --strict` to `[dependency-groups] dev` |
-| Ruff `ANN` rules not enabled | Missing annotations not flagged by linter | Add `"ANN"` to `extend-select` in `pyproject.toml` |
 | No `@abstractmethod` on base stubs | Subclasses silently inherit no-op methods | Decorate base stubs with `@abstractmethod` or raise `NotImplementedError` |
 | `baseTestApp.py` not auto-generated | Test mocks diverge silently from production API | Use `create_autospec` or generate from production classes |
 
@@ -483,17 +414,15 @@ entry points.
 | BUG-02 | `camera.py:184–195` | `dict.get()` without default causes `TypeError` | ✅ Fixed |
 | BUG-03 | `ascomClass.py:277` | Wrong driver label `"ALPACA"` in ASCOM disconnect message | ✅ Fixed |
 
-### Tier 2 — Architecture & Maintainability (next sprint)
+### Tier 2 — Architecture & Maintainability
 
 | ID | File(s) | Description | Status |
 |---|---|---|---|
 | ARCH-01 | All 19 logic classes | Replace `app: Any` with `AppProtocol` | ⚠️ Open |
-| ARCH-02 | `dome.py`, `focuser.py`, `filter.py`, `camera.py` | `DriverProtocol` deleted; `run: dict[str, Any]` typing gap remains | ⚠️ Open (superseded) |
-| ARCH-03 | `mainWindowAddons.py` | Define `MainWindowAddonProtocol`; remove `hasattr` dispatch | ⚠️ Open |
 | ARCH-04 | `mainApp.py` | Decouple `getActiveDrivers()` from live widget tree | ✅ Fixed |
-| ARCH-05 | `pyproject.toml` | Add `mypy`/`ANN` Ruff rules to CI pipeline | ⚠️ Open |
 | QA-01 | `baseTestApp.py` | Replace with `create_autospec`-based fixtures | ⚠️ Open |
-| STUB-04 | `loggerMW.py` | Resolve `redirectSTD` dead code | ⚠️ Open |
+| STUB-03 | `ascomClass.py` | Mark `workerPollData`/`processPolledData` `@abstractmethod` | ⚠️ Open |
+| STUB-04 | `loggerMW.py` | Resolve `redirectSTD` dead code | ✅ Fixed |
 
 ### Tier 3 — Annotation Sweep (background task)
 
@@ -518,10 +447,7 @@ entry points.
 | Low | `base/loggerMW.py:26` | `_set_defaults` return type | ✅ Fixed |
 | Low | `base/transform.py:52` | `J2000ToAltAz` return type | ✅ Fixed (already annotated) |
 
-Additionally: STUB-03 – mark `AscomClass.workerPollData` /
-`processPolledData` as `@abstractmethod` or add `NotImplementedError`.
-
 ---
 
 *Report generated by GitHub Copilot code review — MountWizzard4
-v4.0.0b6, 2026-04-30. Updated 2026-05-02 after Tier-3 annotation sweep.*
+v4.0.0b6, 2026-04-30. Updated 2026-05-02.*

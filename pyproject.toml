@@ -151,8 +151,5 @@ no-sections = true
 max-complexity = 10
 
 [tool.ruff.lint.per-file-ignores]
-"src/mw4/gui/styles/gradients.py" = ["E501"]
 "src/mw4/gui/extWindows/uploadPopupW.py" = ["SIM115"]
 "src/mw4/logic/measure/measureCSV.py" = ["SIM115"]
-"tests/unit_tests/logic/environment/test_boltwoodWeather.py" = ["E501"]
-"tests/unit_tests/gui/styles/test_styles.py" = ["E501"]

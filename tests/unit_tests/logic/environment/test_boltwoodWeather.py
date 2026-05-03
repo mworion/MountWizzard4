@@ -89,7 +89,10 @@ def test_convertFtoC_2(function):
 
 
 def test_parseAndWriteBoltwoodData_1(function):
-    rawData = "2018-01-17 14:51:45.00 F M 35.9   78.1  78     10      45  56.1   000 0 0 00020 043117.61927 1 1 1 3 0 0"
+    rawData = (
+        "2018-01-17 14:51:45.00 F M 35.9   78.1  78     10      45  56.1"
+        "   000 0 0 00020 043117.61927 1 1 1 3 0 0"
+    )
     assert function.parseAndWriteBoltwoodData(rawData)
     assert round(function.data["SKY_QUALITY.SKY_BRIGHTNESS"], 3) == 2.167
     assert round(function.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"], 3) == 25.611
@@ -99,7 +102,10 @@ def test_parseAndWriteBoltwoodData_1(function):
 
 
 def test_parseAndWriteBoltwoodData_2(function):
-    rawData = "2018-01-17 14:51:45.00 C K 35.9   78.1  78     10      45  56.1   000 0 0 00020 043117.61927 1 1 1 3 0 0"
+    rawData = (
+        "2018-01-17 14:51:45.00 C K 35.9   78.1  78     10      45  56.1"
+        "   000 0 0 00020 043117.61927 1 1 1 3 0 0"
+    )
     assert function.parseAndWriteBoltwoodData(rawData)
     assert round(function.data["SKY_QUALITY.SKY_BRIGHTNESS"], 3) == 35.9
     assert round(function.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"], 3) == 78.1

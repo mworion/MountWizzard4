@@ -51,6 +51,7 @@ def test_workerPollData_2(function):
 
 
 def test_closeCover_1(function):
+    function.deviceConnected = False
     with mock.patch.object(function, "getAlpacaProperty"):
         function.closeCover()
 
@@ -62,6 +63,7 @@ def test_closeCover_2(function):
 
 
 def test_openCover_1(function):
+    function.deviceConnected = False
     with mock.patch.object(function, "getAlpacaProperty"):
         function.openCover()
 
@@ -73,6 +75,7 @@ def test_openCover_2(function):
 
 
 def test_haltCover_1(function):
+    function.deviceConnected = False
     with mock.patch.object(function, "getAlpacaProperty"):
         function.haltCover()
 

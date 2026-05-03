@@ -50,6 +50,7 @@ def test_workerPollData_2(function):
 
 
 def test_lightOn_1(function):
+    function.deviceConnected = False
     with mock.patch.object(function, "getAlpacaProperty", return_value=0):
         with mock.patch.object(function, "setAlpacaProperty"):
             function.lightOn()
@@ -63,6 +64,7 @@ def test_lightOn_2(function):
 
 
 def test_lightOff_1(function):
+    function.deviceConnected = False
     with mock.patch.object(function, "getAlpacaProperty"):
         function.lightOff()
 
@@ -74,6 +76,7 @@ def test_lightOff_2(function):
 
 
 def test_lightIntensity_1(function):
+    function.deviceConnected = False
     with mock.patch.object(function, "setAlpacaProperty"):
         function.lightIntensity(0)
 

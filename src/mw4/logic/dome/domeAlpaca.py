@@ -24,9 +24,9 @@ class DomeAlpaca(AlpacaClass):
 
     def workerGetInitialConfig(self) -> None:
         super().workerGetInitialConfig()
-        self.getAndStoreAlpacaProperty("cansetaltitude", "CanSetAltitude")
-        self.getAndStoreAlpacaProperty("cansetazimuth", "CanSetAzimuth")
-        self.getAndStoreAlpacaProperty("cansetshutter", "CanSetShutter")
+        self.getAndStoreDeviceProp("CanSetAltitude", "CanSetAltitude")
+        self.getAndStoreDeviceProp("CanSetAzimuth", "CanSetAzimuth")
+        self.getAndStoreDeviceProp("CanSetShutter", "CanSetShutter")
         self.log.debug(f"Initial data: {self.data}")
 
     def processPolledData(self) -> None:
@@ -34,23 +34,29 @@ class DomeAlpaca(AlpacaClass):
         self.signals.azimuth.emit(azimuth)
 
     def workerPollData(self) -> None:
-        if not self.deviceConnected:
-            return
 
         shutterStates = ["Open", "Closed", "Opening", "Closing", "Error"]
-        azimuth = self.getAlpacaProperty("azimuth")
-        self.storePropertyToData(azimuth, "ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION")
+        azimuth = self.getDeviceProp("Azimuth")
+        self.storePropertyToData(
+            azimuth, "ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION"
+        )
         self.signals.azimuth.emit(azimuth)
-        self.getAndStoreAlpacaProperty("slewing", "Slewing")
+        self.getAndStoreDeviceProp("Slewing", "Slewing")
 
-        state = self.getAlpacaProperty("shutterstatus")
-        if state == 0:
-            stateText = shutterStates[state]
+        state = self.getDeviceProp("ShutterStatus")
+        if state is None:
+            self.data["DOME_SHUTTER.SHUTTER_OPEN"] = None
+            self.data["DOME_SHUTTER.SHUTTER_CLOSED"] = None
+            return
+
+        stateIndex = int(state)
+        if stateIndex == 0:
+            stateText = shutterStates[stateIndex]
             self.storePropertyToData(stateText, "Status.Shutter")
             self.storePropertyToData(True, "DOME_SHUTTER.SHUTTER_OPEN")
             self.storePropertyToData(False, "DOME_SHUTTER.SHUTTER_CLOSED")
-        elif state == 1:
-            stateText = shutterStates[state]
+        elif stateIndex == 1:
+            stateText = shutterStates[stateIndex]
             self.storePropertyToData(stateText, "Status.Shutter")
             self.storePropertyToData(False, "DOME_SHUTTER.SHUTTER_OPEN")
             self.storePropertyToData(True, "DOME_SHUTTER.SHUTTER_CLOSED")
@@ -59,24 +65,18 @@ class DomeAlpaca(AlpacaClass):
             self.data["DOME_SHUTTER.SHUTTER_CLOSED"] = None
 
     def slewToAltAz(self, altitude: float, azimuth: float) -> None:
-        if not self.deviceConnected:
-            return
         if self.data.get("CanSetAzimuth"):
-            self.setAlpacaProperty("slewtoazimuth", Azimuth=azimuth)
+            self.callDeviceMethod("SlewToAzimuth", Azimuth=azimuth)
         if self.data.get("CanSetAltitude"):
-            self.setAlpacaProperty("slewtoaltitude", Altitude=altitude)
+            self.callDeviceMethod("SlewToAltitude", Altitude=altitude)
 
     def openShutter(self) -> None:
-        if not self.deviceConnected:
-            return
         if self.data.get("CanSetShutter"):
-            self.getAlpacaProperty("openshutter")
+            self.callDeviceMethod("OpenShutter")
 
     def closeShutter(self) -> None:
-        if not self.deviceConnected:
-            return
         if self.data.get("CanSetShutter"):
-            self.getAlpacaProperty("closeshutter")
+            self.callDeviceMethod("CloseShutter")
 
     def slewCW(self) -> None:
         pass
@@ -85,6 +85,4 @@ class DomeAlpaca(AlpacaClass):
         pass
 
     def abortSlew(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.getAlpacaProperty("abortslew")
+        self.callDeviceMethod("AbortSlew")

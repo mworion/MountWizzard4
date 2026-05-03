@@ -24,18 +24,12 @@ class FocuserAlpaca(AlpacaClass):
         self.data = parent.data
 
     def workerPollData(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.getAndStoreAlpacaProperty(
-            "position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION"
+        self.getAndStoreDeviceProp(
+            "Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION"
         )
 
     def move(self, position: int) -> None:
-        if not self.deviceConnected:
-            return
-        self.setAlpacaProperty("move", Position=position)
+        self.callDeviceMethod("Move", Position=position)
 
     def halt(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.getAlpacaProperty("halt")
+        self.callDeviceMethod("Halt")

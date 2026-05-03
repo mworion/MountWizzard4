@@ -36,54 +36,58 @@ def function():
 
 
 def test_workerGetInitialConfig_1(function):
-    with mock.patch.object(function, "getAlpacaProperty"):
+    with mock.patch.object(function, "getDeviceProp", return_value=None):
         function.workerGetInitialConfig()
 
 
 def test_workerGetInitialConfig_2(function):
-    with mock.patch.object(function, "getAlpacaProperty", return_value=None):
-        function.workerGetInitialConfig()
-
-
-def test_workerGetInitialConfig_3(function):
-    with mock.patch.object(function, "getAlpacaProperty", return_value=["test", "test1"]):
+    with mock.patch.object(
+        function, "getDeviceProp", return_value=["test", "test1"]
+    ):
         function.workerGetInitialConfig()
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_0"] == "test"
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_1"] == "test1"
 
 
-def test_workerGetInitialConfig_4(function):
-    with mock.patch.object(function, "getAlpacaProperty", return_value=["test", None]):
+def test_workerGetInitialConfig_3(function):
+    with mock.patch.object(
+        function, "getDeviceProp", return_value=["test", None]
+    ):
         function.workerGetInitialConfig()
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_0"] == "test"
 
 
 def test_workerPollData_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty", return_value=-1):
-        function.workerPollData()
+    function.workerPollData()
 
 
 def test_workerPollData_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=-1):
+    with mock.patch.object(function, "getDeviceProp", return_value=-1):
         function.workerPollData()
 
 
 def test_workerPollData_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=1):
+    with mock.patch.object(function, "getDeviceProp", return_value=None):
+        function.workerPollData()
+
+
+def test_workerPollData_4(function):
+    function.deviceConnected = True
+    with mock.patch.object(function, "getDeviceProp", return_value=1):
         function.workerPollData()
         assert function.data["FILTER_SLOT.FILTER_SLOT_VALUE"] == 1
 
 
 def test_sendFilterNumber_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "setAlpacaProperty"):
-        function.sendFilterNumber()
+    function.sendFilterNumber()
 
 
 def test_sendFilterNumber_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "setAlpacaProperty"):
-        function.sendFilterNumber()
+    with mock.patch.object(function, "setDeviceProp") as m:
+        function.sendFilterNumber(filterNumber=2)
+        m.assert_called_once_with("Position", 2)

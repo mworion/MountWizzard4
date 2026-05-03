@@ -38,50 +38,47 @@ def function():
 
 def test_workerPollData_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty", return_value=1):
-        function.workerPollData()
+    function.workerPollData()
 
 
 def test_workerPollData_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=1):
+    with mock.patch.object(function, "getDeviceProp", return_value=128):
         with mock.patch.object(function, "storePropertyToData"):
             function.workerPollData()
 
 
 def test_lightOn_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty", return_value=0):
-        with mock.patch.object(function, "setAlpacaProperty"):
-            function.lightOn()
+    function.lightOn()
 
 
 def test_lightOn_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=0):
-        with mock.patch.object(function, "setAlpacaProperty"):
-            function.lightOn()
+    with mock.patch.object(function, "callDeviceMethod") as m:
+        function.lightOn()
+        m.assert_called_once_with("CalibratorOn", Brightness=127)
 
 
 def test_lightOff_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.lightOff()
+    function.lightOff()
 
 
 def test_lightOff_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty"):
+    with mock.patch.object(function, "callDeviceMethod") as m:
         function.lightOff()
+        m.assert_called_once_with("CalibratorOff")
 
 
 def test_lightIntensity_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "setAlpacaProperty"):
-        function.lightIntensity(0)
+    function.lightIntensity(0)
 
 
 def test_lightIntensity_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "setAlpacaProperty"):
-        function.lightIntensity(0)
+    with mock.patch.object(function, "callDeviceMethod") as m:
+        function.lightIntensity(100.5)
+        m.assert_called_once_with("CalibratorOn", Brightness=100)

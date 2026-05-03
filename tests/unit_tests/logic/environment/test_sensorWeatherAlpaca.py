@@ -36,11 +36,18 @@ def function():
 
 def test_workerPollData_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "getAndStoreAlpacaProperty"):
-        function.workerPollData()
+    function.workerPollData()
 
 
 def test_workerPollData_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAndStoreAlpacaProperty"):
+    with mock.patch.object(function, "getAndStoreDeviceProp") as m:
         function.workerPollData()
+        attrs = [c.args[0] for c in m.call_args_list]
+        assert "Temperature" in attrs
+        assert "Pressure" in attrs
+        assert "DewPoint" in attrs
+        assert "Humidity" in attrs
+        assert "CloudCover" in attrs
+        assert "RainRate" in attrs
+        assert "SkyQuality" in attrs

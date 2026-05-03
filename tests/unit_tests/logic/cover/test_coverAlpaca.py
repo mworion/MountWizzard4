@@ -39,48 +39,54 @@ def function():
 
 def test_workerPollData_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty", return_value=1):
-        function.workerPollData()
+    function.workerPollData()
 
 
 def test_workerPollData_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=1):
-        with mock.patch.object(function, "storePropertyToData"):
+    with mock.patch.object(function, "getDeviceProp", return_value=None):
+        function.workerPollData()
+
+
+def test_workerPollData_3(function):
+    function.deviceConnected = True
+    with mock.patch.object(function, "getDeviceProp", return_value=1):
+        with mock.patch.object(function, "storePropertyToData") as m:
             function.workerPollData()
+            m.assert_called_once_with("Closed", "Status.Cover")
 
 
 def test_closeCover_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.closeCover()
+    function.closeCover()
 
 
 def test_closeCover_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty"):
+    with mock.patch.object(function, "callDeviceMethod") as m:
         function.closeCover()
+        m.assert_called_once_with("CloseCover")
 
 
 def test_openCover_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.openCover()
+    function.openCover()
 
 
 def test_openCover_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty"):
+    with mock.patch.object(function, "callDeviceMethod") as m:
         function.openCover()
+        m.assert_called_once_with("OpenCover")
 
 
 def test_haltCover_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.haltCover()
+    function.haltCover()
 
 
 def test_haltCover_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty"):
+    with mock.patch.object(function, "callDeviceMethod") as m:
         function.haltCover()
+        m.assert_called_once_with("HaltCover")

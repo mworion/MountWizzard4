@@ -13,9 +13,17 @@
 # Licence APL2.0
 #
 ###########################################################
-import requests
+import alpaca.management as alpacaMgmt
 import time
-import uuid
+from alpaca.camera import Camera as AlpycaCamera
+from alpaca.covercalibrator import CoverCalibrator as AlpycaCoverCalibrator
+from alpaca.dome import Dome as AlpycaDome
+from alpaca.exceptions import NotImplementedException as AlpycaNotImplError
+from alpaca.filterwheel import FilterWheel as AlpycaFilterWheel
+from alpaca.focuser import Focuser as AlpycaFocuser
+from alpaca.observingconditions import ObservingConditions as AlpycaObsConditions
+from alpaca.switch import Switch as AlpycaSwitch
+from alpaca.telescope import Telescope as AlpycaTelescope
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QThreadPool, QTimer
@@ -23,8 +31,16 @@ from typing import Any
 
 
 class AlpacaClass(DriverData):
-    ALPACA_TIMEOUT: int = 3
-    CLIENT_ID: int = uuid.uuid4().int % 2**16
+    DEVICE_TYPE_MAP: dict[str, type] = {
+        "camera": AlpycaCamera,
+        "dome": AlpycaDome,
+        "focuser": AlpycaFocuser,
+        "filterwheel": AlpycaFilterWheel,
+        "covercalibrator": AlpycaCoverCalibrator,
+        "telescope": AlpycaTelescope,
+        "observingconditions": AlpycaObsConditions,
+        "switch": AlpycaSwitch,
+    }
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
@@ -44,6 +60,7 @@ class AlpacaClass(DriverData):
         self._deviceName: str = ""
         self.deviceType: str = ""
         self.number: int = 0
+        self.device: Any = None
 
         self.defaultConfig: dict[str, Any] = {
             "deviceName": "",
@@ -98,10 +115,6 @@ class AlpacaClass(DriverData):
         self._host = (self._hostaddress, self._port)
 
     @property
-    def baseUrl(self) -> str:
-        return self.generateBaseUrl()
-
-    @property
     def deviceName(self) -> str:
         return self._deviceName
 
@@ -114,149 +127,115 @@ class AlpacaClass(DriverData):
         self.deviceType = valueSplit[1].strip()
         self.number = int(valueSplit[2].strip())
 
-    def generateBaseUrl(self) -> str:
-        val = f"{self.protocol}://{self.host[0]}:{self.host[1]}/api/v{self.apiVersion}/{self.deviceType}/{self.number}"
-        return val
+    def createAlpacaDevice(self) -> bool:
+        deviceClass = self.DEVICE_TYPE_MAP.get(self.deviceType)
+        if deviceClass is None:
+            self.log.warning(f"Unknown device type: [{self.deviceType}]")
+            return False
 
-    def discoverAPIVersion(self) -> int:
-        url = f"{self.protocol}://{self.host[0]}:{self.host[1]}/management/apiversions"
+        address = f"{self._hostaddress}:{self._port}"
+        try:
+            self.device = deviceClass(address, self.number, self.protocol)
+        except Exception as e:
+            self.log.error(f"Create device exception: [{e}]")
+            return False
 
-        uid = uuid.uuid4().int % 2**32
-        data = {"ClientTransactionID": uid, "ClientID": self.CLIENT_ID}
+        self.log.debug(f"Created [{self.deviceType}] device at [{address}]")
+        return True
+
+    def getDeviceProp(self, attr: str) -> Any:
+        if self.device is None or attr in self.propertyExceptions:
+            return None
 
         try:
-            response = requests.get(url, params=data, timeout=self.ALPACA_TIMEOUT)
+            return getattr(self.device, attr)
+        except AlpycaNotImplError:
+            self.log.warning(
+                f"[{self.deviceName}] [{attr}] not implemented"
+            )
+            self.propertyExceptions.append(attr)
+            return None
+        except Exception as e:
+            self.log.error(
+                f"[{self.deviceName}] get [{attr}] exception: [{e}]"
+            )
+            return None
+
+    def setDeviceProp(self, attr: str, value: Any) -> bool:
+        if self.device is None or attr in self.propertyExceptions:
+            return False
+
+        try:
+            setattr(self.device, attr, value)
+            return True
+        except AlpycaNotImplError:
+            self.log.warning(
+                f"[{self.deviceName}] [{attr}] not implemented"
+            )
+            self.propertyExceptions.append(attr)
+            return False
+        except Exception as e:
+            self.log.error(
+                f"[{self.deviceName}] set [{attr}] exception: [{e}]"
+            )
+            return False
+
+    def callDeviceMethod(self, method: str, **kwargs: Any) -> Any:
+        if not self.deviceConnected:
+            return None
+        if self.device is None or method in self.propertyExceptions:
+            return None
+
+        try:
+            return getattr(self.device, method)(**kwargs)
+        except AlpycaNotImplError:
+            self.log.warning(
+                f"[{self.deviceName}] [{method}] not implemented"
+            )
+            self.propertyExceptions.append(method)
+            return None
+        except Exception as e:
+            self.log.error(
+                f"[{self.deviceName}] call [{method}] exception: [{e}]"
+            )
+            return None
+
+    def getAndStoreDeviceProp(self, attr: str, element: str) -> None:
+        value = self.getDeviceProp(attr)
+        self.storePropertyToData(value, element)
+
+    def discoverAPIVersion(self) -> int:
+        address = f"{self._hostaddress}:{self._port}"
+        try:
+            versions = alpacaMgmt.apiversions(address)
+            if not versions:
+                return 0
+            return max(versions)
         except Exception as e:
             self.log.error(f"Discover API exception: [{e}]")
             return 0
 
-        if response.status_code == 400 or response.status_code == 500:
-            t = f"Discover API version stat 400/500, [{response.text}]"
-            self.log.warning(t)
-            return 0
-
-        response = response.json()
-        if response["ErrorNumber"] != 0:
-            self.log.warning(f"Discover API response: [{response}]")
-            return 0
-
-        self.log.trace(f"Discover API response: [{response}]")
-        return response["Value"]
-
     def discoverAlpacaDevices(self) -> list:
-        url = f"{self.protocol}://{self.host[0]}:{self.host[1]}/management/v{self.apiVersion}/configureddevices"
-
-        uid = uuid.uuid4().int % 2**32
-        data = {"ClientTransactionID": uid, "ClientID": self.CLIENT_ID}
-
+        address = f"{self._hostaddress}:{self._port}"
         try:
-            response = requests.get(url, params=data, timeout=self.ALPACA_TIMEOUT)
-
+            return alpacaMgmt.configureddevices(address)
         except Exception as e:
             self.log.error(f"Search devices exception: [{e}]")
             return []
-
-        if response.status_code == 400 or response.status_code == 500:
-            self.log.warning("Search devices stat 400/500]")
-            return []
-
-        response = response.json()
-        if response["ErrorNumber"] != 0:
-            self.log.warning(f"Search devices response: [{response}]")
-            return []
-
-        self.log.trace(f"Search devices response: [{response}]")
-        return response["Value"]
-
-    def getAlpacaProperty(self, valueProp: str, **data) -> Any:
-        if not self.deviceName:
-            return []
-        if valueProp in self.propertyExceptions:
-            return []
-
-        uid = uuid.uuid4().int % 2**32
-        data["ClientTransactionID"] = uid
-        data["ClientID"] = self.CLIENT_ID
-
-        t = f"[{self.deviceName}] [{uid:10d}], get [{valueProp}], data:[{data}]"
-        self.log.trace(t)
-
-        try:
-            response = requests.get(
-                f"{self.baseUrl}/{valueProp}", params=data, timeout=self.ALPACA_TIMEOUT
-            )
-        except Exception as e:
-            t = f"[{self.deviceName}] [{uid:10d}] has exception: [{e}]"
-            self.log.error(t)
-            return []
-
-        if response.status_code == 400 or response.status_code == 500:
-            t = f"[{self.deviceName}] [{uid:10d}], stat 400/500"
-            self.log.warning(t)
-            return []
-
-        response = response.json()
-        if response["ErrorNumber"] != 0:
-            t = f"[{self.deviceName}] [{uid:10d}], response: [{response}]"
-            self.log.warning(t)
-            self.propertyExceptions.append(valueProp)
-            return []
-
-        if valueProp != "imagearray":
-            t = f"[{self.deviceName}] [{uid:10d}], response: [{response}]"
-            self.log.trace(t)
-        else:
-            self.log.trace(f"[{self.deviceName}] [{uid:10d}]")
-
-        return response["Value"]
-
-    def setAlpacaProperty(self, valueProp: str, **data) -> dict:
-        if not self.deviceName:
-            return {}
-        if valueProp in self.propertyExceptions:
-            return {}
-
-        uid = uuid.uuid4().int % 2**32
-        t = f"[{self.deviceName}] [{uid:10d}], set [{valueProp}] to: [{data}]"
-        self.log.trace(t)
-
-        try:
-            response = requests.put(
-                f"{self.baseUrl}/{valueProp}", data=data, timeout=self.ALPACA_TIMEOUT
-            )
-        except Exception as e:
-            t = f"[{self.deviceName}] [{uid:10d}] has exception: [{e}]"
-            self.log.error(t)
-            return {}
-
-        if response.status_code == 400 or response.status_code == 500:
-            t = f"[{self.deviceName}] [{uid:10d}], stat 400/500, [{response.text}]"
-            self.log.warning(t)
-            return {}
-
-        response = response.json()
-        if response["ErrorNumber"] != 0:
-            t = f"[{self.deviceName}] [{uid:10d}], response: [{response}]"
-            self.log.warning(t)
-            self.propertyExceptions.append(valueProp)
-            return {}
-
-        t = f"[{self.deviceName}] [{uid:10d}], response: [{response}]"
-        self.log.trace(t)
-        return response
-
-    def getAndStoreAlpacaProperty(self, valueProp: str, element: str) -> None:
-        value = self.getAlpacaProperty(valueProp)
-        self.storePropertyToData(value, element)
 
     def workerConnectDevice(self) -> None:
         self.propertyExceptions = []
         self.deviceConnected = False
         self.serverConnected = False
+
+        if not self.createAlpacaDevice():
+            self.msg.emit(2, "ALPACA", "Device type error", f"{self.deviceName}")
+            return
+
         suc = False
         for retry in range(0, 10):
-            self.setAlpacaProperty("connected", Connected=True)
-            suc = self.getAlpacaProperty("connected")
+            self.setDeviceProp("Connected", True)
+            suc = self.getDeviceProp("Connected")
 
             if suc:
                 t = f"[{self.deviceName}] connected, [{retry}] retries"
@@ -291,12 +270,14 @@ class AlpacaClass(DriverData):
         self.cycleDevice.stop()
 
     def workerGetInitialConfig(self) -> None:
-        self.data["DRIVER_INFO.DRIVER_NAME"] = self.getAlpacaProperty("name")
-        self.data["DRIVER_INFO.DRIVER_VERSION"] = self.getAlpacaProperty("driverversion")
-        self.data["DRIVER_INFO.DRIVER_EXEC"] = self.getAlpacaProperty("driverinfo")
+        self.data["DRIVER_INFO.DRIVER_NAME"] = self.getDeviceProp("Name")
+        self.data["DRIVER_INFO.DRIVER_VERSION"] = self.getDeviceProp(
+            "DriverVersion"
+        )
+        self.data["DRIVER_INFO.DRIVER_EXEC"] = self.getDeviceProp("DriverInfo")
 
     def workerPollStatus(self) -> None:
-        suc = self.getAlpacaProperty("connected")
+        suc = self.getDeviceProp("Connected")
         if self.deviceConnected and not suc:
             self.deviceConnected = False
             self.signals.deviceDisconnected.emit(f"{self.deviceName}")
@@ -339,7 +320,7 @@ class AlpacaClass(DriverData):
 
     def stopCommunication(self) -> None:
         self.stopAlpacaTimer()
-        self.setAlpacaProperty("connected", Connected=False)
+        self.setDeviceProp("Connected", False)
         self.deviceConnected = False
         self.serverConnected = False
         self.propertyExceptions = []
@@ -353,5 +334,8 @@ class AlpacaClass(DriverData):
             return []
 
         temp = [x for x in devices if x["DeviceType"].lower() == deviceType]
-        discoverList = [f"{x['DeviceName']}:{deviceType}:{x['DeviceNumber']}" for x in temp]
+        discoverList = [
+            f"{x['DeviceName']}:{deviceType}:{x['DeviceNumber']}"
+            for x in temp
+        ]
         return discoverList

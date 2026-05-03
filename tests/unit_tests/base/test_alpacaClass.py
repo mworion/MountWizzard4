@@ -13,10 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
+import alpaca.management as alpacaMgmt
 import PySide6
 import pytest
-import requests
 import time
+from alpaca.exceptions import NotImplementedException as AlpycaNotImplError
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.loggerMW import setupLogging
 from mw4.base.signalsDevices import Signals
@@ -66,317 +67,273 @@ def test_properties_3(function):
     assert function.number == 3
 
 
-def test_baseUrl_1(function):
-    function.deviceName = "test:camera:3"
-    val = function.generateBaseUrl()
-    assert val == "http://localhost:11111/api/v1/camera/3"
+def test_createAlpacaDevice_1(function):
+    function.deviceType = "camera"
+    function.number = 0
+    suc = function.createAlpacaDevice()
+    assert suc
+    assert function.device is not None
+
+
+def test_createAlpacaDevice_2(function):
+    function.deviceType = "unknown"
+    suc = function.createAlpacaDevice()
+    assert not suc
+
+
+def test_createAlpacaDevice_3(function):
+    function.deviceType = "dome"
+    function.number = 0
+
+    class RaisingClass:
+        def __init__(self, *args, **kwargs):
+            raise Exception("error")
+
+    with mock.patch.dict(AlpacaClass.DEVICE_TYPE_MAP, {"dome": RaisingClass}):
+        suc = function.createAlpacaDevice()
+        assert not suc
+
+
+def test_getDeviceProp_1(function):
+    function.device = None
+    result = function.getDeviceProp("Connected")
+    assert result is None
+
+
+def test_getDeviceProp_2(function):
+    function.propertyExceptions = ["Connected"]
+    function.device = mock.MagicMock()
+    result = function.getDeviceProp("Connected")
+    assert result is None
+
+
+def test_getDeviceProp_3(function):
+    function.propertyExceptions = []
+    function.device = mock.MagicMock()
+    function.device.Connected = True
+    result = function.getDeviceProp("Connected")
+    assert result is True
+
+
+def test_getDeviceProp_4(function):
+    function.propertyExceptions = []
+    function.device = mock.MagicMock()
+    type(function.device).TestProp = mock.PropertyMock(
+        side_effect=AlpycaNotImplError("not implemented")
+    )
+    result = function.getDeviceProp("TestProp")
+    assert result is None
+    assert "TestProp" in function.propertyExceptions
+
+
+def test_getDeviceProp_5(function):
+    function.propertyExceptions = []
+    function.device = mock.MagicMock()
+    type(function.device).TestProp = mock.PropertyMock(
+        side_effect=Exception("error")
+    )
+    result = function.getDeviceProp("TestProp")
+    assert result is None
+
+
+def test_setDeviceProp_1(function):
+    function.device = None
+    result = function.setDeviceProp("Connected", True)
+    assert not result
+
+
+def test_setDeviceProp_2(function):
+    function.propertyExceptions = ["Connected"]
+    function.device = mock.MagicMock()
+    result = function.setDeviceProp("Connected", True)
+    assert not result
+
+
+def test_setDeviceProp_3(function):
+    function.propertyExceptions = []
+    function.device = mock.MagicMock()
+    result = function.setDeviceProp("Connected", True)
+    assert result
+
+
+def test_setDeviceProp_4(function):
+    function.propertyExceptions = []
+
+    class DeviceWithBadProp:
+        @property
+        def TestProp(self):
+            return None
+
+        @TestProp.setter
+        def TestProp(self, value):
+            raise AlpycaNotImplError("not implemented")
+
+    function.device = DeviceWithBadProp()
+    result = function.setDeviceProp("TestProp", True)
+    assert not result
+    assert "TestProp" in function.propertyExceptions
+
+
+def test_setDeviceProp_5(function):
+    function.propertyExceptions = []
+
+    class DeviceWithErrorProp:
+        @property
+        def TestProp(self):
+            return None
+
+        @TestProp.setter
+        def TestProp(self, value):
+            raise Exception("error")
+
+    function.device = DeviceWithErrorProp()
+    result = function.setDeviceProp("TestProp", True)
+    assert not result
+
+
+def test_callDeviceMethod_1(function):
+    function.deviceConnected = False
+    function.device = mock.MagicMock()
+    result = function.callDeviceMethod("Halt")
+    assert result is None
+
+
+def test_callDeviceMethod_2(function):
+    function.deviceConnected = True
+    function.device = None
+    result = function.callDeviceMethod("Halt")
+    assert result is None
+
+
+def test_callDeviceMethod_3(function):
+    function.deviceConnected = True
+    function.propertyExceptions = ["Halt"]
+    function.device = mock.MagicMock()
+    result = function.callDeviceMethod("Halt")
+    assert result is None
+
+
+def test_callDeviceMethod_4(function):
+    function.deviceConnected = True
+    function.propertyExceptions = []
+    function.device = mock.MagicMock()
+    function.device.Halt.return_value = None
+    function.callDeviceMethod("Halt")
+    function.device.Halt.assert_called_once_with()
+
+
+def test_callDeviceMethod_5(function):
+    function.deviceConnected = True
+    function.propertyExceptions = []
+    function.device = mock.MagicMock()
+    function.device.Move.side_effect = AlpycaNotImplError("not implemented")
+    result = function.callDeviceMethod("Move", Position=100)
+    assert result is None
+    assert "Move" in function.propertyExceptions
+
+
+def test_callDeviceMethod_6(function):
+    function.deviceConnected = True
+    function.propertyExceptions = []
+    function.device = mock.MagicMock()
+    function.device.Move.side_effect = Exception("error")
+    result = function.callDeviceMethod("Move", Position=100)
+    assert result is None
+
+
+def test_getAndStoreDeviceProp(function):
+    with mock.patch.object(function, "getDeviceProp", return_value="test"):
+        with mock.patch.object(function, "storePropertyToData") as m:
+            function.getAndStoreDeviceProp("Name", "KEY")
+            m.assert_called_once_with("test", "KEY")
 
 
 def test_discoverAPIVersion_1(function):
-    with mock.patch.object(requests, "get", side_effect=Exception()):
+    with mock.patch.object(alpacaMgmt, "apiversions", side_effect=Exception()):
         val = function.discoverAPIVersion()
         assert val == 0
 
 
 def test_discoverAPIVersion_2(function):
-    with mock.patch.object(requests, "get", side_effect=requests.exceptions.Timeout):
+    with mock.patch.object(alpacaMgmt, "apiversions", return_value=[]):
         val = function.discoverAPIVersion()
         assert val == 0
 
 
 def test_discoverAPIVersion_3(function):
-    with mock.patch.object(requests, "get", side_effect=requests.exceptions.ConnectionError):
+    with mock.patch.object(alpacaMgmt, "apiversions", return_value=[1, 2]):
         val = function.discoverAPIVersion()
-        assert val == 0
-
-
-def test_discoverAPIVersion_4(function):
-    class Test:
-        status_code = 400
-        text = "test"
-
-    function.deviceName = "test"
-
-    with mock.patch.object(requests, "get", return_value=Test()):
-        val = function.discoverAPIVersion()
-        assert val == 0
-
-
-def test_discoverAPIVersion_5(function):
-    class Test:
-        status_code = 200
-        text = "test"
-
-        @staticmethod
-        def json():
-            return {"ErrorNumber": 1, "ErrorMessage": "msg", "Value": "test"}
-
-    with mock.patch.object(requests, "get", return_value=Test()):
-        val = function.discoverAPIVersion()
-        assert val == 0
-
-
-def test_discoverAPIVersion_6(function):
-    class Test:
-        status_code = 200
-        text = "test"
-
-        @staticmethod
-        def json():
-            return {"ErrorNumber": 0, "ErrorMessage": "msg", "Value": 1}
-
-    with mock.patch.object(requests, "get", return_value=Test()):
-        val = function.discoverAPIVersion()
-        assert val == 1
+        assert val == 2
 
 
 def test_discoverAlpacaDevices_1(function):
-    with mock.patch.object(requests, "get", side_effect=Exception):
+    with mock.patch.object(
+        alpacaMgmt, "configureddevices", side_effect=Exception()
+    ):
         val = function.discoverAlpacaDevices()
         assert val == []
 
 
 def test_discoverAlpacaDevices_2(function):
-    with mock.patch.object(requests, "get", side_effect=requests.exceptions.Timeout):
+    with mock.patch.object(
+        alpacaMgmt, "configureddevices", return_value=[]
+    ):
         val = function.discoverAlpacaDevices()
         assert val == []
 
 
 def test_discoverAlpacaDevices_3(function):
-    with mock.patch.object(requests, "get", side_effect=requests.exceptions.ConnectionError):
+    devices = [
+        {"DeviceName": "cam", "DeviceType": "Camera", "DeviceNumber": 0}
+    ]
+    with mock.patch.object(
+        alpacaMgmt, "configureddevices", return_value=devices
+    ):
         val = function.discoverAlpacaDevices()
-        assert val == []
-
-
-def test_discoverAlpacaDevices_4(function):
-    class Test:
-        status_code = 400
-        text = "test"
-
-    function.deviceName = "test"
-    with mock.patch.object(requests, "get", return_value=Test()):
-        val = function.discoverAlpacaDevices()
-        assert val == []
-
-
-def test_discoverAlpacaDevices_5(function):
-    class Test:
-        status_code = 200
-        text = "test"
-
-        @staticmethod
-        def json():
-            return {"ErrorNumber": 1, "ErrorMessage": "msg", "Value": "test"}
-
-    with mock.patch.object(requests, "get", return_value=Test()):
-        val = function.discoverAlpacaDevices()
-        assert val == []
-
-
-def test_discoverAlpacaDevices_6(function):
-    class Test:
-        status_code = 200
-        text = "test"
-
-        @staticmethod
-        def json():
-            return {"ErrorNumber": 0, "ErrorMessage": "msg", "Value": "test"}
-
-    with mock.patch.object(requests, "get", return_value=Test()):
-        val = function.discoverAlpacaDevices()
-        assert val == "test"
-
-
-def test_getAlpacaProperty_1(function):
-    function.deviceName = ""
-    function.deviceConnected = False
-    val = function.getAlpacaProperty("")
-    assert val == []
-
-
-def test_getAlpacaProperty_2(function):
-    function.deviceName = ""
-    function.deviceConnected = True
-    val = function.getAlpacaProperty("")
-    assert val == []
-
-
-def test_getAlpacaProperty_3(function):
-    function.deviceName = "test"
-    function.deviceConnected = True
-    function.propertyExceptions = ["test"]
-    val = function.getAlpacaProperty("test")
-    assert val == []
-
-
-def test_getAlpacaProperty_6(function):
-    function.deviceName = "test"
-    function.deviceConnected = True
-    with mock.patch.object(requests, "get", side_effect=Exception):
-        val = function.getAlpacaProperty("test")
-        assert val == []
-
-
-def test_getAlpacaProperty_7(function):
-    class Test:
-        status_code = 400
-        text = "test"
-
-    function.deviceName = "test"
-    function.deviceConnected = True
-    with mock.patch.object(requests, "get", return_value=Test()):
-        val = function.getAlpacaProperty("test")
-        assert val == []
-
-
-def test_getAlpacaProperty_8(function):
-    class Test:
-        status_code = 200
-        text = "test"
-
-        @staticmethod
-        def json():
-            return {"ErrorNumber": 1, "ErrorMessage": "msg"}
-
-    function.deviceName = "test"
-    function.deviceConnected = True
-    with mock.patch.object(requests, "get", return_value=Test()):
-        val = function.getAlpacaProperty("test")
-        assert val == []
-        assert "test" in function.propertyExceptions
-
-
-def test_getAlpacaProperty_9(function):
-    class Test:
-        status_code = 200
-        text = "test"
-
-        @staticmethod
-        def json():
-            return {"ErrorNumber": 0, "ErrorMessage": "msg", "Value": "test"}
-
-    function.deviceName = "test"
-    function.deviceConnected = True
-    with mock.patch.object(requests, "get", return_value=Test()):
-        val = function.getAlpacaProperty("test")
-        assert val == "test"
-
-
-def test_getAlpacaProperty_10(function):
-    class Test:
-        status_code = 200
-        text = "test"
-
-        @staticmethod
-        def json():
-            return {"ErrorNumber": 0, "ErrorMessage": "msg", "Value": "imagearray"}
-
-    function.deviceName = "test"
-    function.deviceConnected = True
-    with mock.patch.object(requests, "get", return_value=Test()):
-        val = function.getAlpacaProperty("imagearray")
-        assert val == "imagearray"
-
-
-def test_setAlpacaProperty_1(function):
-    function.deviceConnected = False
-    val = function.setAlpacaProperty("")
-    assert val == {}
-
-
-def test_setAlpacaProperty_2(function):
-    function.deviceConnected = True
-    val = function.setAlpacaProperty("")
-    assert val == {}
-
-
-def test_setAlpacaProperty_3(function):
-    function.deviceName = "test"
-    function.deviceConnected = True
-    function.propertyExceptions = ["test"]
-    val = function.setAlpacaProperty("test")
-    assert val == {}
-
-
-def test_setAlpacaProperty_6(function):
-    function.deviceName = "test"
-    function.deviceConnected = True
-    with mock.patch.object(requests, "put", side_effect=Exception):
-        val = function.setAlpacaProperty("test")
-        assert val == {}
-
-
-def test_setAlpacaProperty_7(function):
-    class Test:
-        status_code = 400
-        text = "test"
-
-    function.deviceName = "test"
-    function.deviceConnected = True
-    with mock.patch.object(requests, "put", return_value=Test()):
-        val = function.setAlpacaProperty("test")
-        assert val == {}
-
-
-def test_setAlpacaProperty_8(function):
-    class Test:
-        status_code = 200
-        text = "test"
-
-        @staticmethod
-        def json():
-            return {"ErrorNumber": 1, "ErrorMessage": "msg"}
-
-    function.deviceName = "test"
-    function.deviceConnected = True
-    with mock.patch.object(requests, "put", return_value=Test()):
-        val = function.setAlpacaProperty("test")
-        assert val == {}
-        assert "test" in function.propertyExceptions
-
-
-def test_setAlpacaProperty_9(function):
-    class Test:
-        status_code = 200
-        text = "test"
-
-        @staticmethod
-        def json():
-            return {"ErrorNumber": 0, "ErrorMessage": "msg", "Value": "test"}
-
-    function.deviceName = "test"
-    function.deviceConnected = True
-    with mock.patch.object(requests, "put", return_value=Test()):
-        val = function.setAlpacaProperty("test")
-        assert val == {"ErrorNumber": 0, "ErrorMessage": "msg", "Value": "test"}
-
-
-def test_getAndStoreAlpacaProperty(function):
-    with mock.patch.object(function, "getAlpacaProperty"):
-        with mock.patch.object(function, "storePropertyToData"):
-            function.getAndStoreAlpacaProperty(10, "YES")
+        assert val == devices
 
 
 def test_workerConnectDevice_1(function):
     function.serverConnected = False
     function.deviceConnected = False
-    with mock.patch.object(time, "sleep"):
-        with mock.patch.object(function, "setAlpacaProperty"):
-            with mock.patch.object(function, "getAlpacaProperty", return_value=False):
-                function.workerConnectDevice()
-                assert not function.serverConnected
-                assert not function.deviceConnected
+    with mock.patch.object(function, "createAlpacaDevice", return_value=False):
+        function.workerConnectDevice()
+        assert not function.serverConnected
+        assert not function.deviceConnected
 
 
 def test_workerConnectDevice_2(function):
     function.serverConnected = False
     function.deviceConnected = False
     with mock.patch.object(time, "sleep"):
-        with mock.patch.object(function, "setAlpacaProperty"):
-            with mock.patch.object(function, "getAlpacaProperty", return_value=True):
-                function.workerConnectDevice()
-                assert function.serverConnected
-                assert function.deviceConnected
+        with mock.patch.object(
+            function, "createAlpacaDevice", return_value=True
+        ):
+            with mock.patch.object(
+                function, "setDeviceProp"
+            ):
+                with mock.patch.object(
+                    function, "getDeviceProp", return_value=False
+                ):
+                    function.workerConnectDevice()
+                    assert not function.serverConnected
+                    assert not function.deviceConnected
+
+
+def test_workerConnectDevice_3(function):
+    function.serverConnected = False
+    function.deviceConnected = False
+    with mock.patch.object(time, "sleep"):
+        with mock.patch.object(
+            function, "createAlpacaDevice", return_value=True
+        ):
+            with mock.patch.object(function, "setDeviceProp"):
+                with mock.patch.object(
+                    function, "getDeviceProp", return_value=True
+                ):
+                    function.workerConnectDevice()
+                    assert function.serverConnected
+                    assert function.deviceConnected
 
 
 def test_startTimer(function):
@@ -389,7 +346,7 @@ def test_stopTimer(function):
 
 
 def test_workerGetInitialConfig_1(function):
-    with mock.patch.object(function, "getAlpacaProperty", return_value="test"):
+    with mock.patch.object(function, "getDeviceProp", return_value="test"):
         function.workerGetInitialConfig()
         assert function.data["DRIVER_INFO.DRIVER_NAME"] == "test"
         assert function.data["DRIVER_INFO.DRIVER_VERSION"] == "test"
@@ -398,14 +355,14 @@ def test_workerGetInitialConfig_1(function):
 
 def test_workerPollStatus_1(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=False):
+    with mock.patch.object(function, "getDeviceProp", return_value=False):
         function.workerPollStatus()
         assert not function.deviceConnected
 
 
 def test_workerPollStatus_2(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty", return_value=True):
+    with mock.patch.object(function, "getDeviceProp", return_value=True):
         function.workerPollStatus()
         assert function.deviceConnected
 
@@ -463,29 +420,21 @@ def test_stopCommunication_1(function):
     function.deviceConnected = True
     function.serverConnected = True
     function.deviceName = "test"
+    function.device = mock.MagicMock()
     with mock.patch.object(function, "stopAlpacaTimer"):
-        with mock.patch.object(function, "setAlpacaProperty"):
+        with mock.patch.object(function, "setDeviceProp"):
             function.stopCommunication()
             assert not function.serverConnected
             assert not function.deviceConnected
 
 
 def test_discoverDevices_1(function):
+    devices = [
+        {"DeviceName": "test", "DeviceNumber": 1, "DeviceType": "Dome"},
+        {"DeviceName": "test1", "DeviceNumber": 3, "DeviceType": "Dome"},
+    ]
     with mock.patch.object(
-        function,
-        "discoverAlpacaDevices",
-        return_value=[
-            {
-                "DeviceName": "test",
-                "DeviceNumber": 1,
-                "DeviceType": "Dome",
-            },
-            {
-                "DeviceName": "test1",
-                "DeviceNumber": 3,
-                "DeviceType": "Dome",
-            },
-        ],
+        function, "discoverAlpacaDevices", return_value=devices
     ):
         val = function.discoverDevices("dome")
         assert val == ["test:dome:1", "test1:dome:3"]

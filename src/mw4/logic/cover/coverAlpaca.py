@@ -26,24 +26,17 @@ class CoverAlpaca(AlpacaClass):
 
     def workerPollData(self) -> None:
         states = ["NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"]
-        if not self.deviceConnected:
-            return
 
-        state = self.getAlpacaProperty("coverstate")
-        stateText = states[state]
-        self.storePropertyToData(stateText, "Status.Cover")
+        state = self.getDeviceProp("CoverState")
+        if state is None:
+            return
+        self.storePropertyToData(states[int(state)], "Status.Cover")
 
     def closeCover(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.getAlpacaProperty("closecover")
+        self.callDeviceMethod("CloseCover")
 
     def openCover(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.getAlpacaProperty("opencover")
+        self.callDeviceMethod("OpenCover")
 
     def haltCover(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.getAlpacaProperty("haltcover")
+        self.callDeviceMethod("HaltCover")

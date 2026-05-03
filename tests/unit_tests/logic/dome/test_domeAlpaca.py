@@ -39,15 +39,14 @@ def function():
 
 
 def test_workerGetInitialConfig_1(function):
-    with mock.patch.object(AlpacaClass, "getAndStoreAlpacaProperty", return_value=True):
-        with mock.patch.object(function, "getAndStoreAlpacaProperty"):
+    with mock.patch.object(AlpacaClass, "getAndStoreDeviceProp"):
+        with mock.patch.object(function, "getAndStoreDeviceProp"):
             function.workerGetInitialConfig()
 
 
 def test_workerPollData_1(function):
-    function.data["CAN_FAST"] = True
-    with mock.patch.object(function, "getAndStoreAlpacaProperty"):
-        function.workerPollData()
+    function.deviceConnected = False
+    function.workerPollData()
 
 
 def test_processPolledData_1(function):
@@ -56,92 +55,83 @@ def test_processPolledData_1(function):
 
 def test_workerPollData_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=0):
-        with mock.patch.object(function, "getAndStoreAlpacaProperty"):
+    with mock.patch.object(function, "getDeviceProp", return_value=0):
+        with mock.patch.object(function, "getAndStoreDeviceProp"):
             function.workerPollData()
 
 
 def test_workerPollData_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=1):
-        with mock.patch.object(function, "getAndStoreAlpacaProperty"):
+    with mock.patch.object(function, "getDeviceProp", return_value=1):
+        with mock.patch.object(function, "getAndStoreDeviceProp"):
             function.workerPollData()
 
 
 def test_workerPollData_4(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=3):
-        with mock.patch.object(function, "getAndStoreAlpacaProperty"):
+    with mock.patch.object(function, "getDeviceProp", return_value=3):
+        with mock.patch.object(function, "getAndStoreDeviceProp"):
+            function.workerPollData()
+
+
+def test_workerPollData_5(function):
+    function.deviceConnected = True
+    with mock.patch.object(function, "getDeviceProp", return_value=None):
+        with mock.patch.object(function, "getAndStoreDeviceProp"):
             function.workerPollData()
 
 
 def test_slewToAltAz_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "setAlpacaProperty"):
-        function.slewToAltAz(0, 0)
+    function.slewToAltAz(0, 0)
 
 
 def test_slewToAltAz_2(function):
     function.deviceConnected = True
     function.data["CanSetAzimuth"] = True
     function.data["CanSetAltitude"] = True
-    with mock.patch.object(function, "setAlpacaProperty"):
+    with mock.patch.object(function, "callDeviceMethod"):
         function.slewToAltAz(0, 0)
 
 
 def test_closeShutter_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.closeShutter()
+    function.closeShutter()
 
 
 def test_closeShutter_2(function):
     function.deviceConnected = True
     function.data["CanSetShutter"] = True
-    with mock.patch.object(function, "getAlpacaProperty"):
+    with mock.patch.object(function, "callDeviceMethod"):
         function.closeShutter()
 
 
 def test_openShutter_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.openShutter()
+    function.openShutter()
 
 
 def test_openShutter_2(function):
     function.deviceConnected = True
     function.data["CanSetShutter"] = True
-    with mock.patch.object(function, "getAlpacaProperty"):
+    with mock.patch.object(function, "callDeviceMethod"):
         function.openShutter()
 
 
 def test_slewCW_1(function):
-    function.deviceConnected = False
-    function.slewCW()
-
-
-def test_slewCW_2(function):
-    function.deviceConnected = True
     function.slewCW()
 
 
 def test_slewCCW_1(function):
-    function.deviceConnected = False
-    function.slewCCW()
-
-
-def test_slewCCW_2(function):
-    function.deviceConnected = True
     function.slewCCW()
 
 
 def test_abortSlew_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.abortSlew()
+    function.abortSlew()
 
 
 def test_abortSlew_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty"):
+    with mock.patch.object(function, "callDeviceMethod"):
         function.abortSlew()

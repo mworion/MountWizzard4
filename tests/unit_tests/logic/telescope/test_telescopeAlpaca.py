@@ -38,10 +38,16 @@ def function():
 
 
 def test_workerGetInitialConfig_1(function):
-    with mock.patch.object(function, "getAndStoreAlpacaProperty"):
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
         function.workerGetInitialConfig()
 
 
 def test_workerGetInitialConfig_2(function):
-    with mock.patch.object(function, "getAndStoreAlpacaProperty", return_value=100):
+    with mock.patch.object(
+        function, "getAndStoreDeviceProp"
+    ) as m:
         function.workerGetInitialConfig()
+        calls = m.call_args_list
+        attrs = [c.args[0] for c in calls]
+        assert "ApertureDiameter" in attrs
+        assert "FocalLength" in attrs

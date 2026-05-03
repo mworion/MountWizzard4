@@ -24,13 +24,23 @@ class SensorWeatherAlpaca(AlpacaClass):
         self.data = parent.data
 
     def workerPollData(self) -> None:
-        if not self.deviceConnected:
-            return
 
-        self.getAndStoreAlpacaProperty("temperature", "WEATHER_PARAMETERS.WEATHER_TEMPERATURE")
-        self.getAndStoreAlpacaProperty("pressure", "WEATHER_PARAMETERS.WEATHER_PRESSURE")
-        self.getAndStoreAlpacaProperty("dewpoint", "WEATHER_PARAMETERS.WEATHER_DEWPOINT")
-        self.getAndStoreAlpacaProperty("humidity", "WEATHER_PARAMETERS.WEATHER_HUMIDITY")
-        self.getAndStoreAlpacaProperty("cloudcover", "WEATHER_PARAMETERS.CloudCover")
-        self.getAndStoreAlpacaProperty("rainrate", "WEATHER_PARAMETERS.RainVol")
-        self.getAndStoreAlpacaProperty("skyquality", "SKY_QUALITY.SKY_BRIGHTNESS")
+        self.getAndStoreDeviceProp(
+            "Temperature", "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
+        )
+        self.getAndStoreDeviceProp(
+            "Pressure", "WEATHER_PARAMETERS.WEATHER_PRESSURE"
+        )
+        self.getAndStoreDeviceProp(
+            "DewPoint", "WEATHER_PARAMETERS.WEATHER_DEWPOINT"
+        )
+        self.getAndStoreDeviceProp(
+            "Humidity", "WEATHER_PARAMETERS.WEATHER_HUMIDITY"
+        )
+        self.getAndStoreDeviceProp(
+            "CloudCover", "WEATHER_PARAMETERS.CloudCover"
+        )
+        self.getAndStoreDeviceProp("RainRate", "WEATHER_PARAMETERS.RainVol")
+        self.getAndStoreDeviceProp(
+            "SkyQuality", "SKY_QUALITY.SKY_BRIGHTNESS"
+        )

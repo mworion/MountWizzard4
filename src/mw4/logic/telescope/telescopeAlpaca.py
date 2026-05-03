@@ -25,5 +25,9 @@ class TelescopeAlpaca(AlpacaClass):
 
     def workerGetInitialConfig(self) -> None:
         super().workerGetInitialConfig()
-        self.getAndStoreAlpacaProperty("aperturediameter", "TELESCOPE_INFO.TELESCOPE_APERTURE")
-        self.getAndStoreAlpacaProperty("focallength", "TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH")
+        self.getAndStoreDeviceProp(
+            "ApertureDiameter", "TELESCOPE_INFO.TELESCOPE_APERTURE"
+        )
+        self.getAndStoreDeviceProp(
+            "FocalLength", "TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH"
+        )

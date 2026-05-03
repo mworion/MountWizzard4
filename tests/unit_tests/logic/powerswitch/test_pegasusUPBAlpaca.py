@@ -37,22 +37,26 @@ def function():
 
 def test_workerPollData_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty"):
+    with mock.patch.object(function, "callDeviceMethod"):
         function.workerPollData()
 
 
 def test_workerPollData_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=15):
-        with mock.patch.object(function, "storePropertyToData"):
-            function.workerPollData()
+    with mock.patch.object(function, "getDeviceProp", return_value=15):
+        with mock.patch.object(function, "callDeviceMethod", return_value=True):
+            with mock.patch.object(function, "storePropertyToData"):
+                function.workerPollData()
 
 
 def test_workerPollData_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=21):
-        with mock.patch.object(function, "storePropertyToData"):
-            function.workerPollData()
+    with mock.patch.object(function, "getDeviceProp", return_value=21):
+        with mock.patch.object(
+            function, "callDeviceMethod", return_value=1.0
+        ):
+            with mock.patch.object(function, "storePropertyToData"):
+                function.workerPollData()
 
 
 def test_togglePowerPort_1(function):
@@ -67,27 +71,15 @@ def test_togglePowerPort_2(function):
 
 def test_togglePowerPort_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "setAlpacaProperty"):
+    with mock.patch.object(function, "callDeviceMethod"):
         function.togglePowerPort("1")
 
 
 def test_togglePowerPortBoot_1(function):
-    function.deviceConnected = False
-    function.togglePowerPortBoot("1")
-
-
-def test_togglePowerPortBoot_2(function):
-    function.deviceConnected = True
     function.togglePowerPortBoot("1")
 
 
 def test_toggleHubUSB_1(function):
-    function.deviceConnected = False
-    function.toggleHubUSB()
-
-
-def test_toggleHubUSB_2(function):
-    function.deviceConnected = True
     function.toggleHubUSB()
 
 
@@ -98,13 +90,14 @@ def test_togglePortUSB_1(function):
 
 def test_togglePortUSB_2(function):
     function.deviceConnected = True
-    function.togglePortUSB("1")
+    with mock.patch.object(function, "getDeviceProp", return_value=15):
+        function.togglePortUSB("1")
 
 
 def test_togglePortUSB_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=21):
-        with mock.patch.object(function, "setAlpacaProperty"):
+    with mock.patch.object(function, "getDeviceProp", return_value=21):
+        with mock.patch.object(function, "callDeviceMethod"):
             function.togglePortUSB("1")
 
 
@@ -115,55 +108,39 @@ def test_toggleAutoDew_1(function):
 
 def test_toggleAutoDew_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=21):
-        with mock.patch.object(function, "setAlpacaProperty"):
+    with mock.patch.object(function, "getDeviceProp", return_value=21):
+        with mock.patch.object(function, "callDeviceMethod"):
             function.toggleAutoDew()
 
 
 def test_toggleAutoDew_3(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=15):
-        with mock.patch.object(function, "setAlpacaProperty"):
+    with mock.patch.object(function, "getDeviceProp", return_value=15):
+        with mock.patch.object(function, "callDeviceMethod"):
             function.toggleAutoDew()
 
 
 def test_sendDew_1(function):
     function.deviceConnected = False
-    function.sendDew("1", 10)
+    function.sendDew("A", 10)
 
 
 def test_sendDew_2(function):
     function.deviceConnected = True
-    function.sendDew("1", 10)
+    with mock.patch.object(function, "getDeviceProp", return_value=15):
+        function.sendDew("A", 10)
 
 
 def test_sendDew_3(function):
     function.deviceConnected = True
-    function.sendDew("1", 10)
-
-
-def test_sendDew_4(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=21):
-        with mock.patch.object(function, "setAlpacaProperty"):
-            function.sendDew("1", 10)
+    with mock.patch.object(function, "getDeviceProp", return_value=21):
+        with mock.patch.object(function, "callDeviceMethod"):
+            function.sendDew("A", 10)
 
 
 def test_sendAdjustableOutput_1(function):
-    function.deviceConnected = False
     function.sendAdjustableOutput(1)
 
 
-def test_sendAdjustableOutput_2(function):
-    function.deviceConnected = True
-    function.sendAdjustableOutput(4)
-
-
 def test_reboot_1(function):
-    function.deviceConnected = False
-    function.reboot()
-
-
-def test_reboot_2(function):
-    function.deviceConnected = True
     function.reboot()

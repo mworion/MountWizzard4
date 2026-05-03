@@ -37,36 +37,39 @@ def function():
 
 def test_workerPollData_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty", return_value=1):
-        function.workerPollData()
+    function.workerPollData()
 
 
 def test_workerPollData_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=1):
+    with mock.patch.object(
+        function, "getAndStoreDeviceProp"
+    ) as m:
         function.workerPollData()
-        assert function.data["ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION"] == 1
+        m.assert_called_once_with(
+            "Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION"
+        )
 
 
 def test_move_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "setAlpacaProperty"):
-        function.move(position=0)
+    function.move(position=0)
 
 
 def test_move_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "setAlpacaProperty"):
-        function.move(position=0)
+    with mock.patch.object(function, "callDeviceMethod") as m:
+        function.move(position=100)
+        m.assert_called_once_with("Move", Position=100)
 
 
 def test_halt_1(function):
     function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.halt()
+    function.halt()
 
 
 def test_halt_2(function):
     function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty"):
+    with mock.patch.object(function, "callDeviceMethod") as m:
         function.halt()
+        m.assert_called_once_with("Halt")

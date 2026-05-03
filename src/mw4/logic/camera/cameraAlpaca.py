@@ -30,59 +30,70 @@ class CameraAlpaca(AlpacaClass):
 
     def workerGetInitialConfig(self) -> None:
         super().workerGetInitialConfig()
-        self.getAndStoreAlpacaProperty("cameraxsize", "CCD_INFO.CCD_MAX_X")
-        self.getAndStoreAlpacaProperty("cameraysize", "CCD_INFO.CCD_MAX_Y")
-        self.getAndStoreAlpacaProperty("canfastreadout", "CAN_FAST")
-        self.getAndStoreAlpacaProperty("canabortexposure", "CAN_ABORT")
-        self.getAndStoreAlpacaProperty("cansetccdtemperature", "CAN_SET_CCD_TEMPERATURE")
-        self.getAndStoreAlpacaProperty("cangetcoolerpower", "CAN_GET_COOLER_POWER")
-        self.getAndStoreAlpacaProperty("pixelsizex", "CCD_INFO.CCD_PIXEL_SIZE_X")
-        self.getAndStoreAlpacaProperty("pixelsizey", "CCD_INFO.CCD_PIXEL_SIZE_Y")
-        self.getAndStoreAlpacaProperty("maxbinx", "CCD_BINNING.HOR_BIN_MAX")
-        self.getAndStoreAlpacaProperty("maxbiny", "CCD_BINNING.VERT_BIN_MAX")
-        self.getAndStoreAlpacaProperty("gainmax", "CCD_GAIN.GAIN_MAX")
-        self.getAndStoreAlpacaProperty("gainmin", "CCD_GAIN.GAIN_MIN")
-        self.getAndStoreAlpacaProperty("gains", "CCD_GAIN.GAIN_LIST")
-        self.getAndStoreAlpacaProperty("offsetmax", "CCD_OFFSET.OFFSET_MAX")
-        self.getAndStoreAlpacaProperty("offsetmin", "CCD_OFFSET.OFFSET_MIN")
-        self.getAndStoreAlpacaProperty("offsets", "CCD_OFFSET.OFFSET_LIST")
-        self.getAndStoreAlpacaProperty("startx", "CCD_FRAME.X")
-        self.getAndStoreAlpacaProperty("starty", "CCD_FRAME.Y")
+        self.getAndStoreDeviceProp("CameraXSize", "CCD_INFO.CCD_MAX_X")
+        self.getAndStoreDeviceProp("CameraYSize", "CCD_INFO.CCD_MAX_Y")
+        self.getAndStoreDeviceProp("CanFastReadout", "CAN_FAST")
+        self.getAndStoreDeviceProp("CanAbortExposure", "CAN_ABORT")
+        self.getAndStoreDeviceProp(
+            "CanSetCCDTemperature", "CAN_SET_CCD_TEMPERATURE"
+        )
+        self.getAndStoreDeviceProp("CanGetCoolerPower", "CAN_GET_COOLER_POWER")
+        self.getAndStoreDeviceProp("PixelSizeX", "CCD_INFO.CCD_PIXEL_SIZE_X")
+        self.getAndStoreDeviceProp("PixelSizeY", "CCD_INFO.CCD_PIXEL_SIZE_Y")
+        self.getAndStoreDeviceProp("MaxBinX", "CCD_BINNING.HOR_BIN_MAX")
+        self.getAndStoreDeviceProp("MaxBinY", "CCD_BINNING.VERT_BIN_MAX")
+        self.getAndStoreDeviceProp("GainMax", "CCD_GAIN.GAIN_MAX")
+        self.getAndStoreDeviceProp("GainMin", "CCD_GAIN.GAIN_MIN")
+        self.getAndStoreDeviceProp("Gains", "CCD_GAIN.GAIN_LIST")
+        self.getAndStoreDeviceProp("OffsetMax", "CCD_OFFSET.OFFSET_MAX")
+        self.getAndStoreDeviceProp("OffsetMin", "CCD_OFFSET.OFFSET_MIN")
+        self.getAndStoreDeviceProp("Offsets", "CCD_OFFSET.OFFSET_LIST")
+        self.getAndStoreDeviceProp("StartX", "CCD_FRAME.X")
+        self.getAndStoreDeviceProp("StartY", "CCD_FRAME.Y")
         self.log.debug(f"Initial data: {self.data}")
 
     def workerPollData(self) -> None:
-        self.getAndStoreAlpacaProperty("binx", "CCD_BINNING.HOR_BIN")
-        self.getAndStoreAlpacaProperty("biny", "CCD_BINNING.VERT_BIN")
-        self.getAndStoreAlpacaProperty("camerastate", "CAMERA.STATE")
-        self.getAndStoreAlpacaProperty("gain", "CCD_GAIN.GAIN")
-        self.getAndStoreAlpacaProperty("offset", "CCD_OFFSET.OFFSET")
-        self.getAndStoreAlpacaProperty("fastreadout", "READOUT_QUALITY.QUALITY_LOW")
-        self.getAndStoreAlpacaProperty(
-            "ccdtemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"
+        self.getAndStoreDeviceProp("BinX", "CCD_BINNING.HOR_BIN")
+        self.getAndStoreDeviceProp("BinY", "CCD_BINNING.VERT_BIN")
+        self.getAndStoreDeviceProp("CameraState", "CAMERA.STATE")
+        self.getAndStoreDeviceProp("Gain", "CCD_GAIN.GAIN")
+        self.getAndStoreDeviceProp("Offset", "CCD_OFFSET.OFFSET")
+        self.getAndStoreDeviceProp("FastReadout", "READOUT_QUALITY.QUALITY_LOW")
+        self.getAndStoreDeviceProp(
+            "CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"
         )
-        self.getAndStoreAlpacaProperty("cooleron", "CCD_COOLER.COOLER_ON")
-        self.getAndStoreAlpacaProperty("coolerpower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
+        self.getAndStoreDeviceProp("CoolerOn", "CCD_COOLER.COOLER_ON")
+        self.getAndStoreDeviceProp(
+            "CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE"
+        )
 
     def sendDownloadMode(self) -> None:
         if self.data.get("CAN_FAST", False):
-            self.setAlpacaProperty("fastreadout", FastReadout=self.parent.fastReadout)
+            self.setDeviceProp("FastReadout", self.parent.fastReadout)
 
     def waitFunc(self) -> bool:
-        return not self.getAlpacaProperty("imageready")
+        return not self.getDeviceProp("ImageReady")
+
+    def getImageArray(self, _: str = "") -> Any:
+        return self.getDeviceProp("ImageArray")
 
     def workerExpose(self) -> None:
         self.sendDownloadMode()
-        self.setAlpacaProperty("binx", BinX=self.parent.binning)
-        self.setAlpacaProperty("biny", BinY=self.parent.binning)
-        self.setAlpacaProperty("startx", StartX=self.parent.posXASCOM)
-        self.setAlpacaProperty("starty", StartY=self.parent.posYASCOM)
-        self.setAlpacaProperty("numx", NumX=self.parent.widthASCOM)
-        self.setAlpacaProperty("numy", NumY=self.parent.heightASCOM)
-        self.setAlpacaProperty("startexposure", Duration=self.parent.exposureTime, Light=True)
+        self.setDeviceProp("BinX", self.parent.binning)
+        self.setDeviceProp("BinY", self.parent.binning)
+        self.setDeviceProp("StartX", self.parent.posXASCOM)
+        self.setDeviceProp("StartY", self.parent.posYASCOM)
+        self.setDeviceProp("NumX", self.parent.widthASCOM)
+        self.setDeviceProp("NumY", self.parent.heightASCOM)
+        self.callDeviceMethod(
+            "StartExposure",
+            Duration=self.parent.exposureTime,
+            Light=True,
+        )
 
         self.parent.waitExposed(self.parent.exposureTime, self.waitFunc)
         self.signals.exposed.emit(self.parent.imagePath)
-        data = self.parent.retrieveImage(self.getAlpacaProperty, "imagearray")
+        data = self.parent.retrieveImage(self.getImageArray, "")
         self.signals.downloaded.emit(self.parent.imagePath)
         self.signals.message.emit("saving")
         hdu = fits.PrimaryHDU(data=data)
@@ -96,18 +107,18 @@ class CameraAlpaca(AlpacaClass):
 
     def abort(self) -> bool:
         if self.data.get("CAN_ABORT", False):
-            self.getAlpacaProperty("stopexposure")
+            self.callDeviceMethod("StopExposure")
         return True
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
-        self.setAlpacaProperty("cooleron", CoolerOn=coolerOn)
+        self.setDeviceProp("CoolerOn", coolerOn)
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
         if self.data.get("CAN_SET_CCD_TEMPERATURE", False):
-            self.setAlpacaProperty("setccdtemperature", SetCCDTemperature=temperature)
+            self.setDeviceProp("SetCCDTemperature", temperature)
 
     def sendOffset(self, offset: int = 0) -> None:
-        self.setAlpacaProperty("offset", Offset=offset)
+        self.setDeviceProp("Offset", offset)
 
     def sendGain(self, gain: int = 0) -> None:
-        self.setAlpacaProperty("gain", Gain=gain)
+        self.setDeviceProp("Gain", gain)

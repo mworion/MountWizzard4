@@ -29,7 +29,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function(qapp):
     widget = MWidget()
     widget.app = App()
-    window = UploadPopup(widget, Path(), [""], Path())
+    window = UploadPopup(widget, Path(), [], Path())
     yield window
     QApplication.processEvents()
     gc.collect()
@@ -44,11 +44,11 @@ def mocked_sleepAndEvents(monkeypatch, function):
     monkeypatch.setattr("mw4.gui.extWindows.uploadPopupW.mainThreadSleep", test)
 
 
-def set_setIcon(function):
+def test_setIcon(function):
     function.setIcon()
 
 
-def set_setProgressBarColor(function):
+def test_setProgressBarColor(function):
     function.setProgressBarColor("red")
 
 
@@ -272,12 +272,5 @@ def test_closePopup_3(function, mocked_sleepAndEvents):
 
 
 def test_uploadFile_1(function):
-    function.callBack = 1
-    with mock.patch.object(function.threadPool, "start"):
-        function.uploadFile()
-
-
-def test_uploadFile_2(function):
-    function.callBack = None
     with mock.patch.object(function.threadPool, "start"):
         function.uploadFile()

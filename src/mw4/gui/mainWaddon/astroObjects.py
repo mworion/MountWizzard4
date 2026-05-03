@@ -143,7 +143,7 @@ class AstroObjects:
         self.uploadPopup = UploadPopup(self.window, url, [self.objectText], self.tempDir)
         self.uploadPopup.show()
         self.uploadPopup.uploadFile()
-        self.uploadPopup.workerStatus.signals.finished.connect(self.finishProgObjects)
+        self.uploadPopup.worker.signals.finished.connect(self.finishProgObjects)
 
     def progObjects(self, objects: list) -> None:
         if len(objects) == 0:

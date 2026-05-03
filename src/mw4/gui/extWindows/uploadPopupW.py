@@ -110,23 +110,18 @@ class UploadPopup(MWidget):
     def sendProgressStatus(self, text: list) -> None:
         if text == [""]:
             return
-
         single = len(text) == 1
         multiple = len(text) > 1
-        print(text)
 
         if single and text[0].split()[0] in ["Uploading", "Processing"]:
             self.signalStatus.emit(text[0])
-
         elif multiple and text[-1].split()[-1] in ["file.", "failed"]:
             self.pollDispatcherHelper(text[-1])
             self.returnValues["successMount"] = False
-
         elif multiple and text[-1].split()[-1] in ["saved.", "updated."]:
             self.pollDispatcherHelper(text[-1])
             self.returnValues["successMount"] = True
             self.pollStatusRunState = False
-
         elif multiple and text[-1][0].isdigit():
             self.sendProgressValue(text[-1])
 
@@ -193,14 +188,13 @@ class UploadPopup(MWidget):
             self.signalProgressBarColor.emit("red")
         else:
             while self.pollStatusRunState:
-                mainThreadSleep(250)
+                mainThreadSleep(100)
             if self.returnValues["successMount"]:
                 self.signalProgressBarColor.emit("green")
             else:
                 self.signalProgressBarColor.emit("red")
                 self.msg.emit(2, "Upload", "Error", "Uploaded but mount failed to save data")
-
-        mainThreadSleep(1500)
+        mainThreadSleep(1000)
         self.close()
 
     def uploadFile(self) -> None:

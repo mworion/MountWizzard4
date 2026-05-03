@@ -124,6 +124,15 @@ def test_procSourceData_2(function):
         function.procSourceData(direct=True)
 
 
+def test_procSourceData_3(function):
+    class Test:
+        returnValues = {"success": True}
+
+    function.downloadPopup = Test()
+    with mock.patch.object(function.threadPool, "start"):
+        function.procSourceData(direct=False)
+
+
 def test_runDownloadPopup_1(function):
     function.window.ui.isOnline.setChecked(True)
     with mock.patch.object(function.window.app.threadPool, "start"):

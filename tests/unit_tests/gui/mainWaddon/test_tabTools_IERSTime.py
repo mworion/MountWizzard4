@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-import mw4.gui.mainWaddon.tabTools_IERSTime
 import pytest
 from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
 from pathlib import Path
@@ -63,7 +62,7 @@ def test_setupIERSSourceURLsDropDown(function):
 def test_finishProgEarthRotationData_1(function):
     class Test:
         returnValues = {"success": False}
-        workerStatus = mock.MagicMock()
+        worker = mock.MagicMock()
 
     function.uploadPopup = Test()
     function.finishProgEarthRotationData()
@@ -72,7 +71,7 @@ def test_finishProgEarthRotationData_1(function):
 def test_finishProgEarthRotationData_2(function):
     class Test:
         returnValues = {"success": True}
-        workerStatus = mock.MagicMock()
+        worker = mock.MagicMock()
 
     function.uploadPopup = Test()
     function.finishProgEarthRotationData()
@@ -118,8 +117,7 @@ def test_finishLoadFinalsFromSourceURLs_1(function):
         worker = mock.MagicMock()
 
     function.downloadPopup = Test()
-    with mock.patch.object(mw4.gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
-        function.finishLoadFinalsFromSourceURLs()
+    function.finishLoadFinalsFromSourceURLs()
 
 
 def test_finishLoadFinalsFromSourceURLs_2(function):
@@ -128,8 +126,7 @@ def test_finishLoadFinalsFromSourceURLs_2(function):
         worker = mock.MagicMock()
 
     function.downloadPopup = Test()
-    with mock.patch.object(mw4.gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
-        function.finishLoadFinalsFromSourceURLs()
+    function.finishLoadFinalsFromSourceURLs()
 
 
 def test_loadTimeDataFromSourceURLs_1(function):
@@ -139,5 +136,4 @@ def test_loadTimeDataFromSourceURLs_1(function):
 
 def test_loadTimeDataFromSourceURLs_2(function):
     function.ui.isOnline.isChecked.return_value = True
-    with mock.patch.object(mw4.gui.mainWaddon.tabTools_IERSTime, "DownloadPopup"):
-        function.loadTimeDataFromSourceURLs()
+    function.loadTimeDataFromSourceURLs()

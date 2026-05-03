@@ -21,9 +21,60 @@ from typing import Any
 
 
 class MeasureDataCSV(PySide6.QtCore.QObject):
+    FieldNames = [
+        "time",
+        "mount-timeDiff",
+        "mount-deltaRaJNow",
+        "mount-deltaDecJNow",
+        "mount-errorAngularPosRA",
+        "mount-errorAngularPosDEC",
+        "mount-status",
+        "sensor1Weather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE",
+        "sensor1Weather-WEATHER_PARAMETERS.WEATHER_HUMIDITY",
+        "sensor1Weather-WEATHER_PARAMETERS.WEATHER_PRESSURE",
+        "sensor1Weather-WEATHER_PARAMETERS.WEATHER_DEWPOINT",
+        "sensor1Weather-WEATHER_PARAMETERS.CloudCov",
+        "sensor1Weather-WEATHER_PARAMETERS.RainVol",
+        "sensor1Weather-SKY_QUALITY.SKY_BRIGHTNESS",
+        "sensor2Weather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE",
+        "sensor2Weather-WEATHER_PARAMETERS.WEATHER_HUMIDITY",
+        "sensor2Weather-WEATHER_PARAMETERS.WEATHER_PRESSURE",
+        "sensor2Weather-WEATHER_PARAMETERS.WEATHER_DEWPOINT",
+        "sensor2Weather-WEATHER_PARAMETERS.CloudCov",
+        "sensor2Weather-WEATHER_PARAMETERS.RainVol",
+        "sensor2Weather-SKY_QUALITY.SKY_BRIGHTNESS",
+        "sensor3Weather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE",
+        "sensor3Weather-WEATHER_PARAMETERS.WEATHER_HUMIDITY",
+        "sensor3Weather-WEATHER_PARAMETERS.WEATHER_PRESSURE",
+        "sensor3Weather-WEATHER_PARAMETERS.WEATHER_DEWPOINT",
+        "sensor3Weather-WEATHER_PARAMETERS.CloudCov",
+        "sensor3Weather-WEATHER_PARAMETERS.RainVol",
+        "sensor3Weather-SKY_QUALITY.SKY_BRIGHTNESS",
+        "sensor4Weather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE",
+        "sensor4Weather-WEATHER_PARAMETERS.WEATHER_HUMIDITY",
+        "sensor4Weather-WEATHER_PARAMETERS.WEATHER_PRESSURE",
+        "sensor4Weather-WEATHER_PARAMETERS.WEATHER_DEWPOINT",
+        "sensor4Weather-WEATHER_PARAMETERS.CloudCov",
+        "sensor4Weather-WEATHER_PARAMETERS.RainVol",
+        "sensor4Weather-SKY_QUALITY.SKY_BRIGHTNESS",
+        "directWeather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE",
+        "directWeather-WEATHER_PARAMETERS.WEATHER_HUMIDITY",
+        "directWeather-WEATHER_PARAMETERS.WEATHER_PRESSURE",
+        "directWeather-WEATHER_PARAMETERS.WEATHER_DEWPOINT",
+        "filterNumber",
+        "focusPosition",
+        "powCurr1",
+        "powCurr2",
+        "powCurr3",
+        "powCurr4",
+        "powVolt",
+        "powCurr",
+        "cameraTemp",
+        "cameraPower",
+    ]
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: Any = None, parent: Any = None, data: Any = None) -> None:
+    def __init__(self, app: Any = None, parent: Any = None, data: dict[str, float]={}) -> None:
         super().__init__()
 
         self.app = app
@@ -44,99 +95,28 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.measureTask)
 
-    def openCSV(self) -> None:
-        nameTime = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
-        self.csvFilename = self.app.mwGlob["measureDir"] / f"measure-{nameTime}.csv"
-
-        self.csvFile = open(self.csvFilename, "w+")
-        fieldnames = [
-            "time",
-            "deltaRaJNow",
-            "deltaDecJNow",
-            "errorAngularPosRA",
-            "errorAngularPosDEC",
-            "status",
-            "sensor1WeatherTemp",
-            "sensor1WeatherHum",
-            "sensor1WeatherPress",
-            "sensor1WeatherDew",
-            "sensor1WeatherCloud",
-            "sensor1WeatherRain",
-            "sensor1WeatherSky",
-            "sensor2WeatherTemp",
-            "sensor2WeatherHum",
-            "sensor2WeatherPress",
-            "sensor2WeatherDew",
-            "sensor2WeatherCloud",
-            "sensor2WeatherRain",
-            "sensor2WeatherSky",
-            "sensor3WeatherTemp",
-            "sensor3WeatherHum",
-            "sensor3WeatherPress",
-            "sensor3WeatherDew",
-            "sensor3WeatherCloud",
-            "sensor3WeatherRain",
-            "sensor3WeatherSky",
-            "onlineWeatherTemp",
-            "onlineWeatherHum",
-            "onlineWeatherPress",
-            "onlineWeatherDew",
-            "onlineWeatherCloud",
-            "onlineWeatherRain",
-            "onlineWeatherSky",
-            "directWeatherTemp",
-            "directWeatherHum",
-            "directWeatherPress",
-            "directWeatherDew",
-            "filterNumber",
-            "focusPosition",
-            "powCurr1",
-            "powCurr2",
-            "powCurr3",
-            "powCurr4",
-            "powVolt",
-            "powCurr",
-            "cameraTemp",
-            "cameraPower",
-            "timeDiff",
-        ]
-
-        self.csvWriter = csv.DictWriter(self.csvFile, fieldnames=fieldnames)
-        self.csvWriter.writeheader()
+    def writeHeaderCSV(self) -> None:
+        with open(self.csvFilename, "w+") as csvFile:
+            csvWriter = csv.DictWriter(csvFile, fieldnames=self.FieldNames)
+            csvWriter.writeheader()
 
     def writeCSV(self) -> None:
-        if not self.csvFile or not self.csvWriter:
-            return
-
         row = {}
         for key in self.data:
             row[key] = self.data[key][0]
-
-        self.csvWriter.writerow(row)
-
-    def closeCSV(self) -> None:
-        if not self.csvFile or not self.csvWriter:
-            return
-
-        self.csvFile.close()
-        self.csvWriter = None
-        self.csvFile = None
+        with open(self.csvFilename, "a+") as csvFile:
+            csvWriter = csv.DictWriter(csvFile, fieldnames=self.FieldNames)
+            csvWriter.writerow(row)
 
     def startCommunication(self) -> None:
         self.timerTask.start(self.parent.CYCLE_UPDATE_TASK)
-        self.openCSV()
+        nameTime = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
+        self.csvFilename = self.app.mwGlob["measureDir"] / f"measure-{nameTime}.csv"
+        self.writeHeaderCSV()
 
     def stopCommunication(self) -> None:
-        self.closeCSV()
         self.timerTask.stop()
 
     def measureTask(self) -> None:
-        """
-        measureTask runs all necessary pre-processing and collecting tasks to
-        assemble a large dict of lists, where all measurement data is stored.
-        the intention later on would be to store and export this data.
-        the time object is related to the time held in the mount computer and is
-        in utc timezone.
-        """
         self.parent.measureTask()
         self.writeCSV()

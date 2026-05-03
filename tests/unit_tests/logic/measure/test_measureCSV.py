@@ -13,12 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
-
-import csv
 import PySide6
 import pytest
 import unittest.mock as mock
 from mw4.logic.measure.measureCSV import MeasureDataCSV
+from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -42,7 +41,13 @@ def function():
 
 def test_startCommunication(function):
     with mock.patch.object(function.timerTask, "start"):
-        function.startCommunication()
+        with mock.patch.object(function, "writeHeaderCSV"):
+            with mock.patch.object(
+                function.app.mount.obsSite.timeJD,
+                "utc_strftime",
+                return_value="2022-01-01-00-00-00",
+            ):
+                function.startCommunication()
 
 
 def test_stopCommunication(function):
@@ -50,44 +55,23 @@ def test_stopCommunication(function):
         function.stopCommunication()
 
 
-def test_openCSV_1(function):
-    function.openCSV()
+def test_writeHeaderCSV(function):
+    function.csvFilename = Path("tests/work/temp/test.csv")
+    function.writeHeaderCSV()
 
 
 def test_writeCSV_1(function):
+    function.csvFilename = Path("tests/work/temp/test.csv")
+    function.data = {}
     function.writeCSV()
 
 
 def test_writeCSV_2(function):
-    with open("tests/work/temp/test.csv", "w") as f:
-        function.csvFile = f
-        function.writeCSV()
-
-
-def test_writeCSV_3(function):
-    with open("tests/work/temp/test.csv", "w") as f:
-        function.csvFile = f
-        function.csvWriter = csv.DictWriter(f, ["test"])
-        function.data = {"test": [1, 2]}
-        function.writeCSV()
-
-
-def test_closeCSV_1(function):
-    function.closeCSV()
-
-
-def test_closeCSV_2(function):
-    with open("tests/work/temp/test.csv", "w") as f:
-        function.csvFile = f
-        function.closeCSV()
-
-
-def test_closeCSV_3(function):
-    with open("tests/work/temp/test.csv", "w") as f:
-        function.csvFile = f
-        function.csvWriter = csv.DictWriter(f, ["test"])
-        function.closeCSV()
+    function.csvFilename = Path("tests/work/temp/test.csv")
+    function.data = {"time": [1, 2]}
+    function.writeCSV()
 
 
 def test_measureTask(function):
-    function.measureTask()
+    with mock.patch.object(function, "writeCSV"):
+        function.measureTask()

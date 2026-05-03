@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  cov: '--cov --cov-config=pyproject.toml'
+  cov: '--cov-append --cov-config=pyproject.toml'
 
 on:
   push:

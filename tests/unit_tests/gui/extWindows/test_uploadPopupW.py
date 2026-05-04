@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-import builtins
 import gc
 import pytest
 import requests
@@ -174,14 +173,14 @@ def test_pollStatus_1(function):
 
 def test_prepareFiles_1(function):
     function.dataTypes = ["comet"]
-    with mock.patch.object(builtins, "open"):
+    with mock.patch("builtins.open", mock.mock_open(read_data=b"")):
         val = function.prepareFiles()
         assert val
 
 
 def test_prepareFiles_2(function):
     function.dataTypes = ["test"]
-    with mock.patch.object(builtins, "open"):
+    with mock.patch("builtins.open", mock.mock_open(read_data=b"")):
         val = function.prepareFiles()
         assert not val
 

@@ -25,12 +25,9 @@ from PySide6.QtCore import Qt, Signal
 
 
 class UploadPopup(MWidget):
-    PROGRESS_DONE = 100
-    CYCLES_WAIT = 20
     signalProgress = Signal(object)
     signalStatus = Signal(object)
     signalProgressBarColor = Signal(object)
-
     dataNames = {
         "comet": {
             "file": "comets.mpc",
@@ -149,10 +146,11 @@ class UploadPopup(MWidget):
             if dataType not in self.dataNames:
                 return {}
             fullDataFilePath = self.dataFilePath / self.dataNames[dataType]["file"]
-            files[self.dataNames[dataType]["attr"]] = (
-                self.dataNames[dataType]["file"],
-                open(fullDataFilePath),
-            )
+            with open(fullDataFilePath, "rb") as fh:
+                files[self.dataNames[dataType]["attr"]] = (
+                    self.dataNames[dataType]["file"],
+                    fh.read(),
+                )
         self.log.debug(f"Data: {list(files.items())}")
         return files
 

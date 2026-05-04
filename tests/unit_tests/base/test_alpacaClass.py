@@ -311,9 +311,12 @@ def test_workerConnectDevice_3(function):
         with mock.patch.object(function, "createAlpacaDevice", return_value=True):
             with mock.patch.object(function, "setDeviceProp"):
                 with mock.patch.object(function, "getDeviceProp", return_value=True):
-                    function.workerConnectDevice()
-                    assert function.serverConnected
-                    assert function.deviceConnected
+                    with mock.patch.object(
+                        PySide6.QtCore.QTimer, "singleShot"
+                    ):
+                        function.workerConnectDevice()
+                        assert function.serverConnected
+                        assert function.deviceConnected
 
 
 def test_startTimer(function):

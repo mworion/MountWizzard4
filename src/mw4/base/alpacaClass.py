@@ -246,7 +246,7 @@ class AlpacaClass(DriverData):
             self.deviceConnected = True
             self.signals.deviceConnected.emit(f"{self.deviceName}")
             self.msg.emit(0, "ALPACA", "Device found", f"{self.deviceName}")
-            self.startAlpacaTimer()
+            QTimer.singleShot(0, self.startAlpacaTimer)
             self.getInitialConfig()
 
     def startAlpacaTimer(self) -> None:

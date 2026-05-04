@@ -67,13 +67,10 @@ class IERSTime:
 
     def progEarthRotationData(self) -> None:
         self.msg.emit(1, "IERS", "Program", "Earth rotation data")
-        self.msg.emit(0, "", "", "finals.data, CDFLeapSeconds.txt")
-
         suc = self.databaseProcessing.writeEarthRotationData(self.tempDir)
         if not suc:
             self.msg.emit(2, "IERS", "Data error", "Data could not be exported - stopping")
             return
-
         dataTypes = ["finalsdata", "leapsec"]
         url = self.app.mount.host[0]
         self.msg.emit(0, "IERS", "Uploading", "Upload to mount running")

@@ -192,7 +192,7 @@ class UploadPopup(MWidget):
             else:
                 self.signalProgressBarColor.emit("red")
                 self.msg.emit(2, "Upload", "Error", "Uploaded but mount failed to save data")
-        mainThreadSleep(1000)
+        mainThreadSleep(500)
         self.close()
 
     def uploadFile(self) -> None:

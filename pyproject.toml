@@ -151,4 +151,3 @@ no-sections = true
 max-complexity = 10
 
 [tool.ruff.lint.per-file-ignores]
-"src/mw4/gui/extWindows/uploadPopupW.py" = ["SIM115"]

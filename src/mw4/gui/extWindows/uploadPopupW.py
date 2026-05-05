@@ -95,7 +95,6 @@ class UploadPopup(MWidget):
         self.ui.statusText.setText(statusText)
 
     def sendProgressValue(self, text: str) -> None:
-        """:"""
         progressValue = int(re.search(r"\d+", text).group())
         self.signalProgress.emit(progressValue)
 

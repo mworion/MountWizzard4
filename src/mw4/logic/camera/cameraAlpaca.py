@@ -17,6 +17,7 @@ from astropy.io import fits
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.tpool import Worker
 from typing import Any
+import numpy as np
 
 
 class CameraAlpaca(AlpacaClass):
@@ -34,18 +35,10 @@ class CameraAlpaca(AlpacaClass):
         self.getAndStoreDeviceProp("CameraYSize", "CCD_INFO.CCD_MAX_Y")
         self.getAndStoreDeviceProp("CanFastReadout", "CAN_FAST")
         self.getAndStoreDeviceProp("CanAbortExposure", "CAN_ABORT")
-        self.getAndStoreDeviceProp(
-            "CanSetCCDTemperature", "CAN_SET_CCD_TEMPERATURE"
-        )
-        self.getAndStoreDeviceProp(
-            "CanGetCoolerPower", "CAN_GET_COOLER_POWER"
-        )
-        self.getAndStoreDeviceProp(
-            "PixelSizeX", "CCD_INFO.CCD_PIXEL_SIZE_X"
-        )
-        self.getAndStoreDeviceProp(
-            "PixelSizeY", "CCD_INFO.CCD_PIXEL_SIZE_Y"
-        )
+        self.getAndStoreDeviceProp("CanSetCCDTemperature", "CAN_SET_CCD_TEMPERATURE")
+        self.getAndStoreDeviceProp("CanGetCoolerPower", "CAN_GET_COOLER_POWER")
+        self.getAndStoreDeviceProp("PixelSizeX", "CCD_INFO.CCD_PIXEL_SIZE_X")
+        self.getAndStoreDeviceProp("PixelSizeY", "CCD_INFO.CCD_PIXEL_SIZE_Y")
         self.getAndStoreDeviceProp("MaxBinX", "CCD_BINNING.HOR_BIN_MAX")
         self.getAndStoreDeviceProp("MaxBinY", "CCD_BINNING.VERT_BIN_MAX")
         self.getAndStoreDeviceProp("GainMax", "CCD_GAIN.GAIN_MAX")
@@ -64,26 +57,17 @@ class CameraAlpaca(AlpacaClass):
         self.getAndStoreDeviceProp("CameraState", "CAMERA.STATE")
         self.getAndStoreDeviceProp("Gain", "CCD_GAIN.GAIN")
         self.getAndStoreDeviceProp("Offset", "CCD_OFFSET.OFFSET")
-        self.getAndStoreDeviceProp(
-            "FastReadout", "READOUT_QUALITY.QUALITY_LOW"
-        )
-        self.getAndStoreDeviceProp(
-            "CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"
-        )
+        self.getAndStoreDeviceProp("FastReadout", "READOUT_QUALITY.QUALITY_LOW")
+        self.getAndStoreDeviceProp("CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE")
         self.getAndStoreDeviceProp("CoolerOn", "CCD_COOLER.COOLER_ON")
-        self.getAndStoreDeviceProp(
-            "CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE"
-        )
+        self.getAndStoreDeviceProp("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
 
     def sendDownloadMode(self) -> None:
         if self.data.get("CAN_FAST", False):
-            self.setDeviceProp("FastReadout", self.parent.fastReadout)
+            self.setDevicePropQueued("FastReadout", self.parent.fastReadout)
 
     def waitFunc(self) -> bool:
         return not self.getDeviceProp("ImageReady")
-
-    def getImageArray(self, _: str = "") -> Any:
-        return self.getDeviceProp("ImageArray")
 
     def workerExpose(self) -> None:
         self.sendDownloadMode()
@@ -93,15 +77,14 @@ class CameraAlpaca(AlpacaClass):
         self.setDeviceProp("StartY", self.parent.posYASCOM)
         self.setDeviceProp("NumX", self.parent.widthASCOM)
         self.setDeviceProp("NumY", self.parent.heightASCOM)
-        self.callDeviceMethodSync(
-            "StartExposure",
-            Duration=self.parent.exposureTime,
-            Light=True,
+        self.callDeviceMethod(
+            "StartExposure", Duration=self.parent.exposureTime, Light=True
         )
-
         self.parent.waitExposed(self.parent.exposureTime, self.waitFunc)
         self.signals.exposed.emit(self.parent.imagePath)
-        data = self.parent.retrieveImage(self.getImageArray, "")
+        self.signals.message.emit("download")
+        data = self.getDeviceProp("ImageArray")
+        data = np.array(data, dtype=np.uint16).transpose()
         self.signals.downloaded.emit(self.parent.imagePath)
         self.signals.message.emit("saving")
         hdu = fits.PrimaryHDU(data=data)
@@ -115,18 +98,18 @@ class CameraAlpaca(AlpacaClass):
 
     def abort(self) -> bool:
         if self.data.get("CAN_ABORT", False):
-            self.callDeviceMethod("StopExposure")
+            self.callDeviceMethodQueued("StopExposure")
         return True
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
-        self.setDeviceProp("CoolerOn", coolerOn)
+        self.setDevicePropQueued("CoolerOn", coolerOn)
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
         if self.data.get("CAN_SET_CCD_TEMPERATURE", False):
-            self.setDeviceProp("SetCCDTemperature", temperature)
+            self.setDevicePropQueued("SetCCDTemperature", temperature)
 
     def sendOffset(self, offset: int = 0) -> None:
-        self.setDeviceProp("Offset", offset)
+        self.setDevicePropQueued("Offset", offset)
 
     def sendGain(self, gain: int = 0) -> None:
-        self.setDeviceProp("Gain", gain)
+        self.setDevicePropQueued("Gain", gain)

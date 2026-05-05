@@ -38,10 +38,7 @@ def function():
 def test_pollData_1(function):
     with mock.patch.object(function, "getAndStoreDeviceProp") as m:
         function.pollData()
-        m.assert_called_once_with(
-            "Position",
-            "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION",
-        )
+        m.assert_called_once_with("Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION")
 
 
 def test_move_1(function):

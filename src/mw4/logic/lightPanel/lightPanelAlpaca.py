@@ -39,10 +39,10 @@ class LightPanelAlpaca(AlpacaClass):
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
         )
         brightness = int(maxBrightness / 2)
-        self.callDeviceMethod("CalibratorOn", Brightness=brightness)
+        self.callDeviceMethodQueued("CalibratorOn", Brightness=brightness)
 
     def lightOff(self) -> None:
-        self.callDeviceMethod("CalibratorOff")
+        self.callDeviceMethodQueued("CalibratorOff")
 
     def lightIntensity(self, value: float) -> None:
-        self.callDeviceMethod("CalibratorOn", Brightness=int(value))
+        self.callDeviceMethodQueued("CalibratorOn", Brightness=int(value))

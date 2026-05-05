@@ -18,9 +18,7 @@ from typing import Any
 
 
 class DomeAlpaca(AlpacaClass):
-    SHUTTER_STATES: list[str] = [
-        "Open", "Closed", "Opening", "Closing", "Error"
-    ]
+    SHUTTER_STATES: list[str] = ["Open", "Closed", "Opening", "Closing", "Error"]
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
@@ -34,12 +32,8 @@ class DomeAlpaca(AlpacaClass):
         self.log.debug(f"Initial data: {self.data}")
 
     def pollData(self) -> None:
-        self.getAndStoreDeviceProp(
-            "Azimuth", "ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION"
-        )
-        self.signals.azimuth.emit(
-            self.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION")
-        )
+        self.getAndStoreDeviceProp("Azimuth", "ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION")
+        self.signals.azimuth.emit(self.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION"))
         self.getAndStoreDeviceProp("Slewing", "Slewing")
 
         state = self.getDeviceProp("ShutterStatus")
@@ -65,17 +59,17 @@ class DomeAlpaca(AlpacaClass):
 
     def slewToAltAz(self, altitude: float, azimuth: float) -> None:
         if self.data.get("CanSetAzimuth"):
-            self.callDeviceMethod("SlewToAzimuth", Azimuth=azimuth)
+            self.callDeviceMethodQueued("SlewToAzimuth", Azimuth=azimuth)
         if self.data.get("CanSetAltitude"):
-            self.callDeviceMethod("SlewToAltitude", Altitude=altitude)
+            self.callDeviceMethodQueued("SlewToAltitude", Altitude=altitude)
 
     def openShutter(self) -> None:
         if self.data.get("CanSetShutter"):
-            self.callDeviceMethod("OpenShutter")
+            self.callDeviceMethodQueued("OpenShutter")
 
     def closeShutter(self) -> None:
         if self.data.get("CanSetShutter"):
-            self.callDeviceMethod("CloseShutter")
+            self.callDeviceMethodQueued("CloseShutter")
 
     def slewCW(self) -> None:
         pass
@@ -84,4 +78,4 @@ class DomeAlpaca(AlpacaClass):
         pass
 
     def abortSlew(self) -> None:
-        self.callDeviceMethod("AbortSlew")
+        self.callDeviceMethodQueued("AbortSlew")

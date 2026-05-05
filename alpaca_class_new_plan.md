@@ -22,6 +22,9 @@ any `QTimer` instances and without multiple worker objects.
 | 2026-05-05 | Clarified `getAndStoreDeviceProp` is not queue-routed; applied it to `Azimuth` in `DomeAlpaca.pollData`; kept `getDeviceProp` for `ShutterStatus` branching logic |
 | 2026-05-05 | Added `callDeviceMethodSync` for synchronous direct device-method calls needed in `pollData` workflows; added all remaining device class migrations; moved local constants to class variables |
 | 2026-05-05 | Changed target from new file `alpacaClassNew.py` to in-place edit of `alpacaClass.py`; class name stays `AlpacaClass`; subclass imports unchanged |
+| 2026-05-05 | Refactored `runnerCommunicationLoop`: extracted `handleDeviceConnect` and `handleDeviceDisconnect`; unified `stopEvent.wait` to single call at end of every iteration |
+| 2026-05-05 | Applied line-length consolidation (≤ 95 chars) to all multi-line statements across `alpacaClass.py` and all device subclasses and their tests |
+| 2026-05-05 | Added `setDevicePropQueued` to `AlpacaClass`; introduced native-vs-queued convention for all device subclass command methods and `workerExpose` |
 
 ---
 
@@ -291,46 +294,107 @@ Drains the entire queue with `get_nowait()` in a
 
 ---
 
-### Step 10 – `runnerCommunicationLoop()` — the single worker loop
+### Step 10 – `handleDeviceConnect()` and `handleDeviceDisconnect()` — extracted helpers
+
+Two helper methods extracted from the loop to keep `runnerCommunicationLoop`
+focused on iteration control:
+
+```python
+def handleDeviceConnect(self) -> None:
+    suc = self.connectDevice()
+    if not suc:
+        return
+    self.serverConnected = True
+    self.deviceConnected = True
+    self.signals.serverConnected.emit()
+    self.signals.deviceConnected.emit(self.deviceName)
+    self.msg.emit(0, "ALPACA", "Device found", self.deviceName)
+    self.getInitialConfig()
+
+def handleDeviceDisconnect(self) -> None:
+    self.deviceConnected = False
+    self.signals.deviceDisconnected.emit(self.deviceName)
+    self.msg.emit(0, "ALPACA", "Device remove", self.deviceName)
+```
+
+---
+
+### Step 11 – `runnerCommunicationLoop()` — the single worker loop
 
 ```python
 def runnerCommunicationLoop(self) -> None:
 ```
 
-State machine with `while not self.stopEvent.is_set()`:
+Simplified state machine with `while not self.stopEvent.is_set()`.
+Delegates connection/disconnection to helpers; single `stopEvent.wait`
+at the end of every iteration (no `continue` branches):
 
 ```
 NOT CONNECTED (not self.deviceConnected):
-    suc = self.connectDevice()
-    if suc:
-        self.serverConnected = True
-        self.deviceConnected = True
-        self.signals.serverConnected.emit()
-        self.signals.deviceConnected.emit(self.deviceName)
-        self.msg.emit(0, "ALPACA", "Device found", self.deviceName)
-        self.getInitialConfig()
-    continue  # fall through to wait at end of loop
+    self.handleDeviceConnect()
 
-CONNECTED (self.deviceConnected):
-    suc = self.getDeviceProp("Connected")
-    if not suc:   # includes None
-        self.deviceConnected = False
-        self.signals.deviceDisconnected.emit(self.deviceName)
-        self.msg.emit(0, "ALPACA", "Device remove", self.deviceName)
-        continue
-    try:
-        self.pollData()
-    except Exception as e:
-        self.log.error(...)
-    self.processCommandQueue()
+CONNECTED but device reports disconnected:
+    elif not self.getDeviceProp("Connected"):
+        self.handleDeviceDisconnect()
 
-# end of every iteration — uniform cycle time for both states
+CONNECTED and polling:
+    else:
+        try:
+            self.pollData()
+        except Exception as e:
+            self.log.error(...)
+        self.processCommandQueue()
+
+# end of every iteration — uniform cycle time for all states
 self.stopEvent.wait(timeout=self.updateRate / 1000)
 ```
 
 ---
 
-### Step 11 – `startCommunication()` — create device, start loop
+### Step 12 – `setDevicePropQueued()` — queue-based property setter
+
+New companion to `setDeviceProp`. Enqueues a `"set"` command for
+execution by `processCommandQueue` in the loop thread:
+
+```python
+def setDevicePropQueued(self, attr: str, value: Any) -> None:
+    self.commandQueue.put(CommandItem(cmdType="set", name=attr, value=value))
+```
+
+`processCommandQueue` already handles `cmdType == "set"` by calling
+`setDeviceProp(cmd.name, cmd.value)` — no change needed there.
+
+#### Native-vs-Queued convention
+
+| Context | `setDeviceProp` | `callDeviceMethodSync` |
+|---------|-----------------|------------------------|
+| `pollData` (loop thread) | ✅ native | ✅ native |
+| `getInitialConfig` (loop thread) | ✅ native | ✅ native |
+| `connectDevice` / `stopCommunication` (loop internals) | ✅ native | — |
+| GUI command methods (`sendGain`, `openShutter`, …) | `setDevicePropQueued` | `callDeviceMethod` (queued) |
+| `workerExpose` and helpers (`sendDownloadMode`) | `setDevicePropQueued` | `callDeviceMethodSync` (direct — return value needed) |
+
+---
+
+### Step 13 – Line-length consolidation
+
+All multi-line expressions that fit within the 95-character limit (from
+`pyproject.toml`) are collapsed to a single line. This applies to:
+
+- `alpacaClass.py`: `log.warning`, `log.error`, `log.debug`, `log.info`,
+  `msg.emit`, `commandQueue.put`, `getInitialConfig` assignments
+- All device subclasses: `getAndStoreDeviceProp` calls,
+  `SHUTTER_STATES`/`COVER_STATES` list literals, `model` ternary
+  assignments, `callDeviceMethod` single-argument calls
+
+Expressions that remain multi-line (would exceed 95 chars):
+- `lightPanelAlpaca.py`: both `getAndStoreDeviceProp` calls in `pollData`
+- `pegasusUPBAlpaca.py`: all `storePropertyToData(callDeviceMethodSync(...))` calls
+- `cameraAlpaca.py`: `callDeviceMethodSync("StartExposure", ...)` call
+
+---
+
+### Step 14 – `startCommunication()` — create device, start loop
 
 ```python
 def startCommunication(self) -> None:
@@ -345,7 +409,7 @@ def startCommunication(self) -> None:
 
 ---
 
-### Step 12 – `stopCommunication()` — signal stop, disconnect device
+### Step 15 – `stopCommunication()` — signal stop, disconnect device
 
 ```python
 def stopCommunication(self) -> None:
@@ -360,7 +424,7 @@ def stopCommunication(self) -> None:
 
 ---
 
-### Step 13 – Update `tests/unit_tests/base/test_alpacaClass.py`
+### Step 16 – Update `tests/unit_tests/base/test_alpacaClass.py`
 
 The existing test file is updated in-place. The `Parent` fixture class
 and the `AlpacaClass` import remain. The `mock.patch.object(QTimer,
@@ -408,44 +472,46 @@ the fixture mock.
 | T11 | `test_setDeviceProp_1` | successful set → True |
 | T12 | `test_setDeviceProp_2` | `AlpycaNotImplError` → log only, False |
 | T13 | `test_setDeviceProp_3` | generic exception → False |
-| T14 | `test_callDeviceMethod_1` | success → item placed on queue |
-| T15 | `test_callDeviceMethodSync_1` | successful call → return value |
-| T16 | `test_callDeviceMethodSync_2` | `AlpycaNotImplError` → log only, return None |
-| T17 | `test_callDeviceMethodSync_3` | generic exception → None |
-| T18 | `test_getAndStoreDeviceProp` | delegation correct |
-| T19 | `test_discoverAPIVersion_1` | exception → 0 |
-| T20 | `test_discoverAPIVersion_2` | empty list → 0 |
-| T21 | `test_discoverAPIVersion_3` | maximum of versions |
-| T22 | `test_discoverAlpacaDevices_1` | exception → [] |
-| T23 | `test_discoverAlpacaDevices_2` | empty list → [] |
-| T24 | `test_discoverAlpacaDevices_3` | device list returned |
-| T25 | `test_discoverDevices_1` | filtered and formatted list |
-| T26 | `test_discoverDevices_2` | empty device list → [] |
-| T27 | `test_connectDevice_1` | all retries failed → False |
-| T28 | `test_connectDevice_2` | first attempt succeeds → True |
-| T29 | `test_connectDevice_3` | succeeds after retries → True |
-| T30 | `test_getInitialConfig` | all three data keys stored |
-| T31 | `test_pollData` | base implementation is no-op |
-| T32 | `test_processCommandQueue_1` | empty queue → no action |
-| T33 | `test_processCommandQueue_2` | "call" cmd → method called on device |
-| T34 | `test_processCommandQueue_3` | "set" cmd → setDeviceProp called |
-| T35 | `test_processCommandQueue_4` | unknown type → warning logged |
-| T36 | `test_processCommandQueue_5` | exception in "call" → error logged, no crash |
-| T37 | `test_processCommandQueue_6` | `AlpycaNotImplError` in "call" → log only, continues |
-| T38 | `test_runnerCommunicationLoop_stopImmediately` | `stopEvent` pre-set → 0 iterations |
-| T39 | `test_runnerCommunicationLoop_connectFails` | disconnected → `connectDevice` False → wait |
-| T40 | `test_runnerCommunicationLoop_connectSucceeds` | `getInitialConfig` called, signals emitted |
-| T41 | `test_runnerCommunicationLoop_pollCycle` | connected → `pollData`, `processCommandQueue`, wait |
-| T42 | `test_runnerCommunicationLoop_deviceLost` | `getDeviceProp("Connected")` False → `deviceDisconnected` |
-| T43 | `test_runnerCommunicationLoop_devicePropNone` | `getDeviceProp` returns None → treated as disconnect |
-| T44 | `test_runnerCommunicationLoop_pollDataException` | `pollData` raises → logged, loop continues |
-| T45 | `test_startCommunication_1` | `createAlpacaDevice` False → no worker started |
-| T46 | `test_startCommunication_2` | success → worker started, `stopEvent.clear` called |
-| T47 | `test_stopCommunication` | `stopEvent.set` called, signals emitted, state reset |
+| T14 | `test_callDeviceMethod_1` | success → item placed on queue with `cmdType="call"` |
+| T15 | `test_setDevicePropQueued_1` | item placed on queue with `cmdType="set"`, correct name and value |
+| T16 | `test_callDeviceMethodSync_1` | successful call → return value |
+| T17 | `test_callDeviceMethodSync_2` | `AlpycaNotImplError` → log only, return None |
+| T18 | `test_callDeviceMethodSync_3` | generic exception → None |
+| T19 | `test_getAndStoreDeviceProp` | delegation correct |
+| T20 | `test_discoverAPIVersion_1` | exception → 0 |
+| T21 | `test_discoverAPIVersion_2` | empty list → 0 |
+| T22 | `test_discoverAPIVersion_3` | maximum of versions |
+| T23 | `test_discoverAlpacaDevices_1` | exception → [] |
+| T24 | `test_discoverAlpacaDevices_2` | empty list → [] |
+| T25 | `test_discoverAlpacaDevices_3` | device list returned |
+| T26 | `test_discoverDevices_1` | filtered and formatted list |
+| T27 | `test_discoverDevices_2` | empty device list → [] |
+| T28 | `test_connectDevice_1` | all retries failed → False |
+| T29 | `test_connectDevice_2` | first attempt succeeds → True |
+| T30 | `test_connectDevice_3` | succeeds after retries → True |
+| T31 | `test_getInitialConfig` | all three data keys stored |
+| T32 | `test_pollData` | base implementation is no-op |
+| T33 | `test_processCommandQueue_1` | empty queue → no action |
+| T34 | `test_processCommandQueue_2` | "call" cmd → method called on device |
+| T35 | `test_processCommandQueue_3` | "set" cmd → setDeviceProp called |
+| T36 | `test_processCommandQueue_4` | unknown type → warning logged |
+| T37 | `test_processCommandQueue_5` | exception in "call" → error logged, no crash |
+| T38 | `test_processCommandQueue_6` | `AlpycaNotImplError` in "call" → log only, continues |
+| T39 | `test_handleDeviceConnect_1` | `connectDevice` returns False → state unchanged, no signals |
+| T40 | `test_handleDeviceConnect_2` | `connectDevice` returns True → state set, signals emitted, `getInitialConfig` called |
+| T41 | `test_handleDeviceDisconnect` | `deviceConnected` set False, signal emitted |
+| T42 | `test_runnerCommunicationLoop_stopImmediately` | `stopEvent` pre-set → 0 iterations |
+| T43 | `test_runnerCommunicationLoop_connectBranch` | not connected → `handleDeviceConnect` called |
+| T44 | `test_runnerCommunicationLoop_disconnectBranch` | connected but prop False → `handleDeviceDisconnect` called |
+| T45 | `test_runnerCommunicationLoop_pollCycle` | connected → `pollData`, `processCommandQueue`, wait |
+| T46 | `test_runnerCommunicationLoop_pollDataException` | `pollData` raises → logged, loop continues |
+| T47 | `test_startCommunication_1` | `createAlpacaDevice` False → no worker started |
+| T48 | `test_startCommunication_2` | success → worker started, `stopEvent.clear` called |
+| T49 | `test_stopCommunication` | `stopEvent.set` called, signals emitted, state reset |
 
 ---
 
-### Step 14 – Ruff linting
+### Step 17 – Ruff linting
 
 After implementation:
 
@@ -486,7 +552,7 @@ DomeAlpaca(AlpacaClass)
 └── abortSlew()
 ```
 
-### Step 15 – Update `domeAlpaca.py`
+### Step 18 – Update `domeAlpaca.py`
 
 **No import or base class change needed** — `DomeAlpaca` already
 inherits from `AlpacaClass` via `from mw4.base.alpacaClass import
@@ -565,7 +631,7 @@ call `callDeviceMethod` which now enqueues the command. The
 
 ---
 
-### Step 16 – Update `tests/unit_tests/logic/dome/test_domeAlpaca.py`
+### Step 19 – Update `tests/unit_tests/logic/dome/test_domeAlpaca.py`
 
 **Fixture**: remove `mock.patch.object(PySide6.QtCore.QTimer, "start")`
 and `import PySide6` — no longer needed.
@@ -626,7 +692,7 @@ from mw4.logic.dome.domeAlpaca import DomeAlpaca
 
 ---
 
-### Step 17 – Ruff linting for `DomeAlpaca`
+### Step 20 – Ruff linting for `DomeAlpaca`
 
 ```bash
 ruff check src/mw4/logic/dome/domeAlpaca.py \
@@ -648,13 +714,18 @@ ruff format src/mw4/logic/dome/domeAlpaca.py \
 | `CONNECTION_RETRY_DELAY` constant | Removed — `updateRate / 1000` used uniformly |
 | `processPolledData` | Removed — post-processing moved to end of `pollData()` |
 | `callDeviceMethod` return type | Changed `Any` → `None` (enqueue only, fire-and-forget) |
-| `callDeviceMethodSync` | New method — direct synchronous call, returns `Any`; used inside worker threads that need return values (`pollData`, expose workflows) |
+| `callDeviceMethodSync` | Direct synchronous call, returns `Any`; used in `pollData` and `workerExpose` |
+| `setDevicePropQueued` | New method — enqueues `"set"` command; used in all GUI command methods and `workerExpose` |
+| `handleDeviceConnect` | Extracted from loop — handles connect attempt and post-connect setup |
+| `handleDeviceDisconnect` | Extracted from loop — handles device-lost event |
+| Loop control flow | Single `stopEvent.wait` at end of every iteration; no `continue` branches |
 | Loop cycle time | Single `stopEvent.wait(updateRate / 1000)` at end of every iteration |
-| Thread safety of `setDeviceProp` | Safe — alpyca is stateless HTTP; concurrent calls are harmless |
+| Native-vs-Queued convention | `pollData`, `getInitialConfig`, `connectDevice`, `stopCommunication` use native direct methods; all GUI command methods and `workerExpose` use `setDevicePropQueued` / `callDeviceMethod` |
 | `getAndStoreDeviceProp` and the queue | Not routed through the queue — read helper called from within the loop thread |
 | `getAndStoreDeviceProp` vs `getDeviceProp` in `pollData` | Use `getAndStoreDeviceProp` + read from `self.data` when value only needed for signal emission; keep `getDeviceProp` when value drives local branching logic |
 | Local list constants in `pollData` | Moved to class variables (`SCREAMING_SNAKE_CASE`) |
 | `deviceConnected` guard in subclass command methods | Removed — loop owns connection state; alpyca HTTP exceptions are caught and logged |
+| Line-length consolidation | All multi-line expressions ≤ 95 chars collapsed to one line; expressions that exceed 95 chars remain multi-line |
 
 ---
 
@@ -701,43 +772,45 @@ transformation is non-trivial.
 - [ ] Remove `processPolledData` (if present); merge logic into `pollData`
 - [ ] Replace local list constants with class variables (`SCREAMING_SNAKE_CASE`)
 - [ ] Replace `callDeviceMethod(read)` with `callDeviceMethodSync(read)` where return value is used
+- [ ] Replace `setDeviceProp` in GUI command methods with `setDevicePropQueued`
+- [ ] Replace `setDeviceProp` in `workerExpose` and its helpers with `setDevicePropQueued`
+- [ ] Keep `setDeviceProp` native in `pollData` and loop-internal methods
 - [ ] Remove `deviceConnected` guards in command methods
+- [ ] Collapse multi-line expressions to one line where result ≤ 95 chars
 - [ ] Update test fixture (remove QTimer mock, remove `import PySide6` if unused)
 - [ ] Rename test functions accordingly
+- [ ] Update command-method tests to assert queue contents instead of mocking `setDeviceProp`
 
 ---
 
-### Step 18 – `FocuserAlpaca`
+### Step 21 – `FocuserAlpaca`
 
 **`focuserAlpaca.py` changes:**
 
 | Item | Change |
 |------|--------|
-| Base class | `AlpacaClass` → `AlpacaClassNew` |
 | `workerPollData` | renamed → `pollData` |
-| All `getAndStoreDeviceProp` calls | unchanged |
-| Command methods (`move`, `halt`) | unchanged — already fire-and-forget |
+| All `getAndStoreDeviceProp` calls | consolidated to single line |
+| Command methods (`move`, `halt`) | unchanged — already use `callDeviceMethod` |
 
 ```python
 # after
 def pollData(self) -> None:
-    self.getAndStoreDeviceProp(
-        "Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION"
-    )
+    self.getAndStoreDeviceProp("Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION")
 ```
 
-**`test_focuserAlpaca.py` changes:** remove QTimer mock, rename
-`test_workerPollData_1` → `test_pollData_1`.
+**`test_focuserAlpaca.py` changes:** remove QTimer mock; rename
+`test_workerPollData_1` → `test_pollData_1`; collapse multi-line
+`assert_called_once_with` to single line.
 
 ---
 
-### Step 19 – `SensorWeatherAlpaca`
+### Step 22 – `SensorWeatherAlpaca`
 
 **`sensorWeatherAlpaca.py` changes:**
 
 | Item | Change |
 |------|--------|
-| Base class | `AlpacaClass` → `AlpacaClassNew` |
 | `workerPollData` | renamed → `pollData` |
 | All `getAndStoreDeviceProp` calls | unchanged |
 
@@ -748,14 +821,14 @@ test.
 
 ---
 
-### Step 20 – `TelescopeAlpaca`
+### Step 23 – `TelescopeAlpaca`
 
 **`telescopeAlpaca.py` changes:**
 
 | Item | Change |
 |------|--------|
-| Base class | `AlpacaClass` → `AlpacaClassNew` |
 | `workerGetInitialConfig` | renamed → `getInitialConfig`; `super()` call updated |
+| `getAndStoreDeviceProp` calls | consolidated to single line (90 chars each) |
 | No `workerPollData` | base `pollData` (`pass`) is sufficient |
 
 **`test_telescopeAlpaca.py` changes:** remove QTimer mock, rename
@@ -763,7 +836,7 @@ test.
 
 ---
 
-### Step 21 – `FilterAlpaca`
+### Step 24 – `FilterAlpaca`
 
 **`filterAlpaca.py` changes:**
 
@@ -772,7 +845,7 @@ test.
 | Base class | `AlpacaClass` → `AlpacaClassNew` |
 | `workerGetInitialConfig` | renamed → `getInitialConfig`; `super()` call updated |
 | `workerPollData` | renamed → `pollData`; logic unchanged |
-| `sendFilterNumber` | remove `if not self.deviceConnected: return` guard |
+| `sendFilterNumber` | `setDeviceProp` → `setDevicePropQueued` |
 
 `getInitialConfig` iterates over filter names — using `getDeviceProp` is
 correct here (return value drives local logic):
@@ -800,49 +873,48 @@ def pollData(self) -> None:
 ```
 
 **`test_filterAlpaca.py` changes:** remove QTimer mock; rename tests;
-remove `deviceConnected = False` setups from `sendFilterNumber` test.
+`sendFilterNumber` test asserts queue content (`cmdType="set"`,
+`name="Position"`, `value=2`) instead of mocking `setDeviceProp`.
 
 ---
 
-### Step 22 – `CoverAlpaca`
+### Step 25 – `CoverAlpaca`
 
 **`coverAlpaca.py` changes:**
 
 | Item | Change |
 |------|--------|
-| Base class | `AlpacaClass` → `AlpacaClassNew` |
 | `workerPollData` | renamed → `pollData` |
 | `states` local list | moved to class variable `COVER_STATES` |
+| `storePropertyToData` call | consolidated to single line |
 
 ```python
-class CoverAlpaca(AlpacaClassNew):
-    COVER_STATES: list[str] = [
-        "NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"
-    ]
+class CoverAlpaca(AlpacaClass):
+    COVER_STATES: list[str] = ["NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"]
 
     def pollData(self) -> None:
         state = self.getDeviceProp("CoverState")
         if state is None:
             return
-        self.storePropertyToData(
-            self.COVER_STATES[int(state)], "Status.Cover"
-        )
+        self.storePropertyToData(self.COVER_STATES[int(state)], "Status.Cover")
 ```
 
 **`test_coverAlpaca.py` changes:** remove QTimer mock; rename test.
 
 ---
 
-### Step 23 – `LightPanelAlpaca`
+### Step 26 – `LightPanelAlpaca`
 
 **`lightPanelAlpaca.py` changes:**
 
 | Item | Change |
 |------|--------|
-| Base class | `AlpacaClass` → `AlpacaClassNew` |
 | `workerPollData` | renamed → `pollData` |
 | `getDeviceProp("Brightness")` + `storePropertyToData` | replace with `getAndStoreDeviceProp` |
 | `getDeviceProp("MaxBrightness")` + `storePropertyToData` | replace with `getAndStoreDeviceProp` |
+
+> Both `getAndStoreDeviceProp` calls remain multi-line — they exceed 95
+> chars when collapsed.
 
 ```python
 def pollData(self) -> None:
@@ -860,89 +932,75 @@ def pollData(self) -> None:
 
 ---
 
-### Step 24 – `CameraAlpaca`
+### Step 27 – `CameraAlpaca`
 
 **`cameraAlpaca.py` changes:**
 
 | Item | Change |
 |------|--------|
-| Base class | `AlpacaClass` → `AlpacaClassNew` |
-| `workerGetInitialConfig` | renamed → `getInitialConfig`; `super()` call updated |
-| `workerPollData` | renamed → `pollData`; all calls are `getAndStoreDeviceProp` — unchanged |
-| `workerExpose` | `callDeviceMethod("StartExposure", …)` → `callDeviceMethodSync("StartExposure", …)` |
-
-> **Why `callDeviceMethodSync` in `workerExpose`**: `workerExpose` runs
-> in its own dedicated `Worker` thread (not the communication loop). It
-> must call `StartExposure` synchronously before entering
-> `waitExposed()`. Enqueueing via `callDeviceMethod` would only execute
-> the command at the next loop iteration, by which time `waitExposed`
-> has already started polling for `ImageReady` — a race condition.
+| `workerGetInitialConfig` | renamed → `getInitialConfig`; `super()` call updated; all `getAndStoreDeviceProp` calls consolidated to single lines |
+| `workerPollData` | renamed → `pollData`; all `getAndStoreDeviceProp` calls consolidated to single lines |
+| `workerExpose` — `setDeviceProp` calls | → `setDevicePropQueued` (all 6 property sets) |
+| `sendDownloadMode` — `setDeviceProp` | → `setDevicePropQueued` |
+| `workerExpose` — `StartExposure` | `callDeviceMethodSync("StartExposure", …)` — remains direct (return value / blocking needed) |
+| `sendCoolerSwitch`, `sendCoolerTemp`, `sendOffset`, `sendGain` | `setDeviceProp` → `setDevicePropQueued` |
 
 ```python
 def workerExpose(self) -> None:
     self.sendDownloadMode()
-    self.setDeviceProp("BinX", self.parent.binning)
-    self.setDeviceProp("BinY", self.parent.binning)
-    self.setDeviceProp("StartX", self.parent.posXASCOM)
-    self.setDeviceProp("StartY", self.parent.posYASCOM)
-    self.setDeviceProp("NumX", self.parent.widthASCOM)
-    self.setDeviceProp("NumY", self.parent.heightASCOM)
-    self.callDeviceMethodSync(          # ← changed from callDeviceMethod
-        "StartExposure",
-        Duration=self.parent.exposureTime,
-        Light=True,
+    self.setDevicePropQueued("BinX", self.parent.binning)
+    self.setDevicePropQueued("BinY", self.parent.binning)
+    self.setDevicePropQueued("StartX", self.parent.posXASCOM)
+    self.setDevicePropQueued("StartY", self.parent.posYASCOM)
+    self.setDevicePropQueued("NumX", self.parent.widthASCOM)
+    self.setDevicePropQueued("NumY", self.parent.heightASCOM)
+    self.callDeviceMethodSync(
+        "StartExposure", Duration=self.parent.exposureTime, Light=True
     )
-    self.parent.waitExposed(self.parent.exposureTime, self.waitFunc)
     ...
 ```
 
 **`test_cameraAlpaca.py` changes:** remove QTimer mock; rename tests;
-update `workerExpose` test to mock `callDeviceMethodSync` instead of
-`callDeviceMethod`.
+`sendDownloadMode` test checks queue (`cmdType="set"`, `name="FastReadout"`);
+`workerExpose` test removes `setDeviceProp` mock — no longer needed;
+`sendCoolerSwitch/sendCoolerTemp/sendOffset/sendGain` tests assert queue
+contents instead of mocking `setDeviceProp`.
 
 ---
 
-### Step 25 – `PegasusUPBAlpaca`
+### Step 28 – `PegasusUPBAlpaca`
 
 This is the most complex migration. `workerPollData` uses
 `callDeviceMethod` as a **read** mechanism — it captures the return value
-and passes it to `storePropertyToData`. In `AlpacaClassNew`,
-`callDeviceMethod` returns `None` (enqueues only), so all such calls
-must become `callDeviceMethodSync`.
+and passes it to `storePropertyToData`. `callDeviceMethod` returns `None`
+(enqueues only), so all such calls must become `callDeviceMethodSync`.
 
 **`pegasusUPBAlpaca.py` changes:**
 
 | Item | Change |
 |------|--------|
-| Base class | `AlpacaClass` → `AlpacaClassNew` |
 | `workerPollData` | renamed → `pollData` |
 | All `callDeviceMethod` in `pollData` (read calls) | → `callDeviceMethodSync` |
-| `callDeviceMethod` in `togglePowerPort`, `togglePortUSB`, `toggleAutoDew`, `sendDew` | unchanged — fire-and-forget commands from GUI |
+| `model` ternary assignments | collapsed to single line (72 chars) |
+| `FIRMWARE_INFO.VERSION` assignment | collapsed to single line (76 chars) |
+| `callDeviceMethod` in `togglePortUSB` and `sendDew` | collapsed to single line (77 chars) |
+| `callDeviceMethod` in `togglePowerPort`, `toggleAutoDew` | unchanged — fire-and-forget GUI commands |
 
-```python
-# after (excerpt from pollData — UPB branch, pattern applies to UPBv2)
-def pollData(self) -> None:
-    model = "UPB" if self.getDeviceProp("MaxSwitch") == 15 else "UPBv2"
-    self.data["FIRMWARE_INFO.VERSION"] = "1.4" if model == "UPB" else "2.1"
-    if model == "UPB":
-        self.storePropertyToData(
-            self.callDeviceMethodSync("GetSwitch", Id=0),  # ← sync
-            "POWER_CONTROL.POWER_CONTROL_1",
-        )
-        # … all remaining callDeviceMethod → callDeviceMethodSync
-```
+> `storePropertyToData(callDeviceMethodSync(...))` calls remain
+> multi-line — they exceed 95 chars when collapsed.
 
 > **Rule**: inside `pollData`, every `callDeviceMethod` whose return
 > value is captured must become `callDeviceMethodSync`. Command methods
 > called from the GUI (`togglePowerPort`, etc.) keep `callDeviceMethod`.
 
 **`test_pegasusUPBAlpaca.py` changes:** remove QTimer mock; rename
-`test_workerPollData_*` → `test_pollData_*`; mock `callDeviceMethodSync`
-instead of `callDeviceMethod` in poll tests.
+`test_workerPollData_*` → `test_pollData_*`; collapse
+`mock.patch.object(function, "callDeviceMethodSync", ...)` to single
+line.
 
 ---
 
-### Step 26 – Run full test suite and Ruff
+### Step 29 – Run full test suite and Ruff
 
 After all subclass migrations:
 

@@ -148,14 +148,10 @@ class AlpacaClass(DriverData):
         try:
             return getattr(self.device, attr)
         except AlpycaNotImplError:
-            self.log.warning(
-                f"[{self.deviceName}] [{attr}] not implemented"
-            )
+            self.log.warning(f"[{self.deviceName}] [{attr}] not implemented")
             return None
         except Exception as e:
-            self.log.error(
-                f"[{self.deviceName}] get [{attr}] exception: [{e}]"
-            )
+            self.log.error(f"[{self.deviceName}] get [{attr}] exception: [{e}]")
             return None
 
     def setDeviceProp(self, attr: str, value: Any) -> bool:
@@ -163,33 +159,26 @@ class AlpacaClass(DriverData):
             setattr(self.device, attr, value)
             return True
         except AlpycaNotImplError:
-            self.log.warning(
-                f"[{self.deviceName}] [{attr}] not implemented"
-            )
+            self.log.warning(f"[{self.deviceName}] [{attr}] not implemented")
             return False
         except Exception as e:
-            self.log.error(
-                f"[{self.deviceName}] set [{attr}] exception: [{e}]"
-            )
+            self.log.error(f"[{self.deviceName}] set [{attr}] exception: [{e}]")
             return False
 
-    def callDeviceMethod(self, method: str, **kwargs: Any) -> None:
-        self.commandQueue.put(
-            CommandItem(cmdType="call", name=method, kwargs=kwargs)
-        )
+    def setDevicePropQueued(self, attr: str, value: Any) -> None:
+        self.commandQueue.put(CommandItem(cmdType="set", name=attr, value=value))
 
-    def callDeviceMethodSync(self, method: str, **kwargs: Any) -> Any:
+    def callDeviceMethodQueued(self, method: str, **kwargs: Any) -> None:
+        self.commandQueue.put(CommandItem(cmdType="call", name=method, kwargs=kwargs))
+
+    def callDeviceMethod(self, method: str, **kwargs: Any) -> Any:
         try:
             return getattr(self.device, method)(**kwargs)
         except AlpycaNotImplError:
-            self.log.warning(
-                f"[{self.deviceName}] [{method}] not implemented"
-            )
+            self.log.warning(f"[{self.deviceName}] [{method}] not implemented")
             return None
         except Exception as e:
-            self.log.error(
-                f"[{self.deviceName}] call [{method}] exception: [{e}]"
-            )
+            self.log.error(f"[{self.deviceName}] call [{method}] exception: [{e}]")
             return None
 
     def getAndStoreDeviceProp(self, attr: str, element: str) -> None:
@@ -221,10 +210,7 @@ class AlpacaClass(DriverData):
             return []
 
         temp = [x for x in devices if x["DeviceType"].lower() == deviceType]
-        discoverList = [
-            f"{x['DeviceName']}:{deviceType}:{x['DeviceNumber']}"
-            for x in temp
-        ]
+        discoverList = [f"{x['DeviceName']}:{deviceType}:{x['DeviceNumber']}" for x in temp]
         return discoverList
 
     def connectDevice(self) -> bool:
@@ -233,13 +219,9 @@ class AlpacaClass(DriverData):
             self.setDeviceProp("Connected", True)
             suc = self.getDeviceProp("Connected")
             if suc:
-                self.log.debug(
-                    f"[{self.deviceName}] connected, [{retry}] retries"
-                )
+                self.log.debug(f"[{self.deviceName}] connected, [{retry}] retries")
                 break
-            self.log.info(
-                f"[{self.deviceName}] Connection retry: [{retry}]"
-            )
+            self.log.info(f"[{self.deviceName}] Connection retry: [{retry}]")
             time.sleep(0.2)
 
         if not suc:
@@ -248,12 +230,8 @@ class AlpacaClass(DriverData):
 
     def getInitialConfig(self) -> None:
         self.data["DRIVER_INFO.DRIVER_NAME"] = self.getDeviceProp("Name")
-        self.data["DRIVER_INFO.DRIVER_VERSION"] = (
-            self.getDeviceProp("DriverVersion")
-        )
-        self.data["DRIVER_INFO.DRIVER_EXEC"] = self.getDeviceProp(
-            "DriverInfo"
-        )
+        self.data["DRIVER_INFO.DRIVER_VERSION"] = self.getDeviceProp("DriverVersion")
+        self.data["DRIVER_INFO.DRIVER_EXEC"] = self.getDeviceProp("DriverInfo")
 
     def pollData(self) -> None:
         pass
@@ -269,65 +247,52 @@ class AlpacaClass(DriverData):
                 try:
                     getattr(self.device, cmd.name)(**cmd.kwargs)
                 except AlpycaNotImplError:
-                    self.log.warning(
-                        f"[{self.deviceName}] [{cmd.name}] not implemented"
-                    )
+                    self.log.warning(f"[{self.deviceName}] [{cmd.name}] not implemented")
                 except Exception as e:
-                    self.log.error(
-                        f"[{self.deviceName}] call [{cmd.name}]"
-                        f" exception: [{e}]"
-                    )
+                    self.log.error(f"[{self.deviceName}] call [{cmd.name}] exception: [{e}]")
             elif cmd.cmdType == "set":
                 self.setDeviceProp(cmd.name, cmd.value)
             else:
-                self.log.warning(
-                    f"[{self.deviceName}] unknown cmdType: [{cmd.cmdType}]"
-                )
+                self.log.warning(f"[{self.deviceName}] unknown cmdType: [{cmd.cmdType}]")
+
+    def handleDeviceConnect(self) -> None:
+        suc = self.connectDevice()
+        if not suc:
+            return
+        self.serverConnected = True
+        self.deviceConnected = True
+        self.signals.serverConnected.emit()
+        self.signals.deviceConnected.emit(self.deviceName)
+        self.msg.emit(0, "ALPACA", "Device found", self.deviceName)
+        self.getInitialConfig()
+
+    def handleDeviceDisconnect(self) -> None:
+        self.deviceConnected = False
+        self.signals.deviceDisconnected.emit(self.deviceName)
+        self.msg.emit(0, "ALPACA", "Device remove", self.deviceName)
 
     def runnerCommunicationLoop(self) -> None:
         while not self.stopEvent.is_set():
             if not self.deviceConnected:
-                suc = self.connectDevice()
-                if suc:
-                    self.serverConnected = True
-                    self.deviceConnected = True
-                    self.signals.serverConnected.emit()
-                    self.signals.deviceConnected.emit(self.deviceName)
-                    self.msg.emit(
-                        0, "ALPACA", "Device found", self.deviceName
-                    )
-                    self.getInitialConfig()
-                self.stopEvent.wait(timeout=self.updateRate / 1000)
+                self.handleDeviceConnect()
                 continue
-
-            suc = self.getDeviceProp("Connected")
-            if not suc:
-                self.deviceConnected = False
-                self.signals.deviceDisconnected.emit(self.deviceName)
-                self.msg.emit(
-                    0, "ALPACA", "Device remove", self.deviceName
-                )
-                self.stopEvent.wait(timeout=self.updateRate / 1000)
+            if not self.getDeviceProp("Connected"):
+                self.handleDeviceDisconnect()
                 continue
-
             try:
                 self.pollData()
             except Exception as e:
-                self.log.error(
-                    f"[{self.deviceName}] pollData exception: [{e}]"
-                )
+                self.log.error(f"[{self.deviceName}] pollData exception: [{e}]")
             self.processCommandQueue()
             self.stopEvent.wait(timeout=self.updateRate / 1000)
 
     def startCommunication(self) -> None:
         self.data.clear()
-        if not self.createAlpacaDevice():
-            self.msg.emit(
-                2, "ALPACA", "Device type error", self.deviceName
-            )
-            return
         self.stopEvent.clear()
         self.workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
+        if not self.createAlpacaDevice():
+            self.msg.emit(2, "ALPACA", "Device type error", self.deviceName)
+            return
         self.threadPool.start(self.workerCommunicationLoop)
 
     def stopCommunication(self) -> None:

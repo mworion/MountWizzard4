@@ -37,18 +37,14 @@ def function():
 
 def test_pollData_1(function):
     with mock.patch.object(function, "getDeviceProp", return_value=15):
-        with mock.patch.object(
-            function, "callDeviceMethodSync", return_value=True
-        ):
+        with mock.patch.object(function, "callDeviceMethod", return_value=True):
             with mock.patch.object(function, "storePropertyToData"):
                 function.pollData()
 
 
 def test_pollData_2(function):
     with mock.patch.object(function, "getDeviceProp", return_value=21):
-        with mock.patch.object(
-            function, "callDeviceMethodSync", return_value=1.0
-        ):
+        with mock.patch.object(function, "callDeviceMethod", return_value=1.0):
             with mock.patch.object(function, "storePropertyToData"):
                 function.pollData()
 

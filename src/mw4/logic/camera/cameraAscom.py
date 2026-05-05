@@ -17,6 +17,7 @@ from astropy.io import fits
 from mw4.base.ascomClass import AscomClass
 from mw4.base.tpool import Worker
 from typing import Any
+import numpy as np
 
 
 class CameraAscom(AscomClass):
@@ -81,7 +82,9 @@ class CameraAscom(AscomClass):
         self.client.StartExposure(self.parent.exposureTime, True)
         self.parent.waitExposed(self.parent.exposureTime, self.waitFunc)
         self.signals.exposed.emit(self.parent.imagePath)
-        data = self.parent.retrieveImage(self.getAscomProperty, "ImageArray")
+        self.signals.message.emit("download")
+        data = self.getAscomProperty("ImageArray")
+        data = np.array(data, dtype=np.uint16).transpose()
         self.signals.downloaded.emit(self.parent.imagePath)
         self.signals.message.emit("saving")
         hdu = fits.PrimaryHDU(data=data)

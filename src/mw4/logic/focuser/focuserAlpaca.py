@@ -27,7 +27,7 @@ class FocuserAlpaca(AlpacaClass):
         self.getAndStoreDeviceProp("Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION")
 
     def move(self, position: int) -> None:
-        self.callDeviceMethod("Move", Position=position)
+        self.callDeviceMethodQueued("Move", Position=position)
 
     def halt(self) -> None:
-        self.callDeviceMethod("Halt")
+        self.callDeviceMethodQueued("Halt")

@@ -35,10 +35,10 @@ class CoverAlpaca(AlpacaClass):
         self.storePropertyToData(self.COVER_STATES[int(state)], "Status.Cover")
 
     def closeCover(self) -> None:
-        self.callDeviceMethod("CloseCover")
+        self.callDeviceMethodQueued("CloseCover")
 
     def openCover(self) -> None:
-        self.callDeviceMethod("OpenCover")
+        self.callDeviceMethodQueued("OpenCover")
 
     def haltCover(self) -> None:
-        self.callDeviceMethod("HaltCover")
+        self.callDeviceMethodQueued("HaltCover")

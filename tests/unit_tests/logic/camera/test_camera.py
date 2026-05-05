@@ -261,31 +261,6 @@ def test_waitFinish(function, mocked_sleepAndEvents):
     function.waitFinish(test, {})
 
 
-def test_retrieveImage_1(function):
-    def test():
-        return
-
-    function.exposing = False
-    function.retrieveImage(test, {})
-
-
-def test_retrieveImage_2(function):
-    def test(param):
-        return
-
-    function.exposing = True
-    function.retrieveImage(test, {})
-    assert not function.exposing
-
-
-def test_retrieveImage_3(function):
-    def test(param):
-        return np.array([], dtype=np.uint16)
-
-    function.exposing = True
-    function.retrieveImage(test, {})
-
-
 def test_writeImageFitsHeader_1(function):
     with mock.patch.object(fits, "open"):
         with mock.patch.object(mw4.logic.camera.camera, "writeHeaderPointing"):

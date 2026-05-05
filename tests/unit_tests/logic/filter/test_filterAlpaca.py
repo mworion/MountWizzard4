@@ -42,18 +42,14 @@ def test_getInitialConfig_1(function):
 
 
 def test_getInitialConfig_2(function):
-    with mock.patch.object(
-        function, "getDeviceProp", return_value=["test", "test1"]
-    ):
+    with mock.patch.object(function, "getDeviceProp", return_value=["test", "test1"]):
         function.getInitialConfig()
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_0"] == "test"
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_1"] == "test1"
 
 
 def test_getInitialConfig_3(function):
-    with mock.patch.object(
-        function, "getDeviceProp", return_value=["test", None]
-    ):
+    with mock.patch.object(function, "getDeviceProp", return_value=["test", None]):
         function.getInitialConfig()
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_0"] == "test"
 
@@ -75,6 +71,10 @@ def test_pollData_3(function):
 
 
 def test_sendFilterNumber_1(function):
-    with mock.patch.object(function, "setDeviceProp") as m:
-        function.sendFilterNumber(filterNumber=2)
-        m.assert_called_once_with("Position", 2)
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.sendFilterNumber(filterNumber=2)
+    item = function.commandQueue.get_nowait()
+    assert item.cmdType == "set"
+    assert item.name == "Position"
+    assert item.value == 2

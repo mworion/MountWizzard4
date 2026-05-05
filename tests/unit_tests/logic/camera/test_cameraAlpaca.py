@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import pytest
 import unittest.mock as mock
 from astropy.io import fits
@@ -47,8 +46,20 @@ def test_pollData_1(function):
 
 def test_sendDownloadMode_1(function):
     function.data["CAN_FAST"] = True
-    with mock.patch.object(function, "setDeviceProp", return_value=True):
-        function.sendDownloadMode()
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.sendDownloadMode()
+    item = function.commandQueue.get_nowait()
+    assert item.cmdType == "set"
+    assert item.name == "FastReadout"
+
+
+def test_sendDownloadMode_2(function):
+    function.data["CAN_FAST"] = False
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.sendDownloadMode()
+    assert function.commandQueue.empty()
 
 
 def test_waitFunc(function):
@@ -57,22 +68,17 @@ def test_waitFunc(function):
         assert suc
 
 
-def test_getImageArray_1(function):
-    with mock.patch.object(function, "getDeviceProp", return_value="data"):
-        result = function.getImageArray("")
-        assert result == "data"
-
-
 def test_workerExpose_1(function):
-    with mock.patch.object(function, "setDeviceProp"):
-        with mock.patch.object(function, "callDeviceMethodSync"):
-            with mock.patch.object(function.parent, "waitExposed"):
-                with mock.patch.object(function.parent, "retrieveImage"):
-                    with mock.patch.object(
-                        function.parent, "writeImageFitsHeader"
-                    ):
-                        with mock.patch.object(fits.HDUList, "writeto"):
-                            function.workerExpose()
+    with mock.patch.object(function, "sendDownloadMode"):
+        with mock.patch.object(function, "setDeviceProp"):
+            with mock.patch.object(function, "callDeviceMethod"):
+                with mock.patch.object(
+                    function, "getDeviceProp", return_value=[[1, 2], [3, 4]]
+                ):
+                    with mock.patch.object(function.parent, "waitExposed"):
+                        with mock.patch.object(function.parent, "writeImageFitsHeader"):
+                            with mock.patch.object(fits.PrimaryHDU, "writeto"):
+                                function.workerExpose()
 
 
 def test_expose_1(function):
@@ -96,26 +102,59 @@ def test_abort_2(function):
 
 
 def test_sendCoolerSwitch_1(function):
-    with mock.patch.object(function, "setDeviceProp", return_value=True):
-        function.sendCoolerSwitch()
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.sendCoolerSwitch()
+    item = function.commandQueue.get_nowait()
+    assert item.cmdType == "set"
+    assert item.name == "CoolerOn"
+    assert item.value is False
 
 
 def test_sendCoolerSwitch_2(function):
-    with mock.patch.object(function, "setDeviceProp", return_value=True):
-        function.sendCoolerSwitch(coolerOn=True)
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.sendCoolerSwitch(coolerOn=True)
+    item = function.commandQueue.get_nowait()
+    assert item.cmdType == "set"
+    assert item.name == "CoolerOn"
+    assert item.value is True
 
 
 def test_sendCoolerTemp_1(function):
     function.data["CAN_SET_CCD_TEMPERATURE"] = True
-    with mock.patch.object(function, "setDeviceProp", return_value=True):
-        function.sendCoolerTemp()
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.sendCoolerTemp(temperature=-10.0)
+    item = function.commandQueue.get_nowait()
+    assert item.cmdType == "set"
+    assert item.name == "SetCCDTemperature"
+    assert item.value == -10.0
+
+
+def test_sendCoolerTemp_2(function):
+    function.data["CAN_SET_CCD_TEMPERATURE"] = False
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.sendCoolerTemp(temperature=-10.0)
+    assert function.commandQueue.empty()
 
 
 def test_sendOffset_1(function):
-    with mock.patch.object(function, "setDeviceProp", return_value=True):
-        function.sendOffset()
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.sendOffset(offset=50)
+    item = function.commandQueue.get_nowait()
+    assert item.cmdType == "set"
+    assert item.name == "Offset"
+    assert item.value == 50
 
 
 def test_sendGain_1(function):
-    with mock.patch.object(function, "setDeviceProp", return_value=True):
-        function.sendGain()
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.sendGain(gain=100)
+    item = function.commandQueue.get_nowait()
+    assert item.cmdType == "set"
+    assert item.name == "Gain"
+    assert item.value == 100

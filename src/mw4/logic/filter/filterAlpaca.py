@@ -41,4 +41,4 @@ class FilterAlpaca(AlpacaClass):
         self.storePropertyToData(position, "FILTER_SLOT.FILTER_SLOT_VALUE")
 
     def sendFilterNumber(self, filterNumber: int = 0) -> None:
-        self.setDeviceProp("Position", filterNumber)
+        self.setDevicePropQueued("Position", filterNumber)

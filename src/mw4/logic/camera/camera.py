@@ -202,19 +202,6 @@ class Camera:
         while self.exposing and not function(param):
             time.sleep(0.1)
 
-    def retrieveImage(self, function: Callable[..., Any], param: Any) -> np.ndarray:
-        if not self.exposing:
-            return np.array([], dtype=np.uint16)
-
-        self.signals.message.emit("download")
-        tmp = function(param)
-        if tmp is None:
-            self.exposing = False
-            data = np.array([], dtype=np.uint16)
-        else:
-            data = np.array(tmp, dtype=np.uint16).transpose()
-        return data
-
     def writeImageFitsHeader(self) -> None:
         with fits.open(self.imagePath, mode="update", output_verify="silentfix") as HDU:
             header = writeHeaderCamera(HDU[0].header, self)

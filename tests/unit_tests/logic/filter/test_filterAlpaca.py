@@ -32,58 +32,49 @@ class Parent:
 @pytest.fixture(autouse=True, scope="module")
 def function():
     func = FilterAlpaca(parent=Parent())
+    func.device = mock.MagicMock()
     yield func
 
 
-def test_workerGetInitialConfig_1(function):
+def test_getInitialConfig_1(function):
     with mock.patch.object(function, "getDeviceProp", return_value=None):
-        function.workerGetInitialConfig()
+        function.getInitialConfig()
 
 
-def test_workerGetInitialConfig_2(function):
-    with mock.patch.object(function, "getDeviceProp", return_value=["test", "test1"]):
-        function.workerGetInitialConfig()
+def test_getInitialConfig_2(function):
+    with mock.patch.object(
+        function, "getDeviceProp", return_value=["test", "test1"]
+    ):
+        function.getInitialConfig()
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_0"] == "test"
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_1"] == "test1"
 
 
-def test_workerGetInitialConfig_3(function):
-    with mock.patch.object(function, "getDeviceProp", return_value=["test", None]):
-        function.workerGetInitialConfig()
+def test_getInitialConfig_3(function):
+    with mock.patch.object(
+        function, "getDeviceProp", return_value=["test", None]
+    ):
+        function.getInitialConfig()
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_0"] == "test"
 
 
-def test_workerPollData_1(function):
-    function.deviceConnected = False
-    function.workerPollData()
-
-
-def test_workerPollData_2(function):
-    function.deviceConnected = True
+def test_pollData_1(function):
     with mock.patch.object(function, "getDeviceProp", return_value=-1):
-        function.workerPollData()
+        function.pollData()
 
 
-def test_workerPollData_3(function):
-    function.deviceConnected = True
+def test_pollData_2(function):
     with mock.patch.object(function, "getDeviceProp", return_value=None):
-        function.workerPollData()
+        function.pollData()
 
 
-def test_workerPollData_4(function):
-    function.deviceConnected = True
+def test_pollData_3(function):
     with mock.patch.object(function, "getDeviceProp", return_value=1):
-        function.workerPollData()
+        function.pollData()
         assert function.data["FILTER_SLOT.FILTER_SLOT_VALUE"] == 1
 
 
 def test_sendFilterNumber_1(function):
-    function.deviceConnected = False
-    function.sendFilterNumber()
-
-
-def test_sendFilterNumber_2(function):
-    function.deviceConnected = True
     with mock.patch.object(function, "setDeviceProp") as m:
         function.sendFilterNumber(filterNumber=2)
         m.assert_called_once_with("Position", 2)

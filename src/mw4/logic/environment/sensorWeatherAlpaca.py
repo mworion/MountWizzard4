@@ -23,7 +23,7 @@ class SensorWeatherAlpaca(AlpacaClass):
         self.signals = parent.signals
         self.data = parent.data
 
-    def workerPollData(self) -> None:
+    def pollData(self) -> None:
 
         self.getAndStoreDeviceProp("Temperature", "WEATHER_PARAMETERS.WEATHER_TEMPERATURE")
         self.getAndStoreDeviceProp("Pressure", "WEATHER_PARAMETERS.WEATHER_PRESSURE")

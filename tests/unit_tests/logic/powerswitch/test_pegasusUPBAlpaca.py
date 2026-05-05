@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import pytest
 import unittest.mock as mock
 from mw4.base.signalsDevices import Signals
@@ -32,45 +31,33 @@ class Parent:
 @pytest.fixture(autouse=True, scope="module")
 def function():
     func = PegasusUPBAlpaca(parent=Parent())
+    func.device = mock.MagicMock()
     yield func
 
 
-def test_workerPollData_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function, "callDeviceMethod"):
-        function.workerPollData()
-
-
-def test_workerPollData_2(function):
-    function.deviceConnected = True
+def test_pollData_1(function):
     with mock.patch.object(function, "getDeviceProp", return_value=15):
-        with mock.patch.object(function, "callDeviceMethod", return_value=True):
+        with mock.patch.object(
+            function, "callDeviceMethodSync", return_value=True
+        ):
             with mock.patch.object(function, "storePropertyToData"):
-                function.workerPollData()
+                function.pollData()
 
 
-def test_workerPollData_3(function):
-    function.deviceConnected = True
+def test_pollData_2(function):
     with mock.patch.object(function, "getDeviceProp", return_value=21):
-        with mock.patch.object(function, "callDeviceMethod", return_value=1.0):
+        with mock.patch.object(
+            function, "callDeviceMethodSync", return_value=1.0
+        ):
             with mock.patch.object(function, "storePropertyToData"):
-                function.workerPollData()
+                function.pollData()
 
 
 def test_togglePowerPort_1(function):
-    function.deviceConnected = False
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
     function.togglePowerPort("1")
-
-
-def test_togglePowerPort_2(function):
-    function.deviceConnected = True
-    function.togglePowerPort("1")
-
-
-def test_togglePowerPort_3(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "callDeviceMethod"):
-        function.togglePowerPort("1")
+    assert not function.commandQueue.empty()
 
 
 def test_togglePowerPortBoot_1(function):
@@ -82,58 +69,51 @@ def test_toggleHubUSB_1(function):
 
 
 def test_togglePortUSB_1(function):
-    function.deviceConnected = False
-    function.togglePortUSB("1")
+    with mock.patch.object(function, "getDeviceProp", return_value=15):
+        while not function.commandQueue.empty():
+            function.commandQueue.get_nowait()
+        function.togglePortUSB("1")
+        assert function.commandQueue.empty()
 
 
 def test_togglePortUSB_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getDeviceProp", return_value=15):
-        function.togglePortUSB("1")
-
-
-def test_togglePortUSB_3(function):
-    function.deviceConnected = True
     with mock.patch.object(function, "getDeviceProp", return_value=21):
-        with mock.patch.object(function, "callDeviceMethod"):
-            function.togglePortUSB("1")
+        while not function.commandQueue.empty():
+            function.commandQueue.get_nowait()
+        function.togglePortUSB("1")
+        assert not function.commandQueue.empty()
 
 
 def test_toggleAutoDew_1(function):
-    function.deviceConnected = False
-    function.toggleAutoDew()
+    with mock.patch.object(function, "getDeviceProp", return_value=21):
+        while not function.commandQueue.empty():
+            function.commandQueue.get_nowait()
+        function.toggleAutoDew()
+        assert not function.commandQueue.empty()
 
 
 def test_toggleAutoDew_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getDeviceProp", return_value=21):
-        with mock.patch.object(function, "callDeviceMethod"):
-            function.toggleAutoDew()
-
-
-def test_toggleAutoDew_3(function):
-    function.deviceConnected = True
     with mock.patch.object(function, "getDeviceProp", return_value=15):
-        with mock.patch.object(function, "callDeviceMethod"):
-            function.toggleAutoDew()
+        while not function.commandQueue.empty():
+            function.commandQueue.get_nowait()
+        function.toggleAutoDew()
+        assert not function.commandQueue.empty()
 
 
 def test_sendDew_1(function):
-    function.deviceConnected = False
-    function.sendDew("A", 10)
+    with mock.patch.object(function, "getDeviceProp", return_value=15):
+        while not function.commandQueue.empty():
+            function.commandQueue.get_nowait()
+        function.sendDew("A", 10)
+        assert function.commandQueue.empty()
 
 
 def test_sendDew_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getDeviceProp", return_value=15):
-        function.sendDew("A", 10)
-
-
-def test_sendDew_3(function):
-    function.deviceConnected = True
     with mock.patch.object(function, "getDeviceProp", return_value=21):
-        with mock.patch.object(function, "callDeviceMethod"):
-            function.sendDew("A", 10)
+        while not function.commandQueue.empty():
+            function.commandQueue.get_nowait()
+        function.sendDew("A", 10)
+        assert not function.commandQueue.empty()
 
 
 def test_sendAdjustableOutput_1(function):

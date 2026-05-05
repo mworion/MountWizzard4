@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-import PySide6
 import pytest
 import unittest.mock as mock
 from mw4.base.signalsDevices import Signals
@@ -31,54 +30,45 @@ class Parent:
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = LightPanelAlpaca(parent=Parent())
-        yield func
+    func = LightPanelAlpaca(parent=Parent())
+    func.device = mock.MagicMock()
+    yield func
 
 
-def test_workerPollData_1(function):
-    function.deviceConnected = False
-    function.workerPollData()
-
-
-def test_workerPollData_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getDeviceProp", return_value=128):
-        with mock.patch.object(function, "storePropertyToData"):
-            function.workerPollData()
+def test_pollData_1(function):
+    with mock.patch.object(function, "getAndStoreDeviceProp") as m:
+        function.pollData()
+        assert m.call_count == 2
+        attrs = [c.args[0] for c in m.call_args_list]
+        assert "Brightness" in attrs
+        assert "MaxBrightness" in attrs
 
 
 def test_lightOn_1(function):
-    function.deviceConnected = False
+    function.app.cover = mock.MagicMock()
+    function.app.cover.data = {
+        "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 254
+    }
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
     function.lightOn()
-
-
-def test_lightOn_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "callDeviceMethod") as m:
-        function.lightOn()
-        m.assert_called_once_with("CalibratorOn", Brightness=127)
+    item = function.commandQueue.get_nowait()
+    assert item.name == "CalibratorOn"
+    assert item.kwargs == {"Brightness": 127}
 
 
 def test_lightOff_1(function):
-    function.deviceConnected = False
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
     function.lightOff()
-
-
-def test_lightOff_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "callDeviceMethod") as m:
-        function.lightOff()
-        m.assert_called_once_with("CalibratorOff")
+    item = function.commandQueue.get_nowait()
+    assert item.name == "CalibratorOff"
 
 
 def test_lightIntensity_1(function):
-    function.deviceConnected = False
-    function.lightIntensity(0)
-
-
-def test_lightIntensity_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "callDeviceMethod") as m:
-        function.lightIntensity(100.5)
-        m.assert_called_once_with("CalibratorOn", Brightness=100)
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.lightIntensity(100.5)
+    item = function.commandQueue.get_nowait()
+    assert item.name == "CalibratorOn"
+    assert item.kwargs == {"Brightness": 100}

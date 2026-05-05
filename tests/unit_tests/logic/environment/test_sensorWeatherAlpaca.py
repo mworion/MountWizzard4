@@ -31,18 +31,13 @@ class Parent:
 @pytest.fixture(autouse=True, scope="module")
 def function():
     func = SensorWeatherAlpaca(parent=Parent())
+    func.device = mock.MagicMock()
     yield func
 
 
-def test_workerPollData_1(function):
-    function.deviceConnected = False
-    function.workerPollData()
-
-
-def test_workerPollData_2(function):
-    function.deviceConnected = True
+def test_pollData_1(function):
     with mock.patch.object(function, "getAndStoreDeviceProp") as m:
-        function.workerPollData()
+        function.pollData()
         attrs = [c.args[0] for c in m.call_args_list]
         assert "Temperature" in attrs
         assert "Pressure" in attrs

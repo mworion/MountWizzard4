@@ -18,19 +18,21 @@ from typing import Any
 
 
 class CoverAlpaca(AlpacaClass):
+    COVER_STATES: list[str] = [
+        "NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"
+    ]
+
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.parent = parent
         self.alpacaSignals = parent.signals
         self.data = parent.data
 
-    def workerPollData(self) -> None:
-        states = ["NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"]
-
+    def pollData(self) -> None:
         state = self.getDeviceProp("CoverState")
         if state is None:
             return
-        self.storePropertyToData(states[int(state)], "Status.Cover")
+        self.storePropertyToData(self.COVER_STATES[int(state)], "Status.Cover")
 
     def closeCover(self) -> None:
         self.callDeviceMethod("CloseCover")

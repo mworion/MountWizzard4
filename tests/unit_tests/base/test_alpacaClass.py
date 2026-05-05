@@ -14,14 +14,14 @@
 #
 ###########################################################
 import alpaca.management as alpacaMgmt
-import PySide6
 import pytest
+import queue
+import threading
 import time
 from alpaca.exceptions import NotImplementedException as AlpycaNotImplError
-from mw4.base.alpacaClass import AlpacaClass
+from mw4.base.alpacaClass import AlpacaClass, CommandItem
 from mw4.base.loggerMW import setupLogging
 from mw4.base.signalsDevices import Signals
-from PySide6.QtCore import QTimer
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
@@ -35,9 +35,20 @@ def function():
         data = {}
         signals = Signals()
 
-    with mock.patch.object(QTimer, "start"):
-        func = AlpacaClass(parent=Parent())
-        yield func
+    func = AlpacaClass(parent=Parent())
+    func.device = mock.MagicMock()
+    yield func
+
+
+def test_init(function):
+    assert hasattr(function, "commandQueue")
+    assert hasattr(function, "stopEvent")
+    assert hasattr(function, "workerCommunicationLoop")
+    assert isinstance(function.commandQueue, queue.Queue)
+    assert isinstance(function.stopEvent, threading.Event)
+    assert not hasattr(function, "propertyExceptions")
+    assert not hasattr(function, "cycleDevice")
+    assert not hasattr(function, "cycleData")
 
 
 def test_properties_1(function):
@@ -51,8 +62,7 @@ def test_properties_1(function):
 
 
 def test_properties_2(function):
-    host = function.host
-    assert host == ("localhost", 11111)
+    assert function.host == ("localhost", 11111)
     assert function.hostaddress == "localhost"
     assert function.port == 11111
     assert function.deviceName == ""
@@ -95,68 +105,33 @@ def test_createAlpacaDevice_3(function):
 
 
 def test_getDeviceProp_1(function):
-    function.device = None
-    result = function.getDeviceProp("Connected")
-    assert result is None
-
-
-def test_getDeviceProp_2(function):
-    function.propertyExceptions = ["Connected"]
-    function.device = mock.MagicMock()
-    result = function.getDeviceProp("Connected")
-    assert result is None
-
-
-def test_getDeviceProp_3(function):
-    function.propertyExceptions = []
-    function.device = mock.MagicMock()
     function.device.Connected = True
     result = function.getDeviceProp("Connected")
     assert result is True
 
 
-def test_getDeviceProp_4(function):
-    function.propertyExceptions = []
-    function.device = mock.MagicMock()
+def test_getDeviceProp_2(function):
     type(function.device).TestProp = mock.PropertyMock(
         side_effect=AlpycaNotImplError("not implemented")
     )
     result = function.getDeviceProp("TestProp")
     assert result is None
-    assert "TestProp" in function.propertyExceptions
 
 
-def test_getDeviceProp_5(function):
-    function.propertyExceptions = []
-    function.device = mock.MagicMock()
-    type(function.device).TestProp = mock.PropertyMock(side_effect=Exception("error"))
+def test_getDeviceProp_3(function):
+    type(function.device).TestProp = mock.PropertyMock(
+        side_effect=Exception("error")
+    )
     result = function.getDeviceProp("TestProp")
     assert result is None
 
 
 def test_setDeviceProp_1(function):
-    function.device = None
-    result = function.setDeviceProp("Connected", True)
-    assert not result
-
-
-def test_setDeviceProp_2(function):
-    function.propertyExceptions = ["Connected"]
-    function.device = mock.MagicMock()
-    result = function.setDeviceProp("Connected", True)
-    assert not result
-
-
-def test_setDeviceProp_3(function):
-    function.propertyExceptions = []
-    function.device = mock.MagicMock()
     result = function.setDeviceProp("Connected", True)
     assert result
 
 
-def test_setDeviceProp_4(function):
-    function.propertyExceptions = []
-
+def test_setDeviceProp_2(function):
     class DeviceWithBadProp:
         @property
         def TestProp(self):
@@ -169,12 +144,9 @@ def test_setDeviceProp_4(function):
     function.device = DeviceWithBadProp()
     result = function.setDeviceProp("TestProp", True)
     assert not result
-    assert "TestProp" in function.propertyExceptions
 
 
-def test_setDeviceProp_5(function):
-    function.propertyExceptions = []
-
+def test_setDeviceProp_3(function):
     class DeviceWithErrorProp:
         @property
         def TestProp(self):
@@ -190,52 +162,28 @@ def test_setDeviceProp_5(function):
 
 
 def test_callDeviceMethod_1(function):
-    function.deviceConnected = False
-    function.device = mock.MagicMock()
-    result = function.callDeviceMethod("Halt")
-    assert result is None
-
-
-def test_callDeviceMethod_2(function):
-    function.deviceConnected = True
-    function.device = None
-    result = function.callDeviceMethod("Halt")
-    assert result is None
-
-
-def test_callDeviceMethod_3(function):
-    function.deviceConnected = True
-    function.propertyExceptions = ["Halt"]
-    function.device = mock.MagicMock()
-    result = function.callDeviceMethod("Halt")
-    assert result is None
-
-
-def test_callDeviceMethod_4(function):
-    function.deviceConnected = True
-    function.propertyExceptions = []
-    function.device = mock.MagicMock()
-    function.device.Halt.return_value = None
     function.callDeviceMethod("Halt")
-    function.device.Halt.assert_called_once_with()
+    assert not function.commandQueue.empty()
+    item = function.commandQueue.get_nowait()
+    assert item.cmdType == "call"
+    assert item.name == "Halt"
 
 
-def test_callDeviceMethod_5(function):
-    function.deviceConnected = True
-    function.propertyExceptions = []
-    function.device = mock.MagicMock()
+def test_callDeviceMethodSync_1(function):
+    function.device.Halt.return_value = "ok"
+    result = function.callDeviceMethodSync("Halt")
+    assert result == "ok"
+
+
+def test_callDeviceMethodSync_2(function):
     function.device.Move.side_effect = AlpycaNotImplError("not implemented")
-    result = function.callDeviceMethod("Move", Position=100)
+    result = function.callDeviceMethodSync("Move", Position=100)
     assert result is None
-    assert "Move" in function.propertyExceptions
 
 
-def test_callDeviceMethod_6(function):
-    function.deviceConnected = True
-    function.propertyExceptions = []
-    function.device = mock.MagicMock()
+def test_callDeviceMethodSync_3(function):
     function.device.Move.side_effect = Exception("error")
-    result = function.callDeviceMethod("Move", Position=100)
+    result = function.callDeviceMethodSync("Move", Position=100)
     assert result is None
 
 
@@ -265,7 +213,9 @@ def test_discoverAPIVersion_3(function):
 
 
 def test_discoverAlpacaDevices_1(function):
-    with mock.patch.object(alpacaMgmt, "configureddevices", side_effect=Exception()):
+    with mock.patch.object(
+        alpacaMgmt, "configureddevices", side_effect=Exception()
+    ):
         val = function.discoverAlpacaDevices()
         assert val == []
 
@@ -278,137 +228,11 @@ def test_discoverAlpacaDevices_2(function):
 
 def test_discoverAlpacaDevices_3(function):
     devices = [{"DeviceName": "cam", "DeviceType": "Camera", "DeviceNumber": 0}]
-    with mock.patch.object(alpacaMgmt, "configureddevices", return_value=devices):
+    with mock.patch.object(
+        alpacaMgmt, "configureddevices", return_value=devices
+    ):
         val = function.discoverAlpacaDevices()
         assert val == devices
-
-
-def test_workerConnectDevice_1(function):
-    function.serverConnected = False
-    function.deviceConnected = False
-    with mock.patch.object(function, "createAlpacaDevice", return_value=False):
-        function.workerConnectDevice()
-        assert not function.serverConnected
-        assert not function.deviceConnected
-
-
-def test_workerConnectDevice_2(function):
-    function.serverConnected = False
-    function.deviceConnected = False
-    with mock.patch.object(time, "sleep"):
-        with mock.patch.object(function, "createAlpacaDevice", return_value=True):
-            with mock.patch.object(function, "setDeviceProp"):
-                with mock.patch.object(function, "getDeviceProp", return_value=False):
-                    function.workerConnectDevice()
-                    assert not function.serverConnected
-                    assert not function.deviceConnected
-
-
-def test_workerConnectDevice_3(function):
-    function.serverConnected = False
-    function.deviceConnected = False
-    with mock.patch.object(time, "sleep"):
-        with mock.patch.object(function, "createAlpacaDevice", return_value=True):
-            with mock.patch.object(function, "setDeviceProp"):
-                with mock.patch.object(function, "getDeviceProp", return_value=True):
-                    with mock.patch.object(
-                        PySide6.QtCore.QTimer, "singleShot"
-                    ):
-                        function.workerConnectDevice()
-                        assert function.serverConnected
-                        assert function.deviceConnected
-
-
-def test_startTimer(function):
-    function.startAlpacaTimer()
-
-
-def test_stopTimer(function):
-    with mock.patch.object(PySide6.QtCore.QTimer, "stop"):
-        function.stopAlpacaTimer()
-
-
-def test_workerGetInitialConfig_1(function):
-    with mock.patch.object(function, "getDeviceProp", return_value="test"):
-        function.workerGetInitialConfig()
-        assert function.data["DRIVER_INFO.DRIVER_NAME"] == "test"
-        assert function.data["DRIVER_INFO.DRIVER_VERSION"] == "test"
-        assert function.data["DRIVER_INFO.DRIVER_EXEC"] == "test"
-
-
-def test_workerPollStatus_1(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getDeviceProp", return_value=False):
-        function.workerPollStatus()
-        assert not function.deviceConnected
-
-
-def test_workerPollStatus_2(function):
-    function.deviceConnected = False
-    with mock.patch.object(function, "getDeviceProp", return_value=True):
-        function.workerPollStatus()
-        assert function.deviceConnected
-
-
-def test_processPolledData(function):
-    function.processPolledData()
-
-
-def test_workerPollData(function):
-    function.workerPollData()
-
-
-def test_pollData_1(function):
-    function.deviceConnected = True
-    with mock.patch.object(function.threadPool, "start"):
-        function.pollData()
-
-
-def test_pollData_2(function):
-    function.deviceConnected = False
-    with mock.patch.object(function.threadPool, "start"):
-        function.pollData()
-
-
-def test_pollStatus_1(function):
-    function.deviceConnected = True
-    with mock.patch.object(function.threadPool, "start"):
-        function.pollStatus()
-
-
-def test_pollStatus_2(function):
-    function.deviceConnected = False
-    with mock.patch.object(function.threadPool, "start"):
-        function.pollStatus()
-
-
-def test_getInitialConfig_1(function):
-    function.deviceConnected = True
-    with mock.patch.object(function.threadPool, "start"):
-        function.getInitialConfig()
-
-
-def test_getInitialConfig_2(function):
-    function.deviceConnected = False
-    with mock.patch.object(function.threadPool, "start"):
-        function.getInitialConfig()
-
-
-def test_startCommunication(function):
-    with mock.patch.object(function.threadPool, "start"):
-        function.startCommunication()
-
-
-def test_stopCommunication_1(function):
-    function.deviceConnected = True
-    function.serverConnected = True
-    function.deviceName = "test"
-    function.device = mock.MagicMock()
-    with mock.patch.object(function, "stopAlpacaTimer"):
-        with mock.patch.object(function, "setDeviceProp"):
-            function.stopCommunication()
-            assert not function.serverConnected
-            assert not function.deviceConnected
 
 
 def test_discoverDevices_1(function):
@@ -416,7 +240,9 @@ def test_discoverDevices_1(function):
         {"DeviceName": "test", "DeviceNumber": 1, "DeviceType": "Dome"},
         {"DeviceName": "test1", "DeviceNumber": 3, "DeviceType": "Dome"},
     ]
-    with mock.patch.object(function, "discoverAlpacaDevices", return_value=devices):
+    with mock.patch.object(
+        function, "discoverAlpacaDevices", return_value=devices
+    ):
         val = function.discoverDevices("dome")
         assert val == ["test:dome:1", "test1:dome:3"]
 
@@ -425,3 +251,237 @@ def test_discoverDevices_2(function):
     with mock.patch.object(function, "discoverAlpacaDevices", return_value=[]):
         val = function.discoverDevices("dome")
         assert val == []
+
+
+def test_connectDevice_1(function):
+    with mock.patch.object(time, "sleep"):
+        with mock.patch.object(function, "setDeviceProp"):
+            with mock.patch.object(
+                function, "getDeviceProp", return_value=False
+            ):
+                result = function.connectDevice()
+                assert not result
+
+
+def test_connectDevice_2(function):
+    with mock.patch.object(time, "sleep"):
+        with mock.patch.object(function, "setDeviceProp"):
+            with mock.patch.object(
+                function, "getDeviceProp", return_value=True
+            ):
+                result = function.connectDevice()
+                assert result
+
+
+def test_connectDevice_3(function):
+    responses = [False, False, True]
+    with mock.patch.object(time, "sleep"):
+        with mock.patch.object(function, "setDeviceProp"):
+            with mock.patch.object(
+                function, "getDeviceProp", side_effect=responses
+            ):
+                result = function.connectDevice()
+                assert result
+
+
+def test_getInitialConfig(function):
+    with mock.patch.object(function, "getDeviceProp", return_value="val"):
+        function.getInitialConfig()
+        assert function.data["DRIVER_INFO.DRIVER_NAME"] == "val"
+        assert function.data["DRIVER_INFO.DRIVER_VERSION"] == "val"
+        assert function.data["DRIVER_INFO.DRIVER_EXEC"] == "val"
+
+
+def test_pollData(function):
+    function.pollData()
+
+
+def test_processCommandQueue_1(function):
+    function.processCommandQueue()
+
+
+def test_processCommandQueue_2(function):
+    function.commandQueue.put(CommandItem(cmdType="call", name="Halt"))
+    function.processCommandQueue()
+    function.device.Halt.assert_called_once_with()
+
+
+def test_processCommandQueue_3(function):
+    function.commandQueue.put(
+        CommandItem(cmdType="set", name="Connected", value=True)
+    )
+    with mock.patch.object(function, "setDeviceProp") as m:
+        function.processCommandQueue()
+        m.assert_called_once_with("Connected", True)
+
+
+def test_processCommandQueue_4(function):
+    function.commandQueue.put(
+        CommandItem(cmdType="unknown", name="Halt")
+    )
+    function.processCommandQueue()
+
+
+def test_processCommandQueue_5(function):
+    function.device.Halt.side_effect = Exception("error")
+    function.commandQueue.put(CommandItem(cmdType="call", name="Halt"))
+    function.processCommandQueue()
+
+
+def test_processCommandQueue_6(function):
+    function.device.Halt.side_effect = AlpycaNotImplError("not implemented")
+    function.commandQueue.put(CommandItem(cmdType="call", name="Halt"))
+    function.processCommandQueue()
+
+
+def test_processCommandQueue_7(function):
+    with mock.patch.object(
+        function.commandQueue,
+        "empty",
+        return_value=False,
+    ):
+        with mock.patch.object(
+            function.commandQueue,
+            "get_nowait",
+            side_effect=queue.Empty,
+        ):
+            function.processCommandQueue()
+
+
+def test_runnerCommunicationLoop_stopImmediately(function):
+    function.stopEvent.set()
+    function.runnerCommunicationLoop()
+
+
+def test_runnerCommunicationLoop_connectFails(function):
+    call_count = 0
+
+    def stop_after_one(*args, **kwargs):
+        nonlocal call_count
+        call_count += 1
+        function.stopEvent.set()
+
+    with mock.patch.object(
+        function, "connectDevice", return_value=False
+    ):
+        with mock.patch.object(
+            function.stopEvent, "wait", side_effect=stop_after_one
+        ):
+            function.runnerCommunicationLoop()
+            assert call_count == 1
+
+
+def test_runnerCommunicationLoop_connectSucceeds(function):
+    call_count = 0
+
+    def stop_after_one(*args, **kwargs):
+        nonlocal call_count
+        call_count += 1
+        function.stopEvent.set()
+
+    with mock.patch.object(
+        function, "connectDevice", return_value=True
+    ):
+        with mock.patch.object(function, "getInitialConfig") as m_cfg:
+            with mock.patch.object(
+                function.stopEvent, "wait", side_effect=stop_after_one
+            ):
+                function.runnerCommunicationLoop()
+                assert function.deviceConnected
+                m_cfg.assert_called_once()
+
+
+def test_runnerCommunicationLoop_pollCycle(function):
+    function.deviceConnected = True
+
+    call_count = 0
+
+    def stop_after_one(*args, **kwargs):
+        nonlocal call_count
+        call_count += 1
+        function.stopEvent.set()
+
+    with mock.patch.object(function, "getDeviceProp", return_value=True):
+        with mock.patch.object(function, "pollData") as m_poll:
+            with mock.patch.object(
+                function, "processCommandQueue"
+            ) as m_queue:
+                with mock.patch.object(
+                    function.stopEvent, "wait", side_effect=stop_after_one
+                ):
+                    function.runnerCommunicationLoop()
+                    m_poll.assert_called_once()
+                    m_queue.assert_called_once()
+
+
+def test_runnerCommunicationLoop_deviceLost(function):
+    function.deviceConnected = True
+
+    def stop_after_one(*args, **kwargs):
+        function.stopEvent.set()
+
+    with mock.patch.object(function, "getDeviceProp", return_value=False):
+        with mock.patch.object(
+            function.stopEvent, "wait", side_effect=stop_after_one
+        ):
+            function.runnerCommunicationLoop()
+            assert not function.deviceConnected
+
+
+def test_runnerCommunicationLoop_devicePropNone(function):
+    function.deviceConnected = True
+
+    def stop_after_one(*args, **kwargs):
+        function.stopEvent.set()
+
+    with mock.patch.object(function, "getDeviceProp", return_value=None):
+        with mock.patch.object(
+            function.stopEvent, "wait", side_effect=stop_after_one
+        ):
+            function.runnerCommunicationLoop()
+            assert not function.deviceConnected
+
+
+def test_runnerCommunicationLoop_pollDataException(function):
+    function.deviceConnected = True
+
+    def stop_after_one(*args, **kwargs):
+        function.stopEvent.set()
+
+    with mock.patch.object(function, "getDeviceProp", return_value=True):
+        with mock.patch.object(
+            function, "pollData", side_effect=Exception("boom")
+        ):
+            with mock.patch.object(
+                function.stopEvent, "wait", side_effect=stop_after_one
+            ):
+                function.runnerCommunicationLoop()
+
+
+def test_startCommunication_1(function):
+    with mock.patch.object(
+        function, "createAlpacaDevice", return_value=False
+    ):
+        function.startCommunication()
+        assert function.workerCommunicationLoop is None
+
+
+def test_startCommunication_2(function):
+    with mock.patch.object(
+        function, "createAlpacaDevice", return_value=True
+    ):
+        with mock.patch.object(function.threadPool, "start"):
+            function.startCommunication()
+            assert function.workerCommunicationLoop is not None
+            assert not function.stopEvent.is_set()
+
+
+def test_stopCommunication(function):
+    function.deviceConnected = True
+    function.serverConnected = True
+    function.deviceName = "test"
+    with mock.patch.object(function, "setDeviceProp"):
+        function.stopCommunication()
+        assert function.stopEvent.is_set()
+        assert not function.deviceConnected
+        assert not function.serverConnected

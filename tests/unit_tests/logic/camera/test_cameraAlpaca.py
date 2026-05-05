@@ -29,18 +29,20 @@ def function():
     camera.binning = 1
     camera.focalLength = 1
     func = CameraAlpaca(camera)
+    func.device = mock.MagicMock()
     yield func
 
 
-def test_workerGetInitialConfig_1(function):
+def test_getInitialConfig_1(function):
     with mock.patch.object(function, "getAndStoreDeviceProp"):
-        function.workerGetInitialConfig()
+        with mock.patch.object(function, "getDeviceProp"):
+            function.getInitialConfig()
 
 
-def test_workerPollData_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function.threadPool, "start"):
-        function.workerPollData()
+def test_pollData_1(function):
+    with mock.patch.object(function, "getAndStoreDeviceProp") as m:
+        function.pollData()
+        assert m.call_count >= 1
 
 
 def test_sendDownloadMode_1(function):
@@ -62,14 +64,15 @@ def test_getImageArray_1(function):
 
 
 def test_workerExpose_1(function):
-    with mock.patch.object(function.parent, "sendDownloadMode"):
-        with mock.patch.object(function, "setDeviceProp"):
-            with mock.patch.object(function, "callDeviceMethod"):
-                with mock.patch.object(function.parent, "waitExposed"):
-                    with mock.patch.object(function.parent, "retrieveImage"):
-                        with mock.patch.object(function.parent, "writeImageFitsHeader"):
-                            with mock.patch.object(fits.HDUList, "writeto"):
-                                function.workerExpose()
+    with mock.patch.object(function, "setDeviceProp"):
+        with mock.patch.object(function, "callDeviceMethodSync"):
+            with mock.patch.object(function.parent, "waitExposed"):
+                with mock.patch.object(function.parent, "retrieveImage"):
+                    with mock.patch.object(
+                        function.parent, "writeImageFitsHeader"
+                    ):
+                        with mock.patch.object(fits.HDUList, "writeto"):
+                            function.workerExpose()
 
 
 def test_expose_1(function):
@@ -85,9 +88,11 @@ def test_abort_1(function):
 
 def test_abort_2(function):
     function.data["CAN_ABORT"] = True
-    with mock.patch.object(function, "callDeviceMethod"):
-        suc = function.abort()
-        assert suc
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    suc = function.abort()
+    assert suc
+    assert not function.commandQueue.empty()
 
 
 def test_sendCoolerSwitch_1(function):

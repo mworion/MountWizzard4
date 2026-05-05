@@ -13,7 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import pytest
 import unittest.mock as mock
 from mw4.base.signalsDevices import Signals
@@ -32,40 +31,31 @@ class Parent:
 @pytest.fixture(autouse=True, scope="module")
 def function():
     func = FocuserAlpaca(parent=Parent())
+    func.device = mock.MagicMock()
     yield func
 
 
-def test_workerPollData_1(function):
-    function.deviceConnected = False
-    function.workerPollData()
-
-
-def test_workerPollData_2(function):
-    function.deviceConnected = True
+def test_pollData_1(function):
     with mock.patch.object(function, "getAndStoreDeviceProp") as m:
-        function.workerPollData()
-        m.assert_called_once_with("Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION")
+        function.pollData()
+        m.assert_called_once_with(
+            "Position",
+            "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION",
+        )
 
 
 def test_move_1(function):
-    function.deviceConnected = False
-    function.move(position=0)
-
-
-def test_move_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "callDeviceMethod") as m:
-        function.move(position=100)
-        m.assert_called_once_with("Move", Position=100)
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.move(position=100)
+    item = function.commandQueue.get_nowait()
+    assert item.name == "Move"
+    assert item.kwargs == {"Position": 100}
 
 
 def test_halt_1(function):
-    function.deviceConnected = False
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
     function.halt()
-
-
-def test_halt_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "callDeviceMethod") as m:
-        function.halt()
-        m.assert_called_once_with("Halt")
+    item = function.commandQueue.get_nowait()
+    assert item.name == "Halt"

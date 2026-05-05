@@ -13,8 +13,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
-import PySide6
 import pytest
 import unittest.mock as mock
 from mw4.base.signalsDevices import Signals
@@ -32,20 +30,15 @@ class Parent:
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = TelescopeAlpaca(parent=Parent())
-        yield func
+    func = TelescopeAlpaca(parent=Parent())
+    func.device = mock.MagicMock()
+    yield func
 
 
-def test_workerGetInitialConfig_1(function):
-    with mock.patch.object(function, "getAndStoreDeviceProp"):
-        function.workerGetInitialConfig()
-
-
-def test_workerGetInitialConfig_2(function):
+def test_getInitialConfig_1(function):
     with mock.patch.object(function, "getAndStoreDeviceProp") as m:
-        function.workerGetInitialConfig()
-        calls = m.call_args_list
-        attrs = [c.args[0] for c in calls]
-        assert "ApertureDiameter" in attrs
-        assert "FocalLength" in attrs
+        with mock.patch.object(function, "getDeviceProp"):
+            function.getInitialConfig()
+            attrs = [c.args[0] for c in m.call_args_list]
+            assert "ApertureDiameter" in attrs
+            assert "FocalLength" in attrs

@@ -14,6 +14,8 @@
 #
 ###########################################################
 import alpaca.management as alpacaMgmt
+import queue
+import threading
 import time
 from alpaca.camera import Camera as AlpycaCamera
 from alpaca.covercalibrator import CoverCalibrator as AlpycaCoverCalibrator
@@ -24,10 +26,19 @@ from alpaca.focuser import Focuser as AlpycaFocuser
 from alpaca.observingconditions import ObservingConditions as AlpycaObsConditions
 from alpaca.switch import Switch as AlpycaSwitch
 from alpaca.telescope import Telescope as AlpycaTelescope
+from dataclasses import dataclass, field
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
-from PySide6.QtCore import QThreadPool, QTimer
+from PySide6.QtCore import QThreadPool
 from typing import Any
+
+
+@dataclass
+class CommandItem:
+    cmdType: str
+    name: str
+    kwargs: dict = field(default_factory=dict)
+    value: Any = None
 
 
 class AlpacaClass(DriverData):
@@ -51,7 +62,6 @@ class AlpacaClass(DriverData):
         self.threadPool: QThreadPool = parent.app.threadPool
         self.updateRate: int = 1000
         self.loadConfig: bool = False
-        self.propertyExceptions: list[str] = []
         self._host: tuple[str, int] = ("localhost", 11111)
         self._port: int = 11111
         self._hostaddress: str = "localhost"
@@ -75,18 +85,9 @@ class AlpacaClass(DriverData):
 
         self.deviceConnected: bool = False
         self.serverConnected: bool = False
-        self.worker: Worker | None = None
-        self.workerGetConfig: Worker | None = None
-        self.workerStatus: Worker | None = None
-        self.workerData: Worker | None = None
-        self.workerConnect: Worker | None = None
-
-        self.cycleDevice: QTimer = QTimer()
-        self.cycleDevice.setSingleShot(False)
-        self.cycleDevice.timeout.connect(self.pollStatus)
-        self.cycleData: QTimer = QTimer()
-        self.cycleData.setSingleShot(False)
-        self.cycleData.timeout.connect(self.pollData)
+        self.commandQueue: queue.Queue = queue.Queue()
+        self.stopEvent: threading.Event = threading.Event()
+        self.workerCommunicationLoop: Worker | None = None
 
     @property
     def host(self) -> tuple[str, int]:
@@ -144,48 +145,51 @@ class AlpacaClass(DriverData):
         return True
 
     def getDeviceProp(self, attr: str) -> Any:
-        if self.device is None or attr in self.propertyExceptions:
-            return None
-
         try:
             return getattr(self.device, attr)
         except AlpycaNotImplError:
-            self.log.warning(f"[{self.deviceName}] [{attr}] not implemented")
-            self.propertyExceptions.append(attr)
+            self.log.warning(
+                f"[{self.deviceName}] [{attr}] not implemented"
+            )
             return None
         except Exception as e:
-            self.log.error(f"[{self.deviceName}] get [{attr}] exception: [{e}]")
+            self.log.error(
+                f"[{self.deviceName}] get [{attr}] exception: [{e}]"
+            )
             return None
 
     def setDeviceProp(self, attr: str, value: Any) -> bool:
-        if self.device is None or attr in self.propertyExceptions:
-            return False
-
         try:
             setattr(self.device, attr, value)
             return True
         except AlpycaNotImplError:
-            self.log.warning(f"[{self.deviceName}] [{attr}] not implemented")
-            self.propertyExceptions.append(attr)
+            self.log.warning(
+                f"[{self.deviceName}] [{attr}] not implemented"
+            )
             return False
         except Exception as e:
-            self.log.error(f"[{self.deviceName}] set [{attr}] exception: [{e}]")
+            self.log.error(
+                f"[{self.deviceName}] set [{attr}] exception: [{e}]"
+            )
             return False
 
-    def callDeviceMethod(self, method: str, **kwargs: Any) -> Any:
-        if not self.deviceConnected:
-            return None
-        if self.device is None or method in self.propertyExceptions:
-            return None
+    def callDeviceMethod(self, method: str, **kwargs: Any) -> None:
+        self.commandQueue.put(
+            CommandItem(cmdType="call", name=method, kwargs=kwargs)
+        )
 
+    def callDeviceMethodSync(self, method: str, **kwargs: Any) -> Any:
         try:
             return getattr(self.device, method)(**kwargs)
         except AlpycaNotImplError:
-            self.log.warning(f"[{self.deviceName}] [{method}] not implemented")
-            self.propertyExceptions.append(method)
+            self.log.warning(
+                f"[{self.deviceName}] [{method}] not implemented"
+            )
             return None
         except Exception as e:
-            self.log.error(f"[{self.deviceName}] call [{method}] exception: [{e}]")
+            self.log.error(
+                f"[{self.deviceName}] call [{method}] exception: [{e}]"
+            )
             return None
 
     def getAndStoreDeviceProp(self, attr: str, element: str) -> None:
@@ -211,114 +215,126 @@ class AlpacaClass(DriverData):
             self.log.error(f"Search devices exception: [{e}]")
             return []
 
-    def workerConnectDevice(self) -> None:
-        self.propertyExceptions = []
-        self.deviceConnected = False
-        self.serverConnected = False
-
-        if not self.createAlpacaDevice():
-            self.msg.emit(2, "ALPACA", "Device type error", f"{self.deviceName}")
-            return
-
-        suc = False
-        for retry in range(0, 10):
-            self.setDeviceProp("Connected", True)
-            suc = self.getDeviceProp("Connected")
-
-            if suc:
-                t = f"[{self.deviceName}] connected, [{retry}] retries"
-                self.log.debug(t)
-                break
-            else:
-                t = f" [{self.deviceName}] Connection retry: [{retry}]"
-                self.log.info(t)
-                time.sleep(0.2)
-
-        if not suc:
-            self.msg.emit(2, "ALPACA", "Connect error", f"{self.deviceName}")
-            return
-
-        if not self.serverConnected:
-            self.serverConnected = True
-            self.signals.serverConnected.emit()
-
-        if not self.deviceConnected:
-            self.deviceConnected = True
-            self.signals.deviceConnected.emit(f"{self.deviceName}")
-            self.msg.emit(0, "ALPACA", "Device found", f"{self.deviceName}")
-            QTimer.singleShot(0, self.startAlpacaTimer)
-            self.getInitialConfig()
-
-    def startAlpacaTimer(self) -> None:
-        self.cycleData.start(self.updateRate)
-        self.cycleDevice.start(self.updateRate)
-
-    def stopAlpacaTimer(self) -> None:
-        self.cycleData.stop()
-        self.cycleDevice.stop()
-
-    def workerGetInitialConfig(self) -> None:
-        self.data["DRIVER_INFO.DRIVER_NAME"] = self.getDeviceProp("Name")
-        self.data["DRIVER_INFO.DRIVER_VERSION"] = self.getDeviceProp("DriverVersion")
-        self.data["DRIVER_INFO.DRIVER_EXEC"] = self.getDeviceProp("DriverInfo")
-
-    def workerPollStatus(self) -> None:
-        suc = self.getDeviceProp("Connected")
-        if self.deviceConnected and not suc:
-            self.deviceConnected = False
-            self.signals.deviceDisconnected.emit(f"{self.deviceName}")
-            self.msg.emit(0, "ALPACA", "Device remove", f"{self.deviceName}")
-
-        elif not self.deviceConnected and suc:
-            self.deviceConnected = True
-            self.signals.deviceConnected.emit(f"{self.deviceName}")
-            self.msg.emit(0, "ALPACA", "Device found", f"{self.deviceName}")
-
-    def processPolledData(self) -> None:
-        pass
-
-    def workerPollData(self) -> None:
-        pass
-
-    def pollData(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.workerData = Worker(self.workerPollData)
-        self.workerData.signals.result.connect(self.processPolledData)
-        self.threadPool.start(self.workerData)
-
-    def pollStatus(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.workerStatus = Worker(self.workerPollStatus)
-        self.threadPool.start(self.workerStatus)
-
-    def getInitialConfig(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.workerGetConfig = Worker(self.workerGetInitialConfig)
-        self.threadPool.start(self.workerGetConfig)
-
-    def startCommunication(self) -> None:
-        self.data.clear()
-        self.workerConnect = Worker(self.workerConnectDevice)
-        self.threadPool.start(self.workerConnect)
-
-    def stopCommunication(self) -> None:
-        self.stopAlpacaTimer()
-        self.setDeviceProp("Connected", False)
-        self.deviceConnected = False
-        self.serverConnected = False
-        self.propertyExceptions = []
-        self.signals.deviceDisconnected.emit(f"{self.deviceName}")
-        self.signals.serverDisconnected.emit({f"{self.deviceName}": 0})
-        self.msg.emit(0, "ALPACA", "Device  remove", f"{self.deviceName}")
-
     def discoverDevices(self, deviceType: str) -> list:
         devices = self.discoverAlpacaDevices()
         if not devices:
             return []
 
         temp = [x for x in devices if x["DeviceType"].lower() == deviceType]
-        discoverList = [f"{x['DeviceName']}:{deviceType}:{x['DeviceNumber']}" for x in temp]
+        discoverList = [
+            f"{x['DeviceName']}:{deviceType}:{x['DeviceNumber']}"
+            for x in temp
+        ]
         return discoverList
+
+    def connectDevice(self) -> bool:
+        suc = False
+        for retry in range(0, 10):
+            self.setDeviceProp("Connected", True)
+            suc = self.getDeviceProp("Connected")
+            if suc:
+                self.log.debug(
+                    f"[{self.deviceName}] connected, [{retry}] retries"
+                )
+                break
+            self.log.info(
+                f"[{self.deviceName}] Connection retry: [{retry}]"
+            )
+            time.sleep(0.2)
+
+        if not suc:
+            self.msg.emit(2, "ALPACA", "Connect error", self.deviceName)
+        return bool(suc)
+
+    def getInitialConfig(self) -> None:
+        self.data["DRIVER_INFO.DRIVER_NAME"] = self.getDeviceProp("Name")
+        self.data["DRIVER_INFO.DRIVER_VERSION"] = (
+            self.getDeviceProp("DriverVersion")
+        )
+        self.data["DRIVER_INFO.DRIVER_EXEC"] = self.getDeviceProp(
+            "DriverInfo"
+        )
+
+    def pollData(self) -> None:
+        pass
+
+    def processCommandQueue(self) -> None:
+        while not self.commandQueue.empty():
+            try:
+                cmd = self.commandQueue.get_nowait()
+            except queue.Empty:
+                break
+
+            if cmd.cmdType == "call":
+                try:
+                    getattr(self.device, cmd.name)(**cmd.kwargs)
+                except AlpycaNotImplError:
+                    self.log.warning(
+                        f"[{self.deviceName}] [{cmd.name}] not implemented"
+                    )
+                except Exception as e:
+                    self.log.error(
+                        f"[{self.deviceName}] call [{cmd.name}]"
+                        f" exception: [{e}]"
+                    )
+            elif cmd.cmdType == "set":
+                self.setDeviceProp(cmd.name, cmd.value)
+            else:
+                self.log.warning(
+                    f"[{self.deviceName}] unknown cmdType: [{cmd.cmdType}]"
+                )
+
+    def runnerCommunicationLoop(self) -> None:
+        while not self.stopEvent.is_set():
+            if not self.deviceConnected:
+                suc = self.connectDevice()
+                if suc:
+                    self.serverConnected = True
+                    self.deviceConnected = True
+                    self.signals.serverConnected.emit()
+                    self.signals.deviceConnected.emit(self.deviceName)
+                    self.msg.emit(
+                        0, "ALPACA", "Device found", self.deviceName
+                    )
+                    self.getInitialConfig()
+                self.stopEvent.wait(timeout=self.updateRate / 1000)
+                continue
+
+            suc = self.getDeviceProp("Connected")
+            if not suc:
+                self.deviceConnected = False
+                self.signals.deviceDisconnected.emit(self.deviceName)
+                self.msg.emit(
+                    0, "ALPACA", "Device remove", self.deviceName
+                )
+                self.stopEvent.wait(timeout=self.updateRate / 1000)
+                continue
+
+            try:
+                self.pollData()
+            except Exception as e:
+                self.log.error(
+                    f"[{self.deviceName}] pollData exception: [{e}]"
+                )
+            self.processCommandQueue()
+            self.stopEvent.wait(timeout=self.updateRate / 1000)
+
+    def startCommunication(self) -> None:
+        self.data.clear()
+        if not self.createAlpacaDevice():
+            self.msg.emit(
+                2, "ALPACA", "Device type error", self.deviceName
+            )
+            return
+        self.stopEvent.clear()
+        self.workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
+        self.threadPool.start(self.workerCommunicationLoop)
+
+    def stopCommunication(self) -> None:
+        self.stopEvent.set()
+        self.setDeviceProp("Connected", False)
+        self.deviceConnected = False
+        self.serverConnected = False
+        self.signals.deviceDisconnected.emit(self.deviceName)
+        self.signals.serverDisconnected.emit({self.deviceName: 0})
+        self.msg.emit(0, "ALPACA", "Device  remove", self.deviceName)

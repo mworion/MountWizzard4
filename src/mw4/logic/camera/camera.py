@@ -14,7 +14,6 @@
 #
 ###########################################################
 import logging
-import numpy as np
 import platform
 import time
 from astropy.io import fits

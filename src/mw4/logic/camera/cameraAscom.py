@@ -13,11 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
+import numpy as np
 from astropy.io import fits
 from mw4.base.ascomClass import AscomClass
 from mw4.base.tpool import Worker
 from typing import Any
-import numpy as np
 
 
 class CameraAscom(AscomClass):

@@ -424,14 +424,10 @@ def test_runnerCommunicationLoop_notConnected(function):
     def stop_after_one(*args, **kwargs) -> None:
         function.stopEvent.set()
 
-    with mock.patch.object(
-        function, "handleDeviceConnect", side_effect=make_connected
-    ) as m:
+    with mock.patch.object(function, "handleDeviceConnect", side_effect=make_connected) as m:
         with mock.patch.object(function, "getDeviceProp", return_value=True):
             with mock.patch.object(function, "pollData"):
-                with mock.patch.object(
-                    function.stopEvent, "wait", side_effect=stop_after_one
-                ):
+                with mock.patch.object(function.stopEvent, "wait", side_effect=stop_after_one):
                     function.runnerCommunicationLoop()
                     m.assert_called_once()
 

@@ -18,9 +18,7 @@ from typing import Any
 
 
 class CoverAlpaca(AlpacaClass):
-    COVER_STATES: list[str] = [
-        "NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"
-    ]
+    COVER_STATES: list[str] = ["NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"]
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)

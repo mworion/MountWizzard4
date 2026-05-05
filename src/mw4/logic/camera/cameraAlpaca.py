@@ -13,11 +13,11 @@
 # Licence APL2.0
 #
 ###########################################################
+import numpy as np
 from astropy.io import fits
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.tpool import Worker
 from typing import Any
-import numpy as np
 
 
 class CameraAlpaca(AlpacaClass):
@@ -77,9 +77,7 @@ class CameraAlpaca(AlpacaClass):
         self.setDeviceProp("StartY", self.parent.posYASCOM)
         self.setDeviceProp("NumX", self.parent.widthASCOM)
         self.setDeviceProp("NumY", self.parent.heightASCOM)
-        self.callDeviceMethod(
-            "StartExposure", Duration=self.parent.exposureTime, Light=True
-        )
+        self.callDeviceMethod("StartExposure", Duration=self.parent.exposureTime, Light=True)
         self.parent.waitExposed(self.parent.exposureTime, self.waitFunc)
         self.signals.exposed.emit(self.parent.imagePath)
         self.signals.message.emit("download")

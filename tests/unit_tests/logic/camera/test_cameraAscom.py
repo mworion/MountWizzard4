@@ -13,10 +13,10 @@
 # Licence APL2.0
 #
 ###########################################################
-
 import platform
 import pytest
 import unittest.mock as mock
+import numpy as np
 
 if platform.system() != "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
@@ -108,7 +108,7 @@ def test_workerExpose_1(function):
     with mock.patch.object(function.parent, "sendDownloadMode"):
         with mock.patch.object(function, "setAscomProperty"):
             with mock.patch.object(function.parent, "waitExposed"):
-                with mock.patch.object(function.parent, "retrieveImage"):
+                with mock.patch.object(function, "getAscomProperty", return_values=np.ones(10, 10)):
                     with mock.patch.object(function.parent, "writeImageFitsHeader"):
                         with mock.patch.object(fits.HDUList, "writeto"):
                             function.workerExpose()

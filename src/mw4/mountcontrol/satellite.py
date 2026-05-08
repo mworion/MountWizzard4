@@ -205,7 +205,7 @@ class Satellite:
         return all(response[i] != "E" for i in range(0, len(az)))
 
     def preCalcTrajectory(self, replay: bool = False) -> bool:
-        self.trajectoryParams.flip = 0
+        self.trajectoryParams.flip = False
         self.trajectoryParams.jdStart = 0
         self.trajectoryParams.jdEnd = 0
 

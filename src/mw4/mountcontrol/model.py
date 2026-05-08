@@ -173,7 +173,7 @@ class Model:
             self.addStar(modelStar)
         return True
 
-    def parseNumberStars(self, response: list, numberOfChunks: int) -> bool:
+    def parseNumberStars(self, response: list[str], numberOfChunks: int) -> bool:
         if len(response) != numberOfChunks or len(response) == 0:
             self.log.warning("Wrong number of chunks")
             return False
@@ -198,7 +198,7 @@ class Model:
         self.orthoError = valueToAngle(responseSplit[4], preference="degrees")
         self.azimuthTurns = valueToFloat(responseSplit[5])
         self.altitudeTurns = valueToFloat(responseSplit[6])
-        self.terms = valueToFloat(responseSplit[7])
+        self.terms = valueToInt(responseSplit[7])
         self.errorRMS = valueToFloat(responseSplit[8])
         return True
 

@@ -242,7 +242,6 @@ class AlpacaClass(DriverData):
                 cmd = self.commandQueue.get_nowait()
             except queue.Empty:
                 break
-
             if cmd.cmdType == "call":
                 try:
                     getattr(self.device, cmd.name)(**cmd.kwargs)

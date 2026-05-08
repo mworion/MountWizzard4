@@ -169,7 +169,7 @@ class Model:
             errorRMS = valueToFloat(err)
             errorAngle = valueToAngle(angle)
             alt, az = topoToAltAz(ra, dec, self.parent.obsSite.location.latitude)
-            modelStar = ModelStar(coord, errorRMS, errorAngle, number + 1, alt, az)
+            modelStar = ModelStar(coord, errorRMS, errorAngle, number, alt, az)
             self.addStar(modelStar)
         return True
 
@@ -240,11 +240,11 @@ class Model:
         return suc
 
     def deletePoint(self, number: int) -> bool:
-        if number < 1 or number > self._numberStars:
+        if number < 0 or number > self._numberStars - 1:
             return False
 
         conn = Connection(self.parent.host)
-        commandString = f":delalst{number:d}#"
+        commandString = f":delalst{number + 1:d}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 

@@ -388,7 +388,7 @@ class Connection:
                 responseStr += chunk
                 if (
                     numberOfChunks == 0
-                    and len(response) == minBytes
+                    and len(responseStr) == minBytes
                     or numberOfChunks != 0
                     and numberOfChunks == responseStr.count("#")
                 ):

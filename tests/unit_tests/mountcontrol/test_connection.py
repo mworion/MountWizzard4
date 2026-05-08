@@ -249,7 +249,7 @@ def test_no_host_defined():
         conn = Connection()
         suc, response, chunks = conn.communicate(":GVN#")
     assert not suc
-    assert response == ""
+    assert response == []
 
 
 def test_no_port_defined():
@@ -258,7 +258,7 @@ def test_no_port_defined():
         conn = Connection(host="localhost")
         suc, response, chunks = conn.communicate(":GVN#")
     assert not suc
-    assert response == ""
+    assert response == []
 
 
 def test_no_response():
@@ -267,7 +267,7 @@ def test_no_response():
         conn = Connection(host=("localhost", 3492))
         suc, response, chunks = conn.communicate("")
     assert suc
-    assert response == ""
+    assert response == []
 
 
 def test_no_chunk():
@@ -276,7 +276,7 @@ def test_no_chunk():
         conn = Connection(host=("localhost", 3492))
         suc, response, chunks = conn.communicate("")
     assert suc
-    assert response == ""
+    assert response == []
 
 
 def test_connect_timeout():
@@ -437,7 +437,7 @@ def test_receiveData_1():
     with mock.patch.object(socket.socket, "recv", return_value=Test()):
         with mock.patch.object(Test, "decode", side_effect=Exception):
             val = conn.receiveData(client=client, numberOfChunks=0, minBytes=0)
-            assert val == (False, "")
+            assert val == (False, [])
 
 
 def test_receiveData_2():

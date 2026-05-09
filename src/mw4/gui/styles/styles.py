@@ -21,6 +21,7 @@ from mw4.gui.styles.gradients import gradients
 from mw4.gui.styles.images import images
 from mw4.gui.styles.styleSheets import BASIC_STYLE, MAC_STYLE, NON_MAC_STYLE
 from PySide6.QtGui import QIcon
+from pathlib import Path, PureWindowsPath
 
 
 class Styles:
@@ -191,7 +192,8 @@ class Styles:
                 continue
             keyExt = images[key][self.colorSet]
             with as_file(files("mw4").joinpath(f"assets/icon/{keyExt}.svg")) as imageFile:
-                line = line.replace(f"${key}$", str(imageFile))
+                temp = str(imageFile).replace("\\", "/") if platform.system() == "Windows" else str(imageFile)
+                line = line.replace(f"${key}$", temp)
         return line
 
     def replaceColor(self, line: str) -> str:

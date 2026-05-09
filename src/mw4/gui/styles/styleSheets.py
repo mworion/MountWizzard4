@@ -732,7 +732,6 @@ BASIC_STYLE = """
     QFileDialog QListView:disabled {
         color: $M_PRIM2$;
     }
-
     QFileDialog QPushButton {
         min-width: 50px;
         min-height: 20px;

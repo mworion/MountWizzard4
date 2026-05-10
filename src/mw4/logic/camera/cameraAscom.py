@@ -16,7 +16,6 @@
 import numpy as np
 from astropy.io import fits
 from mw4.base.ascomClass import AscomClass
-from mw4.base.tpool import Worker
 from typing import Any
 
 
@@ -26,11 +25,10 @@ class CameraAscom(AscomClass):
         self.app = parent.app
         self.data = parent.data
         self.signals = parent.signals
-        self.worker: Worker | None = None
         super().__init__(parent=parent)
 
-    def workerGetInitialConfig(self) -> None:
-        super().workerGetInitialConfig()
+    def getInitialConfig(self) -> None:
+        super().getInitialConfig()
         self.getAndStoreAscomProperty("CameraXSize", "CCD_INFO.CCD_MAX_X")
         self.getAndStoreAscomProperty("CameraYSize", "CCD_INFO.CCD_MAX_Y")
         self.getAndStoreAscomProperty("CanFastReadout", "CAN_FAST")
@@ -51,7 +49,7 @@ class CameraAscom(AscomClass):
         self.getAndStoreAscomProperty("StartY", "CCD_FRAME.Y")
         self.log.debug(f"Initial data: {self.data}")
 
-    def workerPollData(self) -> None:
+    def pollData(self) -> None:
         self.getAndStoreAscomProperty("BinX", "CCD_BINNING.HOR_BIN")
         self.getAndStoreAscomProperty("BinY", "CCD_BINNING.VERT_BIN")
         self.getAndStoreAscomProperty("CameraState", "CAMERA.STATE")
@@ -64,22 +62,19 @@ class CameraAscom(AscomClass):
         self.getAndStoreAscomProperty("CoolerOn", "CCD_COOLER.COOLER_ON")
         self.getAndStoreAscomProperty("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
 
-    def sendDownloadMode(self) -> None:
-        if self.data.get("CAN_FAST", False):
-            self.setAscomProperty("FastReadout", self.parent.fastReadout)
-
     def waitFunc(self) -> bool:
         return not self.getAscomProperty("ImageReady")
 
-    def workerExpose(self) -> None:
-        self.sendDownloadMode()
+    def expose(self) -> None:
         self.setAscomProperty("BinX", self.parent.binning)
         self.setAscomProperty("BinY", self.parent.binning)
         self.setAscomProperty("StartX", self.parent.posXASCOM)
         self.setAscomProperty("StartY", self.parent.posYASCOM)
         self.setAscomProperty("NumX", self.parent.widthASCOM)
         self.setAscomProperty("NumY", self.parent.heightASCOM)
-        self.client.StartExposure(self.parent.exposureTime, True)
+        if self.data.get("CAN_FAST", False):
+            self.setAscomProperty("FastReadout", self.parent.fastReadout)
+        self.callAscomMethod("StartExposure", (self.parent.exposureTime, True))
         self.parent.waitExposed(self.parent.exposureTime, self.waitFunc)
         self.signals.exposed.emit(self.parent.imagePath)
         self.signals.message.emit("download")
@@ -90,26 +85,22 @@ class CameraAscom(AscomClass):
         hdu = fits.PrimaryHDU(data=data)
         hdu.writeto(self.parent.imagePath, overwrite=True)
         self.parent.writeImageFitsHeader()
-
-    def expose(self) -> None:
-        self.worker = Worker(self.callerInitUnInit, self.workerExpose)
-        self.worker.signals.finished.connect(self.parent.exposeFinished)
-        self.threadPool.start(self.worker)
+        self.parent.exposeFinished()
 
     def abort(self) -> bool:
         if self.data.get("CAN_ABORT", False):
-            self.callMethodThreaded(self.client.StopExposure)
+            self.callAscomMethodQueued("StopExposure", ())
         return True
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
-        self.setAscomProperty("CoolerOn", coolerOn)
+        self.setAscomPropertyQueued("CoolerOn", coolerOn)
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
         if self.data.get("CAN_SET_CCD_TEMPERATURE", False):
-            self.setAscomProperty("SetCCDTemperature", temperature)
+            self.setAscomPropertyQueued("SetCCDTemperature", temperature)
 
     def sendOffset(self, offset: int = 0) -> None:
-        self.setAscomProperty("Offset", offset)
+        self.setAscomPropertyQueued("Offset", offset)
 
     def sendGain(self, gain: int = 0) -> None:
-        self.setAscomProperty("Gain", gain)
+        self.setAscomPropertyQueued("Gain", gain)

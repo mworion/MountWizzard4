@@ -22,15 +22,11 @@ class FocuserAscom(AscomClass):
         super().__init__(parent=parent)
         self.signals = parent.signals
 
-    def workerPollData(self) -> None:
+    def pollData(self) -> None:
         self.getAndStoreAscomProperty("Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION")
 
     def move(self, position: int) -> None:
-        if not self.deviceConnected:
-            return
-        self.client.move(position)
+        self.callAscomMethodQueued("move", position)
 
     def halt(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.getAscomProperty("Halt")
+        self.callAscomMethodQueued("Halt", ())

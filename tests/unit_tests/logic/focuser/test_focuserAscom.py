@@ -36,46 +36,24 @@ class Parent:
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    class Test1:
-        @staticmethod
-        def move(a):
-            return True
-
-        @staticmethod
-        def halt():
-            return True
-
-        Position = 1
-        Name = "test"
-        DriverVersion = "1"
-        DriverInfo = "test1"
-
     func = FocuserAscom(parent=Parent())
-    func.clientProps = []
-    func.client = Test1()
+    func.client = mock.MagicMock()
+    func.client.Position = 1
     yield func
 
 
-def test_workerPollData_1(function):
+def test_pollData_1(function):
     with mock.patch.object(function, "getAndStoreAscomProperty"):
-        function.workerPollData()
+        function.pollData()
 
 
-def test_move_1(function):
-    function.deviceConnected = True
-    function.move(3)
+def test_move(function):
+    with mock.patch.object(function, "callAscomMethodQueued") as m:
+        function.move(3)
+    m.assert_called_once_with("move", 3)
 
 
-def test_move_2(function):
-    function.deviceConnected = False
-    function.move(3)
-
-
-def test_halt_1(function):
-    function.deviceConnected = True
-    function.halt()
-
-
-def test_halt_2(function):
-    function.deviceConnected = False
-    function.halt()
+def test_halt(function):
+    with mock.patch.object(function, "callAscomMethodQueued") as m:
+        function.halt()
+    m.assert_called_once_with("Halt", ())

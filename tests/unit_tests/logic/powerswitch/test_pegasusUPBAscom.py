@@ -13,7 +13,6 @@
 # License APL2.0
 #
 ###########################################################
-
 import platform
 import pytest
 import unittest.mock as mock
@@ -39,144 +38,89 @@ class Parent:
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    class Test1:
-        Name = "test"
-        DriverVersion = "1"
-        DriverInfo = "test1"
-
-        @staticmethod
-        def getswitch(a):
-            return False
-
-        @staticmethod
-        def getswitchvalue(a):
-            return 0
-
     func = PegasusUPBAscom(parent=Parent())
-    func.clientProps = []
-    func.client = Test1()
+    func.client = mock.MagicMock()
     yield func
 
 
-def test_workerPollData_1(function):
-    with mock.patch.object(function, "getAscomProperty", return_value=15):
-        function.workerPollData()
+def test_pollData_UPB(function):
+    function.data["MaxSwitch"] = 15
+    with mock.patch.object(function, "getAndStoreAscomProperty"):
+        function.pollData()
+    assert function.data["FIRMWARE_INFO.VERSION"] == "1.4"
 
 
-def test_workerPollData_2(function):
-    with mock.patch.object(function, "getAscomProperty", return_value=21):
-        function.workerPollData()
+def test_pollData_UPBv2(function):
+    function.data["MaxSwitch"] = 21
+    with mock.patch.object(function, "getAndStoreAscomProperty"):
+        function.pollData()
+    assert function.data["FIRMWARE_INFO.VERSION"] == "2.1"
 
 
-def test_togglePowerPort_1(function):
-    function.deviceConnected = False
-    function.togglePowerPort("1")
-
-
-def test_togglePowerPort_2(function):
-    function.deviceConnected = True
-    function.togglePowerPort("1")
-
-
-def test_togglePowerPort_3(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "callAscomMethod"):
+def test_togglePowerPort(function):
+    function.data["MaxSwitch"] = 15
+    function.data["POWER_CONTROL.POWER_CONTROL_1"] = True
+    with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.togglePowerPort("1")
+    m.assert_called_once_with("setswitch", (0, False))
 
 
-def test_togglePowerPortBoot_1(function):
-    function.deviceConnected = False
+def test_togglePowerPortBoot(function):
     function.togglePowerPortBoot("1")
 
 
-def test_togglePowerPortBoot_2(function):
-    function.deviceConnected = True
-    function.togglePowerPortBoot("1")
-
-
-def test_toggleHubUSB_1(function):
-    function.deviceConnected = False
+def test_toggleHubUSB(function):
     function.toggleHubUSB()
 
 
-def test_toggleHubUSB_2(function):
-    function.deviceConnected = True
-    function.toggleHubUSB()
+def test_togglePortUSB_UPB(function):
+    function.data["MaxSwitch"] = 15
+    with mock.patch.object(function, "callAscomMethodQueued") as m:
+        function.togglePortUSB("1")
+    m.assert_not_called()
 
 
-def test_togglePortUSB_1(function):
-    function.deviceConnected = False
-    function.togglePortUSB("1")
+def test_togglePortUSB_UPBv2(function):
+    function.data["MaxSwitch"] = 21
+    function.data["USB_PORT_CONTROL.PORT_1"] = True
+    with mock.patch.object(function, "callAscomMethodQueued") as m:
+        function.togglePortUSB("1")
+    m.assert_called_once_with("setswitch", (7, False))
 
 
-def test_togglePortUSB_2(function):
-    function.deviceConnected = True
-    function.togglePortUSB("1")
+def test_toggleAutoDew_UPB(function):
+    function.data["MaxSwitch"] = 15
+    function.data["AUTO_DEW.INDI_ENABLED"] = False
+    with mock.patch.object(function, "callAscomMethodQueued") as m:
+        function.toggleAutoDew()
+    m.assert_called_once_with("setswitch", (7, True))
 
 
-def test_togglePortUSB_3(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getAscomProperty", return_value=21):
-        with mock.patch.object(function, "callAscomMethod"):
-            function.togglePortUSB("1")
+def test_toggleAutoDew_UPBv2(function):
+    function.data["MaxSwitch"] = 21
+    function.data["AUTO_DEW.DEW_A"] = False
+    with mock.patch.object(function, "callAscomMethodQueued") as m:
+        function.toggleAutoDew()
+    m.assert_called_once_with("setswitch", (13, True))
 
 
-def test_toggleAutoDew_1(function):
-    function.deviceConnected = False
-    function.toggleAutoDew()
+def test_sendDew_UPB(function):
+    function.data["MaxSwitch"] = 15
+    with mock.patch.object(function, "callAscomMethodQueued") as m:
+        function.sendDew("A", 50.0)
+    m.assert_not_called()
 
 
-def test_toggleAutoDew_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getAscomProperty", return_value=21):
-        with mock.patch.object(function, "callAscomMethod"):
-            function.toggleAutoDew()
+def test_sendDew_UPBv2(function):
+    function.data["MaxSwitch"] = 21
+    with mock.patch.object(function, "callAscomMethodQueued") as m:
+        function.sendDew("A", 50.0)
+    m.assert_called_once_with("setswitchvalue", (4, 127))
 
 
-def test_toggleAutoDew_3(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getAscomProperty", return_value=15):
-        with mock.patch.object(function, "callAscomMethod"):
-            function.toggleAutoDew()
+def test_sendAdjustableOutput(function):
+    function.sendAdjustableOutput(1.0)
 
 
-def test_sendDew_1(function):
-    function.deviceConnected = False
-    function.sendDew("1", 10)
-
-
-def test_sendDew_2(function):
-    function.deviceConnected = True
-    function.sendDew("1", 10)
-
-
-def test_sendDew_3(function):
-    function.deviceConnected = True
-    function.sendDew("1", 10)
-
-
-def test_sendDew_4(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getAscomProperty", return_value=21):
-        with mock.patch.object(function, "callAscomMethod"):
-            function.sendDew("1", 10)
-
-
-def test_sendAdjustableOutput_1(function):
-    function.deviceConnected = False
-    function.sendAdjustableOutput(1)
-
-
-def test_sendAdjustableOutput_2(function):
-    function.deviceConnected = True
-    function.sendAdjustableOutput(4)
-
-
-def test_reboot_1(function):
-    function.deviceConnected = False
-    function.reboot()
-
-
-def test_reboot_2(function):
-    function.deviceConnected = True
+def test_reboot(function):
     function.reboot()

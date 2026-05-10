@@ -26,22 +26,18 @@ class CoverAscom(AscomClass):
         self.signals = parent.signals
         self.data = parent.data
 
-    def workerPollData(self) -> None:
+    def pollData(self) -> None:
         state = self.getAscomProperty("CoverState")
-        stateText = self.coverStates[state]
+        if state is None:
+            return
+        stateText = self.coverStates[int(state)]
         self.storePropertyToData(stateText, "Status.Cover")
 
     def closeCover(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.callMethodThreaded(self.client.CloseCover)
+        self.callAscomMethodQueued("CloseCover", ())
 
     def openCover(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.callMethodThreaded(self.client.OpenCover)
+        self.callAscomMethodQueued("OpenCover", ())
 
     def haltCover(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.callMethodThreaded(self.client.HaltCover)
+        self.callAscomMethodQueued("HaltCover", ())

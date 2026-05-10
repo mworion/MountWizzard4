@@ -22,8 +22,8 @@ class TelescopeAscom(AscomClass):
         super().__init__(parent=parent)
         self.signals = parent.signals
 
-    def workerGetInitialConfig(self) -> None:
-        super().workerGetInitialConfig()
+    def getInitialConfig(self) -> None:
+        super().getInitialConfig()
 
         value = self.getAscomProperty("ApertureDiameter")
         if isinstance(value, float):

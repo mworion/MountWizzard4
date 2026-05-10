@@ -26,7 +26,6 @@ class CameraAlpaca(AlpacaClass):
         self.app = parent.app
         self.data = parent.data
         self.signals = parent.signals
-        self.worker: Worker | None = None
         super().__init__(parent=parent)
 
     def getInitialConfig(self) -> None:
@@ -69,7 +68,7 @@ class CameraAlpaca(AlpacaClass):
     def waitFunc(self) -> bool:
         return not self.getDeviceProp("ImageReady")
 
-    def workerExpose(self) -> None:
+    def expose(self) -> None:
         self.sendDownloadMode()
         self.setDeviceProp("BinX", self.parent.binning)
         self.setDeviceProp("BinY", self.parent.binning)
@@ -88,11 +87,7 @@ class CameraAlpaca(AlpacaClass):
         hdu = fits.PrimaryHDU(data=data)
         hdu.writeto(self.parent.imagePath, overwrite=True)
         self.parent.writeImageFitsHeader()
-
-    def expose(self) -> None:
-        self.worker = Worker(self.workerExpose)
-        self.worker.signals.finished.connect(self.parent.exposeFinished)
-        self.threadPool.start(self.worker)
+        self.parent.exposeFinished()
 
     def abort(self) -> bool:
         if self.data.get("CAN_ABORT", False):

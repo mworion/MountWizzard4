@@ -23,6 +23,7 @@ from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
 from pathlib import Path
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QCheckBox, QComboBox, QDoubleSpinBox, QLineEdit, QListView
+import platform
 
 
 class DevicePopup(MWidget):
@@ -304,6 +305,7 @@ class DevicePopup(MWidget):
 
     def selectAscomDriver(self) -> None:
         ascom = AscomClass(parent=self.parent)
+        ascom.deviceType = self.deviceType
         deviceName = ascom.selectAscomDriver(self.ui.ascomDevice.text())
         self.ui.ascomDevice.setText(deviceName)
 

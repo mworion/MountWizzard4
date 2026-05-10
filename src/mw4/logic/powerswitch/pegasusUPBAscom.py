@@ -22,8 +22,9 @@ class PegasusUPBAscom(AscomClass):
         super().__init__(parent=parent)
         self.signals = parent.signals
 
-    def workerPollData(self) -> None:
-        maxSwitch = self.getAscomProperty("MaxSwitch")
+    def pollData(self) -> None:
+        self.getAndStoreAscomProperty("MaxSwitch", "MaxSwitch")
+        maxSwitch = self.data.get("MaxSwitch", 0)
         model = "UPB" if maxSwitch == 15 else "UPBv2"
 
         self.data["FIRMWARE_INFO.VERSION"] = "1.4" if model == "UPB" else "2.1"
@@ -66,12 +67,9 @@ class PegasusUPBAscom(AscomClass):
             self.getAndStoreAscomProperty("getswitchvalue(19)", "POWER_SENSORS.SENSOR_POWER")
 
     def togglePowerPort(self, port: str) -> None:
-        if not self.deviceConnected:
-            return
-
         switchNumber = int(port) - 1
         val = self.data.get(f"POWER_CONTROL.POWER_CONTROL_{port}", True)
-        self.callAscomMethod("setswitch", (switchNumber, not val))
+        self.callAscomMethodQueued("setswitch", (switchNumber, not val))
 
     def togglePowerPortBoot(self, port: str) -> None:
         pass
@@ -80,41 +78,32 @@ class PegasusUPBAscom(AscomClass):
         pass
 
     def togglePortUSB(self, port: str) -> None:
-        if not self.deviceConnected:
-            return
-
-        maxSwitch = self.getAscomProperty("MaxSwitch")
+        maxSwitch = self.data.get("MaxSwitch", 0)
         model = "UPB" if maxSwitch == 15 else "UPBv2"
         if model == "UPBv2":
             switchNumber = int(port) + 6
             val = self.data.get(f"USB_PORT_CONTROL.PORT_{port}", True)
-            self.callAscomMethod("setswitch", (switchNumber, not val))
+            self.callAscomMethodQueued("setswitch", (switchNumber, not val))
 
     def toggleAutoDew(self) -> None:
-        if not self.deviceConnected:
-            return
-
-        maxSwitch = self.getAscomProperty("MaxSwitch")
+        maxSwitch = self.data.get("MaxSwitch", 0)
         model = "UPB" if maxSwitch == 15 else "UPBv2"
 
         if model == "UPB":
             val = self.data.get("AUTO_DEW.INDI_ENABLED", False)
-            self.callAscomMethod("setswitch", (7, not val))
+            self.callAscomMethodQueued("setswitch", (7, not val))
         else:
             val = self.data.get("AUTO_DEW.DEW_A", False)
-            self.callAscomMethod("setswitch", (13, not val))
+            self.callAscomMethodQueued("setswitch", (13, not val))
 
     def sendDew(self, port: str, value: float) -> None:
-        if not self.deviceConnected:
-            return
-
-        maxSwitch = self.getAscomProperty("MaxSwitch")
+        maxSwitch = self.data.get("MaxSwitch", 0)
         model = "UPB" if maxSwitch == 15 else "UPBv2"
 
         switchNumber = ord(port) - ord("A") + 4
         val = int(value * 2.55)
         if model == "UPBv2":
-            self.callAscomMethod("setswitchvalue", (switchNumber, val))
+            self.callAscomMethodQueued("setswitchvalue", (switchNumber, val))
 
     def sendAdjustableOutput(self, value: float) -> None:
         pass

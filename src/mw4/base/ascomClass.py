@@ -14,8 +14,12 @@
 #
 ###########################################################
 import platform
+import queue
+import subprocess
+import sys
+import threading
 import time
-from collections.abc import Callable
+from dataclasses import dataclass, field
 from typing import Any
 
 if platform.system() == "Windows":
@@ -23,7 +27,15 @@ if platform.system() == "Windows":
     from win32com import client
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
-from PySide6.QtCore import QMutex, QThreadPool, QTimer
+from PySide6.QtCore import QThreadPool
+
+
+@dataclass
+class CommandItem:
+    cmdType: str
+    name: str
+    args: tuple = field(default_factory=tuple)
+    value: Any = None
 
 
 class AscomClass(DriverData):
@@ -31,10 +43,11 @@ class AscomClass(DriverData):
 
     Wraps a win32com dispatch object and exposes a uniform
     startCommunication / stopCommunication / poll lifecycle that is
-    compatible with AlpacaClass and NINAClass.  All COM calls that may
-    block are dispatched through the shared QThreadPool via Worker.
-    CoInitialize / CoUninitialize are handled per-thread by
-    callerInitUnInit.
+    compatible with AlpacaClass and NINAClass. All COM calls run
+    inside a single worker loop that calls CoInitialize once at start
+    and CoUninitialize in a finally block. GUI-thread callers enqueue
+    commands via the Queued-suffix methods; the loop drains the queue
+    on every iteration via processCommandQueue.
     """
 
     def __init__(self, parent: Any) -> None:
@@ -48,14 +61,7 @@ class AscomClass(DriverData):
         self.threadPool: QThreadPool = parent.app.threadPool
         self.updateRate: int = 3000
         self.loadConfig: bool = False
-        self.tM: QMutex = QMutex()
-        self.worker: Worker | None = None
-        self.workerData: Worker | None = None
-        self.workerGetConfig: Worker | None = None
-        self.workerStatus: Worker | None = None
-        self.workerConnect: Worker | None = None
         self.client: Any = None
-        self.propertyExceptions: list[str] = []
         self.deviceName: str = ""
         self.deviceConnected: bool = False
         self.serverConnected: bool = False
@@ -64,226 +70,165 @@ class AscomClass(DriverData):
             "deviceName": "",
         }
 
-        self.cyclePollStatus: QTimer = QTimer()
-        self.cyclePollStatus.setSingleShot(False)
-        self.cyclePollStatus.timeout.connect(self.pollStatus)
-
-        self.cyclePollData: QTimer = QTimer()
-        self.cyclePollData.setSingleShot(False)
-        self.cyclePollData.timeout.connect(self.pollData)
-
-    def startAscomTimer(self) -> None:
-        self.cyclePollData.start(self.updateRate)
-        self.cyclePollStatus.start(self.updateRate)
-
-    def stopAscomTimer(self) -> None:
-        self.cyclePollData.stop()
-        self.cyclePollStatus.stop()
+        self.commandQueue: queue.Queue = queue.Queue()
+        self.stopEvent: threading.Event = threading.Event()
+        self.workerCommunicationLoop: Worker | None = None
 
     def getAscomProperty(self, valueProp: str) -> str | float | bool | None:
-        value = None
-        if valueProp in self.propertyExceptions:
-            return value
-
         try:
             value = getattr(self.client, valueProp)
         except Exception as e:
-            t = f"[{self.deviceName}] property [{valueProp}] not implemented: {e}"
-            self.log.debug(t)
-            self.propertyExceptions.append(valueProp)
+            self.log.debug(f"[{self.deviceName}] property [{valueProp}] not implemented: {e}")
+            return None
+        if valueProp != "ImageArray":
+            self.log.trace(f"[{self.deviceName}] property [{valueProp}] has value: [{value}]")
         else:
-            if valueProp != "ImageArray":
-                t = f"[{self.deviceName}] property [{valueProp}] has value: [{value}]"
-                self.log.trace(t)
-            else:
-                self.log.trace(f"{self.deviceName}] property [{valueProp}]")
+            self.log.trace(f"[{self.deviceName}] property [{valueProp}]")
         return value
 
-    def setAscomProperty(self, valueProp: str, value: str | float) -> None:
-        if valueProp in self.propertyExceptions:
-            return
-
+    def setAscomProperty(self, valueProp: str, value: Any) -> None:
         try:
             setattr(self.client, valueProp, value)
         except Exception as e:
-            t = f"[{self.deviceName}] property [{valueProp}] not implemented: {e}"
-            self.log.debug(t)
-            if valueProp != "Connected":
-                self.propertyExceptions.append(valueProp)
+            self.log.debug(f"[{self.deviceName}] property [{valueProp}] not implemented: {e}")
             return
-        t = f"[{self.deviceName}] property [{valueProp}] set to: [{value}]"
-        self.log.trace(t)
+        self.log.trace(f"[{self.deviceName}] property [{valueProp}] set to: [{value}]")
 
-    def callAscomMethod(self, methodString: str, param: Any) -> None:
-        if methodString in self.propertyExceptions:
-            return
-
+    def callAscomMethod(self, methodString: str, param: Any = ()) -> Any:
         args = param if isinstance(param, tuple) else (param,)
         try:
-            getattr(self.client, methodString)(*args)
+            result = getattr(self.client, methodString)(*args)
         except Exception as e:
-            t = f"[{self.deviceName}] method [{methodString}] not implemented: {e}"
-            self.log.debug(t)
-            self.propertyExceptions.append(methodString)
-            return
-
-        t = f"[{self.deviceName}] method [{methodString}] called [{param}]"
-        self.log.trace(t)
+            self.log.debug(f"[{self.deviceName}] method [{methodString}] not implemented: {e}")
+            return None
+        self.log.trace(f"[{self.deviceName}] method [{methodString}] called [{param}]")
+        return result
 
     def getAndStoreAscomProperty(self, valueProp: str, element: str) -> None:
         value = self.getAscomProperty(valueProp)
         self.storePropertyToData(value, element)
 
-    def workerConnectDevice(self) -> None:
-        self.propertyExceptions = []
+    def setAscomPropertyQueued(self, valueProp: str, value: Any) -> None:
+        self.commandQueue.put(CommandItem(cmdType="set", name=valueProp, value=value))
+
+    def callAscomMethodQueued(self, methodString: str, param: Any = ()) -> None:
+        args = param if isinstance(param, tuple) else (param,)
+        self.commandQueue.put(CommandItem(cmdType="call", name=methodString, args=args))
+        self.log.trace(f"[{self.deviceName}] method [{methodString}] queued")
+
+    def processCommandQueue(self) -> None:
+        while not self.commandQueue.empty():
+            try:
+                cmd = self.commandQueue.get_nowait()
+            except queue.Empty:
+                break
+            if cmd.cmdType == "call":
+                self.callAscomMethod(cmd.name, cmd.args)
+            elif cmd.cmdType == "set":
+                self.setAscomProperty(cmd.name, cmd.value)
+            else:
+                self.log.warning(f"[{self.deviceName}] unknown cmdType: [{cmd.cmdType}]")
+
+    def connectDevice(self) -> bool:
         self.deviceConnected = False
         self.serverConnected = False
         for retry in range(0, 10):
             self.setAscomProperty("Connected", True)
             suc = self.getAscomProperty("Connected")
-
             if suc:
-                t = f"[{self.deviceName}] connected, retries: [{retry}]"
-                self.log.debug(t)
+                self.log.debug(f"[{self.deviceName}] connected, retries: [{retry}]")
                 break
-            else:
-                t = f"[{self.deviceName}] connection retry: [{retry}]"
-                self.log.info(t)
-                time.sleep(0.2)
+            self.log.info(f"[{self.deviceName}] connection retry: [{retry}]")
+            time.sleep(0.2)
         else:
             suc = False
-
         if not suc:
             self.msg.emit(2, "ASCOM ", "Connect error", f"{self.deviceName}")
-            return
+        return bool(suc)
 
-        if not self.serverConnected:
-            self.serverConnected = True
-            self.signals.serverConnected.emit()
-
-        if not self.deviceConnected:
-            self.deviceConnected = True
-            self.signals.deviceConnected.emit(f"{self.deviceName}")
-            self.msg.emit(0, "ASCOM ", "Device found", f"{self.deviceName}")
-            self.startAscomTimer()
-            self.getInitialConfig()
-
-    def workerGetInitialConfig(self) -> None:
+    def getInitialConfig(self) -> None:
         self.getAndStoreAscomProperty("Name", "DRIVER_INFO.DRIVER_NAME")
         self.getAndStoreAscomProperty("DriverVersion", "DRIVER_INFO.DRIVER_VERSION")
         self.getAndStoreAscomProperty("DriverInfo", "DRIVER_INFO.DRIVER_EXEC")
 
-    def workerPollStatus(self) -> None:
-        suc = self.getAscomProperty("Connected")
-
-        if self.deviceConnected and not suc:
-            self.deviceConnected = False
-            self.signals.deviceDisconnected.emit(f"{self.deviceName}")
-            self.msg.emit(0, "ASCOM ", "Device remove", f"{self.deviceName}")
-
-        elif not self.deviceConnected and suc:
-            self.deviceConnected = True
-            self.signals.deviceConnected.emit(f"{self.deviceName}")
-            self.msg.emit(0, "ASCOM ", "Device found", f"{self.deviceName}")
-
-    @staticmethod
-    def callerInitUnInit(fn: Callable[..., Any], *args: Any, **kwargs: Any) -> None:
-        CoInitialize()
-        fn(*args, **kwargs)
-        CoUninitialize()
-
-    def callMethodThreaded(
-        self,
-        fn: Callable[..., Any],
-        *args: Any,
-        cb_res: Callable | None = None,
-        cb_fin: Callable | None = None,
-        **kwargs: Any,
-    ) -> None:
-        """
-        callMethodThreaded is done mainly for ASCOM ctypes interfaces which take
-        longer to end and should not slow down the gui thread itself. All called
-        functions run in PySide6 threadPool and could have callback after result is
-        processed or the thread task is finished. It does not call directly the
-        defined function, but the callerInitUnInit method, which does the necessary
-        pythoncom.Initialize() before running win32 functions in another thread
-        than the dispatch was done (in our case the main gui thread) and call
-        pythoncom.CoUninitialize() after the functions finished.
-
-        :param fn: function
-        :param args:
-        :param cb_res: callback result
-        :param cb_fin: callback finished
-        :param kwargs:
-        :return:
-        """
-        if not self.deviceConnected:
-            return
-
-        self.worker = Worker(self.callerInitUnInit, fn, *args, **kwargs)
-        t = f"ASCOM threaded: [{fn}], args:[{args}], kwargs:[{kwargs}]"
-        self.log.trace(t)
-        if cb_res:
-            self.worker.signals.result.connect(cb_res)
-        if cb_fin:
-            self.worker.signals.finished.connect(cb_fin)
-        self.threadPool.start(self.worker)
-
-    def processPolledData(self) -> None:
-        pass
-
-    def workerPollData(self) -> None:
-        pass
-
     def pollData(self) -> None:
-        self.workerData = Worker(self.workerPollData)
-        self.workerData.signals.result.connect(self.processPolledData)
-        self.threadPool.start(self.workerData)
+        pass
 
-    def pollStatus(self) -> None:
-        self.workerStatus = Worker(self.workerPollStatus)
-        self.threadPool.start(self.workerStatus)
+    def handleDeviceConnect(self) -> None:
+        suc = self.connectDevice()
+        if not suc:
+            return
+        self.serverConnected = True
+        self.deviceConnected = True
+        self.signals.serverConnected.emit()
+        self.signals.deviceConnected.emit(f"{self.deviceName}")
+        self.msg.emit(0, "ASCOM ", "Device found", f"{self.deviceName}")
+        self.getInitialConfig()
 
-    def getInitialConfig(self) -> None:
-        self.workerGetConfig = Worker(self.workerGetInitialConfig)
-        self.threadPool.start(self.workerGetConfig)
+    def handleDeviceDisconnect(self) -> None:
+        self.deviceConnected = False
+        self.signals.deviceDisconnected.emit(f"{self.deviceName}")
+        self.msg.emit(0, "ASCOM ", "Device remove", f"{self.deviceName}")
+
+    def runnerCommunicationLoop(self) -> None:
+        CoInitialize()
+        try:
+            try:
+                self.client = client.dynamic.Dispatch(self.deviceName)
+                self.log.debug(f"[{self.deviceName}] Dispatching")
+            except Exception as e:
+                self.log.error(f"[{self.deviceName}] Dispatch error: [{e}]")
+                return
+            while not self.stopEvent.is_set():
+                if not self.deviceConnected:
+                    self.handleDeviceConnect()
+                elif not self.getAscomProperty("Connected"):
+                    self.handleDeviceDisconnect()
+                else:
+                    try:
+                        self.pollData()
+                    except Exception as e:
+                        self.log.error(f"[{self.deviceName}] pollData error: [{e}]")
+                    self.processCommandQueue()
+                self.stopEvent.wait(timeout=self.updateRate / 1000)
+        finally:
+            if self.client:
+                self.setAscomProperty("Connected", False)
+                self.client = None
+            CoUninitialize()
 
     def startCommunication(self) -> None:
         self.data.clear()
         if not self.deviceName:
             return
-
-        try:
-            self.client = client.dynamic.Dispatch(self.deviceName)
-            self.log.debug(f"[{self.deviceName}] Dispatching")
-
-        except Exception as e:
-            self.log.error(f"[{self.deviceName}] Dispatch error: [{e}]")
-            return
-
-        self.workerConnect = Worker(self.callerInitUnInit, self.workerConnectDevice)
-        self.threadPool.start(self.workerConnect)
+        self.stopEvent.clear()
+        self.workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
+        self.threadPool.start(self.workerCommunicationLoop)
 
     def stopCommunication(self) -> None:
-        self.stopAscomTimer()
-        if self.client:
-            self.setAscomProperty("Connected", False)
-            self.deviceConnected = False
-            self.serverConnected = False
-            self.client = None
-            self.propertyExceptions = []
+        self.stopEvent.set()
+        self.deviceConnected = False
+        self.serverConnected = False
         self.signals.deviceDisconnected.emit(f"{self.deviceName}")
         self.signals.serverDisconnected.emit({f"{self.deviceName}": 0})
         self.msg.emit(0, "ASCOM", "Device  remove", f"{self.deviceName}")
 
     def selectAscomDriver(self, deviceName: str) -> str:
+        script = (
+            "import sys; import win32com.client; "
+            f"chooser = win32com.client.Dispatch('ASCOM.Utilities.Chooser'); "
+            f"chooser.DeviceType = '{self.deviceType}'; "
+            f"result = chooser.Choose('{deviceName}'); "
+            "print(result if result else '', end='')"
+        )
         try:
-            chooser = client.Dispatch("ASCOM.Utilities.Chooser")
-            chooser.DeviceType = self.deviceType
-            deviceName = chooser.Choose(deviceName)
+            result = subprocess.check_output(
+                [sys.executable, "-c", script],
+                text=True,
+                creationflags=0x08000000,  # CREATE_NO_WINDOW
+            ).strip()
+        except subprocess.CalledProcessError as e:
+            self.log.critical(f"ASCOM Chooser subprocess error: {e}")
+            return deviceName
 
-        except Exception as e:
-            self.log.critical(f"Error: {e}")
-            deviceName = ""
-
-        return deviceName
+        return result if result else deviceName

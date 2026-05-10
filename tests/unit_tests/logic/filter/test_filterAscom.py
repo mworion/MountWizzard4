@@ -13,11 +13,9 @@
 # License APL2.0
 #
 ###########################################################
-
 import platform
 import pytest
 import unittest.mock as mock
-from mw4.base.ascomClass import AscomClass
 from mw4.base.loggerMW import setupLogging
 from mw4.base.signalsDevices import Signals
 from mw4.logic.filter.filterAscom import FilterAscom
@@ -40,56 +38,45 @@ class Parent:
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    class Test1:
-        Names = []
-        Position = 1
-        Name = "test"
-        DriverVersion = "1"
-        DriverInfo = "test1"
-
     func = FilterAscom(parent=Parent())
-    func.clientProps = []
-    func.client = Test1()
+    func.client = mock.MagicMock()
+    func.client.Names = []
+    func.client.Position = 1
     yield func
 
 
-def test_workerGetInitialConfig_1(function):
-    with mock.patch.object(AscomClass, "workerGetInitialConfig", return_value=True):
+def test_getInitialConfig_noNames(function):
+    with mock.patch.object(function, "getAndStoreAscomProperty"):
         with mock.patch.object(function, "getAscomProperty", return_value=None):
-            function.workerGetInitialConfig()
+            function.getInitialConfig()
 
 
-def test_workerGetInitialConfig_2(function):
-    with mock.patch.object(AscomClass, "workerGetInitialConfig", return_value=True):
-        with mock.patch.object(function, "getAscomProperty", return_value=["test"]):
-            with mock.patch.object(function, "storePropertyToData"):
-                function.workerGetInitialConfig()
+def test_getInitialConfig_withNames(function):
+    with mock.patch.object(function, "getAndStoreAscomProperty"):
+        with mock.patch.object(function, "getAscomProperty", return_value=["Red", "Green"]):
+            with mock.patch.object(function, "storePropertyToData") as m:
+                function.getInitialConfig()
+    assert m.call_count == 2
 
 
-def test_workerPollData_1(function):
-    function.client.Position = -1
-    function.workerPollData()
-
-
-def test_workerPollData_2(function):
-    function.client.Position = 1
+def test_pollData_noPosition(function):
     with mock.patch.object(function, "getAscomProperty", return_value=-1):
-        function.workerPollData()
+        function.pollData()
 
 
-def test_workerPollData_3(function):
-    function.client.Position = 1
-    with mock.patch.object(function, "getAscomProperty", return_value=1):
-        with mock.patch.object(function, "storePropertyToData"):
-            function.workerPollData()
+def test_pollData_nonePosition(function):
+    with mock.patch.object(function, "getAscomProperty", return_value=None):
+        function.pollData()
 
 
-def test_sendFilterNumber_1(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "setAscomProperty"):
+def test_pollData_validPosition(function):
+    with mock.patch.object(function, "getAscomProperty", return_value=2):
+        with mock.patch.object(function, "storePropertyToData") as m:
+            function.pollData()
+    m.assert_called_once_with(2, "FILTER_SLOT.FILTER_SLOT_VALUE")
+
+
+def test_sendFilterNumber(function):
+    with mock.patch.object(function, "setAscomPropertyQueued") as m:
         function.sendFilterNumber(3)
-
-
-def test_sendFilterNumber_2(function):
-    function.deviceConnected = False
-    function.sendFilterNumber(3)
+    m.assert_called_once_with("Position", 3)

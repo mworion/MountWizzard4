@@ -13,7 +13,6 @@
 # License APL2.0
 #
 ###########################################################
-import ctypes
 import platform
 import pytest
 import unittest.mock as mock
@@ -58,8 +57,6 @@ def function():
         ImageReady = True
         Gain = 100
         Offset = 0
-        image = [1, 1, 1]
-        ImageArray = (ctypes.c_int * len(image))(*image)
 
         @staticmethod
         def StartExposure(time, light=True):
@@ -89,101 +86,100 @@ def test_getInitialConfig_1(function):
         function.getInitialConfig()
 
 
-def test_pollData_regular(function):
-    with mock.patch.object(function, "getAndStoreAscomProperty"):
-        function.exposurePending = False
-        function.exposing = False
+def test_pollData(function):
+    with mock.patch.object(function, "getAndStoreAscomProperty") as m:
         function.pollData()
+    assert m.call_count == 9
 
 
-def test_pollData_exposureStart(function):
-    function.exposurePending = True
-    function.exposing = False
-    function.data["CAN_FAST"] = False
-    with mock.patch.object(function, "getAndStoreAscomProperty"):
-        with mock.patch.object(function, "setAscomProperty"):
-            with mock.patch.object(function, "callAscomMethod") as mc:
-                with mock.patch.object(function, "getAscomProperty", return_value=False):
-                    function.pollData()
-    assert function.exposing
-    mc.assert_called_once_with("StartExposure", (function.parent.exposureTime, True))
+def test_waitFunc_imageReady(function):
+    with mock.patch.object(function, "getAscomProperty", return_value=True):
+        result = function.waitFunc()
+    assert result is False
 
 
-def test_pollData_exposureStart_fastReadout(function):
-    function.exposurePending = True
-    function.exposing = False
+def test_waitFunc_imageNotReady(function):
+    with mock.patch.object(function, "getAscomProperty", return_value=False):
+        result = function.waitFunc()
+    assert result is True
+
+
+def test_expose(function):
+    fakeImage = [[1, 2], [3, 4]]
+    with mock.patch.object(function, "setAscomProperty"):
+        with mock.patch.object(function, "callAscomMethod"):
+            with mock.patch.object(function.parent, "waitExposed"):
+                with mock.patch.object(
+                    function, "getAscomProperty", return_value=fakeImage
+                ):
+                    with mock.patch.object(
+                        function.parent, "writeImageFitsHeader"
+                    ):
+                        with mock.patch.object(
+                            function.parent, "exposeFinished"
+                        ) as mf:
+                            with mock.patch.object(
+                                fits.PrimaryHDU, "writeto"
+                            ):
+                                function.expose()
+    mf.assert_called_once()
+
+
+def test_expose_withFastReadout(function):
     function.data["CAN_FAST"] = True
-    with mock.patch.object(function, "getAndStoreAscomProperty"):
-        with mock.patch.object(function, "setAscomProperty") as ms:
-            with mock.patch.object(function, "callAscomMethod"):
-                with mock.patch.object(function, "getAscomProperty", return_value=False):
-                    function.pollData()
+    fakeImage = [[1, 2], [3, 4]]
+    with mock.patch.object(function, "setAscomProperty") as ms:
+        with mock.patch.object(function, "callAscomMethod"):
+            with mock.patch.object(function.parent, "waitExposed"):
+                with mock.patch.object(
+                    function, "getAscomProperty", return_value=fakeImage
+                ):
+                    with mock.patch.object(
+                        function.parent, "writeImageFitsHeader"
+                    ):
+                        with mock.patch.object(function.parent, "exposeFinished"):
+                            with mock.patch.object(
+                                fits.PrimaryHDU, "writeto"
+                            ):
+                                function.expose()
     calls = [c[0][0] for c in ms.call_args_list]
     assert "FastReadout" in calls
 
 
-def test_pollData_imageReady(function):
-    function.exposurePending = False
-    function.exposing = True
+def test_expose_noFastReadout(function):
+    function.data["CAN_FAST"] = False
     fakeImage = [[1, 2], [3, 4]]
-
-    def fake_getprop(prop: str):
-        if prop == "ImageArray":
-            return fakeImage
-        return True
-
-    with mock.patch.object(function, "getAndStoreAscomProperty"):
-        with mock.patch.object(
-            function, "getAscomProperty", side_effect=fake_getprop
-        ):
-            with mock.patch.object(function.parent, "writeImageFitsHeader"):
+    with mock.patch.object(function, "setAscomProperty") as ms:
+        with mock.patch.object(function, "callAscomMethod"):
+            with mock.patch.object(function.parent, "waitExposed"):
                 with mock.patch.object(
-                    function.parent, "exposeFinished"
-                ) as mf:
-                    with mock.patch.object(fits.HDUList, "writeto"):
-                        function.pollData()
-    assert not function.exposing
-    mf.assert_called_once()
-
-
-def test_pollData_imageNotReady(function):
-    function.exposurePending = False
-    function.exposing = True
-    with mock.patch.object(function, "getAndStoreAscomProperty"):
-        with mock.patch.object(function, "getAscomProperty", return_value=False):
-            with mock.patch.object(function.parent, "exposeFinished") as mf:
-                function.pollData()
-    assert function.exposing
-    mf.assert_not_called()
-
-
-def test_expose(function):
-    function.exposurePending = False
-    function.expose()
-    assert function.exposurePending
+                    function, "getAscomProperty", return_value=fakeImage
+                ):
+                    with mock.patch.object(
+                        function.parent, "writeImageFitsHeader"
+                    ):
+                        with mock.patch.object(function.parent, "exposeFinished"):
+                            with mock.patch.object(
+                                fits.PrimaryHDU, "writeto"
+                            ):
+                                function.expose()
+    calls = [c[0][0] for c in ms.call_args_list]
+    assert "FastReadout" not in calls
 
 
 def test_abort_canAbort(function):
     function.data["CAN_ABORT"] = True
-    function.exposurePending = True
-    function.exposing = True
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         suc = function.abort()
     assert suc
-    assert not function.exposurePending
-    assert not function.exposing
     m.assert_called_once_with("StopExposure", ())
 
 
 def test_abort_cannotAbort(function):
     function.data["CAN_ABORT"] = False
-    function.exposurePending = True
-    function.exposing = True
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         suc = function.abort()
     assert suc
-    assert not function.exposurePending
-    assert not function.exposing
     m.assert_not_called()
 
 

@@ -39,17 +39,6 @@ class CommandItem:
 
 
 class AscomClass(DriverData):
-    """ASCOM driver adapter.
-
-    Wraps a win32com dispatch object and exposes a uniform
-    startCommunication / stopCommunication / poll lifecycle that is
-    compatible with AlpacaClass and NINAClass. All COM calls run
-    inside a single worker loop that calls CoInitialize once at start
-    and CoUninitialize in a finally block. GUI-thread callers enqueue
-    commands via the Queued-suffix methods; the loop drains the queue
-    on every iteration via processCommandQueue.
-    """
-
     def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
         self.parent: Any = parent

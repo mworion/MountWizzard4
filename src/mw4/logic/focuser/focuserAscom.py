@@ -29,4 +29,4 @@ class FocuserAscom(AscomClass):
         self.callAscomMethodQueued("move", position)
 
     def halt(self) -> None:
-        self.callAscomMethodQueued("Halt", ())
+        self.callAscomMethodQueued("Halt")

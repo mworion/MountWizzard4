@@ -69,7 +69,7 @@ class PegasusUPBAscom(AscomClass):
     def togglePowerPort(self, port: str) -> None:
         switchNumber = int(port) - 1
         val = self.data.get(f"POWER_CONTROL.POWER_CONTROL_{port}", True)
-        self.callAscomMethodQueued("setswitch", (switchNumber, not val))
+        self.callAscomMethodQueued("setswitch", switchNumber, not val)
 
     def togglePowerPortBoot(self, port: str) -> None:
         pass
@@ -83,7 +83,7 @@ class PegasusUPBAscom(AscomClass):
         if model == "UPBv2":
             switchNumber = int(port) + 6
             val = self.data.get(f"USB_PORT_CONTROL.PORT_{port}", True)
-            self.callAscomMethodQueued("setswitch", (switchNumber, not val))
+            self.callAscomMethodQueued("setswitch", switchNumber, not val)
 
     def toggleAutoDew(self) -> None:
         maxSwitch = self.data.get("MaxSwitch", 0)
@@ -91,10 +91,10 @@ class PegasusUPBAscom(AscomClass):
 
         if model == "UPB":
             val = self.data.get("AUTO_DEW.INDI_ENABLED", False)
-            self.callAscomMethodQueued("setswitch", (7, not val))
+            self.callAscomMethodQueued("setswitch", 7, not val)
         else:
             val = self.data.get("AUTO_DEW.DEW_A", False)
-            self.callAscomMethodQueued("setswitch", (13, not val))
+            self.callAscomMethodQueued("setswitch", 13, not val)
 
     def sendDew(self, port: str, value: float) -> None:
         maxSwitch = self.data.get("MaxSwitch", 0)
@@ -103,7 +103,7 @@ class PegasusUPBAscom(AscomClass):
         switchNumber = ord(port) - ord("A") + 4
         val = int(value * 2.55)
         if model == "UPBv2":
-            self.callAscomMethodQueued("setswitchvalue", (switchNumber, val))
+            self.callAscomMethodQueued("setswitchvalue", switchNumber, val)
 
     def sendAdjustableOutput(self, value: float) -> None:
         pass

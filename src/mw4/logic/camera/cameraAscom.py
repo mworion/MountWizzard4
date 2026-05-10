@@ -17,7 +17,9 @@ import numpy as np
 from astropy.io import fits
 from mw4.base.ascomClass import AscomClass
 from typing import Any
-
+import platform
+if platform.system() == "Windows":
+    from pythoncom import CoInitialize, CoUninitialize
 
 class CameraAscom(AscomClass):
     def __init__(self, parent: Any) -> None:
@@ -61,24 +63,28 @@ class CameraAscom(AscomClass):
         )
         self.getAndStoreAscomProperty("CoolerOn", "CCD_COOLER.COOLER_ON")
         self.getAndStoreAscomProperty("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
+        self.getAndStoreAscomProperty("ImageReady", "CCD_EXPOSURE.IMAGE_READY")
 
     def waitFunc(self) -> bool:
-        return not self.getAscomProperty("ImageReady")
+        return not self.data.get("ImageReady", False)
 
     def expose(self) -> None:
-        self.setAscomProperty("BinX", self.parent.binning)
-        self.setAscomProperty("BinY", self.parent.binning)
-        self.setAscomProperty("StartX", self.parent.posXASCOM)
-        self.setAscomProperty("StartY", self.parent.posYASCOM)
-        self.setAscomProperty("NumX", self.parent.widthASCOM)
-        self.setAscomProperty("NumY", self.parent.heightASCOM)
+        self.setAscomPropertyQueued("BinX", self.parent.binning)
+        self.setAscomPropertyQueued("BinY", self.parent.binning)
+        self.setAscomPropertyQueued("StartX", self.parent.posXASCOM)
+        self.setAscomPropertyQueued("StartY", self.parent.posYASCOM)
+        self.setAscomPropertyQueued("NumX", self.parent.widthASCOM)
+        self.setAscomPropertyQueued("NumY", self.parent.heightASCOM)
         if self.data.get("CAN_FAST", False):
-            self.setAscomProperty("FastReadout", self.parent.fastReadout)
-        self.callAscomMethod("StartExposure", (self.parent.exposureTime, True))
+            self.setAscomPropertyQueued("FastReadout", self.parent.fastReadout)
+        self.callAscomMethodQueued("StartExposure", Duration=self.parent.exposureTime, Light=True)
         self.parent.waitExposed(self.parent.exposureTime, self.waitFunc)
         self.signals.exposed.emit(self.parent.imagePath)
         self.signals.message.emit("download")
-        data = self.getAscomProperty("ImageArray")
+        # CoInitialize()
+        # data = self.getAscomProperty("ImageArray")
+        data = np.ones((100,100), dtype=np.uint16)
+        # CoUninitialize()
         data = np.array(data, dtype=np.uint16).transpose()
         self.signals.downloaded.emit(self.parent.imagePath)
         self.signals.message.emit("saving")
@@ -89,7 +95,7 @@ class CameraAscom(AscomClass):
 
     def abort(self) -> bool:
         if self.data.get("CAN_ABORT", False):
-            self.callAscomMethodQueued("StopExposure", ())
+            self.callAscomMethodQueued("StopExposure")
         return True
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:

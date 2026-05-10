@@ -34,7 +34,7 @@ from PySide6.QtCore import QThreadPool
 class CommandItem:
     cmdType: str
     name: str
-    args: tuple = field(default_factory=tuple)
+    kwargs: tuple = field(default_factory=tuple)
     value: Any = None
 
 
@@ -83,14 +83,13 @@ class AscomClass(DriverData):
             return
         self.log.trace(f"[{self.deviceName}] property [{valueProp}] set to: [{value}]")
 
-    def callAscomMethod(self, methodString: str, param: Any = ()) -> Any:
-        args = param if isinstance(param, tuple) else (param,)
+    def callAscomMethod(self, method: str, **kwargs: Any) -> Any:
         try:
-            result = getattr(self.client, methodString)(*args)
+            result = getattr(self.client, method)(**kwargs)
         except Exception as e:
-            self.log.debug(f"[{self.deviceName}] method [{methodString}] not implemented: {e}")
+            self.log.debug(f"[{self.deviceName}] method [{method}] not implemented: {e}")
             return None
-        self.log.trace(f"[{self.deviceName}] method [{methodString}] called [{param}]")
+        self.log.trace(f"[{self.deviceName}] method [{method}] called [{param}]")
         return result
 
     def getAndStoreAscomProperty(self, valueProp: str, element: str) -> None:
@@ -100,10 +99,9 @@ class AscomClass(DriverData):
     def setAscomPropertyQueued(self, valueProp: str, value: Any) -> None:
         self.commandQueue.put(CommandItem(cmdType="set", name=valueProp, value=value))
 
-    def callAscomMethodQueued(self, methodString: str, param: Any = ()) -> None:
-        args = param if isinstance(param, tuple) else (param,)
-        self.commandQueue.put(CommandItem(cmdType="call", name=methodString, args=args))
-        self.log.trace(f"[{self.deviceName}] method [{methodString}] queued")
+    def callAscomMethodQueued(self, method: str, **kwargs: Any) -> None:
+        self.commandQueue.put(CommandItem(cmdType="call", name=method, kwargs=kwargs))
+        self.log.trace(f"[{self.deviceName}] method [{method}] queued")
 
     def processCommandQueue(self) -> None:
         while not self.commandQueue.empty():
@@ -111,6 +109,7 @@ class AscomClass(DriverData):
                 cmd = self.commandQueue.get_nowait()
             except queue.Empty:
                 break
+            print(cmd)
             if cmd.cmdType == "call":
                 self.callAscomMethod(cmd.name, cmd.args)
             elif cmd.cmdType == "set":
@@ -159,27 +158,30 @@ class AscomClass(DriverData):
         self.signals.deviceDisconnected.emit(f"{self.deviceName}")
         self.msg.emit(0, "ASCOM ", "Device remove", f"{self.deviceName}")
 
+    def runnerCoreLoop(self) -> None:
+        while not self.stopEvent.is_set():
+            if not self.deviceConnected:
+                self.handleDeviceConnect()
+            elif not self.getAscomProperty("Connected"):
+                self.handleDeviceDisconnect()
+            else:
+                try:
+                    self.pollData()
+                except Exception as e:
+                    self.log.error(f"[{self.deviceName}] pollData error: [{e}]")
+                self.processCommandQueue()
+            self.stopEvent.wait(timeout=self.updateRate / 1000)
+
     def runnerCommunicationLoop(self) -> None:
         CoInitialize()
         try:
-            try:
-                self.client = client.dynamic.Dispatch(self.deviceName)
-                self.log.debug(f"[{self.deviceName}] Dispatching")
-            except Exception as e:
-                self.log.error(f"[{self.deviceName}] Dispatch error: [{e}]")
-                return
-            while not self.stopEvent.is_set():
-                if not self.deviceConnected:
-                    self.handleDeviceConnect()
-                elif not self.getAscomProperty("Connected"):
-                    self.handleDeviceDisconnect()
-                else:
-                    try:
-                        self.pollData()
-                    except Exception as e:
-                        self.log.error(f"[{self.deviceName}] pollData error: [{e}]")
-                    self.processCommandQueue()
-                self.stopEvent.wait(timeout=self.updateRate / 1000)
+            self.client = client.dynamic.Dispatch(self.deviceName)
+            self.log.debug(f"[{self.deviceName}] Dispatching")
+        except Exception as e:
+            self.log.error(f"[{self.deviceName}] Dispatch error: [{e}]")
+            return
+        else:
+            self.runnerCoreLoop()
         finally:
             if self.client:
                 self.setAscomProperty("Connected", False)

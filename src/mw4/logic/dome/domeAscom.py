@@ -57,13 +57,13 @@ class DomeAscom(AscomClass):
         self.callAscomMethodQueued("SlewToAltitude", altitude)
 
     def openShutter(self) -> None:
-        self.callAscomMethodQueued("OpenShutter", ())
+        self.callAscomMethodQueued("OpenShutter")
 
     def closeShutter(self) -> None:
-        self.callAscomMethodQueued("CloseShutter", ())
+        self.callAscomMethodQueued("CloseShutter")
 
     def slewCW(self) -> None:
-        self.callAscomMethodQueued("OpenShutter", ())
+        self.callAscomMethodQueued("OpenShutter")
 
     def slewCCW(self) -> None:
         pass

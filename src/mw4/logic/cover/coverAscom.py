@@ -18,7 +18,7 @@ from typing import Any
 
 
 class CoverAscom(AscomClass):
-    coverStates = ["NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"]
+    COVERSTATES: list[str] = ["NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"]
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
@@ -30,14 +30,13 @@ class CoverAscom(AscomClass):
         state = self.getAscomProperty("CoverState")
         if state is None:
             return
-        stateText = self.coverStates[int(state)]
-        self.storePropertyToData(stateText, "Status.Cover")
+        self.storePropertyToData(self.COVERSTATES[int(state)], "Status.Cover")
 
     def closeCover(self) -> None:
-        self.callAscomMethodQueued("CloseCover", ())
+        self.callAscomMethodQueued("CloseCover")
 
     def openCover(self) -> None:
-        self.callAscomMethodQueued("OpenCover", ())
+        self.callAscomMethodQueued("OpenCover")
 
     def haltCover(self) -> None:
-        self.callAscomMethodQueued("HaltCover", ())
+        self.callAscomMethodQueued("HaltCover")

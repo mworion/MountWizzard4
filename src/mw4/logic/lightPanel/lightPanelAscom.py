@@ -40,7 +40,7 @@ class LightPanelAscom(AscomClass):
         self.callAscomMethodQueued("CalibratorOn", brightness)
 
     def lightOff(self) -> None:
-        self.callAscomMethodQueued("CalibratorOff", ())
+        self.callAscomMethodQueued("CalibratorOff")
 
     def lightIntensity(self, value: float) -> None:
         self.callAscomMethodQueued("CalibratorOn", value)

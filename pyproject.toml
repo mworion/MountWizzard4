@@ -142,7 +142,6 @@ exclude = ["src/mw4/gui/widgets/*"]
 extend-select = [
     "E", "T2", "UP", "I", "C", "LOG", "W", "SIM", "A"
 ]
-ignore = ["SIM117"]
 
 [tool.ruff.lint.isort]
 no-sections = true

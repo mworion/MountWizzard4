@@ -35,7 +35,7 @@ from PySide6.QtWidgets import QApplication
 
 def _setAppIcon(app: QApplication) -> None:
     """Load and set the application window icon."""
-    with as_file(files("mw4").joinpath("data/icon/mw4.ico")) as iconFile:
+    with as_file(files("mw4").joinpath("../../work/data/icon/mw4.ico")) as iconFile:
         app.setWindowIcon(QIcon(str(iconFile)))
 
 

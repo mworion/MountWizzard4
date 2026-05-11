@@ -22,6 +22,8 @@ if platform.system() == "Windows":
     from pythoncom import CoInitialize, CoUninitialize
 
 class CameraAscom(AscomClass):
+    CAMERA_STATES: list[str] = ["CameraIdle", "CameraWaiting", "CameraExposing", "CameraReading",
+                                "CameraDownload", "CameraError"]
     def __init__(self, parent: Any) -> None:
         self.parent = parent
         self.app = parent.app
@@ -51,7 +53,26 @@ class CameraAscom(AscomClass):
         self.getAndStoreAscomProperty("StartY", "CCD_FRAME.Y")
         self.log.debug(f"Initial data: {self.data}")
 
+    def saveImage(self):
+        if not self.getAscomProperty("ImageReady"):
+            timeLeft = 1
+            text = f"expose {timeLeft:3.0f} s"
+            self.signals.message.emit(text)
+            return
+
+        self.signals.exposed.emit(self.parent.imagePath)
+        self.signals.message.emit("download")
+        data = self.getAscomProperty("ImageArray")
+        data = np.array(data, dtype=np.uint16).transpose()
+        self.signals.downloaded.emit(self.parent.imagePath)
+        self.signals.message.emit("saving")
+        hdu = fits.PrimaryHDU(data=data)
+        hdu.writeto(self.parent.imagePath, overwrite=True)
+        self.parent.writeImageFitsHeader()
+        self.parent.exposeFinished()
+
     def pollData(self) -> None:
+        super().pollData()
         self.getAndStoreAscomProperty("BinX", "CCD_BINNING.HOR_BIN")
         self.getAndStoreAscomProperty("BinY", "CCD_BINNING.VERT_BIN")
         self.getAndStoreAscomProperty("CameraState", "CAMERA.STATE")
@@ -63,10 +84,8 @@ class CameraAscom(AscomClass):
         )
         self.getAndStoreAscomProperty("CoolerOn", "CCD_COOLER.COOLER_ON")
         self.getAndStoreAscomProperty("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
-        self.getAndStoreAscomProperty("ImageReady", "CCD_EXPOSURE.IMAGE_READY")
-
-    def waitFunc(self) -> bool:
-        return not self.data.get("ImageReady", False)
+        print(self.data["CAMERA.STATE"])
+        # self.saveImage()
 
     def expose(self) -> None:
         self.setAscomPropertyQueued("BinX", self.parent.binning)
@@ -78,20 +97,6 @@ class CameraAscom(AscomClass):
         if self.data.get("CAN_FAST", False):
             self.setAscomPropertyQueued("FastReadout", self.parent.fastReadout)
         self.callAscomMethodQueued("StartExposure", Duration=self.parent.exposureTime, Light=True)
-        self.parent.waitExposed(self.parent.exposureTime, self.waitFunc)
-        self.signals.exposed.emit(self.parent.imagePath)
-        self.signals.message.emit("download")
-        # CoInitialize()
-        # data = self.getAscomProperty("ImageArray")
-        data = np.ones((100,100), dtype=np.uint16)
-        # CoUninitialize()
-        data = np.array(data, dtype=np.uint16).transpose()
-        self.signals.downloaded.emit(self.parent.imagePath)
-        self.signals.message.emit("saving")
-        hdu = fits.PrimaryHDU(data=data)
-        hdu.writeto(self.parent.imagePath, overwrite=True)
-        self.parent.writeImageFitsHeader()
-        self.parent.exposeFinished()
 
     def abort(self) -> bool:
         if self.data.get("CAN_ABORT", False):

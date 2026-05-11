@@ -34,7 +34,7 @@ from PySide6.QtCore import QThreadPool
 class CommandItem:
     cmdType: str
     name: str
-    kwargs: tuple = field(default_factory=tuple)
+    kwargs: dict = field(default_factory=dict)
     value: Any = None
 
 
@@ -48,7 +48,7 @@ class AscomClass(DriverData):
         self.msg: Any = parent.app.msg
         self.deviceType: str = parent.deviceType
         self.threadPool: QThreadPool = parent.app.threadPool
-        self.updateRate: int = 3000
+        self.updateRate: int = 500
         self.loadConfig: bool = False
         self.client: Any = None
         self.deviceName: str = ""
@@ -89,7 +89,7 @@ class AscomClass(DriverData):
         except Exception as e:
             self.log.debug(f"[{self.deviceName}] method [{method}] not implemented: {e}")
             return None
-        self.log.trace(f"[{self.deviceName}] method [{method}] called [{param}]")
+        self.log.trace(f"[{self.deviceName}] method [{method}] called [{kwargs}]")
         return result
 
     def getAndStoreAscomProperty(self, valueProp: str, element: str) -> None:
@@ -109,9 +109,8 @@ class AscomClass(DriverData):
                 cmd = self.commandQueue.get_nowait()
             except queue.Empty:
                 break
-            print(cmd)
             if cmd.cmdType == "call":
-                self.callAscomMethod(cmd.name, cmd.args)
+                self.callAscomMethod(method=cmd.name, **cmd.kwargs)
             elif cmd.cmdType == "set":
                 self.setAscomProperty(cmd.name, cmd.value)
             else:

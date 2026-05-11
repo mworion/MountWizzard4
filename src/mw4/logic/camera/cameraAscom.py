@@ -17,9 +17,7 @@ import numpy as np
 from astropy.io import fits
 from mw4.base.ascomClass import AscomClass
 from typing import Any
-import platform
-if platform.system() == "Windows":
-    from pythoncom import CoInitialize, CoUninitialize
+
 
 class CameraAscom(AscomClass):
     CAMERA_STATES: list[str] = ["CameraIdle", "CameraWaiting", "CameraExposing", "CameraReading",
@@ -54,12 +52,17 @@ class CameraAscom(AscomClass):
         self.log.debug(f"Initial data: {self.data}")
 
     def saveImage(self):
-        if not self.getAscomProperty("ImageReady"):
+        if not self.parent.exposing:
+            print("no exposure")
+            return
+        state = self.getAscomProperty("ImageReady")
+        print(state, self.data["CAMERA.STATE"])
+        if not state:
             timeLeft = 1
             text = f"expose {timeLeft:3.0f} s"
             self.signals.message.emit(text)
             return
-
+        print("weiter")
         self.signals.exposed.emit(self.parent.imagePath)
         self.signals.message.emit("download")
         data = self.getAscomProperty("ImageArray")
@@ -72,7 +75,6 @@ class CameraAscom(AscomClass):
         self.parent.exposeFinished()
 
     def pollData(self) -> None:
-        super().pollData()
         self.getAndStoreAscomProperty("BinX", "CCD_BINNING.HOR_BIN")
         self.getAndStoreAscomProperty("BinY", "CCD_BINNING.VERT_BIN")
         self.getAndStoreAscomProperty("CameraState", "CAMERA.STATE")
@@ -84,8 +86,7 @@ class CameraAscom(AscomClass):
         )
         self.getAndStoreAscomProperty("CoolerOn", "CCD_COOLER.COOLER_ON")
         self.getAndStoreAscomProperty("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
-        print(self.data["CAMERA.STATE"])
-        # self.saveImage()
+        self.saveImage()
 
     def expose(self) -> None:
         self.setAscomPropertyQueued("BinX", self.parent.binning)

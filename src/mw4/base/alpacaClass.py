@@ -243,12 +243,7 @@ class AlpacaClass(DriverData):
             except queue.Empty:
                 break
             if cmd.cmdType == "call":
-                try:
-                    getattr(self.device, cmd.name)(**cmd.kwargs)
-                except AlpycaNotImplError:
-                    self.log.warning(f"[{self.deviceName}] [{cmd.name}] not implemented")
-                except Exception as e:
-                    self.log.error(f"[{self.deviceName}] call [{cmd.name}] exception: [{e}]")
+                self.callDeviceMethod(method=cmd.name, **cmd.kwargs)
             elif cmd.cmdType == "set":
                 self.setDeviceProp(cmd.name, cmd.value)
             else:

@@ -28,6 +28,7 @@ class SGProClass(DriverData):
     PROTOCOL: str = "http"
     BASE_URL: str = f"{PROTOCOL}://{HOST_ADDR}:{PORT}"
     DEVICE_TYPE: str = "Camera"
+    UPDATE_RATE: int = 1000
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
@@ -37,7 +38,6 @@ class SGProClass(DriverData):
         self.msg: Any = parent.app.msg
         self.signals: Any = parent.signals
         self.threadPool: QThreadPool = parent.app.threadPool
-        self.updateRate: int = 1000
         self.loadConfig: bool = False
         self._deviceName: str = ""
         self.defaultConfig: dict[str, Any] = {
@@ -112,7 +112,7 @@ class SGProClass(DriverData):
         return response.get("Devices", [])
 
     def startSGProTimer(self) -> None:
-        self.cycleDevice.start(self.updateRate)
+        self.cycleDevice.start(self.UPDATE_RATE)
 
     def stopSGProTimer(self) -> None:
         self.cycleDevice.stop()

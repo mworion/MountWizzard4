@@ -173,31 +173,37 @@ def test_callAscomMethod_3(function):
 
 
 def test_getAndStoreAscomProperty(function):
-    with mock.patch.object(function, "getAscomProperty"):
-        with mock.patch.object(function, "storePropertyToData"):
-            function.getAndStoreAscomProperty(10, "YES")
+    with (
+        mock.patch.object(function, "getAscomProperty"),
+        mock.patch.object(function, "storePropertyToData"),
+    ):
+        function.getAndStoreAscomProperty(10, "YES")
 
 
 def test_workerConnectDevice_1(function):
     function.serverConnected = False
     function.deviceConnected = False
-    with mock.patch.object(time, "sleep"):
-        with mock.patch.object(function, "setAscomProperty"):
-            with mock.patch.object(function, "getAscomProperty", return_value=False):
-                function.workerConnectDevice()
-                assert not function.serverConnected
-                assert not function.deviceConnected
+    with (
+        mock.patch.object(time, "sleep"),
+        mock.patch.object(function, "setAscomProperty"),
+        mock.patch.object(function, "getAscomProperty", return_value=False),
+    ):
+        function.workerConnectDevice()
+        assert not function.serverConnected
+        assert not function.deviceConnected
 
 
 def test_workerConnectDevice_2(function):
     function.serverConnected = False
     function.deviceConnected = False
-    with mock.patch.object(time, "sleep"):
-        with mock.patch.object(function, "setAscomProperty"):
-            with mock.patch.object(function, "getAscomProperty", return_value=True):
-                function.workerConnectDevice()
-                assert function.serverConnected
-                assert function.deviceConnected
+    with (
+        mock.patch.object(time, "sleep"),
+        mock.patch.object(function, "setAscomProperty"),
+        mock.patch.object(function, "getAscomProperty", return_value=True),
+    ):
+        function.workerConnectDevice()
+        assert function.serverConnected
+        assert function.deviceConnected
 
 
 def test_workerGetInitialConfig_1(function):
@@ -270,25 +276,27 @@ def test_workerPollData(function):
 
 
 def test_pollData(function):
-    with mock.patch.object(function, "callMethodThreaded"):
+    with mock.patch.object(function.threadPool, "start"):
         function.pollData()
 
 
 def test_pollStatus(function):
-    with mock.patch.object(function, "callMethodThreaded"):
+    with mock.patch.object(function.threadPool, "start"):
         function.pollStatus()
 
 
 def test_getInitialConfig(function):
-    with mock.patch.object(function, "callMethodThreaded"):
+    with mock.patch.object(function.threadPool, "start"):
         function.getInitialConfig()
 
 
 def test_startCommunication_1(function):
     function.deviceName = "test"
-    with mock.patch.object(function.threadPool, "start"):
-        with mock.patch.object(win32com.client.dynamic, "Dispatch"):
-            function.startCommunication()
+    with (
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch.object(win32com.client.dynamic, "Dispatch"),
+    ):
+        function.startCommunication()
 
 
 def test_startCommunication_2(function):
@@ -305,9 +313,11 @@ def test_stopCommunication_1(function):
     function.deviceConnected = True
     function.serverConnected = True
     function.deviceName = "test"
-    with mock.patch.object(function, "stopAscomTimer"):
-        with mock.patch.object(function, "setAscomProperty"):
-            function.stopCommunication()
+    with (
+        mock.patch.object(function, "stopAscomTimer"),
+        mock.patch.object(function, "setAscomProperty"),
+    ):
+        function.stopCommunication()
 
 
 def test_stopCommunication_2(function):
@@ -315,11 +325,13 @@ def test_stopCommunication_2(function):
     function.deviceConnected = True
     function.serverConnected = True
     function.deviceName = "test"
-    with mock.patch.object(function, "stopAscomTimer"):
-        with mock.patch.object(function, "setAscomProperty"):
-            function.stopCommunication()
-            assert not function.serverConnected
-            assert not function.deviceConnected
+    with (
+        mock.patch.object(function, "stopAscomTimer"),
+        mock.patch.object(function, "setAscomProperty"),
+    ):
+        function.stopCommunication()
+        assert not function.serverConnected
+        assert not function.deviceConnected
 
 
 def test_selectAscomDriver_1(function):

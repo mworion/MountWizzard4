@@ -352,31 +352,37 @@ def test_setAlpacaProperty_9(function):
 
 
 def test_getAndStoreAlpacaProperty(function):
-    with mock.patch.object(function, "getAlpacaProperty"):
-        with mock.patch.object(function, "storePropertyToData"):
-            function.getAndStoreAlpacaProperty(10, "YES")
+    with (
+        mock.patch.object(function, "getAlpacaProperty"),
+        mock.patch.object(function, "storePropertyToData"),
+    ):
+        function.getAndStoreAlpacaProperty(10, "YES")
 
 
 def test_workerConnectDevice_1(function):
     function.serverConnected = False
     function.deviceConnected = False
-    with mock.patch.object(time, "sleep"):
-        with mock.patch.object(function, "setAlpacaProperty"):
-            with mock.patch.object(function, "getAlpacaProperty", return_value=False):
-                function.workerConnectDevice()
-                assert not function.serverConnected
-                assert not function.deviceConnected
+    with (
+        mock.patch.object(time, "sleep"),
+        mock.patch.object(function, "setAlpacaProperty"),
+        mock.patch.object(function, "getAlpacaProperty", return_value=False),
+    ):
+        function.workerConnectDevice()
+        assert not function.serverConnected
+        assert not function.deviceConnected
 
 
 def test_workerConnectDevice_2(function):
     function.serverConnected = False
     function.deviceConnected = False
-    with mock.patch.object(time, "sleep"):
-        with mock.patch.object(function, "setAlpacaProperty"):
-            with mock.patch.object(function, "getAlpacaProperty", return_value=True):
-                function.workerConnectDevice()
-                assert function.serverConnected
-                assert function.deviceConnected
+    with (
+        mock.patch.object(time, "sleep"),
+        mock.patch.object(function, "setAlpacaProperty"),
+        mock.patch.object(function, "getAlpacaProperty", return_value=True),
+    ):
+        function.workerConnectDevice()
+        assert function.serverConnected
+        assert function.deviceConnected
 
 
 def test_startTimer(function):
@@ -463,11 +469,13 @@ def test_stopCommunication_1(function):
     function.deviceConnected = True
     function.serverConnected = True
     function.deviceName = "test"
-    with mock.patch.object(function, "stopAlpacaTimer"):
-        with mock.patch.object(function, "setAlpacaProperty"):
-            function.stopCommunication()
-            assert not function.serverConnected
-            assert not function.deviceConnected
+    with (
+        mock.patch.object(function, "stopAlpacaTimer"),
+        mock.patch.object(function, "setAlpacaProperty"),
+    ):
+        function.stopCommunication()
+        assert not function.serverConnected
+        assert not function.deviceConnected
 
 
 def test_discoverDevices_1(function):

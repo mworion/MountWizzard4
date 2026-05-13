@@ -62,6 +62,7 @@ class AlpacaClass(DriverData):
         self.threadPool: QThreadPool = parent.app.threadPool
         self.updateRate: int = 1000
         self.loadConfig: bool = False
+        self.propertyExceptions: list[str] = []
         self._host: tuple[str, int] = ("localhost", 11111)
         self._port: int = 11111
         self._hostaddress: str = "localhost"
@@ -145,21 +146,27 @@ class AlpacaClass(DriverData):
         return True
 
     def getDeviceProp(self, attr: str) -> Any:
+        if valueProp in self.propertyExceptions:
+            return value
         try:
             return getattr(self.device, attr)
         except AlpycaNotImplError:
             self.log.warning(f"[{self.deviceName}] [{attr}] not implemented")
+            self.propertyExceptions.append(valueProp)
             return None
         except Exception as e:
             self.log.error(f"[{self.deviceName}] get [{attr}] exception: [{e}]")
             return None
 
     def setDeviceProp(self, attr: str, value: Any) -> bool:
+        if valueProp in self.propertyExceptions:
+            return value
         try:
             setattr(self.device, attr, value)
             return True
         except AlpycaNotImplError:
             self.log.warning(f"[{self.deviceName}] [{attr}] not implemented")
+            self.propertyExceptions.append(valueProp)
             return False
         except Exception as e:
             self.log.error(f"[{self.deviceName}] set [{attr}] exception: [{e}]")
@@ -172,10 +179,13 @@ class AlpacaClass(DriverData):
         self.commandQueue.put(CommandItem(cmdType="call", name=method, kwargs=kwargs))
 
     def callDeviceMethod(self, method: str, **kwargs: Any) -> Any:
+        if valueProp in self.propertyExceptions:
+            return value
         try:
             return getattr(self.device, method)(**kwargs)
         except AlpycaNotImplError:
             self.log.warning(f"[{self.deviceName}] [{method}] not implemented")
+            self.propertyExceptions.append(valueProp)
             return None
         except Exception as e:
             self.log.error(f"[{self.deviceName}] call [{method}] exception: [{e}]")
@@ -282,6 +292,7 @@ class AlpacaClass(DriverData):
 
     def startCommunication(self) -> None:
         self.data.clear()
+        self.propertyExceptions.clear()
         self.stopEvent.clear()
         self.workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
         if not self.createAlpacaDevice():

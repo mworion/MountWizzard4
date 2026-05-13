@@ -39,6 +39,7 @@ class CommandItem:
 
 
 class AscomClass(DriverData):
+    UPDATE_RATE: float = 0.5
     def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
         self.parent: Any = parent
@@ -48,7 +49,6 @@ class AscomClass(DriverData):
         self.msg: Any = parent.app.msg
         self.deviceType: str = parent.deviceType
         self.threadPool: QThreadPool = parent.app.threadPool
-        self.updateRate: int = 500
         self.loadConfig: bool = False
         self.propertyExceptions: list[str] = []
         self.client: Any = None
@@ -179,7 +179,7 @@ class AscomClass(DriverData):
                 except Exception as e:
                     self.log.error(f"[{self.deviceName}] pollData error: [{e}]")
                 self.processCommandQueue()
-            self.stopEvent.wait(timeout=self.updateRate / 1000)
+            self.stopEvent.wait(timeout=self.UPDATE_RATE)
 
     def runnerCommunicationLoop(self) -> None:
         CoInitialize()

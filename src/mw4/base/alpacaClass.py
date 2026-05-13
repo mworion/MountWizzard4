@@ -42,6 +42,7 @@ class CommandItem:
 
 
 class AlpacaClass(DriverData):
+    UPDATE_RATE: float = 0.5
     DEVICE_TYPE_MAP: dict[str, type] = {
         "camera": AlpycaCamera,
         "dome": AlpycaDome,
@@ -288,7 +289,7 @@ class AlpacaClass(DriverData):
             except Exception as e:
                 self.log.error(f"[{self.deviceName}] pollData exception: [{e}]")
             self.processCommandQueue()
-            self.stopEvent.wait(timeout=self.updateRate / 1000)
+            self.stopEvent.wait(timeout=self.UPDATE_RATE)
 
     def startCommunication(self) -> None:
         self.data.clear()

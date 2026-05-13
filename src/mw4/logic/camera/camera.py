@@ -41,7 +41,6 @@ class Camera:
         self.signals = Signals()
         self.data: dict[str, Any] = {}
         self.loadConfig: bool = True
-        self.updateRate: int = 1000
         self.deviceType: str = ""
         self.exposing: bool = False
         self.fastReadout: bool = False

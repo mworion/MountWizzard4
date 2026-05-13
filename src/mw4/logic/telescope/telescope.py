@@ -33,7 +33,6 @@ class Telescope:
         self.signals = Signals()
         self.data: dict[str, Any] = {}
         self.loadConfig: bool = True
-        self.updateRate: int = 10000
         self.deviceType: str = ""
         self.framework: str = ""
         self.defaultConfig: dict[str, Any] = {"framework": "", "frameworks": {}}

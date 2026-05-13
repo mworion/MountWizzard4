@@ -35,7 +35,6 @@ class SensorWeather:
         self.signals = Signals()
         self.data: dict[str, Any] = {}
         self.loadConfig: bool = True
-        self.updateRate: int = 1000
         self.deviceType: str = ""
         self.defaultConfig: dict[str, Any] = {"framework": "", "frameworks": {}}
         self.framework: str = ""

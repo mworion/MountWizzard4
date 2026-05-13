@@ -36,7 +36,6 @@ class Dome:
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.loadConfig: bool = True
-        self.updateRate: int = 1000
         self.deviceType: str = ""
         self.data: dict[str, Any] = {
             "Slewing": False,

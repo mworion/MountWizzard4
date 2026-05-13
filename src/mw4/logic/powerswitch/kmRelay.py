@@ -29,7 +29,7 @@ class RelaySignals(Signals):
 class KMRelay:
     log = logging.getLogger("MW4")
 
-    CYCLE_POLLING = 1000
+    UPDATE_RATE = 1000
     DEFAULT_PORT = 80
     TIMEOUT = 0.5
     PULSEWIDTH = 0.5
@@ -68,7 +68,7 @@ class KMRelay:
             return
 
         self.deviceConnected = False
-        self.timerTask.start(self.CYCLE_POLLING)
+        self.timerTask.start(self.UPDATE_RATE)
 
     def stopCommunication(self) -> None:
         self.timerTask.stop()

@@ -50,6 +50,7 @@ class AscomClass(DriverData):
         self.threadPool: QThreadPool = parent.app.threadPool
         self.updateRate: int = 500
         self.loadConfig: bool = False
+        self.propertyExceptions: list[str] = []
         self.client: Any = None
         self.deviceName: str = ""
         self.deviceConnected: bool = False
@@ -64,10 +65,13 @@ class AscomClass(DriverData):
         self.workerCommunicationLoop: Worker | None = None
 
     def getAscomProperty(self, valueProp: str) -> str | float | bool | None:
+        if valueProp in self.propertyExceptions:
+            return value
         try:
             value = getattr(self.client, valueProp)
         except Exception as e:
             self.log.debug(f"[{self.deviceName}] property [{valueProp}] not implemented: {e}")
+            self.propertyExceptions.append(valueProp)
             return None
         if valueProp != "ImageArray":
             self.log.trace(f"[{self.deviceName}] property [{valueProp}] has value: [{value}]")
@@ -76,18 +80,24 @@ class AscomClass(DriverData):
         return value
 
     def setAscomProperty(self, valueProp: str, value: Any) -> None:
+        if valueProp in self.propertyExceptions:
+            return value
         try:
             setattr(self.client, valueProp, value)
         except Exception as e:
             self.log.debug(f"[{self.deviceName}] property [{valueProp}] not implemented: {e}")
+            self.propertyExceptions.append(valueProp)
             return
         self.log.trace(f"[{self.deviceName}] property [{valueProp}] set to: [{value}]")
 
     def callAscomMethod(self, method: str, **kwargs: Any) -> Any:
+        if valueProp in self.propertyExceptions:
+            return value
         try:
             result = getattr(self.client, method)(**kwargs)
         except Exception as e:
             self.log.debug(f"[{self.deviceName}] method [{method}] not implemented: {e}")
+            self.propertyExceptions.append(valueProp)
             return None
         self.log.trace(f"[{self.deviceName}] method [{method}] called [{kwargs}]")
         return result
@@ -189,6 +199,7 @@ class AscomClass(DriverData):
 
     def startCommunication(self) -> None:
         self.data.clear()
+        self.propertyExceptions.clear()
         if not self.deviceName:
             return
         self.stopEvent.clear()

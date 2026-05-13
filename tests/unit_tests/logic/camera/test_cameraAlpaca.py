@@ -51,7 +51,7 @@ def test_sendDownloadMode_1(function):
     function.sendDownloadMode()
     item = function.commandQueue.get_nowait()
     assert item.cmdType == "set"
-    assert item.name == "FastReadout"
+    assert item.valueProp == "FastReadout"
 
 
 def test_sendDownloadMode_2(function):
@@ -70,8 +70,8 @@ def test_waitFunc(function):
 
 def test_workerExpose_1(function):
     with mock.patch.object(function, "sendDownloadMode"):
-        with mock.patch.object(function, "setDeviceProp"):
-            with mock.patch.object(function, "callDeviceMethod"):
+        with mock.patch.object(function, "setDevicePropQueued"):
+            with mock.patch.object(function, "callDeviceMethodQueued"):
                 with mock.patch.object(
                     function, "getDeviceProp", return_value=[[1, 2], [3, 4]]
                 ):
@@ -107,7 +107,7 @@ def test_sendCoolerSwitch_1(function):
     function.sendCoolerSwitch()
     item = function.commandQueue.get_nowait()
     assert item.cmdType == "set"
-    assert item.name == "CoolerOn"
+    assert item.valueProp == "CoolerOn"
     assert item.value is False
 
 
@@ -117,7 +117,7 @@ def test_sendCoolerSwitch_2(function):
     function.sendCoolerSwitch(coolerOn=True)
     item = function.commandQueue.get_nowait()
     assert item.cmdType == "set"
-    assert item.name == "CoolerOn"
+    assert item.valueProp == "CoolerOn"
     assert item.value is True
 
 
@@ -128,7 +128,7 @@ def test_sendCoolerTemp_1(function):
     function.sendCoolerTemp(temperature=-10.0)
     item = function.commandQueue.get_nowait()
     assert item.cmdType == "set"
-    assert item.name == "SetCCDTemperature"
+    assert item.valueProp == "SetCCDTemperature"
     assert item.value == -10.0
 
 
@@ -146,7 +146,7 @@ def test_sendOffset_1(function):
     function.sendOffset(offset=50)
     item = function.commandQueue.get_nowait()
     assert item.cmdType == "set"
-    assert item.name == "Offset"
+    assert item.valueProp == "Offset"
     assert item.value == 50
 
 
@@ -156,5 +156,5 @@ def test_sendGain_1(function):
     function.sendGain(gain=100)
     item = function.commandQueue.get_nowait()
     assert item.cmdType == "set"
-    assert item.name == "Gain"
+    assert item.valueProp == "Gain"
     assert item.value == 100

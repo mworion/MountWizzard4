@@ -53,7 +53,7 @@ def test_closeCover_1(function):
     function.closeCover()
     assert not function.commandQueue.empty()
     item = function.commandQueue.get_nowait()
-    assert item.name == "CloseCover"
+    assert item.valueProp == "CloseCover"
 
 
 def test_openCover_1(function):
@@ -62,7 +62,7 @@ def test_openCover_1(function):
     function.openCover()
     assert not function.commandQueue.empty()
     item = function.commandQueue.get_nowait()
-    assert item.name == "OpenCover"
+    assert item.valueProp == "OpenCover"
 
 
 def test_haltCover_1(function):
@@ -71,4 +71,4 @@ def test_haltCover_1(function):
     function.haltCover()
     assert not function.commandQueue.empty()
     item = function.commandQueue.get_nowait()
-    assert item.name == "HaltCover"
+    assert item.valueProp == "HaltCover"

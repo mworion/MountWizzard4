@@ -69,6 +69,10 @@ class CameraAlpaca(AlpacaClass):
         return not self.getDeviceProp("ImageReady")
 
     def expose(self) -> None:
+        worker = Worker(self.workerExpose)
+        self.threadPool.start(worker)
+
+    def workerExpose(self) -> None:
         self.sendDownloadMode()
         self.setDevicePropQueued("BinX", self.parent.binning)
         self.setDevicePropQueued("BinY", self.parent.binning)

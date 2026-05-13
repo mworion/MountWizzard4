@@ -63,7 +63,6 @@ class AlpacaClass(DriverData):
         self.threadPool: QThreadPool = parent.app.threadPool
         self.updateRate: int = 1000
         self.loadConfig: bool = False
-        self.propertyExceptions: list[str] = []
         self._host: tuple[str, int] = ("localhost", 11111)
         self._port: int = 11111
         self._hostaddress: str = "localhost"
@@ -90,6 +89,7 @@ class AlpacaClass(DriverData):
         self.commandQueue: queue.Queue = queue.Queue()
         self.stopEvent: threading.Event = threading.Event()
         self.workerCommunicationLoop: Worker | None = None
+
 
     @property
     def host(self) -> tuple[str, int]:
@@ -147,27 +147,21 @@ class AlpacaClass(DriverData):
         return True
 
     def getDeviceProp(self, valueProp: str) -> Any:
-        if valueProp in self.propertyExceptions:
-            return value
         try:
             return getattr(self.device, valueProp)
         except AlpycaNotImplError:
             self.log.warning(f"[{self.deviceName}] [{valueProp}] not implemented")
-            self.propertyExceptions.append(valueProp)
             return None
         except Exception as e:
             self.log.error(f"[{self.deviceName}] get [{valueProp}] exception: [{e}]")
             return None
 
     def setDeviceProp(self, valueProp: str, value: Any) -> bool:
-        if valueProp in self.propertyExceptions:
-            return value
         try:
             setattr(self.device, valueProp, value)
             return True
         except AlpycaNotImplError:
             self.log.warning(f"[{self.deviceName}] [{valueProp}] not implemented")
-            self.propertyExceptions.append(valueProp)
             return False
         except Exception as e:
             self.log.error(f"[{self.deviceName}] set [{valueProp}] exception: [{e}]")
@@ -180,13 +174,10 @@ class AlpacaClass(DriverData):
         self.commandQueue.put(CommandItem(cmdType="call", valueProp=valueProp, kwargs=kwargs))
 
     def callDeviceMethod(self, valueProp: str, **kwargs: Any) -> Any:
-        if valueProp in self.propertyExceptions:
-            return value
         try:
             return getattr(self.device, valueProp)(**kwargs)
         except AlpycaNotImplError:
             self.log.warning(f"[{self.deviceName}] [{valueProp}] not implemented")
-            self.propertyExceptions.append(valueProp)
             return None
         except Exception as e:
             self.log.error(f"[{self.deviceName}] call [{valueProp}] exception: [{e}]")
@@ -293,7 +284,6 @@ class AlpacaClass(DriverData):
 
     def startCommunication(self) -> None:
         self.data.clear()
-        self.propertyExceptions.clear()
         self.stopEvent.clear()
         self.workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
         if not self.createAlpacaDevice():

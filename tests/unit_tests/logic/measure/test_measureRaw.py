@@ -23,7 +23,7 @@ from mw4.logic.measure.measureRaw import MeasureDataRaw
 @pytest.fixture(autouse=True, scope="module")
 def function():
     class Test1:
-        CYCLE_UPDATE_TASK = 1000
+        UPDATE_RATE = 1000
 
         @staticmethod
         def setEmptyData():

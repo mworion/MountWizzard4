@@ -64,7 +64,6 @@ def test_init(function):
     assert hasattr(function, "workerCommunicationLoop")
     assert isinstance(function.commandQueue, queue.Queue)
     assert isinstance(function.stopEvent, threading.Event)
-    assert not hasattr(function, "propertyExceptions")
     assert not hasattr(function, "cycleDevice")
     assert not hasattr(function, "cycleData")
 
@@ -182,7 +181,7 @@ def test_callDeviceMethodQueued_1(function):
     assert not function.commandQueue.empty()
     item = function.commandQueue.get_nowait()
     assert item.cmdType == "call"
-    assert item.name == "Halt"
+    assert item.valueProp == "Halt"
 
 
 def test_setDevicePropQueued_1(function):
@@ -192,7 +191,7 @@ def test_setDevicePropQueued_1(function):
     assert not function.commandQueue.empty()
     item = function.commandQueue.get_nowait()
     assert item.cmdType == "set"
-    assert item.name == "Connected"
+    assert item.valueProp == "Connected"
     assert item.value is True
 
 
@@ -316,32 +315,32 @@ def test_processCommandQueue_1(function):
 
 
 def test_processCommandQueue_2(function):
-    function.commandQueue.put(CommandItem(cmdType="call", name="Halt"))
+    function.commandQueue.put(CommandItem(cmdType="call", valueProp="Halt"))
     function.processCommandQueue()
     function.device.Halt.assert_called_once_with()
 
 
 def test_processCommandQueue_3(function):
-    function.commandQueue.put(CommandItem(cmdType="set", name="Connected", value=True))
+    function.commandQueue.put(CommandItem(cmdType="set", valueProp="Connected", value=True))
     with mock.patch.object(function, "setDeviceProp") as m:
         function.processCommandQueue()
         m.assert_called_once_with("Connected", True)
 
 
 def test_processCommandQueue_4(function):
-    function.commandQueue.put(CommandItem(cmdType="unknown", name="Halt"))
+    function.commandQueue.put(CommandItem(cmdType="unknown", valueProp="Halt"))
     function.processCommandQueue()
 
 
 def test_processCommandQueue_5(function):
     function.device.Halt.side_effect = Exception("error")
-    function.commandQueue.put(CommandItem(cmdType="call", name="Halt"))
+    function.commandQueue.put(CommandItem(cmdType="call", valueProp="Halt"))
     function.processCommandQueue()
 
 
 def test_processCommandQueue_6(function):
     function.device.Halt.side_effect = AlpycaNotImplError("not implemented")
-    function.commandQueue.put(CommandItem(cmdType="call", name="Halt"))
+    function.commandQueue.put(CommandItem(cmdType="call", valueProp="Halt"))
     function.processCommandQueue()
 
 

@@ -76,5 +76,5 @@ def test_sendFilterNumber_1(function):
     function.sendFilterNumber(filterNumber=2)
     item = function.commandQueue.get_nowait()
     assert item.cmdType == "set"
-    assert item.name == "Position"
+    assert item.valueProp == "Position"
     assert item.value == 2

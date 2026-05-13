@@ -51,7 +51,7 @@ def test_lightOn_1(function):
         function.commandQueue.get_nowait()
     function.lightOn()
     item = function.commandQueue.get_nowait()
-    assert item.name == "CalibratorOn"
+    assert item.valueProp == "CalibratorOn"
     assert item.kwargs == {"Brightness": 127}
 
 
@@ -60,7 +60,7 @@ def test_lightOff_1(function):
         function.commandQueue.get_nowait()
     function.lightOff()
     item = function.commandQueue.get_nowait()
-    assert item.name == "CalibratorOff"
+    assert item.valueProp == "CalibratorOff"
 
 
 def test_lightIntensity_1(function):
@@ -68,5 +68,5 @@ def test_lightIntensity_1(function):
         function.commandQueue.get_nowait()
     function.lightIntensity(100.5)
     item = function.commandQueue.get_nowait()
-    assert item.name == "CalibratorOn"
+    assert item.valueProp == "CalibratorOn"
     assert item.kwargs == {"Brightness": 100}

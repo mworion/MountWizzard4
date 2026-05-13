@@ -46,7 +46,7 @@ def test_move_1(function):
         function.commandQueue.get_nowait()
     function.move(position=100)
     item = function.commandQueue.get_nowait()
-    assert item.name == "Move"
+    assert item.valueProp == "Move"
     assert item.kwargs == {"Position": 100}
 
 
@@ -55,4 +55,4 @@ def test_halt_1(function):
         function.commandQueue.get_nowait()
     function.halt()
     item = function.commandQueue.get_nowait()
-    assert item.name == "Halt"
+    assert item.valueProp == "Halt"

@@ -28,7 +28,6 @@ class Parent:
         self.data: dict = {}
         self.signals = Signals()
         self.loadConfig = True
-        self.updateRate = 1000
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -74,7 +73,6 @@ def test_defaultConfig(function):
     assert function.defaultConfig["port"] == 7624
     assert function.defaultConfig["loadConfig"] is False
     assert function.defaultConfig["messages"] is False
-    assert function.defaultConfig["updateRate"] == 1000
 
 
 # ─── updateMessage ───────────────────────────────────────────────────────────

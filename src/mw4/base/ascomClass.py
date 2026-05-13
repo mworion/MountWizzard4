@@ -90,16 +90,16 @@ class AscomClass(DriverData):
             return
         self.log.trace(f"[{self.deviceName}] property [{valueProp}] set to: [{value}]")
 
-    def callAscomMethod(self, method: str, **kwargs: Any) -> Any:
+    def callAscomMethod(self, valueProp: str, **kwargs: Any) -> Any:
         if valueProp in self.propertyExceptions:
             return value
         try:
-            result = getattr(self.client, method)(**kwargs)
+            result = getattr(self.client, valueProp)(**kwargs)
         except Exception as e:
-            self.log.debug(f"[{self.deviceName}] method [{method}] not implemented: {e}")
+            self.log.debug(f"[{self.deviceName}] method [{valueProp}] not implemented: {e}")
             self.propertyExceptions.append(valueProp)
             return None
-        self.log.trace(f"[{self.deviceName}] method [{method}] called [{kwargs}]")
+        self.log.trace(f"[{self.deviceName}] method [{valueProp}] called [{kwargs}]")
         return result
 
     def getAndStoreAscomProperty(self, valueProp: str, element: str) -> None:
@@ -109,8 +109,8 @@ class AscomClass(DriverData):
     def setAscomPropertyQueued(self, valueProp: str, value: Any) -> None:
         self.commandQueue.put(CommandItem(cmdType="set", name=valueProp, value=value))
 
-    def callAscomMethodQueued(self, method: str, **kwargs: Any) -> None:
-        self.commandQueue.put(CommandItem(cmdType="call", name=method, kwargs=kwargs))
+    def callAscomMethodQueued(self, valueProp: str, **kwargs: Any) -> None:
+        self.commandQueue.put(CommandItem(cmdType="call", name=valueProp, kwargs=kwargs))
         self.log.trace(f"[{self.deviceName}] method [{method}] queued")
 
     def processCommandQueue(self) -> None:
@@ -120,7 +120,7 @@ class AscomClass(DriverData):
             except queue.Empty:
                 break
             if cmd.cmdType == "call":
-                self.callAscomMethod(method=cmd.name, **cmd.kwargs)
+                self.callAscomMethod(valueProp=cmd.name, **cmd.kwargs)
             elif cmd.cmdType == "set":
                 self.setAscomProperty(cmd.name, cmd.value)
             else:

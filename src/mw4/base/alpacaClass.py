@@ -146,54 +146,54 @@ class AlpacaClass(DriverData):
         self.log.debug(f"Created [{self.deviceType}] device at [{address}]")
         return True
 
-    def getDeviceProp(self, attr: str) -> Any:
+    def getDeviceProp(self, valueProp: str) -> Any:
         if valueProp in self.propertyExceptions:
             return value
         try:
-            return getattr(self.device, attr)
+            return getattr(self.device, valueProp)
         except AlpycaNotImplError:
-            self.log.warning(f"[{self.deviceName}] [{attr}] not implemented")
+            self.log.warning(f"[{self.deviceName}] [{valueProp}] not implemented")
             self.propertyExceptions.append(valueProp)
             return None
         except Exception as e:
-            self.log.error(f"[{self.deviceName}] get [{attr}] exception: [{e}]")
+            self.log.error(f"[{self.deviceName}] get [{valueProp}] exception: [{e}]")
             return None
 
-    def setDeviceProp(self, attr: str, value: Any) -> bool:
+    def setDeviceProp(self, valueProp: str, value: Any) -> bool:
         if valueProp in self.propertyExceptions:
             return value
         try:
-            setattr(self.device, attr, value)
+            setattr(self.device, valueProp, value)
             return True
         except AlpycaNotImplError:
-            self.log.warning(f"[{self.deviceName}] [{attr}] not implemented")
+            self.log.warning(f"[{self.deviceName}] [{valueProp}] not implemented")
             self.propertyExceptions.append(valueProp)
             return False
         except Exception as e:
-            self.log.error(f"[{self.deviceName}] set [{attr}] exception: [{e}]")
+            self.log.error(f"[{self.deviceName}] set [{valueProp}] exception: [{e}]")
             return False
 
-    def setDevicePropQueued(self, attr: str, value: Any) -> None:
-        self.commandQueue.put(CommandItem(cmdType="set", name=attr, value=value))
+    def setDevicePropQueued(self, valueProp: str, value: Any) -> None:
+        self.commandQueue.put(CommandItem(cmdType="set", name=valueProp, value=value))
 
-    def callDeviceMethodQueued(self, method: str, **kwargs: Any) -> None:
-        self.commandQueue.put(CommandItem(cmdType="call", name=method, kwargs=kwargs))
+    def callDeviceMethodQueued(self, valueProp: str, **kwargs: Any) -> None:
+        self.commandQueue.put(CommandItem(cmdType="call", name=valueProp, kwargs=kwargs))
 
-    def callDeviceMethod(self, method: str, **kwargs: Any) -> Any:
+    def callDeviceMethod(self, valueProp: str, **kwargs: Any) -> Any:
         if valueProp in self.propertyExceptions:
             return value
         try:
-            return getattr(self.device, method)(**kwargs)
+            return getattr(self.device, valueProp)(**kwargs)
         except AlpycaNotImplError:
-            self.log.warning(f"[{self.deviceName}] [{method}] not implemented")
+            self.log.warning(f"[{self.deviceName}] [{valueProp}] not implemented")
             self.propertyExceptions.append(valueProp)
             return None
         except Exception as e:
-            self.log.error(f"[{self.deviceName}] call [{method}] exception: [{e}]")
+            self.log.error(f"[{self.deviceName}] call [{valueProp}] exception: [{e}]")
             return None
 
-    def getAndStoreDeviceProp(self, attr: str, element: str) -> None:
-        value = self.getDeviceProp(attr)
+    def getAndStoreDeviceProp(self, valueProp: str, element: str) -> None:
+        value = self.getDeviceProp(valueProp)
         self.storePropertyToData(value, element)
 
     def discoverAPIVersion(self) -> int:

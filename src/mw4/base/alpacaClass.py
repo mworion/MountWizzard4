@@ -36,7 +36,7 @@ from typing import Any
 @dataclass
 class CommandItem:
     cmdType: str
-    name: str
+    valueProp: str
     kwargs: dict = field(default_factory=dict)
     value: Any = None
 
@@ -174,10 +174,10 @@ class AlpacaClass(DriverData):
             return False
 
     def setDevicePropQueued(self, valueProp: str, value: Any) -> None:
-        self.commandQueue.put(CommandItem(cmdType="set", name=valueProp, value=value))
+        self.commandQueue.put(CommandItem(cmdType="set", valueProp=valueProp, value=value))
 
     def callDeviceMethodQueued(self, valueProp: str, **kwargs: Any) -> None:
-        self.commandQueue.put(CommandItem(cmdType="call", name=valueProp, kwargs=kwargs))
+        self.commandQueue.put(CommandItem(cmdType="call", valueProp=valueProp, kwargs=kwargs))
 
     def callDeviceMethod(self, valueProp: str, **kwargs: Any) -> Any:
         if valueProp in self.propertyExceptions:
@@ -254,9 +254,9 @@ class AlpacaClass(DriverData):
             except queue.Empty:
                 break
             if cmd.cmdType == "call":
-                self.callDeviceMethod(method=cmd.name, **cmd.kwargs)
+                self.callDeviceMethod(cmd.valueProp, **cmd.kwargs)
             elif cmd.cmdType == "set":
-                self.setDeviceProp(cmd.name, cmd.value)
+                self.setDeviceProp(cmd.valueProp, cmd.value)
             else:
                 self.log.warning(f"[{self.deviceName}] unknown cmdType: [{cmd.cmdType}]")
 

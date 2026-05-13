@@ -33,7 +33,7 @@ from PySide6.QtCore import QThreadPool
 @dataclass
 class CommandItem:
     cmdType: str
-    name: str
+    valueProp: str
     kwargs: dict = field(default_factory=dict)
     value: Any = None
 
@@ -107,10 +107,10 @@ class AscomClass(DriverData):
         self.storePropertyToData(value, element)
 
     def setAscomPropertyQueued(self, valueProp: str, value: Any) -> None:
-        self.commandQueue.put(CommandItem(cmdType="set", name=valueProp, value=value))
+        self.commandQueue.put(CommandItem(cmdType="set", valueProp=valueProp, value=value))
 
     def callAscomMethodQueued(self, valueProp: str, **kwargs: Any) -> None:
-        self.commandQueue.put(CommandItem(cmdType="call", name=valueProp, kwargs=kwargs))
+        self.commandQueue.put(CommandItem(cmdType="call", valueProp=valueProp, kwargs=kwargs))
         self.log.trace(f"[{self.deviceName}] method [{method}] queued")
 
     def processCommandQueue(self) -> None:
@@ -120,9 +120,9 @@ class AscomClass(DriverData):
             except queue.Empty:
                 break
             if cmd.cmdType == "call":
-                self.callAscomMethod(valueProp=cmd.name, **cmd.kwargs)
+                self.callAscomMethod(cmd.valueProp, **cmd.kwargs)
             elif cmd.cmdType == "set":
-                self.setAscomProperty(cmd.name, cmd.value)
+                self.setAscomProperty(cmd.valueProp, cmd.value)
             else:
                 self.log.warning(f"[{self.deviceName}] unknown cmdType: [{cmd.cmdType}]")
 

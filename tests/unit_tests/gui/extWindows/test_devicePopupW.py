@@ -138,6 +138,21 @@ def test_populateTabs_1(function):
     function.populateTabs()
 
 
+def test_populateTabs_2(function):
+    function.data = {
+        "framework": "astap",
+        "frameworks": {
+            "astap": {
+                "deviceName": "test",
+                "deviceList": ["test", "test1"],
+                "searchRadius": 30.0,
+                "timeout": 60.0,
+            },
+        },
+    }
+    function.populateTabs()
+
+
 def test_readTabs_1(function):
     function.data = {
         "framework": "indi",
@@ -149,6 +164,21 @@ def test_readTabs_1(function):
                 "hostaddress": "test",
                 "messages": True,
                 "port": 10,
+            },
+        },
+    }
+    function.readTabs()
+
+
+def test_readTabs_2(function):
+    function.data = {
+        "framework": "astap",
+        "frameworks": {
+            "astap": {
+                "deviceName": "test",
+                "deviceList": ["test", "test1"],
+                "searchRadius": 30.0,
+                "timeout": 60.0,
             },
         },
     }

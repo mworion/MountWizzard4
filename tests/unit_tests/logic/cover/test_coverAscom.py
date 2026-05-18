@@ -50,6 +50,12 @@ def test_pollData_1(function):
             function.pollData()
 
 
+def test_pollData_2(function):
+    with mock.patch.object(function, "getAscomProperty", return_value=0):
+        with mock.patch.object(function, "storePropertyToData"):
+            function.pollData()
+
+
 def test_closeCover(function):
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.closeCover()

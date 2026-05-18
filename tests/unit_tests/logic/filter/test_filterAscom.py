@@ -39,9 +39,9 @@ class Parent:
 @pytest.fixture(autouse=True, scope="module")
 def function():
     func = FilterAscom(parent=Parent())
-    func.client = mock.MagicMock()
-    func.client.Names = []
-    func.client.Position = 1
+    func.device = mock.MagicMock()
+    func.device.Names = []
+    func.device.Position = 1
     yield func
 
 

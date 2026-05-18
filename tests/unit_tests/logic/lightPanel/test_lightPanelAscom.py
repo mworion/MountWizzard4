@@ -39,9 +39,9 @@ class Parent:
 @pytest.fixture(autouse=True, scope="module")
 def function():
     func = LightPanelAscom(parent=Parent())
-    func.client = mock.MagicMock()
-    func.client.Brightness = 100
-    func.client.MaxBrightness = 255
+    func.device = mock.MagicMock()
+    func.device.Brightness = 100
+    func.device.MaxBrightness = 255
     yield func
 
 
@@ -55,16 +55,16 @@ def test_lightOn(function):
     function.app.cover.data = {"FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 200}
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.lightOn()
-    m.assert_called_once_with("CalibratorOn", 100)
+    m.assert_called_once_with("CalibratorOn", Brightness=100)
 
 
 def test_lightOff(function):
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.lightOff()
-    m.assert_called_once_with("CalibratorOff", ())
+    m.assert_called_once_with("CalibratorOff")
 
 
 def test_lightIntensity(function):
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.lightIntensity(128.0)
-    m.assert_called_once_with("CalibratorOn", 128.0)
+    m.assert_called_once_with("CalibratorOn", Brightness=128)

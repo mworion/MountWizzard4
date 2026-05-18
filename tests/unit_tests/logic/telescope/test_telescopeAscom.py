@@ -39,9 +39,9 @@ class Parent:
 @pytest.fixture(autouse=True, scope="module")
 def function():
     func = TelescopeAscom(parent=Parent())
-    func.client = mock.MagicMock()
-    func.client.ApertureDiameter = 0.1
-    func.client.FocalLength = 0.57
+    func.device = mock.MagicMock()
+    func.device.ApertureDiameter = 0.1
+    func.device.FocalLength = 0.57
     yield func
 
 

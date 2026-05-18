@@ -36,8 +36,8 @@ class Parent:
 @pytest.fixture(autouse=True, scope="module")
 def function():
     func = FocuserAscom(parent=Parent())
-    func.client = mock.MagicMock()
-    func.client.Position = 1
+    func.device = mock.MagicMock()
+    func.device.Position = 1
     yield func
 
 
@@ -49,10 +49,10 @@ def test_pollData_1(function):
 def test_move(function):
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.move(3)
-    m.assert_called_once_with("move", 3)
+    m.assert_called_once_with("Move", Position=3)
 
 
 def test_halt(function):
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.halt()
-    m.assert_called_once_with("Halt", ())
+    m.assert_called_once_with("Halt")

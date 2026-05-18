@@ -26,7 +26,7 @@ class FocuserAscom(AscomClass):
         self.getAndStoreAscomProperty("Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION")
 
     def move(self, position: int) -> None:
-        self.callAscomMethodQueued("move", position)
+        self.callAscomMethodQueued("Move", Position=position)
 
     def halt(self) -> None:
         self.callAscomMethodQueued("Halt")

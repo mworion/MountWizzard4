@@ -53,8 +53,8 @@ class DomeAscom(AscomClass):
             self.data["DOME_SHUTTER.SHUTTER_CLOSED"] = None
 
     def slewToAltAz(self, altitude: float, azimuth: float) -> None:
-        self.callAscomMethodQueued("SlewToAzimuth", azimuth)
-        self.callAscomMethodQueued("SlewToAltitude", altitude)
+        self.callAscomMethodQueued("SlewToAzimuth", Azimuth=azimuth)
+        self.callAscomMethodQueued("SlewToAltitude", Altitude=altitude)
 
     def openShutter(self) -> None:
         self.callAscomMethodQueued("OpenShutter")

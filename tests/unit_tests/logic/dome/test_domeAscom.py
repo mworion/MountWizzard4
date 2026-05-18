@@ -39,9 +39,9 @@ class Parent:
 @pytest.fixture(autouse=True, scope="module")
 def function():
     func = DomeAscom(parent=Parent())
-    func.client = mock.MagicMock()
-    func.client.Azimuth = 100
-    func.client.Slewing = False
+    func.device = mock.MagicMock()
+    func.device.Azimuth = 100
+    func.device.Slewing = False
     yield func
 
 
@@ -75,21 +75,23 @@ def test_slewToAltAz(function):
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.slewToAltAz(30.0, 180.0)
     assert m.call_count == 2
-    calls = [c[0][0] for c in m.call_args_list]
+    calls = {c[0][0]: c[1] for c in m.call_args_list}
     assert "SlewToAzimuth" in calls
+    assert calls["SlewToAzimuth"] == {"Azimuth": 180.0}
     assert "SlewToAltitude" in calls
+    assert calls["SlewToAltitude"] == {"Altitude": 30.0}
 
 
 def test_openShutter(function):
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.openShutter()
-    m.assert_called_once_with("OpenShutter", ())
+    m.assert_called_once_with("OpenShutter")
 
 
 def test_closeShutter(function):
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.closeShutter()
-    m.assert_called_once_with("CloseShutter", ())
+    m.assert_called_once_with("CloseShutter")
 
 
 def test_slewCW(function):

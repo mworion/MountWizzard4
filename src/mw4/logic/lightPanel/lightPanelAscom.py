@@ -37,10 +37,10 @@ class LightPanelAscom(AscomClass):
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
         )
         brightness = int(maxBrightness / 2)
-        self.callAscomMethodQueued("CalibratorOn", brightness)
+        self.callAscomMethodQueued("CalibratorOn", Brightness=brightness)
 
     def lightOff(self) -> None:
         self.callAscomMethodQueued("CalibratorOff")
 
     def lightIntensity(self, value: float) -> None:
-        self.callAscomMethodQueued("CalibratorOn", value)
+        self.callAscomMethodQueued("CalibratorOn", Brightness=int(value))

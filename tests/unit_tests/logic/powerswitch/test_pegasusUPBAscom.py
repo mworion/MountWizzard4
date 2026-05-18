@@ -39,7 +39,7 @@ class Parent:
 @pytest.fixture(autouse=True, scope="module")
 def function():
     func = PegasusUPBAscom(parent=Parent())
-    func.client = mock.MagicMock()
+    func.device = mock.MagicMock()
     yield func
 
 
@@ -62,7 +62,7 @@ def test_togglePowerPort(function):
     function.data["POWER_CONTROL.POWER_CONTROL_1"] = True
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.togglePowerPort("1")
-    m.assert_called_once_with("setswitch", (0, False))
+    m.assert_called_once_with("SetSwitch", Id=0, State=False)
 
 
 def test_togglePowerPortBoot(function):
@@ -85,7 +85,7 @@ def test_togglePortUSB_UPBv2(function):
     function.data["USB_PORT_CONTROL.PORT_1"] = True
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.togglePortUSB("1")
-    m.assert_called_once_with("setswitch", (7, False))
+    m.assert_called_once_with("SetSwitch", Id=7, State=False)
 
 
 def test_toggleAutoDew_UPB(function):
@@ -93,7 +93,7 @@ def test_toggleAutoDew_UPB(function):
     function.data["AUTO_DEW.INDI_ENABLED"] = False
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.toggleAutoDew()
-    m.assert_called_once_with("setswitch", (7, True))
+    m.assert_called_once_with("SetSwitch", Id=7, State=True)
 
 
 def test_toggleAutoDew_UPBv2(function):
@@ -101,7 +101,7 @@ def test_toggleAutoDew_UPBv2(function):
     function.data["AUTO_DEW.DEW_A"] = False
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.toggleAutoDew()
-    m.assert_called_once_with("setswitch", (13, True))
+    m.assert_called_once_with("SetSwitch", Id=13, State=True)
 
 
 def test_sendDew_UPB(function):
@@ -115,7 +115,7 @@ def test_sendDew_UPBv2(function):
     function.data["MaxSwitch"] = 21
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.sendDew("A", 50.0)
-    m.assert_called_once_with("setswitchvalue", (4, 127))
+    m.assert_called_once_with("SetSwitchValue", Id=4, Value=127)
 
 
 def test_sendAdjustableOutput(function):

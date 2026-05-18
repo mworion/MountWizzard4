@@ -39,8 +39,8 @@ class Parent:
 @pytest.fixture(autouse=True, scope="module")
 def function():
     func = CoverAscom(parent=Parent())
-    func.client = mock.MagicMock()
-    func.client.CoverState = 1
+    func.device = mock.MagicMock()
+    func.device.CoverState = 1
     yield func
 
 
@@ -53,16 +53,16 @@ def test_pollData_1(function):
 def test_closeCover(function):
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.closeCover()
-    m.assert_called_once_with("CloseCover", ())
+    m.assert_called_once_with("CloseCover")
 
 
 def test_openCover(function):
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.openCover()
-    m.assert_called_once_with("OpenCover", ())
+    m.assert_called_once_with("OpenCover")
 
 
 def test_haltCover(function):
     with mock.patch.object(function, "callAscomMethodQueued") as m:
         function.haltCover()
-    m.assert_called_once_with("HaltCover", ())
+    m.assert_called_once_with("HaltCover")

@@ -36,7 +36,7 @@ class Parent:
 @pytest.fixture(autouse=True, scope="module")
 def function():
     func = SensorWeatherAscom(parent=Parent())
-    func.client = mock.MagicMock()
+    func.device = mock.MagicMock()
     yield func
 
 

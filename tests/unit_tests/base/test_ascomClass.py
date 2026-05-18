@@ -19,13 +19,15 @@ import queue
 import subprocess
 import threading
 import time
-from unittest import mock
 from mw4.base.ascomClass import AscomClass, CommandItem
 from mw4.base.loggerMW import setupLogging
 from mw4.base.signalsDevices import Signals
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
+
 if platform.system() != "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
+
 setupLogging()
 
 
@@ -41,36 +43,40 @@ class Parent:
 def function():
     func = AscomClass(parent=Parent())
     func.signals = Signals()
-    func.client = mock.MagicMock()
+    func.device = mock.MagicMock()
     yield func
 
 
 def test_init(function):
     assert isinstance(function.commandQueue, queue.Queue)
     assert isinstance(function.stopEvent, threading.Event)
-    assert function.workerCommunicationLoop is None
-    assert not hasattr(function, "propertyExceptions")
-    assert not hasattr(function, "tM")
-    assert not hasattr(function, "cyclePollData")
-    assert not hasattr(function, "cyclePollStatus")
+    assert function.workerRunnerCoreLoop is None
+    assert isinstance(function.propertyExceptions, list)
+    assert len(function.propertyExceptions) == 0
 
 
 def test_getAscomProperty_success(function):
-    function.client.Connected = True
+    function.device.Connected = True
     val = function.getAscomProperty("Connected")
     assert val is True
 
 
 def test_getAscomProperty_exception(function):
-    function.client = None
+    function.device = None
     val = function.getAscomProperty("Connected")
     assert val is None
 
 
 def test_getAscomProperty_imageArray(function):
-    function.client.ImageArray = [[1, 2], [3, 4]]
+    function.device.ImageArray = [[1, 2], [3, 4]]
     val = function.getAscomProperty("ImageArray")
     assert val is not None
+
+
+def test_getAscomProperty_propertyException(function):
+    function.propertyExceptions.append("Connected")
+    val = function.getAscomProperty("Connected")
+    assert val is None
 
 
 def test_setAscomProperty_success(function):
@@ -78,7 +84,12 @@ def test_setAscomProperty_success(function):
 
 
 def test_setAscomProperty_exception(function):
-    function.client = None
+    function.device = None
+    function.setAscomProperty("Connected", True)
+
+
+def test_setAscomProperty_propertyException(function):
+    function.propertyExceptions.append("Connected")
     function.setAscomProperty("Connected", True)
 
 
@@ -90,51 +101,57 @@ def test_getAndStoreAscomProperty(function):
 
 
 def test_callAscomMethod_success(function):
-    function.client.Halt = mock.MagicMock(return_value=99)
-    result = function.callAscomMethod("Halt", ())
+    function.device.Halt = mock.MagicMock(return_value=99)
+    result = function.callAscomMethod("Halt")
     assert result == 99
 
 
 def test_callAscomMethod_exception(function):
-    function.client = None
-    result = function.callAscomMethod("Halt", ())
+    function.device = None
+    result = function.callAscomMethod("Halt")
     assert result is None
 
 
-def test_callAscomMethod_tuple(function):
-    function.client.setswitch = mock.MagicMock()
-    function.callAscomMethod("setswitch", (0, True))
-    function.client.setswitch.assert_called_once_with(0, True)
+def test_callAscomMethod_kwargs(function):
+    function.device.Move = mock.MagicMock()
+    function.callAscomMethod("Move", Position=100)
+    function.device.Move.assert_called_once_with(Position=100)
 
 
-def test_callAscomMethod_scalar(function):
-    function.client.move = mock.MagicMock()
-    function.callAscomMethod("move", 100)
-    function.client.move.assert_called_once_with(100)
+def test_callAscomMethod_noKwargs(function):
+    function.device.OpenShutter = mock.MagicMock()
+    function.callAscomMethod("OpenShutter")
+    function.device.OpenShutter.assert_called_once_with()
+
+
+def test_callAscomMethod_propertyException(function):
+    function.propertyExceptions.append("Halt")
+    result = function.callAscomMethod("Halt")
+    assert result is None
 
 
 def test_setAscomPropertyQueued(function):
     function.setAscomPropertyQueued("Gain", 42)
     cmd = function.commandQueue.get_nowait()
     assert cmd.cmdType == "set"
-    assert cmd.name == "Gain"
+    assert cmd.valueProp == "Gain"
     assert cmd.value == 42
 
 
-def test_callAscomMethodQueued_scalar(function):
-    function.callAscomMethodQueued("Halt", 0)
+def test_callAscomMethodQueued(function):
+    function.callAscomMethodQueued("Halt", SwitchIndex=0)
     cmd = function.commandQueue.get_nowait()
     assert cmd.cmdType == "call"
-    assert cmd.name == "Halt"
-    assert cmd.args == (0,)
+    assert cmd.valueProp == "Halt"
+    assert cmd.kwargs == {"SwitchIndex": 0}
 
 
-def test_callAscomMethodQueued_tuple(function):
-    function.callAscomMethodQueued("setswitch", (2, True))
+def test_callAscomMethodQueued_noKwargs(function):
+    function.callAscomMethodQueued("OpenShutter")
     cmd = function.commandQueue.get_nowait()
     assert cmd.cmdType == "call"
-    assert cmd.name == "setswitch"
-    assert cmd.args == (2, True)
+    assert cmd.valueProp == "OpenShutter"
+    assert cmd.kwargs == {}
 
 
 def test_processCommandQueue_empty(function):
@@ -142,28 +159,51 @@ def test_processCommandQueue_empty(function):
 
 
 def test_processCommandQueue_call(function):
-    function.commandQueue.put(CommandItem(cmdType="call", name="OpenShutter", args=()))
+    function.commandQueue.put(CommandItem(cmdType="call", valueProp="OpenShutter"))
     with mock.patch.object(function, "callAscomMethod") as m:
         function.processCommandQueue()
-        m.assert_called_once_with("OpenShutter", ())
+        m.assert_called_once_with("OpenShutter")
+
+
+def test_processCommandQueue_callWithKwargs(function):
+    function.commandQueue.put(
+        CommandItem(
+            cmdType="call",
+            valueProp="Move",
+            kwargs={"Position": 100},
+        )
+    )
+    with mock.patch.object(function, "callAscomMethod") as m:
+        function.processCommandQueue()
+        m.assert_called_once_with("Move", Position=100)
 
 
 def test_processCommandQueue_set(function):
-    function.commandQueue.put(CommandItem(cmdType="set", name="Gain", value=10))
+    function.commandQueue.put(CommandItem(cmdType="set", valueProp="Gain", value=10))
     with mock.patch.object(function, "setAscomProperty") as m:
         function.processCommandQueue()
         m.assert_called_once_with("Gain", 10)
 
 
 def test_processCommandQueue_unknownType(function):
-    function.commandQueue.put(CommandItem(cmdType="unknown", name="X"))
+    function.commandQueue.put(CommandItem(cmdType="unknown", valueProp="X"))
     function.processCommandQueue()
 
 
 def test_processCommandQueue_callException(function):
-    function.client = None
-    function.commandQueue.put(CommandItem(cmdType="call", name="Halt", args=()))
+    function.device = None
+    function.commandQueue.put(CommandItem(cmdType="call", valueProp="Halt"))
     function.processCommandQueue()
+
+
+def test_processCommandQueue_queueEmpty(function):
+    with mock.patch.object(function.commandQueue, "empty", return_value=False):
+        with mock.patch.object(
+            function.commandQueue,
+            "get_nowait",
+            side_effect=queue.Empty,
+        ):
+            function.processCommandQueue()
 
 
 def test_connectDevice_allFail(function):
@@ -223,89 +263,100 @@ def test_handleDeviceDisconnect(function):
     assert not function.deviceConnected
 
 
-def test_runnerCommunicationLoop_dispatchError(function):
-    function.stopEvent.set()
+def test_runnerCoreLoop_dispatchError(function):
     with mock.patch("mw4.base.ascomClass.CoInitialize") as ci:
         with mock.patch("mw4.base.ascomClass.CoUninitialize") as cu:
             with mock.patch(
                 "mw4.base.ascomClass.client.dynamic.Dispatch",
                 side_effect=Exception("fail"),
             ):
-                function.runnerCommunicationLoop()
+                function.runnerCoreLoop()
     ci.assert_called_once()
     cu.assert_called_once()
-    assert function.client is None
+    assert function.device is None
+
+
+def test_runnerCoreLoop_success(function):
+    with mock.patch("mw4.base.ascomClass.CoInitialize") as ci:
+        with mock.patch("mw4.base.ascomClass.CoUninitialize") as cu:
+            with mock.patch("mw4.base.ascomClass.client.dynamic.Dispatch"):
+                with mock.patch.object(function, "runnerCommunicationLoop") as m:
+                    function.runnerCoreLoop()
+    ci.assert_called_once()
+    m.assert_called_once()
+    cu.assert_called_once()
+
+
+def test_runnerCoreLoop_cleanup(function):
+    with mock.patch("mw4.base.ascomClass.CoInitialize"):
+        with mock.patch("mw4.base.ascomClass.CoUninitialize") as cu:
+            with mock.patch("mw4.base.ascomClass.client.dynamic.Dispatch"):
+                with mock.patch.object(function, "runnerCommunicationLoop"):
+                    with mock.patch.object(function, "setAscomProperty") as ms:
+                        function.runnerCoreLoop()
+    ms.assert_called_with("Connected", False)
+    assert function.device is None
+    cu.assert_called_once()
 
 
 def test_runnerCommunicationLoop_stopImmediately(function):
     function.stopEvent.set()
-    with mock.patch("mw4.base.ascomClass.CoInitialize"):
-        with mock.patch("mw4.base.ascomClass.CoUninitialize"):
-            with mock.patch("mw4.base.ascomClass.client.dynamic.Dispatch"):
-                with mock.patch.object(function, "handleDeviceConnect") as m:
-                    function.runnerCommunicationLoop()
+    with mock.patch.object(function, "handleDeviceConnect") as m:
+        function.runnerCommunicationLoop()
     m.assert_not_called()
 
 
 def test_runnerCommunicationLoop_connectBranch(function):
     call_count = 0
 
-    def fake_connect():
+    def fake_connect() -> None:
         nonlocal call_count
         call_count += 1
         function.stopEvent.set()
 
     function.deviceConnected = False
-    with mock.patch("mw4.base.ascomClass.CoInitialize"):
-        with mock.patch("mw4.base.ascomClass.CoUninitialize"):
-            with mock.patch("mw4.base.ascomClass.client.dynamic.Dispatch"):
-                with mock.patch.object(
-                    function,
-                    "handleDeviceConnect",
-                    side_effect=fake_connect,
-                ):
-                    function.runnerCommunicationLoop()
+    with mock.patch.object(
+        function,
+        "handleDeviceConnect",
+        side_effect=fake_connect,
+    ):
+        with mock.patch.object(function, "getAscomProperty", return_value=True):
+            function.runnerCommunicationLoop()
     assert call_count == 1
 
 
 def test_runnerCommunicationLoop_disconnectBranch(function):
     call_count = 0
 
-    def fake_disconnect():
+    def fake_disconnect() -> None:
         nonlocal call_count
         call_count += 1
         function.stopEvent.set()
 
     function.deviceConnected = True
-    with mock.patch("mw4.base.ascomClass.CoInitialize"):
-        with mock.patch("mw4.base.ascomClass.CoUninitialize"):
-            with mock.patch("mw4.base.ascomClass.client.dynamic.Dispatch"):
-                with mock.patch.object(function, "getAscomProperty", return_value=False):
-                    with mock.patch.object(
-                        function,
-                        "handleDeviceDisconnect",
-                        side_effect=fake_disconnect,
-                    ):
-                        function.runnerCommunicationLoop()
+    with mock.patch.object(function, "getAscomProperty", return_value=False):
+        with mock.patch.object(
+            function,
+            "handleDeviceDisconnect",
+            side_effect=fake_disconnect,
+        ):
+            function.runnerCommunicationLoop()
     assert call_count == 1
 
 
 def test_runnerCommunicationLoop_pollCycle(function):
     call_count = 0
 
-    def fake_poll():
+    def fake_poll() -> None:
         nonlocal call_count
         call_count += 1
         function.stopEvent.set()
 
     function.deviceConnected = True
-    with mock.patch("mw4.base.ascomClass.CoInitialize"):
-        with mock.patch("mw4.base.ascomClass.CoUninitialize"):
-            with mock.patch("mw4.base.ascomClass.client.dynamic.Dispatch"):
-                with mock.patch.object(function, "getAscomProperty", return_value=True):
-                    with mock.patch.object(function, "pollData", side_effect=fake_poll):
-                        with mock.patch.object(function, "processCommandQueue") as mq:
-                            function.runnerCommunicationLoop()
+    with mock.patch.object(function, "getAscomProperty", return_value=True):
+        with mock.patch.object(function, "pollData", side_effect=fake_poll):
+            with mock.patch.object(function, "processCommandQueue") as mq:
+                function.runnerCommunicationLoop()
     assert call_count == 1
     mq.assert_called_once()
 
@@ -313,34 +364,19 @@ def test_runnerCommunicationLoop_pollCycle(function):
 def test_runnerCommunicationLoop_pollException(function):
     call_count = 0
 
-    def fake_poll():
+    def fake_poll() -> None:
         nonlocal call_count
         call_count += 1
         function.stopEvent.set()
         raise RuntimeError("boom")
 
     function.deviceConnected = True
-    with mock.patch("mw4.base.ascomClass.CoInitialize"):
-        with mock.patch("mw4.base.ascomClass.CoUninitialize"):
-            with mock.patch("mw4.base.ascomClass.client.dynamic.Dispatch"):
-                with mock.patch.object(function, "getAscomProperty", return_value=True):
-                    with mock.patch.object(function, "pollData", side_effect=fake_poll):
-                        with mock.patch.object(function, "processCommandQueue"):
-                            function.runnerCommunicationLoop()
-    assert call_count == 1
-
-
-def test_runnerCommunicationLoop_cleanup(function):
-    function.stopEvent.set()
-    function.client = mock.MagicMock()
-    with mock.patch("mw4.base.ascomClass.CoInitialize"):
-        with mock.patch("mw4.base.ascomClass.CoUninitialize") as cu:
-            with mock.patch("mw4.base.ascomClass.client.dynamic.Dispatch"):
-                with mock.patch.object(function, "setAscomProperty") as ms:
+    with mock.patch.object(function, "getAscomProperty", return_value=True):
+        with mock.patch.object(function, "pollData", side_effect=fake_poll):
+            with mock.patch.object(function, "processCommandQueue"):
+                with pytest.raises(RuntimeError):
                     function.runnerCommunicationLoop()
-    ms.assert_called_with("Connected", False)
-    assert function.client is None
-    cu.assert_called_once()
+    assert call_count == 1
 
 
 def test_startCommunication_noDevice(function):

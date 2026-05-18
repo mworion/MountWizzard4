@@ -20,10 +20,11 @@ import sys
 import threading
 import time
 from dataclasses import dataclass, field
-from typing import Any
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QThreadPool
+from typing import Any
+
 if platform.system() == "Windows":
     from pythoncom import CoInitialize, CoUninitialize
     from win32com import client
@@ -39,6 +40,7 @@ class CommandItem:
 
 class AscomClass(DriverData):
     UPDATE_RATE: float = 0.5
+
     def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
         self.app: Any = parent.app
@@ -171,7 +173,7 @@ class AscomClass(DriverData):
             self.log.error(f"[{self.deviceName}] Dispatch error: [{e}]")
             return
         else:
-            self.runnerCoreLoop()
+            self.runnerCommunicationLoop()
         finally:
             if self.device:
                 self.setAscomProperty("Connected", False)

@@ -33,6 +33,7 @@ def function():
     class Parent:
         app = App()
         data = {}
+        deviceType = ""
         signals = Signals()
 
     func = AlpacaClass(parent=Parent())
@@ -48,6 +49,7 @@ def resetState(function):
     function.serverConnected = False
     function.stopEvent.clear()
     function.commandQueue = queue.Queue()
+    function.propertyExceptions.clear()
     function.hostaddress = "localhost"
     function.port = 11111
     function.deviceName = ""
@@ -121,6 +123,12 @@ def test_createAlpacaDevice_3(function):
         assert not suc
 
 
+def test_getDeviceProp_propertyException(function):
+    function.propertyExceptions.append("Connected")
+    result = function.getDeviceProp("Connected")
+    assert result is None
+
+
 def test_getDeviceProp_1(function):
     function.device.Connected = True
     result = function.getDeviceProp("Connected")
@@ -141,9 +149,13 @@ def test_getDeviceProp_3(function):
     assert result is None
 
 
+def test_setDeviceProp_propertyException(function):
+    function.propertyExceptions.append("Connected")
+    function.setDeviceProp("Connected", True)
+
+
 def test_setDeviceProp_1(function):
-    result = function.setDeviceProp("Connected", True)
-    assert result
+    function.setDeviceProp("Connected", True)
 
 
 def test_setDeviceProp_2(function):
@@ -157,8 +169,8 @@ def test_setDeviceProp_2(function):
             raise AlpycaNotImplError("not implemented")
 
     function.device = DeviceWithBadProp()
-    result = function.setDeviceProp("TestProp", True)
-    assert not result
+    function.setDeviceProp("TestProp", True)
+    assert "TestProp" in function.propertyExceptions
 
 
 def test_setDeviceProp_3(function):
@@ -172,8 +184,8 @@ def test_setDeviceProp_3(function):
             raise Exception("error")
 
     function.device = DeviceWithErrorProp()
-    result = function.setDeviceProp("TestProp", True)
-    assert not result
+    function.setDeviceProp("TestProp", True)
+    assert "TestProp" not in function.propertyExceptions
 
 
 def test_callDeviceMethodQueued_1(function):
@@ -193,6 +205,12 @@ def test_setDevicePropQueued_1(function):
     assert item.cmdType == "set"
     assert item.valueProp == "Connected"
     assert item.value is True
+
+
+def test_callDeviceMethod_propertyException(function):
+    function.propertyExceptions.append("Halt")
+    result = function.callDeviceMethod("Halt")
+    assert result is None
 
 
 def test_callDeviceMethod_1(function):
@@ -411,7 +429,8 @@ def test_runnerCommunicationLoop_pollDataException(function):
     with mock.patch.object(function, "getDeviceProp", return_value=True):
         with mock.patch.object(function, "pollData", side_effect=Exception("boom")):
             with mock.patch.object(function.stopEvent, "wait", side_effect=stop_after_one):
-                function.runnerCommunicationLoop()
+                with pytest.raises(Exception, match="boom"):
+                    function.runnerCommunicationLoop()
 
 
 def test_runnerCommunicationLoop_notConnected(function):

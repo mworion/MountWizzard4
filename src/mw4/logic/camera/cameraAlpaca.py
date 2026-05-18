@@ -50,38 +50,14 @@ class CameraAlpaca(AlpacaClass):
         self.getAndStoreDeviceProp("StartY", "CCD_FRAME.Y")
         self.log.debug(f"Initial data: {self.data}")
 
-    def pollData(self) -> None:
-        self.getAndStoreDeviceProp("BinX", "CCD_BINNING.HOR_BIN")
-        self.getAndStoreDeviceProp("BinY", "CCD_BINNING.VERT_BIN")
-        self.getAndStoreDeviceProp("CameraState", "CAMERA.STATE")
-        self.getAndStoreDeviceProp("Gain", "CCD_GAIN.GAIN")
-        self.getAndStoreDeviceProp("Offset", "CCD_OFFSET.OFFSET")
-        self.getAndStoreDeviceProp("FastReadout", "READOUT_QUALITY.QUALITY_LOW")
-        self.getAndStoreDeviceProp("CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE")
-        self.getAndStoreDeviceProp("CoolerOn", "CCD_COOLER.COOLER_ON")
-        self.getAndStoreDeviceProp("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
-
-    def sendDownloadMode(self) -> None:
-        if self.data.get("CAN_FAST", False):
-            self.setDevicePropQueued("FastReadout", self.parent.fastReadout)
-
-    def waitFunc(self) -> bool:
-        return not self.getDeviceProp("ImageReady")
-
-    def expose(self) -> None:
-        worker = Worker(self.workerExpose)
-        self.threadPool.start(worker)
-
-    def workerExpose(self) -> None:
-        self.sendDownloadMode()
-        self.setDevicePropQueued("BinX", self.parent.binning)
-        self.setDevicePropQueued("BinY", self.parent.binning)
-        self.setDevicePropQueued("StartX", self.parent.posXASCOM)
-        self.setDevicePropQueued("StartY", self.parent.posYASCOM)
-        self.setDevicePropQueued("NumX", self.parent.widthASCOM)
-        self.setDevicePropQueued("NumY", self.parent.heightASCOM)
-        self.callDeviceMethodQueued("StartExposure", Duration=self.parent.exposureTime, Light=True)
-        self.parent.waitExposed(self.parent.exposureTime, self.waitFunc)
+    def saveImage(self) -> None:
+        if not self.parent.exposing:
+            print("no exposure")
+            return
+        state = self.getDeviceProp("ImageReady")
+        print(state, self.data["CAMERA.STATE"])
+        if not state:
+            return
         self.signals.exposed.emit(self.parent.imagePath)
         self.signals.message.emit("download")
         data = self.getDeviceProp("ImageArray")
@@ -92,6 +68,34 @@ class CameraAlpaca(AlpacaClass):
         hdu.writeto(self.parent.imagePath, overwrite=True)
         self.parent.writeImageFitsHeader()
         self.parent.exposeFinished()
+
+
+
+    def pollData(self) -> None:
+        self.getAndStoreDeviceProp("BinX", "CCD_BINNING.HOR_BIN")
+        self.getAndStoreDeviceProp("BinY", "CCD_BINNING.VERT_BIN")
+        self.getAndStoreDeviceProp("CameraState", "CAMERA.STATE")
+        self.getAndStoreDeviceProp("Gain", "CCD_GAIN.GAIN")
+        self.getAndStoreDeviceProp("Offset", "CCD_OFFSET.OFFSET")
+        self.getAndStoreDeviceProp("FastReadout", "READOUT_QUALITY.QUALITY_LOW")
+        self.getAndStoreDeviceProp("CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE")
+        self.getAndStoreDeviceProp("CoolerOn", "CCD_COOLER.COOLER_ON")
+        self.getAndStoreDeviceProp("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
+        self.saveImage()
+
+    def sendDownloadMode(self) -> None:
+        if self.data.get("CAN_FAST", False):
+            self.setDevicePropQueued("FastReadout", self.parent.fastReadout)
+
+    def expose(self) -> None:
+        self.sendDownloadMode()
+        self.setDevicePropQueued("BinX", self.parent.binning)
+        self.setDevicePropQueued("BinY", self.parent.binning)
+        self.setDevicePropQueued("StartX", self.parent.posXASCOM)
+        self.setDevicePropQueued("StartY", self.parent.posYASCOM)
+        self.setDevicePropQueued("NumX", self.parent.widthASCOM)
+        self.setDevicePropQueued("NumY", self.parent.heightASCOM)
+        self.callDeviceMethodQueued("StartExposure", Duration=self.parent.exposureTime, Light=True)
 
     def abort(self) -> bool:
         if self.data.get("CAN_ABORT", False):

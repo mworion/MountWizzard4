@@ -122,6 +122,21 @@ def test_saveImage_imageReady(function):
     function.parent.exposing = False
 
 
+def test_sendDownloadMode_withFastReadout(function):
+    function.data["CAN_FAST"] = True
+    function.parent.fastReadout = True
+    with mock.patch.object(function, "setAscomPropertyQueued") as m:
+        function.sendDownloadMode()
+    m.assert_called_once_with("FastReadout", True)
+
+
+def test_sendDownloadMode_noFastReadout(function):
+    function.data["CAN_FAST"] = False
+    with mock.patch.object(function, "setAscomPropertyQueued") as m:
+        function.sendDownloadMode()
+    m.assert_not_called()
+
+
 def test_expose_basic(function):
     function.data.pop("CAN_FAST", None)
     with mock.patch.object(function, "setAscomPropertyQueued") as ms:

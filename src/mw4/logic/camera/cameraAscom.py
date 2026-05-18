@@ -81,22 +81,23 @@ class CameraAscom(AscomClass):
         self.getAndStoreAscomProperty("Gain", "CCD_GAIN.GAIN")
         self.getAndStoreAscomProperty("Offset", "CCD_OFFSET.OFFSET")
         self.getAndStoreAscomProperty("FastReadout", "READOUT_QUALITY.QUALITY_LOW")
-        self.getAndStoreAscomProperty(
-            "CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"
-        )
+        self.getAndStoreAscomProperty("CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE")
         self.getAndStoreAscomProperty("CoolerOn", "CCD_COOLER.COOLER_ON")
         self.getAndStoreAscomProperty("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
         self.saveImage()
 
+    def sendDownloadMode(self) -> None:
+        if self.data.get("CAN_FAST", False):
+            self.setAscomPropertyQueued("FastReadout", self.parent.fastReadout)
+
     def expose(self) -> None:
+        self.sendDownloadMode()
         self.setAscomPropertyQueued("BinX", self.parent.binning)
         self.setAscomPropertyQueued("BinY", self.parent.binning)
         self.setAscomPropertyQueued("StartX", self.parent.posXASCOM)
         self.setAscomPropertyQueued("StartY", self.parent.posYASCOM)
         self.setAscomPropertyQueued("NumX", self.parent.widthASCOM)
         self.setAscomPropertyQueued("NumY", self.parent.heightASCOM)
-        if self.data.get("CAN_FAST", False):
-            self.setAscomPropertyQueued("FastReadout", self.parent.fastReadout)
         self.callAscomMethodQueued("StartExposure", Duration=self.parent.exposureTime, Light=True)
 
     def abort(self) -> bool:

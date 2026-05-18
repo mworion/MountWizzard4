@@ -23,10 +23,10 @@ class FocuserAscom(AscomClass):
         self.signals = parent.signals
 
     def pollData(self) -> None:
-        self.getAndStoreAscomProperty("Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION")
+        self.getAndStoreDeviceProp("Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION")
 
     def move(self, position: int) -> None:
-        self.callAscomMethodQueued("Move", Position=position)
+        self.callDeviceMethodQueued("Move", Position=position)
 
     def halt(self) -> None:
-        self.callAscomMethodQueued("Halt")
+        self.callDeviceMethodQueued("Halt")

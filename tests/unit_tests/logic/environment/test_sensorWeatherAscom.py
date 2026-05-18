@@ -41,5 +41,5 @@ def function():
 
 
 def test_pollData_1(function):
-    with mock.patch.object(function, "getAndStoreAscomProperty"):
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
         function.pollData()

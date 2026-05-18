@@ -46,25 +46,25 @@ def function():
 
 
 def test_pollData_1(function):
-    with mock.patch.object(function, "getAndStoreAscomProperty"):
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
         function.pollData()
 
 
 def test_lightOn(function):
     function.app.cover = mock.MagicMock()
     function.app.cover.data = {"FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 200}
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.lightOn()
     m.assert_called_once_with("CalibratorOn", Brightness=100)
 
 
 def test_lightOff(function):
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.lightOff()
     m.assert_called_once_with("CalibratorOff")
 
 
 def test_lightIntensity(function):
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.lightIntensity(128.0)
     m.assert_called_once_with("CalibratorOn", Brightness=128)

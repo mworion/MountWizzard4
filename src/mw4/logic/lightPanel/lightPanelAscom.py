@@ -25,10 +25,10 @@ class LightPanelAscom(AscomClass):
         self.data = parent.data
 
     def pollData(self) -> None:
-        self.getAndStoreAscomProperty(
+        self.getAndStoreDeviceProp(
             "Brightness", "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"
         )
-        self.getAndStoreAscomProperty(
+        self.getAndStoreDeviceProp(
             "MaxBrightness", "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX"
         )
 
@@ -37,10 +37,10 @@ class LightPanelAscom(AscomClass):
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
         )
         brightness = int(maxBrightness / 2)
-        self.callAscomMethodQueued("CalibratorOn", Brightness=brightness)
+        self.callDeviceMethodQueued("CalibratorOn", Brightness=brightness)
 
     def lightOff(self) -> None:
-        self.callAscomMethodQueued("CalibratorOff")
+        self.callDeviceMethodQueued("CalibratorOff")
 
     def lightIntensity(self, value: float) -> None:
-        self.callAscomMethodQueued("CalibratorOn", Brightness=int(value))
+        self.callDeviceMethodQueued("CalibratorOn", Brightness=int(value))

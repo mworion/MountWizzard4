@@ -40,7 +40,8 @@ def test_getInitialConfig_1(function):
     with mock.patch.object(function, "getAndStoreDeviceProp") as m:
         with mock.patch.object(function, "getDeviceProp"):
             function.getInitialConfig()
-            assert m.call_count == 3
+            # 3 from base (Name, DriverVersion, DriverInfo) + 3 dome-specific
+            assert m.call_count == 6
 
 
 def test_pollData_1(function):

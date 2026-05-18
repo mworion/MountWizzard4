@@ -20,8 +20,10 @@ from typing import Any
 
 
 class CameraAscom(AscomClass):
-    CAMERA_STATES: list[str] = ["CameraIdle", "CameraWaiting", "CameraExposing", "CameraReading",
-                                "CameraDownload", "CameraError"]
+    CAMERA_STATES: list[str] = [
+        "CameraIdle", "CameraWaiting", "CameraExposing",
+        "CameraReading", "CameraDownload", "CameraError",
+    ]
     def __init__(self, parent: Any) -> None:
         self.parent = parent
         self.app = parent.app
@@ -31,41 +33,41 @@ class CameraAscom(AscomClass):
 
     def getInitialConfig(self) -> None:
         super().getInitialConfig()
-        self.getAndStoreAscomProperty("CameraXSize", "CCD_INFO.CCD_MAX_X")
-        self.getAndStoreAscomProperty("CameraYSize", "CCD_INFO.CCD_MAX_Y")
-        self.getAndStoreAscomProperty("CanFastReadout", "CAN_FAST")
-        self.getAndStoreAscomProperty("CanAbortExposure", "CAN_ABORT")
-        self.getAndStoreAscomProperty("CanSetCCDTemperature", "CAN_SET_CCD_TEMPERATURE")
-        self.getAndStoreAscomProperty("CanGetCoolerPower", "CAN_GET_COOLER_POWER")
-        self.getAndStoreAscomProperty("PixelSizeX", "CCD_INFO.CCD_PIXEL_SIZE_X")
-        self.getAndStoreAscomProperty("PixelSizeY", "CCD_INFO.CCD_PIXEL_SIZE_Y")
-        self.getAndStoreAscomProperty("MaxBinX", "CCD_BINNING.HOR_BIN_MAX")
-        self.getAndStoreAscomProperty("MaxBinY", "CCD_BINNING.VERT_BIN_MAX")
-        self.getAndStoreAscomProperty("GainMax", "CCD_GAIN.GAIN_MAX")
-        self.getAndStoreAscomProperty("GainMin", "CCD_GAIN.GAIN_MIN")
-        self.getAndStoreAscomProperty("Gains", "CCD_GAIN.GAIN_LIST")
-        self.getAndStoreAscomProperty("OffsetMax", "CCD_OFFSET.OFFSET_MAX")
-        self.getAndStoreAscomProperty("OffsetMin", "CCD_OFFSET.OFFSET_MIN")
-        self.getAndStoreAscomProperty("Offsets", "CCD_OFFSET.OFFSET_LIST")
-        self.getAndStoreAscomProperty("StartX", "CCD_FRAME.X")
-        self.getAndStoreAscomProperty("StartY", "CCD_FRAME.Y")
+        self.getAndStoreDeviceProp("CameraXSize", "CCD_INFO.CCD_MAX_X")
+        self.getAndStoreDeviceProp("CameraYSize", "CCD_INFO.CCD_MAX_Y")
+        self.getAndStoreDeviceProp("CanFastReadout", "CAN_FAST")
+        self.getAndStoreDeviceProp("CanAbortExposure", "CAN_ABORT")
+        self.getAndStoreDeviceProp("CanSetCCDTemperature", "CAN_SET_CCD_TEMPERATURE")
+        self.getAndStoreDeviceProp("CanGetCoolerPower", "CAN_GET_COOLER_POWER")
+        self.getAndStoreDeviceProp("PixelSizeX", "CCD_INFO.CCD_PIXEL_SIZE_X")
+        self.getAndStoreDeviceProp("PixelSizeY", "CCD_INFO.CCD_PIXEL_SIZE_Y")
+        self.getAndStoreDeviceProp("MaxBinX", "CCD_BINNING.HOR_BIN_MAX")
+        self.getAndStoreDeviceProp("MaxBinY", "CCD_BINNING.VERT_BIN_MAX")
+        self.getAndStoreDeviceProp("GainMax", "CCD_GAIN.GAIN_MAX")
+        self.getAndStoreDeviceProp("GainMin", "CCD_GAIN.GAIN_MIN")
+        self.getAndStoreDeviceProp("Gains", "CCD_GAIN.GAIN_LIST")
+        self.getAndStoreDeviceProp("OffsetMax", "CCD_OFFSET.OFFSET_MAX")
+        self.getAndStoreDeviceProp("OffsetMin", "CCD_OFFSET.OFFSET_MIN")
+        self.getAndStoreDeviceProp("Offsets", "CCD_OFFSET.OFFSET_LIST")
+        self.getAndStoreDeviceProp("StartX", "CCD_FRAME.X")
+        self.getAndStoreDeviceProp("StartY", "CCD_FRAME.Y")
         self.log.debug(f"Initial data: {self.data}")
 
     def saveImage(self):
         if not self.parent.exposing:
-            print("no exposure")
+            self.log.debug("no exposure")
             return
-        state = self.getAscomProperty("ImageReady")
-        print(state, self.data["CAMERA.STATE"])
+        state = self.getDeviceProp("ImageReady")
+        self.log.debug(f"ImageReady: {state}, state: {self.data.get('CAMERA.STATE')}")
         if not state:
             timeLeft = 1
             text = f"expose {timeLeft:3.0f} s"
             self.signals.message.emit(text)
             return
-        print("weiter")
+        self.log.debug("image ready, proceeding")
         self.signals.exposed.emit(self.parent.imagePath)
         self.signals.message.emit("download")
-        data = self.getAscomProperty("ImageArray")
+        data = self.getDeviceProp("ImageArray")
         data = np.array(data, dtype=np.uint16).transpose()
         self.signals.downloaded.emit(self.parent.imagePath)
         self.signals.message.emit("saving")
@@ -75,45 +77,49 @@ class CameraAscom(AscomClass):
         self.parent.exposeFinished()
 
     def pollData(self) -> None:
-        self.getAndStoreAscomProperty("BinX", "CCD_BINNING.HOR_BIN")
-        self.getAndStoreAscomProperty("BinY", "CCD_BINNING.VERT_BIN")
-        self.getAndStoreAscomProperty("CameraState", "CAMERA.STATE")
-        self.getAndStoreAscomProperty("Gain", "CCD_GAIN.GAIN")
-        self.getAndStoreAscomProperty("Offset", "CCD_OFFSET.OFFSET")
-        self.getAndStoreAscomProperty("FastReadout", "READOUT_QUALITY.QUALITY_LOW")
-        self.getAndStoreAscomProperty("CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE")
-        self.getAndStoreAscomProperty("CoolerOn", "CCD_COOLER.COOLER_ON")
-        self.getAndStoreAscomProperty("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
+        self.getAndStoreDeviceProp("BinX", "CCD_BINNING.HOR_BIN")
+        self.getAndStoreDeviceProp("BinY", "CCD_BINNING.VERT_BIN")
+        self.getAndStoreDeviceProp("CameraState", "CAMERA.STATE")
+        self.getAndStoreDeviceProp("Gain", "CCD_GAIN.GAIN")
+        self.getAndStoreDeviceProp("Offset", "CCD_OFFSET.OFFSET")
+        self.getAndStoreDeviceProp("FastReadout", "READOUT_QUALITY.QUALITY_LOW")
+        self.getAndStoreDeviceProp("CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE")
+        self.getAndStoreDeviceProp("CoolerOn", "CCD_COOLER.COOLER_ON")
+        self.getAndStoreDeviceProp("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
         self.saveImage()
 
     def sendDownloadMode(self) -> None:
         if self.data.get("CAN_FAST", False):
-            self.setAscomPropertyQueued("FastReadout", self.parent.fastReadout)
+            self.setDevicePropQueued("FastReadout", self.parent.fastReadout)
 
     def expose(self) -> None:
         self.sendDownloadMode()
-        self.setAscomPropertyQueued("BinX", self.parent.binning)
-        self.setAscomPropertyQueued("BinY", self.parent.binning)
-        self.setAscomPropertyQueued("StartX", self.parent.posXASCOM)
-        self.setAscomPropertyQueued("StartY", self.parent.posYASCOM)
-        self.setAscomPropertyQueued("NumX", self.parent.widthASCOM)
-        self.setAscomPropertyQueued("NumY", self.parent.heightASCOM)
-        self.callAscomMethodQueued("StartExposure", Duration=self.parent.exposureTime, Light=True)
+        self.setDevicePropQueued("BinX", self.parent.binning)
+        self.setDevicePropQueued("BinY", self.parent.binning)
+        self.setDevicePropQueued("StartX", self.parent.posXASCOM)
+        self.setDevicePropQueued("StartY", self.parent.posYASCOM)
+        self.setDevicePropQueued("NumX", self.parent.widthASCOM)
+        self.setDevicePropQueued("NumY", self.parent.heightASCOM)
+        self.callDeviceMethodQueued(
+            "StartExposure",
+            Duration=self.parent.exposureTime,
+            Light=True,
+        )
 
     def abort(self) -> bool:
         if self.data.get("CAN_ABORT", False):
-            self.callAscomMethodQueued("StopExposure")
+            self.callDeviceMethodQueued("StopExposure")
         return True
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
-        self.setAscomPropertyQueued("CoolerOn", coolerOn)
+        self.setDevicePropQueued("CoolerOn", coolerOn)
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
         if self.data.get("CAN_SET_CCD_TEMPERATURE", False):
-            self.setAscomPropertyQueued("SetCCDTemperature", temperature)
+            self.setDevicePropQueued("SetCCDTemperature", temperature)
 
     def sendOffset(self, offset: int = 0) -> None:
-        self.setAscomPropertyQueued("Offset", offset)
+        self.setDevicePropQueued("Offset", offset)
 
     def sendGain(self, gain: int = 0) -> None:
-        self.setAscomPropertyQueued("Gain", gain)
+        self.setDevicePropQueued("Gain", gain)

@@ -26,7 +26,7 @@ class FilterAscom(AscomClass):
 
     def getInitialConfig(self) -> None:
         super().getInitialConfig()
-        names = self.getAscomProperty("Names")
+        names = self.getDeviceProp("Names")
         if names is None:
             return
 
@@ -34,10 +34,10 @@ class FilterAscom(AscomClass):
             self.storePropertyToData(name, f"FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}")
 
     def pollData(self) -> None:
-        position = self.getAscomProperty("Position")
+        position = self.getDeviceProp("Position")
         if position == -1 or position is None:
             return
         self.storePropertyToData(position, "FILTER_SLOT.FILTER_SLOT_VALUE")
 
     def sendFilterNumber(self, filterNumber: int = 0) -> None:
-        self.setAscomPropertyQueued("Position", filterNumber)
+        self.setDevicePropQueued("Position", filterNumber)

@@ -82,12 +82,12 @@ def function():
 
 
 def test_getInitialConfig_1(function):
-    with mock.patch.object(function, "getAndStoreAscomProperty"):
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
         function.getInitialConfig()
 
 
 def test_pollData(function):
-    with mock.patch.object(function, "getAndStoreAscomProperty") as m:
+    with mock.patch.object(function, "getAndStoreDeviceProp") as m:
         function.pollData()
     assert m.call_count == 9
 
@@ -100,7 +100,7 @@ def test_saveImage_notExposing(function):
 def test_saveImage_imageNotReady(function):
     function.parent.exposing = True
     function.data["CAMERA.STATE"] = 0
-    with mock.patch.object(function, "getAscomProperty", return_value=False):
+    with mock.patch.object(function, "getDeviceProp", return_value=False):
         function.saveImage()
     function.parent.exposing = False
 
@@ -110,7 +110,7 @@ def test_saveImage_imageReady(function):
     function.data["CAMERA.STATE"] = 0
     fakeImage = [[1, 2], [3, 4]]
     with mock.patch.object(
-        function, "getAscomProperty", side_effect=[True, fakeImage]
+        function, "getDeviceProp", side_effect=[True, fakeImage]
     ):
         with mock.patch.object(function.parent, "writeImageFitsHeader"):
             with mock.patch.object(
@@ -125,22 +125,22 @@ def test_saveImage_imageReady(function):
 def test_sendDownloadMode_withFastReadout(function):
     function.data["CAN_FAST"] = True
     function.parent.fastReadout = True
-    with mock.patch.object(function, "setAscomPropertyQueued") as m:
+    with mock.patch.object(function, "setDevicePropQueued") as m:
         function.sendDownloadMode()
     m.assert_called_once_with("FastReadout", True)
 
 
 def test_sendDownloadMode_noFastReadout(function):
     function.data["CAN_FAST"] = False
-    with mock.patch.object(function, "setAscomPropertyQueued") as m:
+    with mock.patch.object(function, "setDevicePropQueued") as m:
         function.sendDownloadMode()
     m.assert_not_called()
 
 
 def test_expose_basic(function):
     function.data.pop("CAN_FAST", None)
-    with mock.patch.object(function, "setAscomPropertyQueued") as ms:
-        with mock.patch.object(function, "callAscomMethodQueued") as mc:
+    with mock.patch.object(function, "setDevicePropQueued") as ms:
+        with mock.patch.object(function, "callDeviceMethodQueued") as mc:
             function.expose()
     props_set = [c.args[0] for c in ms.call_args_list]
     assert "BinX" in props_set
@@ -154,8 +154,8 @@ def test_expose_basic(function):
 def test_expose_withFastReadout(function):
     function.data["CAN_FAST"] = True
     function.parent.fastReadout = True
-    with mock.patch.object(function, "setAscomPropertyQueued") as ms:
-        with mock.patch.object(function, "callAscomMethodQueued"):
+    with mock.patch.object(function, "setDevicePropQueued") as ms:
+        with mock.patch.object(function, "callDeviceMethodQueued"):
             function.expose()
     props_set = [c.args[0] for c in ms.call_args_list]
     assert "FastReadout" in props_set
@@ -163,8 +163,8 @@ def test_expose_withFastReadout(function):
 
 def test_expose_noFastReadout(function):
     function.data["CAN_FAST"] = False
-    with mock.patch.object(function, "setAscomPropertyQueued") as ms:
-        with mock.patch.object(function, "callAscomMethodQueued"):
+    with mock.patch.object(function, "setDevicePropQueued") as ms:
+        with mock.patch.object(function, "callDeviceMethodQueued"):
             function.expose()
     props_set = [c.args[0] for c in ms.call_args_list]
     assert "FastReadout" not in props_set
@@ -172,7 +172,7 @@ def test_expose_noFastReadout(function):
 
 def test_abort_canAbort(function):
     function.data["CAN_ABORT"] = True
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         suc = function.abort()
     assert suc
     m.assert_called_once_with("StopExposure")
@@ -180,39 +180,39 @@ def test_abort_canAbort(function):
 
 def test_abort_cannotAbort(function):
     function.data["CAN_ABORT"] = False
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         suc = function.abort()
     assert suc
     m.assert_not_called()
 
 
 def test_sendCoolerSwitch(function):
-    with mock.patch.object(function, "setAscomPropertyQueued") as m:
+    with mock.patch.object(function, "setDevicePropQueued") as m:
         function.sendCoolerSwitch(coolerOn=True)
     m.assert_called_once_with("CoolerOn", True)
 
 
 def test_sendCoolerTemp_withCap(function):
     function.data["CAN_SET_CCD_TEMPERATURE"] = True
-    with mock.patch.object(function, "setAscomPropertyQueued") as m:
+    with mock.patch.object(function, "setDevicePropQueued") as m:
         function.sendCoolerTemp(temperature=-10)
     m.assert_called_once_with("SetCCDTemperature", -10)
 
 
 def test_sendCoolerTemp_noCap(function):
     function.data["CAN_SET_CCD_TEMPERATURE"] = False
-    with mock.patch.object(function, "setAscomPropertyQueued") as m:
+    with mock.patch.object(function, "setDevicePropQueued") as m:
         function.sendCoolerTemp(temperature=-10)
     m.assert_not_called()
 
 
 def test_sendOffset(function):
-    with mock.patch.object(function, "setAscomPropertyQueued") as m:
+    with mock.patch.object(function, "setDevicePropQueued") as m:
         function.sendOffset(5)
     m.assert_called_once_with("Offset", 5)
 
 
 def test_sendGain(function):
-    with mock.patch.object(function, "setAscomPropertyQueued") as m:
+    with mock.patch.object(function, "setDevicePropQueued") as m:
         function.sendGain(200)
     m.assert_called_once_with("Gain", 200)

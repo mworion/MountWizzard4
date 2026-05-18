@@ -45,14 +45,14 @@ def function():
 
 def test_pollData_UPB(function):
     function.data["MaxSwitch"] = 15
-    with mock.patch.object(function, "getAndStoreAscomProperty"):
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
         function.pollData()
     assert function.data["FIRMWARE_INFO.VERSION"] == "1.4"
 
 
 def test_pollData_UPBv2(function):
     function.data["MaxSwitch"] = 21
-    with mock.patch.object(function, "getAndStoreAscomProperty"):
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
         function.pollData()
     assert function.data["FIRMWARE_INFO.VERSION"] == "2.1"
 
@@ -60,7 +60,7 @@ def test_pollData_UPBv2(function):
 def test_togglePowerPort(function):
     function.data["MaxSwitch"] = 15
     function.data["POWER_CONTROL.POWER_CONTROL_1"] = True
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.togglePowerPort("1")
     m.assert_called_once_with("SetSwitch", Id=0, State=False)
 
@@ -75,7 +75,7 @@ def test_toggleHubUSB(function):
 
 def test_togglePortUSB_UPB(function):
     function.data["MaxSwitch"] = 15
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.togglePortUSB("1")
     m.assert_not_called()
 
@@ -83,7 +83,7 @@ def test_togglePortUSB_UPB(function):
 def test_togglePortUSB_UPBv2(function):
     function.data["MaxSwitch"] = 21
     function.data["USB_PORT_CONTROL.PORT_1"] = True
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.togglePortUSB("1")
     m.assert_called_once_with("SetSwitch", Id=7, State=False)
 
@@ -91,7 +91,7 @@ def test_togglePortUSB_UPBv2(function):
 def test_toggleAutoDew_UPB(function):
     function.data["MaxSwitch"] = 15
     function.data["AUTO_DEW.INDI_ENABLED"] = False
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.toggleAutoDew()
     m.assert_called_once_with("SetSwitch", Id=7, State=True)
 
@@ -99,21 +99,21 @@ def test_toggleAutoDew_UPB(function):
 def test_toggleAutoDew_UPBv2(function):
     function.data["MaxSwitch"] = 21
     function.data["AUTO_DEW.DEW_A"] = False
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.toggleAutoDew()
     m.assert_called_once_with("SetSwitch", Id=13, State=True)
 
 
 def test_sendDew_UPB(function):
     function.data["MaxSwitch"] = 15
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.sendDew("A", 50.0)
     m.assert_not_called()
 
 
 def test_sendDew_UPBv2(function):
     function.data["MaxSwitch"] = 21
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.sendDew("A", 50.0)
     m.assert_called_once_with("SetSwitchValue", Id=4, Value=127)
 

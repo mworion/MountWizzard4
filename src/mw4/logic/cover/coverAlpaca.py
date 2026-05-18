@@ -23,7 +23,7 @@ class CoverAlpaca(AlpacaClass):
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.parent = parent
-        self.alpacaSignals = parent.signals
+        self.signals = parent.signals
         self.data = parent.data
 
     def pollData(self) -> None:

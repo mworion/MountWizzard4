@@ -23,10 +23,10 @@ class SensorWeatherAscom(AscomClass):
         self.signals = parent.signals
 
     def pollData(self) -> None:
-        self.getAndStoreAscomProperty("temperature", "WEATHER_PARAMETERS.WEATHER_TEMPERATURE")
-        self.getAndStoreAscomProperty("pressure", "WEATHER_PARAMETERS.WEATHER_PRESSURE")
-        self.getAndStoreAscomProperty("dewpoint", "WEATHER_PARAMETERS.WEATHER_DEWPOINT")
-        self.getAndStoreAscomProperty("humidity", "WEATHER_PARAMETERS.WEATHER_HUMIDITY")
-        self.getAndStoreAscomProperty("cloudcover", "WEATHER_PARAMETERS.CloudCover")
-        self.getAndStoreAscomProperty("rainrate", "WEATHER_PARAMETERS.RainVol")
-        self.getAndStoreAscomProperty("skyquality", "SKY_QUALITY.SKY_BRIGHTNESS")
+        self.getAndStoreDeviceProp("temperature", "WEATHER_PARAMETERS.WEATHER_TEMPERATURE")
+        self.getAndStoreDeviceProp("pressure", "WEATHER_PARAMETERS.WEATHER_PRESSURE")
+        self.getAndStoreDeviceProp("dewpoint", "WEATHER_PARAMETERS.WEATHER_DEWPOINT")
+        self.getAndStoreDeviceProp("humidity", "WEATHER_PARAMETERS.WEATHER_HUMIDITY")
+        self.getAndStoreDeviceProp("cloudcover", "WEATHER_PARAMETERS.CloudCover")
+        self.getAndStoreDeviceProp("rainrate", "WEATHER_PARAMETERS.RainVol")
+        self.getAndStoreDeviceProp("skyquality", "SKY_QUALITY.SKY_BRIGHTNESS")

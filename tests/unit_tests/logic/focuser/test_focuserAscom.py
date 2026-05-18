@@ -42,17 +42,17 @@ def function():
 
 
 def test_pollData_1(function):
-    with mock.patch.object(function, "getAndStoreAscomProperty"):
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
         function.pollData()
 
 
 def test_move(function):
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.move(3)
     m.assert_called_once_with("Move", Position=3)
 
 
 def test_halt(function):
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.halt()
     m.assert_called_once_with("Halt")

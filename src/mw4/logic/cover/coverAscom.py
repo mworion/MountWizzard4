@@ -27,16 +27,16 @@ class CoverAscom(AscomClass):
         self.data = parent.data
 
     def pollData(self) -> None:
-        state = self.getAscomProperty("CoverState")
+        state = self.getDeviceProp("CoverState")
         if state is None:
             return
         self.storePropertyToData(self.COVERSTATES[int(state)], "Status.Cover")
 
     def closeCover(self) -> None:
-        self.callAscomMethodQueued("CloseCover")
+        self.callDeviceMethodQueued("CloseCover")
 
     def openCover(self) -> None:
-        self.callAscomMethodQueued("OpenCover")
+        self.callDeviceMethodQueued("OpenCover")
 
     def haltCover(self) -> None:
-        self.callAscomMethodQueued("HaltCover")
+        self.callDeviceMethodQueued("HaltCover")

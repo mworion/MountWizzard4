@@ -26,18 +26,18 @@ class DomeAscom(AscomClass):
 
     def getInitialConfig(self) -> None:
         super().getInitialConfig()
-        self.getAndStoreAscomProperty("CanSetAltitude", "CanSetAltitude")
-        self.getAndStoreAscomProperty("CanSetAzimuth", "CanSetAzimuth")
-        self.getAndStoreAscomProperty("CanSetShutter", "CanSetShutter")
+        self.getAndStoreDeviceProp("CanSetAltitude", "CanSetAltitude")
+        self.getAndStoreDeviceProp("CanSetAzimuth", "CanSetAzimuth")
+        self.getAndStoreDeviceProp("CanSetShutter", "CanSetShutter")
         self.log.debug(f"Initial data: {self.data}")
 
     def pollData(self) -> None:
-        azimuth = self.getAscomProperty("Azimuth")
+        azimuth = self.getDeviceProp("Azimuth")
         self.storePropertyToData(azimuth, "ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION")
         self.signals.azimuth.emit(azimuth)
-        self.getAndStoreAscomProperty("Slewing", "Slewing")
+        self.getAndStoreDeviceProp("Slewing", "Slewing")
 
-        state = self.getAscomProperty("ShutterStatus")
+        state = self.getDeviceProp("ShutterStatus")
         if state == 0:
             stateText = self.shutterStates[state]
             self.storePropertyToData(stateText, "Status.Shutter")
@@ -53,17 +53,17 @@ class DomeAscom(AscomClass):
             self.data["DOME_SHUTTER.SHUTTER_CLOSED"] = None
 
     def slewToAltAz(self, altitude: float, azimuth: float) -> None:
-        self.callAscomMethodQueued("SlewToAzimuth", Azimuth=azimuth)
-        self.callAscomMethodQueued("SlewToAltitude", Altitude=altitude)
+        self.callDeviceMethodQueued("SlewToAzimuth", Azimuth=azimuth)
+        self.callDeviceMethodQueued("SlewToAltitude", Altitude=altitude)
 
     def openShutter(self) -> None:
-        self.callAscomMethodQueued("OpenShutter")
+        self.callDeviceMethodQueued("OpenShutter")
 
     def closeShutter(self) -> None:
-        self.callAscomMethodQueued("CloseShutter")
+        self.callDeviceMethodQueued("CloseShutter")
 
     def slewCW(self) -> None:
-        self.callAscomMethodQueued("OpenShutter")
+        self.callDeviceMethodQueued("OpenShutter")
 
     def slewCCW(self) -> None:
         pass

@@ -45,30 +45,30 @@ def function():
 
 
 def test_pollData_1(function):
-    with mock.patch.object(function, "getAscomProperty", return_value=1):
+    with mock.patch.object(function, "getDeviceProp", return_value=1):
         with mock.patch.object(function, "storePropertyToData"):
             function.pollData()
 
 
 def test_pollData_2(function):
-    with mock.patch.object(function, "getAscomProperty", return_value=0):
+    with mock.patch.object(function, "getDeviceProp", return_value=0):
         with mock.patch.object(function, "storePropertyToData"):
             function.pollData()
 
 
 def test_closeCover(function):
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.closeCover()
     m.assert_called_once_with("CloseCover")
 
 
 def test_openCover(function):
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.openCover()
     m.assert_called_once_with("OpenCover")
 
 
 def test_haltCover(function):
-    with mock.patch.object(function, "callAscomMethodQueued") as m:
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.haltCover()
     m.assert_called_once_with("HaltCover")

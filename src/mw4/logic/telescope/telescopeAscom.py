@@ -25,13 +25,13 @@ class TelescopeAscom(AscomClass):
     def getInitialConfig(self) -> None:
         super().getInitialConfig()
 
-        value = self.getAscomProperty("ApertureDiameter")
+        value = self.getDeviceProp("ApertureDiameter")
         if isinstance(value, float):
             value = value * 1000
 
         self.storePropertyToData(value, "TELESCOPE_INFO.TELESCOPE_APERTURE")
 
-        value = self.getAscomProperty("FocalLength")
+        value = self.getDeviceProp("FocalLength")
         if isinstance(value, float):
             value = value * 1000
 

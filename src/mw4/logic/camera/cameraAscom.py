@@ -17,18 +17,17 @@ import numpy as np
 from astropy.io import fits
 from mw4.base.ascomClass import AscomClass
 from typing import Any
+import time
 
 
 class CameraAscom(AscomClass):
-    CAMERA_STATES: list[str] = [
-        "CameraIdle", "CameraWaiting", "CameraExposing",
-        "CameraReading", "CameraDownload", "CameraError",
-    ]
     def __init__(self, parent: Any) -> None:
         self.parent = parent
         self.app = parent.app
         self.data = parent.data
         self.signals = parent.signals
+        self.startTimeExposure: float = 0
+        self.exposing: bool = False
         super().__init__(parent=parent)
 
     def getInitialConfig(self) -> None:
@@ -53,20 +52,21 @@ class CameraAscom(AscomClass):
         self.getAndStoreDeviceProp("StartY", "CCD_FRAME.Y")
         self.log.debug(f"Initial data: {self.data}")
 
-    def saveImage(self):
-        if not self.parent.exposing:
-            self.log.debug("no exposure")
+    def setExposureState(self):
+        state =  self.getDeviceProp("CameraState")
+        if state == 2 and not self.exposing:
+            self.exposing = True
+        if state != 2 and not self.exposing:
             return
-        state = self.getDeviceProp("ImageReady")
-        self.log.debug(f"ImageReady: {state}, state: {self.data.get('CAMERA.STATE')}")
-        if not state:
-            timeLeft = 1
+        if state == 2 and self.exposing:
+            timeLeft = max(self.parent.exposureTime - time.time() + self.startTimeExposure, 0)
             text = f"expose {timeLeft:3.0f} s"
             self.signals.message.emit(text)
+        if state != 2 and self.exposing:
+            self.signals.exposed.emit(self.parent.imagePath)
+            self.signals.message.emit("download")
+        if not self.getDeviceProp("ImageReady"):
             return
-        self.log.debug("image ready, proceeding")
-        self.signals.exposed.emit(self.parent.imagePath)
-        self.signals.message.emit("download")
         data = self.getDeviceProp("ImageArray")
         data = np.array(data, dtype=np.uint16).transpose()
         self.signals.downloaded.emit(self.parent.imagePath)
@@ -75,18 +75,23 @@ class CameraAscom(AscomClass):
         hdu.writeto(self.parent.imagePath, overwrite=True)
         self.parent.writeImageFitsHeader()
         self.parent.exposeFinished()
+        self.exposing = False
 
     def pollData(self) -> None:
         self.getAndStoreDeviceProp("BinX", "CCD_BINNING.HOR_BIN")
         self.getAndStoreDeviceProp("BinY", "CCD_BINNING.VERT_BIN")
-        self.getAndStoreDeviceProp("CameraState", "CAMERA.STATE")
         self.getAndStoreDeviceProp("Gain", "CCD_GAIN.GAIN")
         self.getAndStoreDeviceProp("Offset", "CCD_OFFSET.OFFSET")
         self.getAndStoreDeviceProp("FastReadout", "READOUT_QUALITY.QUALITY_LOW")
         self.getAndStoreDeviceProp("CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE")
         self.getAndStoreDeviceProp("CoolerOn", "CCD_COOLER.COOLER_ON")
         self.getAndStoreDeviceProp("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
-        self.saveImage()
+        if self.parent.exposing:
+            self.setExposureState()
+        else:
+            if self.exposing:
+                self.exposing = False
+                self.parent.exposeFinished()
 
     def sendDownloadMode(self) -> None:
         if self.data.get("CAN_FAST", False):
@@ -100,6 +105,7 @@ class CameraAscom(AscomClass):
         self.setDevicePropQueued("StartY", self.parent.posYASCOM)
         self.setDevicePropQueued("NumX", self.parent.widthASCOM)
         self.setDevicePropQueued("NumY", self.parent.heightASCOM)
+        self.startTimeExposure = time.time()
         self.callDeviceMethodQueued(
             "StartExposure",
             Duration=self.parent.exposureTime,
@@ -108,7 +114,8 @@ class CameraAscom(AscomClass):
 
     def abort(self) -> bool:
         if self.data.get("CAN_ABORT", False):
-            self.callDeviceMethodQueued("StopExposure")
+            self.callDeviceMethodQueued("AbortExposure")
+            self.exposing = False
         return True
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:

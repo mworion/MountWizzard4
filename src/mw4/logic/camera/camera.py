@@ -143,7 +143,7 @@ class Camera:
         self.imagePath = imagePath
         self.exposureTime = exposureTime
         self.binning = binning
-        self.signals.message.emit("exposing")
+        self.signals.message.emit(f"expose {self.exposureTime:3.0f} s")
         self.run[self.framework].expose()
         return True
 

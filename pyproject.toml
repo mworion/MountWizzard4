@@ -56,7 +56,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "numpy==2.4.4",
+    "numpy==2.4.5",
     "opencv-python-headless==4.13.0.92",
     "scipy==1.17.1",
     "astropy==7.2.0",
@@ -79,7 +79,7 @@ dependencies = [
     "packaging==26.2",
     "lz4==4.4.5",
     "xisf==0.9.6",
-    "pyside6==6.11.0",
+    "pyside6==6.11.1",
     "pyyaml==6.0.3",
     "pywin32==311; platform_system == 'Windows'",
 ]
@@ -105,8 +105,8 @@ dev = [
     "pytest-cov==7.1.0",
     "pytest-xdist==3.8.0",
     "invoke==3.0.3",
-    "ruff==0.15.12",
-    "coverage==7.13.5",
+    "ruff==0.15.13",
+    "coverage==7.14.0",
     "scipy-stubs==1.17.1.4",
 ]
 

@@ -16,8 +16,8 @@
 import numpy as np
 from astropy.io import fits
 from mw4.base.alpacaClass import AlpacaClass
-from mw4.base.tpool import Worker
 from typing import Any
+import time
 
 
 class CameraAlpaca(AlpacaClass):
@@ -26,6 +26,8 @@ class CameraAlpaca(AlpacaClass):
         self.app = parent.app
         self.data = parent.data
         self.signals = parent.signals
+        self.startTimeExposure: float = 0
+        self.exposing: bool = False
         super().__init__(parent=parent)
 
     def getInitialConfig(self) -> None:
@@ -50,16 +52,21 @@ class CameraAlpaca(AlpacaClass):
         self.getAndStoreDeviceProp("StartY", "CCD_FRAME.Y")
         self.log.debug(f"Initial data: {self.data}")
 
-    def saveImage(self) -> None:
-        if not self.parent.exposing:
-            print("no exposure")
+    def setExposureState(self) -> None:
+        state =  self.getDeviceProp("CameraState")
+        if state == 2 and not self.exposing:
+            self.exposing = True
+        if state != 2 and not self.exposing:
             return
-        state = self.getDeviceProp("ImageReady")
-        print(state, self.data["CAMERA.STATE"])
-        if not state:
+        if state == 2 and self.exposing:
+            timeLeft = max(self.parent.exposureTime - time.time() + self.startTimeExposure, 0)
+            text = f"expose {timeLeft:3.0f} s"
+            self.signals.message.emit(text)
+        if state != 2 and self.exposing:
+            self.signals.exposed.emit(self.parent.imagePath)
+            self.signals.message.emit("download")
+        if not self.getDeviceProp("ImageReady"):
             return
-        self.signals.exposed.emit(self.parent.imagePath)
-        self.signals.message.emit("download")
         data = self.getDeviceProp("ImageArray")
         data = np.array(data, dtype=np.uint16).transpose()
         self.signals.downloaded.emit(self.parent.imagePath)
@@ -68,20 +75,23 @@ class CameraAlpaca(AlpacaClass):
         hdu.writeto(self.parent.imagePath, overwrite=True)
         self.parent.writeImageFitsHeader()
         self.parent.exposeFinished()
-
-
+        self.exposing = False
 
     def pollData(self) -> None:
         self.getAndStoreDeviceProp("BinX", "CCD_BINNING.HOR_BIN")
         self.getAndStoreDeviceProp("BinY", "CCD_BINNING.VERT_BIN")
-        self.getAndStoreDeviceProp("CameraState", "CAMERA.STATE")
         self.getAndStoreDeviceProp("Gain", "CCD_GAIN.GAIN")
         self.getAndStoreDeviceProp("Offset", "CCD_OFFSET.OFFSET")
         self.getAndStoreDeviceProp("FastReadout", "READOUT_QUALITY.QUALITY_LOW")
         self.getAndStoreDeviceProp("CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE")
         self.getAndStoreDeviceProp("CoolerOn", "CCD_COOLER.COOLER_ON")
         self.getAndStoreDeviceProp("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
-        self.saveImage()
+        if self.parent.exposing:
+            self.setExposureState()
+        else:
+            if self.exposing:
+                self.exposing = False
+                self.parent.exposeFinished()
 
     def sendDownloadMode(self) -> None:
         if self.data.get("CAN_FAST", False):
@@ -95,11 +105,13 @@ class CameraAlpaca(AlpacaClass):
         self.setDevicePropQueued("StartY", self.parent.posYASCOM)
         self.setDevicePropQueued("NumX", self.parent.widthASCOM)
         self.setDevicePropQueued("NumY", self.parent.heightASCOM)
+        self.startTimeExposure = time.time()
         self.callDeviceMethodQueued("StartExposure", Duration=self.parent.exposureTime, Light=True)
 
     def abort(self) -> bool:
         if self.data.get("CAN_ABORT", False):
-            self.callDeviceMethodQueued("StopExposure")
+            self.callDeviceMethodQueued("AbortExposure")
+            self.exposing = False
         return True
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:

@@ -45,9 +45,31 @@ def test_getInitialConfig_1(function):
 
 
 def test_pollData_1(function):
+    function.parent.exposing = False
+    function.exposing = False
     with mock.patch.object(function, "getAndStoreDeviceProp") as m:
         function.pollData()
-    assert m.call_count == 9
+    assert m.call_count == 8
+
+
+def test_pollData_parentExposing(function):
+    function.parent.exposing = True
+    function.exposing = False
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
+        with mock.patch.object(function, "setExposureState") as ms:
+            function.pollData()
+    ms.assert_called_once()
+    function.parent.exposing = False
+
+
+def test_pollData_selfExposing(function):
+    function.parent.exposing = False
+    function.exposing = True
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
+        with mock.patch.object(function.parent, "exposeFinished") as mf:
+            function.pollData()
+    assert function.exposing is False
+    mf.assert_called_once()
 
 
 def test_sendDownloadMode_1(function):
@@ -68,34 +90,84 @@ def test_sendDownloadMode_2(function):
     assert function.commandQueue.empty()
 
 
-def test_saveImage_notExposing(function):
-    function.parent.exposing = False
-    function.saveImage()
+def test_setExposureState_stateNot2NotExposing(function):
+    # state != 2, self.exposing = False -> returns early
+    function.exposing = False
+    with mock.patch.object(function, "getDeviceProp", return_value=0) as m:
+        function.setExposureState()
+    assert function.exposing is False
+    assert m.call_count == 1
 
 
-def test_saveImage_imageNotReady(function):
-    function.parent.exposing = True
-    function.data["CAMERA.STATE"] = 0
-    with mock.patch.object(function, "getDeviceProp", return_value=False):
-        function.saveImage()
-    function.parent.exposing = False
+def test_setExposureState_state2NotExposing(function):
+    # state == 2, self.exposing = False -> sets exposing=True,
+    # emits message, ImageReady=False -> returns
+    function.exposing = False
+    with mock.patch.object(
+        function, "getDeviceProp", side_effect=[2, False]
+    ):
+        function.setExposureState()
+    assert function.exposing is True
+    function.exposing = False
 
 
-def test_saveImage_imageReady(function):
-    function.parent.exposing = True
-    function.data["CAMERA.STATE"] = 0
+def test_setExposureState_state2Exposing(function):
+    # state == 2, self.exposing = True -> emits message,
+    # ImageReady=False -> returns
+    function.exposing = True
+    with mock.patch.object(
+        function, "getDeviceProp", side_effect=[2, False]
+    ):
+        function.setExposureState()
+    assert function.exposing is True
+    function.exposing = False
+
+
+def test_setExposureState_stateNot2Exposing(function):
+    # state != 2, self.exposing = True -> emits exposed+download,
+    # ImageReady=False -> returns
+    function.exposing = True
+    with mock.patch.object(
+        function, "getDeviceProp", side_effect=[0, False]
+    ):
+        function.setExposureState()
+    assert function.exposing is True
+    function.exposing = False
+
+
+def test_setExposureState_stateNot2ExposingImageReady(function):
+    # state != 2, self.exposing=True, ImageReady=True -> saves and finishes
+    function.exposing = True
     fakeImage = [[1, 2], [3, 4]]
     with mock.patch.object(
-        function, "getDeviceProp", side_effect=[True, fakeImage]
+        function, "getDeviceProp", side_effect=[0, True, fakeImage]
     ):
         with mock.patch.object(function.parent, "writeImageFitsHeader"):
             with mock.patch.object(
                 function.parent, "exposeFinished"
             ) as mf:
                 with mock.patch.object(fits.PrimaryHDU, "writeto"):
-                    function.saveImage()
+                    function.setExposureState()
+    assert function.exposing is False
     mf.assert_called_once()
-    function.parent.exposing = False
+
+
+def test_setExposureState_state2NotExposingImageReady(function):
+    # state == 2, self.exposing=False -> sets exposing=True,
+    # ImageReady=True -> saves and finishes
+    function.exposing = False
+    fakeImage = [[1, 2], [3, 4]]
+    with mock.patch.object(
+        function, "getDeviceProp", side_effect=[2, True, fakeImage]
+    ):
+        with mock.patch.object(function.parent, "writeImageFitsHeader"):
+            with mock.patch.object(
+                function.parent, "exposeFinished"
+            ) as mf:
+                with mock.patch.object(fits.PrimaryHDU, "writeto"):
+                    function.setExposureState()
+    assert function.exposing is False
+    mf.assert_called_once()
 
 
 def test_expose_basic(function):

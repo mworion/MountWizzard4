@@ -268,6 +268,8 @@ class AlpacaClass(DriverData):
         self.msg.emit(0, "ALPACA", "Device remove", self.deviceName)
 
     def runnerCommunicationLoop(self) -> None:
+        if not self.mutexRunnerCommunicationLoop.tryLock():
+            return
         while not self.stopEvent.is_set():
             if not self.deviceConnected:
                 self.handleDeviceConnect()
@@ -275,10 +277,7 @@ class AlpacaClass(DriverData):
             if not self.getDeviceProp("Connected"):
                 self.handleDeviceDisconnect()
                 continue
-            try:
-                self.pollData()
-            except Exception as e:
-                self.log.error(f"[{self.deviceName}] pollData exception: [{e}]")
+            self.pollData()
             self.processCommandQueue()
             self.stopEvent.wait(timeout=self.UPDATE_RATE)
 

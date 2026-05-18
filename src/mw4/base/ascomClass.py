@@ -21,13 +21,12 @@ import threading
 import time
 from dataclasses import dataclass, field
 from typing import Any
-
-if platform.system() == "Windows":
-    from pythoncom import CoInitialize, CoUninitialize
-    from win32com import client
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QThreadPool
+if platform.system() == "Windows":
+    from pythoncom import CoInitialize, CoUninitialize
+    from win32com import client
 
 
 @dataclass
@@ -66,7 +65,7 @@ class AscomClass(DriverData):
 
     def getAscomProperty(self, valueProp: str) -> str | float | bool | None:
         if valueProp in self.propertyExceptions:
-            return value
+            return None
         try:
             value = getattr(self.client, valueProp)
         except Exception as e:
@@ -92,7 +91,7 @@ class AscomClass(DriverData):
 
     def callAscomMethod(self, valueProp: str, **kwargs: Any) -> Any:
         if valueProp in self.propertyExceptions:
-            return value
+            return None
         try:
             result = getattr(self.client, valueProp)(**kwargs)
         except Exception as e:
@@ -111,7 +110,7 @@ class AscomClass(DriverData):
 
     def callAscomMethodQueued(self, valueProp: str, **kwargs: Any) -> None:
         self.commandQueue.put(CommandItem(cmdType="call", valueProp=valueProp, kwargs=kwargs))
-        self.log.trace(f"[{self.deviceName}] method [{method}] queued")
+        self.log.trace(f"[{self.deviceName}] method [{valueProp}] queued")
 
     def processCommandQueue(self) -> None:
         while not self.commandQueue.empty():
@@ -174,10 +173,7 @@ class AscomClass(DriverData):
             elif not self.getAscomProperty("Connected"):
                 self.handleDeviceDisconnect()
             else:
-                try:
-                    self.pollData()
-                except Exception as e:
-                    self.log.error(f"[{self.deviceName}] pollData error: [{e}]")
+                self.pollData()
                 self.processCommandQueue()
             self.stopEvent.wait(timeout=self.UPDATE_RATE)
 

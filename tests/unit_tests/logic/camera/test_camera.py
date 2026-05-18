@@ -51,10 +51,8 @@ def test_properties_1(function):
 
 
 def test_properties_2(function):
-    function.updateRate = 1000
     function.loadConfig = True
     function.framework = "indi"
-    assert function.updateRate == 1000
     assert function.loadConfig
 
 

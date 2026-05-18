@@ -13,7 +13,6 @@
 # License APL2.0
 #
 ###########################################################
-
 import PySide6
 import pytest
 import unittest.mock as mock

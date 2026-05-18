@@ -20,15 +20,12 @@ import subprocess
 import threading
 import time
 from unittest import mock
-
-if platform.system() != "Windows":
-    pytest.skip("skipping windows-only tests", allow_module_level=True)
-
 from mw4.base.ascomClass import AscomClass, CommandItem
 from mw4.base.loggerMW import setupLogging
 from mw4.base.signalsDevices import Signals
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-
+if platform.system() != "Windows":
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
 setupLogging()
 
 
@@ -38,7 +35,6 @@ class Parent:
     deviceType = ""
     signals = Signals()
     loadConfig = True
-    updateRate = 1000
 
 
 @pytest.fixture(autouse=True, scope="function")

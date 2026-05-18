@@ -28,7 +28,6 @@ class Parent:
     data = {}
     signals = Signals()
     loadConfig = True
-    updateRate = 1000
     binning = 1
     exposureTime = 1
     imagePath = Path("tests/work/image/test.fit")

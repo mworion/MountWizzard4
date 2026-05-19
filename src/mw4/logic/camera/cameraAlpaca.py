@@ -21,6 +21,8 @@ import time
 
 
 class CameraAlpaca(AlpacaClass):
+    CAMERA_STATES: list[str] = ["CameraIdle", "CameraWaiting", "CameraExposing", "CameraReading",
+                                "CameraDownload", "CameraError"]
     def __init__(self, parent: Any) -> None:
         self.parent = parent
         self.app = parent.app

@@ -18,7 +18,7 @@ from typing import Any
 
 
 class DomeAscom(AscomClass):
-    shutterStates = ["Open", "Closed", "Opening", "Closing", "Error"]
+    SHUTTER_STATES: list[str] = ["Open", "Closed", "Opening", "Closing", "Error"]
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)

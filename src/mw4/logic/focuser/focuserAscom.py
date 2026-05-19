@@ -14,19 +14,8 @@
 #
 ###########################################################
 from mw4.base.ascomClass import AscomClass
-from typing import Any
+from mw4.logic.focuser.focuserAlpacaAscomBase import FocuserAlpacaAscomBase
 
 
-class FocuserAscom(AscomClass):
-    def __init__(self, parent: Any) -> None:
-        super().__init__(parent=parent)
-        self.signals = parent.signals
-
-    def pollData(self) -> None:
-        self.getAndStoreDeviceProp("Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION")
-
-    def move(self, position: int) -> None:
-        self.callDeviceMethodQueued("Move", Position=position)
-
-    def halt(self) -> None:
-        self.callDeviceMethodQueued("Halt")
+class FocuserAscom(FocuserAlpacaAscomBase, AscomClass):
+    pass

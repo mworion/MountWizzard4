@@ -14,21 +14,8 @@
 #
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
-from typing import Any
+from mw4.logic.environment.sensorWeatherAlpacaAscomBase import SensorWeatherAlpacaAscomBase
 
 
-class SensorWeatherAlpaca(AlpacaClass):
-    def __init__(self, parent: Any) -> None:
-        super().__init__(parent=parent)
-        self.signals = parent.signals
-        self.data = parent.data
-
-    def pollData(self) -> None:
-
-        self.getAndStoreDeviceProp("Temperature", "WEATHER_PARAMETERS.WEATHER_TEMPERATURE")
-        self.getAndStoreDeviceProp("Pressure", "WEATHER_PARAMETERS.WEATHER_PRESSURE")
-        self.getAndStoreDeviceProp("DewPoint", "WEATHER_PARAMETERS.WEATHER_DEWPOINT")
-        self.getAndStoreDeviceProp("Humidity", "WEATHER_PARAMETERS.WEATHER_HUMIDITY")
-        self.getAndStoreDeviceProp("CloudCover", "WEATHER_PARAMETERS.CloudCover")
-        self.getAndStoreDeviceProp("RainRate", "WEATHER_PARAMETERS.RainVol")
-        self.getAndStoreDeviceProp("SkyQuality", "SKY_QUALITY.SKY_BRIGHTNESS")
+class SensorWeatherAlpaca(SensorWeatherAlpacaAscomBase, AlpacaClass):
+    pass

@@ -13,9 +13,14 @@
 # License APL2.0
 #
 ###########################################################
-from mw4.base.ascomClass import AscomClass
-from mw4.logic.powerswitch.pegasusUPBAlpacaAscomBase import PegasusUPBAlpacaAscomBase
+from typing import Any
 
 
-class PegasusUPBAscom(PegasusUPBAlpacaAscomBase, AscomClass):
-    pass
+class TelescopeAlpacaAscomBase:
+    def __init__(self, parent: Any) -> None:
+        super().__init__(parent=parent)
+
+    def getInitialConfig(self) -> None:
+        super().getInitialConfig()
+        self.getAndStoreDeviceProp("ApertureDiameter", "TELESCOPE_INFO.TELESCOPE_APERTURE")
+        self.getAndStoreDeviceProp("FocalLength", "TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH")

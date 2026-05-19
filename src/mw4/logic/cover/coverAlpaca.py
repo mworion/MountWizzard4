@@ -14,29 +14,8 @@
 #
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
-from typing import Any
+from mw4.logic.cover.coverAlpacaAscomBase import CoverAlpacaAscomBase
 
 
-class CoverAlpaca(AlpacaClass):
-    COVERSTATES: list[str] = ["NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"]
-
-    def __init__(self, parent: Any) -> None:
-        super().__init__(parent=parent)
-        self.parent = parent
-        self.signals = parent.signals
-        self.data = parent.data
-
-    def pollData(self) -> None:
-        state = self.getDeviceProp("CoverState")
-        if state is None:
-            return
-        self.storePropertyToData(self.COVERSTATES[int(state)], "Status.Cover")
-
-    def closeCover(self) -> None:
-        self.callDeviceMethodQueued("CloseCover")
-
-    def openCover(self) -> None:
-        self.callDeviceMethodQueued("OpenCover")
-
-    def haltCover(self) -> None:
-        self.callDeviceMethodQueued("HaltCover")
+class CoverAlpaca(CoverAlpacaAscomBase, AlpacaClass):
+    pass

@@ -14,25 +14,8 @@
 #
 ###########################################################
 from mw4.base.ascomClass import AscomClass
-from typing import Any
+from mw4.logic.telescope.telescopeAlpacaAscomBase import TelescopeAlpacaAscomBase
 
 
-class TelescopeAscom(AscomClass):
-    def __init__(self, parent: Any) -> None:
-        super().__init__(parent=parent)
-        self.signals = parent.signals
-
-    def getInitialConfig(self) -> None:
-        super().getInitialConfig()
-
-        value = self.getDeviceProp("ApertureDiameter")
-        if isinstance(value, float):
-            value = value * 1000
-
-        self.storePropertyToData(value, "TELESCOPE_INFO.TELESCOPE_APERTURE")
-
-        value = self.getDeviceProp("FocalLength")
-        if isinstance(value, float):
-            value = value * 1000
-
-        self.storePropertyToData(value, "TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH")
+class TelescopeAscom(TelescopeAlpacaAscomBase, AscomClass):
+    pass

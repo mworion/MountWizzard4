@@ -14,16 +14,8 @@
 #
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
-from typing import Any
+from mw4.logic.telescope.telescopeAlpacaAscomBase import TelescopeAlpacaAscomBase
 
 
-class TelescopeAlpaca(AlpacaClass):
-    def __init__(self, parent: Any) -> None:
-        super().__init__(parent=parent)
-        self.signals = parent.signals
-        self.data = parent.data
-
-    def getInitialConfig(self) -> None:
-        super().getInitialConfig()
-        self.getAndStoreDeviceProp("ApertureDiameter", "TELESCOPE_INFO.TELESCOPE_APERTURE")
-        self.getAndStoreDeviceProp("FocalLength", "TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH")
+class TelescopeAlpaca(TelescopeAlpacaAscomBase, AlpacaClass):
+    pass

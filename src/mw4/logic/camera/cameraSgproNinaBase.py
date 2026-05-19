@@ -13,12 +13,13 @@
 # License APL2.0
 #
 ###########################################################
+from mw4.base.sgproNinaCommon import SgproNinaCommon
 from mw4.base.tpool import Worker
 from pathlib import Path
 from typing import Any
 
 
-class CameraSgproNinaBase:
+class CameraSgproNinaBase(SgproNinaCommon):
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.threadPool = parent.threadPool

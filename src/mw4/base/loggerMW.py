@@ -15,7 +15,6 @@
 ###########################################################
 import datetime
 import logging
-import sys
 import time
 from collections.abc import Callable
 from functools import partial, partialmethod

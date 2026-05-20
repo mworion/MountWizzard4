@@ -21,7 +21,6 @@ from mw4.gui.styles.gradients import gradients
 from mw4.gui.styles.images import images
 from mw4.gui.styles.styleSheets import BASIC_STYLE, MAC_STYLE, NON_MAC_STYLE
 from PySide6.QtGui import QIcon
-from pathlib import Path, PureWindowsPath
 
 
 class Styles:

@@ -13,9 +13,8 @@
 # License APL2.0
 #
 ###########################################################
-from mw4.base.sgproClass import SGProClass
 from mw4.logic.camera.cameraSgproNinaBase import CameraSgproNinaBase
 
 
-class CameraSGPro(CameraSgproNinaBase, SGProClass):
-    DEVICE_TYPE: str = "Camera"
+class CameraSGPro(CameraSgproNinaBase):
+    pass

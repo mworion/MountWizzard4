@@ -88,23 +88,6 @@ class SgproNinaCommon(DriverData):
     def requestPropertyQueued(self, valueProp: str, params: dict | None = None) -> None:
         self.commandQueue.put((valueProp, params))
 
-    def connectDevice(self) -> bool:
-        devName = self.deviceName.replace(" ", "%20")
-        prop = f"connectdevice/{self.DEVICE_TYPE}/{devName}"
-        response = self.requestProperty(prop)
-        print(devName, self.deviceName, response)
-        return response.get("Success", False)
-
-    def disconnectDevice(self) -> bool:
-        prop = f"disconnectdevice/{self.DEVICE_TYPE}"
-        response = self.requestProperty(prop)
-        return response.get("Success", False)
-
-    def enumerateDevice(self) -> list:
-        prop = f"enumdevices/{self.DEVICE_TYPE}"
-        response = self.requestProperty(prop)
-        return response.get("Devices", [])
-
     def getInitialConfig(self) -> None:
         pass
 
@@ -127,10 +110,14 @@ class SgproNinaCommon(DriverData):
                 valueProp, params = self.commandQueue.get_nowait()
             except queue.Empty:
                 break
-            self.requestProperty(valueProp, params)
+            if valueProp == "image":
+                response = self.requestProperty(valueProp, params)
+                self.storePropertyToData(response.get("Receipt"), "IMAGE.RECEIPT")
+            else:
+                self.requestProperty(valueProp, params)
 
     def handleDeviceConnect(self) -> None:
-        if not self.connectDevice():
+        if not self.isConnected():
             return
         self.serverConnected = True
         self.deviceConnected = True
@@ -158,7 +145,6 @@ class SgproNinaCommon(DriverData):
     def startCommunication(self) -> None:
         self.data.clear()
         self.stopEvent.clear()
-        self.discoverDevices(self.DEVICE_TYPE)
         workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
         self.threadPool.start(workerCommunicationLoop)
 
@@ -169,8 +155,3 @@ class SgproNinaCommon(DriverData):
         self.signals.deviceDisconnected.emit(self.deviceName)
         self.signals.serverDisconnected.emit(self.deviceName)
         self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.deviceName)
-
-    def discoverDevices(self, deviceType: str) -> list:
-        discoverList = self.enumerateDevice()
-        self.log.debug(f"[Type: {deviceType}: {discoverList}]")
-        return discoverList

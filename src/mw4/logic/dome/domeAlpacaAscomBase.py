@@ -64,7 +64,8 @@ class DomeAlpacaAscomBase:
             self.callDeviceMethodQueued("CloseShutter")
 
     def slewCW(self) -> None:
-        pass
+        azimuth = self.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION", 0.0)
+        self.callDeviceMethodQueued("SlewToAzimuth", Azimuth=(azimuth + 5.0) % 360.0)
 
     def slewCCW(self) -> None:
         pass

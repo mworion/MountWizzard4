@@ -13,10 +13,12 @@
 # License APL2.0
 #
 ###########################################################
+import queue
 import requests
-from mw4.base.driverDataClass import DriverData, RemoteDeviceShutdown
+import threading
+from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
-from PySide6.QtCore import QMutex, QThreadPool, QTimer
+from PySide6.QtCore import QThreadPool
 from typing import Any
 
 
@@ -27,7 +29,7 @@ class SgproNinaCommon(DriverData):
     PROTOCOL: str = "http"
     BASE_URL: str = f"{PROTOCOL}://{HOST_ADDR}:{PORT}"
     DEVICE_TYPE: str = "Camera"
-    UPDATE_RATE: int = 1000
+    UPDATE_RATE: float = 0.5
     PROTOCOL_NAME: str = ""
 
     def __init__(self, parent: Any) -> None:
@@ -44,16 +46,10 @@ class SgproNinaCommon(DriverData):
             "deviceList": [self.PROTOCOL_NAME],
             "deviceName": self.PROTOCOL_NAME,
         }
-        self.signalRS: RemoteDeviceShutdown = RemoteDeviceShutdown()
         self.deviceConnected: bool = False
         self.serverConnected: bool = False
-        self.workerGetConfig: Worker | None = None
-        self.workerStatus: Worker | None = None
-        self.mutexPollStatus: QMutex = QMutex()
-        self.cycleDevice: QTimer = QTimer()
-        self.cycleDevice.setSingleShot(False)
-        self.cycleDevice.timeout.connect(self.pollStatus)
-        self.signalRS.signalRemoteShutdown.connect(self.stopCommunication)
+        self.commandQueue: queue.Queue = queue.Queue()
+        self.stopEvent: threading.Event = threading.Event()
 
     @property
     def deviceName(self) -> str:
@@ -89,6 +85,9 @@ class SgproNinaCommon(DriverData):
         response = response.json()
         return response
 
+    def requestPropertyQueued(self, valueProp: str, params: dict | None = None) -> None:
+        self.commandQueue.put((valueProp, params))
+
     def isConnectedState(self, state: Any) -> bool:
         return state != "DISCONNECTED"
 
@@ -108,66 +107,70 @@ class SgproNinaCommon(DriverData):
         response = self.requestProperty(prop)
         return response.get("Devices", [])
 
-    def startTimer(self) -> None:
-        self.cycleDevice.start(self.UPDATE_RATE)
-
-    def stopTimer(self) -> None:
-        self.cycleDevice.stop()
-
     def workerGetInitialConfig(self) -> None:
         pass
 
     def getInitialConfig(self) -> None:
-        self.workerGetConfig = Worker(self.workerGetInitialConfig)
-        self.threadPool.start(self.workerGetConfig)
+        self.workerGetInitialConfig()
 
-    def workerPollStatus(self) -> None:
+    def pollData(self) -> bool:
         prop = f"devicestatus/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
         if not response:
-            return
-
-        self.storePropertyToData(response["State"], "Device.Status")
-        self.storePropertyToData(response["Message"], "Device.Message")
-
+            return False
+        self.storePropertyToData(response.get("State"), "Device.Status")
+        self.storePropertyToData(response.get("Message"), "Device.Message")
         state = response.get("State")
-        if not self.isConnectedState(state):
-            if self.deviceConnected:
-                self.deviceConnected = False
-                self.signals.deviceDisconnected.emit(self.deviceName)
-                self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.deviceName)
-        else:
-            if not self.deviceConnected:
-                self.deviceConnected = True
-                self.getInitialConfig()
-                self.signals.deviceConnected.emit(self.deviceName)
-                self.msg.emit(0, self.PROTOCOL_NAME, "Device found", self.deviceName)
+        return self.isConnectedState(state)
 
-    def clearPollStatus(self) -> None:
-        self.mutexPollStatus.unlock()
+    def processCommandQueue(self) -> None:
+        while not self.commandQueue.empty():
+            try:
+                valueProp, params = self.commandQueue.get_nowait()
+            except queue.Empty:
+                break
+            self.requestProperty(valueProp, params)
 
-    def pollStatus(self) -> None:
-        if not self.mutexPollStatus.tryLock():
+    def handleDeviceConnect(self) -> None:
+        if not self.connectDevice():
             return
+        self.serverConnected = True
+        self.deviceConnected = True
+        self.signals.serverConnected.emit()
+        self.signals.deviceConnected.emit(self.deviceName)
+        self.msg.emit(0, self.PROTOCOL_NAME, "Device found", self.deviceName)
+        self.getInitialConfig()
 
-        self.workerStatus = Worker(self.workerPollStatus)
-        self.workerStatus.signals.finished.connect(self.clearPollStatus)
-        self.threadPool.start(self.workerStatus)
+    def handleDeviceDisconnect(self) -> None:
+        self.deviceConnected = False
+        self.signals.deviceDisconnected.emit(self.deviceName)
+        self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.deviceName)
+
+    def runnerCommunicationLoop(self) -> None:
+        while not self.stopEvent.is_set():
+            if not self.deviceConnected:
+                self.handleDeviceConnect()
+            else:
+                state = self.pollData()
+                if not state:
+                    self.handleDeviceDisconnect()
+                else:
+                    self.processCommandQueue()
+            self.stopEvent.wait(timeout=self.UPDATE_RATE)
 
     def startCommunication(self) -> None:
         self.data.clear()
-        if not self.serverConnected:
-            self.serverConnected = True
-            self.signals.serverConnected.emit()
-        self.startTimer()
+        self.stopEvent.clear()
+        workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
+        self.threadPool.start(workerCommunicationLoop)
 
     def stopCommunication(self) -> None:
-        self.stopTimer()
+        self.stopEvent.set()
         self.deviceConnected = False
         self.serverConnected = False
-        self.signals.deviceDisconnected.emit(f"{self.deviceName}")
-        self.signals.serverDisconnected.emit({f"{self.deviceName}": 0})
-        self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", f"{self.deviceName}")
+        self.signals.deviceDisconnected.emit(self.deviceName)
+        self.signals.serverDisconnected.emit(self.deviceName)
+        self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.deviceName)
 
     def discoverDevices(self, deviceType: str) -> list:
         discoverList = self.enumerateDevice()

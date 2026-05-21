@@ -18,4 +18,11 @@ from mw4.logic.telescope.telescopeAlpacaAscomBase import TelescopeAlpacaAscomBas
 
 
 class TelescopeAscom(TelescopeAlpacaAscomBase, AscomClass):
-    pass
+    def getInitialConfig(self) -> None:
+        super().getInitialConfig()
+        aperture = self.getDeviceProp("ApertureDiameter")
+        if isinstance(aperture, float):
+            self.data["TELESCOPE_INFO.TELESCOPE_APERTURE"] = aperture * 1000
+        focalLength = self.getDeviceProp("FocalLength")
+        if isinstance(focalLength, float):
+            self.data["TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH"] = focalLength * 1000

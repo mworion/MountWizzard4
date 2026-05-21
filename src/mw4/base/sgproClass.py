@@ -13,7 +13,7 @@
 # License APL2.0
 #
 ###########################################################
-from mw4.base.sgproNinaCommon import SgproNinaCommon
+from mw4.base.sgproNinaClass import SgproNinaCommon
 
 
 class SGProClass(SgproNinaCommon):

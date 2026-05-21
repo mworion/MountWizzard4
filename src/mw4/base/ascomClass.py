@@ -41,10 +41,7 @@ class AscomClass(AlpacaAscomCommon):
         try:
             return getattr(self.device, valueProp)
         except Exception as e:
-            self.log.debug(
-                f"[{self.deviceName}] property [{valueProp}]"
-                f" not implemented: {e}"
-            )
+            self.log.debug(f"[{self.deviceName}] property [{valueProp}] not implemented: {e}")
             self.propertyExceptions.append(valueProp)
 
     def setDeviceProp(self, valueProp: str, value: Any) -> None:
@@ -53,10 +50,7 @@ class AscomClass(AlpacaAscomCommon):
         try:
             setattr(self.device, valueProp, value)
         except Exception as e:
-            self.log.debug(
-                f"[{self.deviceName}] property [{valueProp}]"
-                f" not implemented: {e}"
-            )
+            self.log.debug(f"[{self.deviceName}] property [{valueProp}] not implemented: {e}")
             self.propertyExceptions.append(valueProp)
 
     def callDeviceMethod(self, valueProp: str, **kwargs: Any) -> Any:
@@ -65,10 +59,7 @@ class AscomClass(AlpacaAscomCommon):
         try:
             return getattr(self.device, valueProp)(**kwargs)
         except Exception as e:
-            self.log.debug(
-                f"[{self.deviceName}] method [{valueProp}]"
-                f" not implemented: {e}"
-            )
+            self.log.debug(f"[{self.deviceName}] method [{valueProp}] not implemented: {e}")
             self.propertyExceptions.append(valueProp)
 
     def runnerCoreLoop(self) -> None:

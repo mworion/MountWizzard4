@@ -29,7 +29,7 @@ class FilterAlpacaAscomBase:
         for i, name in enumerate(names):
             if name is None:
                 continue
-            self.data[f"FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}"] = name
+            self.storePropertyToData(name, f"FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}")
 
     def pollData(self) -> None:
         position = self.getDeviceProp("Position")

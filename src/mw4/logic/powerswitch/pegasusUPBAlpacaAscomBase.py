@@ -21,7 +21,8 @@ class PegasusUPBAlpacaAscomBase:
         super().__init__(parent=parent)
 
     def pollData(self) -> None:
-        model = "UPB" if self.getDeviceProp("MaxSwitch") == 15 else "UPBv2"
+        self.getAndStoreDeviceProp("MaxSwitch", "MaxSwitch")
+        model = "UPB" if self.data.get("MaxSwitch") == 15 else "UPBv2"
         self.data["FIRMWARE_INFO.VERSION"] = "1.4" if model == "UPB" else "2.1"
         if model == "UPB":
             self.getAndStoreDeviceProp("GetSwitch(0)", "POWER_CONTROL.POWER_CONTROL_1")
@@ -63,7 +64,7 @@ class PegasusUPBAlpacaAscomBase:
     def togglePowerPort(self, port: str) -> None:
         switchNumber = int(port) - 1
         val = self.data.get(f"POWER_CONTROL.POWER_CONTROL_{port}", True)
-        self.callDeviceMethodQueued("SetSwitchValue", Id=switchNumber, Value=not val)
+        self.callDeviceMethodQueued("SetSwitch", Id=switchNumber, State=not val)
 
     def togglePowerPortBoot(self, port: str) -> None:
         pass
@@ -76,23 +77,23 @@ class PegasusUPBAlpacaAscomBase:
         if model == "UPBv2":
             switchNumber = int(port) + 6
             val = self.data.get(f"USB_PORT_CONTROL.PORT_{port}", True)
-            self.callDeviceMethodQueued("SetSwitchValue", Id=switchNumber, Value=val)
+            self.callDeviceMethodQueued("SetSwitch", Id=switchNumber, State=not val)
 
     def toggleAutoDew(self) -> None:
         model = "UPB" if self.getDeviceProp("MaxSwitch") == 15 else "UPBv2"
         if model == "UPB":
             val = self.data.get("AUTO_DEW.INDI_ENABLED", False)
-            self.callDeviceMethodQueued("SetSwitch", Id=7, State=val)
+            self.callDeviceMethodQueued("SetSwitch", Id=7, State=not val)
         else:
             val = self.data.get("AUTO_DEW.DEW_A", False)
-            self.callDeviceMethodQueued("SetSwitch", Id=13, State=val)
+            self.callDeviceMethodQueued("SetSwitch", Id=13, State=not val)
 
     def sendDew(self, port: str, value: float) -> None:
         model = "UPB" if self.getDeviceProp("MaxSwitch") == 15 else "UPBv2"
         switchNumber = ord(port) - ord("A") + 4
         val = int(value * 2.55)
         if model == "UPBv2":
-            self.callDeviceMethodQueued("SetSwitch", Id=switchNumber, State=val)
+            self.callDeviceMethodQueued("SetSwitchValue", Id=switchNumber, Value=val)
 
     def sendAdjustableOutput(self, value: float) -> None:
         pass

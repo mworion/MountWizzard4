@@ -72,6 +72,8 @@ def test_pollData_shutterOther(function):
 
 
 def test_slewToAltAz(function):
+    function.data["CanSetAzimuth"] = True
+    function.data["CanSetAltitude"] = True
     with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.slewToAltAz(30.0, 180.0)
     assert m.call_count == 2
@@ -83,12 +85,14 @@ def test_slewToAltAz(function):
 
 
 def test_openShutter(function):
+    function.data["CanSetShutter"] = True
     with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.openShutter()
     m.assert_called_once_with("OpenShutter")
 
 
 def test_closeShutter(function):
+    function.data["CanSetShutter"] = True
     with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.closeShutter()
     m.assert_called_once_with("CloseShutter")

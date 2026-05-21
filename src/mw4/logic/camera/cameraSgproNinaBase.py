@@ -13,7 +13,7 @@
 # License APL2.0
 #
 ###########################################################
-from mw4.base.sgproNinaCommon import SgproNinaCommon
+from mw4.base.sgproNinaClass import SgproNinaCommon
 from mw4.base.tpool import Worker
 from pathlib import Path
 from typing import Any

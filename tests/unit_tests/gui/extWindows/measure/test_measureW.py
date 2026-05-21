@@ -26,7 +26,7 @@ from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     func = MeasureWindow(app=App())
 
@@ -71,6 +71,13 @@ def test_storeConfig_2(function):
 def test_showWindow_1(function):
     with mock.patch.object(function, "show"):
         function.showWindow()
+    # Disconnect signals connected by showWindow to prevent interference
+    # with subsequent tests that modify combo boxes or emit app signals.
+    for setName in function.mSetUI:
+        function.mSetUI[setName].currentIndexChanged.disconnect()
+    function.app.colorChange.disconnect(function.colorChange)
+    function.app.update1s.disconnect(function.drawMeasure)
+    function.app.update1s.disconnect(function.setTitle)
 
 
 def test_closeEvent_1(function):
@@ -204,7 +211,6 @@ def test_changeChart_2(function):
             with mock.patch.object(function, "inUseMessage"):
                 with mock.patch.object(function, "checkInUse", return_value=True):
                     function.changeChart("set0", 1)
-                    function.drawLock.unlock()
 
 
 def test_processDrawMeasure_1(function):
@@ -260,7 +266,6 @@ def test_processDrawMeasure_2(function):
 def test_drawMeasure_1(function):
     with mock.patch.object(function, "processDrawMeasure"):
         function.drawMeasure()
-    function.drawLock.unlock()
 
 
 def test_drawMeasure_2(function):
@@ -274,4 +279,3 @@ def test_drawMeasure_3(function):
     function.app.measure.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
     with mock.patch.object(function, "processDrawMeasure"):
         function.drawMeasure()
-    function.drawLock.unlock()

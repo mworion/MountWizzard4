@@ -95,6 +95,7 @@ class SgproNinaCommon(DriverData):
         devName = self.deviceName.replace(" ", "%20")
         prop = f"connectdevice/{self.DEVICE_TYPE}/{devName}"
         response = self.requestProperty(prop)
+        print(prop)
         return response.get("Success", False)
 
     def disconnectDevice(self) -> bool:

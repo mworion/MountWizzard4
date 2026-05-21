@@ -18,4 +18,4 @@ from mw4.logic.camera.cameraSgproNinaBase import CameraSgproNinaBase
 
 
 class CameraNINA(CameraSgproNinaBase, NINAClass):
-    pass
+    DEVICE_TYPE: str = "Camera"

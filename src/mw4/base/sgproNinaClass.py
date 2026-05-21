@@ -28,7 +28,7 @@ class SgproNinaCommon(DriverData):
     PORT: int = 59590
     PROTOCOL: str = "http"
     BASE_URL: str = f"{PROTOCOL}://{HOST_ADDR}:{PORT}"
-    DEVICE_TYPE: str = "Camera"
+    DEVICE_TYPE: str = ""
     UPDATE_RATE: float = 0.5
     PROTOCOL_NAME: str = ""
 

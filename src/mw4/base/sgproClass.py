@@ -18,3 +18,7 @@ from mw4.base.sgproNinaClass import SgproNinaCommon
 
 class SGProClass(SgproNinaCommon):
     PROTOCOL_NAME: str = "SGPro"
+
+    def isConnectedState(self, response: dict) -> bool:
+        state = response.get("State", "")
+        return state == "DISCONNECTED"

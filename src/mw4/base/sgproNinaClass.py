@@ -88,14 +88,11 @@ class SgproNinaCommon(DriverData):
     def requestPropertyQueued(self, valueProp: str, params: dict | None = None) -> None:
         self.commandQueue.put((valueProp, params))
 
-    def isConnectedState(self, state: Any) -> bool:
-        return state != "DISCONNECTED"
-
     def connectDevice(self) -> bool:
         devName = self.deviceName.replace(" ", "%20")
         prop = f"connectdevice/{self.DEVICE_TYPE}/{devName}"
         response = self.requestProperty(prop)
-        print(prop)
+        print(devName, self.deviceName, response)
         return response.get("Success", False)
 
     def disconnectDevice(self) -> bool:
@@ -108,21 +105,21 @@ class SgproNinaCommon(DriverData):
         response = self.requestProperty(prop)
         return response.get("Devices", [])
 
-    def workerGetInitialConfig(self) -> None:
+    def getInitialConfig(self) -> None:
         pass
 
-    def getInitialConfig(self) -> None:
-        self.workerGetInitialConfig()
+    def pollData(self) -> None:
+        pass
 
-    def pollData(self) -> bool:
+    def isConnectedState(self, response: dict) -> bool:
+        pass
+
+    def isConnected(self) -> bool:
         prop = f"devicestatus/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
         if not response:
             return False
-        self.storePropertyToData(response.get("State"), "Device.Status")
-        self.storePropertyToData(response.get("Message"), "Device.Message")
-        state = response.get("State")
-        return self.isConnectedState(state)
+        return self.isConnectedState(response)
 
     def processCommandQueue(self) -> None:
         while not self.commandQueue.empty():
@@ -151,17 +148,17 @@ class SgproNinaCommon(DriverData):
         while not self.stopEvent.is_set():
             if not self.deviceConnected:
                 self.handleDeviceConnect()
+            if not self.isConnected():
+                self.handleDeviceDisconnect()
             else:
-                state = self.pollData()
-                if not state:
-                    self.handleDeviceDisconnect()
-                else:
-                    self.processCommandQueue()
+                self.pollData()
+                self.processCommandQueue()
             self.stopEvent.wait(timeout=self.UPDATE_RATE)
 
     def startCommunication(self) -> None:
         self.data.clear()
         self.stopEvent.clear()
+        self.discoverDevices(self.DEVICE_TYPE)
         workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
         self.threadPool.start(workerCommunicationLoop)
 

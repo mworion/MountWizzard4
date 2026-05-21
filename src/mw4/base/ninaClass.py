@@ -18,3 +18,7 @@ from mw4.base.sgproNinaClass import SgproNinaCommon
 
 class NINAClass(SgproNinaCommon):
     PROTOCOL_NAME: str = "NINA"
+
+    def isConnectedState(self, response: dict) -> bool:
+        state = response.get("State", -1)
+        return state != 5

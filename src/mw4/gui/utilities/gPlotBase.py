@@ -25,7 +25,7 @@ from scipy.ndimage import uniform_filter
 
 class PlotBase(pg.GraphicsLayoutWidget, Styles):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs, show=True)
+        super().__init__(*args, **kwargs, show=False)
         pg.setConfigOptions(antialias=True, imageAxisOrder="row-major")
 
         self.pen = pg.mkPen(color=self.M_PRIM, width=1)

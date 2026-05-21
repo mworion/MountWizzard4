@@ -152,7 +152,7 @@ class MWidget(QWidget, Styles):
             for button in buttons:
                 msg.addButton(button, QMessageBox.ButtonRole.AcceptRole)
             msg.setDefaultButton(QMessageBox.StandardButton.Cancel)
-        msg.show()
+        msg.adjustSize()
         x = parentWidget.x() + int((parentWidget.width() - msg.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - msg.height()) / 2)
         msg.move(x, y)

@@ -134,41 +134,23 @@ def test_runDialog_1(function):
 
 def test_messageDialog_1(function):
     widget = QWidget()
-    with mock.patch.object(
-        QMessageBox, "question", return_value=QMessageBox.StandardButton.No
-    ):
-        with mock.patch.object(QMessageBox, "show"):
-            with mock.patch.object(
-                function, "runDialog", return_value=QMessageBox.StandardButton.No
-            ):
-                suc = function.messageDialog(widget, "test", "test")
-                assert not suc
+    with mock.patch.object(function, "runDialog", return_value=QMessageBox.StandardButton.No):
+        suc = function.messageDialog(widget, "test", "test")
+        assert not suc
 
 
 def test_messageDialog_2(function):
     widget = QWidget()
-    with mock.patch.object(
-        QMessageBox, "question", return_value=QMessageBox.StandardButton.Yes
-    ):
-        with mock.patch.object(QMessageBox, "show"):
-            with mock.patch.object(
-                function, "runDialog", return_value=QMessageBox.StandardButton.Yes
-            ):
-                suc = function.messageDialog(widget, "test", "test")
-                assert suc
+    with mock.patch.object(function, "runDialog", return_value=QMessageBox.StandardButton.Yes):
+        suc = function.messageDialog(widget, "test", "test")
+        assert suc
 
 
 def test_messageDialog_3(function):
     widget = QWidget()
-    with mock.patch.object(
-        QMessageBox, "question", return_value=QMessageBox.StandardButton.Yes
-    ):
-        with mock.patch.object(QMessageBox, "show"):
-            with mock.patch.object(
-                function, "runDialog", return_value=QMessageBox.StandardButton.Yes
-            ):
-                suc = function.messageDialog(widget, "test", "test", ["A", "B"])
-                assert suc
+    with mock.patch.object(function, "runDialog", return_value=QMessageBox.StandardButton.Yes):
+        suc = function.messageDialog(widget, "test", "test", ["A", "B"])
+        assert suc
 
 
 def test_openFile_5(function):

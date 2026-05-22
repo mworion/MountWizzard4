@@ -29,7 +29,7 @@ class SgproNinaCommon(DriverData):
     PROTOCOL: str = "http"
     BASE_URL: str = f"{PROTOCOL}://{HOST_ADDR}:{PORT}"
     DEVICE_TYPE: str = ""
-    UPDATE_RATE: float = 0.5
+    UPDATE_RATE: float = 0.1
     PROTOCOL_NAME: str = ""
 
     def __init__(self, parent: Any) -> None:
@@ -112,6 +112,9 @@ class SgproNinaCommon(DriverData):
                 break
             if valueProp == "image":
                 response = self.requestProperty(valueProp, params)
+                if not response.get("Success", False):
+                    self.data["IMAGE.RECEIPT"] = ""
+                    self.parent.exposeFinished()
                 self.storePropertyToData(response.get("Receipt"), "IMAGE.RECEIPT")
             else:
                 self.requestProperty(valueProp, params)
@@ -131,6 +134,12 @@ class SgproNinaCommon(DriverData):
         self.signals.deviceDisconnected.emit(self.deviceName)
         self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.deviceName)
 
+    def printState(self) -> None:
+        r1 = self.requestProperty(f"devicestatus/{self.DEVICE_TYPE}")
+        receipt = self.data.get("IMAGE.RECEIPT", "")
+        r2 = self.requestProperty(f"imagepath/{receipt}")
+        print(r1, r2)
+
     def runnerCommunicationLoop(self) -> None:
         while not self.stopEvent.is_set():
             if not self.deviceConnected:
@@ -140,6 +149,7 @@ class SgproNinaCommon(DriverData):
             else:
                 self.pollData()
                 self.processCommandQueue()
+            # self.printState()
             self.stopEvent.wait(timeout=self.UPDATE_RATE)
 
     def startCommunication(self) -> None:

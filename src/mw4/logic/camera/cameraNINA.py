@@ -19,31 +19,23 @@ from mw4.logic.camera.cameraSgproNinaBase import CameraSgproNinaBase
 
 class CameraNINA(CameraSgproNinaBase):
 
-    @staticmethod
-    def exposureState(response: dict) -> str:
-        state = response.get("State", -1)
-        if state == 2:
-            return "integrating downloading image is ready"
-        else:
-            return "IDLE"
-
     def setExposureState(self) -> None:
         response = self.requestProperty(f"devicestatus/{self.DEVICE_TYPE}")
-        state = self.exposureState(response)
-        if "integrating" in state and not self.exposing:
+        state =  response.get("State", -1)
+        if state == 3 and not self.exposing:
             self.exposing = True
-        if "integrating" in state and self.exposing:
+        if state == 3 and self.exposing:
             timeLeft = max(
                 self.parent.exposureTime - time.time() + self.startTimeExposure,
                 0,
             )
             text = f"expose {timeLeft:3.0f} s"
             self.signals.message.emit(text)
-        if "IDLE" in state and self.exposing:
+        if state == 0 and self.exposing:
             self.signals.exposed.emit(self.parent.imagePath)
             self.signals.message.emit("download")
 
-        receipt = self.data['IMAGE.RECEIPT']
+        receipt = self.data.get("IMAGE.RECEIPT", "")
         response = self.requestProperty(f"imagepath/{receipt}")
         if not response.get("Success", False):
             return

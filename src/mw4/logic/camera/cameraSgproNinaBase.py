@@ -13,22 +13,21 @@
 # License APL2.0
 #
 ###########################################################
-from mw4.base.sgproNinaClass import SgproNinaCommon
+import time
+from mw4.base.ninaClass import NINAClass
 from typing import Any
 
 
-class CameraSgproNinaBase(SgproNinaCommon):
+class CameraSgproNinaBase(NINAClass):
     DEVICE_TYPE: str = "Camera"
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
+        self.startTimeExposure: float = 0
         self.exposing: bool = False
 
     def getInitialConfig(self) -> None:
         self.storePropertyToData(0, "CCD_BINNING.HOR_BIN")
-
-    def setExposureState(self) -> None:
-        pass
 
     def pollData(self) -> None:
         if self.parent.exposing:
@@ -42,6 +41,8 @@ class CameraSgproNinaBase(SgproNinaCommon):
         pass
 
     def expose(self) -> None:
+        self.data["IMAGE.RECEIPT"] = ""
+        self.startTimeExposure = time.time()
         params = {
             "BinningMode": self.parent.binning,
             "ExposureLength": max(self.parent.exposureTime, 1),

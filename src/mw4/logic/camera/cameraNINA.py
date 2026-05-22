@@ -18,7 +18,6 @@ from mw4.logic.camera.cameraSgproNinaBase import CameraSgproNinaBase
 
 
 class CameraNINA(CameraSgproNinaBase):
-
     def setExposureState(self) -> None:
         response = self.requestProperty(f"devicestatus/{self.DEVICE_TYPE}")
         state =  response.get("State", -1)

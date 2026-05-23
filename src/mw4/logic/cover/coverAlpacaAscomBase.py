@@ -13,10 +13,11 @@
 # License APL2.0
 #
 ###########################################################
+from mw4.base.alpacaAscomCommon import AlpacaAscomCommon
 from typing import Any
 
 
-class CoverAlpacaAscomBase:
+class CoverAlpacaAscomBase(AlpacaAscomCommon):
     COVERSTATES: list[str] = [
         "NotPresent",
         "Closed",

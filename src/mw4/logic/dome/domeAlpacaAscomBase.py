@@ -13,10 +13,11 @@
 # License APL2.0
 #
 ###########################################################
+from mw4.base.alpacaAscomCommon import AlpacaAscomCommon
 from typing import Any
 
 
-class DomeAlpacaAscomBase:
+class DomeAlpacaAscomBase(AlpacaAscomCommon):
     SHUTTER_STATES: list[str] = ["Open", "Closed", "Opening", "Closing", "Error"]
 
     def __init__(self, parent: Any) -> None:

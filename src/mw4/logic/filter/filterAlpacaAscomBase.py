@@ -13,10 +13,11 @@
 # License APL2.0
 #
 ###########################################################
+from mw4.base.alpacaAscomCommon import AlpacaAscomCommon
 from typing import Any
 
 
-class FilterAlpacaAscomBase:
+class FilterAlpacaAscomBase(AlpacaAscomCommon):
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
 

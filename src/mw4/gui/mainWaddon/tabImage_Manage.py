@@ -98,9 +98,11 @@ class ImageManage:
     def checkEnableCameraUI(self) -> None:
         coolerTemp = "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE" in self.app.camera.data
         gainCam = "CCD_GAIN.GAIN" in self.app.camera.data
+        offsetCam = "CCD_OFFSET.OFFSET" in self.app.camera.data
         pixelX = "CCD_INFO.CCD_MAX_X" in self.app.camera.data
         self.ui.GroupCooler.setEnabled(coolerTemp)
-        self.ui.GroupCCD.setEnabled(gainCam)
+        self.ui.GroupGain.setEnabled(gainCam)
+        self.ui.GroupOffset.setEnabled(offsetCam)
         self.ui.GroupControlledCamera.setEnabled(pixelX)
 
     def updateOffset(self) -> None:

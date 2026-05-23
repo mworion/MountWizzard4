@@ -32,8 +32,8 @@ class Watney:
         self.result: dict[str, Any] = {"success": False}
         self.process: Any = None
         self.deviceName: str = "Watney"
-        self.indexPath = Path("")
-        self.appPath = Path("")
+        self.indexPath = Path()
+        self.appPath = Path()
         self.timeout: int = 30
         self.searchRadius: int = 20
         self.setDefaultPath()

@@ -159,7 +159,7 @@ def test_openFile_5(function):
         full = function.openFile(
             window=window, title="title", folder=Path("."), filterSet="*.*"
         )
-        assert full == Path("")
+        assert full == Path()
 
 
 def test_openFile_6(function):
@@ -196,7 +196,7 @@ def test_saveFile_5(function):
         full = function.saveFile(
             window=window, title="title", folder=Path("."), filterSet="*.*"
         )
-        assert full == Path("")
+        assert full == Path()
 
 
 def test_saveFile_6(function):
@@ -219,7 +219,7 @@ def test_openDir_5(function):
     window = QWidget()
     with mock.patch.object(function, "runDialog", return_value=None):
         full = function.openDir(window=window, title="title", folder=Path("."))
-        assert full == Path("")
+        assert full == Path()
 
 
 def test_convertTime_1(function):

@@ -60,7 +60,6 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
 
     def setExposureState(self) -> None:
         state = self.getDeviceProp("CameraState")
-        print(state)
         if state == 0 and not self.exposing:
             return
         if state == 2 and not self.exposing:
@@ -127,8 +126,8 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
     def abort(self) -> bool:
         if self.data.get("CAN_ABORT", False):
             self.callDeviceMethodQueued("AbortExposure")
-            self.exposing = False
-        return True
+            return True
+        return False
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
         self.setDevicePropQueued("CoolerOn", coolerOn)

@@ -304,7 +304,7 @@ def test_writeBuildModelOptimized_2(function):
 def test_clearRefreshModel_1(function):
     function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
     with mock.patch.object(
-        mw4.gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(""), [])
+        mw4.gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(), [])
     ):
         with mock.patch.object(Path, "is_file", return_value=True):
             with mock.patch.object(function, "writeBuildModelOptimized"):
@@ -314,7 +314,7 @@ def test_clearRefreshModel_1(function):
 def test_clearRefreshModel_2(function):
     function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
     with mock.patch.object(
-        mw4.gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(""), [])
+        mw4.gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(), [])
     ):
         with mock.patch.object(Path, "is_file", return_value=False):
             with mock.patch.object(function, "sendAnalyseFileName"):

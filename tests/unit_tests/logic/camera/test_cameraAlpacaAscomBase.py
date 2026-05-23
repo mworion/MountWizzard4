@@ -120,6 +120,16 @@ def test_setExposureState_stateNot2NotExposing(function):
     assert m.call_count == 1
 
 
+def test_setExposureState_stateNot0Not2NotExposing(function):
+    # state != 0 and != 2, not self.exposing -> reaches the
+    # "state != 2 and not self.exposing" guard and returns
+    function.exposing = False
+    with mock.patch.object(function, "getDeviceProp", return_value=4) as m:
+        function.setExposureState()
+    assert function.exposing is False
+    assert m.call_count == 1
+
+
 def test_setExposureState_state2NotExposing(function):
     # state == 2, self.exposing = False -> sets exposing=True,
     # emits message, ImageReady=False -> returns
@@ -212,7 +222,7 @@ def test_expose_noFastReadout(function):
 def test_abort_cannotAbort(function):
     function.data["CAN_ABORT"] = False
     suc = function.abort()
-    assert suc
+    assert not suc
 
 
 def test_abort_canAbort(function):

@@ -43,8 +43,8 @@ class ImageWindow(MWidget):
         self.photometry = Photometry(self, np.zeros((1, 1)))
         self.fileHandler = FileHandler(self)
         self.slewInterface = SlewInterface(self)
-        self.imageFileName: Path = Path("")
-        self.imageFileNameOld: Path = Path("")
+        self.imageFileName: Path = Path()
+        self.imageFileNameOld: Path = Path()
         self.exposureTime: float = 1
         self.binning: int = 1
         self.folder: Path = Path()
@@ -309,7 +309,8 @@ class ImageWindow(MWidget):
         self.exposeRaw(self.app.camera.exposureTimeN, self.app.camera.binningN)
 
     def abortExpose(self) -> None:
-        self.app.camera.abort()
+        if not self.app.camera.abort():
+            return
         if self.imagingDeviceStat["expose"]:
             self.app.camera.signals.saved.disconnect(self.exposeImageDone)
         if self.imagingDeviceStat["exposeN"]:

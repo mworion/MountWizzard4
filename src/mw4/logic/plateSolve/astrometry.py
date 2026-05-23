@@ -47,8 +47,8 @@ class Astrometry:
         self.tempDir: Path = parent.app.mwGlob["tempDir"]
         self.result: dict[str, Any] = {"success": False}
         self.process: Any = None
-        self.indexPath = Path("")
-        self.appPath = Path("")
+        self.indexPath = Path()
+        self.appPath = Path()
         self.setDefaultPath()
         self.apiKey: str = ""
         self.timeout: int = 30

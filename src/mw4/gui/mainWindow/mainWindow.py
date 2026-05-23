@@ -282,15 +282,11 @@ class MainWindow(MWidget):
     def updateThreadAndOnlineStatus(self) -> None:
         mode = "Online" if self.ui.isOnline.isChecked() else "Offline"
         moon = self.ui.moonPhaseIllumination.text()
-
         f = dark_twilight_day(self.app.ephemeris, self.app.mount.obsSite.location)
         twilight = TWILIGHTS[int(f(self.app.mount.obsSite.ts.now()))]
-
         activeCount = self.threadPool.activeThreadCount()
-
         diskUsage = shutil.disk_usage(self.app.mwGlob["workDir"])
         free = int(diskUsage[2] / diskUsage[0] * 100)
-
         t = f"{mode} - {twilight} - Moon: {moon}%"
         t += f" - Threads:{activeCount:2d} / 30 - Disk free: {free}%"
         self.ui.statusOnline.setTitle(t)
@@ -303,7 +299,6 @@ class MainWindow(MWidget):
 
     def updateStatusGUI(self, obs: ObsSite) -> None:
         self.ui.statusText.setText(obs.statusText())
-
         if self.app.mount.obsSite.status == 0:
             changeStyleDynamic(self.ui.tracking, "run", True)
         else:

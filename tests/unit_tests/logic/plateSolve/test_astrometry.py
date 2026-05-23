@@ -59,7 +59,7 @@ def test_setDefaultPath_2(function):
 def test_setDefaultPath_3(function):
     with mock.patch.object(platform, "system", return_value="Windows"):
         function.setDefaultPath()
-        assert function.appPath == Path("")
+        assert function.appPath == Path()
 
 
 def test_saveConfigFile(function):

@@ -140,17 +140,12 @@ class AlpacaClass(AlpacaAscomCommon):
         self.propertyExceptions.clear()
         self.stopEvent.clear()
         self.workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
-        if not self.createAlpacaDevice():
-            self.msg.emit(
-                2, "ALPACA", "Device type error", self.deviceName
-            )
-            return
         self.threadPool.start(self.workerCommunicationLoop)
 
-    def createAlpacaDevice(self) -> bool:
-        deviceClass = self.DEVICE_TYPE_MAP.get(self.deviceType)
+    def createAlpacaDevice(self, deviceType: str) -> bool:
+        deviceClass = self.DEVICE_TYPE_MAP.get(deviceType)
         if deviceClass is None:
-            self.log.warning(f"Unknown device type: [{self.deviceType}]")
+            self.log.warning(f"Unknown device type: [{deviceType}]")
             return False
 
         address = f"{self._hostaddress}:{self._port}"

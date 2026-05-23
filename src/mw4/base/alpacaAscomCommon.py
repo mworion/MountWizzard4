@@ -112,10 +112,9 @@ class AlpacaAscomCommon(DriverData):
             except queue.Empty:
                 break
             if cmd.cmdType == "call":
-                ret = self.callDeviceMethod(cmd.valueProp, **cmd.kwargs)
-                print(ret)
+                self.callDeviceMethod(cmd.valueProp, **cmd.kwargs)
             elif cmd.cmdType == "set":
-                ret = self.setDeviceProp(cmd.valueProp, cmd.value)
+                self.setDeviceProp(cmd.valueProp, cmd.value)
             else:
                 self.log.warning(
                     f"[{self.deviceName}] unknown cmdType: [{cmd.cmdType}]"
@@ -143,7 +142,6 @@ class AlpacaAscomCommon(DriverData):
 
     def runnerCommunicationLoop(self) -> None:
         while not self.stopEvent.is_set():
-            print(self.getDeviceProp("DriverVersion"))
             if not self.deviceConnected:
                 self.handleDeviceConnect()
             if not self.getDeviceProp("Connected"):

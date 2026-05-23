@@ -185,7 +185,7 @@ class MWidget(QWidget, Styles):
 
         result = self.runDialog(dlg)
         if not result:
-            return [] if multiple else Path("")
+            return [] if multiple else Path()
 
         if multiple:
             return [Path(f) for f in dlg.selectedFiles()]

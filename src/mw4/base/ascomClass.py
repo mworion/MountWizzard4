@@ -90,11 +90,11 @@ class AscomClass(AlpacaAscomCommon):
         self.workerRunnerCoreLoop = Worker(self.runnerCoreLoop)
         self.threadPool.start(self.workerRunnerCoreLoop)
 
-    def selectAscomDriver(self, deviceName: str) -> str:
+    def selectAscomDriver(self, deviceName: str, deviceType: str) -> str:
         script = (
             "import sys; import win32com.client; "
             f"chooser = win32com.client.Dispatch('ASCOM.Utilities.Chooser'); "
-            f"chooser.DeviceType = '{self.deviceType}'; "
+            f"chooser.DeviceType = '{deviceType}'; "
             f"result = chooser.Choose('{deviceName}'); "
             "print(result if result else '', end='')"
         )

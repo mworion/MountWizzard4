@@ -296,8 +296,7 @@ class DevicePopup(MWidget):
 
     def selectAscomDriver(self) -> None:
         ascom = AscomClass(parent=self.parent)
-        ascom.deviceType = self.deviceType
-        deviceName = ascom.selectAscomDriver(self.ui.ascomDevice.text())
+        deviceName = ascom.selectAscomDriver(self.ui.ascomDevice.text(), self.deviceType)
         self.ui.ascomDevice.setText(deviceName)
 
     def selectBoltwoodPath(self) -> None:

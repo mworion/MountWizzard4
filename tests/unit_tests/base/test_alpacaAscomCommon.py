@@ -91,7 +91,6 @@ def test_init(function):
     assert function.loadConfig is False
     assert function.device is not None
     assert function.deviceName == ""
-    assert function.deviceType == "test"
 
 
 def test_protocolName(function):

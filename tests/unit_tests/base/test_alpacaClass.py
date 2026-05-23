@@ -92,26 +92,21 @@ def test_properties_2(function):
 def test_properties_3(function):
     function.deviceName = "test:camera:3"
     assert function.deviceName == "test:camera:3"
-    assert function.deviceType == "camera"
-    assert function.number == 3
 
 
 def test_createAlpacaDevice_1(function):
-    function.deviceType = "camera"
     function.number = 0
-    suc = function.createAlpacaDevice()
+    suc = function.createAlpacaDevice("camera")
     assert suc
     assert function.device is not None
 
 
 def test_createAlpacaDevice_2(function):
-    function.deviceType = "unknown"
-    suc = function.createAlpacaDevice()
+    suc = function.createAlpacaDevice("unknown")
     assert not suc
 
 
 def test_createAlpacaDevice_3(function):
-    function.deviceType = "dome"
     function.number = 0
 
     class RaisingClass:
@@ -119,7 +114,7 @@ def test_createAlpacaDevice_3(function):
             raise Exception("error")
 
     with mock.patch.dict(AlpacaClass.DEVICE_TYPE_MAP, {"dome": RaisingClass}):
-        suc = function.createAlpacaDevice()
+        suc = function.createAlpacaDevice("dome")
         assert not suc
 
 
@@ -278,17 +273,16 @@ def test_discoverDevices_2(function):
 
 
 def test_startCommunication_1(function):
-    with mock.patch.object(function, "createAlpacaDevice", return_value=False):
-        with mock.patch.object(function.threadPool, "start") as m_start:
-            function.startCommunication()
-            assert function.workerCommunicationLoop is not None
-            m_start.assert_not_called()
+    with mock.patch.object(function.threadPool, "start") as m_start:
+        function.startCommunication()
+        assert function.workerCommunicationLoop is not None
+        m_start.assert_called_once()
 
 
 def test_startCommunication_2(function):
-    with mock.patch.object(function, "createAlpacaDevice", return_value=True):
-        with mock.patch.object(function.threadPool, "start") as m_start:
-            function.startCommunication()
-            assert function.workerCommunicationLoop is not None
-            assert not function.stopEvent.is_set()
-            m_start.assert_called_once()
+    with mock.patch.object(function.threadPool, "start") as m_start:
+        function.startCommunication()
+        assert not function.deviceConnected
+        assert not function.serverConnected
+        assert not function.stopEvent.is_set()
+        m_start.assert_called_once()

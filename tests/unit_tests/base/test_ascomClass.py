@@ -407,7 +407,7 @@ def test_stopCommunication(function):
 
 def test_selectAscomDriver_success(function):
     with mock.patch("subprocess.check_output", return_value="ASCOM.Test.Telescope"):
-        result = function.selectAscomDriver("old")
+        result = function.selectAscomDriver("old", "Telescope")
     assert result == "ASCOM.Test.Telescope"
 
 
@@ -416,11 +416,11 @@ def test_selectAscomDriver_error(function):
         "subprocess.check_output",
         side_effect=subprocess.CalledProcessError(1, "cmd"),
     ):
-        result = function.selectAscomDriver("original")
+        result = function.selectAscomDriver("original", "Telescope")
     assert result == "original"
 
 
 def test_selectAscomDriver_empty(function):
     with mock.patch("subprocess.check_output", return_value="  "):
-        result = function.selectAscomDriver("fallback")
+        result = function.selectAscomDriver("fallback", "Telescope")
     assert result == "fallback"

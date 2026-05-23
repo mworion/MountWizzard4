@@ -78,6 +78,8 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
             self.signals.message.emit("download")
         if not self.getDeviceProp("ImageReady"):
             return
+        if not self.getDeviceProp("ImageReady"):
+            return
         data = self.getDeviceProp("ImageArray")
         data = np.array(data, dtype=np.uint16).transpose()
         self.signals.downloaded.emit(self.parent.imagePath)

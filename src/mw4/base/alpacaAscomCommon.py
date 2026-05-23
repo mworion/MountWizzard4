@@ -71,7 +71,6 @@ class AlpacaAscomCommon(DriverData):
 
     def getAndStoreDeviceProp(self, valueProp: str, element: str) -> None:
         value = self.getDeviceProp(valueProp)
-        # print(valueProp, value)
         self.storePropertyToData(value, element)
 
     def connectDevice(self) -> bool:
@@ -100,7 +99,6 @@ class AlpacaAscomCommon(DriverData):
         self.getAndStoreDeviceProp(
             "DriverVersion", "DRIVER_INFO.DRIVER_VERSION"
         )
-        self.getAndStoreDeviceProp("DriverInfo", "DRIVER_INFO.DRIVER_EXEC")
 
     def pollData(self) -> None:
         pass

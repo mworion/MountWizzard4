@@ -255,8 +255,18 @@ def test_exposeImageNDone_2(function):
 
 
 def test_exposeImageN_1(function):
+    # exposeN not running → start continuous exposure
+    function.imagingDeviceStat["exposeN"] = False
     function.app.camera.data = {}
     function.exposeImageN()
+
+
+def test_exposeImageN_2(function):
+    # exposeN already running → stop continuous exposure
+    function.imagingDeviceStat["exposeN"] = True
+    function.app.camera.signals.saved.connect(function.exposeImageNDone)
+    function.exposeImageN()
+    assert not function.imagingDeviceStat["exposeN"]
 
 
 def test_abortExpose_1(function):

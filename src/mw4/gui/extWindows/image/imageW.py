@@ -302,11 +302,17 @@ class ImageWindow(MWidget):
         self.exposeRaw(self.app.camera.exposureTimeN, self.app.camera.binningN)
 
     def exposeImageN(self) -> None:
-        self.app.operationRunning.emit(Model.STATUS_EXPOSE_N)
-        self.msg.emit(1, "Image", "Expose", "Continuous start")
-        self.imagingDeviceStat["exposeN"] = True
-        self.app.camera.signals.saved.connect(self.exposeImageNDone)
-        self.exposeRaw(self.app.camera.exposureTimeN, self.app.camera.binningN)
+        if not self.imagingDeviceStat["exposeN"]:
+            self.app.operationRunning.emit(Model.STATUS_EXPOSE_N)
+            self.msg.emit(1, "Image", "Expose", "Continuous start")
+            self.imagingDeviceStat["exposeN"] = True
+            self.app.camera.signals.saved.connect(self.exposeImageNDone)
+            self.exposeRaw(self.app.camera.exposureTimeN, self.app.camera.binningN)
+        else:
+            self.app.camera.signals.saved.disconnect(self.exposeImageNDone)
+            self.imagingDeviceStat["exposeN"] = False
+            self.msg.emit(1, "Image", "Expose", "Continuous stopped")
+            self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def abortExpose(self) -> None:
         if not self.app.camera.abort():

@@ -30,16 +30,20 @@ class LightPanelAlpacaAscomBase(AlpacaAscomCommon):
             "MaxBrightness",
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX",
         )
+        if self.data.get("FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"):
+            self.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = 1
+        else:
+            self.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = 0
 
     def lightOn(self) -> None:
-        maxBrightness = self.app.cover.data.get(
+        maxBrightness = self.app.lightPanel.data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
         )
         brightness = int(maxBrightness / 2)
-        self.callDeviceMethodQueued("CalibratorOn", Brightness=brightness)
+        self.callDeviceMethodQueued("CalibratorOn", BrightnessVal=brightness)
 
     def lightOff(self) -> None:
         self.callDeviceMethodQueued("CalibratorOff")
 
-    def lightIntensity(self, value: float) -> None:
-        self.callDeviceMethodQueued("CalibratorOn", Brightness=int(value))
+    def lightIntensity(self, value: int) -> None:
+        self.callDeviceMethodQueued("CalibratorOn", BrightnessVal=value)

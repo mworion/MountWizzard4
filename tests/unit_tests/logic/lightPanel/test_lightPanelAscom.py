@@ -51,11 +51,12 @@ def test_pollData_1(function):
 
 
 def test_lightOn(function):
-    function.app.cover = mock.MagicMock()
-    function.app.cover.data = {"FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 200}
+    function.app.lightPanel.data = {
+        "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 200
+    }
     with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.lightOn()
-    m.assert_called_once_with("CalibratorOn", Brightness=100)
+    m.assert_called_once_with("CalibratorOn", BrightnessVal=100)
 
 
 def test_lightOff(function):
@@ -67,4 +68,4 @@ def test_lightOff(function):
 def test_lightIntensity(function):
     with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.lightIntensity(128.0)
-    m.assert_called_once_with("CalibratorOn", Brightness=128)
+    m.assert_called_once_with("CalibratorOn", BrightnessVal=128.0)

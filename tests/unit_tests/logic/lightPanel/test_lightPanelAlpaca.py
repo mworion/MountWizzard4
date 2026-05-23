@@ -46,15 +46,23 @@ def test_pollData_1(function):
         assert "MaxBrightness" in attrs
 
 
+def test_pollData_2(function):
+    function.data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 100
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
+        function.pollData()
+    assert function.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] == 1
+
+
 def test_lightOn_1(function):
-    function.app.cover = mock.MagicMock()
-    function.app.cover.data = {"FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 254}
+    function.app.lightPanel.data = {
+        "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 254
+    }
     while not function.commandQueue.empty():
         function.commandQueue.get_nowait()
     function.lightOn()
     item = function.commandQueue.get_nowait()
     assert item.valueProp == "CalibratorOn"
-    assert item.kwargs == {"Brightness": 127}
+    assert item.kwargs == {"BrightnessVal": 127}
 
 
 def test_lightOff_1(function):
@@ -71,7 +79,7 @@ def test_lightIntensity_1(function):
     function.lightIntensity(100.5)
     item = function.commandQueue.get_nowait()
     assert item.valueProp == "CalibratorOn"
-    assert item.kwargs == {"Brightness": 100}
+    assert item.kwargs == {"BrightnessVal": 100.5}
 
 
 def test_startCommunication_1(function):

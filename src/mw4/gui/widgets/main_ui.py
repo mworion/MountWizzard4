@@ -3408,7 +3408,7 @@ class Ui_MainWindow(object):
         self.GroupCover.setProperty(u"large", True)
         self.coverStatusText = QLineEdit(self.GroupCover)
         self.coverStatusText.setObjectName(u"coverStatusText")
-        self.coverStatusText.setEnabled(False)
+        self.coverStatusText.setEnabled(True)
         self.coverStatusText.setGeometry(QRect(250, 20, 111, 21))
         self.coverStatusText.setFont(font1)
         self.coverStatusText.setMouseTracking(False)

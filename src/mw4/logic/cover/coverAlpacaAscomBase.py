@@ -35,6 +35,12 @@ class CoverAlpacaAscomBase(AlpacaAscomCommon):
         if state is None:
             return
         self.storePropertyToData(self.COVERSTATES[int(state)], "Status.Cover")
+        if state == 1:
+            self.data["CAP_PARK.PARK"] = True
+        elif state == 3:
+            self.data["CAP_PARK.PARK"] = False
+        else:
+            self.data["CAP_PARK.PARK"] = None
 
     def closeCover(self) -> None:
         self.callDeviceMethodQueued("CloseCover")

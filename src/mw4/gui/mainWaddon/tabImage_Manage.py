@@ -355,7 +355,7 @@ class ImageManage:
             changeStyleDynamic(self.ui.lightPanelOn, "run", False)
             changeStyleDynamic(self.ui.lightPanelOff, "run", True)
 
-        value = self.app.cover.data.get("FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
+        value = self.app.lightPanel.data.get("FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
         guiSetText(self.ui.lightPanelIntensity, "3.0f", value)
 
     def setCoverPark(self) -> None:
@@ -370,13 +370,13 @@ class ImageManage:
     def moveFocuserIn(self) -> None:
         pos = self.app.focuser.data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
         step = self.ui.focuserSteps.value()
-        newPos = pos - step
+        newPos = int(pos - step)
         self.app.focuser.move(position=newPos)
 
     def moveFocuserOut(self) -> None:
         pos = self.app.focuser.data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
         step = self.ui.focuserSteps.value()
-        newPos = pos + step
+        newPos = int(pos + step)
         self.app.focuser.move(position=newPos)
 
     def haltFocuser(self) -> None:
@@ -389,10 +389,10 @@ class ImageManage:
         self.app.lightPanel.lightOff()
 
     def setLightPanelIntensity(self) -> None:
-        actValue = self.app.cover.data.get(
+        actValue = self.app.lightPanel.data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE", 0
         )
-        maxBrightness = self.app.cover.data.get(
+        maxBrightness = self.app.lightPanel.data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
         )
         dlg = QInputDialog()
@@ -408,7 +408,7 @@ class ImageManage:
         if not ok:
             return
         self.ui.lightPanelIntensity.setText(f"{value}")
-        self.app.lightPanel.lightIntensity(value)
+        self.app.lightPanel.lightIntensity(int(value))
 
     def updateDomeGui(self) -> None:
         value = self.app.dome.data.get("DOME_MOTION.DOME_CW", None)

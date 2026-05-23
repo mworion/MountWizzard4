@@ -60,6 +60,9 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
 
     def setExposureState(self) -> None:
         state = self.getDeviceProp("CameraState")
+        print(state)
+        if state == 0 and not self.exposing:
+            return
         if state == 2 and not self.exposing:
             self.exposing = True
         if state != 2 and not self.exposing:

@@ -30,6 +30,7 @@ class AscomClass(AlpacaAscomCommon):
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent)
+        self.deviceName: str = ""
         self.workerRunnerCoreLoop: Worker | None = None
         self.defaultConfig: dict[str, Any] = {
             "deviceName": "",
@@ -79,6 +80,8 @@ class AscomClass(AlpacaAscomCommon):
             CoUninitialize()
 
     def startCommunication(self) -> None:
+        self.deviceConnected = False
+        self.serverConnected = False
         self.data.clear()
         self.propertyExceptions.clear()
         if not self.deviceName:

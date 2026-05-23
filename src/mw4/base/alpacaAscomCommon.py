@@ -32,7 +32,7 @@ class CommandItem:
 
 class AlpacaAscomCommon(DriverData):
     PROTOCOL_NAME: str = ""
-    UPDATE_RATE: float = 0.5
+    UPDATE_RATE: float = 0.25
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
@@ -45,7 +45,6 @@ class AlpacaAscomCommon(DriverData):
         self.propertyExceptions: list[str] = []
         self.device: Any = None
         self.deviceName: str = ""
-        self.deviceType: str = parent.deviceType
         self.deviceConnected: bool = False
         self.serverConnected: bool = False
         self.commandQueue: queue.Queue = queue.Queue()
@@ -72,11 +71,10 @@ class AlpacaAscomCommon(DriverData):
 
     def getAndStoreDeviceProp(self, valueProp: str, element: str) -> None:
         value = self.getDeviceProp(valueProp)
+        # print(valueProp, value)
         self.storePropertyToData(value, element)
 
     def connectDevice(self) -> bool:
-        self.deviceConnected = False
-        self.serverConnected = False
         for retry in range(0, 10):
             self.setDeviceProp("Connected", True)
             suc = self.getDeviceProp("Connected")
@@ -114,9 +112,10 @@ class AlpacaAscomCommon(DriverData):
             except queue.Empty:
                 break
             if cmd.cmdType == "call":
-                self.callDeviceMethod(cmd.valueProp, **cmd.kwargs)
+                ret = self.callDeviceMethod(cmd.valueProp, **cmd.kwargs)
+                print(ret)
             elif cmd.cmdType == "set":
-                self.setDeviceProp(cmd.valueProp, cmd.value)
+                ret = self.setDeviceProp(cmd.valueProp, cmd.value)
             else:
                 self.log.warning(
                     f"[{self.deviceName}] unknown cmdType: [{cmd.cmdType}]"
@@ -136,6 +135,7 @@ class AlpacaAscomCommon(DriverData):
 
     def handleDeviceDisconnect(self) -> None:
         self.deviceConnected = False
+        self.serverConnected = False
         self.signals.deviceDisconnected.emit(self.deviceName)
         self.msg.emit(
             0, self.PROTOCOL_NAME, "Device remove", self.deviceName
@@ -143,6 +143,7 @@ class AlpacaAscomCommon(DriverData):
 
     def runnerCommunicationLoop(self) -> None:
         while not self.stopEvent.is_set():
+            print(self.getDeviceProp("DriverVersion"))
             if not self.deviceConnected:
                 self.handleDeviceConnect()
             if not self.getDeviceProp("Connected"):

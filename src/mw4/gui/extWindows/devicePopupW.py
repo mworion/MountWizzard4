@@ -63,14 +63,8 @@ class DevicePopup(MWidget):
             "ascom": {
                 "deviceName": self.ui.ascomDevice,
             },
-            "sgpro": {
-                "deviceList": self.ui.sgproDeviceList,
-            },
             "boltwood": {
                 "filePath": self.ui.boltwoodPath,
-            },
-            "nina": {
-                "deviceList": self.ui.ninaDeviceList,
             },
             "astrometry": {
                 "deviceList": self.ui.astrometryDeviceList,

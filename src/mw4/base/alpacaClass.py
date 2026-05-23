@@ -44,11 +44,10 @@ class AlpacaClass(AlpacaAscomCommon):
     def __init__(self, parent: Any) -> None:
         super().__init__(parent)
         self._host: tuple[str, int] = ("localhost", 11111)
-        self._port: int = 11111
+        self._port: int = 32330
         self._hostaddress: str = "localhost"
         self.protocol: str = "http"
         self.apiVersion: int = 1
-        self._deviceName: str = ""
         self.number: int = 0
         self.workerCommunicationLoop: Worker | None = None
 
@@ -88,19 +87,6 @@ class AlpacaClass(AlpacaAscomCommon):
     def port(self, value: int | str) -> None:
         self._port = int(value)
         self._host = (self._hostaddress, self._port)
-
-    @property
-    def deviceName(self) -> str:
-        return self._deviceName
-
-    @deviceName.setter
-    def deviceName(self, value: str) -> None:
-        self._deviceName = value
-        valueSplit = value.split(":")
-        if len(valueSplit) != 3:
-            return
-        self.deviceType = valueSplit[1].strip()
-        self.number = int(valueSplit[2].strip())
 
     def getDeviceProp(self, valueProp: str) -> Any:
         if valueProp in self.propertyExceptions:
@@ -148,6 +134,8 @@ class AlpacaClass(AlpacaAscomCommon):
             )
 
     def startCommunication(self) -> None:
+        self.deviceConnected = False
+        self.serverConnected = False
         self.data.clear()
         self.propertyExceptions.clear()
         self.stopEvent.clear()

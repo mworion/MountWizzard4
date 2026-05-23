@@ -27,12 +27,11 @@ from typing import Any
 
 if platform.system() == "Windows":
     from mw4.logic.camera.cameraAscom import CameraAscom
-    from mw4.logic.camera.cameraNINA import CameraNINA
-    from mw4.logic.camera.cameraSGPro import CameraSGPro
 
 
 class Camera:
     log = logging.getLogger("MW4")
+    deviceType: str = "camera"
 
     def __init__(self, app: Any) -> None:
         self.app = app
@@ -41,7 +40,6 @@ class Camera:
         self.signals = Signals()
         self.data: dict[str, Any] = {}
         self.loadConfig: bool = True
-        self.deviceType: str = ""
         self.exposing: bool = False
         self.fastReadout: bool = False
         self.imagePath: Path = Path()
@@ -69,8 +67,6 @@ class Camera:
             "alpaca": CameraAlpaca(self),
         }
         if platform.system() == "Windows":
-            self.run["nina"] = CameraNINA(self)
-            self.run["sgpro"] = CameraSGPro(self)
             self.run["ascom"] = CameraAscom(self)
 
         for fw in self.run:

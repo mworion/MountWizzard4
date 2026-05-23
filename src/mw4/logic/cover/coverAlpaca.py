@@ -10,40 +10,12 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
-from typing import Any
+from mw4.logic.cover.coverAlpacaAscomBase import CoverAlpacaAscomBase
 
 
-class CoverAlpaca(AlpacaClass):
-    def __init__(self, parent: Any) -> None:
-        super().__init__(parent=parent)
-        self.parent = parent
-        self.alpacaSignals = parent.signals
-        self.data = parent.data
-
-    def workerPollData(self) -> None:
-        states = ["NotPresent", "Closed", "Moving", "Open", "Unknown", "Error"]
-        if not self.deviceConnected:
-            return
-
-        state = self.getAlpacaProperty("coverstate")
-        stateText = states[state]
-        self.storePropertyToData(stateText, "Status.Cover")
-
-    def closeCover(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.getAlpacaProperty("closecover")
-
-    def openCover(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.getAlpacaProperty("opencover")
-
-    def haltCover(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.getAlpacaProperty("haltcover")
+class CoverAlpaca(CoverAlpacaAscomBase, AlpacaClass):
+    pass

@@ -10,11 +10,9 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
-
-import PySide6
 import pytest
 import unittest.mock as mock
 from mw4.base.signalsDevices import Signals
@@ -25,23 +23,22 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 class Parent:
     app = App()
     data = {}
+    deviceType = ""
     signals = Signals()
     loadConfig = True
-    updateRate = 1000
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = TelescopeAlpaca(parent=Parent())
-        yield func
+    func = TelescopeAlpaca(parent=Parent())
+    func.device = mock.MagicMock()
+    yield func
 
 
-def test_workerGetInitialConfig_1(function):
-    with mock.patch.object(function, "getAndStoreAlpacaProperty"):
-        function.workerGetInitialConfig()
-
-
-def test_workerGetInitialConfig_2(function):
-    with mock.patch.object(function, "getAndStoreAlpacaProperty", return_value=100):
-        function.workerGetInitialConfig()
+def test_getInitialConfig_1(function):
+    with mock.patch.object(function, "getAndStoreDeviceProp") as m:
+        with mock.patch.object(function, "getDeviceProp"):
+            function.getInitialConfig()
+            attrs = [c.args[0] for c in m.call_args_list]
+            assert "ApertureDiameter" in attrs
+            assert "FocalLength" in attrs

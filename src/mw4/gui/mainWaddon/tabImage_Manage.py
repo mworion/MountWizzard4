@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
@@ -98,9 +98,11 @@ class ImageManage:
     def checkEnableCameraUI(self) -> None:
         coolerTemp = "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE" in self.app.camera.data
         gainCam = "CCD_GAIN.GAIN" in self.app.camera.data
+        offsetCam = "CCD_OFFSET.OFFSET" in self.app.camera.data
         pixelX = "CCD_INFO.CCD_MAX_X" in self.app.camera.data
         self.ui.GroupCooler.setEnabled(coolerTemp)
-        self.ui.GroupCCD.setEnabled(gainCam)
+        self.ui.GroupGain.setEnabled(gainCam)
+        self.ui.GroupOffset.setEnabled(offsetCam)
         self.ui.GroupControlledCamera.setEnabled(pixelX)
 
     def updateOffset(self) -> None:

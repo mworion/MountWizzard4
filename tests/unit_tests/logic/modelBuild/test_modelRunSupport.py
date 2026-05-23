@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 
@@ -181,7 +181,7 @@ def test_convertAngleToFloat_1():
 
 
 def test_loadModelsFromFile_1():
-    modelFilesPath = [Path("")]
+    modelFilesPath = [Path()]
     model, msg = loadModelsFromFile(modelFilesPath)
     assert model == []
     assert msg == "File . does not exist"
@@ -304,4 +304,4 @@ def test_findFittingModel_2():
         ):
             filePath, pointsOut = findFittingModel({}, Path("tests/testData"))
         assert pointsOut == [4]
-        assert filePath == Path("")
+        assert filePath == Path()

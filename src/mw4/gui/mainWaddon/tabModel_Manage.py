@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import json
@@ -400,18 +400,18 @@ class ModelManage:
 
         index = points[0].data()[0]
         error = self.app.mount.model.starList[index].errorRMS
-        text = f"Do you want to delete \npoint {index + 1:3.0f}"
+        text = f"Do you want to delete \npoint {index:3.0f}"
         text += f"\nRMS of {error:5.1f} arcsec"
 
         if not self.mainW.messageDialog(self.mainW, "Deleting point", text):
             return
         if not self.app.mount.model.deletePoint(index):
             self.msg.emit(
-                2, "Model", "Manage error", f"Point {index + 1:3.0f} cannot be deleted"
+                2, "Model", "Manage error", f"Point {index:3.0f} cannot be deleted"
             )
             return
 
-        text = f"Point: {index + 1:3.0f}, RMS of {error:5.1f}"
+        text = f"Point: {index:3.0f}, RMS of {error:5.1f}"
         text += " arcsec deleted."
         self.msg.emit(0, "Model", "Manage", text)
         self.refreshModel()

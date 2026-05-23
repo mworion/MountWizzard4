@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -641,7 +641,7 @@ class ObsSite:
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
-    def setElevation(self, elev: tuple[int, float]) -> bool:
+    def setElevation(self, elev: int | float) -> bool:
         conn = Connection(self.parent.host)
         sign = "+" if elev > 0 else "-"
         commandString = f":Sev{sign}{abs(elev):06.1f}#"

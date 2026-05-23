@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -26,7 +26,7 @@ from typing import Any
 class MeasureData:
     log = logging.getLogger("MW4")
     MAXSIZE = 48 * 60 * 60
-    CYCLE_UPDATE_TASK = 1000
+    UPDATE_RATE = 1000
 
     def __init__(self, app: Any) -> None:
         super().__init__()

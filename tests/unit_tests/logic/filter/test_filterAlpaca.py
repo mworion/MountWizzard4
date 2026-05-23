@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 
@@ -24,6 +24,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 class Parent:
     app = App()
     data = {}
+    deviceType = ""
     signals = Signals()
     loadConfig = True
     updateRate = 1000
@@ -32,58 +33,49 @@ class Parent:
 @pytest.fixture(autouse=True, scope="module")
 def function():
     func = FilterAlpaca(parent=Parent())
+    func.device = mock.MagicMock()
     yield func
 
 
-def test_workerGetInitialConfig_1(function):
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.workerGetInitialConfig()
+def test_getInitialConfig_1(function):
+    with mock.patch.object(function, "getDeviceProp", return_value=None):
+        function.getInitialConfig()
 
 
-def test_workerGetInitialConfig_2(function):
-    with mock.patch.object(function, "getAlpacaProperty", return_value=None):
-        function.workerGetInitialConfig()
-
-
-def test_workerGetInitialConfig_3(function):
-    with mock.patch.object(function, "getAlpacaProperty", return_value=["test", "test1"]):
-        function.workerGetInitialConfig()
+def test_getInitialConfig_2(function):
+    with mock.patch.object(function, "getDeviceProp", return_value=["test", "test1"]):
+        function.getInitialConfig()
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_0"] == "test"
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_1"] == "test1"
 
 
-def test_workerGetInitialConfig_4(function):
-    with mock.patch.object(function, "getAlpacaProperty", return_value=["test", None]):
-        function.workerGetInitialConfig()
+def test_getInitialConfig_3(function):
+    with mock.patch.object(function, "getDeviceProp", return_value=["test", None]):
+        function.getInitialConfig()
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_0"] == "test"
 
 
-def test_workerPollData_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty", return_value=-1):
-        function.workerPollData()
+def test_pollData_1(function):
+    with mock.patch.object(function, "getDeviceProp", return_value=-1):
+        function.pollData()
 
 
-def test_workerPollData_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=-1):
-        function.workerPollData()
+def test_pollData_2(function):
+    with mock.patch.object(function, "getDeviceProp", return_value=None):
+        function.pollData()
 
 
-def test_workerPollData_3(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=1):
-        function.workerPollData()
+def test_pollData_3(function):
+    with mock.patch.object(function, "getDeviceProp", return_value=1):
+        function.pollData()
         assert function.data["FILTER_SLOT.FILTER_SLOT_VALUE"] == 1
 
 
 def test_sendFilterNumber_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function, "setAlpacaProperty"):
-        function.sendFilterNumber()
-
-
-def test_sendFilterNumber_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "setAlpacaProperty"):
-        function.sendFilterNumber()
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.sendFilterNumber(filterNumber=2)
+    item = function.commandQueue.get_nowait()
+    assert item.cmdType == "set"
+    assert item.valueProp == "Position"
+    assert item.value == 2

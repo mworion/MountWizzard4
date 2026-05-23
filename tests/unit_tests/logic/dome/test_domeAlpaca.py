@@ -10,14 +10,11 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
-
-import PySide6
 import pytest
 import unittest.mock as mock
-from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.signalsDevices import Signals
 from mw4.logic.dome.domeAlpaca import DomeAlpaca
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -26,6 +23,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 class Parent:
     app = App()
     data = {}
+    deviceType = ""
     signals = Signals()
     loadConfig = True
     updateRate = 1000
@@ -33,115 +31,107 @@ class Parent:
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = DomeAlpaca(parent=Parent())
-        yield func
+    func = DomeAlpaca(parent=Parent())
+    func.device = mock.MagicMock()
+    yield func
 
 
-def test_workerGetInitialConfig_1(function):
-    with mock.patch.object(AlpacaClass, "getAndStoreAlpacaProperty", return_value=True):
-        with mock.patch.object(function, "getAndStoreAlpacaProperty"):
-            function.workerGetInitialConfig()
+def test_getInitialConfig_1(function):
+    with mock.patch.object(function, "getAndStoreDeviceProp") as m:
+        with mock.patch.object(function, "getDeviceProp"):
+            function.getInitialConfig()
+            # 3 from base (Name, DriverVersion, DriverInfo) + 3 dome-specific
+            assert m.call_count == 6
 
 
-def test_workerPollData_1(function):
-    function.data["CAN_FAST"] = True
-    with mock.patch.object(function, "getAndStoreAlpacaProperty"):
-        function.workerPollData()
+def test_pollData_1(function):
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
+        with mock.patch.object(function, "getDeviceProp", return_value=0):
+            function.pollData()
+            assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is True
 
 
-def test_processPolledData_1(function):
-    function.processPolledData()
+def test_pollData_2(function):
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
+        with mock.patch.object(function, "getDeviceProp", return_value=1):
+            function.pollData()
+            assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is True
 
 
-def test_workerPollData_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=0):
-        with mock.patch.object(function, "getAndStoreAlpacaProperty"):
-            function.workerPollData()
+def test_pollData_3(function):
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
+        with mock.patch.object(function, "getDeviceProp", return_value=3):
+            function.pollData()
+            assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is None
+            assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is None
 
 
-def test_workerPollData_3(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=1):
-        with mock.patch.object(function, "getAndStoreAlpacaProperty"):
-            function.workerPollData()
-
-
-def test_workerPollData_4(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=3):
-        with mock.patch.object(function, "getAndStoreAlpacaProperty"):
-            function.workerPollData()
+def test_pollData_4(function):
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
+        with mock.patch.object(function, "getDeviceProp", return_value=None):
+            function.pollData()
+            assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is None
+            assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is None
 
 
 def test_slewToAltAz_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function, "setAlpacaProperty"):
-        function.slewToAltAz(0, 0)
+    function.data.pop("CanSetAzimuth", None)
+    function.data.pop("CanSetAltitude", None)
+    function.slewToAltAz(0, 0)
+    assert function.commandQueue.empty()
 
 
 def test_slewToAltAz_2(function):
-    function.deviceConnected = True
     function.data["CanSetAzimuth"] = True
     function.data["CanSetAltitude"] = True
-    with mock.patch.object(function, "setAlpacaProperty"):
-        function.slewToAltAz(0, 0)
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.slewToAltAz(10, 45)
+    assert function.commandQueue.qsize() == 2
 
 
 def test_closeShutter_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.closeShutter()
+    function.data.pop("CanSetShutter", None)
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.closeShutter()
+    assert function.commandQueue.empty()
 
 
 def test_closeShutter_2(function):
-    function.deviceConnected = True
     function.data["CanSetShutter"] = True
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.closeShutter()
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.closeShutter()
+    assert not function.commandQueue.empty()
 
 
 def test_openShutter_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.openShutter()
+    function.data.pop("CanSetShutter", None)
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.openShutter()
+    assert function.commandQueue.empty()
 
 
 def test_openShutter_2(function):
-    function.deviceConnected = True
     function.data["CanSetShutter"] = True
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.openShutter()
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.openShutter()
+    assert not function.commandQueue.empty()
 
 
 def test_slewCW_1(function):
-    function.deviceConnected = False
-    function.slewCW()
-
-
-def test_slewCW_2(function):
-    function.deviceConnected = True
     function.slewCW()
 
 
 def test_slewCCW_1(function):
-    function.deviceConnected = False
-    function.slewCCW()
-
-
-def test_slewCCW_2(function):
-    function.deviceConnected = True
     function.slewCCW()
 
 
 def test_abortSlew_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.abortSlew()
-
-
-def test_abortSlew_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.abortSlew()
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.abortSlew()
+    assert not function.commandQueue.empty()

@@ -1,0 +1,26 @@
+############################################################
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10_micron mounts
+# GUI with PySide
+#
+# written in python3, (c) 2019-2026 by mworion
+# License APL2.0
+#
+###########################################################
+from typing import Any
+
+
+class TelescopeAlpacaAscomBase:
+    def __init__(self, parent: Any) -> None:
+        super().__init__(parent=parent)
+
+    def getInitialConfig(self) -> None:
+        super().getInitialConfig()
+        self.getAndStoreDeviceProp("ApertureDiameter", "TELESCOPE_INFO.TELESCOPE_APERTURE")
+        self.getAndStoreDeviceProp("FocalLength", "TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH")

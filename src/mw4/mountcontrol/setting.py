@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -55,14 +55,14 @@ class Setting:
         self._addressLanMAC: str = ""
         self._addressWirelessMAC: str = ""
         self._wakeOnLan: str = "None"
-        self._weatherStatus: bool = False
+        self._weatherStatus: int = 0
         self.weatherPressure: float = 950
         self.weatherTemperature: float = 0
         self.weatherHumidity: float = 0
         self.weatherDewPoint: float = 0
         self.weatherAge: int = 0
         self.trackingRate: float = 0
-        self.webInterfaceStat: str = ""
+        self.webInterfaceStat: bool = False
         self.settleTime: float = 0
         self._autoPowerOn: str = "None"
         self.configEquatorial: str = ""
@@ -128,10 +128,10 @@ class Setting:
         return self._weatherStatus
 
     @weatherStatus.setter
-    def weatherStatus(self, value: Any) -> None:
+    def weatherStatus(self, value: str | float) -> None:
         value = valueToInt(value)
-        if value not in [0, 1, 2]:
-            value = 0
+        if not(0 <= value <= 2):
+            value = False
         self._weatherStatus = value
 
     def timeToMeridian(self) -> int:
@@ -166,7 +166,7 @@ class Setting:
         if len(response[17].split(",")) > 1:
             self.weatherAge = valueToInt(response[17].split(",")[1])
         else:
-            self.weatherAge = ""
+            self.weatherAge = 0
         self.weatherPressure = valueToFloat(response[17].split(",")[0])
         self.weatherTemperature = valueToFloat(response[18].split(",")[0])
         self.weatherHumidity = valueToFloat(response[19].split(",")[0])

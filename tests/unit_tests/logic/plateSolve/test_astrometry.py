@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import glob
@@ -59,7 +59,7 @@ def test_setDefaultPath_2(function):
 def test_setDefaultPath_3(function):
     with mock.patch.object(platform, "system", return_value="Windows"):
         function.setDefaultPath()
-        assert function.appPath == Path("")
+        assert function.appPath == Path()
 
 
 def test_saveConfigFile(function):

@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -369,14 +369,14 @@ class Connection:
 
     def receiveData(
         self, client: socket.socket, numberOfChunks: int, minBytes: int
-    ) -> tuple[bool, str]:
+    ) -> tuple[bool, list[str]]:
         """
         receive Data waits on the give socket client for a number of chunks to
         be received or a minimum set of bytes received. the chunks are delimited
         with #. the min bytes are necessary because the mount computer has
         commands which give a response without a delimiter. this is bad, but status.
         """
-        response = ""
+        responseStr = ""
         receiving = True
         chunkRaw = b""
         try:
@@ -385,43 +385,43 @@ class Connection:
                 chunk = chunkRaw.decode("ASCII")
                 if not chunk:
                     break
-                response += chunk
+                responseStr += chunk
                 if (
                     numberOfChunks == 0
-                    and len(response) == minBytes
+                    and len(responseStr) == minBytes
                     or numberOfChunks != 0
-                    and numberOfChunks == response.count("#")
+                    and numberOfChunks == responseStr.count("#")
                 ):
                     break
 
         except TimeoutError:
             self.log.trace(f"Timeout  [{self.id}]: socket timeout in receive data")
-            return False, response
+            return False, []
         except Exception as e:
             self.log.warning(f"Error    [{self.id}]: error: [{e}], received: [{chunkRaw}]")
             self.log.trace(f"Error    [{self.id}]: socket error: [{e}] in receive data")
-            return False, response
+            return False, []
         else:
-            response = response.rstrip("#").split("#")
+            response = responseStr.rstrip("#").split("#")
             self.log.trace(f"Response [{self.id}]: [{response}]")
             return True, response
 
     def communicate(
         self, commandString: str, responseCheck: str = ""
-    ) -> tuple[bool, str, int]:
+    ) -> tuple[bool, list[str], int]:
         if not self.validCommandSet(commandString):
-            return False, "", 0
+            return False, [], 0
 
         client = self.buildClient()
         numberOfChunks, getData, minBytes = self.analyseCommand(commandString)
 
         if client is None:
-            return False, "", numberOfChunks
+            return False, [], numberOfChunks
         if not self.sendData(client, commandString):
-            return False, "", numberOfChunks
+            return False, [], numberOfChunks
         if not getData:
             self.closeClientHard(client)
-            return True, "", numberOfChunks
+            return True, [], numberOfChunks
 
         suc, response = self.receiveData(client, numberOfChunks, minBytes)
         self.closeClientHard(client)

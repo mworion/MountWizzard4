@@ -10,11 +10,10 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
-import numpy as np
 import platform
 import time
 from astropy.io import fits
@@ -28,12 +27,11 @@ from typing import Any
 
 if platform.system() == "Windows":
     from mw4.logic.camera.cameraAscom import CameraAscom
-    from mw4.logic.camera.cameraNINA import CameraNINA
-    from mw4.logic.camera.cameraSGPro import CameraSGPro
 
 
 class Camera:
     log = logging.getLogger("MW4")
+    DEVICE_TYPE: str = "camera"
 
     def __init__(self, app: Any) -> None:
         self.app = app
@@ -42,8 +40,6 @@ class Camera:
         self.signals = Signals()
         self.data: dict[str, Any] = {}
         self.loadConfig: bool = True
-        self.updateRate: int = 1000
-        self.deviceType: str = ""
         self.exposing: bool = False
         self.fastReadout: bool = False
         self.imagePath: Path = Path()
@@ -71,8 +67,6 @@ class Camera:
             "alpaca": CameraAlpaca(self),
         }
         if platform.system() == "Windows":
-            self.run["nina"] = CameraNINA(self)
-            self.run["sgpro"] = CameraSGPro(self)
             self.run["ascom"] = CameraAscom(self)
 
         for fw in self.run:
@@ -145,14 +139,17 @@ class Camera:
         self.imagePath = imagePath
         self.exposureTime = exposureTime
         self.binning = binning
-        self.signals.message.emit("exposing")
+        self.signals.message.emit(f"expose {self.exposureTime:3.0f} s")
         self.run[self.framework].expose()
         return True
 
-    def abort(self) -> None:
-        self.signals.message.emit("")
-        self.exposing = False
-        self.run[self.framework].abort()
+    def abort(self) -> bool:
+        if self.run[self.framework].abort():
+            self.signals.message.emit("")
+            self.exposing = False
+            return True
+        else:
+            return False
 
     def sendDownloadMode(self) -> None:
         self.run[self.framework].sendDownloadMode()
@@ -168,52 +165,6 @@ class Camera:
 
     def sendGain(self, gain: int = 0) -> None:
         self.run[self.framework].sendGain(gain=gain)
-
-    def waitExposed(self, exposureTime: float, func: Callable[[], bool]) -> None:
-        timeLeft = exposureTime
-        while self.exposing and func():
-            text = f"expose {timeLeft:3.0f} s"
-            time.sleep(0.1)
-            self.signals.message.emit(text)
-            if timeLeft >= 0.1:
-                timeLeft -= 0.1
-            else:
-                timeLeft = 0
-
-    def waitStart(self) -> None:
-        while self.exposing and "integrating" not in self.data.get("Device.Message", ""):
-            time.sleep(0.1)
-
-    def waitDownload(self) -> None:
-        self.signals.message.emit("download")
-        msg = self.data.get("Device.Message", "")
-        while self.exposing and "downloading" not in msg:
-            time.sleep(0.1)
-            msg = self.data.get("Device.Message", "")
-
-    def waitSave(self) -> None:
-        self.signals.message.emit("saving")
-        msg = self.data.get("Device.Message", "")
-        while self.exposing and "image is ready" not in msg:
-            time.sleep(0.1)
-            msg = self.data.get("Device.Message", "")
-
-    def waitFinish(self, function: Callable[..., bool], param: Any) -> None:
-        while self.exposing and not function(param):
-            time.sleep(0.1)
-
-    def retrieveImage(self, function: Callable[..., Any], param: Any) -> np.ndarray:
-        if not self.exposing:
-            return np.array([], dtype=np.uint16)
-
-        self.signals.message.emit("download")
-        tmp = function(param)
-        if tmp is None:
-            self.exposing = False
-            data = np.array([], dtype=np.uint16)
-        else:
-            data = np.array(tmp, dtype=np.uint16).transpose()
-        return data
 
     def writeImageFitsHeader(self) -> None:
         with fits.open(self.imagePath, mode="update", output_verify="silentfix") as HDU:

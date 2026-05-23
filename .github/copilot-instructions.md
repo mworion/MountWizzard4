@@ -93,6 +93,7 @@ def test_myFunction(app):
 - Platform-specific code (Windows) must be guarded with
   `platform_system == 'Windows'`.
 - Method names, function names, variables, etc. stay in camelCase format.
+- Line length must not exceed the limit defined in `pyproject.toml` (Ruff). but still use this length as a guideline for readability.
 - Source code is located in `src/mw4`.
 - Unit tests are located in `tests/unit_tests`.
 - All code must be covered by tests with a test coverage of 100%.

@@ -10,12 +10,11 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import datetime
 import logging
-import sys
 import time
 from collections.abc import Callable
 from functools import partial, partialmethod
@@ -60,7 +59,8 @@ class LoggerWriter:
 
 
 def redirectSTD() -> None:
-    sys.stderr = LoggerWriter(logging.getLogger().error, "STDERR", sys.stderr)
+    pass
+    # sys.stderr = LoggerWriter(logging.getLogger().error, "STDERR", sys.stderr)
     # sys.stdout = LoggerWriter(logging.getLogger().info, "STDOUT", sys.stdout)
 
 

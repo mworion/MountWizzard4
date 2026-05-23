@@ -9,7 +9,7 @@
 # GUI with PyQT5 for python
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 [build-system]
@@ -56,7 +56,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "numpy==2.4.4",
+    "numpy==2.4.5",
     "opencv-python-headless==4.13.0.92",
     "scipy==1.17.1",
     "astropy==7.2.0",
@@ -68,6 +68,7 @@ dependencies = [
     "qimage2ndarray==1.10.0",
     "skyfield==1.54",
     "sgp4==2.25",
+    "alpyca==3.1.2",
     "requests==2.33.1",
     "python-dateutil==2.9.0.post0",
     "wakeonlan==3.1.0",
@@ -78,7 +79,7 @@ dependencies = [
     "packaging==26.2",
     "lz4==4.4.5",
     "xisf==0.9.6",
-    "pyside6==6.11.0",
+    "pyside6==6.11.1",
     "pyyaml==6.0.3",
     "pywin32==311; platform_system == 'Windows'",
 ]
@@ -104,8 +105,8 @@ dev = [
     "pytest-cov==7.1.0",
     "pytest-xdist==3.8.0",
     "invoke==3.0.3",
-    "ruff==0.15.12",
-    "coverage==7.13.5",
+    "ruff==0.15.13",
+    "coverage==7.14.0",
     "scipy-stubs==1.17.1.4",
 ]
 

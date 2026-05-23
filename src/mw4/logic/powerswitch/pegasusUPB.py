@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -31,7 +31,6 @@ class PegasusUPB:
         self.signals = Signals()
         self.data: dict[str, Any] = {}
         self.loadConfig: bool = True
-        self.updateRate: int = 1000
         self.deviceType: str = ""
         self.defaultConfig: dict[str, Any] = {"framework": "", "frameworks": {}}
         self.framework: str = ""

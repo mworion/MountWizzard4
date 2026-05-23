@@ -10,47 +10,12 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
-from typing import Any
+from mw4.logic.lightPanel.lightPanelAlpacaAscomBase import LightPanelAlpacaAscomBase
 
 
-class LightPanelAlpaca(AlpacaClass):
-    def __init__(self, parent: Any) -> None:
-        super().__init__(parent=parent)
-        self.parent = parent
-        self.alpacaSignals = parent.signals
-        self.data = parent.data
-
-    def workerPollData(self) -> None:
-        if not self.deviceConnected:
-            return
-
-        brightness = self.getAlpacaProperty("Brightness")
-        self.storePropertyToData(brightness, "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
-
-        maxBrightness = self.getAlpacaProperty("MaxBrightness")
-        self.storePropertyToData(
-            maxBrightness, "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX"
-        )
-
-    def lightOn(self) -> None:
-        if not self.deviceConnected:
-            return
-        maxBrightness = self.app.cover.data.get(
-            "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
-        )
-        brightness = int(maxBrightness / 2)
-        self.setAlpacaProperty("calibratoron", Brightness=brightness)
-
-    def lightOff(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.getAlpacaProperty("calibratoroff")
-
-    def lightIntensity(self, value: float) -> None:
-        if not self.deviceConnected:
-            return
-        self.setAlpacaProperty("calibratoron", Brightness=value)
+class LightPanelAlpaca(LightPanelAlpacaAscomBase, AlpacaClass):
+    pass

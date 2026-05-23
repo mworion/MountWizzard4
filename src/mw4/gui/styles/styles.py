@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import platform
@@ -191,7 +191,8 @@ class Styles:
                 continue
             keyExt = images[key][self.colorSet]
             with as_file(files("mw4").joinpath(f"assets/icon/{keyExt}.svg")) as imageFile:
-                line = line.replace(f"${key}$", str(imageFile))
+                temp = str(imageFile).replace("\\", "/") if platform.system() == "Windows" else str(imageFile)
+                line = line.replace(f"${key}$", temp)
         return line
 
     def replaceColor(self, line: str) -> str:

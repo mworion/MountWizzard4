@@ -10,29 +10,19 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 from mw4.base.ascomClass import AscomClass
-from typing import Any
+from mw4.logic.telescope.telescopeAlpacaAscomBase import TelescopeAlpacaAscomBase
 
 
-class TelescopeAscom(AscomClass):
-    def __init__(self, parent: Any) -> None:
-        super().__init__(parent=parent)
-        self.signals = parent.signals
-
-    def workerGetInitialConfig(self) -> None:
-        super().workerGetInitialConfig()
-
-        value = self.getAscomProperty("ApertureDiameter")
-        if isinstance(value, float):
-            value = value * 1000
-
-        self.storePropertyToData(value, "TELESCOPE_INFO.TELESCOPE_APERTURE")
-
-        value = self.getAscomProperty("FocalLength")
-        if isinstance(value, float):
-            value = value * 1000
-
-        self.storePropertyToData(value, "TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH")
+class TelescopeAscom(TelescopeAlpacaAscomBase, AscomClass):
+    def getInitialConfig(self) -> None:
+        super().getInitialConfig()
+        aperture = self.getDeviceProp("ApertureDiameter")
+        if isinstance(aperture, float):
+            self.data["TELESCOPE_INFO.TELESCOPE_APERTURE"] = aperture * 1000
+        focalLength = self.getDeviceProp("FocalLength")
+        if isinstance(focalLength, float):
+            self.data["TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH"] = focalLength * 1000

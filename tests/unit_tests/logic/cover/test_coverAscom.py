@@ -10,12 +10,11 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 
 import platform
-import PySide6
 import pytest
 import unittest.mock as mock
 from mw4.base.loggerMW import setupLogging
@@ -35,94 +34,41 @@ class Parent:
     signals = Signals()
     deviceType = ""
     loadConfig = True
-    updateRate = 1000
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    class Test1:
-        Name = "test"
-        DriverVersion = "1"
-        DriverInfo = "test1"
-        CoverState = 1
-
-        @staticmethod
-        def CloseCover():
-            return True
-
-        @staticmethod
-        def OpenCover():
-            return True
-
-        @staticmethod
-        def HaltCover():
-            return True
-
-        @staticmethod
-        def CalibratorOn():
-            return True
-
-        @staticmethod
-        def CalibratorOff():
-            return True
-
-        @staticmethod
-        def Brightness(a):
-            return True
-
-    with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = CoverAscom(parent=Parent)
-        func.client = Test1()
-        func.clientProps = []
-        yield func
+    func = CoverAscom(parent=Parent())
+    func.device = mock.MagicMock()
+    func.device.CoverState = 1
+    yield func
 
 
-def test_workerPollData_1(function):
-    with mock.patch.object(function, "getAscomProperty", return_value=1):
+def test_pollData_1(function):
+    with mock.patch.object(function, "getDeviceProp", return_value=1):
         with mock.patch.object(function, "storePropertyToData"):
-            function.workerPollData()
+            function.pollData()
 
 
-def test_closeCover_1(function):
-    function.deviceConnected = False
-    function.closeCover()
+def test_pollData_2(function):
+    with mock.patch.object(function, "getDeviceProp", return_value=0):
+        with mock.patch.object(function, "storePropertyToData"):
+            function.pollData()
 
 
-def test_closeCover_2(function):
-    function.deviceConnected = True
-    function.closeCover()
+def test_closeCover(function):
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.closeCover()
+    m.assert_called_once_with("CloseCover")
 
 
-def test_closeCover_3(function):
-    function.deviceConnected = True
-    function.closeCover()
+def test_openCover(function):
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.openCover()
+    m.assert_called_once_with("OpenCover")
 
 
-def test_openCover_1(function):
-    function.deviceConnected = False
-    function.openCover()
-
-
-def test_openCover_2(function):
-    function.deviceConnected = True
-    function.openCover()
-
-
-def test_openCover_3(function):
-    function.deviceConnected = True
-    function.openCover()
-
-
-def test_haltCover_1(function):
-    function.deviceConnected = False
-    function.haltCover()
-
-
-def test_haltCover_2(function):
-    function.deviceConnected = True
-    function.haltCover()
-
-
-def test_haltCover_3(function):
-    function.deviceConnected = True
-    function.haltCover()
+def test_haltCover(function):
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.haltCover()
+    m.assert_called_once_with("HaltCover")

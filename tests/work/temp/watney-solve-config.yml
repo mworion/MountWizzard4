@@ -1,0 +1,3 @@
+quadDbPath: 'tests\work\watney-index'
+defaultStarDetectionBgOffset: 1.0
+defaultLowerDensityOffset: 3

@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import numpy as np
@@ -43,8 +43,8 @@ class ImageWindow(MWidget):
         self.photometry = Photometry(self, np.zeros((1, 1)))
         self.fileHandler = FileHandler(self)
         self.slewInterface = SlewInterface(self)
-        self.imageFileName: Path = Path("")
-        self.imageFileNameOld: Path = Path("")
+        self.imageFileName: Path = Path()
+        self.imageFileNameOld: Path = Path()
         self.exposureTime: float = 1
         self.binning: int = 1
         self.folder: Path = Path()
@@ -302,14 +302,21 @@ class ImageWindow(MWidget):
         self.exposeRaw(self.app.camera.exposureTimeN, self.app.camera.binningN)
 
     def exposeImageN(self) -> None:
-        self.app.operationRunning.emit(Model.STATUS_EXPOSE_N)
-        self.msg.emit(1, "Image", "Expose", "Continuous start")
-        self.imagingDeviceStat["exposeN"] = True
-        self.app.camera.signals.saved.connect(self.exposeImageNDone)
-        self.exposeRaw(self.app.camera.exposureTimeN, self.app.camera.binningN)
+        if not self.imagingDeviceStat["exposeN"]:
+            self.app.operationRunning.emit(Model.STATUS_EXPOSE_N)
+            self.msg.emit(1, "Image", "Expose", "Continuous start")
+            self.imagingDeviceStat["exposeN"] = True
+            self.app.camera.signals.saved.connect(self.exposeImageNDone)
+            self.exposeRaw(self.app.camera.exposureTimeN, self.app.camera.binningN)
+        else:
+            self.app.camera.signals.saved.disconnect(self.exposeImageNDone)
+            self.imagingDeviceStat["exposeN"] = False
+            self.msg.emit(1, "Image", "Expose", "Continuous stopped")
+            self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def abortExpose(self) -> None:
-        self.app.camera.abort()
+        if not self.app.camera.abort():
+            return
         if self.imagingDeviceStat["expose"]:
             self.app.camera.signals.saved.disconnect(self.exposeImageDone)
         if self.imagingDeviceStat["exposeN"]:

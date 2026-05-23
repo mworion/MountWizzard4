@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -205,7 +205,7 @@ class Satellite:
         return all(response[i] != "E" for i in range(0, len(az)))
 
     def preCalcTrajectory(self, replay: bool = False) -> bool:
-        self.trajectoryParams.flip = 0
+        self.trajectoryParams.flip = False
         self.trajectoryParams.jdStart = 0
         self.trajectoryParams.jdEnd = 0
 

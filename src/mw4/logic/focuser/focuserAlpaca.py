@@ -10,32 +10,12 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
-from typing import Any
+from mw4.logic.focuser.focuserAlpacaAscomBase import FocuserAlpacaAscomBase
 
 
-class FocuserAlpaca(AlpacaClass):
-    def __init__(self, parent: Any) -> None:
-        super().__init__(parent=parent)
-        self.signals = parent.signals
-        self.data = parent.data
-
-    def workerPollData(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.getAndStoreAlpacaProperty(
-            "position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION"
-        )
-
-    def move(self, position: int) -> None:
-        if not self.deviceConnected:
-            return
-        self.setAlpacaProperty("move", Position=position)
-
-    def halt(self) -> None:
-        if not self.deviceConnected:
-            return
-        self.getAlpacaProperty("halt")
+class FocuserAlpaca(FocuserAlpacaAscomBase, AlpacaClass):
+    pass

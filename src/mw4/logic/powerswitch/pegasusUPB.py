@@ -24,6 +24,7 @@ from typing import Any
 
 class PegasusUPB:
     log = logging.getLogger("MW4")
+    DEVICE_TYPE: str = "switch"
 
     def __init__(self, app: Any) -> None:
         self.app = app

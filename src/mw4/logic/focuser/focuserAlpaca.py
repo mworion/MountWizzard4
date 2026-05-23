@@ -15,7 +15,16 @@
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.logic.focuser.focuserAlpacaAscomBase import FocuserAlpacaAscomBase
+from typing import Any
 
 
 class FocuserAlpaca(FocuserAlpacaAscomBase, AlpacaClass):
-    pass
+    def __init__(self, parent: Any) -> None:
+        super().__init__(parent)
+        self.deviceType = parent.DEVICE_TYPE
+
+    def startCommunication(self) -> None:
+        if not self.createAlpacaDevice(self.deviceType):
+            self.msg.emit(2, "ALPACA", "Device type error", self.deviceName)
+            return
+        super().startCommunication()

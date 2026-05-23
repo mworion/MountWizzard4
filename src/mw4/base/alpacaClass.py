@@ -94,14 +94,10 @@ class AlpacaClass(AlpacaAscomCommon):
         try:
             return getattr(self.device, valueProp)
         except AlpycaNotImplError:
-            self.log.warning(
-                f"[{self.deviceName}] [{valueProp}] not implemented"
-            )
+            self.log.warning(f"[{self.deviceName}] [{valueProp}] not implemented")
             self.propertyExceptions.append(valueProp)
         except Exception as e:
-            self.log.error(
-                f"[{self.deviceName}] get [{valueProp}] exception: [{e}]"
-            )
+            self.log.error(f"[{self.deviceName}] get [{valueProp}] exception: [{e}]")
 
     def setDeviceProp(self, valueProp: str, value: Any) -> None:
         if valueProp in self.propertyExceptions:
@@ -109,14 +105,10 @@ class AlpacaClass(AlpacaAscomCommon):
         try:
             setattr(self.device, valueProp, value)
         except AlpycaNotImplError:
-            self.log.warning(
-                f"[{self.deviceName}] [{valueProp}] not implemented"
-            )
+            self.log.warning(f"[{self.deviceName}] [{valueProp}] not implemented")
             self.propertyExceptions.append(valueProp)
         except Exception as e:
-            self.log.error(
-                f"[{self.deviceName}] set [{valueProp}] exception: [{e}]"
-            )
+            self.log.error(f"[{self.deviceName}] set [{valueProp}] exception: [{e}]")
 
     def callDeviceMethod(self, valueProp: str, **kwargs: Any) -> Any:
         if valueProp in self.propertyExceptions:
@@ -124,14 +116,10 @@ class AlpacaClass(AlpacaAscomCommon):
         try:
             return getattr(self.device, valueProp)(**kwargs)
         except AlpycaNotImplError:
-            self.log.warning(
-                f"[{self.deviceName}] [{valueProp}] not implemented"
-            )
+            self.log.warning(f"[{self.deviceName}] [{valueProp}] not implemented")
             self.propertyExceptions.append(valueProp)
         except Exception as e:
-            self.log.error(
-                f"[{self.deviceName}] call [{valueProp}] exception: [{e}]"
-            )
+            self.log.error(f"[{self.deviceName}] call [{valueProp}] exception: [{e}]")
 
     def startCommunication(self) -> None:
         self.deviceConnected = False
@@ -183,8 +171,5 @@ class AlpacaClass(AlpacaAscomCommon):
             return []
 
         temp = [x for x in devices if x["DeviceType"].lower() == deviceType]
-        discoverList = [
-            f"{x['DeviceName']}:{deviceType}:{x['DeviceNumber']}"
-            for x in temp
-        ]
+        discoverList = [f"{x['DeviceName']}:{deviceType}:{x['DeviceNumber']}" for x in temp]
         return discoverList

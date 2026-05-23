@@ -26,6 +26,7 @@ if platform.system() == "Windows":
 
 class Telescope:
     log = logging.getLogger("MW4")
+    DEVICE_TYPE: str = "telescope"
 
     def __init__(self, app: Any) -> None:
         self.app = app

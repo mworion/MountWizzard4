@@ -15,9 +15,7 @@
 ###########################################################
 import logging
 import platform
-import time
 from astropy.io import fits
-from collections.abc import Callable
 from mw4.base.signalsDevices import Signals
 from mw4.logic.camera.cameraAlpaca import CameraAlpaca
 from mw4.logic.camera.cameraIndi import CameraIndi

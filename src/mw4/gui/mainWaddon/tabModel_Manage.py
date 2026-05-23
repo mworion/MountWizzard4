@@ -406,9 +406,7 @@ class ModelManage:
         if not self.mainW.messageDialog(self.mainW, "Deleting point", text):
             return
         if not self.app.mount.model.deletePoint(index):
-            self.msg.emit(
-                2, "Model", "Manage error", f"Point {index:3.0f} cannot be deleted"
-            )
+            self.msg.emit(2, "Model", "Manage error", f"Point {index:3.0f} cannot be deleted")
             return
 
         text = f"Point: {index:3.0f}, RMS of {error:5.1f}"

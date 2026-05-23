@@ -23,6 +23,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 class Parent:
     app = App()
     data = {}
+    DEVICE_TYPE = "dome"
     deviceType = ""
     signals = Signals()
     loadConfig = True
@@ -37,41 +38,51 @@ def function():
 
 
 def test_getInitialConfig_1(function):
-    with mock.patch.object(function, "getAndStoreDeviceProp") as m:
-        with mock.patch.object(function, "getDeviceProp"):
-            function.getInitialConfig()
-            # 3 from base (Name, DriverVersion, DriverInfo) + 3 dome-specific
-            assert m.call_count == 6
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp") as m,
+        mock.patch.object(function, "getDeviceProp"),
+    ):
+        function.getInitialConfig()
+        # 2 from base (Name, DriverVersion) + 3 dome-specific
+        assert m.call_count == 5
 
 
 def test_pollData_1(function):
-    with mock.patch.object(function, "getAndStoreDeviceProp"):
-        with mock.patch.object(function, "getDeviceProp", return_value=0):
-            function.pollData()
-            assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is True
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+        mock.patch.object(function, "getDeviceProp", return_value=0),
+    ):
+        function.pollData()
+        assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is True
 
 
 def test_pollData_2(function):
-    with mock.patch.object(function, "getAndStoreDeviceProp"):
-        with mock.patch.object(function, "getDeviceProp", return_value=1):
-            function.pollData()
-            assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is True
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+        mock.patch.object(function, "getDeviceProp", return_value=1),
+    ):
+        function.pollData()
+        assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is True
 
 
 def test_pollData_3(function):
-    with mock.patch.object(function, "getAndStoreDeviceProp"):
-        with mock.patch.object(function, "getDeviceProp", return_value=3):
-            function.pollData()
-            assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is None
-            assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is None
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+        mock.patch.object(function, "getDeviceProp", return_value=3),
+    ):
+        function.pollData()
+        assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is None
+        assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is None
 
 
 def test_pollData_4(function):
-    with mock.patch.object(function, "getAndStoreDeviceProp"):
-        with mock.patch.object(function, "getDeviceProp", return_value=None):
-            function.pollData()
-            assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is None
-            assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is None
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+        mock.patch.object(function, "getDeviceProp", return_value=None),
+    ):
+        function.pollData()
+        assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is None
+        assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is None
 
 
 def test_slewToAltAz_1(function):
@@ -135,3 +146,21 @@ def test_abortSlew_1(function):
         function.commandQueue.get_nowait()
     function.abortSlew()
     assert not function.commandQueue.empty()
+
+
+def test_startCommunication_1(function):
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=False),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
+        function.startCommunication()
+        m_start.assert_not_called()
+
+
+def test_startCommunication_2(function):
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=True),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
+        function.startCommunication()
+        m_start.assert_called_once()

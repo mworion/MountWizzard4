@@ -26,6 +26,7 @@ if platform.system() == "Windows":
 
 class Filter:
     log = logging.getLogger("MW4")
+    DEVICE_TYPE: str = "filterwheel"
 
     def __init__(self, app: Any) -> None:
         self.app = app

@@ -130,7 +130,7 @@ class Setting:
     @weatherStatus.setter
     def weatherStatus(self, value: str | float) -> None:
         value = valueToInt(value)
-        if not(0 <= value <= 2):
+        if not (0 <= value <= 2):
             value = False
         self._weatherStatus = value
 

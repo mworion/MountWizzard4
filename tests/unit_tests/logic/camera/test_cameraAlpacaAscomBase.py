@@ -165,7 +165,7 @@ def test_setExposureState_stateNot2ExposingImageReady(function):
     # -> saves and finishes
     function.exposing = True
     fakeImage = [[1, 2], [3, 4]]
-    with mock.patch.object(function, "getDeviceProp", side_effect=[0, True, fakeImage]):
+    with mock.patch.object(function, "getDeviceProp", side_effect=[0, True, True, fakeImage]):
         with mock.patch.object(function.parent, "writeImageFitsHeader"):
             with mock.patch.object(function.parent, "exposeFinished") as mf:
                 with mock.patch.object(fits.PrimaryHDU, "writeto"):
@@ -179,7 +179,7 @@ def test_setExposureState_state2NotExposingImageReady(function):
     # ImageReady=True -> saves and finishes
     function.exposing = False
     fakeImage = [[1, 2], [3, 4]]
-    with mock.patch.object(function, "getDeviceProp", side_effect=[2, True, fakeImage]):
+    with mock.patch.object(function, "getDeviceProp", side_effect=[2, True, True, fakeImage]):
         with mock.patch.object(function.parent, "writeImageFitsHeader"):
             with mock.patch.object(function.parent, "exposeFinished") as mf:
                 with mock.patch.object(fits.PrimaryHDU, "writeto"):

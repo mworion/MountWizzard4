@@ -23,6 +23,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 class Parent:
     app = App()
     data = {}
+    DEVICE_TYPE = "focuser"
     deviceType = ""
     signals = Signals()
     loadConfig = True
@@ -56,3 +57,18 @@ def test_halt_1(function):
     function.halt()
     item = function.commandQueue.get_nowait()
     assert item.valueProp == "Halt"
+
+
+def test_startCommunication_1(function):
+    with mock.patch.object(function, "createAlpacaDevice", return_value=False):
+        with mock.patch.object(function.threadPool, "start") as m_start:
+            function.startCommunication()
+            m_start.assert_not_called()
+
+
+def test_startCommunication_2(function):
+    with mock.patch.object(function, "createAlpacaDevice", return_value=True):
+        with mock.patch.object(function.threadPool, "start") as m_start:
+            function.startCommunication()
+            m_start.assert_called_once()
+

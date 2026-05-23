@@ -24,6 +24,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 class Parent:
     app = App()
     data = {}
+    DEVICE_TYPE = "filterwheel"
     deviceType = ""
     signals = Signals()
     loadConfig = True
@@ -79,3 +80,21 @@ def test_sendFilterNumber_1(function):
     assert item.cmdType == "set"
     assert item.valueProp == "Position"
     assert item.value == 2
+
+
+def test_startCommunication_1(function):
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=False),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
+        function.startCommunication()
+        m_start.assert_not_called()
+
+
+def test_startCommunication_2(function):
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=True),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
+        function.startCommunication()
+        m_start.assert_called_once()

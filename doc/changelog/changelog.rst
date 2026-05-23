@@ -28,6 +28,7 @@ Version 4.x
 - add: split Satellite window into satellite world map and satellite horizon view
 - add: support for compressed / uncompressed xisf files for image display (simple versions)
 - add: support for compressed fits files for image display (gzip, bzip2)
+- add: support for NINA alpaca devices, please install Alpaca plugin for NINA and enable in settings.
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
 - change: moving PyQt5 to major PySide6
@@ -61,6 +62,7 @@ Version 4.x
 - remove: updater for MW4 (use uv installer instead)
 - remove: automatic profile conversion from x.x to 4.x (too complex)
 - remove: blending profiles as it did not work so far.
+- native support for SGPro and NINA
 - fix: typos
 
 

@@ -23,6 +23,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 class Parent:
     app = App()
     data = {}
+    DEVICE_TYPE = "cover"
     deviceType = ""
     signals = Signals()
     loadConfig = True
@@ -41,10 +42,12 @@ def test_pollData_1(function):
 
 
 def test_pollData_2(function):
-    with mock.patch.object(function, "getDeviceProp", return_value=1):
-        with mock.patch.object(function, "storePropertyToData") as m:
-            function.pollData()
-            m.assert_called_once_with("Closed", "Status.Cover")
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=1),
+        mock.patch.object(function, "storePropertyToData") as m,
+    ):
+        function.pollData()
+        m.assert_called_once_with("Closed", "Status.Cover")
 
 
 def test_closeCover_1(function):
@@ -72,3 +75,21 @@ def test_haltCover_1(function):
     assert not function.commandQueue.empty()
     item = function.commandQueue.get_nowait()
     assert item.valueProp == "HaltCover"
+
+
+def test_startCommunication_1(function):
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=False),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
+        function.startCommunication()
+        m_start.assert_not_called()
+
+
+def test_startCommunication_2(function):
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=True),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
+        function.startCommunication()
+        m_start.assert_called_once()

@@ -26,6 +26,7 @@ if platform.system() == "Windows":
 
 class Focuser:
     log = logging.getLogger("MW4")
+    DEVICE_TYPE: str = "focuser"
 
     def __init__(self, app: Any) -> None:
         self.app = app

@@ -235,7 +235,7 @@ def test_connectDevice_retriesThenSuccess(function):
 def test_getInitialConfig(function):
     with mock.patch.object(function, "getAndStoreDeviceProp") as m:
         function.getInitialConfig()
-        assert m.call_count == 3
+        assert m.call_count == 2
 
 
 def test_pollData(function):

@@ -174,13 +174,11 @@ def test_getInitialConfig(function):
     # arrange
     function.device.Name = "MySensor"
     function.device.DriverVersion = "1.0"
-    function.device.DriverInfo = "info"
     # act
     function.getInitialConfig()
     # assert
     assert function.data["DRIVER_INFO.DRIVER_NAME"] == "MySensor"
     assert function.data["DRIVER_INFO.DRIVER_VERSION"] == "1.0"
-    assert function.data["DRIVER_INFO.DRIVER_EXEC"] == "info"
 
 
 def test_pollData(function):

@@ -191,7 +191,11 @@ class Styles:
                 continue
             keyExt = images[key][self.colorSet]
             with as_file(files("mw4").joinpath(f"assets/icon/{keyExt}.svg")) as imageFile:
-                temp = str(imageFile).replace("\\", "/") if platform.system() == "Windows" else str(imageFile)
+                temp = (
+                    str(imageFile).replace("\\", "/")
+                    if platform.system() == "Windows"
+                    else str(imageFile)
+                )
                 line = line.replace(f"${key}$", temp)
         return line
 

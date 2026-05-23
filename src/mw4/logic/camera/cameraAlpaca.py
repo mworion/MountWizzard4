@@ -25,9 +25,6 @@ class CameraAlpaca(CameraAlpacaAscomBase, AlpacaClass):
 
     def startCommunication(self) -> None:
         if not self.createAlpacaDevice(self.deviceType):
-            self.msg.emit(
-                2, "ALPACA", "Device type error", self.deviceName
-            )
+            self.msg.emit(2, "ALPACA", "Device type error", self.deviceName)
             return
         super().startCommunication()
-

@@ -60,14 +60,10 @@ class AlpacaAscomCommon(DriverData):
         raise NotImplementedError
 
     def setDevicePropQueued(self, valueProp: str, value: Any) -> None:
-        self.commandQueue.put(
-            CommandItem(cmdType="set", valueProp=valueProp, value=value)
-        )
+        self.commandQueue.put(CommandItem(cmdType="set", valueProp=valueProp, value=value))
 
     def callDeviceMethodQueued(self, valueProp: str, **kwargs: Any) -> None:
-        self.commandQueue.put(
-            CommandItem(cmdType="call", valueProp=valueProp, kwargs=kwargs)
-        )
+        self.commandQueue.put(CommandItem(cmdType="call", valueProp=valueProp, kwargs=kwargs))
 
     def getAndStoreDeviceProp(self, valueProp: str, element: str) -> None:
         value = self.getDeviceProp(valueProp)
@@ -78,27 +74,19 @@ class AlpacaAscomCommon(DriverData):
             self.setDeviceProp("Connected", True)
             suc = self.getDeviceProp("Connected")
             if suc:
-                self.log.debug(
-                    f"[{self.deviceName}] connected, [{retry}] retries"
-                )
+                self.log.debug(f"[{self.deviceName}] connected, [{retry}] retries")
                 break
-            self.log.info(
-                f"[{self.deviceName}] connection retry: [{retry}]"
-            )
+            self.log.info(f"[{self.deviceName}] connection retry: [{retry}]")
             time.sleep(0.2)
         else:
             suc = False
         if not suc:
-            self.msg.emit(
-                2, self.PROTOCOL_NAME, "Connect error", self.deviceName
-            )
+            self.msg.emit(2, self.PROTOCOL_NAME, "Connect error", self.deviceName)
         return suc
 
     def getInitialConfig(self) -> None:
         self.getAndStoreDeviceProp("Name", "DRIVER_INFO.DRIVER_NAME")
-        self.getAndStoreDeviceProp(
-            "DriverVersion", "DRIVER_INFO.DRIVER_VERSION"
-        )
+        self.getAndStoreDeviceProp("DriverVersion", "DRIVER_INFO.DRIVER_VERSION")
 
     def pollData(self) -> None:
         pass
@@ -114,9 +102,7 @@ class AlpacaAscomCommon(DriverData):
             elif cmd.cmdType == "set":
                 self.setDeviceProp(cmd.valueProp, cmd.value)
             else:
-                self.log.warning(
-                    f"[{self.deviceName}] unknown cmdType: [{cmd.cmdType}]"
-                )
+                self.log.warning(f"[{self.deviceName}] unknown cmdType: [{cmd.cmdType}]")
 
     def handleDeviceConnect(self) -> None:
         if not self.connectDevice():
@@ -125,18 +111,14 @@ class AlpacaAscomCommon(DriverData):
         self.deviceConnected = True
         self.signals.serverConnected.emit()
         self.signals.deviceConnected.emit(self.deviceName)
-        self.msg.emit(
-            0, self.PROTOCOL_NAME, "Device found", self.deviceName
-        )
+        self.msg.emit(0, self.PROTOCOL_NAME, "Device found", self.deviceName)
         self.getInitialConfig()
 
     def handleDeviceDisconnect(self) -> None:
         self.deviceConnected = False
         self.serverConnected = False
         self.signals.deviceDisconnected.emit(self.deviceName)
-        self.msg.emit(
-            0, self.PROTOCOL_NAME, "Device remove", self.deviceName
-        )
+        self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.deviceName)
 
     def runnerCommunicationLoop(self) -> None:
         while not self.stopEvent.is_set():
@@ -156,7 +138,4 @@ class AlpacaAscomCommon(DriverData):
         self.serverConnected = False
         self.signals.deviceDisconnected.emit(self.deviceName)
         self.signals.serverDisconnected.emit({self.deviceName: 0})
-        self.msg.emit(
-            0, self.PROTOCOL_NAME, "Device  remove", self.deviceName
-        )
-
+        self.msg.emit(0, self.PROTOCOL_NAME, "Device  remove", self.deviceName)

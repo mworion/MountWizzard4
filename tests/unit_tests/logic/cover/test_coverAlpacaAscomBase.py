@@ -23,6 +23,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 class Parent:
     app = App()
     data = {}
+    DEVICE_TYPE = "cover"
     deviceType = ""
     signals = Signals()
     loadConfig = True

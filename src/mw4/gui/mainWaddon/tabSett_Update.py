@@ -75,11 +75,8 @@ class SettUpdate:
 
     def setLoggingLevel(self) -> None:
         if self.ui.loglevelInfo.isChecked():
-            setCustomLoggingLevel("INFO")
-            self.app.mount.loggingTrace = False
+            setCustomLoggingLevel(self.app, "INFO")
         elif self.ui.loglevelTrace.isChecked():
-            setCustomLoggingLevel("DEBUG")
-            self.app.mount.loggingTrace = True
+            setCustomLoggingLevel(self.app, "TRACE")
         else:
-            setCustomLoggingLevel("DEBUG")
-            self.app.mount.loggingTrace = False
+            setCustomLoggingLevel(self.app, "DEBUG")

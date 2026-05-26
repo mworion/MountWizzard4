@@ -238,7 +238,7 @@ class MountWizzard4(QObject):
 
     def initConfig(self) -> Topos:
         """Apply logging level and return the topocentric location."""
-        setCustomLoggingLevel(self.config.get("loglevel", "DEBUG"))
+        setCustomLoggingLevel(self, self.config.get("loglevel", "DEBUG"))
         lat = self.config.get("topoLat", 51.47)
         lon = self.config.get("topoLon", 0)
         elev = self.config.get("topoElev", 46)

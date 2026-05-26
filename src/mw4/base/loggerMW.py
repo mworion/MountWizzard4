@@ -91,6 +91,11 @@ def setupLogging() -> None:
     redirectSTD()
 
 
-def setCustomLoggingLevel(level: str = "DEBUG") -> None:
-    logging.getLogger("MW4").setLevel(level)
-# IPyClient.debug_verbosity(verbose) method, where 0 is no xml traffic is recorded, 1 is xml recorded but the least verbose, and 3 is the most.
+def setCustomLoggingLevel(app: Any, level: str = "DEBUG") -> None:
+    if level == "TRACE":
+        logging.getLogger("MW4").setLevel("DEBUG")
+        app.mount.loggingTrace = True
+        app.mount.loggingTrace = False
+    else:
+        logging.getLogger("MW4").setLevel(level)
+    # IPyClient.debug_verbosity(verbose) method, where 0 is no xml traffic is recorded, 1 is xml recorded but the least verbose, and 3 is the most.

@@ -113,5 +113,20 @@ def test_setupLogging():
             loggerMW.setupLogging()
 
 
-def test_setCustomLoggingLevel():
-    loggerMW.setCustomLoggingLevel()
+def test_setCustomLoggingLevel_debug():
+    app = MagicMock()
+    loggerMW.setCustomLoggingLevel(app, "DEBUG")
+    assert logging.getLogger("MW4").level == logging.DEBUG
+
+
+def test_setCustomLoggingLevel_info():
+    app = MagicMock()
+    loggerMW.setCustomLoggingLevel(app, "INFO")
+    assert logging.getLogger("MW4").level == logging.INFO
+
+
+def test_setCustomLoggingLevel_trace():
+    app = MagicMock()
+    loggerMW.setCustomLoggingLevel(app, "TRACE")
+    assert logging.getLogger("MW4").level == logging.DEBUG
+    assert app.mount.loggingTrace is False

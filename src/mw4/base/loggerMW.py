@@ -91,7 +91,7 @@ def setupLogging() -> None:
     redirectSTD()
 
 
-def setTrace(app: Any, enable: bool = False) -> None :
+def setTrace(app: Any, enable: bool = False) -> None:
     drivers = app.getActiveDrivers()
 
     for device in drivers:

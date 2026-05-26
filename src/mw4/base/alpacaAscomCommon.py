@@ -55,7 +55,7 @@ class AlpacaAscomCommon(DriverData):
         if valueProp in self.propertyExceptions:
             return None
         try:
-            returnVal =  getattr(self.device, valueProp)
+            returnVal = getattr(self.device, valueProp)
             if self.loggingTrace:
                 self.log.debug(f"[Trace] [{self.deviceName}] [{valueProp}] [{returnVal}]")
             return returnVal
@@ -78,7 +78,7 @@ class AlpacaAscomCommon(DriverData):
         if valueProp in self.propertyExceptions:
             return None
         try:
-            returnVal =  getattr(self.device, valueProp)(**kwargs)
+            returnVal = getattr(self.device, valueProp)(**kwargs)
             if self.loggingTrace:
                 t = f"[Trace] [{self.deviceName}] [{valueProp}] [{kwargs}] [{returnVal}]"
                 self.log.debug(t)

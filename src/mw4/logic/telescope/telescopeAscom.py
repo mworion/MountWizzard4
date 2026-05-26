@@ -19,4 +19,3 @@ from mw4.logic.telescope.telescopeAlpacaAscomBase import TelescopeAlpacaAscomBas
 
 class TelescopeAscom(TelescopeAlpacaAscomBase, AscomClass):
     pass
-

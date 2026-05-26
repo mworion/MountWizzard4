@@ -17,7 +17,6 @@ import alpaca.management as alpacaMgmt
 from alpaca.camera import Camera as AlpycaCamera
 from alpaca.covercalibrator import CoverCalibrator as AlpycaCoverCalibrator
 from alpaca.dome import Dome as AlpycaDome
-from alpaca.exceptions import NotImplementedException as AlpycaNotImplError
 from alpaca.filterwheel import FilterWheel as AlpycaFilterWheel
 from alpaca.focuser import Focuser as AlpycaFocuser
 from alpaca.observingconditions import ObservingConditions as AlpycaObsConditions

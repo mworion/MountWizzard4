@@ -38,6 +38,7 @@ class Connection:
     The class itself needs parameters for the host and port to be able to interact
     with the mount.
     """
+
     log = logging.getLogger("MW4")
     SOCKET_TIMEOUT = 10
     COMMANDS = [
@@ -312,8 +313,8 @@ class Connection:
                 else:
                     chunksToReceive += 1
         if self.loggingTrace:
-            t = f"[Trace] Analyse  [{self.id}]: minBytes: [{minBytes}], numOfChunks: [{chunksToReceive}]"
-            t += f", host: [{self.host}]"
+            t = f"[Trace] Analyse  [{self.id}]: minBytes: [{minBytes}],"
+            t += f" numOfChunks: [{chunksToReceive}], host: [{self.host}]"
             self.log.debug(t)
         return chunksToReceive, getData, minBytes
 
@@ -443,11 +444,15 @@ class Connection:
             val = chunkRaw.decode("ASCII")
         except TimeoutError:
             if self.loggingTrace:
-                self.log.debug(f"[Trace] Timeout  [{self.id}]: socket timeout in communicate raw")
+                self.log.debug(
+                    f"[Trace] Timeout  [{self.id}]: socket timeout in communicate raw"
+                )
             val = "Timeout"
             sucRec = False
         except Exception as e:
-            self.log.warning(f"[Trace] Error    [{self.id}]: socket error: [{e}] in communicate raw")
+            self.log.warning(
+                f"[Trace] Error    [{self.id}]: socket error: [{e}] in communicate raw"
+            )
             val = "Exception"
             sucRec = False
         else:

@@ -31,6 +31,7 @@ class Geometry:
     for the transformation between homogeneous vectors (vh) and Cartesian
     vectors (vk): vk = vh[0:2]/vh[3], vh = [vk, 1]
     """
+
     log = logging.getLogger("MW4")
     geometryData = {
         "10micron GM1000HPS": {

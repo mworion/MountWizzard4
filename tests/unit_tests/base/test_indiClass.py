@@ -485,6 +485,61 @@ def test_cleanupStop(function):
     function.clientMutex.unlock()
 
 
+# ─── setTrace ────────────────────────────────────────────────────────────────
+
+
+def test_setTrace_noQueueClient(function):
+    """enable=True with queueClient=None → loggingTrace set, debug_verbosity not called."""
+    function.queueClient = None
+    function.setTrace(enable=True)
+    assert function.loggingTrace is True
+
+
+def test_setTrace_withQueueClient_enable(function):
+    """enable=True with queueClient present → debug_verbosity(2)."""
+    mock_client = mock.MagicMock()
+    function.queueClient = mock_client
+    function.setTrace(enable=True)
+    assert function.loggingTrace is True
+    mock_client.debug_verbosity.assert_called_once_with(2)
+    function.queueClient = None
+
+
+def test_setTrace_withQueueClient_disable(function):
+    """enable=False with queueClient present → debug_verbosity(0)."""
+    mock_client = mock.MagicMock()
+    function.queueClient = mock_client
+    function.setTrace(enable=False)
+    assert function.loggingTrace is False
+    mock_client.debug_verbosity.assert_called_once_with(0)
+    function.queueClient = None
+
+
+# ─── runQueueClient ──────────────────────────────────────────────────────────
+
+
+def test_runQueueClient(function):
+    """runQueueClient creates QueClient and runs its async loop."""
+    function.hostaddress = "localhost"
+    function.port = 7624
+    mock_client = mock.MagicMock()
+    with (
+        mock.patch("mw4.base.indiClass.QueClient", return_value=mock_client) as mock_qc,
+        mock.patch("mw4.base.indiClass.asyncio") as mock_asyncio,
+        mock.patch.object(function, "setTrace"),
+    ):
+        function.runQueueClient()
+    mock_qc.assert_called_once_with(
+        function.txQ,
+        function.rxQ,
+        indihost="localhost",
+        indiport=7624,
+        blobfolder=mock.ANY,
+    )
+    mock_asyncio.run.assert_called_once_with(mock_client.asyncrun())
+    function.queueClient = None
+
+
 # ─── startCommunication ──────────────────────────────────────────────────────
 
 
@@ -545,9 +600,11 @@ def test_discoverDevices_mutexLocked(function):
 def test_discoverDevices_maxSearchZero(function, monkeypatch):
     """Loop never entered when MAX_SEARCH == 0; verifies setup/teardown path."""
     monkeypatch.setattr(IndiClass, "MAX_SEARCH", 0)
-    with mock.patch("mw4.base.indiClass.Worker"):
-        with mock.patch.object(function.threadPool, "start"):
-            result = function.discoverDevices("dome")
+    with (
+        mock.patch("mw4.base.indiClass.Worker"),
+        mock.patch.object(function.threadPool, "start"),
+    ):
+        result = function.discoverDevices("dome")
     assert result == []
 
 
@@ -559,33 +616,37 @@ def test_discoverDevices_loopEmptyQueue(function, monkeypatch):
     dummy.eventtype = "Remove"
     dummy.devicename = "x"
 
-    with mock.patch("mw4.base.indiClass.Worker"):
-        with mock.patch.object(function.threadPool, "start"):
-            with mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls:
-                mock_txQ = mock.MagicMock()
-                mock_rxQ = mock.MagicMock()
-                mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-                # first: empty → sleep → continue; second: not empty → get item
-                mock_rxQ.empty.side_effect = [True, False]
-                mock_rxQ.get.return_value = dummy
-                with mock.patch("mw4.base.indiClass.time"):
-                    result = function.discoverDevices("dome")
+    with (
+        mock.patch("mw4.base.indiClass.Worker"),
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
+        mock.patch("mw4.base.indiClass.time"),
+    ):
+        mock_txQ = mock.MagicMock()
+        mock_rxQ = mock.MagicMock()
+        mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
+        # first: empty → sleep → continue; second: not empty → get item
+        mock_rxQ.empty.side_effect = [True, False]
+        mock_rxQ.get.return_value = dummy
+        result = function.discoverDevices("dome")
     assert result == []
 
 
 def test_discoverDevices_loopNoneItem(function, monkeypatch):
     """Loop branch: rxQ yields None → continue, loop finishes normally."""
     monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
-    with mock.patch("mw4.base.indiClass.Worker"):
-        with mock.patch.object(function.threadPool, "start"):
-            with mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls:
-                mock_txQ = mock.MagicMock()
-                mock_rxQ = mock.MagicMock()
-                mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-                mock_rxQ.empty.return_value = False
-                mock_rxQ.get.return_value = None
-                with mock.patch("mw4.base.indiClass.time"):
-                    result = function.discoverDevices("dome")
+    with (
+        mock.patch("mw4.base.indiClass.Worker"),
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
+        mock.patch("mw4.base.indiClass.time"),
+    ):
+        mock_txQ = mock.MagicMock()
+        mock_rxQ = mock.MagicMock()
+        mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
+        mock_rxQ.empty.return_value = False
+        mock_rxQ.get.return_value = None
+        result = function.discoverDevices("dome")
     assert result == []
 
 
@@ -601,15 +662,17 @@ def test_discoverDevices_loopDefineEventMatch(function, monkeypatch):
     item.devicename = "TestDome"
     item.snapshot = {"TestDome": snap}
 
-    with mock.patch("mw4.base.indiClass.Worker"):
-        with mock.patch.object(function.threadPool, "start"):
-            with mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls:
-                mock_txQ = mock.MagicMock()
-                mock_rxQ = mock.MagicMock()
-                mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-                mock_rxQ.empty.return_value = False
-                mock_rxQ.get.return_value = item
-                result = function.discoverDevices("dome")
+    with (
+        mock.patch("mw4.base.indiClass.Worker"),
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
+    ):
+        mock_txQ = mock.MagicMock()
+        mock_rxQ = mock.MagicMock()
+        mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
+        mock_rxQ.empty.return_value = False
+        mock_rxQ.get.return_value = item
+        result = function.discoverDevices("dome")
     assert "TestDome" in result
 
 
@@ -624,15 +687,17 @@ def test_discoverDevices_loopDefineEventNoDriver(function, monkeypatch):
     item.devicename = "TestDome"
     item.snapshot = {"TestDome": snap}
 
-    with mock.patch("mw4.base.indiClass.Worker"):
-        with mock.patch.object(function.threadPool, "start"):
-            with mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls:
-                mock_txQ = mock.MagicMock()
-                mock_rxQ = mock.MagicMock()
-                mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-                mock_rxQ.empty.return_value = False
-                mock_rxQ.get.return_value = item
-                result = function.discoverDevices("dome")
+    with (
+        mock.patch("mw4.base.indiClass.Worker"),
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
+    ):
+        mock_txQ = mock.MagicMock()
+        mock_rxQ = mock.MagicMock()
+        mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
+        mock_rxQ.empty.return_value = False
+        mock_rxQ.get.return_value = item
+        result = function.discoverDevices("dome")
     assert result == []
 
 
@@ -649,15 +714,17 @@ def test_discoverDevices_loopDefineEventNoTypeMatch(function, monkeypatch):
     item.devicename = "TestCamera"
     item.snapshot = {"TestCamera": snap}
 
-    with mock.patch("mw4.base.indiClass.Worker"):
-        with mock.patch.object(function.threadPool, "start"):
-            with mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls:
-                mock_txQ = mock.MagicMock()
-                mock_rxQ = mock.MagicMock()
-                mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-                mock_rxQ.empty.return_value = False
-                mock_rxQ.get.return_value = item
-                result = function.discoverDevices("dome")
+    with (
+        mock.patch("mw4.base.indiClass.Worker"),
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
+    ):
+        mock_txQ = mock.MagicMock()
+        mock_rxQ = mock.MagicMock()
+        mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
+        mock_rxQ.empty.return_value = False
+        mock_rxQ.get.return_value = item
+        result = function.discoverDevices("dome")
     assert result == []
 
 
@@ -668,13 +735,15 @@ def test_discoverDevices_loopNonDefineEvent(function, monkeypatch):
     item.eventtype = "Remove"
     item.devicename = "TestDome"
 
-    with mock.patch("mw4.base.indiClass.Worker"):
-        with mock.patch.object(function.threadPool, "start"):
-            with mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls:
-                mock_txQ = mock.MagicMock()
-                mock_rxQ = mock.MagicMock()
-                mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-                mock_rxQ.empty.return_value = False
-                mock_rxQ.get.return_value = item
-                result = function.discoverDevices("dome")
+    with (
+        mock.patch("mw4.base.indiClass.Worker"),
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
+    ):
+        mock_txQ = mock.MagicMock()
+        mock_rxQ = mock.MagicMock()
+        mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
+        mock_rxQ.empty.return_value = False
+        mock_rxQ.get.return_value = item
+        result = function.discoverDevices("dome")
     assert result == []

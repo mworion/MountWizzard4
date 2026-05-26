@@ -13,9 +13,10 @@
 # License APL2.0
 #
 ###########################################################
+import asyncio
 import logging
 import time
-from indipyclient.queclient import EventItem, runqueclient
+from indipyclient.queclient import EventItem, QueClient, runqueclient
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO_CONV
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QThreadPool
@@ -47,8 +48,10 @@ class IndiClass:
         self.isINDIGO: bool = False
         self.messages: bool = False
         self.commandRunning: bool = False
+        self.loggingTrace: bool = False
         self.rxQ: Queue = Queue()
         self.txQ: Queue = Queue()
+        self.queueClient: QueClient | None = None
         self.workerIndiQueueClient: Worker | None = None
         self.workerProcessRxQueue: Worker | None = None
 
@@ -133,6 +136,23 @@ class IndiClass:
     def cleanupStop(self) -> None:
         self.clientMutex.unlock()
 
+    def setTrace(self, enable: bool = False) -> None:
+        self.loggingTrace = enable
+        indiTrace = 2 if enable else 0
+        if self.queueClient:
+            self.queueClient.debug_verbosity(indiTrace)
+
+    def runQueueClient(self) -> None:
+        self.queueClient = QueClient(
+            self.txQ,
+            self.rxQ,
+            indihost=self.hostaddress,
+            indiport=self.port,
+            blobfolder=str(self.app.mwGlob["tempDir"]),
+        )
+        self.setTrace(self.loggingTrace)
+        asyncio.run(self.queueClient.asyncrun())
+
     def startCommunication(self) -> None:
         if not self.clientMutex.tryLock():
             return
@@ -140,14 +160,7 @@ class IndiClass:
         self.rxQ.queue.clear()
         self.data.clear()
         self.commandRunning = True
-        self.workerIndiQueueClient = Worker(
-            runqueclient,
-            self.txQ,
-            self.rxQ,
-            indihost=self.hostaddress,
-            indiport=self.port,
-            blobfolder=str(self.app.mwGlob["tempDir"]),
-        )
+        self.workerIndiQueueClient = Worker(self.runQueueClient)
         self.workerIndiQueueClient.signals.finished.connect(self.cleanupStop)
         self.threadPool.start(self.workerIndiQueueClient)
         self.workerProcessRxQueue = Worker(self.processRxQueue)

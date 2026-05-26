@@ -783,3 +783,25 @@ def test_geometry_9(function):
         dec=Angle(degrees=10), ha=Angle(hours=5), lat=Angle(degrees=-50), pierside="E"
     )
     alt, az, inter, _, _ = val
+
+
+def test_calcTransformationMatrices_loggingTrace(function):
+    # arrange
+    suc = function.geometry.initializeGeometry("10micron GM1000HPS")
+    assert suc
+    function.geometry.offNorth = 0.1
+    function.geometry.offEast = 0.2
+    function.geometry.offVert = 0.3
+    function.geometry.offGEM = 0.1
+    function.geometry.offLAT = 0.2
+    function.geometry.domeRadius = 1.5
+    function.geometry.loggingTrace = True
+    # act
+    val = function.geometry.calcTransformationMatrices(
+        dec=Angle(degrees=0), ha=Angle(hours=0), lat=Angle(degrees=50), pierside="E"
+    )
+    function.geometry.loggingTrace = False
+    # assert
+    alt, az, inter, _, _ = val
+    assert alt is not None
+    assert az is not None

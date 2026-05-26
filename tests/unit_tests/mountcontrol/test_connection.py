@@ -581,3 +581,102 @@ def test_communicateRaw_3():
         assert suc[0]
         assert suc[1]
         assert suc[2] == "test"
+
+
+def test_analyseCommand_loggingTrace():
+    # arrange
+    conn = Connection(makeParent(host=("localhost", 3492), loggingTrace=True))
+    # act
+    chunksToReceive, getData, minBytes = conn.analyseCommand(":AP#")
+    # assert
+    assert not getData
+    assert minBytes == 0
+    assert chunksToReceive == 0
+
+
+def test_sendData_loggingTrace():
+    # arrange
+    conn = Connection(makeParent(host=("localhost", 3492), loggingTrace=True))
+    with mock.patch("socket.socket") as m_socket:
+        client = m_socket.return_value
+        # act
+        suc = conn.sendData(client, ":AP#")
+    # assert
+    assert suc
+
+
+def test_sendData_timeout_loggingTrace():
+    # arrange
+    conn = Connection(makeParent(host=("localhost", 3492), loggingTrace=True))
+    with mock.patch("socket.socket") as m_socket:
+        m_socket.return_value.sendall.side_effect = TimeoutError
+        client = m_socket.return_value
+        # act
+        suc = conn.sendData(client, ":AP#")
+    # assert
+    assert not suc
+
+
+def test_receiveData_timeout_loggingTrace():
+    # arrange
+    conn = Connection(makeParent(loggingTrace=True))
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    with mock.patch.object(socket.socket, "recv", side_effect=TimeoutError):
+        # act
+        val = conn.receiveData(client=client, numberOfChunks=1, minBytes=0)
+    # assert
+    assert val == (False, [])
+
+
+def test_receiveData_success_loggingTrace():
+    # arrange
+    class _ChunkResp:
+        @staticmethod
+        def decode(enc):
+            return "result#"
+
+    conn = Connection(makeParent(loggingTrace=True))
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    with mock.patch.object(socket.socket, "recv", return_value=_ChunkResp()):
+        # act
+        val = conn.receiveData(client=client, numberOfChunks=1, minBytes=0)
+    # assert
+    assert val == (True, ["result"])
+
+
+def test_communicateRaw_timeout_loggingTrace():
+    # arrange
+    class _Client:
+        @staticmethod
+        def recv(n):
+            raise TimeoutError
+
+    conn = Connection(makeParent(loggingTrace=True))
+    with (
+        mock.patch.object(conn, "buildClient", return_value=_Client()),
+        mock.patch.object(conn, "sendData", return_value=True),
+    ):
+        # act
+        suc = conn.communicateRaw("test")
+    # assert
+    assert not suc[1]
+    assert suc[2] == "Timeout"
+
+
+def test_communicateRaw_success_loggingTrace():
+    # arrange
+    class _Client:
+        @staticmethod
+        def recv(n):
+            return "response".encode("ASCII")
+
+    conn = Connection(makeParent(loggingTrace=True))
+    with (
+        mock.patch.object(conn, "buildClient", return_value=_Client()),
+        mock.patch.object(conn, "sendData", return_value=True),
+    ):
+        # act
+        suc = conn.communicateRaw("test")
+    # assert
+    assert suc[1]
+    assert suc[2] == "response"

@@ -182,7 +182,7 @@ def test_setDeviceProp_3(function):
 
     function.device = DeviceWithErrorProp()
     function.setDeviceProp("TestProp", True)
-    assert "TestProp" not in function.propertyExceptions
+    assert "TestProp" in function.propertyExceptions
 
 
 def test_callDeviceMethod_propertyException(function):

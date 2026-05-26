@@ -93,4 +93,4 @@ def setupLogging() -> None:
 
 def setCustomLoggingLevel(level: str = "DEBUG") -> None:
     logging.getLogger("MW4").setLevel(level)
-
+# IPyClient.debug_verbosity(verbose) method, where 0 is no xml traffic is recorded, 1 is xml recorded but the least verbose, and 3 is the most.

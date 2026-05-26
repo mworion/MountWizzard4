@@ -21,6 +21,16 @@ from mw4.mountcontrol.connection import Connection
 setupLogging()
 
 
+def makeParent(host=None, loggingTrace: bool = False) -> object:
+    class Parent:
+        pass
+
+    p = Parent()
+    p.host = host
+    p.loggingTrace = loggingTrace
+    return p
+
+
 #
 #
 # testing the command analyses against structural faults
@@ -29,7 +39,7 @@ setupLogging()
 
 
 def test_responses_withoutCommand_analyseCommand():
-    conn = Connection()
+    conn = Connection(makeParent())
     chunksToReceive, getData, minBytes = conn.analyseCommand("")
     assert not getData
     assert minBytes == 0
@@ -37,7 +47,7 @@ def test_responses_withoutCommand_analyseCommand():
 
 
 def test_responses_withoutCommand_analyseCommand_1():
-    conn = Connection()
+    conn = Connection(makeParent())
     chunksToReceive, getData, minBytes = conn.analyseCommand(":Q#")
     assert not getData
     assert minBytes == 0
@@ -45,7 +55,7 @@ def test_responses_withoutCommand_analyseCommand_1():
 
 
 def test_responses_withoutCommand_analyseCommand_2():
-    conn = Connection()
+    conn = Connection(makeParent())
     chunksToReceive, getData, minBytes = conn.analyseCommand(":QaXa#")
     assert getData
     assert minBytes == 0
@@ -53,7 +63,7 @@ def test_responses_withoutCommand_analyseCommand_2():
 
 
 def test_responses_withoutCommand_analyseCommand_3():
-    conn = Connection()
+    conn = Connection(makeParent())
     chunksToReceive, getData, minBytes = conn.analyseCommand(":Q#:QaXa#")
     assert getData
     assert minBytes == 0
@@ -61,7 +71,7 @@ def test_responses_withoutCommand_analyseCommand_3():
 
 
 def test_responses_typeA_analyseCommand():
-    conn = Connection()
+    conn = Connection(makeParent())
     command = ":AP#"
     chunksToReceive, getData, minBytes = conn.analyseCommand(command)
     assert not getData
@@ -70,7 +80,7 @@ def test_responses_typeA_analyseCommand():
 
 
 def test_responses_typeB_analyseCommand():
-    conn = Connection()
+    conn = Connection(makeParent())
     command = ":FLIP#"
     chunksToReceive, getData, minBytes = conn.analyseCommand(command)
     assert getData
@@ -79,7 +89,7 @@ def test_responses_typeB_analyseCommand():
 
 
 def test_responses_typeC_analyseCommand():
-    conn = Connection()
+    conn = Connection(makeParent())
     command = ":GTMP1#"
     chunksToReceive, getData, minBytes = conn.analyseCommand(command)
     assert getData
@@ -88,7 +98,7 @@ def test_responses_typeC_analyseCommand():
 
 
 def test_responses_typeAB_analyseCommand():
-    conn = Connection()
+    conn = Connection(makeParent())
     command = ":AP#:FLIP#"
     chunksToReceive, getData, minBytes = conn.analyseCommand(command)
     assert getData
@@ -97,7 +107,7 @@ def test_responses_typeAB_analyseCommand():
 
 
 def test_responses_typeAC_analyseCommand():
-    conn = Connection()
+    conn = Connection(makeParent())
     command = ":AP#:GTMP1#"
     chunksToReceive, getData, minBytes = conn.analyseCommand(command)
     assert getData
@@ -106,7 +116,7 @@ def test_responses_typeAC_analyseCommand():
 
 
 def test_responses_typeBC_analyseCommand():
-    conn = Connection()
+    conn = Connection(makeParent())
     command = ":FLIP#:GTMP1#"
     chunksToReceive, getData, minBytes = conn.analyseCommand(command)
     assert getData
@@ -115,7 +125,7 @@ def test_responses_typeBC_analyseCommand():
 
 
 def test_responses_typeABC_analyseCommand():
-    conn = Connection()
+    conn = Connection(makeParent())
     command = ":AP#:FLIP#:GTMP1#"
     chunksToReceive, getData, minBytes = conn.analyseCommand(command)
     assert getData
@@ -124,7 +134,7 @@ def test_responses_typeABC_analyseCommand():
 
 
 def test_responses_typeABCABC_analyseCommand():
-    conn = Connection()
+    conn = Connection(makeParent())
     command = ":AP#:FLIP#:GTMP1#:AP#:FLIP#:GTMP1#"
     chunksToReceive, getData, minBytes = conn.analyseCommand(command)
     assert getData
@@ -133,7 +143,7 @@ def test_responses_typeABCABC_analyseCommand():
 
 
 def test_responses_typeABBCCABC_analyseCommand():
-    conn = Connection()
+    conn = Connection(makeParent())
     command = ":AP#:FLIP#:FLIP#:GTMP1#:GTMP1#:AP#:FLIP#:GTMP1#"
     chunksToReceive, getData, minBytes = conn.analyseCommand(command)
     assert getData
@@ -142,7 +152,7 @@ def test_responses_typeABBCCABC_analyseCommand():
 
 
 def test_responses_real_analyseCommand():
-    conn = Connection()
+    conn = Connection(makeParent())
     command = ":GTsid#:Ga#:Gz#:Gr#:Gd#:QaXa#:QaXb#"
     chunksToReceive, getData, minBytes = conn.analyseCommand(command)
     assert getData
@@ -151,7 +161,7 @@ def test_responses_real_analyseCommand():
 
 
 def test_responses_real_analyseCommand_2():
-    conn = Connection()
+    conn = Connection(makeParent())
     command = ":Suaf1#"
     chunksToReceive, getData, minBytes = conn.analyseCommand(command)
     assert not getData
@@ -160,7 +170,7 @@ def test_responses_real_analyseCommand_2():
 
 
 def test_responses_real_analyseCommand_3():
-    conn = Connection()
+    conn = Connection(makeParent())
     command = ":RC3#"
     chunksToReceive, getData, minBytes = conn.analyseCommand(command)
     assert not getData
@@ -169,7 +179,7 @@ def test_responses_real_analyseCommand_3():
 
 
 def test_responses_real_analyseCommand_4():
-    conn = Connection()
+    conn = Connection(makeParent())
     command = ":RG2#"
     chunksToReceive, getData, minBytes = conn.analyseCommand(command)
     assert not getData
@@ -178,7 +188,7 @@ def test_responses_real_analyseCommand_4():
 
 
 def test_responses_real_analyseCommand_5():
-    conn = Connection()
+    conn = Connection(makeParent())
     command = ":RG#"
     chunksToReceive, getData, minBytes = conn.analyseCommand(command)
     assert not getData
@@ -187,7 +197,7 @@ def test_responses_real_analyseCommand_5():
 
 
 def test_responses_real_analyseCommand_6():
-    conn = Connection()
+    conn = Connection(makeParent())
     command = ":RC#"
     chunksToReceive, getData, minBytes = conn.analyseCommand(command)
     assert not getData
@@ -196,19 +206,19 @@ def test_responses_real_analyseCommand_6():
 
 
 def test_closeClientHard_1():
-    conn = Connection()
+    conn = Connection(makeParent())
     conn.closeClientHard("")
 
 
 def test_closeClientHard_2():
-    conn = Connection("test")
+    conn = Connection(makeParent(host="test"))
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     with mock.patch.object(socket.socket, "shutdown", side_effect=Exception):
         conn.closeClientHard(client)
 
 
 def test_closeClientHard_3():
-    conn = Connection("test")
+    conn = Connection(makeParent(host="test"))
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     with mock.patch.object(socket.socket, "shutdown"):
         with mock.patch.object(socket.socket, "close"):
@@ -224,7 +234,7 @@ def test_closeClientHard_3():
 def test_ok():
     with mock.patch("socket.socket") as m_socket:
         m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
-        conn = Connection(host=("localhost", 3492))
+        conn = Connection(makeParent(host=("localhost", 3492)))
         suc, response, chunks = conn.communicate(":GVN#")
         m_socket.return_value.connect.assert_called_with(("localhost", 3492))
         m_socket.return_value.sendall.assert_called_with(b":GVN#")
@@ -235,7 +245,7 @@ def test_ok():
 def test_notok_response_check():
     with mock.patch("socket.socket") as m_socket:
         m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
-        conn = Connection(host=("localhost", 3492))
+        conn = Connection(makeParent(host=("localhost", 3492)))
         suc, response, chunks = conn.communicate(":GVN#", "0")
         m_socket.return_value.connect.assert_called_with(("localhost", 3492))
         m_socket.return_value.sendall.assert_called_with(b":GVN#")
@@ -246,7 +256,7 @@ def test_notok_response_check():
 def test_no_host_defined():
     with mock.patch("socket.socket") as m_socket:
         m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
-        conn = Connection()
+        conn = Connection(makeParent())
         suc, response, chunks = conn.communicate(":GVN#")
     assert not suc
     assert response == []
@@ -255,7 +265,7 @@ def test_no_host_defined():
 def test_no_port_defined():
     with mock.patch("socket.socket") as m_socket:
         m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
-        conn = Connection(host="localhost")
+        conn = Connection(makeParent(host="localhost"))
         suc, response, chunks = conn.communicate(":GVN#")
     assert not suc
     assert response == []
@@ -264,7 +274,7 @@ def test_no_port_defined():
 def test_no_response():
     with mock.patch("socket.socket") as m_socket:
         m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
-        conn = Connection(host=("localhost", 3492))
+        conn = Connection(makeParent(host=("localhost", 3492)))
         suc, response, chunks = conn.communicate("")
     assert suc
     assert response == []
@@ -273,7 +283,7 @@ def test_no_response():
 def test_no_chunk():
     with mock.patch("socket.socket") as m_socket:
         m_socket.return_value.recv.return_value = "".encode
-        conn = Connection(host=("localhost", 3492))
+        conn = Connection(makeParent(host=("localhost", 3492)))
         suc, response, chunks = conn.communicate("")
     assert suc
     assert response == []
@@ -283,7 +293,7 @@ def test_connect_timeout():
     with mock.patch("socket.socket") as m_socket:
         m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
         m_socket.return_value.connect.side_effect = TimeoutError
-        conn = Connection(host=("localhost", 3492))
+        conn = Connection(makeParent(host=("localhost", 3492)))
         suc, response, chunks = conn.communicate(":GVN#")
     assert not suc
 
@@ -292,7 +302,7 @@ def test_sendall_timeout():
     with mock.patch("socket.socket") as m_socket:
         m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
         m_socket.return_value.sendall.side_effect = TimeoutError
-        conn = Connection(host=("localhost", 3492))
+        conn = Connection(makeParent(host=("localhost", 3492)))
         suc, response, chunks = conn.communicate(":GVN#")
     assert not suc
 
@@ -301,7 +311,7 @@ def test_recv_timeout():
     with mock.patch("socket.socket") as m_socket:
         m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
         m_socket.return_value.recv.side_effect = TimeoutError
-        conn = Connection(host=("localhost", 3492))
+        conn = Connection(makeParent(host=("localhost", 3492)))
         suc, response, chunks = conn.communicate(":GVN#")
     assert not suc
 
@@ -310,7 +320,7 @@ def test_connect_socket_error():
     with mock.patch("socket.socket") as m_socket:
         m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
         m_socket.return_value.connect.side_effect = socket.error
-        conn = Connection(host=("localhost", 3492))
+        conn = Connection(makeParent(host=("localhost", 3492)))
         suc, response, chunks = conn.communicate(":GVN#")
     assert not suc
 
@@ -319,7 +329,7 @@ def test_sendall_socket_error():
     with mock.patch("socket.socket") as m_socket:
         m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
         m_socket.return_value.sendall.side_effect = socket.error
-        conn = Connection(host=("localhost", 3492))
+        conn = Connection(makeParent(host=("localhost", 3492)))
         suc, response, chunks = conn.communicate(":GVN#")
     assert not suc
 
@@ -328,7 +338,7 @@ def test_recv_socket_error():
     with mock.patch("socket.socket") as m_socket:
         m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
         m_socket.return_value.recv.side_effect = socket.error
-        conn = Connection(host=("localhost", 3492))
+        conn = Connection(makeParent(host=("localhost", 3492)))
         suc, response, chunks = conn.communicate(":GVN#")
     assert not suc
 
@@ -337,7 +347,7 @@ def test_connect_exception():
     with mock.patch("socket.socket") as m_socket:
         m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
         m_socket.return_value.connect.side_effect = Exception("Test")
-        conn = Connection(host=("localhost", 3492))
+        conn = Connection(makeParent(host=("localhost", 3492)))
         suc, response, chunks = conn.communicate(":GVN#")
     assert not suc
 
@@ -346,7 +356,7 @@ def test_sendall_exception():
     with mock.patch("socket.socket") as m_socket:
         m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
         m_socket.return_value.sendall.side_effect = Exception("Test")
-        conn = Connection(host=("localhost", 3492))
+        conn = Connection(makeParent(host=("localhost", 3492)))
         suc, response, chunks = conn.communicate(":GVN#")
     assert not suc
 
@@ -355,73 +365,73 @@ def test_recv_exception():
     with mock.patch("socket.socket") as m_socket:
         m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
         m_socket.return_value.recv.side_effect = Exception("Test")
-        conn = Connection(host=("localhost", 3492))
+        conn = Connection(makeParent(host=("localhost", 3492)))
         suc, response, chunks = conn.communicate(":GVN#")
     assert not suc
 
 
 def test_commands_valid_A():
-    conn = Connection()
+    conn = Connection(makeParent())
     for command in conn.COMMAND_A:
         assert command in conn.COMMANDS
 
 
 def test_commands_valid_B():
-    conn = Connection()
+    conn = Connection(makeParent())
     for command in conn.COMMAND_B:
         assert command in conn.COMMANDS
 
 
 def test_valid_commandSet_1():
-    conn = Connection()
+    conn = Connection(makeParent())
     suc = conn.validCommandSet(":AP#")
     assert suc
 
 
 def test_valid_commandSet_2():
-    conn = Connection()
+    conn = Connection(makeParent())
     suc = conn.validCommandSet(":AP#:AP#:AP#")
     assert suc
 
 
 def test_valid_commandSet_3():
-    conn = Connection()
+    conn = Connection(makeParent())
     suc = conn.validCommandSet(":AP#:AP#:AP#")
     assert suc
 
 
 def test_invalid_commandSet_1():
-    conn = Connection()
+    conn = Connection(makeParent())
     suc = conn.validCommandSet(":test#")
     assert not suc
 
 
 def test_invalid_commandSet_2():
-    conn = Connection()
+    conn = Connection(makeParent())
     suc = conn.validCommandSet(":AP#:test#")
     assert not suc
 
 
 def test_invalid_command_1():
-    conn = Connection()
+    conn = Connection(makeParent())
     suc = conn.validCommand(":AP#")
     assert suc
 
 
 def test_invalid_command_2():
-    conn = Connection()
+    conn = Connection(makeParent())
     suc = conn.validCommand(":test#")
     assert not suc
 
 
 def test_communicate_invalid_command_1():
-    conn = Connection()
+    conn = Connection(makeParent())
     suc, msg, num = conn.communicate(":test#")
     assert not suc
 
 
 def test_communicate_invalid_command_2():
-    conn = Connection()
+    conn = Connection(makeParent())
     suc, msg, num = conn.communicate(":AP#:test#")
     assert not suc
 
@@ -433,7 +443,7 @@ def test_receiveData_1():
             return
 
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    conn = Connection()
+    conn = Connection(makeParent())
     with mock.patch.object(socket.socket, "recv", return_value=Test()):
         with mock.patch.object(Test, "decode", side_effect=Exception):
             val = conn.receiveData(client=client, numberOfChunks=0, minBytes=0)
@@ -447,7 +457,7 @@ def test_receiveData_2():
             return ""
 
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    conn = Connection()
+    conn = Connection(makeParent())
     with mock.patch.object(socket.socket, "recv", return_value=Test()):
         val = conn.receiveData(client=client, numberOfChunks=0, minBytes=0)
         assert val == (True, [""])
@@ -460,7 +470,7 @@ def test_receiveData_3():
             return "12345"
 
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    conn = Connection()
+    conn = Connection(makeParent())
     with mock.patch.object(socket.socket, "recv", return_value=Test()):
         val = conn.receiveData(client=client, numberOfChunks=0, minBytes=5)
         assert val == (True, ["12345"])
@@ -480,7 +490,7 @@ def test_communicateRaw_0():
         def recv(a):
             return "test".encode("ASCII")
 
-    conn = Connection()
+    conn = Connection(makeParent())
     with mock.patch.object(conn, "buildClient", return_value=None):
         with mock.patch.object(conn, "sendData", return_value=False):
             with mock.patch.object(Test, "recv", side_effect=TimeoutError):
@@ -504,7 +514,7 @@ def test_communicateRaw_1():
         def recv(a):
             return "test".encode("ASCII")
 
-    conn = Connection()
+    conn = Connection(makeParent())
     with mock.patch.object(conn, "buildClient", return_value=Test()):
         with mock.patch.object(conn, "sendData", return_value=False):
             with mock.patch.object(Test, "recv", side_effect=TimeoutError):
@@ -528,7 +538,7 @@ def test_communicateRaw_2():
         def recv(a):
             return "test".encode("ASCII")
 
-    conn = Connection()
+    conn = Connection(makeParent())
     with mock.patch.object(conn, "buildClient", return_value=Test()):
         with mock.patch.object(conn, "sendData", return_value=True):
             with mock.patch.object(Test, "recv", side_effect=Exception):
@@ -552,7 +562,7 @@ def test_communicateRaw_3():
         def recv(a):
             return "test".encode("ASCII")
 
-    conn = Connection()
+    conn = Connection(makeParent())
     with mock.patch.object(conn, "buildClient", return_value=Test()):
         with mock.patch.object(conn, "sendData", return_value=True):
             suc = conn.communicateRaw("test")

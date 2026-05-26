@@ -1041,6 +1041,7 @@ class Mount(QObject):
         self.satellite = MountSatellite()
         self.model = MountModel()
         self.host = None
+        self.loggingTrace = False
 
     @staticmethod
     def bootMount():

@@ -29,6 +29,7 @@ setupLogging()
 
 class Parent:
     host = None
+    loggingTrace = False
     pathToData = Path(os.getcwd() + "/data")
 
 

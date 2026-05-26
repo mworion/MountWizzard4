@@ -355,25 +355,28 @@ def test_stopCommunication(function):
     assert item.value is False
 
 
-def test_getDeviceProp_notImplemented():
-    # arrange — use base class directly
+def test_getDeviceProp_noDevice():
+    # arrange — use base class directly, device is None
     parent = Parent()
     base = AlpacaAscomCommon(parent=parent)
-    # act / assert
-    with pytest.raises(NotImplementedError):
-        base.getDeviceProp("Test")
+    # act
+    result = base.getDeviceProp("Test")
+    # assert — exception is caught, prop added to exceptions, None returned
+    assert result is None
+    assert "Test" in base.propertyExceptions
 
 
-def test_setDeviceProp_notImplemented():
+def test_setDeviceProp_noDevice():
     parent = Parent()
     base = AlpacaAscomCommon(parent=parent)
-    with pytest.raises(NotImplementedError):
-        base.setDeviceProp("Test", True)
+    base.setDeviceProp("Test", True)
+    assert "Test" in base.propertyExceptions
 
 
-def test_callDeviceMethod_notImplemented():
+def test_callDeviceMethod_noDevice():
     parent = Parent()
     base = AlpacaAscomCommon(parent=parent)
-    with pytest.raises(NotImplementedError):
-        base.callDeviceMethod("Test")
+    result = base.callDeviceMethod("Test")
+    assert result is None
+    assert "Test" in base.propertyExceptions
 

@@ -27,7 +27,6 @@ class SettUpdate:
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)

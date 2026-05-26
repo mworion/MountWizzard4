@@ -51,8 +51,8 @@ def test_getInitialConfig(function):
     with mock.patch.object(function, "getAndStoreDeviceProp") as m:
         with mock.patch.object(function, "getDeviceProp"):
             function.getInitialConfig()
-            # 2 from base (Name, DriverVersion) + 3 dome-specific
-            assert m.call_count == 5
+            # 3 from base (Name, DriverVersion, DriverInfo) + 3 dome-specific
+            assert m.call_count == 6
 
 
 def test_pollData_shutterOpen(function):

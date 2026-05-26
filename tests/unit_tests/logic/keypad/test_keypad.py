@@ -89,23 +89,29 @@ def test_dispatch_0(function):
 
 def test_dispatch_1(function):
     msg = [1, 1]
-    with mock.patch.object(function, "expand7to8", return_value=msg):
-        with mock.patch.object(function, "dispText"):
-            function.dispatch(msg)
+    with (
+        mock.patch.object(function, "expand7to8", return_value=msg),
+        mock.patch.object(function, "dispText"),
+    ):
+        function.dispatch(msg)
 
 
 def test_dispatch_2(function):
     msg = [2, 1]
-    with mock.patch.object(function, "expand7to8", return_value=msg):
-        with mock.patch.object(function, "drawPixel"):
-            function.dispatch(msg)
+    with (
+        mock.patch.object(function, "expand7to8", return_value=msg),
+        mock.patch.object(function, "drawPixel"),
+    ):
+        function.dispatch(msg)
 
 
 def test_dispatch_3(function):
     msg = [3, 1]
-    with mock.patch.object(function, "expand7to8", return_value=msg):
-        with mock.patch.object(function, "deletePixel"):
-            function.dispatch(msg)
+    with (
+        mock.patch.object(function, "expand7to8", return_value=msg),
+        mock.patch.object(function, "deletePixel"),
+    ):
+        function.dispatch(msg)
 
 
 def test_dispatch_5(function):
@@ -246,9 +252,8 @@ def test_keyPressed_2(function):
 
 
 def test_keyPressed_3(function):
-    with mock.patch.object(function, "send"):
-        with mock.patch.object(function, "calcChecksum"):
-            function.keyPressed(54)
+    with mock.patch.object(function, "send"), mock.patch.object(function, "calcChecksum"):
+        function.keyPressed(54)
 
 
 def test_on_data_1(function):

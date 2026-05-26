@@ -33,9 +33,8 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    with mock.patch.object(function, "positionWindow"):
-        with mock.patch.object(function, "loadMap"):
-            function.initConfig()
+    with mock.patch.object(function, "positionWindow"), mock.patch.object(function, "loadMap"):
+        function.initConfig()
 
 
 def test_storeConfig_1(function):
@@ -52,9 +51,8 @@ def test_storeConfig_2(function):
 
 def test_closeEvent_1(function):
     function.app.colorChange.connect(function.colorChange)
-    with mock.patch.object(function, "show"):
-        with mock.patch.object(MWidget, "closeEvent"):
-            function.closeEvent(QCloseEvent)
+    with mock.patch.object(function, "show"), mock.patch.object(MWidget, "closeEvent"):
+        function.closeEvent(QCloseEvent)
 
 
 def test_showWindow(function):
@@ -163,9 +161,11 @@ def test_drawEarthTrajectory_1(function):
 
 
 def test_drawEarth_1(function):
-    with mock.patch.object(function, "prepareEarthSatellite"):
-        with mock.patch.object(function, "drawEarthTrajectory"):
-            function.drawEarth()
+    with (
+        mock.patch.object(function, "prepareEarthSatellite"),
+        mock.patch.object(function, "drawEarthTrajectory"),
+    ):
+        function.drawEarth()
 
 
 def test_drawSatellite_1(function):

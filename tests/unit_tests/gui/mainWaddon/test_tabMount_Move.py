@@ -65,30 +65,38 @@ def test_countDuration_1(function):
 
 def test_moveDuration_1(function):
     function.ui.moveDuration.setCurrentIndex(1)
-    with mock.patch.object(function, "countDuration"):
-        with mock.patch.object(function, "stopMoveAll"):
-            function.moveDuration()
+    with (
+        mock.patch.object(function, "countDuration"),
+        mock.patch.object(function, "stopMoveAll"),
+    ):
+        function.moveDuration()
 
 
 def test_moveDuration_2(function):
     function.ui.moveDuration.setCurrentIndex(2)
-    with mock.patch.object(function, "countDuration"):
-        with mock.patch.object(function, "stopMoveAll"):
-            function.moveDuration()
+    with (
+        mock.patch.object(function, "countDuration"),
+        mock.patch.object(function, "stopMoveAll"),
+    ):
+        function.moveDuration()
 
 
 def test_moveDuration_3(function):
     function.ui.moveDuration.setCurrentIndex(3)
-    with mock.patch.object(function, "countDuration"):
-        with mock.patch.object(function, "stopMoveAll"):
-            function.moveDuration()
+    with (
+        mock.patch.object(function, "countDuration"),
+        mock.patch.object(function, "stopMoveAll"),
+    ):
+        function.moveDuration()
 
 
 def test_moveDuration_4(function):
     function.ui.moveDuration.setCurrentIndex(4)
-    with mock.patch.object(function, "countDuration"):
-        with mock.patch.object(function, "stopMoveAll"):
-            function.moveDuration()
+    with (
+        mock.patch.object(function, "countDuration"),
+        mock.patch.object(function, "stopMoveAll"),
+    ):
+        function.moveDuration()
 
 
 def test_moveDuration_5(function):

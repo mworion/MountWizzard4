@@ -865,14 +865,14 @@ def test_getStarCount_1():
         loggingTrace = False
 
     model = Model(parent=Parent())
-    with mock.patch.object(
-        mw4.mountcontrol.model.Connection,
-        "communicate",
-        return_value=(False, ["100"], 1),
+    with (
+        mock.patch.object(
+            mw4.mountcontrol.model.Connection, "communicate", return_value=(False, ["100"], 1)
+        ),
+        mock.patch.object(model, "parseNumberStars", return_value=False),
     ):
-        with mock.patch.object(model, "parseNumberStars", return_value=False):
-            suc = model.getStarCount()
-            assert not suc
+        suc = model.getStarCount()
+        assert not suc
 
 
 def test_getStarCount_2():
@@ -881,14 +881,14 @@ def test_getStarCount_2():
         loggingTrace = False
 
     model = Model(parent=Parent())
-    with mock.patch.object(
-        mw4.mountcontrol.model.Connection,
-        "communicate",
-        return_value=(True, ["100"], 1),
+    with (
+        mock.patch.object(
+            mw4.mountcontrol.model.Connection, "communicate", return_value=(True, ["100"], 1)
+        ),
+        mock.patch.object(model, "parseNumberStars", return_value=False),
     ):
-        with mock.patch.object(model, "parseNumberStars", return_value=False):
-            suc = model.getStarCount()
-            assert not suc
+        suc = model.getStarCount()
+        assert not suc
 
 
 def test_getStarCount_3():
@@ -897,14 +897,14 @@ def test_getStarCount_3():
         loggingTrace = False
 
     model = Model(parent=Parent())
-    with mock.patch.object(
-        mw4.mountcontrol.model.Connection,
-        "communicate",
-        return_value=(True, ["100"], 1),
+    with (
+        mock.patch.object(
+            mw4.mountcontrol.model.Connection, "communicate", return_value=(True, ["100"], 1)
+        ),
+        mock.patch.object(model, "parseNumberStars", return_value=True),
     ):
-        with mock.patch.object(model, "parseNumberStars", return_value=True):
-            suc = model.getStarCount()
-            assert suc
+        suc = model.getStarCount()
+        assert suc
 
 
 def test_getStars_0():
@@ -970,9 +970,11 @@ def test_pollStars_2():
         loggingTrace = False
 
     model = Model(parent=Parent())
-    with mock.patch.object(model, "getStarCount", return_value=True):
-        with mock.patch.object(model, "getStars", return_value=False):
-            model.pollStars()
+    with (
+        mock.patch.object(model, "getStarCount", return_value=True),
+        mock.patch.object(model, "getStars", return_value=False),
+    ):
+        model.pollStars()
 
 
 def test_pollStars_3():
@@ -981,9 +983,11 @@ def test_pollStars_3():
         loggingTrace = False
 
     model = Model(parent=Parent())
-    with mock.patch.object(model, "getStarCount", return_value=True):
-        with mock.patch.object(model, "getStars", return_value=True):
-            model.pollStars()
+    with (
+        mock.patch.object(model, "getStarCount", return_value=True),
+        mock.patch.object(model, "getStars", return_value=True),
+    ):
+        model.pollStars()
 
 
 #

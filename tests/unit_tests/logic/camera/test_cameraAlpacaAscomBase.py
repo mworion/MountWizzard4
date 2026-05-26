@@ -59,9 +59,11 @@ def test_cameraAlpacaAscomBase_initAttributes(function):
 
 
 def test_getInitialConfig(function):
-    with mock.patch.object(function, "getAndStoreDeviceProp") as m:
-        with mock.patch.object(function, "getDeviceProp"):
-            function.getInitialConfig()
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp") as m,
+        mock.patch.object(function, "getDeviceProp"),
+    ):
+        function.getInitialConfig()
     assert m.call_count >= 18
 
 
@@ -76,9 +78,11 @@ def test_pollData_notExposingNotSelfExposing(function):
 def test_pollData_parentExposing(function):
     function.parent.exposing = True
     function.exposing = False
-    with mock.patch.object(function, "getAndStoreDeviceProp"):
-        with mock.patch.object(function, "setExposureState") as ms:
-            function.pollData()
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+        mock.patch.object(function, "setExposureState") as ms,
+    ):
+        function.pollData()
     ms.assert_called_once()
     function.parent.exposing = False
 
@@ -86,9 +90,11 @@ def test_pollData_parentExposing(function):
 def test_pollData_selfExposing(function):
     function.parent.exposing = False
     function.exposing = True
-    with mock.patch.object(function, "getAndStoreDeviceProp"):
-        with mock.patch.object(function.parent, "exposeFinished") as mf:
-            function.pollData()
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+        mock.patch.object(function.parent, "exposeFinished") as mf,
+    ):
+        function.pollData()
     assert function.exposing is False
     mf.assert_called_once()
 
@@ -165,11 +171,13 @@ def test_setExposureState_stateNot2ExposingImageReady(function):
     # -> saves and finishes
     function.exposing = True
     fakeImage = [[1, 2], [3, 4]]
-    with mock.patch.object(function, "getDeviceProp", side_effect=[0, True, True, fakeImage]):
-        with mock.patch.object(function.parent, "writeImageFitsHeader"):
-            with mock.patch.object(function.parent, "exposeFinished") as mf:
-                with mock.patch.object(fits.PrimaryHDU, "writeto"):
-                    function.setExposureState()
+    with (
+        mock.patch.object(function, "getDeviceProp", side_effect=[0, True, True, fakeImage]),
+        mock.patch.object(function.parent, "writeImageFitsHeader"),
+        mock.patch.object(function.parent, "exposeFinished") as mf,
+        mock.patch.object(fits.PrimaryHDU, "writeto"),
+    ):
+        function.setExposureState()
     assert function.exposing is False
     mf.assert_called_once()
 
@@ -179,20 +187,24 @@ def test_setExposureState_state2NotExposingImageReady(function):
     # ImageReady=True -> saves and finishes
     function.exposing = False
     fakeImage = [[1, 2], [3, 4]]
-    with mock.patch.object(function, "getDeviceProp", side_effect=[2, True, True, fakeImage]):
-        with mock.patch.object(function.parent, "writeImageFitsHeader"):
-            with mock.patch.object(function.parent, "exposeFinished") as mf:
-                with mock.patch.object(fits.PrimaryHDU, "writeto"):
-                    function.setExposureState()
+    with (
+        mock.patch.object(function, "getDeviceProp", side_effect=[2, True, True, fakeImage]),
+        mock.patch.object(function.parent, "writeImageFitsHeader"),
+        mock.patch.object(function.parent, "exposeFinished") as mf,
+        mock.patch.object(fits.PrimaryHDU, "writeto"),
+    ):
+        function.setExposureState()
     assert function.exposing is False
     mf.assert_called_once()
 
 
 def test_expose_basic(function):
     function.data.pop("CAN_FAST", None)
-    with mock.patch.object(function, "setDevicePropQueued") as ms:
-        with mock.patch.object(function, "callDeviceMethodQueued") as mc:
-            function.expose()
+    with (
+        mock.patch.object(function, "setDevicePropQueued") as ms,
+        mock.patch.object(function, "callDeviceMethodQueued") as mc,
+    ):
+        function.expose()
     props_set = [c.args[0] for c in ms.call_args_list]
     assert "BinX" in props_set
     assert "BinY" in props_set
@@ -203,18 +215,22 @@ def test_expose_basic(function):
 def test_expose_withFastReadout(function):
     function.data["CAN_FAST"] = True
     function.parent.fastReadout = True
-    with mock.patch.object(function, "setDevicePropQueued") as ms:
-        with mock.patch.object(function, "callDeviceMethodQueued"):
-            function.expose()
+    with (
+        mock.patch.object(function, "setDevicePropQueued") as ms,
+        mock.patch.object(function, "callDeviceMethodQueued"),
+    ):
+        function.expose()
     props_set = [c.args[0] for c in ms.call_args_list]
     assert "FastReadout" in props_set
 
 
 def test_expose_noFastReadout(function):
     function.data["CAN_FAST"] = False
-    with mock.patch.object(function, "setDevicePropQueued") as ms:
-        with mock.patch.object(function, "callDeviceMethodQueued"):
-            function.expose()
+    with (
+        mock.patch.object(function, "setDevicePropQueued") as ms,
+        mock.patch.object(function, "callDeviceMethodQueued"),
+    ):
+        function.expose()
     props_set = [c.args[0] for c in ms.call_args_list]
     assert "FastReadout" not in props_set
 

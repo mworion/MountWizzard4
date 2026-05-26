@@ -42,9 +42,11 @@ def test_startCommunication_2(function):
 
 def test_stopCommunication_1(function):
     function.tcpServer = QtNetwork.QTcpServer()
-    with mock.patch.object(function.tcpServer, "isListening", return_value=True):
-        with mock.patch.object(function.tcpServer, "close", return_value=True):
-            function.stopCommunication()
+    with (
+        mock.patch.object(function.tcpServer, "isListening", return_value=True),
+        mock.patch.object(function.tcpServer, "close", return_value=True),
+    ):
+        function.stopCommunication()
 
 
 def test_addConnection_1(function):

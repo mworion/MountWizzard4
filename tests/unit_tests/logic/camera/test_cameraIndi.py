@@ -127,11 +127,13 @@ def test_setExposureState_alert(function):
             "members": {"CCD_EXPOSURE_VALUE": {"floatvalue": 0.0}},
         }
     }
-    with mock.patch.object(function.parent, "exposeFinished") as mock_finished:
-        with mock.patch.object(function, "abort") as mock_abort:
-            function.setExposureState(vectors)
-            mock_finished.assert_called_once()
-            mock_abort.assert_called_once()
+    with (
+        mock.patch.object(function.parent, "exposeFinished") as mock_finished,
+        mock.patch.object(function, "abort") as mock_abort,
+    ):
+        function.setExposureState(vectors)
+        mock_finished.assert_called_once()
+        mock_abort.assert_called_once()
 
 
 def test_setExposureState_unknown_state(function):
@@ -327,13 +329,15 @@ def test_saveImageBLOB_fits(function):
     mock_temp_dir.__truediv__ = mock.MagicMock(return_value=mock_blob_file)
     function.app.mwGlob["tempDir"] = mock_temp_dir
     function.parent.imagePath = Path("tests/work/temp/capture.fits")
-    with mock.patch.object(function.parent, "writeImageFitsHeader") as mock_fits:
-        with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
-            function.saveImageBLOB(item, vectors)
-            assert function.parent.imagePath == Path("tests/work/temp/capture.fits")
-            mock_blob_file.rename.assert_called_once_with(function.parent.imagePath)
-            mock_fits.assert_called_once()
-            mock_fin.assert_called_once()
+    with (
+        mock.patch.object(function.parent, "writeImageFitsHeader") as mock_fits,
+        mock.patch.object(function.parent, "exposeFinished") as mock_fin,
+    ):
+        function.saveImageBLOB(item, vectors)
+        assert function.parent.imagePath == Path("tests/work/temp/capture.fits")
+        mock_blob_file.rename.assert_called_once_with(function.parent.imagePath)
+        mock_fits.assert_called_once()
+        mock_fin.assert_called_once()
 
 
 def test_saveImageBLOB_xisf(function):
@@ -351,13 +355,15 @@ def test_saveImageBLOB_xisf(function):
     mock_temp_dir.__truediv__ = mock.MagicMock(return_value=mock_blob_file)
     function.app.mwGlob["tempDir"] = mock_temp_dir
     function.parent.imagePath = Path("tests/work/temp/capture.fits")
-    with mock.patch.object(function, "writeImageXisfHeader") as mock_xisf:
-        with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
-            function.saveImageBLOB(item, vectors)
-            assert function.parent.imagePath == Path("tests/work/temp/capture.xisf")
-            mock_blob_file.rename.assert_called_once_with(function.parent.imagePath)
-            mock_xisf.assert_called_once()
-            mock_fin.assert_called_once()
+    with (
+        mock.patch.object(function, "writeImageXisfHeader") as mock_xisf,
+        mock.patch.object(function.parent, "exposeFinished") as mock_fin,
+    ):
+        function.saveImageBLOB(item, vectors)
+        assert function.parent.imagePath == Path("tests/work/temp/capture.xisf")
+        mock_blob_file.rename.assert_called_once_with(function.parent.imagePath)
+        mock_xisf.assert_called_once()
+        mock_fin.assert_called_once()
 
 
 # ---------------------------------------------------------------------------
@@ -369,19 +375,21 @@ def test_writeVectorsToData(function):
     """All delegate methods and super() are called with item and/or vectors."""
     item = mock.MagicMock()
     vectors = {}
-    with mock.patch.object(IndiClass, "writeVectorsToData") as mock_super:
-        with mock.patch.object(function, "addGainLimits") as mock_gain:
-            with mock.patch.object(function, "addOffsetLimits") as mock_offset:
-                with mock.patch.object(function, "setCanTemperature") as mock_temp:
-                    with mock.patch.object(function, "setExposureState") as mock_exp:
-                        with mock.patch.object(function, "saveImageBLOB") as mock_blob:
-                            function.writeVectorsToData(item, vectors)
-                            mock_super.assert_called_once_with(item, vectors)
-                            mock_gain.assert_called_once_with(vectors)
-                            mock_offset.assert_called_once_with(vectors)
-                            mock_temp.assert_called_once_with(vectors)
-                            mock_exp.assert_called_once_with(vectors)
-                            mock_blob.assert_called_once_with(item, vectors)
+    with (
+        mock.patch.object(IndiClass, "writeVectorsToData") as mock_super,
+        mock.patch.object(function, "addGainLimits") as mock_gain,
+        mock.patch.object(function, "addOffsetLimits") as mock_offset,
+        mock.patch.object(function, "setCanTemperature") as mock_temp,
+        mock.patch.object(function, "setExposureState") as mock_exp,
+        mock.patch.object(function, "saveImageBLOB") as mock_blob,
+    ):
+        function.writeVectorsToData(item, vectors)
+        mock_super.assert_called_once_with(item, vectors)
+        mock_gain.assert_called_once_with(vectors)
+        mock_offset.assert_called_once_with(vectors)
+        mock_temp.assert_called_once_with(vectors)
+        mock_exp.assert_called_once_with(vectors)
+        mock_blob.assert_called_once_with(item, vectors)
 
 
 # ---------------------------------------------------------------------------

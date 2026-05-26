@@ -13,6 +13,7 @@
 # Licence APL2.0
 #
 ###########################################################
+import contextlib
 import gc
 import numpy as np
 import pyqtgraph as pg
@@ -68,20 +69,16 @@ def prepareFunctionState(function):
     warnings.simplefilter("ignore", RuntimeWarning)
     try:
         for setName in function.mSetUI:
-            try:
+            with contextlib.suppress(TypeError, RuntimeError):
                 function.mSetUI[setName].currentIndexChanged.disconnect()
-            except (TypeError, RuntimeError):
-                pass
 
         for signal, slot in (
             (function.app.colorChange, function.colorChange),
             (function.app.update1s, function.drawMeasure),
             (function.app.update1s, function.setTitle),
         ):
-            try:
+            with contextlib.suppress(TypeError, RuntimeError):
                 signal.disconnect(slot)
-            except (TypeError, RuntimeError):
-                pass
     finally:
         warnings.filters = warningFilters
 

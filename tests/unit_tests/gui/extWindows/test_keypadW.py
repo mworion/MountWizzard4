@@ -49,12 +49,14 @@ def test_storeConfig_2(function):
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(function, "storeConfig"):
-        with mock.patch.object(function.keypad, "closeWebsocket"):
-            with mock.patch.object(function, "setupButtons"):
-                with mock.patch.object(MWidget, "closeEvent"):
-                    function.showWindow()
-                    function.closeEvent(QCloseEvent)
+    with (
+        mock.patch.object(function, "storeConfig"),
+        mock.patch.object(function.keypad, "closeWebsocket"),
+        mock.patch.object(function, "setupButtons"),
+        mock.patch.object(MWidget, "closeEvent"),
+    ):
+        function.showWindow()
+        function.closeEvent(QCloseEvent)
 
 
 def test_keyPressEvent_1(function):
@@ -134,14 +136,12 @@ def test_keyPressEvent_5(function):
 
 def test_showWindow_1(function):
     function.app.mount.setting.webInterfaceStat = False
-    with mock.patch.object(function, "setupButtons"):
-        with mock.patch.object(function, "startKeypad"):
-            with mock.patch.object(
-                function.app.mount.setting,
-                "setWebInterface",
-                return_value=False,
-            ):
-                function.showWindow()
+    with (
+        mock.patch.object(function, "setupButtons"),
+        mock.patch.object(function, "startKeypad"),
+        mock.patch.object(function.app.mount.setting, "setWebInterface", return_value=False),
+    ):
+        function.showWindow()
 
 
 def test_colorChange(function):
@@ -165,17 +165,21 @@ def test_startKeypad_1(function):
 
 
 def test_startKeypad_2(function):
-    with mock.patch.object(function, "clearDisplay"):
-        with mock.patch.object(function, "writeTextRow"):
-            with mock.patch.object(function.threadPool, "start"):
-                function.startKeypad()
-                function.websocketMutex.unlock()
+    with (
+        mock.patch.object(function, "clearDisplay"),
+        mock.patch.object(function, "writeTextRow"),
+        mock.patch.object(function.threadPool, "start"),
+    ):
+        function.startKeypad()
+        function.websocketMutex.unlock()
 
 
 def test_hostChanged_1(function):
-    with mock.patch.object(function.keypad, "closeWebsocket"):
-        with mock.patch.object(function, "startKeypad"):
-            function.hostChanged()
+    with (
+        mock.patch.object(function.keypad, "closeWebsocket"),
+        mock.patch.object(function, "startKeypad"),
+    ):
+        function.hostChanged()
 
 
 def test_buttonPressed_1(function):

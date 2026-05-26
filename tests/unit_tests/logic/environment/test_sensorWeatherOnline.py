@@ -196,19 +196,23 @@ def test_sendStatus_2(function):
 
 
 def test_getOpenWeatherMapData_1(function):
-    with mock.patch.object(function, "loadingFileNeeded", return_value=False):
-        with mock.patch.object(function, "processOpenWeatherMapData"):
-            with mock.patch.object(function, "sendStatus"):
-                with mock.patch.object(function.threadPool, "start"):
-                    function.getOpenWeatherMapData("test")
+    with (
+        mock.patch.object(function, "loadingFileNeeded", return_value=False),
+        mock.patch.object(function, "processOpenWeatherMapData"),
+        mock.patch.object(function, "sendStatus"),
+        mock.patch.object(function.threadPool, "start"),
+    ):
+        function.getOpenWeatherMapData("test")
 
 
 def test_getOpenWeatherMapData_2(function):
-    with mock.patch.object(function, "loadingFileNeeded", return_value=True):
-        with mock.patch.object(function, "processOpenWeatherMapData"):
-            with mock.patch.object(function, "sendStatus"):
-                with mock.patch.object(function.threadPool, "start"):
-                    function.getOpenWeatherMapData("test")
+    with (
+        mock.patch.object(function, "loadingFileNeeded", return_value=True),
+        mock.patch.object(function, "processOpenWeatherMapData"),
+        mock.patch.object(function, "sendStatus"),
+        mock.patch.object(function.threadPool, "start"),
+    ):
+        function.getOpenWeatherMapData("test")
 
 
 def test_loadingFileNeeded_1(function):
@@ -218,17 +222,21 @@ def test_loadingFileNeeded_1(function):
 
 
 def test_loadingFileNeeded_2(function):
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(function.app.mount.obsSite.loader, "days_old", return_value=1):
-            suc = function.loadingFileNeeded("test", 1)
-            assert suc
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(function.app.mount.obsSite.loader, "days_old", return_value=1),
+    ):
+        suc = function.loadingFileNeeded("test", 1)
+        assert suc
 
 
 def test_loadingFileNeeded_3(function):
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(function.app.mount.obsSite.loader, "days_old", return_value=1):
-            suc = function.loadingFileNeeded("test", 25)
-            assert not suc
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(function.app.mount.obsSite.loader, "days_old", return_value=1),
+    ):
+        suc = function.loadingFileNeeded("test", 25)
+        assert not suc
 
 
 def test_pollOpenWeatherMapData_1(function):
@@ -259,6 +267,8 @@ def test_pollOpenWeatherMapData_4(function):
 def test_pollOpenWeatherMapData_5(function):
     function.apiKey = "test"
     function.app.onlineMode = True
-    with mock.patch.object(function, "loadingFileNeeded", return_value=True):
-        with mock.patch.object(function, "getOpenWeatherMapData"):
-            function.pollOpenWeatherMapData()
+    with (
+        mock.patch.object(function, "loadingFileNeeded", return_value=True),
+        mock.patch.object(function, "getOpenWeatherMapData"),
+    ):
+        function.pollOpenWeatherMapData()

@@ -53,10 +53,9 @@ def test_storeConfig_2(function):
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(function, "show"):
-        with mock.patch.object(MWidget, "closeEvent"):
-            function.showWindow()
-            function.closeEvent(QCloseEvent)
+    with mock.patch.object(function, "show"), mock.patch.object(MWidget, "closeEvent"):
+        function.showWindow()
+        function.closeEvent(QCloseEvent)
 
 
 def test_showWindow(function):
@@ -90,10 +89,12 @@ def test_generateDataSets(function):
 
 
 def test_processModel_1(function):
-    with mock.patch.object(function, "writeGui"):
-        with mock.patch.object(function, "generateDataSets"):
-            with mock.patch.object(function, "drawAll"):
-                function.processModel(Path("tests/testData/test.model"))
+    with (
+        mock.patch.object(function, "writeGui"),
+        mock.patch.object(function, "generateDataSets"),
+        mock.patch.object(function, "drawAll"),
+    ):
+        function.processModel(Path("tests/testData/test.model"))
 
 
 def test_processModel_2(function):
@@ -102,23 +103,29 @@ def test_processModel_2(function):
 
 
 def test_loadModel_1(function):
-    with mock.patch.object(function, "openFile", return_value=Path("test.test")):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch.object(function, "processModel"):
-                function.loadModel()
+    with (
+        mock.patch.object(function, "openFile", return_value=Path("test.test")),
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(function, "processModel"),
+    ):
+        function.loadModel()
 
 
 def test_loadModel_2(function):
-    with mock.patch.object(function, "openFile", return_value=Path("test.test")):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch.object(function, "processModel"):
-                function.loadModel()
+    with (
+        mock.patch.object(function, "openFile", return_value=Path("test.test")),
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(function, "processModel"),
+    ):
+        function.loadModel()
 
 
 def test_showAnalyse_1(function):
-    with mock.patch.object(function, "processModel"):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            function.showAnalyse(Path("test.test"))
+    with (
+        mock.patch.object(function, "processModel"),
+        mock.patch.object(Path, "is_file", return_value=True),
+    ):
+        function.showAnalyse(Path("test.test"))
 
 
 def test_draw_raRawErrors(function):
@@ -257,7 +264,9 @@ def test_drawAll_1(function):
 
     function.errorIndex = np.array([])
     function.charts = [test]
-    with mock.patch.object(function, "linkViewsAltAz"):
-        with mock.patch.object(function, "linkViewsRa"):
-            with mock.patch.object(function, "linkViewsDec"):
-                function.drawAll()
+    with (
+        mock.patch.object(function, "linkViewsAltAz"),
+        mock.patch.object(function, "linkViewsRa"),
+        mock.patch.object(function, "linkViewsDec"),
+    ):
+        function.drawAll()

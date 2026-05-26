@@ -149,9 +149,11 @@ def test_cyclePolling_1(function):
     function.user = "test"
     function.password = "test"
     function.hostaddress = "localhost"
-    with mock.patch.object(function, "getRelay"):
-        with mock.patch.object(function, "checkConnected", return_value=False):
-            function.cyclePolling()
+    with (
+        mock.patch.object(function, "getRelay"),
+        mock.patch.object(function, "checkConnected", return_value=False),
+    ):
+        function.cyclePolling()
 
 
 def test_cyclePolling_2(function):
@@ -162,9 +164,11 @@ def test_cyclePolling_2(function):
     function.user = "test"
     function.password = "test"
     function.hostaddress = "localhost"
-    with mock.patch.object(function, "getRelay", return_value=Test()):
-        with mock.patch.object(function, "checkConnected", return_value=True):
-            function.cyclePolling()
+    with (
+        mock.patch.object(function, "getRelay", return_value=Test()),
+        mock.patch.object(function, "checkConnected", return_value=True),
+    ):
+        function.cyclePolling()
 
 
 def test_cyclePolling_3(function):
@@ -175,9 +179,11 @@ def test_cyclePolling_3(function):
     function.user = "test"
     function.password = "test"
     function.hostaddress = "localhost"
-    with mock.patch.object(function, "getRelay", return_value=Test()):
-        with mock.patch.object(function, "checkConnected", return_value=True):
-            function.cyclePolling()
+    with (
+        mock.patch.object(function, "getRelay", return_value=Test()),
+        mock.patch.object(function, "checkConnected", return_value=True),
+    ):
+        function.cyclePolling()
 
 
 def test_status1(function):
@@ -288,13 +294,15 @@ def test_status4(function):
     ret.reason = "OK"
     ret.status_code = 200
 
-    with mock.patch.object(function, "getRelay", return_value=ret):
-        with mock.patch.object(time, "sleep"):
-            for i in range(0, 8):
-                function.pulse(i)
+    with (
+        mock.patch.object(function, "getRelay", return_value=ret),
+        mock.patch.object(time, "sleep"),
+    ):
+        for i in range(0, 8):
+            function.pulse(i)
 
-            function.cyclePolling()
-            assert function.status == [0, 0, 0, 0, 0, 0, 0, 0]
+        function.cyclePolling()
+        assert function.status == [0, 0, 0, 0, 0, 0, 0, 0]
 
 
 def test_getByte_1(function):
@@ -318,9 +326,11 @@ def test_getByte_2(function):
 def test_pulse_1(function):
     ret = None
 
-    with mock.patch.object(function, "getRelay", return_value=ret):
-        with mock.patch.object(time, "sleep"):
-            function.pulse(7)
+    with (
+        mock.patch.object(function, "getRelay", return_value=ret),
+        mock.patch.object(time, "sleep"),
+    ):
+        function.pulse(7)
 
 
 def test_pulse_2(function):
@@ -331,9 +341,11 @@ def test_pulse_2(function):
     ret.reason = "False"
     ret.status_code = 200
 
-    with mock.patch.object(function, "getRelay", return_value=ret):
-        with mock.patch.object(time, "sleep"):
-            function.pulse(7)
+    with (
+        mock.patch.object(function, "getRelay", return_value=ret),
+        mock.patch.object(time, "sleep"),
+    ):
+        function.pulse(7)
 
 
 def test_pulse_3(function):
@@ -344,9 +356,11 @@ def test_pulse_3(function):
     ret.reason = "OK"
     ret.status_code = 200
 
-    with mock.patch.object(function, "getRelay", return_value=ret):
-        with mock.patch.object(time, "sleep"):
-            function.pulse(7)
+    with (
+        mock.patch.object(function, "getRelay", return_value=ret),
+        mock.patch.object(time, "sleep"),
+    ):
+        function.pulse(7)
 
 
 def test_switch_1(function):

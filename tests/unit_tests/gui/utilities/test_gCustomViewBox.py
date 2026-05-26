@@ -414,9 +414,8 @@ def test_CustomViewBox_rightMouseRange_2():
     vb.state["limits"]["xLimits"] = [-10, 10]
     vb.state["limits"]["yLimits"] = [-10, 10]
 
-    with mock.patch.object(vb, "setYRange"):
-        with mock.patch.object(vb, "setXRange"):
-            vb.rightMouseRange()
+    with mock.patch.object(vb, "setYRange"), mock.patch.object(vb, "setXRange"):
+        vb.rightMouseRange()
 
 
 def test_CustomViewBox_mouseDragEvent_1():
@@ -492,13 +491,13 @@ def test_CustomViewBox_mouseDragEvent_4():
     event = EV()
     vb = CustomViewBox()
     vb.plotDataItem = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2], symbol="o")
-    with mock.patch.object(vb, "mapSceneToView", return_value=QPointF(0, 0)):
-        with mock.patch.object(
-            vb.plotDataItem.scatter,
-            "pointsAt",
-            return_value=vb.plotDataItem.scatter.points(),
-        ):
-            vb.mouseDragEvent(event)
+    with (
+        mock.patch.object(vb, "mapSceneToView", return_value=QPointF(0, 0)),
+        mock.patch.object(
+            vb.plotDataItem.scatter, "pointsAt", return_value=vb.plotDataItem.scatter.points()
+        ),
+    ):
+        vb.mouseDragEvent(event)
 
 
 def test_CustomViewBox_mouseDragEvent_5():
@@ -598,14 +597,14 @@ def test_CustomViewBox_mouseClickEvent_3():
 
     vb = CustomViewBox()
     vb.plotDataItem = pg.PlotDataItem()
-    with mock.patch.object(vb, "mapSceneToView", return_value=QPointF(0, 0)):
-        with mock.patch.object(
-            vb.plotDataItem.scatter,
-            "pointsAt",
-            return_value=vb.plotDataItem.scatter.points(),
-        ):
-            with mock.patch.object(vb, "rightMouseRange"):
-                vb.mouseClickEvent(EV())
+    with (
+        mock.patch.object(vb, "mapSceneToView", return_value=QPointF(0, 0)),
+        mock.patch.object(
+            vb.plotDataItem.scatter, "pointsAt", return_value=vb.plotDataItem.scatter.points()
+        ),
+        mock.patch.object(vb, "rightMouseRange"),
+    ):
+        vb.mouseClickEvent(EV())
 
 
 def test_CustomViewBox_mouseClickEvent_4():
@@ -624,14 +623,14 @@ def test_CustomViewBox_mouseClickEvent_4():
 
     vb = CustomViewBox()
     vb.plotDataItem = pg.PlotDataItem(x=[0, 0, 0], y=[0, 0, 0], symbol="o")
-    with mock.patch.object(vb, "mapSceneToView", return_value=QPointF(0, 0)):
-        with mock.patch.object(
-            vb.plotDataItem.scatter,
-            "pointsAt",
-            return_value=vb.plotDataItem.scatter.points(),
-        ):
-            with mock.patch.object(vb, "delUpdate"):
-                vb.mouseClickEvent(EV())
+    with (
+        mock.patch.object(vb, "mapSceneToView", return_value=QPointF(0, 0)),
+        mock.patch.object(
+            vb.plotDataItem.scatter, "pointsAt", return_value=vb.plotDataItem.scatter.points()
+        ),
+        mock.patch.object(vb, "delUpdate"),
+    ):
+        vb.mouseClickEvent(EV())
 
 
 def test_CustomViewBox_mouseClickEvent_5():
@@ -650,10 +649,12 @@ def test_CustomViewBox_mouseClickEvent_5():
 
     vb = CustomViewBox()
     vb.plotDataItem = pg.PlotDataItem(x=[0, 0, 0], y=[0, 0, 0], symbol="o")
-    with mock.patch.object(vb, "mapSceneToView", return_value=QPointF(0, 0)):
-        with mock.patch.object(vb, "getCurveIndex", return_value=0):
-            with mock.patch.object(vb, "addUpdate"):
-                vb.mouseClickEvent(EV())
+    with (
+        mock.patch.object(vb, "mapSceneToView", return_value=QPointF(0, 0)),
+        mock.patch.object(vb, "getCurveIndex", return_value=0),
+        mock.patch.object(vb, "addUpdate"),
+    ):
+        vb.mouseClickEvent(EV())
 
 
 def test_CustomViewBox_mouseClickEvent_6():
@@ -672,11 +673,13 @@ def test_CustomViewBox_mouseClickEvent_6():
 
     vb = CustomViewBox()
     vb.plotDataItem = pg.PlotDataItem(x=[0, 0, 0], y=[0, 0, 0], symbol="o")
-    with mock.patch.object(vb, "mapSceneToView", return_value=QPointF(0, 0)):
-        with mock.patch.object(vb, "getCurveIndex", return_value=None):
-            with mock.patch.object(vb, "getNearestPointIndex", return_value=0):
-                with mock.patch.object(vb, "addUpdate"):
-                    vb.mouseClickEvent(EV())
+    with (
+        mock.patch.object(vb, "mapSceneToView", return_value=QPointF(0, 0)),
+        mock.patch.object(vb, "getCurveIndex", return_value=None),
+        mock.patch.object(vb, "getNearestPointIndex", return_value=0),
+        mock.patch.object(vb, "addUpdate"),
+    ):
+        vb.mouseClickEvent(EV())
 
 
 def test_CustomViewBox_mouseClickEvent_7():
@@ -695,9 +698,11 @@ def test_CustomViewBox_mouseClickEvent_7():
 
     vb = CustomViewBox()
     vb.plotDataItem = pg.PlotDataItem(x=[0, 0, 0], y=[0, 0, 0], symbol="o")
-    with mock.patch.object(vb, "mapSceneToView", return_value=QPointF(0, 0)):
-        with mock.patch.object(vb.plotDataItem.scatter, "pointsAt", return_value=False):
-            vb.mouseClickEvent(EV())
+    with (
+        mock.patch.object(vb, "mapSceneToView", return_value=QPointF(0, 0)),
+        mock.patch.object(vb.plotDataItem.scatter, "pointsAt", return_value=False),
+    ):
+        vb.mouseClickEvent(EV())
 
 
 def test_CustomViewBox_mouseDoubleClickEvent_1():
@@ -714,6 +719,8 @@ def test_CustomViewBox_mouseDoubleClickEvent_2():
 
     vb = CustomViewBox()
     vb.plotDataItem = None
-    with mock.patch.object(vb, "mapSceneToView", return_value=QPointF(0, 0)):
-        with mock.patch.object(vb, "callbackMDC"):
-            vb.mouseDoubleClickEvent(EV())
+    with (
+        mock.patch.object(vb, "mapSceneToView", return_value=QPointF(0, 0)),
+        mock.patch.object(vb, "callbackMDC"),
+    ):
+        vb.mouseDoubleClickEvent(EV())

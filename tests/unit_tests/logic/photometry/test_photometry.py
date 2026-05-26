@@ -131,28 +131,32 @@ def test_baseCalcs(function):
 
 def test_runCalcs_1(function):
     function.hfr = np.array([1, 2, 3])
-    with mock.patch.object(function, "baseCalcs"):
-        with mock.patch.object(function, "workerGetHFR"):
-            with mock.patch.object(function, "workerCalcTiltValuesSquare"):
-                with mock.patch.object(function, "workerCalcTiltValuesTriangle"):
-                    with mock.patch.object(function, "workerGetRoundness"):
-                        with mock.patch.object(function, "calcAberrationInspectView"):
-                            with mock.patch.object(function, "calcBackground"):
-                                with mock.patch.object(function, "calcBackgroundRMS"):
-                                    function.runCalcs()
+    with (
+        mock.patch.object(function, "baseCalcs"),
+        mock.patch.object(function, "workerGetHFR"),
+        mock.patch.object(function, "workerCalcTiltValuesSquare"),
+        mock.patch.object(function, "workerCalcTiltValuesTriangle"),
+        mock.patch.object(function, "workerGetRoundness"),
+        mock.patch.object(function, "calcAberrationInspectView"),
+        mock.patch.object(function, "calcBackground"),
+        mock.patch.object(function, "calcBackgroundRMS"),
+    ):
+        function.runCalcs()
 
 
 def test_runCalcs_2(function):
     function.hfr = np.array([1] * 20)
-    with mock.patch.object(function, "baseCalcs"):
-        with mock.patch.object(function, "workerGetHFR"):
-            with mock.patch.object(function, "workerCalcTiltValuesSquare"):
-                with mock.patch.object(function, "workerCalcTiltValuesTriangle"):
-                    with mock.patch.object(function, "workerGetRoundness"):
-                        with mock.patch.object(function, "calcAberrationInspectView"):
-                            with mock.patch.object(function, "calcBackground"):
-                                with mock.patch.object(function, "calcBackgroundRMS"):
-                                    function.runCalcs()
+    with (
+        mock.patch.object(function, "baseCalcs"),
+        mock.patch.object(function, "workerGetHFR"),
+        mock.patch.object(function, "workerCalcTiltValuesSquare"),
+        mock.patch.object(function, "workerCalcTiltValuesTriangle"),
+        mock.patch.object(function, "workerGetRoundness"),
+        mock.patch.object(function, "calcAberrationInspectView"),
+        mock.patch.object(function, "calcBackground"),
+        mock.patch.object(function, "calcBackgroundRMS"),
+    ):
+        function.runCalcs()
 
 
 def test_workerCalcPhotometry_1(function):

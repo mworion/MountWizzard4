@@ -52,63 +52,81 @@ def test_slewSelectedTargetWithDome_4(function):
     function.app.mount.obsSite.AltTarget = Angle(degrees=10)
     function.app.mount.obsSite.AzTarget = Angle(degrees=10)
     function.app.deviceStat["dome"] = True
-    with mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=False):
-        with mock.patch.object(function.app.dome, "slewDome", return_value=10):
-            suc = function.slewSelectedTargetWithDome()
-            assert not suc
+    with (
+        mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=False),
+        mock.patch.object(function.app.dome, "slewDome", return_value=10),
+    ):
+        suc = function.slewSelectedTargetWithDome()
+        assert not suc
 
 
 def test_slewTargetAltAz_1(function):
-    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=False):
-        with mock.patch.object(function, "slewSelectedTargetWithDome", return_value=False):
-            suc = function.slewTargetAltAz(Angle(degrees=100), Angle(degrees=10))
-            assert not suc
+    with (
+        mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=False),
+        mock.patch.object(function, "slewSelectedTargetWithDome", return_value=False),
+    ):
+        suc = function.slewTargetAltAz(Angle(degrees=100), Angle(degrees=10))
+        assert not suc
 
 
 def test_slewTargetAltAz_2(function):
-    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=False):
-        with mock.patch.object(function, "slewSelectedTargetWithDome", return_value=True):
-            suc = function.slewTargetAltAz(Angle(degrees=-10), Angle(degrees=10))
-            assert not suc
+    with (
+        mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=False),
+        mock.patch.object(function, "slewSelectedTargetWithDome", return_value=True),
+    ):
+        suc = function.slewTargetAltAz(Angle(degrees=-10), Angle(degrees=10))
+        assert not suc
 
 
 def test_slewTargetAltAz_3(function):
-    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
-        with mock.patch.object(function, "slewSelectedTargetWithDome", return_value=True):
-            suc = function.slewTargetAltAz(Angle(degrees=100), Angle(degrees=10))
-            assert suc
+    with (
+        mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True),
+        mock.patch.object(function, "slewSelectedTargetWithDome", return_value=True),
+    ):
+        suc = function.slewTargetAltAz(Angle(degrees=100), Angle(degrees=10))
+        assert suc
 
 
 def test_slewTargetRaDec_1(function):
-    with mock.patch.object(function.app.mount.obsSite, "setTargetRaDec", return_value=False):
-        with mock.patch.object(function, "slewSelectedTargetWithDome", return_value=False):
-            suc = function.slewTargetRaDec(Angle(hours=10), Angle(degrees=10))
-            assert not suc
+    with (
+        mock.patch.object(function.app.mount.obsSite, "setTargetRaDec", return_value=False),
+        mock.patch.object(function, "slewSelectedTargetWithDome", return_value=False),
+    ):
+        suc = function.slewTargetRaDec(Angle(hours=10), Angle(degrees=10))
+        assert not suc
 
 
 def test_slewTargetRaDec_2(function):
-    with mock.patch.object(function.app.mount.obsSite, "setTargetRaDec", return_value=False):
-        with mock.patch.object(function, "slewSelectedTargetWithDome", return_value=True):
-            suc = function.slewTargetRaDec(Angle(hours=-10), Angle(degrees=10))
-            assert not suc
+    with (
+        mock.patch.object(function.app.mount.obsSite, "setTargetRaDec", return_value=False),
+        mock.patch.object(function, "slewSelectedTargetWithDome", return_value=True),
+    ):
+        suc = function.slewTargetRaDec(Angle(hours=-10), Angle(degrees=10))
+        assert not suc
 
 
 def test_slewTargetRaDec_3(function):
-    with mock.patch.object(function.app.mount.obsSite, "setTargetRaDec", return_value=True):
-        with mock.patch.object(function, "slewSelectedTargetWithDome", return_value=True):
-            suc = function.slewTargetRaDec(Angle(hours=10), Angle(degrees=10))
-            assert suc
+    with (
+        mock.patch.object(function.app.mount.obsSite, "setTargetRaDec", return_value=True),
+        mock.patch.object(function, "slewSelectedTargetWithDome", return_value=True),
+    ):
+        suc = function.slewTargetRaDec(Angle(hours=10), Angle(degrees=10))
+        assert suc
 
 
 def test_slewTargetRaDec_4(function):
-    with mock.patch.object(function.app.mount.obsSite, "setTargetRaDec", return_value=True):
-        with mock.patch.object(function, "slewSelectedTargetWithDome", return_value=True):
-            suc = function.slewTargetRaDec(Angle(hours=10), Angle(degrees=10), epoch="JNow")
-            assert suc
+    with (
+        mock.patch.object(function.app.mount.obsSite, "setTargetRaDec", return_value=True),
+        mock.patch.object(function, "slewSelectedTargetWithDome", return_value=True),
+    ):
+        suc = function.slewTargetRaDec(Angle(hours=10), Angle(degrees=10), epoch="JNow")
+        assert suc
 
 
 def test_slewTargetRaDec_5(function):
-    with mock.patch.object(function.app.mount.obsSite, "setTargetRaDec", return_value=True):
-        with mock.patch.object(function, "slewSelectedTargetWithDome", return_value=True):
-            suc = function.slewTargetRaDec(10, 10, epoch="JNow")
-            assert suc
+    with (
+        mock.patch.object(function.app.mount.obsSite, "setTargetRaDec", return_value=True),
+        mock.patch.object(function, "slewSelectedTargetWithDome", return_value=True),
+    ):
+        suc = function.slewTargetRaDec(10, 10, epoch="JNow")
+        assert suc

@@ -213,25 +213,31 @@ def test_drawModelText_3(function):
 
 
 def test_updateDataModel(function):
-    with mock.patch.object(function, "drawModelPoints"):
-        with mock.patch.object(function, "drawModelText"):
-            function.updateDataModel([1, 2], [1, 2])
+    with (
+        mock.patch.object(function, "drawModelPoints"),
+        mock.patch.object(function, "drawModelText"),
+    ):
+        function.updateDataModel([1, 2], [1, 2])
 
 
 def test_setupModel_1(function):
-    with mock.patch.object(function, "drawModelPoints"):
-        with mock.patch.object(function, "drawModelText"):
-            function.ui.editModeHem.setChecked(True)
-            function.ui.showSlewPath.setChecked(True)
-            function.setupModel()
+    with (
+        mock.patch.object(function, "drawModelPoints"),
+        mock.patch.object(function, "drawModelText"),
+    ):
+        function.ui.editModeHem.setChecked(True)
+        function.ui.showSlewPath.setChecked(True)
+        function.setupModel()
 
 
 def test_setupModel_2(function):
-    with mock.patch.object(function, "drawModelPoints"):
-        with mock.patch.object(function, "drawModelText"):
-            function.ui.normalModeHem.setChecked(True)
-            function.ui.showSlewPath.setChecked(False)
-            function.setupModel()
+    with (
+        mock.patch.object(function, "drawModelPoints"),
+        mock.patch.object(function, "drawModelText"),
+    ):
+        function.ui.normalModeHem.setChecked(True)
+        function.ui.showSlewPath.setChecked(False)
+        function.setupModel()
 
 
 def test_setupPointer(function):
@@ -288,9 +294,11 @@ def test_slewDirect_1(function):
 
 
 def test_slewDirect_2(function):
-    with mock.patch.object(function, "messageDialog", return_value=True):
-        with mock.patch.object(function.slewInterface, "slewTargetAltAz", return_value=False):
-            function.slewDirect(QPointF(1, 1))
+    with (
+        mock.patch.object(function, "messageDialog", return_value=True),
+        mock.patch.object(function.slewInterface, "slewTargetAltAz", return_value=False),
+    ):
+        function.slewDirect(QPointF(1, 1))
 
 
 def test_slewStar_1(function):
@@ -308,12 +316,14 @@ def test_slewStar_2(function):
     function.app.hipparcos.name = ["test"]
     function.app.mount.setting.statusDualAxisTracking = True
     function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
-    with mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]):
-        with mock.patch.object(function, "messageDialog", return_value=0):
-            with mock.patch.object(
-                function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
-            ):
-                function.slewStar(QPointF(1, 1))
+    with (
+        mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]),
+        mock.patch.object(function, "messageDialog", return_value=0),
+        mock.patch.object(
+            function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
+        ),
+    ):
+        function.slewStar(QPointF(1, 1))
 
 
 def test_slewStar_3(function):
@@ -326,12 +336,14 @@ def test_slewStar_3(function):
     function.app.mount.setting.statusDualAxisTracking = False
     function.app.mount.model.numberStars = 5
     function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
-    with mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]):
-        with mock.patch.object(function, "messageDialog", return_value=0):
-            with mock.patch.object(
-                function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
-            ):
-                function.slewStar(QPointF(1, 1))
+    with (
+        mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]),
+        mock.patch.object(function, "messageDialog", return_value=0),
+        mock.patch.object(
+            function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
+        ),
+    ):
+        function.slewStar(QPointF(1, 1))
 
 
 def test_slewStar_4(function):
@@ -343,15 +355,15 @@ def test_slewStar_4(function):
     function.app.hipparcos.name = ["test"]
     function.app.mount.model.numberStars = 5
     function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
-    with mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]):
-        with mock.patch.object(function, "messageDialog", return_value=1):
-            with mock.patch.object(
-                function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
-            ):
-                with mock.patch.object(
-                    function.slewInterface, "slewTargetRaDec", return_value=False
-                ):
-                    function.slewStar(QPointF(1, 1))
+    with (
+        mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]),
+        mock.patch.object(function, "messageDialog", return_value=1),
+        mock.patch.object(
+            function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
+        ),
+        mock.patch.object(function.slewInterface, "slewTargetRaDec", return_value=False),
+    ):
+        function.slewStar(QPointF(1, 1))
 
 
 def test_slewStar_5(function):
@@ -363,15 +375,15 @@ def test_slewStar_5(function):
     function.app.hipparcos.name = ["test"]
     function.app.mount.model.numberStars = 5
     function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
-    with mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]):
-        with mock.patch.object(function, "messageDialog", return_value=2):
-            with mock.patch.object(
-                function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
-            ):
-                with mock.patch.object(
-                    function.slewInterface, "slewTargetRaDec", return_value=True
-                ):
-                    function.slewStar(QPointF(1, 1))
+    with (
+        mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]),
+        mock.patch.object(function, "messageDialog", return_value=2),
+        mock.patch.object(
+            function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
+        ),
+        mock.patch.object(function.slewInterface, "slewTargetRaDec", return_value=True),
+    ):
+        function.slewStar(QPointF(1, 1))
 
 
 def test_mouseDoubleClick_1(function):
@@ -390,11 +402,13 @@ def test_mouseDoubleClick_2(function):
 
 def test_mouseDoubleClick_3(function):
     function.ui.editModeHem.setChecked(True)
-    with mock.patch.object(function, "slewStar") as mock_star:
-        with mock.patch.object(function, "slewDirect") as mock_direct:
-            function.mouseDoubleClick(1, QPointF(1, 1))
-            mock_star.assert_not_called()
-            mock_direct.assert_not_called()
+    with (
+        mock.patch.object(function, "slewStar") as mock_star,
+        mock.patch.object(function, "slewDirect") as mock_direct,
+    ):
+        function.mouseDoubleClick(1, QPointF(1, 1))
+        mock_star.assert_not_called()
+        mock_direct.assert_not_called()
 
 
 def test_drawTab_1(function):
@@ -405,13 +419,15 @@ def test_drawTab_1(function):
     function.ui.showHorizon.setChecked(True)
     function.app.deviceStat["mount"] = True
     function.app.mount.model.numberStars = 5
-    with mock.patch.object(function, "drawCelestialEquator"):
-        with mock.patch.object(function.parent, "drawTerrainImage"):
-            with mock.patch.object(function.parent, "drawMeridianLimits"):
-                with mock.patch.object(function.parent, "drawHorizonLimits"):
-                    with mock.patch.object(function, "drawModelIsoCurve"):
-                        with mock.patch.object(function, "drawHorizon"):
-                            function.drawTab()
+    with (
+        mock.patch.object(function, "drawCelestialEquator"),
+        mock.patch.object(function.parent, "drawTerrainImage"),
+        mock.patch.object(function.parent, "drawMeridianLimits"),
+        mock.patch.object(function.parent, "drawHorizonLimits"),
+        mock.patch.object(function, "drawModelIsoCurve"),
+        mock.patch.object(function, "drawHorizon"),
+    ):
+        function.drawTab()
 
 
 def test_drawTab_2(function):

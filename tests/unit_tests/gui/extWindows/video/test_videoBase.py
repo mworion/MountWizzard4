@@ -36,9 +36,8 @@ def function(qapp):
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(function, "stopVideo"):
-        with mock.patch.object(MWidget, "closeEvent"):
-            function.closeEvent(QCloseEvent)
+    with mock.patch.object(function, "stopVideo"), mock.patch.object(MWidget, "closeEvent"):
+        function.closeEvent(QCloseEvent)
 
 
 def test_colorChange(function):
@@ -244,10 +243,12 @@ def test_stopVideoStream_1(function):
 
 
 def test_restartVideo(function):
-    with mock.patch.object(function, "stopVideo"):
-        with mock.patch.object(function, "startVideo"):
-            with mock.patch.object(mw4.gui.extWindows.video.videoBase, "mainThreadSleep"):
-                function.restartVideo()
+    with (
+        mock.patch.object(function, "stopVideo"),
+        mock.patch.object(function, "startVideo"),
+        mock.patch.object(mw4.gui.extWindows.video.videoBase, "mainThreadSleep"),
+    ):
+        function.restartVideo()
 
 
 def test_receivedImage_1(function):
@@ -269,20 +270,24 @@ def test_checkAuth(function):
 def test_authPopup_1(function):
     function.user = "test"
     function.password = "test"
-    with mock.patch.object(function, "checkAuth"):
-        with mock.patch.object(function, "restartVideo"):
-            with mock.patch.object(QInputDialog, "getText", return_value=("test", False)):
-                function.authPopup()
-                assert function.user == "test"
-                assert function.password == "test"
+    with (
+        mock.patch.object(function, "checkAuth"),
+        mock.patch.object(function, "restartVideo"),
+        mock.patch.object(QInputDialog, "getText", return_value=("test", False)),
+    ):
+        function.authPopup()
+        assert function.user == "test"
+        assert function.password == "test"
 
 
 def test_authPopup_2(function):
     function.user = "test"
     function.password = "test"
-    with mock.patch.object(function, "checkAuth"):
-        with mock.patch.object(function, "restartVideo"):
-            with mock.patch.object(QInputDialog, "getText", return_value=("test1", True)):
-                function.authPopup()
-                assert function.user == "test1"
-                assert function.password == "test1"
+    with (
+        mock.patch.object(function, "checkAuth"),
+        mock.patch.object(function, "restartVideo"),
+        mock.patch.object(QInputDialog, "getText", return_value=("test1", True)),
+    ):
+        function.authPopup()
+        assert function.user == "test1"
+        assert function.password == "test1"

@@ -148,13 +148,15 @@ def test_writeVectorsToData(function):
     """super(), sendDomePosition and addShutterStatus are all called."""
     item = mock.MagicMock()
     vectors = {}
-    with mock.patch.object(IndiClass, "writeVectorsToData") as mock_super:
-        with mock.patch.object(function, "sendDomePosition") as mock_pos:
-            with mock.patch.object(function, "addShutterStatus") as mock_shut:
-                function.writeVectorsToData(item, vectors)
-                mock_super.assert_called_once_with(item, vectors)
-                mock_pos.assert_called_once_with(vectors)
-                mock_shut.assert_called_once_with(vectors)
+    with (
+        mock.patch.object(IndiClass, "writeVectorsToData") as mock_super,
+        mock.patch.object(function, "sendDomePosition") as mock_pos,
+        mock.patch.object(function, "addShutterStatus") as mock_shut,
+    ):
+        function.writeVectorsToData(item, vectors)
+        mock_super.assert_called_once_with(item, vectors)
+        mock_pos.assert_called_once_with(vectors)
+        mock_shut.assert_called_once_with(vectors)
 
 
 # ---------------------------------------------------------------------------

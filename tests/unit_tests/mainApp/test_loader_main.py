@@ -57,15 +57,15 @@ def test_main_1():
         "modelDir": Path("tests/work/model"),
         "workDir": Path("tests/work"),
     }
-    with mock.patch.object(PySide6.QtCore.QBasicTimer, "start"):
-        with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-            with mock.patch.object(mw4.loader, "QIcon"):
-                with mock.patch.object(mw4.loader, "QApplication", return_value=App()):
-                    with mock.patch.object(mw4.loader, "SplashScreen", return_value=Splash()):
-                        with mock.patch.object(mw4.loader, "MountWizzard4"):
-                            with mock.patch.object(
-                                mw4.loader, "setupWorkDirs", return_value=mwGlob
-                            ):
-                                with mock.patch.object(sys, "exit"):
-                                    with mock.patch.object(sys, "excepthook"):
-                                        mw4.loader.main()
+    with (
+        mock.patch.object(PySide6.QtCore.QBasicTimer, "start"),
+        mock.patch.object(PySide6.QtCore.QTimer, "start"),
+        mock.patch.object(mw4.loader, "QIcon"),
+        mock.patch.object(mw4.loader, "QApplication", return_value=App()),
+        mock.patch.object(mw4.loader, "SplashScreen", return_value=Splash()),
+        mock.patch.object(mw4.loader, "MountWizzard4"),
+        mock.patch.object(mw4.loader, "setupWorkDirs", return_value=mwGlob),
+        mock.patch.object(sys, "exit"),
+        mock.patch.object(sys, "excepthook"),
+    ):
+        mw4.loader.main()

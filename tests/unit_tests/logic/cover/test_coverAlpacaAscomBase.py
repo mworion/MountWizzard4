@@ -53,17 +53,21 @@ def test_pollData_stateNone(function):
 
 
 def test_pollData_stateClosed(function):
-    with mock.patch.object(function, "getDeviceProp", return_value=1):
-        with mock.patch.object(function, "storePropertyToData") as m:
-            function.pollData()
-            m.assert_called_once_with("Closed", "Status.Cover")
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=1),
+        mock.patch.object(function, "storePropertyToData") as m,
+    ):
+        function.pollData()
+        m.assert_called_once_with("Closed", "Status.Cover")
 
 
 def test_pollData_stateOpen(function):
-    with mock.patch.object(function, "getDeviceProp", return_value=3):
-        with mock.patch.object(function, "storePropertyToData") as m:
-            function.pollData()
-            m.assert_called_once_with("Open", "Status.Cover")
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=3),
+        mock.patch.object(function, "storePropertyToData") as m,
+    ):
+        function.pollData()
+        m.assert_called_once_with("Open", "Status.Cover")
 
 
 def test_closeCover(function):

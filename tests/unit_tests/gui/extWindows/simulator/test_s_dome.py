@@ -98,7 +98,9 @@ def test_updateShutter_1(function):
 
 
 def test_create_1(function):
-    with mock.patch.object(function, "updateAzimuth"):
-        with mock.patch.object(function, "updateShutter"):
-            with mock.patch.object(function, "updateSize"):
-                function.create()
+    with (
+        mock.patch.object(function, "updateAzimuth"),
+        mock.patch.object(function, "updateShutter"),
+        mock.patch.object(function, "updateSize"),
+    ):
+        function.create()

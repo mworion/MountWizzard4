@@ -48,43 +48,53 @@ def test_shutterStates(function):
 
 
 def test_getInitialConfig(function):
-    with mock.patch.object(function, "getAndStoreDeviceProp") as m:
-        with mock.patch.object(function, "getDeviceProp"):
-            function.getInitialConfig()
-            # 3 from base (Name, DriverVersion, DriverInfo) + 3 dome-specific
-            assert m.call_count == 6
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp") as m,
+        mock.patch.object(function, "getDeviceProp"),
+    ):
+        function.getInitialConfig()
+        # 3 from base (Name, DriverVersion, DriverInfo) + 3 dome-specific
+        assert m.call_count == 6
 
 
 def test_pollData_shutterOpen(function):
-    with mock.patch.object(function, "getAndStoreDeviceProp"):
-        with mock.patch.object(function, "getDeviceProp", return_value=0):
-            function.pollData()
-            assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is True
-            assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is False
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+        mock.patch.object(function, "getDeviceProp", return_value=0),
+    ):
+        function.pollData()
+        assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is True
+        assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is False
 
 
 def test_pollData_shutterClosed(function):
-    with mock.patch.object(function, "getAndStoreDeviceProp"):
-        with mock.patch.object(function, "getDeviceProp", return_value=1):
-            function.pollData()
-            assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is False
-            assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is True
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+        mock.patch.object(function, "getDeviceProp", return_value=1),
+    ):
+        function.pollData()
+        assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is False
+        assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is True
 
 
 def test_pollData_shutterElse(function):
-    with mock.patch.object(function, "getAndStoreDeviceProp"):
-        with mock.patch.object(function, "getDeviceProp", return_value=3):
-            function.pollData()
-            assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is None
-            assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is None
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+        mock.patch.object(function, "getDeviceProp", return_value=3),
+    ):
+        function.pollData()
+        assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is None
+        assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is None
 
 
 def test_pollData_shutterNone(function):
-    with mock.patch.object(function, "getAndStoreDeviceProp"):
-        with mock.patch.object(function, "getDeviceProp", return_value=None):
-            function.pollData()
-            assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is None
-            assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is None
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+        mock.patch.object(function, "getDeviceProp", return_value=None),
+    ):
+        function.pollData()
+        assert function.data.get("DOME_SHUTTER.SHUTTER_OPEN") is None
+        assert function.data.get("DOME_SHUTTER.SHUTTER_CLOSED") is None
 
 
 def test_slewToAltAz_noFlags(function):

@@ -220,16 +220,18 @@ def test_sendGain_2(function):
         function.sendGain()
 
 
-
-
 def test_writeImageFitsHeader_1(function):
-    with mock.patch.object(fits, "open"):
-        with mock.patch.object(mw4.logic.camera.camera, "writeHeaderPointing"):
-            with mock.patch.object(mw4.logic.camera.camera, "writeHeaderCamera"):
-                function.writeImageFitsHeader()
+    with (
+        mock.patch.object(fits, "open"),
+        mock.patch.object(mw4.logic.camera.camera, "writeHeaderPointing"),
+        mock.patch.object(mw4.logic.camera.camera, "writeHeaderCamera"),
+    ):
+        function.writeImageFitsHeader()
 
 
 def test_updateImageFitsHeaderPointing_1(function):
-    with mock.patch.object(fits, "open"):
-        with mock.patch.object(mw4.logic.camera.camera, "writeHeaderPointing"):
-            function.updateImageFitsHeaderPointing()
+    with (
+        mock.patch.object(fits, "open"),
+        mock.patch.object(mw4.logic.camera.camera, "writeHeaderPointing"),
+    ):
+        function.updateImageFitsHeaderPointing()

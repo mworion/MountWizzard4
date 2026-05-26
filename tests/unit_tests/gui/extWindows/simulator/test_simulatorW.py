@@ -118,12 +118,14 @@ def test_createReference_1(function):
 
 def test_createScene_1(function):
     function.entityModel["root"] = {"entity": Qt3DCore.QEntity()}
-    with mock.patch.object(function, "createReference"):
-        with mock.patch.object(function.telescope, "create"):
-            with mock.patch.object(function.laser, "create"):
-                with mock.patch.object(function.pointer, "create"):
-                    with mock.patch.object(function.world, "create"):
-                        with mock.patch.object(function.horizon, "create"):
-                            with mock.patch.object(function.dome, "create"):
-                                with mock.patch.object(function.buildPoints, "create"):
-                                    function.createScene()
+    with (
+        mock.patch.object(function, "createReference"),
+        mock.patch.object(function.telescope, "create"),
+        mock.patch.object(function.laser, "create"),
+        mock.patch.object(function.pointer, "create"),
+        mock.patch.object(function.world, "create"),
+        mock.patch.object(function.horizon, "create"),
+        mock.patch.object(function.dome, "create"),
+        mock.patch.object(function.buildPoints, "create"),
+    ):
+        function.createScene()

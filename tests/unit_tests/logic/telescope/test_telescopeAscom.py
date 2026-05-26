@@ -46,14 +46,18 @@ def function():
 
 
 def test_getInitialConfig_floatValues(function):
-    with mock.patch.object(function, "getAndStoreDeviceProp"):
-        with mock.patch.object(function, "getDeviceProp", return_value=0.57):
-            function.getInitialConfig()
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+        mock.patch.object(function, "getDeviceProp", return_value=0.57),
+    ):
+        function.getInitialConfig()
     assert function.data["TELESCOPE_INFO.TELESCOPE_APERTURE"] == 570.0
     assert function.data["TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH"] == 570.0
 
 
 def test_getInitialConfig_nonFloatValues(function):
-    with mock.patch.object(function, "getAndStoreDeviceProp"):
-        with mock.patch.object(function, "getDeviceProp", return_value=None):
-            function.getInitialConfig()
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+        mock.patch.object(function, "getDeviceProp", return_value=None),
+    ):
+        function.getInitialConfig()

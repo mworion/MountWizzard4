@@ -51,24 +51,30 @@ def test_getInitialConfig_1(function):
 
 
 def test_pollData_shutterOpen(function):
-    with mock.patch.object(function, "getDeviceProp", return_value=0):
-        with mock.patch.object(function, "storePropertyToData"):
-            with mock.patch.object(function, "getAndStoreDeviceProp"):
-                function.pollData()
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=0),
+        mock.patch.object(function, "storePropertyToData"),
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+    ):
+        function.pollData()
 
 
 def test_pollData_shutterClosed(function):
-    with mock.patch.object(function, "getDeviceProp", return_value=1):
-        with mock.patch.object(function, "storePropertyToData"):
-            with mock.patch.object(function, "getAndStoreDeviceProp"):
-                function.pollData()
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=1),
+        mock.patch.object(function, "storePropertyToData"),
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+    ):
+        function.pollData()
 
 
 def test_pollData_shutterOther(function):
-    with mock.patch.object(function, "getDeviceProp", return_value=2):
-        with mock.patch.object(function, "storePropertyToData"):
-            with mock.patch.object(function, "getAndStoreDeviceProp"):
-                function.pollData()
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=2),
+        mock.patch.object(function, "storePropertyToData"),
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+    ):
+        function.pollData()
 
 
 def test_slewToAltAz(function):

@@ -192,37 +192,43 @@ def test_startNewSlew_4(function):
         },
     }
 
-    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
-        with mock.patch.object(function.app.dome, "slewDome"):
-            with mock.patch.object(function.app.mount.obsSite, "startSlewing"):
-                function.startNewSlew()
-                assert not function.mountSlewed
-                assert not function.domeSlewed
+    with (
+        mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True),
+        mock.patch.object(function.app.dome, "slewDome"),
+        mock.patch.object(function.app.mount.obsSite, "startSlewing"),
+    ):
+        function.startNewSlew()
+        assert not function.mountSlewed
+        assert not function.domeSlewed
 
 
 def test_addMountModelToBuildModel_1(function):
     function.app.mount.model.starList = [1, 2, 3]
     function.modelSaveData = [1, 2, 3]
-    with mock.patch.object(
-        mw4.logic.modelBuild.modelRun, "writeRetrofitData", return_value=[1, 2, 3]
-    ):
-        with mock.patch.object(
+    with (
+        mock.patch.object(
+            mw4.logic.modelBuild.modelRun, "writeRetrofitData", return_value=[1, 2, 3]
+        ),
+        mock.patch.object(
             mw4.logic.modelBuild.modelRun, "convertAngleToFloat", return_value=[1, 2, 3]
-        ):
-            function.addMountModelToBuildModel()
+        ),
+    ):
+        function.addMountModelToBuildModel()
     assert len(function.modelSaveData) == 3
 
 
 def test_addMountModelToBuildModel_2(function):
     function.app.mount.model.starList = [1, 2]
     function.modelSaveData = [1, 2, 3]
-    with mock.patch.object(
-        mw4.logic.modelBuild.modelRun, "writeRetrofitData", return_value=[1, 2, 3]
-    ):
-        with mock.patch.object(
+    with (
+        mock.patch.object(
+            mw4.logic.modelBuild.modelRun, "writeRetrofitData", return_value=[1, 2, 3]
+        ),
+        mock.patch.object(
             mw4.logic.modelBuild.modelRun, "convertAngleToFloat", return_value=[1, 2, 3]
-        ):
-            function.addMountModelToBuildModel()
+        ),
+    ):
+        function.addMountModelToBuildModel()
 
     assert len(function.modelSaveData) == 0
 
@@ -268,16 +274,17 @@ def test_collectBuildModelResults_2(function):
 
 
 def test_generateSaveData_1(function):
-    with mock.patch.object(function, "collectBuildModelResults"):
-        with mock.patch.object(function, "addMountModelToBuildModel"):
-            function.generateSaveData()
+    with (
+        mock.patch.object(function, "collectBuildModelResults"),
+        mock.patch.object(function, "addMountModelToBuildModel"),
+    ):
+        function.generateSaveData()
 
 
 def test_saveModelData_1(function):
     function.modelSaveData = [1, 2, 3]
-    with mock.patch.object(builtins, "open"):
-        with mock.patch.object(json, "dump"):
-            function.saveModelData(Path(""))
+    with mock.patch.object(builtins, "open"), mock.patch.object(json, "dump"):
+        function.saveModelData(Path(""))
 
 
 def test_buildProgModel_1(function):
@@ -372,9 +379,11 @@ def test_startNewImageExposure_2(function, mocked_sleepAndEvents):
     function.cancelBatch = False
     function.exposureWaitTime = 1
     function.modelBuildData = {"im-00": {"imagePath": Path("test")}}
-    with mock.patch.object(function, "addMountDataToModelBuildData"):
-        with mock.patch.object(function.app.camera, "expose"):
-            function.startNewImageExposure()
+    with (
+        mock.patch.object(function, "addMountDataToModelBuildData"),
+        mock.patch.object(function.app.camera, "expose"),
+    ):
+        function.startNewImageExposure()
 
 
 def test_startNewPlateSolve_1(function):
@@ -411,9 +420,11 @@ def test_collectPlateSolveResult_1(function):
         "imagePath": Path("im-00.fits"),
         "message": "Ok",
     }
-    with mock.patch.object(function.app.data, "setStatusBuildP"):
-        with mock.patch.object(function, "sendModelProgress"):
-            function.collectPlateSolveResult(result)
+    with (
+        mock.patch.object(function.app.data, "setStatusBuildP"),
+        mock.patch.object(function, "sendModelProgress"),
+    ):
+        function.collectPlateSolveResult(result)
 
 
 def test_collectPlateSolveResult_2(function):
@@ -437,9 +448,11 @@ def test_collectPlateSolveResult_2(function):
         "imagePath": Path("im-00.fits"),
         "message": "Ok",
     }
-    with mock.patch.object(function.app.data, "setStatusBuildP"):
-        with mock.patch.object(function, "sendModelProgress"):
-            function.collectPlateSolveResult(result)
+    with (
+        mock.patch.object(function.app.data, "setStatusBuildP"),
+        mock.patch.object(function, "sendModelProgress"),
+    ):
+        function.collectPlateSolveResult(result)
 
 
 def test_collectPlateSolveResult_3(function):
@@ -463,9 +476,11 @@ def test_collectPlateSolveResult_3(function):
         "imagePath": Path("im-00.fits"),
         "message": "Ok",
     }
-    with mock.patch.object(function.app.data, "setStatusBuildP"):
-        with mock.patch.object(function, "sendModelProgress"):
-            function.collectPlateSolveResult(result)
+    with (
+        mock.patch.object(function.app.data, "setStatusBuildP"),
+        mock.patch.object(function, "sendModelProgress"),
+    ):
+        function.collectPlateSolveResult(result)
 
 
 def test_collectPlateSolveResult_4(function):
@@ -489,9 +504,11 @@ def test_collectPlateSolveResult_4(function):
         "imagePath": Path("im-00.fits"),
         "message": "Skipped",
     }
-    with mock.patch.object(function.app.data, "setStatusBuildP"):
-        with mock.patch.object(function, "sendModelProgress"):
-            function.collectPlateSolveResult(result)
+    with (
+        mock.patch.object(function.app.data, "setStatusBuildP"),
+        mock.patch.object(function, "sendModelProgress"),
+    ):
+        function.collectPlateSolveResult(result)
 
 
 def test_prepareModelBuildData_1(function):
@@ -499,12 +516,14 @@ def test_prepareModelBuildData_1(function):
     function.app.mount.setting.horizonLimitLow = 10
     function.app.mount.setting.horizonLimitHigh = 90
 
-    with mock.patch.object(function, "sendModelProgress"):
-        with mock.patch.object(function.app.data, "setStatusBuildPUnprocessed"):
-            function.prepareModelBuildData()
-            assert len(function.modelBuildData) == 2
-            assert function.modelBuildData["image-000"]["altitude"].degrees == 5
-            assert function.modelBuildData["image-000"]["azimuth"].degrees == 0
+    with (
+        mock.patch.object(function, "sendModelProgress"),
+        mock.patch.object(function.app.data, "setStatusBuildPUnprocessed"),
+    ):
+        function.prepareModelBuildData()
+        assert len(function.modelBuildData) == 2
+        assert function.modelBuildData["image-000"]["altitude"].degrees == 5
+        assert function.modelBuildData["image-000"]["azimuth"].degrees == 0
 
 
 def test_checkRetryNeeded_1(function):
@@ -554,9 +573,11 @@ def test_checkModelFinished_2(function):
 def test_runThroughModelBuildData_1(function, mocked_sleepAndEvents_2):
     function.cancelBatch = False
     function.endBatch = False
-    with mock.patch.object(function, "startNewSlew"):
-        with mock.patch.object(function, "checkModelFinished", return_value=False):
-            function.runThroughModelBuildData()
+    with (
+        mock.patch.object(function, "startNewSlew"),
+        mock.patch.object(function, "checkModelFinished", return_value=False),
+    ):
+        function.runThroughModelBuildData()
 
 
 def test_generateRunIterator_1(function):
@@ -600,10 +621,12 @@ def test_runThroughModelBuildDataRetries_1(function):
     function.endBatch = False
     function.retries = 1
     function.numberRetries = 2
-    with mock.patch.object(function, "generateRunIterator"):
-        with mock.patch.object(function, "runThroughModelBuildData"):
-            with mock.patch.object(function, "checkRetryNeeded", return_value=False):
-                function.runThroughModelBuildDataRetries()
+    with (
+        mock.patch.object(function, "generateRunIterator"),
+        mock.patch.object(function, "runThroughModelBuildData"),
+        mock.patch.object(function, "checkRetryNeeded", return_value=False),
+    ):
+        function.runThroughModelBuildDataRetries()
 
 
 def test_runThroughModelBuildDataRetries_2(function):
@@ -611,10 +634,12 @@ def test_runThroughModelBuildDataRetries_2(function):
     function.endBatch = True
     function.retries = 1
     function.numberRetries = 2
-    with mock.patch.object(function, "generateRunIterator"):
-        with mock.patch.object(function, "runThroughModelBuildData"):
-            with mock.patch.object(function, "checkRetryNeeded", return_value=True):
-                function.runThroughModelBuildDataRetries()
+    with (
+        mock.patch.object(function, "generateRunIterator"),
+        mock.patch.object(function, "runThroughModelBuildData"),
+        mock.patch.object(function, "checkRetryNeeded", return_value=True),
+    ):
+        function.runThroughModelBuildDataRetries()
 
 
 def test_runThroughModelBuildDataRetries_3(function):
@@ -622,10 +647,12 @@ def test_runThroughModelBuildDataRetries_3(function):
     function.endBatch = False
     function.retries = 1
     function.numberRetries = 2
-    with mock.patch.object(function, "generateRunIterator"):
-        with mock.patch.object(function, "runThroughModelBuildData"):
-            with mock.patch.object(function, "checkRetryNeeded", return_value=True):
-                function.runThroughModelBuildDataRetries()
+    with (
+        mock.patch.object(function, "generateRunIterator"),
+        mock.patch.object(function, "runThroughModelBuildData"),
+        mock.patch.object(function, "checkRetryNeeded", return_value=True),
+    ):
+        function.runThroughModelBuildDataRetries()
 
 
 def test_runModel_1(function):
@@ -636,15 +663,19 @@ def test_runModel_1(function):
 def test_runModel_2(function):
     function.modelInputData = [(0, 0, True)]
     function.cancelBatch = False
-    with mock.patch.object(function, "prepareModelBuildData"):
-        with mock.patch.object(function, "runThroughModelBuildData"):
-            with mock.patch.object(function, "buildProgModel"):
-                function.runModel()
+    with (
+        mock.patch.object(function, "prepareModelBuildData"),
+        mock.patch.object(function, "runThroughModelBuildData"),
+        mock.patch.object(function, "buildProgModel"),
+    ):
+        function.runModel()
 
 
 def test_runModel_3(function):
     function.modelInputData = [(0, 0, True)]
     function.cancelBatch = True
-    with mock.patch.object(function, "prepareModelBuildData"):
-        with mock.patch.object(function, "runThroughModelBuildData"):
-            function.runModel()
+    with (
+        mock.patch.object(function, "prepareModelBuildData"),
+        mock.patch.object(function, "runThroughModelBuildData"),
+    ):
+        function.runModel()

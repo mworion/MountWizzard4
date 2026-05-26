@@ -114,15 +114,14 @@ def test_runSolverBin_1(function):
 
 
 def test_runSolverBin_2(function):
-    with mock.patch.object(subprocess, "Popen", return_value=None):
-        with mock.patch.object(
-            subprocess.Popen,
-            "communicate",
-            return_value=("", ""),
-            side_effect=Exception(),
-        ):
-            suc, ret = function.runSolverBin(["test", "test", "test", "test"])
-            assert not suc
+    with (
+        mock.patch.object(subprocess, "Popen", return_value=None),
+        mock.patch.object(
+            subprocess.Popen, "communicate", return_value=("", ""), side_effect=Exception()
+        ),
+    ):
+        suc, ret = function.runSolverBin(["test", "test", "test", "test"])
+        assert not suc
 
 
 def test_runSolverBin_3(function):
@@ -157,22 +156,22 @@ def test_prepareResult_3(function):
         "raJ2000S": 1,
         "decJ2000S": 1,
     }
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(mw4.logic.plateSolve.plateSolve, "getImageHeader"):
-            with mock.patch.object(
-                mw4.logic.plateSolve.plateSolve, "getSolutionFromWCSHeader", return_value=solve
-            ):
-                with mock.patch.object(
-                    mw4.logic.plateSolve.plateSolve, "updateImageFileHeaderWithSolution"
-                ):
-                    with mock.patch.object(
-                        mw4.logic.plateSolve.plateSolve, "J2000ToJNow", return_value=(1, 1)
-                    ):
-                        result = function.prepareResult(
-                            True, "test", Path("tests/work/image/m51.fit"), Path("test"), True
-                        )
-                        assert result["success"]
-                        assert result["message"] == "Solved"
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(mw4.logic.plateSolve.plateSolve, "getImageHeader"),
+        mock.patch.object(
+            mw4.logic.plateSolve.plateSolve, "getSolutionFromWCSHeader", return_value=solve
+        ),
+        mock.patch.object(
+            mw4.logic.plateSolve.plateSolve, "updateImageFileHeaderWithSolution"
+        ),
+        mock.patch.object(mw4.logic.plateSolve.plateSolve, "J2000ToJNow", return_value=(1, 1)),
+    ):
+        result = function.prepareResult(
+            True, "test", Path("tests/work/image/m51.fit"), Path("test"), True
+        )
+        assert result["success"]
+        assert result["message"] == "Solved"
 
 
 def test_processSolveQueue_1(function):
@@ -182,9 +181,11 @@ def test_processSolveQueue_1(function):
 
 def test_processSolveQueue_2(function):
     function.framework = "astap"
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(function.run["astap"], "solve"):
-            function.processSolveQueue(Path("tests/work/image/m51.fit"), False)
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(function.run["astap"], "solve"),
+    ):
+        function.processSolveQueue(Path("tests/work/image/m51.fit"), False)
 
 
 def test_workerSolveLoop_1(function, mocked_sleepAndEvents):
@@ -228,16 +229,20 @@ def test_checkAvailabilityIndex_1(function):
 
 def test_startCommunication_1(function, mocked_sleepAndEvents):
     function.framework = "astap"
-    with mock.patch.object(function, "checkAvailabilityProgram", return_value=True):
-        with mock.patch.object(function, "checkAvailabilityIndex", return_value=True):
-            function.startCommunication()
+    with (
+        mock.patch.object(function, "checkAvailabilityProgram", return_value=True),
+        mock.patch.object(function, "checkAvailabilityIndex", return_value=True),
+    ):
+        function.startCommunication()
 
 
 def test_startCommunication_2(function, mocked_sleepAndEvents):
     function.framework = "astap"
-    with mock.patch.object(function, "checkAvailabilityProgram", return_value=False):
-        with mock.patch.object(function, "checkAvailabilityIndex", return_value=True):
-            function.startCommunication()
+    with (
+        mock.patch.object(function, "checkAvailabilityProgram", return_value=False),
+        mock.patch.object(function, "checkAvailabilityIndex", return_value=True),
+    ):
+        function.startCommunication()
 
 
 def test_stopCommunication(function):

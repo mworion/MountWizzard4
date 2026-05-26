@@ -58,11 +58,13 @@ def test_setColors(function):
 
 
 def test_updateColorSet(function):
-    with mock.patch.object(function, "showTwilightDataPlot"):
-        with mock.patch.object(function, "showTwilightDataList"):
-            with mock.patch.object(function, "showMoonPhase"):
-                with mock.patch.object(function, "showMoonPhase"):
-                    function.updateColorSet()
+    with (
+        mock.patch.object(function, "showTwilightDataPlot"),
+        mock.patch.object(function, "showTwilightDataList"),
+        mock.patch.object(function, "showMoonPhase"),
+        mock.patch.object(function, "showMoonPhase"),
+    ):
+        function.updateColorSet()
 
 
 def test_plotTwilightData_1(function):

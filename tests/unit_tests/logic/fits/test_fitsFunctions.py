@@ -234,9 +234,7 @@ def test_getHintFromImageFile_1():
             "getCoordinatesFromHeader",
             return_value=(Angle(hours=12), Angle(degrees=45)),
         ),
-        mock.patch.object(
-            mw4.logic.fits.fitsFunction, "getScaleFromHeader", return_value=1
-        ),
+        mock.patch.object(mw4.logic.fits.fitsFunction, "getScaleFromHeader", return_value=1),
     ):
         ra, dec, scale = getHintFromImageFile("test")
         assert ra.hours == 12.0

@@ -128,13 +128,15 @@ def test_updateFocuser(function):
 
 
 def test_updateImagingParam_1(function):
-    with mock.patch.object(function, "checkEnableCameraUI"):
-        with mock.patch.object(function, "updateOffset"):
-            with mock.patch.object(function, "updateGain"):
-                with mock.patch.object(function, "updateCooler"):
-                    with mock.patch.object(function, "updateFilter"):
-                        with mock.patch.object(function, "updateFocuser"):
-                            function.updateImagingParam()
+    with (
+        mock.patch.object(function, "checkEnableCameraUI"),
+        mock.patch.object(function, "updateOffset"),
+        mock.patch.object(function, "updateGain"),
+        mock.patch.object(function, "updateCooler"),
+        mock.patch.object(function, "updateFilter"),
+        mock.patch.object(function, "updateFocuser"),
+    ):
+        function.updateImagingParam()
 
 
 def test_updateImagingParam_2(function):
@@ -484,16 +486,20 @@ def test_setLightPanelIntensity_2(function):
 
 def test_setLightPanelIntensity_3(function):
     function.app.cover.data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 10
-    with mock.patch.object(QInputDialog, "getInt", return_value=(10, True)):
-        with mock.patch.object(function.app.lightPanel, "lightIntensity", return_value=False):
-            function.setLightPanelIntensity()
+    with (
+        mock.patch.object(QInputDialog, "getInt", return_value=(10, True)),
+        mock.patch.object(function.app.lightPanel, "lightIntensity", return_value=False),
+    ):
+        function.setLightPanelIntensity()
 
 
 def test_setLightPanelIntensity_4(function):
     function.app.cover.data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 10
-    with mock.patch.object(QInputDialog, "getInt", return_value=(10, True)):
-        with mock.patch.object(function.app.lightPanel, "lightIntensity", return_value=True):
-            function.setLightPanelIntensity()
+    with (
+        mock.patch.object(QInputDialog, "getInt", return_value=(10, True)),
+        mock.patch.object(function.app.lightPanel, "lightIntensity", return_value=True),
+    ):
+        function.setLightPanelIntensity()
 
 
 def test_updateDomeGui_1(function):
@@ -630,13 +636,17 @@ def test_domeMoveGameController_1(function):
 
 def test_domeMoveGameController_2(function):
     function.app.deviceStat["dome"] = True
-    with mock.patch.object(function, "domeSlewCCW"):
-        with mock.patch.object(function, "domeOpenShutter"):
-            function.domeMoveGameController(0, 0)
+    with (
+        mock.patch.object(function, "domeSlewCCW"),
+        mock.patch.object(function, "domeOpenShutter"),
+    ):
+        function.domeMoveGameController(0, 0)
 
 
 def test_domeMoveGameController_3(function):
     function.app.deviceStat["dome"] = True
-    with mock.patch.object(function, "domeSlewCW"):
-        with mock.patch.object(function, "domeCloseShutter"):
-            function.domeMoveGameController(255, 255)
+    with (
+        mock.patch.object(function, "domeSlewCW"),
+        mock.patch.object(function, "domeCloseShutter"),
+    ):
+        function.domeMoveGameController(255, 255)

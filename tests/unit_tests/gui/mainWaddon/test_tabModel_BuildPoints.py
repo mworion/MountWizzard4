@@ -185,9 +185,11 @@ def test_genBuildDSO_6(function):
     function.simbadDec = Angle(degrees=0)
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(function.app.data, "generateDSOPath"):
-        with mock.patch.object(function.app.data, "ditherPoints"):
-            function.genBuildDSO()
+    with (
+        mock.patch.object(function.app.data, "generateDSOPath"),
+        mock.patch.object(function.app.data, "ditherPoints"),
+    ):
+        function.genBuildDSO()
     function.autoDeletePoints = t
 
 
@@ -204,9 +206,11 @@ def test_genBuildDSO_7(function):
     function.simbadDec = Angle(degrees=0)
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(function.app.data, "generateDSOPath"):
-        with mock.patch.object(function.app.data, "ditherPoints"):
-            function.genBuildDSO()
+    with (
+        mock.patch.object(function.app.data, "generateDSOPath"),
+        mock.patch.object(function.app.data, "ditherPoints"),
+    ):
+        function.genBuildDSO()
     function.autoDeletePoints = t
 
 
@@ -227,31 +231,39 @@ def test_genModel_1(function):
 
 
 def test_loadBuildFile_1(function):
-    with mock.patch.object(Path, "is_file", return_value=False):
-        with mock.patch.object(MWidget, "openFile", return_value=Path("test.bpts")):
-            with mock.patch.object(function.app.data, "loadBuildP", return_value=True):
-                function.loadBuildFile()
+    with (
+        mock.patch.object(Path, "is_file", return_value=False),
+        mock.patch.object(MWidget, "openFile", return_value=Path("test.bpts")),
+        mock.patch.object(function.app.data, "loadBuildP", return_value=True),
+    ):
+        function.loadBuildFile()
 
 
 def test_loadBuildFile_2(function):
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(function.app.data, "loadBuildP", return_value=True):
-            with mock.patch.object(MWidget, "openFile", return_value=Path("")):
-                function.loadBuildFile()
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(function.app.data, "loadBuildP", return_value=True),
+        mock.patch.object(MWidget, "openFile", return_value=Path("")),
+    ):
+        function.loadBuildFile()
 
 
 def test_loadBuildFile_3(function):
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(MWidget, "openFile", return_value=Path("test.bpts")):
-            with mock.patch.object(function.app.data, "loadBuildP", return_value=False):
-                function.loadBuildFile()
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(MWidget, "openFile", return_value=Path("test.bpts")),
+        mock.patch.object(function.app.data, "loadBuildP", return_value=False),
+    ):
+        function.loadBuildFile()
 
 
 def test_saveBuildFile_1(function):
     function.ui.buildPFileName.setText("test")
-    with mock.patch.object(MWidget, "saveFile", return_value=Path("test.bpts")):
-        with mock.patch.object(function.app.data, "saveBuildP", return_value=True):
-            function.saveBuildFile()
+    with (
+        mock.patch.object(MWidget, "saveFile", return_value=Path("test.bpts")),
+        mock.patch.object(function.app.data, "saveBuildP", return_value=True),
+    ):
+        function.saveBuildFile()
 
 
 def test_saveBuildFile_2(function):
@@ -261,15 +273,19 @@ def test_saveBuildFile_2(function):
 
 def test_saveBuildFile_3(function):
     function.ui.buildPFileName.setText("test")
-    with mock.patch.object(MWidget, "saveFile", return_value=Path("test.bpts")):
-        with mock.patch.object(function.app.data, "saveBuildP", return_value=False):
-            function.saveBuildFile()
+    with (
+        mock.patch.object(MWidget, "saveFile", return_value=Path("test.bpts")),
+        mock.patch.object(function.app.data, "saveBuildP", return_value=False),
+    ):
+        function.saveBuildFile()
 
 
 def test_saveBuildFileAs_1(function):
-    with mock.patch.object(MWidget, "saveFile", return_value=Path("test.bpts")):
-        with mock.patch.object(function.app.data, "saveBuildP", return_value=True):
-            function.saveBuildFileAs()
+    with (
+        mock.patch.object(MWidget, "saveFile", return_value=Path("test.bpts")),
+        mock.patch.object(function.app.data, "saveBuildP", return_value=True),
+    ):
+        function.saveBuildFileAs()
 
 
 def test_saveBuildFileAs_2(function):
@@ -278,9 +294,11 @@ def test_saveBuildFileAs_2(function):
 
 
 def test_saveBuildFileAs_3(function):
-    with mock.patch.object(MWidget, "saveFile", return_value=Path("test.bpts")):
-        with mock.patch.object(function.app.data, "saveBuildP", return_value=False):
-            function.saveBuildFileAs()
+    with (
+        mock.patch.object(MWidget, "saveFile", return_value=Path("test.bpts")),
+        mock.patch.object(function.app.data, "saveBuildP", return_value=False),
+    ):
+        function.saveBuildFileAs()
 
 
 def test_genBuildFile_1(function):
@@ -356,9 +374,11 @@ def test_rebuildPoints_1(function):
 
 
 def test_processPoints(function):
-    with mock.patch.object(function, "autoDeletePoints"):
-        with mock.patch.object(function, "autoSortPoints"):
-            function.processPoints()
+    with (
+        mock.patch.object(function, "autoDeletePoints"),
+        mock.patch.object(function, "autoSortPoints"),
+    ):
+        function.processPoints()
 
 
 def test_setupDsoGui(function):

@@ -37,24 +37,29 @@ def function():
 
 
 def test_getInitialConfig_1(function):
-    with mock.patch.object(function, "getAndStoreDeviceProp"):
-        with mock.patch.object(function, "getDeviceProp") as m:
-            function.getInitialConfig()
-            attrs = [c.args[0] for c in m.call_args_list]
-            assert "ApertureDiameter" in attrs
-            assert "FocalLength" in attrs
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+        mock.patch.object(function, "getDeviceProp") as m,
+    ):
+        function.getInitialConfig()
+        attrs = [c.args[0] for c in m.call_args_list]
+        assert "ApertureDiameter" in attrs
+        assert "FocalLength" in attrs
 
 
 def test_startCommunication_1(function):
-    with mock.patch.object(function, "createAlpacaDevice", return_value=False):
-        with mock.patch.object(function.threadPool, "start") as m_start:
-            function.startCommunication()
-            m_start.assert_not_called()
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=False),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
+        function.startCommunication()
+        m_start.assert_not_called()
 
 
 def test_startCommunication_2(function):
-    with mock.patch.object(function, "createAlpacaDevice", return_value=True):
-        with mock.patch.object(function.threadPool, "start") as m_start:
-            function.startCommunication()
-            m_start.assert_called_once()
-
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=True),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
+        function.startCommunication()
+        m_start.assert_called_once()

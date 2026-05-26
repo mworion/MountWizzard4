@@ -162,18 +162,22 @@ def test_checkFileAgeOK_1(function):
 
 def test_checkFileAgeOK_2(function):
     function.window.ui.ageDatabases.setValue(3)
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(function.loader, "days_old", return_value=1):
-            val = function.checkFileAgeOK(Path())
-            assert val
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(function.loader, "days_old", return_value=1),
+    ):
+        val = function.checkFileAgeOK(Path())
+        assert val
 
 
 def test_checkFileAgeOK_3(function):
     function.window.ui.ageDatabases.setValue(3)
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(function.loader, "days_old", return_value=5):
-            val = function.checkFileAgeOK(Path())
-            assert not val
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(function.loader, "days_old", return_value=5),
+    ):
+        val = function.checkFileAgeOK(Path())
+        assert not val
 
 
 def test_loadSourceUrl_1(function):
@@ -186,9 +190,11 @@ def test_loadSourceUrl_2(function):
     function.uiSourceList.clear()
     function.uiSourceList.addItem("100 brightest")
 
-    with mock.patch.object(function, "checkFileAgeOK", return_value=True):
-        with mock.patch.object(function, "procSourceData"):
-            function.loadSourceUrl()
+    with (
+        mock.patch.object(function, "checkFileAgeOK", return_value=True),
+        mock.patch.object(function, "procSourceData"),
+    ):
+        function.loadSourceUrl()
 
 
 def test_loadSourceUrl_3(function):
@@ -205,9 +211,11 @@ def test_loadSourceUrl_4(function):
     function.uiSourceList.addItem("100 brightest")
 
     function.window.ui.isOnline.setChecked(True)
-    with mock.patch.object(function, "checkFileAgeOK", return_value=False):
-        with mock.patch.object(function, "runDownloadPopup"):
-            function.loadSourceUrl()
+    with (
+        mock.patch.object(function, "checkFileAgeOK", return_value=False),
+        mock.patch.object(function, "runDownloadPopup"),
+    ):
+        function.loadSourceUrl()
 
 
 def test_finishProgObjects_1(function):
@@ -262,12 +270,12 @@ def test_progSelected_1(function):
         def text(self):
             return "test"
 
-    with mock.patch.object(function, "progGUI"):
-        with mock.patch.object(function, "progObjects"):
-            with mock.patch.object(
-                function.uiObjectList, "selectedItems", return_value=[Test()]
-            ):
-                function.progSelected()
+    with (
+        mock.patch.object(function, "progGUI"),
+        mock.patch.object(function, "progObjects"),
+        mock.patch.object(function.uiObjectList, "selectedItems", return_value=[Test()]),
+    ):
+        function.progSelected()
 
 
 def test_progSelected_2(function):
@@ -280,12 +288,12 @@ def test_progSelected_2(function):
         def text(self):
             return "test"
 
-    with mock.patch.object(function, "progGUI"):
-        with mock.patch.object(function, "progObjects"):
-            with mock.patch.object(
-                function.uiObjectList, "selectedItems", return_value=[Test()]
-            ):
-                function.progSelected()
+    with (
+        mock.patch.object(function, "progGUI"),
+        mock.patch.object(function, "progObjects"),
+        mock.patch.object(function.uiObjectList, "selectedItems", return_value=[Test()]),
+    ):
+        function.progSelected()
 
 
 def test_progFiltered_1(function):
@@ -299,9 +307,8 @@ def test_progFiltered_1(function):
     function.uiObjectList.setItem(0, 1, item)
     function.uiObjectList.setRowHidden(0, True)
 
-    with mock.patch.object(function, "progGUI"):
-        with mock.patch.object(function, "progObjects"):
-            function.progFiltered()
+    with mock.patch.object(function, "progGUI"), mock.patch.object(function, "progObjects"):
+        function.progFiltered()
 
 
 def test_progFiltered_2(function):
@@ -314,12 +321,10 @@ def test_progFiltered_2(function):
     function.uiObjectList.setItem(0, 1, item)
     function.uiObjectList.setRowHidden(0, False)
 
-    with mock.patch.object(function, "progGUI"):
-        with mock.patch.object(function, "progObjects"):
-            function.progFiltered()
+    with mock.patch.object(function, "progGUI"), mock.patch.object(function, "progObjects"):
+        function.progFiltered()
 
 
 def test_progFull_1(function):
-    with mock.patch.object(function, "progGUI"):
-        with mock.patch.object(function, "progObjects"):
-            function.progFull()
+    with mock.patch.object(function, "progGUI"), mock.patch.object(function, "progObjects"):
+        function.progFull()

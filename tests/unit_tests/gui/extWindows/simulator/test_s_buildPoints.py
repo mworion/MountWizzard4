@@ -180,9 +180,11 @@ def test_create_2(function):
 def test_create_3(function):
     function.parent.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
     function.app.data.buildP = [(0, 0, 1), (10, 10, 1)]
-    with mock.patch.object(function, "clear"):
-        with mock.patch.object(function, "loopCreate"):
-            with mock.patch.object(function, "updatePositions"):
-                with mock.patch.object(function, "showEnable"):
-                    suc = function.create()
-                    assert suc
+    with (
+        mock.patch.object(function, "clear"),
+        mock.patch.object(function, "loopCreate"),
+        mock.patch.object(function, "updatePositions"),
+        mock.patch.object(function, "showEnable"),
+    ):
+        suc = function.create()
+        assert suc

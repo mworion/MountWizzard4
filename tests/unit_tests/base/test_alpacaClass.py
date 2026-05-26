@@ -139,9 +139,7 @@ def test_getDeviceProp_2(function):
 
 
 def test_getDeviceProp_3(function):
-    type(function.device).TestProp = mock.PropertyMock(
-        side_effect=Exception("error")
-    )
+    type(function.device).TestProp = mock.PropertyMock(side_effect=Exception("error"))
     result = function.getDeviceProp("TestProp")
     assert result is None
 
@@ -228,9 +226,7 @@ def test_discoverAPIVersion_3(function):
 
 
 def test_discoverAlpacaDevices_1(function):
-    with mock.patch.object(
-        alpacaMgmt, "configureddevices", side_effect=Exception()
-    ):
+    with mock.patch.object(alpacaMgmt, "configureddevices", side_effect=Exception()):
         val = function.discoverAlpacaDevices()
         assert val == []
 
@@ -242,12 +238,8 @@ def test_discoverAlpacaDevices_2(function):
 
 
 def test_discoverAlpacaDevices_3(function):
-    devices = [
-        {"DeviceName": "cam", "DeviceType": "Camera", "DeviceNumber": 0}
-    ]
-    with mock.patch.object(
-        alpacaMgmt, "configureddevices", return_value=devices
-    ):
+    devices = [{"DeviceName": "cam", "DeviceType": "Camera", "DeviceNumber": 0}]
+    with mock.patch.object(alpacaMgmt, "configureddevices", return_value=devices):
         val = function.discoverAlpacaDevices()
         assert val == devices
 
@@ -257,17 +249,13 @@ def test_discoverDevices_1(function):
         {"DeviceName": "test", "DeviceNumber": 1, "DeviceType": "Dome"},
         {"DeviceName": "test1", "DeviceNumber": 3, "DeviceType": "Dome"},
     ]
-    with mock.patch.object(
-        function, "discoverAlpacaDevices", return_value=devices
-    ):
+    with mock.patch.object(function, "discoverAlpacaDevices", return_value=devices):
         val = function.discoverDevices("dome")
         assert val == ["test:dome:1", "test1:dome:3"]
 
 
 def test_discoverDevices_2(function):
-    with mock.patch.object(
-        function, "discoverAlpacaDevices", return_value=[]
-    ):
+    with mock.patch.object(function, "discoverAlpacaDevices", return_value=[]):
         val = function.discoverDevices("dome")
         assert val == []
 

@@ -102,13 +102,17 @@ def test_updateRotation_2(function):
 
 def test_create_1(function):
     function.app.mount.obsSite.location.latitude = Angle(degrees=10)
-    with mock.patch.object(function, "updatePositions"):
-        with mock.patch.object(function, "updateRotation"):
-            function.create()
+    with (
+        mock.patch.object(function, "updatePositions"),
+        mock.patch.object(function, "updateRotation"),
+    ):
+        function.create()
 
 
 def test_create_2(function):
     function.app.mount.obsSite.location.latitude = Angle(degrees=-10)
-    with mock.patch.object(function, "updatePositions"):
-        with mock.patch.object(function, "updateRotation"):
-            function.create()
+    with (
+        mock.patch.object(function, "updatePositions"),
+        mock.patch.object(function, "updateRotation"),
+    ):
+        function.create()

@@ -49,10 +49,12 @@ def test_setDefaultPath_1(function):
 
 
 def test_solve_1(function):
-    with mock.patch.object(function.parent, "runSolverBin", return_value=(0, "")):
-        with mock.patch.object(function.parent, "prepareResult"):
-            res = function.solve(Path("tests/work/image/m51.fit"), True)
-            assert res["success"]
+    with (
+        mock.patch.object(function.parent, "runSolverBin", return_value=(0, "")),
+        mock.patch.object(function.parent, "prepareResult"),
+    ):
+        res = function.solve(Path("tests/work/image/m51.fit"), True)
+        assert res["success"]
 
 
 def test_checkAvailabilityProgram_1(function):
@@ -68,21 +70,27 @@ def test_checkAvailabilityProgram_2(function):
 
 
 def test_checkAvailabilityIndex_1(function):
-    with mock.patch.object(builtins, "any", return_value=True):
-        with mock.patch.object(platform, "system", return_value="Linux"):
-            suc = function.checkAvailabilityIndex(Path("test"))
-            assert suc
+    with (
+        mock.patch.object(builtins, "any", return_value=True),
+        mock.patch.object(platform, "system", return_value="Linux"),
+    ):
+        suc = function.checkAvailabilityIndex(Path("test"))
+        assert suc
 
 
 def test_checkAvailabilityIndex_2(function):
-    with mock.patch.object(builtins, "any", return_value=True):
-        with mock.patch.object(platform, "system", return_value="Darwin"):
-            suc = function.checkAvailabilityIndex(Path("test"))
-            assert suc
+    with (
+        mock.patch.object(builtins, "any", return_value=True),
+        mock.patch.object(platform, "system", return_value="Darwin"),
+    ):
+        suc = function.checkAvailabilityIndex(Path("test"))
+        assert suc
 
 
 def test_checkAvailabilityIndex_3(function):
-    with mock.patch.object(builtins, "any", return_value=True):
-        with mock.patch.object(platform, "system", return_value="Windows"):
-            suc = function.checkAvailabilityIndex(Path("test"))
-            assert suc
+    with (
+        mock.patch.object(builtins, "any", return_value=True),
+        mock.patch.object(platform, "system", return_value="Windows"),
+    ):
+        suc = function.checkAvailabilityIndex(Path("test"))
+        assert suc

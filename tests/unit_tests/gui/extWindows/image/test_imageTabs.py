@@ -85,10 +85,12 @@ def test_showTabImage_1(function):
     function.fileHandler = FileHandler(function.parent)
     function.fileHandler.image = np.random.rand(100, 100) + 1
     function.fileHandler.wcs = wcs.WCS()
-    with mock.patch.object(function, "setBarColor"):
-        with mock.patch.object(function, "setCrosshair"):
-            with mock.patch.object(function, "writeHeaderDataToGUI"):
-                function.showImage()
+    with (
+        mock.patch.object(function, "setBarColor"),
+        mock.patch.object(function, "setCrosshair"),
+        mock.patch.object(function, "writeHeaderDataToGUI"),
+    ):
+        function.showImage()
 
 
 def test_showTabImage_2(function):
@@ -172,11 +174,15 @@ def test_showTabImageSources(function):
     )
 
     function.ui.showValues.setChecked(True)
-    with mock.patch.object(
-        function.ui.imageSource, "addEllipse", return_value=pg.QtWidgets.QGraphicsEllipseItem()
+    with (
+        mock.patch.object(
+            function.ui.imageSource,
+            "addEllipse",
+            return_value=pg.QtWidgets.QGraphicsEllipseItem(),
+        ),
+        mock.patch.object(function.ui.tabImage, "setTabEnabled"),
     ):
-        with mock.patch.object(function.ui.tabImage, "setTabEnabled"):
-            function.showImageSources()
+        function.showImageSources()
 
 
 def test_showTabBackground(function):

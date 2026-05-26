@@ -105,13 +105,15 @@ def test_stopClockTimer(function):
 
 def test_startupMountData_1(function):
     function.mountIsUpLastStatus = False
-    with mock.patch.object(function, "cycleSetting"):
-        with mock.patch.object(function, "getFW"):
-            with mock.patch.object(function, "getLocation"):
-                with mock.patch.object(function, "getTLE"):
-                    with mock.patch.object(function.obsSite, "setHighPrecision"):
-                        function.startupMountData(True)
-                        assert function.mountIsUpLastStatus
+    with (
+        mock.patch.object(function, "cycleSetting"),
+        mock.patch.object(function, "getFW"),
+        mock.patch.object(function, "getLocation"),
+        mock.patch.object(function, "getTLE"),
+        mock.patch.object(function.obsSite, "setHighPrecision"),
+    ):
+        function.startupMountData(True)
+        assert function.mountIsUpLastStatus
 
 
 def test_startupMountData_2(function):
@@ -145,11 +147,13 @@ def test_checkMountIsUp_2(function):
 
 
 def test_checkMountIsUp_3(function):
-    with mock.patch.object(socket.socket, "connect"):
-        with mock.patch.object(socket.socket, "shutdown"):
-            with mock.patch.object(socket.socket, "close"):
-                function.checkMountIsUp()
-                assert function.mountIsUp
+    with (
+        mock.patch.object(socket.socket, "connect"),
+        mock.patch.object(socket.socket, "shutdown"),
+        mock.patch.object(socket.socket, "close"),
+    ):
+        function.checkMountIsUp()
+        assert function.mountIsUp
 
 
 def test_clearCycleCheckMountIsUp_1(function):
@@ -499,10 +503,12 @@ def test_workerProgTrajectory_1(function):
 def test_workerProgTrajectory_2(function):
     alt = [10, 20, 30]
     az = [10, 20, 30]
-    with mock.patch.object(function.satellite, "addTrajectoryPoint"):
-        with mock.patch.object(function.satellite, "preCalcTrajectory"):
-            suc = function.workerProgTrajectory(alt, az, False)
-            assert not suc
+    with (
+        mock.patch.object(function.satellite, "addTrajectoryPoint"),
+        mock.patch.object(function.satellite, "preCalcTrajectory"),
+    ):
+        suc = function.workerProgTrajectory(alt, az, False)
+        assert not suc
 
 
 def test_clearProgTrajectory_1(function):
@@ -544,13 +550,15 @@ def test_calcTransformationMatricesActual(function):
 
 
 def test_calcMountAltAzToDomeAltAz_1(function):
-    with mock.patch.object(function.obsSite, "setTargetAltAz", return_value=True):
-        with mock.patch.object(
+    with (
+        mock.patch.object(function.obsSite, "setTargetAltAz", return_value=True),
+        mock.patch.object(
             function, "calcTransformationMatricesTarget", return_value=(10, 5, 0, 0, 0)
-        ):
-            valAlt, valAz = function.calcMountAltAzToDomeAltAz(10, 5)
-            assert valAlt == 10
-            assert valAz == 5
+        ),
+    ):
+        valAlt, valAz = function.calcMountAltAzToDomeAltAz(10, 5)
+        assert valAlt == 10
+        assert valAz == 5
 
 
 def test_calcMountAltAzToDomeAltAz_2(function):

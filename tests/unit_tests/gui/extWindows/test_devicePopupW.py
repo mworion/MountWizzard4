@@ -55,10 +55,12 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    with mock.patch.object(function, "populateTabs"):
-        with mock.patch.object(function, "selectTabs"):
-            with mock.patch.object(function, "show"):
-                function.initConfig()
+    with (
+        mock.patch.object(function, "populateTabs"),
+        mock.patch.object(function, "selectTabs"),
+        mock.patch.object(function, "show"),
+    ):
+        function.initConfig()
 
 
 def test_initConfig_2(function):
@@ -71,19 +73,23 @@ def test_initConfig_2(function):
             }
         },
     }
-    with mock.patch.object(function, "checkApp"):
-        with mock.patch.object(function, "checkIndex"):
-            with mock.patch.object(function, "populateTabs"):
-                with mock.patch.object(function, "selectTabs"):
-                    with mock.patch.object(function, "show"):
-                        function.initConfig()
+    with (
+        mock.patch.object(function, "checkApp"),
+        mock.patch.object(function, "checkIndex"),
+        mock.patch.object(function, "populateTabs"),
+        mock.patch.object(function, "selectTabs"),
+        mock.patch.object(function, "show"),
+    ):
+        function.initConfig()
 
 
 def test_storeConfig_1(function):
-    with mock.patch.object(function, "readFramework"):
-        with mock.patch.object(function, "readTabs"):
-            with mock.patch.object(function, "close"):
-                function.storeConfig()
+    with (
+        mock.patch.object(function, "readFramework"),
+        mock.patch.object(function, "readTabs"),
+        mock.patch.object(function, "close"),
+    ):
+        function.storeConfig()
 
 
 def test_selectTabs_1(function):
@@ -270,9 +276,11 @@ def test_selectAppPath_1(function):
             return True
 
     function.app.plateSolve.run["astrometry"] = Avail()
-    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
-        with mock.patch.object(Path, "is_dir", return_value=False):
-            function.selectAppPath("astap")
+    with (
+        mock.patch.object(MWidget, "openDir", return_value=Path("/test")),
+        mock.patch.object(Path, "is_dir", return_value=False),
+    ):
+        function.selectAppPath("astap")
 
 
 def test_selectAppPath_2(function):
@@ -282,9 +290,11 @@ def test_selectAppPath_2(function):
             return True
 
     function.app.plateSolve.run["astap"] = Avail()
-    with mock.patch.object(MWidget, "openDir", return_value=Path("/test.app")):
-        with mock.patch.object(Path, "is_dir", return_value=True):
-            function.selectAppPath("astap")
+    with (
+        mock.patch.object(MWidget, "openDir", return_value=Path("/test.app")),
+        mock.patch.object(Path, "is_dir", return_value=True),
+    ):
+        function.selectAppPath("astap")
 
 
 def test_selectAppPath_3(function):
@@ -294,9 +304,11 @@ def test_selectAppPath_3(function):
             return True
 
     function.app.plateSolve.run["astap"] = Avail()
-    with mock.patch.object(MWidget, "openDir", return_value=Path("/Astrometry.app")):
-        with mock.patch.object(Path, "is_dir", return_value=True):
-            function.selectAppPath("astap")
+    with (
+        mock.patch.object(MWidget, "openDir", return_value=Path("/Astrometry.app")),
+        mock.patch.object(Path, "is_dir", return_value=True),
+    ):
+        function.selectAppPath("astap")
 
 
 def test_selectIndexPath_1(function):
@@ -306,9 +318,11 @@ def test_selectIndexPath_1(function):
             return True
 
     function.app.plateSolve.run["astap"] = Avail()
-    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
-        with mock.patch.object(Path, "is_dir", return_value=False):
-            function.selectIndexPath("astap")
+    with (
+        mock.patch.object(MWidget, "openDir", return_value=Path("/test")),
+        mock.patch.object(Path, "is_dir", return_value=False),
+    ):
+        function.selectIndexPath("astap")
 
 
 def test_selectIndexPath_2(function):
@@ -318,9 +332,11 @@ def test_selectIndexPath_2(function):
             return True
 
     function.app.plateSolve.run = {"astap": Avail()}
-    with mock.patch.object(MWidget, "openDir", return_value=Path("/test")):
-        with mock.patch.object(Path, "is_dir", return_value=True):
-            function.selectIndexPath("astap")
+    with (
+        mock.patch.object(MWidget, "openDir", return_value=Path("/test")),
+        mock.patch.object(Path, "is_dir", return_value=True),
+    ):
+        function.selectIndexPath("astap")
 
 
 def test_selectAscomDriver_1(function):
@@ -331,15 +347,19 @@ def test_selectAscomDriver_1(function):
 
 def test_selectBoltwoodPath_1(function):
     function.ui.boltwoodPath.setText("")
-    with mock.patch.object(MWidget, "openFile", return_value=Path("/test/file.txt")):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            function.selectBoltwoodPath()
-            assert function.ui.boltwoodPath.text() == str(Path("/test/file.txt"))
+    with (
+        mock.patch.object(MWidget, "openFile", return_value=Path("/test/file.txt")),
+        mock.patch.object(Path, "is_file", return_value=True),
+    ):
+        function.selectBoltwoodPath()
+        assert function.ui.boltwoodPath.text() == str(Path("/test/file.txt"))
 
 
 def test_selectBoltwoodPath_2(function):
     function.ui.boltwoodPath.setText("")
-    with mock.patch.object(MWidget, "openFile", return_value=Path("/test/file.txt")):
-        with mock.patch.object(Path, "is_file", return_value=False):
-            function.selectBoltwoodPath()
-            assert function.ui.boltwoodPath.text() == ""
+    with (
+        mock.patch.object(MWidget, "openFile", return_value=Path("/test/file.txt")),
+        mock.patch.object(Path, "is_file", return_value=False),
+    ):
+        function.selectBoltwoodPath()
+        assert function.ui.boltwoodPath.text() == ""

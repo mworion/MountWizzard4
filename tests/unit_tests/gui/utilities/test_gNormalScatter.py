@@ -32,17 +32,19 @@ def test_NormalScatter():
 
 def test_setupRangeLimits_with_limits():
     p = NormalScatter()
-    with mock.patch.object(p.p[0], "setLimits") as mockLimits:
-        with mock.patch.object(p.p[0], "setXRange") as mockX:
-            with mock.patch.object(p.p[0], "setYRange") as mockY:
-                p.setupRangeLimits(
-                    np.array([0, 1]),
-                    np.array([0, 1]),
-                    {"limits": True},
-                )
-                assert mockLimits.called
-                assert mockX.called
-                assert mockY.called
+    with (
+        mock.patch.object(p.p[0], "setLimits") as mockLimits,
+        mock.patch.object(p.p[0], "setXRange") as mockX,
+        mock.patch.object(p.p[0], "setYRange") as mockY,
+    ):
+        p.setupRangeLimits(
+            np.array([0, 1]),
+            np.array([0, 1]),
+            {"limits": True},
+        )
+        assert mockLimits.called
+        assert mockX.called
+        assert mockY.called
 
 
 def test_setupRangeLimits_no_limits():
@@ -115,13 +117,15 @@ def test_setupColorData_with_z():
 def test_setupBarItem_active():
     p = NormalScatter()
     p.barItem = pg.ColorBarItem()
-    with mock.patch.object(p.barItem, "setVisible") as mockVis:
-        with mock.patch.object(p.barItem, "setLevels") as mockLev:
-            with mock.patch.object(p.barItem, "setColorMap") as mockCM:
-                p.setupBarItem({"bar": True, "z": np.array([1])}, 0.0, 1.0)
-                assert mockVis.called
-                assert mockLev.called
-                assert mockCM.called
+    with (
+        mock.patch.object(p.barItem, "setVisible") as mockVis,
+        mock.patch.object(p.barItem, "setLevels") as mockLev,
+        mock.patch.object(p.barItem, "setColorMap") as mockCM,
+    ):
+        p.setupBarItem({"bar": True, "z": np.array([1])}, 0.0, 1.0)
+        assert mockVis.called
+        assert mockLev.called
+        assert mockCM.called
 
 
 def test_setupBarItem_no_bar():

@@ -50,10 +50,9 @@ def test_storeConfig_2(function):
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(function, "show"):
-        with mock.patch.object(MWidget, "closeEvent"):
-            function.showWindow()
-            function.closeEvent(QCloseEvent)
+    with mock.patch.object(function, "show"), mock.patch.object(MWidget, "closeEvent"):
+        function.showWindow()
+        function.closeEvent(QCloseEvent)
 
 
 def test_showWindow(function):

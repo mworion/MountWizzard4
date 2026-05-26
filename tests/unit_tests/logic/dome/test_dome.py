@@ -256,19 +256,23 @@ def test_checkSlewNeeded_1(function):
 
 
 def test_checkSlewNeeded_2(function):
-    with mock.patch.object(function, "checkTargetConditions", return_value=True):
-        with mock.patch.object(function, "calcTargetRectanglePoints", return_value=(0, 1, 2)):
-            with mock.patch.object(function, "targetInDomeShutter", return_value=False):
-                suc = function.checkSlewNeeded(0, 0)
-                assert suc
+    with (
+        mock.patch.object(function, "checkTargetConditions", return_value=True),
+        mock.patch.object(function, "calcTargetRectanglePoints", return_value=(0, 1, 2)),
+        mock.patch.object(function, "targetInDomeShutter", return_value=False),
+    ):
+        suc = function.checkSlewNeeded(0, 0)
+        assert suc
 
 
 def test_checkSlewNeeded_3(function):
-    with mock.patch.object(function, "checkTargetConditions", return_value=True):
-        with mock.patch.object(function, "calcTargetRectanglePoints", return_value=(0, 1, 2)):
-            with mock.patch.object(function, "targetInDomeShutter", return_value=True):
-                suc = function.checkSlewNeeded(0, 0)
-                assert not suc
+    with (
+        mock.patch.object(function, "checkTargetConditions", return_value=True),
+        mock.patch.object(function, "calcTargetRectanglePoints", return_value=(0, 1, 2)),
+        mock.patch.object(function, "targetInDomeShutter", return_value=True),
+    ):
+        suc = function.checkSlewNeeded(0, 0)
+        assert not suc
 
 
 def test_checkSlewNeeded_4(function):
@@ -417,10 +421,12 @@ def test_slewDome_2(function):
     function.data = {"AZ": 1}
     function.framework = "indi"
     val = (10, 10, None, None)
-    with mock.patch.object(function, "calcSlewTarget", return_value=val):
-        with mock.patch.object(function.run["indi"], "slewToAltAz", return_value=val):
-            delta = function.slewDome(0, 0, False)
-            assert delta == -10
+    with (
+        mock.patch.object(function, "calcSlewTarget", return_value=val),
+        mock.patch.object(function.run["indi"], "slewToAltAz", return_value=val),
+    ):
+        delta = function.slewDome(0, 0, False)
+        assert delta == -10
 
 
 def test_slewDome_3(function):
@@ -428,11 +434,13 @@ def test_slewDome_3(function):
     function.framework = "indi"
     function.useDynamicFollowing = True
     val = (10, 10, 0, 0)
-    with mock.patch.object(function, "calcSlewTarget", return_value=val):
-        with mock.patch.object(function.run["indi"], "slewToAltAz", return_value=val):
-            with mock.patch.object(function, "checkSlewNeeded", return_value=False):
-                delta = function.slewDome(0, 0, False)
-                assert delta == -10
+    with (
+        mock.patch.object(function, "calcSlewTarget", return_value=val),
+        mock.patch.object(function.run["indi"], "slewToAltAz", return_value=val),
+        mock.patch.object(function, "checkSlewNeeded", return_value=False),
+    ):
+        delta = function.slewDome(0, 0, False)
+        assert delta == -10
 
 
 def test_slewDome_4(function):
@@ -440,11 +448,13 @@ def test_slewDome_4(function):
     function.framework = "indi"
     function.useDynamicFollowing = True
     val = (10, 10, 0, 0)
-    with mock.patch.object(function, "calcSlewTarget", return_value=val):
-        with mock.patch.object(function.run["indi"], "slewToAltAz", return_value=val):
-            with mock.patch.object(function, "checkSlewNeeded", return_value=False):
-                delta = function.slewDome(0, 0, True)
-                assert delta == -10
+    with (
+        mock.patch.object(function, "calcSlewTarget", return_value=val),
+        mock.patch.object(function.run["indi"], "slewToAltAz", return_value=val),
+        mock.patch.object(function, "checkSlewNeeded", return_value=False),
+    ):
+        delta = function.slewDome(0, 0, True)
+        assert delta == -10
 
 
 def test_avoidFirstOvershoot(function):

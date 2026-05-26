@@ -55,9 +55,8 @@ def test_drawContents():
 
 def test_finish():
     app = SplashScreen(QWidget())
-    with mock.patch.object(app, "update"):
-        with mock.patch.object(app.qss, "finish"):
-            app.finish(QWidget())
+    with mock.patch.object(app, "update"), mock.patch.object(app.qss, "finish"):
+        app.finish(QWidget())
 
 
 def test_init():
@@ -66,6 +65,5 @@ def test_init():
 
 def test_close():
     app = SplashScreen(QWidget())
-    with mock.patch.object(app, "update"):
-        with mock.patch.object(app.qss, "close"):
-            app.close()
+    with mock.patch.object(app, "update"), mock.patch.object(app.qss, "close"):
+        app.close()

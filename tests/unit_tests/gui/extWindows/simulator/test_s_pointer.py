@@ -60,6 +60,8 @@ def test_updatePositions_3(function):
 
 
 def test_create_1(function):
-    with mock.patch.object(function, "updatePositions"):
-        with mock.patch.object(function, "showEnable"):
-            function.create()
+    with (
+        mock.patch.object(function, "updatePositions"),
+        mock.patch.object(function, "showEnable"),
+    ):
+        function.create()

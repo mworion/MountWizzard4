@@ -92,37 +92,43 @@ def test_mouseMovedHorizon_2(function):
 
 
 def test_loadTerrainImage_1(function):
-    with mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch.object(cv2, "imread", return_value=np.array([[0, 0], [0, 0]])):
-                with mock.patch.object(cv2, "resize", return_value=np.ones((360, 180))):
-                    with mock.patch.object(cv2, "flip", return_value=np.ones((90, 360))):
-                        function.loadTerrainImage(Path("terrain.jpg"))
+    with (
+        mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")),
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(cv2, "imread", return_value=np.array([[0, 0], [0, 0]])),
+        mock.patch.object(cv2, "resize", return_value=np.ones((360, 180))),
+        mock.patch.object(cv2, "flip", return_value=np.ones((90, 360))),
+    ):
+        function.loadTerrainImage(Path("terrain.jpg"))
 
 
 def test_loadTerrainImage_2(function):
-    with mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch.object(
-                cv2, "imread", return_value=np.array([[0, 0, 0, 0], [0, 0, 0, 0]])
-            ):
-                with mock.patch.object(cv2, "resize", return_value=np.ones((360, 180))):
-                    with mock.patch.object(cv2, "flip", return_value=np.ones((90, 360))):
-                        function.loadTerrainImage(Path("terrain.jpg"))
+    with (
+        mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")),
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(cv2, "imread", return_value=np.array([[0, 0, 0, 0], [0, 0, 0, 0]])),
+        mock.patch.object(cv2, "resize", return_value=np.ones((360, 180))),
+        mock.patch.object(cv2, "flip", return_value=np.ones((90, 360))),
+    ):
+        function.loadTerrainImage(Path("terrain.jpg"))
 
 
 def test_selectTerrainFile_1(function):
-    with mock.patch.object(function, "openFile", return_value=(Path(""))):
-        with mock.patch.object(Path, "is_file", return_value=False):
-            function.selectTerrainFile()
+    with (
+        mock.patch.object(function, "openFile", return_value=Path("")),
+        mock.patch.object(Path, "is_file", return_value=False),
+    ):
+        function.selectTerrainFile()
 
 
 def test_selectTerrainFile_2(function):
-    with mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")):
-        with mock.patch.object(function.parent, "redrawAll"):
-            with mock.patch.object(Path, "is_file", return_value=True):
-                with mock.patch.object(function, "loadTerrainImage"):
-                    function.selectTerrainFile()
+    with (
+        mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")),
+        mock.patch.object(function.parent, "redrawAll"),
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(function, "loadTerrainImage"),
+    ):
+        function.selectTerrainFile()
 
 
 def test_clearTerrainFile(function):
@@ -131,32 +137,40 @@ def test_clearTerrainFile(function):
 
 
 def test_loadHorizonMask_1(function):
-    with mock.patch.object(function, "openFile", return_value=Path("test.test")):
-        with mock.patch.object(Path, "is_file", return_value=False):
-            function.loadHorizonMask()
+    with (
+        mock.patch.object(function, "openFile", return_value=Path("test.test")),
+        mock.patch.object(Path, "is_file", return_value=False),
+    ):
+        function.loadHorizonMask()
 
 
 def test_loadHorizonMask_2(function):
-    with mock.patch.object(function, "openFile", return_value=Path("test.bpts")):
-        with mock.patch.object(function.app.data, "loadHorizonP", return_value=False):
-            with mock.patch.object(Path, "is_file", return_value=True):
-                with mock.patch.object(function, "drawTab"):
-                    function.loadHorizonMask()
+    with (
+        mock.patch.object(function, "openFile", return_value=Path("test.bpts")),
+        mock.patch.object(function.app.data, "loadHorizonP", return_value=False),
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(function, "drawTab"),
+    ):
+        function.loadHorizonMask()
 
 
 def test_loadHorizonMask_3(function):
-    with mock.patch.object(function, "openFile", return_value=Path("test.bpts")):
-        with mock.patch.object(function.app.data, "loadHorizonP", return_value=True):
-            with mock.patch.object(Path, "is_file", return_value=True):
-                with mock.patch.object(function, "drawTab"):
-                    function.loadHorizonMask()
+    with (
+        mock.patch.object(function, "openFile", return_value=Path("test.bpts")),
+        mock.patch.object(function.app.data, "loadHorizonP", return_value=True),
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(function, "drawTab"),
+    ):
+        function.loadHorizonMask()
 
 
 def test_saveHorizonMask_1(function):
     function.ui.horizonMaskFileName.setText("test")
-    with mock.patch.object(function, "openFile", return_value=Path("test.bpts")):
-        with mock.patch.object(function.app.data, "saveHorizonP", return_value=True):
-            function.saveHorizonMask()
+    with (
+        mock.patch.object(function, "openFile", return_value=Path("test.bpts")),
+        mock.patch.object(function.app.data, "saveHorizonP", return_value=True),
+    ):
+        function.saveHorizonMask()
 
 
 def test_saveHorizonMaskFile_2(function):
@@ -166,15 +180,19 @@ def test_saveHorizonMaskFile_2(function):
 
 def test_saveHorizonMaskFile_3(function):
     function.ui.horizonMaskFileName.setText("test")
-    with mock.patch.object(function, "saveFile", return_value=(Path("build.bpts"))):
-        with mock.patch.object(function.app.data, "saveHorizonP", return_value=False):
-            function.saveHorizonMask()
+    with (
+        mock.patch.object(function, "saveFile", return_value=Path("build.bpts")),
+        mock.patch.object(function.app.data, "saveHorizonP", return_value=False),
+    ):
+        function.saveHorizonMask()
 
 
 def test_saveHorizonMaskFileAs_1(function):
-    with mock.patch.object(function, "saveFile", return_value=(Path("build.bpts"))):
-        with mock.patch.object(function.app.data, "saveHorizonP", return_value=True):
-            function.saveHorizonMaskAs()
+    with (
+        mock.patch.object(function, "saveFile", return_value=Path("build.bpts")),
+        mock.patch.object(function.app.data, "saveHorizonP", return_value=True),
+    ):
+        function.saveHorizonMaskAs()
 
 
 def test_saveHorizonMaskFileAs_2(function):
@@ -183,9 +201,11 @@ def test_saveHorizonMaskFileAs_2(function):
 
 
 def test_saveHorizonMaskFileAs_3(function):
-    with mock.patch.object(function, "saveFile", return_value=(Path("build.bpts"))):
-        with mock.patch.object(function.app.data, "saveHorizonP", return_value=False):
-            function.saveHorizonMaskAs()
+    with (
+        mock.patch.object(function, "saveFile", return_value=Path("build.bpts")),
+        mock.patch.object(function.app.data, "saveHorizonP", return_value=False),
+    ):
+        function.saveHorizonMaskAs()
 
 
 def test_setOperationMode_1(function):
@@ -208,9 +228,11 @@ def test_clearHorizonMask(function):
 def test_addActualPosition_2(function):
     function.app.mount.obsSite.Alt = Angle(degrees=10)
     function.app.mount.obsSite.Az = Angle(degrees=20)
-    with mock.patch.object(CustomViewBox, "getNearestPointIndex", return_value=1):
-        with mock.patch.object(CustomViewBox, "addUpdate"):
-            function.addActualPosition()
+    with (
+        mock.patch.object(CustomViewBox, "getNearestPointIndex", return_value=1),
+        mock.patch.object(CustomViewBox, "addUpdate"),
+    ):
+        function.addActualPosition()
 
 
 def test_prepareView(function):
@@ -254,12 +276,14 @@ def test_drawTab_1(function):
     function.ui.showTerrain.setChecked(True)
     function.ui.editModeHor.setChecked(True)
     function.ui.showMountLimits.setChecked(True)
-    with mock.patch.object(function, "prepareView"):
-        with mock.patch.object(function.parent, "drawTerrainImage"):
-            with mock.patch.object(function, "setupView"):
-                with mock.patch.object(function, "drawView"):
-                    with mock.patch.object(function, "setupPointer"):
-                        with mock.patch.object(function, "drawPointer"):
-                            with mock.patch.object(function.parent, "drawMeridianLimits"):
-                                with mock.patch.object(function.parent, "drawHorizonLimits"):
-                                    function.drawTab()
+    with (
+        mock.patch.object(function, "prepareView"),
+        mock.patch.object(function.parent, "drawTerrainImage"),
+        mock.patch.object(function, "setupView"),
+        mock.patch.object(function, "drawView"),
+        mock.patch.object(function, "setupPointer"),
+        mock.patch.object(function, "drawPointer"),
+        mock.patch.object(function.parent, "drawMeridianLimits"),
+        mock.patch.object(function.parent, "drawHorizonLimits"),
+    ):
+        function.drawTab()

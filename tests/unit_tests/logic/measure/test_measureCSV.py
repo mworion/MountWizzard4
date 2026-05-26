@@ -40,14 +40,16 @@ def function():
 
 
 def test_startCommunication(function):
-    with mock.patch.object(function.timerTask, "start"):
-        with mock.patch.object(function, "writeHeaderCSV"):
-            with mock.patch.object(
-                function.app.mount.obsSite.timeJD,
-                "utc_strftime",
-                return_value="2022-01-01-00-00-00",
-            ):
-                function.startCommunication()
+    with (
+        mock.patch.object(function.timerTask, "start"),
+        mock.patch.object(function, "writeHeaderCSV"),
+        mock.patch.object(
+            function.app.mount.obsSite.timeJD,
+            "utc_strftime",
+            return_value="2022-01-01-00-00-00",
+        ),
+    ):
+        function.startCommunication()
 
 
 def test_stopCommunication(function):

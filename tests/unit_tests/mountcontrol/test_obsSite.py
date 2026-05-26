@@ -52,10 +52,12 @@ def test_setLoaderAndTimescale_2():
 
 def test_setLoaderAndTimescale_3():
     obsSite = ObsSite(parent=Parent())
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(Loader, "timescale"):
-            with mock.patch.object(Loader.timescale, "now"):
-                obsSite.setLoaderAndTimescale()
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(Loader, "timescale"),
+        mock.patch.object(Loader.timescale, "now"),
+    ):
+        obsSite.setLoaderAndTimescale()
 
 
 def test_Data_without_ts():
@@ -739,62 +741,64 @@ def test_ObsSite_pollPointing_not_ok2():
 
 def test_pollSyncClock_1():
     obsSite = ObsSite(parent=Parent())
-    with mock.patch.object(platform, "system", return_value="Windows"):
-        with mock.patch.object(
-            mw4.mountcontrol.obsSite.Connection,
-            "communicate",
-            return_value=(False, [], 0),
-        ):
-            suc = obsSite.pollSyncClock()
-            assert not suc
+    with (
+        mock.patch.object(platform, "system", return_value="Windows"),
+        mock.patch.object(
+            mw4.mountcontrol.obsSite.Connection, "communicate", return_value=(False, [], 0)
+        ),
+    ):
+        suc = obsSite.pollSyncClock()
+        assert not suc
 
 
 def test_pollSyncClock_2():
     obsSite = ObsSite(parent=Parent())
-    with mock.patch.object(platform, "system", return_value="Linux"):
-        with mock.patch.object(
-            mw4.mountcontrol.obsSite.Connection,
-            "communicate",
-            return_value=(False, [], 0),
-        ):
-            suc = obsSite.pollSyncClock()
-            assert not suc
+    with (
+        mock.patch.object(platform, "system", return_value="Linux"),
+        mock.patch.object(
+            mw4.mountcontrol.obsSite.Connection, "communicate", return_value=(False, [], 0)
+        ),
+    ):
+        suc = obsSite.pollSyncClock()
+        assert not suc
 
 
 def test_pollSyncClock_3():
     obsSite = ObsSite(parent=Parent())
-    with mock.patch.object(platform, "system", return_value="aarch64"):
-        with mock.patch.object(
-            mw4.mountcontrol.obsSite.Connection,
-            "communicate",
-            return_value=(False, [], 0),
-        ):
-            suc = obsSite.pollSyncClock()
-            assert not suc
+    with (
+        mock.patch.object(platform, "system", return_value="aarch64"),
+        mock.patch.object(
+            mw4.mountcontrol.obsSite.Connection, "communicate", return_value=(False, [], 0)
+        ),
+    ):
+        suc = obsSite.pollSyncClock()
+        assert not suc
 
 
 def test_pollSyncClock_4():
     obsSite = ObsSite(parent=Parent())
-    with mock.patch.object(platform, "system", return_value="Darwin"):
-        with mock.patch.object(
-            mw4.mountcontrol.obsSite.Connection,
-            "communicate",
-            return_value=(True, ["eee"], 1),
-        ):
-            suc = obsSite.pollSyncClock()
-            assert suc
+    with (
+        mock.patch.object(platform, "system", return_value="Darwin"),
+        mock.patch.object(
+            mw4.mountcontrol.obsSite.Connection, "communicate", return_value=(True, ["eee"], 1)
+        ),
+    ):
+        suc = obsSite.pollSyncClock()
+        assert suc
 
 
 def test_pollSyncClock_5():
     obsSite = ObsSite(parent=Parent())
-    with mock.patch.object(platform, "system", return_value="Darwin"):
-        with mock.patch.object(
+    with (
+        mock.patch.object(platform, "system", return_value="Darwin"),
+        mock.patch.object(
             mw4.mountcontrol.obsSite.Connection,
             "communicate",
             return_value=(True, ["12345678.1"], 1),
-        ):
-            suc = obsSite.pollSyncClock()
-            assert suc
+        ),
+    ):
+        suc = obsSite.pollSyncClock()
+        assert suc
 
 
 def test_adjustClock_1():

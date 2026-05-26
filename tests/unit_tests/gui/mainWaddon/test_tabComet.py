@@ -83,26 +83,32 @@ def test_generateName_5(function):
 
 def test_processCometSource_1(function):
     function.comets.dest = "tests/testData/mpc_comet_test.json"
-    with mock.patch.object(json, "load", return_value="", side_effect=Exception):
-        with mock.patch.object(os, "remove"):
-            function.processCometSource()
-            assert function.comets.objects == {}
+    with (
+        mock.patch.object(json, "load", return_value="", side_effect=Exception),
+        mock.patch.object(os, "remove"),
+    ):
+        function.processCometSource()
+        assert function.comets.objects == {}
 
 
 def test_processCometSource_2(function):
     function.comets.dest = "tests/testData/mpc_comet_test.json"
-    with mock.patch.object(json, "load", return_value={"test": "test"}):
-        with mock.patch.object(function, "generateName", return_value=""):
-            function.processCometSource()
-            assert function.comets.objects == {}
+    with (
+        mock.patch.object(json, "load", return_value={"test": "test"}),
+        mock.patch.object(function, "generateName", return_value=""),
+    ):
+        function.processCometSource()
+        assert function.comets.objects == {}
 
 
 def test_processCometSource_3(function):
     function.comets.dest = "tests/testData/mpc_comet_test.json"
-    with mock.patch.object(json, "load", return_value={"test": "test"}):
-        with mock.patch.object(function, "generateName", return_value="albert"):
-            function.processCometSource()
-            assert function.comets.objects == {"albert": "test"}
+    with (
+        mock.patch.object(json, "load", return_value={"test": "test"}),
+        mock.patch.object(function, "generateName", return_value="albert"),
+    ):
+        function.processCometSource()
+        assert function.comets.objects == {"albert": "test"}
 
 
 def test_filterListComets_1(function):

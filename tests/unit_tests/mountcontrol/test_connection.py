@@ -220,9 +220,11 @@ def test_closeClientHard_2():
 def test_closeClientHard_3():
     conn = Connection(makeParent(host="test"))
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    with mock.patch.object(socket.socket, "shutdown"):
-        with mock.patch.object(socket.socket, "close"):
-            conn.closeClientHard(client)
+    with (
+        mock.patch.object(socket.socket, "shutdown"),
+        mock.patch.object(socket.socket, "close"),
+    ):
+        conn.closeClientHard(client)
 
     #
     #
@@ -444,10 +446,12 @@ def test_receiveData_1():
 
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     conn = Connection(makeParent())
-    with mock.patch.object(socket.socket, "recv", return_value=Test()):
-        with mock.patch.object(Test, "decode", side_effect=Exception):
-            val = conn.receiveData(client=client, numberOfChunks=0, minBytes=0)
-            assert val == (False, [])
+    with (
+        mock.patch.object(socket.socket, "recv", return_value=Test()),
+        mock.patch.object(Test, "decode", side_effect=Exception),
+    ):
+        val = conn.receiveData(client=client, numberOfChunks=0, minBytes=0)
+        assert val == (False, [])
 
 
 def test_receiveData_2():
@@ -491,13 +495,15 @@ def test_communicateRaw_0():
             return "test".encode("ASCII")
 
     conn = Connection(makeParent())
-    with mock.patch.object(conn, "buildClient", return_value=None):
-        with mock.patch.object(conn, "sendData", return_value=False):
-            with mock.patch.object(Test, "recv", side_effect=TimeoutError):
-                suc = conn.communicateRaw("test")
-                assert not suc[0]
-                assert not suc[1]
-                assert suc[2] == "Socket error"
+    with (
+        mock.patch.object(conn, "buildClient", return_value=None),
+        mock.patch.object(conn, "sendData", return_value=False),
+        mock.patch.object(Test, "recv", side_effect=TimeoutError),
+    ):
+        suc = conn.communicateRaw("test")
+        assert not suc[0]
+        assert not suc[1]
+        assert suc[2] == "Socket error"
 
 
 def test_communicateRaw_1():
@@ -515,13 +521,15 @@ def test_communicateRaw_1():
             return "test".encode("ASCII")
 
     conn = Connection(makeParent())
-    with mock.patch.object(conn, "buildClient", return_value=Test()):
-        with mock.patch.object(conn, "sendData", return_value=False):
-            with mock.patch.object(Test, "recv", side_effect=TimeoutError):
-                suc = conn.communicateRaw("test")
-                assert not suc[0]
-                assert not suc[1]
-                assert suc[2] == "Timeout"
+    with (
+        mock.patch.object(conn, "buildClient", return_value=Test()),
+        mock.patch.object(conn, "sendData", return_value=False),
+        mock.patch.object(Test, "recv", side_effect=TimeoutError),
+    ):
+        suc = conn.communicateRaw("test")
+        assert not suc[0]
+        assert not suc[1]
+        assert suc[2] == "Timeout"
 
 
 def test_communicateRaw_2():
@@ -539,13 +547,15 @@ def test_communicateRaw_2():
             return "test".encode("ASCII")
 
     conn = Connection(makeParent())
-    with mock.patch.object(conn, "buildClient", return_value=Test()):
-        with mock.patch.object(conn, "sendData", return_value=True):
-            with mock.patch.object(Test, "recv", side_effect=Exception):
-                suc = conn.communicateRaw("test")
-                assert suc[0]
-                assert not suc[1]
-                assert suc[2] == "Exception"
+    with (
+        mock.patch.object(conn, "buildClient", return_value=Test()),
+        mock.patch.object(conn, "sendData", return_value=True),
+        mock.patch.object(Test, "recv", side_effect=Exception),
+    ):
+        suc = conn.communicateRaw("test")
+        assert suc[0]
+        assert not suc[1]
+        assert suc[2] == "Exception"
 
 
 def test_communicateRaw_3():
@@ -563,9 +573,11 @@ def test_communicateRaw_3():
             return "test".encode("ASCII")
 
     conn = Connection(makeParent())
-    with mock.patch.object(conn, "buildClient", return_value=Test()):
-        with mock.patch.object(conn, "sendData", return_value=True):
-            suc = conn.communicateRaw("test")
-            assert suc[0]
-            assert suc[1]
-            assert suc[2] == "test"
+    with (
+        mock.patch.object(conn, "buildClient", return_value=Test()),
+        mock.patch.object(conn, "sendData", return_value=True),
+    ):
+        suc = conn.communicateRaw("test")
+        assert suc[0]
+        assert suc[1]
+        assert suc[2] == "test"

@@ -51,9 +51,7 @@ def test_pollData_1(function):
 
 
 def test_lightOn(function):
-    function.app.lightPanel.data = {
-        "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 200
-    }
+    function.app.lightPanel.data = {"FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 200}
     with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.lightOn()
     m.assert_called_once_with("CalibratorOn", BrightnessVal=100)

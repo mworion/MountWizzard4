@@ -99,23 +99,29 @@ def test_slewParkPos_2(function):
 
 
 def test_slewParkPos_3(function):
-    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
-        with mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=False):
-            function.slewToParkPos(0)
+    with (
+        mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True),
+        mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=False),
+    ):
+        function.slewToParkPos(0)
 
 
 def test_slewParkPos_4(function):
     function.ui.parkMountAfterSlew.setChecked(True)
-    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
-        with mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=True):
-            function.slewToParkPos(0)
+    with (
+        mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True),
+        mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=True),
+    ):
+        function.slewToParkPos(0)
 
 
 def test_slewParkPos_5(function):
     function.ui.parkMountAfterSlew.setChecked(False)
-    with mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True):
-        with mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=True):
-            function.slewToParkPos(0)
+    with (
+        mock.patch.object(function.app.mount.obsSite, "setTargetAltAz", return_value=True),
+        mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=True),
+    ):
+        function.slewToParkPos(0)
 
 
 def test_saveActualPosition_3(function):

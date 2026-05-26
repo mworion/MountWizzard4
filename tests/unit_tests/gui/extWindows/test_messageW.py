@@ -53,10 +53,9 @@ def test_storeConfig_2(function):
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(function, "show"):
-        with mock.patch.object(MWidget, "closeEvent"):
-            function.showWindow()
-            function.closeEvent(QCloseEvent)
+    with mock.patch.object(function, "show"), mock.patch.object(MWidget, "closeEvent"):
+        function.showWindow()
+        function.closeEvent(QCloseEvent)
 
 
 def test_updateListColors(function):
@@ -67,9 +66,11 @@ def test_updateListColors(function):
 
 
 def test_colorChange(function):
-    with mock.patch.object(function, "setupMessage"):
-        with mock.patch.object(function, "clearMessageTable"):
-            function.colorChange()
+    with (
+        mock.patch.object(function, "setupMessage"),
+        mock.patch.object(function, "clearMessageTable"),
+    ):
+        function.colorChange()
 
 
 def test_clearMessageTable_1(function):

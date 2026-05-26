@@ -417,20 +417,20 @@ def test_calcSatPasses_1(function):
     satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
     obsSite = function.mount.obsSite
     setting = function.mount.setting
-    with mock.patch.object(
-        mw4.logic.satellites.satellite_calculations, "calcPassEvents", return_value=(1, 1)
-    ):
-        with mock.patch.object(
+    with (
+        mock.patch.object(
+            mw4.logic.satellites.satellite_calculations, "calcPassEvents", return_value=(1, 1)
+        ),
+        mock.patch.object(
             mw4.logic.satellites.satellite_calculations, "collectAllOrbits", return_value=[]
-        ):
-            with mock.patch.object(
-                mw4.logic.satellites.satellite_calculations,
-                "extractCorrectOrbits",
-                return_value=[],
-            ):
-                with mock.patch.object(
-                    mw4.logic.satellites.satellite_calculations,
-                    "addMeridianTransit",
-                    return_value=[],
-                ):
-                    calcSatPasses(satellite, obsSite, setting)
+        ),
+        mock.patch.object(
+            mw4.logic.satellites.satellite_calculations,
+            "extractCorrectOrbits",
+            return_value=[],
+        ),
+        mock.patch.object(
+            mw4.logic.satellites.satellite_calculations, "addMeridianTransit", return_value=[]
+        ),
+    ):
+        calcSatPasses(satellite, obsSite, setting)

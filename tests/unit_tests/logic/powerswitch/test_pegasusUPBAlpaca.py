@@ -38,17 +38,21 @@ def function():
 
 
 def test_pollData_1(function):
-    with mock.patch.object(function, "getDeviceProp", return_value=15):
-        with mock.patch.object(function, "callDeviceMethod", return_value=True):
-            with mock.patch.object(function, "storePropertyToData"):
-                function.pollData()
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=15),
+        mock.patch.object(function, "callDeviceMethod", return_value=True),
+        mock.patch.object(function, "storePropertyToData"),
+    ):
+        function.pollData()
 
 
 def test_pollData_2(function):
-    with mock.patch.object(function, "getDeviceProp", return_value=21):
-        with mock.patch.object(function, "callDeviceMethod", return_value=1.0):
-            with mock.patch.object(function, "storePropertyToData"):
-                function.pollData()
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=21),
+        mock.patch.object(function, "callDeviceMethod", return_value=1.0),
+        mock.patch.object(function, "storePropertyToData"),
+    ):
+        function.pollData()
 
 
 def test_togglePowerPort_1(function):
@@ -123,15 +127,18 @@ def test_reboot_1(function):
 
 
 def test_startCommunication_1(function):
-    with mock.patch.object(function, "createAlpacaDevice", return_value=False):
-        with mock.patch.object(function.threadPool, "start") as m_start:
-            function.startCommunication()
-            m_start.assert_not_called()
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=False),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
+        function.startCommunication()
+        m_start.assert_not_called()
 
 
 def test_startCommunication_2(function):
-    with mock.patch.object(function, "createAlpacaDevice", return_value=True):
-        with mock.patch.object(function.threadPool, "start") as m_start:
-            function.startCommunication()
-            m_start.assert_called_once()
-
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=True),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
+        function.startCommunication()
+        m_start.assert_called_once()

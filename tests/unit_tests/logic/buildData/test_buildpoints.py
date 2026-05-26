@@ -858,16 +858,18 @@ def test_generateDSOPath_3(function):
     dec = skyfield.api.Angle(degrees=0)
     ts = function.app.mount.obsSite.ts
     ti = ts.tt_jd(2459580.5)
-    with mock.patch.object(skyfield.almanac, "find_discrete", return_value=([ti, ti], [1, 0])):
-        with mock.patch.object(function, "calcPath", return_value=[(0, 0), (0, 0), (0, 0)]):
-            function.generateDSOPath(
-                ha=ra,
-                dec=dec,
-                numberPoints=1,
-                timeJD=function.app.mount.obsSite.timeJD,
-                location=function.app.mount.obsSite.location,
-                keep=True,
-            )
+    with (
+        mock.patch.object(skyfield.almanac, "find_discrete", return_value=([ti, ti], [1, 0])),
+        mock.patch.object(function, "calcPath", return_value=[(0, 0), (0, 0), (0, 0)]),
+    ):
+        function.generateDSOPath(
+            ha=ra,
+            dec=dec,
+            numberPoints=1,
+            timeJD=function.app.mount.obsSite.timeJD,
+            location=function.app.mount.obsSite.location,
+            keep=True,
+        )
 
 
 def test_generateGoldenSpiral_1(function):

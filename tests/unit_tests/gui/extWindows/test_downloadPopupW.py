@@ -75,12 +75,12 @@ def test_getFileFromUrl_1(function):
             return [b"s" * 512]
 
     function.cancel = False
-    with mock.patch.object(requests, "get", return_value=Response()):
-        with mock.patch.object(builtins, "open"):
-            suc = function.getFileFromUrl(
-                Path("http://local"), Path("tests/work/temp/test.txt")
-            )
-            assert suc
+    with (
+        mock.patch.object(requests, "get", return_value=Response()),
+        mock.patch.object(builtins, "open"),
+    ):
+        suc = function.getFileFromUrl(Path("http://local"), Path("tests/work/temp/test.txt"))
+        assert suc
 
 
 def test_getFileFromUrl_2(function):
@@ -93,12 +93,12 @@ def test_getFileFromUrl_2(function):
         def iter_content(_):
             return [b"s" * 512]
 
-    with mock.patch.object(requests, "get", return_value=Response()):
-        with mock.patch.object(builtins, "open"):
-            suc = function.getFileFromUrl(
-                Path("http://local"), Path("tests/work/temp/test.txt")
-            )
-            assert suc
+    with (
+        mock.patch.object(requests, "get", return_value=Response()),
+        mock.patch.object(builtins, "open"),
+    ):
+        suc = function.getFileFromUrl(Path("http://local"), Path("tests/work/temp/test.txt"))
+        assert suc
 
 
 def test_getFileFromUrl_3(function):
@@ -111,12 +111,12 @@ def test_getFileFromUrl_3(function):
         def iter_content(_):
             return [b"s" * 512]
 
-    with mock.patch.object(requests, "get", return_value=Response()):
-        with mock.patch.object(builtins, "open"):
-            suc = function.getFileFromUrl(
-                Path("http://local"), Path("tests/work/temp/test.txt")
-            )
-            assert not suc
+    with (
+        mock.patch.object(requests, "get", return_value=Response()),
+        mock.patch.object(builtins, "open"),
+    ):
+        suc = function.getFileFromUrl(Path("http://local"), Path("tests/work/temp/test.txt"))
+        assert not suc
 
 
 def test_unzipFile(function):
@@ -169,42 +169,34 @@ def test_downloadFileWorker_6(function):
 
 
 def test_downloadFileWorker_7(function):
-    with mock.patch.object(
-        function,
-        "getFileFromUrl",
-        return_value=True,
+    with (
+        mock.patch.object(function, "getFileFromUrl", return_value=True),
+        mock.patch.object(function, "unzipFile", side_effect=Exception),
     ):
-        with mock.patch.object(function, "unzipFile", side_effect=Exception):
-            suc = function.downloadFileWorker(
-                url=Path(), dest=Path("tests/work/temp/test.txt"), unzip=True
-            )
-            assert not suc
+        suc = function.downloadFileWorker(
+            url=Path(), dest=Path("tests/work/temp/test.txt"), unzip=True
+        )
+        assert not suc
 
 
 def test_downloadFileWorker_8(function):
-    with mock.patch.object(
-        function,
-        "getFileFromUrl",
-        return_value=True,
+    with (
+        mock.patch.object(function, "getFileFromUrl", return_value=True),
+        mock.patch.object(function, "unzipFile"),
     ):
-        with mock.patch.object(function, "unzipFile"):
-            suc = function.downloadFileWorker(
-                url=Path(), dest=Path("tests/work/temp/test.txt"), unzip=True
-            )
-            assert suc
+        suc = function.downloadFileWorker(
+            url=Path(), dest=Path("tests/work/temp/test.txt"), unzip=True
+        )
+        assert suc
 
 
 def test_downloadFileWorker_9(function, mocked_sleepAndEvents):
-    with mock.patch.object(
-        function,
-        "getFileFromUrl",
-        return_value=False,
+    with (
+        mock.patch.object(function, "getFileFromUrl", return_value=False),
+        mock.patch.object(function, "unzipFile"),
     ):
-        with mock.patch.object(function, "unzipFile"):
-            suc = function.downloadFileWorker(
-                url=Path(), dest=Path("tests/work/temp/test.txt")
-            )
-            assert not suc
+        suc = function.downloadFileWorker(url=Path(), dest=Path("tests/work/temp/test.txt"))
+        assert not suc
 
 
 def test_closePopup_1(function, mocked_sleepAndEvents):

@@ -30,17 +30,21 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    with mock.patch.object(ImageTabs, "setCrosshair"):
-        with mock.patch.object(ImageTabs, "colorChange"):
-            func = ImageWindow(App())
-            yield func
-            QApplication.processEvents()
+    with (
+        mock.patch.object(ImageTabs, "setCrosshair"),
+        mock.patch.object(ImageTabs, "colorChange"),
+    ):
+        func = ImageWindow(App())
+        yield func
+        QApplication.processEvents()
 
 
 def test_initConfig_1(function):
-    with mock.patch.object(function, "positionWindow"):
-        with mock.patch.object(function.tabs, "setCrosshair"):
-            function.initConfig()
+    with (
+        mock.patch.object(function, "positionWindow"),
+        mock.patch.object(function.tabs, "setCrosshair"),
+    ):
+        function.initConfig()
 
 
 def test_storeConfig_1(function):
@@ -55,18 +59,19 @@ def test_storeConfig_2(function):
 
 
 def test_showWindow_1(function):
-    with mock.patch.object(function, "setAspectLocked"):
-        with mock.patch.object(function, "clearGui"):
-            with mock.patch.object(function, "setupIcons"):
-                with mock.patch.object(function, "colorChange"):
-                    with mock.patch.object(function, "show"):
-                        function.showWindow()
+    with (
+        mock.patch.object(function, "setAspectLocked"),
+        mock.patch.object(function, "clearGui"),
+        mock.patch.object(function, "setupIcons"),
+        mock.patch.object(function, "colorChange"),
+        mock.patch.object(function, "show"),
+    ):
+        function.showWindow()
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(MWidget, "closeEvent"):
-        with mock.patch.object(function, "storeConfig"):
-            function.closeEvent(QCloseEvent)
+    with mock.patch.object(MWidget, "closeEvent"), mock.patch.object(function, "storeConfig"):
+        function.closeEvent(QCloseEvent)
 
 
 def test_setupIcons_1(function):
@@ -74,10 +79,12 @@ def test_setupIcons_1(function):
 
 
 def test_colorChange(function):
-    with mock.patch.object(function, "showCurrent"):
-        with mock.patch.object(function.tabs, "colorChange"):
-            with mock.patch.object(function, "setupIcons"):
-                function.colorChange()
+    with (
+        mock.patch.object(function, "showCurrent"),
+        mock.patch.object(function.tabs, "colorChange"),
+        mock.patch.object(function, "setupIcons"),
+    ):
+        function.colorChange()
 
 
 def test_clearGui(function):
@@ -135,18 +142,22 @@ def test_selectImage_1(function):
 
 def test_selectImage_2(function):
     function.ui.autoSolve.setChecked(False)
-    with mock.patch.object(MWidget, "openFile", return_value=Path("c:/test/test.fits")):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            function.selectImage()
-            assert function.folder == Path("c:/test")
+    with (
+        mock.patch.object(MWidget, "openFile", return_value=Path("c:/test/test.fits")),
+        mock.patch.object(Path, "is_file", return_value=True),
+    ):
+        function.selectImage()
+        assert function.folder == Path("c:/test")
 
 
 def test_selectImage_3(function):
     function.ui.autoSolve.setChecked(True)
-    with mock.patch.object(MWidget, "openFile", return_value=Path("c:/test/test.fits")):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            function.selectImage()
-            assert function.folder == Path("c:/test")
+    with (
+        mock.patch.object(MWidget, "openFile", return_value=Path("c:/test/test.fits")),
+        mock.patch.object(Path, "is_file", return_value=True),
+    ):
+        function.selectImage()
+        assert function.folder == Path("c:/test")
 
 
 def test_copyLevels(function):
@@ -172,9 +183,11 @@ def test_resultPhotometry_2(function):
 def test_processPhotometry_1(function):
     function.ui.photometryGroup.setChecked(True)
     function.fileHandler.image = 1
-    with mock.patch.object(function.photometry, "processPhotometry"):
-        with mock.patch.object(function, "clearGui"):
-            function.processPhotometry()
+    with (
+        mock.patch.object(function.photometry, "processPhotometry"),
+        mock.patch.object(function, "clearGui"),
+    ):
+        function.processPhotometry()
 
 
 def test_processPhotometry_2(function):
@@ -196,9 +209,11 @@ def test_showImage_2(function):
 
 def test_showImage_3(function):
     function.imagingDeviceStat["expose"] = False
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(function.fileHandler, "loadImage"):
-            function.showImage(Path("c:/test/test.fits"))
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(function.fileHandler, "loadImage"),
+    ):
+        function.showImage(Path("c:/test/test.fits"))
 
 
 def test_showCurrent_1(function):
@@ -380,9 +395,11 @@ def test_slewDirect_2(function):
 
 def test_slewDirect_3(function):
     function.app.deviceStat["mount"] = True
-    with mock.patch.object(function, "messageDialog", return_value=True):
-        with mock.patch.object(function.slewInterface, "slewTargetRaDec", return_value=True):
-            function.slewDirect(Angle(hours=0), Angle(degrees=0))
+    with (
+        mock.patch.object(function, "messageDialog", return_value=True),
+        mock.patch.object(function.slewInterface, "slewTargetRaDec", return_value=True),
+    ):
+        function.slewDirect(Angle(hours=0), Angle(degrees=0))
 
 
 def test_slewCenter_1(function):
@@ -409,38 +426,46 @@ def test_syncModelToImage_2(function):
 def test_syncModelToImage_3(function):
     function.app.deviceStat["mount"] = True
     function.imageFileName = Path("tests/testData/m51.fit")
-    with mock.patch.object(
-        mw4.gui.extWindows.image.imageW, "getCoordinatesFromHeader", return_value=(None, None)
-    ):
-        with mock.patch.object(
+    with (
+        mock.patch.object(
+            mw4.gui.extWindows.image.imageW,
+            "getCoordinatesFromHeader",
+            return_value=(None, None),
+        ),
+        mock.patch.object(
             function.app.mount.obsSite, "syncPositionToTarget", return_value=False
-        ):
-            function.syncModelToImage()
+        ),
+    ):
+        function.syncModelToImage()
 
 
 def test_syncModelToImage_4(function):
     function.app.deviceStat["mount"] = True
     function.imageFileName = Path("tests/testData/m51.fit")
-    with mock.patch.object(
-        mw4.gui.extWindows.image.imageW,
-        "getCoordinatesFromHeader",
-        return_value=(Angle(hours=10), Angle(degrees=10)),
-    ):
-        with mock.patch.object(
+    with (
+        mock.patch.object(
+            mw4.gui.extWindows.image.imageW,
+            "getCoordinatesFromHeader",
+            return_value=(Angle(hours=10), Angle(degrees=10)),
+        ),
+        mock.patch.object(
             function.app.mount.obsSite, "syncPositionToTarget", return_value=False
-        ):
-            function.syncModelToImage()
+        ),
+    ):
+        function.syncModelToImage()
 
 
 def test_syncModelToImage_5(function):
     function.app.deviceStat["mount"] = True
     function.imageFileName = Path("tests/testData/m51.fit")
-    with mock.patch.object(
-        mw4.gui.extWindows.image.imageW,
-        "getCoordinatesFromHeader",
-        return_value=(Angle(hours=10), Angle(degrees=10)),
-    ):
-        with mock.patch.object(
+    with (
+        mock.patch.object(
+            mw4.gui.extWindows.image.imageW,
+            "getCoordinatesFromHeader",
+            return_value=(Angle(hours=10), Angle(degrees=10)),
+        ),
+        mock.patch.object(
             function.app.mount.obsSite, "syncPositionToTarget", return_value=True
-        ):
-            function.syncModelToImage()
+        ),
+    ):
+        function.syncModelToImage()

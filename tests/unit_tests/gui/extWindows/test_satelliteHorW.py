@@ -53,9 +53,8 @@ def test_storeConfig_2(function):
 def test_closeEvent_1(function):
     function.app.mount.signals.pointDone.connect(function.updatePointerAltAz)
     function.app.colorChange.connect(function.colorChange)
-    with mock.patch.object(function, "show"):
-        with mock.patch.object(MWidget, "closeEvent"):
-            function.closeEvent(QCloseEvent)
+    with mock.patch.object(function, "show"), mock.patch.object(MWidget, "closeEvent"):
+        function.closeEvent(QCloseEvent)
 
 
 def test_showWindow(function):
@@ -165,12 +164,14 @@ def test_drawHorizon(function):
 
 
 def test_drawHorizonView_1(function):
-    with mock.patch.object(function, "prepareHorizon"):
-        with mock.patch.object(function, "drawHorizonTrajectory"):
-            with mock.patch.object(function, "prepareHorizonSatellite"):
-                with mock.patch.object(function, "preparePointer"):
-                    with mock.patch.object(function, "drawHorizon"):
-                        function.drawHorizonView([1], [1])
+    with (
+        mock.patch.object(function, "prepareHorizon"),
+        mock.patch.object(function, "drawHorizonTrajectory"),
+        mock.patch.object(function, "prepareHorizonSatellite"),
+        mock.patch.object(function, "preparePointer"),
+        mock.patch.object(function, "drawHorizon"),
+    ):
+        function.drawHorizonView([1], [1])
 
 
 def test_drawSatellite_1(function):

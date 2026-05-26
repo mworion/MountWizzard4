@@ -263,9 +263,11 @@ def test_workerGameController_3(function):
     function.ui.gameControllerList.addItem("test")
     function.ui.gameControllerList.setCurrentIndex(0)
     function.gameControllerList["test"] = {"vendorId": 1, "productId": 1}
-    with mock.patch.object(hid, "device", return_value=Gamepad()):
-        with mock.patch.object(mw4.gui.mainWaddon.tabSett_Misc, "mainThreadSleep"):
-            function.workerGameController()
+    with (
+        mock.patch.object(hid, "device", return_value=Gamepad()),
+        mock.patch.object(mw4.gui.mainWaddon.tabSett_Misc, "mainThreadSleep"),
+    ):
+        function.workerGameController()
     function.readGameController = temp
 
 
@@ -294,10 +296,12 @@ def test_workerGameController_4(function):
     function.ui.gameControllerList.addItem("test")
     function.ui.gameControllerList.setCurrentIndex(0)
     function.gameControllerList["test"] = {"vendorId": 1, "productId": 1}
-    with mock.patch.object(hid, "device", return_value=Gamepad()):
-        with mock.patch.object(mw4.gui.mainWaddon.tabSett_Misc, "mainThreadSleep"):
-            with mock.patch.object(function, "sendGameControllerSignals"):
-                function.workerGameController()
+    with (
+        mock.patch.object(hid, "device", return_value=Gamepad()),
+        mock.patch.object(mw4.gui.mainWaddon.tabSett_Misc, "mainThreadSleep"),
+        mock.patch.object(function, "sendGameControllerSignals"),
+    ):
+        function.workerGameController()
     function.readGameController = temp
 
 
@@ -332,20 +336,24 @@ def test_populateGameControllerList_3(function):
     function.ui.gameControllerGroup.setChecked(True)
     function.mainW.gameControllerRunning = False
     device = [{"product_string": "test", "vendor_id": 1, "product_id": 1}]
-    with mock.patch.object(hid, "enumerate", return_value=device):
-        with mock.patch.object(function, "isValidGameControllers", return_value=False):
-            function.populateGameControllerList()
+    with (
+        mock.patch.object(hid, "enumerate", return_value=device),
+        mock.patch.object(function, "isValidGameControllers", return_value=False),
+    ):
+        function.populateGameControllerList()
 
 
 def test_populateGameControllerList_4(function):
     function.ui.gameControllerGroup.setChecked(True)
     function.mainW.gameControllerRunning = False
     device = [{"product_string": "test", "vendor_id": 1, "product_id": 1}]
-    with mock.patch.object(hid, "enumerate", return_value=device):
-        with mock.patch.object(function, "isValidGameControllers", return_value=True):
-            with mock.patch.object(function, "startGameController"):
-                function.populateGameControllerList()
-                assert function.mainW.gameControllerRunning
+    with (
+        mock.patch.object(hid, "enumerate", return_value=device),
+        mock.patch.object(function, "isValidGameControllers", return_value=True),
+        mock.patch.object(function, "startGameController"),
+    ):
+        function.populateGameControllerList()
+        assert function.mainW.gameControllerRunning
 
 
 def test_playAudioDomeSlewFinished_1(function):

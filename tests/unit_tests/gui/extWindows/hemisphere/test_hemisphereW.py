@@ -38,9 +38,11 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    with mock.patch.object(function.horizonDraw, "initConfig"):
-        with mock.patch.object(function.hemisphereDraw, "initConfig"):
-            function.initConfig()
+    with (
+        mock.patch.object(function.horizonDraw, "initConfig"),
+        mock.patch.object(function.hemisphereDraw, "initConfig"),
+    ):
+        function.initConfig()
 
 
 def test_storeConfig_1(function):
@@ -49,19 +51,23 @@ def test_storeConfig_1(function):
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(function, "storeConfig"):
-        with mock.patch.object(function.hemisphereDraw, "closeTab"):
-            with mock.patch.object(function.horizonDraw, "closeTab"):
-                with mock.patch.object(MWidget, "closeEvent"):
-                    function.closeEvent(QCloseEvent)
+    with (
+        mock.patch.object(function, "storeConfig"),
+        mock.patch.object(function.hemisphereDraw, "closeTab"),
+        mock.patch.object(function.horizonDraw, "closeTab"),
+        mock.patch.object(MWidget, "closeEvent"),
+    ):
+        function.closeEvent(QCloseEvent)
 
 
 def test_showWindow_1(function):
-    with mock.patch.object(function.hemisphereDraw, "drawTab"):
-        with mock.patch.object(function.horizonDraw, "drawTab"):
-            with mock.patch.object(function, "setIcons"):
-                with mock.patch.object(function, "show"):
-                    function.showWindow()
+    with (
+        mock.patch.object(function.hemisphereDraw, "drawTab"),
+        mock.patch.object(function.horizonDraw, "drawTab"),
+        mock.patch.object(function, "setIcons"),
+        mock.patch.object(function, "show"),
+    ):
+        function.showWindow()
 
 
 def test_setIcons(function):
@@ -83,10 +89,12 @@ def test_mouseMoved_2(function):
 
 
 def test_colorChange(function):
-    with mock.patch.object(function.hemisphereDraw, "drawTab"):
-        with mock.patch.object(function.horizonDraw, "drawTab"):
-            with mock.patch.object(function, "setIcons"):
-                function.colorChange()
+    with (
+        mock.patch.object(function.hemisphereDraw, "drawTab"),
+        mock.patch.object(function.horizonDraw, "drawTab"),
+        mock.patch.object(function, "setIcons"),
+    ):
+        function.colorChange()
 
 
 def test_preparePlotItem(function):
@@ -125,15 +133,19 @@ def test_drawTerrainImage_1(function):
 
 def test_drawTerrainImage_2(function):
     function.horizonDraw.imageTerrain = np.ones((1440, 360))
-    with mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch.object(cv2, "imread", return_value=np.array([[0, 0], [0, 0]])):
-                with mock.patch.object(cv2, "resize", return_value=np.ones((1440, 360))):
-                    with mock.patch.object(cv2, "flip", return_value=np.ones((360, 1440))):
-                        function.drawTerrainImage(pg.PlotItem())
+    with (
+        mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")),
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(cv2, "imread", return_value=np.array([[0, 0], [0, 0]])),
+        mock.patch.object(cv2, "resize", return_value=np.ones((1440, 360))),
+        mock.patch.object(cv2, "flip", return_value=np.ones((360, 1440))),
+    ):
+        function.drawTerrainImage(pg.PlotItem())
 
 
 def test_redrawAll_1(function):
-    with mock.patch.object(function.hemisphereDraw, "drawTab"):
-        with mock.patch.object(function.horizonDraw, "drawTab"):
-            function.redrawAll()
+    with (
+        mock.patch.object(function.hemisphereDraw, "drawTab"),
+        mock.patch.object(function.horizonDraw, "drawTab"),
+    ):
+        function.redrawAll()

@@ -172,23 +172,29 @@ def test_convHeaderXISF2FITS(function):
 
 def test_loadXSIF(function):
     img = np.ones((100, 100, 1))
-    with mock.patch.object(XISF, "read", return_value=img):
-        with mock.patch.object(function, "convHeaderXISF2FITS"):
-            function.loadXISF()
+    with (
+        mock.patch.object(XISF, "read", return_value=img),
+        mock.patch.object(function, "convHeaderXISF2FITS"),
+    ):
+        function.loadXISF()
 
 
 def test_workerLoadImage_1(function):
     imageFileName = Path("tests/work/image/m51.fit")
-    with mock.patch.object(function, "loadFITS"):
-        with mock.patch.object(function, "checkValidImageFormat", return_value=False):
-            function.workerLoadImage(imageFileName)
+    with (
+        mock.patch.object(function, "loadFITS"),
+        mock.patch.object(function, "checkValidImageFormat", return_value=False),
+    ):
+        function.workerLoadImage(imageFileName)
 
 
 def test_workerLoadImage_2(function):
     imageFileName = Path("tests/work/image/m51.xisf")
-    with mock.patch.object(function, "loadXISF"):
-        with mock.patch.object(function, "checkValidImageFormat", return_value=False):
-            function.workerLoadImage(imageFileName)
+    with (
+        mock.patch.object(function, "loadXISF"),
+        mock.patch.object(function, "checkValidImageFormat", return_value=False),
+    ):
+        function.workerLoadImage(imageFileName)
 
 
 def test_workerLoadImage_3(function):
@@ -202,11 +208,13 @@ def test_workerLoadImage_3(function):
     }
 
     imageFileName = Path("tests/work/image/m51.fit")
-    with mock.patch.object(function, "loadFITS"):
-        with mock.patch.object(function, "checkValidImageFormat", return_value=True):
-            with mock.patch.object(function, "cleanImageFormat"):
-                with mock.patch.object(function, "debayerImage"):
-                    function.workerLoadImage(imageFileName)
+    with (
+        mock.patch.object(function, "loadFITS"),
+        mock.patch.object(function, "checkValidImageFormat", return_value=True),
+        mock.patch.object(function, "cleanImageFormat"),
+        mock.patch.object(function, "debayerImage"),
+    ):
+        function.workerLoadImage(imageFileName)
 
 
 def test_loadImage_1(function):

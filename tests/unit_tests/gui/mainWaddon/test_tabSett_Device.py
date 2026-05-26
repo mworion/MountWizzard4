@@ -54,18 +54,22 @@ def test_removeUnknownDriversData_1(function):
 
 def test_loadDriversDataFromConfig_1(function):
     config = {}
-    with mock.patch.object(function, "addMissingDefaultData"):
-        with mock.patch.object(function, "removeUnknownDriversData"):
-            function.loadDriversDataFromConfig(config)
-            assert not function.driversData
+    with (
+        mock.patch.object(function, "addMissingDefaultData"),
+        mock.patch.object(function, "removeUnknownDriversData"),
+    ):
+        function.loadDriversDataFromConfig(config)
+        assert not function.driversData
 
 
 def test_initConfig_1(function):
     function.app.config["mainW"] = {}
-    with mock.patch.object(function, "setupDeviceGui"):
-        with mock.patch.object(function, "startDrivers"):
-            with mock.patch.object(function, "loadDriversDataFromConfig"):
-                function.initConfig()
+    with (
+        mock.patch.object(function, "setupDeviceGui"),
+        mock.patch.object(function, "startDrivers"),
+        mock.patch.object(function, "loadDriversDataFromConfig"),
+    ):
+        function.initConfig()
 
 
 def test_storeConfig_1(function):
@@ -164,9 +168,8 @@ def test_processPopupResults_3(function):
     }
     function.devicePopup = Test()
     function.devicePopup.ui.ok.clicked.connect(function.processPopupResults)
-    with mock.patch.object(function, "stopDriver"):
-        with mock.patch.object(function, "startDriver"):
-            function.processPopupResults()
+    with mock.patch.object(function, "stopDriver"), mock.patch.object(function, "startDriver"):
+        function.processPopupResults()
 
 
 def test_copyConfig_1(function):
@@ -183,9 +186,8 @@ def test_copyConfig_1(function):
             },
         }
     }
-    with mock.patch.object(function, "stopDriver"):
-        with mock.patch.object(function, "startDriver"):
-            function.copyConfig("telescope", "telescope")
+    with mock.patch.object(function, "stopDriver"), mock.patch.object(function, "startDriver"):
+        function.copyConfig("telescope", "telescope")
 
 
 def test_copyConfig_2(function):
@@ -211,9 +213,8 @@ def test_copyConfig_2(function):
             },
         },
     }
-    with mock.patch.object(function, "stopDriver"):
-        with mock.patch.object(function, "startDriver"):
-            function.copyConfig("telescope", "indi")
+    with mock.patch.object(function, "stopDriver"), mock.patch.object(function, "startDriver"):
+        function.copyConfig("telescope", "indi")
 
 
 def test_copyConfig_3(function):
@@ -239,9 +240,8 @@ def test_copyConfig_3(function):
             },
         },
     }
-    with mock.patch.object(function, "stopDriver"):
-        with mock.patch.object(function, "startDriver"):
-            function.copyConfig("telescope", "test")
+    with mock.patch.object(function, "stopDriver"), mock.patch.object(function, "startDriver"):
+        function.copyConfig("telescope", "test")
 
 
 def test_copyConfig_4(function):
@@ -269,10 +269,9 @@ def test_copyConfig_4(function):
             },
         },
     }
-    with mock.patch.object(function, "stopDriver"):
-        with mock.patch.object(function, "startDriver"):
-            function.copyConfig("telescope", "indi")
-            assert function.driversData["cover"]["frameworks"]["indi"]["test"] == 1
+    with mock.patch.object(function, "stopDriver"), mock.patch.object(function, "startDriver"):
+        function.copyConfig("telescope", "indi")
+        assert function.driversData["cover"]["frameworks"]["indi"]["test"] == 1
 
 
 def test_callPopup_1(function):
@@ -297,11 +296,13 @@ def test_callPopup_1(function):
     saved_drivers = function.drivers
     function.drivers = {"cover": {"deviceType": "cover", "class": mock.Mock()}}
     try:
-        with mock.patch.object(function, "stopDriver"):
-            with mock.patch.object(
+        with (
+            mock.patch.object(function, "stopDriver"),
+            mock.patch.object(
                 mw4.gui.mainWaddon.tabSett_Device, "DevicePopup", return_value=Pop()
-            ):
-                function.callPopup("cover")
+            ),
+        ):
+            function.callPopup("cover")
     finally:
         function.drivers = saved_drivers
 
@@ -395,9 +396,11 @@ def test_startDriver_4(function):
             },
         }
     }
-    with mock.patch.object(function, "configDriver"):
-        with mock.patch.object(function, "configDriver"):
-            function.startDriver("telescope", True)
+    with (
+        mock.patch.object(function, "configDriver"),
+        mock.patch.object(function, "configDriver"),
+    ):
+        function.startDriver("telescope", True)
 
 
 def test_startDrivers_1(function):
@@ -478,9 +481,8 @@ def test_dispatchDriverDropdown_1(function):
         }
     }
     function.drivers["telescope"]["uiDropDown"].addItem("indi - test")
-    with mock.patch.object(function, "stopDriver"):
-        with mock.patch.object(function, "startDriver"):
-            function.dispatchDriverDropdown("telescope", 1)
+    with mock.patch.object(function, "stopDriver"), mock.patch.object(function, "startDriver"):
+        function.dispatchDriverDropdown("telescope", 1)
 
 
 def test_dispatchDriverDropdown_2(function):
@@ -490,9 +492,8 @@ def test_dispatchDriverDropdown_2(function):
         }
     }
     function.drivers["dome"]["uiDropDown"].addItem("device disabled")
-    with mock.patch.object(function, "stopDriver"):
-        with mock.patch.object(function, "startDriver"):
-            function.dispatchDriverDropdown("dome", 0)
+    with mock.patch.object(function, "stopDriver"), mock.patch.object(function, "startDriver"):
+        function.dispatchDriverDropdown("dome", 0)
 
 
 def test_serverDisconnected_1(function):

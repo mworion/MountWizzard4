@@ -53,11 +53,13 @@ def function(qapp):
 
 def test_initConfig_1(function):
     function.app.config["mainW"] = {}
-    with mock.patch.object(function, "showModelPosition"):
-        with mock.patch.object(function, "showErrorAscending"):
-            with mock.patch.object(function, "showErrorDistribution"):
-                function.initConfig()
-                assert function.ui.targetRMS.value() == 10
+    with (
+        mock.patch.object(function, "showModelPosition"),
+        mock.patch.object(function, "showErrorAscending"),
+        mock.patch.object(function, "showErrorDistribution"),
+    ):
+        function.initConfig()
+        assert function.ui.targetRMS.value() == 10
 
 
 def test_storeConfig_1(function):
@@ -69,10 +71,12 @@ def test_setupIcons_1(function):
 
 
 def test_updateColorSet(function):
-    with mock.patch.object(function, "showModelPosition"):
-        with mock.patch.object(function, "showErrorAscending"):
-            with mock.patch.object(function, "showErrorDistribution"):
-                function.updateColorSet()
+    with (
+        mock.patch.object(function, "showModelPosition"),
+        mock.patch.object(function, "showErrorAscending"),
+        mock.patch.object(function, "showErrorDistribution"),
+    ):
+        function.updateColorSet()
 
 
 def test_setNameList(function):
@@ -183,9 +187,11 @@ def test_loadName_2(function):
         def text():
             return "test"
 
-    with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
-        with mock.patch.object(function.app.mount.model, "loadName", return_value=True):
-            function.loadName()
+    with (
+        mock.patch.object(function.ui.nameList, "currentItem", return_value=Test),
+        mock.patch.object(function.app.mount.model, "loadName", return_value=True),
+    ):
+        function.loadName()
 
 
 def test_loadName_3(function):
@@ -194,9 +200,11 @@ def test_loadName_3(function):
         def text():
             return "test"
 
-    with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
-        with mock.patch.object(function.app.mount.model, "loadName", return_value=False):
-            function.loadName()
+    with (
+        mock.patch.object(function.ui.nameList, "currentItem", return_value=Test),
+        mock.patch.object(function.app.mount.model, "loadName", return_value=False),
+    ):
+        function.loadName()
 
 
 def test_saveName_1(function):
@@ -219,19 +227,23 @@ def test_saveName_3(function):
 
 
 def test_saveName_4(function):
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", True)
+    with (
+        mock.patch.object(
+            PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", True)
+        ),
+        mock.patch.object(function.app.mount.model, "storeName", return_value=False),
     ):
-        with mock.patch.object(function.app.mount.model, "storeName", return_value=False):
-            function.saveName()
+        function.saveName()
 
 
 def test_saveName_5(function):
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", True)
+    with (
+        mock.patch.object(
+            PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", True)
+        ),
+        mock.patch.object(function.app.mount.model, "storeName", return_value=True),
     ):
-        with mock.patch.object(function.app.mount.model, "storeName", return_value=True):
-            function.saveName()
+        function.saveName()
 
 
 def test_deleteName_1(function):
@@ -245,9 +257,11 @@ def test_deleteName_2(function):
         def text():
             return "test"
 
-    with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
-        with mock.patch.object(MWidget, "messageDialog", return_value=False):
-            function.deleteName()
+    with (
+        mock.patch.object(function.ui.nameList, "currentItem", return_value=Test),
+        mock.patch.object(MWidget, "messageDialog", return_value=False),
+    ):
+        function.deleteName()
 
 
 def test_deleteName_3(function):
@@ -256,11 +270,13 @@ def test_deleteName_3(function):
         def text():
             return "test"
 
-    with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
-        with mock.patch.object(MWidget, "messageDialog", return_value=True):
-            with mock.patch.object(function.app.mount.model, "deleteName", return_value=True):
-                with mock.patch.object(function, "refreshName", return_value=True):
-                    function.deleteName()
+    with (
+        mock.patch.object(function.ui.nameList, "currentItem", return_value=Test),
+        mock.patch.object(MWidget, "messageDialog", return_value=True),
+        mock.patch.object(function.app.mount.model, "deleteName", return_value=True),
+        mock.patch.object(function, "refreshName", return_value=True),
+    ):
+        function.deleteName()
 
 
 def test_deleteName_4(function):
@@ -269,10 +285,12 @@ def test_deleteName_4(function):
         def text():
             return "test"
 
-    with mock.patch.object(function.ui.nameList, "currentItem", return_value=Test):
-        with mock.patch.object(MWidget, "messageDialog", return_value=True):
-            with mock.patch.object(function.app.mount.model, "deleteName", return_value=False):
-                function.deleteName()
+    with (
+        mock.patch.object(function.ui.nameList, "currentItem", return_value=Test),
+        mock.patch.object(MWidget, "messageDialog", return_value=True),
+        mock.patch.object(function.app.mount.model, "deleteName", return_value=False),
+    ):
+        function.deleteName()
 
 
 def test_writeBuildModelOptimized_0(function):
@@ -293,32 +311,36 @@ def test_writeBuildModelOptimized_1(function):
 
 def test_writeBuildModelOptimized_2(function):
     function.fittedModelPath = Path("tests/work/model/test-opt.model")
-    with mock.patch.object(mw4.gui.mainWaddon.tabModel_Manage, "writeRetrofitData"):
-        with mock.patch.object(
-            json, "load", return_value=[{"errorIndex": 1}, {"errorIndex": 3}]
-        ):
-            with mock.patch.object(json, "dump"):
-                function.writeBuildModelOptimized([1])
+    with (
+        mock.patch.object(mw4.gui.mainWaddon.tabModel_Manage, "writeRetrofitData"),
+        mock.patch.object(json, "load", return_value=[{"errorIndex": 1}, {"errorIndex": 3}]),
+        mock.patch.object(json, "dump"),
+    ):
+        function.writeBuildModelOptimized([1])
 
 
 def test_clearRefreshModel_1(function):
     function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
-    with mock.patch.object(
-        mw4.gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(), [])
+    with (
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(), [])
+        ),
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(function, "writeBuildModelOptimized"),
     ):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch.object(function, "writeBuildModelOptimized"):
-                function.clearRefreshModel()
+        function.clearRefreshModel()
 
 
 def test_clearRefreshModel_2(function):
     function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
-    with mock.patch.object(
-        mw4.gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(), [])
+    with (
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(), [])
+        ),
+        mock.patch.object(Path, "is_file", return_value=False),
+        mock.patch.object(function, "sendAnalyseFileName"),
     ):
-        with mock.patch.object(Path, "is_file", return_value=False):
-            with mock.patch.object(function, "sendAnalyseFileName"):
-                function.clearRefreshModel()
+        function.clearRefreshModel()
 
 
 def test_clearModel_1(function):
@@ -327,15 +349,19 @@ def test_clearModel_1(function):
 
 
 def test_clearModel_2(function):
-    with mock.patch.object(MWidget, "messageDialog", return_value=True):
-        with mock.patch.object(function.app.mount.model, "clearModel", return_value=False):
-            function.clearModel()
+    with (
+        mock.patch.object(MWidget, "messageDialog", return_value=True),
+        mock.patch.object(function.app.mount.model, "clearModel", return_value=False),
+    ):
+        function.clearModel()
 
 
 def test_clearModel_3(function):
-    with mock.patch.object(MWidget, "messageDialog", return_value=True):
-        with mock.patch.object(function.app.mount.model, "clearModel", return_value=True):
-            function.clearModel()
+    with (
+        mock.patch.object(MWidget, "messageDialog", return_value=True),
+        mock.patch.object(function.app.mount.model, "clearModel", return_value=True),
+    ):
+        function.clearModel()
 
 
 def test_deleteWorstPoint_1(function):
@@ -359,9 +385,11 @@ def test_deleteWorstPoint_2(function):
     )
     function.app.mount.model.starList = [star, star, star]
     function.app.mount.model.numberStars = 3
-    with mock.patch.object(function.app.mount.model, "deletePoint", return_value=True):
-        with mock.patch.object(function, "refreshModel"):
-            function.deleteWorstPoint()
+    with (
+        mock.patch.object(function.app.mount.model, "deletePoint", return_value=True),
+        mock.patch.object(function, "refreshModel"),
+    ):
+        function.deleteWorstPoint()
 
 
 def test_deleteWorstPoint_3(function):
@@ -373,9 +401,11 @@ def test_deleteWorstPoint_3(function):
     )
     function.app.mount.model.starList = [star, star, star]
     function.app.mount.model.numberStars = 3
-    with mock.patch.object(function.app.mount.model, "deletePoint", return_value=False):
-        with mock.patch.object(function, "refreshModel"):
-            function.deleteWorstPoint()
+    with (
+        mock.patch.object(function.app.mount.model, "deletePoint", return_value=False),
+        mock.patch.object(function, "refreshModel"),
+    ):
+        function.deleteWorstPoint()
 
 
 def test_runTargetRMS_1(function):
@@ -415,9 +445,11 @@ def test_runTargetRMS_2(function):
     function.app.mount.model.numberStars = 3
     function.runningTargetRMS = True
     function.app.mount.signals.getModelDone.connect(function.runTargetRMS)
-    with mock.patch.object(function.app.mount.model, "deletePoint", return_value=False):
-        with mock.patch.object(function.app.mount, "getModel"):
-            function.runTargetRMS()
+    with (
+        mock.patch.object(function.app.mount.model, "deletePoint", return_value=False),
+        mock.patch.object(function.app.mount, "getModel"),
+    ):
+        function.runTargetRMS()
 
 
 def test_runTargetRMS_3(function):
@@ -448,9 +480,11 @@ def test_runTargetRMS_3(function):
     function.app.mount.model.numberStars = 3
     function.runningTargetRMS = True
     function.app.mount.signals.getModelDone.connect(function.runTargetRMS)
-    with mock.patch.object(function.app.mount.model, "deletePoint", return_value=True):
-        with mock.patch.object(function.app.mount, "getModel"):
-            function.runTargetRMS()
+    with (
+        mock.patch.object(function.app.mount.model, "deletePoint", return_value=True),
+        mock.patch.object(function.app.mount, "getModel"),
+    ):
+        function.runTargetRMS()
 
 
 def test_runTargetRMS_4(function):
@@ -510,9 +544,11 @@ def test_runSingleRMS_2(function):
     function.app.mount.model.numberStars = 3
     function.runningTargetRMS = True
     function.app.mount.signals.getModelDone.connect(function.runSingleRMS)
-    with mock.patch.object(function.app.mount.model, "deletePoint", return_value=False):
-        with mock.patch.object(function.app.mount, "getModel"):
-            function.runSingleRMS()
+    with (
+        mock.patch.object(function.app.mount.model, "deletePoint", return_value=False),
+        mock.patch.object(function.app.mount, "getModel"),
+    ):
+        function.runSingleRMS()
 
 
 def test_runSingleRMS_3(function):
@@ -543,9 +579,11 @@ def test_runSingleRMS_3(function):
     function.app.mount.model.numberStars = 3
     function.runningTargetRMS = True
     function.app.mount.signals.getModelDone.connect(function.runSingleRMS)
-    with mock.patch.object(function.app.mount.model, "deletePoint", return_value=True):
-        with mock.patch.object(function.app.mount, "getModel"):
-            function.runSingleRMS()
+    with (
+        mock.patch.object(function.app.mount.model, "deletePoint", return_value=True),
+        mock.patch.object(function.app.mount, "getModel"),
+    ):
+        function.runSingleRMS()
 
 
 def test_runSingleRMS_4(function):
@@ -706,9 +744,11 @@ def test_pointClicked_5(function):
     function.app.mount.model.starList.append(a)
     function.app.mount.model.starList.append(a)
 
-    with mock.patch.object(MWidget, "messageDialog", return_value=True):
-        with mock.patch.object(function.app.mount.model, "deletePoint", return_value=False):
-            function.pointClicked(None, points, Event())
+    with (
+        mock.patch.object(MWidget, "messageDialog", return_value=True),
+        mock.patch.object(function.app.mount.model, "deletePoint", return_value=False),
+    ):
+        function.pointClicked(None, points, Event())
 
 
 def test_pointClicked_6(function):
@@ -737,7 +777,9 @@ def test_pointClicked_6(function):
     function.app.mount.model.starList.append(a)
     function.app.mount.model.starList.append(a)
 
-    with mock.patch.object(MWidget, "messageDialog", return_value=True):
-        with mock.patch.object(function.app.mount.model, "deletePoint", return_value=True):
-            with mock.patch.object(function, "refreshModel"):
-                function.pointClicked(None, points, Event())
+    with (
+        mock.patch.object(MWidget, "messageDialog", return_value=True),
+        mock.patch.object(function.app.mount.model, "deletePoint", return_value=True),
+        mock.patch.object(function, "refreshModel"),
+    ):
+        function.pointClicked(None, points, Event())

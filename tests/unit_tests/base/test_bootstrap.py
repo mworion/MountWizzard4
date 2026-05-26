@@ -46,13 +46,11 @@ def module_setup_teardown():
 
 
 def test_except_hook():
-    with mock.patch.object(
-        traceback,
-        "format_exception",
-        return_value=("1", "2", "3"),
+    with (
+        mock.patch.object(traceback, "format_exception", return_value=("1", "2", "3")),
+        mock.patch.object(sys, "__excepthook__"),
     ):
-        with mock.patch.object(sys, "__excepthook__"):
-            exceptHook(1, 2, 3)
+        exceptHook(1, 2, 3)
 
 
 def test_setup_work_dirs():
@@ -75,11 +73,13 @@ def test_write_system_info():
 
 def test_write_system_info_socket_error():
     mwGlob = {"workDir": Path()}
-    with mock.patch.object(
-        socket, "gethostname", side_effect=Exception("hostname lookup failed")
+    with (
+        mock.patch.object(
+            socket, "gethostname", side_effect=Exception("hostname lookup failed")
+        ),
+        pytest.raises(Exception),
     ):
-        with pytest.raises(Exception):
-            writeSystemInfo(mwGlob=mwGlob)
+        writeSystemInfo(mwGlob=mwGlob)
 
 
 def test_extract_data_files():
@@ -92,10 +92,12 @@ def test_extract_data_files_skip_uptodate():
     mwGlob = {"dataDir": Path("tests/work/data")}
     stat_result = mock.MagicMock()
     stat_result.st_mtime = 1000.0
-    with mock.patch("mw4.base.bootstrap.os.stat", return_value=stat_result):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch("mw4.base.bootstrap.shutil.copy2") as mock_copy:
-                extractDataFiles(mwGlob=mwGlob)
+    with (
+        mock.patch("mw4.base.bootstrap.os.stat", return_value=stat_result),
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch("mw4.base.bootstrap.shutil.copy2") as mock_copy,
+    ):
+        extractDataFiles(mwGlob=mwGlob)
     mock_copy.assert_not_called()
 
 

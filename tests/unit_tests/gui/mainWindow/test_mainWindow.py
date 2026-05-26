@@ -34,24 +34,30 @@ def window(qapp):
 
 def test_initConfig_1(window):
     del window.app.config["mainW"]
-    with mock.patch.object(window.mainWindowAddons, "initConfig"):
-        with mock.patch.object(window, "smartTabGui"):
-            with mock.patch.object(window, "setupIcons"):
-                with mock.patch.object(window.externalWindows, "showExtendedWindows"):
-                    window.initConfig()
+    with (
+        mock.patch.object(window.mainWindowAddons, "initConfig"),
+        mock.patch.object(window, "smartTabGui"),
+        mock.patch.object(window, "setupIcons"),
+        mock.patch.object(window.externalWindows, "showExtendedWindows"),
+    ):
+        window.initConfig()
 
 
 def test_storeConfig_1(window):
-    with mock.patch.object(window.mainWindowAddons, "storeConfig"):
-        with mock.patch.object(window.externalWindows, "storeConfigExtendedWindows"):
-            window.storeConfig()
+    with (
+        mock.patch.object(window.mainWindowAddons, "storeConfig"),
+        mock.patch.object(window.externalWindows, "storeConfigExtendedWindows"),
+    ):
+        window.storeConfig()
 
 
 def test_storeConfig_2(window):
     del window.app.config["mainW"]
-    with mock.patch.object(window.mainWindowAddons, "storeConfig"):
-        with mock.patch.object(window.externalWindows, "storeConfigExtendedWindows"):
-            window.storeConfig()
+    with (
+        mock.patch.object(window.mainWindowAddons, "storeConfig"),
+        mock.patch.object(window.externalWindows, "storeConfigExtendedWindows"),
+    ):
+        window.storeConfig()
 
 
 def test_setupIcons_1(window):
@@ -60,27 +66,31 @@ def test_setupIcons_1(window):
 
 
 def test_updateColorSet_1(window):
-    with mock.patch.object(window, "setStyleSheet"):
-        with mock.patch.object(window, "setupIcons"):
-            with mock.patch.object(window.mainWindowAddons, "updateColorSet"):
-                with mock.patch.object(window.mainWindowAddons, "setupIcons"):
-                    window.updateColorSet()
+    with (
+        mock.patch.object(window, "setStyleSheet"),
+        mock.patch.object(window, "setupIcons"),
+        mock.patch.object(window.mainWindowAddons, "updateColorSet"),
+        mock.patch.object(window.mainWindowAddons, "setupIcons"),
+    ):
+        window.updateColorSet()
 
 
 def test_closeEvent_1(window):
-    with mock.patch.object(window.externalWindows, "closeExtendedWindows"):
-        with mock.patch.object(window.threadPool, "waitForDone"):
-            window.closeEvent(QCloseEvent())
+    with (
+        mock.patch.object(window.externalWindows, "closeExtendedWindows"),
+        mock.patch.object(window.threadPool, "waitForDone"),
+    ):
+        window.closeEvent(QCloseEvent())
 
 
 def test_quitSave_1(window):
     window.ui.profile.setText("test")
-    with mock.patch.object(window, "saveProfile"):
-        with mock.patch.object(window, "close"):
-            with mock.patch.object(
-                window.mainWindowAddons.addons["SettDevice"], "stopDrivers"
-            ):
-                window.quitSave()
+    with (
+        mock.patch.object(window, "saveProfile"),
+        mock.patch.object(window, "close"),
+        mock.patch.object(window.mainWindowAddons.addons["SettDevice"], "stopDrivers"),
+    ):
+        window.quitSave()
 
 
 def test_smartFunctionGui_0(window):
@@ -281,59 +291,65 @@ def test_updateStatusGUI_5(window):
 
 def test_switchProfile_1(window):
     loc = wgs84.latlon(latitude_degrees=10, longitude_degrees=10)
-    with mock.patch.object(window.externalWindows, "closeExtendedWindows"):
-        with mock.patch.object(window.externalWindows, "showExtendedWindows"):
-            with mock.patch.object(window, "initConfig"):
-                with mock.patch.object(window.app, "initConfig", return_value=loc):
-                    with mock.patch.object(
-                        window.mainWindowAddons.addons["SettDevice"], "stopDrivers"
-                    ):
-                        window.switchProfile({"test": 1})
+    with (
+        mock.patch.object(window.externalWindows, "closeExtendedWindows"),
+        mock.patch.object(window.externalWindows, "showExtendedWindows"),
+        mock.patch.object(window, "initConfig"),
+        mock.patch.object(window.app, "initConfig", return_value=loc),
+        mock.patch.object(window.mainWindowAddons.addons["SettDevice"], "stopDrivers"),
+    ):
+        window.switchProfile({"test": 1})
 
 
 def test_loadProfileGUI_1(window):
-    with mock.patch.object(window, "openFile", return_value=Path("")):
-        with mock.patch.object(Path, "is_file", return_value=False):
-            window.loadProfileGUI()
+    with (
+        mock.patch.object(window, "openFile", return_value=Path("")),
+        mock.patch.object(Path, "is_file", return_value=False),
+    ):
+        window.loadProfileGUI()
 
 
 def test_loadProfileGUI2(window):
-    with mock.patch.object(window, "openFile", return_value=Path("config.cfg")):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch.object(
-                mw4.gui.mainWindow.mainWindow, "loadConfig", return_value={}
-            ):
-                with mock.patch.object(window, "switchProfile"):
-                    with mock.patch.object(window, "saveProfile"):
-                        window.loadProfileGUI()
+    with (
+        mock.patch.object(window, "openFile", return_value=Path("config.cfg")),
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(mw4.gui.mainWindow.mainWindow, "loadConfig", return_value={}),
+        mock.patch.object(window, "switchProfile"),
+        mock.patch.object(window, "saveProfile"),
+    ):
+        window.loadProfileGUI()
 
 
 def test_loadProfileGUI_3(window):
-    with mock.patch.object(window, "openFile", return_value=Path("test.cfg")):
-        with mock.patch.object(Path, "is_file", return_value=True):
-            with mock.patch.object(
-                mw4.gui.mainWindow.mainWindow, "loadConfig", return_value={"test": 1}
-            ):
-                with mock.patch.object(window, "switchProfile"):
-                    window.loadProfileGUI()
+    with (
+        mock.patch.object(window, "openFile", return_value=Path("test.cfg")),
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(
+            mw4.gui.mainWindow.mainWindow, "loadConfig", return_value={"test": 1}
+        ),
+        mock.patch.object(window, "switchProfile"),
+    ):
+        window.loadProfileGUI()
 
 
 def test_saveConfigAs1(window):
-    with mock.patch.object(window, "saveFile", return_value=Path("test.cfg")):
-        with mock.patch.object(mw4.gui.mainWindow.mainWindow, "saveConfig", return_value=True):
-            with mock.patch.object(window.app, "storeConfig"):
-                with mock.patch.object(window, "storeConfig"):
-                    window.saveProfileAs()
+    with (
+        mock.patch.object(window, "saveFile", return_value=Path("test.cfg")),
+        mock.patch.object(mw4.gui.mainWindow.mainWindow, "saveConfig", return_value=True),
+        mock.patch.object(window.app, "storeConfig"),
+        mock.patch.object(window, "storeConfig"),
+    ):
+        window.saveProfileAs()
 
 
 def test_saveConfigAs2(window):
-    with mock.patch.object(window, "saveFile", return_value=Path("test.cfg")):
-        with mock.patch.object(
-            mw4.gui.mainWindow.mainWindow, "saveConfig", return_value=False
-        ):
-            with mock.patch.object(window.app, "storeConfig"):
-                with mock.patch.object(window, "storeConfig"):
-                    window.saveProfileAs()
+    with (
+        mock.patch.object(window, "saveFile", return_value=Path("test.cfg")),
+        mock.patch.object(mw4.gui.mainWindow.mainWindow, "saveConfig", return_value=False),
+        mock.patch.object(window.app, "storeConfig"),
+        mock.patch.object(window, "storeConfig"),
+    ):
+        window.saveProfileAs()
 
 
 def test_saveConfigAs3(window):
@@ -342,21 +358,21 @@ def test_saveConfigAs3(window):
 
 
 def test_saveConfig1(window):
-    with mock.patch.object(window, "storeConfig"):
-        with mock.patch.object(window.app, "storeConfig"):
-            with mock.patch.object(
-                mw4.gui.mainWindow.mainWindow, "saveConfig", return_value=True
-            ):
-                window.saveProfile()
+    with (
+        mock.patch.object(window, "storeConfig"),
+        mock.patch.object(window.app, "storeConfig"),
+        mock.patch.object(mw4.gui.mainWindow.mainWindow, "saveConfig", return_value=True),
+    ):
+        window.saveProfile()
 
 
 def test_saveConfig2(window):
-    with mock.patch.object(window, "storeConfig"):
-        with mock.patch.object(window.app, "storeConfig"):
-            with mock.patch.object(
-                mw4.gui.mainWindow.mainWindow, "saveConfig", return_value=False
-            ):
-                window.saveProfile()
+    with (
+        mock.patch.object(window, "storeConfig"),
+        mock.patch.object(window.app, "storeConfig"),
+        mock.patch.object(mw4.gui.mainWindow.mainWindow, "saveConfig", return_value=False),
+    ):
+        window.saveProfile()
 
 
 def test_remoteCommand_1(window):

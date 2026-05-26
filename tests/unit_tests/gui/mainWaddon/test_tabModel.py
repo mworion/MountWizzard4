@@ -132,9 +132,11 @@ def test_programModelToMountFinish_1(function):
     function.modelData = ModelData(App)
     function.modelData.name = "Test"
     function.app.mount.signals.getModelDone.connect(function.programModelToMountFinish)
-    with mock.patch.object(function.modelData, "generateSaveData"):
-        with mock.patch.object(function.modelData, "saveModelData"):
-            function.programModelToMountFinish()
+    with (
+        mock.patch.object(function.modelData, "generateSaveData"),
+        mock.patch.object(function.modelData, "saveModelData"),
+    ):
+        function.programModelToMountFinish()
 
 
 def test_programModelToMount_1(function):
@@ -162,11 +164,13 @@ def test_programModelToMount_3(function):
     function.modelData.name = "Test"
 
     function.modelData.modelProgData = [1, 2, 3]
-    with mock.patch.object(
-        function.app.mount.model, "programModelFromStarList", return_value=True
+    with (
+        mock.patch.object(
+            function.app.mount.model, "programModelFromStarList", return_value=True
+        ),
+        mock.patch.object(function.app.mount.model, "storeName"),
     ):
-        with mock.patch.object(function.app.mount.model, "storeName"):
-            function.programModelToMount()
+        function.programModelToMount()
 
 
 def test_checkModelRunConditions_1(function):
@@ -194,35 +198,40 @@ def test_clearAlignAndBackup_1(function):
 
 
 def test_clearAlignAndBackup_2(function):
-    with mock.patch.object(function.app.mount.model, "clearModel", return_value=True):
-        with mock.patch.object(function.app.mount.model, "deleteName", return_value=False):
-            with mock.patch.object(mw4.gui.mainWaddon.tabModel, "mainThreadSleep"):
-                suc = function.clearAlignAndBackup()
-                assert suc
+    with (
+        mock.patch.object(function.app.mount.model, "clearModel", return_value=True),
+        mock.patch.object(function.app.mount.model, "deleteName", return_value=False),
+        mock.patch.object(mw4.gui.mainWaddon.tabModel, "mainThreadSleep"),
+    ):
+        suc = function.clearAlignAndBackup()
+        assert suc
 
 
 def test_clearAlignAndBackup_3(function):
-    with mock.patch.object(function.app.mount.model, "clearModel", return_value=True):
-        with mock.patch.object(function.app.mount.model, "deleteName", return_value=True):
-            with mock.patch.object(function.app.mount.model, "storeName", return_value=False):
-                with mock.patch.object(mw4.gui.mainWaddon.tabModel, "mainThreadSleep"):
-                    suc = function.clearAlignAndBackup()
-                    assert suc
+    with (
+        mock.patch.object(function.app.mount.model, "clearModel", return_value=True),
+        mock.patch.object(function.app.mount.model, "deleteName", return_value=True),
+        mock.patch.object(function.app.mount.model, "storeName", return_value=False),
+        mock.patch.object(mw4.gui.mainWaddon.tabModel, "mainThreadSleep"),
+    ):
+        suc = function.clearAlignAndBackup()
+        assert suc
 
 
 def test_clearAlignAndBackup_4(function):
-    with mock.patch.object(function.app.mount.model, "clearModel", return_value=True):
-        with mock.patch.object(function.app.mount.model, "deleteName", return_value=True):
-            with mock.patch.object(function.app.mount.model, "storeName", return_value=True):
-                with mock.patch.object(mw4.gui.mainWaddon.tabModel, "mainThreadSleep"):
-                    suc = function.clearAlignAndBackup()
-                    assert suc
+    with (
+        mock.patch.object(function.app.mount.model, "clearModel", return_value=True),
+        mock.patch.object(function.app.mount.model, "deleteName", return_value=True),
+        mock.patch.object(function.app.mount.model, "storeName", return_value=True),
+        mock.patch.object(mw4.gui.mainWaddon.tabModel, "mainThreadSleep"),
+    ):
+        suc = function.clearAlignAndBackup()
+        assert suc
 
 
 def test_setupFilenamesAndDirectories_1(function):
-    with mock.patch.object(Path, "is_dir", return_value=False):
-        with mock.patch.object(os, "mkdir"):
-            function.setupFilenamesAndDirectories()
+    with mock.patch.object(Path, "is_dir", return_value=False), mock.patch.object(os, "mkdir"):
+        function.setupFilenamesAndDirectories()
 
 
 def test_setupFilenamesAndDirectories_2(function):
@@ -311,28 +320,34 @@ def test_runBatch_1(function):
 
 
 def test_runBatch_2(function):
-    with mock.patch.object(function, "checkModelRunConditions", return_value=True):
-        with mock.patch.object(function, "clearAlignAndBackup", return_value=False):
-            function.runBatch()
+    with (
+        mock.patch.object(function, "checkModelRunConditions", return_value=True),
+        mock.patch.object(function, "clearAlignAndBackup", return_value=False),
+    ):
+        function.runBatch()
 
 
 def test_runBatch_3(function):
-    with mock.patch.object(function, "checkModelRunConditions", return_value=True):
-        with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
-            with mock.patch.object(function, "setupModelInputData"):
-                with mock.patch.object(function.modelData, "runModel"):
-                    with mock.patch.object(function, "programModelToMount"):
-                        function.runBatch()
+    with (
+        mock.patch.object(function, "checkModelRunConditions", return_value=True),
+        mock.patch.object(function, "clearAlignAndBackup", return_value=True),
+        mock.patch.object(function, "setupModelInputData"),
+        mock.patch.object(function.modelData, "runModel"),
+        mock.patch.object(function, "programModelToMount"),
+    ):
+        function.runBatch()
 
 
 def test_runBatch_4(function):
     function.modelData.cancelBatch = True
-    with mock.patch.object(function, "checkModelRunConditions", return_value=True):
-        with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
-            with mock.patch.object(function, "setupModelInputData"):
-                with mock.patch.object(function.modelData, "runModel"):
-                    with mock.patch.object(function, "programModelToMount"):
-                        function.runBatch()
+    with (
+        mock.patch.object(function, "checkModelRunConditions", return_value=True),
+        mock.patch.object(function, "clearAlignAndBackup", return_value=True),
+        mock.patch.object(function, "setupModelInputData"),
+        mock.patch.object(function.modelData, "runModel"),
+        mock.patch.object(function, "programModelToMount"),
+    ):
+        function.runBatch()
 
 
 def test_runFileModel_1(function):
@@ -370,46 +385,50 @@ def test_runFileModel_2(function):
 
     val = (model, "Error")
     function.modelData = ModelData(App)
-    with mock.patch.object(MWidget, "openFile", return_value=[Path("test.model")]):
-        with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
-            with mock.patch.object(function.modelData, "buildProgModel"):
-                with mock.patch.object(
-                    mw4.gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val
-                ):
-                    with mock.patch.object(function.modelData, "buildProgModel"):
-                        with mock.patch.object(function, "programModelToMount"):
-                            function.runFileModel()
-                            assert function.modelData.name == "test"
+    with (
+        mock.patch.object(MWidget, "openFile", return_value=[Path("test.model")]),
+        mock.patch.object(function, "clearAlignAndBackup", return_value=True),
+        mock.patch.object(function.modelData, "buildProgModel"),
+        mock.patch.object(mw4.gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val),
+        mock.patch.object(function.modelData, "buildProgModel"),
+        mock.patch.object(function, "programModelToMount"),
+    ):
+        function.runFileModel()
+        assert function.modelData.name == "test"
 
 
 def test_runFileModel_3(function):
     function.modelData = ModelData(App)
     function.modelData.name = "Test"
 
-    with mock.patch.object(function, "clearAlignAndBackup", return_value=True):
-        with mock.patch.object(
+    with (
+        mock.patch.object(function, "clearAlignAndBackup", return_value=True),
+        mock.patch.object(
             MWidget, "openFile", return_value=[Path("test1.model"), Path("test2.model")]
-        ):
-            with mock.patch.object(
-                function, "setupFilenamesAndDirectories", return_value=(Path("m-test1-add"))
-            ):
-                with mock.patch.object(
-                    mw4.gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=([], "")
-                ):
-                    with mock.patch.object(function.modelData, "buildProgModel"):
-                        with mock.patch.object(function, "programModelToMount"):
-                            function.runFileModel()
-                            assert function.modelData.name == Path("m-test1-add")
+        ),
+        mock.patch.object(
+            function, "setupFilenamesAndDirectories", return_value=Path("m-test1-add")
+        ),
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=([], "")
+        ),
+        mock.patch.object(function.modelData, "buildProgModel"),
+        mock.patch.object(function, "programModelToMount"),
+    ):
+        function.runFileModel()
+        assert function.modelData.name == Path("m-test1-add")
 
 
 def test_runFileModel_4(function):
     function.modelData = ModelData(App)
     function.modelData.name = "Test"
-    with mock.patch.object(function, "clearAlignAndBackup", return_value=False):
-        with mock.patch.object(
+    with (
+        mock.patch.object(function, "clearAlignAndBackup", return_value=False),
+        mock.patch.object(
             MWidget, "openFile", return_value=[Path("test1.model"), Path("test2.model")]
-        ):
-            with mock.patch.object(
-                function, "setupFilenamesAndDirectories", return_value=(Path("m-test1-add"))
-            ):
-                function.runFileModel()
+        ),
+        mock.patch.object(
+            function, "setupFilenamesAndDirectories", return_value=Path("m-test1-add")
+        ),
+    ):
+        function.runFileModel()

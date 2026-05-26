@@ -118,29 +118,35 @@ def test_calcTrajectoryAndShow_1(function):
 def test_calcTrajectoryAndShow_2(function):
     function.app.deviceStat["mount"] = True
     function.ui.useInternalSatCalc.setChecked(True)
-    with mock.patch.object(function, "selectStartEnd", return_value=(1, 1)):
-        with mock.patch.object(function, "calcTrajectoryData", return_value=(0, 0)):
-            with mock.patch.object(function, "filterHorizon", return_value=(0, 0, 0, 0)):
-                with mock.patch.object(function, "signalSatelliteData"):
-                    function.calcTrajectoryAndShow()
+    with (
+        mock.patch.object(function, "selectStartEnd", return_value=(1, 1)),
+        mock.patch.object(function, "calcTrajectoryData", return_value=(0, 0)),
+        mock.patch.object(function, "filterHorizon", return_value=(0, 0, 0, 0)),
+        mock.patch.object(function, "signalSatelliteData"),
+    ):
+        function.calcTrajectoryAndShow()
 
 
 def test_calcTrajectoryAndShow_3(function):
     function.app.deviceStat["mount"] = False
     function.ui.useInternalSatCalc.setChecked(False)
-    with mock.patch.object(function, "selectStartEnd", return_value=(1, 1)):
-        with mock.patch.object(function.app.mount, "calcTLE"):
-            with mock.patch.object(function, "signalSatelliteData"):
-                function.calcTrajectoryAndShow()
+    with (
+        mock.patch.object(function, "selectStartEnd", return_value=(1, 1)),
+        mock.patch.object(function.app.mount, "calcTLE"),
+        mock.patch.object(function, "signalSatelliteData"),
+    ):
+        function.calcTrajectoryAndShow()
 
 
 def test_calcTrajectoryAndShow_4(function):
     function.app.deviceStat["mount"] = True
     function.ui.useInternalSatCalc.setChecked(False)
-    with mock.patch.object(function, "selectStartEnd", return_value=(1, 1)):
-        with mock.patch.object(function.app.mount, "calcTLE"):
-            with mock.patch.object(function, "signalSatelliteData"):
-                function.calcTrajectoryAndShow()
+    with (
+        mock.patch.object(function, "selectStartEnd", return_value=(1, 1)),
+        mock.patch.object(function.app.mount, "calcTLE"),
+        mock.patch.object(function, "signalSatelliteData"),
+    ):
+        function.calcTrajectoryAndShow()
 
 
 def test_workerShowSatPasses_0(function):
@@ -164,12 +170,14 @@ def test_workerShowSatPasses_1(function):
         },
         {"rise": ts.tt_jd(2459216.5), "settle": ts.tt_jd(2459216.7)},
     ]
-    with mock.patch.object(function, "clearTrackingParameters"):
-        with mock.patch.object(
+    with (
+        mock.patch.object(function, "clearTrackingParameters"),
+        mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
-        ):
-            with mock.patch.object(function, "calcTrajectoryAndShow"):
-                function.workerShowSatPasses()
+        ),
+        mock.patch.object(function, "calcTrajectoryAndShow"),
+    ):
+        function.workerShowSatPasses()
 
 
 def test_workerShowSatPasses_2(function):
@@ -189,12 +197,14 @@ def test_workerShowSatPasses_2(function):
         },
         {"rise": ts.tt_jd(2459216.5), "settle": ts.tt_jd(2459216.7)},
     ]
-    with mock.patch.object(function, "clearTrackingParameters"):
-        with mock.patch.object(
+    with (
+        mock.patch.object(function, "clearTrackingParameters"),
+        mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
-        ):
-            with mock.patch.object(function, "calcTrajectoryAndShow"):
-                function.workerShowSatPasses()
+        ),
+        mock.patch.object(function, "calcTrajectoryAndShow"),
+    ):
+        function.workerShowSatPasses()
 
 
 def test_workerShowSatPasses_3(function):
@@ -212,12 +222,14 @@ def test_workerShowSatPasses_3(function):
         },
         {"rise": ts.tt_jd(2459216.5), "settle": ts.tt_jd(2459216.7)},
     ]
-    with mock.patch.object(function, "clearTrackingParameters"):
-        with mock.patch.object(
+    with (
+        mock.patch.object(function, "clearTrackingParameters"),
+        mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
-        ):
-            with mock.patch.object(function, "calcTrajectoryAndShow"):
-                function.workerShowSatPasses()
+        ),
+        mock.patch.object(function, "calcTrajectoryAndShow"),
+    ):
+        function.workerShowSatPasses()
 
 
 def test_showSatPasses_1(function):
@@ -267,11 +279,13 @@ def test_extractSatelliteData_3(function):
     function.satellites.objects = {"NOAA 8": sat, "Test1": sat}
     function.satTableBaseValid = True
     ts = function.app.mount.obsSite.ts
-    with mock.patch.object(
-        function.app.mount.obsSite.ts, "now", return_value=ts.tt_jd(2458925.404976551)
+    with (
+        mock.patch.object(
+            function.app.mount.obsSite.ts, "now", return_value=ts.tt_jd(2458925.404976551)
+        ),
+        mock.patch.object(mw4.gui.utilities.qtHelpers, "positionCursorInTable"),
     ):
-        with mock.patch.object(mw4.gui.utilities.qtHelpers, "positionCursorInTable"):
-            function.extractSatelliteData(satName="NOAA 8")
+        function.extractSatelliteData(satName="NOAA 8")
 
 
 def test_extractSatelliteData_4(function):
@@ -294,11 +308,13 @@ def test_extractSatelliteData_4(function):
     function.satellites.objects = {"NOAA 8": sat, "Test1": sat}
     function.satTableBaseValid = True
     ts = function.app.mount.obsSite.ts
-    with mock.patch.object(
-        function.app.mount.obsSite.ts, "now", return_value=ts.tt_jd(2458930.404976551)
+    with (
+        mock.patch.object(
+            function.app.mount.obsSite.ts, "now", return_value=ts.tt_jd(2458930.404976551)
+        ),
+        mock.patch.object(mw4.gui.utilities.qtHelpers, "positionCursorInTable"),
     ):
-        with mock.patch.object(mw4.gui.utilities.qtHelpers, "positionCursorInTable"):
-            function.extractSatelliteData(satName="NOAA 8")
+        function.extractSatelliteData(satName="NOAA 8")
 
 
 def test_extractSatelliteData_5(function):
@@ -321,11 +337,13 @@ def test_extractSatelliteData_5(function):
     function.satellites.objects = {"NOAA 8": sat, "Test1": sat}
     function.satTableBaseValid = True
     ts = function.app.mount.obsSite.ts
-    with mock.patch.object(
-        function.app.mount.obsSite.ts, "now", return_value=ts.tt_jd(2458950.404976551)
+    with (
+        mock.patch.object(
+            function.app.mount.obsSite.ts, "now", return_value=ts.tt_jd(2458950.404976551)
+        ),
+        mock.patch.object(mw4.gui.utilities.qtHelpers, "positionCursorInTable"),
     ):
-        with mock.patch.object(mw4.gui.utilities.qtHelpers, "positionCursorInTable"):
-            function.extractSatelliteData(satName="NOAA 8")
+        function.extractSatelliteData(satName="NOAA 8")
 
 
 def test_programSatToMount_3(function):
@@ -350,26 +368,29 @@ def test_programSatToMount_4(function):
     function.satellite = EarthSatellite(tle[1], tle[2], name=tle[0])
     function.satellites.objects = {"TIANGONG 2": EarthSatellite(tle[1], tle[2], name=tle[0])}
     function.app.mount.satellite.tleParams.name = "TIANGONG 2"
-    with mock.patch.object(function.app.mount.satellite, "setTLE", return_value=True):
-        with mock.patch.object(function.app.mount, "getTLE"):
-            function.programSatToMount(satName="TIANGONG 2")
+    with (
+        mock.patch.object(function.app.mount.satellite, "setTLE", return_value=True),
+        mock.patch.object(function.app.mount, "getTLE"),
+    ):
+        function.programSatToMount(satName="TIANGONG 2")
 
 
 def test_chooseSatellite_1(function):
     satTab = function.ui.listSats
     function.app.deviceStat["mount"] = True
-    with mock.patch.object(satTab, "item"):
-        with mock.patch.object(function, "programSatToMount"):
-            function.chooseSatellite()
+    with mock.patch.object(satTab, "item"), mock.patch.object(function, "programSatToMount"):
+        function.chooseSatellite()
 
 
 def test_chooseSatellite_2(function):
     satTab = function.ui.listSats
     function.app.deviceStat["mount"] = False
-    with mock.patch.object(satTab, "item"):
-        with mock.patch.object(function, "extractSatelliteData"):
-            with mock.patch.object(function, "showSatPasses"):
-                function.chooseSatellite()
+    with (
+        mock.patch.object(satTab, "item"),
+        mock.patch.object(function, "extractSatelliteData"),
+        mock.patch.object(function, "showSatPasses"),
+    ):
+        function.chooseSatellite()
 
 
 def test_getSatelliteDataFromDatabase_2(function):
@@ -378,9 +399,11 @@ def test_getSatelliteDataFromDatabase_2(function):
 
     tleParams = TLEParams(Test())
     tleParams.name = ""
-    with mock.patch.object(function, "extractSatelliteData"):
-        with mock.patch.object(function, "showSatPasses"):
-            function.getSatelliteDataFromDatabase(tleParams=tleParams)
+    with (
+        mock.patch.object(function, "extractSatelliteData"),
+        mock.patch.object(function, "showSatPasses"),
+    ):
+        function.getSatelliteDataFromDatabase(tleParams=tleParams)
 
 
 def test_updateOrbit_1(function):
@@ -549,42 +572,50 @@ def test_filterHorizon_2(function):
     end = 0
     alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
     az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    with mock.patch.object(function, "filterHorizonForward", return_value=([], [], 1)):
-        with mock.patch.object(function, "filterHorizonReverse", return_value=([], [], 1)):
-            start, end, alt, az = function.filterHorizon(start, end, alt, az)
-            assert start == 1 / 86400
-            assert end == -1 / 86400
+    with (
+        mock.patch.object(function, "filterHorizonForward", return_value=([], [], 1)),
+        mock.patch.object(function, "filterHorizonReverse", return_value=([], [], 1)),
+    ):
+        start, end, alt, az = function.filterHorizon(start, end, alt, az)
+        assert start == 1 / 86400
+        assert end == -1 / 86400
 
 
 def test_startProg_1(function):
-    with mock.patch.object(function, "clearTrackingParameters"):
-        with mock.patch.object(function, "selectStartEnd", return_value=(1, 2)):
-            with mock.patch.object(function, "calcTrajectoryData", return_value=(0, 0)):
-                with mock.patch.object(
-                    function, "filterHorizon", return_value=(0, 0, [1], [1])
-                ):
-                    with mock.patch.object(function.app.mount, "progTrajectory"):
-                        function.startProg()
+    with (
+        mock.patch.object(function, "clearTrackingParameters"),
+        mock.patch.object(function, "selectStartEnd", return_value=(1, 2)),
+        mock.patch.object(function, "calcTrajectoryData", return_value=(0, 0)),
+        mock.patch.object(function, "filterHorizon", return_value=(0, 0, [1], [1])),
+        mock.patch.object(function.app.mount, "progTrajectory"),
+    ):
+        function.startProg()
 
 
 def test_startProg_2(function):
-    with mock.patch.object(function, "clearTrackingParameters"):
-        with mock.patch.object(function, "selectStartEnd", return_value=(0, 0)):
-            function.startProg()
+    with (
+        mock.patch.object(function, "clearTrackingParameters"),
+        mock.patch.object(function, "selectStartEnd", return_value=(0, 0)),
+    ):
+        function.startProg()
 
 
 def test_startProg_3(function):
-    with mock.patch.object(function, "clearTrackingParameters"):
-        with mock.patch.object(function, "selectStartEnd", return_value=(1, 1)):
-            with mock.patch.object(function, "calcTrajectoryData", return_value=(0, 0)):
-                with mock.patch.object(function, "filterHorizon", return_value=(0, 0, [], [])):
-                    function.startProg()
+    with (
+        mock.patch.object(function, "clearTrackingParameters"),
+        mock.patch.object(function, "selectStartEnd", return_value=(1, 1)),
+        mock.patch.object(function, "calcTrajectoryData", return_value=(0, 0)),
+        mock.patch.object(function, "filterHorizon", return_value=(0, 0, [], [])),
+    ):
+        function.startProg()
 
 
 def test_changeUnitTimeUTC_1(function):
-    with mock.patch.object(function, "showSatPasses"):
-        with mock.patch.object(function, "updateSatelliteTrackGui"):
-            function.changeUnitTimeUTC()
+    with (
+        mock.patch.object(function, "showSatPasses"),
+        mock.patch.object(function, "updateSatelliteTrackGui"),
+    ):
+        function.changeUnitTimeUTC()
 
 
 def test_updateSatelliteTrackGui_1(function):
@@ -710,24 +741,28 @@ def test_startTrack_5(function):
 def test_startTrack_6(function):
     function.app.deviceStat["mount"] = True
     function.app.mount.obsSite.status = 5
-    with mock.patch.object(
-        function.app.mount.satellite, "slewTLE", return_value=(True, "test")
+    with (
+        mock.patch.object(
+            function.app.mount.satellite, "slewTLE", return_value=(True, "test")
+        ),
+        mock.patch.object(function.app.mount.obsSite, "unpark", return_value=True),
     ):
-        with mock.patch.object(function.app.mount.obsSite, "unpark", return_value=True):
-            function.startTrack()
+        function.startTrack()
 
 
 def test_startTrack_7(function):
     function.app.deviceStat["mount"] = True
     function.app.mount.obsSite.status = 5
-    with mock.patch.object(
-        function.app.mount.satellite, "slewTLE", return_value=(True, "test")
+    with (
+        mock.patch.object(
+            function.app.mount.satellite, "slewTLE", return_value=(True, "test")
+        ),
+        mock.patch.object(function.app.mount.obsSite, "unpark", return_value=False),
+        mock.patch.object(
+            function.app.mount.satellite, "clearTrackingOffsets", return_value=True
+        ),
     ):
-        with mock.patch.object(function.app.mount.obsSite, "unpark", return_value=False):
-            with mock.patch.object(
-                function.app.mount.satellite, "clearTrackingOffsets", return_value=True
-            ):
-                function.startTrack()
+        function.startTrack()
 
 
 def test_stopTrack_1(function):

@@ -54,9 +54,7 @@ def test_pollData_2(function):
 
 
 def test_lightOn_1(function):
-    function.app.lightPanel.data = {
-        "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 254
-    }
+    function.app.lightPanel.data = {"FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 254}
     while not function.commandQueue.empty():
         function.commandQueue.get_nowait()
     function.lightOn()
@@ -83,15 +81,18 @@ def test_lightIntensity_1(function):
 
 
 def test_startCommunication_1(function):
-    with mock.patch.object(function, "createAlpacaDevice", return_value=False):
-        with mock.patch.object(function.threadPool, "start") as m_start:
-            function.startCommunication()
-            m_start.assert_not_called()
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=False),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
+        function.startCommunication()
+        m_start.assert_not_called()
 
 
 def test_startCommunication_2(function):
-    with mock.patch.object(function, "createAlpacaDevice", return_value=True):
-        with mock.patch.object(function.threadPool, "start") as m_start:
-            function.startCommunication()
-            m_start.assert_called_once()
-
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=True),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
+        function.startCommunication()
+        m_start.assert_called_once()

@@ -68,15 +68,19 @@ def test_processSeeingData_1(function):
 
 
 def test_processSeeingData_2(function):
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(json, "load", return_value={}, side_effect=Exception):
-            function.processSeeingData()
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(json, "load", return_value={}, side_effect=Exception),
+    ):
+        function.processSeeingData()
 
 
 def test_processSeeingData_3(function):
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(json, "load", return_value={}):
-            function.processSeeingData()
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(json, "load", return_value={}),
+    ):
+        function.processSeeingData()
 
 
 def test_workerGetSeeingData_0(function):
@@ -139,19 +143,23 @@ def test_sendStatus_2(function):
 
 
 def test_getSeeingData_1(function):
-    with mock.patch.object(function, "loadingFileNeeded", return_value=False):
-        with mock.patch.object(function, "processSeeingData"):
-            with mock.patch.object(function, "sendStatus"):
-                with mock.patch.object(function.threadPool, "start"):
-                    function.getSeeingData("test")
+    with (
+        mock.patch.object(function, "loadingFileNeeded", return_value=False),
+        mock.patch.object(function, "processSeeingData"),
+        mock.patch.object(function, "sendStatus"),
+        mock.patch.object(function.threadPool, "start"),
+    ):
+        function.getSeeingData("test")
 
 
 def test_getSeeingData_2(function):
-    with mock.patch.object(function, "loadingFileNeeded", return_value=True):
-        with mock.patch.object(function, "processSeeingData"):
-            with mock.patch.object(function, "sendStatus"):
-                with mock.patch.object(function.threadPool, "start"):
-                    function.getSeeingData("test")
+    with (
+        mock.patch.object(function, "loadingFileNeeded", return_value=True),
+        mock.patch.object(function, "processSeeingData"),
+        mock.patch.object(function, "sendStatus"),
+        mock.patch.object(function.threadPool, "start"),
+    ):
+        function.getSeeingData("test")
 
 
 def test_loadingFileNeeded_1(function):
@@ -161,17 +169,21 @@ def test_loadingFileNeeded_1(function):
 
 
 def test_loadingFileNeeded_2(function):
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(function.app.mount.obsSite.loader, "days_old", return_value=1):
-            suc = function.loadingFileNeeded("test", 1)
-            assert suc
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(function.app.mount.obsSite.loader, "days_old", return_value=1),
+    ):
+        suc = function.loadingFileNeeded("test", 1)
+        assert suc
 
 
 def test_loadingFileNeeded_3(function):
-    with mock.patch.object(Path, "is_file", return_value=True):
-        with mock.patch.object(function.app.mount.obsSite.loader, "days_old", return_value=1):
-            suc = function.loadingFileNeeded("test", 25)
-            assert not suc
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(function.app.mount.obsSite.loader, "days_old", return_value=1),
+    ):
+        suc = function.loadingFileNeeded("test", 25)
+        assert not suc
 
 
 def test_pollSeeingData_1(function):
@@ -211,6 +223,8 @@ def test_pollSeeingData_5(function):
     function.apiKey = "test"
     function.b = "test"
     function.app.onlineMode = True
-    with mock.patch.object(function, "loadingFileNeeded", return_value=True):
-        with mock.patch.object(function, "getSeeingData"):
-            function.pollSeeingData()
+    with (
+        mock.patch.object(function, "loadingFileNeeded", return_value=True),
+        mock.patch.object(function, "getSeeingData"),
+    ):
+        function.pollSeeingData()

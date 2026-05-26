@@ -68,6 +68,7 @@ dependencies = [
     "qimage2ndarray==1.10.0",
     "skyfield==1.54",
     "sgp4==2.25",
+    "alpyca==3.1.2",
     "requests==2.34.2",
     "python-dateutil==2.9.0.post0",
     "wakeonlan==3.3.0",

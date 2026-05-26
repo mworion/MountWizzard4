@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import numpy as np
@@ -1041,6 +1041,7 @@ class Mount(QObject):
         self.satellite = MountSatellite()
         self.model = MountModel()
         self.host = None
+        self.loggingTrace = False
 
     @staticmethod
     def bootMount():

@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -26,6 +26,7 @@ if platform.system() == "Windows":
 
 class Telescope:
     log = logging.getLogger("MW4")
+    DEVICE_TYPE: str = "telescope"
 
     def __init__(self, app: Any) -> None:
         self.app = app
@@ -33,7 +34,6 @@ class Telescope:
         self.signals = Signals()
         self.data: dict[str, Any] = {}
         self.loadConfig: bool = True
-        self.updateRate: int = 10000
         self.deviceType: str = ""
         self.framework: str = ""
         self.defaultConfig: dict[str, Any] = {"framework": "", "frameworks": {}}

@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 from functools import partial
@@ -52,7 +52,6 @@ class DevicePopup(MWidget):
                 "deviceList": self.ui.indiDeviceList,
                 "messages": self.ui.indiMessages,
                 "loadConfig": self.ui.indiLoadConfig,
-                "updateRate": self.ui.indiUpdateRate,
             },
             "alpaca": {
                 "hostaddress": self.ui.alpacaHostAddress,
@@ -60,19 +59,12 @@ class DevicePopup(MWidget):
                 "user": self.ui.alpacaUser,
                 "password": self.ui.alpacaPassword,
                 "deviceList": self.ui.alpacaDeviceList,
-                "updateRate": self.ui.alpacaUpdateRate,
             },
             "ascom": {
                 "deviceName": self.ui.ascomDevice,
             },
-            "sgpro": {
-                "deviceList": self.ui.sgproDeviceList,
-            },
             "boltwood": {
                 "filePath": self.ui.boltwoodPath,
-            },
-            "nina": {
-                "deviceList": self.ui.ninaDeviceList,
             },
             "astrometry": {
                 "deviceList": self.ui.astrometryDeviceList,
@@ -304,7 +296,7 @@ class DevicePopup(MWidget):
 
     def selectAscomDriver(self) -> None:
         ascom = AscomClass(parent=self.parent)
-        deviceName = ascom.selectAscomDriver(self.ui.ascomDevice.text())
+        deviceName = ascom.selectAscomDriver(self.ui.ascomDevice.text(), self.deviceType)
         self.ui.ascomDevice.setText(deviceName)
 
     def selectBoltwoodPath(self) -> None:

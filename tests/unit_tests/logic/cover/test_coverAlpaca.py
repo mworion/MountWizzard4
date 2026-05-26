@@ -10,11 +10,9 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
-
-import PySide6
 import pytest
 import unittest.mock as mock
 from mw4.base.signalsDevices import Signals
@@ -25,62 +23,73 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 class Parent:
     app = App()
     data = {}
+    DEVICE_TYPE = "cover"
+    deviceType = ""
     signals = Signals()
     loadConfig = True
-    updateRate = 1000
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = CoverAlpaca(parent=Parent())
-        yield func
+    func = CoverAlpaca(parent=Parent())
+    func.device = mock.MagicMock()
+    yield func
 
 
-def test_workerPollData_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty", return_value=1):
-        function.workerPollData()
+def test_pollData_1(function):
+    with mock.patch.object(function, "getDeviceProp", return_value=None):
+        function.pollData()
 
 
-def test_workerPollData_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty", return_value=1):
-        with mock.patch.object(function, "storePropertyToData"):
-            function.workerPollData()
+def test_pollData_2(function):
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=1),
+        mock.patch.object(function, "storePropertyToData") as m,
+    ):
+        function.pollData()
+        m.assert_called_once_with("Closed", "Status.Cover")
 
 
 def test_closeCover_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.closeCover()
-
-
-def test_closeCover_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.closeCover()
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.closeCover()
+    assert not function.commandQueue.empty()
+    item = function.commandQueue.get_nowait()
+    assert item.valueProp == "CloseCover"
 
 
 def test_openCover_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.openCover()
-
-
-def test_openCover_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.openCover()
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.openCover()
+    assert not function.commandQueue.empty()
+    item = function.commandQueue.get_nowait()
+    assert item.valueProp == "OpenCover"
 
 
 def test_haltCover_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.haltCover()
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.haltCover()
+    assert not function.commandQueue.empty()
+    item = function.commandQueue.get_nowait()
+    assert item.valueProp == "HaltCover"
 
 
-def test_haltCover_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "getAlpacaProperty"):
-        function.haltCover()
+def test_startCommunication_1(function):
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=False),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
+        function.startCommunication()
+        m_start.assert_not_called()
+
+
+def test_startCommunication_2(function):
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=True),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
+        function.startCommunication()
+        m_start.assert_called_once()

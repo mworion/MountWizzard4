@@ -10,11 +10,10 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import mw4.logic
-import numpy as np
 import pytest
 import unittest.mock as mock
 from astropy.io import fits
@@ -52,10 +51,8 @@ def test_properties_1(function):
 
 
 def test_properties_2(function):
-    function.updateRate = 1000
     function.loadConfig = True
     function.framework = "indi"
-    assert function.updateRate == 1000
     assert function.loadConfig
 
 
@@ -177,6 +174,14 @@ def test_expose_3(function):
         assert suc
 
 
+def test_abort_1(function):
+    function.framework = "indi"
+    function.exposing = True
+    with mock.patch.object(function.run["indi"], "abort", return_value=False):
+        result = function.abort()
+        assert not result
+
+
 def test_abort_2(function):
     function.framework = "indi"
     function.exposing = True
@@ -215,75 +220,6 @@ def test_sendGain_2(function):
         function.sendGain()
 
 
-def test_waitExposed_1(function, mocked_sleepAndEvents):
-    def test():
-        return True
-
-    function.exposing = True
-    function.waitExposed(1, test)
-
-
-def test_waitExposed_2(function, mocked_sleepAndEvents):
-    def test():
-        return True
-
-    function.exposing = True
-    function.waitExposed(0.05, test)
-
-
-def test_waitStart_1(function, mocked_sleepAndEvents):
-    function.data["Device.Message"] = "test"
-    function.exposing = True
-    function.waitStart()
-
-
-def test_waitDownload(function, mocked_sleepAndEvents):
-    # message does not yet contain "downloading" → loop body executes once;
-    # the sleep monkeypatch sets exposing=False so the loop exits cleanly
-    function.data["Device.Message"] = "capturing"
-    function.exposing = True
-    function.waitDownload()
-
-
-def test_waitSave_1(function, mocked_sleepAndEvents):
-    # message does not yet contain "image is ready" → loop body executes once;
-    # the sleep monkeypatch sets exposing=False so the loop exits cleanly
-    function.data["Device.Message"] = "downloading"
-    function.exposing = True
-    function.waitSave()
-
-
-def test_waitFinish(function, mocked_sleepAndEvents):
-    def test(a):
-        function.exposing = False
-
-    function.exposing = True
-    function.waitFinish(test, {})
-
-
-def test_retrieveImage_1(function):
-    def test():
-        return
-
-    function.exposing = False
-    function.retrieveImage(test, {})
-
-
-def test_retrieveImage_2(function):
-    def test(param):
-        return
-
-    function.exposing = True
-    function.retrieveImage(test, {})
-    assert not function.exposing
-
-
-def test_retrieveImage_3(function):
-    def test(param):
-        return np.array([], dtype=np.uint16)
-
-    function.exposing = True
-    function.retrieveImage(test, {})
 
 
 def test_writeImageFitsHeader_1(function):

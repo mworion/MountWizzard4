@@ -10,40 +10,21 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
+from mw4.logic.filter.filterAlpacaAscomBase import FilterAlpacaAscomBase
 from typing import Any
 
 
-class FilterAlpaca(AlpacaClass):
+class FilterAlpaca(FilterAlpacaAscomBase, AlpacaClass):
     def __init__(self, parent: Any) -> None:
-        super().__init__(parent=parent)
-        self.signals = parent.signals
-        self.data = parent.data
+        super().__init__(parent)
+        self.deviceType = parent.DEVICE_TYPE
 
-    def workerGetInitialConfig(self) -> None:
-        super().workerGetInitialConfig()
-        names = self.getAlpacaProperty("names")
-        if names is None:
+    def startCommunication(self) -> None:
+        if not self.createAlpacaDevice(self.deviceType):
+            self.msg.emit(2, "ALPACA", "Device type error", self.deviceName)
             return
-
-        for i, name in enumerate(names):
-            if name is None:
-                continue
-            self.data[f"FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}"] = name
-
-    def workerPollData(self) -> None:
-        if not self.deviceConnected:
-            return
-
-        position = self.getAlpacaProperty("position")
-        if position == -1 or position is None:
-            return
-        self.storePropertyToData(position, "FILTER_SLOT.FILTER_SLOT_VALUE")
-
-    def sendFilterNumber(self, filterNumber: int = 0) -> None:
-        if not self.deviceConnected:
-            return
-        self.setAlpacaProperty("position", Position=filterNumber)
+        super().startCommunication()

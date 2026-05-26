@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 
@@ -81,27 +81,24 @@ def test_PlotBase_drawHorizon_0():
     p = PlotBase()
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
-    with mock.patch.object(p, "show"):
-        suc = p.drawHorizon([], plotItem=p.p[0])
-        assert not suc
+    suc = p.drawHorizon([], plotItem=p.p[0])
+    assert not suc
 
 
 def test_PlotBase_drawHorizon_1():
     p = PlotBase()
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
-    with mock.patch.object(p, "show"):
-        suc = p.drawHorizon([])
-        assert not suc
+    suc = p.drawHorizon([])
+    assert not suc
 
 
 def test_PlotBase_drawHorizon_2():
     p = PlotBase()
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
-    with mock.patch.object(p, "show"):
-        suc = p.drawHorizon([(0, 0)])
-        assert not suc
+    suc = p.drawHorizon([(0, 0)])
+    assert not suc
 
 
 def test_PlotBase_drawHorizon_3():
@@ -109,9 +106,8 @@ def test_PlotBase_drawHorizon_3():
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
     p.p[0].addItem(pg.PlotDataItem())
-    with mock.patch.object(p, "show"):
-        suc = p.drawHorizon([(0, 0), (1, 1)])
-        assert suc
+    suc = p.drawHorizon([(0, 0), (1, 1)])
+    assert suc
 
 
 def test_PlotBase_drawHorizon_4():
@@ -119,9 +115,8 @@ def test_PlotBase_drawHorizon_4():
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
     p.p[0].addItem(pg.PlotDataItem())
-    with mock.patch.object(p, "show"):
-        suc = p.drawHorizon([(0, 0), (1, 1)], polar=True)
-        assert suc
+    suc = p.drawHorizon([(0, 0), (1, 1)], polar=True)
+    assert suc
 
 
 def test_PlotBase_drawHorizon_5():
@@ -130,9 +125,8 @@ def test_PlotBase_drawHorizon_5():
     p2 = PlotBase()
     target = p2.p[0]
     target.addItem(pg.PlotDataItem())  # target has items; p.p[0] has none
-    with mock.patch.object(p, "show"):
-        suc = p.drawHorizon([(0, 0), (1, 1)], plotItem=target)
-        assert suc  # must succeed because target has items, not p.p[0]
+    suc = p.drawHorizon([(0, 0), (1, 1)], plotItem=target)
+    assert suc  # must succeed because target has items, not p.p[0]
 
 
 def test_addIsoBasic_1():

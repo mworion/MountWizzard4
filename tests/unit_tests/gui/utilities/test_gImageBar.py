@@ -10,15 +10,13 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
-
 import numpy as np
 import pytest
 import unittest.mock as mock
 from mw4.gui.utilities.gImageBar import ImageBar
-from PySide6.QtWidgets import QWidget
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -58,8 +56,8 @@ def test_ImageBar_setImage_3():
 
 def test_ImageBar_showCrosshair():
     function = ImageBar()
-    function.lx = QWidget()
-    function.ly = QWidget()
+    function.lx = mock.MagicMock()
+    function.ly = mock.MagicMock()
     function.showCrosshair(True)
 
 

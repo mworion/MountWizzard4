@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -29,7 +29,7 @@ class RelaySignals(Signals):
 class KMRelay:
     log = logging.getLogger("MW4")
 
-    CYCLE_POLLING = 1000
+    UPDATE_RATE = 1000
     DEFAULT_PORT = 80
     TIMEOUT = 0.5
     PULSEWIDTH = 0.5
@@ -68,7 +68,7 @@ class KMRelay:
             return
 
         self.deviceConnected = False
-        self.timerTask.start(self.CYCLE_POLLING)
+        self.timerTask.start(self.UPDATE_RATE)
 
     def stopCommunication(self) -> None:
         self.timerTask.stop()
@@ -84,7 +84,7 @@ class KMRelay:
         status = result.status_code
         url = result.url
         elapsed = result.elapsed
-        self.log.trace(f"Result: {url}, {reason}, {status}, {elapsed}, {text}")
+        self.log.debug(f"Result: {url}, {reason}, {status}, {elapsed}, {text}")
 
     def getRelay(self, url: str, debug: bool = False) -> Any:
         if self.hostaddress is None:

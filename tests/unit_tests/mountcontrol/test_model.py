@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import math
@@ -44,6 +44,7 @@ class Parent:
 def test_Model_altitudeError():
     class Parent:
         host = None
+        loggingTrace = False
 
     align = Model(parent=Parent())
     align.altitudeError = Angle(degrees=67)
@@ -53,6 +54,7 @@ def test_Model_altitudeError():
 def test_Model_azimuthError():
     class Parent:
         host = None
+        loggingTrace = False
 
     align = Model(parent=Parent())
     align.azimuthError = Angle(degrees=67)
@@ -62,6 +64,7 @@ def test_Model_azimuthError():
 def test_Model_polarError():
     class Parent:
         host = None
+        loggingTrace = False
 
     align = Model(parent=Parent())
     align.polarError = Angle(degrees=67)
@@ -71,6 +74,7 @@ def test_Model_polarError():
 def test_Model_positionAngle1():
     class Parent:
         host = None
+        loggingTrace = False
 
     align = Model(parent=Parent())
     align.positionAngle = Angle(degrees=67)
@@ -80,6 +84,7 @@ def test_Model_positionAngle1():
 def test_Model_positionAngle2():
     class Parent:
         host = None
+        loggingTrace = False
 
     align = Model(parent=Parent())
     align.positionAngle = Angle(degrees=67)
@@ -89,6 +94,7 @@ def test_Model_positionAngle2():
 def test_Model_orthoError():
     class Parent:
         host = None
+        loggingTrace = False
 
     align = Model(parent=Parent())
     align.orthoError = Angle(degrees=67)
@@ -98,6 +104,7 @@ def test_Model_orthoError():
 def test_Model_altitudeTurns():
     class Parent:
         host = None
+        loggingTrace = False
 
     align = Model(parent=Parent())
     align.altitudeTurns = 67
@@ -107,6 +114,7 @@ def test_Model_altitudeTurns():
 def test_Model_azimuthTurns():
     class Parent:
         host = None
+        loggingTrace = False
 
     align = Model(parent=Parent())
     align.azimuthTurns = 67
@@ -116,6 +124,7 @@ def test_Model_azimuthTurns():
 def test_Model_terms():
     class Parent:
         host = None
+        loggingTrace = False
 
     align = Model(parent=Parent())
     align.terms = 67
@@ -125,6 +134,7 @@ def test_Model_terms():
 def test_Model_errorRMS():
     class Parent:
         host = None
+        loggingTrace = False
 
     align = Model(parent=Parent())
     align.errorRMS = 67
@@ -134,6 +144,7 @@ def test_Model_errorRMS():
 def test_Model_numberStars_1():
     class Parent:
         host = None
+        loggingTrace = False
 
     align = Model(parent=Parent())
     align.numberStars = "67"
@@ -144,6 +155,7 @@ def test_Model_numberStars_1():
 def test_Model_numberStars_2():
     class Parent:
         host = None
+        loggingTrace = False
 
     align = Model(parent=Parent())
     align.numberStars = None
@@ -154,6 +166,7 @@ def test_Model_numberStars_2():
 def test_Model_numberNames_1():
     class Parent:
         host = None
+        loggingTrace = False
 
     align = Model(parent=Parent())
     align.numberNames = "67"
@@ -164,6 +177,7 @@ def test_Model_numberNames_1():
 def test_Model_numberNames_2():
     class Parent:
         host = None
+        loggingTrace = False
 
     align = Model(parent=Parent())
     align.numberNames = None
@@ -179,6 +193,7 @@ def test_Model_starList1():
 
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -199,6 +214,7 @@ def test_add_del_Star():
 
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -224,6 +240,7 @@ def test_add_del_Star():
 def test_addStar_ok():
     class Parent:
         host = None
+        loggingTrace = False
         obsSite = None
 
     model = Model(parent=Parent())
@@ -235,6 +252,7 @@ def test_addStar_ok():
 def test_StarList_iteration():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     p4 = Angle(degrees=90)
@@ -252,6 +270,7 @@ def test_StarList_iteration():
 def test_StarList_checkStarListOK():
     class Parent:
         host = None
+        loggingTrace = False
         obsSite = None
 
     model = Model(parent=Parent())
@@ -264,6 +283,7 @@ def test_StarList_checkStarListOK():
 def test_StarList_checkStarList_not_OK1():
     class Parent:
         host = None
+        loggingTrace = False
         obsSite = None
 
     model = Model(parent=Parent())
@@ -274,6 +294,7 @@ def test_StarList_checkStarList_not_OK1():
 
     class Parent:
         host = None
+        loggingTrace = False
         obsSite = None
 
     model = Model(parent=Parent())
@@ -285,6 +306,7 @@ def test_StarList_checkStarList_not_OK1():
 def test_Model_nameList1():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -296,6 +318,7 @@ def test_Model_nameList1():
 def test_Model_nameList2():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -307,6 +330,7 @@ def test_Model_nameList2():
 def test_Model_nameList3():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -318,6 +342,7 @@ def test_Model_nameList3():
 def test_Model_nameList4():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -329,6 +354,7 @@ def test_Model_nameList4():
 def test_add_del_Name():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -346,6 +372,7 @@ def test_add_del_Name():
 def test_addName_not_ok():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -364,6 +391,7 @@ def test_addName_not_ok():
 def test_errorRMS_HPS():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     model.errorRMS = 36.8
@@ -373,6 +401,7 @@ def test_errorRMS_HPS():
 def test_errorRMS_HPS_float():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     model.errorRMS = 36.8
@@ -382,6 +411,7 @@ def test_errorRMS_HPS_float():
 def test_errorRMS_HPS_int():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     model.errorRMS = 36
@@ -460,6 +490,7 @@ def test_AlignStar_error_DEC_RA():
 def test_Model_parseNumberName_ok():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = ["5"]
@@ -470,6 +501,7 @@ def test_Model_parseNumberName_ok():
 def test_Model_parseNumberName_not_ok1():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = ["df"]
@@ -480,6 +512,7 @@ def test_Model_parseNumberName_not_ok1():
 def test_Model_parseNumberName_not_ok2():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = [""]
@@ -490,6 +523,7 @@ def test_Model_parseNumberName_not_ok2():
 def test_Model_parseNumberName_not_ok3():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = ["5a"]
@@ -500,6 +534,7 @@ def test_Model_parseNumberName_not_ok3():
 def test_Model_parseNumberName_not_ok4():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = ["5", "4"]
@@ -510,6 +545,7 @@ def test_Model_parseNumberName_not_ok4():
 def test_Model_parseNumberName_not_ok5():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = ["5", "g"]
@@ -527,6 +563,7 @@ def test_Model_parseNumberName_not_ok5():
 def test_Model_parseNames_ok1():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = ["test"]
@@ -537,6 +574,7 @@ def test_Model_parseNames_ok1():
 def test_Model_parseNames_ok2():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = ["sd", "", None]
@@ -547,6 +585,7 @@ def test_Model_parseNames_ok2():
 def test_Model_parseNumberNames_ok3():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = ["5"]
@@ -557,6 +596,7 @@ def test_Model_parseNumberNames_ok3():
 def test_Model_parseNames_not_ok1():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = ["sd"]
@@ -567,6 +607,7 @@ def test_Model_parseNames_not_ok1():
 def test_Model_parseNumberNames_not_ok2():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = ["sd"]
@@ -577,6 +618,7 @@ def test_Model_parseNumberNames_not_ok2():
 def test_Model_parseNumberNames_not_ok3():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = ["5", "6"]
@@ -587,6 +629,7 @@ def test_Model_parseNumberNames_not_ok3():
 def test_getNameCount_1():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     with mock.patch.object(
@@ -601,6 +644,7 @@ def test_getNameCount_1():
 def test_getNameCount_2():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     with mock.patch.object(
@@ -615,6 +659,7 @@ def test_getNameCount_2():
 def test_getNames_1():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     model.numberNames = 1
@@ -630,6 +675,7 @@ def test_getNames_1():
 def test_getNames_2():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     model.numberNames = 1
@@ -645,6 +691,7 @@ def test_getNames_2():
 def test_pollNames_1():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     with mock.patch.object(model, "getNameCount", return_value=False):
@@ -655,6 +702,7 @@ def test_pollNames_1():
 def test_pollNames_2():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     with mock.patch.object(model, "getNameCount", return_value=True):
@@ -666,6 +714,7 @@ def test_pollNames_2():
 def test_pollNames_3():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     with mock.patch.object(model, "getNameCount", return_value=True):
@@ -684,6 +733,7 @@ def test_pollNames_3():
 def test_Model_parseNumberStars_ok1():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = ["0", "E"]
@@ -694,6 +744,7 @@ def test_Model_parseNumberStars_ok1():
 def test_Model_parseNumberStars_ok2():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = [
@@ -716,6 +767,7 @@ def test_Model_parseNumberStars_ok2():
 def test_Model_parseNumberStars_not_ok0():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = ["4", "E"]
@@ -726,6 +778,7 @@ def test_Model_parseNumberStars_not_ok0():
 def test_Model_parseNumberStars_not_ok1():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = ["4"]
@@ -736,6 +789,7 @@ def test_Model_parseNumberStars_not_ok1():
 def test_Model_parseNumberStars_not_ok2():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = ["4", "4, 4, 4"]
@@ -746,6 +800,7 @@ def test_Model_parseNumberStars_not_ok2():
 def test_Model_parseNumberStars_not_ok3():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     response = ["4", "4"]
@@ -759,6 +814,7 @@ def test_Model_parseStars_ok():
 
     class Parent:
         host = None
+        loggingTrace = False
         obsSite = obsSite
 
     model = Model(parent=Parent())
@@ -786,6 +842,7 @@ def test_Model_parseStars_not_ok1():
 
     class Parent:
         host = None
+        loggingTrace = False
         obsSite = obsSite
 
     model = Model(parent=Parent())
@@ -805,6 +862,7 @@ def test_Model_parseStars_not_ok1():
 def test_getStarCount_1():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     with mock.patch.object(
@@ -820,6 +878,7 @@ def test_getStarCount_1():
 def test_getStarCount_2():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     with mock.patch.object(
@@ -835,6 +894,7 @@ def test_getStarCount_2():
 def test_getStarCount_3():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     with mock.patch.object(
@@ -850,6 +910,7 @@ def test_getStarCount_3():
 def test_getStars_0():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     model.numberStars = 0
@@ -860,6 +921,7 @@ def test_getStars_0():
 def test_getStars_1():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     model.numberStars = 1
@@ -878,6 +940,7 @@ def test_getStars_2():
 
     class Parent:
         host = None
+        loggingTrace = False
         obsSite = obsSite
 
     model = Model(parent=Parent())
@@ -894,6 +957,7 @@ def test_getStars_2():
 def test_pollStars_1():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     with mock.patch.object(model, "getStarCount", return_value=False):
@@ -903,6 +967,7 @@ def test_pollStars_1():
 def test_pollStars_2():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     with mock.patch.object(model, "getStarCount", return_value=True):
@@ -913,6 +978,7 @@ def test_pollStars_2():
 def test_pollStars_3():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     with mock.patch.object(model, "getStarCount", return_value=True):
@@ -930,6 +996,7 @@ def test_pollStars_3():
 def test_Model_clearAlign_ok():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -943,6 +1010,7 @@ def test_Model_clearAlign_ok():
 def test_Model_clearAlign_not_ok1():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -963,6 +1031,7 @@ def test_Model_clearAlign_not_ok1():
 def test_Model_deletePoint_ok():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     model.numberStars = 5
@@ -976,6 +1045,7 @@ def test_Model_deletePoint_ok():
 def test_Model_deletePoint_not_ok1():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     model.numberStars = 5
@@ -989,6 +1059,7 @@ def test_Model_deletePoint_not_ok1():
 def test_Model_deletePoint_not_ok4():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
     model.numberStars = 5
@@ -1009,6 +1080,7 @@ def test_Model_deletePoint_not_ok4():
 def test_Model_storeName_ok1():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -1022,6 +1094,7 @@ def test_Model_storeName_ok1():
 def test_Model_storeName_ok2():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -1042,6 +1115,7 @@ def test_Model_storeName_ok2():
 def test_Model_loadName_ok():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -1055,6 +1129,7 @@ def test_Model_loadName_ok():
 def test_Model_loadName_not_ok2():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -1075,6 +1150,7 @@ def test_Model_loadName_not_ok2():
 def test_Model_deleteName_ok():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -1088,6 +1164,7 @@ def test_Model_deleteName_ok():
 def test_Model_deleteName_not_ok2():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -1108,6 +1185,7 @@ def test_Model_deleteName_not_ok2():
 def test_Model_programAlign_ok1():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -1127,6 +1205,7 @@ def test_Model_programAlign_ok1():
 def test_Model_programAlign_ok2():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 
@@ -1140,6 +1219,7 @@ def test_Model_programAlign_ok2():
 def test_Model_programAlign_ok3():
     class Parent:
         host = None
+        loggingTrace = False
 
     model = Model(parent=Parent())
 

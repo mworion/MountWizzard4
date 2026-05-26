@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 
@@ -75,14 +75,16 @@ def test_setLoggingLevel1(function):
 
 
 def test_setLoggingLevel2(function):
-    function.ui.loglevelStandard.setChecked(True)
+    function.ui.loglevelInfo.setChecked(True)
+    function.ui.loglevelTrace.setChecked(False)
     function.setLoggingLevel()
     val = logging.getLogger("MW4").getEffectiveLevel()
     assert val == 20
 
 
 def test_setLoggingLevel3(function):
+    function.ui.loglevelInfo.setChecked(False)
     function.ui.loglevelTrace.setChecked(True)
     function.setLoggingLevel()
     val = logging.getLogger("MW4").getEffectiveLevel()
-    assert val == 5
+    assert val == 10

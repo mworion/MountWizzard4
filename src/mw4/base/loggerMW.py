@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import datetime
@@ -18,7 +18,6 @@ import logging
 import sys
 import time
 from collections.abc import Callable
-from functools import partial, partialmethod
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from typing import Any
@@ -53,9 +52,6 @@ class LoggerWriter:
                 self.level(" " * 9 + line.strip())
 
     def flush(self) -> None:
-        """
-        flush has to be present, but is not used
-        """
         pass
 
 
@@ -92,19 +88,26 @@ def setupLogging() -> None:
     logging.getLogger("urllib3").setLevel(logging.WARNING)
     logging.getLogger("astropy").setLevel(logging.WARNING)
     logging.getLogger("keyring").setLevel(logging.WARNING)
-
-    TRACE = 5
-    logging.addLevelName(TRACE, "TRACE")
-    logging.Logger.trace = partialmethod(logging.Logger.log, TRACE)
-    logging.trace = partial(logging.log, TRACE)
-
-    HEADER = 55
-    logging.addLevelName(HEADER, "HEADER")
-    logging.Logger.header = partialmethod(logging.Logger.log, HEADER)
-    logging.header = partial(logging.log, HEADER)
-
     redirectSTD()
 
 
-def setCustomLoggingLevel(level: str = "WARN") -> None:
-    logging.getLogger("MW4").setLevel(level)
+def setTrace(app: Any, enable: bool = False) -> None :
+    drivers = app.getActiveDrivers()
+
+    for device in drivers:
+        for framework in drivers[device]["class"].run:
+            if framework in ["ascom", "alpaca"]:
+                drivers[device]["class"].run[framework].loggingTrace = enable
+            elif framework in ["indi"]:
+                drivers[device]["class"].run[framework].setTrace(enable)
+
+
+def setCustomLoggingLevel(app: Any, level: str = "DEBUG") -> None:
+    if level == "TRACE":
+        logging.getLogger("MW4").setLevel("DEBUG")
+        # app.mount.loggingTrace = True
+        setTrace(app, enable=True)
+    else:
+        logging.getLogger("MW4").setLevel(level)
+        app.mount.loggingTrace = False
+        setTrace(app, enable=False)

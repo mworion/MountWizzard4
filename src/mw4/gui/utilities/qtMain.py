@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import datetime
@@ -152,7 +152,7 @@ class MWidget(QWidget, Styles):
             for button in buttons:
                 msg.addButton(button, QMessageBox.ButtonRole.AcceptRole)
             msg.setDefaultButton(QMessageBox.StandardButton.Cancel)
-        msg.show()
+        msg.adjustSize()
         x = parentWidget.x() + int((parentWidget.width() - msg.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - msg.height()) / 2)
         msg.move(x, y)
@@ -185,7 +185,7 @@ class MWidget(QWidget, Styles):
 
         result = self.runDialog(dlg)
         if not result:
-            return [] if multiple else Path("")
+            return [] if multiple else Path()
 
         if multiple:
             return [Path(f) for f in dlg.selectedFiles()]

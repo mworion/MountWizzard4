@@ -10,12 +10,13 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
 import socket
 import uuid
+from typing import Any
 
 
 class Connection:
@@ -37,7 +38,6 @@ class Connection:
     The class itself needs parameters for the host and port to be able to interact
     with the mount.
     """
-
     log = logging.getLogger("MW4")
     SOCKET_TIMEOUT = 10
     COMMANDS = [
@@ -265,8 +265,9 @@ class Connection:
         ":SWOL",
     ]
 
-    def __init__(self, host: tuple | None = None) -> None:
-        self.host = host
+    def __init__(self, parent: Any) -> None:
+        self.host = parent.host
+        self.loggingTrace = parent.loggingTrace
         self.id = str(uuid.uuid4())[:8]
 
     def validCommand(self, command: str) -> bool:
@@ -310,9 +311,10 @@ class Connection:
                         break
                 else:
                     chunksToReceive += 1
-        t = f"Analyse  [{self.id}]: minBytes: [{minBytes}], numOfChunks: [{chunksToReceive}]"
-        t += f", host: [{self.host}]"
-        self.log.trace(t)
+        if self.loggingTrace:
+            t = f"[Trace] Analyse  [{self.id}]: minBytes: [{minBytes}], numOfChunks: [{chunksToReceive}]"
+            t += f", host: [{self.host}]"
+            self.log.debug(t)
         return chunksToReceive, getData, minBytes
 
     def closeClientHard(self, client: socket.socket | None) -> None:
@@ -338,45 +340,44 @@ class Connection:
         client.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
         try:
             client.connect(self.host)
-
         except TimeoutError:
             self.closeClientHard(client)
             self.log.debug(f"Timeout  [{self.id}]: socket timeout in build client")
             return None
-
         except Exception as e:
             self.closeClientHard(client)
-            self.log.debug(f"Error    [{self.id}]: socket general: [{e}] in build client")
+            self.log.warning(f"Error    [{self.id}]: socket general: [{e}] in build client")
             return None
-
         else:
             return client
 
     def sendData(self, client: socket.socket, commandString: str) -> bool:
         try:
-            self.log.trace(f"Sending  [{self.id}]: [{commandString}]")
+            if self.loggingTrace:
+                self.log.debug(f"[Trace] Sending  [{self.id}]: [{commandString}]")
             client.sendall(commandString.encode())
         except TimeoutError:
             self.closeClientHard(client)
-            self.log.trace(f"Timeout  [{self.id}]: socket timeout in send data")
+            if self.loggingTrace:
+                self.log.debug(f"[Trace] Timeout  [{self.id}]: socket timeout in send data")
             return False
         except Exception as e:
             self.closeClientHard(client)
-            self.log.trace(f"Error    [{self.id}]: socket error: [{e}] in send data")
+            self.log.warning(f"[Trace] Error    [{self.id}]: socket error: [{e}] in send data")
             return False
         else:
             return True
 
     def receiveData(
         self, client: socket.socket, numberOfChunks: int, minBytes: int
-    ) -> tuple[bool, str]:
+    ) -> tuple[bool, list[str]]:
         """
         receive Data waits on the give socket client for a number of chunks to
         be received or a minimum set of bytes received. the chunks are delimited
         with #. the min bytes are necessary because the mount computer has
         commands which give a response without a delimiter. this is bad, but status.
         """
-        response = ""
+        responseStr = ""
         receiving = True
         chunkRaw = b""
         try:
@@ -385,43 +386,44 @@ class Connection:
                 chunk = chunkRaw.decode("ASCII")
                 if not chunk:
                     break
-                response += chunk
+                responseStr += chunk
                 if (
                     numberOfChunks == 0
-                    and len(response) == minBytes
+                    and len(responseStr) == minBytes
                     or numberOfChunks != 0
-                    and numberOfChunks == response.count("#")
+                    and numberOfChunks == responseStr.count("#")
                 ):
                     break
 
         except TimeoutError:
-            self.log.trace(f"Timeout  [{self.id}]: socket timeout in receive data")
-            return False, response
+            if self.loggingTrace:
+                self.log.debug(f"[Trace] Timeout  [{self.id}]: socket timeout in receive data")
+            return False, []
         except Exception as e:
             self.log.warning(f"Error    [{self.id}]: error: [{e}], received: [{chunkRaw}]")
-            self.log.trace(f"Error    [{self.id}]: socket error: [{e}] in receive data")
-            return False, response
+            return False, []
         else:
-            response = response.rstrip("#").split("#")
-            self.log.trace(f"Response [{self.id}]: [{response}]")
+            response = responseStr.rstrip("#").split("#")
+            if self.loggingTrace:
+                self.log.debug(f"[Trace] Response [{self.id}]: [{response}]")
             return True, response
 
     def communicate(
         self, commandString: str, responseCheck: str = ""
-    ) -> tuple[bool, str, int]:
+    ) -> tuple[bool, list[str], int]:
         if not self.validCommandSet(commandString):
-            return False, "", 0
+            return False, [], 0
 
         client = self.buildClient()
         numberOfChunks, getData, minBytes = self.analyseCommand(commandString)
 
         if client is None:
-            return False, "", numberOfChunks
+            return False, [], numberOfChunks
         if not self.sendData(client, commandString):
-            return False, "", numberOfChunks
+            return False, [], numberOfChunks
         if not getData:
             self.closeClientHard(client)
-            return True, "", numberOfChunks
+            return True, [], numberOfChunks
 
         suc, response = self.receiveData(client, numberOfChunks, minBytes)
         self.closeClientHard(client)
@@ -440,15 +442,17 @@ class Connection:
             chunkRaw = client.recv(2048)
             val = chunkRaw.decode("ASCII")
         except TimeoutError:
-            self.log.trace(f"Timeout  [{self.id}]: socket timeout in communicate raw")
+            if self.loggingTrace:
+                self.log.debug(f"[Trace] Timeout  [{self.id}]: socket timeout in communicate raw")
             val = "Timeout"
             sucRec = False
         except Exception as e:
-            self.log.trace(f"Error    [{self.id}]: socket error: [{e}] in communicate raw")
+            self.log.warning(f"[Trace] Error    [{self.id}]: socket error: [{e}] in communicate raw")
             val = "Exception"
             sucRec = False
         else:
-            self.log.trace(f"Response [{self.id}]:  [{val}] in communicate raw")
+            if self.loggingTrace:
+                self.log.debug(f"[Trace] Response [{self.id}]:  [{val}] in communicate raw")
             sucRec = True
 
         return sucSend, sucRec, val

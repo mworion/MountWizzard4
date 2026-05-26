@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -450,7 +450,7 @@ class ObsSite:
         return True
 
     def getLocation(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ":Gev#:Gg#:Gt#"
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -481,7 +481,7 @@ class ObsSite:
         return True
 
     def pollPointing(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ":GS#:GDUT#:TLESCK#:Ginfo#:GaE#"
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -495,7 +495,7 @@ class ObsSite:
             corrTerm = -0.011
         else:
             corrTerm = 0
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ":GJD1#"
         suc, response, _ = conn.communicate(commandString)
         if not suc:
@@ -510,7 +510,7 @@ class ObsSite:
         return True
 
     def adjustClock(self, delta: int) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         sign = "+" if delta >= 0 else "-"
         delta = abs(delta)
         commandString = f":NUtim{sign}{delta:03.0f}#"
@@ -532,7 +532,7 @@ class ObsSite:
         slewTypes["keep"] = keepSlewType
 
         self.flipped = self.piersideTarget != self.pierside
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ":PO#" + slewTypes[slewType]
         suc, _, _ = conn.communicate(commandString, responseCheck="0")
         return suc
@@ -548,7 +548,7 @@ class ObsSite:
 
         getTargetStatus = ":GTsid#:Ga#:Gz#:Gr#:Gd#"
 
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = setAlt + setAz + getTargetStatus
         suc, response, _ = conn.communicate(commandString)
         if not suc:
@@ -580,7 +580,7 @@ class ObsSite:
 
         getTargetStatus = ":GTsid#:Ga#:Gz#:Gr#:Gd#"
 
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = setRa + setDec + getTargetStatus
         suc, response, _ = conn.communicate(commandString)
         if not suc:
@@ -603,12 +603,12 @@ class ObsSite:
         return suc and valueToInt(response[0][2]) != 0
 
     def shutdown(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":shutdown#", responseCheck="1")
         return suc
 
     def setLocation(self, location: GeographicPosition) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
 
         sgn, h, m, s, frac = sexagesimalizeToInt(location.longitude.degrees, 1)
         sign = "+" if sgn < 0 else "-"
@@ -626,7 +626,7 @@ class ObsSite:
         return suc
 
     def setLatitude(self, lat: Angle) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         sgn, h, m, s, frac = sexagesimalizeToInt(lat.degrees, 1)
         sign = "+" if sgn >= 0 else "-"
         commandString = f":St{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#"
@@ -634,102 +634,102 @@ class ObsSite:
         return suc
 
     def setLongitude(self, lon: Angle) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         sgn, h, m, s, frac = sexagesimalizeToInt(lon.degrees, 1)
         sign = "+" if sgn < 0 else "-"
         commandString = f":Sg{sign}{h:03d}*{m:02d}:{s:02d}.{frac:1d}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
-    def setElevation(self, elev: tuple[int, float]) -> bool:
-        conn = Connection(self.parent.host)
+    def setElevation(self, elev: int | float) -> bool:
+        conn = Connection(self.parent)
         sign = "+" if elev > 0 else "-"
         commandString = f":Sev{sign}{abs(elev):06.1f}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def startTracking(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":PO#:AP#")
         return suc
 
     def stopTracking(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":RT9#")
         return suc
 
     def park(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":hP#")
         return suc
 
     def unpark(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":PO#")
         return suc
 
     def parkOnActualPosition(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":PiP#", responseCheck="1")
         return suc
 
     def stop(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":STOP#")
         return suc
 
     def flip(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":FLIP#", responseCheck="1")
         return suc
 
     def moveNorth(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":PO#:Mn#")
         return suc
 
     def moveEast(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":PO#:Me#")
         return suc
 
     def moveSouth(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":PO#:Ms#")
         return suc
 
     def moveWest(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":PO#:Mw#")
         return suc
 
     def stopMoveAll(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":Q#")
         return suc
 
     def stopMoveNorth(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":Qn#")
         return suc
 
     def stopMoveEast(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":Qe#")
         return suc
 
     def stopMoveSouth(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":Qs#")
         return suc
 
     def stopMoveWest(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":Qw#")
         return suc
 
     def syncPositionToTarget(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ":CMCFG0#:CM#"
         suc, response, _ = conn.communicate(commandString)
         if not suc:
@@ -737,7 +737,7 @@ class ObsSite:
         return response[1].startswith("Coord")
 
     def setHighPrecision(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ":U2#"
         suc, _, _ = conn.communicate(commandString)
         return suc

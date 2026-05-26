@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -238,7 +238,7 @@ class MountWizzard4(QObject):
 
     def initConfig(self) -> Topos:
         """Apply logging level and return the topocentric location."""
-        setCustomLoggingLevel(self.config.get("loglevel", "DEBUG"))
+        setCustomLoggingLevel(self, self.config.get("loglevel", "DEBUG"))
         lat = self.config.get("topoLat", 51.47)
         lon = self.config.get("topoLon", 0)
         elev = self.config.get("topoElev", 46)

@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import hid
@@ -155,7 +155,6 @@ class SettMisc:
             self.app.gameSL.emit(act[3], act[4])
         if act[5] != old[5] or act[6] != old[6]:
             self.app.gameSR.emit(act[5], act[6])
-        self.mainW.log.trace(f"GameController: {[act]}, {[old]}")
 
     def readGameController(self, gamepad: hid.device) -> list:
         result = []

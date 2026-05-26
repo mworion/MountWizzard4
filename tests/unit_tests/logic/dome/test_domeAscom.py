@@ -10,15 +10,12 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
-
 import platform
-import PySide6
 import pytest
 import unittest.mock as mock
-from mw4.base.ascomClass import AscomClass
 from mw4.base.loggerMW import setupLogging
 from mw4.base.signalsDevices import Signals
 from mw4.logic.dome.domeAscom import DomeAscom
@@ -41,131 +38,75 @@ class Parent:
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    class Test1:
-        Azimuth = 100
-        Name = "test"
-        DriverVersion = "1"
-        DriverInfo = "test1"
-        ShutterStatus = 4
-        Slewing = True
-        CanSetAltitude = True
-        CanSetAzimuth = True
-        CanSetShutter = True
-        AbortSlew = False
-        OpenShutter = None
-        CloseShutter = None
-        AbortSlew = None
-
-        @staticmethod
-        def SlewToAzimuth(azimuth):
-            return True
-
-        @staticmethod
-        def SlewToAltitude(altitude):
-            return True
-
-    with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = DomeAscom(parent=Parent())
-        func.client = Test1()
-        func.clientProps = []
-        yield func
+    func = DomeAscom(parent=Parent())
+    func.device = mock.MagicMock()
+    func.device.Azimuth = 100
+    func.device.Slewing = False
+    yield func
 
 
-def test_workerGetInitialConfig_1(function):
-    with mock.patch.object(AscomClass, "getAndStoreAscomProperty", return_value=True):
-        with mock.patch.object(function, "getAndStoreAscomProperty"):
-            function.workerGetInitialConfig()
+def test_getInitialConfig_1(function):
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
+        function.getInitialConfig()
 
 
-def test_processPolledData_1(function):
-    function.processPolledData()
-
-
-def test_workerPollData_1(function):
-    with mock.patch.object(function, "getAscomProperty", return_value=0):
+def test_pollData_shutterOpen(function):
+    with mock.patch.object(function, "getDeviceProp", return_value=0):
         with mock.patch.object(function, "storePropertyToData"):
-            with mock.patch.object(function, "getAndStoreAscomProperty"):
-                function.workerPollData()
+            with mock.patch.object(function, "getAndStoreDeviceProp"):
+                function.pollData()
 
 
-def test_workerPollData_2(function):
-    with mock.patch.object(function, "getAscomProperty", return_value=1):
+def test_pollData_shutterClosed(function):
+    with mock.patch.object(function, "getDeviceProp", return_value=1):
         with mock.patch.object(function, "storePropertyToData"):
-            with mock.patch.object(function, "getAndStoreAscomProperty"):
-                function.workerPollData()
+            with mock.patch.object(function, "getAndStoreDeviceProp"):
+                function.pollData()
 
 
-def test_workerPollData_3(function):
-    with mock.patch.object(function, "getAscomProperty", return_value=2):
+def test_pollData_shutterOther(function):
+    with mock.patch.object(function, "getDeviceProp", return_value=2):
         with mock.patch.object(function, "storePropertyToData"):
-            with mock.patch.object(function, "getAndStoreAscomProperty"):
-                function.workerPollData()
+            with mock.patch.object(function, "getAndStoreDeviceProp"):
+                function.pollData()
 
 
-def test_slewToAltAz_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function, "callMethodThreaded"):
-        function.slewToAltAz(0, 0)
+def test_slewToAltAz(function):
+    function.data["CanSetAzimuth"] = True
+    function.data["CanSetAltitude"] = True
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.slewToAltAz(30.0, 180.0)
+    assert m.call_count == 2
+    calls = {c[0][0]: c[1] for c in m.call_args_list}
+    assert "SlewToAzimuth" in calls
+    assert calls["SlewToAzimuth"] == {"Azimuth": 180.0}
+    assert "SlewToAltitude" in calls
+    assert calls["SlewToAltitude"] == {"Altitude": 30.0}
 
 
-def test_slewToAltAz_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "callMethodThreaded"):
-        function.slewToAltAz(0, 0)
-
-
-def test_openShutter_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function, "callMethodThreaded"):
-        function.openShutter()
-
-
-def test_openShutter_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "callMethodThreaded"):
-        function.openShutter()
-
-
-def test_closeShutter_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function, "callMethodThreaded"):
-        function.closeShutter()
-
-
-def test_closeShutter_2(function):
+def test_openShutter(function):
     function.data["CanSetShutter"] = True
-    function.deviceConnected = True
-    with mock.patch.object(function, "callMethodThreaded"):
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.openShutter()
+    m.assert_called_once_with("OpenShutter")
+
+
+def test_closeShutter(function):
+    function.data["CanSetShutter"] = True
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.closeShutter()
+    m.assert_called_once_with("CloseShutter")
 
 
-def test_slewCW_1(function):
-    function.deviceConnected = False
-    function.slewCW()
+def test_slewCW(function):
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.slewCW()
+    m.assert_called_once()
 
 
-def test_slewCW_2(function):
-    function.deviceConnected = True
-    function.slewCW()
-
-
-def test_slewCCW_1(function):
-    function.deviceConnected = False
+def test_slewCCW(function):
     function.slewCCW()
 
 
-def test_slewCCW_2(function):
-    function.deviceConnected = True
-    function.slewCCW()
-
-
-def test_abortSlew_1(function):
-    function.deviceConnected = False
-    with mock.patch.object(function, "callMethodThreaded"):
-        function.abortSlew()
-
-
-def test_abortSlew_2(function):
-    function.deviceConnected = True
-    with mock.patch.object(function, "callMethodThreaded"):
-        function.abortSlew()
+def test_abortSlew(function):
+    function.abortSlew()

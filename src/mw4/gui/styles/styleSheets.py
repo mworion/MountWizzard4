@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 MAC_STYLE = """
@@ -732,7 +732,6 @@ BASIC_STYLE = """
     QFileDialog QListView:disabled {
         color: $M_PRIM2$;
     }
-
     QFileDialog QPushButton {
         min-width: 50px;
         min-height: 20px;

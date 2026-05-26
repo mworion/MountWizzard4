@@ -10,11 +10,10 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import platform
-import PySide6
 import pytest
 import unittest.mock as mock
 from mw4.base.loggerMW import setupLogging
@@ -39,76 +38,34 @@ class Parent:
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    class Test1:
-        Name = "test"
-        DriverVersion = "1"
-        DriverInfo = "test1"
-
-        @staticmethod
-        def CalibratorOn():
-            return True
-
-        @staticmethod
-        def CalibratorOff():
-            return True
-
-        @staticmethod
-        def Brightness(a):
-            return True
-
-    with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = LightPanelAscom(parent=Parent)
-        func.client = Test1()
-        func.clientProps = []
-        yield func
+    func = LightPanelAscom(parent=Parent())
+    func.device = mock.MagicMock()
+    func.device.Brightness = 100
+    func.device.MaxBrightness = 255
+    yield func
 
 
-def test_workerPollData_1(function):
-    with mock.patch.object(function, "getAscomProperty", return_value=1):
-        with mock.patch.object(function, "storePropertyToData"):
-            function.workerPollData()
+def test_pollData_1(function):
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
+        function.pollData()
 
 
-def test_lightOn_1(function):
-    function.deviceConnected = False
-    function.lightOn()
+def test_lightOn(function):
+    function.app.lightPanel.data = {
+        "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 200
+    }
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.lightOn()
+    m.assert_called_once_with("CalibratorOn", BrightnessVal=100)
 
 
-def test_lightOn_2(function):
-    function.deviceConnected = True
-    function.lightOn()
+def test_lightOff(function):
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.lightOff()
+    m.assert_called_once_with("CalibratorOff")
 
 
-def test_lightOn_3(function):
-    function.deviceConnected = True
-    function.lightOn()
-
-
-def test_lightOff_1(function):
-    function.deviceConnected = False
-    function.lightOff()
-
-
-def test_lightOff_2(function):
-    function.deviceConnected = True
-    function.lightOff()
-
-
-def test_lightOff_3(function):
-    function.deviceConnected = True
-    function.lightOff()
-
-
-def test_lightIntensity_1(function):
-    function.deviceConnected = False
-    function.lightIntensity(0)
-
-
-def test_lightIntensity_2(function):
-    function.deviceConnected = True
-    function.lightIntensity(0)
-
-
-def test_lightIntensity_3(function):
-    function.deviceConnected = True
-    function.lightIntensity(0)
+def test_lightIntensity(function):
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.lightIntensity(128.0)
+    m.assert_called_once_with("CalibratorOn", BrightnessVal=128.0)

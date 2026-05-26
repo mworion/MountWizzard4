@@ -12,7 +12,7 @@
 # Michael Würtenberger
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -128,7 +128,7 @@ class Model:
         return True
 
     def getNameCount(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ":modelcnt#"
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -138,7 +138,7 @@ class Model:
         return suc
 
     def getNames(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ""
         for i in range(1, self.numberNames + 1):
             commandString += f":modelnam{i:d}#"
@@ -169,11 +169,11 @@ class Model:
             errorRMS = valueToFloat(err)
             errorAngle = valueToAngle(angle)
             alt, az = topoToAltAz(ra, dec, self.parent.obsSite.location.latitude)
-            modelStar = ModelStar(coord, errorRMS, errorAngle, number + 1, alt, az)
+            modelStar = ModelStar(coord, errorRMS, errorAngle, number, alt, az)
             self.addStar(modelStar)
         return True
 
-    def parseNumberStars(self, response: list, numberOfChunks: int) -> bool:
+    def parseNumberStars(self, response: list[str], numberOfChunks: int) -> bool:
         if len(response) != numberOfChunks or len(response) == 0:
             self.log.warning("Wrong number of chunks")
             return False
@@ -198,12 +198,12 @@ class Model:
         self.orthoError = valueToAngle(responseSplit[4], preference="degrees")
         self.azimuthTurns = valueToFloat(responseSplit[5])
         self.altitudeTurns = valueToFloat(responseSplit[6])
-        self.terms = valueToFloat(responseSplit[7])
+        self.terms = valueToInt(responseSplit[7])
         self.errorRMS = valueToFloat(responseSplit[8])
         return True
 
     def getStarCount(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ":getalst#:getain#"
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -221,7 +221,7 @@ class Model:
         for i in range(1, self.numberStars + 1):
             commandString += f":getalp{i:d}#"
 
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
@@ -235,33 +235,33 @@ class Model:
             self.getStars()
 
     def clearModel(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":delalig#", responseCheck="")
         return suc
 
     def deletePoint(self, number: int) -> bool:
-        if number < 1 or number > self._numberStars:
+        if number < 0 or number > self._numberStars - 1:
             return False
 
-        conn = Connection(self.parent.host)
-        commandString = f":delalst{number:d}#"
+        conn = Connection(self.parent)
+        commandString = f":delalst{number + 1:d}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def storeName(self, name: str) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = f":modeldel0{name[:15]}#:modelsv0{name[:15]}#"
         suc, response, _ = conn.communicate(commandString)
         return suc and response[1] == "1"
 
     def loadName(self, name: str) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = f":modelld0{name[:15]}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def deleteName(self, name: str) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = f":modeldel0{name[:15]}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
@@ -292,7 +292,7 @@ class Model:
             value = comFormat.format(ra, dec, pierside, raSolve, decSolve, sidereal)
             commandString += value
 
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString += ":endalig#"
         suc, _, _ = conn.communicate(commandString, responseCheck="V")
         return suc

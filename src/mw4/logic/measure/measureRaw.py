@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -38,7 +38,7 @@ class MeasureDataRaw(PySide6.QtCore.QObject):
         self.timerTask.timeout.connect(self.measureTask)
 
     def startCommunication(self) -> None:
-        self.timerTask.start(self.parent.CYCLE_UPDATE_TASK)
+        self.timerTask.start(self.parent.UPDATE_RATE)
 
     def stopCommunication(self) -> None:
         self.timerTask.stop()

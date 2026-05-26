@@ -10,27 +10,21 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
+from mw4.logic.environment.sensorWeatherAlpacaAscomBase import SensorWeatherAlpacaAscomBase
 from typing import Any
 
 
-class SensorWeatherAlpaca(AlpacaClass):
+class SensorWeatherAlpaca(SensorWeatherAlpacaAscomBase, AlpacaClass):
     def __init__(self, parent: Any) -> None:
-        super().__init__(parent=parent)
-        self.signals = parent.signals
-        self.data = parent.data
+        super().__init__(parent)
+        self.deviceType = parent.DEVICE_TYPE
 
-    def workerPollData(self) -> None:
-        if not self.deviceConnected:
+    def startCommunication(self) -> None:
+        if not self.createAlpacaDevice(self.deviceType):
+            self.msg.emit(2, "ALPACA", "Device type error", self.deviceName)
             return
-
-        self.getAndStoreAlpacaProperty("temperature", "WEATHER_PARAMETERS.WEATHER_TEMPERATURE")
-        self.getAndStoreAlpacaProperty("pressure", "WEATHER_PARAMETERS.WEATHER_PRESSURE")
-        self.getAndStoreAlpacaProperty("dewpoint", "WEATHER_PARAMETERS.WEATHER_DEWPOINT")
-        self.getAndStoreAlpacaProperty("humidity", "WEATHER_PARAMETERS.WEATHER_HUMIDITY")
-        self.getAndStoreAlpacaProperty("cloudcover", "WEATHER_PARAMETERS.CloudCover")
-        self.getAndStoreAlpacaProperty("rainrate", "WEATHER_PARAMETERS.RainVol")
-        self.getAndStoreAlpacaProperty("skyquality", "SKY_QUALITY.SKY_BRIGHTNESS")
+        super().startCommunication()

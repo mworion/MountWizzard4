@@ -10,10 +10,9 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
-
 import PySide6
 import pytest
 import unittest.mock as mock
@@ -23,7 +22,7 @@ from mw4.logic.measure.measureRaw import MeasureDataRaw
 @pytest.fixture(autouse=True, scope="module")
 def function():
     class Test1:
-        CYCLE_UPDATE_TASK = 1000
+        UPDATE_RATE = 1000
 
         @staticmethod
         def setEmptyData():

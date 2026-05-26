@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
@@ -98,9 +98,11 @@ class ImageManage:
     def checkEnableCameraUI(self) -> None:
         coolerTemp = "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE" in self.app.camera.data
         gainCam = "CCD_GAIN.GAIN" in self.app.camera.data
+        offsetCam = "CCD_OFFSET.OFFSET" in self.app.camera.data
         pixelX = "CCD_INFO.CCD_MAX_X" in self.app.camera.data
         self.ui.GroupCooler.setEnabled(coolerTemp)
-        self.ui.GroupCCD.setEnabled(gainCam)
+        self.ui.GroupGain.setEnabled(gainCam)
+        self.ui.GroupOffset.setEnabled(offsetCam)
         self.ui.GroupControlledCamera.setEnabled(pixelX)
 
     def updateOffset(self) -> None:
@@ -353,7 +355,7 @@ class ImageManage:
             changeStyleDynamic(self.ui.lightPanelOn, "run", False)
             changeStyleDynamic(self.ui.lightPanelOff, "run", True)
 
-        value = self.app.cover.data.get("FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
+        value = self.app.lightPanel.data.get("FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
         guiSetText(self.ui.lightPanelIntensity, "3.0f", value)
 
     def setCoverPark(self) -> None:
@@ -368,13 +370,13 @@ class ImageManage:
     def moveFocuserIn(self) -> None:
         pos = self.app.focuser.data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
         step = self.ui.focuserSteps.value()
-        newPos = pos - step
+        newPos = int(pos - step)
         self.app.focuser.move(position=newPos)
 
     def moveFocuserOut(self) -> None:
         pos = self.app.focuser.data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
         step = self.ui.focuserSteps.value()
-        newPos = pos + step
+        newPos = int(pos + step)
         self.app.focuser.move(position=newPos)
 
     def haltFocuser(self) -> None:
@@ -387,10 +389,10 @@ class ImageManage:
         self.app.lightPanel.lightOff()
 
     def setLightPanelIntensity(self) -> None:
-        actValue = self.app.cover.data.get(
+        actValue = self.app.lightPanel.data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE", 0
         )
-        maxBrightness = self.app.cover.data.get(
+        maxBrightness = self.app.lightPanel.data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
         )
         dlg = QInputDialog()
@@ -406,7 +408,7 @@ class ImageManage:
         if not ok:
             return
         self.ui.lightPanelIntensity.setText(f"{value}")
-        self.app.lightPanel.lightIntensity(value)
+        self.app.lightPanel.lightIntensity(int(value))
 
     def updateDomeGui(self) -> None:
         value = self.app.dome.data.get("DOME_MOTION.DOME_CW", None)

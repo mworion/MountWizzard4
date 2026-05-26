@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -30,13 +30,13 @@ if platform.system() == "Windows":
 
 class Dome:
     log = logging.getLogger("MW4")
+    DEVICE_TYPE: str = "dome"
 
     def __init__(self, app: Any) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.loadConfig: bool = True
-        self.updateRate: int = 1000
         self.deviceType: str = ""
         self.data: dict[str, Any] = {
             "Slewing": False,

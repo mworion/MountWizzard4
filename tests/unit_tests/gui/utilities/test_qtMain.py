@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -134,41 +134,23 @@ def test_runDialog_1(function):
 
 def test_messageDialog_1(function):
     widget = QWidget()
-    with mock.patch.object(
-        QMessageBox, "question", return_value=QMessageBox.StandardButton.No
-    ):
-        with mock.patch.object(QMessageBox, "show"):
-            with mock.patch.object(
-                function, "runDialog", return_value=QMessageBox.StandardButton.No
-            ):
-                suc = function.messageDialog(widget, "test", "test")
-                assert not suc
+    with mock.patch.object(function, "runDialog", return_value=QMessageBox.StandardButton.No):
+        suc = function.messageDialog(widget, "test", "test")
+        assert not suc
 
 
 def test_messageDialog_2(function):
     widget = QWidget()
-    with mock.patch.object(
-        QMessageBox, "question", return_value=QMessageBox.StandardButton.Yes
-    ):
-        with mock.patch.object(QMessageBox, "show"):
-            with mock.patch.object(
-                function, "runDialog", return_value=QMessageBox.StandardButton.Yes
-            ):
-                suc = function.messageDialog(widget, "test", "test")
-                assert suc
+    with mock.patch.object(function, "runDialog", return_value=QMessageBox.StandardButton.Yes):
+        suc = function.messageDialog(widget, "test", "test")
+        assert suc
 
 
 def test_messageDialog_3(function):
     widget = QWidget()
-    with mock.patch.object(
-        QMessageBox, "question", return_value=QMessageBox.StandardButton.Yes
-    ):
-        with mock.patch.object(QMessageBox, "show"):
-            with mock.patch.object(
-                function, "runDialog", return_value=QMessageBox.StandardButton.Yes
-            ):
-                suc = function.messageDialog(widget, "test", "test", ["A", "B"])
-                assert suc
+    with mock.patch.object(function, "runDialog", return_value=QMessageBox.StandardButton.Yes):
+        suc = function.messageDialog(widget, "test", "test", ["A", "B"])
+        assert suc
 
 
 def test_openFile_5(function):
@@ -177,7 +159,7 @@ def test_openFile_5(function):
         full = function.openFile(
             window=window, title="title", folder=Path("."), filterSet="*.*"
         )
-        assert full == Path("")
+        assert full == Path()
 
 
 def test_openFile_6(function):
@@ -214,7 +196,7 @@ def test_saveFile_5(function):
         full = function.saveFile(
             window=window, title="title", folder=Path("."), filterSet="*.*"
         )
-        assert full == Path("")
+        assert full == Path()
 
 
 def test_saveFile_6(function):
@@ -237,7 +219,7 @@ def test_openDir_5(function):
     window = QWidget()
     with mock.patch.object(function, "runDialog", return_value=None):
         full = function.openDir(window=window, title="title", folder=Path("."))
-        assert full == Path("")
+        assert full == Path()
 
 
 def test_convertTime_1(function):

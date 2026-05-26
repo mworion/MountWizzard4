@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -59,7 +59,7 @@ class Firmware:
         return True
 
     def poll(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ":GVD#:GVN#:GVP#:GVT#:GVZ#:GCFG#"
         suc, response, chunks = conn.communicate(commandString)
         if not suc:

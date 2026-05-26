@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import json
@@ -55,7 +55,7 @@ class ModelData(QObject):
         self.modelProgData: list[ProgStar] = []
         self.modelSaveData: list = []
         self.modelName: str = ""
-        self.imageDir: Path = Path("")
+        self.imageDir: Path = Path()
         self.latitude: float = 0
         self.version: str = ""
         self.firmware: str = ""

@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import time
@@ -68,8 +68,7 @@ class MountCommand:
             self.msg.emit(0, "System", "Mount", "mount manual opened")
 
     def commandRaw(self) -> None:
-        host = self.app.mount.host
-        conn = Connection(host)
+        conn = Connection(self.app.mount)
         cmd = self.ui.commandInput.text()
         self.ui.commandStatus.clear()
         self.ui.commandOutput.clear()

@@ -10,11 +10,9 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
-"""Bootstrap utilities for MountWizzard4 application startup."""
-
 import faulthandler
 import logging
 import os
@@ -93,19 +91,19 @@ def setupWorkDirs(workDir: Path) -> MwGlob:
 # noinspection PyUnresolvedReferences
 def writeSystemInfo(mwGlob: MwGlob) -> None:
     """Write system and version information to the log header."""
-    log.header("-" * 100)
-    log.header(f"mountwizzard4    : {version('mountwizzard4')}")
-    log.header(f"platform         : {platform.system()}")
-    log.header(f"sys.executable   : {sys.executable}")
-    log.header(f"actual workdir   : {mwGlob['workDir']}")
-    log.header(f"machine          : {platform.machine()}")
-    log.header(f"cpu              : {platform.processor()}")
-    log.header(f"release          : {platform.release()}")
-    log.header(f"python           : {platform.python_version()}")
-    log.header(f"python runtime   : {platform.architecture()[0]}")
-    log.header(f"PySide6 / Qt     : {PySide6.QtCore.__version__} / {qVersion()}")
-    log.header(f"node / hostname  : {platform.node()} / {socket.gethostname()}")
-    log.header("-" * 100)
+    log.info("-" * 100)
+    log.info(f"mountwizzard4    : {version('mountwizzard4')}")
+    log.info(f"platform         : {platform.system()}")
+    log.info(f"sys.executable   : {sys.executable}")
+    log.info(f"actual workdir   : {mwGlob['workDir']}")
+    log.info(f"machine          : {platform.machine()}")
+    log.info(f"cpu              : {platform.processor()}")
+    log.info(f"release          : {platform.release()}")
+    log.info(f"python           : {platform.python_version()}")
+    log.info(f"python runtime   : {platform.architecture()[0]}")
+    log.info(f"PySide6 / Qt     : {PySide6.QtCore.__version__} / {qVersion()}")
+    log.info(f"node / hostname  : {platform.node()} / {socket.gethostname()}")
+    log.info("-" * 100)
 
 
 def extractDataFiles(mwGlob: MwGlob) -> None:

@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 
@@ -36,10 +36,8 @@ def test_properties(function):
 
 
 def test_properties_2(function):
-    function.updateRate = 1000
     function.loadConfig = True
     function.framework = "indi"
-    assert function.updateRate == 1000
     assert function.loadConfig
 
 

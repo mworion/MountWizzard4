@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -67,6 +67,7 @@ class Geometry:
 
     def __init__(self, parent: Any) -> None:
         self.parent = parent
+        self.loggingTrace = parent.loggingTrace
         self.offBaseAltAxisX: float = 0
         self.offBaseAltAxisZ: float = 0
         self.offAltAxisGemX: float = 0
@@ -252,13 +253,14 @@ class Geometry:
         np.ndarray | None,
         np.ndarray | None,
     ]:
-        text = f"HA:{ha.hours}, DEC:{dec.degrees}, LAT:{lat.degrees}, "
-        text += f"pierside:{pierside} ,"
-        text += f"offGEM:{self.offGEM}, offPlateOTA:{self.offPlateOTA}, "
-        text += f"offNorth:{self.offNorth}, offEast:{self.offEast}, "
-        text += f"offVert:{self.offVert}, offLAT:{self.offLAT}, "
-        text += f"domeRadius:{self.domeRadius}"
-        self.log.trace(text)
+        if self.loggingTrace:
+            text = f"[Trace] HA:{ha.hours}, DEC:{dec.degrees}, LAT:{lat.degrees}, "
+            text += f"pierside:{pierside} ,"
+            text += f"offGEM:{self.offGEM}, offPlateOTA:{self.offPlateOTA}, "
+            text += f"offNorth:{self.offNorth}, offEast:{self.offEast}, "
+            text += f"offVert:{self.offVert}, offLAT:{self.offLAT}, "
+            text += f"domeRadius:{self.domeRadius}"
+            self.log.debug(text)
 
         ha = ha._degrees
         dec = dec.degrees
@@ -390,7 +392,8 @@ class Geometry:
         p = 2 * np.dot(PD, PB)
         q = np.dot(PB, PB) - self.domeRadius**2
 
-        self.log.trace(f"Geometry calc p:[{p}], q:[{q}]")
+        if self.loggingTrace:
+            self.log.debug(f"[Trace] Geometry calc p:[{p}], q:[{q}]")
 
         # there should be always a reasonable solution
         if (p * p / 4 - q) < 0:
@@ -435,6 +438,7 @@ class Geometry:
             P10[:-1],
         ]
 
-        self.log.trace(f"az:{azDome}, alt:{altDome}")
+        if self.loggingTrace:
+            self.log.debug(f"[Trace] az:{azDome}, alt:{altDome}")
 
         return altDome, azDome, intersect, PB, PD

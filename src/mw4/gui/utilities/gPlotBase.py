@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import numpy as np
@@ -25,7 +25,7 @@ from scipy.ndimage import uniform_filter
 
 class PlotBase(pg.GraphicsLayoutWidget, Styles):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs, show=True)
+        super().__init__(*args, **kwargs, show=False)
         pg.setConfigOptions(antialias=True, imageAxisOrder="row-major")
 
         self.pen = pg.mkPen(color=self.M_PRIM, width=1)

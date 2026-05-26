@@ -10,7 +10,7 @@
 # GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
-# Licence APL2.0
+# License APL2.0
 #
 ###########################################################
 import logging
@@ -32,8 +32,8 @@ class Watney:
         self.result: dict[str, Any] = {"success": False}
         self.process: Any = None
         self.deviceName: str = "Watney"
-        self.indexPath = Path("")
-        self.appPath = Path("")
+        self.indexPath = Path()
+        self.appPath = Path()
         self.timeout: int = 30
         self.searchRadius: int = 20
         self.setDefaultPath()

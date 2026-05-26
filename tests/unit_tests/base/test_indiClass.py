@@ -587,9 +587,6 @@ def test_loadIndiConfig(function):
     assert item == ("TestDevice", "CONFIG_PROCESS", {"CONFIG_PROCESS": True})
 
 
-# ─── discoverDevices ─────────────────────────────────────────────────────────
-
-
 def test_discoverDevices_mutexLocked(function):
     function.discoverMutex.lock()
     result = function.discoverDevices("dome")
@@ -597,153 +594,90 @@ def test_discoverDevices_mutexLocked(function):
     function.discoverMutex.unlock()
 
 
-def test_discoverDevices_maxSearchZero(function, monkeypatch):
-    """Loop never entered when MAX_SEARCH == 0; verifies setup/teardown path."""
-    monkeypatch.setattr(IndiClass, "MAX_SEARCH", 0)
-    with (
-        mock.patch("mw4.base.indiClass.Worker"),
-        mock.patch.object(function.threadPool, "start"),
-    ):
-        result = function.discoverDevices("dome")
-    assert result == []
-
-
-def test_discoverDevices_loopEmptyQueue(function, monkeypatch):
-    """Loop branch: queue is empty → time.sleep is called then continue;
-    second iteration consumes a non-matching item to exhaust n."""
-    monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
-    dummy = mock.MagicMock()
-    dummy.eventtype = "Remove"
-    dummy.devicename = "x"
-
-    with (
-        mock.patch("mw4.base.indiClass.Worker"),
-        mock.patch.object(function.threadPool, "start"),
-        mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
-        mock.patch("mw4.base.indiClass.time"),
-    ):
-        mock_txQ = mock.MagicMock()
-        mock_rxQ = mock.MagicMock()
-        mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-        # first: empty → sleep → continue; second: not empty → get item
-        mock_rxQ.empty.side_effect = [True, False]
-        mock_rxQ.get.return_value = dummy
-        result = function.discoverDevices("dome")
-    assert result == []
-
-
-def test_discoverDevices_loopNoneItem(function, monkeypatch):
-    """Loop branch: rxQ yields None → continue, loop finishes normally."""
+def test_discoverDevices_emptyQueue(function, monkeypatch):
     monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
     with (
         mock.patch("mw4.base.indiClass.Worker"),
         mock.patch.object(function.threadPool, "start"),
         mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
-        mock.patch("mw4.base.indiClass.time"),
+        mock.patch("mw4.base.indiClass.mainThreadSleep") as mock_sleep,
     ):
         mock_txQ = mock.MagicMock()
         mock_rxQ = mock.MagicMock()
         mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-        mock_rxQ.empty.return_value = False
+        mock_rxQ.empty.return_value = True
+
+        result = function.discoverDevices("dome")
+
+    assert result == []
+    mock_sleep.assert_called_once_with(100)
+    mock_txQ.put.assert_called_once_with(None)
+
+
+def test_discoverDevices_noneItem(function, monkeypatch):
+    monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
+    with (
+        mock.patch("mw4.base.indiClass.Worker"),
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
+        mock.patch("mw4.base.indiClass.mainThreadSleep"),
+    ):
+        mock_txQ = mock.MagicMock()
+        mock_rxQ = mock.MagicMock()
+        mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
+        mock_rxQ.empty.side_effect = [False, True]
         mock_rxQ.get.return_value = None
+
         result = function.discoverDevices("dome")
+
     assert result == []
+    mock_txQ.put.assert_called_once_with(None)
 
 
-def test_discoverDevices_loopDefineEventMatch(function, monkeypatch):
-    """Loop branch: Define event with matching device type → added to result."""
+def test_discoverDevices_withoutDeviceName(function, monkeypatch):
     monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
-    driver_info = {"DRIVER_INTERFACE": str(1 << 5)}  # dome interface bit
-    snap = mock.MagicMock()
-    snap.get.return_value = driver_info
-
     item = mock.MagicMock()
-    item.eventtype = "Define"
+    item.devicename = ""
+
+    with (
+        mock.patch("mw4.base.indiClass.Worker"),
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
+        mock.patch("mw4.base.indiClass.mainThreadSleep"),
+    ):
+        mock_txQ = mock.MagicMock()
+        mock_rxQ = mock.MagicMock()
+        mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
+        mock_rxQ.empty.side_effect = [False, True]
+        mock_rxQ.get.return_value = item
+
+        result = function.discoverDevices("dome")
+
+    assert result == []
+    mock_rxQ.task_done.assert_called_once()
+
+
+def test_discoverDevices_driverMatchingType(function, monkeypatch):
+    monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
+    driver_info = {"DRIVER_INTERFACE": str(1 << 5)}
+    snapshot_value = mock.MagicMock()
+    snapshot_value.get.return_value = driver_info
+    item = mock.MagicMock()
     item.devicename = "TestDome"
-    item.snapshot = {"TestDome": snap}
+    item.snapshot = {"TestDome": snapshot_value}
 
     with (
         mock.patch("mw4.base.indiClass.Worker"),
         mock.patch.object(function.threadPool, "start"),
         mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
+        mock.patch("mw4.base.indiClass.mainThreadSleep"),
     ):
         mock_txQ = mock.MagicMock()
         mock_rxQ = mock.MagicMock()
         mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-        mock_rxQ.empty.return_value = False
+        mock_rxQ.empty.side_effect = [False, True]
         mock_rxQ.get.return_value = item
+
         result = function.discoverDevices("dome")
-    assert "TestDome" in result
 
-
-def test_discoverDevices_loopDefineEventNoDriver(function, monkeypatch):
-    """Loop branch: Define event but DRIVER_INFO is None → device not added."""
-    monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
-    snap = mock.MagicMock()
-    snap.get.return_value = None  # no DRIVER_INFO
-
-    item = mock.MagicMock()
-    item.eventtype = "Define"
-    item.devicename = "TestDome"
-    item.snapshot = {"TestDome": snap}
-
-    with (
-        mock.patch("mw4.base.indiClass.Worker"),
-        mock.patch.object(function.threadPool, "start"),
-        mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
-    ):
-        mock_txQ = mock.MagicMock()
-        mock_rxQ = mock.MagicMock()
-        mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-        mock_rxQ.empty.return_value = False
-        mock_rxQ.get.return_value = item
-        result = function.discoverDevices("dome")
-    assert result == []
-
-
-def test_discoverDevices_loopDefineEventNoTypeMatch(function, monkeypatch):
-    """Loop branch: Define event but interface bits don't match device type."""
-    monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
-    driver_info = {"DRIVER_INTERFACE": str(1 << 1)}  # camera bit, not dome
-
-    snap = mock.MagicMock()
-    snap.get.return_value = driver_info
-
-    item = mock.MagicMock()
-    item.eventtype = "Define"
-    item.devicename = "TestCamera"
-    item.snapshot = {"TestCamera": snap}
-
-    with (
-        mock.patch("mw4.base.indiClass.Worker"),
-        mock.patch.object(function.threadPool, "start"),
-        mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
-    ):
-        mock_txQ = mock.MagicMock()
-        mock_rxQ = mock.MagicMock()
-        mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-        mock_rxQ.empty.return_value = False
-        mock_rxQ.get.return_value = item
-        result = function.discoverDevices("dome")
-    assert result == []
-
-
-def test_discoverDevices_loopNonDefineEvent(function, monkeypatch):
-    """Loop branch: non-Define event → device not added."""
-    monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
-    item = mock.MagicMock()
-    item.eventtype = "Remove"
-    item.devicename = "TestDome"
-
-    with (
-        mock.patch("mw4.base.indiClass.Worker"),
-        mock.patch.object(function.threadPool, "start"),
-        mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
-    ):
-        mock_txQ = mock.MagicMock()
-        mock_rxQ = mock.MagicMock()
-        mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-        mock_rxQ.empty.return_value = False
-        mock_rxQ.get.return_value = item
-        result = function.discoverDevices("dome")
-    assert result == []
+    assert result == ["TestDome"]

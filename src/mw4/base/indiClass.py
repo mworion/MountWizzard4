@@ -22,6 +22,7 @@ from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QThreadPool
 from queue import Queue
 from typing import Any
+from mw4.base.threadUtils import mainThreadSleep
 
 
 class IndiClass:
@@ -186,14 +187,14 @@ class IndiClass:
         worker = Worker(runqueclient, txQ, rxQ, indihost=self.hostaddress, indiport=self.port)
         self.threadPool.start(worker)
         while n > 0:
-            time.sleep(0.1)
-            n = n - 1
             if rxQ.empty():
+                mainThreadSleep(100)
+                n = n - 1
                 continue
             item = rxQ.get()
             if item is None:
                 continue
-            if item.eventtype == "Define" and item.devicename:
+            if item.devicename:
                 driver = item.snapshot[item.devicename].get("DRIVER_INFO")
                 if driver and (INDI_TYPES[deviceType] & int(driver["DRIVER_INTERFACE"])):
                     discoverSet.add(item.devicename)

@@ -49,7 +49,7 @@ class MeasureData:
     def collectDataDevices(self) -> None:
         self.devices.clear()
         deviceStat = self.app.deviceStat
-        deviceDrivers = self.app.getActiveDrivers()
+        deviceDrivers = self.app.deviceRegistry.getDrivers()
         devices = [device for device in deviceStat if deviceStat[device] is not None]
         for device in devices:
             if device not in measure:

@@ -53,7 +53,7 @@ class AlpacaAscomCommon(DriverData):
 
     def getDeviceProp(self, valueProp: str) -> Any:
         if valueProp in self.propertyExceptions:
-            return
+            return None
         try:
             returnVal =  getattr(self.device, valueProp)
             if self.loggingTrace:
@@ -76,11 +76,12 @@ class AlpacaAscomCommon(DriverData):
 
     def callDeviceMethod(self, valueProp: str, **kwargs: Any) -> Any:
         if valueProp in self.propertyExceptions:
-            return
+            return None
         try:
             returnVal =  getattr(self.device, valueProp)(**kwargs)
             if self.loggingTrace:
-                self.log.debug(f"[Trace] [{self.deviceName}] [{valueProp}] [{kwargs}] [{returnVal}]")
+                t = f"[Trace] [{self.deviceName}] [{valueProp}] [{kwargs}] [{returnVal}]"
+                self.log.debug(t)
             return returnVal
         except Exception as e:
             self.log.debug(f"[{self.deviceName}] method [{valueProp}] not implemented: {e}")

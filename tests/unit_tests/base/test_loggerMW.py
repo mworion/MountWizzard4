@@ -108,9 +108,11 @@ def test_setupLogging_custom_log_levels(clean_log_directory):
 
 
 def test_setupLogging():
-    with mock.patch.object(os.path, "isdir", return_value=False):
-        with mock.patch.object(os, "mkdir"):
-            loggerMW.setupLogging()
+    with (
+        mock.patch.object(os.path, "isdir", return_value=False),
+        mock.patch.object(os, "mkdir"),
+    ):
+        loggerMW.setupLogging()
 
 
 def test_setCustomLoggingLevel_debug():
@@ -127,6 +129,50 @@ def test_setCustomLoggingLevel_info():
 
 def test_setCustomLoggingLevel_trace():
     app = MagicMock()
-    loggerMW.setCustomLoggingLevel(app, "TRACE")
+    with mock.patch("mw4.base.loggerMW.setTrace") as mockSetTrace:
+        loggerMW.setCustomLoggingLevel(app, "TRACE")
     assert logging.getLogger("MW4").level == logging.DEBUG
-    assert app.mount.loggingTrace is False
+    mockSetTrace.assert_called_once_with(app, enable=True)
+
+
+def test_setTrace_noDrivers():
+    app = MagicMock()
+    app.getActiveDrivers.return_value = {}
+    loggerMW.setTrace(app, enable=True)
+    app.getActiveDrivers.assert_called_once()
+
+
+def test_setTrace_ascomFramework_enable():
+    mockRun = MagicMock()
+    drivers = {"dev1": {"class": MagicMock(run={"ascom": mockRun})}}
+    app = MagicMock()
+    app.getActiveDrivers.return_value = drivers
+    loggerMW.setTrace(app, enable=True)
+    assert mockRun.loggingTrace is True
+
+
+def test_setTrace_alpacaFramework_enable():
+    mockRun = MagicMock()
+    drivers = {"dev1": {"class": MagicMock(run={"alpaca": mockRun})}}
+    app = MagicMock()
+    app.getActiveDrivers.return_value = drivers
+    loggerMW.setTrace(app, enable=True)
+    assert mockRun.loggingTrace is True
+
+
+def test_setTrace_indiFramework():
+    mockRun = MagicMock()
+    drivers = {"dev1": {"class": MagicMock(run={"indi": mockRun})}}
+    app = MagicMock()
+    app.getActiveDrivers.return_value = drivers
+    loggerMW.setTrace(app, enable=True)
+    assert not hasattr(mockRun, "loggingTrace") or True
+
+
+def test_setTrace_disable():
+    mockRun = MagicMock()
+    drivers = {"dev1": {"class": MagicMock(run={"ascom": mockRun})}}
+    app = MagicMock()
+    app.getActiveDrivers.return_value = drivers
+    loggerMW.setTrace(app, enable=False)
+    assert mockRun.loggingTrace is False

@@ -91,11 +91,27 @@ def setupLogging() -> None:
     redirectSTD()
 
 
+def setTrace(app: Any, enable: bool = False) -> None :
+    drivers = app.getActiveDrivers()
+    indiTrace = 2 if enable else 0
+    for device in drivers:
+        for framework in drivers[device]["class"].run:
+            if framework in ["ascom", "alpaca"]:
+                drivers[device]["class"].run[framework].loggingTrace = enable
+            elif framework in ["indi"]:
+                pass
+                # drivers[device]["class"].run[framework].runClient.debug_verbosity(indiTrace)
+            
+
+
+
 def setCustomLoggingLevel(app: Any, level: str = "DEBUG") -> None:
     if level == "TRACE":
         logging.getLogger("MW4").setLevel("DEBUG")
-        app.mount.loggingTrace = True
-        app.mount.loggingTrace = False
+        # app.mount.loggingTrace = True
+        setTrace(app, enable=True)
     else:
         logging.getLogger("MW4").setLevel(level)
+        app.mount.loggingTrace = False
+        setTrace(app, enable=False)
     # IPyClient.debug_verbosity(verbose) method, where 0 is no xml traffic is recorded, 1 is xml recorded but the least verbose, and 3 is the most.

@@ -15,7 +15,7 @@
 ###########################################################
 import logging
 from astropy.utils import data, iers
-from mw4.base.loggerMW import setCustomLoggingLevel
+from mw4.base.loggerMW import setCustomLoggingLevel, setTrace
 from typing import Any
 
 

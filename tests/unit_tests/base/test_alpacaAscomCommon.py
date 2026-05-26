@@ -36,6 +36,7 @@ class Parent:
 
 class ConcreteDevice(AlpacaAscomCommon):
     """Concrete test double that implements the abstract template methods."""
+
     PROTOCOL_NAME: str = "TEST"
 
     def getDeviceProp(self, valueProp: str) -> Any:
@@ -220,23 +221,17 @@ def test_processCommandQueue_set(function):
 
 def test_processCommandQueue_unknownType(function):
     # arrange
-    function.commandQueue.put(
-        CommandItem(cmdType="unknown", valueProp="X")
-    )
+    function.commandQueue.put(CommandItem(cmdType="unknown", valueProp="X"))
     # act / assert — must not raise
     function.processCommandQueue()
 
 
 def test_processCommandQueue_queueEmpty(function):
     # arrange — put an item that raises queue.Empty on get_nowait
-    with mock.patch.object(
-        function.commandQueue, "get_nowait", side_effect=queue.Empty
-    ):
+    with mock.patch.object(function.commandQueue, "get_nowait", side_effect=queue.Empty):
         # act / assert — must not raise
         function.commandQueue._mock_empty = False
-        with mock.patch.object(
-            function.commandQueue, "empty", return_value=False
-        ):
+        with mock.patch.object(function.commandQueue, "empty", return_value=False):
             function.processCommandQueue()
 
 
@@ -259,9 +254,7 @@ def test_handleDeviceConnect_success(function):
     function.handleDeviceConnect()
     # assert
     function.signals.serverConnected.emit.assert_called_once()
-    function.signals.deviceConnected.emit.assert_called_once_with(
-        function.deviceName
-    )
+    function.signals.deviceConnected.emit.assert_called_once_with(function.deviceName)
     assert function.serverConnected is True
     assert function.deviceConnected is True
 
@@ -272,9 +265,7 @@ def test_handleDeviceDisconnect(function):
     function.handleDeviceDisconnect()
     # assert
     assert function.deviceConnected is False
-    function.signals.deviceDisconnected.emit.assert_called_once_with(
-        function.deviceName
-    )
+    function.signals.deviceDisconnected.emit.assert_called_once_with(function.deviceName)
 
 
 def test_runnerCommunicationLoop_stopImmediate(function):
@@ -344,9 +335,7 @@ def test_stopCommunication(function):
     assert function.stopEvent.is_set()
     assert function.deviceConnected is False
     assert function.serverConnected is False
-    function.signals.deviceDisconnected.emit.assert_called_once_with(
-        function.deviceName
-    )
+    function.signals.deviceDisconnected.emit.assert_called_once_with(function.deviceName)
     function.signals.serverDisconnected.emit.assert_called_once()
     # "Connected" must be queued
     item = function.commandQueue.get_nowait()
@@ -366,11 +355,58 @@ def test_getDeviceProp_noDevice():
     assert "Test" in base.propertyExceptions
 
 
+def test_getDeviceProp_inPropertyExceptions():
+    # arrange
+    parent = Parent()
+    base = AlpacaAscomCommon(parent=parent)
+    base.propertyExceptions.append("Test")
+    # act
+    result = base.getDeviceProp("Test")
+    # assert — early return
+    assert result is None
+
+
+def test_getDeviceProp_withLoggingTrace():
+    # arrange
+    parent = Parent()
+    base = AlpacaAscomCommon(parent=parent)
+    base.device = mock.MagicMock()
+    base.device.Name = "TracedDevice"
+    base.loggingTrace = True
+    # act
+    result = base.getDeviceProp("Name")
+    # assert
+    assert result == "TracedDevice"
+
+
 def test_setDeviceProp_noDevice():
     parent = Parent()
     base = AlpacaAscomCommon(parent=parent)
     base.setDeviceProp("Test", True)
     assert "Test" in base.propertyExceptions
+
+
+def test_setDeviceProp_inPropertyExceptions():
+    # arrange
+    parent = Parent()
+    base = AlpacaAscomCommon(parent=parent)
+    base.propertyExceptions.append("Test")
+    # act — must not raise and must not add a second entry
+    base.setDeviceProp("Test", True)
+    # assert
+    assert base.propertyExceptions.count("Test") == 1
+
+
+def test_setDeviceProp_withLoggingTrace():
+    # arrange
+    parent = Parent()
+    base = AlpacaAscomCommon(parent=parent)
+    base.device = mock.MagicMock()
+    base.loggingTrace = True
+    # act
+    base.setDeviceProp("Gain", 42)
+    # assert
+    assert base.device.Gain == 42
 
 
 def test_callDeviceMethod_noDevice():
@@ -380,3 +416,27 @@ def test_callDeviceMethod_noDevice():
     assert result is None
     assert "Test" in base.propertyExceptions
 
+
+def test_callDeviceMethod_inPropertyExceptions():
+    # arrange
+    parent = Parent()
+    base = AlpacaAscomCommon(parent=parent)
+    base.propertyExceptions.append("Test")
+    # act
+    result = base.callDeviceMethod("Test")
+    # assert — early return
+    assert result is None
+
+
+def test_callDeviceMethod_withLoggingTrace():
+    # arrange
+    parent = Parent()
+    base = AlpacaAscomCommon(parent=parent)
+    base.device = mock.MagicMock()
+    base.device.Halt.return_value = "ok"
+    base.loggingTrace = True
+    # act
+    result = base.callDeviceMethod("Halt")
+    # assert
+    base.device.Halt.assert_called_once_with()
+    assert result == "ok"

@@ -87,6 +87,7 @@ class AlpacaAscomCommon(DriverData):
     def getInitialConfig(self) -> None:
         self.getAndStoreDeviceProp("Name", "DRIVER_INFO.DRIVER_NAME")
         self.getAndStoreDeviceProp("DriverVersion", "DRIVER_INFO.DRIVER_VERSION")
+        self.getAndStoreDeviceProp("DriverInfo", "DRIVER_INFO.DRIVER_EXEC")
 
     def pollData(self) -> None:
         pass

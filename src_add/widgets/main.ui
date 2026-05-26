@@ -107,7 +107,7 @@
     <enum>QTabWidget::TabShape::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>8</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -24216,7 +24216,7 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="text">
-         <string>Optics Data</string>
+         <string>Telescope</string>
         </property>
        </widget>
        <widget class="QPushButton" name="telescopeSetup">

@@ -23,5 +23,9 @@ class TelescopeAlpacaAscomBase(AlpacaAscomCommon):
 
     def getInitialConfig(self) -> None:
         super().getInitialConfig()
-        self.getAndStoreDeviceProp("ApertureDiameter", "TELESCOPE_INFO.TELESCOPE_APERTURE")
-        self.getAndStoreDeviceProp("FocalLength", "TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH")
+        aperture = self.getDeviceProp("ApertureDiameter")
+        if aperture:
+            self.data["TELESCOPE_INFO.TELESCOPE_APERTURE"] = float(aperture) * 1000
+        focalLength = self.getDeviceProp("FocalLength")
+        if focalLength:
+            self.data["TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH"] = float(focalLength) * 1000

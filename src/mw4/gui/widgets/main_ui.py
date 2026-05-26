@@ -8394,7 +8394,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainTabWidget.setCurrentIndex(4)
+        self.mainTabWidget.setCurrentIndex(8)
         self.mountTabWidget.setCurrentIndex(0)
         self.modelingTabWidget.setCurrentIndex(0)
         self.manageTabWidget.setCurrentIndex(0)
@@ -10449,7 +10449,7 @@ class Ui_MainWindow(object):
         self.relaySetup.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>Configure the observing conditions part of the relay device. A popup will open and ask for the parameters.</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
         self.relaySetup.setText(QCoreApplication.translate("MainWindow", u"Set", None))
-        self.dome_3.setText(QCoreApplication.translate("MainWindow", u"Optics Data", None))
+        self.dome_3.setText(QCoreApplication.translate("MainWindow", u"Telescope", None))
 #if QT_CONFIG(tooltip)
         self.telescopeSetup.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>Configure a driver to access optics data like focal length and aperture. Normally this is configured  in the telescope driver. A popup will open and ask for the parameters.</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)

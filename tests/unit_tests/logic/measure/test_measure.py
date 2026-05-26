@@ -20,6 +20,11 @@ from mw4.logic.measure.measure import MeasureData
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
+class Data:
+    def __init__(self, data):
+        self.data = data
+
+
 @pytest.fixture(autouse=True, scope="module")
 def function():
     func = MeasureData(app=App())
@@ -147,14 +152,14 @@ def test_measureTask_1(function):
 
 
 def test_measureTask_2(function):
-        data = {
-            "WEATHER_PARAMETERS.WEATHER_TEMPERATURE": 0,
-            "WEATHER_PARAMETERS.WEATHER_PRESSURE": 0,
-            "WEATHER_PARAMETERS.WEATHER_DEWPOINT": 0,
-            "WEATHER_PARAMETERS.WEATHER_HUMIDITY": 0,
-        }
+    data = {
+        "WEATHER_PARAMETERS.WEATHER_TEMPERATURE": 0,
+        "WEATHER_PARAMETERS.WEATHER_PRESSURE": 0,
+        "WEATHER_PARAMETERS.WEATHER_DEWPOINT": 0,
+        "WEATHER_PARAMETERS.WEATHER_HUMIDITY": 0,
+    }
 
-    function.devices = {"directWeather": Data()}
+    function.devices = {"directWeather": Data(data=data)}
     function.clearData()
     with (
         mock.patch.object(function, "checkStart"),

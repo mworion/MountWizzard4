@@ -18,6 +18,7 @@ import numpy as np
 import pyqtgraph as pg
 import pytest
 import unittest.mock as mock
+import warnings
 from mw4.gui.extWindows.measure.measureW import MeasureWindow
 from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
@@ -26,7 +27,7 @@ from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     func = MeasureWindow(app=App())
 
@@ -48,6 +49,59 @@ def function(qapp):
     QApplication.processEvents()
     gc.collect()
     QApplication.processEvents()
+
+
+@pytest.fixture(autouse=True, scope="function")
+def prepareFunctionState(function):
+    value = np.datetime64("2014-12-12 20:20:20")
+    function.app.measure.framework = ""
+    function.app.measure.devices["directWeather"] = ""
+    function.app.measure.data = {
+        "time": np.array([value] * 5, dtype="datetime64[s]"),
+        "directWeather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE": np.array([1, 1, 1, 1, 1]),
+        "directWeather-WEATHER_PARAMETERS.WEATHER_PRESSURE": np.array([1, 1, 1, 1, 1]),
+        "directWeather-WEATHER_PARAMETERS.WEATHER_DEWPOINT": np.array([1, 1, 1, 1, 1]),
+        "directWeather-WEATHER_PARAMETERS.WEATHER_HUMIDITY": np.array([1, 1, 1, 1, 1]),
+    }
+
+    warningFilters = warnings.filters[:]
+    warnings.simplefilter("ignore", RuntimeWarning)
+    try:
+        for setName in function.mSetUI:
+            try:
+                function.mSetUI[setName].currentIndexChanged.disconnect()
+            except (TypeError, RuntimeError):
+                pass
+
+        for signal, slot in (
+            (function.app.colorChange, function.colorChange),
+            (function.app.update1s, function.drawMeasure),
+            (function.app.update1s, function.setTitle),
+        ):
+            try:
+                signal.disconnect(slot)
+            except (TypeError, RuntimeError):
+                pass
+    finally:
+        warnings.filters = warningFilters
+
+    function.setupButtons()
+    for setName in function.mSetUI:
+        function.mSetUI[setName].setCurrentIndex(0)
+    function.oldTitle = ["No chart"] * len(function.mSetUI)
+
+    for chart in function.dataPlots.values():
+        if not chart:
+            continue
+        chart["template"]["legendRef"] = None
+        for line in chart["lineItems"].values():
+            line["plotItemRef"] = None
+
+    if function.drawLock.tryLock():
+        function.drawLock.unlock()
+    yield
+    if function.drawLock.tryLock():
+        function.drawLock.unlock()
 
 
 def test_initConfig_1(function):

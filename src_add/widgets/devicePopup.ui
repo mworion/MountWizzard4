@@ -436,6 +436,9 @@
      <property name="text">
       <string>Search</string>
      </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="ascom">

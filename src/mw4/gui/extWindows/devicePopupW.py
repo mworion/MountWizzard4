@@ -17,6 +17,7 @@ from functools import partial
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.ascomClass import AscomClass
 from mw4.base.indiClass import IndiClass
+from mw4.base.threadUtils import mainThreadSleep
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, getTabIndex, svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
@@ -138,7 +139,7 @@ class DevicePopup(MWidget):
         self.ui.ok.clicked.connect(self.storeConfig)
 
         for framework in self.discovers:
-            clickable(self.discovers[framework]["button"]).connect(
+            self.discovers[framework]["button"].clicked.connect(
                 partial(self.discoverDevices, framework)
             )
 
@@ -250,7 +251,7 @@ class DevicePopup(MWidget):
         for deviceName in deviceNames:
             self.discovers[framework]["deviceList"].addItem(deviceName)
 
-    def discoverDevices(self, framework: str, widget) -> None:
+    def discoverDevices(self, framework: str, widget: object = None) -> None:
         device = self.discovers[framework]["class"](parent=self.parent)
 
         if framework in ["indi", "alpaca"]:

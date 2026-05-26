@@ -54,6 +54,36 @@ def test_collectDataDevices(function):
         assert "focuser" not in function.devices
 
 
+def test_collectDataDevices_unknownActiveDriver(function):
+    function.app.deviceStat = {
+        "sensor1Weather": object(),
+        "unknownDevice": object(),
+    }
+    activeDrivers = {
+        "sensor1Weather": {"class": object()},
+        "unknownDevice": {"class": object()},
+    }
+    with mock.patch.object(function.app, "getActiveDrivers", return_value=activeDrivers):
+        function.collectDataDevices()
+        assert "sensor1Weather" in function.devices
+        assert "unknownDevice" not in function.devices
+
+
+def test_collectDataDevices_driverClassNone(function):
+    function.app.deviceStat = {
+        "sensor1Weather": object(),
+        "camera": object(),
+    }
+    activeDrivers = {
+        "sensor1Weather": {"class": object()},
+        "camera": {"class": None},
+    }
+    with mock.patch.object(function.app, "getActiveDrivers", return_value=activeDrivers):
+        function.collectDataDevices()
+        assert "sensor1Weather" in function.devices
+        assert "camera" not in function.devices
+
+
 def test_clearData_1(function):
     function.devices = {"directWeather": object(), "test": object()}
     function.clearData()
@@ -61,10 +91,12 @@ def test_clearData_1(function):
 
 def test_startCommunication_1(function):
     function.framework = "raw"
-    with mock.patch.object(function.run[function.framework], "startCommunication"):
-        with mock.patch.object(function, "collectDataDevices"):
-            with mock.patch.object(function, "clearData"):
-                function.startCommunication()
+    with (
+        mock.patch.object(function.run[function.framework], "startCommunication"),
+        mock.patch.object(function, "collectDataDevices"),
+        mock.patch.object(function, "clearData"),
+    ):
+        function.startCommunication()
 
 
 def test_stopCommunication_1(function):
@@ -115,7 +147,6 @@ def test_measureTask_1(function):
 
 
 def test_measureTask_2(function):
-    class Data:
         data = {
             "WEATHER_PARAMETERS.WEATHER_TEMPERATURE": 0,
             "WEATHER_PARAMETERS.WEATHER_PRESSURE": 0,
@@ -125,6 +156,8 @@ def test_measureTask_2(function):
 
     function.devices = {"directWeather": Data()}
     function.clearData()
-    with mock.patch.object(function, "checkStart"):
-        with mock.patch.object(function, "checkSize"):
-            function.measureTask()
+    with (
+        mock.patch.object(function, "checkStart"),
+        mock.patch.object(function, "checkSize"),
+    ):
+        function.measureTask()

@@ -77,6 +77,18 @@ def test_getCoordinatesFromHeader_2():
     assert dec.degrees == 45.0
 
 
+def test_getCoordinatesFromHeader_3():
+    header = {
+        "RA": 180,
+        "DEC": 45,
+        "OBJCTRA": "01 00 00",
+        "OBJCTDEC": "+10 00 00",
+    }
+    ra, dec = getCoordinatesFromHeader(header=header)
+    assert ra.hours == 12.0
+    assert dec.degrees == 45.0
+
+
 def test_getSQMFromHeader_0():
     header = {
         "test": "17.0",
@@ -203,20 +215,33 @@ def test_getScaleFromHeader_6():
     assert scale == 0
 
 
+def test_getScaleFromHeader_7():
+    header = {
+        "FOCALLEN": "570",
+        "XBINNING": "1",
+        "XPIXSZ": "3.0",
+        "PIXSIZE1": "4.0",
+    }
+    scale = getScaleFromHeader(header=header)
+    assert round(scale, 3) == 1.447
+
+
 def test_getHintFromImageFile_1():
-    with mock.patch.object(mw4.logic.fits.fitsFunction, "getImageHeader"):
-        with mock.patch.object(
+    with (
+        mock.patch.object(mw4.logic.fits.fitsFunction, "getImageHeader"),
+        mock.patch.object(
             mw4.logic.fits.fitsFunction,
             "getCoordinatesFromHeader",
             return_value=(Angle(hours=12), Angle(degrees=45)),
-        ):
-            with mock.patch.object(
-                mw4.logic.fits.fitsFunction, "getScaleFromHeader", return_value=1
-            ):
-                ra, dec, scale = getHintFromImageFile("test")
-                assert ra.hours == 12.0
-                assert dec.degrees == 45.0
-                assert scale == 1
+        ),
+        mock.patch.object(
+            mw4.logic.fits.fitsFunction, "getScaleFromHeader", return_value=1
+        ),
+    ):
+        ra, dec, scale = getHintFromImageFile("test")
+        assert ra.hours == 12.0
+        assert dec.degrees == 45.0
+        assert scale == 1
 
 
 def test_getCoordinatesFromWCSHeader_1():
@@ -242,6 +267,19 @@ def test_calcAngleScaleFromWCSHeader_1():
     assert mirrored
 
 
+def test_calcAngleScaleFromWCSHeader_2():
+    header = {
+        "CD1_1": 0.0002777777777777778,
+        "CD1_2": 0,
+        "CD2_1": 0,
+        "CD2_2": 0.0002777777777777778,
+    }
+    angle, scale, mirrored = calcAngleScaleFromWCSHeader(header=header)
+    assert angle.degrees == 0
+    assert scale == 1
+    assert not mirrored
+
+
 def test_writeHeaderCamera():
     hdu = fits.PrimaryHDU(data=np.array([]))
     header = hdu.header
@@ -251,6 +289,25 @@ def test_writeHeaderCamera():
     camera.app = App()
     camera.obsSite = camera.app.mount.obsSite
     writeHeaderCamera(header, camera)
+
+
+def test_writeHeaderCamera_withoutFocalLength():
+    hdu = fits.PrimaryHDU(data=np.array([]))
+    header = hdu.header
+    camera = Camera()
+    camera.data["CCD_INFO.CCD_PIXEL_SIZE_X"] = 3
+    camera.data["CCD_INFO.CCD_PIXEL_SIZE_Y"] = 3
+    camera.focalLength = 0
+    camera.app = App()
+    camera.obsSite = camera.app.mount.obsSite
+
+    with (
+        mock.patch.object(mw4.logic.fits.fitsFunction.log, "warning") as warningMock,
+        pytest.raises(UnboundLocalError),
+    ):
+        writeHeaderCamera(header, camera)
+
+    warningMock.assert_called_once_with("camera.focalLength not set")
 
 
 def test_writeHeaderPointing():

@@ -24,7 +24,7 @@ package-data = ["data/**/*.*"]
 
 [project]
 name = "mountwizzard4"
-version = "4.0.0b7"
+version = "4.0.0b8"
 license = "Apache-2.0"
 description = "Tool for managing 10_micron mounts"
 readme = "README.rst"
@@ -56,7 +56,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "numpy==2.4.4",
+    "numpy==2.4.6",
     "opencv-python-headless==4.13.0.92",
     "scipy==1.17.1",
     "astropy==7.2.0",
@@ -68,9 +68,9 @@ dependencies = [
     "qimage2ndarray==1.10.0",
     "skyfield==1.54",
     "sgp4==2.25",
-    "requests==2.33.1",
+    "requests==2.34.2",
     "python-dateutil==2.9.0.post0",
-    "wakeonlan==3.1.0",
+    "wakeonlan==3.3.0",
     "pybase64==1.4.3",
     "websocket-client==1.9.0",
     "hidapi==0.15.0",
@@ -78,7 +78,7 @@ dependencies = [
     "packaging==26.2",
     "lz4==4.4.5",
     "xisf==0.9.6",
-    "pyside6==6.11.0",
+    "pyside6==6.11.1",
     "pyyaml==6.0.3",
     "pywin32==311; platform_system == 'Windows'",
 ]
@@ -104,9 +104,9 @@ dev = [
     "pytest-cov==7.1.0",
     "pytest-xdist==3.8.0",
     "invoke==3.0.3",
-    "ruff==0.15.12",
-    "coverage==7.13.5",
-    "scipy-stubs==1.17.1.4",
+    "ruff==0.15.14",
+    "coverage==7.14.0",
+    "scipy-stubs==1.17.1.5",
 ]
 
 [tool.pytest.ini_options]

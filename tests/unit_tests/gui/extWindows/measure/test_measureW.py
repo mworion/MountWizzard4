@@ -51,9 +51,11 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    with mock.patch.object(function, "setupButtons"):
-        with mock.patch.object(function, "drawMeasure"):
-            function.initConfig()
+    with (
+        mock.patch.object(function, "setupButtons"),
+        mock.patch.object(function, "drawMeasure"),
+    ):
+        function.initConfig()
 
 
 def test_storeConfig_1(function):
@@ -76,16 +78,20 @@ def test_showWindow_1(function):
 def test_closeEvent_1(function):
     function.app.update1s.connect(function.drawMeasure)
     function.app.update1s.connect(function.setTitle)
-    with mock.patch.object(function, "show"):
-        with mock.patch.object(MWidget, "closeEvent"):
-            function.closeEvent(QCloseEvent())
+    with (
+        mock.patch.object(function, "show"),
+        mock.patch.object(MWidget, "closeEvent"),
+    ):
+        function.closeEvent(QCloseEvent())
 
 
 def test_colorChange(function):
-    with mock.patch.object(function, "drawMeasure"):
-        with mock.patch.object(function.ui.measure, "colorChange"):
-            with mock.patch.object(function, "resetPlotItem"):
-                function.colorChange()
+    with (
+        mock.patch.object(function, "drawMeasure"),
+        mock.patch.object(function.ui.measure, "colorChange"),
+        mock.patch.object(function, "resetPlotItem"),
+    ):
+        function.colorChange()
 
 
 def test_setTitle_1(function):
@@ -105,10 +111,12 @@ def test_setupButtons(function):
         "set0": function.ui.set0,
     }
 
-    with mock.patch.object(function.ui.set0, "clear"):
-        with mock.patch.object(function.ui.set0, "setView"):
-            with mock.patch.object(function.ui.set0, "addItem"):
-                function.setupButtons()
+    with (
+        mock.patch.object(function.ui.set0, "clear"),
+        mock.patch.object(function.ui.set0, "setView"),
+        mock.patch.object(function.ui.set0, "addItem"),
+    ):
+        function.setupButtons()
     function.mSetUI = test
 
 
@@ -189,9 +197,11 @@ def test_changeChart_1(function):
         function.ui.set4.clear()
         function.ui.set4.addItem("No chart")
         function.ui.set0.setCurrentIndex(0)
-        with mock.patch.object(function, "drawMeasure"):
-            with mock.patch.object(function, "checkInUse", return_value=False):
-                function.changeChart("set4", 0)
+        with (
+            mock.patch.object(function, "drawMeasure"),
+            mock.patch.object(function, "checkInUse", return_value=False),
+        ):
+            function.changeChart("set4", 0)
 
 
 def test_changeChart_2(function):
@@ -200,11 +210,13 @@ def test_changeChart_2(function):
         function.ui.set0.addItem("No chart")
         function.ui.set0.addItem("Voltage")
         function.ui.set0.setCurrentIndex(1)
-        with mock.patch.object(function, "drawMeasure"):
-            with mock.patch.object(function, "inUseMessage"):
-                with mock.patch.object(function, "checkInUse", return_value=True):
-                    function.changeChart("set0", 1)
-                    function.drawLock.unlock()
+        with (
+            mock.patch.object(function, "drawMeasure"),
+            mock.patch.object(function, "inUseMessage"),
+            mock.patch.object(function, "checkInUse", return_value=True),
+        ):
+            function.changeChart("set0", 1)
+            function.drawLock.unlock()
 
 
 def test_processDrawMeasure_1(function):
@@ -226,10 +238,12 @@ def test_processDrawMeasure_1(function):
         function.ui.set4.setCurrentIndex(0)
         function.oldTitle = ["No chart", "Voltage", "No chart", "No chart", "No chart"]
         x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
-        with mock.patch.object(function, "plotting"):
-            with mock.patch.object(function, "resetPlotItem"):
-                with mock.patch.object(function, "triggerUpdate"):
-                    function.processDrawMeasure(x, True)
+        with (
+            mock.patch.object(function, "plotting"),
+            mock.patch.object(function, "resetPlotItem"),
+            mock.patch.object(function, "triggerUpdate"),
+        ):
+            function.processDrawMeasure(x, True)
 
 
 def test_processDrawMeasure_2(function):
@@ -251,10 +265,12 @@ def test_processDrawMeasure_2(function):
         function.ui.set4.setCurrentIndex(0)
         function.oldTitle = ["No chart"] * 5
         x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
-        with mock.patch.object(function, "plotting"):
-            with mock.patch.object(function, "resetPlotItem"):
-                with mock.patch.object(function, "triggerUpdate"):
-                    function.processDrawMeasure(x, False)
+        with (
+            mock.patch.object(function, "plotting"),
+            mock.patch.object(function, "resetPlotItem"),
+            mock.patch.object(function, "triggerUpdate"),
+        ):
+            function.processDrawMeasure(x, False)
 
 
 def test_drawMeasure_1(function):

@@ -139,7 +139,10 @@ def writeHeaderCamera(header: fits.Header, camera: Any) -> fits.Header:
     header.append(("YPIXSZ", data["CCD_INFO.CCD_PIXEL_SIZE_Y"] * camera.binning))
     header.append(("XBINNING", camera.binning, "MW4 same binning x/y"))
     header.append(("YBINNING", camera.binning, "MW4 same binning x/y"))
-    scale = camera.binning / camera.focalLength * 206.265
+    if camera.focalLength:
+        scale = camera.binning / camera.focalLength * 206.265
+    else:
+        log.warning('camera.focalLength not set')
     header.append(("FOCALLEN", camera.focalLength, "Data from driver / manual input"))
     header.append(("SCALE", data["CCD_INFO.CCD_PIXEL_SIZE_X"] * scale))
     header.append(("EXPTIME", camera.exposureTime))

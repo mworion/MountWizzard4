@@ -96,7 +96,7 @@ def test_myFunction(app):
 - Source code is located in `src/mw4`.
 - Unit tests are located in `tests/unit_tests`.
 - All code must be covered by tests with a test coverage of 100%.
-- As a first step, a plan must be created before implementing any changes.
+- if larger changes (more than one class) are needed, a plan must be created before implementing any changes.
 - The plan will be saved as a Markdown file with an appropriate name in the
   root directory.
 - After all changes, the package will be tested to 100% coverage.
@@ -117,7 +117,7 @@ def test_myFunction(app):
 - Do not take `src/mw4/gui/widgets` into account, as those files are
   automatically generated.
 - no local methods and functions with leading underscore (e.g., `_myFunction`) should be used
-- When adding comments, check the line length – it must not exceed the limit
+- check the line length – it must not exceed the limit, but use the line length limit as much as possible to avoid unnecessary line breaks
   defined in `pyproject.toml`; split long comments into multiple lines.
 - stay close with the task description and do not add any additional features or changes that are not
   explicitly mentioned in the task description.

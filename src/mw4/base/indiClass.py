@@ -18,11 +18,11 @@ import logging
 import time
 from indipyclient.queclient import EventItem, QueClient, runqueclient
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO_CONV
+from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QThreadPool
 from queue import Queue
 from typing import Any
-from mw4.base.threadUtils import mainThreadSleep
 
 
 class IndiClass:

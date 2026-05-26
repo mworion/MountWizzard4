@@ -130,6 +130,7 @@ class Ui_DevicePopup(object):
         self.alpacaDiscover.setObjectName(u"alpacaDiscover")
         self.alpacaDiscover.setGeometry(QRect(305, 100, 51, 21))
         self.alpacaDiscover.setFont(font)
+        self.alpacaDiscover.setAutoDefault(False)
         self.tab.addTab(self.alpaca, "")
         self.ascom = QWidget()
         self.ascom.setObjectName(u"ascom")

@@ -16,6 +16,7 @@
 import logging
 import socket
 import uuid
+from typing import Any
 
 
 class Connection:
@@ -37,7 +38,6 @@ class Connection:
     The class itself needs parameters for the host and port to be able to interact
     with the mount.
     """
-
     log = logging.getLogger("MW4")
     SOCKET_TIMEOUT = 10
     COMMANDS = [
@@ -265,8 +265,9 @@ class Connection:
         ":SWOL",
     ]
 
-    def __init__(self, host: tuple | None = None) -> None:
-        self.host = host
+    def __init__(self, parent: Any) -> None:
+        self.host = parent.host
+        self.loggingTrace = parent.loggingTrace
         self.id = str(uuid.uuid4())[:8]
 
     def validCommand(self, command: str) -> bool:
@@ -310,9 +311,10 @@ class Connection:
                         break
                 else:
                     chunksToReceive += 1
-        t = f"Analyse  [{self.id}]: minBytes: [{minBytes}], numOfChunks: [{chunksToReceive}]"
-        t += f", host: [{self.host}]"
-        self.log.trace(t)
+        if self.loggingTrace:
+            t = f"[Trace] Analyse  [{self.id}]: minBytes: [{minBytes}], numOfChunks: [{chunksToReceive}]"
+            t += f", host: [{self.host}]"
+            self.log.debug(t)
         return chunksToReceive, getData, minBytes
 
     def closeClientHard(self, client: socket.socket | None) -> None:
@@ -338,31 +340,30 @@ class Connection:
         client.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
         try:
             client.connect(self.host)
-
         except TimeoutError:
             self.closeClientHard(client)
             self.log.debug(f"Timeout  [{self.id}]: socket timeout in build client")
             return None
-
         except Exception as e:
             self.closeClientHard(client)
-            self.log.debug(f"Error    [{self.id}]: socket general: [{e}] in build client")
+            self.log.warning(f"Error    [{self.id}]: socket general: [{e}] in build client")
             return None
-
         else:
             return client
 
     def sendData(self, client: socket.socket, commandString: str) -> bool:
         try:
-            self.log.trace(f"Sending  [{self.id}]: [{commandString}]")
+            if self.loggingTrace:
+                self.log.debug(f"[Trace] Sending  [{self.id}]: [{commandString}]")
             client.sendall(commandString.encode())
         except TimeoutError:
             self.closeClientHard(client)
-            self.log.trace(f"Timeout  [{self.id}]: socket timeout in send data")
+            if self.loggingTrace:
+                self.log.debug(f"[Trace] Timeout  [{self.id}]: socket timeout in send data")
             return False
         except Exception as e:
             self.closeClientHard(client)
-            self.log.trace(f"Error    [{self.id}]: socket error: [{e}] in send data")
+            self.log.warning(f"[Trace] Error    [{self.id}]: socket error: [{e}] in send data")
             return False
         else:
             return True
@@ -395,15 +396,16 @@ class Connection:
                     break
 
         except TimeoutError:
-            self.log.trace(f"Timeout  [{self.id}]: socket timeout in receive data")
+            if self.loggingTrace:
+                self.log.debug(f"[Trace] Timeout  [{self.id}]: socket timeout in receive data")
             return False, []
         except Exception as e:
             self.log.warning(f"Error    [{self.id}]: error: [{e}], received: [{chunkRaw}]")
-            self.log.trace(f"Error    [{self.id}]: socket error: [{e}] in receive data")
             return False, []
         else:
             response = responseStr.rstrip("#").split("#")
-            self.log.trace(f"Response [{self.id}]: [{response}]")
+            if self.loggingTrace:
+                self.log.debug(f"[Trace] Response [{self.id}]: [{response}]")
             return True, response
 
     def communicate(
@@ -440,15 +442,17 @@ class Connection:
             chunkRaw = client.recv(2048)
             val = chunkRaw.decode("ASCII")
         except TimeoutError:
-            self.log.trace(f"Timeout  [{self.id}]: socket timeout in communicate raw")
+            if self.loggingTrace:
+                self.log.debug(f"[Trace] Timeout  [{self.id}]: socket timeout in communicate raw")
             val = "Timeout"
             sucRec = False
         except Exception as e:
-            self.log.trace(f"Error    [{self.id}]: socket error: [{e}] in communicate raw")
+            self.log.warning(f"[Trace] Error    [{self.id}]: socket error: [{e}] in communicate raw")
             val = "Exception"
             sucRec = False
         else:
-            self.log.trace(f"Response [{self.id}]:  [{val}] in communicate raw")
+            if self.loggingTrace:
+                self.log.debug(f"[Trace] Response [{self.id}]:  [{val}] in communicate raw")
             sucRec = True
 
         return sucSend, sucRec, val

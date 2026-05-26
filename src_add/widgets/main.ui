@@ -23902,7 +23902,7 @@ Next point in time when satellite settles.</string>
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -30335,7 +30335,7 @@ Next point in time when satellite settles.</string>
          <rect>
           <x>185</x>
           <y>20</y>
-          <width>66</width>
+          <width>86</width>
           <height>21</height>
          </rect>
         </property>
@@ -30356,7 +30356,7 @@ Next point in time when satellite settles.</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QRadioButton" name="loglevelStandard">
+       <widget class="QRadioButton" name="loglevelInfo">
         <property name="geometry">
          <rect>
           <x>95</x>
@@ -30385,9 +30385,9 @@ Next point in time when satellite settles.</string>
        <widget class="QRadioButton" name="loglevelTrace">
         <property name="geometry">
          <rect>
-          <x>270</x>
+          <x>275</x>
           <y>20</y>
-          <width>101</width>
+          <width>86</width>
           <height>21</height>
          </rect>
         </property>
@@ -30399,7 +30399,7 @@ Next point in time when satellite settles.</string>
          </font>
         </property>
         <property name="toolTip">
-         <string>Debug logging and communication will be stored in log file.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Trace logging and communication will be stored in log file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Trace</string>

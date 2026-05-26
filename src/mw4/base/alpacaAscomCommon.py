@@ -49,15 +49,42 @@ class AlpacaAscomCommon(DriverData):
         self.serverConnected: bool = False
         self.commandQueue: queue.Queue = queue.Queue()
         self.stopEvent: threading.Event = threading.Event()
+        self.loggingTrace: bool = False
 
     def getDeviceProp(self, valueProp: str) -> Any:
-        raise NotImplementedError
+        if valueProp in self.propertyExceptions:
+            return
+        try:
+            returnVal =  getattr(self.device, valueProp)
+            if self.loggingTrace:
+                self.log.debug(f"[Trace] [{self.deviceName}] [{valueProp}] [{returnVal}]")
+            return returnVal
+        except Exception as e:
+            self.log.debug(f"[{self.deviceName}] property [{valueProp}] not implemented: {e}")
+            self.propertyExceptions.append(valueProp)
 
     def setDeviceProp(self, valueProp: str, value: Any) -> None:
-        raise NotImplementedError
+        if valueProp in self.propertyExceptions:
+            return
+        try:
+            setattr(self.device, valueProp, value)
+            if self.loggingTrace:
+                self.log.debug(f"[Trace] [{self.deviceName}] [{valueProp}] [{value}]")
+        except Exception as e:
+            self.log.debug(f"[{self.deviceName}] property [{valueProp}] not implemented: {e}")
+            self.propertyExceptions.append(valueProp)
 
     def callDeviceMethod(self, valueProp: str, **kwargs: Any) -> Any:
-        raise NotImplementedError
+        if valueProp in self.propertyExceptions:
+            return
+        try:
+            returnVal =  getattr(self.device, valueProp)(**kwargs)
+            if self.loggingTrace:
+                self.log.debug(f"[Trace] [{self.deviceName}] [{valueProp}] [{kwargs}] [{returnVal}]")
+            return returnVal
+        except Exception as e:
+            self.log.debug(f"[{self.deviceName}] method [{valueProp}] not implemented: {e}")
+            self.propertyExceptions.append(valueProp)
 
     def setDevicePropQueued(self, valueProp: str, value: Any) -> None:
         self.commandQueue.put(CommandItem(cmdType="set", valueProp=valueProp, value=value))

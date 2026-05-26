@@ -81,7 +81,7 @@ class Dome:
         return True
 
     def poll(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ":GDS#:GDF#:GDW#:GDA#"
         suc, response, chunks = conn.communicate(commandString)
         if not suc:
@@ -89,39 +89,39 @@ class Dome:
         return self.parse(response, chunks)
 
     def openShutter(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ":SDS2#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def closeShutter(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ":SDS1#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def openFlap(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ":SDF2#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def closeFlap(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ":SDF1#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def slewDome(self, azimuth: Angle) -> bool:
         azimuth = azimuth.degrees % 360
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         setAzimuth = f":SDA{azimuth:04.0f}#"
         commandString = setAzimuth
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
     def enableInternalDomeControl(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ":SDAr#"
         suc, _, _ = conn.communicate(commandString)
         return suc

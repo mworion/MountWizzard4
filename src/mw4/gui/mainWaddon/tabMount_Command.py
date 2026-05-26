@@ -68,8 +68,7 @@ class MountCommand:
             self.msg.emit(0, "System", "Mount", "mount manual opened")
 
     def commandRaw(self) -> None:
-        host = self.app.mount.host
-        conn = Connection(host)
+        conn = Connection(self.app.mount)
         cmd = self.ui.commandInput.text()
         self.ui.commandStatus.clear()
         self.ui.commandOutput.clear()

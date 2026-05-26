@@ -88,39 +88,6 @@ class AlpacaClass(AlpacaAscomCommon):
         self._port = int(value)
         self._host = (self._hostaddress, self._port)
 
-    def getDeviceProp(self, valueProp: str) -> Any:
-        if valueProp in self.propertyExceptions:
-            return
-        try:
-            return getattr(self.device, valueProp)
-        except AlpycaNotImplError:
-            self.log.warning(f"[{self.deviceName}] [{valueProp}] not implemented")
-            self.propertyExceptions.append(valueProp)
-        except Exception as e:
-            self.log.error(f"[{self.deviceName}] get [{valueProp}] exception: [{e}]")
-
-    def setDeviceProp(self, valueProp: str, value: Any) -> None:
-        if valueProp in self.propertyExceptions:
-            return
-        try:
-            setattr(self.device, valueProp, value)
-        except AlpycaNotImplError:
-            self.log.warning(f"[{self.deviceName}] [{valueProp}] not implemented")
-            self.propertyExceptions.append(valueProp)
-        except Exception as e:
-            self.log.error(f"[{self.deviceName}] set [{valueProp}] exception: [{e}]")
-
-    def callDeviceMethod(self, valueProp: str, **kwargs: Any) -> Any:
-        if valueProp in self.propertyExceptions:
-            return
-        try:
-            return getattr(self.device, valueProp)(**kwargs)
-        except AlpycaNotImplError:
-            self.log.warning(f"[{self.deviceName}] [{valueProp}] not implemented")
-            self.propertyExceptions.append(valueProp)
-        except Exception as e:
-            self.log.error(f"[{self.deviceName}] call [{valueProp}] exception: [{e}]")
-
     def startCommunication(self) -> None:
         self.deviceConnected = False
         self.serverConnected = False
@@ -172,4 +139,5 @@ class AlpacaClass(AlpacaAscomCommon):
 
         temp = [x for x in devices if x["DeviceType"].lower() == deviceType]
         discoverList = [f"{x['DeviceName']}:{deviceType}:{x['DeviceNumber']}" for x in temp]
+        self.log.debug(f"Discovered [{deviceType}] devices at [{discoverList}]")
         return discoverList

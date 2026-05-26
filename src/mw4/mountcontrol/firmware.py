@@ -59,7 +59,7 @@ class Firmware:
         return True
 
     def poll(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = ":GVD#:GVN#:GVP#:GVT#:GVZ#:GCFG#"
         suc, response, chunks = conn.communicate(commandString)
         if not suc:

@@ -36,33 +36,6 @@ class AscomClass(AlpacaAscomCommon):
             "deviceName": "",
         }
 
-    def getDeviceProp(self, valueProp: str) -> Any:
-        if valueProp in self.propertyExceptions:
-            return
-        try:
-            return getattr(self.device, valueProp)
-        except Exception as e:
-            self.log.debug(f"[{self.deviceName}] property [{valueProp}] not implemented: {e}")
-            self.propertyExceptions.append(valueProp)
-
-    def setDeviceProp(self, valueProp: str, value: Any) -> None:
-        if valueProp in self.propertyExceptions:
-            return
-        try:
-            setattr(self.device, valueProp, value)
-        except Exception as e:
-            self.log.debug(f"[{self.deviceName}] property [{valueProp}] not implemented: {e}")
-            self.propertyExceptions.append(valueProp)
-
-    def callDeviceMethod(self, valueProp: str, **kwargs: Any) -> Any:
-        if valueProp in self.propertyExceptions:
-            return
-        try:
-            return getattr(self.device, valueProp)(**kwargs)
-        except Exception as e:
-            self.log.debug(f"[{self.deviceName}] method [{valueProp}] not implemented: {e}")
-            self.propertyExceptions.append(valueProp)
-
     def runnerCoreLoop(self) -> None:
         CoInitialize()
         try:
@@ -107,5 +80,5 @@ class AscomClass(AlpacaAscomCommon):
         except subprocess.CalledProcessError as e:
             self.log.critical(f"ASCOM Chooser subprocess error: {e}")
             return deviceName
-
+        self.log.debug(f"ASCOM Chooser result: [{result}]")
         return result if result else deviceName

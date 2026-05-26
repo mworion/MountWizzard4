@@ -15,9 +15,9 @@
 ###########################################################
 import datetime
 import logging
+import sys
 import time
 from collections.abc import Callable
-from functools import partial, partialmethod
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from typing import Any
@@ -52,15 +52,11 @@ class LoggerWriter:
                 self.level(" " * 9 + line.strip())
 
     def flush(self) -> None:
-        """
-        flush has to be present, but is not used
-        """
         pass
 
 
 def redirectSTD() -> None:
-    pass
-    # sys.stderr = LoggerWriter(logging.getLogger().error, "STDERR", sys.stderr)
+    sys.stderr = LoggerWriter(logging.getLogger().error, "STDERR", sys.stderr)
     # sys.stdout = LoggerWriter(logging.getLogger().info, "STDOUT", sys.stdout)
 
 
@@ -92,19 +88,9 @@ def setupLogging() -> None:
     logging.getLogger("urllib3").setLevel(logging.WARNING)
     logging.getLogger("astropy").setLevel(logging.WARNING)
     logging.getLogger("keyring").setLevel(logging.WARNING)
-
-    TRACE = 5
-    logging.addLevelName(TRACE, "TRACE")
-    logging.Logger.trace = partialmethod(logging.Logger.log, TRACE)
-    logging.trace = partial(logging.log, TRACE)
-
-    HEADER = 55
-    logging.addLevelName(HEADER, "HEADER")
-    logging.Logger.header = partialmethod(logging.Logger.log, HEADER)
-    logging.header = partial(logging.log, HEADER)
-
     redirectSTD()
 
 
-def setCustomLoggingLevel(level: str = "WARN") -> None:
+def setCustomLoggingLevel(level: str = "DEBUG") -> None:
     logging.getLogger("MW4").setLevel(level)
+

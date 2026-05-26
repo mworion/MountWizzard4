@@ -65,7 +65,7 @@ class Satellite:
         return True
 
     def getTLE(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, response, numberOfChunks = conn.communicate(":TLEG#")
         if not suc:
             return False
@@ -85,7 +85,7 @@ class Satellite:
             return False
 
         commandString = f":TLEL0{line0}$0a{line1}$0a{line2}#"
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(commandString, responseCheck="V")
         return suc
 
@@ -136,7 +136,7 @@ class Satellite:
             return False
 
         julD -= self.obsSite.UTC2TT
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         command = f":TLEGAZ{julD}#:TLEGEQ{julD}#:TLEP{julD},{duration}#"
         suc, response, numberOfChunks = conn.communicate(command)
         if not suc:
@@ -144,7 +144,7 @@ class Satellite:
         return self.parseCalcTLE(response, numberOfChunks)
 
     def slewTLE(self) -> tuple:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, response, numberOfChunks = conn.communicate(":TLES#")
         if numberOfChunks != 1:
             return False, "Error"
@@ -166,7 +166,7 @@ class Satellite:
         return True
 
     def statTLE(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, response, numberOfChunks = conn.communicate(":TLESCK#")
         if not suc:
             return False
@@ -179,7 +179,7 @@ class Satellite:
         julD -= self.obsSite.UTC2TT
 
         commandString = f":TRNEW{julD}#"
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(commandString, responseCheck="V")
         return suc
 
@@ -190,7 +190,7 @@ class Satellite:
         for azimuth, altitude in zip(az, alt):
             commandString += f":TRADD{azimuth},{altitude}#"
 
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
@@ -210,7 +210,7 @@ class Satellite:
         self.trajectoryParams.jdEnd = 0
 
         cmd = ":TRREPLAY#" if replay else ":TRP#"
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
         if not suc:
             return False
@@ -237,7 +237,7 @@ class Satellite:
 
     def getTrackingOffsets(self) -> bool:
         cmd = ":TROFFGET1#:TROFFGET2#:TROFFGET3#:TROFFGET4#"
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
         if not suc:
             return False
@@ -276,7 +276,7 @@ class Satellite:
             cmd += f":TROFFSET4,{Time:+05.1f}#"
             responseLen += 1
 
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
         if not suc:
             return False
@@ -296,54 +296,54 @@ class Satellite:
         return False
 
     def setTrackingFirst(self, first: Angle) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = f":TROFFSET1,{first.degrees:+05.1f}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="V")
         return suc
 
     def setTrackingSecond(self, second: Angle) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = f":TROFFSET2,{second.degrees:+05.1f}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="V")
         return suc
 
     def setTrackingFirstCorr(self, firstCorr: Angle) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = f":TROFFSET3,{firstCorr.degrees:+05.1f}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="V")
         return suc
 
     def setTrackingTime(self, time: float) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = f":TROFFSET4,{time:+05.1f}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="V")
         return suc
 
     def addTrackingFirst(self, first: Angle) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = f":TROFFADD1,{first.degrees:+05.1f}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="V")
         return suc
 
     def addTrackingSecond(self, second: Angle) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = f":TROFFADD2,{second.degrees:+05.1f}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="V")
         return suc
 
     def addTrackingFirstCorr(self, firstCorr: Angle) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = f":TROFFADD3,{firstCorr.degrees:+05.1f}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="V")
         return suc
 
     def addTrackingTime(self, time: float) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         commandString = f":TROFFADD4,{time:+05.1f}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="V")
         return suc
 
     def clearTrackingOffsets(self) -> bool:
-        conn = Connection(self.parent.host)
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(":TROFFCLR#", responseCheck="V")
         return suc

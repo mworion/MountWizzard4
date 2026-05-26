@@ -47,13 +47,13 @@ class MountDevice:
     ) -> None:
         self._waitTime = 0
         self._waitTimeFlip = 0
-
         self.app = app
         self.host = host
         self.MAC = MAC
         self.threadPool = app.threadPool
-        self.pathToData = pathToData
-        self.verbose = verbose
+        self.pathToData: Path = pathToData
+        self.verbose: bool = verbose
+        self.loggingTrace: bool = False
 
         self.signals = MountSignals()
         self.firmware = Firmware(parent=self)
@@ -287,11 +287,11 @@ class MountDevice:
         self.threadPool.start(self.workerGetNames)
 
     def clearGetFW(self) -> None:
-        self.log.header("-" * 100)
-        self.log.header(f"10micron product : {self.firmware.product}")
-        self.log.header(f"10micron firmware: {self.firmware.vString}")
-        self.log.header(f"10micron host    : {self.host}")
-        self.log.header("-" * 100)
+        self.log.info("-" * 100)
+        self.log.info(f"10micron product : {self.firmware.product}")
+        self.log.info(f"10micron firmware: {self.firmware.vString}")
+        self.log.info(f"10micron host    : {self.host}")
+        self.log.info("-" * 100)
         self.geometry.initializeGeometry(self.firmware.product)
         self.signals.firmwareDone.emit(self.firmware)
 

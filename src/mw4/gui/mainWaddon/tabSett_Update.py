@@ -28,26 +28,29 @@ class SettUpdate:
         self.msg = mainW.app.msg
         self.ui = mainW.ui
 
-        self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
+        self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
-        self.ui.loglevelStandard.clicked.connect(self.setLoggingLevel)
+        self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
         self.ui.isOnline.clicked.connect(self.setOnlineMode)
         self.ui.isOnline.clicked.connect(self.setupIERS)
 
     def initConfig(self) -> None:
         config = self.app.config["mainW"]
-        loglevel = logging.getLevelName(self.log.level)
-        self.ui.loglevelTrace.setChecked(loglevel == "TRACE")
-        self.ui.loglevelDebug.setChecked(loglevel == "DEBUG")
-        self.ui.loglevelStandard.setChecked(loglevel == "INFO")
+        self.ui.loglevelInfo.setChecked(config.get("loglevelInfo", False))
+        self.ui.loglevelDebug.setChecked(config.get("loglevelDebug", True))
+        self.ui.loglevelTrace.setChecked(config.get("loglevelTrace", False))
         self.ui.isOnline.setChecked(config.get("isOnline", False))
         self.ui.ageDatabases.setValue(config.get("ageDatabases", 1))
+        self.setLoggingLevel()
         self.setOnlineMode()
         self.setupIERS()
 
     def storeConfig(self) -> None:
         config = self.app.config["mainW"]
         config["isOnline"] = self.ui.isOnline.isChecked()
+        config["loglevelInfo"] = self.ui.loglevelInfo.isChecked()
+        config["loglevelDebug"] = self.ui.loglevelDebug.isChecked()
+        config["loglevelTrace"] = self.ui.loglevelTrace.isChecked()
         config["ageDatabases"] = self.ui.ageDatabases.value()
 
     def setOnlineMode(self) -> None:
@@ -71,9 +74,12 @@ class SettUpdate:
             data.conf.allow_internet = False
 
     def setLoggingLevel(self) -> None:
-        if self.ui.loglevelTrace.isChecked():
-            setCustomLoggingLevel("TRACE")
-        elif self.ui.loglevelDebug.isChecked():
-            setCustomLoggingLevel("DEBUG")
-        elif self.ui.loglevelStandard.isChecked():
+        if self.ui.loglevelInfo.isChecked():
             setCustomLoggingLevel("INFO")
+            self.app.mount.loggingTrace = False
+        elif self.ui.loglevelTrace.isChecked():
+            setCustomLoggingLevel("DEBUG")
+            self.app.mount.loggingTrace = True
+        else:
+            setCustomLoggingLevel("DEBUG")
+            self.app.mount.loggingTrace = False

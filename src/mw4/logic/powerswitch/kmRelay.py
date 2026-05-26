@@ -84,7 +84,7 @@ class KMRelay:
         status = result.status_code
         url = result.url
         elapsed = result.elapsed
-        self.log.trace(f"Result: {url}, {reason}, {status}, {elapsed}, {text}")
+        self.log.debug(f"Result: {url}, {reason}, {status}, {elapsed}, {text}")
 
     def getRelay(self, url: str, debug: bool = False) -> Any:
         if self.hostaddress is None:

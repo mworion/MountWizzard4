@@ -33,7 +33,7 @@ class SatelliteHorizonWindow(MWidget):
         self.threadPool = app.threadPool
         self.ui = satelliteHor_ui.Ui_SatelliteHorizonDialog()
         self.ui.setupUi(self)
-        self.satellite: EarthSatellite = EarthSatellite("", "", "")
+        self.satellite: EarthSatellite | None = None
         self.satOrbits: dict = {}
         self.plotSatPosHorizon: pg.PlotDataItem = pg.PlotDataItem()
         self.pointerAltAz: pg.PlotDataItem = pg.PlotDataItem()

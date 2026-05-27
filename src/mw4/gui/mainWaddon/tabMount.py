@@ -13,7 +13,6 @@
 # License APL2.0
 #
 ###########################################################
-from ast import Bytes
 from typing import Any
 
 
@@ -98,7 +97,7 @@ class Mount:
         else:
             self.msg.emit(2, "Mount", "Command", "Cannot set tracking to Solar")
 
-    def flipMountGameController(self, value: Bytes) -> None:
+    def flipMountGameController(self, value: bytes) -> None:
         if value == 0b00000010:
             self.flipMount()
 
@@ -108,7 +107,7 @@ class Mount:
         else:
             self.msg.emit(2, "Mount", "Command", "Cannot flip mount")
 
-    def stopGameController(self, value: Bytes) -> None:
+    def stopGameController(self, value: bytes) -> None:
         if value == 0b00001000:
             self.stop()
 

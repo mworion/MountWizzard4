@@ -23,7 +23,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 class Parent:
     app = App()
     data = {}
-    deviceType = "switch"
+    DEVICE_TYPE = "switch"
     signals = Signals()
     loadConfig = True
     updateRate = 1000
@@ -37,17 +37,17 @@ def function():
 
 
 def test_pollData_UPB(function):
-    with mock.patch.object(function, "getDeviceProp", return_value=15):
-        with mock.patch.object(function, "getAndStoreDeviceProp"):
-            function.pollData()
-            assert function.data["FIRMWARE_INFO.VERSION"] == "1.4"
+    function.data["MaxSwitch"] = 15
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
+        function.pollData()
+        assert function.data["FIRMWARE_INFO.VERSION"] == "1.4"
 
 
 def test_pollData_UPBv2(function):
-    with mock.patch.object(function, "getDeviceProp", return_value=21):
-        with mock.patch.object(function, "getAndStoreDeviceProp"):
-            function.pollData()
-            assert function.data["FIRMWARE_INFO.VERSION"] == "2.1"
+    function.data["MaxSwitch"] = 21
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
+        function.pollData()
+        assert function.data["FIRMWARE_INFO.VERSION"] == "2.1"
 
 
 def test_togglePowerPort(function):

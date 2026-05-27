@@ -23,7 +23,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 class Parent:
     app = App()
     data = {}
-    deviceType = ""
+    DEVICE_TYPE = "observingconditions"
     signals = Signals()
     loadConfig = True
     updateRate = 1000

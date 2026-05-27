@@ -23,7 +23,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 class Parent:
     app = App()
     data = {}
-    deviceType = ""
+    DEVICE_TYPE = "filterwheel"
     signals = Signals()
     loadConfig = True
     updateRate = 1000
@@ -42,18 +42,14 @@ def test_getInitialConfig_namesNone(function):
 
 
 def test_getInitialConfig_namesPresent(function):
-    with mock.patch.object(
-        function, "getDeviceProp", return_value=["Red", "Green"]
-    ):
+    with mock.patch.object(function, "getDeviceProp", return_value=["Red", "Green"]):
         function.getInitialConfig()
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_0"] == "Red"
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_1"] == "Green"
 
 
 def test_getInitialConfig_nameNoneEntry(function):
-    with mock.patch.object(
-        function, "getDeviceProp", return_value=["Red", None]
-    ):
+    with mock.patch.object(function, "getDeviceProp", return_value=["Red", None]):
         function.getInitialConfig()
         assert function.data["FILTER_NAME.FILTER_SLOT_NAME_0"] == "Red"
 

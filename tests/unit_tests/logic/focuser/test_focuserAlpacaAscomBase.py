@@ -23,7 +23,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 class Parent:
     app = App()
     data = {}
-    deviceType = ""
+    DEVICE_TYPE = "focuser"
     signals = Signals()
     loadConfig = True
 
@@ -38,9 +38,7 @@ def function():
 def test_pollData(function):
     with mock.patch.object(function, "getAndStoreDeviceProp") as m:
         function.pollData()
-        m.assert_called_once_with(
-            "Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION"
-        )
+        m.assert_called_once_with("Position", "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION")
 
 
 def test_move(function):

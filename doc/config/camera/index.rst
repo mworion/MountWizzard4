@@ -42,13 +42,10 @@ Do the steps 1 - 5 for all devices you need to configure. All configuration are
 save when leaving MountWizzard4 with Save/Quit button or just when saving the
 profile. You can add or change any config later on at any time.
 
-Using SGPro or N.I.N.A. as camera
----------------------------------
+Using N.I.N.A. as device
+------------------------
 In addition to the standard frameworks to interface to devices, MountWizzard4
-could use Sequence Generator Pro (SGPro) an Nighttime Imaging (N.I.N.A.) as a
-camera driver for devices attached to them. Unfortunately they support only a
-minimum set of devices through their API and only with a limited feature set.
-But the provided basic API is sufficient to do the modeling job.
+could use Nighttime Imaging (N.I.N.A.) as a driver for devices attached to them.
 
 .. note:: MountWizzard4 uses all necessary data from the FITS of the images
           taken by the external apps. Please make sure, that the FITS header
@@ -57,65 +54,18 @@ But the provided basic API is sufficient to do the modeling job.
           transfer their images to MountWizzard4, you have to ensure that the
           FITS files are stored on your local disk and MountWizzard4 has access.
 
-Basically MountWizzard4 interface these apps and let them control the devices.
-Selection and connecting the devices have to be done manually in the regarding
-application. MountWizzard4 just recognizes of a device is connected or not and
-if connected uses it as is.
+Basically MountWizzard4 interface N.I.N.A. through it's alpaca plugin and let
+them control the devices. This means, that you have to install the Alpaca plugin
+for N.I.N.A. and enable it, but you could also use other devices than cameras,
+e.g. filter wheel, focuser, dome, etc. as well.
 
-SGPro controlled mode
----------------------
-First in camera driver setup you choose to use the SGPro controlled mode:
-
-.. image:: image/driver_sgpro_controlled.png
-    :align: center
-    :scale: 71%
-
-You recognize the setting in device tab:
-
-.. image:: image/imaging_sgpro_controlled.png
-    :align: center
-    :scale: 71%
-
-Once you connect a camera in SGPro
-
-.. image:: image/imaging_sgpro_controlled_connected.png
-    :align: center
-    :scale: 71%
-
-the status in MountWizzard4 will change to connected as well.
-
-N.I.N.A. controlled mode
-------------------------
-First in camera driver setup you choose to use the N.I.N.A. controlled mode, you
-recognize the setting in device tab:
-
-.. image:: image/driver_nina_controlled.png
-    :align: center
-    :scale: 71%
-
-Once you connect a camera in N.I.N.A.
-
-.. image:: image/imaging_nina_controlled_connected.png
-    :align: center
-    :scale: 71%
-
-the status in MountWizzard4 will change to connected as well.
-
-Preparation for using NINA 3.x as remote camera
------------------------------------------------
+Preparation for using NINA 3.x as ALPACA device
+------------------------------------------
 N.I.N.A. 3.x realizes this feature in a separate plugin. The plugin is called
-SGPro server emulator:
+Alpaca:
 
 .. image:: image/sgpro-control.png
     :align: center
     :scale: 71%
 
-Pleas install this plugin first and enable server mode.
-
-Preparation for using NINA 2.x as remote camera
------------------------------------------------
-In N.I.N.A. 2.x you have to enable server mode directly in main program:
-
-.. image:: image/server_setting_nina.png
-    :align: center
-    :scale: 71%
+Please install this plugin first and enable it.

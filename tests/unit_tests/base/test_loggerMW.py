@@ -38,6 +38,12 @@ def clean_log_directory():
             log_file.unlink()
 
 
+def test_set_defaults_noop():
+    """The monkey-patched _set_defaults on logging.Logger must be callable."""
+    logger = logging.getLogger("test_noop")
+    logger._set_defaults()
+
+
 def test_loggerwriter_write_single_line():
     mock_level = MagicMock()
     writer = LoggerWriter(level=mock_level, mode="INFO", std="stdout")

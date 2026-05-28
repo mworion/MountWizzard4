@@ -193,10 +193,10 @@ class Geometry:
 
     def initializeGeometry(self, mountType: str) -> bool:
         if mountType not in self.geometryData:
-            self.log.error(f"[{mountType}] not in database")
+            self.log.warning(f"[{mountType}] not in database")
             return False
 
-        self.log.debug(f"using [{mountType}] geometry")
+        self.log.info(f"using [{mountType}] geometry")
         self.offBaseAltAxisX = self.geometryData[mountType]["offBaseAltAxisX"]
         self.offBaseAltAxisZ = self.geometryData[mountType]["offBaseAltAxisZ"]
         self.offAltAxisGemX = self.geometryData[mountType]["offAltAxisGemX"]

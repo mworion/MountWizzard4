@@ -105,7 +105,7 @@ def setTrace(app: Any, enable: bool = False) -> None:
 def setCustomLoggingLevel(app: Any, level: str = "DEBUG") -> None:
     if level == "TRACE":
         logging.getLogger("MW4").setLevel("DEBUG")
-        # app.mount.loggingTrace = True
+        app.mount.loggingTrace = True
         setTrace(app, enable=True)
     else:
         logging.getLogger("MW4").setLevel(level)

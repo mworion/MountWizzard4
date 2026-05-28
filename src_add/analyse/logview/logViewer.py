@@ -45,7 +45,7 @@ class Categories(QTabWidget):
         layout = QVBoxLayout()
         self.qLists = {
             "Full Log": None,
-            "Header": None,
+            "SYS": None,
             "Error": None,
             "Warnings": None,
             "Info": None,
@@ -93,8 +93,8 @@ class Categories(QTabWidget):
 
     @staticmethod
     def getListKey(line):
-        if "[I]" in line and "[Header]" in line:
-            listKey = "Header"
+        if "[I]" in line and "[SYS]" in line:
+            listKey = "SYS"
         elif "[C]" in line:
             listKey = "Error"
         elif "[E]" in line:
@@ -105,9 +105,7 @@ class Categories(QTabWidget):
             listKey = "Info"
         elif "[D]" in line and "modelRun" in line:
             listKey = "Model Trace"
-        elif "[D]" in line:
-            listKey = "Debug"
-        elif "[Trace]" in line and "[  connection.py]" in line:
+        elif "[D]" in line and "[Trace]" in line and "connection.py" in line:
             listKey = "Mount Trace"
         elif "[D]" in line and "[Trace]" in line and "indi" in line:
             listKey = "INDI Trace"
@@ -115,6 +113,8 @@ class Categories(QTabWidget):
             listKey = "ASCOM Trace"
         elif "[D]" in line and "[Trace]" in line and "alpaca" in line:
             listKey = "ALPACA Trace"
+        elif "[D]" in line:
+            listKey = "Debug"
         else:
             listKey = None
         return listKey
@@ -133,7 +133,7 @@ class Categories(QTabWidget):
             qList = self.qLists[key]
             qList.insertItem(qList.count(), item)
 
-        resetFirst = "10micron" in line and "[H]" in line
+        resetFirst = "10micron" in line and "[SYS]" in line
         return resetFirst
 
 
@@ -147,7 +147,7 @@ class LifeCycle(QTabWidget):
         layout.addWidget(self)
 
     def addEntry(self, line):
-        if "[H]" in line and "loader" in line and self.first:
+        if "[I]" in line and "bootstrap" in line and self.first:
             # if first line for new header occurs, start a new cat tab
             self.first = False
             self.numberLifecycles += 1
@@ -211,7 +211,6 @@ class Window(QWidget):
         title = "Load logging file"
         with open(fileName, "rb") as f:
             for i, line in enumerate(f.readlines()):
-                print(line)
                 line = line.decode("utf-8", errors="ignore")
                 t = title + f"   -   progress: {i + 1} lines loaded from {numLines}"
                 t += f"   -   {int((i + 1) / numLines * 100)} %"

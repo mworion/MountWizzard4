@@ -44,8 +44,8 @@ class Categories(QTabWidget):
         QTabWidget.__init__(self)
         layout = QVBoxLayout()
         self.qLists = {
+            "System": None,
             "Full Log": None,
-            "SYS": None,
             "Error": None,
             "Warnings": None,
             "Info": None,
@@ -94,7 +94,7 @@ class Categories(QTabWidget):
     @staticmethod
     def getListKey(line):
         if "[I]" in line and "[SYS]" in line:
-            listKey = "SYS"
+            listKey = "System"
         elif "[C]" in line:
             listKey = "Error"
         elif "[E]" in line:
@@ -133,23 +133,18 @@ class Categories(QTabWidget):
             qList = self.qLists[key]
             qList.insertItem(qList.count(), item)
 
-        resetFirst = "10micron" in line and "[SYS]" in line
-        return resetFirst
-
 
 class LifeCycle(QTabWidget):
     def __init__(self):
         QTabWidget.__init__(self)
         layout = QVBoxLayout()
         self.actual = None
-        self.first = True
         self.numberLifecycles = 0
         layout.addWidget(self)
 
     def addEntry(self, line):
-        if "[I]" in line and "bootstrap" in line and self.first:
+        if "[I]" in line and "bootstrap" in line and "mountwizzard4" in line:
             # if first line for new header occurs, start a new cat tab
-            self.first = False
             self.numberLifecycles += 1
             val = line.split("][")[0].lstrip("[").split(".")[0]
             categoriesTab = Categories()
@@ -182,6 +177,7 @@ class Window(QWidget):
         layout.addWidget(self.fileName)
         layout.addWidget(self.lifecycleTab)
         self.loadButt.clicked.connect(self.selectFile)
+        self.selectFile()
 
     def selectFile(self):
         dlg = QFileDialog()

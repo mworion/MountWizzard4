@@ -91,7 +91,7 @@ class Satellite:
         return suc
 
     def parseCalcTLE(self, response: list, numberOfChunks: int) -> bool:
-        if len(response) != numberOfChunks:
+        if len(response) != 3:
             self.log.warning("wrong number of chunks")
             return False
         if "E" in response:
@@ -151,7 +151,7 @@ class Satellite:
         return suc, message
 
     def parseStatTLE(self, response: list, numberOfChunks: int) -> bool:
-        if len(response) != numberOfChunks:
+        if len(response) != 1:
             self.log.warning("wrong number of chunks")
             return False
         if not response[0]:

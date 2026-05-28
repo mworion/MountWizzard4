@@ -261,7 +261,7 @@ class Geometry:
             text += f"domeRadius:{self.domeRadius}"
             self.log.debug(text)
 
-        ha = ha._degrees
+        ha = ha.degrees
         dec = dec.degrees
         lat = lat.degrees
 

@@ -112,14 +112,14 @@ guards, fix real bugs, and improve consistency – without adding any new featur
 | # | Issue | Type |
 |---|-------|------|
 | 1 | `transformRotX`, `transformRotY`, `transformRotZ` are three nearly identical static methods; they only differ in which axes the `tCos`/`tSin` values are placed in a 4×4 identity matrix | Redundancy |
-| 2 | `calcTransformationMatrices` accesses `ha._degrees` – a private Skyfield attribute. `ha.degrees` (without underscore) should be used for the signed version or `ha._degrees` with `preference="degrees"` should be accessed via the public interface | Correctness |
+| 2 | `calcTransformationMatrices` accesses `ha.degrees` – a private Skyfield attribute. `ha.degrees` (without underscore) should be used for the signed version or `ha.degrees` with `preference="degrees"` should be accessed via the public interface | Correctness |
 | 3 | `initializeGeometry` unpacks the geometry dict key-by-key; could use dict unpacking | Pythonic |
 
 **Actions:**
 - Merge the three rotation static methods into one `transformRot(axis, angle)` where `axis` is
   `"x"`, `"y"`, or `"z"`, using a `match` statement to build the matrix. The three original
   names can remain as thin wrappers calling the unified helper.
-- Replace `ha._degrees` with `ha.degrees` or the appropriate public accessor throughout the module
+- Replace `ha.degrees` with `ha.degrees` or the appropriate public accessor throughout the module
   (also applies to `mount.py`).
 - Replace the five individual key-by-key dict assignments in `initializeGeometry` with
   `vars(self).update(self.geometryData[mountType])` or targeted unpacking.
@@ -173,7 +173,7 @@ No issues found. File is clean, well-structured, and concise.
 | # | Issue | Type | Status |
 |---|-------|------|--------|
 | 1 | `workerProgTrajectory` is a method name in violation of the project naming convention: worker *methods* should be named `runner{Name}`, not `worker{Name}` (which is reserved for the Worker instance attribute) | Convention | ⬜ Pending |
-| 2 | `collectData` and `resetAfterStart` access `self.obsSite.raJNow._degrees` – private Skyfield attribute | Correctness | ⬜ Omitted (per user request) |
+| 2 | `collectData` and `resetAfterStart` access `self.obsSite.raJNow.degrees` – private Skyfield attribute | Correctness | ⬜ Omitted (per user request) |
 | 3 | `cycleDome` is the only cycle method that does **not** use a mutex guard, while all other cycle methods (`cyclePointing`, `cycleSetting`, `cycleClock`) do | Bug | ⬜ Pending |
 | 4 | `checkMountIsUp`: `client.shutdown(socket.SHUT_RDWR)` is called inside the `try` block (on the success path in the `else` branch of `connect`) without being guarded; if `shutdown` itself raises, `client.close()` in `finally` still runs (fine), but there is also a missing `client.close()` on the success path before `finally`. Actually reviewing: `finally: client.close()` does the close. But the success path calls `shutdown` and then `finally` calls `close` – this is correct actually. | OK | ✅ No action needed |
 | 5 | `clearCyclePointing`: the `statusSlew` tracking logic can be simplified | Cleanup | ✅ Fixed |
@@ -181,7 +181,7 @@ No issues found. File is clean, well-structured, and concise.
 **Actions:**
 - ⬜ Rename `workerProgTrajectory` method to `runnerProgTrajectory` and update the `Worker(…)` call
   in `progTrajectory` accordingly.
-- ⬜ Omitted (point 2, per user request): Replace `self.obsSite.raJNow._degrees` with the public
+- ⬜ Omitted (point 2, per user request): Replace `self.obsSite.raJNow.degrees` with the public
   accessor.
 - ⬜ Add `mutexCycleDome` usage to `cycleDome` / `clearDome` (matching the pattern of the other
   cycle methods).
@@ -312,7 +312,7 @@ No issues found. File is clean, well-structured, and concise.
 
 | # | Issue | Applies to | Status |
 |---|-------|-----------|--------|
-| A | `ha._degrees` private Skyfield attribute accessed – use `ha.degrees` | `mount.py`, `geometry.py` | ⬜ Pending (mount.py omitted per user; geometry.py pending) |
+| A | `ha.degrees` private Skyfield attribute accessed – use `ha.degrees` | `mount.py`, `geometry.py` | ⬜ Pending (mount.py omitted per user; geometry.py pending) |
 | B | `import numpy` vs `import numpy as np` inconsistency | `modelStar.py` | ✅ Fixed |
 | C | Pattern `conn = Connection(self.parent)` repeated in every method body of every class – this is the design (one TCP connection per command), and it is acceptable as-is | All data classes | ✅ Accepted |
 | D | Naming convention: `worker{X}` attribute vs `runner{X}` method | `mount.py` | ⬜ Pending |

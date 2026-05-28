@@ -152,13 +152,13 @@ def writeHeaderCamera(header: fits.Header, camera: Any) -> fits.Header:
 
 def writeHeaderPointing(header: fits.Header, camera: Any) -> fits.Header:
     ra, dec = JNowToJ2000(camera.obsSite.raJNow, camera.obsSite.decJNow, camera.obsSite.timeJD)
-    header.append(("RA", ra._degrees, "Float value in degree"))
+    header.append(("RA", ra.degrees, "Float value in degree"))
     header.append(("DEC", dec.degrees, "Float value in degree"))
     return header
 
 
 def writeSolutionToHeader(header: fits.Header, solution: dict[str, Any]) -> fits.Header:
-    header.append(("RA", solution["raJ2000S"]._degrees, "MW4 - processed"))
+    header.append(("RA", solution["raJ2000S"].degrees, "MW4 - processed"))
     header.append(("DEC", solution["decJ2000S"].degrees, "MW4 - processed"))
     header.append(("SCALE", solution["scaleS"], "MW4 - processed"))
     header.append(("PIXSCALE", solution["scaleS"], "MW4 - processed"))
@@ -186,7 +186,7 @@ def getSolutionFromWCSHeader(
     angle, scale, mirrored = calcAngleScaleFromWCSHeader(header=wcsHeader)
     raMount, decMount = getCoordinatesFromHeader(header=imageHeader)
 
-    deltaRA_raw = raJ2000._degrees - raMount._degrees
+    deltaRA_raw = raJ2000.degrees - raMount.degrees
     deltaDEC_raw = decJ2000.degrees - decMount.degrees
     error = np.sqrt(np.square(deltaRA_raw) + np.square(deltaDEC_raw))
 

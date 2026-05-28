@@ -131,15 +131,15 @@ class MountDevice:
         self._waitTimeFlip = int(value * 1000)
 
     def resetAfterStart(self) -> None:
-        self.raRef = self.obsSite.raJNow._degrees
+        self.raRef = self.obsSite.raJNow.degrees
         self.decRef = self.obsSite.decJNow.degrees
 
     def collectData(self) -> None:
         if self.obsSite.statusSlew:
-            self.raRef = self.obsSite.raJNow._degrees
+            self.raRef = self.obsSite.raJNow.degrees
             self.decRef = self.obsSite.decJNow.degrees
 
-        deltaRaJNow = (self.obsSite.raJNow._degrees - self.raRef) * 3600
+        deltaRaJNow = (self.obsSite.raJNow.degrees - self.raRef) * 3600
         deltaDecJNow = (self.obsSite.decJNow.degrees - self.decRef) * 3600
         self.data["deltaRaJNow"] = deltaRaJNow
         self.data["deltaDecJNow"] = deltaDecJNow

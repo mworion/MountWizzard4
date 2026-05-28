@@ -90,20 +90,17 @@ def setupWorkDirs(workDir: Path) -> MwGlob:
 
 # noinspection PyUnresolvedReferences
 def writeSystemInfo(mwGlob: MwGlob) -> None:
-    """Write system and version information to the log header."""
-    log.info("-" * 100)
-    log.info(f"mountwizzard4    : {version('mountwizzard4')}")
-    log.info(f"platform         : {platform.system()}")
-    log.info(f"sys.executable   : {sys.executable}")
-    log.info(f"actual workdir   : {mwGlob['workDir']}")
-    log.info(f"machine          : {platform.machine()}")
-    log.info(f"cpu              : {platform.processor()}")
-    log.info(f"release          : {platform.release()}")
-    log.info(f"python           : {platform.python_version()}")
-    log.info(f"python runtime   : {platform.architecture()[0]}")
-    log.info(f"PySide6 / Qt     : {PySide6.QtCore.__version__} / {qVersion()}")
-    log.info(f"node / hostname  : {platform.node()} / {socket.gethostname()}")
-    log.info("-" * 100)
+    log.info(f"[Header] mountwizzard4    : {version('mountwizzard4')}")
+    log.info(f"[Header] platform         : {platform.system()}")
+    log.info(f"[Header] sys.executable   : {sys.executable}")
+    log.info(f"[Header] actual workdir   : {mwGlob['workDir']}")
+    log.info(f"[Header] machine          : {platform.machine()}")
+    log.info(f"[Header] cpu              : {platform.processor()}")
+    log.info(f"[Header] release          : {platform.release()}")
+    log.info(f"[Header] python           : {platform.python_version()}")
+    log.info(f"[Header] python runtime   : {platform.architecture()[0]}")
+    log.info(f"[Header] PySide6 / Qt     : {PySide6.QtCore.__version__} / {qVersion()}")
+    log.info(f"[Header] node / hostname  : {platform.node()} / {socket.gethostname()}")
 
 
 def extractDataFiles(mwGlob: MwGlob) -> None:

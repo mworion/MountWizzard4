@@ -16,6 +16,7 @@
 ###########################################################
 import sys
 import os
+from pathlib import Path
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QTabWidget, QLabel, QLineEdit
 from PySide6.QtWidgets import QGridLayout, QPushButton, QFileDialog
 from PySide6.QtWidgets import QListWidget, QListWidgetItem, QApplication
@@ -49,13 +50,11 @@ class Categories(QTabWidget):
             "Warnings": None,
             "Info": None,
             "Debug": None,
-            "UI Trace": None,
             "Model Trace": None,
             "Mount Trace": None,
             "INDI Trace": None,
             "ASCOM Trace": None,
             "ALPACA Trace": None,
-            "App Trace": None,
             "Other traces": None,
         }
 
@@ -94,7 +93,7 @@ class Categories(QTabWidget):
 
     @staticmethod
     def getListKey(line):
-        if "[H]" in line and "startup" not in line:
+        if "[I]" in line and "[Header]" in line:
             listKey = "Header"
         elif "[C]" in line:
             listKey = "Error"
@@ -108,26 +107,14 @@ class Categories(QTabWidget):
             listKey = "Model Trace"
         elif "[D]" in line:
             listKey = "Debug"
-        elif "[U]" in line:
-            if "qt_scrollarea_viewport" in line:
-                return None
-            if "QComboBoxPrivateContainerClassWindow" in line:
-                return None
-            if "Click Object  : []" in line:
-                return None
-            listKey = "UI Trace"
-        elif "[T][  connection.py]" in line:
+        elif "[Trace]" in line and "[  connection.py]" in line:
             listKey = "Mount Trace"
-        elif "[T]" in line and "indi" in line:
+        elif "[D]" in line and "[Trace]" in line and "indi" in line:
             listKey = "INDI Trace"
-        elif "[T]" in line and "ascom" in line:
+        elif "[D]" in line and "[Trace]" in line and "ascom" in line:
             listKey = "ASCOM Trace"
-        elif "[T]" in line and "alpaca" in line:
+        elif "[D]" in line and "[Trace]" in line and "alpaca" in line:
             listKey = "ALPACA Trace"
-        elif "[T]" in line and ("nina" in line or "sgpro" in line):
-            listKey = "App Trace"
-        elif "[T]" in line:
-            listKey = "Other traces"
         else:
             listKey = None
         return listKey
@@ -209,12 +196,12 @@ class Window(QWidget):
         if not dlg.exec():
             return
 
-        fileName = dlg.selectedFiles()[0]
-        self.fileName.setText(fileName)
+        fileName = Path(dlg.selectedFiles()[0])
+        self.fileName.setText(fileName.name)
         self.processFile(fileName)
 
     def processFile(self, fileName):
-        if not os.path.isfile(fileName):
+        if not fileName.is_file():
             return
         self.lifecycleTab.clear()
         self.lifecycleTab.actual = None
@@ -224,6 +211,7 @@ class Window(QWidget):
         title = "Load logging file"
         with open(fileName, "rb") as f:
             for i, line in enumerate(f.readlines()):
+                print(line)
                 line = line.decode("utf-8", errors="ignore")
                 t = title + f"   -   progress: {i + 1} lines loaded from {numLines}"
                 t += f"   -   {int((i + 1) / numLines * 100)} %"

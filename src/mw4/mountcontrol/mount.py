@@ -287,11 +287,9 @@ class MountDevice:
         self.threadPool.start(self.workerGetNames)
 
     def clearGetFW(self) -> None:
-        self.log.info("-" * 100)
-        self.log.info(f"10micron product : {self.firmware.product}")
-        self.log.info(f"10micron firmware: {self.firmware.vString}")
-        self.log.info(f"10micron host    : {self.host}")
-        self.log.info("-" * 100)
+        self.log.info(f"[Header] 10micron product : {self.firmware.product}")
+        self.log.info(f"[Header] 10micron firmware: {self.firmware.vString}")
+        self.log.info(f"[Header] 10micron host    : {self.host}")
         self.geometry.initializeGeometry(self.firmware.product)
         self.signals.firmwareDone.emit(self.firmware)
 

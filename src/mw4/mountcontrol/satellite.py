@@ -19,6 +19,7 @@ from mw4.mountcontrol.convert import valueToAngle, valueToFloat
 from mw4.mountcontrol.tleParams import TLEParams
 from mw4.mountcontrol.trajectoryParams import TrajectoryParams
 from skyfield.api import Angle
+from typing import Any
 
 
 class Satellite:
@@ -41,7 +42,7 @@ class Satellite:
         "E": "No slew to satellite requested",
     }
 
-    def __init__(self, parent):
+    def __init__(self, parent: Any) -> None:
         self.parent = parent
         self.obsSite = parent.obsSite
         self.tleParams = TLEParams(obsSite=parent.obsSite)
@@ -91,9 +92,6 @@ class Satellite:
 
     def parseCalcTLE(self, response: list, numberOfChunks: int) -> bool:
         if len(response) != numberOfChunks:
-            self.log.warning("wrong number of chunks")
-            return False
-        if len(response) != 3:
             self.log.warning("wrong number of chunks")
             return False
         if "E" in response:
@@ -156,9 +154,6 @@ class Satellite:
         if len(response) != numberOfChunks:
             self.log.warning("wrong number of chunks")
             return False
-        if len(response) != 1:
-            self.log.warning("wrong number of chunks")
-            return False
         if not response[0]:
             return False
 
@@ -202,7 +197,7 @@ class Satellite:
             self.log.warning("wrong number of chunks")
             return False
 
-        return all(response[i] != "E" for i in range(0, len(az)))
+        return all(r != "E" for r in response)
 
     def preCalcTrajectory(self, replay: bool = False) -> bool:
         self.trajectoryParams.flip = False
@@ -288,60 +283,41 @@ class Satellite:
             self.log.warning("wrong number of chunks")
             return False
 
-        for res in response:
-            if res == "E":
-                break
-        else:
-            return True
-        return False
+        return all(res != "E" for res in response)
+
+    def setTrackingOffset(self, index: int, value: float) -> bool:
+        conn = Connection(self.parent)
+        suc, _, _ = conn.communicate(f":TROFFSET{index},{value:+05.1f}#", responseCheck="V")
+        return suc
+
+    def addTrackingOffset(self, index: int, value: float) -> bool:
+        conn = Connection(self.parent)
+        suc, _, _ = conn.communicate(f":TROFFADD{index},{value:+05.1f}#", responseCheck="V")
+        return suc
 
     def setTrackingFirst(self, first: Angle) -> bool:
-        conn = Connection(self.parent)
-        commandString = f":TROFFSET1,{first.degrees:+05.1f}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="V")
-        return suc
+        return self.setTrackingOffset(1, first.degrees)
 
     def setTrackingSecond(self, second: Angle) -> bool:
-        conn = Connection(self.parent)
-        commandString = f":TROFFSET2,{second.degrees:+05.1f}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="V")
-        return suc
+        return self.setTrackingOffset(2, second.degrees)
 
     def setTrackingFirstCorr(self, firstCorr: Angle) -> bool:
-        conn = Connection(self.parent)
-        commandString = f":TROFFSET3,{firstCorr.degrees:+05.1f}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="V")
-        return suc
+        return self.setTrackingOffset(3, firstCorr.degrees)
 
     def setTrackingTime(self, time: float) -> bool:
-        conn = Connection(self.parent)
-        commandString = f":TROFFSET4,{time:+05.1f}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="V")
-        return suc
+        return self.setTrackingOffset(4, time)
 
     def addTrackingFirst(self, first: Angle) -> bool:
-        conn = Connection(self.parent)
-        commandString = f":TROFFADD1,{first.degrees:+05.1f}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="V")
-        return suc
+        return self.addTrackingOffset(1, first.degrees)
 
     def addTrackingSecond(self, second: Angle) -> bool:
-        conn = Connection(self.parent)
-        commandString = f":TROFFADD2,{second.degrees:+05.1f}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="V")
-        return suc
+        return self.addTrackingOffset(2, second.degrees)
 
     def addTrackingFirstCorr(self, firstCorr: Angle) -> bool:
-        conn = Connection(self.parent)
-        commandString = f":TROFFADD3,{firstCorr.degrees:+05.1f}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="V")
-        return suc
+        return self.addTrackingOffset(3, firstCorr.degrees)
 
     def addTrackingTime(self, time: float) -> bool:
-        conn = Connection(self.parent)
-        commandString = f":TROFFADD4,{time:+05.1f}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="V")
-        return suc
+        return self.addTrackingOffset(4, time)
 
     def clearTrackingOffsets(self) -> bool:
         conn = Connection(self.parent)

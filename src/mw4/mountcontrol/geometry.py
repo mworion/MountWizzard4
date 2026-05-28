@@ -197,39 +197,39 @@ class Geometry:
             return False
 
         self.log.info(f"using [{mountType}] geometry")
-        self.offBaseAltAxisX = self.geometryData[mountType]["offBaseAltAxisX"]
-        self.offBaseAltAxisZ = self.geometryData[mountType]["offBaseAltAxisZ"]
-        self.offAltAxisGemX = self.geometryData[mountType]["offAltAxisGemX"]
-        self.offAltAxisGemZ = self.geometryData[mountType]["offAltAxisGemZ"]
-        self.offGemPlate = self.geometryData[mountType]["offGemPlate"]
+        vars(self).update(self.geometryData[mountType])
         return True
 
     @staticmethod
-    def transformRotX(rotX: float) -> np.ndarray:
-        rot = np.radians(rotX)
+    def transformRot(axis: str, angle: float) -> np.ndarray:
+        rot = np.radians(angle)
         tCos = np.cos(rot)
         tSin = np.sin(rot)
+        match axis:
+            case "x":
+                return np.array(
+                    [[1, 0, 0, 0], [0, tCos, -tSin, 0], [0, tSin, tCos, 0], [0, 0, 0, 1]]
+                )
+            case "y":
+                return np.array(
+                    [[tCos, 0, tSin, 0], [0, 1, 0, 0], [-tSin, 0, tCos, 0], [0, 0, 0, 1]]
+                )
+            case _:
+                return np.array(
+                    [[tCos, -tSin, 0, 0], [tSin, tCos, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+                )
 
-        T = np.array([[1, 0, 0, 0], [0, tCos, -tSin, 0], [0, tSin, tCos, 0], [0, 0, 0, 1]])
-        return T
+    @staticmethod
+    def transformRotX(rotX: float) -> np.ndarray:
+        return Geometry.transformRot("x", rotX)
 
     @staticmethod
     def transformRotY(rotY: float) -> np.ndarray:
-        rot = np.radians(rotY)
-        tCos = np.cos(rot)
-        tSin = np.sin(rot)
-
-        T = np.array([[tCos, 0, tSin, 0], [0, 1, 0, 0], [-tSin, 0, tCos, 0], [0, 0, 0, 1]])
-        return T
+        return Geometry.transformRot("y", rotY)
 
     @staticmethod
     def transformRotZ(rotZ: float) -> np.ndarray:
-        rot = np.radians(rotZ)
-        tCos = np.cos(rot)
-        tSin = np.sin(rot)
-
-        T = np.array([[tCos, -tSin, 0, 0], [tSin, tCos, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
-        return T
+        return Geometry.transformRot("z", rotZ)
 
     @staticmethod
     def transformTranslate(vector: list) -> np.ndarray:

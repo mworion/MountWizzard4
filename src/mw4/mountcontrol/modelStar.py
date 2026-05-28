@@ -13,7 +13,7 @@
 # License APL2.0
 #
 ###########################################################
-import numpy
+import numpy as np
 from dataclasses import dataclass
 from skyfield.api import Angle, Star
 
@@ -28,7 +28,7 @@ class ModelStar:
     az: Angle = Angle(degrees=0)
 
     def errorRA(self) -> Angle:
-        return Angle(degrees=self.errorRMS * numpy.sin(self.errorAngle.radians))
+        return Angle(degrees=self.errorRMS * np.sin(self.errorAngle.radians))
 
     def errorDEC(self) -> Angle:
-        return Angle(degrees=self.errorRMS * numpy.cos(self.errorAngle.radians))
+        return Angle(degrees=self.errorRMS * np.cos(self.errorAngle.radians))

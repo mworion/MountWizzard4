@@ -71,7 +71,7 @@ class Model:
 
     def delStar(self, value: int) -> None:
         value = valueToInt(value)
-        if value < 0 or value > len(self._starList) - 1:
+        if not (0 <= value < len(self._starList)):
             self.log.warning(f"invalid value: {value}")
             return
         self._starList.pop(value)
@@ -85,13 +85,9 @@ class Model:
 
     @nameList.setter
     def nameList(self, value: Any) -> None:
-        if not isinstance(value, list):
-            self._nameList = []
-            return
-        if all(isinstance(x, str) for x in value):
-            self._nameList = value
-        else:
-            self._nameList = []
+        self._nameList = (
+            value if isinstance(value, list) and all(isinstance(x, str) for x in value) else []
+        )
 
     @property
     def numberNames(self) -> int:
@@ -105,7 +101,7 @@ class Model:
         if not isinstance(value, str):
             self.log.warning(f"malformed value: {value}")
             return
-        self._nameList.insert(len(self._nameList), value)
+        self._nameList.append(value)
 
     def parseNames(self, response: list, numberOfChunks: int) -> bool:
         if len(response) != numberOfChunks:
@@ -118,11 +114,8 @@ class Model:
         return True
 
     def parseNumberNames(self, response: list, numberOfChunks: int) -> bool:
-        if len(response) != numberOfChunks:
-            self.log.warning("wrong number of chunks")
-            return False
         if len(response) != 1:
-            self.log.warning("wrong number of chunks")
+            self.log.warning("wrong number of chunks: expected exactly 1")
             return False
         self.numberNames = response[0]
         return True
@@ -266,31 +259,32 @@ class Model:
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
+    @staticmethod
+    def formatSexagesimalRA(hours: float) -> str:
+        _, h, m, s, frac = sexagesimalizeToInt(hours, 1)
+        return f"{h:02d}:{m:02d}:{s:02d}.{frac:1d}"
+
+    @staticmethod
+    def formatSexagesimalDec(degrees: float) -> str:
+        sgn, h, m, s, frac = sexagesimalizeToInt(degrees, 1)
+        sign = "+" if sgn >= 0 else "-"
+        return f"{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}"
+
+    @staticmethod
+    def formatSexagesimalSidereal(hours: float) -> str:
+        _, h, m, s, frac = sexagesimalizeToInt(hours, 2)
+        return f"{h:02d}:{m:02d}:{s:02d}.{frac:02d}"
+
     def programModelFromStarList(self, build: list[ProgStar]) -> bool:
         commandString = ":newalig#"
         for aPoint in build:
-            sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.mCoord.ra.hours, 1)
-            ra = f"{h:02d}:{m:02d}:{s:02d}.{frac:1d}"
-
-            sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.mCoord.dec.degrees, 1)
-            sign = "+" if sgn >= 0 else "-"
-            dec = f"{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}"
-
+            ra = self.formatSexagesimalRA(aPoint.mCoord.ra.hours)
+            dec = self.formatSexagesimalDec(aPoint.mCoord.dec.degrees)
             pierside = aPoint.pierside
-
-            sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.sCoord.ra.hours, 1)
-            raSolve = f"{h:02d}:{m:02d}:{s:02d}.{frac:1d}"
-
-            sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.sCoord.dec.degrees, 1)
-            sign = "+" if sgn >= 0 else "-"
-            decSolve = f"{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}"
-
-            sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.sidereal.hours, 2)
-            sidereal = f"{h:02d}:{m:02d}:{s:02d}.{frac:02d}"
-
-            comFormat = ":newalpt{0},{1},{2},{3},{4},{5}#"
-            value = comFormat.format(ra, dec, pierside, raSolve, decSolve, sidereal)
-            commandString += value
+            raSolve = self.formatSexagesimalRA(aPoint.sCoord.ra.hours)
+            decSolve = self.formatSexagesimalDec(aPoint.sCoord.dec.degrees)
+            sidereal = self.formatSexagesimalSidereal(aPoint.sidereal.hours)
+            commandString += f":newalpt{ra},{dec},{pierside},{raSolve},{decSolve},{sidereal}#"
 
         conn = Connection(self.parent)
         commandString += ":endalig#"

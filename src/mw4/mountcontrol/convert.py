@@ -25,15 +25,15 @@ def stringToDegree(value: str) -> float:
     convert it to a decimal number.
     """
     if not isinstance(value, str):
-        return 0
+        return 0.0
     if not len(value):
-        return 0
+        return 0.0
     if value.count("+") > 1:
-        return 0
+        return 0.0
     if value.count("-") > 1:
-        return 0
+        return 0.0
     if value == "E":
-        return 0
+        return 0.0
 
     value = value.replace("*", " ")
     value = value.replace(":", " ")
@@ -45,29 +45,31 @@ def stringToDegree(value: str) -> float:
     try:
         value = [float(x) for x in value]
     except Exception:
-        return 0
+        return 0.0
 
     sign = 1 if value[0] >= 0 else -1
     value[0] = abs(value[0])
 
     if len(value) == 3:
-        value = sign * (value[0] + value[1] / 60 + value[2] / 3600)
-        return value
+        return sign * (value[0] + value[1] / 60 + value[2] / 3600)
+    if len(value) == 2:
+        return sign * (value[0] + value[1] / 60)
+    return 0.0
 
-    elif len(value) == 2:
-        value = sign * (value[0] + value[1] / 60)
-        return value
-    else:
-        return 0
+
+def angleFromValue(value: float, preference: str) -> Angle:
+    """
+    Build a Skyfield Angle from a numeric value according to preference.
+    preference 'degrees' creates a degree-based Angle; anything else creates
+    an hours-based Angle.
+    """
+    if preference == "degrees":
+        return Angle(degrees=value, preference="degrees")
+    return Angle(hours=value, preference="hours")
 
 
 def stringToAngle(value: str, preference: str = "degrees") -> Angle:
-    value = stringToDegree(value)
-    if preference == "degrees":
-        value = Angle(degrees=value, preference="degrees")
-    else:
-        value = Angle(hours=value, preference="hours")
-    return value
+    return angleFromValue(stringToDegree(value), preference)
 
 
 def valueToFloat(value: Any) -> float:
@@ -81,12 +83,7 @@ def valueToFloat(value: Any) -> float:
 
 
 def valueToAngle(value: Any, preference: str = "degrees") -> Angle:
-    value = valueToFloat(value)
-    if preference == "degrees":
-        value = Angle(degrees=value, preference="degrees")
-    else:
-        value = Angle(hours=value, preference="hours")
-    return value
+    return angleFromValue(valueToFloat(value), preference)
 
 
 def valueToInt(value: Any) -> int:
@@ -174,9 +171,20 @@ def convertLonToAngle(value: str) -> Angle:
     return formatLatLonToAngle(value, "WE")
 
 
-def parseRaToAngleString(value: str) -> tuple[bool, bool, list[str] | str]:
+def parseCoordToAngleString(value: str, coordType: str) -> tuple[bool, bool, list[str] | str]:
+    """
+    Parse a coordinate string for RA or Dec into match flags and captured groups.
+
+    coordType selects the unit keyword that appears immediately after the degrees
+    digits: use 'H' for right ascension (e.g. '12H 30 30') and 'Deg' for
+    declination (e.g. '12Deg 30 30').
+
+    Returns (isSexagesimal, isFloat, elements) where elements is the list of
+    captured groups from the matching pattern, or an empty string if no pattern
+    matched.
+    """
     value = value.strip()
-    p1 = re.compile(r"([+-]?)(\d{1,3})H[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")
+    p1 = re.compile(rf"([+-]?)(\d{{1,3}}){coordType}[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")
     p2 = re.compile(r"([+-]?)(\d{1,3})[\s:]+(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")
     p3 = re.compile(r"([+-]?)(\d{1,3})[.,]?(\d*)?")
     isP1 = p1.fullmatch(value) is not None
@@ -195,7 +203,7 @@ def parseRaToAngleString(value: str) -> tuple[bool, bool, list[str] | str]:
 
 
 def convertRaToAngle(value: str) -> Angle:
-    isSexagesimal, isFloat, elements = parseRaToAngleString(value)
+    isSexagesimal, isFloat, elements = parseCoordToAngleString(value, "H")
 
     if isFloat:
         angle = float(value.replace(",", "."))
@@ -214,28 +222,8 @@ def convertRaToAngle(value: str) -> Angle:
     return Angle(hours=angle / 360 * 24) if isFloat else Angle(hours=angle)
 
 
-def parseDecToAngleString(value: str) -> tuple[bool, bool, list[str] | str]:
-    value = value.strip()
-    p1 = re.compile(r"([+-]?)(\d{1,3})Deg[\s:]*(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")
-    p2 = re.compile(r"([+-]?)(\d{1,3})[\s:]+(\d\d)?[\s:]*(\d\d)?[.,]?(\d*)?")
-    p3 = re.compile(r"([+-]?)(\d{1,3})[.,]?(\d*)?")
-    isP1 = p1.fullmatch(value) is not None
-    isP2 = p2.fullmatch(value) is not None
-    isSexagesimal = isP1 or isP2
-    isFloat = p3.fullmatch(value) is not None
-
-    if isP1:
-        elements = p1.split(value)
-    elif isP2:
-        elements = p2.split(value)
-    else:
-        elements = ""
-
-    return isSexagesimal, isFloat, elements
-
-
 def convertDecToAngle(value: str) -> Angle:
-    isSexagesimal, isFloat, elements = parseDecToAngleString(value)
+    isSexagesimal, isFloat, elements = parseCoordToAngleString(value, "Deg")
 
     if isFloat:
         angle = float(value.replace(",", "."))
@@ -268,14 +256,12 @@ def formatDstrToText(angle: Angle) -> str:
 
 
 def formatLatToText(angle: Angle) -> str:
-    sgn, h, m, s, frac = sexagesimalizeToInt(angle.degrees, 0)
+    sgn, h, m, s, _ = sexagesimalizeToInt(angle.degrees, 0)
     sign = "N" if sgn >= 0 else "S"
-    text = f"{h:02d}{sign} {m:02d} {s:02d}"
-    return text
+    return f"{h:02d}{sign} {m:02d} {s:02d}"
 
 
 def formatLonToText(angle: Angle) -> str:
-    sgn, h, m, s, frac = sexagesimalizeToInt(angle.degrees, 0)
+    sgn, h, m, s, _ = sexagesimalizeToInt(angle.degrees, 0)
     sign = "E" if sgn >= 0 else "W"
-    text = f"{h:03d}{sign} {m:02d} {s:02d}"
-    return text
+    return f"{h:03d}{sign} {m:02d} {s:02d}"

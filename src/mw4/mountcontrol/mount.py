@@ -229,12 +229,9 @@ class MountDevice:
             self.statusAlert = False
 
         settleWait = self._waitTimeFlip if self.obsSite.flipped else 0
-        if self.obsSite.statusSlew:
-            self.statusSlew = True
-        else:
-            if self.statusSlew:
-                self.statusSlew = False
-                self.settlingWait.start(settleWait)
+        if not self.obsSite.statusSlew and self.statusSlew:
+            self.settlingWait.start(settleWait)
+        self.statusSlew = self.obsSite.statusSlew
 
         if result:
             self.signals.pointDone.emit(self.obsSite)
@@ -370,11 +367,14 @@ class MountDevice:
         return suc
 
     def clearDome(self, result: bool) -> None:
+        self.mutexCycleDome.unlock()
         if result:
             self.signals.domeDone.emit(self.dome)
 
     def cycleDome(self) -> None:
         if not self.mountIsUp:
+            return
+        if not self.mutexCycleDome.tryLock():
             return
 
         self.workerCycleDome = Worker(self.dome.poll)
@@ -398,7 +398,7 @@ class MountDevice:
     def clearProgTrajectory(self) -> None:
         self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
 
-    def workerProgTrajectory(self, alt: Angle, az: Angle, replay: bool = False) -> bool:
+    def runnerProgTrajectory(self, alt: Angle, az: Angle, replay: bool = False) -> bool:
         self.satellite.addTrajectoryPoint(alt, az)
         self.satellite.preCalcTrajectory(replay=replay)
         return replay
@@ -410,7 +410,7 @@ class MountDevice:
             return
 
         self.satellite.startProgTrajectory(julD=start)
-        self.workerTrajectory = Worker(self.workerProgTrajectory, alt, az, replay=replay)
+        self.workerTrajectory = Worker(self.runnerProgTrajectory, alt, az, replay=replay)
         self.workerTrajectory.signals.result.connect(self.clearProgTrajectory)
         self.threadPool.start(self.workerTrajectory)
 

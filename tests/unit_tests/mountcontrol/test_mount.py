@@ -17,7 +17,6 @@ import os
 import pytest
 import socket
 import wakeonlan
-from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.mount import MountDevice
 from mw4.mountcontrol.mountSignals import MountSignals
 from pathlib import Path
@@ -25,8 +24,6 @@ from PySide6.QtCore import QThreadPool, QTimer
 from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
-
-setupLogging()
 
 
 @pytest.fixture(autouse=True, scope="module")

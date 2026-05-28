@@ -14,13 +14,10 @@
 #
 ###########################################################
 import unittest.mock as mock
-from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.satellite import Satellite
 from skyfield.api import Angle, load
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-
-setupLogging()
 
 
 def test_parseGetTLE_1():

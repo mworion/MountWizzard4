@@ -105,6 +105,7 @@ def test_setupLogging_configures_specific_log_levels(clean_log_directory):
 
 def test_setupLogging_custom_log_levels(clean_log_directory):
     setupLogging()
+    assert logging.getLogger("MW4") is not None
 
 
 def test_setupLogging():
@@ -166,7 +167,7 @@ def test_setTrace_indiFramework():
     app = MagicMock()
     app.getActiveDrivers.return_value = drivers
     loggerMW.setTrace(app, enable=True)
-    assert not hasattr(mockRun, "loggingTrace") or True
+    mockRun.setTrace.assert_called_once_with(True)
 
 
 def test_setTrace_disable():

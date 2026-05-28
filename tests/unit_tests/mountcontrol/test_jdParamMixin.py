@@ -14,11 +14,8 @@
 #
 ###########################################################
 from dataclasses import dataclass
-from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.jdParamMixin import JdParamsMixin
 from skyfield.api import load
-
-setupLogging()
 
 
 class ObsSite:

@@ -19,12 +19,9 @@ import queue
 import threading
 from alpaca.exceptions import NotImplementedException as AlpycaNotImplError
 from mw4.base.alpacaClass import AlpacaClass
-from mw4.base.loggerMW import setupLogging
 from mw4.base.signalsDevices import Signals
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
-
-setupLogging()
 
 
 @pytest.fixture(autouse=True, scope="module")

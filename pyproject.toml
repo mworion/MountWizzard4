@@ -24,7 +24,7 @@ package-data = ["data/**/*.*"]
 
 [project]
 name = "mountwizzard4"
-version = "4.0.0b8"
+version = "4.0.0b9"
 license = "Apache-2.0"
 description = "Tool for managing 10_micron mounts"
 readme = "README.rst"
@@ -86,10 +86,10 @@ dependencies = [
 ]
 
 [project.scripts]
-mw4 = "mw4.cli:app"
-MW4 = "mw4.cli:app"
-mountwizzard4 = "mw4.cli:app"
-MountWizzard4 = "mw4.cli:app"
+mw4 = "mw4.cli:run"
+MW4 = "mw4.cli:run"
+mountwizzard4 = "mw4.cli:run"
+MountWizzard4 = "mw4.cli:run"
 
 [project.urls]
 Documentation = "https://mworion.github.io/MountWizzard4"
@@ -106,7 +106,7 @@ dev = [
     "pytest-cov==7.1.0",
     "pytest-xdist==3.8.0",
     "invoke==3.0.3",
-    "ruff==0.15.14",
+    "ruff==0.15.15",
     "coverage==7.14.1",
     "scipy-stubs==1.17.1.5",
 ]

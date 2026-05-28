@@ -49,7 +49,7 @@ def readOptions() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def app():
+def run():
     options = readOptions()
     if platform.system() == "Windows":
         os.environ["QT_SCALE_FACTOR"] = f"{options.scale:2.1f}"
@@ -58,4 +58,4 @@ def app():
 
 
 if __name__ == "__main__":
-    app()
+    run()

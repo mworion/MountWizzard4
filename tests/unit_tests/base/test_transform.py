@@ -14,14 +14,8 @@
 #
 ###########################################################
 
-import pytest
 from mw4.base import transform
 from skyfield.api import Angle, wgs84
-
-
-@pytest.fixture(autouse=True, scope="function")
-def module_setup_teardown(qtbot, qapp):
-    pass
 
 
 def test_JNowToJ2000_3():

@@ -105,7 +105,7 @@ def test_getActiveDrivers(app):
 
 
 def test_main_module_entry_point():
-    """Running mw4 as __main__ invokes the cli app() entry point."""
-    with mock.patch("mw4.cli.app") as mock_app:
+    """Running mw4 as __main__ invokes the cli run() entry point."""
+    with mock.patch("mw4.cli.run") as mock_run:
         runpy.run_module("mw4", run_name="__main__")
-    mock_app.assert_called_once()
+    mock_run.assert_called_once()

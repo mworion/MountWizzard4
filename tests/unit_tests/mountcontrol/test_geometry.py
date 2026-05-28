@@ -15,13 +15,10 @@
 ###########################################################
 import os
 import pytest
-from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.mount import MountDevice
 from pathlib import Path
 from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-
-setupLogging()
 
 
 @pytest.fixture(autouse=True, scope="module")

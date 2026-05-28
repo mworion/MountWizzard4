@@ -17,13 +17,10 @@ import pytest
 import queue
 import threading
 from mw4.base.alpacaAscomCommon import AlpacaAscomCommon, CommandItem
-from mw4.base.loggerMW import setupLogging
 from mw4.base.signalsDevices import Signals
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from typing import Any
 from unittest import mock
-
-setupLogging()
 
 
 class Parent:
@@ -146,12 +143,13 @@ def test_connectDevice_successFirst(function):
 
 def test_connectDevice_successAfterRetry(function):
     # arrange — fail twice then succeed
-    call_count = {"n": 0}
+    call_count = 0
 
     def fake_get(prop: str) -> Any:
+        nonlocal call_count
         if prop == "Connected":
-            call_count["n"] += 1
-            return call_count["n"] >= 3
+            call_count += 1
+            return call_count >= 3
         return None
 
     function.getDeviceProp = fake_get
@@ -278,10 +276,11 @@ def test_runnerCommunicationLoop_stopImmediate(function):
 def test_runnerCommunicationLoop_connectBranch(function):
     # arrange
     function.deviceConnected = False
-    call_count = {"n": 0}
+    connect_count = 0
 
     def fake_connect() -> None:
-        call_count["n"] += 1
+        nonlocal connect_count
+        connect_count += 1
         function.stopEvent.set()
 
     function.handleDeviceConnect = fake_connect
@@ -289,16 +288,17 @@ def test_runnerCommunicationLoop_connectBranch(function):
     # act
     function.runnerCommunicationLoop()
     # assert
-    assert call_count["n"] == 1
+    assert connect_count == 1
 
 
 def test_runnerCommunicationLoop_disconnectBranch(function):
     # arrange
     function.deviceConnected = True
-    call_count = {"n": 0}
+    disconnect_count = 0
 
     def fake_disconnect() -> None:
-        call_count["n"] += 1
+        nonlocal disconnect_count
+        disconnect_count += 1
         function.stopEvent.set()
 
     function.handleDeviceDisconnect = fake_disconnect
@@ -306,16 +306,17 @@ def test_runnerCommunicationLoop_disconnectBranch(function):
     # act
     function.runnerCommunicationLoop()
     # assert
-    assert call_count["n"] == 1
+    assert disconnect_count == 1
 
 
 def test_runnerCommunicationLoop_pollCycle(function):
     # arrange
     function.deviceConnected = True
-    poll_count = {"n": 0}
+    poll_count = 0
 
     def fake_poll() -> None:
-        poll_count["n"] += 1
+        nonlocal poll_count
+        poll_count += 1
         function.stopEvent.set()
 
     function.pollData = fake_poll
@@ -323,7 +324,7 @@ def test_runnerCommunicationLoop_pollCycle(function):
     # act
     function.runnerCommunicationLoop()
     # assert
-    assert poll_count["n"] == 1
+    assert poll_count == 1
 
 
 def test_stopCommunication(function):

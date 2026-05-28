@@ -21,15 +21,12 @@ import threading
 import time
 from mw4.base.alpacaAscomCommon import CommandItem
 from mw4.base.ascomClass import AscomClass
-from mw4.base.loggerMW import setupLogging
 from mw4.base.signalsDevices import Signals
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 if platform.system() != "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
-
-setupLogging()
 
 
 class Parent:

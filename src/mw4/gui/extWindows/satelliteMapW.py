@@ -36,7 +36,7 @@ class SatelliteMapWindow(MWidget):
         self.threadPool = app.threadPool
         self.ui = satelliteMap_ui.Ui_SatelliteMapDialog()
         self.ui.setupUi(self)
-        self.satellite: EarthSatellite | None  = None
+        self.satellite: EarthSatellite | None = None
         self.satOrbits: dict = {}
         self.plotSatPosEarth: pg.PlotDataItem = pg.PlotDataItem()
         self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]

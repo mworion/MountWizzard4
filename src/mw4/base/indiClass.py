@@ -15,7 +15,7 @@
 ###########################################################
 import asyncio
 import logging
-import time
+import queue
 from indipyclient.queclient import EventItem, QueClient, runqueclient
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO_CONV
 from mw4.base.threadUtils import mainThreadSleep
@@ -118,10 +118,10 @@ class IndiClass:
 
     def processRxQueue(self) -> None:
         while self.commandRunning:
-            if self.rxQ.empty():
-                time.sleep(0.1)
+            try:
+                item = self.rxQ.get(timeout=0.01)
+            except queue.Empty:
                 continue
-            item = self.rxQ.get()
             if item.snapshot.get(self.deviceName) is None:
                 continue
             if item.devicename != self.deviceName:
@@ -189,7 +189,7 @@ class IndiClass:
         while n > 0:
             if rxQ.empty():
                 mainThreadSleep(100)
-                n = n - 1
+                n -= 1
                 continue
             item = rxQ.get()
             if item is None:

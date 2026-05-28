@@ -15,6 +15,7 @@
 ############################################################
 import logging
 from PySide6.QtCore import QObject, Signal
+from typing import Any
 
 
 class RemoteDeviceShutdown(QObject):
@@ -27,7 +28,7 @@ class DriverData:
     def __init__(self, data: dict) -> None:
         self.data: dict = data
 
-    def storePropertyToData(self, value: str | float | bool | None, element: str) -> None:
+    def storePropertyToData(self, value: Any, element: str) -> None:
         if value is None and element in self.data:
             del self.data[element]
         else:

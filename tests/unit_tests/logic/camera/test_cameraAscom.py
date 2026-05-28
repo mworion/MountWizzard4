@@ -21,13 +21,10 @@ if platform.system() != "Windows":
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 from mw4.base.ascomClass import AscomClass
-from mw4.base.loggerMW import setupLogging
 from mw4.logic.camera.camera import Camera
 from mw4.logic.camera.cameraAlpacaAscomBase import CameraAlpacaAscomBase
 from mw4.logic.camera.cameraAscom import CameraAscom
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-
-setupLogging()
 
 
 @pytest.fixture(autouse=True, scope="module")

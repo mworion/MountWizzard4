@@ -70,7 +70,7 @@ def test_app_on_windows_sets_environment_variables(mock_platform, mock_main, mon
     monkeypatch.delenv("QT_SCALE_FACTOR", raising=False)
     monkeypatch.delenv("QT_FONT_DPI", raising=False)
 
-    cli.app()
+    cli.run()
 
     assert os.environ["QT_SCALE_FACTOR"] == "1.5"
     assert os.environ["QT_FONT_DPI"] == "120"
@@ -88,7 +88,7 @@ def test_app_on_linux_does_not_set_environment_variables(
     monkeypatch.delenv("QT_SCALE_FACTOR", raising=False)
     monkeypatch.delenv("QT_FONT_DPI", raising=False)
 
-    cli.app()
+    cli.run()
 
     assert "QT_SCALE_FACTOR" not in os.environ
     assert "QT_FONT_DPI" not in os.environ
@@ -103,7 +103,7 @@ def test_app_on_darwin_does_not_set_environment_variables(
     monkeypatch.setattr(sys, "argv", ["mw4.cli"])
     mock_platform.return_value = "Darwin"
 
-    cli.app()
+    cli.run()
 
     mock_main.assert_called_once()
 
@@ -117,7 +117,7 @@ def test_app_with_float_formatting(mock_platform, mock_main, monkeypatch):
     monkeypatch.delenv("QT_SCALE_FACTOR", raising=False)
     monkeypatch.delenv("QT_FONT_DPI", raising=False)
 
-    cli.app()
+    cli.run()
 
     assert os.environ["QT_SCALE_FACTOR"] == "1.2"
     assert os.environ["QT_FONT_DPI"] == "97"
@@ -129,7 +129,7 @@ def test_app_calls_main_function(mock_platform, mock_main, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli"])
     mock_platform.return_value = "Linux"
 
-    cli.app()
+    cli.run()
 
     mock_main.assert_called_once()
 

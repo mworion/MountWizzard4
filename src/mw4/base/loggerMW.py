@@ -43,13 +43,9 @@ class LoggerWriter:
         self.standard: object = std
 
     def write(self, message: str) -> None:
-        first = True
-        for line in message.rstrip().splitlines():
-            if first:
-                self.level(f"[{self.mode}] " + line.strip())
-                first = False
-            else:
-                self.level(" " * 9 + line.strip())
+        for i, line in enumerate(message.rstrip().splitlines()):
+            prefix = f"[{self.mode}] " if i == 0 else " " * 9
+            self.level(prefix + line.strip())
 
     def flush(self) -> None:
         pass
@@ -61,16 +57,17 @@ def redirectSTD() -> None:
 
 
 def setupLogging() -> None:
-    Path.mkdir(Path("./log"), parents=True, exist_ok=True)
+    logDir = Path.cwd() / "log"
+    logDir.mkdir(parents=True, exist_ok=True)
     logging.Formatter.converter = time.gmtime
     timeTag = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%d")
-    logFile = f"./log/mw4-{timeTag}.log"
+    logFile = logDir / f"mw4-{timeTag}.log"
     logHandler = RotatingFileHandler(
         logFile,
         mode="a",
         maxBytes=100 * 1024 * 1024,
         backupCount=100,
-        encoding=None,
+        encoding="utf-8",
         delay=False,
     )
     logging.basicConfig(

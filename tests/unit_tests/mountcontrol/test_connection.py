@@ -15,10 +15,7 @@
 ###########################################################
 import socket
 import unittest.mock as mock
-from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.connection import Connection
-
-setupLogging()
 
 
 def makeParent(host=None, loggingTrace: bool = False) -> object:

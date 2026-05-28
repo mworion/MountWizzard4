@@ -13,11 +13,8 @@
 # License APL2.0
 #
 ###########################################################
-from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.trajectoryParams import TrajectoryParams
 from skyfield.api import load
-
-setupLogging()
 
 
 class ObsSite:
@@ -65,4 +62,3 @@ def testOffsetTime():
     trajectoryParams = TrajectoryParams(ObsSite())
     trajectoryParams.offsetTime = 4.5
     assert trajectoryParams.offsetTime == 4.5
-

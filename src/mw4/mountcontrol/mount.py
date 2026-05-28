@@ -114,7 +114,7 @@ class MountDevice:
         self.decRef: float = 0.0
 
     @property
-    def MAC(self) -> str | None:
+    def MAC(self) -> str:
         return self._MAC
 
     @MAC.setter

@@ -341,8 +341,8 @@ class Connection:
         try:
             client.shutdown(socket.SHUT_RDWR)
             client.close()
-        except Exception:
-            self.log.warning(f"Error    [{self.id}]: closing socket client")
+        except Exception as e:
+            self.log.warning(f"Error    [{self.id} {e}]: closing socket client")
 
     def buildClient(self) -> socket.socket | None:
         if not self.host:

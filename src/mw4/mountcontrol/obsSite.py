@@ -171,7 +171,7 @@ class ObsSite:
 
     @property
     def timeDiff(self) -> float:
-        return np.mean(self._timeDiff)
+        return float(np.mean(self._timeDiff))
 
     @timeDiff.setter
     def timeDiff(self, value: Any) -> None:

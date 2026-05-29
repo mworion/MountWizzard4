@@ -27,6 +27,7 @@ class CameraIndi(IndiClass):
         self.app = parent.app
         self.data = parent.data
         self.signals = parent.signals
+        self.exposing: bool = False
 
     def setUpdateConfig(self, deviceName: str) -> None:
         self.txQ.put((deviceName, "FITS_HEADER", {"FITS_OBJECT": "Skymodel"}))
@@ -35,21 +36,28 @@ class CameraIndi(IndiClass):
         self.txQ.put((deviceName, "TELESCOPE_TYPE", {"TELESCOPE_PRIMARY": "On"}))
 
     def setExposureState(self, vectors: dict) -> None:
+        if not self.parent.exposing:
+            return
         if not vectors.get("CCD_EXPOSURE"):
             return
         value = vectors["CCD_EXPOSURE"]["members"]["CCD_EXPOSURE_VALUE"]["floatvalue"]
         state = vectors["CCD_EXPOSURE"]["state"]
+        if state == "Busy" and value == 0 and not self.exposing:
+            return
         if state == "Busy" and value > 0:
-            self.signals.message.emit(f"expose {value:2.0f} s")
-        elif state == "Busy" and value == 0:
+            self.signals.message.emit(f"expose {value:3.0f} s")
+            self.exposing = True
+        if state == "Busy" and value == 0 and self.exposing:
             self.signals.exposed.emit(self.parent.imagePath)
-        elif state == "Ok" and value == 0:
+            self.signals.message.emit("downloading")
+        if state == "Ok" and value == 0 and self.exposing:
             self.signals.downloaded.emit(self.parent.imagePath)
             self.signals.message.emit("")
-        elif state in ["Alert"]:
+        if state in ["Alert"]:
             self.signals.exposed.emit(Path())
             self.signals.downloaded.emit(Path())
             self.parent.exposeFinished()
+            self.exposing = False
             self.abort()
             self.log.warning("INDI camera state alert")
 
@@ -104,6 +112,7 @@ class CameraIndi(IndiClass):
         filename = blob["members"]["CCD1"]["filename"]
         if not filename:
             return
+        self.signals.message.emit("saving")
         blobFile = self.app.mwGlob["tempDir"] / filename
         blobformat = blob["members"]["CCD1"]["blobformat"]
         self.parent.imagePath = self.parent.imagePath.with_suffix(blobformat)
@@ -114,6 +123,7 @@ class CameraIndi(IndiClass):
         else:
             self.parent.writeImageFitsHeader()
         self.parent.exposeFinished()
+        self.exposing = False
 
     def writeVectorsToData(self, item: EventItem, vectors: dict) -> None:
         super().writeVectorsToData(item, vectors)

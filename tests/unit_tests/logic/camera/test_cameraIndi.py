@@ -61,17 +61,9 @@ def test_setUpdateConfig(function):
 # ---------------------------------------------------------------------------
 
 
-def test_setExposureState_no_ccd_exposure(function):
-    """No 'CCD_EXPOSURE' key → early return, no signals emitted."""
-    slot = mock.MagicMock()
-    function.signals.message.connect(slot)
-    function.setExposureState({})
-    slot.assert_not_called()
-    function.signals.message.disconnect(slot)
-
-
-def test_setExposureState_busy_value_gt_0(function):
-    """State 'Busy' and value > 0 → message signal with remaining time."""
+def test_setExposureState_not_exposing(function):
+    """parent.exposing False → early return, no signals emitted."""
+    function.parent.exposing = False
     vectors = {
         "CCD_EXPOSURE": {
             "state": "Busy",
@@ -81,12 +73,62 @@ def test_setExposureState_busy_value_gt_0(function):
     slot = mock.MagicMock()
     function.signals.message.connect(slot)
     function.setExposureState(vectors)
-    slot.assert_called_once_with("expose  5 s")
+    slot.assert_not_called()
     function.signals.message.disconnect(slot)
 
 
+def test_setExposureState_no_ccd_exposure(function):
+    """No 'CCD_EXPOSURE' key → early return, no signals emitted."""
+    function.parent.exposing = True
+    slot = mock.MagicMock()
+    function.signals.message.connect(slot)
+    function.setExposureState({})
+    slot.assert_not_called()
+    function.signals.message.disconnect(slot)
+    function.parent.exposing = False
+
+
+def test_setExposureState_busy_value_gt_0(function):
+    """State 'Busy' and value > 0 → message signal with remaining time."""
+    function.parent.exposing = True
+    function.exposing = False
+    vectors = {
+        "CCD_EXPOSURE": {
+            "state": "Busy",
+            "members": {"CCD_EXPOSURE_VALUE": {"floatvalue": 5.0}},
+        }
+    }
+    slot = mock.MagicMock()
+    function.signals.message.connect(slot)
+    function.setExposureState(vectors)
+    slot.assert_called_once_with("expose   5 s")
+    function.signals.message.disconnect(slot)
+    function.exposing = False
+    function.parent.exposing = False
+
+
+def test_setExposureState_busy_value_zero_not_exposing(function):
+    """State 'Busy', value == 0, self.exposing=False → early return."""
+    function.parent.exposing = True
+    function.exposing = False
+    vectors = {
+        "CCD_EXPOSURE": {
+            "state": "Busy",
+            "members": {"CCD_EXPOSURE_VALUE": {"floatvalue": 0.0}},
+        }
+    }
+    slot = mock.MagicMock()
+    function.signals.exposed.connect(slot)
+    function.setExposureState(vectors)
+    slot.assert_not_called()
+    function.signals.exposed.disconnect(slot)
+    function.parent.exposing = False
+
+
 def test_setExposureState_busy_value_zero(function):
-    """State 'Busy' and value == 0 → exposed signal with imagePath."""
+    """State 'Busy' and value == 0, self.exposing=True → exposed signal with imagePath."""
+    function.parent.exposing = True
+    function.exposing = True
     vectors = {
         "CCD_EXPOSURE": {
             "state": "Busy",
@@ -98,10 +140,14 @@ def test_setExposureState_busy_value_zero(function):
     function.setExposureState(vectors)
     slot.assert_called_once_with(function.parent.imagePath)
     function.signals.exposed.disconnect(slot)
+    function.exposing = False
+    function.parent.exposing = False
 
 
 def test_setExposureState_ok_value_zero(function):
-    """State 'Ok' and value == 0 → downloaded signal + empty message."""
+    """State 'Ok' and value == 0, self.exposing=True → downloaded signal + empty message."""
+    function.parent.exposing = True
+    function.exposing = True
     vectors = {
         "CCD_EXPOSURE": {
             "state": "Ok",
@@ -117,10 +163,13 @@ def test_setExposureState_ok_value_zero(function):
     msg_slot.assert_called_once_with("")
     function.signals.downloaded.disconnect(dl_slot)
     function.signals.message.disconnect(msg_slot)
+    function.exposing = False
+    function.parent.exposing = False
 
 
 def test_setExposureState_alert(function):
     """State 'Alert' → exposed(Path()), downloaded(Path()), exposeFinished and abort called."""
+    function.parent.exposing = True
     vectors = {
         "CCD_EXPOSURE": {
             "state": "Alert",
@@ -134,10 +183,12 @@ def test_setExposureState_alert(function):
         function.setExposureState(vectors)
         mock_finished.assert_called_once()
         mock_abort.assert_called_once()
+    function.parent.exposing = False
 
 
 def test_setExposureState_unknown_state(function):
     """Unrecognised state → no branch taken, no side effects."""
+    function.parent.exposing = True
     vectors = {
         "CCD_EXPOSURE": {
             "state": "Idle",
@@ -149,6 +200,7 @@ def test_setExposureState_unknown_state(function):
     function.setExposureState(vectors)
     slot.assert_not_called()
     function.signals.message.disconnect(slot)
+    function.parent.exposing = False
 
 
 # ---------------------------------------------------------------------------

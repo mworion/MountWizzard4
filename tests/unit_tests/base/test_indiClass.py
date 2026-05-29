@@ -485,48 +485,18 @@ def test_cleanupStop(function):
     function.clientMutex.unlock()
 
 
-# ─── setTrace ────────────────────────────────────────────────────────────────
-
-
-def test_setTrace_noQueueClient(function):
-    """enable=True with queueClient=None → loggingTrace set, debug_verbosity not called."""
-    function.queueClient = None
-    function.setTrace(enable=True)
-    assert function.loggingTrace is True
-
-
-def test_setTrace_withQueueClient_enable(function):
-    """enable=True with queueClient present → debug_verbosity(2)."""
-    mock_client = mock.MagicMock()
-    function.queueClient = mock_client
-    function.setTrace(enable=True)
-    assert function.loggingTrace is True
-    mock_client.debug_verbosity.assert_called_once_with(2)
-    function.queueClient = None
-
-
-def test_setTrace_withQueueClient_disable(function):
-    """enable=False with queueClient present → debug_verbosity(0)."""
-    mock_client = mock.MagicMock()
-    function.queueClient = mock_client
-    function.setTrace(enable=False)
-    assert function.loggingTrace is False
-    mock_client.debug_verbosity.assert_called_once_with(0)
-    function.queueClient = None
-
-
 # ─── runQueueClient ──────────────────────────────────────────────────────────
 
 
-def test_runQueueClient(function):
-    """runQueueClient creates QueClient and runs its async loop."""
+def test_runQueueClient_loggingTraceOff(function):
+    """runQueueClient creates QueClient, calls debug_verbosity(0) and runs asyncrun."""
     function.hostaddress = "localhost"
     function.port = 7624
+    function.loggingTrace = False
     mock_client = mock.MagicMock()
     with (
         mock.patch("mw4.base.indiClass.QueClient", return_value=mock_client) as mock_qc,
         mock.patch("mw4.base.indiClass.asyncio") as mock_asyncio,
-        mock.patch.object(function, "setTrace"),
     ):
         function.runQueueClient()
     mock_qc.assert_called_once_with(
@@ -536,8 +506,23 @@ def test_runQueueClient(function):
         indiport=7624,
         blobfolder=mock.ANY,
     )
+    mock_client.debug_verbosity.assert_called_once_with(0)
     mock_asyncio.run.assert_called_once_with(mock_client.asyncrun())
     function.queueClient = None
+
+
+def test_runQueueClient_loggingTraceOn(function):
+    """runQueueClient calls debug_verbosity(3) when loggingTrace is True."""
+    function.loggingTrace = True
+    mock_client = mock.MagicMock()
+    with (
+        mock.patch("mw4.base.indiClass.QueClient", return_value=mock_client),
+        mock.patch("mw4.base.indiClass.asyncio"),
+    ):
+        function.runQueueClient()
+    mock_client.debug_verbosity.assert_called_once_with(3)
+    function.queueClient = None
+    function.loggingTrace = False
 
 
 # ─── startCommunication ──────────────────────────────────────────────────────

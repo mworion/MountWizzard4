@@ -173,7 +173,7 @@ def test_setTrace_indiFramework():
     app = MagicMock()
     app.getActiveDrivers.return_value = drivers
     loggerMW.setTrace(app, enable=True)
-    mockRun.setTrace.assert_called_once_with(True)
+    assert mockRun.loggingTrace is True
 
 
 def test_setTrace_disable():

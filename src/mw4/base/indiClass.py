@@ -135,13 +135,8 @@ class IndiClass:
                 self.writeVectorsToData(item, vectors)
 
     def cleanupStop(self) -> None:
+        self.queueClient = None
         self.clientMutex.unlock()
-
-    def setTrace(self, enable: bool = False) -> None:
-        self.loggingTrace = enable
-        indiTrace = 2 if enable else 0
-        if self.queueClient:
-            self.queueClient.debug_verbosity(indiTrace)
 
     def runQueueClient(self) -> None:
         self.queueClient = QueClient(
@@ -151,7 +146,7 @@ class IndiClass:
             indiport=self.port,
             blobfolder=str(self.app.mwGlob["tempDir"]),
         )
-        self.setTrace(self.loggingTrace)
+        self.queueClient.debug_verbosity(3 if self.loggingTrace else 0)
         asyncio.run(self.queueClient.asyncrun())
 
     def startCommunication(self) -> None:

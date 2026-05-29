@@ -90,14 +90,9 @@ def setupLogging() -> None:
 
 def setTrace(app: Any, enable: bool = False) -> None:
     drivers = app.getActiveDrivers()
-
     for device in drivers:
         for framework in drivers[device]["class"].run:
-            if framework in ["ascom", "alpaca"]:
-                drivers[device]["class"].run[framework].loggingTrace = enable
-            elif framework in ["indi"]:
-                drivers[device]["class"].run[framework].setTrace(enable)
-
+            drivers[device]["class"].run[framework].loggingTrace = enable
 
 def setCustomLoggingLevel(app: Any, level: str = "DEBUG") -> None:
     if level == "TRACE":

@@ -207,7 +207,7 @@ class Model:
         self.ui.numberPoints.setText(f"{progressData['count']} / {progressData['number']}")
 
     def showStatusExposure(self, statusData: tuple) -> None:
-        t = f"[{statusData[0]}], ExpTime: [{statusData[1]}s], Binning: [{statusData[2]:1d}] "
+        t = f"[{statusData[0]}], ExpTime: [{statusData[1]}s], Binning: [{statusData[2]:1f}] "
         self.msg.emit(0, "Model", "Exposure", t)
 
     def showStatusSlew(self, statusData: tuple) -> None:

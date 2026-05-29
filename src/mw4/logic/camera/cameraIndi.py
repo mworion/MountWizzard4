@@ -116,8 +116,7 @@ class CameraIndi(IndiClass):
         blobFile = self.app.mwGlob["tempDir"] / filename
         blobformat = blob["members"]["CCD1"]["blobformat"]
         self.parent.imagePath = self.parent.imagePath.with_suffix(blobformat)
-        blobFile.rename(self.parent.imagePath)
-
+        blobFile.replace(self.parent.imagePath)
         if blobformat == ".xisf":
             self.writeImageXisfHeader()
         else:

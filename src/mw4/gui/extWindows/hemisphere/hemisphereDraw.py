@@ -43,6 +43,14 @@ class HemisphereDraw(MWidget):
         self.app.dome.signals.azimuth.connect(self.setDomeAzimuth)
         self.app.dome.signals.deviceDisconnected.connect(self.drawDome)
         self.app.dome.signals.serverDisconnected.connect(self.drawDome)
+        # self.app.mount.signals.settingDone.connect(self.drawTab)
+        self.app.mount.signals.getModelDone.connect(self.drawTab)
+        self.app.updatePointMarker.connect(self.setupModel)
+        self.app.redrawHemisphere.connect(self.drawTab)
+        self.app.redrawHorizon.connect(self.drawHorizon)
+        self.app.operationRunning.connect(self.enableOperationModeChange)
+        # self.app.update1s.connect(self.setPointerVisibility)
+        self.app.update3s.connect(self.drawAlignmentStars)
         self.ui.showSlewPath.clicked.connect(self.drawTab)
         self.ui.showHorizon.clicked.connect(self.drawTab)
         self.ui.showAlignStar.clicked.connect(self.drawTab)
@@ -51,22 +59,14 @@ class HemisphereDraw(MWidget):
         self.ui.showPolar.clicked.connect(self.drawTab)
         self.ui.showTerrain.clicked.connect(self.drawTab)
         self.ui.showIsoModel.clicked.connect(self.drawTab)
-        self.app.mount.signals.getModelDone.connect(self.drawTab)
         self.ui.showTerrain.clicked.connect(self.drawTab)
         self.ui.azimuthShift.valueChanged.connect(self.drawTab)
         self.ui.altitudeShift.valueChanged.connect(self.drawTab)
         self.ui.terrainAlpha.valueChanged.connect(self.drawTab)
-        self.app.mount.signals.settingDone.connect(self.drawTab)
         self.ui.normalModeHem.clicked.connect(self.setOperationMode)
         self.ui.editModeHem.clicked.connect(self.setOperationMode)
         self.ui.alignmentModeHem.clicked.connect(self.setOperationMode)
-        self.app.updatePointMarker.connect(self.setupModel)
-        self.app.redrawHemisphere.connect(self.drawTab)
-        self.app.redrawHorizon.connect(self.drawHorizon)
-        self.app.operationRunning.connect(self.enableOperationModeChange)
         self.ui.hemisphere.p[0].scene().sigMouseMoved.connect(self.mouseMovedHemisphere)
-        self.app.mount.signals.mountIsUp.connect(self.setPointerVisibility)
-        self.app.update3s.connect(self.drawAlignmentStars)
 
     def closeTab(self) -> None:
         self.app.mount.signals.pointDone.disconnect(self.drawPointer)
@@ -82,14 +82,12 @@ class HemisphereDraw(MWidget):
         self.app.operationRunning.disconnect(self.enableOperationModeChange)
         self.app.update3s.disconnect(self.drawAlignmentStars)
 
-    def setPointerVisibility(self, status) -> None:
-        items = []
+    def setPointerVisibility(self) -> None:
+        visible = bool(self.app.deviceStat.get("mount"))
         for plotItem in self.ui.hemisphere.p:
             item = self.ui.hemisphere.findItemByName(plotItem, "pointer")
             if item:
-                items.append(item)
-        for item in items:
-            item.setVisible(status)
+                item.setVisible(visible)
 
     def mouseMovedHemisphere(self, pos: QPointF) -> None:
         self.parent.mouseMoved(pos)
@@ -320,8 +318,8 @@ class HemisphereDraw(MWidget):
             pd.setBrush(pg.mkBrush(color=self.M_PINK + "20"))
             pd.setZValue(60)
             pd.nameStr = "pointer"
-            pd.setVisible(False)
             plotItem.addItem(pd)
+            pd.setVisible(False)
 
     def drawPointer(self) -> None:
         items = []
@@ -329,6 +327,7 @@ class HemisphereDraw(MWidget):
             item = self.ui.hemisphere.findItemByName(plotItem, "pointer")
             if item:
                 items.append(item)
+                item.setVisible(True)
 
         obsSite = self.app.mount.obsSite
         alt = obsSite.Alt.degrees
@@ -439,9 +438,7 @@ class HemisphereDraw(MWidget):
         self.drawAlignmentStars()
         self.setupModel()
         self.setupPointer()
-        self.drawPointer()
         self.setupDome()
-        self.drawDome()
         self.ui.hemisphere.p[1].getViewBox().rightMouseRange()
         if self.ui.showHorizon.isChecked():
             self.drawHorizon()

@@ -209,7 +209,7 @@ class HorizonDraw(MWidget):
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
         self.pointerHor.setData(x=[az], y=[alt])
-        self.pointerHor.setVisible(False)
+        self.pointerHor.setVisible(True)
 
     def setupView(self) -> None:
         plotItem = self.ui.horizon.p[0]

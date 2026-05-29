@@ -34,11 +34,7 @@ MAC_STYLE = """
         font-weight: bold;
         font-size: 13pt;
     }
-    QWidget QTableWidget {
-        font-family: Courier New;
-        font-weight: demibold;
-        font-size: 13pt;
-    }
+
     QToolTip {
         font-size: 13pt;
     }
@@ -73,11 +69,7 @@ NON_MAC_STYLE = """
         font-weight: bold;
         font-size: 10pt;
     }
-    QWidget QTableWidget {
-        font-family: Courier New;
-        font-weight: bold;
-        font-size: 10pt;
-    }
+
     QToolTip {
         font-size: 10pt;
     }
@@ -736,4 +728,5 @@ BASIC_STYLE = """
         min-width: 50px;
         min-height: 20px;
     }
+    Q
     """

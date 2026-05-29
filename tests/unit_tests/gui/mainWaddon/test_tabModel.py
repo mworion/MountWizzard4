@@ -7,8 +7,7 @@
 #   #   #   #  #   #       #
 #
 # Python-based Tool for interaction with the 10_micron mounts
-# GUI with PySide !
-
+# GUI with PySide
 #
 # written in python3, (c) 2019-2026 by mworion
 # License APL2.0
@@ -200,7 +199,7 @@ def test_clearAlignAndBackup_1(function):
 def test_clearAlignAndBackup_2(function):
     with (
         mock.patch.object(function.app.mount.model, "clearModel", return_value=True),
-        mock.patch.object(function.app.mount.model, "deleteName", return_value=False),
+        mock.patch.object(function.app.mount.model, "storeName", return_value=False),
         mock.patch.object(mw4.gui.mainWaddon.tabModel, "mainThreadSleep"),
     ):
         suc = function.clearAlignAndBackup()
@@ -210,8 +209,7 @@ def test_clearAlignAndBackup_2(function):
 def test_clearAlignAndBackup_3(function):
     with (
         mock.patch.object(function.app.mount.model, "clearModel", return_value=True),
-        mock.patch.object(function.app.mount.model, "deleteName", return_value=True),
-        mock.patch.object(function.app.mount.model, "storeName", return_value=False),
+        mock.patch.object(function.app.mount.model, "storeName", return_value=True),
         mock.patch.object(mw4.gui.mainWaddon.tabModel, "mainThreadSleep"),
     ):
         suc = function.clearAlignAndBackup()
@@ -221,7 +219,6 @@ def test_clearAlignAndBackup_3(function):
 def test_clearAlignAndBackup_4(function):
     with (
         mock.patch.object(function.app.mount.model, "clearModel", return_value=True),
-        mock.patch.object(function.app.mount.model, "deleteName", return_value=True),
         mock.patch.object(function.app.mount.model, "storeName", return_value=True),
         mock.patch.object(mw4.gui.mainWaddon.tabModel, "mainThreadSleep"),
     ):
@@ -351,7 +348,7 @@ def test_runBatch_4(function):
 
 
 def test_runFileModel_1(function):
-    with mock.patch.object(MWidget, "openFile", return_value=[]):
+    with mock.patch.object(MWidget, "openMultipleFiles", return_value=[]):
         function.runFileModel()
 
 
@@ -386,7 +383,7 @@ def test_runFileModel_2(function):
     val = (model, "Error")
     function.modelData = ModelData(App)
     with (
-        mock.patch.object(MWidget, "openFile", return_value=[Path("test.model")]),
+        mock.patch.object(MWidget, "openMultipleFiles", return_value=[Path("test.model")]),
         mock.patch.object(function, "clearAlignAndBackup", return_value=True),
         mock.patch.object(function.modelData, "buildProgModel"),
         mock.patch.object(mw4.gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val),
@@ -401,11 +398,10 @@ def test_runFileModel_3(function):
     function.modelData = ModelData(App)
     function.modelData.name = "Test"
 
+    files = [Path("test1.model"), Path("test2.model")]
     with (
         mock.patch.object(function, "clearAlignAndBackup", return_value=True),
-        mock.patch.object(
-            MWidget, "openFile", return_value=[Path("test1.model"), Path("test2.model")]
-        ),
+        mock.patch.object(MWidget, "openMultipleFiles", return_value=files),
         mock.patch.object(
             function, "setupFilenamesAndDirectories", return_value=Path("m-test1-add")
         ),
@@ -422,11 +418,10 @@ def test_runFileModel_3(function):
 def test_runFileModel_4(function):
     function.modelData = ModelData(App)
     function.modelData.name = "Test"
+    files = [Path("test1.model"), Path("test2.model")]
     with (
         mock.patch.object(function, "clearAlignAndBackup", return_value=False),
-        mock.patch.object(
-            MWidget, "openFile", return_value=[Path("test1.model"), Path("test2.model")]
-        ),
+        mock.patch.object(MWidget, "openMultipleFiles", return_value=files),
         mock.patch.object(
             function, "setupFilenamesAndDirectories", return_value=Path("m-test1-add")
         ),

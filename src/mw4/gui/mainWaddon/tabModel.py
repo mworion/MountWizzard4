@@ -276,9 +276,8 @@ class Model:
     def runFileModel(self) -> None:
         self.msg.emit(1, "Model", "Run", "Model from file")
         folder = self.app.mwGlob["modelDir"]
-        modelFilesPath = self.mainW.openFile(
-            self.mainW, "Open model file(s)", folder, "Model files (*.model)", multiple=True
-        )
+        modelFilesPath = self.mainW.openMultipleFiles(
+            self.mainW, "Open model file(s)", folder, "Model files (*.model)")
         if len(modelFilesPath) > 1:
             self.msg.emit(0, "Model", "Run", "Combination of len(modelFilesPath) files")
             self.modelData.name = self.setupFilenamesAndDirectories(prefix="m", postfix="add")

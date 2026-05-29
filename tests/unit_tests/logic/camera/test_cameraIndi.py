@@ -387,7 +387,7 @@ def test_saveImageBLOB_fits(function):
     ):
         function.saveImageBLOB(item, vectors)
         assert function.parent.imagePath == Path("tests/work/temp/capture.fits")
-        mock_blob_file.rename.assert_called_once_with(function.parent.imagePath)
+        mock_blob_file.replace.assert_called_once_with(function.parent.imagePath)
         mock_fits.assert_called_once()
         mock_fin.assert_called_once()
 
@@ -413,7 +413,7 @@ def test_saveImageBLOB_xisf(function):
     ):
         function.saveImageBLOB(item, vectors)
         assert function.parent.imagePath == Path("tests/work/temp/capture.xisf")
-        mock_blob_file.rename.assert_called_once_with(function.parent.imagePath)
+        mock_blob_file.replace.assert_called_once_with(function.parent.imagePath)
         mock_xisf.assert_called_once()
         mock_fin.assert_called_once()
 

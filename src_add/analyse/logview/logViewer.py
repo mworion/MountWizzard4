@@ -107,7 +107,7 @@ class Categories(QTabWidget):
             listKey = "Model Trace"
         elif "[D]" in line and "[Trace]" in line and "connection.py" in line:
             listKey = "Mount Trace"
-        elif "[D]" in line and "[Trace]" in line and "indi" in line:
+        elif "[D]" in line and "ipyclient" in line:
             listKey = "INDI Trace"
         elif "[D]" in line and "[Trace]" in line and "ascom" in line:
             listKey = "ASCOM Trace"

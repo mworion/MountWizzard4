@@ -106,14 +106,20 @@ class DevicePopup(MWidget):
             "astrometry": {
                 "appPath": self.ui.astrometryAppPath,
                 "indexPath": self.ui.astrometryIndexPath,
+                "selectAppPath": self.ui.selectAstrometryAppPath,
+                "selectIndexPath": self.ui.selectAstrometryIndexPath,
             },
             "astap": {
                 "appPath": self.ui.astapAppPath,
                 "indexPath": self.ui.astapIndexPath,
+                "selectAppPath": self.ui.selectAstapAppPath,
+                "selectIndexPath": self.ui.selectAstapIndexPath,
             },
             "watney": {
                 "appPath": self.ui.watneyAppPath,
                 "indexPath": self.ui.watneyIndexPath,
+                "selectAppPath": self.ui.selectWatneyAppPath,
+                "selectIndexPath": self.ui.selectWatneyIndexPath,
             },
         }
 
@@ -136,19 +142,16 @@ class DevicePopup(MWidget):
 
         self.ui.cancel.clicked.connect(self.close)
         self.ui.ok.clicked.connect(self.storeConfig)
-
         for framework in self.discovers:
             self.discovers[framework]["button"].clicked.connect(
                 partial(self.discoverDevices, framework)
             )
-
         self.ui.ascomSelector.clicked.connect(self.selectAscomDriver)
-
         for framework in self.platesolvers:
-            clickable(self.platesolvers[framework]["appPath"]).connect(
+            self.platesolvers[framework]["selectAppPath"].clicked.connect(
                 partial(self.selectAppPath, framework)
             )
-            clickable(self.platesolvers[framework]["indexPath"]).connect(
+            self.platesolvers[framework]["selectIndexPath"].clicked.connect(
                 partial(self.selectIndexPath, framework)
             )
             self.platesolvers[framework]["appPath"].textChanged.connect(
@@ -157,7 +160,6 @@ class DevicePopup(MWidget):
             self.platesolvers[framework]["indexPath"].textChanged.connect(
                 partial(self.checkIndex, framework)
             )
-
         self.ui.selectBoltwoodPath.clicked.connect(self.selectBoltwoodPath)
 
     def initConfig(self) -> None:
@@ -264,10 +266,8 @@ class DevicePopup(MWidget):
         if not deviceNames:
             self.msg.emit(2, framework.upper(), "Device", "No devices found")
             return
-
         for deviceName in deviceNames:
             self.msg.emit(0, framework.upper(), "Device discovered", f"{deviceName}")
-
         self.updateDeviceNameList(framework, deviceNames)
 
     def checkApp(self, framework: str, folder: str = "") -> None:
@@ -282,14 +282,16 @@ class DevicePopup(MWidget):
         colorI = "green" if sucIndex else "red"
         changeStyleDynamic(self.platesolvers[framework]["indexPath"], "color", colorI)
 
-    def selectAppPath(self, framework: str, folder: str = "") -> None:
-        appFolderPath = self.openDir(self, "Select App Path", Path(folder))
+    def selectAppPath(self, framework: str) -> None:
+        folder = Path(self.platesolvers[framework]["appPath"].text())
+        appFolderPath = self.openDir(self, "Select App Path", folder)
         if not appFolderPath.is_dir():
             return
         self.platesolvers[framework]["appPath"].setText(str(appFolderPath))
 
-    def selectIndexPath(self, framework: str, folder: str = "") -> None:
-        indexFolderPath = self.openDir(self, "Select Index Path", Path(folder))
+    def selectIndexPath(self, framework: str) -> None:
+        folder = Path(self.platesolvers[framework]["indexPath"].text())
+        indexFolderPath = self.openDir(self, "Select Index Path", folder)
         if not indexFolderPath.is_dir():
             return
         self.platesolvers[framework]["indexPath"].setText(str(indexFolderPath))

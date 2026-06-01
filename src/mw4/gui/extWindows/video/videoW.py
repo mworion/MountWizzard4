@@ -21,8 +21,6 @@ class VideoWindow(VideoWindowBase):
     def __init__(self, app: Any) -> None:
         super().__init__(app=app)
         self.setWindowTitle("Video Stream 1")
-        self.setMinimumSize(self.HALF_WIDTH, self.HALF_HEIGHT)
-        self.setMaximumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.setObjectName("Video1")
 
     def initConfig(self) -> None:

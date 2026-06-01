@@ -36,6 +36,8 @@ class VideoWindowBase(MWidget):
         self.threadPool = app.threadPool
         self.ui = video_ui.Ui_VideoDialog()
         self.ui.setupUi(self.ws)
+        self.setMinimumSize(self.HALF_WIDTH, self.HALF_HEIGHT)
+        self.setMaximumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.running = False
         self.capture = None
         self.user = ""

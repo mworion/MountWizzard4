@@ -23,14 +23,14 @@ class Ui_DevicePopup(object):
     def setupUi(self, DevicePopup):
         if not DevicePopup.objectName():
             DevicePopup.setObjectName(u"DevicePopup")
-        DevicePopup.resize(500, 300)
+        DevicePopup.resize(500, 310)
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(DevicePopup.sizePolicy().hasHeightForWidth())
         DevicePopup.setSizePolicy(sizePolicy)
-        DevicePopup.setMinimumSize(QSize(500, 300))
-        DevicePopup.setMaximumSize(QSize(500, 300))
+        DevicePopup.setMinimumSize(QSize(500, 310))
+        DevicePopup.setMaximumSize(QSize(16777215, 16777215))
         DevicePopup.setSizeIncrement(QSize(10, 10))
         DevicePopup.setBaseSize(QSize(10, 10))
         font = QFont()

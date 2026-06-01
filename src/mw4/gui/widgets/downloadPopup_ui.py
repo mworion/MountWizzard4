@@ -28,7 +28,7 @@ class Ui_DownloadPopup(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(DownloadPopup.sizePolicy().hasHeightForWidth())
         DownloadPopup.setSizePolicy(sizePolicy)
-        DownloadPopup.setMinimumSize(QSize(0, 0))
+        DownloadPopup.setMinimumSize(QSize(400, 90))
         DownloadPopup.setMaximumSize(QSize(16777215, 16777215))
         DownloadPopup.setSizeIncrement(QSize(10, 10))
         DownloadPopup.setBaseSize(QSize(10, 10))

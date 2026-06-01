@@ -42,7 +42,6 @@
   </property>
   <property name="font">
    <font>
-    <family>Arial</family>
     <pointsize>10</pointsize>
    </font>
   </property>
@@ -53,7 +52,7 @@
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>465</y>
+     <y>475</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -78,7 +77,6 @@
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -94,7 +92,7 @@ INFO</string>
    <property name="geometry">
     <rect>
      <x>110</x>
-     <y>285</y>
+     <y>295</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -119,7 +117,6 @@ INFO</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -134,7 +131,7 @@ INFO</string>
    <property name="geometry">
     <rect>
      <x>200</x>
-     <y>405</y>
+     <y>415</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -159,7 +156,6 @@ INFO</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -175,7 +171,7 @@ DOWN</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>405</y>
+     <y>415</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -200,7 +196,6 @@ DOWN</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -216,7 +211,7 @@ STAR</string>
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>525</y>
+     <y>535</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -241,7 +236,6 @@ STAR</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -256,7 +250,7 @@ STAR</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>525</y>
+     <y>535</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -281,7 +275,6 @@ STAR</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -297,7 +290,7 @@ LIGHT</string>
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>525</y>
+     <y>535</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -322,7 +315,6 @@ LIGHT</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -337,7 +329,7 @@ LIGHT</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>345</y>
+     <y>355</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -362,7 +354,6 @@ LIGHT</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -378,7 +369,7 @@ M</string>
    <property name="geometry">
     <rect>
      <x>200</x>
-     <y>465</y>
+     <y>475</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -403,7 +394,6 @@ M</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -418,7 +408,7 @@ M</string>
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>465</y>
+     <y>475</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -443,7 +433,6 @@ M</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -459,7 +448,7 @@ DISP</string>
    <property name="geometry">
     <rect>
      <x>170</x>
-     <y>255</y>
+     <y>265</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -484,7 +473,6 @@ DISP</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -499,7 +487,7 @@ DISP</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>465</y>
+     <y>475</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -524,7 +512,6 @@ DISP</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -540,7 +527,7 @@ COORD</string>
    <property name="geometry">
     <rect>
      <x>110</x>
-     <y>220</y>
+     <y>230</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -565,7 +552,6 @@ COORD</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -580,7 +566,7 @@ COORD</string>
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>345</y>
+     <y>355</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -605,7 +591,6 @@ COORD</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -624,7 +609,7 @@ NGC</string>
    <property name="geometry">
     <rect>
      <x>200</x>
-     <y>525</y>
+     <y>535</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -649,7 +634,6 @@ NGC</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -664,7 +648,7 @@ NGC</string>
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>405</y>
+     <y>415</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -689,7 +673,6 @@ NGC</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -705,7 +688,7 @@ MORE</string>
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>345</y>
+     <y>355</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -730,7 +713,6 @@ MORE</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -765,7 +747,7 @@ IC</string>
    <property name="geometry">
     <rect>
      <x>200</x>
-     <y>345</y>
+     <y>355</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -790,7 +772,6 @@ IC</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -806,7 +787,7 @@ UP</string>
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>255</y>
+     <y>265</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -831,7 +812,6 @@ UP</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -846,7 +826,7 @@ UP</string>
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>405</y>
+     <y>415</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -871,7 +851,6 @@ UP</string>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -892,8 +871,8 @@ PLANET</string>
      <height>25</height>
     </rect>
    </property>
-   <property name="frame">
-    <bool>false</bool>
+   <property name="layoutDirection">
+    <enum>Qt::LayoutDirection::LeftToRight</enum>
    </property>
    <property name="readOnly">
     <bool>true</bool>
@@ -911,8 +890,8 @@ PLANET</string>
      <height>25</height>
     </rect>
    </property>
-   <property name="frame">
-    <bool>false</bool>
+   <property name="layoutDirection">
+    <enum>Qt::LayoutDirection::LeftToRight</enum>
    </property>
    <property name="readOnly">
     <bool>true</bool>
@@ -930,8 +909,8 @@ PLANET</string>
      <height>25</height>
     </rect>
    </property>
-   <property name="frame">
-    <bool>false</bool>
+   <property name="layoutDirection">
+    <enum>Qt::LayoutDirection::LeftToRight</enum>
    </property>
    <property name="readOnly">
     <bool>true</bool>
@@ -949,8 +928,8 @@ PLANET</string>
      <height>25</height>
     </rect>
    </property>
-   <property name="frame">
-    <bool>false</bool>
+   <property name="layoutDirection">
+    <enum>Qt::LayoutDirection::LeftToRight</enum>
    </property>
    <property name="readOnly">
     <bool>true</bool>
@@ -968,8 +947,8 @@ PLANET</string>
      <height>25</height>
     </rect>
    </property>
-   <property name="frame">
-    <bool>false</bool>
+   <property name="layoutDirection">
+    <enum>Qt::LayoutDirection::LeftToRight</enum>
    </property>
    <property name="readOnly">
     <bool>true</bool>
@@ -982,9 +961,9 @@ PLANET</string>
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>210</y>
+     <y>220</y>
      <width>251</width>
-     <height>381</height>
+     <height>376</height>
     </rect>
    </property>
    <property name="text">
@@ -992,6 +971,25 @@ PLANET</string>
    </property>
    <property name="keypad" stdset="0">
     <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="Line" name="cursor">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>220</y>
+     <width>15</width>
+     <height>3</height>
+    </rect>
+   </property>
+   <property name="lineWidth">
+    <number>3</number>
+   </property>
+   <property name="midLineWidth">
+    <number>0</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Orientation::Vertical</enum>
    </property>
   </widget>
   <zorder>label</zorder>
@@ -1021,6 +1019,7 @@ PLANET</string>
   <zorder>row2</zorder>
   <zorder>row3</zorder>
   <zorder>row4</zorder>
+  <zorder>cursor</zorder>
  </widget>
  <resources/>
  <connections/>

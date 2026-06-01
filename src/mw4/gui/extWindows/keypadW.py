@@ -93,11 +93,8 @@ class KeypadWindow(MWidget):
         configMain = self.app.config
         configMain["keypadW"] = {}
         config = configMain["keypadW"]
-
-        config["winPosX"] = max(self.pos().x(), 0)
-        config["winPosY"] = max(self.pos().y(), 0)
-        config["height"] = self.height()
-        config["width"] = self.width()
+        config["winPosX"] = max(self.ws.pos().x(), 0)
+        config["winPosY"] = max(self.ws.pos().y(), 0)
 
     def closeEvent(self, closeEvent) -> None:
         self.storeConfig()

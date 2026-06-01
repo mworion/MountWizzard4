@@ -163,18 +163,26 @@ class MWidget(QWidget, Styles):
         else:
             return reply
 
-    def openFileBase(self, window: QWidget, title: str, folder: Path, filterSet: str, multiple: bool = False) -> list[str]:
+    def openFileBase(
+        self, window: QWidget, title: str, folder: Path, filterSet: str, multiple: bool = False
+    ) -> list[str]:
         dlg = self.prepareFileDialog(window=window)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
         dlg.setWindowTitle(title)
         dlg.setNameFilter(filterSet)
         dlg.setDirectory(str(folder))
-        fileMode = QFileDialog.FileMode.ExistingFiles if multiple else QFileDialog.FileMode.ExistingFile
+        fileMode = (
+            QFileDialog.FileMode.ExistingFiles
+            if multiple
+            else QFileDialog.FileMode.ExistingFile
+        )
         dlg.setFileMode(fileMode)
         self.runDialog(dlg)
         return dlg.selectedFiles()
 
-    def openMultipleFiles(self, window: QWidget, title: str, folder: Path, filterSet: str) -> list[Path]:
+    def openMultipleFiles(
+        self, window: QWidget, title: str, folder: Path, filterSet: str
+    ) -> list[Path]:
         files = self.openFileBase(window, title, folder, filterSet, multiple=True)
         return [Path(f) for f in files]
 

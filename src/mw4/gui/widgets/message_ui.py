@@ -29,7 +29,7 @@ class Ui_MessageDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MessageDialog.sizePolicy().hasHeightForWidth())
         MessageDialog.setSizePolicy(sizePolicy)
-        MessageDialog.setMinimumSize(QSize(800, 285))
+        MessageDialog.setMinimumSize(QSize(800, 280))
         MessageDialog.setMaximumSize(QSize(800, 1200))
         MessageDialog.setSizeIncrement(QSize(10, 10))
         MessageDialog.setBaseSize(QSize(10, 10))

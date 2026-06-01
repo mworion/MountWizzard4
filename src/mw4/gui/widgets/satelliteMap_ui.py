@@ -31,7 +31,7 @@ class Ui_SatelliteMapDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(SatelliteMapDialog.sizePolicy().hasHeightForWidth())
         SatelliteMapDialog.setSizePolicy(sizePolicy)
-        SatelliteMapDialog.setMinimumSize(QSize(400, 285))
+        SatelliteMapDialog.setMinimumSize(QSize(400, 280))
         SatelliteMapDialog.setMaximumSize(QSize(1600, 1230))
         SatelliteMapDialog.setSizeIncrement(QSize(10, 10))
         SatelliteMapDialog.setBaseSize(QSize(10, 10))

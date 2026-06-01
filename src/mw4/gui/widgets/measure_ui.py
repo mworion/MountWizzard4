@@ -31,7 +31,7 @@ class Ui_MeasureDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MeasureDialog.sizePolicy().hasHeightForWidth())
         MeasureDialog.setSizePolicy(sizePolicy)
-        MeasureDialog.setMinimumSize(QSize(800, 285))
+        MeasureDialog.setMinimumSize(QSize(800, 280))
         MeasureDialog.setMaximumSize(QSize(1600, 1230))
         MeasureDialog.setSizeIncrement(QSize(10, 10))
         MeasureDialog.setBaseSize(QSize(10, 10))

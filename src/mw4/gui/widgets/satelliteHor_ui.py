@@ -31,7 +31,7 @@ class Ui_SatelliteHorizonDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(SatelliteHorizonDialog.sizePolicy().hasHeightForWidth())
         SatelliteHorizonDialog.setSizePolicy(sizePolicy)
-        SatelliteHorizonDialog.setMinimumSize(QSize(400, 285))
+        SatelliteHorizonDialog.setMinimumSize(QSize(400, 280))
         SatelliteHorizonDialog.setMaximumSize(QSize(1600, 1230))
         SatelliteHorizonDialog.setSizeIncrement(QSize(10, 10))
         SatelliteHorizonDialog.setBaseSize(QSize(10, 10))

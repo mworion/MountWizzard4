@@ -29,7 +29,7 @@ class Ui_VideoDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(VideoDialog.sizePolicy().hasHeightForWidth())
         VideoDialog.setSizePolicy(sizePolicy)
-        VideoDialog.setMinimumSize(QSize(400, 285))
+        VideoDialog.setMinimumSize(QSize(400, 280))
         VideoDialog.setMaximumSize(QSize(800, 600))
         VideoDialog.setSizeIncrement(QSize(10, 10))
         VideoDialog.setBaseSize(QSize(10, 10))

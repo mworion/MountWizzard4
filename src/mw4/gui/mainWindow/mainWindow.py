@@ -127,6 +127,7 @@ class MainWindow(MWidget):
 
         config["winPosX"] = self.pos().x()
         config["winPosY"] = self.pos().y()
+        config["height"] = self.height()
         getTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
         getTabAndIndex(self.ui.mountTabWidget, config, "orderMount")
         getTabAndIndex(self.ui.imagingTabWidget, config, "orderImaging")

@@ -1,6 +1,6 @@
-from PySide6.QtCore import QSize, Qt, QPoint
+from PySide6.QtCore import QPoint, QSize, Qt
 from PySide6.QtGui import QColor, QIcon, QPixmap
-from PySide6.QtWidgets import QHBoxLayout, QLabel, QToolButton, QWidget, QFrame
+from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QToolButton, QWidget
 
 
 class CustomTitleBar(QWidget):
@@ -11,7 +11,7 @@ class CustomTitleBar(QWidget):
         titleBarLayout = QHBoxLayout(self)
         titleFrame = QFrame()
         titleFrame.setProperty("title", True)
-        titleFrame.setFixedHeight(30)
+        titleFrame.setFixedHeight(31)
         frameLayout = QHBoxLayout(titleFrame)
         frameLayout.setContentsMargins(0, 0, 0, 0)
         self.title = QLabel()
@@ -70,8 +70,8 @@ class CustomTitleBar(QWidget):
             )
             frameLayout.addWidget(button)
             titleBarLayout.addWidget(titleFrame)
-            titleBarLayout.setContentsMargins(0, 0, 0, 0)
-            # titleBarLayout.setSpacing(5)
+            titleBarLayout.setContentsMargins(0, 0, 8, 0)
+            titleBarLayout.setSpacing(5)
 
     def windowStateChanged(self, state):
         if state == Qt.WindowState.WindowMaximized:

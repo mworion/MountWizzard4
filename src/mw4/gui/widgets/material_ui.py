@@ -28,7 +28,7 @@ class Ui_MaterialDialog(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MaterialDialog.sizePolicy().hasHeightForWidth())
         MaterialDialog.setSizePolicy(sizePolicy)
-        MaterialDialog.setMinimumSize(QSize(800, 285))
+        MaterialDialog.setMinimumSize(QSize(800, 600))
         MaterialDialog.setMaximumSize(QSize(800, 1200))
         MaterialDialog.setSizeIncrement(QSize(10, 10))
         MaterialDialog.setBaseSize(QSize(10, 10))

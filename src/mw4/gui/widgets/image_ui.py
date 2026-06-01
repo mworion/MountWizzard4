@@ -27,8 +27,8 @@ class Ui_ImageDialog(object):
         if not ImageDialog.objectName():
             ImageDialog.setObjectName(u"ImageDialog")
         ImageDialog.resize(800, 600)
-        ImageDialog.setMinimumSize(QSize(800, 600))
-        ImageDialog.setMaximumSize(QSize(1600, 1230))
+        ImageDialog.setMinimumSize(QSize(0, 0))
+        ImageDialog.setMaximumSize(QSize(16777215, 16777215))
         ImageDialog.setSizeIncrement(QSize(10, 10))
         font = QFont()
         font.setFamilies([u"Arial"])

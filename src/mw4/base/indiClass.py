@@ -20,7 +20,8 @@ from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO_CONV
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QThreadPool
-from queue import Empty as QueueEmpty, Queue
+from queue import Empty as QueueEmpty
+from queue import Queue
 from typing import Any
 
 
@@ -118,7 +119,9 @@ class IndiClass:
     def processRxQueue(self) -> None:
         while self.commandRunning:
             try:
-                item = self.rxQ.get(timeout=0.1)  # blocks until item arrives or timeout (PERF-3)
+                item = self.rxQ.get(
+                    timeout=0.1
+                )  # blocks until item arrives or timeout (PERF-3)
             except QueueEmpty:
                 continue
             if item.snapshot.get(self.deviceName) is None:

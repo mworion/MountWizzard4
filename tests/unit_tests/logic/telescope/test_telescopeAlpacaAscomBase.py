@@ -36,9 +36,9 @@ def function():
 
 
 def test_getInitialConfig(function):
-    with mock.patch.object(function, "getAndStoreDeviceProp") as m:
-        with mock.patch.object(function, "getDeviceProp"):
-            function.getInitialConfig()
-            attrs = [c.args[0] for c in m.call_args_list]
-            assert "ApertureDiameter" in attrs
-            assert "FocalLength" in attrs
+    with mock.patch.object(function, "getAndStoreDeviceProp") as m, \
+         mock.patch.object(function, "getDeviceProp"):
+        function.getInitialConfig()
+        attrs = [c.args[0] for c in m.call_args_list]
+        assert "ApertureDiameter" in attrs
+        assert "FocalLength" in attrs

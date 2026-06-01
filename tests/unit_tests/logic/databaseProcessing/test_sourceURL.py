@@ -39,4 +39,3 @@ for name, entry in satSourceURLs.items():
         assert url.startswith("https://"), (
             f"satSourceURLs['{name}']['url'] must use https://, got: {url}"
         )
-

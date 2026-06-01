@@ -482,4 +482,3 @@ def test_selectAscomDriver_injection_safe(function):
     # But it must survive round-tripping through JSON
     payload = _json.loads(payload_str)
     assert payload["deviceName"] == malicious
-

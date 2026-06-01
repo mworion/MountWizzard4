@@ -227,5 +227,3 @@ def test_mw4Style_cache_invalidation(function):
     assert style0_first == style0_second
     # But different from colorSet 1
     assert style0_first != style1
-
-

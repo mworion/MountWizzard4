@@ -35,7 +35,7 @@ class SatelliteMapWindow(MWidget):
         self.threadPool = app.threadPool
         self.ui = satelliteMap_ui.Ui_SatelliteMapDialog()
         self.ui.setupUi(self)
-        self.satellite: EarthSatellite | None  = None
+        self.satellite: EarthSatellite | None = None
         self.satOrbits: dict = {}
         self.plotSatPosEarth: pg.PlotDataItem = pg.PlotDataItem()
         self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
@@ -101,8 +101,8 @@ class SatelliteMapWindow(MWidget):
         for i, length in enumerate(lengths):
             n = int(length)
             world[i] = {
-                "xDeg": x_all[offset: offset + n],
-                "yDeg": y_all[offset: offset + n],
+                "xDeg": x_all[offset : offset + n],
+                "yDeg": y_all[offset : offset + n],
             }
             offset += n
         return world

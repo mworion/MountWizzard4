@@ -122,7 +122,6 @@ class IndiClass:
                 item = self.rxQ.get(timeout=0.01)
             except queue.Empty:
                 continue
-            item = self.rxQ.get()
             if item.snapshot.get(self.deviceName) is None:
                 continue
             if item.devicename != self.deviceName:

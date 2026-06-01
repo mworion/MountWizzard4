@@ -37,15 +37,21 @@ def function():
 
 
 def test_pollData_UPB(function):
-    with mock.patch.object(function, "getDeviceProp", return_value=15), \
-         mock.patch.object(function, "getAndStoreDeviceProp"):
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=15),
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+    ):
+        function.data["MaxSwitch"] = 15
         function.pollData()
         assert function.data["FIRMWARE_INFO.VERSION"] == "1.4"
 
 
 def test_pollData_UPBv2(function):
-    with mock.patch.object(function, "getDeviceProp", return_value=21), \
-         mock.patch.object(function, "getAndStoreDeviceProp"):
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=21),
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+    ):
+        function.data["MaxSwitch"] = 21
         function.pollData()
         assert function.data["FIRMWARE_INFO.VERSION"] == "2.1"
 

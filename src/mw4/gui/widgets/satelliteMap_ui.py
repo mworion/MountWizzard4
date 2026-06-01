@@ -42,7 +42,7 @@ class Ui_SatelliteMapDialog(object):
         self.gridLayout = QGridLayout(SatelliteMapDialog)
         self.gridLayout.setSpacing(4)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setContentsMargins(4, 8, 4, 4)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setSpacing(4)
         self.verticalLayout.setObjectName(u"verticalLayout")

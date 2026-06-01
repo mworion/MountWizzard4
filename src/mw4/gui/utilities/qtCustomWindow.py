@@ -11,9 +11,9 @@ class CustomTitleBar(QWidget):
         titleBarLayout = QHBoxLayout(self)
         titleFrame = QFrame()
         titleFrame.setProperty("title", True)
-        titleFrame.setFixedHeight(28)
+        titleFrame.setFixedHeight(30)
         frameLayout = QHBoxLayout(titleFrame)
-        frameLayout.setContentsMargins(0, 0, 8, 0)
+        frameLayout.setContentsMargins(0, 0, 0, 0)
         self.title = QLabel()
         self.title.setProperty("title", True)
         self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -70,8 +70,8 @@ class CustomTitleBar(QWidget):
             )
             frameLayout.addWidget(button)
             titleBarLayout.addWidget(titleFrame)
-            titleBarLayout.setContentsMargins(1, 1, 1, 1)
-            titleBarLayout.setSpacing(5)
+            titleBarLayout.setContentsMargins(0, 0, 0, 0)
+            # titleBarLayout.setSpacing(5)
 
     def windowStateChanged(self, state):
         if state == Qt.WindowState.WindowMaximized:

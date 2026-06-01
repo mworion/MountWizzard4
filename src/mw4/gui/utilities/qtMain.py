@@ -26,7 +26,14 @@ from PySide6.QtGui import (
     QKeyEvent,
     QPixmap,
 )
-from PySide6.QtWidgets import QFileDialog, QMessageBox, QPushButton, QVBoxLayout, QWidget, QMainWindow
+from PySide6.QtWidgets import (
+    QFileDialog,
+    QMainWindow,
+    QMessageBox,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+)
 from skyfield.api import Time
 
 
@@ -50,11 +57,10 @@ class MWidget(QWidget, Styles):
         self.setWindowIcon(self.mwIcon)
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
-
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.titleBar = CustomTitleBar(self)
         workSpaceLayout = QVBoxLayout()
-        workSpaceLayout.setContentsMargins(11, 11, 11, 11)
+        workSpaceLayout.setContentsMargins(0, 0, 0, 0)
         self.ws = QWidget()
         workSpaceLayout.addWidget(self.ws)
 

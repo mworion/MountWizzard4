@@ -17,20 +17,16 @@ import datetime
 import logging
 from dateutil.tz import tzlocal
 from mw4.gui.styles.styles import Styles
+from mw4.gui.utilities.qtCustomWindow import CustomTitleBar
 from mw4.gui.utilities.qtHelpers import svg2icon
 from pathlib import Path
-from PySide6.QtCore import QDir, QSize, Qt
+from PySide6.QtCore import QDir, QEvent, QSize, Qt
 from PySide6.QtGui import (
     QGuiApplication,
     QKeyEvent,
     QPixmap,
 )
-from PySide6.QtWidgets import (
-    QFileDialog,
-    QMessageBox,
-    QPushButton,
-    QWidget,
-)
+from PySide6.QtWidgets import QFileDialog, QMessageBox, QPushButton, QVBoxLayout, QWidget, QMainWindow
 from skyfield.api import Time
 
 
@@ -42,7 +38,7 @@ class MWidget(QWidget, Styles):
         self.initUI()
         self.screenSizeX = QGuiApplication.primaryScreen().geometry().width()
         self.screenSizeY = QGuiApplication.primaryScreen().geometry().height()
-
+        """
         newFlag = Qt.WindowType.CustomizeWindowHint | Qt.WindowType.WindowSystemMenuHint
         newFlag = (
             newFlag
@@ -50,11 +46,34 @@ class MWidget(QWidget, Styles):
             | Qt.WindowType.WindowMaximizeButtonHint
         )
         self.setWindowFlags(self.windowFlags() | newFlag)
+        """
         self.setWindowIcon(self.mwIcon)
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
-        self.app = None
-        self.ui = None
+
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        self.titleBar = CustomTitleBar(self)
+        workSpaceLayout = QVBoxLayout()
+        workSpaceLayout.setContentsMargins(11, 11, 11, 11)
+        self.ws = QWidget()
+        workSpaceLayout.addWidget(self.ws)
+
+        centralWidgetLayout = QVBoxLayout()
+        centralWidgetLayout.setContentsMargins(0, 0, 0, 0)
+        centralWidgetLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        centralWidgetLayout.addWidget(self.titleBar)
+        centralWidgetLayout.addLayout(workSpaceLayout)
+        self.setLayout(centralWidgetLayout)
+
+    def changeEvent(self, event):
+        if event.type() == QEvent.Type.WindowStateChange:
+            self.titleBar.windowStateChanged(self.windowState())
+        super().changeEvent(event)
+        event.accept()
+
+    def setWindowTitle(self, title: str) -> None:
+        if hasattr(self, "titleBar"):
+            self.titleBar.title.setText(title)
 
     @staticmethod
     def saveWindowAsPNG(window: QWidget) -> None:

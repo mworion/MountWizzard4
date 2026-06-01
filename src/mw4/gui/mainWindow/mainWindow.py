@@ -42,7 +42,7 @@ class MainWindow(MWidget):
         self.msg = app.msg
         self.threadPool = app.threadPool
         self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self.ws)
         self.setWindowTitle(f"MountWizzard4 - v{self.app.__version__}")
         self.activateWindow()
         self.externalWindows = ExternalWindows(self)

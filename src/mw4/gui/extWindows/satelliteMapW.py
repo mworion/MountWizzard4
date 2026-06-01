@@ -34,7 +34,7 @@ class SatelliteMapWindow(MWidget):
         self.obsSite = app.mount.obsSite
         self.threadPool = app.threadPool
         self.ui = satelliteMap_ui.Ui_SatelliteMapDialog()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self.ws)
         self.satellite: EarthSatellite | None = None
         self.satOrbits: dict = {}
         self.plotSatPosEarth: pg.PlotDataItem = pg.PlotDataItem()

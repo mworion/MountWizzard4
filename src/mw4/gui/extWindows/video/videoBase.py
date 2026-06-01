@@ -35,7 +35,7 @@ class VideoWindowBase(MWidget):
         self.msg = app.msg
         self.threadPool = app.threadPool
         self.ui = video_ui.Ui_VideoDialog()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self.ws)
         self.running = False
         self.capture = None
         self.user = ""

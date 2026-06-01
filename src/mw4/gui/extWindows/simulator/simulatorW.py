@@ -40,7 +40,7 @@ class SimulatorWindow(MWidget):
         super().__init__()
         self.app = app
         self.ui = simulator_ui.Ui_SimulatorDialog()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self.ws)
         self.world = SimulatorWorld(self, self.app)
         self.light = SimulatorLight(self, self.app)
         self.dome = SimulatorDome(self, self.app)

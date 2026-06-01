@@ -33,7 +33,7 @@ class MeasureWindow(MWidget):
         super().__init__()
         self.app = app
         self.ui = measure_ui.Ui_MeasureDialog()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self.ws)
         self.drawLock = QMutex()
         self.dataPlots = dataPlots()
 

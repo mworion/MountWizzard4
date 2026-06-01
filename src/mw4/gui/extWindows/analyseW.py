@@ -28,7 +28,7 @@ class AnalyseWindow(MWidget):
         super().__init__()
         self.app = app
         self.ui = analyse_ui.Ui_AnalyseDialog()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self.ws)
 
         self.latitude: float = 0
         self.pierside: list[str] = []

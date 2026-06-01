@@ -437,3 +437,49 @@ def test_selectAscomDriver_empty(function):
     with mock.patch("subprocess.check_output", return_value="  "):
         result = function.selectAscomDriver("fallback", "Telescope")
     assert result == "fallback"
+
+
+def test_selectAscomDriver_uses_json_payload(function):
+    """SEC-1: deviceName and deviceType must be passed as a JSON payload, not
+    interpolated into the script string."""
+    import json as _json
+
+    with mock.patch("subprocess.check_output", return_value="result") as m:
+        function.selectAscomDriver("MyDevice", "Camera")
+
+    args, _ = m.call_args
+    cmd_list = args[0]
+    # script is cmd_list[2]; JSON payload is cmd_list[3]
+    script = cmd_list[2]
+    payload_str = cmd_list[3]
+
+    # The device name / type must NOT appear literally in the script string
+    assert "MyDevice" not in script
+    assert "Camera" not in script
+
+    # The payload must be valid JSON containing the correct keys
+    payload = _json.loads(payload_str)
+    assert payload["deviceName"] == "MyDevice"
+    assert payload["deviceType"] == "Camera"
+
+
+def test_selectAscomDriver_injection_safe(function):
+    """SEC-1: A malicious deviceName with Python-injection characters must be
+    transmitted safely through the JSON payload, not break the script."""
+    import json as _json
+
+    malicious = "'; import os; os.system('rm -rf /')#"
+    with mock.patch("subprocess.check_output", return_value="") as m:
+        function.selectAscomDriver(malicious, "Telescope")
+
+    args, _ = m.call_args
+    cmd_list = args[0]
+    script = cmd_list[2]
+    payload_str = cmd_list[3]
+
+    # Injection string must not appear raw in the script
+    assert malicious not in script
+    # But it must survive round-tripping through JSON
+    payload = _json.loads(payload_str)
+    assert payload["deviceName"] == malicious
+

@@ -13,7 +13,7 @@
 # License APL2.0
 #
 ###########################################################
-satBaseUrl: str = "http://www.celestrak.org/NORAD/elements/gp.php?"
+satBaseUrl: str = "https://celestrak.org/NORAD/elements/gp.php?"  # SEC-5: changed http → https
 satSourceURLs: dict[str, dict[str, str | bool]] = {
     "100 brightest": {
         "url": satBaseUrl + "GROUP=visual&FORMAT=tle",

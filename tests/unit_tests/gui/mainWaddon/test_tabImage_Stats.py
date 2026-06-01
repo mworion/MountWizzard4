@@ -87,8 +87,10 @@ def test_openASTAPCatalog_2(function):
 
 
 def test_openAstrometryCatalog_1(function):
-    with mock.patch.object(webbrowser, "open", return_value=True):
+    with mock.patch.object(webbrowser, "open", return_value=True) as m:
         function.openAstrometryCatalog()
+        url = m.call_args[0][0]
+        assert url.startswith("https://"), f"URL must use https://, got: {url}"  # SEC-5
 
 
 def test_openAstrometryCatalog_2(function):

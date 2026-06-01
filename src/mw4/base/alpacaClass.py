@@ -57,7 +57,7 @@ class AlpacaClass(AlpacaAscomCommon):
             "port": 11111,
             "apiVersion": 1,
             "user": "",
-            "password": "",
+            "password": "",  # nosec B105 — empty-string default, not a hardcoded credential
             "updateRate": 1000,
         }
 

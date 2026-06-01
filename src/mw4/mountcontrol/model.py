@@ -139,10 +139,7 @@ class Model:
 
     def getNames(self) -> bool:
         conn = Connection(self.parent)
-        commandString = ""
-        for i in range(1, self.numberNames + 1):
-            commandString += f":modelnam{i:d}#"
-
+        commandString = "".join(f":modelnam{i:d}#" for i in range(1, self.numberNames + 1))
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
@@ -217,10 +214,7 @@ class Model:
         if self.numberStars == 0:
             return True
 
-        commandString = ""
-        for i in range(1, self.numberStars + 1):
-            commandString += f":getalp{i:d}#"
-
+        commandString = "".join(f":getalp{i:d}#" for i in range(1, self.numberStars + 1))
         conn = Connection(self.parent)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
@@ -267,7 +261,7 @@ class Model:
         return suc
 
     def programModelFromStarList(self, build: list[ProgStar]) -> bool:
-        commandString = ":newalig#"
+        parts = [":newalig#"]
         for aPoint in build:
             sgn, h, m, s, frac = sexagesimalizeToInt(aPoint.mCoord.ra.hours, 1)
             ra = f"{h:02d}:{m:02d}:{s:02d}.{frac:1d}"
@@ -289,10 +283,9 @@ class Model:
             sidereal = f"{h:02d}:{m:02d}:{s:02d}.{frac:02d}"
 
             comFormat = ":newalpt{0},{1},{2},{3},{4},{5}#"
-            value = comFormat.format(ra, dec, pierside, raSolve, decSolve, sidereal)
-            commandString += value
+            parts.append(comFormat.format(ra, dec, pierside, raSolve, decSolve, sidereal))
 
         conn = Connection(self.parent)
-        commandString += ":endalig#"
+        commandString = "".join(parts) + ":endalig#"
         suc, _, _ = conn.communicate(commandString, responseCheck="V")
         return suc

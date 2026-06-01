@@ -482,6 +482,6 @@ class DataPoint:
         for i, point in enumerate(self.buildP):
             alt = point[0]
             az = point[1]
-            alt += random.uniform(-1, 1)
-            az += random.uniform(-1, 1)
+            alt += random.uniform(-1, 1)  # nosec B311 — non-cryptographic use (pointing dither)
+            az += random.uniform(-1, 1)  # nosec B311 — non-cryptographic use (pointing dither)
             self.buildP[i] = [alt, az, self.UNPROCESSED]

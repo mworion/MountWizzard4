@@ -184,12 +184,9 @@ class Satellite:
         return suc
 
     def addTrajectoryPoint(self, alt: Angle, az: Angle) -> bool:
-        commandString = ""
         az = az.degrees
         alt = alt.degrees
-        for azimuth, altitude in zip(az, alt):
-            commandString += f":TRADD{azimuth},{altitude}#"
-
+        commandString = "".join(f":TRADD{azimuth},{altitude}#" for azimuth, altitude in zip(az, alt))
         conn = Connection(self.parent)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:

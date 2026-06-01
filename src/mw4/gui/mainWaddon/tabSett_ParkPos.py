@@ -33,12 +33,13 @@ class SettParkPos:
         self.posSaveButtons = {}
 
         for i in range(0, 10):
-            self.posButtons[i] = eval(f"self.ui.posButton{i:1d}")
-            self.posSaveButtons[i] = eval(f"self.ui.posSave{i:1d}")
+            # Use getattr() instead of eval() to safely resolve UI widget names. (SEC-2)
+            self.posButtons[i] = getattr(self.ui, f"posButton{i:1d}")
+            self.posSaveButtons[i] = getattr(self.ui, f"posSave{i:1d}")
 
-            self.posTexts[i] = eval(f"self.ui.posText{i:1d}")
-            self.posAlt[i] = eval(f"self.ui.posAlt{i:1d}")
-            self.posAz[i] = eval(f"self.ui.posAz{i:1d}")
+            self.posTexts[i] = getattr(self.ui, f"posText{i:1d}")
+            self.posAlt[i] = getattr(self.ui, f"posAlt{i:1d}")
+            self.posAz[i] = getattr(self.ui, f"posAz{i:1d}")
 
         for index in self.posTexts:
             self.posTexts[index].editingFinished.connect(self.updateParkPosButtonText)

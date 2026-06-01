@@ -39,7 +39,7 @@ class VideoWindowBase(MWidget):
         self.running = False
         self.capture = None
         self.user = ""
-        self.password = ""
+        self.password = ""  # nosec B105 — empty-string default, not a hardcoded credential
         self.runningCounter = 0
         self.worker: Worker | None = None
 
@@ -147,7 +147,7 @@ class VideoWindowBase(MWidget):
         self.ui.video.setPixmap(pixmap)
 
     def checkAuth(self) -> None:
-        hasAuth = self.user != "" and self.password != ""
+        hasAuth = self.user != "" and self.password != ""  # nosec B105
         changeStyleDynamic(self.ui.authPopup, "run", hasAuth)
 
     def authPopup(self) -> None:

@@ -455,27 +455,17 @@ def test_receiveData_1():
 
 
 def test_receiveData_2():
-    class Test:
-        @staticmethod
-        def decode(a):
-            return ""
-
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     conn = Connection(makeParent())
-    with mock.patch.object(socket.socket, "recv", return_value=Test()):
+    with mock.patch.object(socket.socket, "recv", return_value=b""):
         val = conn.receiveData(client=client, numberOfChunks=0, minBytes=0)
         assert val == (True, [""])
 
 
 def test_receiveData_3():
-    class Test:
-        @staticmethod
-        def decode(a):
-            return "12345"
-
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     conn = Connection(makeParent())
-    with mock.patch.object(socket.socket, "recv", return_value=Test()):
+    with mock.patch.object(socket.socket, "recv", return_value=b"12345"):
         val = conn.receiveData(client=client, numberOfChunks=0, minBytes=5)
         assert val == (True, ["12345"])
 
@@ -629,15 +619,9 @@ def test_receiveData_timeout_loggingTrace():
 
 
 def test_receiveData_success_loggingTrace():
-    # arrange
-    class _ChunkResp:
-        @staticmethod
-        def decode(enc):
-            return "result#"
-
     conn = Connection(makeParent(loggingTrace=True))
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    with mock.patch.object(socket.socket, "recv", return_value=_ChunkResp()):
+    with mock.patch.object(socket.socket, "recv", return_value=b"result#"):
         # act
         val = conn.receiveData(client=client, numberOfChunks=1, minBytes=0)
     # assert

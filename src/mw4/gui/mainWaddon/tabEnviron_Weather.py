@@ -254,7 +254,8 @@ class EnvironWeather:
             data = self.refractionSources[source]["data"]
             uiPost = self.refractionSources[source]["uiPost"]
             for field in self.envFields:
-                ui = eval("self.ui." + field + uiPost)
+                # Use getattr() instead of eval() to safely resolve UI widget names. (SEC-2)
+                ui = getattr(self.ui, field + uiPost)
                 value = data.get(self.envFields[field]["valueKey"])
                 guiSetText(ui, self.envFields[field]["format"], value)
 

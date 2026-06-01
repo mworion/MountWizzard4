@@ -40,7 +40,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
         MainWindow.setMinimumSize(QSize(800, 600))
-        MainWindow.setMaximumSize(QSize(800, 600))
+        MainWindow.setMaximumSize(QSize(16777215, 16777215))
         MainWindow.setSizeIncrement(QSize(9, 0))
         font = QFont()
         font.setFamilies([u"Arial"])

@@ -33,9 +33,9 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 
 
-def _setAppIcon(app: QApplication) -> None:
-    """Load and set the application window icon."""
-    with as_file(files("mw4").joinpath("../../work/data/icon/mw4.ico")) as iconFile:
+def setAppIcon(app: QApplication) -> None:
+    """Load and set the application window icon from the bundled assets."""
+    with as_file(files("mw4").joinpath("assets/icon/mw4.ico")) as iconFile:
         app.setWindowIcon(QIcon(str(iconFile)))
 
 
@@ -64,7 +64,7 @@ def main(test: int = 0) -> None:
     splash.showMessage("Initialize Application")
     splash.setValue(80)
     sys.excepthook = exceptHook
-    _setAppIcon(app)
+    setAppIcon(app)
 
     MountWizzard4(mwGlob, app, test)
 

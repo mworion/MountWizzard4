@@ -28,10 +28,7 @@ from mw4.base.bootstrap import (
     setupWorkDirs,
     writeSystemInfo,
 )
-from mw4.base.loggerMW import setupLogging
 from pathlib import Path
-
-setupLogging()
 
 
 @pytest.fixture(autouse=True, scope="module")

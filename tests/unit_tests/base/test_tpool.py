@@ -18,11 +18,19 @@
 from mw4.base import tpool
 
 
-def test_WorkerSignals():
-    a = tpool.WorkerSignals()
-    assert a.finished
-    assert a.error
-    assert a.result
+def test_workerSignals_hasRequiredAttributes():
+    signals = tpool.WorkerSignals()
+    assert hasattr(signals, "finished")
+    assert hasattr(signals, "error")
+    assert hasattr(signals, "result")
+
+
+def test_workerSignals_canConnect(qtbot):
+    signals = tpool.WorkerSignals()
+    received = []
+    signals.finished.connect(lambda: received.append("finished"))
+    signals.finished.emit()
+    assert received == ["finished"]
 
 
 def test_clearPrintErrorStack():
@@ -33,15 +41,15 @@ def test_clearPrintErrorStack():
     a.run()
 
 
-def test_Worker_1():
+def test_worker_hasSignalsAttribute():
     def testFunc():
         return "test"
 
     a = tpool.Worker(testFunc)
-    assert a.signals
+    assert a.signals is not None
 
 
-def test_Worker_2(qtbot):
+def test_worker_run_emitsFinishedSignal(qtbot):
     def testFunc():
         return "test"
 
@@ -50,16 +58,16 @@ def test_Worker_2(qtbot):
         a.run()
 
 
-def test_Worker_3(qtbot):
+def test_worker_run_emitsResultSignal(qtbot):
     def testFunc():
-        return
+        return "value"
 
     a = tpool.Worker(testFunc)
     with qtbot.waitSignal(a.signals.result):
         a.run()
 
 
-def test_Worker_4(qtbot):
+def test_worker_run_doesNotEmitErrorOnSuccess(qtbot):
     def testFunc():
         return
 
@@ -68,7 +76,7 @@ def test_Worker_4(qtbot):
         a.run()
 
 
-def test_Worker_5(qtbot):
+def test_worker_run_emitsErrorOnException(qtbot):
     def testFunc():
         raise Exception("Test")
 

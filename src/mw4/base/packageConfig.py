@@ -13,5 +13,8 @@
 # License APL2.0
 #
 ###########################################################
-isAnalyse: bool = False
-isReference: bool = False
+from typing import Final
+
+# Feature flags – set once at import time; never mutated at runtime.
+isAnalyse: Final[bool] = False
+isReference: Final[bool] = False

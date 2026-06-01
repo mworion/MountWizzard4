@@ -18,12 +18,9 @@ import pytest
 import requests
 import shutil
 import unittest.mock as mock
-from mw4.base.loggerMW import setupLogging
 from mw4.logic.environment.seeingWeather import SeeingWeather
 from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-
-setupLogging()
 
 
 @pytest.fixture(autouse=True, scope="module")

@@ -59,6 +59,8 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
         self.log.debug(f"Initial data: {self.data}")
 
     def setExposureState(self) -> None:
+        if not self.parent.exposing:
+            return
         state = self.getDeviceProp("CameraState")
         if state == 0 and not self.exposing:
             return
@@ -99,12 +101,7 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
         self.getAndStoreDeviceProp("CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE")
         self.getAndStoreDeviceProp("CoolerOn", "CCD_COOLER.COOLER_ON")
         self.getAndStoreDeviceProp("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
-        if self.parent.exposing:
-            self.setExposureState()
-        else:
-            if self.exposing:
-                self.exposing = False
-                self.parent.exposeFinished()
+        self.setExposureState()
 
     def sendDownloadMode(self) -> None:
         if self.data.get("CAN_FAST", False):

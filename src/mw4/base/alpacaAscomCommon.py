@@ -98,7 +98,7 @@ class AlpacaAscomCommon(DriverData):
         self.storePropertyToData(value, element)
 
     def connectDevice(self) -> bool:
-        for retry in range(0, 10):
+        for retry in range(10):
             self.setDeviceProp("Connected", True)
             suc = self.getDeviceProp("Connected")
             if suc:
@@ -153,7 +153,7 @@ class AlpacaAscomCommon(DriverData):
         while not self.stopEvent.is_set():
             if not self.deviceConnected:
                 self.handleDeviceConnect()
-            if not self.getDeviceProp("Connected"):
+            elif not self.getDeviceProp("Connected"):
                 self.handleDeviceDisconnect()
             else:
                 self.pollData()
@@ -167,4 +167,4 @@ class AlpacaAscomCommon(DriverData):
         self.serverConnected = False
         self.signals.deviceDisconnected.emit(self.deviceName)
         self.signals.serverDisconnected.emit({self.deviceName: 0})
-        self.msg.emit(0, self.PROTOCOL_NAME, "Device  remove", self.deviceName)
+        self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.deviceName)

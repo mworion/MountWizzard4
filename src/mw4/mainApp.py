@@ -44,7 +44,7 @@ from PySide6.QtCore import QObject, QThreadPool, Signal
 from PySide6.QtWidgets import QApplication
 from queue import Queue
 from skyfield.api import wgs84
-from skyfield.toposlib import Topos
+from skyfield.toposlib import GeographicPosition
 from typing import Any
 
 
@@ -108,8 +108,6 @@ class MountWizzard4(QObject):
     # --- Startup signals (emitted once by CyclicTimerManager) ---
     start3s = Signal()
 
-    messageQueue = Queue()
-
     # --- Thread pool configuration ---
     MAX_THREAD_COUNT: int = 30  # allows concurrent device polling + model workers
 
@@ -120,18 +118,18 @@ class MountWizzard4(QObject):
         test: int = 0,
     ) -> None:
         super().__init__()
-        self._initCore(mwGlob, application)
-        self._initMount()
-        self._initDevices()
-        self._initGui()
-        self._initTimers()
-        self._connectSignals(test)
+        self.initCore(mwGlob, application)
+        self.initMount()
+        self.initDevices()
+        self.initGui()
+        self.initTimers()
+        self.connectSignals(test)
 
     # ------------------------------------------------------------------
     # Initialisation phases
     # ------------------------------------------------------------------
 
-    def _initCore(self, mwGlob: MwGlob, application: QApplication) -> None:
+    def initCore(self, mwGlob: MwGlob, application: QApplication) -> None:
         """Set up global references, thread pool, flags, and profile."""
         self.mwGlob = mwGlob
         self.application = application
@@ -164,9 +162,9 @@ class MountWizzard4(QObject):
             "remote": None,
             "measure": None,
         }
-        self._logStartupInfo()
+        self.logStartupInfo()
 
-    def _logStartupInfo(self) -> None:
+    def logStartupInfo(self) -> None:
         """Push initial lifecycle messages into the message queue."""
         profile = self.config.get("profileName", "-")
         workDir = self.mwGlob["workDir"]
@@ -174,7 +172,7 @@ class MountWizzard4(QObject):
         self.messageQueue.put((1, "System", "Workdir", f"[{workDir}]"))
         self.messageQueue.put((1, "System", "Profile", f"[{profile}]"))
 
-    def _initMount(self) -> None:
+    def initMount(self) -> None:
         """Create the mount device and load ephemeris data."""
         self.mount = MountDevice(
             app=self,
@@ -187,7 +185,7 @@ class MountWizzard4(QObject):
         self.mount.obsSite.location = topo
         self.ephemeris = self.mount.obsSite.loader("de440_mw4.bsp")
 
-    def _initDevices(self) -> None:
+    def initDevices(self) -> None:
         """Instantiate all hardware subsystems."""
         self.relay = KMRelay()
         self.sensor1Weather = SensorWeather(self)
@@ -210,19 +208,19 @@ class MountWizzard4(QObject):
         self.remote = Remote(self)
         self.plateSolve = PlateSolve(self)
 
-    def _initGui(self) -> None:
+    def initGui(self) -> None:
         """Create, configure, and show the main window."""
         self.mainW = MainWindow(self)
         self.mainW.initConfig()
         self.mainW.show()
 
-    def _initTimers(self) -> None:
+    def initTimers(self) -> None:
         """Set up the cyclic timer manager and start the mount timers."""
         self.mount.startMountTimers()
         self.timerMgr = CyclicTimerManager(app=self, parent=self)
         self.timerMgr.start()
 
-    def _connectSignals(self, test: int) -> None:
+    def connectSignals(self, test: int) -> None:
         """Wire up application-level signal connections."""
         self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
@@ -236,7 +234,7 @@ class MountWizzard4(QObject):
     # Configuration
     # ------------------------------------------------------------------
 
-    def initConfig(self) -> Topos:
+    def initConfig(self) -> GeographicPosition:
         """Apply logging level and return the topocentric location."""
         setCustomLoggingLevel(self, self.config.get("loglevel", "DEBUG"))
         lat = self.config.get("topoLat", 51.47)

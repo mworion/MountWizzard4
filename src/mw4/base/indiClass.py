@@ -15,12 +15,12 @@
 ###########################################################
 import asyncio
 import logging
+import queue
 from indipyclient.queclient import EventItem, QueClient, runqueclient
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO_CONV
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QThreadPool
-from queue import Empty as QueueEmpty
 from queue import Queue
 from typing import Any
 
@@ -119,11 +119,10 @@ class IndiClass:
     def processRxQueue(self) -> None:
         while self.commandRunning:
             try:
-                item = self.rxQ.get(
-                    timeout=0.1
-                )  # blocks until item arrives or timeout (PERF-3)
-            except QueueEmpty:
+                item = self.rxQ.get(timeout=0.01)
+            except queue.Empty:
                 continue
+            item = self.rxQ.get()
             if item.snapshot.get(self.deviceName) is None:
                 continue
             if item.devicename != self.deviceName:
@@ -137,13 +136,8 @@ class IndiClass:
                 self.writeVectorsToData(item, vectors)
 
     def cleanupStop(self) -> None:
+        self.queueClient = None
         self.clientMutex.unlock()
-
-    def setTrace(self, enable: bool = False) -> None:
-        self.loggingTrace = enable
-        indiTrace = 2 if enable else 0
-        if self.queueClient:
-            self.queueClient.debug_verbosity(indiTrace)
 
     def runQueueClient(self) -> None:
         self.queueClient = QueClient(
@@ -153,7 +147,7 @@ class IndiClass:
             indiport=self.port,
             blobfolder=str(self.app.mwGlob["tempDir"]),
         )
-        self.setTrace(self.loggingTrace)
+        self.queueClient.debug_verbosity(3 if self.loggingTrace else 0)
         asyncio.run(self.queueClient.asyncrun())
 
     def startCommunication(self) -> None:
@@ -191,7 +185,7 @@ class IndiClass:
         while n > 0:
             if rxQ.empty():
                 mainThreadSleep(100)
-                n = n - 1
+                n -= 1
                 continue
             item = rxQ.get()
             if item is None:

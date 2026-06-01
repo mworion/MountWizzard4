@@ -109,9 +109,10 @@ class ASTAP:
 
     def checkAvailabilityProgram(self, appPath: Path) -> bool:
         self.appPath = appPath
+        extension = ".exe" if platform.system() == "Windows" else ""
 
-        bin1 = self.appPath / self.GUI
-        bin2 = self.appPath / self.CLI
+        bin1 = self.appPath / (self.CLI + extension)
+        bin2 = self.appPath / (self.GUI + extension)
 
         if bin1.is_file() or bin2.is_file():
             self.binPath = bin1 if bin1.is_file() else bin2

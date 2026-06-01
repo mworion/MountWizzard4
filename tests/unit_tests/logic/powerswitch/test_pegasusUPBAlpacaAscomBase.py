@@ -23,7 +23,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 class Parent:
     app = App()
     data = {}
-    deviceType = "switch"
+    DEVICE_TYPE = "switch"
     signals = Signals()
     loadConfig = True
     updateRate = 1000

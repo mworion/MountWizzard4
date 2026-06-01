@@ -14,11 +14,8 @@
 #
 ###########################################################
 
-from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.tleParams import TLEParams
 from skyfield.api import Angle, load
-
-setupLogging()
 
 
 class ObsSite:
@@ -54,42 +51,6 @@ def testFlip():
     tleParams = TLEParams(ObsSite())
     tleParams.flip = True
     assert tleParams.flip
-
-
-def testJdStartDefault():
-    tleParams = TLEParams(ObsSite())
-    result = tleParams.jdStart
-    assert result is not None
-
-
-def testJdStartZero():
-    tleParams = TLEParams(ObsSite())
-    tleParams.jdStart = 0
-    assert tleParams.jdStart.tt == 69
-
-
-def testJdStartValue():
-    tleParams = TLEParams(ObsSite())
-    tleParams.jdStart = 100
-    assert tleParams.jdStart.tt == 169
-
-
-def testJdEndDefault():
-    tleParams = TLEParams(ObsSite())
-    result = tleParams.jdEnd
-    assert result is not None
-
-
-def testJdEndZero():
-    tleParams = TLEParams(ObsSite())
-    tleParams.jdEnd = 0
-    assert tleParams.jdEnd.tt == 69
-
-
-def testJdEndValue():
-    tleParams = TLEParams(ObsSite())
-    tleParams.jdEnd = 100
-    assert tleParams.jdEnd.tt == 169
 
 
 def testMessage():

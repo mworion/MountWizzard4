@@ -45,10 +45,8 @@ def test_closeTab_1(function):
 
 
 def test_setPointerVisibility(function):
-    function.app.mount.obsSite.Az = Angle(degrees=10)
-    function.app.mount.obsSite.Alt = Angle(degrees=10)
     function.setupPointer()
-    function.setPointerVisibility(True)
+    function.setPointerVisibility()
 
 
 def test_mouseMoved_1(function):

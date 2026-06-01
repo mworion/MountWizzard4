@@ -14,13 +14,10 @@
 #
 ###########################################################
 import unittest.mock as mock
-from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.satellite import Satellite
 from skyfield.api import Angle, load
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-
-setupLogging()
 
 
 def test_parseGetTLE_1():
@@ -362,11 +359,10 @@ def test_calcTLE_4():
     sat = Satellite(App().mount)
     s0 = "+23.12334,123.1234"
     s1 = "12.12345,+12.1234"
-    s2 = "12345678.1, 12345678.2, F"
-    response = [s0, s1, s2]
+    response = [s0, s1]
 
     with mock.patch("mw4.mountcontrol.satellite.Connection") as mConn:
-        mConn.return_value.communicate.return_value = True, response, 1
+        mConn.return_value.communicate.return_value = True, response, 2
 
         suc = sat.calcTLE(julD=1234567.8)
         assert not suc

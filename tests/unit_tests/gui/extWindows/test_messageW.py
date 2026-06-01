@@ -16,14 +16,11 @@
 import gc
 import pytest
 import unittest.mock as mock
-from mw4.base.loggerMW import setupLogging
 from mw4.gui.extWindows.messageW import MessageWindow
 from mw4.gui.utilities.qtMain import MWidget
 from PySide6.QtGui import QCloseEvent, QFont
 from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-
-setupLogging()
 
 
 @pytest.fixture(autouse=True, scope="module")

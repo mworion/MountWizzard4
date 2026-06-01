@@ -430,7 +430,7 @@ def test_convertRaToAngle_1():
     ]
     for value in values:
         angle = convertRaToAngle(value[0])
-        assert math.isclose(angle._degrees, value[1], abs_tol=0.000001)
+        assert math.isclose(angle.degrees, value[1], abs_tol=0.000001)
 
 
 def test_convertDecToAngle_1():
@@ -457,7 +457,7 @@ def test_convertDecToAngle_1():
     ]
     for value in values:
         angle = convertDecToAngle(value[0])
-        assert math.isclose(angle._degrees, value[1], abs_tol=0.000001)
+        assert math.isclose(angle.degrees, value[1], abs_tol=0.000001)
 
 
 def test_formatHstrToText():

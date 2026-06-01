@@ -14,9 +14,7 @@
 #
 ###########################################################
 from mw4.base.driverDataClass import DriverData
-from mw4.base.loggerMW import setupLogging
 
-setupLogging()
 data = {}
 app = DriverData(data)
 

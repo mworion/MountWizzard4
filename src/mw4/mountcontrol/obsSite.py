@@ -49,6 +49,8 @@ class ObsSite:
 
     log = logging.getLogger("MW4")
 
+    _STATUS_VALID: frozenset = frozenset({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 98, 99})
+
     STAT = {
         "0": "tracking",
         "1": "stopped after STOP",
@@ -160,8 +162,7 @@ class ObsSite:
     def timeJD(self) -> Time:
         if self.parent.mountIsUp:
             return self._timeJD
-        else:
-            return self.ts.now()
+        return self.ts.now()
 
     @timeJD.setter
     def timeJD(self, value: Any) -> None:
@@ -170,10 +171,12 @@ class ObsSite:
 
     @property
     def timeDiff(self) -> float:
-        return np.mean(self._timeDiff)
+        return float(np.mean(self._timeDiff))
 
     @timeDiff.setter
     def timeDiff(self, value: Any) -> None:
+        # Read-only: direct assignment is intentionally prevented;
+        # internal updates use self._timeDiff directly.
         return
 
     @property
@@ -399,7 +402,7 @@ class ObsSite:
     @status.setter
     def status(self, value: Any) -> None:
         self._status = valueToInt(value)
-        if self._status not in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 98, 99]:
+        if self._status not in self._STATUS_VALID:
             self._status = 99
 
     def statusText(self) -> str:
@@ -407,8 +410,7 @@ class ObsSite:
         text = self.STAT.get(reference, "unknown Status")
         if self._status in [2, 6]:
             return text
-        else:
-            return text + " - settle" if self.statusSlew else text
+        return text + " - settle" if self.statusSlew else text
 
     @property
     def statusSat(self) -> str:
@@ -433,18 +435,19 @@ class ObsSite:
 
     def parseLocation(self, response: list, numberOfChunks: int) -> bool:
         """
-        due to compatibility to LX200 protocol east is negative, so we change that
-        in class we would like to keep the correct sign for east is positive
+        Due to compatibility with the LX200 protocol, east longitude is transmitted
+        as negative; we invert the sign so that east longitude is positive internally.
         """
         if len(response) != numberOfChunks:
             self.log.warning("Wrong number of chunks")
             return False
         elev = response[0]
-        lon = None
-        if "-" in response[1]:
-            lon = response[1].replace("-", "+")
-        if "+" in response[1]:
-            lon = response[1].replace("+", "-")
+        # LX200 protocol encodes east as negative – swap sign to east-positive convention
+        lon = (
+            response[1].replace("-", "+")
+            if "-" in response[1]
+            else response[1].replace("+", "-")
+        )
         lat = response[2]
         self.location = [lat, lon, elev]
         return True
@@ -489,7 +492,7 @@ class ObsSite:
         return self.parsePointing(response, numberOfChunks)
 
     def pollSyncClock(self) -> bool:
-        if platform.system() == "Windows" or platform.system() == "Linux":
+        if platform.system() in ("Windows", "Linux"):
             corrTerm = -0.001
         elif platform.system() == "Darwin":
             corrTerm = -0.011
@@ -525,17 +528,29 @@ class ObsSite:
             "park": ":PaX#",
             "polar": ":MSap#",
             "ortho": ":MSao#",
-            "keep": "",
+            "keep": ":MS#" if self.status == 0 else ":MA#",
         }
-
-        keepSlewType = ":MS#" if self.status == 0 else ":MA#"
-        slewTypes["keep"] = keepSlewType
 
         self.flipped = self.piersideTarget != self.pierside
         conn = Connection(self.parent)
         commandString = ":PO#" + slewTypes[slewType]
         suc, _, _ = conn.communicate(commandString, responseCheck="0")
         return suc
+
+    def parseSetTargetResponse(self, response: list) -> bool:
+        result = response[0][0:2]
+        if result.count("0") > 0:
+            self.log.debug(f"Coordinates could not be set: [{response}]")
+            return False
+        if len(response) != 4:
+            self.log.debug(f"Missing return values: [{response}]")
+            return False
+        self.piersideTarget = valueToInt(response[0][2])
+        self.AltTarget = response[0][3:]
+        self.AzTarget = response[1]
+        self.raJNowTarget = response[2]
+        self.decJNowTarget = response[3]
+        return valueToInt(response[0][2]) != 0
 
     def setTargetAltAz(self, alt: Angle, az: Angle) -> bool:
         sgn, h, m, s, frac = sexagesimalizeToInt(alt.degrees, 1)
@@ -553,22 +568,7 @@ class ObsSite:
         suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
-
-        result = response[0][0:2]
-        if result.count("0") > 0:
-            self.log.debug(f"Coordinates could not be set: [{response}]")
-            return False
-
-        if len(response) != 4:
-            self.log.debug(f"Missing return values: [{response}]")
-            return False
-
-        self.piersideTarget = valueToInt(response[0][2])
-        self.AltTarget = response[0][3:]
-        self.AzTarget = response[1]
-        self.raJNowTarget = response[2]
-        self.decJNowTarget = response[3]
-        return suc and valueToInt(response[0][2]) != 0
+        return self.parseSetTargetResponse(response)
 
     def setTargetRaDec(self, ra: Angle, dec: Angle) -> bool:
         sgn, h, m, s, frac = sexagesimalizeToInt(ra.hours, 2)
@@ -585,22 +585,7 @@ class ObsSite:
         suc, response, _ = conn.communicate(commandString)
         if not suc:
             return False
-
-        result = response[0][0:2]
-        if result.count("0") > 0:
-            self.log.debug(f"Coordinates could not be set: [{response}]")
-            return False
-
-        if len(response) != 4:
-            self.log.debug(f"Missing return values: [{response}]")
-            return False
-
-        self.piersideTarget = valueToInt(response[0][2])
-        self.AltTarget = response[0][3:]
-        self.AzTarget = response[1]
-        self.raJNowTarget = response[2]
-        self.decJNowTarget = response[3]
-        return suc and valueToInt(response[0][2]) != 0
+        return self.parseSetTargetResponse(response)
 
     def shutdown(self) -> bool:
         conn = Connection(self.parent)

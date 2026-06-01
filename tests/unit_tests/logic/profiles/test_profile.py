@@ -38,6 +38,20 @@ def setup():
         os.remove(f)
 
 
+def test_loadProfile_osError():
+    val = loadConfig(Path("tests/work/config/nonexistent_file.yaml"))
+    assert val == defaultConfig()
+
+
+def test_loadProfile_yamlError():
+    with (
+        mock.patch("builtins.open", mock.mock_open(read_data="data")),
+        mock.patch.object(yaml, "safe_load", side_effect=yaml.YAMLError),
+    ):
+        val = loadConfig(Path("tests/work/config/config.yaml"))
+    assert val == defaultConfig()
+
+
 def test_defaultConfig():
     val = defaultConfig()
     assert val["profileName"] == "config"

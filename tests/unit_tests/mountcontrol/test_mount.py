@@ -17,7 +17,6 @@ import os
 import pytest
 import socket
 import wakeonlan
-from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.mount import MountDevice
 from mw4.mountcontrol.mountSignals import MountSignals
 from pathlib import Path
@@ -25,8 +24,6 @@ from PySide6.QtCore import QThreadPool, QTimer
 from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
-
-setupLogging()
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -442,6 +439,7 @@ def test_shutdown_2(function):
 
 
 def test_clearDome_1(function):
+    function.mutexCycleDome.lock()
     function.clearDome(True)
 
 
@@ -492,22 +490,22 @@ def test_cycleClock_3(function):
     function.mutexCycleClock.unlock()
 
 
-def test_workerProgTrajectory_1(function):
+def test_runnerProgTrajectory_1(function):
     alt = [10, 20, 30]
     az = [10, 20, 30]
     with mock.patch.object(function.satellite, "addTrajectoryPoint"):
-        suc = function.workerProgTrajectory(alt, az, True)
+        suc = function.runnerProgTrajectory(alt, az, True)
         assert suc
 
 
-def test_workerProgTrajectory_2(function):
+def test_runnerProgTrajectory_2(function):
     alt = [10, 20, 30]
     az = [10, 20, 30]
     with (
         mock.patch.object(function.satellite, "addTrajectoryPoint"),
         mock.patch.object(function.satellite, "preCalcTrajectory"),
     ):
-        suc = function.workerProgTrajectory(alt, az, False)
+        suc = function.runnerProgTrajectory(alt, az, False)
         assert not suc
 
 

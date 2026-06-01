@@ -13,19 +13,20 @@
 # License APL2.0
 #
 ###########################################################
+from pathlib import Path
 from PySide6.QtCore import QObject, Signal
 
 
 class Signals(QObject):
     serverConnected = Signal()
-    serverDisconnected = Signal(object)
+    serverDisconnected = Signal(dict)
     deviceConnected = Signal(str)
     deviceDisconnected = Signal(str)
-    exposed = Signal(object)
-    downloaded = Signal(object)
-    saved = Signal(object)
+    exposed = Signal(Path)
+    downloaded = Signal(Path)
+    saved = Signal(Path)
     azimuth = Signal(object)
-    slewed = Signal(object)
-    message = Signal(object)
+    slewed = Signal(str)
+    message = Signal(str)
     version = Signal(int)
     result = Signal(object)

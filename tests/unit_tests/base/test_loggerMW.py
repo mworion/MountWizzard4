@@ -38,6 +38,12 @@ def clean_log_directory():
             log_file.unlink()
 
 
+def test_set_defaults_noop():
+    """The monkey-patched _set_defaults on logging.Logger must be callable."""
+    logger = logging.getLogger("test_noop")
+    logger._set_defaults()
+
+
 def test_loggerwriter_write_single_line():
     mock_level = MagicMock()
     writer = LoggerWriter(level=mock_level, mode="INFO", std="stdout")
@@ -105,6 +111,7 @@ def test_setupLogging_configures_specific_log_levels(clean_log_directory):
 
 def test_setupLogging_custom_log_levels(clean_log_directory):
     setupLogging()
+    assert logging.getLogger("MW4") is not None
 
 
 def test_setupLogging():
@@ -166,7 +173,7 @@ def test_setTrace_indiFramework():
     app = MagicMock()
     app.getActiveDrivers.return_value = drivers
     loggerMW.setTrace(app, enable=True)
-    assert not hasattr(mockRun, "loggingTrace") or True
+    assert mockRun.loggingTrace is True
 
 
 def test_setTrace_disable():

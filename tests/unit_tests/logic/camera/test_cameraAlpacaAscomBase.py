@@ -90,13 +90,10 @@ def test_pollData_parentExposing(function):
 def test_pollData_selfExposing(function):
     function.parent.exposing = False
     function.exposing = True
-    with (
-        mock.patch.object(function, "getAndStoreDeviceProp"),
-        mock.patch.object(function.parent, "exposeFinished") as mf,
-    ):
+    with mock.patch.object(function, "getAndStoreDeviceProp") as m:
         function.pollData()
-    assert function.exposing is False
-    mf.assert_called_once()
+    assert m.call_count == 8
+    function.exposing = False
 
 
 def test_sendDownloadMode_canFast(function):
@@ -119,56 +116,67 @@ def test_sendDownloadMode_noFast(function):
 
 def test_setExposureState_stateNot2NotExposing(function):
     # state != 2, self.exposing = False -> returns early
+    function.parent.exposing = True
     function.exposing = False
     with mock.patch.object(function, "getDeviceProp", return_value=0) as m:
         function.setExposureState()
     assert function.exposing is False
     assert m.call_count == 1
+    function.parent.exposing = False
 
 
 def test_setExposureState_stateNot0Not2NotExposing(function):
     # state != 0 and != 2, not self.exposing -> reaches the
     # "state != 2 and not self.exposing" guard and returns
+    function.parent.exposing = True
     function.exposing = False
     with mock.patch.object(function, "getDeviceProp", return_value=4) as m:
         function.setExposureState()
     assert function.exposing is False
     assert m.call_count == 1
+    function.parent.exposing = False
 
 
 def test_setExposureState_state2NotExposing(function):
     # state == 2, self.exposing = False -> sets exposing=True,
     # emits message, ImageReady=False -> returns
+    function.parent.exposing = True
     function.exposing = False
     with mock.patch.object(function, "getDeviceProp", side_effect=[2, False]):
         function.setExposureState()
     assert function.exposing is True
     function.exposing = False
+    function.parent.exposing = False
 
 
 def test_setExposureState_state2Exposing(function):
     # state == 2, self.exposing = True -> emits message,
     # ImageReady=False -> returns
+    function.parent.exposing = True
     function.exposing = True
     with mock.patch.object(function, "getDeviceProp", side_effect=[2, False]):
         function.setExposureState()
     assert function.exposing is True
     function.exposing = False
+    function.parent.exposing = False
 
 
 def test_setExposureState_stateNot2Exposing(function):
     # state != 2, self.exposing = True -> emits exposed+download,
     # ImageReady=False -> returns
+    function.parent.exposing = True
     function.exposing = True
     with mock.patch.object(function, "getDeviceProp", side_effect=[0, False]):
         function.setExposureState()
     assert function.exposing is True
     function.exposing = False
+    function.parent.exposing = False
 
 
 def test_setExposureState_stateNot2ExposingImageReady(function):
     # state != 2, self.exposing=True, ImageReady=True
     # -> saves and finishes
+    function.parent.exposing = True
     function.exposing = True
     fakeImage = [[1, 2], [3, 4]]
     with (
@@ -180,11 +188,25 @@ def test_setExposureState_stateNot2ExposingImageReady(function):
         function.setExposureState()
     assert function.exposing is False
     mf.assert_called_once()
+    function.parent.exposing = False
+
+
+def test_setExposureState_imageReadySecondCheckFalse(function):
+    # state != 2, self.exposing=True, first ImageReady=True, second=False
+    # -> returns at second ImageReady check (line 84)
+    function.parent.exposing = True
+    function.exposing = True
+    with mock.patch.object(function, "getDeviceProp", side_effect=[0, True, False]):
+        function.setExposureState()
+    assert function.exposing is True
+    function.exposing = False
+    function.parent.exposing = False
 
 
 def test_setExposureState_state2NotExposingImageReady(function):
     # state == 2, self.exposing=False -> sets exposing=True,
     # ImageReady=True -> saves and finishes
+    function.parent.exposing = True
     function.exposing = False
     fakeImage = [[1, 2], [3, 4]]
     with (
@@ -196,6 +218,7 @@ def test_setExposureState_state2NotExposingImageReady(function):
         function.setExposureState()
     assert function.exposing is False
     mf.assert_called_once()
+    function.parent.exposing = False
 
 
 def test_expose_basic(function):

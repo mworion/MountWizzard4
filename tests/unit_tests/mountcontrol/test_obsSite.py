@@ -19,12 +19,9 @@ import mw4.mountcontrol
 import os
 import platform
 import unittest.mock as mock
-from mw4.base.loggerMW import setupLogging
 from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path
 from skyfield.api import Angle, Loader, Timescale, wgs84
-
-setupLogging()
 
 
 class Parent:

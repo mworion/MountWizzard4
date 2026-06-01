@@ -193,43 +193,43 @@ class Geometry:
 
     def initializeGeometry(self, mountType: str) -> bool:
         if mountType not in self.geometryData:
-            self.log.error(f"[{mountType}] not in database")
+            self.log.warning(f"[{mountType}] not in database")
             return False
 
-        self.log.debug(f"using [{mountType}] geometry")
-        self.offBaseAltAxisX = self.geometryData[mountType]["offBaseAltAxisX"]
-        self.offBaseAltAxisZ = self.geometryData[mountType]["offBaseAltAxisZ"]
-        self.offAltAxisGemX = self.geometryData[mountType]["offAltAxisGemX"]
-        self.offAltAxisGemZ = self.geometryData[mountType]["offAltAxisGemZ"]
-        self.offGemPlate = self.geometryData[mountType]["offGemPlate"]
+        self.log.info(f"using [{mountType}] geometry")
+        vars(self).update(self.geometryData[mountType])
         return True
 
     @staticmethod
-    def transformRotX(rotX: float) -> np.ndarray:
-        rot = np.radians(rotX)
+    def transformRot(axis: str, angle: float) -> np.ndarray:
+        rot = np.radians(angle)
         tCos = np.cos(rot)
         tSin = np.sin(rot)
+        match axis:
+            case "x":
+                return np.array(
+                    [[1, 0, 0, 0], [0, tCos, -tSin, 0], [0, tSin, tCos, 0], [0, 0, 0, 1]]
+                )
+            case "y":
+                return np.array(
+                    [[tCos, 0, tSin, 0], [0, 1, 0, 0], [-tSin, 0, tCos, 0], [0, 0, 0, 1]]
+                )
+            case _:
+                return np.array(
+                    [[tCos, -tSin, 0, 0], [tSin, tCos, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+                )
 
-        T = np.array([[1, 0, 0, 0], [0, tCos, -tSin, 0], [0, tSin, tCos, 0], [0, 0, 0, 1]])
-        return T
+    @staticmethod
+    def transformRotX(rotX: float) -> np.ndarray:
+        return Geometry.transformRot("x", rotX)
 
     @staticmethod
     def transformRotY(rotY: float) -> np.ndarray:
-        rot = np.radians(rotY)
-        tCos = np.cos(rot)
-        tSin = np.sin(rot)
-
-        T = np.array([[tCos, 0, tSin, 0], [0, 1, 0, 0], [-tSin, 0, tCos, 0], [0, 0, 0, 1]])
-        return T
+        return Geometry.transformRot("y", rotY)
 
     @staticmethod
     def transformRotZ(rotZ: float) -> np.ndarray:
-        rot = np.radians(rotZ)
-        tCos = np.cos(rot)
-        tSin = np.sin(rot)
-
-        T = np.array([[tCos, -tSin, 0, 0], [tSin, tCos, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
-        return T
+        return Geometry.transformRot("z", rotZ)
 
     @staticmethod
     def transformTranslate(vector: list) -> np.ndarray:
@@ -261,7 +261,7 @@ class Geometry:
             text += f"domeRadius:{self.domeRadius}"
             self.log.debug(text)
 
-        ha = ha._degrees
+        ha = ha.degrees
         dec = dec.degrees
         lat = lat.degrees
 
@@ -282,7 +282,7 @@ class Geometry:
         # the rotation around z axis (polar direction) to adjust the orientation
         # of the mount to true north, if the fixed pier does not make it.
         # turning counterclockwise is positive
-        # we also take into account southern hemisphere
+        # we also take into account Southern Hemisphere
         rotBase = self.azAdj if lat > 0 else self.azAdj + 180
         T1 = np.dot(T0, self.transformRotZ(rotBase))
         P2 = np.dot(T1, P0)
@@ -321,7 +321,7 @@ class Geometry:
         # HA_sky = HA_mech
         # Beyond the pole
         # HA_sky = HA_mech + 12h, expressed in range ± 12h
-        # You have to take care about southern hemisphere ha axis.
+        # You have to take care about Southern Hemisphere ha axis.
         if lat < 0:
             ha = -ha
             checkPier = "W"
@@ -352,24 +352,24 @@ class Geometry:
         T6 = np.dot(T5, self.transformRotZ(value))
         P7 = np.dot(T6, P0)
 
-        # the translation from GEM to the center of the ota, this should be a
-        # translation in z. it consists of two parts: the user OTA measures and
+        # the translation from GEM to the center of the scope, this should be a
+        # translation in z. it consists of two parts: the user scope measures and
         # the distance from GEM to baseplate, which is depending on mount type
         # and is fixed and secondly the distance between the mount plate and
-        # the OTA line of sight axis
+        # the scope line of sight axis
         vec6 = [0, 0, self.offPlateOTA + self.offGemPlate]
         T7 = np.dot(T6, self.transformTranslate(vec6))
         P8 = np.dot(T7, P0)
 
-        # the translation from center of the ota, to the side if a second ota is
-        # installed but not centered should be a translation in y. if the ota is
-        # de-centered looking in the direction of the ota (out of the hemisphere)
+        # the translation from center of the scope, to the side if a second scope is
+        # installed but not centered should be a translation in y. if the scope is
+        # de-centered looking in the direction of the scope (out of the hemisphere)
         # to the right it's a negative y otherwise a positive one
         vec7 = [0, -self.offLAT, 0]
         T8 = np.dot(T7, self.transformTranslate(vec7))
         P9 = np.dot(T8, P0)
 
-        # calculating the direction of OTA for dome geometry. pointing direction
+        # calculating the direction of scope for dome geometry. pointing direction
         # is in x-axis, length is standard 1. P10 would be the head of the vector,
         # P9 is the base of the vector. subtracting gives the resulting direction
         # of the vector which is in PD
@@ -378,13 +378,13 @@ class Geometry:
         P10 = np.dot(T9, P0)
         PD = (P10 - P9)[:-1]
 
-        # calculating the crossing point between view of sight of the OTA and the
+        # calculating the crossing point between view of sight of the scope and the
         # dome hemisphere using the traditional p-q formula
-        # if you have g: v = v0 + t * tDir and hem: x^2 + y^2 + z^2 = r^2
-        # with v0 = PB and tDir = PD you get t1 and t2 from p-q formula as
+        # if you have g: v = v0 + t * t_Dir and hem: x^2 + y^2 + z^2 = r^2
+        # with v0 = PB and t_Dir = PD you get t1 and t2 from p-q formula as
         # t1 = -p/2 + sqr (p^2/4 - q), t2 = -p/2 - sqr (p^2/4 - q)
         # for the right point whe have to choose the one, which crosses the
-        # hemisphere above the OTA point as we normally are looking upward.
+        # hemisphere above the scope point as we normally are looking upward.
         # and we have to use scalar product on a cartesian system
         PB = P9[:-1]
 

@@ -128,7 +128,7 @@ class MWidget(QWidget, Styles):
         parentWidget: QWidget,
         title: str,
         question: str,
-        buttons: list[str] = None,
+        buttons: list[str] = [],
         iconType: int = 0,
     ) -> int:
         msg = QMessageBox()
@@ -145,7 +145,7 @@ class MWidget(QWidget, Styles):
         pixmap = QPixmap(icons[iconType]).scaled(64, 64)
         msg.setIconPixmap(pixmap)
         msg.setText(question)
-        if buttons is None:
+        if not buttons:
             msg.setStandardButtons(msg.StandardButton.Yes | msg.StandardButton.No)
             msg.setDefaultButton(msg.StandardButton.No)
         else:
@@ -158,39 +158,30 @@ class MWidget(QWidget, Styles):
         msg.move(x, y)
         reply = self.runDialog(msg)
 
-        if buttons is None:
+        if not buttons:
             return reply == msg.StandardButton.Yes
         else:
             return reply
 
-    def openFile(
-        self,
-        window: QWidget,
-        title: str,
-        folder: Path,
-        filterSet: str,
-        enableDir: bool = False,
-        multiple: bool = False,
-    ) -> list[Path] | Path:
-        dlg = self.prepareFileDialog(window=window, enableDir=enableDir)
+    def openFileBase(self, window: QWidget, title: str, folder: Path, filterSet: str, multiple: bool = False) -> list[str]:
+        dlg = self.prepareFileDialog(window=window)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
         dlg.setWindowTitle(title)
         dlg.setNameFilter(filterSet)
         dlg.setDirectory(str(folder))
+        fileMode = QFileDialog.FileMode.ExistingFiles if multiple else QFileDialog.FileMode.ExistingFile
+        dlg.setFileMode(fileMode)
+        self.runDialog(dlg)
+        return dlg.selectedFiles()
 
-        if multiple:
-            dlg.setFileMode(QFileDialog.FileMode.ExistingFiles)
-        else:
-            dlg.setFileMode(QFileDialog.FileMode.ExistingFile)
+    def openMultipleFiles(self, window: QWidget, title: str, folder: Path, filterSet: str) -> list[Path]:
+        files = self.openFileBase(window, title, folder, filterSet, multiple=True)
+        return [Path(f) for f in files]
 
-        result = self.runDialog(dlg)
-        if not result:
-            return [] if multiple else Path()
-
-        if multiple:
-            return [Path(f) for f in dlg.selectedFiles()]
-        else:
-            return Path(dlg.selectedFiles()[0])
+    def openFile(self, window: QWidget, title: str, folder: Path, filterSet: str) -> Path:
+        files = self.openFileBase(window, title, folder, filterSet)
+        file = files[0] if files else ""
+        return Path(file)
 
     def saveFile(
         self,

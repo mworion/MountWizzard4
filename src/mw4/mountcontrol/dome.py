@@ -37,9 +37,7 @@ class Dome:
     @shutterState.setter
     def shutterState(self, value: Any) -> None:
         value = valueToInt(value)
-        if value not in [0, 1, 2, 3]:
-            value = 0
-        self._shutterState = value
+        self._shutterState = value if value in {0, 1, 2, 3} else 0
 
     @property
     def flapState(self) -> int:
@@ -48,9 +46,7 @@ class Dome:
     @flapState.setter
     def flapState(self, value: Any) -> None:
         value = valueToInt(value)
-        if value not in [0, 1, 2, 3]:
-            value = 0
-        self._flapState = value
+        self._flapState = value if value in {0, 1, 2, 3} else 0
 
     @property
     def slew(self) -> bool:
@@ -115,8 +111,7 @@ class Dome:
     def slewDome(self, azimuth: Angle) -> bool:
         azimuth = azimuth.degrees % 360
         conn = Connection(self.parent)
-        setAzimuth = f":SDA{azimuth:04.0f}#"
-        commandString = setAzimuth
+        commandString = f":SDA{azimuth:04.0f}#"
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 

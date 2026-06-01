@@ -163,11 +163,9 @@ class Setting:
         self.addressLanMAC = response[14]
         self.wakeOnLan = response[15]
         self.weatherStatus = response[16]
-        if len(response[17].split(",")) > 1:
-            self.weatherAge = valueToInt(response[17].split(",")[1])
-        else:
-            self.weatherAge = 0
-        self.weatherPressure = valueToFloat(response[17].split(",")[0])
+        w17 = response[17].split(",")
+        self.weatherAge = valueToInt(w17[1]) if len(w17) > 1 else 0
+        self.weatherPressure = valueToFloat(w17[0])
         self.weatherTemperature = valueToFloat(response[18].split(",")[0])
         self.weatherHumidity = valueToFloat(response[19].split(",")[0])
         self.weatherDewPoint = valueToFloat(response[20].split(",")[0])
@@ -222,16 +220,12 @@ class Setting:
 
     def setSlewSpeedMed(self) -> bool:
         conn = Connection(self.parent)
-        centerSpeed = 255
-        commandString = f":Rc{centerSpeed:02.0f}#"
-        suc, _, _ = conn.communicate(commandString)
+        suc, _, _ = conn.communicate(f":Rc{255:02.0f}#")
         return suc
 
     def setSlewSpeedLow(self) -> bool:
         conn = Connection(self.parent)
-        centerSpeed = 128
-        commandString = f":Rc{centerSpeed:02.0f}#"
-        suc, _, _ = conn.communicate(commandString)
+        suc, _, _ = conn.communicate(f":Rc{128:02.0f}#")
         return suc
 
     def setRefractionParam(self, temperature: float, pressure: float) -> bool:
@@ -326,13 +320,13 @@ class Setting:
         return suc
 
     def checkRateLunar(self) -> bool:
-        return f"{self.trackingRate:2.1f}" == "62.4"
+        return abs(self.trackingRate - 62.4) < 0.05
 
     def checkRateSidereal(self) -> bool:
-        return f"{self.trackingRate:2.1f}" == "60.2"
+        return abs(self.trackingRate - 60.2) < 0.05
 
     def checkRateSolar(self) -> bool:
-        return f"{self.trackingRate:2.1f}" == "60.3"
+        return abs(self.trackingRate - 60.3) < 0.05
 
     def setLunarTracking(self) -> bool:
         conn = Connection(self.parent)

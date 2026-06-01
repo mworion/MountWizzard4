@@ -114,7 +114,7 @@ class MountDevice:
         self.decRef: float = 0.0
 
     @property
-    def MAC(self) -> str | None:
+    def MAC(self) -> str:
         return self._MAC
 
     @MAC.setter
@@ -131,15 +131,15 @@ class MountDevice:
         self._waitTimeFlip = int(value * 1000)
 
     def resetAfterStart(self) -> None:
-        self.raRef = self.obsSite.raJNow._degrees
+        self.raRef = self.obsSite.raJNow.degrees
         self.decRef = self.obsSite.decJNow.degrees
 
     def collectData(self) -> None:
         if self.obsSite.statusSlew:
-            self.raRef = self.obsSite.raJNow._degrees
+            self.raRef = self.obsSite.raJNow.degrees
             self.decRef = self.obsSite.decJNow.degrees
 
-        deltaRaJNow = (self.obsSite.raJNow._degrees - self.raRef) * 3600
+        deltaRaJNow = (self.obsSite.raJNow.degrees - self.raRef) * 3600
         deltaDecJNow = (self.obsSite.decJNow.degrees - self.decRef) * 3600
         self.data["deltaRaJNow"] = deltaRaJNow
         self.data["deltaDecJNow"] = deltaDecJNow
@@ -229,12 +229,9 @@ class MountDevice:
             self.statusAlert = False
 
         settleWait = self._waitTimeFlip if self.obsSite.flipped else 0
-        if self.obsSite.statusSlew:
-            self.statusSlew = True
-        else:
-            if self.statusSlew:
-                self.statusSlew = False
-                self.settlingWait.start(settleWait)
+        if not self.obsSite.statusSlew and self.statusSlew:
+            self.settlingWait.start(settleWait)
+        self.statusSlew = self.obsSite.statusSlew
 
         if result:
             self.signals.pointDone.emit(self.obsSite)
@@ -287,11 +284,9 @@ class MountDevice:
         self.threadPool.start(self.workerGetNames)
 
     def clearGetFW(self) -> None:
-        self.log.info("-" * 100)
-        self.log.info(f"10micron product : {self.firmware.product}")
-        self.log.info(f"10micron firmware: {self.firmware.vString}")
-        self.log.info(f"10micron host    : {self.host}")
-        self.log.info("-" * 100)
+        self.log.info(f"[SYS] 10micron product : {self.firmware.product}")
+        self.log.info(f"[SYS] 10micron firmware: {self.firmware.vString}")
+        self.log.info(f"[SYS] 10micron host    : {self.host}")
         self.geometry.initializeGeometry(self.firmware.product)
         self.signals.firmwareDone.emit(self.firmware)
 
@@ -372,11 +367,14 @@ class MountDevice:
         return suc
 
     def clearDome(self, result: bool) -> None:
+        self.mutexCycleDome.unlock()
         if result:
             self.signals.domeDone.emit(self.dome)
 
     def cycleDome(self) -> None:
         if not self.mountIsUp:
+            return
+        if not self.mutexCycleDome.tryLock():
             return
 
         self.workerCycleDome = Worker(self.dome.poll)
@@ -400,7 +398,7 @@ class MountDevice:
     def clearProgTrajectory(self) -> None:
         self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
 
-    def workerProgTrajectory(self, alt: Angle, az: Angle, replay: bool = False) -> bool:
+    def runnerProgTrajectory(self, alt: Angle, az: Angle, replay: bool = False) -> bool:
         self.satellite.addTrajectoryPoint(alt, az)
         self.satellite.preCalcTrajectory(replay=replay)
         return replay
@@ -412,7 +410,7 @@ class MountDevice:
             return
 
         self.satellite.startProgTrajectory(julD=start)
-        self.workerTrajectory = Worker(self.workerProgTrajectory, alt, az, replay=replay)
+        self.workerTrajectory = Worker(self.runnerProgTrajectory, alt, az, replay=replay)
         self.workerTrajectory.signals.result.connect(self.clearProgTrajectory)
         self.threadPool.start(self.workerTrajectory)
 

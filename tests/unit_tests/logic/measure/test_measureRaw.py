@@ -13,7 +13,6 @@
 # License APL2.0
 #
 ###########################################################
-import PySide6
 import pytest
 import unittest.mock as mock
 from mw4.logic.measure.measureRaw import MeasureDataRaw
@@ -22,19 +21,14 @@ from mw4.logic.measure.measureRaw import MeasureDataRaw
 @pytest.fixture(autouse=True, scope="module")
 def function():
     class Test1:
-        UPDATE_RATE = 1000
-
-        @staticmethod
-        def setEmptyData():
-            return
+        CYCLE_UPDATE_TASK = 1000
 
         @staticmethod
         def measureTask():
             return True
 
-    with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = MeasureDataRaw(parent=Test1())
-        yield func
+    func = MeasureDataRaw(parent=Test1())
+    yield func
 
 
 def test_startCommunication(function):

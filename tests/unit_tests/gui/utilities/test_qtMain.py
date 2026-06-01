@@ -127,6 +127,12 @@ def test_prepareFileDialog_1(function):
     assert suc
 
 
+def test_prepareFileDialog_2(function):
+    window = QWidget()
+    suc = function.prepareFileDialog(window=window, enableDir=True)
+    assert suc
+
+
 def test_runDialog_1(function):
     dialog = QFileDialog()
     with mock.patch.object(QFileDialog, "exec", return_value=0):
@@ -168,32 +174,24 @@ def test_openFile_6(function):
     window = QWidget()
     with (
         mock.patch.object(function, "runDialog", return_value=1),
-        mock.patch.object(QFileDialog, "selectedFiles", return_value=["test1", "test2"]),
-    ):
-        full = function.openFile(
-            window=window,
-            title="title",
-            folder=Path("."),
-            filterSet="*.*",
-            multiple=True,
-        )
-        assert full == [Path("test1"), Path("test2")]
-
-
-def test_openFile_7(function):
-    window = QWidget()
-    with (
-        mock.patch.object(function, "runDialog", return_value=1),
         mock.patch.object(QFileDialog, "selectedFiles", return_value=["test1"]),
     ):
         full = function.openFile(
-            window=window,
-            title="title",
-            folder=Path("."),
-            filterSet="*.*",
-            multiple=False,
+            window=window, title="title", folder=Path("."), filterSet="*.*"
         )
         assert full == Path("test1")
+
+
+def test_openMultipleFiles_1(function):
+    window = QWidget()
+    with (
+        mock.patch.object(function, "runDialog", return_value=1),
+        mock.patch.object(QFileDialog, "selectedFiles", return_value=["test1", "test2"]),
+    ):
+        full = function.openMultipleFiles(
+            window=window, title="title", folder=Path("."), filterSet="*.*"
+        )
+        assert full == [Path("test1"), Path("test2")]
 
 
 def test_saveFile_5(function):

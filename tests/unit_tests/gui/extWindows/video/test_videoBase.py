@@ -14,7 +14,6 @@
 #
 ###########################################################
 import cv2
-import gc
 import mw4.gui.extWindows.video.videoBase
 import numpy as np
 import pytest
@@ -26,12 +25,10 @@ from PySide6.QtWidgets import QApplication, QInputDialog
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     func = VideoWindowBase(app=App())
     yield func
-    QApplication.processEvents()
-    gc.collect()
     QApplication.processEvents()
 
 
@@ -79,145 +76,54 @@ def test_count(function):
 
 
 def test_workerVideoStream_0(function):
-    class Test:
-        @staticmethod
-        def isOpened():
-            return True
-
-        @staticmethod
-        def open(a):
-            return
-
-        @staticmethod
-        def grab():
-            return False
-
-        @staticmethod
-        def release():
-            return
-
-        @staticmethod
-        def setExceptionMode(a):
-            return
-
-    function.capture = Test()
+    capture = mock.MagicMock()
+    capture.isOpened.return_value = True
+    capture.open.side_effect = cv2.error
+    function.capture = capture
     function.running = True
-    with mock.patch.object(function.capture, "open", side_effect=cv2.error):
-        function.workerVideo("test", 1)
-        assert not function.running
+    function.workerVideo("test", 1)
+    assert not function.running
 
 
 def test_workerVideoStream_1(function):
-    class Test:
-        @staticmethod
-        def isOpened():
-            return True
-
-        @staticmethod
-        def open(a):
-            return
-
-        @staticmethod
-        def grab():
-            return False
-
-        @staticmethod
-        def release():
-            return
-
-        @staticmethod
-        def setExceptionMode(a):
-            return
-
-    function.capture = Test()
+    capture = mock.MagicMock()
+    capture.isOpened.return_value = True
+    capture.open.side_effect = Exception
+    function.capture = capture
     function.running = True
-    with mock.patch.object(function.capture, "open", side_effect=Exception):
-        function.workerVideo("test", 1)
-        assert not function.running
+    function.workerVideo("test", 1)
+    assert not function.running
 
 
 def test_workerVideoStream_2(function):
-    class Test:
-        @staticmethod
-        def isOpened():
-            return False
-
-        @staticmethod
-        def open(a):
-            return
-
-        @staticmethod
-        def grab():
-            return False
-
-        @staticmethod
-        def release():
-            return
-
-        @staticmethod
-        def setExceptionMode(a):
-            return
-
-    function.capture = Test()
+    capture = mock.MagicMock()
+    capture.isOpened.return_value = False
+    function.capture = capture
     function.running = True
-    with mock.patch.object(function.capture, "isOpened", return_value=False):
-        function.workerVideo("test", 1)
-        assert not function.running
+    function.workerVideo("test", 1)
+    assert not function.running
 
 
 def test_workerVideoStream_3(function):
-    class Test:
-        @staticmethod
-        def isOpened():
-            return True
-
-        @staticmethod
-        def open(a):
-            return
-
-        @staticmethod
-        def grab():
-            return False
-
-        @staticmethod
-        def release():
-            return
-
-        @staticmethod
-        def setExceptionMode(a):
-            return
-
+    capture = mock.MagicMock()
+    capture.isOpened.return_value = True
+    capture.grab.return_value = False
     function.running = True
-    function.capture = Test()
+    function.capture = capture
     with mock.patch.object(function, "sendImage"):
         function.workerVideo("test", 1)
 
 
 def test_workerVideoStream_4(function):
-    class Test:
-        @staticmethod
-        def isOpened():
-            return True
+    def grabSideEffect():
+        function.running = False
+        return True
 
-        @staticmethod
-        def open(a):
-            return
-
-        @staticmethod
-        def grab():
-            function.running = False
-            return True
-
-        @staticmethod
-        def release():
-            return
-
-        @staticmethod
-        def setExceptionMode(a):
-            return
-
+    capture = mock.MagicMock()
+    capture.isOpened.return_value = True
+    capture.grab.side_effect = grabSideEffect
     function.running = True
-    function.capture = Test()
+    function.capture = capture
     with mock.patch.object(function, "sendImage"):
         function.workerVideo("test", 1)
 

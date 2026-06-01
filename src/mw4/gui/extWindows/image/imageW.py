@@ -207,7 +207,6 @@ class ImageWindow(MWidget):
             "Select image file",
             self.folder,
             "All (*.fit* *.xisf);; FITS files (*.fit*);;XISF files (*.xisf)",
-            enableDir=True,
         )
         if not self.imageFileName.is_file():
             self.msg.emit(0, "Image", "Loading", "No image selected")

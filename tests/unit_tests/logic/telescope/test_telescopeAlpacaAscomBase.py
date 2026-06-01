@@ -23,7 +23,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 class Parent:
     app = App()
     data = {}
-    deviceType = ""
+    DEVICE_TYPE = "telescope"
     signals = Signals()
     loadConfig = True
 

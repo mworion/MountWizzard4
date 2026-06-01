@@ -23,7 +23,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 class Parent:
     app = App()
     data = {}
-    deviceType = ""
+    DEVICE_TYPE = "covercalibrator"
     signals = Signals()
     loadConfig = True
     updateRate = 1000
@@ -45,6 +45,13 @@ def test_pollData(function):
         assert "MaxBrightness" in attrs
 
 
+def test_pollData_lightOn(function):
+    function.data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 100
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
+        function.pollData()
+        assert function.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] == 1
+
+
 def test_lightOn(function):
     function.app.cover = mock.MagicMock()
     function.app.cover.data = {"FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 254}
@@ -53,7 +60,7 @@ def test_lightOn(function):
     function.lightOn()
     item = function.commandQueue.get_nowait()
     assert item.valueProp == "CalibratorOn"
-    assert item.kwargs == {"Brightness": 127}
+    assert item.kwargs == {"BrightnessVal": 127}
 
 
 def test_lightOff(function):
@@ -70,4 +77,4 @@ def test_lightIntensity(function):
     function.lightIntensity(100.5)
     item = function.commandQueue.get_nowait()
     assert item.valueProp == "CalibratorOn"
-    assert item.kwargs == {"Brightness": 100}
+    assert item.kwargs == {"BrightnessVal": 100.5}

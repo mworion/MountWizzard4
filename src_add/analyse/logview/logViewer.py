@@ -16,6 +16,7 @@
 ###########################################################
 import sys
 import os
+from pathlib import Path
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QTabWidget, QLabel, QLineEdit
 from PySide6.QtWidgets import QGridLayout, QPushButton, QFileDialog
 from PySide6.QtWidgets import QListWidget, QListWidgetItem, QApplication
@@ -43,19 +44,17 @@ class Categories(QTabWidget):
         QTabWidget.__init__(self)
         layout = QVBoxLayout()
         self.qLists = {
+            "System": None,
             "Full Log": None,
-            "Header": None,
             "Error": None,
             "Warnings": None,
             "Info": None,
             "Debug": None,
-            "UI Trace": None,
             "Model Trace": None,
             "Mount Trace": None,
             "INDI Trace": None,
             "ASCOM Trace": None,
             "ALPACA Trace": None,
-            "App Trace": None,
             "Other traces": None,
         }
 
@@ -94,8 +93,8 @@ class Categories(QTabWidget):
 
     @staticmethod
     def getListKey(line):
-        if "[H]" in line and "startup" not in line:
-            listKey = "Header"
+        if "[I]" in line and "[SYS]" in line:
+            listKey = "System"
         elif "[C]" in line:
             listKey = "Error"
         elif "[E]" in line:
@@ -106,28 +105,16 @@ class Categories(QTabWidget):
             listKey = "Info"
         elif "[D]" in line and "modelRun" in line:
             listKey = "Model Trace"
+        elif "[D]" in line and "[Trace]" in line and "connection.py" in line:
+            listKey = "Mount Trace"
+        elif "[D]" in line and "ipyclient" in line:
+            listKey = "INDI Trace"
+        elif "[D]" in line and "[Trace]" in line and "ascom" in line:
+            listKey = "ASCOM Trace"
+        elif "[D]" in line and "[Trace]" in line and "alpaca" in line:
+            listKey = "ALPACA Trace"
         elif "[D]" in line:
             listKey = "Debug"
-        elif "[U]" in line:
-            if "qt_scrollarea_viewport" in line:
-                return None
-            if "QComboBoxPrivateContainerClassWindow" in line:
-                return None
-            if "Click Object  : []" in line:
-                return None
-            listKey = "UI Trace"
-        elif "[T][  connection.py]" in line:
-            listKey = "Mount Trace"
-        elif "[T]" in line and "indi" in line:
-            listKey = "INDI Trace"
-        elif "[T]" in line and "ascom" in line:
-            listKey = "ASCOM Trace"
-        elif "[T]" in line and "alpaca" in line:
-            listKey = "ALPACA Trace"
-        elif "[T]" in line and ("nina" in line or "sgpro" in line):
-            listKey = "App Trace"
-        elif "[T]" in line:
-            listKey = "Other traces"
         else:
             listKey = None
         return listKey
@@ -146,23 +133,18 @@ class Categories(QTabWidget):
             qList = self.qLists[key]
             qList.insertItem(qList.count(), item)
 
-        resetFirst = "10micron" in line and "[H]" in line
-        return resetFirst
-
 
 class LifeCycle(QTabWidget):
     def __init__(self):
         QTabWidget.__init__(self)
         layout = QVBoxLayout()
         self.actual = None
-        self.first = True
         self.numberLifecycles = 0
         layout.addWidget(self)
 
     def addEntry(self, line):
-        if "[H]" in line and "loader" in line and self.first:
+        if "[I]" in line and "bootstrap" in line and "mountwizzard4" in line:
             # if first line for new header occurs, start a new cat tab
-            self.first = False
             self.numberLifecycles += 1
             val = line.split("][")[0].lstrip("[").split(".")[0]
             categoriesTab = Categories()
@@ -195,6 +177,7 @@ class Window(QWidget):
         layout.addWidget(self.fileName)
         layout.addWidget(self.lifecycleTab)
         self.loadButt.clicked.connect(self.selectFile)
+        self.selectFile()
 
     def selectFile(self):
         dlg = QFileDialog()
@@ -209,12 +192,12 @@ class Window(QWidget):
         if not dlg.exec():
             return
 
-        fileName = dlg.selectedFiles()[0]
-        self.fileName.setText(fileName)
+        fileName = Path(dlg.selectedFiles()[0])
+        self.fileName.setText(fileName.name)
         self.processFile(fileName)
 
     def processFile(self, fileName):
-        if not os.path.isfile(fileName):
+        if not fileName.is_file():
             return
         self.lifecycleTab.clear()
         self.lifecycleTab.actual = None

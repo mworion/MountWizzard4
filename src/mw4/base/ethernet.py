@@ -13,11 +13,11 @@
 # License APL2.0
 #
 ###########################################################
-def checkFormatMAC(value: str) -> str:
-    if not value:
-        return ""
+import re
 
-    if not isinstance(value, str):
+
+def checkFormatMAC(value: str) -> str:
+    if not value or not isinstance(value, str):
         return ""
 
     value = value.upper()
@@ -27,12 +27,7 @@ def checkFormatMAC(value: str) -> str:
         return ""
 
     for chunk in value:
-        if len(chunk) != 2:
+        if not re.fullmatch(r"[0-9A-F]{2}", chunk):
             return ""
 
-        for char in chunk:
-            if char.upper() not in "0123456789ABCDEF":
-                return ""
-
-    value = "{:2s}:{:2s}:{:2s}:{:2s}:{:2s}:{:2s}".format(*value)
-    return value
+    return "{:2s}:{:2s}:{:2s}:{:2s}:{:2s}:{:2s}".format(*value)

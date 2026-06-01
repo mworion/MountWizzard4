@@ -33,6 +33,7 @@ class SatelliteHorizonWindow(MWidget):
         self.threadPool = app.threadPool
         self.ui = satelliteHor_ui.Ui_SatelliteHorizonDialog()
         self.ui.setupUi(self.ws)
+        self.setMinimumSize(self.HALF_WIDTH, self.HALF_HEIGHT)
         self.setWindowTitle("Satellite Horizon")
         self.satellite: EarthSatellite | None = None
         self.satOrbits: dict = {}

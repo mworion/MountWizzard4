@@ -1,13 +1,16 @@
+from mw4.gui.utilities.qtHelpers import svg2icon
 from PySide6.QtCore import QPoint, QSize, Qt
-from PySide6.QtGui import QColor, QIcon, QPixmap
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QToolButton, QWidget
 
 
 class CustomTitleBar(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
+        self.minButton: QToolButton = QToolButton(self)
+        self.maxButton: QToolButton = QToolButton(self)
+        self.closeButton: QToolButton = QToolButton(self)
+        self.normButton: QToolButton = QToolButton(self)
         self.initial_pos: QPoint | None = None
-
         titleBarLayout = QHBoxLayout(self)
         titleFrame = QFrame()
         titleFrame.setProperty("title", True)
@@ -19,75 +22,64 @@ class CustomTitleBar(QWidget):
         self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         frameLayout.addWidget(self.title)
 
-        # Min button
-        self.min_button = QToolButton(self)
-        pm = QPixmap(20, 20)
-        pm.fill(QColor("yellow"))
-        min_icon = QIcon(pm)
-        self.min_button.setIcon(min_icon)
-        self.min_button.clicked.connect(self.window().showMinimized)
+        buttons = {
+            "min": {
+                "widget": self.minButton,
+                "icon": "min.svg",
+                "func": self.window().showMinimized,
+                "col": "yellow",
+            },
+            "max": {
+                "widget": self.maxButton,
+                "icon": "max.svg",
+                "func": self.window().showMaximized,
+                "col": "green",
+            },
+            "norm": {
+                "widget": self.normButton,
+                "icon": "norm.svg",
+                "func": self.window().showNormal,
+                "col": "green",
+            },
+            "close": {
+                "widget": self.closeButton,
+                "icon": "close.svg",
+                "func": self.window().close,
+                "col": "red",
+            },
+        }
 
-        # Max button
-        self.max_button = QToolButton(self)
-        pm = QPixmap(20, 20)
-        pm.fill(QColor("green"))
-        max_icon = QIcon(pm)
-        self.max_button.setIcon(max_icon)
-        self.max_button.clicked.connect(self.window().showMaximized)
-
-        # Close button
-        self.close_button = QToolButton(self)
-        pm = QPixmap(20, 20)
-        pm.fill(QColor("red"))
-        close_icon = QIcon(pm)
-        self.close_button.setIcon(close_icon)
-        self.close_button.clicked.connect(self.window().close)
-
-        # Normal button
-        self.normal_button = QToolButton(self)
-        pm = QPixmap(20, 20)
-        pm.fill(QColor("white"))
-        normal_icon = QIcon(pm)
-        self.normal_button.setIcon(normal_icon)
-        self.normal_button.clicked.connect(self.window().showNormal)
-        self.normal_button.setVisible(False)
-        # Add buttons
-        buttons = [
-            self.min_button,
-            self.normal_button,
-            self.max_button,
-            self.close_button,
-        ]
         for button in buttons:
-            button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-            button.setFixedSize(QSize(20, 20))
-            button.setStyleSheet(
-                """QToolButton {
-                        border: none;
-                        padding: 2px;
-                    }
-                """
+            buttons[button]["widget"].setIcon(
+                svg2icon(f"assets/icon/{buttons[button]['icon']}", "black")
             )
-            frameLayout.addWidget(button)
-            titleBarLayout.addWidget(titleFrame)
-            titleBarLayout.setContentsMargins(0, 0, 8, 0)
-            titleBarLayout.setSpacing(5)
+            buttons[button]["widget"].setFixedSize(QSize(16, 16))
+            buttons[button]["widget"].setFocusPolicy(Qt.FocusPolicy.NoFocus)
+            buttons[button]["widget"].clicked.connect(buttons[button]["func"])
+            style = f"border: none; padding: 2px; background-color: {buttons[button]['col']};"
+            buttons[button]["widget"].setStyleSheet(style)
+            frameLayout.addWidget(buttons[button]["widget"])
 
-    def windowStateChanged(self, state):
+        self.normButton.setVisible(False)
+        titleBarLayout.addWidget(titleFrame)
+        titleBarLayout.setContentsMargins(0, 0, 8, 0)
+        titleBarLayout.setSpacing(5)
+
+    def windowStateChanged(self, state) -> None:
         if state == Qt.WindowState.WindowMaximized:
-            self.normal_button.setVisible(True)
-            self.max_button.setVisible(False)
+            self.normButton.setVisible(True)
+            self.maxButton.setVisible(False)
         else:
-            self.normal_button.setVisible(False)
-            self.max_button.setVisible(True)
+            self.normButton.setVisible(False)
+            self.maxButton.setVisible(True)
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
             self.initial_pos = event.position().toPoint()
         super().mousePressEvent(event)
         event.accept()
 
-    def mouseMoveEvent(self, event):
+    def mouseMoveEvent(self, event) -> None:
         if self.initial_pos is not None:
             delta = event.position().toPoint() - self.initial_pos
             self.window().move(
@@ -97,7 +89,7 @@ class CustomTitleBar(QWidget):
         super().mouseMoveEvent(event)
         event.accept()
 
-    def mouseReleaseEvent(self, event):
+    def mouseReleaseEvent(self, event) -> None:
         self.initial_pos = None
         super().mouseReleaseEvent(event)
         event.accept()

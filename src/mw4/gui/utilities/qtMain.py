@@ -39,6 +39,10 @@ from skyfield.api import Time
 
 class MWidget(QWidget, Styles):
     log = logging.getLogger("MW4")
+    FULL_WIDTH = 800
+    FULL_HEIGHT = 600
+    HALF_WIDTH = 400
+    HALF_HEIGHT = 320
 
     def __init__(self) -> None:
         super().__init__()

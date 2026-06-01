@@ -35,6 +35,7 @@ class SatelliteMapWindow(MWidget):
         self.threadPool = app.threadPool
         self.ui = satelliteMap_ui.Ui_SatelliteMapDialog()
         self.ui.setupUi(self.ws)
+        self.setMinimumSize(self.HALF_WIDTH, self.HALF_HEIGHT)
         self.setWindowTitle("Satellite Map")
         self.satellite: EarthSatellite | None = None
         self.satOrbits: dict = {}

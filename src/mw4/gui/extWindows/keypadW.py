@@ -45,6 +45,7 @@ class KeypadWindow(MWidget):
         self.threadPool = app.threadPool
         self.ui = keypad_ui.Ui_KeypadDialog()
         self.ui.setupUi(self.ws)
+        self.setWindowTitle("Keypad")
         self.signals = KeypadSignals()
         self.keypad = KeyPad(self.signals)
         self.inputActive: bool = False

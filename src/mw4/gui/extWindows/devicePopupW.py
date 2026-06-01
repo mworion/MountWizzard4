@@ -37,6 +37,7 @@ class DevicePopup(MWidget):
 
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self.ws)
+        self.setWindowTitle("Device Management")
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)

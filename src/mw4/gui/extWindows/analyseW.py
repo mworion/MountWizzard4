@@ -29,7 +29,7 @@ class AnalyseWindow(MWidget):
         self.app = app
         self.ui = analyse_ui.Ui_AnalyseDialog()
         self.ui.setupUi(self.ws)
-
+        self.setWindowTitle("Analyse")
         self.latitude: float = 0
         self.pierside: list[str] = []
         self.countSequence: np.ndarray = np.array([])

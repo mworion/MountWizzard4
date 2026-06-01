@@ -45,6 +45,8 @@ class KeypadWindow(MWidget):
         self.threadPool = app.threadPool
         self.ui = keypad_ui.Ui_KeypadDialog()
         self.ui.setupUi(self.ws)
+        self.setMinimumSize(270, 630)
+        self.setMaximumSize(270, 630)
         self.setWindowTitle("Keypad")
         self.signals = KeypadSignals()
         self.keypad = KeyPad(self.signals)

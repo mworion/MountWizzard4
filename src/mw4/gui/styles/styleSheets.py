@@ -590,6 +590,7 @@ BASIC_STYLE = """
         color: $M_PRIM1$;
     }
     QFrame[title='true'] {
+        color: $M_PRIM$;
         background-color: $M_BACK1$;
     }
     /* tab widget */
@@ -736,5 +737,4 @@ BASIC_STYLE = """
         min-width: 50px;
         min-height: 20px;
     }
-    Q
     """

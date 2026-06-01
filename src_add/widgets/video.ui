@@ -83,7 +83,7 @@
       <widget class="QComboBox" name="videoSource">
        <property name="minimumSize">
         <size>
-         <width>130</width>
+         <width>140</width>
          <height>21</height>
         </size>
        </property>
@@ -139,7 +139,7 @@
       <widget class="QComboBox" name="frameRate">
        <property name="minimumSize">
         <size>
-         <width>80</width>
+         <width>100</width>
          <height>0</height>
         </size>
        </property>
@@ -196,7 +196,7 @@
       <widget class="QLineEdit" name="videoURL">
        <property name="minimumSize">
         <size>
-         <width>250</width>
+         <width>270</width>
          <height>21</height>
         </size>
        </property>

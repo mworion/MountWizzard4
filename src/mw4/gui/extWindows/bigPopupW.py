@@ -25,6 +25,8 @@ class BigPopup(MWidget):
         self.app = app
         self.ui = Ui_BigPopup()
         self.ui.setupUi(self.ws)
+        self.setMinimumSize(self.HALF_WIDTH, self.HALF_HEIGHT)
+        self.setMaximumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.parent = app.mainW
         self.msg = app.msg
         self.setWindowTitle("Big buttons")

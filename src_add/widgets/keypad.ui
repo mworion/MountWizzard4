@@ -53,7 +53,7 @@
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>475</y>
+     <y>465</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -94,7 +94,7 @@ INFO</string>
    <property name="geometry">
     <rect>
      <x>110</x>
-     <y>295</y>
+     <y>285</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -134,7 +134,7 @@ INFO</string>
    <property name="geometry">
     <rect>
      <x>200</x>
-     <y>415</y>
+     <y>405</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -175,7 +175,7 @@ DOWN</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>415</y>
+     <y>405</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -216,7 +216,7 @@ STAR</string>
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>535</y>
+     <y>525</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -256,7 +256,7 @@ STAR</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>535</y>
+     <y>525</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -297,7 +297,7 @@ LIGHT</string>
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>535</y>
+     <y>525</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -337,7 +337,7 @@ LIGHT</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>355</y>
+     <y>345</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -378,7 +378,7 @@ M</string>
    <property name="geometry">
     <rect>
      <x>200</x>
-     <y>475</y>
+     <y>465</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -418,7 +418,7 @@ M</string>
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>475</y>
+     <y>465</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -459,7 +459,7 @@ DISP</string>
    <property name="geometry">
     <rect>
      <x>170</x>
-     <y>265</y>
+     <y>255</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -499,7 +499,7 @@ DISP</string>
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>475</y>
+     <y>465</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -540,7 +540,7 @@ COORD</string>
    <property name="geometry">
     <rect>
      <x>110</x>
-     <y>230</y>
+     <y>220</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -580,7 +580,7 @@ COORD</string>
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>355</y>
+     <y>345</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -624,7 +624,7 @@ NGC</string>
    <property name="geometry">
     <rect>
      <x>200</x>
-     <y>535</y>
+     <y>525</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -664,7 +664,7 @@ NGC</string>
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>415</y>
+     <y>405</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -705,7 +705,7 @@ MORE</string>
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>355</y>
+     <y>345</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -765,7 +765,7 @@ IC</string>
    <property name="geometry">
     <rect>
      <x>200</x>
-     <y>355</y>
+     <y>345</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -806,7 +806,7 @@ UP</string>
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>265</y>
+     <y>255</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -846,7 +846,7 @@ UP</string>
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>415</y>
+     <y>405</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -982,9 +982,9 @@ PLANET</string>
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>220</y>
+     <y>210</y>
      <width>251</width>
-     <height>376</height>
+     <height>381</height>
     </rect>
    </property>
    <property name="text">
@@ -992,28 +992,6 @@ PLANET</string>
    </property>
    <property name="keypad" stdset="0">
     <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="Line" name="cursor">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>220</y>
-     <width>15</width>
-     <height>3</height>
-    </rect>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Shadow::Plain</enum>
-   </property>
-   <property name="lineWidth">
-    <number>3</number>
-   </property>
-   <property name="midLineWidth">
-    <number>0</number>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Orientation::Horizontal</enum>
    </property>
   </widget>
   <zorder>label</zorder>
@@ -1043,7 +1021,6 @@ PLANET</string>
   <zorder>row2</zorder>
   <zorder>row3</zorder>
   <zorder>row4</zorder>
-  <zorder>cursor</zorder>
  </widget>
  <resources/>
  <connections/>

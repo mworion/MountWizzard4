@@ -10,11 +10,15 @@ class CustomTitleBar(QWidget):
         self.maxButton: QToolButton = QToolButton(self)
         self.closeButton: QToolButton = QToolButton(self)
         self.normButton: QToolButton = QToolButton(self)
+        self.normButton.setVisible(False)
         self.initial_pos: QPoint | None = None
         titleBarLayout = QHBoxLayout(self)
         titleFrame = QFrame()
         titleFrame.setProperty("title", True)
-        titleFrame.setFixedHeight(31)
+        titleFrame.setFixedHeight(30)
+        titleFrame.setLineWidth(0)
+        titleFrame.setFrameShape(QFrame.Shape.Box)
+        titleFrame.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         frameLayout = QHBoxLayout(titleFrame)
         frameLayout.setContentsMargins(0, 0, 0, 0)
         self.title = QLabel()
@@ -27,25 +31,25 @@ class CustomTitleBar(QWidget):
                 "widget": self.minButton,
                 "icon": "min.svg",
                 "func": self.window().showMinimized,
-                "col": "yellow",
+                "col": "#D0D000",
             },
             "max": {
                 "widget": self.maxButton,
                 "icon": "max.svg",
                 "func": self.window().showMaximized,
-                "col": "green",
+                "col": "#00C000",
             },
             "norm": {
                 "widget": self.normButton,
                 "icon": "norm.svg",
                 "func": self.window().showNormal,
-                "col": "green",
+                "col": "#00C000",
             },
             "close": {
                 "widget": self.closeButton,
                 "icon": "close.svg",
                 "func": self.window().close,
-                "col": "red",
+                "col": "#D03030",
             },
         }
 
@@ -60,9 +64,9 @@ class CustomTitleBar(QWidget):
             buttons[button]["widget"].setStyleSheet(style)
             frameLayout.addWidget(buttons[button]["widget"])
 
-        self.normButton.setVisible(False)
+        frameLayout.addSpacing(10)
         titleBarLayout.addWidget(titleFrame)
-        titleBarLayout.setContentsMargins(0, 0, 8, 0)
+        titleBarLayout.setContentsMargins(0, 0, 0, 0)
         titleBarLayout.setSpacing(5)
 
     def windowStateChanged(self, state) -> None:

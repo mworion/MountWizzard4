@@ -54,7 +54,7 @@ class Ui_VideoDialog(object):
         self.videoSource.addItem("")
         self.videoSource.addItem("")
         self.videoSource.setObjectName(u"videoSource")
-        self.videoSource.setMinimumSize(QSize(130, 21))
+        self.videoSource.setMinimumSize(QSize(140, 21))
         self.videoSource.setMaximumSize(QSize(16777215, 25))
 
         self.gridLayout.addWidget(self.videoSource, 0, 4, 1, 1)
@@ -66,7 +66,7 @@ class Ui_VideoDialog(object):
         self.frameRate.addItem("")
         self.frameRate.addItem("")
         self.frameRate.setObjectName(u"frameRate")
-        self.frameRate.setMinimumSize(QSize(80, 0))
+        self.frameRate.setMinimumSize(QSize(100, 0))
 
         self.gridLayout.addWidget(self.frameRate, 0, 5, 1, 1)
 
@@ -80,7 +80,7 @@ class Ui_VideoDialog(object):
 
         self.videoURL = QLineEdit(VideoDialog)
         self.videoURL.setObjectName(u"videoURL")
-        self.videoURL.setMinimumSize(QSize(250, 21))
+        self.videoURL.setMinimumSize(QSize(270, 21))
         self.videoURL.setMaximumSize(QSize(16777215, 25))
         self.videoURL.setFrame(False)
         self.videoURL.setProperty(u"input", True)

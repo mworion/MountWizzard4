@@ -29,7 +29,7 @@ class Ui_BigPopup(object):
         sizePolicy.setHeightForWidth(BigPopup.sizePolicy().hasHeightForWidth())
         BigPopup.setSizePolicy(sizePolicy)
         BigPopup.setMinimumSize(QSize(200, 100))
-        BigPopup.setMaximumSize(QSize(400, 285))
+        BigPopup.setMaximumSize(QSize(16777215, 16777215))
         BigPopup.setSizeIncrement(QSize(10, 10))
         BigPopup.setBaseSize(QSize(10, 10))
         font = QFont()

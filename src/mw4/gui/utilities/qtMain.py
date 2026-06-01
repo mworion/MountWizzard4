@@ -17,9 +17,10 @@ import datetime
 import logging
 from dateutil.tz import tzlocal
 from mw4.gui.styles.styles import Styles
+from mw4.gui.utilities.qtCustomWindow import CustomTitleBar
 from mw4.gui.utilities.qtHelpers import svg2icon
 from pathlib import Path
-from PySide6.QtCore import QDir, QSize, Qt
+from PySide6.QtCore import QDir, QEvent, QSize, Qt
 from PySide6.QtGui import (
     QGuiApplication,
     QKeyEvent,
@@ -27,8 +28,10 @@ from PySide6.QtGui import (
 )
 from PySide6.QtWidgets import (
     QFileDialog,
+    QMainWindow,
     QMessageBox,
     QPushButton,
+    QVBoxLayout,
     QWidget,
 )
 from skyfield.api import Time
@@ -42,7 +45,7 @@ class MWidget(QWidget, Styles):
         self.initUI()
         self.screenSizeX = QGuiApplication.primaryScreen().geometry().width()
         self.screenSizeY = QGuiApplication.primaryScreen().geometry().height()
-
+        """
         newFlag = Qt.WindowType.CustomizeWindowHint | Qt.WindowType.WindowSystemMenuHint
         newFlag = (
             newFlag
@@ -50,11 +53,33 @@ class MWidget(QWidget, Styles):
             | Qt.WindowType.WindowMaximizeButtonHint
         )
         self.setWindowFlags(self.windowFlags() | newFlag)
+        """
         self.setWindowIcon(self.mwIcon)
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
-        self.app = None
-        self.ui = None
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        self.titleBar = CustomTitleBar(self)
+        workSpaceLayout = QVBoxLayout()
+        workSpaceLayout.setContentsMargins(0, 0, 0, 0)
+        self.ws = QWidget()
+        workSpaceLayout.addWidget(self.ws)
+
+        centralWidgetLayout = QVBoxLayout()
+        centralWidgetLayout.setContentsMargins(0, 0, 0, 0)
+        centralWidgetLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        centralWidgetLayout.addWidget(self.titleBar)
+        centralWidgetLayout.addLayout(workSpaceLayout)
+        self.setLayout(centralWidgetLayout)
+
+    def changeEvent(self, event):
+        if event.type() == QEvent.Type.WindowStateChange:
+            self.titleBar.windowStateChanged(self.windowState())
+        super().changeEvent(event)
+        event.accept()
+
+    def setWindowTitle(self, title: str) -> None:
+        if hasattr(self, "titleBar"):
+            self.titleBar.title.setText(title)
 
     @staticmethod
     def saveWindowAsPNG(window: QWidget) -> None:
@@ -163,18 +188,26 @@ class MWidget(QWidget, Styles):
         else:
             return reply
 
-    def openFileBase(self, window: QWidget, title: str, folder: Path, filterSet: str, multiple: bool = False) -> list[str]:
+    def openFileBase(
+        self, window: QWidget, title: str, folder: Path, filterSet: str, multiple: bool = False
+    ) -> list[str]:
         dlg = self.prepareFileDialog(window=window)
         dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
         dlg.setWindowTitle(title)
         dlg.setNameFilter(filterSet)
         dlg.setDirectory(str(folder))
-        fileMode = QFileDialog.FileMode.ExistingFiles if multiple else QFileDialog.FileMode.ExistingFile
+        fileMode = (
+            QFileDialog.FileMode.ExistingFiles
+            if multiple
+            else QFileDialog.FileMode.ExistingFile
+        )
         dlg.setFileMode(fileMode)
         self.runDialog(dlg)
         return dlg.selectedFiles()
 
-    def openMultipleFiles(self, window: QWidget, title: str, folder: Path, filterSet: str) -> list[Path]:
+    def openMultipleFiles(
+        self, window: QWidget, title: str, folder: Path, filterSet: str
+    ) -> list[Path]:
         files = self.openFileBase(window, title, folder, filterSet, multiple=True)
         return [Path(f) for f in files]
 

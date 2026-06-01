@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+import json
 import platform
 import subprocess
 import sys
@@ -64,16 +65,20 @@ class AscomClass(AlpacaAscomCommon):
         self.threadPool.start(self.workerRunnerCoreLoop)
 
     def selectAscomDriver(self, deviceName: str, deviceType: str) -> str:
+        # Arguments are passed as a JSON payload to avoid code injection via
+        # f-string interpolation into the subprocess script. (SEC-1)
         script = (
-            "import sys; import win32com.client; "
-            f"chooser = win32com.client.Dispatch('ASCOM.Utilities.Chooser'); "
-            f"chooser.DeviceType = '{deviceType}'; "
-            f"result = chooser.Choose('{deviceName}'); "
+            "import sys, json, win32com.client; "
+            "args = json.loads(sys.argv[1]); "
+            "chooser = win32com.client.Dispatch('ASCOM.Utilities.Chooser'); "
+            "chooser.DeviceType = args['deviceType']; "
+            "result = chooser.Choose(args['deviceName']); "
             "print(result if result else '', end='')"
         )
+        payload = json.dumps({"deviceName": deviceName, "deviceType": deviceType})
         try:
-            result = subprocess.check_output(
-                [sys.executable, "-c", script],
+            result = subprocess.check_output(  # nosec B603
+                [sys.executable, "-c", script, payload],
                 text=True,
                 creationflags=0x08000000,  # CREATE_NO_WINDOW
             ).strip()

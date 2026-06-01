@@ -35,7 +35,8 @@ class MessageWindow(MWidget):
         super().__init__()
         self.app = app
         self.ui = message_ui.Ui_MessageDialog()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self.ws)
+        self.setWindowTitle("Message")
         self.messFont: QFont = None
         self.messColor: list = []
         self.setupMessage()

@@ -394,19 +394,23 @@ class Connection:
         with #. the min bytes are necessary because the mount computer has
         commands which give a response without a delimiter. this is bad, but status.
         """
+        responseBytes = bytearray()
         responseStr = ""
         receiving = True
         chunkRaw = b""
         try:
             while receiving:
                 chunkRaw = client.recv(2048)
-                chunk = chunkRaw.decode("ASCII")
-                if not chunk:
+                if not chunkRaw:
                     break
-                responseStr += chunk
-                gotAllBytes = numberOfChunks == 0 and len(responseStr) == minBytes
-                gotAllChunks = numberOfChunks != 0 and numberOfChunks == responseStr.count("#")
-                if gotAllBytes or gotAllChunks:
+                responseBytes.extend(chunkRaw)
+                responseStr = responseBytes.decode("ASCII")
+                if (
+                    numberOfChunks == 0
+                    and len(responseStr) == minBytes
+                    or numberOfChunks != 0
+                    and numberOfChunks == responseStr.count("#")
+                ):
                     break
 
         except TimeoutError:

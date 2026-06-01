@@ -46,7 +46,7 @@ class KMRelay:
                     "deviceName": "KMRelay",
                     "hostaddress": "",
                     "user": "",
-                    "password": "",
+                    "password": "",  # nosec B105 — empty-string default, not a hardcoded credential
                 }
             },
         }

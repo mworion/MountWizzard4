@@ -14,6 +14,7 @@
 #
 ###########################################################
 import pytest
+import queue
 import threading
 import time
 from mw4.base.indiClass import IndiClass
@@ -585,17 +586,15 @@ def test_discoverDevices_emptyQueue(function, monkeypatch):
         mock.patch("mw4.base.indiClass.Worker"),
         mock.patch.object(function.threadPool, "start"),
         mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
-        mock.patch("mw4.base.indiClass.mainThreadSleep") as mock_sleep,
     ):
         mock_txQ = mock.MagicMock()
         mock_rxQ = mock.MagicMock()
         mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-        mock_rxQ.empty.return_value = True
+        mock_rxQ.get.side_effect = queue.Empty()
 
         result = function.discoverDevices("dome")
 
     assert result == []
-    mock_sleep.assert_called_once_with(100)
     mock_txQ.put.assert_called_once_with(None)
 
 
@@ -605,13 +604,11 @@ def test_discoverDevices_noneItem(function, monkeypatch):
         mock.patch("mw4.base.indiClass.Worker"),
         mock.patch.object(function.threadPool, "start"),
         mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
-        mock.patch("mw4.base.indiClass.mainThreadSleep"),
     ):
         mock_txQ = mock.MagicMock()
         mock_rxQ = mock.MagicMock()
         mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-        mock_rxQ.empty.side_effect = [False, True]
-        mock_rxQ.get.return_value = None
+        mock_rxQ.get.side_effect = [None, queue.Empty()]
 
         result = function.discoverDevices("dome")
 
@@ -628,13 +625,11 @@ def test_discoverDevices_withoutDeviceName(function, monkeypatch):
         mock.patch("mw4.base.indiClass.Worker"),
         mock.patch.object(function.threadPool, "start"),
         mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
-        mock.patch("mw4.base.indiClass.mainThreadSleep"),
     ):
         mock_txQ = mock.MagicMock()
         mock_rxQ = mock.MagicMock()
         mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-        mock_rxQ.empty.side_effect = [False, True]
-        mock_rxQ.get.return_value = item
+        mock_rxQ.get.side_effect = [item, queue.Empty()]
 
         result = function.discoverDevices("dome")
 
@@ -655,13 +650,11 @@ def test_discoverDevices_driverMatchingType(function, monkeypatch):
         mock.patch("mw4.base.indiClass.Worker"),
         mock.patch.object(function.threadPool, "start"),
         mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
-        mock.patch("mw4.base.indiClass.mainThreadSleep"),
     ):
         mock_txQ = mock.MagicMock()
         mock_rxQ = mock.MagicMock()
         mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
-        mock_rxQ.empty.side_effect = [False, True]
-        mock_rxQ.get.return_value = item
+        mock_rxQ.get.side_effect = [item, queue.Empty()]
 
         result = function.discoverDevices("dome")
 

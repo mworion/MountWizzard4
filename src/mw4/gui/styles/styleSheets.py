@@ -20,6 +20,10 @@ MAC_STYLE = """
         font-weight: normal;
         font-size: 13pt;
     }
+    QLabel[title=true] {
+        font-weight: bold;
+        font-size: 16pt;
+    }
     QWidget[large] {
         font-family: Arial;
         font-weight: normal;
@@ -55,6 +59,10 @@ NON_MAC_STYLE = """
         font-weight: normal;
         font-size: 10pt;
     }
+    QLabel[title=true] {
+        font-size: 13pt;
+        font-weight: bold;
+    }
     QWidget[large] {
         font-family: Arial;
         font-weight: bold;
@@ -83,7 +91,7 @@ NON_MAC_STYLE = """
 BASIC_STYLE = """
     QTableWidget QLabel {
         color: $M_BACK$;
-        background: $M_BACK$;
+        background-color: $M_BACK$;
         border: 0px;
     }
     QWidget {
@@ -98,11 +106,11 @@ BASIC_STYLE = """
         padding: 5px;
         max-width: 500px;
     }
-    QLabel {
+    QLabel{
         color: $M_TER$;
         background-color: None;
     }
-    QLabel[keypad]{
+    QLabel[keypad] {
         color: $M_PRIM$;
         background-color: $M_BACK1$;
         border-radius: 8px;
@@ -130,7 +138,6 @@ BASIC_STYLE = """
     QLabel[color='red'] {
         color: $M_RED$;
     }
-
     /* QLine Edit*/
     QLineEdit {
         color: $M_PRIM$;
@@ -174,7 +181,6 @@ BASIC_STYLE = """
         margin-top: 6px;
         background-color: $M_BACK$;
     }
-
     QGroupBox::title {
         left: 5px;
         subcontrol-origin: margin;
@@ -583,7 +589,9 @@ BASIC_STYLE = """
     QFrame[frameShape="5"] {
         color: $M_PRIM1$;
     }
-
+    QFrame[title='true'] {
+        background-color: $M_BACK1$;
+    }
     /* tab widget */
     QTabWidget:pane {
         top: -6px;

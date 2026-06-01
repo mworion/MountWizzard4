@@ -17,7 +17,7 @@ from functools import partial
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.ascomClass import AscomClass
 from mw4.base.indiClass import IndiClass
-from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, getTabIndex, svg2pixmap
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic, getTabIndex, svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
 from pathlib import Path
@@ -36,7 +36,8 @@ class DevicePopup(MWidget):
         self.deviceType = deviceType
 
         self.ui = Ui_DevicePopup()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self.ws)
+        self.setWindowTitle("Device Management")
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)

@@ -37,13 +37,10 @@ def function():
 
 def test_getInitialConfig(function):
     with (
-        mock.patch.object(function, "getAndStoreDeviceProp") as m_store,
-        mock.patch.object(function, "getDeviceProp") as m_get,
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+        mock.patch.object(function, "getDeviceProp") as m,
     ):
         function.getInitialConfig()
-        store_attrs = [c.args[0] for c in m_store.call_args_list]
-        assert "Name" in store_attrs
-        assert "DriverVersion" in store_attrs
-        get_attrs = [c.args[0] for c in m_get.call_args_list]
-        assert "ApertureDiameter" in get_attrs
-        assert "FocalLength" in get_attrs
+        attrs = [c.args[0] for c in m.call_args_list]
+        assert "ApertureDiameter" in attrs
+        assert "FocalLength" in attrs

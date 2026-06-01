@@ -195,36 +195,44 @@ def test_deleteHostData_1(function):
     class Test:
         status_code = 200
 
-    with mock.patch.object(requests, "delete", return_value=Test()):
+    with mock.patch.object(requests, "delete", return_value=Test()) as m:
         val = function.deleteHostData()
         assert val
+        _, kwargs = m.call_args
+        assert kwargs.get("timeout") == 10  # SEC-4
 
 
 def test_deleteHostData_2(function):
     class Test:
         status_code = 400
 
-    with mock.patch.object(requests, "delete", return_value=Test()):
+    with mock.patch.object(requests, "delete", return_value=Test()) as m:
         val = function.deleteHostData()
         assert not val
+        _, kwargs = m.call_args
+        assert kwargs.get("timeout") == 10  # SEC-4
 
 
 def test_postHostData_1(function):
     class Test:
         status_code = 202
 
-    with mock.patch.object(requests, "post", return_value=Test()):
+    with mock.patch.object(requests, "post", return_value=Test()) as m:
         val = function.postHostData({})
         assert val
+        _, kwargs = m.call_args
+        assert kwargs.get("timeout") == 10  # SEC-4
 
 
 def test_postHostData_2(function):
     class Test:
         status_code = 400
 
-    with mock.patch.object(requests, "post", return_value=Test()):
+    with mock.patch.object(requests, "post", return_value=Test()) as m:
         val = function.postHostData({})
         assert not val
+        _, kwargs = m.call_args
+        assert kwargs.get("timeout") == 10  # SEC-4
 
 
 def test_uploadFileWorker_1(function):

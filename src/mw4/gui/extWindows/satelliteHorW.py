@@ -32,7 +32,8 @@ class SatelliteHorizonWindow(MWidget):
         self.obsSite = app.mount.obsSite
         self.threadPool = app.threadPool
         self.ui = satelliteHor_ui.Ui_SatelliteHorizonDialog()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self.ws)
+        self.setWindowTitle("Satellite Horizon")
         self.satellite: EarthSatellite | None = None
         self.satOrbits: dict = {}
         self.plotSatPosHorizon: pg.PlotDataItem = pg.PlotDataItem()

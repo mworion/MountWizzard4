@@ -42,7 +42,7 @@ class MainWindow(MWidget):
         self.msg = app.msg
         self.threadPool = app.threadPool
         self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self.ws)
         self.setWindowTitle(f"MountWizzard4 - v{self.app.__version__}")
         self.activateWindow()
         self.externalWindows = ExternalWindows(self)
@@ -127,6 +127,7 @@ class MainWindow(MWidget):
 
         config["winPosX"] = self.pos().x()
         config["winPosY"] = self.pos().y()
+        config["height"] = self.height()
         getTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
         getTabAndIndex(self.ui.mountTabWidget, config, "orderMount")
         getTabAndIndex(self.ui.imagingTabWidget, config, "orderImaging")

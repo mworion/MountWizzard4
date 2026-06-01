@@ -38,7 +38,8 @@ class ImageWindow(MWidget):
         self.msg = app.msg
         self.threadPool = app.threadPool
         self.ui = image_ui.Ui_ImageDialog()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self.ws)
+        self.setWindowTitle("Image")
         self.signals = ImageWindowSignals()
         self.photometry = Photometry(self, np.zeros((1, 1)))
         self.fileHandler = FileHandler(self)

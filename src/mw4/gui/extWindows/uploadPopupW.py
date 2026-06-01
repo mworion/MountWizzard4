@@ -56,7 +56,8 @@ class UploadPopup(MWidget):
     ):
         super().__init__()
         self.ui = Ui_UploadPopup()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self.ws)
+        self.setWindowTitle("Mount Upload")
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.returnValues = {"success": False, "successMount": False}
         self.parentWidget = parentWidget
@@ -157,14 +158,14 @@ class UploadPopup(MWidget):
         return f"http://{str(self.url)}/bin/upload"
 
     def deleteHostData(self) -> bool:
-        returnValues = requests.delete(self.generateURL())
+        returnValues = requests.delete(self.generateURL(), timeout=10)  # SEC-4
         if returnValues.status_code not in [200, 204]:
             self.msg.emit(0, "Upload", "Error", f"Deleting File: {returnValues.status_code}")
             return False
         return True
 
     def postHostData(self, files: dict) -> bool:
-        returnValues = requests.post(self.generateURL(), files=files)
+        returnValues = requests.post(self.generateURL(), files=files, timeout=10)  # SEC-4
         if returnValues.status_code != 202:
             self.msg.emit(0, "Upload", "Error", f"Data: {returnValues.status_code}")
             return False

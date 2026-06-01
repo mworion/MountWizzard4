@@ -14,7 +14,6 @@
 #
 ###########################################################
 import numpy as np
-import pickle
 import pyqtgraph as pg
 from collections.abc import Iterator
 from importlib.resources import as_file, files
@@ -35,13 +34,14 @@ class SatelliteMapWindow(MWidget):
         self.obsSite = app.mount.obsSite
         self.threadPool = app.threadPool
         self.ui = satelliteMap_ui.Ui_SatelliteMapDialog()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self.ws)
+        self.setWindowTitle("Satellite Map")
         self.satellite: EarthSatellite | None = None
         self.satOrbits: dict = {}
         self.plotSatPosEarth: pg.PlotDataItem = pg.PlotDataItem()
         self.colors = [self.M_RED, self.M_YELLOW, self.M_GREEN]
         self.pens = []
-        self.world: bytes = b""
+        self.world: dict = {}
         for color in self.colors:
             self.pens.append(pg.mkPen(color=color, width=2))
             self.pens.append(pg.mkPen(color=color, width=2, style=Qt.PenStyle.DotLine))
@@ -51,7 +51,7 @@ class SatelliteMapWindow(MWidget):
         self.app.updateSatellite.connect(self.updatePositions)
 
     def initConfig(self) -> None:
-        self.world: bytes = self.loadMap()
+        self.world: dict = self.loadMap()
         self.positionWindow(self.app.config.get("satelliteMapW", {}))
 
     def storeConfig(self) -> None:
@@ -80,10 +80,33 @@ class SatelliteMapWindow(MWidget):
         self.app.sendSatelliteData.emit([], [])
 
     @staticmethod
-    def loadMap() -> bytes:
-        with as_file(files("mw4").joinpath("assets/data/worldmap.dat")) as mapFile:
-            pickleData = mapFile.read_bytes()
-        return pickle.load(BytesIO(pickleData))
+    def loadMap() -> dict:
+        """Load the world shoreline map from the bundled compressed numpy asset.
+
+        The .npz file stores three arrays written by generateMap.py:
+          x        – all longitude values concatenated across all segments
+          y        – all latitude values concatenated across all segments
+          lengths  – number of points in each segment (int32)
+
+        Returns a dict keyed by segment index with {"xDeg": ndarray, "yDeg": ndarray}.
+        Safe to deserialise: numpy .npz contains no executable code.  (SEC-3)
+        """
+        with as_file(files("mw4").joinpath("assets/data/worldmap.npz")) as mapFile:
+            raw = mapFile.read_bytes()
+        data = np.load(BytesIO(raw))
+        x_all: np.ndarray = data["x"]
+        y_all: np.ndarray = data["y"]
+        lengths: np.ndarray = data["lengths"]
+        world: dict = {}
+        offset: int = 0
+        for i, length in enumerate(lengths):
+            n = int(length)
+            world[i] = {
+                "xDeg": x_all[offset : offset + n],
+                "yDeg": y_all[offset : offset + n],
+            }
+            offset += n
+        return world
 
     def updatePositions(self, now: Timescale, location: GeographicPosition) -> None:
         observe = self.satellite.at(now)

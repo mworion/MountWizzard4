@@ -55,13 +55,13 @@ class Worker(QRunnable):
             # as we want to send a clear message to the log file
             _, _, tb = sys.exc_info()
 
-            # moving toward the end of the trace
-            eStr = f"{e} {self.formatTbFrame(tb)}"
+            # moving toward the end of the trace; collect frames then join once
+            parts = [f"{e} {self.formatTbFrame(tb)}"]
             while tb.tb_next is not None:
                 tb = tb.tb_next
-                eStr += self.formatTbFrame(tb)
-
-            eStr += f" - excType: [{type(e)}], excValue: [{e}]"
+                parts.append(self.formatTbFrame(tb))
+            parts.append(f" - excType: [{type(e)}], excValue: [{e}]")
+            eStr = "".join(parts)
             self.log.critical(eStr)
             self.signals.error.emit(eStr)
 

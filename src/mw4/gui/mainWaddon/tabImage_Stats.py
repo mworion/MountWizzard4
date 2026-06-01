@@ -176,7 +176,7 @@ class ImageStats:
             self.msg.emit(2, "System", "ImageStats", "Browser failed")
 
     def openAstrometryCatalog(self) -> None:
-        url = "http://data.astrometry.net/4200/"
+        url = "https://data.astrometry.net/4200/"  # SEC-5: changed http → https
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "ImageStats", "Browser failed")
 

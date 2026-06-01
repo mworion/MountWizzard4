@@ -24,7 +24,7 @@ class BigPopup(MWidget):
         super().__init__()
         self.app = app
         self.ui = Ui_BigPopup()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self.ws)
         self.parent = app.mainW
         self.msg = app.msg
         self.setWindowTitle("Big buttons")

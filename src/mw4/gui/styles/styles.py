@@ -25,6 +25,8 @@ from PySide6.QtGui import QIcon
 
 class Styles:
     colorSet = 0
+    cachedStyle = None
+    cachedColorSet = None
 
     @property
     def M_TRANS(self) -> str:
@@ -148,11 +150,14 @@ class Styles:
 
     @property
     def mw4Style(self) -> str:
-        if platform.system() == "Darwin":
-            styleRaw = MAC_STYLE + BASIC_STYLE
-        else:
-            styleRaw = NON_MAC_STYLE + BASIC_STYLE
-        return self.renderStyle(styleRaw)
+        if self.cachedStyle is None or self.cachedColorSet != self.colorSet:
+            if platform.system() == "Darwin":
+                styleRaw = MAC_STYLE + BASIC_STYLE
+            else:
+                styleRaw = NON_MAC_STYLE + BASIC_STYLE
+            self.cachedStyle = self.renderStyle(styleRaw)
+            self.cachedColorSet = self.colorSet
+        return self.cachedStyle
 
     def __init__(self):
         super().__init__()
@@ -224,11 +229,11 @@ class Styles:
         return line
 
     def renderStyle(self, styleRaw: str) -> str:
-        style = ""
+        lines = []
         for lineItem in styleRaw.split("\n"):
             line = self.insertGradient(lineItem)
             line = self.replaceForm(line)
             line = self.replaceImage(line)
             line = self.replaceColor(line)
-            style += line + "\n"
-        return style
+            lines.append(line)
+        return "\n".join(lines) + "\n"

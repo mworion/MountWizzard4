@@ -161,3 +161,69 @@ def test_renderStyle_2(function):
     function.colorSet = 0
     val = function.renderStyle(inStyle).strip(" ")
     assert val == "12345$M_TEST$12345\n"
+
+
+def test_mw4Style_caching_same_colorSet(function):
+    """Test that mw4Style returns cached value when colorSet doesn't change"""
+    function.colorSet = 0
+    function.cachedStyle = None
+    function.cachedColorSet = None
+
+    # First call should compute and cache
+    style1 = function.mw4Style
+    cachedStyle = function.cachedStyle
+    cachedColorSet = function.cachedColorSet
+
+    # Second call should return cached value
+    style2 = function.mw4Style
+
+    assert style1 == style2
+    assert cachedStyle == function.cachedStyle
+    assert cachedColorSet == function.cachedColorSet
+    assert cachedColorSet == 0
+
+
+def test_mw4Style_caching_different_colorSet(function):
+    """Test that mw4Style recomputes when colorSet changes"""
+    function.colorSet = 0
+    function.cachedStyle = None
+    function.cachedColorSet = None
+
+    # Get style for colorSet 0
+    style1 = function.mw4Style
+    cachedStyle1 = function.cachedStyle
+
+    # Change colorSet
+    function.colorSet = 1
+
+    # Get style for colorSet 1 - should recompute
+    style2 = function.mw4Style
+    cachedStyle2 = function.cachedStyle
+
+    # Styles should be different
+    assert style1 != style2
+    assert cachedStyle1 != cachedStyle2
+    assert function.cachedColorSet == 1
+
+
+def test_mw4Style_cache_invalidation(function):
+    """Test that cache is properly invalidated on colorSet change"""
+    function.colorSet = 0
+    function.cachedStyle = None
+    function.cachedColorSet = None
+
+    # First call with colorSet 0
+    style0_first = function.mw4Style
+
+    # Change to colorSet 1
+    function.colorSet = 1
+    style1 = function.mw4Style
+
+    # Change back to colorSet 0
+    function.colorSet = 0
+    style0_second = function.mw4Style
+
+    # Style for colorSet 0 should be the same both times
+    assert style0_first == style0_second
+    # But different from colorSet 1
+    assert style0_first != style1

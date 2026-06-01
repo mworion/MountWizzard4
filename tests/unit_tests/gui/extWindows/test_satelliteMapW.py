@@ -13,7 +13,7 @@
 # License APL2.0
 #
 ###########################################################
-import pickle
+import numpy as np
 import pyqtgraph as pg
 import pytest
 import unittest.mock as mock
@@ -66,8 +66,19 @@ def test_colorChange(function):
 
 
 def test_loadMap_1(function):
-    with mock.patch.object(pickle, "load"):
-        function.loadMap()
+    """SEC-3: loadMap() must use numpy.load (safe), not pickle.load."""
+    world = function.loadMap()
+    # Returns a dict keyed by sequential integer indices
+    assert isinstance(world, dict)
+    assert len(world) > 0
+    # Every segment has xDeg/yDeg numpy arrays of matching length
+    for key, seg in world.items():
+        assert isinstance(key, (int, np.integer))
+        assert "xDeg" in seg and "yDeg" in seg
+        assert isinstance(seg["xDeg"], np.ndarray)
+        assert isinstance(seg["yDeg"], np.ndarray)
+        assert len(seg["xDeg"]) == len(seg["yDeg"])
+        assert len(seg["xDeg"]) > 0
 
 
 def test_updatePositions_2(function):

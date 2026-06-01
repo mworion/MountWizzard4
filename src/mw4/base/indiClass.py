@@ -18,7 +18,6 @@ import logging
 import queue
 from indipyclient.queclient import EventItem, QueClient, runqueclient
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO_CONV
-from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QThreadPool
 from queue import Queue
@@ -182,11 +181,11 @@ class IndiClass:
         worker = Worker(runqueclient, txQ, rxQ, indihost=self.hostaddress, indiport=self.port)
         self.threadPool.start(worker)
         while n > 0:
-            if rxQ.empty():
-                mainThreadSleep(100)
+            try:
+                item = rxQ.get(timeout=0.1)
+            except queue.Empty:
                 n -= 1
                 continue
-            item = rxQ.get()
             if item is None:
                 continue
             if item.devicename:

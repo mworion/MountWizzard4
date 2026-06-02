@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QToolButton, QWidget
 
 
 class CustomTitleBar(QWidget):
-    def __init__(self, parent):
+    def __init__(self, parent: QWidget) -> None:
         super().__init__(parent)
         self.windowFixed: bool = False
         self.minButton: QToolButton = QToolButton(self)

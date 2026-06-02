@@ -78,7 +78,7 @@ class MWidget(QMainWindow, Styles):
         centralWidget.setLayout(centralWidgetLayout)
         self.setCentralWidget(centralWidget)
 
-    def changeEvent(self, event):
+    def changeEvent(self, event: QEvent) -> None:
         if event.type() == QEvent.Type.WindowStateChange:
             self.titleBar.windowStateChanged(self.windowState())
         super().changeEvent(event)

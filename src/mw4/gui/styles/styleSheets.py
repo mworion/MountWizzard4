@@ -42,7 +42,7 @@ MAC_STYLE = """
     QToolTip {
         font-size: 13pt;
     }
-    QLineEdit[keypad]{
+    QLineEdit[keypad=true]{
         font-family: Courier New;
         font-weight: bold;
         font-size: 26pt;
@@ -81,7 +81,7 @@ NON_MAC_STYLE = """
     QToolTip {
         font-size: 10pt;
     }
-    QLineEdit[keypad]{
+    QLineEdit[keypad=true]{
         font-family: Courier New;
         font-weight: bold;
         font-size: 19pt;

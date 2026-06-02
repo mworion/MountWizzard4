@@ -47,6 +47,7 @@ class KeypadWindow(MWidget):
         self.ui.setupUi(self.ws)
         self.setMinimumSize(270, 630)
         self.setMaximumSize(270, 630)
+        self.titleBar.windowFixed = True
         self.setWindowTitle("Keypad")
         self.signals = KeypadSignals()
         self.keypad = KeyPad(self.signals)

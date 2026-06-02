@@ -42,6 +42,7 @@ class DownloadPopup(MWidget):
         self.ui.setupUi(self.ws)
         self.setMinimumSize(400, 120)
         self.setMaximumSize(400, 120)
+        self.titleBar.windowFixed = True
         self.setWindowTitle("Downloading from Web")
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)

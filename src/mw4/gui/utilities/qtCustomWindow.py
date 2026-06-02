@@ -6,6 +6,7 @@ from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QToolButton, QWidget
 class CustomTitleBar(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
+        self.windowFixed: bool = False
         self.minButton: QToolButton = QToolButton(self)
         self.maxButton: QToolButton = QToolButton(self)
         self.closeButton: QToolButton = QToolButton(self)
@@ -16,8 +17,6 @@ class CustomTitleBar(QWidget):
         titleFrame = QFrame()
         titleFrame.setProperty("title", True)
         titleFrame.setFixedHeight(30)
-        titleFrame.setLineWidth(0)
-        titleFrame.setFrameShape(QFrame.Shape.Box)
         titleFrame.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         frameLayout = QHBoxLayout(titleFrame)
         frameLayout.setContentsMargins(0, 0, 0, 0)
@@ -70,6 +69,10 @@ class CustomTitleBar(QWidget):
         titleBarLayout.setSpacing(5)
 
     def windowStateChanged(self, state) -> None:
+        if self.windowFixed:
+            self.normButton.setVisible(False)
+            self.maxButton.setVisible(False)
+            return
         if state == Qt.WindowState.WindowMaximized:
             self.normButton.setVisible(True)
             self.maxButton.setVisible(False)

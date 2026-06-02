@@ -37,7 +37,7 @@ from PySide6.QtWidgets import (
 from skyfield.api import Time
 
 
-class MWidget(QWidget, Styles):
+class MWidget(QMainWindow, Styles):
     log = logging.getLogger("MW4")
     FULL_WIDTH = 800
     FULL_HEIGHT = 600
@@ -63,6 +63,7 @@ class MWidget(QWidget, Styles):
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.titleBar = CustomTitleBar(self)
+
         workSpaceLayout = QVBoxLayout()
         workSpaceLayout.setContentsMargins(0, 0, 0, 0)
         self.ws = QWidget()
@@ -73,7 +74,9 @@ class MWidget(QWidget, Styles):
         centralWidgetLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
         centralWidgetLayout.addWidget(self.titleBar)
         centralWidgetLayout.addLayout(workSpaceLayout)
-        self.setLayout(centralWidgetLayout)
+        centralWidget = QWidget()
+        centralWidget.setLayout(centralWidgetLayout)
+        self.setCentralWidget(centralWidget)
 
     def changeEvent(self, event):
         if event.type() == QEvent.Type.WindowStateChange:

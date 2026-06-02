@@ -59,6 +59,7 @@ class UploadPopup(MWidget):
         self.ui.setupUi(self.ws)
         self.setMinimumSize(400, 120)
         self.setMaximumSize(400, 120)
+        self.titleBar.windowFixed = True
         self.setWindowTitle("Mount Upload")
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.returnValues = {"success": False, "successMount": False}

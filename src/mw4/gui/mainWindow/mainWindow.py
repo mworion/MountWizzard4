@@ -46,7 +46,7 @@ class MainWindow(MWidget):
         self.setWindowTitle(f"MountWizzard4 - v{self.app.__version__}")
         self.setMinimumSize(800,630)
         self.setMaximumSize(800,630)
-        self.activateWindow()
+        self.titleBar.windowFixed = True
         self.externalWindows = ExternalWindows(self)
         self.mainWindowAddons = MainWindowAddons(self)
         self.satStatus: bool = False

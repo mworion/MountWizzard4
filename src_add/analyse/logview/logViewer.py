@@ -1,5 +1,4 @@
 ############################################################
-# -*- coding: utf-8 -*-
 #
 #       #   #  #   #   #    #
 #      ##  ##  #  ##  #    #
@@ -14,15 +13,25 @@
 # Licence APL2.0
 #
 ###########################################################
-import sys
 import os
+import sys
 from pathlib import Path
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QTabWidget, QLabel, QLineEdit
-from PySide6.QtWidgets import QGridLayout, QPushButton, QFileDialog
-from PySide6.QtWidgets import QListWidget, QListWidgetItem, QApplication
-from PySide6.QtWidgets import QAbstractItemView
 from PySide6.QtCore import QDir, Qt
 from PySide6.QtGui import QFont
+from PySide6.QtWidgets import (
+    QAbstractItemView,
+    QApplication,
+    QFileDialog,
+    QGridLayout,
+    QLabel,
+    QLineEdit,
+    QListWidget,
+    QListWidgetItem,
+    QPushButton,
+    QTabWidget,
+    QVBoxLayout,
+    QWidget,
+)
 
 
 class QCustomListWidget(QListWidget):
@@ -95,9 +104,7 @@ class Categories(QTabWidget):
     def getListKey(line):
         if "[I]" in line and "[SYS]" in line:
             listKey = "System"
-        elif "[C]" in line:
-            listKey = "Error"
-        elif "[E]" in line:
+        elif "[C]" in line or "[E]" in line:
             listKey = "Error"
         elif "[W]" in line:
             listKey = "Warnings"

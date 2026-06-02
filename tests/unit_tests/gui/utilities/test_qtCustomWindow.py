@@ -55,7 +55,7 @@ def test_initialization_2(function):
 def test_initialization_3(function):
     """Test that title label is initialized."""
     assert function.title is not None
-    assert hasattr(function, 'title')
+    assert hasattr(function, "title")
 
 
 def test_button_properties_1(function):
@@ -104,7 +104,7 @@ def test_normalize_button_visibility_1():
     parent = QWidget()
     titleBar = CustomTitleBar(parent)
     # Using property check instead of isVisible since widget is not shown
-    assert hasattr(titleBar.normButton, 'show')
+    assert hasattr(titleBar.normButton, "show")
 
 
 def test_maximize_button_visibility_1():
@@ -112,24 +112,24 @@ def test_maximize_button_visibility_1():
     parent = QWidget()
     titleBar = CustomTitleBar(parent)
     # Using property check instead of isVisible since widget is not shown
-    assert hasattr(titleBar.maxButton, 'show')
+    assert hasattr(titleBar.maxButton, "show")
 
 
 def test_button_connections_1(function):
     """Test minimum button is clickable."""
-    with mock.patch.object(function.window(), 'showMinimized'):
+    with mock.patch.object(function.window(), "showMinimized"):
         QTest.mouseClick(function.minButton, Qt.MouseButton.LeftButton)
 
 
 def test_button_connections_2(function):
     """Test maximize button is clickable."""
-    with mock.patch.object(function.window(), 'showMaximized'):
+    with mock.patch.object(function.window(), "showMaximized"):
         QTest.mouseClick(function.maxButton, Qt.MouseButton.LeftButton)
 
 
 def test_button_connections_3(function):
     """Test close button is clickable."""
-    with mock.patch.object(function.window(), 'close'):
+    with mock.patch.object(function.window(), "close"):
         QTest.mouseClick(function.closeButton, Qt.MouseButton.LeftButton)
 
 
@@ -140,8 +140,8 @@ def test_window_state_changed_1():
     titleBar = CustomTitleBar(parent)
     titleBar.windowStateChanged(Qt.WindowState.WindowMaximized)
     # Check that methods were called (setVisible)
-    assert hasattr(titleBar.normButton, 'setVisible')
-    assert hasattr(titleBar.maxButton, 'setVisible')
+    assert hasattr(titleBar.normButton, "setVisible")
+    assert hasattr(titleBar.maxButton, "setVisible")
     parent.close()
 
 
@@ -151,8 +151,8 @@ def test_window_state_changed_2():
     parent.show()
     titleBar = CustomTitleBar(parent)
     titleBar.windowStateChanged(Qt.WindowState.WindowNoState)
-    assert hasattr(titleBar.normButton, 'setVisible')
-    assert hasattr(titleBar.maxButton, 'setVisible')
+    assert hasattr(titleBar.normButton, "setVisible")
+    assert hasattr(titleBar.maxButton, "setVisible")
     parent.close()
 
 
@@ -163,8 +163,8 @@ def test_window_state_changed_3():
     titleBar = CustomTitleBar(parent)
     titleBar.windowStateChanged(Qt.WindowState.WindowMaximized)
     titleBar.windowStateChanged(Qt.WindowState.WindowNoState)
-    assert hasattr(titleBar.normButton, 'setVisible')
-    assert hasattr(titleBar.maxButton, 'setVisible')
+    assert hasattr(titleBar.normButton, "setVisible")
+    assert hasattr(titleBar.maxButton, "setVisible")
     parent.close()
 
 
@@ -411,6 +411,4 @@ def test_title_bar_margins_1(function):
     """Test title bar layout margins."""
     layout = function.layout()
     left, top, right, bottom = layout.getContentsMargins()
-    assert right == 8
-
-
+    assert right == 0

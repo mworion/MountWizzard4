@@ -1,7 +1,7 @@
-from skyfield.data import hipparcos
-from skyfield.api import Star, load
-import numpy as np
 import erfa
+import numpy as np
+from skyfield.api import Star, load
+from skyfield.data import hipparcos
 
 HEADER = '''############################################################
 # -*- coding: utf-8 -*-

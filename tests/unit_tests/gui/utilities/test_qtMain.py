@@ -22,6 +22,7 @@ from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path
 from PySide6.QtWidgets import (
     QFileDialog,
+    QMainWindow,
     QMessageBox,
     QPushButton,
     QWidget,
@@ -92,6 +93,26 @@ def test_keyPressEvent_3(function):
 
     with mock.patch.object(QWidget, "keyPressEvent"):
         function.keyPressEvent(Key())
+
+
+def test_changeEvent_1(function):
+    from PySide6.QtCore import QEvent
+
+    class MockEvent:
+        @staticmethod
+        def type():
+            return QEvent.Type.WindowStateChange
+
+        @staticmethod
+        def accept():
+            pass
+
+    with (
+        mock.patch.object(function, "windowState", return_value=0),
+        mock.patch.object(function.titleBar, "windowStateChanged"),
+        mock.patch.object(QMainWindow, "changeEvent"),
+    ):
+        function.changeEvent(MockEvent())
 
 
 def test_wIcon_1(function):

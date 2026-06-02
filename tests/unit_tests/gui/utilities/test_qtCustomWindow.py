@@ -168,6 +168,19 @@ def test_window_state_changed_3():
     parent.close()
 
 
+def test_window_state_changed_4():
+    """Test window state change with windowFixed set to True."""
+    parent = QWidget()
+    parent.show()
+    titleBar = CustomTitleBar(parent)
+    titleBar.windowFixed = True
+    titleBar.windowStateChanged(Qt.WindowState.WindowMaximized)
+    # When windowFixed is True, both buttons should remain hidden
+    assert not titleBar.normButton.isVisible()
+    assert not titleBar.maxButton.isVisible()
+    parent.close()
+
+
 def test_initial_pos_attribute_1(function):
     """Test initial_pos is None at start."""
     assert function.initial_pos is None

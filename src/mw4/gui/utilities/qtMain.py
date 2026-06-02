@@ -49,15 +49,6 @@ class MWidget(QMainWindow, Styles):
         self.initUI()
         self.screenSizeX = QGuiApplication.primaryScreen().geometry().width()
         self.screenSizeY = QGuiApplication.primaryScreen().geometry().height()
-        """
-        newFlag = Qt.WindowType.CustomizeWindowHint | Qt.WindowType.WindowSystemMenuHint
-        newFlag = (
-            newFlag
-            | Qt.WindowType.WindowMinimizeButtonHint
-            | Qt.WindowType.WindowMaximizeButtonHint
-        )
-        self.setWindowFlags(self.windowFlags() | newFlag)
-        """
         self.setWindowIcon(self.mwIcon)
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
@@ -75,6 +66,7 @@ class MWidget(QMainWindow, Styles):
         centralWidgetLayout.addWidget(self.titleBar)
         centralWidgetLayout.addLayout(workSpaceLayout)
         centralWidget = QWidget()
+        centralWidget.setStyleSheet("border-radius: 2px;")
         centralWidget.setLayout(centralWidgetLayout)
         self.setCentralWidget(centralWidget)
 

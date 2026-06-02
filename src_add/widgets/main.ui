@@ -159,7 +159,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>140</x>
+         <x>145</x>
          <y>35</y>
          <width>76</width>
          <height>21</height>
@@ -229,7 +229,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>165</x>
+         <x>170</x>
          <y>85</y>
          <width>51</width>
          <height>21</height>
@@ -296,7 +296,7 @@
       <widget class="QLabel" name="label_55">
        <property name="geometry">
         <rect>
-         <x>295</x>
+         <x>305</x>
          <y>60</y>
          <width>101</width>
          <height>21</height>
@@ -316,7 +316,7 @@
       <widget class="QLabel" name="label_28">
        <property name="geometry">
         <rect>
-         <x>535</x>
+         <x>550</x>
          <y>110</y>
          <width>121</width>
          <height>21</height>
@@ -339,7 +339,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>675</x>
+         <x>690</x>
          <y>110</y>
          <width>51</width>
          <height>21</height>
@@ -389,7 +389,7 @@
       <widget class="QLabel" name="label_88">
        <property name="geometry">
         <rect>
-         <x>730</x>
+         <x>745</x>
          <y>60</y>
          <width>16</width>
          <height>20</height>
@@ -415,7 +415,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>165</x>
+         <x>170</x>
          <y>135</y>
          <width>51</width>
          <height>21</height>
@@ -462,7 +462,7 @@
       <widget class="QLabel" name="label_91">
        <property name="geometry">
         <rect>
-         <x>470</x>
+         <x>480</x>
          <y>35</y>
          <width>31</width>
          <height>21</height>
@@ -485,7 +485,7 @@
       <widget class="QLabel" name="label_89">
        <property name="geometry">
         <rect>
-         <x>730</x>
+         <x>745</x>
          <y>85</y>
          <width>16</width>
          <height>20</height>
@@ -531,7 +531,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>675</x>
+         <x>690</x>
          <y>85</y>
          <width>51</width>
          <height>21</height>
@@ -581,7 +581,7 @@
       <widget class="QLabel" name="label_104">
        <property name="geometry">
         <rect>
-         <x>730</x>
+         <x>745</x>
          <y>10</y>
          <width>16</width>
          <height>20</height>
@@ -604,7 +604,7 @@
       <widget class="QLabel" name="label_mountMAC_2">
        <property name="geometry">
         <rect>
-         <x>295</x>
+         <x>305</x>
          <y>135</y>
          <width>66</width>
          <height>21</height>
@@ -644,7 +644,7 @@
       <widget class="QLabel" name="label_65">
        <property name="geometry">
         <rect>
-         <x>535</x>
+         <x>550</x>
          <y>85</y>
          <width>131</width>
          <height>21</height>
@@ -667,7 +667,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>140</x>
+         <x>145</x>
          <y>10</y>
          <width>76</width>
          <height>21</height>
@@ -711,7 +711,7 @@
       <widget class="QLabel" name="label_18">
        <property name="geometry">
         <rect>
-         <x>295</x>
+         <x>305</x>
          <y>85</y>
          <width>71</width>
          <height>21</height>
@@ -734,7 +734,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>675</x>
+         <x>690</x>
          <y>185</y>
          <width>51</width>
          <height>21</height>
@@ -781,7 +781,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>415</x>
+         <x>425</x>
          <y>60</y>
          <width>51</width>
          <height>21</height>
@@ -828,7 +828,7 @@
       <widget class="QLabel" name="label_130">
        <property name="geometry">
         <rect>
-         <x>220</x>
+         <x>225</x>
          <y>10</y>
          <width>46</width>
          <height>21</height>
@@ -848,7 +848,7 @@
       <widget class="QLabel" name="label_109">
        <property name="geometry">
         <rect>
-         <x>730</x>
+         <x>745</x>
          <y>35</y>
          <width>16</width>
          <height>20</height>
@@ -871,7 +871,7 @@
       <widget class="QLabel" name="label_52">
        <property name="geometry">
         <rect>
-         <x>295</x>
+         <x>305</x>
          <y>35</y>
          <width>91</width>
          <height>20</height>
@@ -894,7 +894,7 @@
       <widget class="QLabel" name="clockOffsetMS">
        <property name="geometry">
         <rect>
-         <x>220</x>
+         <x>225</x>
          <y>60</y>
          <width>21</width>
          <height>21</height>
@@ -914,7 +914,7 @@
       <widget class="QLabel" name="label_133">
        <property name="geometry">
         <rect>
-         <x>730</x>
+         <x>745</x>
          <y>110</y>
          <width>16</width>
          <height>21</height>
@@ -934,7 +934,7 @@
       <widget class="QLabel" name="label_90">
        <property name="geometry">
         <rect>
-         <x>295</x>
+         <x>305</x>
          <y>10</y>
          <width>101</width>
          <height>20</height>
@@ -957,7 +957,7 @@
       <widget class="QLabel" name="label_82">
        <property name="geometry">
         <rect>
-         <x>730</x>
+         <x>745</x>
          <y>185</y>
          <width>21</width>
          <height>20</height>
@@ -983,7 +983,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>415</x>
+         <x>425</x>
          <y>160</y>
          <width>51</width>
          <height>21</height>
@@ -1033,7 +1033,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>675</x>
+         <x>690</x>
          <y>60</y>
          <width>51</width>
          <height>21</height>
@@ -1083,7 +1083,7 @@
       <widget class="QLabel" name="label_4">
        <property name="geometry">
         <rect>
-         <x>535</x>
+         <x>550</x>
          <y>35</y>
          <width>121</width>
          <height>21</height>
@@ -1106,7 +1106,7 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>165</x>
+         <x>170</x>
          <y>185</y>
          <width>51</width>
          <height>21</height>
@@ -1154,7 +1154,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_6">
        <property name="geometry">
         <rect>
-         <x>535</x>
+         <x>550</x>
          <y>135</y>
          <width>66</width>
          <height>21</height>
@@ -1174,7 +1174,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_20">
        <property name="geometry">
         <rect>
-         <x>535</x>
+         <x>550</x>
          <y>10</y>
          <width>121</width>
          <height>21</height>
@@ -1194,7 +1194,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_222">
        <property name="geometry">
         <rect>
-         <x>220</x>
+         <x>225</x>
          <y>35</y>
          <width>46</width>
          <height>21</height>
@@ -1217,7 +1217,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>415</x>
+         <x>425</x>
          <y>35</y>
          <width>51</width>
          <height>21</height>
@@ -1264,7 +1264,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>415</x>
+         <x>425</x>
          <y>85</y>
          <width>51</width>
          <height>21</height>
@@ -1311,7 +1311,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>415</x>
+         <x>425</x>
          <y>135</y>
          <width>51</width>
          <height>21</height>
@@ -1367,7 +1367,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>165</x>
+         <x>170</x>
          <y>110</y>
          <width>51</width>
          <height>21</height>
@@ -1437,7 +1437,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>415</x>
+         <x>425</x>
          <y>10</y>
          <width>51</width>
          <height>21</height>
@@ -1481,7 +1481,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_61">
        <property name="geometry">
         <rect>
-         <x>470</x>
+         <x>480</x>
          <y>10</y>
          <width>31</width>
          <height>21</height>
@@ -1524,7 +1524,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_64">
        <property name="geometry">
         <rect>
-         <x>220</x>
+         <x>225</x>
          <y>110</y>
          <width>31</width>
          <height>21</height>
@@ -1547,7 +1547,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>675</x>
+         <x>690</x>
          <y>10</y>
          <width>51</width>
          <height>21</height>
@@ -1617,7 +1617,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_12">
        <property name="geometry">
         <rect>
-         <x>535</x>
+         <x>550</x>
          <y>185</y>
          <width>51</width>
          <height>21</height>
@@ -1637,7 +1637,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_34">
        <property name="geometry">
         <rect>
-         <x>535</x>
+         <x>550</x>
          <y>60</y>
          <width>131</width>
          <height>21</height>
@@ -1657,7 +1657,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_5">
        <property name="geometry">
         <rect>
-         <x>535</x>
+         <x>550</x>
          <y>160</y>
          <width>61</width>
          <height>21</height>
@@ -1677,7 +1677,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_mountMAC_4">
        <property name="geometry">
         <rect>
-         <x>295</x>
+         <x>305</x>
          <y>160</y>
          <width>106</width>
          <height>21</height>
@@ -1700,7 +1700,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>645</x>
+         <x>660</x>
          <y>135</y>
          <width>81</width>
          <height>21</height>
@@ -1767,7 +1767,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>165</x>
+         <x>170</x>
          <y>60</y>
          <width>51</width>
          <height>21</height>
@@ -1817,7 +1817,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>645</x>
+         <x>660</x>
          <y>160</y>
          <width>81</width>
          <height>21</height>
@@ -1867,7 +1867,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_81">
        <property name="geometry">
         <rect>
-         <x>220</x>
+         <x>225</x>
          <y>135</y>
          <width>31</width>
          <height>21</height>
@@ -1890,7 +1890,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>165</x>
+         <x>170</x>
          <y>160</y>
          <width>51</width>
          <height>21</height>
@@ -1940,7 +1940,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>675</x>
+         <x>690</x>
          <y>35</y>
          <width>51</width>
          <height>21</height>
@@ -1996,7 +1996,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>415</x>
+         <x>425</x>
          <y>110</y>
          <width>51</width>
          <height>21</height>
@@ -2046,7 +2046,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_mountMAC_7">
        <property name="geometry">
         <rect>
-         <x>295</x>
+         <x>305</x>
          <y>110</y>
          <width>106</width>
          <height>21</height>
@@ -2066,7 +2066,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <widget class="QLabel" name="label_83">
        <property name="geometry">
         <rect>
-         <x>470</x>
+         <x>480</x>
          <y>110</y>
          <width>21</width>
          <height>20</height>
@@ -2092,7 +2092,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>415</x>
+         <x>425</x>
          <y>185</y>
          <width>51</width>
          <height>21</height>
@@ -2142,7 +2142,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>295</x>
+         <x>305</x>
          <y>185</y>
          <width>106</width>
          <height>21</height>
@@ -2165,7 +2165,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>295</x>
+         <x>305</x>
          <y>185</y>
          <width>106</width>
          <height>21</height>
@@ -2188,7 +2188,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        </property>
        <property name="geometry">
         <rect>
-         <x>415</x>
+         <x>425</x>
          <y>185</y>
          <width>51</width>
          <height>21</height>
@@ -4994,7 +4994,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
       <rect>
        <x>5</x>
        <y>10</y>
-       <width>776</width>
+       <width>781</width>
        <height>211</height>
       </rect>
      </property>
@@ -7975,7 +7975,7 @@ no tracking</string>
       <rect>
        <x>5</x>
        <y>225</y>
-       <width>776</width>
+       <width>781</width>
        <height>206</height>
       </rect>
      </property>
@@ -8003,7 +8003,7 @@ no tracking</string>
        <rect>
         <x>50</x>
         <y>20</y>
-        <width>716</width>
+        <width>721</width>
         <height>181</height>
        </rect>
       </property>
@@ -8200,7 +8200,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <rect>
        <x>485</x>
        <y>10</y>
-       <width>296</width>
+       <width>301</width>
        <height>186</height>
       </rect>
      </property>
@@ -8224,7 +8224,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
        <rect>
         <x>10</x>
         <y>45</y>
-        <width>276</width>
+        <width>281</width>
         <height>136</height>
        </rect>
       </property>
@@ -8261,7 +8261,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <rect>
        <x>485</x>
        <y>215</y>
-       <width>296</width>
+       <width>301</width>
        <height>216</height>
       </rect>
      </property>
@@ -9185,7 +9185,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <widget class="QGroupBox" name="groupBox_55">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>140</y>
          <width>366</width>
          <height>91</height>
@@ -9333,7 +9333,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <widget class="QGroupBox" name="autoSortGroup">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>265</y>
          <width>366</width>
          <height>136</height>
@@ -9606,7 +9606,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
       <widget class="QGroupBox" name="dsoGroup">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>5</y>
          <width>366</width>
          <height>106</height>
@@ -10462,7 +10462,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <widget class="QGroupBox" name="runModelGroup">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>5</y>
          <width>366</width>
          <height>211</height>
@@ -11708,7 +11708,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        </property>
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>290</y>
          <width>366</width>
          <height>71</height>
@@ -11811,7 +11811,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <widget class="QGroupBox" name="groupBoxCoordinateSystems_2">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>230</y>
          <width>366</width>
          <height>46</height>
@@ -11878,7 +11878,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
        </property>
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>370</y>
          <width>366</width>
          <height>31</height>
@@ -12045,7 +12045,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <widget class="QGroupBox" name="modelGroup">
        <property name="geometry">
         <rect>
-         <x>485</x>
+         <x>490</x>
          <y>10</y>
          <width>281</width>
          <height>126</height>
@@ -12301,7 +12301,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <widget class="QGroupBox" name="modelNameGroup">
        <property name="geometry">
         <rect>
-         <x>485</x>
+         <x>490</x>
          <y>235</y>
          <width>281</width>
          <height>166</height>
@@ -12391,7 +12391,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <widget class="QGroupBox" name="groupBox_22">
        <property name="geometry">
         <rect>
-         <x>485</x>
+         <x>490</x>
          <y>150</y>
          <width>281</width>
          <height>71</height>
@@ -12482,7 +12482,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <rect>
        <x>5</x>
        <y>0</y>
-       <width>776</width>
+       <width>781</width>
        <height>436</height>
       </rect>
      </property>
@@ -13642,7 +13642,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <widget class="QGroupBox" name="GroupCover">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>95</y>
          <width>366</width>
          <height>51</height>
@@ -13744,7 +13744,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <widget class="QGroupBox" name="GroupDome">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>315</y>
          <width>366</width>
          <height>81</height>
@@ -13991,7 +13991,7 @@ Slew</string>
       <widget class="QGroupBox" name="GroupFilterWheel">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>230</y>
          <width>366</width>
          <height>51</height>
@@ -14149,7 +14149,7 @@ When clicking the button, you could change the value.</string>
       <widget class="QGroupBox" name="GroupTelescopeReadout">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>10</y>
          <width>366</width>
          <height>76</height>
@@ -14369,7 +14369,7 @@ When clicking the button, you could change the value.</string>
       <widget class="QGroupBox" name="GroupLightPanel">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>160</y>
          <width>366</width>
          <height>51</height>
@@ -18284,7 +18284,7 @@ When clicking the button, you could change the value.</string>
       <rect>
        <x>5</x>
        <y>0</y>
-       <width>776</width>
+       <width>781</width>
        <height>436</height>
       </rect>
      </property>
@@ -18306,7 +18306,7 @@ When clicking the button, you could change the value.</string>
         <rect>
          <x>5</x>
          <y>10</y>
-         <width>566</width>
+         <width>571</width>
          <height>336</height>
         </rect>
        </property>
@@ -18408,7 +18408,7 @@ When clicking the button, you could change the value.</string>
       <widget class="QGroupBox" name="satSourceGroup">
        <property name="geometry">
         <rect>
-         <x>575</x>
+         <x>580</x>
          <y>5</y>
          <width>191</width>
          <height>56</height>
@@ -18507,7 +18507,7 @@ When clicking the button, you could change the value.</string>
       <widget class="QGroupBox" name="satSetupGroup">
        <property name="geometry">
         <rect>
-         <x>575</x>
+         <x>580</x>
          <y>305</y>
          <width>191</width>
          <height>41</height>
@@ -18542,7 +18542,7 @@ When clicking the button, you could change the value.</string>
       <widget class="QGroupBox" name="satFilterGroup">
        <property name="geometry">
         <rect>
-         <x>575</x>
+         <x>580</x>
          <y>70</y>
          <width>191</width>
          <height>221</height>
@@ -20335,7 +20335,7 @@ Next point in time when satellite settles.</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>10</y>
          <width>366</width>
          <height>76</height>
@@ -20465,7 +20465,7 @@ Next point in time when satellite settles.</string>
       <rect>
        <x>5</x>
        <y>0</y>
-       <width>776</width>
+       <width>781</width>
        <height>436</height>
       </rect>
      </property>
@@ -20479,7 +20479,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="satFilterGroup_2">
        <property name="geometry">
         <rect>
-         <x>575</x>
+         <x>580</x>
          <y>70</y>
          <width>191</width>
          <height>221</height>
@@ -20553,7 +20553,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="cometSourceGroup">
        <property name="geometry">
         <rect>
-         <x>575</x>
+         <x>580</x>
          <y>5</y>
          <width>191</width>
          <height>56</height>
@@ -20654,7 +20654,7 @@ Next point in time when satellite settles.</string>
         <rect>
          <x>5</x>
          <y>10</y>
-         <width>566</width>
+         <width>571</width>
          <height>336</height>
         </rect>
        </property>
@@ -20825,7 +20825,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="asteroidFilterGroup">
        <property name="geometry">
         <rect>
-         <x>575</x>
+         <x>580</x>
          <y>70</y>
          <width>191</width>
          <height>221</height>
@@ -20899,7 +20899,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="asteroidSourceGroup">
        <property name="geometry">
         <rect>
-         <x>575</x>
+         <x>580</x>
          <y>5</y>
          <width>191</width>
          <height>56</height>
@@ -20936,7 +20936,7 @@ Next point in time when satellite settles.</string>
         <rect>
          <x>5</x>
          <y>10</y>
-         <width>566</width>
+         <width>571</width>
          <height>336</height>
         </rect>
        </property>
@@ -21047,7 +21047,7 @@ Next point in time when satellite settles.</string>
       <rect>
        <x>5</x>
        <y>0</y>
-       <width>776</width>
+       <width>781</width>
        <height>436</height>
       </rect>
      </property>
@@ -22309,7 +22309,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="groupBox_17">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>170</y>
          <width>366</width>
          <height>71</height>
@@ -22418,7 +22418,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="groupBox_18">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>90</y>
          <width>366</width>
          <height>71</height>
@@ -22527,7 +22527,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="groupBox_13">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>250</y>
          <width>366</width>
          <height>71</height>
@@ -22636,7 +22636,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="box">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>10</y>
          <width>366</width>
          <height>71</height>
@@ -22777,7 +22777,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="groupPortUSB">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>345</y>
          <width>366</width>
          <height>51</height>
@@ -22988,7 +22988,7 @@ Next point in time when satellite settles.</string>
         <rect>
          <x>5</x>
          <y>5</y>
-         <width>761</width>
+         <width>766</width>
          <height>391</height>
         </rect>
        </property>
@@ -23692,7 +23692,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="analysisGroup">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>10</y>
          <width>366</width>
          <height>121</height>
@@ -23869,7 +23869,7 @@ Next point in time when satellite settles.</string>
       <rect>
        <x>5</x>
        <y>0</y>
-       <width>776</width>
+       <width>781</width>
        <height>436</height>
       </rect>
      </property>
@@ -23920,7 +23920,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="GroupAccessories">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>10</y>
          <width>366</width>
          <height>231</height>
@@ -24991,7 +24991,7 @@ Next point in time when satellite settles.</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>345</y>
          <width>366</width>
          <height>51</height>
@@ -25624,7 +25624,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="GroupRigComputer">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>290</y>
          <width>366</width>
          <height>111</height>
@@ -25841,7 +25841,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="FirmwareGroup">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>15</y>
          <width>366</width>
          <height>106</height>
@@ -26192,7 +26192,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="GroupClockSync">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>160</y>
          <width>366</width>
          <height>86</height>
@@ -27215,7 +27215,7 @@ Next point in time when satellite settles.</string>
       <widget class="QTabWidget" name="tabDomeExplain">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>40</y>
          <width>366</width>
          <height>356</height>
@@ -27504,7 +27504,7 @@ Next point in time when satellite settles.</string>
       <widget class="QLabel" name="label_3">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>15</y>
          <width>206</width>
          <height>16</height>
@@ -30318,7 +30318,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="LoglevelGroup">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>10</y>
          <width>366</width>
          <height>46</height>
@@ -30624,7 +30624,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="GroupAlamanc">
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>85</y>
          <width>366</width>
          <height>56</height>
@@ -30701,7 +30701,7 @@ Next point in time when satellite settles.</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>15</y>
          <width>366</width>
          <height>51</height>
@@ -30788,7 +30788,7 @@ Next point in time when satellite settles.</string>
        </property>
        <property name="geometry">
         <rect>
-         <x>400</x>
+         <x>405</x>
          <y>165</y>
          <width>366</width>
          <height>116</height>
@@ -31111,7 +31111,7 @@ Next point in time when satellite settles.</string>
       <widget class="QGroupBox" name="CopyrightGroup_2">
        <property name="geometry">
         <rect>
-         <x>395</x>
+         <x>400</x>
          <y>305</y>
          <width>366</width>
          <height>91</height>
@@ -31147,7 +31147,7 @@ hr { height: 1px; border-width: 0; }
 li.unchecked::marker { content: &quot;\2610&quot;; }
 li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Courier New'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:10pt;&quot;&gt;astropy, deepdiff, hdiapi, importlib_metadata, PySide6, pywin32, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan, hdiapi, tange-dict-key, xisf, packaging, deepdiff, sgp4&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:10pt;&quot;&gt;astropy, deepdiff, hdiapi, importlib_metadata, pyside6, pywin32, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan, hdiapi, tange-dict-key, xisf, packaging, deepdiff, sgp4&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>

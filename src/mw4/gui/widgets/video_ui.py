@@ -23,7 +23,7 @@ class Ui_VideoDialog(object):
     def setupUi(self, VideoDialog):
         if not VideoDialog.objectName():
             VideoDialog.setObjectName(u"VideoDialog")
-        VideoDialog.resize(800, 600)
+        VideoDialog.resize(800, 580)
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

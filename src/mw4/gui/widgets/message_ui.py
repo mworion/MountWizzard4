@@ -23,13 +23,13 @@ class Ui_MessageDialog(object):
     def setupUi(self, MessageDialog):
         if not MessageDialog.objectName():
             MessageDialog.setObjectName(u"MessageDialog")
-        MessageDialog.resize(800, 600)
+        MessageDialog.resize(800, 580)
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MessageDialog.sizePolicy().hasHeightForWidth())
         MessageDialog.setSizePolicy(sizePolicy)
-        MessageDialog.setMinimumSize(QSize(0, 0))
+        MessageDialog.setMinimumSize(QSize(800, 580))
         MessageDialog.setMaximumSize(QSize(16777215, 16777215))
         MessageDialog.setSizeIncrement(QSize(10, 10))
         MessageDialog.setBaseSize(QSize(10, 10))

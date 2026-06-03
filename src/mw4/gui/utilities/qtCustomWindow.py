@@ -12,7 +12,7 @@ class CustomTitleBar(QWidget):
         self.closeButton: QToolButton = QToolButton(self)
         self.normButton: QToolButton = QToolButton(self)
         self.normButton.setVisible(False)
-        self.initial_pos: QPoint | None = None
+        self.initialPos: QPoint | None = None
         titleBarLayout = QHBoxLayout(self)
         titleBarLayout.setContentsMargins(0, 0, 0, 0)
         titleFrame = QFrame()
@@ -68,10 +68,6 @@ class CustomTitleBar(QWidget):
         titleBarLayout.setContentsMargins(10, 0, 10, 0)
 
     def windowStateChanged(self, state) -> None:
-        if self.windowFixed:
-            self.normButton.setVisible(False)
-            self.maxButton.setVisible(False)
-            return
         if state == Qt.WindowState.WindowMaximized:
             self.normButton.setVisible(True)
             self.maxButton.setVisible(False)
@@ -81,13 +77,13 @@ class CustomTitleBar(QWidget):
 
     def mousePressEvent(self, event) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
-            self.initial_pos = event.position().toPoint()
+            self.initialPos = event.position().toPoint()
         super().mousePressEvent(event)
         event.accept()
 
     def mouseMoveEvent(self, event) -> None:
-        if self.initial_pos is not None:
-            delta = event.position().toPoint() - self.initial_pos
+        if self.initialPos is not None:
+            delta = event.position().toPoint() - self.initialPos
             self.window().move(
                 self.window().x() + delta.x(),
                 self.window().y() + delta.y(),
@@ -96,6 +92,6 @@ class CustomTitleBar(QWidget):
         event.accept()
 
     def mouseReleaseEvent(self, event) -> None:
-        self.initial_pos = None
+        self.initialPos = None
         super().mouseReleaseEvent(event)
         event.accept()

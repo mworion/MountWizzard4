@@ -44,9 +44,6 @@ class MainWindow(MWidget):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self.ws)
         self.setWindowTitle(f"MountWizzard4 - v{self.app.__version__}")
-        self.setMinimumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
-        self.setMaximumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
-        # self.titleBar.windowFixed = True
         self.externalWindows = ExternalWindows(self)
         self.mainWindowAddons = MainWindowAddons(self)
         self.satStatus: bool = False
@@ -178,6 +175,13 @@ class MainWindow(MWidget):
         self.mainWindowAddons.addons["SettDevice"].stopDrivers()
         self.saveProfile()
         self.close()
+
+    def showWindow(self) -> None:
+        self.show()
+        self.setMinimumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
+        self.setMaximumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
+        self.titleBar.maxButton.setVisible(False)
+        self.titleBar.normButton.setVisible(False)
 
     def smartFunctionGui(self) -> None:
         isMountReady = bool(self.app.deviceStat.get("mount"))

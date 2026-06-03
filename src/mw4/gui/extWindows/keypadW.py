@@ -129,8 +129,9 @@ class KeypadWindow(MWidget):
         self.show()
         self.setMinimumSize(270, self.FULL_HEIGHT)
         self.setMaximumSize(270, self.FULL_HEIGHT)
-        self.titleBar.maxButton.setVisible(False)
         self.titleBar.normButton.setVisible(False)
+        self.titleBar.maxButton.setVisible(False)
+        self.titleBar.windowFixed = True
         self.startKeypad()
 
     def colorChange(self) -> None:

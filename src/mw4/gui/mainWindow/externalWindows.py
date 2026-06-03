@@ -127,7 +127,6 @@ class ExternalWindows:
                 partial(self.toggleWindow, window)
             )
         self.app.update1s.connect(self.updateWindowsStats)
-        self.mainW.ui.collectWindows.clicked.connect(self.collectWindows)
 
     def updateWindowsStats(self) -> None:
         for win in self.uiWindows:
@@ -176,13 +175,3 @@ class ExternalWindows:
                 continue
             self.uiWindows[window]["classObj"].close()
             mainThreadSleep(50)
-
-    def collectWindows(self) -> None:
-        i = 0
-        for i, window in enumerate(self.uiWindows):
-            if self.uiWindows[window]["classObj"]:
-                self.uiWindows[window]["classObj"].resize(QSize(800, 600))
-                self.uiWindows[window]["classObj"].move(QPoint(i * 50 + 10, i * 50 + 10))
-                self.uiWindows[window]["classObj"].activateWindow()
-        self.mainW.move(i * 50 + 10, i * 50 + 10)
-        self.mainW.activateWindow()

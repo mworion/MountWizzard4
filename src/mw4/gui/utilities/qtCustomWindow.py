@@ -60,7 +60,7 @@ class CustomTitleBar(QWidget):
             buttons[button]["widget"].setFixedSize(QSize(16, 16))
             buttons[button]["widget"].setFocusPolicy(Qt.FocusPolicy.NoFocus)
             buttons[button]["widget"].clicked.connect(buttons[button]["func"])
-            style = f"border: none; padding: 2px; background-color: {buttons[button]['col']};"
+            style = f"border: none; border-radius: 2px; padding: 2px; background-color: {buttons[button]['col']};"
             buttons[button]["widget"].setStyleSheet(style)
             frameLayout.addWidget(buttons[button]["widget"])
 
@@ -68,6 +68,10 @@ class CustomTitleBar(QWidget):
         titleBarLayout.setContentsMargins(10, 0, 10, 0)
 
     def windowStateChanged(self, state) -> None:
+        if self.windowFixed:
+            self.normButton.setVisible(False)
+            self.maxButton.setVisible(False)
+            return
         if state == Qt.WindowState.WindowMaximized:
             self.normButton.setVisible(True)
             self.maxButton.setVisible(False)

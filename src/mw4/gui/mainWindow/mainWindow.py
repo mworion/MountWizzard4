@@ -180,8 +180,9 @@ class MainWindow(MWidget):
         self.show()
         self.setMinimumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.setMaximumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
-        self.titleBar.maxButton.setVisible(False)
         self.titleBar.normButton.setVisible(False)
+        self.titleBar.maxButton.setVisible(False)
+        self.titleBar.windowFixed = True
 
     def smartFunctionGui(self) -> None:
         isMountReady = bool(self.app.deviceStat.get("mount"))

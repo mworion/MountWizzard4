@@ -151,20 +151,3 @@ def test_closeExtendedWindows_2(function):
     function.closeExtendedWindows()
     function.uiWindows = test
 
-
-def test_collectWindows(function):
-    class Test:
-        @staticmethod
-        def resize(a):
-            return
-
-        @staticmethod
-        def move(a):
-            return
-
-        @staticmethod
-        def activateWindow():
-            return
-
-    function.uiWindows = {"showMessageW": {"classObj": Test(), "button": QPushButton()}}
-    function.collectWindows()

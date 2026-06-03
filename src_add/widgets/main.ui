@@ -110,13 +110,13 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_14">
       <property name="leftMargin">
-       <number>2</number>
+       <number>4</number>
       </property>
       <property name="topMargin">
        <number>6</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
@@ -24170,7 +24170,7 @@ Next point in time when satellite settles.</string>
         <enum>QTabWidget::TabShape::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>6</number>
        </property>
        <property name="elideMode">
         <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -30804,7 +30804,7 @@ Next point in time when satellite settles.</string>
            <x>5</x>
            <y>15</y>
            <width>366</width>
-           <height>126</height>
+           <height>91</height>
           </rect>
          </property>
          <property name="title">
@@ -30858,22 +30858,6 @@ Next point in time when satellite settles.</string>
             <string>Light Day Theme</string>
            </property>
           </item>
-         </widget>
-         <widget class="QPushButton" name="collectWindows">
-          <property name="geometry">
-           <rect>
-            <x>190</x>
-            <y>95</y>
-            <width>166</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Collects all open windows to the upper left corner with the startdard size 800x600 pixel.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Collect Windows</string>
-          </property>
          </widget>
          <widget class="QPushButton" name="big">
           <property name="geometry">
@@ -31449,13 +31433,13 @@ li.checked::marker { content: &quot;\2612&quot;; }
      </property>
      <layout class="QGridLayout" name="timeGoup" rowstretch="1,0,0">
       <property name="leftMargin">
-       <number>2</number>
+       <number>4</number>
       </property>
       <property name="topMargin">
        <number>6</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
@@ -31767,13 +31751,13 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
        <enum>QLayout::SizeConstraint::SetNoConstraint</enum>
       </property>
       <property name="leftMargin">
-       <number>2</number>
+       <number>4</number>
       </property>
       <property name="topMargin">
        <number>6</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
@@ -32842,7 +32826,6 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>posAz9</tabstop>
   <tabstop>posSave9</tabstop>
   <tabstop>colorSet</tabstop>
-  <tabstop>collectWindows</tabstop>
   <tabstop>almanacPrediction</tabstop>
   <tabstop>unitTimeUTC</tabstop>
   <tabstop>unitTimeLocal</tabstop>

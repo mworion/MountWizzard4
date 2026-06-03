@@ -101,9 +101,9 @@ def setTrace(app: Any, enable: bool = False) -> None:
 def setCustomLoggingLevel(app: Any, level: str = "DEBUG") -> None:
     if level == "TRACE":
         logging.getLogger("MW4").setLevel("DEBUG")
-        app.dReg.drivers["mount"]["class"].loggingTrace = True
+        app.dReg["mount"].instance.loggingTrace = True
         setTrace(app, enable=True)
     else:
         logging.getLogger("MW4").setLevel(level)
-        app.dReg.drivers["mount"]["class"].loggingTrace = False
+        app.dReg["mount"].instance.loggingTrace = False
         setTrace(app, enable=False)

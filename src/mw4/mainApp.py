@@ -143,7 +143,7 @@ class MountWizzard4(QObject):
 
     def storeConfig(self) -> None:
         self.config["loglevel"] = logging.getLevelName(self.log.level)
-        location = self.dReg.drivers["mount"]["class"].obsSite.location
+        location = self.dReg["mount"].instance.obsSite.location
         if location is not None:
             self.config["topoLat"] = float(location.latitude.degrees)
             self.config["topoLon"] = float(location.longitude.degrees)
@@ -157,7 +157,7 @@ class MountWizzard4(QObject):
         self.mount.stopAllMountTimers()
 
     def quit(self) -> None:
-        self.dReg.drivers["mount"]["stat"] = False
+        self.dReg.setStat("mount", False)
         self.aboutToQuit()
         self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 manual stopped"))
         self.application.quit()

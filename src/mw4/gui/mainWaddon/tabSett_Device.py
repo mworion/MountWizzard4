@@ -132,15 +132,12 @@ class SettDevice:
         return config
 
     def addMissingDefaultData(self, config: dict) -> dict:
-        for driver in self.app.dReg.drivers:
-            if driver in ["mount"] or self.app.dReg.drivers[driver]["class"] is None:
+        for entry in self.app.dReg.configurable():
+            if entry.name not in config:
+                config[entry.name] = {}
+                config[entry.name].update(entry.instance.defaultConfig)
                 continue
-            if driver not in config:
-                config[driver] = {}
-                defaultConfig = self.app.dReg.drivers[driver]["class"].defaultConfig
-                config[driver].update(defaultConfig)
-                continue
-            config = self.addMissingFrameworksData(driver, config)
+            config = self.addMissingFrameworksData(entry.name, config)
         return config
 
     def removeUnknownDriversData(self, config: dict) -> dict:
@@ -221,25 +218,20 @@ class SettDevice:
         self.startDriver(driver, True)
 
     def copyConfig(self, driverOrig: str, framework: str) -> None:
-        for driverDest in self.app.dReg.drivers:
-            if driverDest in ["mount"] or self.app.dReg.drivers[driverDest]["class"] is None:
+        for entry in self.app.dReg.configurable():
+            if entry.name == driverOrig:
                 continue
-            if driverDest == driverOrig:
-                continue
-
-            driverClass = self.app.dReg.drivers[driverDest]["class"]
-            if driverClass.framework == framework:
+            if entry.instance.framework == framework:
                 self.stopDriver(driver=driverOrig)
-            if driverDest not in self.driversData:
+            if entry.name not in self.driversData:
                 continue
-            if framework not in self.driversData[driverDest]["frameworks"]:
+            if framework not in self.driversData[entry.name]["frameworks"]:
                 continue
-            for param in self.driversData[driverDest]["frameworks"][framework]:
+            for param in self.driversData[entry.name]["frameworks"][framework]:
                 if param in ["deviceList", "deviceName"]:
                     continue
-
                 source = self.driversData[driverOrig]["frameworks"][framework][param]
-                self.driversData[driverDest]["frameworks"][framework][param] = source
+                self.driversData[entry.name]["frameworks"][framework][param] = source
 
     def callPopup(self, driver: str) -> None:
         self.stopDriver(driver)
@@ -269,10 +261,8 @@ class SettDevice:
         self.app.dReg.drivers[driver]["stat"] = None
 
     def stopDrivers(self) -> None:
-        for driver in self.drivers:
-            if driver in ["mount"] or self.app.dReg.drivers[driver]["class"] is None:
-                continue
-            self.stopDriver(driver=driver)
+        for entry in self.app.dReg.configurable():
+            self.stopDriver(driver=entry.name)
 
     def configDriver(self, driver: str) -> None:
         self.app.dReg.drivers[driver]["stat"] = False
@@ -305,36 +295,29 @@ class SettDevice:
         self.msg.emit(0, "Driver", f"{framework.upper()} enabled", f"{driver}")
 
     def startDrivers(self) -> None:
-        for driver in self.app.dReg.drivers:
-            if driver not in self.driversData:
+        for entry in self.app.dReg.configurable():
+            if entry.name not in self.driversData:
                 continue
-            if self.driversData[driver]["framework"] == "":
-                continue
-            if driver in ["mount"] or self.app.dReg.drivers[driver]["class"] is None:
+            if self.driversData[entry.name]["framework"] == "":
                 continue
             isAscomAutoConnect = self.ui.autoConnectASCOM.isChecked()
-            isAscom = self.driversData[driver]["framework"] in ["ascom", "alpaca"]
+            isAscom = self.driversData[entry.name]["framework"] in ["ascom", "alpaca"]
             autostart = isAscomAutoConnect and isAscom or not isAscom
-            self.startDriver(driver, autostart)
+            self.startDriver(entry.name, autostart)
 
     def manualStopAllAscomDrivers(self) -> None:
-        for driver in self.app.dReg.drivers:
-            if driver in ["mount"] or self.app.dReg.drivers[driver]["class"] is None:
+        for entry in self.app.dReg.configurable():
+            if entry.name not in self.driversData:
                 continue
-            if driver not in self.driversData:
-                continue
-
-            if self.driversData[driver]["framework"] in ["ascom", "alpaca"]:
-                self.stopDriver(driver)
+            if self.driversData[entry.name]["framework"] in ["ascom", "alpaca"]:
+                self.stopDriver(entry.name)
 
     def manualStartAllAscomDrivers(self) -> None:
-        for driver in self.app.dReg.drivers:
-            if driver in ["mount"] or self.app.dReg.drivers[driver]["class"] is None:
+        for entry in self.app.dReg.configurable():
+            if entry.name not in self.driversData:
                 continue
-            if driver not in self.driversData:
-                continue
-            if self.driversData[driver]["framework"] in ["ascom", "alpaca"]:
-                self.startDriver(driver, True)
+            if self.driversData[entry.name]["framework"] in ["ascom", "alpaca"]:
+                self.startDriver(entry.name, True)
 
     def dispatchDriverDropdown(self, driver: str, position: int) -> None:
         dropDownEntry = self.setupUiDriver[driver]["uiDropDown"].currentText()

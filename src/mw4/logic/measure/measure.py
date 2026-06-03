@@ -48,13 +48,10 @@ class MeasureData:
 
     def collectDataDevices(self) -> None:
         self.devices.clear()
-        for device, driver in self.app.dReg.drivers.items():
-            if device not in measure:
+        for name, entry in self.app.dReg.drivers.items():
+            if name not in measure or entry.instance is None:
                 continue
-            deviceClass = driver.get("class") if isinstance(driver, dict) else driver
-            if deviceClass is None:
-                continue
-            self.devices[device] = deviceClass
+            self.devices[name] = entry.instance
 
     def clearData(self) -> None:
         self.data.clear()

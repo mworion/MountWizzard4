@@ -69,23 +69,23 @@ class MainWindow(MWidget):
                 "tab": self.ui.settingsTabWidget,
             },
         }
-        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(self.updateStatusGUI)
-        self.app.dReg.drivers["mount"]["class"].signals.mountIsUp.connect(
+        self.app.dReg["mount"].instance.signals.pointDone.connect(self.updateStatusGUI)
+        self.app.dReg["mount"].instance.signals.mountIsUp.connect(
             self.updateMountConnStat
         )
         self.app.remoteCommand.connect(self.remoteCommand)
-        self.app.dReg.drivers["plateSolve"]["class"].signals.message.connect(
+        self.app.dReg["plateSolve"].instance.signals.message.connect(
             self.updatePlateSolveStatus
         )
-        self.app.dReg.drivers["dome"]["class"].signals.message.connect(self.updateDomeStatus)
-        self.app.dReg.drivers["camera"]["class"].signals.message.connect(
+        self.app.dReg["dome"].instance.signals.message.connect(self.updateDomeStatus)
+        self.app.dReg["camera"].instance.signals.message.connect(
             self.updateCameraStatus
         )
         self.ui.saveConfigQuit.clicked.connect(self.quitSave)
         self.ui.loadFrom.clicked.connect(self.loadProfileGUI)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
-        self.app.dReg.drivers["seeingWeather"]["class"].b = self.ui.label_b.property("a")
+        self.app.dReg["seeingWeather"].instance.b = self.ui.label_b.property("a")
         self.ui.colorSet.currentIndexChanged.connect(self.updateColorSet)
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateControllerStatus)
@@ -191,9 +191,9 @@ class MainWindow(MWidget):
         self.titleBar.windowFixed = True
 
     def smartFunctionGui(self) -> None:
-        isMountReady = bool(self.app.dReg.drivers["mount"]["stat"])
+        isMountReady = bool(self.app.dReg["mount"].stat)
         isModelingReady = all(
-            bool(self.app.dReg.drivers[x]["stat"]) for x in ["mount", "camera", "plateSolve"]
+            bool(self.app.dReg[x].stat) for x in ["mount", "camera", "plateSolve"]
         )
         isModelRun = bool(isModelingReady and self.app.buildPoint.buildP)
         self.ui.runModelGroup.setEnabled(isModelRun)
@@ -221,7 +221,7 @@ class MainWindow(MWidget):
             tabIndex = getTabIndex(self.smartTabs[key]["tab"], key)
             tabStatus = self.smartTabs[key]["tab"].isTabVisible(tabIndex)
 
-            stat = bool(self.app.dReg.drivers[self.smartTabs[key]["statID"]]["stat"])
+            stat = bool(self.app.dReg[self.smartTabs[key]["statID"]].stat)
             self.smartTabs[key]["tab"].setTabVisible(tabIndex, stat)
             actChanged = tabStatus != stat
             tabChanged = tabChanged or actChanged
@@ -240,42 +240,42 @@ class MainWindow(MWidget):
             ui.setStyleSheet(ui.styleSheet())
 
     def setEnvironDeviceStats(self) -> None:
-        refracOn = self.app.dReg.drivers["mount"]["class"].setting.statusRefraction == 1
+        refracOn = self.app.dReg["mount"].instance.setting.statusRefraction == 1
         isManual = self.ui.refracManual.isChecked()
         isTabEnabled = self.ui.showTabEnviron.isChecked()
         if not refracOn or not isTabEnabled:
-            self.app.dReg.drivers["refraction"]["stat"] = None
+            self.app.dReg.setStat("refraction", None)
             self.ui.refractionConnected.setText("Refraction")
         elif isManual:
             self.ui.refractionConnected.setText("Refrac Manu")
-            self.app.dReg.drivers["refraction"]["stat"] = True
+            self.app.dReg.setStat("refraction", True)
         else:
             self.ui.refractionConnected.setText("Refrac Auto")
             source = self.mainWindowAddons.addons["EnvironWeather"].refractionSource
             if source:
-                isSource = self.app.dReg.drivers[source]["stat"]
-                self.app.dReg.drivers["refraction"]["stat"] = isSource
+                isSource = self.app.dReg[source].stat
+                self.app.dReg.setStat("refraction", isSource)
             else:
-                self.app.dReg.drivers["refraction"]["stat"] = False
+                self.app.dReg.setStat("refraction", False)
 
     def updateDeviceStats(self) -> None:
         for device, ui in self.deviceStatGui.items():
             if self.app.dReg.drivers.get(device) is None:
                 ui.setEnabled(False)
-            elif self.app.dReg.drivers[device]["stat"]:
+            elif self.app.dReg[device].stat:
                 changeStyleDynamic(ui, "color", "green")
                 ui.setEnabled(True)
             else:
                 changeStyleDynamic(ui, "color", "red")
                 ui.setEnabled(True)
 
-        isMount = self.app.dReg.drivers["mount"]["stat"]
+        isMount = self.app.dReg["mount"].stat
         changeStyleDynamic(self.ui.mountOn, "run", isMount)
         changeStyleDynamic(self.ui.mountOff, "run", not isMount)
         changeStyleDynamic(self.ui.mountConnected, "run", isMount)
 
     def updateMountConnStat(self, status: bool) -> None:
-        self.app.dReg.drivers["mount"]["stat"] = status
+        self.app.dReg.setStat("mount", status)
 
     def updatePlateSolveStatus(self, text: str) -> None:
         self.ui.plateSolveText.setText(text)
@@ -298,9 +298,11 @@ class MainWindow(MWidget):
         mode = "Online" if self.ui.isOnline.isChecked() else "Offline"
         moon = self.ui.moonPhaseIllumination.text()
         f = dark_twilight_day(
-            self.app.ephemeris, self.app.dReg.drivers["mount"]["class"].obsSite.location
+            self.app.ephemeris, self.app.dReg["mount"].instance.obsSite.location
         )
-        twilight = TWILIGHTS[int(f(self.app.dReg.drivers["mount"]["class"].obsSite.ts.now()))]
+        twilight = TWILIGHTS[
+            int(f(self.app.dReg["mount"].instance.obsSite.ts.now()))
+        ]
         activeCount = self.threadPool.activeThreadCount()
         diskUsage = shutil.disk_usage(self.app.mwGlob["workDir"])
         free = int(diskUsage[2] / diskUsage[0] * 100)

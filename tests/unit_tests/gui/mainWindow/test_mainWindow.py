@@ -17,6 +17,7 @@ import mw4.gui.utilities.qtMain
 import pytest
 import shutil
 import unittest.mock as mock
+from mw4.base.deviceRegistry import DeviceEntry
 from mw4.gui.mainWindow.mainWindow import MainWindow
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
@@ -420,17 +421,27 @@ def test_updateDeviceStats_noDriver(window):
     ui = mock.MagicMock()
     window.deviceStatGui[device] = ui
     window.app.dReg.drivers[device] = None
-    window.updateDeviceStats()
-    ui.setEnabled.assert_called_with(False)
+    try:
+        window.updateDeviceStats()
+        ui.setEnabled.assert_called_with(False)
+    finally:
+        window.app.dReg.drivers.pop(device, None)
+        window.deviceStatGui.pop(device, None)
 
 
 def test_updateDeviceStats_enabledDriver(window):
     device = "testDevice"
     ui = mock.MagicMock()
     window.deviceStatGui[device] = ui
-    window.app.dReg.drivers[device] = {"stat": True}
-    with mock.patch("mw4.gui.mainWindow.mainWindow.changeStyleDynamic"):
-        window.updateDeviceStats()
-    ui.setEnabled.assert_called_with(True)
+    window.app.dReg.drivers[device] = DeviceEntry(
+        name=device, instance=object(), deviceType=None, isConfigurable=True, stat=True
+    )
+    try:
+        with mock.patch("mw4.gui.mainWindow.mainWindow.changeStyleDynamic"):
+            window.updateDeviceStats()
+        ui.setEnabled.assert_called_with(True)
+    finally:
+        window.app.dReg.drivers.pop(device, None)
+        window.deviceStatGui.pop(device, None)
 
 

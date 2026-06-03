@@ -14,7 +14,7 @@
 #
 ###########################################################
 # Re-export all stubs so that existing test imports remain unchanged.
-from mw4.base.deviceRegistry import DeviceRegistry
+from mw4.base.deviceRegistry import DeviceEntry, DeviceRegistry
 from mw4.logic.buildData.buildpoints import BuildPoint
 from pathlib import Path
 from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
@@ -169,11 +169,12 @@ class App(QObject):
         self.buildPoint = BuildPoint(self)
         self.onlineMode = False
         # Add onlineWeather to drivers for tests
-        self.dReg.drivers["onlineWeather"] = {
-            "class": self.onlineWeather,
-            "deviceType": None,
-            "stat": None,
-        }
+        self.dReg.drivers["onlineWeather"] = DeviceEntry(
+            name="onlineWeather",
+            instance=self.onlineWeather,
+            deviceType=None,
+            isConfigurable=True,
+        )
 
     @staticmethod
     def loadConfig():

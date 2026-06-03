@@ -16,6 +16,7 @@
 import numpy as np
 import pytest
 import unittest.mock as mock
+from mw4.base.deviceRegistry import DeviceEntry
 from mw4.logic.measure.measure import MeasureData
 from mw4.logic.measure.measureCSV import MeasureDataCSV
 from mw4.logic.measure.measureRaw import MeasureDataRaw
@@ -40,45 +41,22 @@ def test_property(function):
 
 
 def test_collectDataDevices(function):
-    function.app.deviceStat = {
-        "sensor1Weather": object(),
-        "directWeather": object(),
-        "skymeter": object(),
-        "filterwheel": object(),
-        "focuser": object(),
-        "power": object(),
-        "camera": object(),
-        "unknownDevice": object(),
-    }
-    activeDrivers = {
-        "sensor1Weather": {"class": object()},
-        "camera": {"class": object()},
-    }
-    with mock.patch.object(function.app, "getActiveDrivers", return_value=activeDrivers):
-        function.collectDataDevices()
-        assert "camera" in function.devices
-        assert "focuser" in function.devices
-        assert "directWeather" in function.devices
+    # All devices listed in the measure mapping that have an instance are collected.
+    function.collectDataDevices()
+    assert "camera" in function.devices
+    assert "focuser" in function.devices
+    assert "directWeather" in function.devices
 
 
 def test_collectDataDevices_unknownActiveDriver(function):
-    function.app.deviceStat = {
-        "sensor1Weather": object(),
-        "unknownDevice": object(),
-    }
-    activeDrivers = {
-        "sensor1Weather": {"class": object()},
-        "unknownDevice": {"class": object()},
-    }
-    with mock.patch.object(function.app, "getActiveDrivers", return_value=activeDrivers):
-        function.collectDataDevices()
-        assert "sensor1Weather" in function.devices
-        assert "unknownDevice" not in function.devices
+    # Devices not in the measure mapping are excluded.
+    function.collectDataDevices()
+    assert "sensor1Weather" in function.devices
+    assert "unknownDevice" not in function.devices
 
 
 def test_collectDataDevices_driverClassNone(function):
-    # Since collectDataDevices now uses app.dReg.drivers directly (not activeDrivers),
-    # all devices that are in measure dict and have a class will be included
+    # collectDataDevices uses dReg directly; devices with a real instance are included.
     function.collectDataDevices()
     assert "camera" in function.devices
     assert "focuser" in function.devices
@@ -165,17 +143,20 @@ def test_measureTask_2(function):
 
 
 def test_collectDataDevices_noneClass(function):
-    function.app.deviceStat = {
-        "camera": object(),
-        "focuser": object(),
-    }
-    function.app.dReg.drivers = {
-        "camera": {"class": object()},
-        "focuser": {"class": None},
-    }
-    function.collectDataDevices()
-    assert "camera" in function.devices
-    assert "focuser" not in function.devices
+    # Entries whose instance is None must not appear in devices.
+    savedDrivers = dict(function.app.dReg.drivers)
+    function.app.dReg.drivers["camera"] = DeviceEntry(
+        name="camera", instance=object(), deviceType="camera", isConfigurable=True
+    )
+    function.app.dReg.drivers["focuser"] = DeviceEntry(
+        name="focuser", instance=None, deviceType="focuser", isConfigurable=True
+    )
+    try:
+        function.collectDataDevices()
+        assert "camera" in function.devices
+        assert "focuser" not in function.devices
+    finally:
+        function.app.dReg.drivers.update(savedDrivers)
 
 
 class TestMeasureDataRaw:

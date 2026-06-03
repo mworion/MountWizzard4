@@ -75,6 +75,18 @@ def test_updateColorSet_1(window):
         window.updateColorSet()
 
 
+def test_showWindow(window):
+    with (
+        mock.patch.object(window, "show"),
+        mock.patch.object(window, "setMinimumSize"),
+        mock.patch.object(window, "setMaximumSize"),
+    ):
+        window.showWindow()
+        window.show.assert_called_once()
+        window.setMinimumSize.assert_called_once()
+        window.setMaximumSize.assert_called_once()
+
+
 def test_closeEvent_1(window):
     with (
         mock.patch.object(window.externalWindows, "closeExtendedWindows"),

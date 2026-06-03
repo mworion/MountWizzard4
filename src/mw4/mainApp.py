@@ -212,7 +212,7 @@ class MountWizzard4(QObject):
         """Create, configure, and show the main window."""
         self.mainW = MainWindow(self)
         self.mainW.initConfig()
-        self.mainW.show()
+        self.mainW.showWindow()
 
     def initTimers(self) -> None:
         """Set up the cyclic timer manager and start the mount timers."""

@@ -45,8 +45,6 @@ class KeypadWindow(MWidget):
         self.threadPool = app.threadPool
         self.ui = keypad_ui.Ui_KeypadDialog()
         self.ui.setupUi(self.ws)
-        self.setMinimumSize(270, self.FULL_HEIGHT)
-        self.setMaximumSize(270, self.FULL_HEIGHT)
         self.setWindowTitle("Keypad")
         self.signals = KeypadSignals()
         self.keypad = KeyPad(self.signals)
@@ -129,6 +127,10 @@ class KeypadWindow(MWidget):
         self.app.update1s.connect(self.drawGraphics)
         self.setupButtons()
         self.show()
+        self.setMinimumSize(270, self.FULL_HEIGHT)
+        self.setMaximumSize(270, self.FULL_HEIGHT)
+        self.titleBar.maxButton.setVisible(False)
+        self.titleBar.normButton.setVisible(False)
         self.startKeypad()
 
     def colorChange(self) -> None:

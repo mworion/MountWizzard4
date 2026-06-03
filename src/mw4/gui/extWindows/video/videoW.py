@@ -18,13 +18,13 @@ from typing import Any
 
 
 class VideoWindow(VideoWindowBase):
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: Any, title: str) -> None:
         super().__init__(app=app)
-        self.setWindowTitle("Video Stream 1")
-        self.setObjectName("Video1")
+        self.title: str = title
+        self.setWindowTitle(title)
 
     def initConfig(self) -> None:
-        config = self.app.config.get("videoW1", {})
+        config = self.app.config.get(self.title, {})
 
         self.positionWindow(config)
         self.ui.videoURL.setText(config.get("videoURL", ""))
@@ -35,8 +35,8 @@ class VideoWindow(VideoWindowBase):
 
     def storeConfig(self) -> None:
         configMain = self.app.config
-        configMain["videoW1"] = {}
-        config = configMain["videoW1"]
+        configMain[self.title] = {}
+        config = configMain[self.title]
 
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)

@@ -24,7 +24,7 @@ from typing import Any
 
 
 class AnalyseWindow(MWidget):
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: Any, title: str) -> None:
         super().__init__()
         self.app = app
         self.ui = analyse_ui.Ui_AnalyseDialog()
@@ -134,7 +134,7 @@ class AnalyseWindow(MWidget):
         self.ui.modelOrthoError.setText(f"{d.get('modelOrthoError', 0):5.0f}")
         self.ui.modelPolarError.setText(f"{d.get('modelPolarError', 0):5.0f}")
         self.ui.focalLength.setText(f"{d.get('focalLength', 0):4.0f}")
-        self.ui.profile.setText(f"{d.get('profile', '')}")
+        self.ui.profileName.setText(f"{d.get('profile', '')}")
         self.ui.firmware.setText(f"{d.get('firmware', '')}")
         self.ui.totalPoints.setText(f"{d.get('lenSequence', 0)}")
         self.ui.goodPoints.setText(f"{de.get('errorIndex', 0)}")

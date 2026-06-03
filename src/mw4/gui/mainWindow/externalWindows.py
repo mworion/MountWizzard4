@@ -149,7 +149,7 @@ class ExternalWindows:
         self.uiWindows[window]["classObj"] = None
 
     def buildWindow(self, window: str) -> None:
-        self.uiWindows[window]["classObj"] = self.uiWindows[window]["class"](self.app)
+        self.uiWindows[window]["classObj"] = self.uiWindows[window]["class"](self.app, self.uiWindows[window]["name"])
         self.uiWindows[window]["classObj"].destroyed.connect(
             partial(self.deleteWindowResource, window)
         )

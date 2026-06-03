@@ -44,9 +44,9 @@ class MainWindow(MWidget):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self.ws)
         self.setWindowTitle(f"MountWizzard4 - v{self.app.__version__}")
-        self.setMinimumSize(800, 630)
-        self.setMaximumSize(800, 630)
-        self.titleBar.windowFixed = True
+        self.setMinimumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
+        self.setMaximumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
+        # self.titleBar.windowFixed = True
         self.externalWindows = ExternalWindows(self)
         self.mainWindowAddons = MainWindowAddons(self)
         self.satStatus: bool = False
@@ -101,7 +101,7 @@ class MainWindow(MWidget):
         Styles.colorSet = colSet
         self.ui.colorSet.setCurrentIndex(colSet)
         self.setStyleSheet(self.mw4Style)
-        self.ui.profile.setText(config.get("profileName"))
+        self.ui.profileName.setText(config.get("profileName"))
         config = config["mainW"]
         self.positionWindow(config)
         setTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
@@ -120,13 +120,12 @@ class MainWindow(MWidget):
     def storeConfig(self) -> None:
         config = self.app.config
         config["colorSet"] = self.ui.colorSet.currentIndex()
-        config["profileName"] = self.ui.profile.text()
+        config["profileName"] = self.ui.profileName.text()
         if "mainW" not in config:
             config["mainW"] = {}
         else:
             config["mainW"].clear()
         config = config["mainW"]
-
         config["winPosX"] = self.pos().x()
         config["winPosY"] = self.pos().y()
         config["height"] = self.height()
@@ -292,16 +291,16 @@ class MainWindow(MWidget):
         free = int(diskUsage[2] / diskUsage[0] * 100)
         t = f"{mode} - {twilight} - Moon: {moon}%"
         t += f" - Threads:{activeCount:2d} / 30 - Disk free: {free}%"
-        self.ui.statusOnline.setTitle(t)
+        self.ui.statusOnlineGroup.setTitle(t)
 
     def updateTime(self) -> None:
         self.ui.timeComputer.setText(datetime.now().strftime("%H:%M:%S"))
         tzT = time.tzname[1] if time.daylight else time.tzname[0]
         t = f"TZ: {tzT}"
-        self.ui.statusTime.setTitle(t)
+        self.ui.statusTimeGroup.setTitle(t)
 
     def updateStatusGUI(self, obs: ObsSite) -> None:
-        self.ui.statusText.setText(obs.statusText())
+        self.ui.mountText.setText(obs.statusText())
         if self.app.mount.obsSite.status == 0:
             changeStyleDynamic(self.ui.tracking, "run", True)
         else:
@@ -341,7 +340,7 @@ class MainWindow(MWidget):
             return
         config = loadConfig(loadProfilePath)
         self.switchProfile(config)
-        self.ui.profile.setText(loadProfilePath.stem)
+        self.ui.profileName.setText(loadProfilePath.stem)
         self.saveProfile()
         self.msg.emit(1, "System", "Profile", f"{loadProfilePath.stem} loaded")
 
@@ -350,7 +349,7 @@ class MainWindow(MWidget):
             return
         self.storeConfig()
         saveConfig(saveProfilePath, self.app.config)
-        self.ui.profile.setText(saveProfilePath.stem)
+        self.ui.profileName.setText(saveProfilePath.stem)
         self.msg.emit(1, "System", "Profile", f"Saved to [{saveProfilePath.stem}]")
 
     def saveProfileAs(self) -> None:
@@ -361,7 +360,7 @@ class MainWindow(MWidget):
         self.saveProfileBase(saveProfilePath)
 
     def saveProfile(self) -> None:
-        saveProfilePath = self.app.mwGlob["configDir"] / (self.ui.profile.text() + ".yaml")
+        saveProfilePath = self.app.mwGlob["configDir"] / (self.ui.profileName.text() + ".yaml")
         self.saveProfileBase(saveProfilePath)
 
     def remoteCommand(self, command: str) -> None:

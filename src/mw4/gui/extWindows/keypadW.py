@@ -38,7 +38,7 @@ class KeypadSignals(QObject):
 
 
 class KeypadWindow(MWidget):
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: Any, title: str) -> None:
         super().__init__()
         self.app = app
         self.msg = app.msg

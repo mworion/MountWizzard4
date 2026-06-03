@@ -29,7 +29,7 @@ class MeasureWindow(MWidget):
     NUMBER_POINTS = 250
     NUMBER_XTICKS = 5
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: Any, title: str) -> None:
         super().__init__()
         self.app = app
         self.ui = measure_ui.Ui_MeasureDialog()

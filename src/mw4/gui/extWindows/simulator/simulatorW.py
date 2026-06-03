@@ -36,7 +36,7 @@ from typing import Any
 class SimulatorWindow(MWidget):
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: Any, title: str) -> None:
         super().__init__()
         self.app = app
         self.ui = simulator_ui.Ui_SimulatorDialog()

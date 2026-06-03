@@ -25,13 +25,12 @@ from typing import Any
 
 class MessageWindow(MWidget):
     log = logging.getLogger("MW4")
-
     TEXT_NORMAL = 0
     TEXT_HIGHLIGHT = 1
     TEXT_WARNING = 2
     TEXT_ERROR = 3
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: Any, title: str) -> None:
         super().__init__()
         self.app = app
         self.ui = message_ui.Ui_MessageDialog()

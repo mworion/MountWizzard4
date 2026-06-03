@@ -22,7 +22,7 @@ MAC_STYLE = """
     }
     QLabel[title=true] {
         font-weight: bold;
-        font-size: 16pt;
+        font-size: 18pt;
     }
     QWidget[large] {
         font-family: Arial;
@@ -59,7 +59,7 @@ NON_MAC_STYLE = """
         font-size: 10pt;
     }
     QLabel[title=true] {
-        font-size: 13pt;
+        font-size: 15pt;
         font-weight: bold;
     }
     QWidget[large] {
@@ -586,6 +586,11 @@ BASIC_STYLE = """
     }
     QFrame[frameShape="5"] {
         color: $M_PRIM1$;
+    }
+    QFrame[title='true'] {
+        color: $M_TER$;
+        background: $M_PRIM2$;
+        border-radius: 2px;
     }
     /* tab widget */
     QTabWidget:pane {

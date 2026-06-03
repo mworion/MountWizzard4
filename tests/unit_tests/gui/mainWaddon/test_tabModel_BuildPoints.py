@@ -515,12 +515,13 @@ def test_genBuildDSO_iteration_exhausted(function):
     function.app.mount.obsSite.timeSidereal = Angle(hours=0)
     function.simbadRa = None
     function.simbadDec = None
+    function.ui.ditherBuildPoints.setChecked(False)
     function.ui.numberDSOPoints.blockSignals(True)
     function.ui.numberDSOPoints.setValue(50)
     function.ui.numberDSOPoints.blockSignals(False)
 
     def autoDelStub():
-        function.app.buildPoint.buildP = [1]
+        function.app.buildPoint.buildP = [(10, 20, 1)]
 
     t = function.autoDeletePoints
     function.autoDeletePoints = autoDelStub

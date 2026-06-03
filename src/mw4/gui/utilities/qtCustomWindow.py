@@ -14,17 +14,11 @@ class CustomTitleBar(QWidget):
         self.normButton.setVisible(False)
         self.initialPos: QPoint | None = None
         titleBarLayout = QHBoxLayout(self)
-        titleBarLayout.setContentsMargins(0, 0, 0, 0)
-        titleFrame = QFrame()
-        titleFrame.setProperty("title", True)
-        titleFrame.setFixedHeight(30)
-        titleFrame.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        frameLayout = QHBoxLayout(titleFrame)
-        frameLayout.setContentsMargins(0, 0, 0, 0)
+        titleBarLayout.setContentsMargins(60, 0, 10, 0)
         self.title = QLabel()
         self.title.setProperty("title", True)
         self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        frameLayout.addWidget(self.title)
+        titleBarLayout.addWidget(self.title)
 
         buttons = {
             "min": {
@@ -62,16 +56,9 @@ class CustomTitleBar(QWidget):
             buttons[button]["widget"].clicked.connect(buttons[button]["func"])
             style = f"border: none; border-radius: 2px; padding: 2px; background-color: {buttons[button]['col']};"
             buttons[button]["widget"].setStyleSheet(style)
-            frameLayout.addWidget(buttons[button]["widget"])
-
-        titleBarLayout.addWidget(titleFrame)
-        titleBarLayout.setContentsMargins(10, 0, 10, 0)
+            titleBarLayout.addWidget(buttons[button]["widget"])
 
     def windowStateChanged(self, state) -> None:
-        if self.windowFixed:
-            self.normButton.setVisible(False)
-            self.maxButton.setVisible(False)
-            return
         if state == Qt.WindowState.WindowMaximized:
             self.normButton.setVisible(True)
             self.maxButton.setVisible(False)

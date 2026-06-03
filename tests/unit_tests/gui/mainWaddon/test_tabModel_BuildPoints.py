@@ -515,7 +515,9 @@ def test_genBuildDSO_iteration_exhausted(function):
     function.app.mount.obsSite.timeSidereal = Angle(hours=0)
     function.simbadRa = None
     function.simbadDec = None
-    function.ui.numberDSOPoints.setValue(100)
+    function.ui.numberDSOPoints.blockSignals(True)
+    function.ui.numberDSOPoints.setValue(50)
+    function.ui.numberDSOPoints.blockSignals(False)
 
     def autoDelStub():
         function.app.buildPoint.buildP = [1]
@@ -528,7 +530,9 @@ def test_genBuildDSO_iteration_exhausted(function):
 
 
 def test_genBuildGoldenSpiral_iteration_exhausted(function):
+    function.ui.numberSpiral.blockSignals(True)
     function.ui.numberSpiral.setValue(100)
+    function.ui.numberSpiral.blockSignals(False)
 
     def keepBuildP(**kwargs):
         function.app.buildPoint.buildP = [1]

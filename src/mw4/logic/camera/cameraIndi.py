@@ -167,7 +167,8 @@ class CameraIndi(IndiClass):
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
         self.txQ.put(
-            (self.deviceName, "CCD_COOLER", {"COOLER_ON": "On" if coolerOn else "Off"})
+            (self.deviceName, "CCD_COOLER", {"COOLER_ON": "On" if coolerOn else "Off",
+                                             "COOLER_OFF": "Off" if coolerOn else "On"})
         )
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:

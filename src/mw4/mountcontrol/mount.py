@@ -43,7 +43,8 @@ class MountDevice:
     log = logging.getLogger("MW4")
 
     def __init__(
-        self, app: Any, host = None, MAC: str = "00.00.00.00.00.00", verbose: bool = False) -> None:
+        self, app: Any, host=None, MAC: str = "00.00.00.00.00.00", verbose: bool = False
+    ) -> None:
         self._waitTime = 0
         self._waitTimeFlip = 0
         self.app = app

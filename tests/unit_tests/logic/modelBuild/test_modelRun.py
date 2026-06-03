@@ -158,7 +158,11 @@ def test_startNewSlew_3(function):
         },
     }
 
-    with mock.patch.object(function.app.dReg.drivers["mount"]["class"].obsSite, "setTargetAltAz", return_value=False):
+    with mock.patch.object(
+        function.app.dReg.drivers["mount"]["class"].obsSite,
+        "setTargetAltAz",
+        return_value=False,
+    ):
         function.startNewSlew()
         assert not function.mountSlewed
         assert not function.domeSlewed
@@ -193,7 +197,11 @@ def test_startNewSlew_4(function):
     }
 
     with (
-        mock.patch.object(function.app.dReg.drivers["mount"]["class"].obsSite, "setTargetAltAz", return_value=True),
+        mock.patch.object(
+            function.app.dReg.drivers["mount"]["class"].obsSite,
+            "setTargetAltAz",
+            return_value=True,
+        ),
         mock.patch.object(function.app.dReg.drivers["dome"]["class"], "slewDome"),
         mock.patch.object(function.app.dReg.drivers["mount"]["class"].obsSite, "startSlewing"),
     ):

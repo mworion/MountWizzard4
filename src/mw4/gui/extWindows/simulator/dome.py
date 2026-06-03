@@ -24,8 +24,12 @@ class SimulatorDome:
         super().__init__()
         self.parent = parent
         self.app = app
-        self.app.dReg.drivers["dome"]["class"].signals.deviceConnected.connect(lambda: self.showEnable(True))
-        self.app.dReg.drivers["dome"]["class"].signals.deviceDisconnected.connect(lambda: self.showEnable(False))
+        self.app.dReg.drivers["dome"]["class"].signals.deviceConnected.connect(
+            lambda: self.showEnable(True)
+        )
+        self.app.dReg.drivers["dome"]["class"].signals.deviceDisconnected.connect(
+            lambda: self.showEnable(False)
+        )
         self.app.dReg.drivers["dome"]["class"].signals.azimuth.connect(self.updateAzimuth)
         self.app.update1s.connect(self.updateShutter)
         self.parent.ui.domeTransparent.checkStateChanged.connect(self.setTransparency)

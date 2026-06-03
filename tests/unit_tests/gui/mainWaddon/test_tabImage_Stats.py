@@ -99,8 +99,12 @@ def test_openAstrometryCatalog_2(function):
 
 
 def test_updateTelescopeParametersToGui_1(function):
-    function.app.dReg.drivers["telescope"]["class"].data["TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH"] = 1
-    function.app.dReg.drivers["telescope"]["class"].data["TELESCOPE_INFO.TELESCOPE_APERTURE"] = 1
+    function.app.dReg.drivers["telescope"]["class"].data[
+        "TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH"
+    ] = 1
+    function.app.dReg.drivers["telescope"]["class"].data[
+        "TELESCOPE_INFO.TELESCOPE_APERTURE"
+    ] = 1
 
     function.updateTelescopeParametersToGui()
 

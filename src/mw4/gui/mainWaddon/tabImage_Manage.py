@@ -96,7 +96,10 @@ class ImageManage:
         self.mainW.wIcon(self.ui.coverUnpark, "exit-up")
 
     def checkEnableCameraUI(self) -> None:
-        coolerTemp = "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE" in self.app.dReg.drivers["camera"]["class"].data
+        coolerTemp = (
+            "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"
+            in self.app.dReg.drivers["camera"]["class"].data
+        )
         gainCam = "CCD_GAIN.GAIN" in self.app.dReg.drivers["camera"]["class"].data
         offsetCam = "CCD_OFFSET.OFFSET" in self.app.dReg.drivers["camera"]["class"].data
         pixelX = "CCD_INFO.CCD_MAX_X" in self.app.dReg.drivers["camera"]["class"].data
@@ -106,8 +109,12 @@ class ImageManage:
         self.ui.GroupControlledCamera.setEnabled(pixelX)
 
     def updateOffset(self) -> None:
-        actValue = self.app.dReg.drivers["camera"]["class"].data.get("CCD_OFFSET.OFFSET", False)
-        offsetList = self.app.dReg.drivers["camera"]["class"].data.get("CCD_OFFSET.OFFSET_LIST", False)
+        actValue = self.app.dReg.drivers["camera"]["class"].data.get(
+            "CCD_OFFSET.OFFSET", False
+        )
+        offsetList = self.app.dReg.drivers["camera"]["class"].data.get(
+            "CCD_OFFSET.OFFSET_LIST", False
+        )
         if offsetList and actValue:
             offsetList = list(offsetList)
             self.mainW.log.debug(f"Index: [{actValue}], List: [{offsetList}]")
@@ -121,7 +128,9 @@ class ImageManage:
 
     def updateGain(self) -> None:
         actValue = self.app.dReg.drivers["camera"]["class"].data.get("CCD_GAIN.GAIN", False)
-        gainList = self.app.dReg.drivers["camera"]["class"].data.get("CCD_GAIN.GAIN_LIST", False)
+        gainList = self.app.dReg.drivers["camera"]["class"].data.get(
+            "CCD_GAIN.GAIN_LIST", False
+        )
         if gainList and actValue:
             gainList = list(gainList)
             self.mainW.log.debug(f"Index: [{actValue}], List: [{gainList}]")
@@ -134,9 +143,15 @@ class ImageManage:
             guiSetText(self.ui.gainCam, "3.0f", actValue)
 
     def updateCooler(self) -> None:
-        coolerTemp = self.app.dReg.drivers["camera"]["class"].data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", 0)
-        coolerPower = self.app.dReg.drivers["camera"]["class"].data.get("CCD_COOLER_POWER.CCD_COOLER_VALUE", 0)
-        coolerOn = self.app.dReg.drivers["camera"]["class"].data.get("CCD_COOLER.COOLER_ON", False)
+        coolerTemp = self.app.dReg.drivers["camera"]["class"].data.get(
+            "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", 0
+        )
+        coolerPower = self.app.dReg.drivers["camera"]["class"].data.get(
+            "CCD_COOLER_POWER.CCD_COOLER_VALUE", 0
+        )
+        coolerOn = self.app.dReg.drivers["camera"]["class"].data.get(
+            "CCD_COOLER.COOLER_ON", False
+        )
         guiSetText(self.ui.coolerTemp, "3.1f", coolerTemp)
         guiSetText(self.ui.coolerPower, "3.1f", coolerPower)
         if coolerOn:
@@ -147,14 +162,18 @@ class ImageManage:
             changeStyleDynamic(self.ui.coolerOff, "run", True)
 
     def updateFilter(self) -> None:
-        filterNumber = self.app.dReg.drivers["filter"]["class"].data.get("FILTER_SLOT.FILTER_SLOT_VALUE", 1)
+        filterNumber = self.app.dReg.drivers["filter"]["class"].data.get(
+            "FILTER_SLOT.FILTER_SLOT_VALUE", 1
+        )
         key = f"FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}"
         filterName = self.app.dReg.drivers["filter"]["class"].data.get(key, "not found")
         guiSetText(self.ui.filterNumber, "1.0f", filterNumber)
         guiSetText(self.ui.filterName, "s", filterName)
 
     def updateFocuser(self) -> None:
-        focus = self.app.dReg.drivers["focuser"]["class"].data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
+        focus = self.app.dReg.drivers["focuser"]["class"].data.get(
+            "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0
+        )
         guiSetText(self.ui.focuserPosition, "6.0f", focus)
 
     def updateImagingParam(self) -> None:
@@ -191,11 +210,15 @@ class ImageManage:
         guiSetText(self.ui.optimalBinning, "1.0f", optimalBinning)
 
     def setCoolerTemp(self) -> None:
-        canSetCCDTemp = self.app.dReg.drivers["camera"]["class"].data.get("CAN_SET_CCD_TEMPERATURE", False)
+        canSetCCDTemp = self.app.dReg.drivers["camera"]["class"].data.get(
+            "CAN_SET_CCD_TEMPERATURE", False
+        )
         if not canSetCCDTemp:
             return
 
-        actValue = self.app.dReg.drivers["camera"]["class"].data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", None)
+        actValue = self.app.dReg.drivers["camera"]["class"].data.get(
+            "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", None
+        )
         if actValue is None:
             return
 
@@ -214,7 +237,9 @@ class ImageManage:
 
         actValue = int(actValue)
         dlg = QInputDialog()
-        offsetList = self.app.dReg.drivers["camera"]["class"].data.get("CCD_OFFSET.OFFSET_LIST")
+        offsetList = self.app.dReg.drivers["camera"]["class"].data.get(
+            "CCD_OFFSET.OFFSET_LIST"
+        )
         offsetMin = self.app.dReg.drivers["camera"]["class"].data.get("CCD_OFFSET.OFFSET_MIN")
         offsetMax = self.app.dReg.drivers["camera"]["class"].data.get("CCD_OFFSET.OFFSET_MAX")
         if offsetList is not None:
@@ -345,7 +370,9 @@ class ImageManage:
         self.ui.coverStatusText.setText(value)
 
     def updateLightPanelGui(self) -> None:
-        value = self.app.dReg.drivers["lightPanel"]["class"].data.get("FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON", None)
+        value = self.app.dReg.drivers["lightPanel"]["class"].data.get(
+            "FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON", None
+        )
         if value:
             changeStyleDynamic(self.ui.lightPanelOn, "run", True)
             changeStyleDynamic(self.ui.lightPanelOff, "run", False)
@@ -356,7 +383,9 @@ class ImageManage:
             changeStyleDynamic(self.ui.lightPanelOn, "run", False)
             changeStyleDynamic(self.ui.lightPanelOff, "run", True)
 
-        value = self.app.dReg.drivers["lightPanel"]["class"].data.get("FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
+        value = self.app.dReg.drivers["lightPanel"]["class"].data.get(
+            "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"
+        )
         guiSetText(self.ui.lightPanelIntensity, "3.0f", value)
 
     def setCoverPark(self) -> None:
@@ -369,13 +398,17 @@ class ImageManage:
         self.app.dReg.drivers["cover"]["class"].haltCover()
 
     def moveFocuserIn(self) -> None:
-        pos = self.app.dReg.drivers["focuser"]["class"].data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
+        pos = self.app.dReg.drivers["focuser"]["class"].data.get(
+            "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0
+        )
         step = self.ui.focuserSteps.value()
         newPos = int(pos - step)
         self.app.dReg.drivers["focuser"]["class"].move(position=newPos)
 
     def moveFocuserOut(self) -> None:
-        pos = self.app.dReg.drivers["focuser"]["class"].data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
+        pos = self.app.dReg.drivers["focuser"]["class"].data.get(
+            "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0
+        )
         step = self.ui.focuserSteps.value()
         newPos = int(pos + step)
         self.app.dReg.drivers["focuser"]["class"].move(position=newPos)
@@ -424,11 +457,15 @@ class ImageManage:
         else:
             changeStyleDynamic(self.ui.domeSlewCCW, "run", False)
 
-        value = self.app.dReg.drivers["dome"]["class"].data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION")
+        value = self.app.dReg.drivers["dome"]["class"].data.get(
+            "ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION"
+        )
         guiSetText(self.ui.domeAzimuth, "3.0f", value)
 
     def updateShutterStatGui(self) -> None:
-        value = self.app.dReg.drivers["dome"]["class"].data.get("DOME_SHUTTER.SHUTTER_OPEN", None)
+        value = self.app.dReg.drivers["dome"]["class"].data.get(
+            "DOME_SHUTTER.SHUTTER_OPEN", None
+        )
         if value is True:
             changeStyleDynamic(self.ui.domeOpenShutter, "run", True)
             changeStyleDynamic(self.ui.domeCloseShutter, "run", False)

@@ -223,73 +223,102 @@ def test_showCurrent_1(function):
 def test_exposeRaw_1(function):
     function.app.dReg.drivers["camera"]["class"].subFrame = 100
     function.ui.timeTagImage.setChecked(True)
-    with mock.patch.object(function.app.dReg.drivers["camera"]["class"], "expose", return_value=True):
+    with mock.patch.object(
+        function.app.dReg.drivers["camera"]["class"], "expose", return_value=True
+    ):
         function.exposeRaw(exposureTime=1, binning=1)
 
 
 def test_exposeRaw_2(function):
     function.app.dReg.drivers["camera"]["class"].subFrame = 100
     function.ui.timeTagImage.setChecked(False)
-    with mock.patch.object(function.app.dReg.drivers["camera"]["class"], "expose", return_value=True):
+    with mock.patch.object(
+        function.app.dReg.drivers["camera"]["class"], "expose", return_value=True
+    ):
         function.exposeRaw(exposureTime=1, binning=1)
 
 
 def test_exposeRaw_3(function):
     function.app.dReg.drivers["camera"]["class"].subFrame = 100
     with (
-        mock.patch.object(function.app.dReg.drivers["camera"]["class"], "expose", return_value=False),
-        mock.patch.object(function.app.dReg.drivers["camera"]["class"], "abort", return_value=True),
+        mock.patch.object(
+            function.app.dReg.drivers["camera"]["class"], "expose", return_value=False
+        ),
+        mock.patch.object(
+            function.app.dReg.drivers["camera"]["class"], "abort", return_value=True
+        ),
     ):
         function.exposeRaw(exposureTime=1, binning=1)
 
 
 def test_exposeImageDone_1(function):
     function.ui.autoSolve.setChecked(False)
-    function.app.dReg.drivers["camera"]["class"].signals.saved.connect(function.exposeImageDone)
+    function.app.dReg.drivers["camera"]["class"].signals.saved.connect(
+        function.exposeImageDone
+    )
     function.exposeImageDone(Path("test"))
 
 
 def test_exposeImageDone_2(function):
     function.ui.autoSolve.setChecked(True)
-    function.app.dReg.drivers["camera"]["class"].signals.saved.connect(function.exposeImageDone)
+    function.app.dReg.drivers["camera"]["class"].signals.saved.connect(
+        function.exposeImageDone
+    )
     function.exposeImageDone(Path("test"))
 
 
 def test_exposeImage_1(function):
     function.app.dReg.drivers["camera"]["class"].data = {}
-    with mock.patch.object(function.app.dReg.drivers["camera"]["class"], "expose", return_value=True):
+    with mock.patch.object(
+        function.app.dReg.drivers["camera"]["class"], "expose", return_value=True
+    ):
         function.exposeImage()
 
 
 def test_exposeImageNDone_1(function):
     function.ui.autoSolve.setChecked(False)
-    function.app.dReg.drivers["camera"]["class"].signals.saved.connect(function.exposeImageDone)
-    with mock.patch.object(function.app.dReg.drivers["camera"]["class"], "expose", return_value=False):
-        with mock.patch.object(function.app.dReg.drivers["camera"]["class"], "abort", return_value=True):
-            function.exposeImageNDone(Path("test"))
+    function.app.dReg.drivers["camera"]["class"].signals.saved.connect(
+        function.exposeImageDone
+    )
+    with mock.patch.object(
+        function.app.dReg.drivers["camera"]["class"], "expose", return_value=False
+    ), mock.patch.object(
+        function.app.dReg.drivers["camera"]["class"], "abort", return_value=True
+    ):
+        function.exposeImageNDone(Path("test"))
 
 
 def test_exposeImageNDone_2(function):
     function.ui.autoSolve.setChecked(True)
-    function.app.dReg.drivers["camera"]["class"].signals.saved.connect(function.exposeImageDone)
-    with mock.patch.object(function.app.dReg.drivers["camera"]["class"], "expose", return_value=False):
-        with mock.patch.object(function.app.dReg.drivers["camera"]["class"], "abort", return_value=True):
-            function.exposeImageNDone(Path("test"))
+    function.app.dReg.drivers["camera"]["class"].signals.saved.connect(
+        function.exposeImageDone
+    )
+    with mock.patch.object(
+        function.app.dReg.drivers["camera"]["class"], "expose", return_value=False
+    ), mock.patch.object(
+        function.app.dReg.drivers["camera"]["class"], "abort", return_value=True
+    ):
+        function.exposeImageNDone(Path("test"))
 
 
 def test_exposeImageN_1(function):
     # exposeN not running → start continuous exposure
     function.imagingDeviceStat["exposeN"] = False
     function.app.dReg.drivers["camera"]["class"].data = {}
-    with mock.patch.object(function.app.dReg.drivers["camera"]["class"], "expose", return_value=False):
-        with mock.patch.object(function.app.dReg.drivers["camera"]["class"], "abort", return_value=True):
-            function.exposeImageN()
+    with mock.patch.object(
+        function.app.dReg.drivers["camera"]["class"], "expose", return_value=False
+    ), mock.patch.object(
+        function.app.dReg.drivers["camera"]["class"], "abort", return_value=True
+    ):
+        function.exposeImageN()
 
 
 def test_exposeImageN_2(function):
     # exposeN already running → stop continuous exposure
     function.imagingDeviceStat["exposeN"] = True
-    function.app.dReg.drivers["camera"]["class"].signals.saved.connect(function.exposeImageNDone)
+    function.app.dReg.drivers["camera"]["class"].signals.saved.connect(
+        function.exposeImageNDone
+    )
     function.exposeImageN()
     assert not function.imagingDeviceStat["exposeN"]
 
@@ -314,7 +343,9 @@ def test_abortExpose_3(function):
     function.app.dReg.drivers["camera"]["class"].signals.saved.connect(function.showImage)
     function.ui.exposeN.setEnabled(False)
     function.ui.expose.setEnabled(True)
-    function.app.dReg.drivers["camera"]["class"].signals.saved.connect(function.exposeImageDone)
+    function.app.dReg.drivers["camera"]["class"].signals.saved.connect(
+        function.exposeImageDone
+    )
     with mock.patch.object(function.app.dReg.drivers["camera"]["class"], "abort"):
         function.abortExpose()
 
@@ -325,7 +356,9 @@ def test_abortExpose_4(function):
     function.app.dReg.drivers["camera"]["class"].signals.saved.connect(function.showImage)
     function.ui.exposeN.setEnabled(False)
     function.ui.expose.setEnabled(True)
-    function.app.dReg.drivers["camera"]["class"].signals.saved.connect(function.exposeImageNDone)
+    function.app.dReg.drivers["camera"]["class"].signals.saved.connect(
+        function.exposeImageNDone
+    )
     with mock.patch.object(function.app.dReg.drivers["camera"]["class"], "abort"):
         function.abortExpose()
 

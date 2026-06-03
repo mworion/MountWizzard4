@@ -41,8 +41,12 @@ class HemisphereDraw(MWidget):
     def initConfig(self) -> None:
         self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(self.drawPointer)
         self.app.dReg.drivers["dome"]["class"].signals.azimuth.connect(self.setDomeAzimuth)
-        self.app.dReg.drivers["dome"]["class"].signals.deviceDisconnected.connect(self.drawDome)
-        self.app.dReg.drivers["dome"]["class"].signals.serverDisconnected.connect(self.drawDome)
+        self.app.dReg.drivers["dome"]["class"].signals.deviceDisconnected.connect(
+            self.drawDome
+        )
+        self.app.dReg.drivers["dome"]["class"].signals.serverDisconnected.connect(
+            self.drawDome
+        )
         self.app.dReg.drivers["mount"]["class"].signals.getModelDone.connect(self.drawTab)
         self.app.updatePointMarker.connect(self.setupModel)
         self.app.redrawHemisphere.connect(self.drawTab)
@@ -70,8 +74,12 @@ class HemisphereDraw(MWidget):
         self.app.dReg.drivers["mount"]["class"].signals.pointDone.disconnect(self.drawPointer)
         self.app.dReg.drivers["mount"]["class"].signals.getModelDone.disconnect(self.drawTab)
         self.app.dReg.drivers["dome"]["class"].signals.azimuth.disconnect(self.setDomeAzimuth)
-        self.app.dReg.drivers["dome"]["class"].signals.deviceDisconnected.disconnect(self.drawDome)
-        self.app.dReg.drivers["dome"]["class"].signals.serverDisconnected.disconnect(self.drawDome)
+        self.app.dReg.drivers["dome"]["class"].signals.deviceDisconnected.disconnect(
+            self.drawDome
+        )
+        self.app.dReg.drivers["dome"]["class"].signals.serverDisconnected.disconnect(
+            self.drawDome
+        )
         self.app.updatePointMarker.disconnect(self.setupModel)
         self.app.redrawHemisphere.disconnect(self.drawTab)
         self.app.redrawHorizon.disconnect(self.drawHorizon)

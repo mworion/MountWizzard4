@@ -72,7 +72,9 @@ class ModelData(QObject):
 
     def setupSignals(self) -> None:
         self.app.dReg.drivers["camera"]["class"].signals.exposed.connect(self.setImageExposed)
-        self.app.dReg.drivers["camera"]["class"].signals.downloaded.connect(self.setImageDownloaded)
+        self.app.dReg.drivers["camera"]["class"].signals.downloaded.connect(
+            self.setImageDownloaded
+        )
         self.app.dReg.drivers["camera"]["class"].signals.saved.connect(self.setImageSaved)
         self.app.dReg.drivers["mount"]["class"].signals.slewed.connect(self.setMountSlewed)
         self.app.dReg.drivers["dome"]["class"].signals.slewed.connect(self.setDomeSlewed)
@@ -80,12 +82,18 @@ class ModelData(QObject):
         self.app.plateSolve.signals.result.connect(self.collectPlateSolveResult)
 
     def resetSignals(self) -> None:
-        self.app.dReg.drivers["camera"]["class"].signals.exposed.disconnect(self.setImageExposed)
-        self.app.dReg.drivers["camera"]["class"].signals.downloaded.disconnect(self.setImageDownloaded)
+        self.app.dReg.drivers["camera"]["class"].signals.exposed.disconnect(
+            self.setImageExposed
+        )
+        self.app.dReg.drivers["camera"]["class"].signals.downloaded.disconnect(
+            self.setImageDownloaded
+        )
         self.app.dReg.drivers["camera"]["class"].signals.saved.disconnect(self.setImageSaved)
         self.app.dReg.drivers["mount"]["class"].signals.slewed.disconnect(self.setMountSlewed)
         self.app.dReg.drivers["dome"]["class"].signals.slewed.disconnect(self.setDomeSlewed)
-        self.app.dReg.drivers["camera"]["class"].signals.saved.disconnect(self.startNewPlateSolve)
+        self.app.dReg.drivers["camera"]["class"].signals.saved.disconnect(
+            self.startNewPlateSolve
+        )
         self.app.plateSolve.signals.result.disconnect(self.collectPlateSolveResult)
 
     def setImageExposed(self) -> None:
@@ -123,7 +131,9 @@ class ModelData(QObject):
         self.mountSlewed = False
         self.domeSlewed = False
         self.statusSlew.emit([self.modelRunKey, altitude.degrees, azimuth.degrees])
-        if not self.app.dReg.drivers["mount"]["class"].obsSite.setTargetAltAz(altitude, azimuth):
+        if not self.app.dReg.drivers["mount"]["class"].obsSite.setTargetAltAz(
+            altitude, azimuth
+        ):
             result = {
                 "success": False,
                 "message": "Slew not possible - limits ?",

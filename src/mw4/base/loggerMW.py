@@ -97,6 +97,7 @@ def setTrace(app: Any, enable: bool = False) -> None:
     """
     pass
 
+
 def setCustomLoggingLevel(app: Any, level: str = "DEBUG") -> None:
     if level == "TRACE":
         logging.getLogger("MW4").setLevel("DEBUG")

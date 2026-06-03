@@ -154,7 +154,9 @@ class KeypadWindow(MWidget):
 
         self.clearDisplay()
         self.writeTextRow(2, "Connecting ...")
-        self.worker = Worker(self.keypad.workerWebsocket, self.app.dReg.drivers["mount"]["class"].host)
+        self.worker = Worker(
+            self.keypad.workerWebsocket, self.app.dReg.drivers["mount"]["class"].host
+        )
         self.worker.signals.finished.connect(self.websocketClear)
         self.threadPool.start(self.worker)
 

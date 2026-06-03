@@ -129,7 +129,9 @@ class ModelManage:
             reverse=True,
             tip="PointNo: {data[0]}\nErrorRMS: {data[1]:0.1f}".format,
         )
-        self.ui.modelPositions.plotLoc(self.app.dReg.drivers["mount"]["class"].obsSite.location.latitude.degrees)
+        self.ui.modelPositions.plotLoc(
+            self.app.dReg.drivers["mount"]["class"].obsSite.location.latitude.degrees
+        )
         self.ui.modelPositions.scatterItem.sigClicked.connect(self.pointClicked)
 
     def showErrorAscending(self) -> None:
@@ -164,11 +166,15 @@ class ModelManage:
         self.ui.deleteName.setEnabled(True)
         self.ui.saveName.setEnabled(True)
         self.ui.loadName.setEnabled(True)
-        self.app.dReg.drivers["mount"]["class"].signals.namesDone.disconnect(self.clearRefreshName)
+        self.app.dReg.drivers["mount"]["class"].signals.namesDone.disconnect(
+            self.clearRefreshName
+        )
         self.msg.emit(0, "Model", "Manage", "Model names refreshed")
 
     def refreshName(self) -> None:
-        self.app.dReg.drivers["mount"]["class"].signals.namesDone.connect(self.clearRefreshName)
+        self.app.dReg.drivers["mount"]["class"].signals.namesDone.connect(
+            self.clearRefreshName
+        )
         self.ui.deleteName.setEnabled(False)
         self.ui.saveName.setEnabled(False)
         self.ui.loadName.setEnabled(False)
@@ -252,7 +258,9 @@ class ModelManage:
         self.ui.deleteWorstPoint.setEnabled(True)
         self.ui.runOptimize.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
-        self.app.dReg.drivers["mount"]["class"].signals.getModelDone.disconnect(self.clearRefreshModel)
+        self.app.dReg.drivers["mount"]["class"].signals.getModelDone.disconnect(
+            self.clearRefreshModel
+        )
         self.msg.emit(0, "Model", "Manage", "Model data refreshed")
         self.fittedModelPath, pointsOut = findFittingModel(
             self.app.dReg.drivers["mount"]["class"].model, self.app.mwGlob["modelDir"]
@@ -271,7 +279,9 @@ class ModelManage:
     def refreshModel(self) -> None:
         changeStyleDynamic(self.ui.refreshModel, "run", True)
         changeStyleDynamic(self.ui.modelGroup, "run", True)
-        self.app.dReg.drivers["mount"]["class"].signals.getModelDone.connect(self.clearRefreshModel)
+        self.app.dReg.drivers["mount"]["class"].signals.getModelDone.connect(
+            self.clearRefreshModel
+        )
         self.ui.deleteWorstPoint.setEnabled(False)
         self.ui.runOptimize.setEnabled(False)
         self.ui.clearModel.setEnabled(False)
@@ -306,9 +316,13 @@ class ModelManage:
     def finishOptimize(self) -> None:
         """ " """
         if self.ui.optimizeOverall.isChecked():
-            self.app.dReg.drivers["mount"]["class"].signals.getModelDone.disconnect(self.runTargetRMS)
+            self.app.dReg.drivers["mount"]["class"].signals.getModelDone.disconnect(
+                self.runTargetRMS
+            )
         else:
-            self.app.dReg.drivers["mount"]["class"].signals.getModelDone.disconnect(self.runSingleRMS)
+            self.app.dReg.drivers["mount"]["class"].signals.getModelDone.disconnect(
+                self.runSingleRMS
+            )
 
         changeStyleDynamic(self.ui.runOptimize, "run", False)
         self.ui.deleteWorstPoint.setEnabled(True)

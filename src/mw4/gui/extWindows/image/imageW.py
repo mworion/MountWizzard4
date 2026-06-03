@@ -270,13 +270,17 @@ class ImageWindow(MWidget):
         self.showImage(self.imageFileName)
 
     def exposeRaw(self, exposureTime: float, binning: int) -> None:
-        timeString = self.app.dReg.drivers["mount"]["class"].obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
+        timeString = self.app.dReg.drivers["mount"]["class"].obsSite.timeJD.utc_strftime(
+            "%Y-%m-%d-%H-%M-%S"
+        )
         if self.ui.timeTagImage.isChecked():
             self.imageFileName = self.app.mwGlob["imageDir"] / (timeString + "-exposure.fits")
         else:
             self.imageFileName = self.app.mwGlob["imageDir"] / "exposure.fits"
 
-        if not self.app.dReg.drivers["camera"]["class"].expose(self.imageFileName, exposureTime, binning):
+        if not self.app.dReg.drivers["camera"]["class"].expose(
+            self.imageFileName, exposureTime, binning
+        ):
             self.abortExpose()
             return
         self.msg.emit(0, "Image", "Exposing", self.imageFileName.stem)
@@ -295,22 +299,35 @@ class ImageWindow(MWidget):
         self.app.operationRunning.emit(Model.STATUS_EXPOSE_1)
         self.imagingDeviceStat["expose"] = True
         self.app.dReg.drivers["camera"]["class"].signals.saved.connect(self.exposeImageDone)
-        self.exposeRaw(self.app.dReg.drivers["camera"]["class"].exposureTime1, self.app.dReg.drivers["camera"]["class"].binning1)
+        self.exposeRaw(
+            self.app.dReg.drivers["camera"]["class"].exposureTime1,
+            self.app.dReg.drivers["camera"]["class"].binning1,
+        )
 
     def exposeImageNDone(self, imagePath: Path) -> None:
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
-        self.exposeRaw(self.app.dReg.drivers["camera"]["class"].exposureTimeN, self.app.dReg.drivers["camera"]["class"].binningN)
+        self.exposeRaw(
+            self.app.dReg.drivers["camera"]["class"].exposureTimeN,
+            self.app.dReg.drivers["camera"]["class"].binningN,
+        )
 
     def exposeImageN(self) -> None:
         if not self.imagingDeviceStat["exposeN"]:
             self.app.operationRunning.emit(Model.STATUS_EXPOSE_N)
             self.msg.emit(1, "Image", "Expose", "Continuous start")
             self.imagingDeviceStat["exposeN"] = True
-            self.app.dReg.drivers["camera"]["class"].signals.saved.connect(self.exposeImageNDone)
-            self.exposeRaw(self.app.dReg.drivers["camera"]["class"].exposureTimeN, self.app.dReg.drivers["camera"]["class"].binningN)
+            self.app.dReg.drivers["camera"]["class"].signals.saved.connect(
+                self.exposeImageNDone
+            )
+            self.exposeRaw(
+                self.app.dReg.drivers["camera"]["class"].exposureTimeN,
+                self.app.dReg.drivers["camera"]["class"].binningN,
+            )
         else:
-            self.app.dReg.drivers["camera"]["class"].signals.saved.disconnect(self.exposeImageNDone)
+            self.app.dReg.drivers["camera"]["class"].signals.saved.disconnect(
+                self.exposeImageNDone
+            )
             self.imagingDeviceStat["exposeN"] = False
             self.msg.emit(1, "Image", "Expose", "Continuous stopped")
             self.app.operationRunning.emit(Model.STATUS_IDLE)
@@ -319,9 +336,13 @@ class ImageWindow(MWidget):
         if not self.app.dReg.drivers["camera"]["class"].abort():
             return
         if self.imagingDeviceStat["expose"]:
-            self.app.dReg.drivers["camera"]["class"].signals.saved.disconnect(self.exposeImageDone)
+            self.app.dReg.drivers["camera"]["class"].signals.saved.disconnect(
+                self.exposeImageDone
+            )
         if self.imagingDeviceStat["exposeN"]:
-            self.app.dReg.drivers["camera"]["class"].signals.saved.disconnect(self.exposeImageNDone)
+            self.app.dReg.drivers["camera"]["class"].signals.saved.disconnect(
+                self.exposeImageNDone
+            )
 
         self.imageFileName = self.imageFileNameOld
         self.imagingDeviceStat["expose"] = False

@@ -59,7 +59,9 @@ class SimulatorBuildPoints:
         if not self.app.dReg.drivers["mount"]["class"].obsSite.haJNow:
             return
 
-        _, _, _, PB, PD = self.app.dReg.drivers["mount"]["class"].calcTransformationMatricesActual()
+        _, _, _, PB, PD = self.app.dReg.drivers["mount"][
+            "class"
+        ].calcTransformationMatricesActual()
         if PB is None or PD is None:
             return
         PB[2] += 1

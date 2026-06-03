@@ -54,7 +54,9 @@ def test_slewSelectedTargetWithDome_4(function):
     function.app.dReg.drivers["dome"]["stat"] = True
     with (
         mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=False),
-        mock.patch.object(function.app.dReg.drivers["dome"]["class"], "slewDome", return_value=10),
+        mock.patch.object(
+            function.app.dReg.drivers["dome"]["class"], "slewDome", return_value=10
+        ),
     ):
         suc = function.slewSelectedTargetWithDome()
         assert not suc

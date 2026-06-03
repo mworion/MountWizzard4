@@ -243,7 +243,9 @@ class MountMove:
         self.slewInterface.slewTargetAltAz(targetAlt, targetAz)
 
     def checkRaDecInputs(self) -> None:
-        canSlew = self.app.dReg.drivers["mount"]["class"].obsSite.setTargetRaDec(self.targetRa, self.targetDec)
+        canSlew = self.app.dReg.drivers["mount"]["class"].obsSite.setTargetRaDec(
+            self.targetRa, self.targetDec
+        )
         self.ui.moveRaDecAbsolute.setEnabled(canSlew)
 
     def setRA(self) -> None:
@@ -281,7 +283,9 @@ class MountMove:
         self.checkRaDecInputs()
 
     def checkAltAzInputs(self) -> None:
-        canSlew = self.app.dReg.drivers["mount"]["class"].obsSite.setTargetAltAz(self.targetAlt, self.targetAz)
+        canSlew = self.app.dReg.drivers["mount"]["class"].obsSite.setTargetAltAz(
+            self.targetAlt, self.targetAz
+        )
         self.ui.moveAltAzAbsolute.setEnabled(canSlew)
 
     def setAlt(self) -> None:

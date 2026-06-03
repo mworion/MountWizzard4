@@ -62,12 +62,16 @@ class HorizonDraw(MWidget):
         self.app.dReg.drivers["mount"]["class"].signals.settingDone.connect(self.drawTab)
         self.ui.showMountLimits.clicked.connect(self.drawTab)
         self.ui.horizon.p[0].scene().sigMouseMoved.connect(self.mouseMovedHorizon)
-        self.app.dReg.drivers["mount"]["class"].signals.mountIsUp.connect(self.setPointerVisibility)
+        self.app.dReg.drivers["mount"]["class"].signals.mountIsUp.connect(
+            self.setPointerVisibility
+        )
 
     def closeTab(self):
         self.app.dReg.drivers["mount"]["class"].signals.pointDone.disconnect(self.drawPointer)
         self.app.dReg.drivers["mount"]["class"].signals.settingDone.disconnect(self.drawTab)
-        self.app.dReg.drivers["mount"]["class"].signals.mountIsUp.disconnect(self.setPointerVisibility)
+        self.app.dReg.drivers["mount"]["class"].signals.mountIsUp.disconnect(
+            self.setPointerVisibility
+        )
 
     def setPointerVisibility(self, status) -> None:
         self.pointerHor.setVisible(status)

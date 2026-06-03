@@ -135,6 +135,3 @@ class DeviceRegistry:
                 "stat": None,
             },
         }
-
-
-

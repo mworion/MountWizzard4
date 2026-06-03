@@ -80,7 +80,9 @@ class SettRelay:
 
         # dynamically generate the widgets
         self.setupRelayGui()
-        self.app.dReg.drivers["relay"]["class"].signals.statusReady.connect(self.updateRelayGui)
+        self.app.dReg.drivers["relay"]["class"].signals.statusReady.connect(
+            self.updateRelayGui
+        )
 
         # make the gui signals linked to slots
         for relayButtonText in self.relayButtonTexts:

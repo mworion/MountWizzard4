@@ -17,6 +17,8 @@ import numpy as np
 import pytest
 import unittest.mock as mock
 from mw4.logic.measure.measure import MeasureData
+from mw4.logic.measure.measureCSV import MeasureDataCSV
+from mw4.logic.measure.measureRaw import MeasureDataRaw
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -160,3 +162,117 @@ def test_measureTask_2(function):
         mock.patch.object(function, "checkSize"),
     ):
         function.measureTask()
+
+
+def test_collectDataDevices_noneClass(function):
+    function.app.deviceStat = {
+        "camera": object(),
+        "focuser": object(),
+    }
+    function.app.dReg.drivers = {
+        "camera": {"class": object()},
+        "focuser": {"class": None},
+    }
+    function.collectDataDevices()
+    assert "camera" in function.devices
+    assert "focuser" not in function.devices
+
+
+class TestMeasureDataRaw:
+    @pytest.fixture(autouse=True, scope="function")
+    def setUp(self):
+        self.app = App()
+        self.parent = MeasureData(app=self.app)
+        self.data = {}
+        self.raw = MeasureDataRaw(app=self.app, parent=self.parent, data=self.data)
+        yield
+
+    def test_init(self):
+        assert self.raw.app == self.app
+        assert self.raw.parent == self.parent
+        assert self.raw.data == self.data
+        assert self.raw.deviceName == "RAW"
+        assert "raw" in self.raw.defaultConfig
+
+    def test_startCommunication(self):
+        with mock.patch.object(self.raw.timerTask, "start") as mock_start:
+            self.raw.startCommunication()
+            mock_start.assert_called_once_with(self.parent.CYCLE_UPDATE_TASK)
+
+    def test_stopCommunication(self):
+        with mock.patch.object(self.raw.timerTask, "stop") as mock_stop:
+            self.raw.stopCommunication()
+            mock_stop.assert_called_once()
+
+    def test_measureTask(self):
+        with mock.patch.object(self.parent, "measureTask") as mock_measure:
+            self.raw.measureTask()
+            mock_measure.assert_called_once()
+
+
+class TestMeasureDataCSV:
+    @pytest.fixture(autouse=True, scope="function")
+    def setUp(self):
+        self.app = App()
+        self.parent = MeasureData(app=self.app)
+        self.data = {}
+        self.csv = MeasureDataCSV(app=self.app, parent=self.parent, data=self.data)
+        yield
+
+    def test_init(self):
+        assert self.csv.app == self.app
+        assert self.csv.parent == self.parent
+        assert self.csv.data == self.data
+        assert self.csv.deviceName == "CSV"
+        assert "csv" in self.csv.defaultConfig
+
+    def test_writeHeaderCSV(self, tmp_path):
+        csv_file = tmp_path / "test_header.csv"
+        self.csv.csvFilename = csv_file
+        self.csv.writeHeaderCSV()
+        assert csv_file.exists()
+        content = csv_file.read_text()
+        assert "time" in content
+        assert "mount-timeDiff" in content
+
+    def test_writeCSV(self, tmp_path):
+        csv_file = tmp_path / "test_write.csv"
+        self.csv.csvFilename = csv_file
+        self.csv.data = {
+            "time": np.array([1]),
+            "mount-timeDiff": np.array([10]),
+            "filterNumber": np.array([0]),
+        }
+        self.csv.writeCSV()
+        assert csv_file.exists()
+        content = csv_file.read_text()
+        assert "1" in content
+        assert "10" in content
+
+    def test_startCommunication(self, tmp_path):
+        with (
+            mock.patch.object(self.csv.timerTask, "start") as mock_start,
+            mock.patch.object(
+                self.app.mount.obsSite.timeJD, "utc_strftime"
+            ) as mock_time,
+            mock.patch.object(self.app, "mwGlob", {"measureDir": tmp_path}),
+        ):
+            mock_time.return_value = "2024-01-01-12-00-00"
+            self.csv.startCommunication()
+            mock_start.assert_called_once_with(self.parent.CYCLE_UPDATE_TASK)
+            assert "measure-2024-01-01-12-00-00.csv" in str(self.csv.csvFilename)
+
+    def test_stopCommunication(self):
+        with mock.patch.object(self.csv.timerTask, "stop") as mock_stop:
+            self.csv.stopCommunication()
+            mock_stop.assert_called_once()
+
+    def test_measureTask(self):
+        with (
+            mock.patch.object(self.parent, "measureTask"),
+            mock.patch.object(self.csv, "writeCSV") as mock_write,
+        ):
+            self.csv.measureTask()
+            mock_write.assert_called_once()
+
+

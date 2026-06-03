@@ -70,11 +70,17 @@ class MainWindow(MWidget):
             },
         }
         self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(self.updateStatusGUI)
-        self.app.dReg.drivers["mount"]["class"].signals.mountIsUp.connect(self.updateMountConnStat)
+        self.app.dReg.drivers["mount"]["class"].signals.mountIsUp.connect(
+            self.updateMountConnStat
+        )
         self.app.remoteCommand.connect(self.remoteCommand)
-        self.app.dReg.drivers["plateSolve"]["class"].signals.message.connect(self.updatePlateSolveStatus)
+        self.app.dReg.drivers["plateSolve"]["class"].signals.message.connect(
+            self.updatePlateSolveStatus
+        )
         self.app.dReg.drivers["dome"]["class"].signals.message.connect(self.updateDomeStatus)
-        self.app.dReg.drivers["camera"]["class"].signals.message.connect(self.updateCameraStatus)
+        self.app.dReg.drivers["camera"]["class"].signals.message.connect(
+            self.updateCameraStatus
+        )
         self.ui.saveConfigQuit.clicked.connect(self.quitSave)
         self.ui.loadFrom.clicked.connect(self.loadProfileGUI)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
@@ -291,7 +297,9 @@ class MainWindow(MWidget):
     def updateThreadAndOnlineStatus(self) -> None:
         mode = "Online" if self.ui.isOnline.isChecked() else "Offline"
         moon = self.ui.moonPhaseIllumination.text()
-        f = dark_twilight_day(self.app.ephemeris, self.app.dReg.drivers["mount"]["class"].obsSite.location)
+        f = dark_twilight_day(
+            self.app.ephemeris, self.app.dReg.drivers["mount"]["class"].obsSite.location
+        )
         twilight = TWILIGHTS[int(f(self.app.dReg.drivers["mount"]["class"].obsSite.ts.now()))]
         activeCount = self.threadPool.activeThreadCount()
         diskUsage = shutil.disk_usage(self.app.mwGlob["workDir"])

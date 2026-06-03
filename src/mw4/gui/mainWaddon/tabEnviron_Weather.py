@@ -105,8 +105,12 @@ class EnvironWeather:
         }
 
         # weather functions
-        self.app.dReg.drivers["mount"]["class"].signals.settingDone.connect(self.updateSourceGui)
-        self.app.dReg.drivers["mount"]["class"].signals.settingDone.connect(self.updateRefractionUpdateType)
+        self.app.dReg.drivers["mount"]["class"].signals.settingDone.connect(
+            self.updateSourceGui
+        )
+        self.app.dReg.drivers["mount"]["class"].signals.settingDone.connect(
+            self.updateRefractionUpdateType
+        )
         self.ui.refracManual.clicked.connect(self.setRefractionUpdateType)
         self.ui.refracCont.clicked.connect(self.setRefractionUpdateType)
         self.ui.refracNoTrack.clicked.connect(self.setRefractionUpdateType)
@@ -240,7 +244,10 @@ class EnvironWeather:
             return
         if self.ui.refracManual.isChecked():
             return
-        if self.ui.refracNoTrack.isChecked() and self.app.dReg.drivers["mount"]["class"].obsSite.status == 0:
+        if (
+            self.ui.refracNoTrack.isChecked()
+            and self.app.dReg.drivers["mount"]["class"].obsSite.status == 0
+        ):
             return
 
         temp, press = self.movingAverageRefractionParameters()

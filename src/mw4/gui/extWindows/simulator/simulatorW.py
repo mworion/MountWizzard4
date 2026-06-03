@@ -96,10 +96,18 @@ class SimulatorWindow(MWidget):
         config["showHorizon"] = self.ui.showHorizon.isChecked()
 
     def closeEvent(self, closeEvent) -> None:
-        self.app.dReg.drivers["mount"]["class"].signals.pointDone.disconnect(self.buildPoints.updatePositions)
-        self.app.dReg.drivers["mount"]["class"].signals.pointDone.disconnect(self.laser.updatePositions)
-        self.app.dReg.drivers["mount"]["class"].signals.pointDone.disconnect(self.pointer.updatePositions)
-        self.app.dReg.drivers["mount"]["class"].signals.pointDone.disconnect(self.telescope.updateRotation)
+        self.app.dReg.drivers["mount"]["class"].signals.pointDone.disconnect(
+            self.buildPoints.updatePositions
+        )
+        self.app.dReg.drivers["mount"]["class"].signals.pointDone.disconnect(
+            self.laser.updatePositions
+        )
+        self.app.dReg.drivers["mount"]["class"].signals.pointDone.disconnect(
+            self.pointer.updatePositions
+        )
+        self.app.dReg.drivers["mount"]["class"].signals.pointDone.disconnect(
+            self.telescope.updateRotation
+        )
         self.entityModel.clear()
         self.storeConfig()
         super().closeEvent(closeEvent)
@@ -112,10 +120,18 @@ class SimulatorWindow(MWidget):
         self.ui.westView.clicked.connect(self.westView)
         self.app.colorChange.connect(self.colorChange)
         self.camera.positionChanged.connect(self.limitPositionZ)
-        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(self.buildPoints.updatePositions)
-        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(self.laser.updatePositions)
-        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(self.pointer.updatePositions)
-        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(self.telescope.updateRotation)
+        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(
+            self.buildPoints.updatePositions
+        )
+        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(
+            self.laser.updatePositions
+        )
+        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(
+            self.pointer.updatePositions
+        )
+        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(
+            self.telescope.updateRotation
+        )
         self.show()
 
     def setupCamera(self, parentEntity) -> None:

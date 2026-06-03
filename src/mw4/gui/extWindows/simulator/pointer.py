@@ -36,7 +36,9 @@ class SimulatorPointer:
         if not self.app.dReg.drivers["mount"]["stat"]:
             return
 
-        _, _, intersect, _, _ = self.app.dReg.drivers["mount"]["class"].calcTransformationMatricesActual()
+        _, _, intersect, _, _ = self.app.dReg.drivers["mount"][
+            "class"
+        ].calcTransformationMatricesActual()
 
         if intersect is None:
             return

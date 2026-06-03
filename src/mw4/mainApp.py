@@ -109,7 +109,7 @@ class MountWizzard4(QObject):
         self.messageQueue.put((1, "System", "Workdir", f"[{workDir}]"))
         self.messageQueue.put((1, "System", "Profile", f"[{profile}]"))
         """Create the mount device and load ephemeris data."""
-        self.mount =  MountDevice(self, verbose=True)
+        self.mount = MountDevice(self, verbose=True)
         self.dReg: DeviceRegistry = DeviceRegistry(self)
         topo = self.initConfig()
         self.mount.obsSite.location = topo

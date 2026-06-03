@@ -14,7 +14,6 @@
 #
 ###########################################################
 
-import mw4.mountcontrol
 import pytest
 import unittest.mock as mock
 import webbrowser

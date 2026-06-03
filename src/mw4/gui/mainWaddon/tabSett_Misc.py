@@ -72,11 +72,21 @@ class SettMisc:
         self.ui.showTabParkPos.clicked.connect(self.minimizeGUI)
         self.ui.showTabProfile.clicked.connect(self.minimizeGUI)
         self.setupAudioSignals()
-        self.app.dReg.drivers["mount"]["class"].signals.alert.connect(lambda: self.playSound("MountAlert"))
-        self.app.dReg.drivers["dome"]["class"].signals.slewed.connect(lambda: self.playSound("DomeSlew"))
-        self.app.dReg.drivers["mount"]["class"].signals.slewed.connect(lambda: self.playSound("MountSlew"))
-        self.app.dReg.drivers["camera"]["class"].signals.saved.connect(lambda: self.playSound("ImageSaved"))
-        self.app.dReg.drivers["plateSolve"]["class"].signals.result.connect(lambda: self.playSound("ImageSolved"))
+        self.app.dReg.drivers["mount"]["class"].signals.alert.connect(
+            lambda: self.playSound("MountAlert")
+        )
+        self.app.dReg.drivers["dome"]["class"].signals.slewed.connect(
+            lambda: self.playSound("DomeSlew")
+        )
+        self.app.dReg.drivers["mount"]["class"].signals.slewed.connect(
+            lambda: self.playSound("MountSlew")
+        )
+        self.app.dReg.drivers["camera"]["class"].signals.saved.connect(
+            lambda: self.playSound("ImageSaved")
+        )
+        self.app.dReg.drivers["plateSolve"]["class"].signals.result.connect(
+            lambda: self.playSound("ImageSolved")
+        )
         self.app.playSound.connect(self.playSound)
 
     def initConfig(self) -> None:

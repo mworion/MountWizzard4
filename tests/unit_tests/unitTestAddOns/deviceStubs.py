@@ -67,7 +67,6 @@ class Camera:
         self.defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
         self.run = {"indi": "dummy"}
 
-
     @staticmethod
     def expose(
         imagePath=None,

@@ -151,10 +151,12 @@ def test_loopCreate_1(function):
     function.points = []
     # Ensure loopCreate is called and doesn't crash
     entity_tuple = (Qt3DCore.QEntity(), None, None, None)
-    with mock.patch.object(function, "createPoint", return_value=(entity_tuple, 0, 0, 0)):
-        with mock.patch.object(function, "createAnnotation", return_value=()):
-            with mock.patch.object(function, "createLine", return_value=None):
-                function.loopCreate(Qt3DCore.QEntity())
+    with (
+        mock.patch.object(function, "createPoint", return_value=(entity_tuple, 0, 0, 0)),
+        mock.patch.object(function, "createAnnotation", return_value=()),
+        mock.patch.object(function, "createLine", return_value=None),
+    ):
+        function.loopCreate(Qt3DCore.QEntity())
     # After loopCreate, buildP should still have 2 items
     assert len(function.app.buildPoint.buildP) == 2
 
@@ -168,9 +170,11 @@ def test_loopCreate_2(function):
     function.points = []
     # Ensure loopCreate is called and doesn't crash
     entity_tuple = (Qt3DCore.QEntity(), None, None, None)
-    with mock.patch.object(function, "createPoint", return_value=(entity_tuple, 0, 0, 0)):
-        with mock.patch.object(function, "createLine", return_value=None):
-            function.loopCreate(Qt3DCore.QEntity())
+    with (
+        mock.patch.object(function, "createPoint", return_value=(entity_tuple, 0, 0, 0)),
+        mock.patch.object(function, "createLine", return_value=None),
+    ):
+        function.loopCreate(Qt3DCore.QEntity())
     # After loopCreate, buildP should still have 2 items
     assert len(function.app.buildPoint.buildP) == 2
 

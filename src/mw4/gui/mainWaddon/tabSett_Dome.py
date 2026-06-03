@@ -38,7 +38,9 @@ class SettDome:
         self.ui.useDomeGeometry.clicked.connect(self.setUseGeometry)
         self.ui.useDynamicFollowing.clicked.connect(self.setUseGeometry)
         self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
-        self.app.dReg.drivers["mount"]["class"].signals.firmwareDone.connect(self.setUseGeometry)
+        self.app.dReg.drivers["mount"]["class"].signals.firmwareDone.connect(
+            self.setUseGeometry
+        )
         self.ui.domeRadius.valueChanged.connect(self.tab1)
         self.ui.domeNorthOffset.valueChanged.connect(self.tab2)
         self.ui.domeEastOffset.valueChanged.connect(self.tab3)
@@ -152,22 +154,46 @@ class SettDome:
         self.mainW.wIcon(self.ui.domeAbortSlew, "bolt-alt")
 
     def updateDomeGeometryToGui(self) -> None:
-        value = float(self.app.dReg.drivers["dome"]["class"].data.get("DOME_MEASUREMENTS.DM_OTA_OFFSET", 0))
+        value = float(
+            self.app.dReg.drivers["dome"]["class"].data.get(
+                "DOME_MEASUREMENTS.DM_OTA_OFFSET", 0
+            )
+        )
         self.ui.offGEM.setValue(value)
 
-        value = float(self.app.dReg.drivers["dome"]["class"].data.get("DOME_MEASUREMENTS.DM_DOME_RADIUS", 0))
+        value = float(
+            self.app.dReg.drivers["dome"]["class"].data.get(
+                "DOME_MEASUREMENTS.DM_DOME_RADIUS", 0
+            )
+        )
         self.ui.domeRadius.setValue(value)
 
-        value = float(self.app.dReg.drivers["dome"]["class"].data.get("DOME_MEASUREMENTS.DM_SHUTTER_WIDTH", 0))
+        value = float(
+            self.app.dReg.drivers["dome"]["class"].data.get(
+                "DOME_MEASUREMENTS.DM_SHUTTER_WIDTH", 0
+            )
+        )
         self.ui.domeClearOpening.setValue(value)
 
-        value = float(self.app.dReg.drivers["dome"]["class"].data.get("DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT", 0))
+        value = float(
+            self.app.dReg.drivers["dome"]["class"].data.get(
+                "DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT", 0
+            )
+        )
         self.ui.domeNorthOffset.setValue(value)
 
-        value = float(self.app.dReg.drivers["dome"]["class"].data.get("DOME_MEASUREMENTS.DM_EAST_DISPLACEMENT", 0))
+        value = float(
+            self.app.dReg.drivers["dome"]["class"].data.get(
+                "DOME_MEASUREMENTS.DM_EAST_DISPLACEMENT", 0
+            )
+        )
         self.ui.domeEastOffset.setValue(value)
 
-        value = float(self.app.dReg.drivers["dome"]["class"].data.get("DOME_MEASUREMENTS.DM_UP_DISPLACEMENT", 0))
+        value = float(
+            self.app.dReg.drivers["dome"]["class"].data.get(
+                "DOME_MEASUREMENTS.DM_UP_DISPLACEMENT", 0
+            )
+        )
         self.ui.domeVerticalOffset.setValue(value)
 
     def switchGeometryDefinition(self) -> None:
@@ -191,26 +217,44 @@ class SettDome:
         if self.ui.automaticDome.isChecked():
             self.updateDomeGeometryToGui()
 
-        self.app.dReg.drivers["mount"]["class"].geometry.domeRadius = self.ui.domeRadius.value()
+        self.app.dReg.drivers["mount"][
+            "class"
+        ].geometry.domeRadius = self.ui.domeRadius.value()
         self.app.dReg.drivers["dome"]["class"].radius = self.ui.domeRadius.value()
         self.app.dReg.drivers["mount"]["class"].geometry.offGEM = self.ui.offGEM.value()
         self.app.dReg.drivers["mount"]["class"].geometry.offLAT = self.ui.offLAT.value()
 
         is10Micron = self.ui.use10micronDef.isChecked()
         if is10Micron:
-            self.app.dReg.drivers["mount"]["class"].geometry.offNorth = self.ui.domeNorthOffset.value()
-            self.app.dReg.drivers["mount"]["class"].geometry.offEast = self.ui.domeEastOffset.value()
-            self.app.dReg.drivers["mount"]["class"].geometry.offVert = self.ui.domeVerticalOffset.value()
+            self.app.dReg.drivers["mount"][
+                "class"
+            ].geometry.offNorth = self.ui.domeNorthOffset.value()
+            self.app.dReg.drivers["mount"][
+                "class"
+            ].geometry.offEast = self.ui.domeEastOffset.value()
+            self.app.dReg.drivers["mount"][
+                "class"
+            ].geometry.offVert = self.ui.domeVerticalOffset.value()
         else:
-            self.app.dReg.drivers["mount"]["class"].geometry.offNorthGEM = self.ui.domeNorthOffset.value()
-            self.app.dReg.drivers["mount"]["class"].geometry.offEastGEM = self.ui.domeEastOffset.value()
-            self.app.dReg.drivers["mount"]["class"].geometry.offVertGEM = self.ui.domeVerticalOffset.value()
+            self.app.dReg.drivers["mount"][
+                "class"
+            ].geometry.offNorthGEM = self.ui.domeNorthOffset.value()
+            self.app.dReg.drivers["mount"][
+                "class"
+            ].geometry.offEastGEM = self.ui.domeEastOffset.value()
+            self.app.dReg.drivers["mount"][
+                "class"
+            ].geometry.offVertGEM = self.ui.domeVerticalOffset.value()
 
         clearOpening = self.ui.domeClearOpening.value()
         self.app.dReg.drivers["dome"]["class"].clearOpening = clearOpening
         self.ui.domeOpeningHysteresis.setMaximum(clearOpening / 2.1)
-        self.app.dReg.drivers["dome"]["class"].openingHysteresis = self.ui.domeOpeningHysteresis.value()
-        self.app.dReg.drivers["dome"]["class"].clearanceZenith = self.ui.domeClearanceZenith.value()
+        self.app.dReg.drivers["dome"][
+            "class"
+        ].openingHysteresis = self.ui.domeOpeningHysteresis.value()
+        self.app.dReg.drivers["dome"][
+            "class"
+        ].clearanceZenith = self.ui.domeClearanceZenith.value()
 
         useGeometry = self.ui.useDomeGeometry.isChecked()
         self.app.dReg.drivers["dome"]["class"].useGeometry = useGeometry

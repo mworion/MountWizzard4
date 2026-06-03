@@ -62,12 +62,22 @@ class SatTrack(SatData):
             },
         }
         self.satOrbits = {}
-        self.app.dReg.drivers["mount"]["class"].signals.calcTLEdone.connect(self.updateSatelliteTrackGui)
-        self.app.dReg.drivers["mount"]["class"].signals.calcTrajectoryDone.connect(self.updateInternalTrackGui)
-        self.app.dReg.drivers["mount"]["class"].signals.getTLEdone.connect(self.getSatelliteDataFromDatabase)
+        self.app.dReg.drivers["mount"]["class"].signals.calcTLEdone.connect(
+            self.updateSatelliteTrackGui
+        )
+        self.app.dReg.drivers["mount"]["class"].signals.calcTrajectoryDone.connect(
+            self.updateInternalTrackGui
+        )
+        self.app.dReg.drivers["mount"]["class"].signals.getTLEdone.connect(
+            self.getSatelliteDataFromDatabase
+        )
         self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(self.followMount)
-        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(self.toggleTrackingOffset)
-        self.app.dReg.drivers["mount"]["class"].signals.firmwareDone.connect(self.enableGuiFunctions)
+        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(
+            self.toggleTrackingOffset
+        )
+        self.app.dReg.drivers["mount"]["class"].signals.firmwareDone.connect(
+            self.enableGuiFunctions
+        )
 
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
@@ -375,7 +385,9 @@ class SatTrack(SatData):
 
     def changeUnitTimeUTC(self) -> None:
         self.showSatPasses()
-        self.updateSatelliteTrackGui(self.app.dReg.drivers["mount"]["class"].satellite.tleParams)
+        self.updateSatelliteTrackGui(
+            self.app.dReg.drivers["mount"]["class"].satellite.tleParams
+        )
 
     def updateSatelliteTrackGui(self, tleParams: TLEParams) -> None:
         title = "Satellite tracking " + self.mainW.timeZoneString()
@@ -472,12 +484,16 @@ class SatTrack(SatData):
 
         azimuth = obs.Az.degrees
         altitude = obs.Alt.degrees
-        self.app.dReg.drivers["dome"]["class"].slewDome(altitude=altitude, azimuth=azimuth, follow=True)
+        self.app.dReg.drivers["dome"]["class"].slewDome(
+            altitude=altitude, azimuth=azimuth, follow=True
+        )
 
     def setTrackingOffsets(self) -> None:
         valT = self.ui.satOffTime.value()
         valR = self.ui.satOffRa.value()
         valD = self.ui.satOffDec.value()
-        suc = self.app.dReg.drivers["mount"]["class"].satellite.setTrackingOffsets(Time=valT, RA=valR, DECcorr=valD)
+        suc = self.app.dReg.drivers["mount"]["class"].satellite.setTrackingOffsets(
+            Time=valT, RA=valR, DECcorr=valD
+        )
         if not suc:
             self.msg.emit(2, "TLE", "Command error", "Cannot change offset")

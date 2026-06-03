@@ -69,7 +69,9 @@ class EnvironSeeing:
         signals.deviceConnected.connect(self.prepareSeeingTable)
 
         self.ui.unitTimeUTC.toggled.connect(self.updateSeeingEntries)
-        self.app.dReg.drivers["seeingWeather"]["class"].signals.update.connect(self.prepareSeeingTable)
+        self.app.dReg.drivers["seeingWeather"]["class"].signals.update.connect(
+            self.prepareSeeingTable
+        )
         clickable(self.ui.seeingIcon).connect(self.openWeb)
         self.app.start3s.connect(self.enableSeeingEntries)
         self.app.colorChange.connect(self.prepareSeeingTable)

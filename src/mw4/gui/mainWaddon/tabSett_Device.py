@@ -21,7 +21,6 @@ from typing import Any
 
 
 class SettDevice:
-
     def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
@@ -126,7 +125,9 @@ class SettDevice:
     def addMissingFrameworksData(self, driver: str, config: dict) -> dict:
         for framework in self.app.dReg.drivers[driver]["class"].run:
             if framework not in config[driver]["frameworks"]:
-                entry = self.app.dReg.drivers[driver]["class"].defaultConfig["frameworks"][framework]
+                entry = self.app.dReg.drivers[driver]["class"].defaultConfig["frameworks"][
+                    framework
+                ]
                 config[driver]["frameworks"][framework] = entry
         return config
 

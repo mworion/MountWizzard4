@@ -49,7 +49,9 @@ class SatelliteHorizonWindow(MWidget):
         self.app.showSatellite.connect(self.drawSatellite)
         self.app.updateSatellite.connect(self.updatePositions)
         self.app.redrawHorizon.connect(self.drawHorizon)
-        self.app.dReg.drivers["mount"]["class"].signals.mountIsUp.connect(self.setPointerVisibility)
+        self.app.dReg.drivers["mount"]["class"].signals.mountIsUp.connect(
+            self.setPointerVisibility
+        )
 
     def initConfig(self) -> None:
         self.positionWindow(self.app.config.get("WindowSatelliteHor", {}))
@@ -69,13 +71,19 @@ class SatelliteHorizonWindow(MWidget):
         self.app.showSatellite.disconnect(self.drawSatellite)
         self.app.updateSatellite.disconnect(self.updatePositions)
         self.app.redrawHorizon.disconnect(self.drawHorizon)
-        self.app.dReg.drivers["mount"]["class"].signals.mountIsUp.disconnect(self.setPointerVisibility)
-        self.app.dReg.drivers["mount"]["class"].signals.pointDone.disconnect(self.updatePointerAltAz)
+        self.app.dReg.drivers["mount"]["class"].signals.mountIsUp.disconnect(
+            self.setPointerVisibility
+        )
+        self.app.dReg.drivers["mount"]["class"].signals.pointDone.disconnect(
+            self.updatePointerAltAz
+        )
         self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
 
     def showWindow(self) -> None:
-        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(self.updatePointerAltAz)
+        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(
+            self.updatePointerAltAz
+        )
         self.app.colorChange.connect(self.colorChange)
         self.app.sendSatelliteData.emit([], [])
         self.show()

@@ -139,7 +139,10 @@ def test_buildSeeingItem(function):
 
 
 def test_markActualColumn(function):
-    function.app.dReg.drivers["seeingWeather"]["class"].data = {"meta": META, "hourly": dict(HOURLY)}
+    function.app.dReg.drivers["seeingWeather"]["class"].data = {
+        "meta": META,
+        "hourly": dict(HOURLY),
+    }
     data = dict(HOURLY)
     item = QTableWidgetItem()
     result = function.markActualColumn(item, data, 3)

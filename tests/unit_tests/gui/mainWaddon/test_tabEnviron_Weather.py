@@ -212,8 +212,12 @@ def test_updateFilterRefractionParameters_1(function):
 
 def test_updateFilterRefractionParameters_2(function):
     function.refractionSource = "sensor1Weather"
-    function.app.dReg.drivers["sensor1Weather"]["class"].data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = 10
-    function.app.dReg.drivers["sensor1Weather"]["class"].data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = 1000
+    function.app.dReg.drivers["sensor1Weather"]["class"].data[
+        "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
+    ] = 10
+    function.app.dReg.drivers["sensor1Weather"]["class"].data[
+        "WEATHER_PARAMETERS.WEATHER_PRESSURE"
+    ] = 1000
     function.updateFilterRefractionParameters()
 
 
@@ -225,16 +229,24 @@ def test_updateFilterRefractionParameters_3(function):
 
 def test_updateFilterRefractionParameters_4(function):
     function.refractionSource = "sensor1Weather"
-    function.app.dReg.drivers["sensor1Weather"]["class"].data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = 10
-    function.app.dReg.drivers["sensor1Weather"]["class"].data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = 1000
+    function.app.dReg.drivers["sensor1Weather"]["class"].data[
+        "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
+    ] = 10
+    function.app.dReg.drivers["sensor1Weather"]["class"].data[
+        "WEATHER_PARAMETERS.WEATHER_PRESSURE"
+    ] = 1000
     function.updateFilterRefractionParameters()
 
 
 def test_updateFilterRefractionParameters_5(function):
     function.refractionSource = "sensor1Weather"
     function.filteredPressure = np.full(100, 1000)
-    function.app.dReg.drivers["sensor1Weather"]["class"].data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = 10
-    function.app.dReg.drivers["sensor1Weather"]["class"].data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = 1000
+    function.app.dReg.drivers["sensor1Weather"]["class"].data[
+        "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
+    ] = 10
+    function.app.dReg.drivers["sensor1Weather"]["class"].data[
+        "WEATHER_PARAMETERS.WEATHER_PRESSURE"
+    ] = 1000
     function.updateFilterRefractionParameters()
 
 
@@ -349,10 +361,18 @@ def test_updateRefractionParameters_8(function):
 
 
 def test_updateSourceGui_1(function):
-    function.app.dReg.drivers["sensor1Weather"]["class"].data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = 10.5
-    function.app.dReg.drivers["sensor1Weather"]["class"].data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = 1000
-    function.app.dReg.drivers["sensor1Weather"]["class"].data["WEATHER_PARAMETERS.WEATHER_DEWPOINT"] = 10.5
-    function.app.dReg.drivers["sensor1Weather"]["class"].data["WEATHER_PARAMETERS.WEATHER_HUMIDITY"] = 10
+    function.app.dReg.drivers["sensor1Weather"]["class"].data[
+        "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
+    ] = 10.5
+    function.app.dReg.drivers["sensor1Weather"]["class"].data[
+        "WEATHER_PARAMETERS.WEATHER_PRESSURE"
+    ] = 1000
+    function.app.dReg.drivers["sensor1Weather"]["class"].data[
+        "WEATHER_PARAMETERS.WEATHER_DEWPOINT"
+    ] = 10.5
+    function.app.dReg.drivers["sensor1Weather"]["class"].data[
+        "WEATHER_PARAMETERS.WEATHER_HUMIDITY"
+    ] = 10
     function.updateSourceGui()
     assert function.ui.temperature1.text() == "10.5"
     assert function.ui.pressure1.text() == "1000"

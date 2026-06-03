@@ -28,7 +28,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    func = AnalyseWindow(app=App())
+    func = AnalyseWindow(app=App(), title="Analyse")
     yield func
     QApplication.processEvents()
     gc.collect()

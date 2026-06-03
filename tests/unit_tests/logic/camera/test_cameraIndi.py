@@ -508,21 +508,29 @@ def test_abort(function):
 
 
 def test_sendCoolerSwitch_off(function):
-    """sendCoolerSwitch(False) → queues COOLER_ON='Off'."""
+    """sendCoolerSwitch(False) → queues COOLER_ON='Off' and COOLER_OFF='On'."""
     function.txQ = Queue()
     function.deviceName = "test_cam"
     function.sendCoolerSwitch(coolerOn=False)
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == ("test_cam", "CCD_COOLER", {"COOLER_ON": "Off"})
+    assert function.txQ.get() == (
+        "test_cam",
+        "CCD_COOLER",
+        {"COOLER_ON": "Off", "COOLER_OFF": "On"},
+    )
 
 
 def test_sendCoolerSwitch_on(function):
-    """sendCoolerSwitch(True) → queues COOLER_ON='On'."""
+    """sendCoolerSwitch(True) → queues COOLER_ON='On' and COOLER_OFF='Off'."""
     function.txQ = Queue()
     function.deviceName = "test_cam"
     function.sendCoolerSwitch(coolerOn=True)
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == ("test_cam", "CCD_COOLER", {"COOLER_ON": "On"})
+    assert function.txQ.get() == (
+        "test_cam",
+        "CCD_COOLER",
+        {"COOLER_ON": "On", "COOLER_OFF": "Off"},
+    )
 
 
 # ---------------------------------------------------------------------------

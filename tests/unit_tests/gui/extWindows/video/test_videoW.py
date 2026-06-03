@@ -24,7 +24,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    func = VideoWindow(app=App())
+    func = VideoWindow(app=App(), title="Video")
     with mock.patch.object(func, "show"):
         yield func
         QApplication.processEvents()

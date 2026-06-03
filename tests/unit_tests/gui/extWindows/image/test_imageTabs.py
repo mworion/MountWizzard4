@@ -33,7 +33,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     CustomViewBox._previousGeometry = None
-    parent = ImageWindow(app=App())
+    parent = ImageWindow(app=App(), title="Image")
     func = ImageTabs(parent)
     yield func
     QApplication.processEvents()

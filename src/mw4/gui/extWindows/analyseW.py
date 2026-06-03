@@ -134,7 +134,8 @@ class AnalyseWindow(MWidget):
         self.ui.modelOrthoError.setText(f"{d.get('modelOrthoError', 0):5.0f}")
         self.ui.modelPolarError.setText(f"{d.get('modelPolarError', 0):5.0f}")
         self.ui.focalLength.setText(f"{d.get('focalLength', 0):4.0f}")
-        self.ui.profileName.setText(f"{d.get('profile', '')}")
+        if hasattr(self.ui, 'profileName'):
+            self.ui.profileName.setText(f"{d.get('profile', '')}")
         self.ui.firmware.setText(f"{d.get('firmware', '')}")
         self.ui.totalPoints.setText(f"{d.get('lenSequence', 0)}")
         self.ui.goodPoints.setText(f"{de.get('errorIndex', 0)}")

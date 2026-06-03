@@ -25,7 +25,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    func = MessageWindow(app=App())
+    func = MessageWindow(app=App(), title="Message")
     yield func
     QApplication.processEvents()
     gc.collect()

@@ -30,7 +30,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    func = MeasureWindow(app=App())
+    func = MeasureWindow(app=App(), title="Measure")
 
     value = np.datetime64("2014-12-12 20:20:20")
     func.app.measure.devices["directWeather"] = ""

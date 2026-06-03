@@ -25,7 +25,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    window = BigPopup(App())
+    window = BigPopup(App(), title="Big buttons")
     yield window
     QApplication.processEvents()
     gc.collect()

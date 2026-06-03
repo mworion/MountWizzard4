@@ -65,8 +65,9 @@ def test_buildWindow_1(function):
             return
 
     class Test:
-        def __init__(self, app):
+        def __init__(self, app, title):
             self.app = app
+            self.title = title
 
         destroyed = Destroyed()
 

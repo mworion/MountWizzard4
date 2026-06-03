@@ -28,7 +28,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 @pytest.fixture(scope="module")
 def function(qapp):
     with mock.patch.object(pickle, "load"):
-        func = SatelliteHorizonWindow(app=App())
+        func = SatelliteHorizonWindow(app=App(), title="Satellite Horizon")
         yield func
         QApplication.processEvents()
 

@@ -30,7 +30,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    func = HemisphereWindow(app=App())
+    func = HemisphereWindow(app=App(), title="Hemisphere")
     yield func
     QApplication.processEvents()
     gc.collect()

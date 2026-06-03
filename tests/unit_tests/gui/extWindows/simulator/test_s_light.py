@@ -24,7 +24,7 @@ from unittest import mock
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    func = SimulatorWindow(app=App())
+    func = SimulatorWindow(app=App(), title="Simulator")
     with mock.patch.object(func, "show"):
         yield func.light
         QApplication.processEvents()

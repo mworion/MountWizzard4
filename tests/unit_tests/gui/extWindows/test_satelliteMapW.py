@@ -27,7 +27,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(scope="module")
 def function(qapp):
-    func = SatelliteMapWindow(app=App())
+    func = SatelliteMapWindow(app=App(), title="Satellite Map")
     yield func
     QApplication.processEvents()
 

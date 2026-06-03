@@ -29,7 +29,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     shutil.copy("tests/testData/terrain.jpg", "tests/work/config/terrain.jpg")
-    func = HemisphereDraw(parent=HemisphereWindow(app=App()))
+    func = HemisphereDraw(parent=HemisphereWindow(app=App(), title="Hemisphere"))
     yield func
     QApplication.processEvents()
     gc.collect()

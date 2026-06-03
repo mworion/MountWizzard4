@@ -84,7 +84,7 @@ def test_closeEvent_1(window):
 
 
 def test_quitSave_1(window):
-    window.ui.profile.setText("test")
+    window.ui.profileName.setText("test")
     with (
         mock.patch.object(window, "saveProfile"),
         mock.patch.object(window, "close"),
@@ -255,7 +255,7 @@ def test_updateStatusGUI_2(window):
 
     window.app.mount.obsSite.status = 0
     window.updateStatusGUI(OB)
-    assert window.ui.statusText.text() == "test"
+    assert window.ui.mountText.text() == "test"
 
 
 def test_updateStatusGUI_3(window):

@@ -73,8 +73,6 @@ class MWidget(QMainWindow, Styles):
 
     def changeEvent(self, event: QEvent) -> None:
         if event.type() == QEvent.Type.WindowStateChange:
-            print(self.window(), self)
-            print(self.pos(), self.geometry(), self.windowState())
             self.titleBar.windowStateChanged(self.windowState())
         super().changeEvent(event)
         event.accept()

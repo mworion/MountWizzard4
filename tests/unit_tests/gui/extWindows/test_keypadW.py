@@ -25,7 +25,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    func = KeypadWindow(app=App())
+    func = KeypadWindow(app=App(), title="Keypad")
     with mock.patch.object(func, "show"):
         yield func
         QApplication.processEvents()

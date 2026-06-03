@@ -34,7 +34,7 @@ def function(qapp):
         mock.patch.object(ImageTabs, "setCrosshair"),
         mock.patch.object(ImageTabs, "colorChange"),
     ):
-        func = ImageWindow(App())
+        func = ImageWindow(App(), title="Image")
         yield func
         QApplication.processEvents()
 

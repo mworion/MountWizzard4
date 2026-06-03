@@ -331,6 +331,8 @@ def test_drawMeasure_1(function):
 
 
 def test_drawMeasure_2(function):
+    measureClass = function.app.dReg.drivers["measure"]["class"]
+    measureClass.data = function.app.measure.data
     function.drawLock.tryLock()
     with mock.patch.object(function, "processDrawMeasure"):
         function.drawMeasure()
@@ -342,3 +344,48 @@ def test_drawMeasure_3(function):
     with mock.patch.object(function, "processDrawMeasure"):
         function.drawMeasure()
     function.drawLock.unlock()
+
+
+def test_setTitle_csvFramework(function):
+    measureClass = function.app.dReg.drivers["measure"]["class"]
+    measureClass.framework = "csv"
+    measureClass.run["csv"].csvFilename = Path("test_data.csv")
+    function.setTitle()
+    measureClass.framework = ""
+
+
+def test_plotting_withExistingPlotItem(function):
+    plotItem = pg.PlotItem()
+    values = function.dataPlots["Pressure"]
+    measureClass = function.app.dReg.drivers["measure"]["class"]
+    measureClass.data = function.app.measure.data
+    x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
+    values["template"]["legendRef"] = pg.LegendItem()
+    firstKey = list(values["lineItems"].keys())[0]
+    values["lineItems"][firstKey]["plotItemRef"] = plotItem.plot()
+    function.plotting(plotItem, values, x)
+
+
+def test_plotting_newPlotItemWithLegend(function):
+    plotItem = pg.PlotItem()
+    values = function.dataPlots["Pressure"]
+    measureClass = function.app.dReg.drivers["measure"]["class"]
+    measureClass.data = function.app.measure.data
+    x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
+    values["template"]["legendRef"] = pg.LegendItem()
+    for line in values["lineItems"].values():
+        line["plotItemRef"] = None
+    function.plotting(plotItem, values, x)
+
+
+def test_drawMeasure_realData(function):
+    measureClass = function.app.dReg.drivers["measure"]["class"]
+    measureClass.data = function.app.measure.data
+    function.drawLock.tryLock()
+    function.drawLock.unlock()
+    with mock.patch.object(function, "processDrawMeasure"):
+        function.drawMeasure()
+    if function.drawLock.tryLock():
+        function.drawLock.unlock()
+
+

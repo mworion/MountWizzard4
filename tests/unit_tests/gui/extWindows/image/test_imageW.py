@@ -512,3 +512,11 @@ def test_syncModelToImage_5(function):
         ),
     ):
         function.syncModelToImage()
+
+
+def test_abortExpose_fail(function):
+    with mock.patch.object(
+        function.app.dReg.drivers["camera"]["class"], "abort", return_value=False
+    ):
+        function.abortExpose()
+

@@ -412,6 +412,27 @@ def test_startDriver_4(function):
         function.startDriver("telescope", True)
 
 
+def test_startDriver_5_autoStart(function):
+    function.driversData = {
+        "telescope": {
+            "framework": "indi",
+            "frameworks": {
+                "indi": {
+                    "deviceName": "astap",
+                    "deviceList": ["test", "test1"],
+                },
+            },
+        }
+    }
+    driverClass = function.app.dReg.drivers["telescope"]["class"]
+    with (
+        mock.patch.object(function, "configDriver"),
+        mock.patch.object(driverClass, "startCommunication") as mockStart,
+    ):
+        function.startDriver("telescope", autoStart=True)
+        mockStart.assert_called_once()
+
+
 def test_startDrivers_1(function):
     function.driversData = {
         "telescope": {
@@ -461,6 +482,23 @@ def test_startDrivers_4(function):
     with mock.patch.object(function, "startDriver") as testMock:
         function.startDrivers()
         assert testMock.call_args.args == ("telescope", True)
+
+
+def test_startDrivers_5_classNone(function):
+    function.ui.autoConnectASCOM.setChecked(False)
+    function.driversData = {
+        "telescope": {
+            "framework": "indi",
+        }
+    }
+    originalClass = function.app.dReg.drivers["telescope"]["class"]
+    function.app.dReg.drivers["telescope"]["class"] = None
+    try:
+        with mock.patch.object(function, "startDriver") as testMock:
+            function.startDrivers()
+            assert not testMock.called
+    finally:
+        function.app.dReg.drivers["telescope"]["class"] = originalClass
 
 
 def test_manualStopAllAscomDrivers_1(function):

@@ -404,3 +404,33 @@ def test_remoteCommand_3(window):
 def test_remoteCommand_4(window):
     with mock.patch.object(window.mainWindowAddons.addons["SettMount"], "mountBoot"):
         window.remoteCommand("boot mount")
+
+
+def test_setEnvironDeviceStats_noSource(window):
+    window.ui.refracManual.setChecked(False)
+    window.ui.showTabEnviron.setChecked(True)
+    window.app.dReg.drivers["mount"]["class"].setting.statusRefraction = 1
+    window.mainWindowAddons.addons["EnvironWeather"].refractionSource = None
+    window.setEnvironDeviceStats()
+    assert window.app.dReg.drivers["refraction"]["stat"] is False
+
+
+def test_updateDeviceStats_noDriver(window):
+    device = "testDevice"
+    ui = mock.MagicMock()
+    window.deviceStatGui[device] = ui
+    window.app.dReg.drivers[device] = None
+    window.updateDeviceStats()
+    ui.setEnabled.assert_called_with(False)
+
+
+def test_updateDeviceStats_enabledDriver(window):
+    device = "testDevice"
+    ui = mock.MagicMock()
+    window.deviceStatGui[device] = ui
+    window.app.dReg.drivers[device] = {"stat": True}
+    with mock.patch("mw4.gui.mainWindow.mainWindow.changeStyleDynamic"):
+        window.updateDeviceStats()
+    ui.setEnabled.assert_called_with(True)
+
+

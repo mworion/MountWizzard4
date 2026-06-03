@@ -179,7 +179,7 @@ def test_checkModelRunConditions_1(function):
 
 
 def test_checkModelRunConditions_2(function):
-    function.app.data.buildP = [[0, 0, 1]] * 100
+    function.app.buildPoint.buildP = [[0, 0, 1]] * 100
     suc = function.checkModelRunConditions()
     assert not suc
 

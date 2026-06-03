@@ -437,3 +437,38 @@ def test_drawTab_2(function):
     function.app.dReg.drivers["mount"]["stat"] = False
     function.app.mount.model.numberStars = 0
     function.drawTab()
+
+
+def test_drawCelestialEquator_empty(function):
+    with mock.patch.object(
+        function.app.buildPoint, "generateCelestialEquator", return_value=None
+    ):
+        function.drawCelestialEquator()
+
+
+def test_drawModelPoints_no_items(function):
+    function.app.buildPoint.buildP = []
+    function.drawModelPoints()
+
+
+def test_drawModelText_empty(function):
+    function.app.buildPoint.buildP = []
+    function.drawModelText()
+
+
+def test_drawModelPoints_with_findItem_returning_none(function):
+    function.app.buildPoint.buildP = [(10, 20, 1), (30, 40, 2)]
+    with mock.patch.object(
+        function.ui.hemisphere, "findItemByName", return_value=None
+    ):
+        function.drawModelPoints()
+
+
+def test_drawModelText_with_existing_text_items(function):
+    function.app.buildPoint.buildP = [(10, 20, 1)]
+    fakeTextItem = mock.MagicMock()
+    function.modelPointsText = [fakeTextItem]
+    with mock.patch.object(function.ui.hemisphere.p[0], "removeItem"):
+        function.drawModelText()
+
+

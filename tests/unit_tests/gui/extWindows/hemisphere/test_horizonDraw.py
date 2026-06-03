@@ -287,3 +287,15 @@ def test_drawTab_1(function):
         mock.patch.object(function.parent, "drawHorizonLimits"),
     ):
         function.drawTab()
+
+
+def test_drawView_3(function):
+    function.app.buildPoint.horizonP = [(30, 0), (30, 90), (30, 180), (30, 270)]
+    function.horizonPlot = pg.PlotDataItem()
+    function.drawView()
+
+
+def test_drawView_empty_list(function):
+    function.app.buildPoint.horizonP = []
+    function.drawView()
+

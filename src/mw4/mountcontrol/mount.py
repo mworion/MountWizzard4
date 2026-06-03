@@ -43,15 +43,14 @@ class MountDevice:
     log = logging.getLogger("MW4")
 
     def __init__(
-        self, app: Any, host: tuple, MAC: str, pathToData: Path, verbose: bool
-    ) -> None:
+        self, app: Any, host = None, MAC: str = "00.00.00.00.00.00", verbose: bool = False) -> None:
         self._waitTime = 0
         self._waitTimeFlip = 0
         self.app = app
         self.host = host
         self.MAC = MAC
         self.threadPool = app.threadPool
-        self.pathToData: Path = pathToData
+        self.pathToData: Path = app.mwGlob["dataDir"]
         self.verbose: bool = verbose
         self.loggingTrace: bool = False
 

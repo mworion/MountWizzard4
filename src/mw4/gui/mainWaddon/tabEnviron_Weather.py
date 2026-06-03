@@ -35,32 +35,32 @@ class EnvironWeather:
         self.refractionSources = {
             "sensor1Weather": {
                 "group": self.ui.sensor1Group,
-                "data": self.app.sensor1Weather.data,
-                "signals": self.app.sensor1Weather.signals,
+                "data": self.app.dReg.drivers["sensor1Weather"]["class"].data,
+                "signals": self.app.dReg.drivers["sensor1Weather"]["class"].signals,
                 "uiPost": "1",
             },
             "sensor2Weather": {
                 "group": self.ui.sensor2Group,
-                "data": self.app.sensor2Weather.data,
-                "signals": self.app.sensor2Weather.signals,
+                "data": self.app.dReg.drivers["sensor2Weather"]["class"].data,
+                "signals": self.app.dReg.drivers["sensor2Weather"]["class"].signals,
                 "uiPost": "2",
             },
             "sensor3Weather": {
                 "group": self.ui.sensor3Group,
-                "data": self.app.sensor3Weather.data,
-                "signals": self.app.sensor3Weather.signals,
+                "data": self.app.dReg.drivers["sensor3Weather"]["class"].data,
+                "signals": self.app.dReg.drivers["sensor3Weather"]["class"].signals,
                 "uiPost": "3",
             },
             "sensor4Weather": {
                 "group": self.ui.sensor4Group,
-                "data": self.app.sensor4Weather.data,
-                "signals": self.app.sensor4Weather.signals,
+                "data": self.app.dReg.drivers["sensor4Weather"]["class"].data,
+                "signals": self.app.dReg.drivers["sensor4Weather"]["class"].signals,
                 "uiPost": "4",
             },
             "directWeather": {
                 "group": self.ui.directGroup,
-                "data": self.app.directWeather.data,
-                "signals": self.app.directWeather.signals,
+                "data": self.app.dReg.drivers["directWeather"]["class"].data,
+                "signals": self.app.dReg.drivers["directWeather"]["class"].signals,
                 "uiPost": "Direct",
             },
         }
@@ -105,8 +105,8 @@ class EnvironWeather:
         }
 
         # weather functions
-        self.app.mount.signals.settingDone.connect(self.updateSourceGui)
-        self.app.mount.signals.settingDone.connect(self.updateRefractionUpdateType)
+        self.app.dReg.drivers["mount"]["class"].signals.settingDone.connect(self.updateSourceGui)
+        self.app.dReg.drivers["mount"]["class"].signals.settingDone.connect(self.updateRefractionUpdateType)
         self.ui.refracManual.clicked.connect(self.setRefractionUpdateType)
         self.ui.refracCont.clicked.connect(self.setRefractionUpdateType)
         self.ui.refracNoTrack.clicked.connect(self.setRefractionUpdateType)
@@ -134,7 +134,7 @@ class EnvironWeather:
 
     def smartEnvironGui(self) -> None:
         for source in self.refractionSources:
-            stat = self.app.deviceStat.get(source, None)
+            stat = self.app.dReg.drivers[source]["stat"]
             group = self.refractionSources[source]["group"]
             if stat is None:
                 group.setFixedWidth(0)
@@ -150,7 +150,7 @@ class EnvironWeather:
         if self.refractionSource != "directWeather":
             return
 
-        setting = self.app.mount.setting
+        setting = self.app.dReg.drivers["mount"]["class"].setting
         if setting.weatherStatus == 0:
             self.ui.refracManual.setChecked(True)
         elif setting.weatherStatus == 1:
@@ -162,19 +162,19 @@ class EnvironWeather:
         if not self.ui.showTabEnviron.isChecked():
             return
         if self.refractionSource != "directWeather":
-            self.app.mount.setting.setDirectWeatherUpdateType(0)
+            self.app.dReg.drivers["mount"]["class"].setting.setDirectWeatherUpdateType(0)
             return
 
-        if self.app.mount.setting.weatherStatus == 0:
+        if self.app.dReg.drivers["mount"]["class"].setting.weatherStatus == 0:
             self.ui.refracCont.setChecked(True)
 
         # otherwise, we have to switch it on or off
         if self.ui.refracManual.isChecked():
-            self.app.mount.setting.setDirectWeatherUpdateType(0)
+            self.app.dReg.drivers["mount"]["class"].setting.setDirectWeatherUpdateType(0)
         elif self.ui.refracNoTrack.isChecked():
-            self.app.mount.setting.setDirectWeatherUpdateType(1)
+            self.app.dReg.drivers["mount"]["class"].setting.setDirectWeatherUpdateType(1)
         else:
-            self.app.mount.setting.setDirectWeatherUpdateType(2)
+            self.app.dReg.drivers["mount"]["class"].setting.setDirectWeatherUpdateType(2)
 
     def setRefractionSourceGui(self) -> None:
         for source in self.refractionSources:
@@ -236,16 +236,16 @@ class EnvironWeather:
             return
         if self.refractionSource == "directWeather":
             return
-        if not self.app.deviceStat["mount"]:
+        if not self.app.dReg.drivers["mount"]["stat"]:
             return
         if self.ui.refracManual.isChecked():
             return
-        if self.ui.refracNoTrack.isChecked() and self.app.mount.obsSite.status == 0:
+        if self.ui.refracNoTrack.isChecked() and self.app.dReg.drivers["mount"]["class"].obsSite.status == 0:
             return
 
         temp, press = self.movingAverageRefractionParameters()
         if abs(temp - self.tempLast) > 0.1 or abs(press - self.pressLast) > 5:
-            self.app.mount.setting.setRefractionParam(temp, press)
+            self.app.dReg.drivers["mount"]["class"].setting.setRefractionParam(temp, press)
             self.tempLast = temp
             self.pressLast = press
 

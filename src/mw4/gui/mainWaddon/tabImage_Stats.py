@@ -91,11 +91,12 @@ class ImageStats:
     def updateImageStats(self) -> None:
         focalLength = self.ui.focalLength.value()
         aperture = self.ui.aperture.value()
-        pixelSizeX = self.app.camera.data.get("CCD_INFO.CCD_PIXEL_SIZE_X", 0)
-        pixelSizeY = self.app.camera.data.get("CCD_INFO.CCD_PIXEL_SIZE_Y", 0)
-        pixelX = self.app.camera.data.get("CCD_INFO.CCD_MAX_X", 0)
-        pixelY = self.app.camera.data.get("CCD_INFO.CCD_MAX_Y", 0)
-        rotation = self.app.camera.data.get("CCD_ROTATION.CCD_ROTATION_VALUE", 0)
+        data = self.app.dReg.drivers["camera"]["class"].data
+        pixelSizeX = data.get("CCD_INFO.CCD_PIXEL_SIZE_X", 0)
+        pixelSizeY = data.get("CCD_INFO.CCD_PIXEL_SIZE_Y", 0)
+        pixelX = data.get("CCD_INFO.CCD_MAX_X", 0)
+        pixelY = data.get("CCD_INFO.CCD_MAX_Y", 0)
+        rotation = data.get("CCD_ROTATION.CCD_ROTATION_VALUE", 0)
 
         if focalLength and pixelSizeX and pixelSizeY:
             resolutionX = pixelSizeX / focalLength * 206.265
@@ -181,7 +182,7 @@ class ImageStats:
             self.msg.emit(2, "System", "ImageStats", "Browser failed")
 
     def updateTelescopeParametersToGui(self) -> None:
-        data = self.app.telescope.data
+        data = self.app.dReg.drivers["telescope"]["class"].data
         value = data.get("TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH", 0)
         if value is not None:
             value = float(value)

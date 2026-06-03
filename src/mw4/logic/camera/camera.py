@@ -70,8 +70,6 @@ class Camera:
         for fw in self.run:
             self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
 
-        self.app.mount.signals.pointDone.connect(self.setObsSite)
-
     @property
     def binning(self) -> int:
         return self._binning
@@ -113,9 +111,6 @@ class Camera:
             self.heightASCOM = int(maxY / self._binning)
             self.posXASCOM = 0
             self.posYASCOM = 0
-
-    def setObsSite(self, obsSite: Any) -> None:
-        self.obsSite = obsSite
 
     def startCommunication(self) -> None:
         self.run[self.framework].startCommunication()

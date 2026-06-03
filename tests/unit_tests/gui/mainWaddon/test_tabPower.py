@@ -46,7 +46,7 @@ def test_updatePowerGui_1(function):
 
 
 def test_updatePowerGui_2(function):
-    function.app.power.data = {"FIRMWARE_INFO.VERSION": "1.5"}
+    function.app.dReg.drivers["power"]["class"].data = {"FIRMWARE_INFO.VERSION": "1.5"}
     function.updatePowerGui()
 
 
@@ -114,12 +114,12 @@ def test_setAdjustableOutput_3(function):
 
 
 def test_rebootUPB_1(function):
-    with mock.patch.object(function.app.power, "reboot", return_value=False):
+    with mock.patch.object(function.app.dReg.drivers["power"]["class"], "reboot", return_value=False):
         suc = function.rebootUPB()
         assert not suc
 
 
 def test_rebootUPB_2(function):
-    with mock.patch.object(function.app.power, "reboot", return_value=True):
+    with mock.patch.object(function.app.dReg.drivers["power"]["class"], "reboot", return_value=True):
         suc = function.rebootUPB()
         assert suc

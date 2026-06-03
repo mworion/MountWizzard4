@@ -33,10 +33,10 @@ class SimulatorPointer:
             node["entity"].setEnabled(isVisible)
 
     def updatePositions(self):
-        if not self.app.deviceStat["mount"]:
+        if not self.app.dReg.drivers["mount"]["stat"]:
             return
 
-        _, _, intersect, _, _ = self.app.mount.calcTransformationMatricesActual()
+        _, _, intersect, _, _ = self.app.dReg.drivers["mount"]["class"].calcTransformationMatricesActual()
 
         if intersect is None:
             return

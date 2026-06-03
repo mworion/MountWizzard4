@@ -39,11 +39,11 @@ class HemisphereDraw(MWidget):
         self.alignmentStarsText: list = []
 
     def initConfig(self) -> None:
-        self.app.mount.signals.pointDone.connect(self.drawPointer)
-        self.app.dome.signals.azimuth.connect(self.setDomeAzimuth)
-        self.app.dome.signals.deviceDisconnected.connect(self.drawDome)
-        self.app.dome.signals.serverDisconnected.connect(self.drawDome)
-        self.app.mount.signals.getModelDone.connect(self.drawTab)
+        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(self.drawPointer)
+        self.app.dReg.drivers["dome"]["class"].signals.azimuth.connect(self.setDomeAzimuth)
+        self.app.dReg.drivers["dome"]["class"].signals.deviceDisconnected.connect(self.drawDome)
+        self.app.dReg.drivers["dome"]["class"].signals.serverDisconnected.connect(self.drawDome)
+        self.app.dReg.drivers["mount"]["class"].signals.getModelDone.connect(self.drawTab)
         self.app.updatePointMarker.connect(self.setupModel)
         self.app.redrawHemisphere.connect(self.drawTab)
         self.app.redrawHorizon.connect(self.drawHorizon)
@@ -67,11 +67,11 @@ class HemisphereDraw(MWidget):
         self.ui.hemisphere.p[0].scene().sigMouseMoved.connect(self.mouseMovedHemisphere)
 
     def closeTab(self) -> None:
-        self.app.mount.signals.pointDone.disconnect(self.drawPointer)
-        self.app.mount.signals.getModelDone.disconnect(self.drawTab)
-        self.app.dome.signals.azimuth.disconnect(self.setDomeAzimuth)
-        self.app.dome.signals.deviceDisconnected.disconnect(self.drawDome)
-        self.app.dome.signals.serverDisconnected.disconnect(self.drawDome)
+        self.app.dReg.drivers["mount"]["class"].signals.pointDone.disconnect(self.drawPointer)
+        self.app.dReg.drivers["mount"]["class"].signals.getModelDone.disconnect(self.drawTab)
+        self.app.dReg.drivers["dome"]["class"].signals.azimuth.disconnect(self.setDomeAzimuth)
+        self.app.dReg.drivers["dome"]["class"].signals.deviceDisconnected.disconnect(self.drawDome)
+        self.app.dReg.drivers["dome"]["class"].signals.serverDisconnected.disconnect(self.drawDome)
         self.app.updatePointMarker.disconnect(self.setupModel)
         self.app.redrawHemisphere.disconnect(self.drawTab)
         self.app.redrawHorizon.disconnect(self.drawHorizon)
@@ -99,7 +99,7 @@ class HemisphereDraw(MWidget):
             self.drawModelPoints()
         elif self.ui.alignmentModeHem.isChecked():
             self.ui.showAlignStar.setChecked(True)
-            self.app.data.clearBuildP()
+            self.app.buildPoint.clearBuildP()
         self.app.redrawHemisphere.emit()
 
     def prepareView(self) -> None:
@@ -112,7 +112,7 @@ class HemisphereDraw(MWidget):
         plotItem.getViewBox().callbackMDC = self.mouseDoubleClick
 
     def drawCelestialEquator(self) -> None:
-        celestial = self.app.data.generateCelestialEquator()
+        celestial = self.app.buildPoint.generateCelestialEquator()
         if not celestial:
             return
 
@@ -136,8 +136,8 @@ class HemisphereDraw(MWidget):
     def drawHorizon(self) -> None:
         p0 = self.ui.hemisphere.p[0]
         p1 = self.ui.hemisphere.p[1]
-        self.ui.hemisphere.drawHorizon(self.app.data.horizonP, plotItem=p0)
-        self.ui.hemisphere.drawHorizon(self.app.data.horizonP, plotItem=p1, polar=True)
+        self.ui.hemisphere.drawHorizon(self.app.buildPoint.horizonP, plotItem=p0)
+        self.ui.hemisphere.drawHorizon(self.app.buildPoint.horizonP, plotItem=p1, polar=True)
 
     def setupAlignmentStars(self) -> None:
         plotItem = self.ui.hemisphere.p[0]
@@ -153,7 +153,7 @@ class HemisphereDraw(MWidget):
             plotItem.addItem(textItem)
 
     def calculateRelevance(self, alt: float, az: float) -> float:
-        isNorth = self.app.mount.obsSite.location.latitude.degrees > 0
+        isNorth = self.app.dReg.drivers["mount"]["class"].obsSite.location.latitude.degrees > 0
         altFak = 1 - np.minimum(np.abs(alt - 30), 35) / 35
         if isNorth:
             azFak = 1 - np.minimum(diffModulusAbs(0, az - 180, 360), 75) / 75
@@ -217,10 +217,10 @@ class HemisphereDraw(MWidget):
             spot.setSymbol(symbol)
 
     def drawModelPoints(self) -> None:
-        if not self.app.data.buildP:
+        if not self.app.buildPoint.buildP:
             return
 
-        y, x, statusList = zip(*self.app.data.buildP)
+        y, x, statusList = zip(*self.app.buildPoint.buildP)
         for index, plotItem in enumerate(self.ui.hemisphere.p):
             item = self.ui.hemisphere.findItemByName(plotItem, "model")
             if not item:
@@ -231,7 +231,7 @@ class HemisphereDraw(MWidget):
             self.setModelPointsAppearanceInPlot(item, statusList)
 
     def drawModelText(self) -> None:
-        if not self.app.data.buildP:
+        if not self.app.buildPoint.buildP:
             return
 
         plotItem = self.ui.hemisphere.p[0]
@@ -244,7 +244,7 @@ class HemisphereDraw(MWidget):
             self.window().font().family(),
             int(self.window().font().pointSize() * facFont),
         )
-        for i, (alt, az, act) in enumerate(self.app.data.buildP):
+        for i, (alt, az, act) in enumerate(self.app.buildPoint.buildP):
             col = [self.M_TER, self.M_RED, self.M_GREEN]
             colActive = col[act]
             color = self.M_PINK if isEdit else colActive
@@ -259,8 +259,8 @@ class HemisphereDraw(MWidget):
             plotItem.addItem(textItem)
 
     def updateDataModel(self, x: list[float], y: list[float]) -> None:
-        bp = [[y, x, self.app.data.UNPROCESSED] for y, x in zip(y, x)]
-        self.app.data.buildP = bp
+        bp = [[y, x, self.app.buildPoint.UNPROCESSED] for y, x in zip(y, x)]
+        self.app.buildPoint.buildP = bp
         self.drawModelPoints()
         self.drawModelText()
         self.app.buildPointsChanged.emit()
@@ -325,7 +325,7 @@ class HemisphereDraw(MWidget):
                 items.append(item)
                 item.setVisible(True)
 
-        obsSite = self.app.mount.obsSite
+        obsSite = self.app.dReg.drivers["mount"]["class"].obsSite
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
         items[0].setData(x=[az], y=[alt])
@@ -349,7 +349,7 @@ class HemisphereDraw(MWidget):
         self.pointerDome.setVisible(visible)
 
     def drawModelIsoCurve(self) -> None:
-        model = self.app.mount.model
+        model = self.app.dReg.drivers["mount"]["class"].model
         if len(model.starList) == 0:
             return
         alt = np.array([x.alt.degrees for x in model.starList])
@@ -388,7 +388,7 @@ class HemisphereDraw(MWidget):
         question += f"<font color={self.M_PRIM}>{name}.</font>"
         question += "<br>Would you like to start alignment?<br>"
 
-        isDAT = self.app.mount.setting.statusDualAxisTracking
+        isDAT = self.app.dReg.drivers["mount"]["class"].setting.statusDualAxisTracking
         warning = f"<br><i><font color={self.M_YELLOW}>"
         warning += "Dual Axis Tracking is actually enabled!<br>"
         warning += "It should be off during alignment process.</font></i>"
@@ -414,10 +414,10 @@ class HemisphereDraw(MWidget):
             self.slewDirect(posView)
 
     def drawTab(self) -> None:
-        hasModel = bool(self.app.mount.model.numberStars)
+        hasModel = bool(self.app.dReg.drivers["mount"]["class"].model.numberStars)
         self.ui.alignmentModeHem.setEnabled(hasModel)
         self.ui.showIsoModel.setEnabled(hasModel)
-        isMount = bool(self.app.deviceStat["mount"])
+        isMount = bool(self.app.dReg.drivers["mount"]["stat"])
         self.ui.showMountLimits.setEnabled(isMount)
 
         self.prepareView()

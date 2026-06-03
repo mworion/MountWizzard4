@@ -63,13 +63,13 @@ class EnvironSeeing:
         self.ui = mainW.ui
         self.seeingEnabled: bool = False
 
-        signals = self.app.seeingWeather.signals
+        signals = self.app.dReg.drivers["seeingWeather"]["class"].signals
         signals.deviceDisconnected.connect(self.clearSeeingEntries)
-        signals = self.app.seeingWeather.signals
+        signals = self.app.dReg.drivers["seeingWeather"]["class"].signals
         signals.deviceConnected.connect(self.prepareSeeingTable)
 
         self.ui.unitTimeUTC.toggled.connect(self.updateSeeingEntries)
-        self.app.seeingWeather.signals.update.connect(self.prepareSeeingTable)
+        self.app.dReg.drivers["seeingWeather"]["class"].signals.update.connect(self.prepareSeeingTable)
         clickable(self.ui.seeingIcon).connect(self.openWeb)
         self.app.start3s.connect(self.enableSeeingEntries)
         self.app.colorChange.connect(self.prepareSeeingTable)
@@ -84,7 +84,7 @@ class EnvironSeeing:
         self.ui.seeing.setVisible(False)
 
     def addSkyfieldTimeObject(self, data: dict) -> None:
-        ts = self.app.mount.obsSite.ts
+        ts = self.app.dReg.drivers["mount"]["class"].obsSite.ts
         data["time"] = []
 
         for date, hour in zip(data["date"], data["hour"]):
@@ -145,20 +145,20 @@ class EnvironSeeing:
         item.setForeground(QColor(self.mainW.M_PINK))
         val = data["seeing_arcsec"][i]
         self.ui.limitForecast.setText(f"{val}")
-        val = self.app.seeingWeather.data["meta"]["last_model_update"]
+        val = self.app.dReg.drivers["seeingWeather"]["class"].data["meta"]["last_model_update"]
         self.ui.limitForecastDate.setText(f"{val}")
         return i
 
     def updateSeeingEntries(self) -> None:
-        if "hourly" not in self.app.seeingWeather.data:
+        if "hourly" not in self.app.dReg.drivers["seeingWeather"]["class"].data:
             return
         self.ui.seeingGroup.setTitle("Seeing data " + self.mainW.timeZoneString())
-        ts = self.app.mount.obsSite.ts
+        ts = self.app.dReg.drivers["mount"]["class"].obsSite.ts
         colorPrim = colors["M_PRIM"][0]
         colorQuar = colors["M_BACK"][0]
         colorTer = colors["M_TER"][0]
         seeTab = self.ui.seeing
-        data = self.app.seeingWeather.data["hourly"]
+        data = self.app.dReg.drivers["seeingWeather"]["class"].data["hourly"]
         self.addSkyfieldTimeObject(data)
         columnCenter = 1
         for i in range(0, 96):

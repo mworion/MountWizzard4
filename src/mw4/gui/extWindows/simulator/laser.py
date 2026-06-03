@@ -35,10 +35,10 @@ class SimulatorLaser:
             node["entity"].setEnabled(isVisible)
 
     def updatePositions(self):
-        if not self.app.deviceStat["mount"]:
+        if not self.app.dReg.drivers["mount"]["stat"]:
             return
 
-        _, _, _, PB, PD = self.app.mount.calcTransformationMatricesActual()
+        _, _, _, PB, PD = self.app.dReg.drivers["mount"]["class"].calcTransformationMatricesActual()
 
         if PB is None or PD is None:
             return

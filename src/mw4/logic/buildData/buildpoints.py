@@ -45,7 +45,7 @@ def HaDecToAltAz(ha: float, dec: float, lat: float) -> tuple[float, float]:
     return alt, az
 
 
-class DataPoint:
+class BuildPoint:
     UNPROCESSED = 0
     FAILED = 1
     SOLVED = 2
@@ -181,7 +181,7 @@ class DataPoint:
             _, domeAz = self.app.mount.calcMountAltAzToDomeAltAz(alt, az)
             if domeAz is None:
                 continue
-            pointsNew.append([alt, az, self.app.data.UNPROCESSED, domeAz.degrees])
+            pointsNew.append([alt, az, self.app.buildPoint.UNPROCESSED, domeAz.degrees])
         self._buildP = [p[0:3] for p in sorted(pointsNew, key=lambda x: -x[3])]
 
     def sortAlt(self) -> None:

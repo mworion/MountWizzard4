@@ -106,7 +106,7 @@ def test_quitSave_1(window):
 
 
 def test_smartFunctionGui_0(window):
-    window.app.deviceStat["mount"] = True
+    window.app.dReg.drivers["mount"]["stat"] = True
     window.app.deviceStat["camera"] = True
     window.app.deviceStat["plateSolve"] = True
     window.app.data.buildP = []
@@ -114,7 +114,7 @@ def test_smartFunctionGui_0(window):
 
 
 def test_smartFunctionGui_1(window):
-    window.app.deviceStat["mount"] = True
+    window.app.dReg.drivers["mount"]["stat"] = True
     window.app.deviceStat["camera"] = True
     window.app.deviceStat["plateSolve"] = True
     window.app.data.buildP = [(0, 0)]
@@ -125,7 +125,7 @@ def test_smartFunctionGui_1(window):
 
 
 def test_smartFunctionGui_2(window):
-    window.app.deviceStat["mount"] = True
+    window.app.dReg.drivers["mount"]["stat"] = True
     window.app.deviceStat["camera"] = False
     window.app.deviceStat["plateSolve"] = True
     window.app.data.buildP = [(0, 0)]
@@ -136,7 +136,7 @@ def test_smartFunctionGui_2(window):
 
 
 def test_smartFunctionGui_3(window):
-    window.app.deviceStat["mount"] = True
+    window.app.dReg.drivers["mount"]["stat"] = True
     window.smartFunctionGui()
     assert window.ui.refractionGroup.isEnabled()
     assert window.ui.dsoGroup.isEnabled()
@@ -144,7 +144,7 @@ def test_smartFunctionGui_3(window):
 
 
 def test_smartFunctionGui_4(window):
-    window.app.deviceStat["mount"] = False
+    window.app.dReg.drivers["mount"]["stat"] = False
     window.smartFunctionGui()
     assert not window.ui.refractionGroup.isEnabled()
     assert not window.ui.dsoGroup.isEnabled()
@@ -212,7 +212,7 @@ def test_updatePlateSolveStatus_1(window):
 
 def test_updateMountConnStat_1(window):
     window.updateMountConnStat(True)
-    assert window.app.deviceStat["mount"]
+    assert window.app.dReg.drivers["mount"]["stat"]
 
 
 def test_updatePlateSolveStatus(window):

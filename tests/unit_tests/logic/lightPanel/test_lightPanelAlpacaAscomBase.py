@@ -53,8 +53,8 @@ def test_pollData_lightOn(function):
 
 
 def test_lightOn(function):
-    function.app.cover = mock.MagicMock()
-    function.app.cover.data = {"FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 254}
+    function.app.dReg.drivers["cover"]["class"] = mock.MagicMock()
+    function.app.dReg.drivers["cover"]["class"].data = {"FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 254}
     while not function.commandQueue.empty():
         function.commandQueue.get_nowait()
     function.lightOn()

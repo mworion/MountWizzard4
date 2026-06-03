@@ -76,7 +76,7 @@ def test_updateAzimuth_1(function):
 
 
 def test_updateShutter_1(function):
-    function.app.dome.data = {
+    function.app.dReg.drivers["dome"]["class"].data = {
         "ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION": 0,
         "DOME_SHUTTER.SHUTTER_OPEN": True,
     }

@@ -21,36 +21,18 @@ from mw4.base.deviceRegistry import DeviceRegistry
 from mw4.base.loggerMW import setCustomLoggingLevel
 from mw4.base.timerManager import CyclicTimerManager
 from mw4.gui.mainWindow.mainWindow import MainWindow
-from mw4.logic.buildData.buildpoints import DataPoint
+from mw4.logic.buildData.buildpoints import BuildPoint
 from mw4.logic.buildData.hipparcos import Hipparcos
-from mw4.logic.camera.camera import Camera
-from mw4.logic.cover.cover import Cover
-from mw4.logic.dome.dome import Dome
-from mw4.logic.environment.directWeather import DirectWeather
-from mw4.logic.environment.seeingWeather import SeeingWeather
-from mw4.logic.environment.sensorWeather import SensorWeather
-from mw4.logic.filter.filter import Filter
-from mw4.logic.focuser.focuser import Focuser
-from mw4.logic.lightPanel.lightPanel import LightPanel
-from mw4.logic.measure.measure import MeasureData
-from mw4.logic.plateSolve.plateSolve import PlateSolve
-from mw4.logic.powerswitch.kmRelay import KMRelay
-from mw4.logic.powerswitch.pegasusUPB import PegasusUPB
 from mw4.logic.profiles.profile import loadProfileStart
-from mw4.logic.remote.remote import Remote
-from mw4.logic.telescope.telescope import Telescope
 from mw4.mountcontrol.mount import MountDevice
 from PySide6.QtCore import QObject, QThreadPool, Signal
 from PySide6.QtWidgets import QApplication
 from queue import Queue
 from skyfield.api import wgs84
 from skyfield.toposlib import GeographicPosition
-from typing import Any
 
 
 class MountWizzard4(QObject):
-    """Main application object for MountWizzard4."""
-
     __version__ = version("mountwizzard4")
     log = logging.getLogger("MW4")
 
@@ -62,7 +44,6 @@ class MountWizzard4(QObject):
     playSound = Signal(object)
     showImage = Signal(object)
     showAnalyse = Signal(object)
-
     # --- Hemisphere / build point signals ---
     redrawHemisphere = Signal()
     redrawHorizon = Signal()
@@ -70,32 +51,27 @@ class MountWizzard4(QObject):
     drawBuildPoints = Signal()
     buildPointsChanged = Signal()
     drawHorizonPoints = Signal()
-
     # --- Device signals ---
     operationRunning = Signal(object)
     updateDomeSettings = Signal()
     hostChanged = Signal()
     remoteCommand = Signal(object)
-
     # --- Mount signals ---
     virtualStop = Signal()
     mountOff = Signal()
     mountOn = Signal()
     refreshModel = Signal()
     refreshName = Signal()
-
     # --- Satellite signals ---
     sendSatelliteData = Signal(object, object)
     updateSatellite = Signal(object, object)
     showSatellite = Signal(object, object, object, object, object)
-
     # --- Gamepad signals ---
     gameABXY = Signal(object)
     gamePMH = Signal(object)
     gameDirection = Signal(object)
     gameSL = Signal(object, object)
     gameSR = Signal(object, object)
-
     # --- Cyclic update signals (emitted by CyclicTimerManager) ---
     update0_1s = Signal()
     update1s = Signal()
@@ -104,10 +80,8 @@ class MountWizzard4(QObject):
     update30s = Signal()
     update3m = Signal()
     update30m = Signal()
-
     # --- Startup signals (emitted once by CyclicTimerManager) ---
     start3s = Signal()
-
     # --- Thread pool configuration ---
     MAX_THREAD_COUNT: int = 30  # allows concurrent device polling + model workers
 
@@ -118,18 +92,6 @@ class MountWizzard4(QObject):
         test: int = 0,
     ) -> None:
         super().__init__()
-        self.initCore(mwGlob, application)
-        self.initMount()
-        self.initDevices()
-        self.initGui()
-        self.initTimers()
-        self.connectSignals(test)
-
-    # ------------------------------------------------------------------
-    # Initialisation phases
-    # ------------------------------------------------------------------
-
-    def initCore(self, mwGlob: MwGlob, application: QApplication) -> None:
         """Set up global references, thread pool, flags, and profile."""
         self.mwGlob = mwGlob
         self.application = application
@@ -140,87 +102,28 @@ class MountWizzard4(QObject):
         self.statusOperationRunning: int = 0
         self.messageQueue: Queue = Queue()
         self.config = loadProfileStart(self.mwGlob["configDir"])
-        self.deviceRegistry: DeviceRegistry = DeviceRegistry()
-        self.deviceStat: dict[str, bool | None] = {
-            "mount": None,
-            "refraction": None,
-            "dome": None,
-            "cover": None,
-            "lightPanel": None,
-            "camera": None,
-            "filter": None,
-            "sensor1Weather": None,
-            "sensor2Weather": None,
-            "sensor3Weather": None,
-            "sensor4Weather": None,
-            "directWeather": None,
-            "seeingWeather": None,
-            "telescope": None,
-            "power": None,
-            "relay": None,
-            "plateSolve": None,
-            "remote": None,
-            "measure": None,
-        }
-        self.logStartupInfo()
-
-    def logStartupInfo(self) -> None:
         """Push initial lifecycle messages into the message queue."""
         profile = self.config.get("profileName", "-")
         workDir = self.mwGlob["workDir"]
         self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 started..."))
         self.messageQueue.put((1, "System", "Workdir", f"[{workDir}]"))
         self.messageQueue.put((1, "System", "Profile", f"[{profile}]"))
-
-    def initMount(self) -> None:
         """Create the mount device and load ephemeris data."""
-        self.mount = MountDevice(
-            app=self,
-            host=None,
-            MAC="00.00.00.00.00.00",
-            pathToData=self.mwGlob["dataDir"],
-            verbose=True,
-        )
+        self.mount =  MountDevice(self, verbose=True)
+        self.dReg: DeviceRegistry = DeviceRegistry(self)
         topo = self.initConfig()
         self.mount.obsSite.location = topo
-        self.ephemeris = self.mount.obsSite.loader("de440_mw4.bsp")
-
-    def initDevices(self) -> None:
-        """Instantiate all hardware subsystems."""
-        self.relay = KMRelay()
-        self.sensor1Weather = SensorWeather(self)
-        self.sensor2Weather = SensorWeather(self)
-        self.sensor3Weather = SensorWeather(self)
-        self.sensor4Weather = SensorWeather(self)
-        self.directWeather = DirectWeather(self)
-        self.seeingWeather = SeeingWeather(self)
-        self.cover = Cover(self)
-        self.lightPanel = LightPanel(self)
-        self.dome = Dome(self)
-        self.camera = Camera(self)
-        self.filter = Filter(self)
-        self.focuser = Focuser(self)
-        self.telescope = Telescope(self)
-        self.power = PegasusUPB(self)
-        self.data = DataPoint(self)
+        self.buildPoint = BuildPoint(self)
         self.hipparcos = Hipparcos(self)
-        self.measure = MeasureData(self)
-        self.remote = Remote(self)
-        self.plateSolve = PlateSolve(self)
-
-    def initGui(self) -> None:
+        self.ephemeris = self.mount.obsSite.loader("de440_mw4.bsp")
         """Create, configure, and show the main window."""
         self.mainW = MainWindow(self)
         self.mainW.initConfig()
         self.mainW.showWindow()
-
-    def initTimers(self) -> None:
         """Set up the cyclic timer manager and start the mount timers."""
         self.mount.startMountTimers()
         self.timerMgr = CyclicTimerManager(app=self, parent=self)
         self.timerMgr.start()
-
-    def connectSignals(self, test: int) -> None:
         """Wire up application-level signal connections."""
         self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
@@ -230,12 +133,7 @@ class MountWizzard4(QObject):
         if len(sys.argv) > 1:
             self.messageQueue.put((1, "System", "Arguments", sys.argv[1]))
 
-    # ------------------------------------------------------------------
-    # Configuration
-    # ------------------------------------------------------------------
-
     def initConfig(self) -> GeographicPosition:
-        """Apply logging level and return the topocentric location."""
         setCustomLoggingLevel(self, self.config.get("loglevel", "DEBUG"))
         lat = self.config.get("topoLat", 51.47)
         lon = self.config.get("topoLon", 0)
@@ -244,39 +142,22 @@ class MountWizzard4(QObject):
         return topo
 
     def storeConfig(self) -> None:
-        """Persist current configuration back to the config dict."""
         self.config["loglevel"] = logging.getLevelName(self.log.level)
-        location = self.mount.obsSite.location
+        location = self.dReg.drivers["mount"]["class"].obsSite.location
         if location is not None:
             self.config["topoLat"] = float(location.latitude.degrees)
             self.config["topoLon"] = float(location.longitude.degrees)
             self.config["topoElev"] = float(location.elevation.m)
 
-    def getActiveDrivers(self) -> dict[str, Any]:
-        """Return the live driver-class mapping from the device registry.
-
-        Centralises the single point of GUI/logic coupling so that
-        logic-layer modules (e.g. MeasureData) never need to navigate
-        the widget tree directly.
-        """
-        return self.deviceRegistry.getDrivers()
-
-    # ------------------------------------------------------------------
-    # Lifecycle
-    # ------------------------------------------------------------------
-
     def storeStatusOperationRunning(self, status: int) -> None:
-        """Store the current operation-running status flag."""
         self.statusOperationRunning = status
 
     def aboutToQuit(self) -> None:
-        """Stop all timers when the application is about to quit."""
         self.timerMgr.stop()
         self.mount.stopAllMountTimers()
 
     def quit(self) -> None:
-        """Gracefully shut down the application."""
-        self.deviceStat["mount"] = False
+        self.dReg.drivers["mount"]["stat"] = False
         self.aboutToQuit()
         self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 manual stopped"))
         self.application.quit()

@@ -39,7 +39,7 @@ class ModelManage:
         self.fittedModelPath = Path()
         self.plane = None
 
-        ms = self.app.mount.signals
+        ms = self.app.dReg.drivers["mount"]["class"].signals
         ms.getModelDone.connect(self.showModelPosition)
         ms.getModelDone.connect(self.showErrorAscending)
         ms.getModelDone.connect(self.showErrorDistribution)
@@ -108,7 +108,7 @@ class ModelManage:
         self.ui.nameList.sortItems()
 
     def showModelPosition(self) -> None:
-        model = self.app.mount.model
+        model = self.app.dReg.drivers["mount"]["class"].model
         if model.numberStars == 0 or len(model.starList) == 0:
             self.ui.modelPositions.p[0].clear()
             return
@@ -129,11 +129,11 @@ class ModelManage:
             reverse=True,
             tip="PointNo: {data[0]}\nErrorRMS: {data[1]:0.1f}".format,
         )
-        self.ui.modelPositions.plotLoc(self.app.mount.obsSite.location.latitude.degrees)
+        self.ui.modelPositions.plotLoc(self.app.dReg.drivers["mount"]["class"].obsSite.location.latitude.degrees)
         self.ui.modelPositions.scatterItem.sigClicked.connect(self.pointClicked)
 
     def showErrorAscending(self) -> None:
-        model = self.app.mount.model
+        model = self.app.dReg.drivers["mount"]["class"].model
         error = np.array([star.errorRMS for star in model.starList])
         if len(error) == 0:
             self.ui.errorAscending.p[0].clear()
@@ -148,7 +148,7 @@ class ModelManage:
         )
 
     def showErrorDistribution(self) -> None:
-        model = self.app.mount.model
+        model = self.app.dReg.drivers["mount"]["class"].model
         error = np.array([x.errorRMS for x in model.starList])
         if len(error) == 0:
             self.ui.errorDistribution.p[0].clear()
@@ -164,24 +164,24 @@ class ModelManage:
         self.ui.deleteName.setEnabled(True)
         self.ui.saveName.setEnabled(True)
         self.ui.loadName.setEnabled(True)
-        self.app.mount.signals.namesDone.disconnect(self.clearRefreshName)
+        self.app.dReg.drivers["mount"]["class"].signals.namesDone.disconnect(self.clearRefreshName)
         self.msg.emit(0, "Model", "Manage", "Model names refreshed")
 
     def refreshName(self) -> None:
-        self.app.mount.signals.namesDone.connect(self.clearRefreshName)
+        self.app.dReg.drivers["mount"]["class"].signals.namesDone.connect(self.clearRefreshName)
         self.ui.deleteName.setEnabled(False)
         self.ui.saveName.setEnabled(False)
         self.ui.loadName.setEnabled(False)
         changeStyleDynamic(self.ui.refreshName, "run", True)
         changeStyleDynamic(self.ui.modelNameGroup, "run", True)
-        self.app.mount.getNames()
+        self.app.dReg.drivers["mount"]["class"].getNames()
 
     def loadName(self):
         if self.ui.nameList.currentItem() is None:
             self.msg.emit(2, "Model", "Manage error", "No model name selected")
             return
         modelName = self.ui.nameList.currentItem().text()
-        if not self.app.mount.model.loadName(modelName):
+        if not self.app.dReg.drivers["camera"]["class"].model.loadName(modelName):
             self.msg.emit(2, "Model", "Manage error", f"Model load failed: [{modelName}]")
             return
         self.msg.emit(0, "Model", "Manage", f"Model loaded: [{modelName}]")
@@ -196,7 +196,7 @@ class ModelManage:
             self.msg.emit(2, "Model", "Manage error", "No model name given")
             return
 
-        if not self.app.mount.model.storeName(modelName):
+        if not self.app.dReg.drivers["camera"]["class"].model.storeName(modelName):
             self.msg.emit(2, "Model", "Manage error", f"Model cannot be saved [{modelName}]")
             return
         self.msg.emit(0, "Model", "Manage", f"Model saved: [{modelName}]")
@@ -213,7 +213,7 @@ class ModelManage:
         ):
             return
 
-        if not self.app.mount.model.deleteName(modelName):
+        if not self.app.dReg.drivers["camera"]["class"].model.deleteName(modelName):
             self.msg.emit(2, "Model", "Manage error", f"Model cannot be deleted [{modelName}]")
             return
         self.msg.emit(0, "Model", "Manage", f"Model deleted: [{modelName}]")
@@ -240,7 +240,7 @@ class ModelManage:
                 continue
             newModel.append(element)
 
-        newModel = writeRetrofitData(self.app.mount.model, newModel)
+        newModel = writeRetrofitData(self.app.dReg.drivers["camera"]["class"].model, newModel)
         newModel = convertAngleToFloat(newModel)
         with open(newPath, "w+") as newFile:
             json.dump(newModel, newFile, sort_keys=True, indent=4)
@@ -252,10 +252,10 @@ class ModelManage:
         self.ui.deleteWorstPoint.setEnabled(True)
         self.ui.runOptimize.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
-        self.app.mount.signals.getModelDone.disconnect(self.clearRefreshModel)
+        self.app.dReg.drivers["mount"]["class"].signals.getModelDone.disconnect(self.clearRefreshModel)
         self.msg.emit(0, "Model", "Manage", "Model data refreshed")
         self.fittedModelPath, pointsOut = findFittingModel(
-            self.app.mount.model, self.app.mwGlob["modelDir"]
+            self.app.dReg.drivers["mount"]["class"].model, self.app.mwGlob["modelDir"]
         )
         self.writeBuildModelOptimized(pointsOut)
         if self.fittedModelPath.is_file():
@@ -271,25 +271,25 @@ class ModelManage:
     def refreshModel(self) -> None:
         changeStyleDynamic(self.ui.refreshModel, "run", True)
         changeStyleDynamic(self.ui.modelGroup, "run", True)
-        self.app.mount.signals.getModelDone.connect(self.clearRefreshModel)
+        self.app.dReg.drivers["mount"]["class"].signals.getModelDone.connect(self.clearRefreshModel)
         self.ui.deleteWorstPoint.setEnabled(False)
         self.ui.runOptimize.setEnabled(False)
         self.ui.clearModel.setEnabled(False)
-        self.app.mount.getModel()
+        self.app.dReg.drivers["mount"]["class"].getModel()
 
     def clearModel(self) -> None:
         if not self.mainW.messageDialog(
             self.mainW, "Clear model", "Clear actual alignment model"
         ):
             return
-        if not self.app.mount.model.clearModel():
+        if not self.app.dReg.drivers["camera"]["class"].model.clearModel():
             self.msg.emit(2, "Model", "Manage error", "Actual model cannot be cleared")
             return
         self.msg.emit(0, "Model", "Manage", "Actual model cleared")
         self.refreshModel()
 
     def deleteWorstPoint(self) -> None:
-        model = self.app.mount.model
+        model = self.app.dReg.drivers["camera"]["class"].model
         if not model.numberStars:
             return
 
@@ -306,9 +306,9 @@ class ModelManage:
     def finishOptimize(self) -> None:
         """ " """
         if self.ui.optimizeOverall.isChecked():
-            self.app.mount.signals.getModelDone.disconnect(self.runTargetRMS)
+            self.app.dReg.drivers["mount"]["class"].signals.getModelDone.disconnect(self.runTargetRMS)
         else:
-            self.app.mount.signals.getModelDone.disconnect(self.runSingleRMS)
+            self.app.dReg.drivers["mount"]["class"].signals.getModelDone.disconnect(self.runSingleRMS)
 
         changeStyleDynamic(self.ui.runOptimize, "run", False)
         self.ui.deleteWorstPoint.setEnabled(True)
@@ -319,7 +319,7 @@ class ModelManage:
         self.refreshModel()
 
     def runTargetRMS(self) -> None:
-        mount = self.app.mount
+        mount = self.app.dReg.drivers["camera"]["class"]
         if mount.model.errorRMS < self.ui.targetRMS.value():
             self.runningOptimize = False
         numberStars = 0 if mount.model.numberStars is None else mount.model.numberStars
@@ -343,7 +343,7 @@ class ModelManage:
             self.finishOptimize()
 
     def runSingleRMS(self) -> None:
-        mount = self.app.mount
+        mount = self.app.dReg.drivers["camera"]["class"]
         if all(star.errorRMS < self.ui.targetRMS.value() for star in mount.model.starList):
             self.runningOptimize = False
         numberStars = 0 if mount.model.numberStars is None else mount.model.numberStars

@@ -32,7 +32,7 @@ def function(qapp):
 
 
 def test_updatePositions_1(function):
-    function.app.deviceStat["mount"] = False
+    function.app.dReg.drivers["mount"]["stat"] = False
     function.updatePositions()
 
 
@@ -75,7 +75,7 @@ def test_updatePositions_2(function):
     function.parent.entityModel["otaImagetrain"]["trans"] = t
     function.parent.entityModel["otaImagetrain"]["entity"].addComponent(t)
 
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.drivers["mount"]["stat"] = True
     function.updatePositions()
 
 

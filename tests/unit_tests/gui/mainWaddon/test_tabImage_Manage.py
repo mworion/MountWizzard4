@@ -50,72 +50,72 @@ def test_checkEnableCameraUI(function):
 
 
 def test_updateOffset_1(function):
-    function.app.camera.data["CCD_OFFSET.OFFSET"] = None
-    function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = None
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET"] = None
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = None
     function.updateOffset()
 
 
 def test_updateOffset_2(function):
-    function.app.camera.data["CCD_OFFSET.OFFSET"] = 0
-    function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET"] = 0
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
     function.updateOffset()
 
 
 def test_updateOffset_3(function):
-    function.app.camera.data["CCD_OFFSET.OFFSET"] = 1
-    function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = []
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = []
     function.updateOffset()
 
 
 def test_updateOffset_4(function):
-    function.app.camera.data["CCD_OFFSET.OFFSET"] = -1
-    function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET"] = -1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
     function.updateOffset()
 
 
 def test_updateOffset_5(function):
-    function.app.camera.data["CCD_OFFSET.OFFSET"] = 2
-    function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET"] = 2
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
     function.updateOffset()
 
 
 def test_updateGain_1(function):
-    function.app.camera.data["CCD_GAIN.GAIN"] = None
-    function.app.camera.data["CCD_GAIN.GAIN_LIST"] = None
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN"] = None
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = None
     function.updateGain()
 
 
 def test_updateGain_2(function):
-    function.app.camera.data["CCD_GAIN.GAIN"] = 0
-    function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN"] = 0
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = ["1"]
     function.updateGain()
 
 
 def test_updateGain_3(function):
-    function.app.camera.data["CCD_GAIN.GAIN"] = 1
-    function.app.camera.data["CCD_GAIN.GAIN_LIST"] = []
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = []
     function.updateGain()
 
 
 def test_updateGain_4(function):
-    function.app.camera.data["CCD_GAIN.GAIN"] = -1
-    function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN"] = -1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = ["1"]
     function.updateGain()
 
 
 def test_updateGain_5(function):
-    function.app.camera.data["CCD_GAIN.GAIN"] = 2
-    function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN"] = 2
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = ["1"]
     function.updateGain()
 
 
 def test_updateCooler_1(function):
-    function.app.camera.data["CCD_COOLER.COOLER_ON"] = False
+    function.app.dReg.drivers["camera"]["class"].data["CCD_COOLER.COOLER_ON"] = False
     function.updateCooler()
 
 
 def test_updateCooler_2(function):
-    function.app.camera.data["CCD_COOLER.COOLER_ON"] = True
+    function.app.dReg.drivers["camera"]["class"].data["CCD_COOLER.COOLER_ON"] = True
     function.updateCooler()
 
 
@@ -140,34 +140,34 @@ def test_updateImagingParam_1(function):
 
 
 def test_updateImagingParam_2(function):
-    function.app.camera.data["CCD_OFFSET.OFFSET"] = 0
-    function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
-    function.app.camera.data["CCD_GAIN.GAIN"] = 0
-    function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
-    function.app.camera.data["CCD_INFO.CCD_MAX_X"] = 1
-    function.app.camera.data["CCD_INFO.CCD_MAX_Y"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET"] = 0
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN"] = 0
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_INFO.CCD_MAX_X"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_INFO.CCD_MAX_Y"] = 1
     function.updateImagingParam()
 
 
 def test_updateImagingParam_3(function):
-    function.app.camera.data["CCD_OFFSET.OFFSET"] = 0
-    function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
-    function.app.camera.data["CCD_GAIN.GAIN"] = 0
-    function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
-    function.app.camera.data["CCD_INFO.CCD_MAX_X"] = 1
-    function.app.camera.data["CCD_INFO.CCD_MAX_Y"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET"] = 0
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN"] = 0
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_INFO.CCD_MAX_X"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_INFO.CCD_MAX_Y"] = 1
     function.ui.aperture.setValue(0)
     function.ui.focalLength.setValue(0)
     function.updateImagingParam()
 
 
 def test_updateImagingParam_4(function):
-    function.app.camera.data["CCD_OFFSET.OFFSET"] = 0
-    function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
-    function.app.camera.data["CCD_GAIN.GAIN"] = 0
-    function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
-    function.app.camera.data["CCD_INFO.CCD_MAX_X"] = 4000
-    function.app.camera.data["CCD_INFO.CCD_MAX_Y"] = 4000
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET"] = 0
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN"] = 0
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_INFO.CCD_MAX_X"] = 4000
+    function.app.dReg.drivers["camera"]["class"].data["CCD_INFO.CCD_MAX_Y"] = 4000
     function.ui.aperture.setValue(0)
     function.ui.focalLength.setValue(0)
     function.updateImagingParam()
@@ -175,12 +175,12 @@ def test_updateImagingParam_4(function):
 
 
 def test_updateImagingParam_5(function):
-    function.app.camera.data["CCD_OFFSET.OFFSET"] = 0
-    function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
-    function.app.camera.data["CCD_GAIN.GAIN"] = 0
-    function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
-    function.app.camera.data["CCD_INFO.CCD_MAX_X"] = 1000
-    function.app.camera.data["CCD_INFO.CCD_MAX_Y"] = 4000
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET"] = 0
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN"] = 0
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_INFO.CCD_MAX_X"] = 1000
+    function.app.dReg.drivers["camera"]["class"].data["CCD_INFO.CCD_MAX_Y"] = 4000
     function.ui.aperture.setValue(0)
     function.ui.focalLength.setValue(0)
     function.updateImagingParam()
@@ -188,12 +188,12 @@ def test_updateImagingParam_5(function):
 
 
 def test_updateImagingParam_6(function):
-    function.app.camera.data["CCD_OFFSET.OFFSET"] = 0
-    function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
-    function.app.camera.data["CCD_GAIN.GAIN"] = 0
-    function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
-    function.app.camera.data["CCD_INFO.CCD_MAX_X"] = 8000
-    function.app.camera.data["CCD_INFO.CCD_MAX_Y"] = 6000
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET"] = 0
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN"] = 0
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_INFO.CCD_MAX_X"] = 8000
+    function.app.dReg.drivers["camera"]["class"].data["CCD_INFO.CCD_MAX_Y"] = 6000
     function.ui.aperture.setValue(0)
     function.ui.focalLength.setValue(0)
     function.updateImagingParam()
@@ -205,109 +205,109 @@ def test_setCoolerTemp_1(function):
 
 
 def test_setCoolerTemp_2(function):
-    function.app.camera.data["CAN_SET_CCD_TEMPERATURE"] = False
+    function.app.dReg.drivers["camera"]["class"].data["CAN_SET_CCD_TEMPERATURE"] = False
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, False)):
         function.setCoolerTemp()
 
 
 def test_setCoolerTemp_3(function):
-    function.app.camera.data["CAN_SET_CCD_TEMPERATURE"] = True
+    function.app.dReg.drivers["camera"]["class"].data["CAN_SET_CCD_TEMPERATURE"] = True
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, True)):
         function.setCoolerTemp()
 
 
 def test_setCoolerTemp_4(function):
-    function.app.camera.data["CAN_SET_CCD_TEMPERATURE"] = True
-    function.app.camera.data["CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"] = 10
+    function.app.dReg.drivers["camera"]["class"].data["CAN_SET_CCD_TEMPERATURE"] = True
+    function.app.dReg.drivers["camera"]["class"].data["CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"] = 10
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, True)):
         function.setCoolerTemp()
 
 
 def test_setCoolerTemp_5(function):
-    function.app.camera.data["CAN_SET_CCD_TEMPERATURE"] = True
-    function.app.camera.data["CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"] = 10
+    function.app.dReg.drivers["camera"]["class"].data["CAN_SET_CCD_TEMPERATURE"] = True
+    function.app.dReg.drivers["camera"]["class"].data["CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"] = 10
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, False)):
         function.setCoolerTemp()
 
 
 def test_setOffset_1(function):
-    function.app.camera.data["CCD_OFFSET.OFFSET"] = None
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET"] = None
     function.setOffset()
 
 
 def test_setOffset_2(function):
-    function.app.camera.data["CCD_OFFSET.OFFSET"] = 1
-    function.app.camera.data["CCD_OFFSET.OFFSET_MIN"] = 1
-    function.app.camera.data["CCD_OFFSET.OFFSET_MAX"] = 1
-    function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_MIN"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_MAX"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
     with mock.patch.object(QInputDialog, "getItem", return_value=("1", False)):
         function.setOffset()
 
 
 def test_setOffset_3(function):
-    function.app.camera.data["CCD_OFFSET.OFFSET"] = 1
-    function.app.camera.data["CCD_OFFSET.OFFSET_MIN"] = 1
-    function.app.camera.data["CCD_OFFSET.OFFSET_MAX"] = 1
-    function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_MIN"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_MAX"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
     with mock.patch.object(QInputDialog, "getItem", return_value=("1", True)):
         function.setOffset()
 
 
 def test_setOffset_4(function):
-    function.app.camera.data["CCD_OFFSET.OFFSET"] = 1
-    function.app.camera.data["CCD_OFFSET.OFFSET_MIN"] = 1
-    function.app.camera.data["CCD_OFFSET.OFFSET_MAX"] = 1
-    function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = None
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_MIN"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_MAX"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = None
     with mock.patch.object(QInputDialog, "getInt", return_value=("1", True)):
         function.setOffset()
 
 
 def test_setOffset_5(function):
-    function.app.camera.data["CCD_OFFSET.OFFSET"] = 1
-    function.app.camera.data["CCD_OFFSET.OFFSET_MIN"] = None
-    function.app.camera.data["CCD_OFFSET.OFFSET_MAX"] = None
-    function.app.camera.data["CCD_OFFSET.OFFSET_LIST"] = None
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_MIN"] = None
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_MAX"] = None
+    function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = None
     with mock.patch.object(QInputDialog, "getInt", return_value=("1", True)):
         function.setOffset()
 
 
 def test_setGain_1(function):
-    function.app.camera.data["CCD_GAIN.GAIN"] = None
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN"] = None
     function.setGain()
 
 
 def test_setGain_2(function):
-    function.app.camera.data["CCD_GAIN.GAIN"] = 1
-    function.app.camera.data["CCD_GAIN.GAIN_MIN"] = 1
-    function.app.camera.data["CCD_GAIN.GAIN_MAX"] = 1
-    function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_MIN"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_MAX"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = ["1"]
     with mock.patch.object(QInputDialog, "getItem", return_value=("1", False)):
         function.setGain()
 
 
 def test_setGain_3(function):
-    function.app.camera.data["CCD_GAIN.GAIN"] = 1
-    function.app.camera.data["CCD_GAIN.GAIN_MIN"] = 1
-    function.app.camera.data["CCD_GAIN.GAIN_MAX"] = 1
-    function.app.camera.data["CCD_GAIN.GAIN_LIST"] = ["1"]
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_MIN"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_MAX"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = ["1"]
     with mock.patch.object(QInputDialog, "getItem", return_value=("1", True)):
         function.setGain()
 
 
 def test_setGain_4(function):
-    function.app.camera.data["CCD_GAIN.GAIN"] = 1
-    function.app.camera.data["CCD_GAIN.GAIN_MIN"] = 1
-    function.app.camera.data["CCD_GAIN.GAIN_MAX"] = 1
-    function.app.camera.data["CCD_GAIN.GAIN_LIST"] = None
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_MIN"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_MAX"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = None
     with mock.patch.object(QInputDialog, "getInt", return_value=("1", True)):
         function.setGain()
 
 
 def test_setGain_5(function):
-    function.app.camera.data["CCD_GAIN.GAIN"] = 1
-    function.app.camera.data["CCD_GAIN.GAIN_MIN"] = None
-    function.app.camera.data["CCD_GAIN.GAIN_MAX"] = None
-    function.app.camera.data["CCD_GAIN.GAIN_LIST"] = None
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN"] = 1
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_MIN"] = None
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_MAX"] = None
+    function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = None
     with mock.patch.object(QInputDialog, "getInt", return_value=("1", True)):
         function.setGain()
 
@@ -317,41 +317,41 @@ def test_setFilterNumber_1(function):
 
 
 def test_setFilterNumber_2(function):
-    function.app.filter.data["FILTER_SLOT.FILTER_SLOT_VALUE"] = 10
-    function.app.filter.data["FILTER_NAME.FILTER_SLOT_NAME_0"] = "test"
+    function.app.dReg.drivers["filter"]["class"].data["FILTER_SLOT.FILTER_SLOT_VALUE"] = 10
+    function.app.dReg.drivers["filter"]["class"].data["FILTER_NAME.FILTER_SLOT_NAME_0"] = "test"
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, False)):
         function.setFilterNumber()
 
 
 def test_setFilterNumber_3(function):
-    function.app.filter.data = {"FILTER_SLOT.FILTER_SLOT_VALUE": 10}
+    function.app.dReg.drivers["filter"]["class"].data = {"FILTER_SLOT.FILTER_SLOT_VALUE": 10}
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, True)):
         function.setFilterNumber()
 
 
 def test_setFilterName_1(function):
-    function.app.filter.data["FILTER_SLOT.FILTER_SLOT_VALUE"] = None
+    function.app.dReg.drivers["filter"]["class"].data["FILTER_SLOT.FILTER_SLOT_VALUE"] = None
     function.setFilterName()
 
 
 def test_setFilterName_2(function):
-    function.app.filter.data["FILTER_SLOT.FILTER_SLOT_VALUE"] = 1
-    function.app.filter.data["FILTER_NAME.FILTER_SLOT_NAME_0"] = "test1"
-    function.app.filter.data["FILTER_NAME.FILTER_SLOT_NAME_1"] = "test2"
+    function.app.dReg.drivers["filter"]["class"].data["FILTER_SLOT.FILTER_SLOT_VALUE"] = 1
+    function.app.dReg.drivers["filter"]["class"].data["FILTER_NAME.FILTER_SLOT_NAME_0"] = "test1"
+    function.app.dReg.drivers["filter"]["class"].data["FILTER_NAME.FILTER_SLOT_NAME_1"] = "test2"
     with mock.patch.object(QInputDialog, "getItem", return_value=(10, False)):
         function.setFilterName()
 
 
 def test_setFilterName_3(function):
-    function.app.filter.data["FILTER_SLOT.FILTER_SLOT_VALUE"] = 1
-    function.app.filter.data["FILTER_NAME.FILTER_SLOT_NAME_0"] = "test1"
-    function.app.filter.data["FILTER_NAME.FILTER_SLOT_NAME_1"] = "test2"
+    function.app.dReg.drivers["filter"]["class"].data["FILTER_SLOT.FILTER_SLOT_VALUE"] = 1
+    function.app.dReg.drivers["filter"]["class"].data["FILTER_NAME.FILTER_SLOT_NAME_0"] = "test1"
+    function.app.dReg.drivers["filter"]["class"].data["FILTER_NAME.FILTER_SLOT_NAME_1"] = "test2"
     with mock.patch.object(QInputDialog, "getItem", return_value=("test1", True)):
         function.setFilterName()
 
 
 def test_setFilterName_4(function):
-    function.app.filter.data = {
+    function.app.dReg.drivers["filter"]["class"].data = {
         "FILTER_SLOT.FILTER_SLOT_VALUE": 1,
         "FILTER_NAME.FILTER_SLOT_NAME_1": "test1",
         "FILTER_NAME.FILTER_SLOT_NAME_2": "test2",
@@ -369,62 +369,62 @@ def test_setCoolerOff_1(function):
 
 
 def test_updateCoverStatGui_1(function):
-    function.app.cover.data["CAP_PARK.PARK"] = True
+    function.app.dReg.drivers["cover"]["class"].data["CAP_PARK.PARK"] = True
     function.updateCoverStatGui()
 
 
 def test_updateCoverStatGui_2(function):
-    function.app.cover.data["CAP_PARK.PARK"] = False
+    function.app.dReg.drivers["cover"]["class"].data["CAP_PARK.PARK"] = False
     function.updateCoverStatGui()
 
 
 def test_updateCoverStatGui_3(function):
-    function.app.cover.data["CAP_PARK.PARK"] = None
+    function.app.dReg.drivers["cover"]["class"].data["CAP_PARK.PARK"] = None
     function.updateCoverStatGui()
 
 
 def test_updateLightPanelGui_1(function):
-    function.app.lightPanel.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = True
+    function.app.dReg.drivers["lightPanel"]["class"].data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = True
     function.updateLightPanelGui()
 
 
 def test_updateLightPanelGui_2(function):
-    function.app.lightPanel.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = False
+    function.app.dReg.drivers["lightPanel"]["class"].data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = False
     function.updateLightPanelGui()
 
 
 def test_updateLightPanelGui_3(function):
-    function.app.lightPanel.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = None
+    function.app.dReg.drivers["lightPanel"]["class"].data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = None
     function.updateLightPanelGui()
 
 
 def test_setCoverPark_1(function):
-    with mock.patch.object(function.app.cover, "closeCover", return_value=False):
+    with mock.patch.object(function.app.dReg.drivers["cover"]["class"], "closeCover", return_value=False):
         function.setCoverPark()
 
 
 def test_setCoverPark_2(function):
-    with mock.patch.object(function.app.cover, "closeCover", return_value=True):
+    with mock.patch.object(function.app.dReg.drivers["cover"]["class"], "closeCover", return_value=True):
         function.setCoverPark()
 
 
 def test_setCoverUnpark_1(function):
-    with mock.patch.object(function.app.cover, "openCover", return_value=False):
+    with mock.patch.object(function.app.dReg.drivers["cover"]["class"], "openCover", return_value=False):
         function.setCoverUnpark()
 
 
 def test_setCoverUnpark_2(function):
-    with mock.patch.object(function.app.cover, "openCover", return_value=True):
+    with mock.patch.object(function.app.dReg.drivers["cover"]["class"], "openCover", return_value=True):
         function.setCoverUnpark()
 
 
 def test_setCoverHalt_1(function):
-    with mock.patch.object(function.app.cover, "haltCover", return_value=False):
+    with mock.patch.object(function.app.dReg.drivers["cover"]["class"], "haltCover", return_value=False):
         function.setCoverHalt()
 
 
 def test_setCoverHalt_2(function):
-    with mock.patch.object(function.app.cover, "haltCover", return_value=True):
+    with mock.patch.object(function.app.dReg.drivers["cover"]["class"], "haltCover", return_value=True):
         function.setCoverHalt()
 
 
@@ -459,183 +459,183 @@ def test_haltFocuser_2(function):
 
 
 def test_switchLightOn_1(function):
-    with mock.patch.object(function.app.lightPanel, "lightOn", return_value=False):
+    with mock.patch.object(function.app.dReg.drivers["lightPanel"]["class"], "lightOn", return_value=False):
         function.switchLightPanelOn()
 
 
 def test_switchLightOn_2(function):
-    with mock.patch.object(function.app.lightPanel, "lightOn", return_value=True):
+    with mock.patch.object(function.app.dReg.drivers["lightPanel"]["class"], "lightOn", return_value=True):
         function.switchLightPanelOn()
 
 
 def test_switchLightOff_1(function):
-    with mock.patch.object(function.app.lightPanel, "lightOff", return_value=False):
+    with mock.patch.object(function.app.dReg.drivers["lightPanel"]["class"], "lightOff", return_value=False):
         function.switchLightPanelOff()
 
 
 def test_switchLightOff_2(function):
-    with mock.patch.object(function.app.lightPanel, "lightOff", return_value=True):
+    with mock.patch.object(function.app.dReg.drivers["lightPanel"]["class"], "lightOff", return_value=True):
         function.switchLightPanelOff()
 
 
 def test_setLightPanelIntensity_2(function):
-    function.app.cover.data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 10
+    function.app.dReg.drivers["cover"]["class"].data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 10
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, False)):
         function.setLightPanelIntensity()
 
 
 def test_setLightPanelIntensity_3(function):
-    function.app.cover.data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 10
+    function.app.dReg.drivers["cover"]["class"].data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 10
     with (
         mock.patch.object(QInputDialog, "getInt", return_value=(10, True)),
-        mock.patch.object(function.app.lightPanel, "lightIntensity", return_value=False),
+        mock.patch.object(function.app.dReg.drivers["lightPanel"]["class"], "lightIntensity", return_value=False),
     ):
         function.setLightPanelIntensity()
 
 
 def test_setLightPanelIntensity_4(function):
-    function.app.cover.data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 10
+    function.app.dReg.drivers["cover"]["class"].data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 10
     with (
         mock.patch.object(QInputDialog, "getInt", return_value=(10, True)),
-        mock.patch.object(function.app.lightPanel, "lightIntensity", return_value=True),
+        mock.patch.object(function.app.dReg.drivers["lightPanel"]["class"], "lightIntensity", return_value=True),
     ):
         function.setLightPanelIntensity()
 
 
 def test_updateDomeGui_1(function):
-    function.app.dome.data["DOME_MOTION.DOME_CW"] = True
-    function.app.dome.data["DOME_MOTION.DOME_CCW"] = True
+    function.app.dReg.drivers["dome"]["class"].data["DOME_MOTION.DOME_CW"] = True
+    function.app.dReg.drivers["dome"]["class"].data["DOME_MOTION.DOME_CCW"] = True
     function.updateDomeGui()
 
 
 def test_updateDomeGui_2(function):
-    function.app.dome.data["DOME_MOTION.DOME_CW"] = False
-    function.app.dome.data["DOME_MOTION.DOME_CCW"] = False
+    function.app.dReg.drivers["dome"]["class"].data["DOME_MOTION.DOME_CW"] = False
+    function.app.dReg.drivers["dome"]["class"].data["DOME_MOTION.DOME_CCW"] = False
     function.updateDomeGui()
 
 
 def test_updateShutterStatGui_1(function):
-    function.app.dome.data["DOME_SHUTTER.SHUTTER_OPEN"] = True
-    function.app.dome.data["Status.Shutter"] = "test"
+    function.app.dReg.drivers["dome"]["class"].data["DOME_SHUTTER.SHUTTER_OPEN"] = True
+    function.app.dReg.drivers["dome"]["class"].data["Status.Shutter"] = "test"
     function.updateShutterStatGui()
 
     assert function.ui.domeShutterStatusText.text() == "test"
 
 
 def test_updateShutterStatGui_2(function):
-    function.app.dome.data["DOME_SHUTTER.SHUTTER_OPEN"] = False
-    function.app.dome.data["Status.Shutter"] = "test"
+    function.app.dReg.drivers["dome"]["class"].data["DOME_SHUTTER.SHUTTER_OPEN"] = False
+    function.app.dReg.drivers["dome"]["class"].data["Status.Shutter"] = "test"
     function.updateShutterStatGui()
 
     assert function.ui.domeShutterStatusText.text() == "test"
 
 
 def test_updateShutterStatGui_3(function):
-    function.app.dome.data["DOME_SHUTTER.SHUTTER_OPEN"] = None
-    function.app.dome.data["Status.Shutter"] = "test"
+    function.app.dReg.drivers["dome"]["class"].data["DOME_SHUTTER.SHUTTER_OPEN"] = None
+    function.app.dReg.drivers["dome"]["class"].data["Status.Shutter"] = "test"
     function.updateShutterStatGui()
 
     assert function.ui.domeShutterStatusText.text() == "test"
 
 
 def test_domeSlewCW_0(function):
-    function.app.deviceStat["dome"] = False
+    function.app.dReg.drivers["dome"]["stat"] = False
     function.domeSlewCW()
 
 
 def test_domeSlewCW_1(function):
-    function.app.deviceStat["dome"] = True
-    with mock.patch.object(function.app.dome, "slewCW", return_value=False):
+    function.app.dReg.drivers["dome"]["stat"] = True
+    with mock.patch.object(function.app.dReg.drivers["dome"]["class"], "slewCW", return_value=False):
         function.domeSlewCW()
 
 
 def test_domeSlewCW_2(function):
-    function.app.deviceStat["dome"] = True
-    with mock.patch.object(function.app.dome, "slewCW", return_value=True):
+    function.app.dReg.drivers["dome"]["stat"] = True
+    with mock.patch.object(function.app.dReg.drivers["dome"]["class"], "slewCW", return_value=True):
         function.domeSlewCW()
 
 
 def test_domeSlewCCW_0(function):
-    function.app.deviceStat["dome"] = False
+    function.app.dReg.drivers["dome"]["stat"] = False
     function.domeSlewCCW()
 
 
 def test_domeSlewCCW_1(function):
-    function.app.deviceStat["dome"] = True
-    with mock.patch.object(function.app.dome, "slewCCW", return_value=False):
+    function.app.dReg.drivers["dome"]["stat"] = True
+    with mock.patch.object(function.app.dReg.drivers["dome"]["class"], "slewCCW", return_value=False):
         function.domeSlewCCW()
 
 
 def test_domeSlewCCW_2(function):
-    function.app.deviceStat["dome"] = True
-    with mock.patch.object(function.app.dome, "slewCCW", return_value=True):
+    function.app.dReg.drivers["dome"]["stat"] = True
+    with mock.patch.object(function.app.dReg.drivers["dome"]["class"], "slewCCW", return_value=True):
         function.domeSlewCCW()
 
 
 def test_domeAbortSlew_0(function):
-    function.app.deviceStat["dome"] = False
+    function.app.dReg.drivers["dome"]["stat"] = False
     function.domeAbortSlew()
 
 
 def test_domeAbortSlew_1(function):
-    function.app.deviceStat["dome"] = True
-    with mock.patch.object(function.app.dome, "abortSlew", return_value=False):
+    function.app.dReg.drivers["dome"]["stat"] = True
+    with mock.patch.object(function.app.dReg.drivers["dome"]["class"], "abortSlew", return_value=False):
         function.domeAbortSlew()
 
 
 def test_domeAbortSlew_2(function):
-    function.app.deviceStat["dome"] = True
-    with mock.patch.object(function.app.dome, "abortSlew", return_value=True):
+    function.app.dReg.drivers["dome"]["stat"] = True
+    with mock.patch.object(function.app.dReg.drivers["dome"]["class"], "abortSlew", return_value=True):
         function.domeAbortSlew()
 
 
 def test_domeOpenShutter_0(function):
-    function.app.deviceStat["dome"] = False
+    function.app.dReg.drivers["dome"]["stat"] = False
     function.domeOpenShutter()
 
 
 def test_domeOpenShutter_1(function):
-    function.app.deviceStat["dome"] = True
-    with mock.patch.object(function.app.dome, "openShutter", return_value=False):
+    function.app.dReg.drivers["dome"]["stat"] = True
+    with mock.patch.object(function.app.dReg.drivers["dome"]["class"], "openShutter", return_value=False):
         function.domeOpenShutter()
 
 
 def test_domeOpenShutter_2(function):
-    function.app.deviceStat["dome"] = True
-    with mock.patch.object(function.app.dome, "openShutter", return_value=True):
+    function.app.dReg.drivers["dome"]["stat"] = True
+    with mock.patch.object(function.app.dReg.drivers["dome"]["class"], "openShutter", return_value=True):
         function.domeOpenShutter()
 
 
 def test_domeCloseShutter_0(function):
-    function.app.deviceStat["dome"] = False
+    function.app.dReg.drivers["dome"]["stat"] = False
     function.domeCloseShutter()
 
 
 def test_domeCloseShutter_1(function):
-    function.app.deviceStat["dome"] = True
-    with mock.patch.object(function.app.dome, "closeShutter", return_value=False):
+    function.app.dReg.drivers["dome"]["stat"] = True
+    with mock.patch.object(function.app.dReg.drivers["dome"]["class"], "closeShutter", return_value=False):
         function.domeCloseShutter()
 
 
 def test_domeCloseShutter_2(function):
-    function.app.deviceStat["dome"] = True
-    with mock.patch.object(function.app.dome, "closeShutter", return_value=True):
+    function.app.dReg.drivers["dome"]["stat"] = True
+    with mock.patch.object(function.app.dReg.drivers["dome"]["class"], "closeShutter", return_value=True):
         function.domeCloseShutter()
 
 
 def test_domeMoveGameController_0(function):
-    function.app.deviceStat["dome"] = False
+    function.app.dReg.drivers["dome"]["stat"] = False
     function.domeMoveGameController(128, 128)
 
 
 def test_domeMoveGameController_1(function):
-    function.app.deviceStat["dome"] = True
+    function.app.dReg.drivers["dome"]["stat"] = True
     with mock.patch.object(function, "domeAbortSlew"):
         function.domeMoveGameController(128, 128)
 
 
 def test_domeMoveGameController_2(function):
-    function.app.deviceStat["dome"] = True
+    function.app.dReg.drivers["dome"]["stat"] = True
     with (
         mock.patch.object(function, "domeSlewCCW"),
         mock.patch.object(function, "domeOpenShutter"),
@@ -644,7 +644,7 @@ def test_domeMoveGameController_2(function):
 
 
 def test_domeMoveGameController_3(function):
-    function.app.deviceStat["dome"] = True
+    function.app.dReg.drivers["dome"]["stat"] = True
     with (
         mock.patch.object(function, "domeSlewCW"),
         mock.patch.object(function, "domeCloseShutter"),

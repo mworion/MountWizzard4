@@ -111,7 +111,7 @@ class SatSearch(QObject, SatData):
 
     def processSatelliteSource(self) -> None:
         self.ui.listSats.setRowCount(0)
-        loader = self.app.mount.obsSite.loader
+        loader = self.app.dReg.drivers["mount"]["class"].obsSite.loader
         satellites = loader.tle_file(str(self.satellites.dest))
         self.satellites.objects.clear()
         for sat in satellites:
@@ -196,9 +196,9 @@ class SatSearch(QObject, SatData):
             return
 
         satTab = self.ui.listSats
-        loc = self.app.mount.obsSite.location
+        loc = self.app.dReg.drivers["mount"]["class"].obsSite.location
         eph = self.app.ephemeris
-        ts = self.app.mount.obsSite.ts
+        ts = self.app.dReg.drivers["mount"]["class"].obsSite.ts
         timeNow = ts.now()
         viewPortRect = QRect(QPoint(0, 0), satTab.viewport().size())
 
@@ -254,8 +254,8 @@ class SatSearch(QObject, SatData):
 
     def workerCalcSatList(self) -> None:
         satTab = self.ui.listSats
-        loc = self.app.mount.obsSite.location
-        ts = self.app.mount.obsSite.ts
+        loc = self.app.dReg.drivers["mount"]["class"].obsSite.location
+        ts = self.app.dReg.drivers["mount"]["class"].obsSite.ts
         timeNow = ts.now()
         timeNext = ts.tt_jd(timeNow.tt + 1)
         altMin = self.ui.satAltitudeMin.value()

@@ -38,7 +38,7 @@ class MountSett:
         self.ui = mainW.ui
         self.typeConnectionTexts = ["RS-232", "GPS/RS-232", "LAN", "WiFi"]
 
-        ms = self.app.mount.signals
+        ms = self.app.dReg.drivers["mount"]["class"].signals
         ms.locationDone.connect(self.updateLocGUI)
         ms.pointDone.connect(self.updatePointGUI)
         ms.settingDone.connect(self.updateSettingGUI)
@@ -59,7 +59,7 @@ class MountSett:
         clickable(self.ui.statusAPO).connect(self.setAPO)
         clickable(self.ui.statusRefraction).connect(self.setRefraction)
         clickable(self.ui.settleTimeMount).connect(self.setSettleTimeMount)
-        self.app.mount.signals.firmwareDone.connect(self.setWOLorAPO)
+        self.app.dReg.drivers["mount"]["class"].signals.firmwareDone.connect(self.setWOLorAPO)
 
     def setWOLorAPO(self, fw: Firmware) -> None:
         self.ui.statusWOL.setEnabled(fw.isHW2012())
@@ -147,13 +147,13 @@ class MountSett:
         guiSetText(self.ui.settleTimeMount, "3.0f", sett.settleTime)
 
         # todo: this might be a little bit too slow
-        if self.app.mount.obsSite.status is None:
+        if self.app.dReg.drivers["mount"]["class"].obsSite.status is None:
             changeStyleDynamic(self.ui.followSat, "run", False)
             changeStyleDynamic(self.ui.setLunarTracking, "run", False)
             changeStyleDynamic(self.ui.setSiderealTracking, "run", False)
             changeStyleDynamic(self.ui.setSolarTracking, "run", False)
 
-        elif self.app.mount.obsSite.status == 10:
+        elif self.app.dReg.drivers["mount"]["class"].obsSite.status == 10:
             changeStyleDynamic(self.ui.followSat, "run", True)
             changeStyleDynamic(self.ui.setLunarTracking, "run", False)
             changeStyleDynamic(self.ui.setSiderealTracking, "run", False)
@@ -189,7 +189,7 @@ class MountSett:
         self.ui.siteElevation.setText(str(location.elevation.m))
 
     def setMeridianLimitTrack(self) -> bool:
-        sett = self.app.mount.setting
+        sett = self.app.dReg.drivers["mount"]["class"].setting
         actValue = 0 if not sett.meridianLimitTrack else int(sett.meridianLimitTrack)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
@@ -205,7 +205,7 @@ class MountSett:
             return False
 
     def setMeridianLimitSlew(self) -> bool:
-        sett = self.app.mount.setting
+        sett = self.app.dReg.drivers["mount"]["class"].setting
         actValue = 0 if not sett.meridianLimitSlew else int(sett.meridianLimitSlew)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
@@ -221,7 +221,7 @@ class MountSett:
             return False
 
     def setHorizonLimitHigh(self) -> bool:
-        sett = self.app.mount.setting
+        sett = self.app.dReg.drivers["mount"]["class"].setting
         actValue = 0 if sett.horizonLimitHigh is None else int(sett.horizonLimitHigh)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
@@ -237,7 +237,7 @@ class MountSett:
             return False
 
     def setHorizonLimitLow(self) -> bool:
-        sett = self.app.mount.setting
+        sett = self.app.dReg.drivers["mount"]["class"].setting
         actValue = 0 if sett.horizonLimitLow is None else int(sett.horizonLimitLow)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
@@ -259,7 +259,7 @@ class MountSett:
             return False
 
     def setSlewRate(self) -> bool:
-        sett = self.app.mount.setting
+        sett = self.app.dReg.drivers["mount"]["class"].setting
         actValue = 0 if sett.slewRate is None else int(sett.slewRate)
         minRate = 0 if sett.slewRateMin is None else int(sett.slewRateMin)
         maxRate = 0 if sett.slewRateMax is None else int(sett.slewRateMax)
@@ -285,7 +285,7 @@ class MountSett:
     def setLocationValues(
         self, lat: Angle | None = None, lon: Angle | None = None, elev: float = None
     ) -> None:
-        obs = self.app.mount.obsSite
+        obs = self.app.dReg.drivers["mount"]["class"].obsSite
         loc = obs.location
         lat = loc.latitude if lat is None else lat
         lon = loc.longitude if lon is None else lon
@@ -296,12 +296,12 @@ class MountSett:
             latitude_degrees=lat.degrees,
             elevation_m=elev,
         )
-        if self.app.deviceStat["mount"]:
+        if self.app.dReg.drivers["mount"]["stat"]:
             obs.setLocation(topo)
-            self.app.mount.getLocation()
+            self.app.dReg.drivers["camera"]["class"].getLocation()
         else:
             obs.location = topo
-            self.updateLocGUI(self.app.mount.obsSite)
+            self.updateLocGUI(self.app.dReg.drivers["mount"]["class"].obsSite)
 
         t = f"Location set to:     [{lat.degrees:3.2f} deg, "
         t += f"{lon.degrees:3.2f} deg, {elev:4.1f} m]"
@@ -336,7 +336,7 @@ class MountSett:
         self.setLocationValues(lat=value)
 
     def setElevation(self) -> bool:
-        obs = self.app.mount.obsSite
+        obs = self.app.dReg.drivers["mount"]["class"].obsSite
         dlg = QInputDialog()
         value, ok = dlg.getDouble(
             self.mainW,
@@ -353,7 +353,7 @@ class MountSett:
         return True
 
     def setUnattendedFlip(self) -> bool:
-        sett = self.app.mount.setting
+        sett = self.app.dReg.drivers["mount"]["class"].setting
         dlg = QInputDialog()
         value, ok = dlg.getItem(
             self.mainW,
@@ -373,7 +373,7 @@ class MountSett:
         return suc
 
     def setDualAxisTracking(self) -> bool:
-        sett = self.app.mount.setting
+        sett = self.app.dReg.drivers["mount"]["class"].setting
         dlg = QInputDialog()
         value, ok = dlg.getItem(
             self.mainW,
@@ -393,7 +393,7 @@ class MountSett:
         return suc
 
     def setWOL(self) -> bool:
-        sett = self.app.mount.setting
+        sett = self.app.dReg.drivers["mount"]["class"].setting
         dlg = QInputDialog()
         act = 0 if sett.wakeOnLan == "ON" else 1
         value, ok = dlg.getItem(
@@ -409,7 +409,7 @@ class MountSett:
         return suc
 
     def setAPO(self) -> bool:
-        sett = self.app.mount.setting
+        sett = self.app.dReg.drivers["mount"]["class"].setting
         dlg = QInputDialog()
         act = 0 if sett.autoPowerOn else 1
         value, ok = dlg.getItem(
@@ -425,7 +425,7 @@ class MountSett:
         return suc
 
     def setRefractionTemp(self) -> bool:
-        sett = self.app.mount.setting
+        sett = self.app.dReg.drivers["mount"]["class"].setting
         actValue = 0 if sett.refractionTemp is None else sett.refractionTemp
         minVal = -40
         maxVal = 75
@@ -449,7 +449,7 @@ class MountSett:
             return False
 
     def setRefractionPress(self) -> bool:
-        sett = self.app.mount.setting
+        sett = self.app.dReg.drivers["mount"]["class"].setting
         actValue = 0 if sett.refractionPress is None else sett.refractionPress
         minVal = 500
         maxVal = 1300
@@ -473,7 +473,7 @@ class MountSett:
             return False
 
     def setRefraction(self) -> bool:
-        sett = self.app.mount.setting
+        sett = self.app.dReg.drivers["mount"]["class"].setting
         dlg = QInputDialog()
         value, ok = dlg.getItem(
             self.mainW,
@@ -493,7 +493,7 @@ class MountSett:
         return suc
 
     def setSettleTimeMount(self) -> bool:
-        sett = self.app.mount.setting
+        sett = self.app.dReg.drivers["mount"]["class"].setting
         actValue = 0 if sett.settleTime is None else int(sett.settleTime)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
@@ -510,7 +510,7 @@ class MountSett:
 
     def showOffset(self) -> None:
         connectSync = self.ui.clockSync.isChecked()
-        delta = self.app.mount.obsSite.timeDiff * 1000
+        delta = self.app.dReg.drivers["mount"]["class"].obsSite.timeDiff * 1000
         ui = self.ui.timeDeltaPC2Mount
         text = f"{delta:4.0f}" if connectSync else "-"
         ui.setText(text)
@@ -522,7 +522,7 @@ class MountSett:
         else:
             changeStyleDynamic(ui, "color", "red")
 
-        timeJD = self.app.mount.obsSite.timeJD
+        timeJD = self.app.dReg.drivers["mount"]["class"].obsSite.timeJD
         if timeJD is not None:
             text = timeJD.utc_strftime("%H:%M:%S")
             self.ui.timeUTC.setText(text)

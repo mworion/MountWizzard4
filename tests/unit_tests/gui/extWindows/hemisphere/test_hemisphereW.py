@@ -115,14 +115,14 @@ def test_preparePolarItem_2(function):
 
 
 def test_drawMeridianLimits2(function):
-    function.app.mount.setting.meridianLimitSlew = 10
-    function.app.mount.setting.meridianLimitTrack = 10
+    function.app.dReg.drivers["mount"]["class"].setting.meridianLimitSlew = 10
+    function.app.dReg.drivers["mount"]["class"].setting.meridianLimitTrack = 10
     function.drawMeridianLimits(pg.PlotItem())
 
 
 def test_staticHorizonLimits_2(function):
-    function.app.mount.setting.horizonLimitHigh = 90
-    function.app.mount.setting.horizonLimitLow = 10
+    function.app.dReg.drivers["mount"]["class"].setting.horizonLimitHigh = 90
+    function.app.dReg.drivers["mount"]["class"].setting.horizonLimitLow = 10
     function.drawHorizonLimits(pg.PlotItem())
 
 

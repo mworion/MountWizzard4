@@ -30,9 +30,9 @@ class SimulatorWorld:
         """
         :return:
         """
-        north = self.app.mount.geometry.offNorth * 1000
-        east = self.app.mount.geometry.offEast * 1000
-        vertical = self.app.mount.geometry.offVert * 1000
+        north = self.app.dReg.drivers["mount"]["class"].geometry.offNorth * 1000
+        east = self.app.dReg.drivers["mount"]["class"].geometry.offEast * 1000
+        vertical = self.app.dReg.drivers["mount"]["class"].geometry.offVert * 1000
         scale = (960 + vertical) / 960
 
         translation = QVector3D(north, -east, 0)

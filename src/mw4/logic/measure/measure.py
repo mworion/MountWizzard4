@@ -48,15 +48,13 @@ class MeasureData:
 
     def collectDataDevices(self) -> None:
         self.devices.clear()
-        deviceDrivers = self.app.getActiveDrivers()
-        for device, driver in deviceDrivers.items():
+        for device, driver in self.app.dReg.drivers.items():
             if device not in measure:
                 continue
             deviceClass = driver.get("class") if isinstance(driver, dict) else driver
             if deviceClass is None:
                 continue
             self.devices[device] = deviceClass
-        self.devices["mount"] = self.app.mount
 
     def clearData(self) -> None:
         self.data.clear()
@@ -98,7 +96,7 @@ class MeasureData:
             return
         self.checkStart()
         self.checkSize()
-        timeStamp = self.app.mount.obsSite.timeJD.utc_datetime().replace(tzinfo=None)
+        timeStamp = self.app.dReg.drivers["mount"]["class"].obsSite.timeJD.utc_datetime().replace(tzinfo=None)
         self.data["time"] = np.append(self.data["time"], np.datetime64(timeStamp))
         for device in self.devices:
             for source in measure[device]:

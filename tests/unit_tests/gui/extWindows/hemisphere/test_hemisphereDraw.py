@@ -260,13 +260,13 @@ def test_setDomeAzimuth(function):
 
 def test_drawDome_1(function):
     function.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
-    function.app.deviceStat["dome"] = False
+    function.app.dReg.drivers["dome"]["stat"] = False
     function.drawDome()
 
 
 def test_drawDome_2(function):
     function.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
-    function.app.deviceStat["dome"] = True
+    function.app.dReg.drivers["dome"]["stat"] = True
     function.drawDome()
 
 
@@ -415,7 +415,7 @@ def test_drawTab_1(function):
     function.ui.showTerrain.setChecked(True)
     function.ui.showMountLimits.setChecked(True)
     function.ui.showHorizon.setChecked(True)
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.drivers["mount"]["stat"] = True
     function.app.mount.model.numberStars = 5
     with (
         mock.patch.object(function, "drawCelestialEquator"),
@@ -434,6 +434,6 @@ def test_drawTab_2(function):
     function.ui.showTerrain.setChecked(False)
     function.ui.showMountLimits.setChecked(False)
     function.ui.showHorizon.setChecked(False)
-    function.app.deviceStat["mount"] = False
+    function.app.dReg.drivers["mount"]["stat"] = False
     function.app.mount.model.numberStars = 0
     function.drawTab()

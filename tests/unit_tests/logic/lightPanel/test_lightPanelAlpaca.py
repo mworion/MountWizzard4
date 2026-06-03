@@ -54,7 +54,7 @@ def test_pollData_2(function):
 
 
 def test_lightOn_1(function):
-    function.app.lightPanel.data = {"FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 254}
+    function.app.dReg.drivers["lightPanel"]["class"].data = {"FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 254}
     while not function.commandQueue.empty():
         function.commandQueue.get_nowait()
     function.lightOn()

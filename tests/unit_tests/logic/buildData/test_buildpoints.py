@@ -40,7 +40,7 @@ def function():
 
     app = App()
     app.mount.obsSite.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
-    func = DataPoint(app=App())
+    func = BuildPoint(app=App())
     yield func
 
 

@@ -62,12 +62,12 @@ class SatTrack(SatData):
             },
         }
         self.satOrbits = {}
-        self.app.mount.signals.calcTLEdone.connect(self.updateSatelliteTrackGui)
-        self.app.mount.signals.calcTrajectoryDone.connect(self.updateInternalTrackGui)
-        self.app.mount.signals.getTLEdone.connect(self.getSatelliteDataFromDatabase)
-        self.app.mount.signals.pointDone.connect(self.followMount)
-        self.app.mount.signals.pointDone.connect(self.toggleTrackingOffset)
-        self.app.mount.signals.firmwareDone.connect(self.enableGuiFunctions)
+        self.app.dReg.drivers["mount"]["class"].signals.calcTLEdone.connect(self.updateSatelliteTrackGui)
+        self.app.dReg.drivers["mount"]["class"].signals.calcTrajectoryDone.connect(self.updateInternalTrackGui)
+        self.app.dReg.drivers["mount"]["class"].signals.getTLEdone.connect(self.getSatelliteDataFromDatabase)
+        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(self.followMount)
+        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(self.toggleTrackingOffset)
+        self.app.dReg.drivers["mount"]["class"].signals.firmwareDone.connect(self.enableGuiFunctions)
 
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
@@ -114,7 +114,7 @@ class SatTrack(SatData):
 
     def enableGuiFunctions(self) -> None:
         useInternal = self.ui.useInternalSatCalc.isChecked()
-        availableInternal = self.app.mount.firmware.checkNewer("3")
+        availableInternal = self.app.dReg.drivers["mount"]["class"].firmware.checkNewer("3")
         if availableInternal is None:
             return
 
@@ -143,7 +143,7 @@ class SatTrack(SatData):
         if duration < 1 / 86400:
             return [], []
 
-        m = self.app.mount
+        m = self.app.dReg.drivers["camera"]["class"]
         temp = m.setting.refractionTemp
         press = m.setting.refractionPress
         timeSeries = start + np.arange(0, duration, 1 / 86400)
@@ -164,7 +164,7 @@ class SatTrack(SatData):
             start, end, alt, az = self.filterHorizon(start, end, alt, az)
             self.signalSatelliteData(alt=alt, az=az)
         else:
-            self.app.mount.calcTLE(start)
+            self.app.dReg.drivers["mount"]["class"].calcTLE(start)
             self.signalSatelliteData(alt=[], az=[])
 
     def workerShowSatPasses(self) -> None:
@@ -175,8 +175,8 @@ class SatTrack(SatData):
             return
 
         self.clearTrackingParameters()
-        obsSite = self.app.mount.obsSite
-        setting = self.app.mount.setting
+        obsSite = self.app.dReg.drivers["mount"]["class"].obsSite
+        setting = self.app.dReg.drivers["mount"]["class"].setting
         self.satOrbits = calcSatPasses(self.satellite, obsSite, setting)
 
         for i in range(0, 3):
@@ -242,7 +242,7 @@ class SatTrack(SatData):
         epochText = self.satellite.epoch.utc_strftime("%Y-%m-%d, %H:%M")
         self.ui.satelliteEpoch.setText(epochText)
 
-        now = self.app.mount.obsSite.ts.now()
+        now = self.app.dReg.drivers["mount"]["class"].obsSite.ts.now()
         days = now - self.satellite.epoch
         self.ui.satelliteDataAge.setText(f"{days:2.2f}")
 
@@ -254,18 +254,18 @@ class SatTrack(SatData):
             changeStyleDynamic(self.ui.satelliteDataAge, "color", "")
 
     def programSatToMount(self, satName: str) -> None:
-        satellite = self.app.mount.satellite
+        satellite = self.app.dReg.drivers["mount"]["class"].satellite
         self.msg.emit(0, "TLE", "Program", f"Upload satellite: [{satName}]")
         line1, line2 = export_tle(self.satellites.objects[satName].model)
         suc = satellite.setTLE(line0=satName, line1=line1, line2=line2)
         if not suc:
             self.msg.emit(2, "TLE", "Program error", "Uploading error")
             return
-        self.app.mount.getTLE()
+        self.app.dReg.drivers["camera"]["class"].getTLE()
 
     def chooseSatellite(self) -> None:
         satName = self.ui.listSats.item(self.ui.listSats.currentRow(), 1).text()
-        if self.app.deviceStat["mount"]:
+        if self.app.dReg.drivers["mount"]["stat"]:
             self.programSatToMount(satName)
         else:
             self.extractSatelliteData(satName)
@@ -282,8 +282,8 @@ class SatTrack(SatData):
             changeStyleDynamic(self.ui.startSatelliteTracking, "run", False)
             return
 
-        now = self.app.mount.obsSite.ts.now()
-        location = self.app.mount.obsSite.location
+        now = self.app.dReg.drivers["mount"]["class"].obsSite.ts.now()
+        location = self.app.dReg.drivers["mount"]["class"].obsSite.location
         self.app.updateSatellite.emit(now, location)
 
     def selectStartEnd(self) -> tuple[int, int]:
@@ -315,7 +315,7 @@ class SatTrack(SatData):
     def filterHorizonForward(self, alt: list, az: list) -> tuple[list, list, int]:
         timeDelayStart = 0
         for altitude, azimuth in zip(alt, az):
-            if self.app.data.isAboveHorizon([altitude, azimuth]):
+            if self.app.buildPoint.isAboveHorizon([altitude, azimuth]):
                 break
             timeDelayStart += 1
             alt = np.delete(alt, 0)
@@ -325,7 +325,7 @@ class SatTrack(SatData):
     def filterHorizonReverse(self, alt: list, az: list) -> tuple[list, list, int]:
         timeDelayEnd = 0
         for altitude, azimuth in reversed(list(zip(alt, az))):
-            if self.app.data.isAboveHorizon([altitude, azimuth]):
+            if self.app.buildPoint.isAboveHorizon([altitude, azimuth]):
                 break
             timeDelayEnd += 1
             alt = np.delete(alt, -1)
@@ -371,11 +371,11 @@ class SatTrack(SatData):
         self.ui.satTrackGroup.setEnabled(False)
         changeStyleDynamic(self.ui.satTrackGroup, "run", True)
         self.ui.progTrajectory.setText("Calculating")
-        self.app.mount.progTrajectory(start, alt, az, replay=isReplay)
+        self.app.dReg.drivers["camera"]["class"].progTrajectory(start, alt, az, replay=isReplay)
 
     def changeUnitTimeUTC(self) -> None:
         self.showSatPasses()
-        self.updateSatelliteTrackGui(self.app.mount.satellite.tleParams)
+        self.updateSatelliteTrackGui(self.app.dReg.drivers["mount"]["class"].satellite.tleParams)
 
     def updateSatelliteTrackGui(self, tleParams: TLEParams) -> None:
         title = "Satellite tracking " + self.mainW.timeZoneString()
@@ -406,33 +406,33 @@ class SatTrack(SatData):
         self.msg.emit(1, "TLE", "Program", "Satellite track data ready!")
 
     def startTrack(self) -> None:
-        if not self.app.deviceStat["mount"]:
+        if not self.app.dReg.drivers["mount"]["stat"]:
             self.msg.emit(2, "TLE", "Program", "Mount is not online")
             return
 
-        if self.app.mount.obsSite.status == 5:
-            suc = self.app.mount.obsSite.unpark()
+        if self.app.dReg.drivers["mount"]["class"].obsSite.status == 5:
+            suc = self.app.dReg.drivers["mount"]["class"].obsSite.unpark()
             if suc:
                 self.msg.emit(0, "TLE", "Command", "Mount unparked")
             else:
                 self.msg.emit(2, "TLE", "Command error", "Cannot unpark mount")
 
-        self.app.dome.avoidFirstOvershoot()
-        suc, message = self.app.mount.satellite.slewTLE()
+        self.app.dReg.drivers["dome"]["class"].avoidFirstOvershoot()
+        suc, message = self.app.dReg.drivers["mount"]["class"].satellite.slewTLE()
         if not suc:
             self.msg.emit(2, "TLE", "Command error", f"{message}")
             return
 
         changeStyleDynamic(self.ui.startSatelliteTracking, "run", True)
         self.msg.emit(0, "TLE", "Command ", f"{message}")
-        self.app.mount.satellite.setTrackingOffsets()
+        self.app.dReg.drivers["mount"]["class"].satellite.setTrackingOffsets()
 
     def stopTrack(self) -> None:
-        if not self.app.deviceStat["mount"]:
+        if not self.app.dReg.drivers["mount"]["stat"]:
             self.msg.emit(2, "TLE", "Command", "Mount is not online")
             return
 
-        suc = self.app.mount.obsSite.startTracking()
+        suc = self.app.dReg.drivers["mount"]["class"].obsSite.startTracking()
         if not suc:
             self.msg.emit(2, "TLE", "Command", "Cannot stop tracking")
             return
@@ -442,7 +442,7 @@ class SatTrack(SatData):
         self.msg.emit(0, "TLE", "Command", "Stopped tracking")
 
     def toggleTrackingOffset(self, obs: ObsSite) -> None:
-        if not self.app.mount.firmware.checkNewer("3"):
+        if not self.app.dReg.drivers["mount"]["class"].firmware.checkNewer("3"):
             return
 
         if obs.status == 10:
@@ -463,7 +463,7 @@ class SatTrack(SatData):
             return
         if not self.ui.domeAutoFollowSat.isChecked():
             return
-        if not self.app.deviceStat["dome"]:
+        if not self.app.dReg.drivers["dome"]["stat"]:
             return
 
         stat = obs.statusSat
@@ -472,12 +472,12 @@ class SatTrack(SatData):
 
         azimuth = obs.Az.degrees
         altitude = obs.Alt.degrees
-        self.app.dome.slewDome(altitude=altitude, azimuth=azimuth, follow=True)
+        self.app.dReg.drivers["dome"]["class"].slewDome(altitude=altitude, azimuth=azimuth, follow=True)
 
     def setTrackingOffsets(self) -> None:
         valT = self.ui.satOffTime.value()
         valR = self.ui.satOffRa.value()
         valD = self.ui.satOffDec.value()
-        suc = self.app.mount.satellite.setTrackingOffsets(Time=valT, RA=valR, DECcorr=valD)
+        suc = self.app.dReg.drivers["mount"]["class"].satellite.setTrackingOffsets(Time=valT, RA=valR, DECcorr=valD)
         if not suc:
             self.msg.emit(2, "TLE", "Command error", "Cannot change offset")

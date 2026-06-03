@@ -38,7 +38,6 @@ MAC_STYLE = """
         font-weight: bold;
         font-size: 13pt;
     }
-
     QToolTip {
         font-size: 13pt;
     }
@@ -77,7 +76,6 @@ NON_MAC_STYLE = """
         font-weight: bold;
         font-size: 10pt;
     }
-
     QToolTip {
         font-size: 10pt;
     }
@@ -100,7 +98,7 @@ BASIC_STYLE = """
     QToolTip {
         border-width: %WIDTH%;
         border-style: outset;
-        border-color: $M_TER$;
+        border-color: $M_SEC$;
         background-color: $M_BACK1$;
         color: $M_PRIM$;
         padding: 5px;
@@ -588,10 +586,6 @@ BASIC_STYLE = """
     }
     QFrame[frameShape="5"] {
         color: $M_PRIM1$;
-    }
-    QFrame[title='true'] {
-        color: $M_PRIM$;
-        background-color: $M_BACK1$;
     }
     /* tab widget */
     QTabWidget:pane {

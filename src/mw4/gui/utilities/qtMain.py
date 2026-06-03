@@ -42,7 +42,7 @@ class MWidget(QMainWindow, Styles):
     FULL_WIDTH = 800
     FULL_HEIGHT = 600
     HALF_WIDTH = 400
-    HALF_HEIGHT = 320
+    HALF_HEIGHT = 300
 
     def __init__(self) -> None:
         super().__init__()
@@ -55,9 +55,9 @@ class MWidget(QMainWindow, Styles):
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.titleBar = CustomTitleBar(self)
 
+        self.ws = QWidget()
         workSpaceLayout = QVBoxLayout()
         workSpaceLayout.setContentsMargins(0, 0, 0, 0)
-        self.ws = QWidget()
         workSpaceLayout.addWidget(self.ws)
 
         centralWidgetLayout = QVBoxLayout()
@@ -65,9 +65,11 @@ class MWidget(QMainWindow, Styles):
         centralWidgetLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
         centralWidgetLayout.addWidget(self.titleBar)
         centralWidgetLayout.addLayout(workSpaceLayout)
+
         centralWidget = QWidget()
         centralWidget.setStyleSheet("border-radius: 2px;")
         centralWidget.setLayout(centralWidgetLayout)
+
         self.setCentralWidget(centralWidget)
 
     def changeEvent(self, event: QEvent) -> None:

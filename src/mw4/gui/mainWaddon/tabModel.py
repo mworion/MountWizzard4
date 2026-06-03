@@ -240,7 +240,7 @@ class Model:
         self.modelData.retriesReverse = self.ui.retriesReverse.isChecked()
         self.modelData.waitTimeExposure = self.ui.waitTimeExposure.value()
         self.modelData.version = f"{self.app.__version__}"
-        self.modelData.profile = self.ui.profile.text()
+        self.modelData.profile = self.ui.profileName.text()
         self.modelData.firmware = self.ui.vString.text()
         self.modelData.latitude = self.app.mount.obsSite.location.latitude.degrees
         self.modelData.plateSolveApp = self.ui.plateSolveDevice.currentText()

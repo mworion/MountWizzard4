@@ -218,7 +218,7 @@ def test_addMountModelToBuildModel_1(function):
 
 
 def test_addMountModelToBuildModel_2(function):
-    function.app.dReg.drivers["camera"]["class"].model.starList = [1, 2]
+    function.app.dReg.drivers["mount"]["class"].model.starList = [1, 2]
     function.modelSaveData = [1, 2, 3]
     with (
         mock.patch.object(

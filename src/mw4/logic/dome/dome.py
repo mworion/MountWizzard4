@@ -243,7 +243,7 @@ class Dome:
         return self.lastFinalAz
 
     def slewDome(self, altitude: float = 0, azimuth: float = 0, follow: bool = False) -> float:
-        mount = self.app.dReg.drivers["camera"]["class"]
+        mount = self.app.dReg.drivers["mount"]["class"]
         if follow:
             func = mount.calcTransformationMatricesActual
         else:

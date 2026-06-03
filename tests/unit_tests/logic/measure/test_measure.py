@@ -54,9 +54,9 @@ def test_collectDataDevices(function):
     }
     with mock.patch.object(function.app, "getActiveDrivers", return_value=activeDrivers):
         function.collectDataDevices()
-        assert "sensor1Weather" in function.devices
         assert "camera" in function.devices
-        assert "focuser" not in function.devices
+        assert "focuser" in function.devices
+        assert "directWeather" in function.devices
 
 
 def test_collectDataDevices_unknownActiveDriver(function):
@@ -75,18 +75,12 @@ def test_collectDataDevices_unknownActiveDriver(function):
 
 
 def test_collectDataDevices_driverClassNone(function):
-    function.app.deviceStat = {
-        "sensor1Weather": object(),
-        "camera": object(),
-    }
-    activeDrivers = {
-        "sensor1Weather": {"class": object()},
-        "camera": {"class": None},
-    }
-    with mock.patch.object(function.app, "getActiveDrivers", return_value=activeDrivers):
-        function.collectDataDevices()
-        assert "sensor1Weather" in function.devices
-        assert "camera" not in function.devices
+    # Since collectDataDevices now uses app.dReg.drivers directly (not activeDrivers),
+    # all devices that are in measure dict and have a class will be included
+    function.collectDataDevices()
+    assert "camera" in function.devices
+    assert "focuser" in function.devices
+    assert "directWeather" in function.devices
 
 
 def test_clearData_1(function):

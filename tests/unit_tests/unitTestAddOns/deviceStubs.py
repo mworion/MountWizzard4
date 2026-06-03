@@ -63,9 +63,10 @@ class Camera:
         self.subFrame = 100
         self.fastReadout = False
         self.data = {}
-        self.framework = None
+        self.framework = "indi"
         self.defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
         self.run = {"indi": "dummy"}
+
 
     @staticmethod
     def expose(

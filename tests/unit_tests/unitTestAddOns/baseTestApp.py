@@ -15,6 +15,7 @@
 ###########################################################
 # Re-export all stubs so that existing test imports remain unchanged.
 from mw4.base.deviceRegistry import DeviceRegistry
+from mw4.logic.buildData.buildpoints import BuildPoint
 from pathlib import Path
 from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
 from queue import Queue
@@ -121,6 +122,8 @@ class App(QObject):
             "mount": False,
             "camera": False,
             "plateSolve": False,
+            "refraction": None,
+            "onlineWeather": False,
         }
         self.statusOperationRunning = 0
         self.messageQueue = Queue()
@@ -139,6 +142,7 @@ class App(QObject):
         self.sensor4Weather = SensorWeather()
         self.directWeather = DirectWeather()
         self.seeingWeather = SeeingWeather()
+        self.onlineWeather = OnlineWeather()
         self.power = Power()
         self.dome = Dome()
         self.relay = Relay()
@@ -157,11 +161,19 @@ class App(QObject):
             "configDir": Path("tests/work/config"),
             "logDir": Path("tests/work/log"),
         }
+        self.threadPool = QThreadPool()
         self.uiWindows = {}
         self.mainW = MainW()
-        self.deviceRegistry = DeviceRegistry()
-        self.threadPool = QThreadPool()
+        self.deviceRegistry = DeviceRegistry(self)
+        self.dReg = self.deviceRegistry  # alias for compatibility
+        self.buildPoint = BuildPoint(self)
         self.onlineMode = False
+        # Add onlineWeather to drivers for tests
+        self.dReg.drivers["onlineWeather"] = {
+            "class": self.onlineWeather,
+            "deviceType": None,
+            "stat": None,
+        }
 
     @staticmethod
     def loadConfig():

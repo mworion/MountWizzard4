@@ -15,69 +15,48 @@
 ###########################################################
 import pytest
 from mw4.base.deviceRegistry import DeviceRegistry
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture()
 def registry() -> DeviceRegistry:
-    return DeviceRegistry()
+    return DeviceRegistry(App())
 
 
-def test_initiallyEmpty(registry: DeviceRegistry) -> None:
+def test_initiallyNotEmpty(registry: DeviceRegistry) -> None:
+    # DeviceRegistry now initializes with all drivers on construction
+    assert "camera" in registry.drivers
+    assert "dome" in registry.drivers
+    assert "mount" in registry.drivers
+
+
+def test_driversHaveRequiredFields(registry: DeviceRegistry) -> None:
     # arrange / act / assert
-    assert registry.getDrivers() == {}
+    for driver_name, driver_info in registry.drivers.items():
+        assert isinstance(driver_info, dict)
+        assert "class" in driver_info
+        assert "deviceType" in driver_info
+        assert "stat" in driver_info
 
 
-def test_updateAndGet(registry: DeviceRegistry) -> None:
-    # arrange
-    drivers = {"camera": {"class": object()}}
-    # act
-    registry.update(drivers)
-    # assert – same object reference (no copy is made)
-    assert registry.getDrivers() is drivers
+def test_cameraDriverExists(registry: DeviceRegistry) -> None:
+    # arrange / act / assert
+    assert "camera" in registry.drivers
+    camera_driver = registry.drivers["camera"]
+    assert camera_driver["class"] is not None
+    assert camera_driver["deviceType"] == "camera"
 
 
-def test_updateReplacesMapping(registry: DeviceRegistry) -> None:
-    # arrange
-    registry.update({"camera": {}})
-    newDrivers = {"dome": {}}
-    # act
-    registry.update(newDrivers)
-    # assert
-    assert registry.getDrivers() is newDrivers
-    assert "camera" not in registry.getDrivers()
+def test_domeDriverExists(registry: DeviceRegistry) -> None:
+    # arrange / act / assert
+    assert "dome" in registry.drivers
+    dome_driver = registry.drivers["dome"]
+    assert dome_driver["class"] is not None
+    assert dome_driver["deviceType"] == "dome"
 
 
-def test_mutationOfOriginalDictIsVisible(registry: DeviceRegistry) -> None:
-    # The registry holds a reference, not a copy.
-    # In-place mutations made by SettDevice are immediately visible
-    # to logic-layer consumers.
-    # arrange
-    drivers: dict = {}
-    registry.update(drivers)
-    # act – simulate SettDevice adding an entry after __init__
-    drivers["focuser"] = {"class": object()}
-    # assert
-    assert "focuser" in registry.getDrivers()
-
-
-def test_updateWithEmptyDict(registry: DeviceRegistry) -> None:
-    # arrange
-    registry.update({"camera": {}})
-    # act
-    registry.update({})
-    # assert
-    assert registry.getDrivers() == {}
-
-
-def test_getDriversReturnsAllKeys(registry: DeviceRegistry) -> None:
-    # arrange
-    drivers = {
-        "camera": {"class": object()},
-        "dome": {"class": object()},
-        "focuser": {"class": object()},
-    }
-    # act
-    registry.update(drivers)
-    result = registry.getDrivers()
-    # assert
-    assert set(result.keys()) == {"camera", "dome", "focuser"}
+def test_mountDriverExists(registry: DeviceRegistry) -> None:
+    # arrange / act / assert
+    assert "mount" in registry.drivers
+    mount_driver = registry.drivers["mount"]
+    assert mount_driver["class"] is not None

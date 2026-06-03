@@ -135,7 +135,7 @@ def test_genBuildDSO_3(function):
     function.simbadDec = None
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(function.app.data, "generateDSOPath"):
+    with mock.patch.object(function.app.buildPoint, "generateDSOPath"):
         function.genBuildDSO()
     function.autoDeletePoints = t
 
@@ -151,7 +151,7 @@ def test_genBuildDSO_4(function):
     function.simbadDec = None
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(function.app.data, "generateDSOPath"):
+    with mock.patch.object(function.app.buildPoint, "generateDSOPath"):
         function.genBuildDSO()
     function.autoDeletePoints = t
 
@@ -252,7 +252,7 @@ def test_loadBuildFile_3(function):
     with (
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(MWidget, "openFile", return_value=Path("test.bpts")),
-        mock.patch.object(function.app.data, "loadBuildP", return_value=False),
+        mock.patch.object(function.app.buildPoint, "loadBuildP", return_value=False),
     ):
         function.loadBuildFile()
 

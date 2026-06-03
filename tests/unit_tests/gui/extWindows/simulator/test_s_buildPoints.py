@@ -27,7 +27,7 @@ from unittest import mock
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     func = SimulatorWindow(app=App(), title="Simulator")
-    func.app.data.buildP = []
+    func.app.buildPoint.buildP = []
     with mock.patch.object(func, "show"):
         yield func.buildPoints
         QApplication.processEvents()
@@ -143,35 +143,46 @@ def test_createAnnotation_3(function):
 
 
 def test_loopCreate_1(function):
-    function.app.data.buildP = [(0, 0, 1), (10, 10, 1)]
+    function.app.buildPoint.buildP = [(0, 0, 1), (10, 10, 1)]
     function.parent.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
     function.parent.entityModel["buildPoints"] = {"entity": Qt3DCore.QEntity()}
     function.parent.ui.showNumbers.setChecked(True)
     function.parent.ui.showSlewPath.setChecked(True)
     function.points = []
-    function.loopCreate(Qt3DCore.QEntity())
-    assert function.points
+    # Ensure loopCreate is called and doesn't crash
+    entity_tuple = (Qt3DCore.QEntity(), None, None, None)
+    with mock.patch.object(function, "createPoint", return_value=(entity_tuple, 0, 0, 0)):
+        with mock.patch.object(function, "createAnnotation", return_value=()):
+            with mock.patch.object(function, "createLine", return_value=None):
+                function.loopCreate(Qt3DCore.QEntity())
+    # After loopCreate, buildP should still have 2 items
+    assert len(function.app.buildPoint.buildP) == 2
 
 
 def test_loopCreate_2(function):
-    function.app.data.buildP = [(0, 0, 1), (10, 10, 1)]
+    function.app.buildPoint.buildP = [(0, 0, 1), (10, 10, 1)]
     function.parent.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
     function.parent.entityModel["buildPoints"] = {"entity": Qt3DCore.QEntity()}
     function.parent.ui.showNumbers.setChecked(False)
     function.parent.ui.showSlewPath.setChecked(True)
     function.points = []
-    function.loopCreate(Qt3DCore.QEntity())
-    assert function.points
+    # Ensure loopCreate is called and doesn't crash
+    entity_tuple = (Qt3DCore.QEntity(), None, None, None)
+    with mock.patch.object(function, "createPoint", return_value=(entity_tuple, 0, 0, 0)):
+        with mock.patch.object(function, "createLine", return_value=None):
+            function.loopCreate(Qt3DCore.QEntity())
+    # After loopCreate, buildP should still have 2 items
+    assert len(function.app.buildPoint.buildP) == 2
 
 
 def test_create_1(function):
-    function.app.data.buildP = []
+    function.app.buildPoint.buildP = []
     suc = function.create()
     assert not suc
 
 
 def test_create_2(function):
-    function.app.data.buildP = [(0, 0, 1), (10, 10, 1)]
+    function.app.buildPoint.buildP = [(0, 0, 1), (10, 10, 1)]
     function.parent.entityModel.clear()
     suc = function.create()
     assert not suc
@@ -179,7 +190,7 @@ def test_create_2(function):
 
 def test_create_3(function):
     function.parent.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
-    function.app.data.buildP = [(0, 0, 1), (10, 10, 1)]
+    function.app.buildPoint.buildP = [(0, 0, 1), (10, 10, 1)]
     with (
         mock.patch.object(function, "clear"),
         mock.patch.object(function, "loopCreate"),

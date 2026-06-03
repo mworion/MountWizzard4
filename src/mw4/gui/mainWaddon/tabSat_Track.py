@@ -143,7 +143,7 @@ class SatTrack(SatData):
         if duration < 1 / 86400:
             return [], []
 
-        m = self.app.dReg.drivers["camera"]["class"]
+        m = self.app.dReg.drivers["mount"]["class"]
         temp = m.setting.refractionTemp
         press = m.setting.refractionPress
         timeSeries = start + np.arange(0, duration, 1 / 86400)
@@ -261,7 +261,7 @@ class SatTrack(SatData):
         if not suc:
             self.msg.emit(2, "TLE", "Program error", "Uploading error")
             return
-        self.app.dReg.drivers["camera"]["class"].getTLE()
+        self.app.dReg.drivers["mount"]["class"].getTLE()
 
     def chooseSatellite(self) -> None:
         satName = self.ui.listSats.item(self.ui.listSats.currentRow(), 1).text()
@@ -371,7 +371,7 @@ class SatTrack(SatData):
         self.ui.satTrackGroup.setEnabled(False)
         changeStyleDynamic(self.ui.satTrackGroup, "run", True)
         self.ui.progTrajectory.setText("Calculating")
-        self.app.dReg.drivers["camera"]["class"].progTrajectory(start, alt, az, replay=isReplay)
+        self.app.dReg.drivers["mount"]["class"].progTrajectory(start, alt, az, replay=isReplay)
 
     def changeUnitTimeUTC(self) -> None:
         self.showSatPasses()

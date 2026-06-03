@@ -43,11 +43,11 @@ def test_storeConfig_1(function):
 
 
 def test_smartEnvironGui_1(function):
-    function.app.deviceStat["sensor1Weather"] = False
-    function.app.deviceStat["sensor2Weather"] = False
-    function.app.deviceStat["sensor3Weather"] = False
-    function.app.deviceStat["sensor4Weather"] = False
-    function.app.deviceStat["directWeather"] = False
+    function.app.dReg.drivers["sensor1Weather"]["stat"] = False
+    function.app.dReg.drivers["sensor2Weather"]["stat"] = False
+    function.app.dReg.drivers["sensor3Weather"]["stat"] = False
+    function.app.dReg.drivers["sensor4Weather"]["stat"] = False
+    function.app.dReg.drivers["directWeather"]["stat"] = False
     function.smartEnvironGui()
     assert not function.ui.sensor1Group.isEnabled()
     assert not function.ui.sensor2Group.isEnabled()
@@ -57,11 +57,11 @@ def test_smartEnvironGui_1(function):
 
 
 def test_smartEnvironGui_2(function):
-    function.app.deviceStat["sensor1Weather"] = True
-    function.app.deviceStat["sensor2Weather"] = True
-    function.app.deviceStat["sensor3Weather"] = True
-    function.app.deviceStat["sensor4Weather"] = True
-    function.app.deviceStat["directWeather"] = True
+    function.app.dReg.drivers["sensor1Weather"]["stat"] = True
+    function.app.dReg.drivers["sensor2Weather"]["stat"] = True
+    function.app.dReg.drivers["sensor3Weather"]["stat"] = True
+    function.app.dReg.drivers["sensor4Weather"]["stat"] = True
+    function.app.dReg.drivers["directWeather"]["stat"] = True
     function.smartEnvironGui()
     assert function.ui.sensor1Group.isEnabled()
     assert function.ui.sensor2Group.isEnabled()
@@ -71,11 +71,11 @@ def test_smartEnvironGui_2(function):
 
 
 def test_smartEnvironGui_3(function):
-    function.app.deviceStat["sensor1Weather"] = None
-    function.app.deviceStat["sensor2Weather"] = None
-    function.app.deviceStat["sensor3Weather"] = None
-    function.app.deviceStat["sensor4Weather"] = None
-    function.app.deviceStat["directWeather"] = False
+    function.app.dReg.drivers["sensor1Weather"]["stat"] = None
+    function.app.dReg.drivers["sensor2Weather"]["stat"] = None
+    function.app.dReg.drivers["sensor3Weather"]["stat"] = None
+    function.app.dReg.drivers["sensor4Weather"]["stat"] = None
+    function.app.dReg.drivers["directWeather"]["stat"] = False
     function.smartEnvironGui()
     assert not function.ui.sensor1Group.isEnabled()
     assert not function.ui.sensor2Group.isEnabled()

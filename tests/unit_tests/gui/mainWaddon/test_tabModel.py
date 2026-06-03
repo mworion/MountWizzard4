@@ -185,7 +185,7 @@ def test_checkModelRunConditions_2(function):
 
 
 def test_checkModelRunConditions_4(function):
-    function.app.data.buildP = [[0, 0, 1], [0, 0, 1], [0, 0, 1]]
+    function.app.buildPoint.buildP = [[0, 0, 1], [0, 0, 1], [0, 0, 1]]
     suc = function.checkModelRunConditions()
     assert suc
 

@@ -181,7 +181,7 @@ class ModelManage:
             self.msg.emit(2, "Model", "Manage error", "No model name selected")
             return
         modelName = self.ui.nameList.currentItem().text()
-        if not self.app.dReg.drivers["camera"]["class"].model.loadName(modelName):
+        if not self.app.dReg.drivers["mount"]["class"].model.loadName(modelName):
             self.msg.emit(2, "Model", "Manage error", f"Model load failed: [{modelName}]")
             return
         self.msg.emit(0, "Model", "Manage", f"Model loaded: [{modelName}]")
@@ -196,7 +196,7 @@ class ModelManage:
             self.msg.emit(2, "Model", "Manage error", "No model name given")
             return
 
-        if not self.app.dReg.drivers["camera"]["class"].model.storeName(modelName):
+        if not self.app.dReg.drivers["mount"]["class"].model.storeName(modelName):
             self.msg.emit(2, "Model", "Manage error", f"Model cannot be saved [{modelName}]")
             return
         self.msg.emit(0, "Model", "Manage", f"Model saved: [{modelName}]")
@@ -213,7 +213,7 @@ class ModelManage:
         ):
             return
 
-        if not self.app.dReg.drivers["camera"]["class"].model.deleteName(modelName):
+        if not self.app.dReg.drivers["mount"]["class"].model.deleteName(modelName):
             self.msg.emit(2, "Model", "Manage error", f"Model cannot be deleted [{modelName}]")
             return
         self.msg.emit(0, "Model", "Manage", f"Model deleted: [{modelName}]")
@@ -240,7 +240,7 @@ class ModelManage:
                 continue
             newModel.append(element)
 
-        newModel = writeRetrofitData(self.app.dReg.drivers["camera"]["class"].model, newModel)
+        newModel = writeRetrofitData(self.app.dReg.drivers["mount"]["class"].model, newModel)
         newModel = convertAngleToFloat(newModel)
         with open(newPath, "w+") as newFile:
             json.dump(newModel, newFile, sort_keys=True, indent=4)
@@ -282,14 +282,14 @@ class ModelManage:
             self.mainW, "Clear model", "Clear actual alignment model"
         ):
             return
-        if not self.app.dReg.drivers["camera"]["class"].model.clearModel():
+        if not self.app.dReg.drivers["mount"]["class"].model.clearModel():
             self.msg.emit(2, "Model", "Manage error", "Actual model cannot be cleared")
             return
         self.msg.emit(0, "Model", "Manage", "Actual model cleared")
         self.refreshModel()
 
     def deleteWorstPoint(self) -> None:
-        model = self.app.dReg.drivers["camera"]["class"].model
+        model = self.app.dReg.drivers["mount"]["class"].model
         if not model.numberStars:
             return
 
@@ -319,7 +319,7 @@ class ModelManage:
         self.refreshModel()
 
     def runTargetRMS(self) -> None:
-        mount = self.app.dReg.drivers["camera"]["class"]
+        mount = self.app.dReg.drivers["mount"]["class"]
         if mount.model.errorRMS < self.ui.targetRMS.value():
             self.runningOptimize = False
         numberStars = 0 if mount.model.numberStars is None else mount.model.numberStars
@@ -343,7 +343,7 @@ class ModelManage:
             self.finishOptimize()
 
     def runSingleRMS(self) -> None:
-        mount = self.app.dReg.drivers["camera"]["class"]
+        mount = self.app.dReg.drivers["mount"]["class"]
         if all(star.errorRMS < self.ui.targetRMS.value() for star in mount.model.starList):
             self.runningOptimize = False
         numberStars = 0 if mount.model.numberStars is None else mount.model.numberStars

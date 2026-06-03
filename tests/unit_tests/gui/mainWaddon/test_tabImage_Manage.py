@@ -220,7 +220,12 @@ def test_setCoolerTemp_4(function):
     function.app.dReg.drivers["camera"]["class"].data["CAN_SET_CCD_TEMPERATURE"] = True
     function.app.dReg.drivers["camera"]["class"].data["CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"] = 10
     with mock.patch.object(QInputDialog, "getInt", return_value=(10, True)):
-        function.setCoolerTemp()
+        with mock.patch.object(
+            function.app.dReg.drivers["camera"]["class"],
+            "sendCoolerTemp",
+            return_value=None,
+        ):
+            function.setCoolerTemp()
 
 
 def test_setCoolerTemp_5(function):
@@ -250,7 +255,12 @@ def test_setOffset_3(function):
     function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_MAX"] = 1
     function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
     with mock.patch.object(QInputDialog, "getItem", return_value=("1", True)):
-        function.setOffset()
+        with mock.patch.object(
+            function.app.dReg.drivers["camera"]["class"],
+            "sendOffset",
+            return_value=None,
+        ):
+            function.setOffset()
 
 
 def test_setOffset_4(function):
@@ -259,7 +269,12 @@ def test_setOffset_4(function):
     function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_MAX"] = 1
     function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = None
     with mock.patch.object(QInputDialog, "getInt", return_value=("1", True)):
-        function.setOffset()
+        with mock.patch.object(
+            function.app.dReg.drivers["camera"]["class"],
+            "sendOffset",
+            return_value=None,
+        ):
+            function.setOffset()
 
 
 def test_setOffset_5(function):
@@ -268,7 +283,12 @@ def test_setOffset_5(function):
     function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_MAX"] = None
     function.app.dReg.drivers["camera"]["class"].data["CCD_OFFSET.OFFSET_LIST"] = None
     with mock.patch.object(QInputDialog, "getInt", return_value=("1", True)):
-        function.setOffset()
+        with mock.patch.object(
+            function.app.dReg.drivers["camera"]["class"],
+            "sendOffset",
+            return_value=None,
+        ):
+            function.setOffset()
 
 
 def test_setGain_1(function):
@@ -291,7 +311,12 @@ def test_setGain_3(function):
     function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_MAX"] = 1
     function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = ["1"]
     with mock.patch.object(QInputDialog, "getItem", return_value=("1", True)):
-        function.setGain()
+        with mock.patch.object(
+            function.app.dReg.drivers["camera"]["class"],
+            "sendGain",
+            return_value=None,
+        ):
+            function.setGain()
 
 
 def test_setGain_4(function):
@@ -300,7 +325,12 @@ def test_setGain_4(function):
     function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_MAX"] = 1
     function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = None
     with mock.patch.object(QInputDialog, "getInt", return_value=("1", True)):
-        function.setGain()
+        with mock.patch.object(
+            function.app.dReg.drivers["camera"]["class"],
+            "sendGain",
+            return_value=None,
+        ):
+            function.setGain()
 
 
 def test_setGain_5(function):
@@ -309,7 +339,12 @@ def test_setGain_5(function):
     function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_MAX"] = None
     function.app.dReg.drivers["camera"]["class"].data["CCD_GAIN.GAIN_LIST"] = None
     with mock.patch.object(QInputDialog, "getInt", return_value=("1", True)):
-        function.setGain()
+        with mock.patch.object(
+            function.app.dReg.drivers["camera"]["class"],
+            "sendGain",
+            return_value=None,
+        ):
+            function.setGain()
 
 
 def test_setFilterNumber_1(function):
@@ -361,11 +396,21 @@ def test_setFilterName_4(function):
 
 
 def test_setCoolerOn_1(function):
-    function.setCoolerOn()
+    with mock.patch.object(
+        function.app.dReg.drivers["camera"]["class"],
+        "sendCoolerSwitch",
+        return_value=None,
+    ):
+        function.setCoolerOn()
 
 
 def test_setCoolerOff_1(function):
-    function.setCoolerOff()
+    with mock.patch.object(
+        function.app.dReg.drivers["camera"]["class"],
+        "sendCoolerSwitch",
+        return_value=None,
+    ):
+        function.setCoolerOff()
 
 
 def test_updateCoverStatGui_1(function):
@@ -429,32 +474,56 @@ def test_setCoverHalt_2(function):
 
 
 def test_moveFocuserIn_1(function):
-    with mock.patch.object(function.app.focuser, "move", return_value=False):
+    with mock.patch.object(
+        function.app.dReg.drivers["focuser"]["class"],
+        "move",
+        return_value=False,
+    ):
         function.moveFocuserIn()
 
 
 def test_moveFocuserIn_2(function):
-    with mock.patch.object(function.app.focuser, "move", return_value=True):
+    with mock.patch.object(
+        function.app.dReg.drivers["focuser"]["class"],
+        "move",
+        return_value=True,
+    ):
         function.moveFocuserIn()
 
 
 def test_moveFocuserOut_1(function):
-    with mock.patch.object(function.app.focuser, "move", return_value=False):
+    with mock.patch.object(
+        function.app.dReg.drivers["focuser"]["class"],
+        "move",
+        return_value=False,
+    ):
         function.moveFocuserOut()
 
 
 def test_moveFocuserOut_2(function):
-    with mock.patch.object(function.app.focuser, "move", return_value=True):
+    with mock.patch.object(
+        function.app.dReg.drivers["focuser"]["class"],
+        "move",
+        return_value=True,
+    ):
         function.moveFocuserOut()
 
 
 def test_haltFocuser_1(function):
-    with mock.patch.object(function.app.focuser, "halt", return_value=False):
+    with mock.patch.object(
+        function.app.dReg.drivers["focuser"]["class"],
+        "halt",
+        return_value=False,
+    ):
         function.haltFocuser()
 
 
 def test_haltFocuser_2(function):
-    with mock.patch.object(function.app.focuser, "halt", return_value=True):
+    with mock.patch.object(
+        function.app.dReg.drivers["focuser"]["class"],
+        "halt",
+        return_value=True,
+    ):
         function.haltFocuser()
 
 

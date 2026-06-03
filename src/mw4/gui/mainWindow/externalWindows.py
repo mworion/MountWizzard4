@@ -27,7 +27,6 @@ from mw4.gui.extWindows.satelliteMapW import SatelliteMapWindow
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 from mw4.gui.extWindows.video.videoW import VideoWindow
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
-from PySide6.QtCore import QPoint, QSize
 
 
 class ExternalWindows:

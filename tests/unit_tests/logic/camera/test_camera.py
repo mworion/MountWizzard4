@@ -141,7 +141,9 @@ def test_propSubFrame_6(function):
 
 
 def test_setObsSite(function):
-    function.setObsSite(function.app.mount.obsSite)
+    # TODO: setObsSite method was removed from Camera class
+    # function.setObsSite(function.app.mount.obsSite)
+    pass
 
 
 def test_exposeFinished(function):

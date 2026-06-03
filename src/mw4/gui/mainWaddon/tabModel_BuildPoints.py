@@ -252,7 +252,7 @@ class BuildPoints:
     def genModel(self) -> None:
         self.lastGenerator = "model"
         self.app.buildPoint.clearBuildP()
-        model = self.app.dReg.drivers["camera"]["class"].model
+        model = self.app.dReg.drivers["mount"]["class"].model
         for star in model.starList:
             self.app.buildPoint.addBuildP(
                 [int(star.alt.degrees), int(star.az.degrees), self.app.buildPoint.UNPROCESSED]

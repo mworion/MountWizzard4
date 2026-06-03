@@ -298,7 +298,7 @@ class MountSett:
         )
         if self.app.dReg.drivers["mount"]["stat"]:
             obs.setLocation(topo)
-            self.app.dReg.drivers["camera"]["class"].getLocation()
+            self.app.dReg.drivers["mount"]["class"].getLocation()
         else:
             obs.location = topo
             self.updateLocGUI(self.app.dReg.drivers["mount"]["class"].obsSite)

@@ -66,6 +66,7 @@ class MWidget(QMainWindow, Styles):
         centralWidgetLayout.addLayout(workSpaceLayout)
 
         centralWidget = QWidget()
+        centralWidget.setStyleSheet("border-radius: 2px;")
         centralWidget.setLayout(centralWidgetLayout)
 
         self.setCentralWidget(centralWidget)

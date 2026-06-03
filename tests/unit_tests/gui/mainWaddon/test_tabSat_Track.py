@@ -524,7 +524,7 @@ def test_filterHorizonForward_1(function):
     alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
     az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     function.app.data.horizonP = [[40, 0], [40, 360]]
-    with mock.patch.object(function.app.data, "isAboveHorizon", return_value=False):
+    with mock.patch.object(function.app.buildPoint, "isAboveHorizon", return_value=False):
         alt, az, delay = function.filterHorizonForward(alt, az)
         assert delay == 10
 
@@ -542,7 +542,7 @@ def test_filterHorizonReverse_1(function):
     alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
     az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     function.app.data.horizonP = [[40, 0], [40, 360]]
-    with mock.patch.object(function.app.data, "isAboveHorizon", return_value=False):
+    with mock.patch.object(function.app.buildPoint, "isAboveHorizon", return_value=False):
         alt, az, delay = function.filterHorizonReverse(alt, az)
         assert delay == 10
 
@@ -835,7 +835,8 @@ def test_followMount_4(function):
     function.app.dReg.drivers["dome"]["stat"] = True
     obs.Az = Angle(degrees=1)
     obs.Alt = Angle(degrees=1)
-    function.followMount(obs)
+    with mock.patch.object(function.app.dReg.drivers["dome"]["class"], "slewDome"):
+        function.followMount(obs)
 
 
 def test_setTrackingOffsets_1(function):

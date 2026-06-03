@@ -208,7 +208,7 @@ class SettDevice:
             self.copyConfig(driverOrig=driver, framework="alpaca")
 
         selectedFramework = self.driversData[driver]["framework"]
-        index = findIndexValue(self.drivers[driver]["uiDropDown"], selectedFramework)
+        index = findIndexValue(self.setupUiDriver[driver]["uiDropDown"], selectedFramework)
         name = self.driversData[driver]["frameworks"][selectedFramework]["deviceName"]
 
         if not name:

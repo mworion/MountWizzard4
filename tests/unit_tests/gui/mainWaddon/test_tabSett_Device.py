@@ -36,7 +36,16 @@ def function(qapp):
 
 def test_addMissingFrameworksData_1(function):
     config = {"camera": {"frameworks": {"ascom": {}}}}
-    result = function.addMissingFrameworksData("camera", config)
+    cameraClass = function.app.dReg.drivers["camera"]["class"]
+    with (
+        mock.patch.object(cameraClass, "run", {"indi": None}),
+        mock.patch.object(
+            cameraClass,
+            "defaultConfig",
+            {"framework": "", "frameworks": {"indi": {"dummy": {}}}},
+        ),
+    ):
+        result = function.addMissingFrameworksData("camera", config)
     assert result == {"camera": {"frameworks": {"ascom": {}, "indi": {"dummy": {}}}}}
 
 
@@ -398,7 +407,7 @@ def test_startDriver_4(function):
     }
     with (
         mock.patch.object(function, "configDriver"),
-        mock.patch.object(function, "configDriver"),
+        mock.patch.object(function, "startDriver"),
     ):
         function.startDriver("telescope", True)
 
@@ -480,7 +489,7 @@ def test_dispatchDriverDropdown_1(function):
             "framework": "indi",
         }
     }
-    function.drivers["telescope"]["uiDropDown"].addItem("indi - test")
+    function.setupUiDriver["telescope"]["uiDropDown"].addItem("indi - test")
     with mock.patch.object(function, "stopDriver"), mock.patch.object(function, "startDriver"):
         function.dispatchDriverDropdown("telescope", 1)
 
@@ -491,7 +500,7 @@ def test_dispatchDriverDropdown_2(function):
             "framework": "indi",
         }
     }
-    function.drivers["dome"]["uiDropDown"].addItem("device disabled")
+    function.setupUiDriver["dome"]["uiDropDown"].addItem("device disabled")
     with mock.patch.object(function, "stopDriver"), mock.patch.object(function, "startDriver"):
         function.dispatchDriverDropdown("dome", 0)
 

@@ -45,9 +45,8 @@ class KeypadWindow(MWidget):
         self.threadPool = app.threadPool
         self.ui = keypad_ui.Ui_KeypadDialog()
         self.ui.setupUi(self.ws)
-        self.setMinimumSize(270, self.FULL_HEIGHT)
-        self.setMaximumSize(270, self.FULL_HEIGHT)
-        self.titleBar.windowFixed = True
+        #self.setMinimumSize(270, self.FULL_HEIGHT-20)
+        #self.setMaximumSize(270, self.FULL_HEIGHT)
         self.setWindowTitle("Keypad")
         self.signals = KeypadSignals()
         self.keypad = KeyPad(self.signals)
@@ -100,6 +99,7 @@ class KeypadWindow(MWidget):
     def closeEvent(self, closeEvent) -> None:
         self.storeConfig()
         self.keypad.closeWebsocket()
+        self.websocketMutex.unlock()
         super().closeEvent(closeEvent)
 
     def keyPressEvent(self, keyEvent) -> None:

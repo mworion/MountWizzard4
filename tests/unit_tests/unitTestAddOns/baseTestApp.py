@@ -115,7 +115,7 @@ class App(QObject):
 
     def __init__(self):
         super().__init__()
-        self.config = {"mainW": {}}
+        self.config = {"WindowMain": {}}
         self.deviceStat = {
             "dome": False,
             "mount": False,

@@ -45,7 +45,7 @@ class SettMount:
         self.app.update30s.connect(self.syncClock)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.ui.mountHost.setText(config.get("mountHost", ""))
         self.ui.port3492.setChecked(config.get("port3492", True))
         self.mountHost()
@@ -65,7 +65,7 @@ class SettMount:
             self.mountBoot()
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["mountHost"] = self.ui.mountHost.text()
         config["mountMAC"] = self.ui.mountMAC.text()
         config["mountWolAddress"] = self.ui.mountWolAddress.text()

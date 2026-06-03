@@ -65,12 +65,12 @@ class Almanac:
         self.ui.unitTimeUTC.toggled.connect(self.showMoonPhase)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.ui.almanacPrediction.currentIndexChanged.connect(self.showTwilightDataPlot)
         self.ui.almanacPrediction.setCurrentIndex(config.get("almanacPrediction", 0))
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["almanacPrediction"] = self.ui.almanacPrediction.currentIndex()
 
     def setColors(self) -> None:

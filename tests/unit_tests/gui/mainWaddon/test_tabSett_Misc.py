@@ -37,7 +37,7 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    function.app.config["mainW"] = {}
+    function.app.config["WindowMain"] = {}
     with mock.patch.object(function, "populateGameControllerList"):
         function.initConfig()
 

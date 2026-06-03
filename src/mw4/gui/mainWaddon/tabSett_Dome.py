@@ -79,7 +79,7 @@ class SettDome:
         self.ui.tabDomeExplain.setCurrentIndex(8)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.ui.domeClearOpening.setValue(config.get("domeClearOpening", 0.4))
         self.ui.domeOpeningHysteresis.setValue(config.get("domeOpeningHysteresis", 0.0))
         self.ui.domeClearanceZenith.setValue(config.get("domeClearanceZenith", 0.2))
@@ -98,7 +98,7 @@ class SettDome:
         self.setUseGeometry()
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["domeRadius"] = self.ui.domeRadius.value()
         config["domeClearOpening"] = self.ui.domeClearOpening.value()
         config["domeOpeningHysteresis"] = self.ui.domeOpeningHysteresis.value()

@@ -40,9 +40,9 @@ from skyfield.api import Time
 class MWidget(QMainWindow, Styles):
     log = logging.getLogger("MW4")
     FULL_WIDTH = 800
-    FULL_HEIGHT = 600
+    FULL_HEIGHT = 620
     HALF_WIDTH = 400
-    HALF_HEIGHT = 300
+    HALF_HEIGHT = 310
 
     def __init__(self) -> None:
         super().__init__()
@@ -62,7 +62,6 @@ class MWidget(QMainWindow, Styles):
 
         centralWidgetLayout = QVBoxLayout()
         centralWidgetLayout.setContentsMargins(0, 0, 0, 0)
-        centralWidgetLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
         centralWidgetLayout.addWidget(self.titleBar)
         centralWidgetLayout.addLayout(workSpaceLayout)
 
@@ -74,6 +73,8 @@ class MWidget(QMainWindow, Styles):
 
     def changeEvent(self, event: QEvent) -> None:
         if event.type() == QEvent.Type.WindowStateChange:
+            print(self.window(), self)
+            print(self.pos(), self.geometry())
             self.titleBar.windowStateChanged(self.windowState())
         super().changeEvent(event)
         event.accept()

@@ -68,7 +68,7 @@ class SatSearch(QObject, SatData):
         self.app.update3s.connect(self.calcSatListDynamic)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.ui.satFilterText.setText(config.get("satFilterText"))
         self.ui.satTwilight.setCurrentIndex(config.get("satTwilight", 5))
         self.ui.satCyclicUpdates.setChecked(config.get("satCyclicUpdates", False))
@@ -78,7 +78,7 @@ class SatSearch(QObject, SatData):
         self.ui.satSourceList.setCurrentIndex(config.get("satSource", 0))
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["satSource"] = self.ui.satSourceList.currentIndex()
         config["satTwilight"] = self.ui.satTwilight.currentIndex()
         config["satFilterText"] = self.ui.satFilterText.text()

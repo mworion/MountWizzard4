@@ -64,7 +64,7 @@ class ModelManage:
         self.app.refreshName.connect(self.refreshName)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.ui.targetRMS.setValue(config.get("targetRMS", 10))
         self.ui.optimizeOverall.setChecked(config.get("optimizeOverall", True))
         self.ui.optimizeSingle.setChecked(config.get("optimizeSingle", True))
@@ -73,7 +73,7 @@ class ModelManage:
         self.showErrorDistribution()
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["targetRMS"] = self.ui.targetRMS.value()
         config["optimizeOverall"] = self.ui.optimizeOverall.isChecked()
         config["optimizeSingle"] = self.ui.optimizeSingle.isChecked()

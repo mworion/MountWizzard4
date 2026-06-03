@@ -64,7 +64,7 @@ class ImageManage:
         self.app.update1s.connect(self.updateShutterStatGui)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.ui.exposureTime1.setValue(config.get("exposureTime1", 1))
         self.ui.binning1.setValue(config.get("binning1", 1))
         self.ui.exposureTimeN.setValue(config.get("exposureTimeN", 1))
@@ -76,7 +76,7 @@ class ImageManage:
         self.ui.focuserSteps.setValue(config.get("focuserSteps", 100))
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["exposureTime1"] = self.ui.exposureTime1.value()
         config["binning1"] = self.ui.binning1.value()
         config["exposureTimeN"] = self.ui.exposureTimeN.value()

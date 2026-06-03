@@ -85,7 +85,7 @@ class SatTrack(SatData):
         self.app.update1s.connect(self.updateOrbit)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.ui.domeAutoFollowSat.setChecked(config.get("domeAutoFollowSat", False))
         self.ui.useInternalSatCalc.setChecked(config.get("useInternalSatCalc", False))
         self.ui.satBeforeFlip.setChecked(config.get("satBeforeFlip", True))
@@ -96,7 +96,7 @@ class SatTrack(SatData):
         self.ui.unitTimeLocal.clicked.connect(self.changeUnitTimeUTC)
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["domeAutoFollowSat"] = self.ui.domeAutoFollowSat.isChecked()
         config["useInternalSatCalc"] = self.ui.useInternalSatCalc.isChecked()
         config["satBeforeFlip"] = self.ui.satBeforeFlip.isChecked()

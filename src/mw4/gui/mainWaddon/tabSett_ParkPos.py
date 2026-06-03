@@ -49,7 +49,7 @@ class SettParkPos:
             self.posButtons[index].clicked.connect(partial(self.saveActualPosition, index))
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         for index in self.posTexts:
             keyConfig = f"posText{index:1d}"
             self.posTexts[index].setText(config.get(keyConfig, f"Park Pos {index:1d}"))
@@ -67,7 +67,7 @@ class SettParkPos:
         self.ui.parkMountAfterSlew.setChecked(config.get("parkMountAfterSlew", False))
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         for index in self.posTexts:
             keyConfig = f"posText{index:1d}"
             config[keyConfig] = self.posTexts[index].text()

@@ -35,7 +35,7 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    function.app.config["mainW"] = {}
+    function.app.config["WindowMain"] = {}
     function.initConfig()
 
 
@@ -44,7 +44,7 @@ def test_initConfig_2(function):
 
 
 def test_initConfig_3(function):
-    config = function.app.config["mainW"]
+    config = function.app.config["WindowMain"]
     for i in range(0, 10):
         config[f"posText{i:1d}"] = str(i)
         config[f"posAlt{i:1d}"] = i

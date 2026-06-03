@@ -46,13 +46,13 @@ class Comet:
         self.ui.progCometFull.clicked.connect(self.comets.progFull)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.ui.cometFilterText.setText(config.get("cometFilterText"))
         self.ui.mpcTabWidget.setCurrentIndex(config.get("mpcTab", 0))
         self.ui.cometSourceList.setCurrentIndex(config.get("cometSource", 0))
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["cometSource"] = self.ui.cometSourceList.currentIndex()
         config["cometFilterText"] = self.ui.cometFilterText.text()
         config["mpcTab"] = self.ui.mpcTabWidget.currentIndex()

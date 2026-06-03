@@ -56,7 +56,7 @@ class Model:
         self.modelData.progress.connect(self.showProgress)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.ui.retriesReverse.setChecked(config.get("retriesReverse", False))
         self.ui.parkMountAfterModel.setChecked(config.get("parkMountAfterModel", False))
         self.ui.numberBuildRetries.setValue(config.get("numberBuildRetries", 0))
@@ -67,7 +67,7 @@ class Model:
         self.ui.waitTimeExposure.setValue(config.get("waitTimeExposure", 0))
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["retriesReverse"] = self.ui.retriesReverse.isChecked()
         config["parkMountAfterModel"] = self.ui.parkMountAfterModel.isChecked()
         config["numberBuildRetries"] = self.ui.numberBuildRetries.value()

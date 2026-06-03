@@ -60,7 +60,7 @@ class Rename:
         self.ui.renameInputSelect.clicked.connect(self.chooseDir)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         imageDir = str(self.app.mwGlob["imageDir"])
         renameDir = config.get("renameDir", imageDir)
         self.ui.renameDir.setText(renameDir)
@@ -72,7 +72,7 @@ class Rename:
         self.ui.renameProgress.setValue(0)
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["renameDir"] = self.ui.renameDir.text()
         config["newObjectName"] = self.ui.newObjectName.text()
         config["includeSubdirs"] = self.ui.includeSubdirs.isChecked()

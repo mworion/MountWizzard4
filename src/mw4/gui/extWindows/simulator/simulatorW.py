@@ -64,7 +64,7 @@ class SimulatorWindow(MWidget):
         self.createScene()
 
     def initConfig(self) -> None:
-        config = self.app.config.get("simulatorW", {})
+        config = self.app.config.get("WindowSimulator", {})
         self.positionWindow(config)
         self.ui.domeTransparent.setChecked(config.get("domeTransparent", False))
         self.ui.showPointer.setChecked(config.get("showPointer", False))
@@ -76,8 +76,8 @@ class SimulatorWindow(MWidget):
 
     def storeConfig(self) -> None:
         configMain = self.app.config
-        configMain["simulatorW"] = {}
-        config = configMain["simulatorW"]
+        configMain["WindowSimulator"] = {}
+        config = configMain["WindowSimulator"]
 
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)

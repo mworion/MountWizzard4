@@ -141,9 +141,9 @@ def _inject_mount_host():
         with contextlib.suppress(Exception):
             cfg = json.loads(cfg_path.read_text())
 
-    cfg.setdefault("mainW", {})
-    cfg["mainW"]["mountHost"] = MOUNT_HOST
-    cfg["mainW"]["port3492"] = MOUNT_PORT_3492
+    cfg.setdefault("WindowMain", {})
+    cfg["WindowMain"]["mountHost"] = MOUNT_HOST
+    cfg["WindowMain"]["port3492"] = MOUNT_PORT_3492
     cfg_path.write_text(json.dumps(cfg, indent=2))
 
 

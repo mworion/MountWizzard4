@@ -40,15 +40,15 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    function.app.config["mainW"] = {}
+    function.app.config["WindowMain"] = {}
     function.initConfig()
     assert function.tempDir == Path("tests/work/temp")
 
 
 def test_storeConfig_1(function):
-    function.app.config["mainW"] = {}
+    function.app.config["WindowMain"] = {}
     function.storeConfig()
-    assert "iersSource" in function.app.config["mainW"]
+    assert "iersSource" in function.app.config["WindowMain"]
 
 
 def test_setupIcons_1(function):

@@ -33,7 +33,7 @@ def window(qapp):
 
 
 def test_initConfig_1(window):
-    del window.app.config["mainW"]
+    del window.app.config["WindowMain"]
     with (
         mock.patch.object(window.mainWindowAddons, "initConfig"),
         mock.patch.object(window, "smartTabGui"),
@@ -52,7 +52,7 @@ def test_storeConfig_1(window):
 
 
 def test_storeConfig_2(window):
-    del window.app.config["mainW"]
+    del window.app.config["WindowMain"]
     with (
         mock.patch.object(window.mainWindowAddons, "storeConfig"),
         mock.patch.object(window.externalWindows, "storeConfigExtendedWindows"),

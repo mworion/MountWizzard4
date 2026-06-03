@@ -20,7 +20,7 @@ from typing import Any
 class VideoWindow(VideoWindowBase):
     def __init__(self, app: Any, title: str) -> None:
         super().__init__(app=app)
-        self.title: str = title
+        self.title: str = "Window" + title
         self.setWindowTitle(title)
 
     def initConfig(self) -> None:

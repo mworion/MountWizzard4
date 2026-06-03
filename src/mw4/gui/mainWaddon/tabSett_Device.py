@@ -226,14 +226,14 @@ class SettDevice:
         self.driversData.update(config)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.loadDriversDataFromConfig(self.app.config)
         self.ui.autoConnectASCOM.setChecked(config.get("autoConnectASCOM", False))
         self.setupDeviceGui()
         self.startDrivers()
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.app.config["driversData"] = self.driversData
         config["autoConnectASCOM"] = self.ui.autoConnectASCOM.isChecked()
 

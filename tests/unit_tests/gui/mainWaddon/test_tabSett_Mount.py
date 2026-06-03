@@ -37,7 +37,7 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    function.app.config["mainW"] = {"automaticWOL": True}
+    function.app.config["WindowMain"] = {"automaticWOL": True}
     with mock.patch.object(function, "mountBoot"):
         function.initConfig()
 

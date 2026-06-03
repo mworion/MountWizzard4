@@ -81,11 +81,11 @@ class ImageStats:
         self.fovHint: float = 0
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.ui.automaticTelescope.setChecked(config.get("automaticTelescope", False))
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["automaticTelescope"] = self.ui.automaticTelescope.isChecked()
 
     def updateImageStats(self) -> None:

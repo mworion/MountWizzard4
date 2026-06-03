@@ -63,7 +63,7 @@ def test_loadDriversDataFromConfig_1(function):
 
 
 def test_initConfig_1(function):
-    function.app.config["mainW"] = {}
+    function.app.config["WindowMain"] = {}
     with (
         mock.patch.object(function, "setupDeviceGui"),
         mock.patch.object(function, "startDrivers"),

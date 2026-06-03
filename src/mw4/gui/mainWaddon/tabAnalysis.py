@@ -34,7 +34,7 @@ class Analysis:
         self.app.operationRunning.connect(self.setAnalysisOperationMode)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.ui.flexureAlt.setValue(config.get("flexureAlt", 45))
         self.ui.flexureAz.setValue(config.get("flexureAz", 45))
         self.ui.flexureDuration.setValue(config.get("flexureDuration", 60))
@@ -43,7 +43,7 @@ class Analysis:
         self.ui.hysteresisRuns.setValue(config.get("hysteresisRuns", 1))
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["flexureAlt"] = self.ui.flexureAlt.value()
         config["flexureAz"] = self.ui.flexureAz.value()
         config["flexureDuration"] = self.ui.flexureDuration.value()

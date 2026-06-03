@@ -40,12 +40,12 @@ class IERSTime:
         self.ui.downloadIERS.clicked.connect(self.loadTimeDataFromSourceURLs)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.setupIERSSourceURLsDropDown()
         self.ui.iersSource.setCurrentIndex(config.get("iersSource", 0))
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["iersSource"] = self.ui.iersSource.currentIndex()
 
     def setupIcons(self) -> None:

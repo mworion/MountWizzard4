@@ -45,8 +45,8 @@ class KeypadWindow(MWidget):
         self.threadPool = app.threadPool
         self.ui = keypad_ui.Ui_KeypadDialog()
         self.ui.setupUi(self.ws)
-        self.setMinimumSize(270, 630)
-        self.setMaximumSize(270, 630)
+        self.setMinimumSize(270, self.FULL_HEIGHT)
+        self.setMaximumSize(270, self.FULL_HEIGHT)
         self.titleBar.windowFixed = True
         self.setWindowTitle("Keypad")
         self.signals = KeypadSignals()
@@ -87,15 +87,15 @@ class KeypadWindow(MWidget):
         ]
 
     def initConfig(self) -> None:
-        config = self.app.config.get("keypadW", {})
+        config = self.app.config.get("WindowKeypad", {})
         self.positionWindow(config)
 
     def storeConfig(self) -> None:
         configMain = self.app.config
-        configMain["keypadW"] = {}
-        config = configMain["keypadW"]
-        config["winPosX"] = max(self.ws.pos().x(), 0)
-        config["winPosY"] = max(self.ws.pos().y(), 0)
+        configMain["WindowKeypad"] = {}
+        config = configMain["WindowKeypad"]
+        config["winPosX"] = max(self.pos().x(), 0)
+        config["winPosY"] = max(self.pos().y(), 0)
 
     def closeEvent(self, closeEvent) -> None:
         self.storeConfig()

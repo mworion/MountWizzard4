@@ -80,7 +80,7 @@ class SettMisc:
         self.app.playSound.connect(self.playSound)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.setupAudioGui()
         self.ui.unitTimeUTC.setChecked(config.get("unitTimeUTC", True))
         self.ui.unitTimeLocal.setChecked(config.get("unitTimeLocal", False))
@@ -107,7 +107,7 @@ class SettMisc:
         # self.minimizeGUI()
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["unitTimeUTC"] = self.ui.unitTimeUTC.isChecked()
         config["unitTimeLocal"] = self.ui.unitTimeLocal.isChecked()
         config["showTabAlmanac"] = self.ui.showTabAlmanac.isChecked()

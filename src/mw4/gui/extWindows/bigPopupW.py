@@ -32,13 +32,13 @@ class BigPopup(MWidget):
         self.setWindowTitle("Big buttons")
 
     def initConfig(self) -> None:
-        config = self.app.config.get("bigPopupW", {})
+        config = self.app.config.get("WindowBigPopup", {})
         self.positionWindow(config)
 
     def storeConfig(self) -> None:
         configMain = self.app.config
-        configMain["bigPopupW"] = {}
-        config = configMain["bigPopupW"]
+        configMain["WindowBigPopup"] = {}
+        config = configMain["WindowBigPopup"]
 
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)

@@ -34,7 +34,7 @@ class SettUpdate:
         self.ui.isOnline.clicked.connect(self.setupIERS)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.ui.loglevelInfo.setChecked(config.get("loglevelInfo", False))
         self.ui.loglevelDebug.setChecked(config.get("loglevelDebug", True))
         self.ui.loglevelTrace.setChecked(config.get("loglevelTrace", False))
@@ -45,7 +45,7 @@ class SettUpdate:
         self.setupIERS()
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["isOnline"] = self.ui.isOnline.isChecked()
         config["loglevelInfo"] = self.ui.loglevelInfo.isChecked()
         config["loglevelDebug"] = self.ui.loglevelDebug.isChecked()

@@ -94,15 +94,15 @@ class MainWindow(MWidget):
 
     def initConfig(self) -> None:
         config = self.app.config
-        if "mainW" not in config:
-            config["mainW"] = {}
+        if "WindowMain" not in config:
+            config["WindowMain"] = {}
 
         colSet = config.get("colorSet", 0)
         Styles.colorSet = colSet
         self.ui.colorSet.setCurrentIndex(colSet)
         self.setStyleSheet(self.mw4Style)
         self.ui.profileName.setText(config.get("profileName"))
-        config = config["mainW"]
+        config = config["WindowMain"]
         self.positionWindow(config)
         setTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
         setTabAndIndex(self.ui.mountTabWidget, config, "orderMount")
@@ -121,11 +121,11 @@ class MainWindow(MWidget):
         config = self.app.config
         config["colorSet"] = self.ui.colorSet.currentIndex()
         config["profileName"] = self.ui.profileName.text()
-        if "mainW" not in config:
-            config["mainW"] = {}
+        if "WindowMain" not in config:
+            config["WindowMain"] = {}
         else:
-            config["mainW"].clear()
-        config = config["mainW"]
+            config["WindowMain"].clear()
+        config = config["WindowMain"]
         config["winPosX"] = self.pos().x()
         config["winPosY"] = self.pos().y()
         config["height"] = self.height()

@@ -89,7 +89,7 @@ class SettRelay:
             self.relayButtons[button].clicked.connect(partial(self.relayButtonPressed, button))
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         for button, key in zip(self.relayButtonTexts, self.relayButtonTextKeys):
             button.setText(config.get(key, ""))
         for dropDown, key in zip(self.relayDropDowns, self.relayDropDownKeys):
@@ -97,7 +97,7 @@ class SettRelay:
         self.updateRelayButtonText()
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         for button, key in zip(self.relayButtonTexts, self.relayButtonTextKeys):
             config[key] = button.text()
         for dropDown, key in zip(self.relayDropDowns, self.relayDropDownKeys):

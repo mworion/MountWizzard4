@@ -59,7 +59,7 @@ class ImageWindow(MWidget):
         self.tabs = ImageTabs(self)
 
     def initConfig(self) -> None:
-        config = self.app.config.get("imageW", {})
+        config = self.app.config.get("WindowImage", {})
         self.positionWindow(config)
         self.ui.color.setCurrentIndex(config.get("color", 0))
         self.ui.snTarget.setCurrentIndex(config.get("snTarget", 0))
@@ -77,13 +77,13 @@ class ImageWindow(MWidget):
         self.ui.showValues.setChecked(config.get("showValues", False))
         self.ui.offsetTiltAngle.setValue(config.get("offsetTiltAngle", 0))
         self.ui.timeTagImage.setChecked(config.get("timeTagImage", True))
-        self.app.config["mainW"].get("tabsMovable", False)
+        self.app.config["WindowMain"].get("tabsMovable", False)
         self.tabs.setCrosshair()
 
     def storeConfig(self) -> None:
         configMain = self.app.config
-        configMain["imageW"] = {}
-        config = configMain["imageW"]
+        configMain["WindowImage"] = {}
+        config = configMain["WindowImage"]
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)
         config["height"] = self.height()

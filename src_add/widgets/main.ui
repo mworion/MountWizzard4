@@ -14,7 +14,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>560</height>
+    <height>580</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,8 +25,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>80</width>
-    <height>560</height>
+    <width>800</width>
+    <height>580</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -394,8 +394,8 @@
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>175</y>
-         <width>776</width>
+         <y>190</y>
+         <width>800</width>
          <height>241</height>
         </rect>
        </property>
@@ -1941,9 +1941,15 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <rect>
            <x>305</x>
            <y>160</y>
-           <width>106</width>
-           <height>21</height>
+           <width>800</width>
+           <height>560</height>
           </rect>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>800</width>
+           <height>0</height>
+          </size>
          </property>
          <property name="font">
           <font>
@@ -4340,7 +4346,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <property name="geometry">
         <rect>
          <x>510</x>
-         <y>115</y>
+         <y>120</y>
          <width>271</width>
          <height>56</height>
         </rect>
@@ -4418,7 +4424,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <property name="geometry">
         <rect>
          <x>510</x>
-         <y>10</y>
+         <y>15</y>
          <width>271</width>
          <height>91</height>
         </rect>
@@ -4588,7 +4594,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
        <property name="geometry">
         <rect>
          <x>5</x>
-         <y>10</y>
+         <y>15</y>
          <width>481</width>
          <height>161</height>
         </rect>
@@ -31756,7 +31762,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
      <property name="title">
       <string>Status</string>
      </property>
-     <layout class="QGridLayout" name="statusGroupWindowButtonLayout" rowstretch="0,0,0,0" columnstretch="1,1,0,0,0,0">
+     <layout class="QGridLayout" name="statusGroupWindowButtonLayout" rowstretch="0,0,0,0" columnstretch="1,1,0,0,0">
       <property name="sizeConstraint">
        <enum>QLayout::SizeConstraint::SetNoConstraint</enum>
       </property>

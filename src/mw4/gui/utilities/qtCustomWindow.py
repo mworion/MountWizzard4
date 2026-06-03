@@ -14,6 +14,7 @@ class CustomTitleBar(QWidget):
         self.normButton.setVisible(False)
         self.initial_pos: QPoint | None = None
         titleBarLayout = QHBoxLayout(self)
+        titleBarLayout.setContentsMargins(0, 0, 0, 0)
         titleFrame = QFrame()
         titleFrame.setProperty("title", True)
         titleFrame.setFixedHeight(30)
@@ -63,10 +64,8 @@ class CustomTitleBar(QWidget):
             buttons[button]["widget"].setStyleSheet(style)
             frameLayout.addWidget(buttons[button]["widget"])
 
-        frameLayout.addSpacing(10)
         titleBarLayout.addWidget(titleFrame)
-        titleBarLayout.setContentsMargins(0, 0, 0, 0)
-        titleBarLayout.setSpacing(5)
+        titleBarLayout.setContentsMargins(10, 0, 10, 0)
 
     def windowStateChanged(self, state) -> None:
         if self.windowFixed:

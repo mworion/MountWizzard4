@@ -35,17 +35,17 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    function.app.config["mainW"] = {}
+    function.app.config["WindowMain"] = {}
     function.initConfig()
 
 
 def test_initConfig_2(function):
-    del function.app.config["mainW"]
+    del function.app.config["WindowMain"]
     function.initConfig()
 
 
 def test_storeConfig_1(function):
-    function.app.config["mainW"] = {}
+    function.app.config["WindowMain"] = {}
     function.storeConfig()
 
 

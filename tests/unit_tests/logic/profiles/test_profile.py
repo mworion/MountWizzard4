@@ -60,9 +60,9 @@ def test_defaultConfig():
 
 def test_loadProfile_1():
     config = defaultConfig()
-    config["mainW"] = {}
-    config["mainW"]["resetTabOrder"] = True
-    config["mainW"]["orderMain"] = {
+    config["WindowMain"] = {}
+    config["WindowMain"]["resetTabOrder"] = True
+    config["WindowMain"]["orderMain"] = {
         "00": "Environ",
         "index": 0,
     }
@@ -76,9 +76,9 @@ def test_loadProfile_1():
 
 def test_loadProfile_2():
     config = defaultConfig()
-    config["mainW"] = {}
-    config["mainW"]["resetTabOrder"] = True
-    config["mainW"]["orderMain"] = {
+    config["WindowMain"] = {}
+    config["WindowMain"]["resetTabOrder"] = True
+    config["WindowMain"]["orderMain"] = {
         "00": "Environ",
         "index": 0,
     }
@@ -86,14 +86,14 @@ def test_loadProfile_2():
         yaml.dump(config, outfile)
 
     val = loadConfig(Path("tests/work/config/config.yaml"))
-    assert "orderMain" in val["mainW"]
+    assert "orderMain" in val["WindowMain"]
 
 
 def test_loadProfile_3():
     config = defaultConfig()
-    config["mainW"] = {}
-    config["mainW"]["resetTabOrder"] = True
-    config["mainW"]["orderMain"] = {
+    config["WindowMain"] = {}
+    config["WindowMain"]["resetTabOrder"] = True
+    config["WindowMain"]["orderMain"] = {
         "00": "Environ",
         "index": 0,
     }
@@ -102,7 +102,7 @@ def test_loadProfile_3():
         yaml.dump(config, outfile)
 
     val = loadConfig(Path("tests/work/config/config.yaml"))
-    assert "mainW" not in val
+    assert "WindowMain" not in val
 
 
 def test_loadProfileStart_1():
@@ -115,7 +115,7 @@ def test_loadProfileStart_2():
         outfile.write("test")
 
     config = defaultConfig()
-    config["mainW"] = {}
+    config["WindowMain"] = {}
     with open("tests/work/config/config.yaml", "w") as outfile:
         yaml.dump(config, outfile)
 
@@ -128,7 +128,7 @@ def test_loadProfileStart_3():
         outfile.write("config")
 
     config = defaultConfig()
-    config["mainW"] = {}
+    config["WindowMain"] = {}
     with open("tests/work/config/config.yaml", "w") as outfile:
         yaml.dump(config, outfile)
 

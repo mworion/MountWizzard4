@@ -36,12 +36,12 @@ class Mount:
         self.ui.stop.clicked.connect(self.stop)
 
     def initConfig(self) -> None:
-        config = self.app.config.get("mainW", {})
+        config = self.app.config.get("WindowMain", {})
         self.ui.coordsJ2000.setChecked(config.get("coordsJ2000", False))
         self.ui.coordsJNow.setChecked(config.get("coordsJNow", False))
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["coordsJ2000"] = self.ui.coordsJ2000.isChecked()
         config["coordsJNow"] = self.ui.coordsJNow.isChecked()
 

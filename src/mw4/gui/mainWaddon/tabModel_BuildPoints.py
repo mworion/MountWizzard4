@@ -76,7 +76,7 @@ class BuildPoints:
         self.ui.isOnline.stateChanged.connect(self.setupDsoGui)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
 
         self.ui.numberGridPointsCol.valueChanged.disconnect(self.genBuildGrid)
         self.ui.numberGridPointsRow.valueChanged.disconnect(self.genBuildGrid)
@@ -119,7 +119,7 @@ class BuildPoints:
         self.ui.meridianDistanceFlip.valueChanged.connect(self.genBuildCelestial)
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["buildPFileName"] = self.ui.buildPFileName.text()
         config["numberGridPointsRow"] = self.ui.numberGridPointsRow.value()
         config["numberGridPointsCol"] = self.ui.numberGridPointsCol.value()

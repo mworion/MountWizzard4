@@ -118,7 +118,7 @@ class EnvironWeather:
         self.app.update1s.connect(self.updateRefractionParameters)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.ui.refracManual.setChecked(config.get("refracManual", False))
         self.ui.refracCont.setChecked(config.get("refracCont", False))
         self.ui.refracNoTrack.setChecked(config.get("refracNoTrack", False))
@@ -126,7 +126,7 @@ class EnvironWeather:
         self.setRefractionSourceGui()
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["refracManual"] = self.ui.refracManual.isChecked()
         config["refracCont"] = self.ui.refracCont.isChecked()
         config["refracNoTrack"] = self.ui.refracNoTrack.isChecked()

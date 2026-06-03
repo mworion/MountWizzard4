@@ -52,12 +52,12 @@ class SatelliteHorizonWindow(MWidget):
         self.app.mount.signals.mountIsUp.connect(self.setPointerVisibility)
 
     def initConfig(self) -> None:
-        self.positionWindow(self.app.config.get("satelliteHorW", {}))
+        self.positionWindow(self.app.config.get("WindowSatelliteHor", {}))
 
     def storeConfig(self) -> None:
         configMain = self.app.config
-        configMain["satelliteHorW"] = {}
-        config = configMain["satelliteHorW"]
+        configMain["WindowSatelliteHor"] = {}
+        config = configMain["WindowSatelliteHor"]
 
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)

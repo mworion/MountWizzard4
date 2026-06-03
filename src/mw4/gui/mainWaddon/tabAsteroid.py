@@ -46,12 +46,12 @@ class Asteroid:
         self.ui.progAsteroidFull.clicked.connect(self.asteroids.progFull)
 
     def initConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         self.ui.asteroidFilterText.setText(config.get("asteroidFilterText"))
         self.ui.asteroidSourceList.setCurrentIndex(config.get("asteroidSource", 0))
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["asteroidSource"] = self.ui.asteroidSourceList.currentIndex()
         config["asteroidFilterText"] = self.ui.asteroidFilterText.text()
 

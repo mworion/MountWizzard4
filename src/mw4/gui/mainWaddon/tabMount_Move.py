@@ -105,7 +105,7 @@ class MountMove:
         self.setupGuiMount()
 
     def initConfig(self) -> None:
-        config = self.app.config.get("mainW", {})
+        config = self.app.config.get("WindowMain", {})
         self.ui.slewSpeedMax.setChecked(config.get("slewSpeedMax", False))
         self.ui.slewSpeedHigh.setChecked(config.get("slewSpeedHigh", False))
         self.ui.slewSpeedMed.setChecked(config.get("slewSpeedMed", False))
@@ -114,7 +114,7 @@ class MountMove:
         self.ui.moveStepSizeAltAz.setCurrentIndex(config.get("moveStepSizeAltAz", 0))
 
     def storeConfig(self) -> None:
-        config = self.app.config["mainW"]
+        config = self.app.config["WindowMain"]
         config["slewSpeedMax"] = self.ui.slewSpeedMax.isChecked()
         config["slewSpeedHigh"] = self.ui.slewSpeedHigh.isChecked()
         config["slewSpeedMed"] = self.ui.slewSpeedMed.isChecked()

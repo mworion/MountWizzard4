@@ -72,19 +72,19 @@ class SettMisc:
         self.ui.showTabParkPos.clicked.connect(self.minimizeGUI)
         self.ui.showTabProfile.clicked.connect(self.minimizeGUI)
         self.setupAudioSignals()
-        self.app.dReg.drivers["mount"]["class"].signals.alert.connect(
+        self.app.dReg["mount"].instance.signals.alert.connect(
             lambda: self.playSound("MountAlert")
         )
-        self.app.dReg.drivers["dome"]["class"].signals.slewed.connect(
+        self.app.dReg["dome"].instance.signals.slewed.connect(
             lambda: self.playSound("DomeSlew")
         )
-        self.app.dReg.drivers["mount"]["class"].signals.slewed.connect(
+        self.app.dReg["mount"].instance.signals.slewed.connect(
             lambda: self.playSound("MountSlew")
         )
-        self.app.dReg.drivers["camera"]["class"].signals.saved.connect(
+        self.app.dReg["camera"].instance.signals.saved.connect(
             lambda: self.playSound("ImageSaved")
         )
-        self.app.dReg.drivers["plateSolve"]["class"].signals.result.connect(
+        self.app.dReg["plateSolve"].instance.signals.result.connect(
             lambda: self.playSound("ImageSolved")
         )
         self.app.playSound.connect(self.playSound)

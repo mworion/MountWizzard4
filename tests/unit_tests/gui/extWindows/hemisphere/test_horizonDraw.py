@@ -298,4 +298,3 @@ def test_drawView_3(function):
 def test_drawView_empty_list(function):
     function.app.buildPoint.horizonP = []
     function.drawView()
-

@@ -71,29 +71,21 @@ class ModelData(QObject):
         self.startSlew.connect(self.startNewSlew)
 
     def setupSignals(self) -> None:
-        self.app.dReg.drivers["camera"]["class"].signals.exposed.connect(self.setImageExposed)
-        self.app.dReg.drivers["camera"]["class"].signals.downloaded.connect(
-            self.setImageDownloaded
-        )
-        self.app.dReg.drivers["camera"]["class"].signals.saved.connect(self.setImageSaved)
-        self.app.dReg.drivers["mount"]["class"].signals.slewed.connect(self.setMountSlewed)
-        self.app.dReg.drivers["dome"]["class"].signals.slewed.connect(self.setDomeSlewed)
-        self.app.dReg.drivers["camera"]["class"].signals.saved.connect(self.startNewPlateSolve)
+        self.app.dReg["camera"].instance.signals.exposed.connect(self.setImageExposed)
+        self.app.dReg["camera"].instance.signals.downloaded.connect(self.setImageDownloaded)
+        self.app.dReg["camera"].instance.signals.saved.connect(self.setImageSaved)
+        self.app.dReg["mount"].instance.signals.slewed.connect(self.setMountSlewed)
+        self.app.dReg["dome"].instance.signals.slewed.connect(self.setDomeSlewed)
+        self.app.dReg["camera"].instance.signals.saved.connect(self.startNewPlateSolve)
         self.app.plateSolve.signals.result.connect(self.collectPlateSolveResult)
 
     def resetSignals(self) -> None:
-        self.app.dReg.drivers["camera"]["class"].signals.exposed.disconnect(
-            self.setImageExposed
-        )
-        self.app.dReg.drivers["camera"]["class"].signals.downloaded.disconnect(
-            self.setImageDownloaded
-        )
-        self.app.dReg.drivers["camera"]["class"].signals.saved.disconnect(self.setImageSaved)
-        self.app.dReg.drivers["mount"]["class"].signals.slewed.disconnect(self.setMountSlewed)
-        self.app.dReg.drivers["dome"]["class"].signals.slewed.disconnect(self.setDomeSlewed)
-        self.app.dReg.drivers["camera"]["class"].signals.saved.disconnect(
-            self.startNewPlateSolve
-        )
+        self.app.dReg["camera"].instance.signals.exposed.disconnect(self.setImageExposed)
+        self.app.dReg["camera"].instance.signals.downloaded.disconnect(self.setImageDownloaded)
+        self.app.dReg["camera"].instance.signals.saved.disconnect(self.setImageSaved)
+        self.app.dReg["mount"].instance.signals.slewed.disconnect(self.setMountSlewed)
+        self.app.dReg["dome"].instance.signals.slewed.disconnect(self.setDomeSlewed)
+        self.app.dReg["camera"].instance.signals.saved.disconnect(self.startNewPlateSolve)
         self.app.plateSolve.signals.result.disconnect(self.collectPlateSolveResult)
 
     def setImageExposed(self) -> None:
@@ -114,7 +106,7 @@ class ModelData(QObject):
 
     def setMountSlewed(self) -> None:
         self.mountSlewed = True
-        if not self.app.dReg.drivers["dome"]["stat"]:
+        if not self.app.dReg["dome"].stat:
             self.domeSlewed = True
         self.startExposureAfterSlew()
 
@@ -131,9 +123,7 @@ class ModelData(QObject):
         self.mountSlewed = False
         self.domeSlewed = False
         self.statusSlew.emit([self.modelRunKey, altitude.degrees, azimuth.degrees])
-        if not self.app.dReg.drivers["mount"]["class"].obsSite.setTargetAltAz(
-            altitude, azimuth
-        ):
+        if not self.app.dReg["mount"].instance.obsSite.setTargetAltAz(altitude, azimuth):
             result = {
                 "success": False,
                 "message": "Slew not possible - limits ?",
@@ -144,9 +134,9 @@ class ModelData(QObject):
             t = f"{'Slew limits ':15s}: [{self.modelRunKey}]"
             self.log.debug(t)
         else:
-            if self.app.dReg.drivers["dome"]["stat"]:
-                self.app.dReg.drivers["dome"]["class"].slewDome(azimuth)
-            self.app.dReg.drivers["mount"]["class"].obsSite.startSlewing()
+            if self.app.dReg["dome"].stat:
+                self.app.dReg["dome"].instance.slewDome(azimuth)
+            self.app.dReg["mount"].instance.obsSite.startSlewing()
             t = f"{'Start slew':15s}: [{self.modelRunKey}], "
             t += f" Alt: [{altitude.degrees:03.0f}], Az: [{azimuth.degrees:03.0f}]"
             self.log.debug(t)
@@ -221,13 +211,13 @@ class ModelData(QObject):
 
         self.addMountDataToModelBuildData()
         item = self.modelBuildData[self.modelRunKey]
-        cam = self.app.dReg.drivers["camera"]["class"]
+        cam = self.app.dReg["camera"].instance
         imagePath = item["imagePath"]
         exposureTime = item["exposureTime"] = cam.exposureTime1
         binning = item["binning"] = cam.binning1
         t = f"{'Start exposure':15s}: [{self.modelRunKey}], ExpTime: [{exposureTime:3.0f}]"
         self.log.debug(t)
-        self.app.dReg.drivers["camera"]["class"].expose(imagePath, exposureTime, binning)
+        self.app.dReg["camera"].instance.expose(imagePath, exposureTime, binning)
         self.statusExpose.emit([imagePath.stem, exposureTime, binning])
 
     def startNewPlateSolve(self, imagePath: Path) -> None:
@@ -279,13 +269,13 @@ class ModelData(QObject):
             modelItem["imagePath"] = imagePath
             modelItem["altitude"] = Angle(degrees=point[0])
             modelItem["azimuth"] = Angle(degrees=point[1])
-            modelItem["exposureTime"] = self.app.dReg.drivers["camera"]["class"].exposureTime
-            modelItem["binning"] = self.app.dReg.drivers["camera"]["class"].binning
-            modelItem["subFrame"] = self.app.dReg.drivers["camera"]["class"].subFrame
-            modelItem["fastReadout"] = self.app.dReg.drivers["camera"]["class"].fastReadout
+            modelItem["exposureTime"] = self.app.dReg["camera"].instance.exposureTime
+            modelItem["binning"] = self.app.dReg["camera"].instance.binning
+            modelItem["subFrame"] = self.app.dReg["camera"].instance.subFrame
+            modelItem["fastReadout"] = self.app.dReg["camera"].instance.fastReadout
             modelItem["name"] = self.modelName
             modelItem["plateSolveApp"] = self.plateSolveApp
-            modelItem["focalLength"] = self.app.dReg.drivers["camera"]["class"].focalLength
+            modelItem["focalLength"] = self.app.dReg["camera"].instance.focalLength
             modelItem["countSequence"] = index
             modelItem["message"] = ""
             modelItem["success"] = False

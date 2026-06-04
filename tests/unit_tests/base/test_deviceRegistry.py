@@ -47,9 +47,7 @@ def test_deviceEntryLegacyGetItem() -> None:
 
 
 def test_deviceEntryLegacySetItem() -> None:
-    entry = DeviceEntry(
-        name="test", instance=None, deviceType=None, isConfigurable=True
-    )
+    entry = DeviceEntry(name="test", instance=None, deviceType=None, isConfigurable=True)
     entry["stat"] = True
     assert entry.stat is True
     entry["class"] = "new"
@@ -79,9 +77,7 @@ def test_deviceEntryContains() -> None:
 
 
 def test_deviceEntryGet() -> None:
-    entry = DeviceEntry(
-        name="x", instance="inst", deviceType="t", isConfigurable=True
-    )
+    entry = DeviceEntry(name="x", instance="inst", deviceType="t", isConfigurable=True)
     assert entry.get("class") == "inst"
     assert entry.get("missing") is None
     assert entry.get("missing", 42) == 42

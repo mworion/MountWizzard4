@@ -40,19 +40,19 @@ class MountMove:
         self.slewSpeeds = {
             "max": {
                 "button": self.ui.slewSpeedMax,
-                "func": self.app.dReg.drivers["mount"]["class"].setting.setSlewSpeedMax,
+                "func": self.app.dReg["mount"].instance.setting.setSlewSpeedMax,
             },
             "high": {
                 "button": self.ui.slewSpeedHigh,
-                "func": self.app.dReg.drivers["mount"]["class"].setting.setSlewSpeedHigh,
+                "func": self.app.dReg["mount"].instance.setting.setSlewSpeedHigh,
             },
             "med": {
                 "button": self.ui.slewSpeedMed,
-                "func": self.app.dReg.drivers["mount"]["class"].setting.setSlewSpeedMed,
+                "func": self.app.dReg["mount"].instance.setting.setSlewSpeedMed,
             },
             "low": {
                 "button": self.ui.slewSpeedLow,
-                "func": self.app.dReg.drivers["mount"]["class"].setting.setSlewSpeedLow,
+                "func": self.app.dReg["mount"].instance.setting.setSlewSpeedLow,
             },
         }
 
@@ -99,7 +99,7 @@ class MountMove:
         clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
         self.ui.moveCoordinateAlt.textEdited.connect(self.setAlt)
         self.ui.moveCoordinateAz.textEdited.connect(self.setAz)
-        self.app.dReg.drivers["mount"]["class"].signals.slewed.connect(self.moveAltAzDefault)
+        self.app.dReg["mount"].instance.signals.slewed.connect(self.moveAltAzDefault)
         self.app.gameDirection.connect(self.moveAltAzGameController)
         self.app.gameSR.connect(self.moveClassicGameController)
         self.setupGuiMount()
@@ -143,7 +143,7 @@ class MountMove:
     def stopMoveAll(self) -> None:
         for uiR in self.setupMoveClassic:
             changeStyleDynamic(self.setupMoveClassic[uiR]["button"], "run", False)
-        self.app.dReg.drivers["mount"]["class"].obsSite.stopMoveAll()
+        self.app.dReg["mount"].instance.obsSite.stopMoveAll()
 
     def countDuration(self, duration: int) -> None:
         for t in range(duration * 10, -1, -1):
@@ -191,20 +191,20 @@ class MountMove:
 
         coord = uiList[direction]["coord"]
         if coord[0] == 1:
-            self.app.dReg.drivers["mount"]["class"].obsSite.moveNorth()
+            self.app.dReg["mount"].instance.obsSite.moveNorth()
         elif coord[0] == -1:
-            self.app.dReg.drivers["mount"]["class"].obsSite.moveSouth()
+            self.app.dReg["mount"].instance.obsSite.moveSouth()
         elif coord[0] == 0:
-            self.app.dReg.drivers["mount"]["class"].obsSite.stopMoveNorth()
-            self.app.dReg.drivers["mount"]["class"].obsSite.stopMoveSouth()
+            self.app.dReg["mount"].instance.obsSite.stopMoveNorth()
+            self.app.dReg["mount"].instance.obsSite.stopMoveSouth()
 
         if coord[1] == 1:
-            self.app.dReg.drivers["mount"]["class"].obsSite.moveEast()
+            self.app.dReg["mount"].instance.obsSite.moveEast()
         elif coord[1] == -1:
-            self.app.dReg.drivers["mount"]["class"].obsSite.moveWest()
+            self.app.dReg["mount"].instance.obsSite.moveWest()
         elif coord[1] == 0:
-            self.app.dReg.drivers["mount"]["class"].obsSite.stopMoveEast()
-            self.app.dReg.drivers["mount"]["class"].obsSite.stopMoveWest()
+            self.app.dReg["mount"].instance.obsSite.stopMoveEast()
+            self.app.dReg["mount"].instance.obsSite.stopMoveWest()
 
         self.moveDuration()
 
@@ -243,7 +243,7 @@ class MountMove:
         self.slewInterface.slewTargetAltAz(targetAlt, targetAz)
 
     def checkRaDecInputs(self) -> None:
-        canSlew = self.app.dReg.drivers["mount"]["class"].obsSite.setTargetRaDec(
+        canSlew = self.app.dReg["mount"].instance.obsSite.setTargetRaDec(
             self.targetRa, self.targetDec
         )
         self.ui.moveRaDecAbsolute.setEnabled(canSlew)
@@ -283,7 +283,7 @@ class MountMove:
         self.checkRaDecInputs()
 
     def checkAltAzInputs(self) -> None:
-        canSlew = self.app.dReg.drivers["mount"]["class"].obsSite.setTargetAltAz(
+        canSlew = self.app.dReg["mount"].instance.obsSite.setTargetAltAz(
             self.targetAlt, self.targetAz
         )
         self.ui.moveAltAzAbsolute.setEnabled(canSlew)

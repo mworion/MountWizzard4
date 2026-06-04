@@ -62,8 +62,7 @@ class CustomTitleBar(QWidget):
             buttons[button]["widget"].clicked.connect(buttons[button]["func"])
             color = buttons[button]["col"]
             style = (
-                "border: none; border-radius: 2px; padding: 2px; "
-                f"background-color: {color};"
+                f"border: none; border-radius: 2px; padding: 2px; background-color: {color};"
             )
             buttons[button]["widget"].setStyleSheet(style)
             frameLayout.addWidget(buttons[button]["widget"])

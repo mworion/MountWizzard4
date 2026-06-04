@@ -41,12 +41,12 @@ class DirectWeather:
 
     def startCommunication(self) -> None:
         self.enabled = True
-        self.app.dReg.drivers["directWeather"]["stat"] = False
+        self.app.dReg["directWeather"].stat = False
 
     def stopCommunication(self) -> None:
         self.enabled = False
         self.running = False
-        self.app.dReg.drivers["directWeather"]["stat"] = None
+        self.app.dReg["directWeather"].stat = None
         self.data.clear()
         self.signals.deviceDisconnected.emit("DirectWeather")
 
@@ -68,7 +68,7 @@ class DirectWeather:
             self.signals.deviceConnected.emit("DirectWeather")
             self.running = True
 
-        self.app.dReg.drivers["directWeather"]["stat"] = isValid
+        self.app.dReg["directWeather"].stat = isValid
         self.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = value1
         self.data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = value2
         self.data["WEATHER_PARAMETERS.WEATHER_DEWPOINT"] = value3

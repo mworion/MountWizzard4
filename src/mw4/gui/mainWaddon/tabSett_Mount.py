@@ -91,7 +91,7 @@ class SettMount:
             self.msg.emit(2, "Mount", "Command", "Mount cannot be booted")
 
     def mountShutdown(self) -> None:
-        self.app.dReg.drivers["mount"]["stat"] = False
+        self.app.dReg["mount"].stat = False
         if self.app.mount.shutdown():
             self.msg.emit(0, "Mount", "Command", "Shutting mount down")
         else:
@@ -155,7 +155,7 @@ class SettMount:
     def syncClock(self) -> None:
         if self.ui.syncTimeNone.isChecked():
             return
-        if not self.app.dReg.drivers["mount"]["stat"]:
+        if not self.app.dReg["mount"].stat:
             return
 
         doSyncNotTrack = self.ui.syncTimeNotTrack.isChecked()

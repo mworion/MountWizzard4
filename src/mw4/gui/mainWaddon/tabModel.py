@@ -85,9 +85,7 @@ class Model:
         self.mainW.wIcon(self.ui.dataModel, "choose")
 
     def setWaitTimeFlip(self) -> None:
-        self.app.dReg.drivers["mount"][
-            "class"
-        ].waitTimeFlip = self.ui.waitTimeMountFlip.value()
+        self.app.dReg["mount"].instance.waitTimeFlip = self.ui.waitTimeMountFlip.value()
 
     def cancelBatch(self) -> None:
         if not self.modelData:
@@ -148,26 +146,26 @@ class Model:
             changeStyleDynamic(self.ui.pauseModel, "pause", False)
 
     def programModelToMountFinish(self) -> None:
-        self.app.dReg.drivers["mount"]["class"].signals.getModelDone.disconnect(
+        self.app.dReg["mount"].instance.signals.getModelDone.disconnect(
             self.programModelToMountFinish
         )
         self.msg.emit(1, "Model", "Writing model", f"[{self.modelData.name}]")
         self.modelData.generateSaveData()
         modelPath = self.app.mwGlob["modelDir"] / (self.modelData.name + ".model")
         self.modelData.saveModelData(modelPath)
-        self.app.dReg.drivers["mount"]["class"].model.storeName("actual")
+        self.app.dReg["mount"].instance.model.storeName("actual")
 
     def programModelToMount(self) -> None:
         if not self.modelData.modelProgData:
             self.msg.emit(3, "Model", "Run error", "No sufficient model data available")
             return
-        if not self.app.dReg.drivers["mount"]["class"].model.programModelFromStarList(
+        if not self.app.dReg["mount"].instance.model.programModelFromStarList(
             self.modelData.modelProgData
         ):
             self.msg.emit(3, "Model", "Run error", f"{'Program':12s} Failed - error")
             return
         self.msg.emit(1, "Model", "Program", f"[{self.modelData.name}] with success")
-        self.app.dReg.drivers["mount"]["class"].signals.getModelDone.connect(
+        self.app.dReg["mount"].instance.signals.getModelDone.connect(
             self.programModelToMountFinish
         )
         self.app.refreshModel.emit()
@@ -184,7 +182,7 @@ class Model:
         return True
 
     def clearAlignAndBackup(self) -> bool:
-        if not self.app.dReg.drivers["mount"]["class"].model.clearModel():
+        if not self.app.dReg["mount"].instance.model.clearModel():
             self.msg.emit(2, "Model", "Run error", "Actual model cannot be cleared")
             self.msg.emit(2, "", "", "Model build cancelled")
             return False
@@ -192,13 +190,13 @@ class Model:
         self.msg.emit(1, "Model", "Clear model", "Waiting 1s ...")
         mainThreadSleep(1000)
         self.msg.emit(1, "Model", "Clear model", "Actual model is cleared")
-        if not self.app.dReg.drivers["mount"]["class"].model.storeName("backup"):
+        if not self.app.dReg["mount"].instance.model.storeName("backup"):
             t = "Cannot save backup model on mount, proceeding with model run"
             self.msg.emit(2, "Model", "Run error", t)
         return True
 
     def setupFilenamesAndDirectories(self, prefix: str = "", postfix: str = "") -> Path:
-        nameTime = self.app.dReg.drivers["mount"]["class"].obsSite.timeJD.utc_strftime(
+        nameTime = self.app.dReg["mount"].instance.obsSite.timeJD.utc_strftime(
             "%Y-%m-%d-%H-%M-%S"
         )
         name = f"{prefix}-{nameTime}-{postfix}"
@@ -252,9 +250,8 @@ class Model:
         self.modelData.version = f"{self.app.__version__}"
         self.modelData.profile = self.ui.profileName.text()
         self.modelData.firmware = self.ui.vString.text()
-        self.modelData.latitude = self.app.dReg.drivers["mount"][
-            "class"
-        ].obsSite.location.latitude.degrees
+        obsSite = self.app.dReg["mount"].instance.obsSite
+        self.modelData.latitude = obsSite.location.latitude.degrees
         self.modelData.plateSolveApp = self.ui.plateSolveDevice.currentText()
 
     def setModelTiming(self) -> None:

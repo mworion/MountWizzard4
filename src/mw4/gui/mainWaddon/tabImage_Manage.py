@@ -97,24 +97,19 @@ class ImageManage:
 
     def checkEnableCameraUI(self) -> None:
         coolerTemp = (
-            "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"
-            in self.app.dReg.drivers["camera"]["class"].data
+            "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE" in self.app.dReg["camera"].instance.data
         )
-        gainCam = "CCD_GAIN.GAIN" in self.app.dReg.drivers["camera"]["class"].data
-        offsetCam = "CCD_OFFSET.OFFSET" in self.app.dReg.drivers["camera"]["class"].data
-        pixelX = "CCD_INFO.CCD_MAX_X" in self.app.dReg.drivers["camera"]["class"].data
+        gainCam = "CCD_GAIN.GAIN" in self.app.dReg["camera"].instance.data
+        offsetCam = "CCD_OFFSET.OFFSET" in self.app.dReg["camera"].instance.data
+        pixelX = "CCD_INFO.CCD_MAX_X" in self.app.dReg["camera"].instance.data
         self.ui.GroupCooler.setEnabled(coolerTemp)
         self.ui.GroupGain.setEnabled(gainCam)
         self.ui.GroupOffset.setEnabled(offsetCam)
         self.ui.GroupControlledCamera.setEnabled(pixelX)
 
     def updateOffset(self) -> None:
-        actValue = self.app.dReg.drivers["camera"]["class"].data.get(
-            "CCD_OFFSET.OFFSET", False
-        )
-        offsetList = self.app.dReg.drivers["camera"]["class"].data.get(
-            "CCD_OFFSET.OFFSET_LIST", False
-        )
+        actValue = self.app.dReg["camera"].instance.data.get("CCD_OFFSET.OFFSET", False)
+        offsetList = self.app.dReg["camera"].instance.data.get("CCD_OFFSET.OFFSET_LIST", False)
         if offsetList and actValue:
             offsetList = list(offsetList)
             self.mainW.log.debug(f"Index: [{actValue}], List: [{offsetList}]")
@@ -127,10 +122,8 @@ class ImageManage:
             guiSetText(self.ui.offsetCam, "3.0f", actValue)
 
     def updateGain(self) -> None:
-        actValue = self.app.dReg.drivers["camera"]["class"].data.get("CCD_GAIN.GAIN", False)
-        gainList = self.app.dReg.drivers["camera"]["class"].data.get(
-            "CCD_GAIN.GAIN_LIST", False
-        )
+        actValue = self.app.dReg["camera"].instance.data.get("CCD_GAIN.GAIN", False)
+        gainList = self.app.dReg["camera"].instance.data.get("CCD_GAIN.GAIN_LIST", False)
         if gainList and actValue:
             gainList = list(gainList)
             self.mainW.log.debug(f"Index: [{actValue}], List: [{gainList}]")
@@ -143,15 +136,13 @@ class ImageManage:
             guiSetText(self.ui.gainCam, "3.0f", actValue)
 
     def updateCooler(self) -> None:
-        coolerTemp = self.app.dReg.drivers["camera"]["class"].data.get(
+        coolerTemp = self.app.dReg["camera"].instance.data.get(
             "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", 0
         )
-        coolerPower = self.app.dReg.drivers["camera"]["class"].data.get(
+        coolerPower = self.app.dReg["camera"].instance.data.get(
             "CCD_COOLER_POWER.CCD_COOLER_VALUE", 0
         )
-        coolerOn = self.app.dReg.drivers["camera"]["class"].data.get(
-            "CCD_COOLER.COOLER_ON", False
-        )
+        coolerOn = self.app.dReg["camera"].instance.data.get("CCD_COOLER.COOLER_ON", False)
         guiSetText(self.ui.coolerTemp, "3.1f", coolerTemp)
         guiSetText(self.ui.coolerPower, "3.1f", coolerPower)
         if coolerOn:
@@ -162,16 +153,16 @@ class ImageManage:
             changeStyleDynamic(self.ui.coolerOff, "run", True)
 
     def updateFilter(self) -> None:
-        filterNumber = self.app.dReg.drivers["filter"]["class"].data.get(
+        filterNumber = self.app.dReg["filter"].instance.data.get(
             "FILTER_SLOT.FILTER_SLOT_VALUE", 1
         )
         key = f"FILTER_NAME.FILTER_SLOT_NAME_{filterNumber:1.0f}"
-        filterName = self.app.dReg.drivers["filter"]["class"].data.get(key, "not found")
+        filterName = self.app.dReg["filter"].instance.data.get(key, "not found")
         guiSetText(self.ui.filterNumber, "1.0f", filterNumber)
         guiSetText(self.ui.filterName, "s", filterName)
 
     def updateFocuser(self) -> None:
-        focus = self.app.dReg.drivers["focuser"]["class"].data.get(
+        focus = self.app.dReg["focuser"].instance.data.get(
             "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0
         )
         guiSetText(self.ui.focuserPosition, "6.0f", focus)
@@ -183,7 +174,7 @@ class ImageManage:
         self.updateCooler()
         self.updateFilter()
         self.updateFocuser()
-        camera = self.app.dReg.drivers["camera"]["class"]
+        camera = self.app.dReg["camera"].instance
 
         focalLength = self.ui.focalLength.value()
         maxBinX = camera.data.get("CCD_BINNING.HOR_BIN_MAX", 9)
@@ -210,13 +201,13 @@ class ImageManage:
         guiSetText(self.ui.optimalBinning, "1.0f", optimalBinning)
 
     def setCoolerTemp(self) -> None:
-        canSetCCDTemp = self.app.dReg.drivers["camera"]["class"].data.get(
+        canSetCCDTemp = self.app.dReg["camera"].instance.data.get(
             "CAN_SET_CCD_TEMPERATURE", False
         )
         if not canSetCCDTemp:
             return
 
-        actValue = self.app.dReg.drivers["camera"]["class"].data.get(
+        actValue = self.app.dReg["camera"].instance.data.get(
             "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", None
         )
         if actValue is None:
@@ -228,20 +219,18 @@ class ImageManage:
             self.mainW, "Set cooler temperature", "Value (-30..+20):", actValue, -30, 20, 1
         )
         if ok:
-            self.app.dReg.drivers["camera"]["class"].sendCoolerTemp(temperature=value)
+            self.app.dReg["camera"].instance.sendCoolerTemp(temperature=value)
 
     def setOffset(self) -> None:
-        actValue = self.app.dReg.drivers["camera"]["class"].data.get("CCD_OFFSET.OFFSET", None)
+        actValue = self.app.dReg["camera"].instance.data.get("CCD_OFFSET.OFFSET", None)
         if actValue is None:
             return
 
         actValue = int(actValue)
         dlg = QInputDialog()
-        offsetList = self.app.dReg.drivers["camera"]["class"].data.get(
-            "CCD_OFFSET.OFFSET_LIST"
-        )
-        offsetMin = self.app.dReg.drivers["camera"]["class"].data.get("CCD_OFFSET.OFFSET_MIN")
-        offsetMax = self.app.dReg.drivers["camera"]["class"].data.get("CCD_OFFSET.OFFSET_MAX")
+        offsetList = self.app.dReg["camera"].instance.data.get("CCD_OFFSET.OFFSET_LIST")
+        offsetMin = self.app.dReg["camera"].instance.data.get("CCD_OFFSET.OFFSET_MIN")
+        offsetMax = self.app.dReg["camera"].instance.data.get("CCD_OFFSET.OFFSET_MAX")
         if offsetList is not None:
             offsetList = list(offsetList)
             value, ok = dlg.getItem(
@@ -264,17 +253,17 @@ class ImageManage:
         else:
             value, ok = dlg.getInt(self.mainW, "Set offset", "Values:", actValue)
         if ok:
-            self.app.dReg.drivers["camera"]["class"].sendOffset(offset=value)
+            self.app.dReg["camera"].instance.sendOffset(offset=value)
 
     def setGain(self) -> None:
-        actValue = self.app.dReg.drivers["camera"]["class"].data.get("CCD_GAIN.GAIN", None)
+        actValue = self.app.dReg["camera"].instance.data.get("CCD_GAIN.GAIN", None)
         if actValue is None:
             return
         actValue = int(actValue)
         dlg = QInputDialog()
-        gainList = self.app.dReg.drivers["camera"]["class"].data.get("CCD_GAIN.GAIN_LIST")
-        gainMin = self.app.dReg.drivers["camera"]["class"].data.get("CCD_GAIN.GAIN_MIN")
-        gainMax = self.app.dReg.drivers["camera"]["class"].data.get("CCD_GAIN.GAIN_MAX")
+        gainList = self.app.dReg["camera"].instance.data.get("CCD_GAIN.GAIN_LIST")
+        gainMin = self.app.dReg["camera"].instance.data.get("CCD_GAIN.GAIN_MIN")
+        gainMax = self.app.dReg["camera"].instance.data.get("CCD_GAIN.GAIN_MAX")
         if gainList is not None:
             gainList = list(gainList)
             value, ok = dlg.getItem(self.mainW, "Set gain", "Gain entry: ", gainList, actValue)
@@ -296,10 +285,10 @@ class ImageManage:
             value, ok = dlg.getInt(self.mainW, "Set gain", "Values:", actValue)
 
         if ok:
-            self.app.dReg.drivers["camera"]["class"].sendGain(gain=value)
+            self.app.dReg["camera"].instance.sendGain(gain=value)
 
     def setFilterNumber(self) -> None:
-        data = self.app.dReg.drivers["filter"]["class"].data
+        data = self.app.dReg["filter"].instance.data
         actValue = data.get("FILTER_SLOT.FILTER_SLOT_VALUE")
         if actValue is None:
             return
@@ -326,10 +315,10 @@ class ImageManage:
             1,
         )
         if ok:
-            self.app.dReg.drivers["filter"]["class"].sendFilterNumber(filterNumber=value)
+            self.app.dReg["filter"].instance.sendFilterNumber(filterNumber=value)
 
     def setFilterName(self) -> None:
-        data = self.app.dReg.drivers["filter"]["class"].data
+        data = self.app.dReg["filter"].instance.data
         actValue = data.get("FILTER_SLOT.FILTER_SLOT_VALUE")
         if actValue is None:
             return
@@ -346,16 +335,16 @@ class ImageManage:
             return
         isAlpaca = "FILTER_NAME.FILTER_SLOT_NAME_0" in data
         number = availNames.index(value) if isAlpaca else availNames.index(value) + 1
-        self.app.dReg.drivers["filter"]["class"].sendFilterNumber(filterNumber=number)
+        self.app.dReg["filter"].instance.sendFilterNumber(filterNumber=number)
 
     def setCoolerOn(self) -> None:
-        self.app.dReg.drivers["camera"]["class"].sendCoolerSwitch(coolerOn=True)
+        self.app.dReg["camera"].instance.sendCoolerSwitch(coolerOn=True)
 
     def setCoolerOff(self) -> None:
-        self.app.dReg.drivers["camera"]["class"].sendCoolerSwitch(coolerOn=False)
+        self.app.dReg["camera"].instance.sendCoolerSwitch(coolerOn=False)
 
     def updateCoverStatGui(self) -> None:
-        value = self.app.dReg.drivers["cover"]["class"].data.get("CAP_PARK.PARK", None)
+        value = self.app.dReg["cover"].instance.data.get("CAP_PARK.PARK", None)
         if value:
             changeStyleDynamic(self.ui.coverPark, "run", True)
             changeStyleDynamic(self.ui.coverUnpark, "run", False)
@@ -366,11 +355,11 @@ class ImageManage:
             changeStyleDynamic(self.ui.coverPark, "run", False)
             changeStyleDynamic(self.ui.coverUnpark, "run", True)
 
-        value = self.app.dReg.drivers["cover"]["class"].data.get("Status.Cover", "-")
+        value = self.app.dReg["cover"].instance.data.get("Status.Cover", "-")
         self.ui.coverStatusText.setText(value)
 
     def updateLightPanelGui(self) -> None:
-        value = self.app.dReg.drivers["lightPanel"]["class"].data.get(
+        value = self.app.dReg["lightPanel"].instance.data.get(
             "FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON", None
         )
         if value:
@@ -383,50 +372,50 @@ class ImageManage:
             changeStyleDynamic(self.ui.lightPanelOn, "run", False)
             changeStyleDynamic(self.ui.lightPanelOff, "run", True)
 
-        value = self.app.dReg.drivers["lightPanel"]["class"].data.get(
+        value = self.app.dReg["lightPanel"].instance.data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"
         )
         guiSetText(self.ui.lightPanelIntensity, "3.0f", value)
 
     def setCoverPark(self) -> None:
-        self.app.dReg.drivers["cover"]["class"].closeCover()
+        self.app.dReg["cover"].instance.closeCover()
 
     def setCoverUnpark(self) -> None:
-        self.app.dReg.drivers["cover"]["class"].openCover()
+        self.app.dReg["cover"].instance.openCover()
 
     def setCoverHalt(self) -> None:
-        self.app.dReg.drivers["cover"]["class"].haltCover()
+        self.app.dReg["cover"].instance.haltCover()
 
     def moveFocuserIn(self) -> None:
-        pos = self.app.dReg.drivers["focuser"]["class"].data.get(
+        pos = self.app.dReg["focuser"].instance.data.get(
             "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0
         )
         step = self.ui.focuserSteps.value()
         newPos = int(pos - step)
-        self.app.dReg.drivers["focuser"]["class"].move(position=newPos)
+        self.app.dReg["focuser"].instance.move(position=newPos)
 
     def moveFocuserOut(self) -> None:
-        pos = self.app.dReg.drivers["focuser"]["class"].data.get(
+        pos = self.app.dReg["focuser"].instance.data.get(
             "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0
         )
         step = self.ui.focuserSteps.value()
         newPos = int(pos + step)
-        self.app.dReg.drivers["focuser"]["class"].move(position=newPos)
+        self.app.dReg["focuser"].instance.move(position=newPos)
 
     def haltFocuser(self) -> None:
-        self.app.dReg.drivers["focuser"]["class"].halt()
+        self.app.dReg["focuser"].instance.halt()
 
     def switchLightPanelOn(self) -> None:
-        self.app.dReg.drivers["lightPanel"]["class"].lightOn()
+        self.app.dReg["lightPanel"].instance.lightOn()
 
     def switchLightPanelOff(self) -> None:
-        self.app.dReg.drivers["lightPanel"]["class"].lightOff()
+        self.app.dReg["lightPanel"].instance.lightOff()
 
     def setLightPanelIntensity(self) -> None:
-        actValue = self.app.dReg.drivers["lightPanel"]["class"].data.get(
+        actValue = self.app.dReg["lightPanel"].instance.data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE", 0
         )
-        maxBrightness = self.app.dReg.drivers["lightPanel"]["class"].data.get(
+        maxBrightness = self.app.dReg["lightPanel"].instance.data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
         )
         dlg = QInputDialog()
@@ -442,30 +431,28 @@ class ImageManage:
         if not ok:
             return
         self.ui.lightPanelIntensity.setText(f"{value}")
-        self.app.dReg.drivers["lightPanel"]["class"].lightIntensity(int(value))
+        self.app.dReg["lightPanel"].instance.lightIntensity(int(value))
 
     def updateDomeGui(self) -> None:
-        value = self.app.dReg.drivers["dome"]["class"].data.get("DOME_MOTION.DOME_CW", None)
+        value = self.app.dReg["dome"].instance.data.get("DOME_MOTION.DOME_CW", None)
         if value:
             changeStyleDynamic(self.ui.domeSlewCW, "run", True)
         else:
             changeStyleDynamic(self.ui.domeSlewCW, "run", False)
 
-        value = self.app.dReg.drivers["dome"]["class"].data.get("DOME_MOTION.DOME_CCW", None)
+        value = self.app.dReg["dome"].instance.data.get("DOME_MOTION.DOME_CCW", None)
         if value:
             changeStyleDynamic(self.ui.domeSlewCCW, "run", True)
         else:
             changeStyleDynamic(self.ui.domeSlewCCW, "run", False)
 
-        value = self.app.dReg.drivers["dome"]["class"].data.get(
+        value = self.app.dReg["dome"].instance.data.get(
             "ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION"
         )
         guiSetText(self.ui.domeAzimuth, "3.0f", value)
 
     def updateShutterStatGui(self) -> None:
-        value = self.app.dReg.drivers["dome"]["class"].data.get(
-            "DOME_SHUTTER.SHUTTER_OPEN", None
-        )
+        value = self.app.dReg["dome"].instance.data.get("DOME_SHUTTER.SHUTTER_OPEN", None)
         if value is True:
             changeStyleDynamic(self.ui.domeOpenShutter, "run", True)
             changeStyleDynamic(self.ui.domeCloseShutter, "run", False)
@@ -476,37 +463,37 @@ class ImageManage:
             changeStyleDynamic(self.ui.domeOpenShutter, "run", False)
             changeStyleDynamic(self.ui.domeCloseShutter, "run", False)
 
-        value = self.app.dReg.drivers["dome"]["class"].data.get("Status.Shutter", None)
+        value = self.app.dReg["dome"].instance.data.get("Status.Shutter", None)
         if value:
             self.ui.domeShutterStatusText.setText(value)
 
     def domeSlewCW(self) -> None:
-        if not self.app.dReg.drivers["dome"]["stat"]:
+        if not self.app.dReg["dome"].stat:
             return
-        self.app.dReg.drivers["dome"]["class"].slewCW()
+        self.app.dReg["dome"].instance.slewCW()
 
     def domeSlewCCW(self) -> None:
-        if not self.app.dReg.drivers["dome"]["stat"]:
+        if not self.app.dReg["dome"].stat:
             return
-        self.app.dReg.drivers["dome"]["class"].slewCCW()
+        self.app.dReg["dome"].instance.slewCCW()
 
     def domeAbortSlew(self) -> None:
-        if not self.app.dReg.drivers["dome"]["stat"]:
+        if not self.app.dReg["dome"].stat:
             return
-        self.app.dReg.drivers["dome"]["class"].abortSlew()
+        self.app.dReg["dome"].instance.abortSlew()
 
     def domeOpenShutter(self) -> None:
-        if not self.app.dReg.drivers["dome"]["stat"]:
+        if not self.app.dReg["dome"].stat:
             return
-        self.app.dReg.drivers["dome"]["class"].openShutter()
+        self.app.dReg["dome"].instance.openShutter()
 
     def domeCloseShutter(self) -> None:
-        if not self.app.dReg.drivers["dome"]["stat"]:
+        if not self.app.dReg["dome"].stat:
             return
-        self.app.dReg.drivers["dome"]["class"].closeShutter()
+        self.app.dReg["dome"].instance.closeShutter()
 
     def domeMoveGameController(self, turnVal: int, openVal: int) -> None:
-        if not self.app.dReg.drivers["dome"]["stat"]:
+        if not self.app.dReg["dome"].stat:
             return
 
         if turnVal < 64:

@@ -387,5 +387,3 @@ def test_drawMeasure_realData(function):
         function.drawMeasure()
     if function.drawLock.tryLock():
         function.drawLock.unlock()
-
-

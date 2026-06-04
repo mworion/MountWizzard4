@@ -113,8 +113,8 @@ class SettDevice:
                 ui = self.setupUiDriver[driver]["uiSetup"]
                 ui.clicked.connect(partial(self.callPopup, driver))
 
-            if hasattr(self.app.dReg.drivers[driver]["class"], "signals"):
-                signals = self.app.dReg.drivers[driver]["class"].signals
+            if hasattr(self.app.dReg[driver].instance, "signals"):
+                signals = self.app.dReg[driver].instance.signals
                 signals.serverDisconnected.connect(partial(self.serverDisconnected, driver))
                 signals.deviceConnected.connect(partial(self.deviceConnected, driver))
                 signals.deviceDisconnected.connect(partial(self.deviceDisconnected, driver))
@@ -123,11 +123,9 @@ class SettDevice:
         self.ui.ascomDisconnect.clicked.connect(self.manualStopAllAscomDrivers)
 
     def addMissingFrameworksData(self, driver: str, config: dict) -> dict:
-        for framework in self.app.dReg.drivers[driver]["class"].run:
+        for framework in self.app.dReg[driver].instance.run:
             if framework not in config[driver]["frameworks"]:
-                entry = self.app.dReg.drivers[driver]["class"].defaultConfig["frameworks"][
-                    framework
-                ]
+                entry = self.app.dReg[driver].instance.defaultConfig["frameworks"][framework]
                 config[driver]["frameworks"][framework] = entry
         return config
 
@@ -236,8 +234,8 @@ class SettDevice:
     def callPopup(self, driver: str) -> None:
         self.stopDriver(driver)
         data = self.driversData[driver]
-        deviceType = self.app.dReg.drivers[driver]["deviceType"]
-        deviceClass = self.app.dReg.drivers[driver]["class"]
+        deviceType = self.app.dReg[driver].deviceType
+        deviceClass = self.app.dReg[driver].instance
         self.devicePopup = DevicePopup(
             self.mainW, parent=deviceClass, driver=driver, deviceType=deviceType, data=data
         )
@@ -245,12 +243,12 @@ class SettDevice:
         self.devicePopup.ui.ok.clicked.connect(self.processPopupResults)
 
     def stopDriver(self, driver: str) -> None:
-        self.app.dReg.drivers[driver]["stat"] = None
-        framework = self.app.dReg.drivers[driver]["class"].framework
-        if framework not in self.app.dReg.drivers[driver]["class"].run:
+        self.app.dReg[driver].stat = None
+        framework = self.app.dReg[driver].instance.framework
+        if framework not in self.app.dReg[driver].instance.run:
             return
 
-        driverClass = self.app.dReg.drivers[driver]["class"]
+        driverClass = self.app.dReg[driver].instance
         if driverClass.run[framework].deviceName != "":
             driverClass.stopCommunication()
             driverClass.data.clear()
@@ -258,30 +256,30 @@ class SettDevice:
             self.msg.emit(0, "Driver", f"{framework.upper()} disabled", f"{driver}")
 
         changeStyleDynamic(self.setupUiDriver[driver]["uiDropDown"], "active", False)
-        self.app.dReg.drivers[driver]["stat"] = None
+        self.app.dReg[driver].stat = None
 
     def stopDrivers(self) -> None:
         for entry in self.app.dReg.configurable():
             self.stopDriver(driver=entry.name)
 
     def configDriver(self, driver: str) -> None:
-        self.app.dReg.drivers[driver]["stat"] = False
+        self.app.dReg[driver].stat = False
         framework = self.driversData[driver]["framework"]
-        if framework not in self.app.dReg.drivers[driver]["class"].run:
+        if framework not in self.app.dReg[driver].instance.run:
             return
 
         frameworkConfig = self.driversData[driver]["frameworks"][framework]
-        driverClass = self.app.dReg.drivers[driver]["class"].run[framework]
+        driverClass = self.app.dReg[driver].instance.run[framework]
         for attribute in frameworkConfig:
             setattr(driverClass, attribute, frameworkConfig[attribute])
 
     def startDriver(self, driver: str, autoStart: bool = False) -> None:
         data = self.driversData[driver]
         framework = data["framework"]
-        if framework not in self.app.dReg.drivers[driver]["class"].run:
+        if framework not in self.app.dReg[driver].instance.run:
             return
 
-        driverClass = self.app.dReg.drivers[driver]["class"]
+        driverClass = self.app.dReg[driver].instance
         loadConfig = data["frameworks"][framework].get("loadConfig", False)
         updateRate = data["frameworks"][framework].get("updateRate", 1000)
         driverClass.updateRate = updateRate
@@ -334,7 +332,7 @@ class SettDevice:
 
     def deviceConnected(self, driver: str, deviceName: str) -> None:
         changeStyleDynamic(self.setupUiDriver[driver]["uiDropDown"], "active", True)
-        self.app.dReg.drivers[driver]["stat"] = True
+        self.app.dReg[driver].stat = True
         self.msg.emit(0, "Driver", "Device connected", f"{deviceName}::{driver}")
 
         data = self.driversData[driver]
@@ -344,5 +342,5 @@ class SettDevice:
 
     def deviceDisconnected(self, driver: str, deviceName: str) -> None:
         changeStyleDynamic(self.setupUiDriver[driver]["uiDropDown"], "active", False)
-        self.app.dReg.drivers[driver]["stat"] = False
+        self.app.dReg[driver].stat = False
         self.msg.emit(0, "Driver", "Device disconnected", f"{deviceName}::{driver}")

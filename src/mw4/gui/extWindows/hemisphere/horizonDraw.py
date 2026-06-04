@@ -58,20 +58,16 @@ class HorizonDraw(MWidget):
         self.ui.terrainAlpha.valueChanged.connect(self.drawTab)
         self.ui.normalModeHor.clicked.connect(self.setOperationMode)
         self.ui.editModeHor.clicked.connect(self.setOperationMode)
-        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(self.drawPointer)
-        self.app.dReg.drivers["mount"]["class"].signals.settingDone.connect(self.drawTab)
+        self.app.dReg["mount"].instance.signals.pointDone.connect(self.drawPointer)
+        self.app.dReg["mount"].instance.signals.settingDone.connect(self.drawTab)
         self.ui.showMountLimits.clicked.connect(self.drawTab)
         self.ui.horizon.p[0].scene().sigMouseMoved.connect(self.mouseMovedHorizon)
-        self.app.dReg.drivers["mount"]["class"].signals.mountIsUp.connect(
-            self.setPointerVisibility
-        )
+        self.app.dReg["mount"].instance.signals.mountIsUp.connect(self.setPointerVisibility)
 
     def closeTab(self):
-        self.app.dReg.drivers["mount"]["class"].signals.pointDone.disconnect(self.drawPointer)
-        self.app.dReg.drivers["mount"]["class"].signals.settingDone.disconnect(self.drawTab)
-        self.app.dReg.drivers["mount"]["class"].signals.mountIsUp.disconnect(
-            self.setPointerVisibility
-        )
+        self.app.dReg["mount"].instance.signals.pointDone.disconnect(self.drawPointer)
+        self.app.dReg["mount"].instance.signals.settingDone.disconnect(self.drawTab)
+        self.app.dReg["mount"].instance.signals.mountIsUp.disconnect(self.setPointerVisibility)
 
     def setPointerVisibility(self, status) -> None:
         self.pointerHor.setVisible(status)
@@ -177,8 +173,8 @@ class HorizonDraw(MWidget):
 
     def addActualPosition(self) -> None:
         vb = self.ui.horizon.p[0].getViewBox()
-        az = self.app.dReg.drivers["mount"]["class"].obsSite.Az
-        alt = self.app.dReg.drivers["mount"]["class"].obsSite.Alt
+        az = self.app.dReg["mount"].instance.obsSite.Az
+        alt = self.app.dReg["mount"].instance.obsSite.Alt
         az = az.degrees
         alt = alt.degrees
         index = vb.getNearestPointIndex(QPointF(az, alt))
@@ -209,7 +205,7 @@ class HorizonDraw(MWidget):
         plotItem.addItem(self.pointerHor)
 
     def drawPointer(self) -> None:
-        obsSite = self.app.dReg.drivers["mount"]["class"].obsSite
+        obsSite = self.app.dReg["mount"].instance.obsSite
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
         self.pointerHor.setData(x=[az], y=[alt])

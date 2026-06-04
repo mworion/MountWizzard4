@@ -68,9 +68,7 @@ def test_create_2(function):
 
 def test_create_3(function):
     function.parent.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
-    function.parent.entityModel["horizonRoot"] = {
-        "entity": Qt3DCore.QEntity()
-    }
+    function.parent.entityModel["horizonRoot"] = {"entity": Qt3DCore.QEntity()}
     horizonPoints = [
         (30, 0),
         (30, 45),
@@ -85,5 +83,3 @@ def test_create_3(function):
     with mock.patch.object(function, "showEnable"):
         function.create()
     assert "horizonRoot" in function.parent.entityModel
-
-

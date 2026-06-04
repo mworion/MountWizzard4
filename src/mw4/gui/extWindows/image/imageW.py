@@ -270,7 +270,7 @@ class ImageWindow(MWidget):
         self.showImage(self.imageFileName)
 
     def exposeRaw(self, exposureTime: float, binning: int) -> None:
-        timeString = self.app.dReg.drivers["mount"]["class"].obsSite.timeJD.utc_strftime(
+        timeString = self.app.dReg["mount"].instance.obsSite.timeJD.utc_strftime(
             "%Y-%m-%d-%H-%M-%S"
         )
         if self.ui.timeTagImage.isChecked():
@@ -278,7 +278,7 @@ class ImageWindow(MWidget):
         else:
             self.imageFileName = self.app.mwGlob["imageDir"] / "exposure.fits"
 
-        if not self.app.dReg.drivers["camera"]["class"].expose(
+        if not self.app.dReg["camera"].instance.expose(
             self.imageFileName, exposureTime, binning
         ):
             self.abortExpose()
@@ -286,7 +286,7 @@ class ImageWindow(MWidget):
         self.msg.emit(0, "Image", "Exposing", self.imageFileName.stem)
 
     def exposeImageDone(self, imagePath: Path) -> None:
-        self.app.dReg.drivers["camera"]["class"].signals.saved.disconnect(self.exposeImageDone)
+        self.app.dReg["camera"].instance.signals.saved.disconnect(self.exposeImageDone)
         self.msg.emit(0, "Image", "Exposed", imagePath.stem)
         self.imageFileName = imagePath
 
@@ -298,18 +298,18 @@ class ImageWindow(MWidget):
     def exposeImage(self) -> None:
         self.app.operationRunning.emit(Model.STATUS_EXPOSE_1)
         self.imagingDeviceStat["expose"] = True
-        self.app.dReg.drivers["camera"]["class"].signals.saved.connect(self.exposeImageDone)
+        self.app.dReg["camera"].instance.signals.saved.connect(self.exposeImageDone)
         self.exposeRaw(
-            self.app.dReg.drivers["camera"]["class"].exposureTime1,
-            self.app.dReg.drivers["camera"]["class"].binning1,
+            self.app.dReg["camera"].instance.exposureTime1,
+            self.app.dReg["camera"].instance.binning1,
         )
 
     def exposeImageNDone(self, imagePath: Path) -> None:
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
         self.exposeRaw(
-            self.app.dReg.drivers["camera"]["class"].exposureTimeN,
-            self.app.dReg.drivers["camera"]["class"].binningN,
+            self.app.dReg["camera"].instance.exposureTimeN,
+            self.app.dReg["camera"].instance.binningN,
         )
 
     def exposeImageN(self) -> None:
@@ -317,32 +317,24 @@ class ImageWindow(MWidget):
             self.app.operationRunning.emit(Model.STATUS_EXPOSE_N)
             self.msg.emit(1, "Image", "Expose", "Continuous start")
             self.imagingDeviceStat["exposeN"] = True
-            self.app.dReg.drivers["camera"]["class"].signals.saved.connect(
-                self.exposeImageNDone
-            )
+            self.app.dReg["camera"].instance.signals.saved.connect(self.exposeImageNDone)
             self.exposeRaw(
-                self.app.dReg.drivers["camera"]["class"].exposureTimeN,
-                self.app.dReg.drivers["camera"]["class"].binningN,
+                self.app.dReg["camera"].instance.exposureTimeN,
+                self.app.dReg["camera"].instance.binningN,
             )
         else:
-            self.app.dReg.drivers["camera"]["class"].signals.saved.disconnect(
-                self.exposeImageNDone
-            )
+            self.app.dReg["camera"].instance.signals.saved.disconnect(self.exposeImageNDone)
             self.imagingDeviceStat["exposeN"] = False
             self.msg.emit(1, "Image", "Expose", "Continuous stopped")
             self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def abortExpose(self) -> None:
-        if not self.app.dReg.drivers["camera"]["class"].abort():
+        if not self.app.dReg["camera"].instance.abort():
             return
         if self.imagingDeviceStat["expose"]:
-            self.app.dReg.drivers["camera"]["class"].signals.saved.disconnect(
-                self.exposeImageDone
-            )
+            self.app.dReg["camera"].instance.signals.saved.disconnect(self.exposeImageDone)
         if self.imagingDeviceStat["exposeN"]:
-            self.app.dReg.drivers["camera"]["class"].signals.saved.disconnect(
-                self.exposeImageNDone
-            )
+            self.app.dReg["camera"].instance.signals.saved.disconnect(self.exposeImageNDone)
 
         self.imageFileName = self.imageFileNameOld
         self.imagingDeviceStat["expose"] = False
@@ -394,7 +386,7 @@ class ImageWindow(MWidget):
         self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def slewDirect(self, ra: Angle, dec: Angle) -> None:
-        if not self.app.dReg.drivers["mount"]["stat"]:
+        if not self.app.dReg["mount"].stat:
             self.msg.emit(2, "Image", "Mount", "Mount is not connected")
             return
         question = "<b>Slewing to target</b>"
@@ -412,7 +404,7 @@ class ImageWindow(MWidget):
         self.slewDirect(ra, dec)
 
     def syncModelToImage(self) -> None:
-        if not self.app.dReg.drivers["mount"]["stat"]:
+        if not self.app.dReg["mount"].stat:
             self.msg.emit(2, "Image", "Mount", "Mount is not connected")
             return
         if not self.imageFileName.is_file():
@@ -426,7 +418,7 @@ class ImageWindow(MWidget):
             return
 
         self.app.operationRunning.emit(Model.STATUS_MODEL_SYNC)
-        obs = self.app.dReg.drivers["mount"]["class"].obsSite
+        obs = self.app.dReg["mount"].instance.obsSite
         raJNow, decJNow = J2000ToJNow(ra, dec, obs.timeJD)
         obs.setTargetRaDec(raJNow, decJNow)
 

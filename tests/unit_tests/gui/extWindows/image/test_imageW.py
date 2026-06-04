@@ -280,10 +280,13 @@ def test_exposeImageNDone_1(function):
     function.app.dReg.drivers["camera"]["class"].signals.saved.connect(
         function.exposeImageDone
     )
-    with mock.patch.object(
-        function.app.dReg.drivers["camera"]["class"], "expose", return_value=False
-    ), mock.patch.object(
-        function.app.dReg.drivers["camera"]["class"], "abort", return_value=True
+    with (
+        mock.patch.object(
+            function.app.dReg.drivers["camera"]["class"], "expose", return_value=False
+        ),
+        mock.patch.object(
+            function.app.dReg.drivers["camera"]["class"], "abort", return_value=True
+        ),
     ):
         function.exposeImageNDone(Path("test"))
 
@@ -293,10 +296,13 @@ def test_exposeImageNDone_2(function):
     function.app.dReg.drivers["camera"]["class"].signals.saved.connect(
         function.exposeImageDone
     )
-    with mock.patch.object(
-        function.app.dReg.drivers["camera"]["class"], "expose", return_value=False
-    ), mock.patch.object(
-        function.app.dReg.drivers["camera"]["class"], "abort", return_value=True
+    with (
+        mock.patch.object(
+            function.app.dReg.drivers["camera"]["class"], "expose", return_value=False
+        ),
+        mock.patch.object(
+            function.app.dReg.drivers["camera"]["class"], "abort", return_value=True
+        ),
     ):
         function.exposeImageNDone(Path("test"))
 
@@ -305,10 +311,13 @@ def test_exposeImageN_1(function):
     # exposeN not running → start continuous exposure
     function.imagingDeviceStat["exposeN"] = False
     function.app.dReg.drivers["camera"]["class"].data = {}
-    with mock.patch.object(
-        function.app.dReg.drivers["camera"]["class"], "expose", return_value=False
-    ), mock.patch.object(
-        function.app.dReg.drivers["camera"]["class"], "abort", return_value=True
+    with (
+        mock.patch.object(
+            function.app.dReg.drivers["camera"]["class"], "expose", return_value=False
+        ),
+        mock.patch.object(
+            function.app.dReg.drivers["camera"]["class"], "abort", return_value=True
+        ),
     ):
         function.exposeImageN()
 
@@ -519,4 +528,3 @@ def test_abortExpose_fail(function):
         function.app.dReg.drivers["camera"]["class"], "abort", return_value=False
     ):
         function.abortExpose()
-

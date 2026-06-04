@@ -233,9 +233,7 @@ class TestMeasureDataCSV:
     def test_startCommunication(self, tmp_path):
         with (
             mock.patch.object(self.csv.timerTask, "start") as mock_start,
-            mock.patch.object(
-                self.app.mount.obsSite.timeJD, "utc_strftime"
-            ) as mock_time,
+            mock.patch.object(self.app.mount.obsSite.timeJD, "utc_strftime") as mock_time,
             mock.patch.object(self.app, "mwGlob", {"measureDir": tmp_path}),
         ):
             mock_time.return_value = "2024-01-01-12-00-00"
@@ -255,5 +253,3 @@ class TestMeasureDataCSV:
         ):
             self.csv.measureTask()
             mock_write.assert_called_once()
-
-

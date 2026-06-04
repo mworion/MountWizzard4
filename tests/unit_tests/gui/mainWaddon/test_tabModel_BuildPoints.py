@@ -436,9 +436,7 @@ def test_genBuildAlign_fail(function):
 
 def test_genBuildCelestial_fail(function):
     with (
-        mock.patch.object(
-            function.app.buildPoint, "genGreaterCircle", return_value=False
-        ),
+        mock.patch.object(function.app.buildPoint, "genGreaterCircle", return_value=False),
         mock.patch.object(function, "msg") as mock_msg,
     ):
         function.genBuildCelestial()
@@ -448,9 +446,7 @@ def test_genBuildCelestial_fail(function):
 def test_genBuildCelestial_success_with_dither(function):
     function.ui.ditherBuildPoints.setChecked(True)
     with (
-        mock.patch.object(
-            function.app.buildPoint, "genGreaterCircle", return_value=True
-        ),
+        mock.patch.object(function.app.buildPoint, "genGreaterCircle", return_value=True),
         mock.patch.object(function.app.buildPoint, "ditherPoints"),
         mock.patch.object(function, "processPoints"),
     ):
@@ -463,9 +459,7 @@ def test_genBuildGrid_success(function):
     function.ui.altitudeMin.setValue(10)
     function.ui.altitudeMax.setValue(60)
     with (
-        mock.patch.object(
-            function.app.buildPoint, "genGrid", return_value=True
-        ),
+        mock.patch.object(function.app.buildPoint, "genGrid", return_value=True),
         mock.patch.object(function, "processPoints") as mockProc,
     ):
         function.genBuildGrid()
@@ -490,9 +484,7 @@ def test_genBuildDSO_iteration_zero(function):
 def test_genBuildFile_loadFails(function):
     function.ui.buildPFileName.setText("nonexistent_file")
     with (
-        mock.patch.object(
-            function.app.buildPoint, "loadBuildP", return_value=False
-        ),
+        mock.patch.object(function.app.buildPoint, "loadBuildP", return_value=False),
         mock.patch.object(function, "msg") as mockMsg,
     ):
         function.genBuildFile()
@@ -546,5 +538,3 @@ def test_genBuildGoldenSpiral_iteration_exhausted(function):
         mock.patch.object(function, "processPoints"),
     ):
         function.genBuildGoldenSpiral()
-
-

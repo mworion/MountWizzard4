@@ -56,12 +56,10 @@ class SimulatorBuildPoints:
         self.points = []
 
     def updatePositions(self) -> None:
-        if not self.app.dReg.drivers["mount"]["class"].obsSite.haJNow:
+        if not self.app.dReg["mount"].instance.obsSite.haJNow:
             return
 
-        _, _, _, PB, PD = self.app.dReg.drivers["mount"][
-            "class"
-        ].calcTransformationMatricesActual()
+        _, _, _, PB, PD = self.app.dReg["mount"].instance.calcTransformationMatricesActual()
         if PB is None or PD is None:
             return
         PB[2] += 1

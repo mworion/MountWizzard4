@@ -59,7 +59,7 @@ class BigPopup(MWidget):
 
         self.app.colorChange.connect(self.colorChange)
         self.app.update1s.connect(self.updateDeviceStats)
-        self.app.dReg.drivers["mount"]["class"].signals.pointDone.connect(self.updateStatus)
+        self.app.dReg["mount"].instance.signals.pointDone.connect(self.updateStatus)
         self.ui.stop.clicked.connect(lambda: self.app.virtualStop.emit())
         self.ui.mountOn.clicked.connect(lambda: self.app.mountOn.emit())
         self.ui.mountOff.clicked.connect(lambda: self.app.mountOff.emit())
@@ -69,10 +69,10 @@ class BigPopup(MWidget):
         isMount = self.app.deviceStat.get("mount", False)
         changeStyleDynamic(self.ui.mountOn, "run", isMount)
         changeStyleDynamic(self.ui.mountOff, "run", not isMount)
-        canWOL = self.app.dReg.drivers["mount"]["class"].firmware.hardware == "Q-TYPE2012"
+        canWOL = self.app.dReg["mount"].instance.firmware.hardware == "Q-TYPE2012"
         self.ui.mountOn.setEnabled(canWOL)
         self.ui.mountOff.setEnabled(canWOL)
 
     def updateStatus(self) -> None:
-        running = self.app.dReg.drivers["mount"]["class"].obsSite.status == 1
+        running = self.app.dReg["mount"].instance.obsSite.status == 1
         changeStyleDynamic(self.ui.stop, "run", running)

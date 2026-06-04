@@ -61,7 +61,7 @@ class AstroObjects:
         self.downloadPopup = None
         self.tempDir: Path = self.app.mwGlob["tempDir"]
         self.dataDir: Path = self.app.mwGlob["dataDir"]
-        self.loader = self.app.dReg.drivers["mount"]["class"].obsSite.loader
+        self.loader = self.app.dReg["mount"].instance.obsSite.loader
         self.dbProc = DataWriter(self.app)
         self.buildSourceListDropdown()
         self.uiSourceList.currentIndexChanged.connect(self.loadSourceUrl)
@@ -155,7 +155,7 @@ class AstroObjects:
             )
             return
         self.dbProcFuncs[self.objectText](objects, dataFilePath=self.tempDir)
-        url = Path(self.app.dReg.drivers["mount"]["class"].host[0])
+        url = Path(self.app.dReg["mount"].instance.host[0])
         self.runUploadPopup(url)
 
     def progGUI(self, text: str) -> None:

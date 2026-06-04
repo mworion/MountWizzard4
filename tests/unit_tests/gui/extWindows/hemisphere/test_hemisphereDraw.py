@@ -458,9 +458,7 @@ def test_drawModelText_empty(function):
 
 def test_drawModelPoints_with_findItem_returning_none(function):
     function.app.buildPoint.buildP = [(10, 20, 1), (30, 40, 2)]
-    with mock.patch.object(
-        function.ui.hemisphere, "findItemByName", return_value=None
-    ):
+    with mock.patch.object(function.ui.hemisphere, "findItemByName", return_value=None):
         function.drawModelPoints()
 
 
@@ -470,5 +468,3 @@ def test_drawModelText_with_existing_text_items(function):
     function.modelPointsText = [fakeTextItem]
     with mock.patch.object(function.ui.hemisphere.p[0], "removeItem"):
         function.drawModelText()
-
-

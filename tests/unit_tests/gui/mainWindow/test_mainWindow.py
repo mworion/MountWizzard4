@@ -443,5 +443,3 @@ def test_updateDeviceStats_enabledDriver(window):
     finally:
         window.app.dReg.drivers.pop(device, None)
         window.deviceStatGui.pop(device, None)
-
-

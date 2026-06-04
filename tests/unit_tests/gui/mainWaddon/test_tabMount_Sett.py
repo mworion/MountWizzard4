@@ -543,7 +543,7 @@ def test_setLocationValues_1(function):
     function.app.mount.obsSite.location = wgs84.latlon(
         longitude_degrees=1, latitude_degrees=2, elevation_m=3
     )
-    function.app.dReg.drivers["mount"]["stat"] = True
+    function.app.dReg.drivers["mount"].stat = True
     with (
         mock.patch.object(function.app.mount, "getLocation"),
         mock.patch.object(function.app.mount.obsSite, "setLocation"),
@@ -555,7 +555,7 @@ def test_setLocationValues_2(function):
     function.app.mount.obsSite.location = wgs84.latlon(
         longitude_degrees=1, latitude_degrees=2, elevation_m=3
     )
-    function.app.dReg.drivers["mount"]["stat"] = False
+    function.app.dReg.drivers["mount"].stat = False
     with mock.patch.object(function, "updateLocGUI"):
         function.setLocationValues()
 

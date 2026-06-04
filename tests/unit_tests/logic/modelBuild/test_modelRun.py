@@ -75,7 +75,7 @@ def test_startExposureAfterSlew_1(function):
 def test_setMountSlewed_1(function):
     function.mountSlewed = False
     function.domeSlewed = False
-    function.app.dReg.drivers["dome"]["stat"] = True
+    function.app.dReg.drivers["dome"].stat = True
     with mock.patch.object(function, "startExposureAfterSlew"):
         function.setMountSlewed()
         assert function.mountSlewed
@@ -85,7 +85,7 @@ def test_setMountSlewed_1(function):
 def test_setMountSlewed_2(function):
     function.domeSlewed = False
     function.mountSlewed = False
-    function.app.dReg.drivers["dome"]["stat"] = False
+    function.app.dReg.drivers["dome"].stat = False
     with mock.patch.object(function, "startExposureAfterSlew"):
         function.setMountSlewed()
         assert function.mountSlewed
@@ -159,7 +159,7 @@ def test_startNewSlew_3(function):
     }
 
     with mock.patch.object(
-        function.app.dReg.drivers["mount"]["class"].obsSite,
+        function.app.dReg.drivers["mount"].instance.obsSite,
         "setTargetAltAz",
         return_value=False,
     ):
@@ -173,7 +173,7 @@ def test_startNewSlew_4(function):
     function.mountSlewed = True
     function.cancelBatch = False
     function.endBatch = False
-    function.app.dReg.drivers["dome"]["stat"] = True
+    function.app.dReg.drivers["dome"].stat = True
     function.modelRunIterator = iter(["im-00", "im-01", "im-02"])
     function.modelBuildData = {
         "im-00": {
@@ -198,12 +198,12 @@ def test_startNewSlew_4(function):
 
     with (
         mock.patch.object(
-            function.app.dReg.drivers["mount"]["class"].obsSite,
+            function.app.dReg.drivers["mount"].instance.obsSite,
             "setTargetAltAz",
             return_value=True,
         ),
-        mock.patch.object(function.app.dReg.drivers["dome"]["class"], "slewDome"),
-        mock.patch.object(function.app.dReg.drivers["mount"]["class"].obsSite, "startSlewing"),
+        mock.patch.object(function.app.dReg.drivers["dome"].instance, "slewDome"),
+        mock.patch.object(function.app.dReg.drivers["mount"].instance.obsSite, "startSlewing"),
     ):
         function.startNewSlew()
         assert not function.mountSlewed
@@ -211,7 +211,7 @@ def test_startNewSlew_4(function):
 
 
 def test_addMountModelToBuildModel_1(function):
-    function.app.dReg.drivers["mount"]["class"].model.starList = [1, 2, 3]
+    function.app.dReg.drivers["mount"].instance.model.starList = [1, 2, 3]
     function.modelSaveData = [1, 2, 3]
     with (
         mock.patch.object(
@@ -226,7 +226,7 @@ def test_addMountModelToBuildModel_1(function):
 
 
 def test_addMountModelToBuildModel_2(function):
-    function.app.dReg.drivers["mount"]["class"].model.starList = [1, 2]
+    function.app.dReg.drivers["mount"].instance.model.starList = [1, 2]
     function.modelSaveData = [1, 2, 3]
     with (
         mock.patch.object(
@@ -250,7 +250,7 @@ def test_collectBuildModelResults_1(function):
 
 
 def test_collectBuildModelResults_2(function):
-    jd = function.app.dReg.drivers["mount"]["class"].obsSite.timeJD
+    jd = function.app.dReg.drivers["mount"].instance.obsSite.timeJD
     function.modelBuildData = {
         "im-00": {
             "altitude": Angle(degrees=0),
@@ -389,7 +389,7 @@ def test_startNewImageExposure_2(function, mocked_sleepAndEvents):
     function.modelBuildData = {"im-00": {"imagePath": Path("test")}}
     with (
         mock.patch.object(function, "addMountDataToModelBuildData"),
-        mock.patch.object(function.app.dReg.drivers["camera"]["class"], "expose"),
+        mock.patch.object(function.app.dReg.drivers["camera"].instance, "expose"),
     ):
         function.startNewImageExposure()
 
@@ -408,7 +408,7 @@ def test_sendModelProgress_1(function):
 
 
 def test_collectPlateSolveResult_1(function):
-    jd = function.app.dReg.drivers["mount"]["class"].obsSite.timeJD
+    jd = function.app.dReg.drivers["mount"].instance.obsSite.timeJD
     function.modelBuildData = {
         "im-00": {
             "julianDate": jd,
@@ -436,7 +436,7 @@ def test_collectPlateSolveResult_1(function):
 
 
 def test_collectPlateSolveResult_2(function):
-    jd = function.app.dReg.drivers["mount"]["class"].obsSite.timeJD
+    jd = function.app.dReg.drivers["mount"].instance.obsSite.timeJD
     function.modelBuildData = {
         "im-00": {
             "julianDate": jd,
@@ -464,7 +464,7 @@ def test_collectPlateSolveResult_2(function):
 
 
 def test_collectPlateSolveResult_3(function):
-    jd = function.app.dReg.drivers["mount"]["class"].obsSite.timeJD
+    jd = function.app.dReg.drivers["mount"].instance.obsSite.timeJD
     function.modelBuildData = {
         "im-00": {
             "julianDate": jd,
@@ -492,7 +492,7 @@ def test_collectPlateSolveResult_3(function):
 
 
 def test_collectPlateSolveResult_4(function):
-    jd = function.app.dReg.drivers["mount"]["class"].obsSite.timeJD
+    jd = function.app.dReg.drivers["mount"].instance.obsSite.timeJD
     function.modelBuildData = {
         "im-00": {
             "julianDate": jd,
@@ -521,8 +521,8 @@ def test_collectPlateSolveResult_4(function):
 
 def test_prepareModelBuildData_1(function):
     function.modelInputData = [(5, 0, True), (20, 1, True)]
-    function.app.dReg.drivers["mount"]["class"].setting.horizonLimitLow = 10
-    function.app.dReg.drivers["mount"]["class"].setting.horizonLimitHigh = 90
+    function.app.dReg.drivers["mount"].instance.setting.horizonLimitLow = 10
+    function.app.dReg.drivers["mount"].instance.setting.horizonLimitHigh = 90
 
     with (
         mock.patch.object(function, "sendModelProgress"),

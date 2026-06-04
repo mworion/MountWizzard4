@@ -48,7 +48,7 @@ def test_pollData_1(function):
 
 
 def test_lightOn(function):
-    function.app.dReg.drivers["lightPanel"]["class"].data = {
+    function.app.dReg.drivers["lightPanel"].instance.data = {
         "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 200
     }
     with mock.patch.object(function, "callDeviceMethodQueued") as m:

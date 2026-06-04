@@ -139,7 +139,7 @@ def test_buildSeeingItem(function):
 
 
 def test_markActualColumn(function):
-    function.app.dReg.drivers["seeingWeather"]["class"].data = {
+    function.app.dReg.drivers["seeingWeather"].instance.data = {
         "meta": META,
         "hourly": dict(HOURLY),
     }
@@ -152,14 +152,14 @@ def test_markActualColumn(function):
 
 
 def test_updateSeeingEntries_1(function):
-    function.app.dReg.drivers["seeingWeather"]["class"].data = {
+    function.app.dReg.drivers["seeingWeather"].instance.data = {
         "test": {"hour": [10, 11], "date": ["2022-01-01", "2022-01-01"]}
     }
     function.updateSeeingEntries()
 
 
 def test_updateSeeingEntries_2(function):
-    function.app.dReg.drivers["seeingWeather"]["class"].data = {
+    function.app.dReg.drivers["seeingWeather"].instance.data = {
         "meta": META,
         "hourly": dict(HOURLY),
     }
@@ -169,7 +169,7 @@ def test_updateSeeingEntries_2(function):
 
 
 def test_updateSeeingEntries_3(function):
-    function.app.dReg.drivers["seeingWeather"]["class"].data = {
+    function.app.dReg.drivers["seeingWeather"].instance.data = {
         "meta": META,
         "hourly": dict(HOURLY),
     }

@@ -356,7 +356,7 @@ def test_autoSortPoints_3(function):
 
 
 def test_autoSortPoints_4(function):
-    function.app.dReg.drivers["dome"]["stat"] = True
+    function.app.dReg.drivers["dome"].stat = True
     function.ui.sortDomeAZ.setChecked(True)
     function.autoSortPoints()
 

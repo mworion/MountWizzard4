@@ -36,6 +36,9 @@ def test_deviceEntryAttributes() -> None:
     assert entry.stat is None
 
 
+# ------------------------------------------------------------------
+# DeviceEntry — legacy dict-style access (backward compatibility)
+# ------------------------------------------------------------------
 def test_deviceEntryLegacyGetItem() -> None:
     obj = object()
     entry = DeviceEntry(
@@ -81,6 +84,7 @@ def test_deviceEntryGet() -> None:
     assert entry.get("class") == "inst"
     assert entry.get("missing") is None
     assert entry.get("missing", 42) == 42
+
 
 
 # ------------------------------------------------------------------
@@ -196,3 +200,6 @@ def test_setStatNone(registry: DeviceRegistry) -> None:
 def test_setStatReflectedInLegacyAccess(registry: DeviceRegistry) -> None:
     registry.setStat("dome", True)
     assert registry.drivers["dome"]["stat"] is True
+
+
+

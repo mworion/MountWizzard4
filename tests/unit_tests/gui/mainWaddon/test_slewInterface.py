@@ -33,7 +33,7 @@ def function(qapp):
 def test_slewSelectedTargetWithDome_2(function):
     function.app.mount.obsSite.AltTarget = Angle(degrees=10)
     function.app.mount.obsSite.AzTarget = Angle(degrees=10)
-    function.app.dReg.drivers["dome"]["stat"] = False
+    function.app.dReg.drivers["dome"].stat = False
     with mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=True):
         suc = function.slewSelectedTargetWithDome()
         assert suc
@@ -42,7 +42,7 @@ def test_slewSelectedTargetWithDome_2(function):
 def test_slewSelectedTargetWithDome_3(function):
     function.app.mount.obsSite.AltTarget = Angle(degrees=10)
     function.app.mount.obsSite.AzTarget = Angle(degrees=10)
-    function.app.dReg.drivers["dome"]["stat"] = False
+    function.app.dReg.drivers["dome"].stat = False
     with mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=False):
         suc = function.slewSelectedTargetWithDome()
         assert not suc
@@ -51,11 +51,11 @@ def test_slewSelectedTargetWithDome_3(function):
 def test_slewSelectedTargetWithDome_4(function):
     function.app.mount.obsSite.AltTarget = Angle(degrees=10)
     function.app.mount.obsSite.AzTarget = Angle(degrees=10)
-    function.app.dReg.drivers["dome"]["stat"] = True
+    function.app.dReg.drivers["dome"].stat = True
     with (
         mock.patch.object(function.app.mount.obsSite, "startSlewing", return_value=False),
         mock.patch.object(
-            function.app.dReg.drivers["dome"]["class"], "slewDome", return_value=10
+            function.app.dReg.drivers["dome"].instance, "slewDome", return_value=10
         ),
     ):
         suc = function.slewSelectedTargetWithDome()

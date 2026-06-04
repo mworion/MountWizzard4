@@ -36,7 +36,7 @@ def function(qapp):
 
 def test_addMissingFrameworksData_1(function):
     config = {"camera": {"frameworks": {"ascom": {}}}}
-    cameraClass = function.app.dReg.drivers["camera"]["class"]
+    cameraClass = function.app.dReg.drivers["camera"].instance
     with (
         mock.patch.object(cameraClass, "run", {"indi": None}),
         mock.patch.object(
@@ -200,8 +200,8 @@ def test_copyConfig_1(function):
 
 
 def test_copyConfig_2(function):
-    function.drivers["telescope"]["class"].framework = "indi"
-    function.drivers["cover"]["class"].framework = "indi"
+    function.drivers["telescope"].instance.framework = "indi"
+    function.drivers["cover"].instance.framework = "indi"
     function.driversData = {
         "telescope": {
             "framework": "indi",
@@ -227,8 +227,8 @@ def test_copyConfig_2(function):
 
 
 def test_copyConfig_3(function):
-    function.drivers["telescope"]["class"].framework = "indi"
-    function.drivers["cover"]["class"].framework = "indi"
+    function.drivers["telescope"].instance.framework = "indi"
+    function.drivers["cover"].instance.framework = "indi"
     function.driversData = {
         "telescope": {
             "framework": "indi",
@@ -254,8 +254,8 @@ def test_copyConfig_3(function):
 
 
 def test_copyConfig_4(function):
-    function.drivers["telescope"]["class"].framework = "indi"
-    function.drivers["cover"]["class"].framework = "indi"
+    function.drivers["telescope"].instance.framework = "indi"
+    function.drivers["cover"].instance.framework = "indi"
     function.driversData = {
         "telescope": {
             "framework": "indi",
@@ -317,13 +317,13 @@ def test_callPopup_1(function):
 
 
 def test_stopDriver_2(function):
-    function.drivers["telescope"]["class"].framework = None
+    function.drivers["telescope"].instance.framework = None
     function.stopDriver("telescope")
 
 
 def test_stopDriver_3(function):
-    function.drivers["telescope"]["class"].framework = "indi"
-    function.drivers["telescope"]["class"].run["indi"].deviceName = "indi"
+    function.drivers["telescope"].instance.framework = "indi"
+    function.drivers["telescope"].instance.run["indi"].deviceName = "indi"
     function.stopDriver("telescope")
 
 
@@ -424,7 +424,7 @@ def test_startDriver_5_autoStart(function):
             },
         }
     }
-    driverClass = function.app.dReg.drivers["telescope"]["class"]
+    driverClass = function.app.dReg.drivers["telescope"].instance
     with (
         mock.patch.object(function, "configDriver"),
         mock.patch.object(driverClass, "startCommunication") as mockStart,
@@ -491,14 +491,14 @@ def test_startDrivers_5_classNone(function):
             "framework": "indi",
         }
     }
-    originalClass = function.app.dReg.drivers["telescope"]["class"]
-    function.app.dReg.drivers["telescope"]["class"] = None
+    originalClass = function.app.dReg.drivers["telescope"].instance
+    function.app.dReg.drivers["telescope"].instance = None
     try:
         with mock.patch.object(function, "startDriver") as testMock:
             function.startDrivers()
             assert not testMock.called
     finally:
-        function.app.dReg.drivers["telescope"]["class"] = originalClass
+        function.app.dReg.drivers["telescope"].instance = originalClass
 
 
 def test_manualStopAllAscomDrivers_1(function):

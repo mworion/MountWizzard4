@@ -86,7 +86,7 @@ class Power:
             button.clicked.connect(partial(self.togglePortUSB, name))
 
         # functional signals
-        self.app.dReg["power"].instance.signals.version.connect(self.setGuiVersion)
+        self.app.dReg["power"].signals.version.connect(self.setGuiVersion)
 
         # cyclic tasks
         self.app.update1s.connect(self.updatePowerGui)
@@ -105,89 +105,73 @@ class Power:
 
     def updatePowerGui(self) -> None:
         for name, button in self.powerOnOFF.items():
-            value = self.app.dReg["power"].instance.data.get(
+            value = self.app.dReg["power"].data.get(
                 f"POWER_CONTROL.POWER_CONTROL_{name}", False
             )
             changeStyleDynamic(button, "run", value)
 
         for name, button in self.powerBoot.items():
-            value = self.app.dReg["power"].instance.data.get(
-                f"POWER_ON_BOOT.POWER_PORT_{name}", False
-            )
+            value = self.app.dReg["power"].data.get(f"POWER_ON_BOOT.POWER_PORT_{name}", False)
             button.setChecked(value)
 
         for name, button in self.current.items():
-            value = self.app.dReg["power"].instance.data.get(
-                f"POWER_CURRENT.POWER_CURRENT_{name}"
-            )
+            value = self.app.dReg["power"].data.get(f"POWER_CURRENT.POWER_CURRENT_{name}")
             guiSetText(button, "4.2f", value)
 
         for name, button in self.dew.items():
-            value = self.app.dReg["power"].instance.data.get(f"DEW_PWM.DEW_{name}")
+            value = self.app.dReg["power"].data.get(f"DEW_PWM.DEW_{name}")
             guiSetText(button, "3.0f", value)
 
         for name, button in self.dewLabel.items():
-            value = self.app.dReg["power"].instance.data.get(
-                f"DEW_CONTROL_LABEL.DEW_LABEL_{name}", ""
-            )
+            value = self.app.dReg["power"].data.get(f"DEW_CONTROL_LABEL.DEW_LABEL_{name}", "")
             button.setTitle(f"{value:1s}")
 
         for name, button in self.powerLabel.items():
-            value = self.app.dReg["power"].instance.data.get(
+            value = self.app.dReg["power"].data.get(
                 f"POWER_CONTROL_LABEL.POWER_LABEL_{name}", f"Power {name}"
             )
             button.setText(value)
 
-        value = self.app.dReg["power"].instance.data.get(
-            "POWER_CONSUMPTION.CONSUMPTION_AVG_AMPS"
-        )
+        value = self.app.dReg["power"].data.get("POWER_CONSUMPTION.CONSUMPTION_AVG_AMPS")
         guiSetText(self.ui.consumptionAvgAmps, "4.2f", value)
-        value = self.app.dReg["power"].instance.data.get(
-            "POWER_CONSUMPTION.CONSUMPTION_AMP_HOURS"
-        )
+        value = self.app.dReg["power"].data.get("POWER_CONSUMPTION.CONSUMPTION_AMP_HOURS")
         guiSetText(self.ui.consumptionAmpHours, "4.2f", value)
-        value = self.app.dReg["power"].instance.data.get(
-            "POWER_CONSUMPTION.CONSUMPTION_WATT_HOURS"
-        )
+        value = self.app.dReg["power"].data.get("POWER_CONSUMPTION.CONSUMPTION_WATT_HOURS")
         guiSetText(self.ui.consumptionWattHours, "4.2f", value)
 
-        value = self.app.dReg["power"].instance.data.get("POWER_SENSORS.SENSOR_VOLTAGE")
+        value = self.app.dReg["power"].data.get("POWER_SENSORS.SENSOR_VOLTAGE")
         guiSetText(self.ui.sensorVoltage, "4.1f", value)
-        value = self.app.dReg["power"].instance.data.get("POWER_SENSORS.SENSOR_CURRENT")
+        value = self.app.dReg["power"].data.get("POWER_SENSORS.SENSOR_CURRENT")
         guiSetText(self.ui.sensorCurrent, "4.2f", value)
-        value = self.app.dReg["power"].instance.data.get("POWER_SENSORS.SENSOR_POWER")
+        value = self.app.dReg["power"].data.get("POWER_SENSORS.SENSOR_POWER")
         guiSetText(self.ui.sensorPower, "4.2f", value)
 
-        value = self.app.dReg["power"].instance.data.get("DEW_CURRENT.DEW_CURRENT_A")
+        value = self.app.dReg["power"].data.get("DEW_CURRENT.DEW_CURRENT_A")
         guiSetText(self.ui.dewCurrentA, "4.2f", value)
-        value = self.app.dReg["power"].instance.data.get("DEW_CURRENT.DEW_CURRENT_B")
+        value = self.app.dReg["power"].data.get("DEW_CURRENT.DEW_CURRENT_B")
         guiSetText(self.ui.dewCurrentB, "4.2f", value)
-        value = self.app.dReg["power"].instance.data.get("DEW_CURRENT.DEW_CURRENT_C")
+        value = self.app.dReg["power"].data.get("DEW_CURRENT.DEW_CURRENT_C")
         guiSetText(self.ui.dewCurrentC, "4.2f", value)
 
-        value1 = self.app.dReg["power"].instance.data.get("AUTO_DEW.INDI_ENABLED", False)
-        value2 = self.app.dReg["power"].instance.data.get("AUTO_DEW.DEW_A", False)
-        value3 = self.app.dReg["power"].instance.data.get("AUTO_DEW.DEW_B", False)
-        value4 = self.app.dReg["power"].instance.data.get("AUTO_DEW.DEW_C", False)
+        value1 = self.app.dReg["power"].data.get("AUTO_DEW.INDI_ENABLED", False)
+        value2 = self.app.dReg["power"].data.get("AUTO_DEW.DEW_A", False)
+        value3 = self.app.dReg["power"].data.get("AUTO_DEW.DEW_B", False)
+        value4 = self.app.dReg["power"].data.get("AUTO_DEW.DEW_C", False)
         value = value1 or value2 or value3 or value4
         changeStyleDynamic(self.ui.autoDew, "run", value)
 
-        if self.app.dReg["power"].instance.data.get("FIRMWARE_INFO.VERSION", "1.4") > "1.4":
-            value = self.app.dReg["power"].instance.data.get(
+        if self.app.dReg["power"].data.get("FIRMWARE_INFO.VERSION", "1.4") > "1.4":
+            value = self.app.dReg["power"].data.get(
                 "ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE"
             )
             guiSetText(self.ui.adjustableOutput, "4.1f", value)
 
             for name, button in self.portUSB.items():
-                value = self.app.dReg["power"].instance.data.get(
-                    f"USB_PORT_CONTROL.PORT_{name}", False
-                )
+                value = self.app.dReg["power"].data.get(f"USB_PORT_CONTROL.PORT_{name}", False)
                 changeStyleDynamic(button, "run", value)
 
         else:
-            value = self.app.dReg["power"].instance.data.get(
-                "USB_HUB_CONTROL.INDI_ENABLED", False
-            )
+            value = self.app.dReg["power"].data.get("USB_HUB_CONTROL.INDI_ENABLED", False)
             changeStyleDynamic(self.ui.hubUSB, "run", value)
 
     def setDew(self, name: str) -> bool:

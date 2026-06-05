@@ -24,13 +24,11 @@ class SimulatorDome:
         super().__init__()
         self.parent = parent
         self.app = app
-        self.app.dReg["dome"].instance.signals.deviceConnected.connect(
-            lambda: self.showEnable(True)
-        )
-        self.app.dReg["dome"].instance.signals.deviceDisconnected.connect(
+        self.app.dReg["dome"].signals.deviceConnected.connect(lambda: self.showEnable(True))
+        self.app.dReg["dome"].signals.deviceDisconnected.connect(
             lambda: self.showEnable(False)
         )
-        self.app.dReg["dome"].instance.signals.azimuth.connect(self.updateAzimuth)
+        self.app.dReg["dome"].signals.azimuth.connect(self.updateAzimuth)
         self.app.update1s.connect(self.updateShutter)
         self.parent.ui.domeTransparent.checkStateChanged.connect(self.setTransparency)
 
@@ -81,10 +79,10 @@ class SimulatorDome:
             node["trans"].setRotationZ(-azimuth)
 
     def updateShutter(self) -> None:
-        if "DOME_SHUTTER.SHUTTER_OPEN" not in self.app.dReg["dome"].instance.data:
+        if "DOME_SHUTTER.SHUTTER_OPEN" not in self.app.dReg["dome"].data:
             return
 
-        isOpen = self.app.dReg["dome"].instance.data["DOME_SHUTTER.SHUTTER_OPEN"]
+        isOpen = self.app.dReg["dome"].data["DOME_SHUTTER.SHUTTER_OPEN"]
         radius = self.app.dReg["mount"].instance.geometry.domeRadius * 1000
         scale = 1 + (radius - 1250) / 1250
         width = self.app.dReg["dome"].instance.clearOpening * 1000

@@ -39,11 +39,11 @@ class HemisphereDraw(MWidget):
         self.alignmentStarsText: list = []
 
     def initConfig(self) -> None:
-        self.app.dReg["mount"].instance.signals.pointDone.connect(self.drawPointer)
-        self.app.dReg["dome"].instance.signals.azimuth.connect(self.setDomeAzimuth)
-        self.app.dReg["dome"].instance.signals.deviceDisconnected.connect(self.drawDome)
-        self.app.dReg["dome"].instance.signals.serverDisconnected.connect(self.drawDome)
-        self.app.dReg["mount"].instance.signals.getModelDone.connect(self.drawTab)
+        self.app.dReg["mount"].signals.pointDone.connect(self.drawPointer)
+        self.app.dReg["dome"].signals.azimuth.connect(self.setDomeAzimuth)
+        self.app.dReg["dome"].signals.deviceDisconnected.connect(self.drawDome)
+        self.app.dReg["dome"].signals.serverDisconnected.connect(self.drawDome)
+        self.app.dReg["mount"].signals.getModelDone.connect(self.drawTab)
         self.app.updatePointMarker.connect(self.setupModel)
         self.app.redrawHemisphere.connect(self.drawTab)
         self.app.redrawHorizon.connect(self.drawHorizon)
@@ -67,11 +67,11 @@ class HemisphereDraw(MWidget):
         self.ui.hemisphere.p[0].scene().sigMouseMoved.connect(self.mouseMovedHemisphere)
 
     def closeTab(self) -> None:
-        self.app.dReg["mount"].instance.signals.pointDone.disconnect(self.drawPointer)
-        self.app.dReg["mount"].instance.signals.getModelDone.disconnect(self.drawTab)
-        self.app.dReg["dome"].instance.signals.azimuth.disconnect(self.setDomeAzimuth)
-        self.app.dReg["dome"].instance.signals.deviceDisconnected.disconnect(self.drawDome)
-        self.app.dReg["dome"].instance.signals.serverDisconnected.disconnect(self.drawDome)
+        self.app.dReg["mount"].signals.pointDone.disconnect(self.drawPointer)
+        self.app.dReg["mount"].signals.getModelDone.disconnect(self.drawTab)
+        self.app.dReg["dome"].signals.azimuth.disconnect(self.setDomeAzimuth)
+        self.app.dReg["dome"].signals.deviceDisconnected.disconnect(self.drawDome)
+        self.app.dReg["dome"].signals.serverDisconnected.disconnect(self.drawDome)
         self.app.updatePointMarker.disconnect(self.setupModel)
         self.app.redrawHemisphere.disconnect(self.drawTab)
         self.app.redrawHorizon.disconnect(self.drawHorizon)

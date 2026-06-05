@@ -59,7 +59,7 @@ class BigPopup(MWidget):
 
         self.app.colorChange.connect(self.colorChange)
         self.app.update1s.connect(self.updateDeviceStats)
-        self.app.dReg["mount"].instance.signals.pointDone.connect(self.updateStatus)
+        self.app.dReg["mount"].signals.pointDone.connect(self.updateStatus)
         self.ui.stop.clicked.connect(lambda: self.app.virtualStop.emit())
         self.ui.mountOn.clicked.connect(lambda: self.app.mountOn.emit())
         self.ui.mountOff.clicked.connect(lambda: self.app.mountOff.emit())

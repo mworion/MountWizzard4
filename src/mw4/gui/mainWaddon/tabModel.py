@@ -146,9 +146,7 @@ class Model:
             changeStyleDynamic(self.ui.pauseModel, "pause", False)
 
     def programModelToMountFinish(self) -> None:
-        self.app.dReg["mount"].instance.signals.getModelDone.disconnect(
-            self.programModelToMountFinish
-        )
+        self.app.dReg["mount"].signals.getModelDone.disconnect(self.programModelToMountFinish)
         self.msg.emit(1, "Model", "Writing model", f"[{self.modelData.name}]")
         self.modelData.generateSaveData()
         modelPath = self.app.mwGlob["modelDir"] / (self.modelData.name + ".model")
@@ -165,9 +163,7 @@ class Model:
             self.msg.emit(3, "Model", "Run error", f"{'Program':12s} Failed - error")
             return
         self.msg.emit(1, "Model", "Program", f"[{self.modelData.name}] with success")
-        self.app.dReg["mount"].instance.signals.getModelDone.connect(
-            self.programModelToMountFinish
-        )
+        self.app.dReg["mount"].signals.getModelDone.connect(self.programModelToMountFinish)
         self.app.refreshModel.emit()
 
     def checkModelRunConditions(self) -> bool:

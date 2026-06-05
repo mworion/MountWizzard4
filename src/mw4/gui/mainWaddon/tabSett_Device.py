@@ -114,7 +114,7 @@ class SettDevice:
                 ui.clicked.connect(partial(self.callPopup, driver))
 
             if hasattr(self.app.dReg[driver].instance, "signals"):
-                signals = self.app.dReg[driver].instance.signals
+                signals = self.app.dReg[driver].signals
                 signals.serverDisconnected.connect(partial(self.serverDisconnected, driver))
                 signals.deviceConnected.connect(partial(self.deviceConnected, driver))
                 signals.deviceDisconnected.connect(partial(self.deviceDisconnected, driver))
@@ -123,7 +123,7 @@ class SettDevice:
         self.ui.ascomDisconnect.clicked.connect(self.manualStopAllAscomDrivers)
 
     def addMissingFrameworksData(self, driver: str, config: dict) -> dict:
-        for framework in self.app.dReg[driver].instance.run:
+        for framework in self.app.dReg[driver].run:
             if framework not in config[driver]["frameworks"]:
                 entry = self.app.dReg[driver].instance.defaultConfig["frameworks"][framework]
                 config[driver]["frameworks"][framework] = entry
@@ -219,7 +219,7 @@ class SettDevice:
         for entry in self.app.dReg.configurable():
             if entry.name == driverOrig:
                 continue
-            if entry.instance.framework == framework:
+            if entry.framework == framework:
                 self.stopDriver(driver=driverOrig)
             if entry.name not in self.driversData:
                 continue
@@ -244,8 +244,8 @@ class SettDevice:
 
     def stopDriver(self, driver: str) -> None:
         self.app.dReg[driver].stat = None
-        framework = self.app.dReg[driver].instance.framework
-        if framework not in self.app.dReg[driver].instance.run:
+        framework = self.app.dReg[driver].framework
+        if framework not in self.app.dReg[driver].run:
             return
 
         driverClass = self.app.dReg[driver].instance
@@ -265,18 +265,18 @@ class SettDevice:
     def configDriver(self, driver: str) -> None:
         self.app.dReg[driver].stat = False
         framework = self.driversData[driver]["framework"]
-        if framework not in self.app.dReg[driver].instance.run:
+        if framework not in self.app.dReg[driver].run:
             return
 
         frameworkConfig = self.driversData[driver]["frameworks"][framework]
-        driverClass = self.app.dReg[driver].instance.run[framework]
+        driverClass = self.app.dReg[driver].run[framework]
         for attribute in frameworkConfig:
             setattr(driverClass, attribute, frameworkConfig[attribute])
 
     def startDriver(self, driver: str, autoStart: bool = False) -> None:
         data = self.driversData[driver]
         framework = data["framework"]
-        if framework not in self.app.dReg[driver].instance.run:
+        if framework not in self.app.dReg[driver].run:
             return
 
         driverClass = self.app.dReg[driver].instance

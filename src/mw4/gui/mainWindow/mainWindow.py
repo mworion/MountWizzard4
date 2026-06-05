@@ -69,14 +69,12 @@ class MainWindow(MWidget):
                 "tab": self.ui.settingsTabWidget,
             },
         }
-        self.app.dReg["mount"].instance.signals.pointDone.connect(self.updateStatusGUI)
-        self.app.dReg["mount"].instance.signals.mountIsUp.connect(self.updateMountConnStat)
+        self.app.dReg["mount"].signals.pointDone.connect(self.updateStatusGUI)
+        self.app.dReg["mount"].signals.mountIsUp.connect(self.updateMountConnStat)
         self.app.remoteCommand.connect(self.remoteCommand)
-        self.app.dReg["plateSolve"].instance.signals.message.connect(
-            self.updatePlateSolveStatus
-        )
-        self.app.dReg["dome"].instance.signals.message.connect(self.updateDomeStatus)
-        self.app.dReg["camera"].instance.signals.message.connect(self.updateCameraStatus)
+        self.app.dReg["plateSolve"].signals.message.connect(self.updatePlateSolveStatus)
+        self.app.dReg["dome"].signals.message.connect(self.updateDomeStatus)
+        self.app.dReg["camera"].signals.message.connect(self.updateCameraStatus)
         self.ui.saveConfigQuit.clicked.connect(self.quitSave)
         self.ui.loadFrom.clicked.connect(self.loadProfileGUI)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)

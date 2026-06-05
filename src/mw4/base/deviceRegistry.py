@@ -43,6 +43,37 @@ class DeviceEntry:
     isConfigurable: bool
     stat: bool | None = field(default=None)
 
+    # ------------------------------------------------------------------
+    # Convenience properties for quick access to common instance attributes
+    # ------------------------------------------------------------------
+    @property
+    def signals(self) -> Any:
+        """Convenience property to access instance.signals directly."""
+        if self.instance is None:
+            raise AttributeError(f"Device '{self.name}' instance is None")
+        return self.instance.signals
+
+    @property
+    def data(self) -> Any:
+        """Convenience property to access instance.data directly."""
+        if self.instance is None:
+            raise AttributeError(f"Device '{self.name}' instance is None")
+        return self.instance.data
+
+    @property
+    def framework(self) -> Any:
+        """Convenience property to access instance.framework directly."""
+        if self.instance is None:
+            raise AttributeError(f"Device '{self.name}' instance is None")
+        return self.instance.framework
+
+    @property
+    def run(self) -> Any:
+        """Convenience property to access instance.run directly."""
+        if self.instance is None:
+            raise AttributeError(f"Device '{self.name}' instance is None")
+        return self.instance.run
+
 
 class DeviceRegistry:
     """Central registry of all device driver instances.

@@ -38,7 +38,7 @@ class SettDome:
         self.ui.useDomeGeometry.clicked.connect(self.setUseGeometry)
         self.ui.useDynamicFollowing.clicked.connect(self.setUseGeometry)
         self.ui.copyFromDomeDriver.clicked.connect(self.updateDomeGeometryToGui)
-        self.app.dReg["mount"].instance.signals.firmwareDone.connect(self.setUseGeometry)
+        self.app.dReg["mount"].signals.firmwareDone.connect(self.setUseGeometry)
         self.ui.domeRadius.valueChanged.connect(self.tab1)
         self.ui.domeNorthOffset.valueChanged.connect(self.tab2)
         self.ui.domeEastOffset.valueChanged.connect(self.tab3)
@@ -152,37 +152,27 @@ class SettDome:
         self.mainW.wIcon(self.ui.domeAbortSlew, "bolt-alt")
 
     def updateDomeGeometryToGui(self) -> None:
-        value = float(
-            self.app.dReg["dome"].instance.data.get("DOME_MEASUREMENTS.DM_OTA_OFFSET", 0)
-        )
+        value = float(self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_OTA_OFFSET", 0))
         self.ui.offGEM.setValue(value)
 
-        value = float(
-            self.app.dReg["dome"].instance.data.get("DOME_MEASUREMENTS.DM_DOME_RADIUS", 0)
-        )
+        value = float(self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_DOME_RADIUS", 0))
         self.ui.domeRadius.setValue(value)
 
-        value = float(
-            self.app.dReg["dome"].instance.data.get("DOME_MEASUREMENTS.DM_SHUTTER_WIDTH", 0)
-        )
+        value = float(self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_SHUTTER_WIDTH", 0))
         self.ui.domeClearOpening.setValue(value)
 
         value = float(
-            self.app.dReg["dome"].instance.data.get(
-                "DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT", 0
-            )
+            self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT", 0)
         )
         self.ui.domeNorthOffset.setValue(value)
 
         value = float(
-            self.app.dReg["dome"].instance.data.get(
-                "DOME_MEASUREMENTS.DM_EAST_DISPLACEMENT", 0
-            )
+            self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_EAST_DISPLACEMENT", 0)
         )
         self.ui.domeEastOffset.setValue(value)
 
         value = float(
-            self.app.dReg["dome"].instance.data.get("DOME_MEASUREMENTS.DM_UP_DISPLACEMENT", 0)
+            self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_UP_DISPLACEMENT", 0)
         )
         self.ui.domeVerticalOffset.setValue(value)
 

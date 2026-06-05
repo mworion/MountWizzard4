@@ -71,21 +71,21 @@ class ModelData(QObject):
         self.startSlew.connect(self.startNewSlew)
 
     def setupSignals(self) -> None:
-        self.app.dReg["camera"].instance.signals.exposed.connect(self.setImageExposed)
-        self.app.dReg["camera"].instance.signals.downloaded.connect(self.setImageDownloaded)
-        self.app.dReg["camera"].instance.signals.saved.connect(self.setImageSaved)
-        self.app.dReg["mount"].instance.signals.slewed.connect(self.setMountSlewed)
-        self.app.dReg["dome"].instance.signals.slewed.connect(self.setDomeSlewed)
-        self.app.dReg["camera"].instance.signals.saved.connect(self.startNewPlateSolve)
+        self.app.dReg["camera"].signals.exposed.connect(self.setImageExposed)
+        self.app.dReg["camera"].signals.downloaded.connect(self.setImageDownloaded)
+        self.app.dReg["camera"].signals.saved.connect(self.setImageSaved)
+        self.app.dReg["mount"].signals.slewed.connect(self.setMountSlewed)
+        self.app.dReg["dome"].signals.slewed.connect(self.setDomeSlewed)
+        self.app.dReg["camera"].signals.saved.connect(self.startNewPlateSolve)
         self.app.plateSolve.signals.result.connect(self.collectPlateSolveResult)
 
     def resetSignals(self) -> None:
-        self.app.dReg["camera"].instance.signals.exposed.disconnect(self.setImageExposed)
-        self.app.dReg["camera"].instance.signals.downloaded.disconnect(self.setImageDownloaded)
-        self.app.dReg["camera"].instance.signals.saved.disconnect(self.setImageSaved)
-        self.app.dReg["mount"].instance.signals.slewed.disconnect(self.setMountSlewed)
-        self.app.dReg["dome"].instance.signals.slewed.disconnect(self.setDomeSlewed)
-        self.app.dReg["camera"].instance.signals.saved.disconnect(self.startNewPlateSolve)
+        self.app.dReg["camera"].signals.exposed.disconnect(self.setImageExposed)
+        self.app.dReg["camera"].signals.downloaded.disconnect(self.setImageDownloaded)
+        self.app.dReg["camera"].signals.saved.disconnect(self.setImageSaved)
+        self.app.dReg["mount"].signals.slewed.disconnect(self.setMountSlewed)
+        self.app.dReg["dome"].signals.slewed.disconnect(self.setDomeSlewed)
+        self.app.dReg["camera"].signals.saved.disconnect(self.startNewPlateSolve)
         self.app.plateSolve.signals.result.disconnect(self.collectPlateSolveResult)
 
     def setImageExposed(self) -> None:

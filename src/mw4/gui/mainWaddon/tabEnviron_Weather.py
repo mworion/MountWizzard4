@@ -35,32 +35,32 @@ class EnvironWeather:
         self.refractionSources = {
             "sensor1Weather": {
                 "group": self.ui.sensor1Group,
-                "data": self.app.dReg["sensor1Weather"].instance.data,
-                "signals": self.app.dReg["sensor1Weather"].instance.signals,
+                "data": self.app.dReg["sensor1Weather"].data,
+                "signals": self.app.dReg["sensor1Weather"].signals,
                 "uiPost": "1",
             },
             "sensor2Weather": {
                 "group": self.ui.sensor2Group,
-                "data": self.app.dReg["sensor2Weather"].instance.data,
-                "signals": self.app.dReg["sensor2Weather"].instance.signals,
+                "data": self.app.dReg["sensor2Weather"].data,
+                "signals": self.app.dReg["sensor2Weather"].signals,
                 "uiPost": "2",
             },
             "sensor3Weather": {
                 "group": self.ui.sensor3Group,
-                "data": self.app.dReg["sensor3Weather"].instance.data,
-                "signals": self.app.dReg["sensor3Weather"].instance.signals,
+                "data": self.app.dReg["sensor3Weather"].data,
+                "signals": self.app.dReg["sensor3Weather"].signals,
                 "uiPost": "3",
             },
             "sensor4Weather": {
                 "group": self.ui.sensor4Group,
-                "data": self.app.dReg["sensor4Weather"].instance.data,
-                "signals": self.app.dReg["sensor4Weather"].instance.signals,
+                "data": self.app.dReg["sensor4Weather"].data,
+                "signals": self.app.dReg["sensor4Weather"].signals,
                 "uiPost": "4",
             },
             "directWeather": {
                 "group": self.ui.directGroup,
-                "data": self.app.dReg["directWeather"].instance.data,
-                "signals": self.app.dReg["directWeather"].instance.signals,
+                "data": self.app.dReg["directWeather"].data,
+                "signals": self.app.dReg["directWeather"].signals,
                 "uiPost": "Direct",
             },
         }
@@ -105,10 +105,8 @@ class EnvironWeather:
         }
 
         # weather functions
-        self.app.dReg["mount"].instance.signals.settingDone.connect(self.updateSourceGui)
-        self.app.dReg["mount"].instance.signals.settingDone.connect(
-            self.updateRefractionUpdateType
-        )
+        self.app.dReg["mount"].signals.settingDone.connect(self.updateSourceGui)
+        self.app.dReg["mount"].signals.settingDone.connect(self.updateRefractionUpdateType)
         self.ui.refracManual.clicked.connect(self.setRefractionUpdateType)
         self.ui.refracCont.clicked.connect(self.setRefractionUpdateType)
         self.ui.refracNoTrack.clicked.connect(self.setRefractionUpdateType)

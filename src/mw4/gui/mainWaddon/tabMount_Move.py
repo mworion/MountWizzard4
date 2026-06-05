@@ -99,7 +99,7 @@ class MountMove:
         clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
         self.ui.moveCoordinateAlt.textEdited.connect(self.setAlt)
         self.ui.moveCoordinateAz.textEdited.connect(self.setAz)
-        self.app.dReg["mount"].instance.signals.slewed.connect(self.moveAltAzDefault)
+        self.app.dReg["mount"].signals.slewed.connect(self.moveAltAzDefault)
         self.app.gameDirection.connect(self.moveAltAzGameController)
         self.app.gameSR.connect(self.moveClassicGameController)
         self.setupGuiMount()

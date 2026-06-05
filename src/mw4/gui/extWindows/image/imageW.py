@@ -286,7 +286,7 @@ class ImageWindow(MWidget):
         self.msg.emit(0, "Image", "Exposing", self.imageFileName.stem)
 
     def exposeImageDone(self, imagePath: Path) -> None:
-        self.app.dReg["camera"].instance.signals.saved.disconnect(self.exposeImageDone)
+        self.app.dReg["camera"].signals.saved.disconnect(self.exposeImageDone)
         self.msg.emit(0, "Image", "Exposed", imagePath.stem)
         self.imageFileName = imagePath
 
@@ -298,7 +298,7 @@ class ImageWindow(MWidget):
     def exposeImage(self) -> None:
         self.app.operationRunning.emit(Model.STATUS_EXPOSE_1)
         self.imagingDeviceStat["expose"] = True
-        self.app.dReg["camera"].instance.signals.saved.connect(self.exposeImageDone)
+        self.app.dReg["camera"].signals.saved.connect(self.exposeImageDone)
         self.exposeRaw(
             self.app.dReg["camera"].instance.exposureTime1,
             self.app.dReg["camera"].instance.binning1,
@@ -317,13 +317,13 @@ class ImageWindow(MWidget):
             self.app.operationRunning.emit(Model.STATUS_EXPOSE_N)
             self.msg.emit(1, "Image", "Expose", "Continuous start")
             self.imagingDeviceStat["exposeN"] = True
-            self.app.dReg["camera"].instance.signals.saved.connect(self.exposeImageNDone)
+            self.app.dReg["camera"].signals.saved.connect(self.exposeImageNDone)
             self.exposeRaw(
                 self.app.dReg["camera"].instance.exposureTimeN,
                 self.app.dReg["camera"].instance.binningN,
             )
         else:
-            self.app.dReg["camera"].instance.signals.saved.disconnect(self.exposeImageNDone)
+            self.app.dReg["camera"].signals.saved.disconnect(self.exposeImageNDone)
             self.imagingDeviceStat["exposeN"] = False
             self.msg.emit(1, "Image", "Expose", "Continuous stopped")
             self.app.operationRunning.emit(Model.STATUS_IDLE)
@@ -332,9 +332,9 @@ class ImageWindow(MWidget):
         if not self.app.dReg["camera"].instance.abort():
             return
         if self.imagingDeviceStat["expose"]:
-            self.app.dReg["camera"].instance.signals.saved.disconnect(self.exposeImageDone)
+            self.app.dReg["camera"].signals.saved.disconnect(self.exposeImageDone)
         if self.imagingDeviceStat["exposeN"]:
-            self.app.dReg["camera"].instance.signals.saved.disconnect(self.exposeImageNDone)
+            self.app.dReg["camera"].signals.saved.disconnect(self.exposeImageNDone)
 
         self.imageFileName = self.imageFileNameOld
         self.imagingDeviceStat["expose"] = False

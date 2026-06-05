@@ -80,7 +80,7 @@ class SettRelay:
 
         # dynamically generate the widgets
         self.setupRelayGui()
-        self.app.dReg["relay"].instance.signals.statusReady.connect(self.updateRelayGui)
+        self.app.dReg["relay"].signals.statusReady.connect(self.updateRelayGui)
 
         # make the gui signals linked to slots
         for relayButtonText in self.relayButtonTexts:

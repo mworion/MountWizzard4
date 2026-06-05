@@ -37,6 +37,69 @@ def test_deviceEntryAttributes() -> None:
 
 
 # ------------------------------------------------------------------
+# DeviceEntry — convenience properties for instance attributes
+# ------------------------------------------------------------------
+def test_deviceEntrySignalsProperty() -> None:
+    class MockInstance:
+        def __init__(self):
+            self.signals = "test_signals"
+
+    entry = DeviceEntry(
+        name="camera", instance=MockInstance(), deviceType="camera", isConfigurable=True
+    )
+    assert entry.signals == "test_signals"
+
+
+def test_deviceEntryDataProperty() -> None:
+    class MockInstance:
+        def __init__(self):
+            self.data = {"test_key": "test_value"}
+
+    entry = DeviceEntry(
+        name="camera", instance=MockInstance(), deviceType="camera", isConfigurable=True
+    )
+    assert entry.data == {"test_key": "test_value"}
+
+
+def test_deviceEntryFrameworkProperty() -> None:
+    class MockInstance:
+        def __init__(self):
+            self.framework = "indi"
+
+    entry = DeviceEntry(
+        name="camera", instance=MockInstance(), deviceType="camera", isConfigurable=True
+    )
+    assert entry.framework == "indi"
+
+
+def test_deviceEntryRunProperty() -> None:
+    class MockInstance:
+        def __init__(self):
+            self.run = {"indi": "device_driver"}
+
+    entry = DeviceEntry(
+        name="camera", instance=MockInstance(), deviceType="camera", isConfigurable=True
+    )
+    assert entry.run == {"indi": "device_driver"}
+
+
+def test_deviceEntrySignalsPropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(
+        name="refraction", instance=None, deviceType=None, isConfigurable=False
+    )
+    with pytest.raises(AttributeError):
+        _ = entry.signals
+
+
+def test_deviceEntryDataPropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(
+        name="refraction", instance=None, deviceType=None, isConfigurable=False
+    )
+    with pytest.raises(AttributeError):
+        _ = entry.data
+
+
+# ------------------------------------------------------------------
 # DeviceRegistry — population
 # ------------------------------------------------------------------
 def test_initiallyNotEmpty(registry: DeviceRegistry) -> None:

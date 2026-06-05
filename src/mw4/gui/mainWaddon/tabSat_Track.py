@@ -62,18 +62,12 @@ class SatTrack(SatData):
             },
         }
         self.satOrbits = {}
-        self.app.dReg["mount"].instance.signals.calcTLEdone.connect(
-            self.updateSatelliteTrackGui
-        )
-        self.app.dReg["mount"].instance.signals.calcTrajectoryDone.connect(
-            self.updateInternalTrackGui
-        )
-        self.app.dReg["mount"].instance.signals.getTLEdone.connect(
-            self.getSatelliteDataFromDatabase
-        )
-        self.app.dReg["mount"].instance.signals.pointDone.connect(self.followMount)
-        self.app.dReg["mount"].instance.signals.pointDone.connect(self.toggleTrackingOffset)
-        self.app.dReg["mount"].instance.signals.firmwareDone.connect(self.enableGuiFunctions)
+        self.app.dReg["mount"].signals.calcTLEdone.connect(self.updateSatelliteTrackGui)
+        self.app.dReg["mount"].signals.calcTrajectoryDone.connect(self.updateInternalTrackGui)
+        self.app.dReg["mount"].signals.getTLEdone.connect(self.getSatelliteDataFromDatabase)
+        self.app.dReg["mount"].signals.pointDone.connect(self.followMount)
+        self.app.dReg["mount"].signals.pointDone.connect(self.toggleTrackingOffset)
+        self.app.dReg["mount"].signals.firmwareDone.connect(self.enableGuiFunctions)
 
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)

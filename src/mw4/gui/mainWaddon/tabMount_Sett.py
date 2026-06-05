@@ -38,7 +38,7 @@ class MountSett:
         self.ui = mainW.ui
         self.typeConnectionTexts = ["RS-232", "GPS/RS-232", "LAN", "WiFi"]
 
-        ms = self.app.dReg["mount"].instance.signals
+        ms = self.app.dReg["mount"].signals
         ms.locationDone.connect(self.updateLocGUI)
         ms.pointDone.connect(self.updatePointGUI)
         ms.settingDone.connect(self.updateSettingGUI)
@@ -59,7 +59,7 @@ class MountSett:
         clickable(self.ui.statusAPO).connect(self.setAPO)
         clickable(self.ui.statusRefraction).connect(self.setRefraction)
         clickable(self.ui.settleTimeMount).connect(self.setSettleTimeMount)
-        self.app.dReg["mount"].instance.signals.firmwareDone.connect(self.setWOLorAPO)
+        self.app.dReg["mount"].signals.firmwareDone.connect(self.setWOLorAPO)
 
     def setWOLorAPO(self, fw: Firmware) -> None:
         self.ui.statusWOL.setEnabled(fw.isHW2012())

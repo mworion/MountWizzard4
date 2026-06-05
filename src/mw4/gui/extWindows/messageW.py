@@ -36,8 +36,6 @@ class MessageWindow(MWidget):
         self.ui = message_ui.Ui_MessageDialog()
         self.ui.setupUi(self.ws)
         self.setWindowTitle("Message")
-        self.setMinimumSize(self.FULL_WIDTH, self.HALF_HEIGHT)
-        self.setMaximumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.messFont: QFont | None = None
         self.messColor: list = []
         self.setupMessage()
@@ -97,6 +95,8 @@ class MessageWindow(MWidget):
         self.app.update1s.connect(self.writeMessage)
         self.app.colorChange.connect(self.colorChange)
         self.show()
+        self.setMinimumSize(self.FULL_WIDTH, self.HALF_HEIGHT)
+        self.setMaximumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
 
     def writeMessageQueue(self, prio: int, source: str, mType: str, message: str) -> None:
         self.log.debug(f"Message window:[{source} - {mType} - {message}]")

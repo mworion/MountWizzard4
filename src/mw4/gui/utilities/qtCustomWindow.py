@@ -68,7 +68,7 @@ class CustomTitleBar(QWidget):
             frameLayout.addWidget(buttons[button]["widget"])
 
         titleBarLayout.addWidget(titleFrame)
-        titleBarLayout.setContentsMargins(4, 0, 4, 0)
+        titleBarLayout.setContentsMargins(4, 4, 4, 0)
 
     def windowStateChanged(self, state) -> None:
         if state == Qt.WindowState.WindowMaximized:

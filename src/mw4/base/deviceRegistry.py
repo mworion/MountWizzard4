@@ -35,12 +35,7 @@ from typing import Any
 
 @dataclass
 class DeviceEntry:
-    """Holds all metadata for one registered device driver.
-
-    Backwards-compatible dict-style access is provided so that existing call
-    sites using ``entry["class"]``, ``entry["stat"]`` and
-    ``entry["deviceType"]`` continue to work unchanged during migration.
-    """
+    """Holds all metadata for one registered device driver."""
 
     name: str
     instance: Any | None
@@ -48,52 +43,13 @@ class DeviceEntry:
     isConfigurable: bool
     stat: bool | None = field(default=None)
 
-    # ------------------------------------------------------------------
-    # Legacy dict-style access (keeps old call sites working)
-    # ------------------------------------------------------------------
-    def __getitem__(self, key: str) -> Any:
-        match key:
-            case "class":
-                return self.instance
-            case "deviceType":
-                return self.deviceType
-            case "stat":
-                return self.stat
-            case _:
-                raise KeyError(key)
-
-    def __setitem__(self, key: str, value: Any) -> None:
-        match key:
-            case "class":
-                self.instance = value
-            case "deviceType":
-                self.deviceType = value
-            case "stat":
-                self.stat = value
-            case _:
-                raise KeyError(key)
-
-    def __contains__(self, key: object) -> bool:
-        return key in ("class", "deviceType", "stat")
-
-    def get(self, key: str, default: Any = None) -> Any:
-        try:
-            return self[key]
-        except KeyError:
-            return default
-
 
 class DeviceRegistry:
     """Central registry of all device driver instances.
 
-    ``drivers`` is the primary mapping from driver name to
-    :class:`DeviceEntry`.  Because ``DeviceEntry`` supports dict-style
-    item access (``entry["class"]``, ``entry["stat"]`` etc.) all legacy
-    call sites continue to work without change.
-
-    New call sites should prefer attribute access on ``DeviceEntry``
-    (``entry.instance``, ``entry.stat``) and the iterator helpers
-    provided here.
+    Uses :class:`DeviceEntry` for storing metadata about each device driver.
+    Access drivers via attribute notation (``entry.instance``, ``entry.stat``)
+    and the iterator helpers provided here.
     """
 
     def __init__(self, app: Any) -> None:

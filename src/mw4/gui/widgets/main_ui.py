@@ -111,18 +111,7 @@ class Ui_MainWindow(object):
         self.profileName.setFrame(False)
         self.profileName.setReadOnly(True)
 
-        self.gridLayout_14.addWidget(self.profileName, 6, 0, 1, 2)
-
-        self.saveConfigAs = QPushButton(self.profileGroup)
-        self.saveConfigAs.setObjectName(u"saveConfigAs")
-        sizePolicy1.setHeightForWidth(self.saveConfigAs.sizePolicy().hasHeightForWidth())
-        self.saveConfigAs.setSizePolicy(sizePolicy1)
-        self.saveConfigAs.setMinimumSize(QSize(0, 25))
-        self.saveConfigAs.setMaximumSize(QSize(16777215, 25))
-        self.saveConfigAs.setFont(font1)
-        self.saveConfigAs.setStyleSheet(u"")
-
-        self.gridLayout_14.addWidget(self.saveConfigAs, 3, 0, 1, 1)
+        self.gridLayout_14.addWidget(self.profileName, 4, 0, 1, 1)
 
         self.saveConfig = QPushButton(self.profileGroup)
         self.saveConfig.setObjectName(u"saveConfig")
@@ -133,7 +122,27 @@ class Ui_MainWindow(object):
         self.saveConfig.setFont(font1)
         self.saveConfig.setStyleSheet(u"")
 
-        self.gridLayout_14.addWidget(self.saveConfig, 3, 1, 1, 1)
+        self.gridLayout_14.addWidget(self.saveConfig, 2, 1, 1, 1)
+
+        self.saveConfigAs = QPushButton(self.profileGroup)
+        self.saveConfigAs.setObjectName(u"saveConfigAs")
+        sizePolicy1.setHeightForWidth(self.saveConfigAs.sizePolicy().hasHeightForWidth())
+        self.saveConfigAs.setSizePolicy(sizePolicy1)
+        self.saveConfigAs.setMinimumSize(QSize(0, 25))
+        self.saveConfigAs.setMaximumSize(QSize(16777215, 25))
+        self.saveConfigAs.setFont(font1)
+        self.saveConfigAs.setStyleSheet(u"")
+
+        self.gridLayout_14.addWidget(self.saveConfigAs, 2, 0, 1, 1)
+
+        self.setting = QPushButton(self.profileGroup)
+        self.setting.setObjectName(u"setting")
+        sizePolicy1.setHeightForWidth(self.setting.sizePolicy().hasHeightForWidth())
+        self.setting.setSizePolicy(sizePolicy1)
+        self.setting.setMinimumSize(QSize(0, 25))
+        self.setting.setFont(font1)
+
+        self.gridLayout_14.addWidget(self.setting, 4, 1, 1, 1)
 
 
         self.gridLayout.addWidget(self.profileGroup, 0, 2, 1, 1)
@@ -8483,13 +8492,14 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.profileName.setText("")
 #if QT_CONFIG(tooltip)
-        self.saveConfigAs.setToolTip(QCoreApplication.translate("MainWindow", u"Saves the actual profile under a selectable new name on the disk without closing the appliation.", None))
-#endif // QT_CONFIG(tooltip)
-        self.saveConfigAs.setText(QCoreApplication.translate("MainWindow", u"Save as", None))
-#if QT_CONFIG(tooltip)
         self.saveConfig.setToolTip(QCoreApplication.translate("MainWindow", u"Saves the actual profile to disk under the same name without closing the application.", None))
 #endif // QT_CONFIG(tooltip)
         self.saveConfig.setText(QCoreApplication.translate("MainWindow", u"Save", None))
+#if QT_CONFIG(tooltip)
+        self.saveConfigAs.setToolTip(QCoreApplication.translate("MainWindow", u"Saves the actual profile under a selectable new name on the disk without closing the appliation.", None))
+#endif // QT_CONFIG(tooltip)
+        self.saveConfigAs.setText(QCoreApplication.translate("MainWindow", u"Save as", None))
+        self.setting.setText(QCoreApplication.translate("MainWindow", u"Setting", None))
 #if QT_CONFIG(tooltip)
         self.mainTabWidget.setToolTip("")
 #endif // QT_CONFIG(tooltip)

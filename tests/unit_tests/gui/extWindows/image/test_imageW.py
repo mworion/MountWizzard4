@@ -48,13 +48,13 @@ def test_initConfig_1(function):
 
 
 def test_storeConfig_1(function):
-    if "imageW" in function.app.config:
-        del function.app.config["imageW"]
+    if "WindowImage" in function.app.config:
+        del function.app.config["WindowImage"]
     function.storeConfig()
 
 
 def test_storeConfig_2(function):
-    function.app.config["imageW"] = {}
+    function.app.config["WindowImage"] = {}
     function.storeConfig()
 
 

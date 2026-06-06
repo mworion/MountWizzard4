@@ -24,6 +24,7 @@ from mw4.gui.extWindows.measure.measureW import MeasureWindow
 from mw4.gui.extWindows.messageW import MessageWindow
 from mw4.gui.extWindows.satelliteHorW import SatelliteHorizonWindow
 from mw4.gui.extWindows.satelliteMapW import SatelliteMapWindow
+from mw4.gui.extWindows.setting.settingW import SettingWindow
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 from mw4.gui.extWindows.video.videoW import VideoWindow
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
@@ -118,6 +119,12 @@ class ExternalWindows:
                 "classObj": None,
                 "name": "SimulatorDialog",
                 "class": SimulatorWindow,
+            },
+            "showSettingW": {
+                "button": self.mainW.ui.setting,
+                "classObj": None,
+                "name": "SettingDialog",
+                "class": SettingWindow,
             },
         }
 

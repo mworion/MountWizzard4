@@ -110,14 +110,14 @@ def test_initConfig_1(function):
 
 
 def test_storeConfig_1(function):
-    if "measureW" in function.app.config:
-        del function.app.config["measureW"]
+    if "WindowMeasure" in function.app.config:
+        del function.app.config["WindowMeasure"]
 
     function.storeConfig()
 
 
 def test_storeConfig_2(function):
-    function.app.config["measureW"] = {}
+    function.app.config["WindowMeasure"] = {}
     function.storeConfig()
 
 

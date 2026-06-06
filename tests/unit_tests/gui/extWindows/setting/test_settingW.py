@@ -16,17 +16,17 @@
 import gc
 import pytest
 import unittest.mock as mock
-from mw4.gui.extWindows.bigPopupW import BigPopup
+from mw4.gui.extWindows.setting.settingW import SettingWindow
 from mw4.gui.utilities.qtMain import MWidget
-from PySide6.QtGui import QCloseEvent
+from PySide6.QtGui import QCloseEvent, QFont
 from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    window = BigPopup(App(), title="Big buttons")
-    yield window
+    func = SettingWindow(app=App(), title="Setting")
+    yield func
     QApplication.processEvents()
     gc.collect()
     QApplication.processEvents()
@@ -37,15 +37,13 @@ def test_initConfig_1(function):
 
 
 def test_storeConfig_1(function):
-    if "WindowBigPopup" in function.app.config:
-        del function.app.config["WindowBigPopup"]
-
+    if "WindowSetting" in function.app.config:
+        del function.app.config["WindowSetting"]
     function.storeConfig()
 
 
 def test_storeConfig_2(function):
-    function.app.config["WindowBigPopup"] = {}
-
+    function.app.config["WindowSetting"] = {}
     function.storeConfig()
 
 
@@ -62,17 +60,3 @@ def test_showWindow(function):
 
 def test_colorChange(function):
     function.colorChange()
-
-
-def test_updateDeviceStats(function):
-    function.updateDeviceStats()
-
-
-def test_updateStatus_1(function):
-    function.app.mount.obsSite.status = 0
-    function.updateStatus()
-
-
-def test_updateStatus_2(function):
-    function.app.mount.obsSite.status = 1
-    function.updateStatus()

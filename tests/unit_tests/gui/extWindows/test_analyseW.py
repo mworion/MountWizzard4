@@ -40,14 +40,14 @@ def test_initConfig_1(function):
 
 
 def test_storeConfig_1(function):
-    if "analyseW" in function.app.config:
-        del function.app.config["analyseW"]
+    if "WindowAnalyse" in function.app.config:
+        del function.app.config["WindowAnalyse"]
 
     function.storeConfig()
 
 
 def test_storeConfig_2(function):
-    function.app.config["analyseW"] = {}
+    function.app.config["WindowAnalyse"] = {}
 
     function.storeConfig()
 

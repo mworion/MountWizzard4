@@ -64,17 +64,6 @@ def test_deviceEntryDataProperty() -> None:
     assert entry.data == {"test_key": "test_value"}
 
 
-def test_deviceEntryFrameworkProperty() -> None:
-    class MockInstance:
-        def __init__(self):
-            self.framework = "indi"
-
-    entry = DeviceEntry(
-        name="camera", instance=MockInstance(), deviceType="camera", isConfigurable=True
-    )
-    assert entry.framework == "indi"
-
-
 def test_deviceEntryRunProperty() -> None:
     class MockInstance:
         def __init__(self):

@@ -62,13 +62,6 @@ class DeviceEntry:
         return self.instance.data
 
     @property
-    def framework(self) -> Any:
-        """Convenience property to access instance.framework directly."""
-        if self.instance is None:
-            raise AttributeError(f"Device '{self.name}' instance is None")
-        return self.instance.framework
-
-    @property
     def run(self) -> Any:
         """Convenience property to access instance.run directly."""
         if self.instance is None:

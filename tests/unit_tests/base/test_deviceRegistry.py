@@ -428,3 +428,41 @@ def test_initPhase2MountAccessibleDuringAddDevices() -> None:
     assert app.mount is not None
     dReg.addDevices(app)
     assert dReg["mount"].instance is app.mount
+
+
+def test_initProductionCreatesNewMount() -> None:
+    """In production (no pre-existing mount), __init__ creates new MountDevice."""
+    from mw4.mountcontrol.mount import MountDevice
+
+    app = App()
+    # Ensure app.mount doesn't exist before initialization
+    if hasattr(app, "mount"):
+        delattr(app, "mount")
+
+    dReg = DeviceRegistry(app)
+
+    # Assert mount was created
+    assert hasattr(app, "mount")
+    assert app.mount is not None
+    assert isinstance(app.mount, MountDevice)
+    # Assert mount entry is in registry
+    assert "mount" in dReg.drivers
+    assert dReg["mount"].instance is app.mount
+
+
+def test_initTestModeMountsInjected() -> None:
+    """In test mode (pre-existing mount), __init__ uses injected mount."""
+    from mw4.mountcontrol.mount import MountDevice
+
+    app = App()
+    # Create a mock mount and inject it
+    mock_mount = MountDevice(app, verbose=True)
+    app.mount = mock_mount
+
+    dReg = DeviceRegistry(app)
+
+    # Assert the injected mount is used
+    assert dReg["mount"].instance is mock_mount
+    assert app.mount is mock_mount
+
+

@@ -16,6 +16,7 @@
 from functools import partial
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, findIndexValue
+from mw4.logic.driverHandling import DriverHandling
 from PySide6.QtWidgets import QListView
 from typing import Any
 
@@ -26,7 +27,8 @@ class SettDevice:
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-        self.drivers = mainW.app.dReg.drivers
+        self.driversData = {}
+        self.dHandling = DriverHandling(mainW.app.dReg, self.driverData)
         self.devicePopup = None
 
         self.setupUiDriver: dict[str, Any] = {
@@ -104,7 +106,6 @@ class SettDevice:
             },
         }
 
-        self.driversData = {}
         for driver in self.setupUiDriver:
             self.setupUiDriver[driver]["uiDropDown"].activated.connect(
                 partial(self.dispatchDriverDropdown, driver)
@@ -119,37 +120,8 @@ class SettDevice:
                 signals.deviceConnected.connect(partial(self.deviceConnected, driver))
                 signals.deviceDisconnected.connect(partial(self.deviceDisconnected, driver))
 
-        self.ui.ascomConnect.clicked.connect(self.manualStartAllAscomDrivers)
-        self.ui.ascomDisconnect.clicked.connect(self.manualStopAllAscomDrivers)
-
-    def addMissingFrameworksData(self, driver: str, config: dict) -> dict:
-        for framework in self.app.dReg[driver].run:
-            if framework not in config[driver]["frameworks"]:
-                entry = self.app.dReg[driver].instance.defaultConfig["frameworks"][framework]
-                config[driver]["frameworks"][framework] = entry
-        return config
-
-    def addMissingDefaultData(self, config: dict) -> dict:
-        for entry in self.app.dReg.configurable():
-            if entry.name not in config:
-                config[entry.name] = {}
-                config[entry.name].update(entry.instance.defaultConfig)
-                continue
-            config = self.addMissingFrameworksData(entry.name, config)
-        return config
-
-    def removeUnknownDriversData(self, config: dict) -> dict:
-        for driver in list(config):
-            if driver not in self.app.dReg.drivers:
-                del config[driver]
-        return config
-
-    def loadDriversDataFromConfig(self, config: dict) -> None:
-        config = config.get("driversData", {})
-        self.driversData.clear()
-        config = self.addMissingDefaultData(config)
-        config = self.removeUnknownDriversData(config)
-        self.driversData.update(config)
+        self.ui.ascomConnect.clicked.connect(self.dHandling.manualStartAllAscomDrivers)
+        self.ui.ascomDisconnect.clicked.connect(self.dHandling.manualStopAllAscomDrivers)
 
     def initConfig(self) -> None:
         config = self.app.config["WindowMain"]
@@ -242,97 +214,31 @@ class SettDevice:
         self.devicePopup.initConfig()
         self.devicePopup.ui.ok.clicked.connect(self.processPopupResults)
 
-    def stopDriver(self, driver: str) -> None:
-        self.app.dReg[driver].stat = None
-        framework = self.app.dReg[driver].framework
-        if framework not in self.app.dReg[driver].run:
-            return
-
-        driverClass = self.app.dReg[driver].instance
-        if driverClass.run[framework].deviceName != "":
-            driverClass.stopCommunication()
-            driverClass.data.clear()
-            driverClass.run[framework].deviceName = ""
-            self.msg.emit(0, "Driver", f"{framework.upper()} disabled", f"{driver}")
-
-        changeStyleDynamic(self.setupUiDriver[driver]["uiDropDown"], "active", False)
-        self.app.dReg[driver].stat = None
-
-    def stopDrivers(self) -> None:
-        for entry in self.app.dReg.configurable():
-            self.stopDriver(driver=entry.name)
-
-    def configDriver(self, driver: str) -> None:
-        self.app.dReg[driver].stat = False
-        framework = self.driversData[driver]["framework"]
-        if framework not in self.app.dReg[driver].run:
-            return
-
-        frameworkConfig = self.driversData[driver]["frameworks"][framework]
-        driverClass = self.app.dReg[driver].run[framework]
-        for attribute in frameworkConfig:
-            setattr(driverClass, attribute, frameworkConfig[attribute])
-
-    def startDriver(self, driver: str, autoStart: bool = False) -> None:
-        data = self.driversData[driver]
-        framework = data["framework"]
-        if framework not in self.app.dReg[driver].run:
-            return
-
-        driverClass = self.app.dReg[driver].instance
-        loadConfig = data["frameworks"][framework].get("loadConfig", False)
-        updateRate = data["frameworks"][framework].get("updateRate", 1000)
-        driverClass.updateRate = updateRate
-        driverClass.loadConfig = loadConfig
-        driverClass.framework = framework
-
-        self.configDriver(driver)
-        if autoStart:
-            driverClass.startCommunication()
-
-        self.msg.emit(0, "Driver", f"{framework.upper()} enabled", f"{driver}")
-
-    def startDrivers(self) -> None:
-        for entry in self.app.dReg.configurable():
-            if entry.name not in self.driversData:
-                continue
-            if self.driversData[entry.name]["framework"] == "":
-                continue
-            isAscomAutoConnect = self.ui.autoConnectASCOM.isChecked()
-            isAscom = self.driversData[entry.name]["framework"] in ["ascom", "alpaca"]
-            autostart = isAscomAutoConnect and isAscom or not isAscom
-            self.startDriver(entry.name, autostart)
-
-    def manualStopAllAscomDrivers(self) -> None:
-        for entry in self.app.dReg.configurable():
-            if entry.name not in self.driversData:
-                continue
-            if self.driversData[entry.name]["framework"] in ["ascom", "alpaca"]:
-                self.stopDriver(entry.name)
-
-    def manualStartAllAscomDrivers(self) -> None:
-        for entry in self.app.dReg.configurable():
-            if entry.name not in self.driversData:
-                continue
-            if self.driversData[entry.name]["framework"] in ["ascom", "alpaca"]:
-                self.startDriver(entry.name, True)
-
     def dispatchDriverDropdown(self, driver: str, position: int) -> None:
         dropDownEntry = self.setupUiDriver[driver]["uiDropDown"].currentText()
         isDisabled = position == 0
         framework = "" if isDisabled else dropDownEntry.split("-")[0].rstrip()
 
         self.driversData[driver]["framework"] = framework
+        changeStyleDynamic(self.setupUiDriver[driver]["uiDropDown"], "active", False)
         self.stopDriver(driver)
         if framework:
             self.startDriver(driver, True)
+
+    def startDriver(self, driver: str, auto: bool) -> None:
+        self.dHandling.startDriver()
+        self.msg.emit(0, "Driver", f"{self.app.dReg[driver].framework} enabled", f"{driver}")
+
+    def stopDriver(self, driver: str) -> None:
+        self.dHandling.stopDriver()
+        self.msg.emit(0, "Driver", f"{self.app.dReg[driver].framework} disabled", f"{driver}")
 
     def serverDisconnected(self, driver: str, deviceList: list) -> None:
         self.msg.emit(0, "Driver", "Server disconnected", f"{driver}")
 
     def deviceConnected(self, driver: str, deviceName: str) -> None:
         changeStyleDynamic(self.setupUiDriver[driver]["uiDropDown"], "active", True)
-        self.app.dReg[driver].stat = True
+        self.app.dReg.setStat(driver, True)
         self.msg.emit(0, "Driver", "Device connected", f"{deviceName}::{driver}")
 
         data = self.driversData[driver]
@@ -342,5 +248,5 @@ class SettDevice:
 
     def deviceDisconnected(self, driver: str, deviceName: str) -> None:
         changeStyleDynamic(self.setupUiDriver[driver]["uiDropDown"], "active", False)
-        self.app.dReg[driver].stat = False
+        self.app.dReg.setStat(driver, False)
         self.msg.emit(0, "Driver", "Device disconnected", f"{deviceName}::{driver}")

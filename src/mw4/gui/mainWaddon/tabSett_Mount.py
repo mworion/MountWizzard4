@@ -91,7 +91,7 @@ class SettMount:
             self.msg.emit(2, "Mount", "Command", "Mount cannot be booted")
 
     def mountShutdown(self) -> None:
-        self.app.dReg["mount"].instance.stat = False
+        self.app.dReg.setStat("mount", False)
         if self.app.dReg["mount"].instance.shutdown():
             self.msg.emit(0, "Mount", "Command", "Shutting mount down")
         else:
@@ -122,7 +122,7 @@ class SettMount:
     def mountMAC(self) -> None:
         self.app.dReg["mount"].instance.MAC = self.ui.mountMAC.text()
 
-    def setMountMAC(self, sett: Setting = None) -> None:
+    def setMountMAC(self, sett: Setting | None = None) -> None:
         if sett is None:
             return
         if sett.addressLanMAC is None:
@@ -155,7 +155,7 @@ class SettMount:
     def syncClock(self) -> None:
         if self.ui.syncTimeNone.isChecked():
             return
-        if not self.app.dReg["mount"].instance.stat:
+        if not self.app.dReg["mount"].stat:
             return
 
         doSyncNotTrack = self.ui.syncTimeNotTrack.isChecked()

@@ -23,7 +23,7 @@ from mw4.logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
 from pathlib import Path
 from typing import Any
 
-if platform.system() == "Windows":
+if platform.system() == "Windows":  # pragma: no cover
     from mw4.logic.camera.cameraAscom import CameraAscom
 
 
@@ -63,7 +63,7 @@ class Camera:
             "indi": CameraIndi(self),
             "alpaca": CameraAlpaca(self),
         }
-        if platform.system() == "Windows":
+        if platform.system() == "Windows":  # pragma: no cover
             self.run["ascom"] = CameraAscom(self)
 
         for fw in self.run:

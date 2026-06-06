@@ -20,7 +20,7 @@ from mw4.logic.filter.filterAlpaca import FilterAlpaca
 from mw4.logic.filter.filterIndi import FilterIndi
 from typing import Any
 
-if platform.system() == "Windows":
+if platform.system() == "Windows":  # pragma: no cover
     from mw4.logic.filter.filterAscom import FilterAscom
 
 

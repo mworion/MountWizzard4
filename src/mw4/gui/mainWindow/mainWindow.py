@@ -291,9 +291,7 @@ class MainWindow(MWidget):
     def updateThreadAndOnlineStatus(self) -> None:
         mode = "Online" if self.ui.isOnline.isChecked() else "Offline"
         moon = self.ui.moonPhaseIllumination.text()
-        f = dark_twilight_day(
-            self.app.ephemeris, self.app.dReg["mount"].location
-        )
+        f = dark_twilight_day(self.app.ephemeris, self.app.dReg["mount"].location)
         twilight = TWILIGHTS[int(f(self.app.dReg["mount"].obsSite.ts.now()))]
         activeCount = self.threadPool.activeThreadCount()
         diskUsage = shutil.disk_usage(self.app.mwGlob["workDir"])

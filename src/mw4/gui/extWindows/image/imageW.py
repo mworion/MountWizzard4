@@ -270,9 +270,7 @@ class ImageWindow(MWidget):
         self.showImage(self.imageFileName)
 
     def exposeRaw(self, exposureTime: float, binning: int) -> None:
-        timeString = self.app.dReg["mount"].obsSite.timeJD.utc_strftime(
-            "%Y-%m-%d-%H-%M-%S"
-        )
+        timeString = self.app.dReg["mount"].obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         if self.ui.timeTagImage.isChecked():
             self.imageFileName = self.app.mwGlob["imageDir"] / (timeString + "-exposure.fits")
         else:

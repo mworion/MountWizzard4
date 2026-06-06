@@ -93,7 +93,7 @@ class MeasureWindow(MWidget):
         self.drawMeasure()
 
     def setTitle(self) -> None:
-        if self.app.dReg["measure"].framework == "csv":
+        if self.app.dReg["measure"].instance.framework == "csv":
             imagePath = self.app.measure.run["csv"].csvFilename
             title = f"Measuring:   {imagePath.stem}"
         else:

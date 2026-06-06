@@ -8,9 +8,11 @@ runs:
     - uses: actions/download-artifact@v8
 
     - name: install uv
-      uses: astral-sh/setup-uv@v8.2
+      uses: astral-sh/setup-uv@v8.2.0
       with:
         enable-cache: true
+        cache-dependency-path: pyproject.toml
+        cache-key: ${{ runner.os }}-${{ matrix.python-version }}-uv
         python-version: '3.13'
 
     - name: build package

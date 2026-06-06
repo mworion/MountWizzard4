@@ -165,6 +165,7 @@ class App(QObject):
         self.uiWindows = {}
         self.mainW = MainW()
         self.deviceRegistry = DeviceRegistry(self)
+        self.deviceRegistry.addDevices(self)
         self.dReg = self.deviceRegistry  # alias for compatibility
         self.buildPoint = BuildPoint(self)
         self.onlineMode = False

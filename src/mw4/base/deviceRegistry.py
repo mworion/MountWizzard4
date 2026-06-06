@@ -132,127 +132,134 @@ class DeviceRegistry:
         # PHASE 2: Create all other devices (can now safely access app.mount)
         # =====================================================================
         self.drivers: dict[str, DeviceEntry] = {
-            "camera": DeviceEntry(
-                name="camera",
-                instance=Camera(app),  # Can access app.mount
-                deviceType="camera",
-                isConfigurable=True,
-            ),
-            "cover": DeviceEntry(
-                name="cover",
-                instance=Cover(app),
-                deviceType="covercalibrator",
-                isConfigurable=True,
-            ),
-            "directWeather": DeviceEntry(
-                name="directWeather",
-                instance=DirectWeather(app),
-                deviceType=None,
-                isConfigurable=True,
-            ),
-            "dome": DeviceEntry(
-                name="dome",
-                instance=Dome(app),
-                deviceType="dome",
-                isConfigurable=True,
-            ),
-            "filter": DeviceEntry(
-                name="filter",
-                instance=Filter(app),
-                deviceType="filterwheel",
-                isConfigurable=True,
-            ),
-            "focuser": DeviceEntry(
-                name="focuser",
-                instance=Focuser(app),
-                deviceType="focuser",
-                isConfigurable=True,
-            ),
-            "lightPanel": DeviceEntry(
-                name="lightPanel",
-                instance=LightPanel(app),
-                deviceType="covercalibrator",
-                isConfigurable=True,
-            ),
-            "measure": DeviceEntry(
-                name="measure",
-                instance=MeasureData(app),
-                deviceType=None,
-                isConfigurable=True,
-            ),
             "mount": DeviceEntry(
                 name="mount",
                 instance=mount_instance,
                 deviceType=None,
                 isConfigurable=False,
             ),
-            "plateSolve": DeviceEntry(
+
+        }
+
+    # =====================================================================
+    # PHASE 3: Create all other devices (can now safely access app.mount)
+    # =====================================================================
+
+    def addDevices(self, app: Any) -> None:
+        self.drivers["camera"] = DeviceEntry(
+                name="camera",
+                instance=Camera(app),  # Can access app.mount
+                deviceType="camera",
+                isConfigurable=True,
+            )
+        self.drivers["cover"] = DeviceEntry(
+                name="cover",
+                instance=Cover(app),
+                deviceType="covercalibrator",
+                isConfigurable=True,
+            )
+        self.drivers["directWeather"] = DeviceEntry(
+                name="directWeather",
+                instance=DirectWeather(app),
+                deviceType=None,
+                isConfigurable=True,
+            )
+        self.drivers["dome"] = DeviceEntry(
+                name="dome",
+                instance=Dome(app),
+                deviceType="dome",
+                isConfigurable=True,
+            )
+        self.drivers["filter"] = DeviceEntry(
+                name="filter",
+                instance=Filter(app),
+                deviceType="filterwheel",
+                isConfigurable=True,
+            )
+        self.drivers["focuser"] = DeviceEntry(
+                name="focuser",
+                instance=Focuser(app),
+                deviceType="focuser",
+                isConfigurable=True,
+            )
+        self.drivers["lightPanel"] = DeviceEntry(
+                name="lightPanel",
+                instance=LightPanel(app),
+                deviceType="covercalibrator",
+                isConfigurable=True,
+            )
+        self.drivers["measure"] = DeviceEntry(
+                name="measure",
+                instance=MeasureData(app),
+                deviceType=None,
+                isConfigurable=True,
+            )
+        self.drivers["plateSolve"] = DeviceEntry(
                 name="plateSolve",
                 instance=PlateSolve(app),
                 deviceType="plateSolve",
                 isConfigurable=True,
-            ),
-            "power": DeviceEntry(
+            )
+        self.drivers["power"] = DeviceEntry(
                 name="power",
                 instance=PegasusUPB(app),
                 deviceType="switch",
                 isConfigurable=True,
-            ),
-            "relay": DeviceEntry(
+            )
+        self.drivers["relay"] = DeviceEntry(
                 name="relay",
                 instance=KMRelay(),
                 deviceType=None,
                 isConfigurable=True,
-            ),
-            "refraction": DeviceEntry(
+            )
+        self.drivers["refraction"] = DeviceEntry(
                 name="refraction",
                 instance=None,
                 deviceType=None,
                 isConfigurable=False,
-            ),
-            "remote": DeviceEntry(
+            )
+        self.drivers["remote"] = DeviceEntry(
                 name="remote",
                 instance=Remote(app),
                 deviceType=None,
                 isConfigurable=True,
-            ),
-            "seeingWeather": DeviceEntry(
+            )
+        self.drivers["seeingWeather"] = DeviceEntry(
                 name="seeingWeather",
                 instance=SeeingWeather(app),  # Can access app.mount
                 deviceType="observingconditions",
                 isConfigurable=True,
-            ),
-            "sensor1Weather": DeviceEntry(
+            )
+        self.drivers["sensor1Weather"] = DeviceEntry(
                 name="sensor1Weather",
                 instance=SensorWeather(app),
                 deviceType="observingconditions",
                 isConfigurable=True,
-            ),
-            "sensor2Weather": DeviceEntry(
+            )
+        self.drivers["sensor2Weather"] = DeviceEntry(
                 name="sensor2Weather",
                 instance=SensorWeather(app),
                 deviceType="observingconditions",
                 isConfigurable=True,
-            ),
-            "sensor3Weather": DeviceEntry(
+            )
+        self.drivers["sensor3Weather"] = DeviceEntry(
                 name="sensor3Weather",
                 instance=SensorWeather(app),
                 deviceType="observingconditions",
                 isConfigurable=True,
-            ),
-            "sensor4Weather": DeviceEntry(
+            )
+        self.drivers["sensor4Weather"] = DeviceEntry(
                 name="sensor4Weather",
                 instance=SensorWeather(app),
                 deviceType="observingconditions",
                 isConfigurable=True,
-            ),
-            "telescope": DeviceEntry(
+            )
+        self.drivers["telescope"] = DeviceEntry(
                 name="telescope",
                 instance=Telescope(app),
                 deviceType="telescope",
                 isConfigurable=True,
-            ),
-        }
+            )
 
     # ------------------------------------------------------------------
     # Mapping protocol — keeps ``"x" in dReg`` and ``dReg["x"]`` working

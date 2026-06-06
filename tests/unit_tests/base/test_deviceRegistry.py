@@ -20,7 +20,10 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture()
 def registry() -> DeviceRegistry:
-    return DeviceRegistry(App())
+    app = App()
+    dReg = DeviceRegistry(app)
+    dReg.addDevices(app)
+    return dReg
 
 
 # ------------------------------------------------------------------
@@ -303,3 +306,37 @@ def test_setStatFalse(registry: DeviceRegistry) -> None:
 def test_setStatNone(registry: DeviceRegistry) -> None:
     registry.setStat("refraction", None)
     assert registry.drivers["refraction"].stat is None
+
+
+# ------------------------------------------------------------------
+# DeviceRegistry — two-phase initialization pattern
+# ------------------------------------------------------------------
+def test_initPhase1OnlyMountExists() -> None:
+    """After __init__, only mount device exists."""
+    app = App()
+    dReg = DeviceRegistry(app)
+    assert "mount" in dReg.drivers
+    assert "camera" not in dReg.drivers
+    assert "dome" not in dReg.drivers
+    assert len(dReg.drivers) == 1
+
+
+def test_initPhase2AllDevicesExist() -> None:
+    """After addDevices(), all devices exist."""
+    app = App()
+    dReg = DeviceRegistry(app)
+    dReg.addDevices(app)
+    assert "mount" in dReg.drivers
+    assert "camera" in dReg.drivers
+    assert "dome" in dReg.drivers
+    assert "refraction" in dReg.drivers
+    assert len(dReg.drivers) > 1
+
+
+def test_initPhase2MountAccessibleDuringAddDevices() -> None:
+    """Mount is accessible during addDevices() for device initialization."""
+    app = App()
+    dReg = DeviceRegistry(app)
+    assert app.mount is not None
+    dReg.addDevices(app)
+    assert dReg["mount"].instance is app.mount

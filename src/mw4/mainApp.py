@@ -111,7 +111,8 @@ class MountWizzard4(QObject):
         This two-phase initialization ensures mount is available when dependent
         devices (Camera, SeeingWeather, Hipparcos) initialize."""
         self.dReg: DeviceRegistry = DeviceRegistry(self)
-        setCustomLoggingLevel(self, self.config.get("loglevel", "DEBUG"))
+        self.initConfig()
+        self.dReg.addDevices(self)
         self.buildPoint = BuildPoint(self)
         self.hipparcos = Hipparcos(self)
         self.ephemeris = self.dReg["mount"].obsSite.loader("de440_mw4.bsp")
@@ -134,6 +135,7 @@ class MountWizzard4(QObject):
 
     def initConfig(self) -> GeographicPosition | None:
         """Initialize and return the mount location from config."""
+        setCustomLoggingLevel(self, self.config.get("loglevel", "DEBUG"))
         lat = self.config.get("topoLat", 51.47)
         lon = self.config.get("topoLon", 0)
         elev = self.config.get("topoElev", 46)

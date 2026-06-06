@@ -89,8 +89,6 @@ jobs:
         uses: astral-sh/setup-uv@v8.2.0
         with:
           enable-cache: true
-          cache-dependency-path: pyproject.toml
-          cache-key: ${{ runner.os }}-${{ matrix.python-version }}-uv
           python-version: ${{ matrix.python-version }}
       
       - uses: actions/download-artifact@v7
@@ -138,8 +136,6 @@ jobs:
         uses: astral-sh/setup-uv@v8.2.0
         with:
           enable-cache: true
-          cache-dependency-path: pyproject.toml
-          cache-key: ${{ runner.os }}-${{ matrix.python-version }}-uv
           python-version: ${{ matrix.python-version }}
   
       - name: MountWizzard4 Install
@@ -172,8 +168,6 @@ jobs:
         uses: astral-sh/setup-uv@v8.2.0
         with:
           enable-cache: true
-          cache-dependency-path: pyproject.toml
-          cache-key: ${{ runner.os }}-${{ matrix.python-version }}-uv
           python-version: ${{ matrix.python-version }}
           
       - name: MountWizzard4 Install

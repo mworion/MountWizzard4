@@ -380,10 +380,10 @@ class ModelManage:
         changeStyleDynamic(self.ui.runOptimize, "run", True)
 
         if self.ui.optimizeOverall.isChecked():
-            self.app.mount.signals.getModelDone.connect(self.runTargetRMS)
+            self.app.dReg["mount"].instance.signals.getModelDone.connect(self.runTargetRMS)
             self.runTargetRMS()
         else:
-            self.app.mount.signals.getModelDone.connect(self.runSingleRMS)
+            self.app.dReg["mount"].instance.signals.getModelDone.connect(self.runSingleRMS)
             self.runSingleRMS()
 
     def cancelOptimize(self) -> None:
@@ -401,13 +401,13 @@ class ModelManage:
             return
 
         index = points[0].data()[0]
-        error = self.app.mount.model.starList[index].errorRMS
+        error = self.app.dReg["mount"].instance.model.starList[index].errorRMS
         text = f"Do you want to delete \npoint {index:3.0f}"
         text += f"\nRMS of {error:5.1f} arcsec"
 
         if not self.mainW.messageDialog(self.mainW, "Deleting point", text):
             return
-        if not self.app.mount.model.deletePoint(index):
+        if not self.app.dReg["mount"].instance.model.deletePoint(index):
             self.msg.emit(2, "Model", "Manage error", f"Point {index:3.0f} cannot be deleted")
             return
 

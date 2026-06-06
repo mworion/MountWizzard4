@@ -150,7 +150,7 @@ class EnvironWeather:
         if self.refractionSource != "directWeather":
             return
 
-        setting = self.app.dReg["mount"].instance.setting
+        setting = self.app.dReg["mount"].setting
         if setting.weatherStatus == 0:
             self.ui.refracManual.setChecked(True)
         elif setting.weatherStatus == 1:
@@ -162,19 +162,19 @@ class EnvironWeather:
         if not self.ui.showTabEnviron.isChecked():
             return
         if self.refractionSource != "directWeather":
-            self.app.dReg["mount"].instance.setting.setDirectWeatherUpdateType(0)
+            self.app.dReg["mount"].setting.setDirectWeatherUpdateType(0)
             return
 
-        if self.app.dReg["mount"].instance.setting.weatherStatus == 0:
+        if self.app.dReg["mount"].setting.weatherStatus == 0:
             self.ui.refracCont.setChecked(True)
 
         # otherwise, we have to switch it on or off
         if self.ui.refracManual.isChecked():
-            self.app.dReg["mount"].instance.setting.setDirectWeatherUpdateType(0)
+            self.app.dReg["mount"].setting.setDirectWeatherUpdateType(0)
         elif self.ui.refracNoTrack.isChecked():
-            self.app.dReg["mount"].instance.setting.setDirectWeatherUpdateType(1)
+            self.app.dReg["mount"].setting.setDirectWeatherUpdateType(1)
         else:
-            self.app.dReg["mount"].instance.setting.setDirectWeatherUpdateType(2)
+            self.app.dReg["mount"].setting.setDirectWeatherUpdateType(2)
 
     def setRefractionSourceGui(self) -> None:
         for source in self.refractionSources:
@@ -242,7 +242,7 @@ class EnvironWeather:
             return
         if (
             self.ui.refracNoTrack.isChecked()
-            and self.app.dReg["mount"].instance.obsSite.status == 0
+            and self.app.dReg["mount"].obsSite.status == 0
         ):
             return
 

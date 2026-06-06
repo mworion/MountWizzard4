@@ -112,7 +112,7 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
 
     def startCommunication(self) -> None:
         self.timerTask.start(self.parent.CYCLE_UPDATE_TASK)
-        nameTime = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
+        nameTime = self.app.dReg["mount"].timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         self.csvFilename = self.app.mwGlob["measureDir"] / f"measure-{nameTime}.csv"
         self.writeHeaderCSV()
 

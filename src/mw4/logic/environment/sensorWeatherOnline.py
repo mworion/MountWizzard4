@@ -30,7 +30,7 @@ class SensorWeatherOnline:
         self.app = parent.app
         self.data: dict[str, Any] = parent.data
         self.signals = parent.signals
-        self.location = parent.app.mount.obsSite.location
+        self.location: Any = None
         self.threadPool = parent.app.threadPool
         self.worker: Worker | None = None
         self.running: bool = False
@@ -43,6 +43,7 @@ class SensorWeatherOnline:
         self.apiKey: str = ""
 
     def startCommunication(self) -> None:
+        self.location = self.app.dReg["mount"].obsSite.location
         self.pollOpenWeatherMapData()
         self.app.update3s.connect(self.pollOpenWeatherMapData)
 
@@ -145,7 +146,7 @@ class SensorWeatherOnline:
         if not filePath.is_file():
             return True
 
-        ageData = self.app.mount.obsSite.loader.days_old(fileName)
+        ageData = self.app.dReg["mount"].obsSite.loader.days_old(fileName)
         return ageData > hours / 24
 
     def pollOpenWeatherMapData(self) -> None:

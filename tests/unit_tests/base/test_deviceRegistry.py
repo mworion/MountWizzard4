@@ -83,6 +83,70 @@ def test_deviceEntryRunProperty() -> None:
     assert entry.run == {"indi": "device_driver"}
 
 
+def test_deviceEntryObsSiteProperty() -> None:
+    class MockObsSite:
+        pass
+
+    class MockInstance:
+        def __init__(self):
+            self.obsSite = MockObsSite()
+
+    entry = DeviceEntry(
+        name="mount", instance=MockInstance(), deviceType=None, isConfigurable=False
+    )
+    assert isinstance(entry.obsSite, MockObsSite)
+
+
+def test_deviceEntrySettingProperty() -> None:
+    class MockSetting:
+        pass
+
+    class MockInstance:
+        def __init__(self):
+            self.setting = MockSetting()
+
+    entry = DeviceEntry(
+        name="mount", instance=MockInstance(), deviceType=None, isConfigurable=False
+    )
+    assert isinstance(entry.setting, MockSetting)
+
+
+def test_deviceEntryLocationProperty() -> None:
+    class MockLocation:
+        pass
+
+    class MockObsSite:
+        def __init__(self):
+            self.location = MockLocation()
+
+    class MockInstance:
+        def __init__(self):
+            self.obsSite = MockObsSite()
+
+    entry = DeviceEntry(
+        name="mount", instance=MockInstance(), deviceType=None, isConfigurable=False
+    )
+    assert isinstance(entry.location, MockLocation)
+
+
+def test_deviceEntryTimeJDProperty() -> None:
+    class MockTimeJD:
+        pass
+
+    class MockObsSite:
+        def __init__(self):
+            self.timeJD = MockTimeJD()
+
+    class MockInstance:
+        def __init__(self):
+            self.obsSite = MockObsSite()
+
+    entry = DeviceEntry(
+        name="mount", instance=MockInstance(), deviceType=None, isConfigurable=False
+    )
+    assert isinstance(entry.timeJD, MockTimeJD)
+
+
 def test_deviceEntrySignalsPropertyRaisesWhenInstanceNone() -> None:
     entry = DeviceEntry(
         name="refraction", instance=None, deviceType=None, isConfigurable=False
@@ -97,6 +161,38 @@ def test_deviceEntryDataPropertyRaisesWhenInstanceNone() -> None:
     )
     with pytest.raises(AttributeError):
         _ = entry.data
+
+
+def test_deviceEntryObsSitePropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(
+        name="refraction", instance=None, deviceType=None, isConfigurable=False
+    )
+    with pytest.raises(AttributeError):
+        _ = entry.obsSite
+
+
+def test_deviceEntrySettingPropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(
+        name="refraction", instance=None, deviceType=None, isConfigurable=False
+    )
+    with pytest.raises(AttributeError):
+        _ = entry.setting
+
+
+def test_deviceEntryLocationPropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(
+        name="refraction", instance=None, deviceType=None, isConfigurable=False
+    )
+    with pytest.raises(AttributeError):
+        _ = entry.location
+
+
+def test_deviceEntryTimeJDPropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(
+        name="refraction", instance=None, deviceType=None, isConfigurable=False
+    )
+    with pytest.raises(AttributeError):
+        _ = entry.timeJD
 
 
 # ------------------------------------------------------------------

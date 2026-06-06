@@ -24,7 +24,6 @@ from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.logic.buildData.buildpoints import BuildPoint
 from mw4.logic.buildData.hipparcos import Hipparcos
 from mw4.logic.profiles.profile import loadProfileStart
-from mw4.mountcontrol.mount import MountDevice
 from PySide6.QtCore import QObject, QThreadPool, Signal
 from PySide6.QtWidgets import QApplication
 from queue import Queue
@@ -108,20 +107,21 @@ class MountWizzard4(QObject):
         self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 started..."))
         self.messageQueue.put((1, "System", "Workdir", f"[{workDir}]"))
         self.messageQueue.put((1, "System", "Profile", f"[{profile}]"))
-        """Create the mount device and load ephemeris data."""
-        self.mount = MountDevice(self, verbose=True)
+        """Create all devices via DeviceRegistry (which creates mount first).
+        This two-phase initialization ensures mount is available when dependent
+        devices (Camera, SeeingWeather, Hipparcos) initialize."""
         self.dReg: DeviceRegistry = DeviceRegistry(self)
         topo = self.initConfig()
-        self.mount.obsSite.location = topo
+        self.dReg["mount"].obsSite.location = topo
         self.buildPoint = BuildPoint(self)
         self.hipparcos = Hipparcos(self)
-        self.ephemeris = self.mount.obsSite.loader("de440_mw4.bsp")
+        self.ephemeris = self.dReg["mount"].obsSite.loader("de440_mw4.bsp")
         """Create, configure, and show the main window."""
         self.mainW = MainWindow(self)
         self.mainW.initConfig()
         self.mainW.showWindow()
         """Set up the cyclic timer manager and start the mount timers."""
-        self.mount.startMountTimers()
+        self.dReg["mount"].instance.startMountTimers()
         self.timerMgr = CyclicTimerManager(app=self, parent=self)
         self.timerMgr.start()
         """Wire up application-level signal connections."""
@@ -143,7 +143,7 @@ class MountWizzard4(QObject):
 
     def storeConfig(self) -> None:
         self.config["loglevel"] = logging.getLevelName(self.log.level)
-        location = self.dReg["mount"].instance.obsSite.location
+        location = self.dReg["mount"].location
         if location is not None:
             self.config["topoLat"] = float(location.latitude.degrees)
             self.config["topoLon"] = float(location.longitude.degrees)
@@ -154,7 +154,7 @@ class MountWizzard4(QObject):
 
     def aboutToQuit(self) -> None:
         self.timerMgr.stop()
-        self.mount.stopAllMountTimers()
+        self.dReg["mount"].instance.stopAllMountTimers()
 
     def quit(self) -> None:
         self.dReg.setStat("mount", False)

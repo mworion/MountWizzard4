@@ -113,8 +113,9 @@ class PlateSolve:
         result["success"] = True
         result["message"] = "Solved"
         result.update(solution)
+        timeJD = self.app.dReg["mount"].instance.obsSite.timeJD
         result["raJNowS"], result["decJNowS"] = J2000ToJNow(
-            result["raJ2000S"], result["decJ2000S"], self.app.mount.obsSite.timeJD
+            result["raJ2000S"], result["decJ2000S"], timeJD
         )
         self.log.debug(f"Solve result:  [{imagePath.stem:10s}], [{result}]")
         return result

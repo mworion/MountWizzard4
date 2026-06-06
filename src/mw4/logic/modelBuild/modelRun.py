@@ -142,8 +142,9 @@ class ModelData(QObject):
             self.log.debug(t)
 
     def addMountModelToBuildModel(self) -> None:
-        if len(self.app.mount.model.starList) == len(self.modelSaveData):
-            self.modelSaveData = writeRetrofitData(self.app.mount.model, self.modelSaveData)
+        mount_instance = self.app.dReg["mount"].instance
+        if len(mount_instance.model.starList) == len(self.modelSaveData):
+            self.modelSaveData = writeRetrofitData(mount_instance.model, self.modelSaveData)
             self.modelSaveData = convertAngleToFloat(self.modelSaveData)
         else:
             self.log.warning("Error in model data: difference in length")
@@ -185,7 +186,7 @@ class ModelData(QObject):
 
     def addMountDataToModelBuildData(self) -> None:
         item = self.modelBuildData[self.modelRunKey]
-        obs = self.app.mount.obsSite
+        obs = self.app.dReg["mount"].obsSite
         t = f"{'Add mount data':15s}: [{self.modelRunKey}], Ra: [{obs.raJNow}], "
         t += f"Dec: [{obs.decJNow}], Jd: [{obs.timeJD}]"
         self.log.debug(t)

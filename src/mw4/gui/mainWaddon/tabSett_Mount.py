@@ -39,9 +39,9 @@ class SettMount:
         self.ui.mountMAC.editingFinished.connect(self.mountMAC)
         self.ui.bootRackComp.clicked.connect(self.bootRackComp)
         self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
-        self.app.mount.signals.settingDone.connect(self.setMountMAC)
-        self.app.mount.signals.firmwareDone.connect(self.setMountCapabilities)
-        self.app.mount.signals.firmwareDone.connect(self.updateFwGui)
+        self.app.dReg["mount"].signals.settingDone.connect(self.setMountMAC)
+        self.app.dReg["mount"].signals.firmwareDone.connect(self.setMountCapabilities)
+        self.app.dReg["mount"].signals.firmwareDone.connect(self.updateFwGui)
         self.app.update30s.connect(self.syncClock)
 
     def initConfig(self) -> None:
@@ -79,20 +79,20 @@ class SettMount:
         config["clockSync"] = self.ui.clockSync.isChecked()
 
     def setMountCapabilities(self, fw) -> None:
-        self.ui.GroupWOL.setEnabled(self.app.mount.firmware.isHW2012())
+        self.ui.GroupWOL.setEnabled(self.app.dReg["mount"].instance.firmware.isHW2012())
 
     def mountBoot(self) -> None:
         bAddress = self.ui.mountWolAddress.text().strip()
         bPort = self.ui.mountWolPort.text().strip()
         bPort = int(bPort) if bPort else 0
-        if self.app.mount.bootMount(bAddress=bAddress, bPort=bPort):
+        if self.app.dReg["mount"].instance.bootMount(bAddress=bAddress, bPort=bPort):
             self.msg.emit(0, "Mount", "Command", "Sent boot command to mount")
         else:
             self.msg.emit(2, "Mount", "Command", "Mount cannot be booted")
 
     def mountShutdown(self) -> None:
-        self.app.dReg["mount"].stat = False
-        if self.app.mount.shutdown():
+        self.app.dReg["mount"].instance.stat = False
+        if self.app.dReg["mount"].instance.shutdown():
             self.msg.emit(0, "Mount", "Command", "Shutting mount down")
         else:
             self.msg.emit(2, "Mount", "Command", "Mount cannot be shutdown")
@@ -116,11 +116,11 @@ class SettMount:
             self.msg.emit(2, "Mount", "Setting error", f"{e}")
             return
 
-        self.app.mount.host = (host, port)
+        self.app.dReg["mount"].instance.host = (host, port)
         self.app.hostChanged.emit()
 
     def mountMAC(self) -> None:
-        self.app.mount.MAC = self.ui.mountMAC.text()
+        self.app.dReg["mount"].instance.MAC = self.ui.mountMAC.text()
 
     def setMountMAC(self, sett: Setting = None) -> None:
         if sett is None:
@@ -130,8 +130,8 @@ class SettMount:
         if not sett.addressLanMAC:
             return
 
-        self.app.mount.MAC = sett.addressLanMAC
-        self.ui.mountMAC.setText(self.app.mount.MAC)
+        self.app.dReg["mount"].instance.MAC = sett.addressLanMAC
+        self.ui.mountMAC.setText(self.app.dReg["mount"].instance.MAC)
 
     def updateFwGui(self, fw: Firmware) -> None:
         guiSetText(self.ui.product, "s", fw.product)
@@ -148,28 +148,28 @@ class SettMount:
         self.ui.clockOffset.setEnabled(enableSyncTimer)
         self.ui.clockOffsetMS.setEnabled(enableSyncTimer)
         if enableSyncTimer:
-            self.app.mount.startMountClockTimer()
+            self.app.dReg["mount"].instance.startMountClockTimer()
         else:
-            self.app.mount.stopMountClockTimer()
+            self.app.dReg["mount"].instance.stopMountClockTimer()
 
     def syncClock(self) -> None:
         if self.ui.syncTimeNone.isChecked():
             return
-        if not self.app.dReg["mount"].stat:
+        if not self.app.dReg["mount"].instance.stat:
             return
 
         doSyncNotTrack = self.ui.syncTimeNotTrack.isChecked()
-        mountTracks = self.app.mount.obsSite.status in [0, 10]
+        mountTracks = self.app.dReg["mount"].obsSite.status in [0, 10]
         if doSyncNotTrack and mountTracks:
             return
 
-        delta = self.app.mount.obsSite.timeDiff * 1000
+        delta = self.app.dReg["mount"].obsSite.timeDiff * 1000
         if abs(delta) < 10:
             return
 
         delta = int(max(min(delta, 999), -999))
 
-        if self.app.mount.obsSite.adjustClock(delta):
+        if self.app.dReg["mount"].obsSite.adjustClock(delta):
             self.msg.emit(0, "System", "Clock", f"Correction: [{-delta} ms]")
         else:
             self.msg.emit(2, "System", "Clock", "Cannot adjust mount clock")

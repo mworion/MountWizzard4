@@ -30,6 +30,7 @@ from mw4.logic.powerswitch.kmRelay import KMRelay
 from mw4.logic.powerswitch.pegasusUPB import PegasusUPB
 from mw4.logic.remote.remote import Remote
 from mw4.logic.telescope.telescope import Telescope
+from mw4.mountcontrol.mount import MountDevice
 from typing import Any
 
 
@@ -74,6 +75,36 @@ class DeviceEntry:
             raise AttributeError(f"Device '{self.name}' instance is None")
         return self.instance.run
 
+    @property
+    def obsSite(self) -> Any:
+        """Convenience property to access instance.obsSite directly (mount-specific)."""
+        if self.instance is None:
+            raise AttributeError(f"Device '{self.name}' instance is None")
+        return self.instance.obsSite
+
+    @property
+    def setting(self) -> Any:
+        """Convenience property to access instance.setting directly (mount-specific)."""
+        if self.instance is None:
+            raise AttributeError(f"Device '{self.name}' instance is None")
+        return self.instance.setting
+
+    @property
+    def location(self) -> Any:
+        """Convenience property to access instance.obsSite.location directly
+        (mount-specific)."""
+        if self.instance is None:
+            raise AttributeError(f"Device '{self.name}' instance is None")
+        return self.instance.obsSite.location
+
+    @property
+    def timeJD(self) -> Any:
+        """Convenience property to access instance.obsSite.timeJD directly
+        (mount-specific)."""
+        if self.instance is None:
+            raise AttributeError(f"Device '{self.name}' instance is None")
+        return self.instance.obsSite.timeJD
+
 
 class DeviceRegistry:
     """Central registry of all device driver instances.
@@ -84,10 +115,26 @@ class DeviceRegistry:
     """
 
     def __init__(self, app: Any) -> None:
+        # =====================================================================
+        # PHASE 1: Create mount device (or use test mock if injected)
+        # Production: app.mount does not exist yet → create MountDevice
+        # Testing: test may have set app.mount = MockMount() → use it
+        # =====================================================================
+        if hasattr(app, "mount") and app.mount is not None:
+            # Test only: tests inject mock mounts before calling registry
+            mount_instance = app.mount
+        else:
+            # Production (normal case): create real mount device
+            mount_instance = MountDevice(app, verbose=True)
+            app.mount = mount_instance
+
+        # =====================================================================
+        # PHASE 2: Create all other devices (can now safely access app.mount)
+        # =====================================================================
         self.drivers: dict[str, DeviceEntry] = {
             "camera": DeviceEntry(
                 name="camera",
-                instance=Camera(app),
+                instance=Camera(app),  # Can access app.mount
                 deviceType="camera",
                 isConfigurable=True,
             ),
@@ -135,7 +182,7 @@ class DeviceRegistry:
             ),
             "mount": DeviceEntry(
                 name="mount",
-                instance=app.mount,
+                instance=mount_instance,
                 deviceType=None,
                 isConfigurable=False,
             ),
@@ -171,7 +218,7 @@ class DeviceRegistry:
             ),
             "seeingWeather": DeviceEntry(
                 name="seeingWeather",
-                instance=SeeingWeather(app),
+                instance=SeeingWeather(app),  # Can access app.mount
                 deviceType="observingconditions",
                 isConfigurable=True,
             ),

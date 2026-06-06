@@ -37,17 +37,15 @@ class DirectWeather:
         }
         self.running: bool = False
         self.enabled: bool = False
-        self.app.mount.signals.settingDone.connect(self.updateData)
+        # Connection deferred to startCommunication to keep DeviceRegistry interface clean
 
     def startCommunication(self) -> None:
+        self.app.dReg["mount"].signals.settingDone.connect(self.updateData)
         self.enabled = True
         self.app.dReg["directWeather"].stat = False
 
     def stopCommunication(self) -> None:
-        self.enabled = False
-        self.running = False
-        self.app.dReg["directWeather"].stat = None
-        self.data.clear()
+        self.app.dReg["mount"].signals.settingDone.disconnect(self.updateData)
         self.signals.deviceDisconnected.emit("DirectWeather")
 
     def updateData(self, sett: Setting) -> None:

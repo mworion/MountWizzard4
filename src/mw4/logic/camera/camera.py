@@ -34,7 +34,6 @@ class Camera:
     def __init__(self, app: Any) -> None:
         self.app = app
         self.threadPool = app.threadPool
-        self.obsSite = app.mount.obsSite
         self.signals = Signals()
         self.data: dict[str, Any] = {}
         self.loadConfig: bool = True

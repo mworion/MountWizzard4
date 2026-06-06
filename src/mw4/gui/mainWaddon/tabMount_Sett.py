@@ -147,13 +147,13 @@ class MountSett:
         guiSetText(self.ui.settleTimeMount, "3.0f", sett.settleTime)
 
         # todo: this might be a little bit too slow
-        if self.app.dReg["mount"].instance.obsSite.status is None:
+        if self.app.dReg["mount"].obsSite.status is None:
             changeStyleDynamic(self.ui.followSat, "run", False)
             changeStyleDynamic(self.ui.setLunarTracking, "run", False)
             changeStyleDynamic(self.ui.setSiderealTracking, "run", False)
             changeStyleDynamic(self.ui.setSolarTracking, "run", False)
 
-        elif self.app.dReg["mount"].instance.obsSite.status == 10:
+        elif self.app.dReg["mount"].obsSite.status == 10:
             changeStyleDynamic(self.ui.followSat, "run", True)
             changeStyleDynamic(self.ui.setLunarTracking, "run", False)
             changeStyleDynamic(self.ui.setSiderealTracking, "run", False)
@@ -189,7 +189,7 @@ class MountSett:
         self.ui.siteElevation.setText(str(location.elevation.m))
 
     def setMeridianLimitTrack(self) -> bool:
-        sett = self.app.dReg["mount"].instance.setting
+        sett = self.app.dReg["mount"].setting
         actValue = 0 if not sett.meridianLimitTrack else int(sett.meridianLimitTrack)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
@@ -205,7 +205,7 @@ class MountSett:
             return False
 
     def setMeridianLimitSlew(self) -> bool:
-        sett = self.app.dReg["mount"].instance.setting
+        sett = self.app.dReg["mount"].setting
         actValue = 0 if not sett.meridianLimitSlew else int(sett.meridianLimitSlew)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
@@ -221,7 +221,7 @@ class MountSett:
             return False
 
     def setHorizonLimitHigh(self) -> bool:
-        sett = self.app.dReg["mount"].instance.setting
+        sett = self.app.dReg["mount"].setting
         actValue = 0 if sett.horizonLimitHigh is None else int(sett.horizonLimitHigh)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
@@ -237,7 +237,7 @@ class MountSett:
             return False
 
     def setHorizonLimitLow(self) -> bool:
-        sett = self.app.dReg["mount"].instance.setting
+        sett = self.app.dReg["mount"].setting
         actValue = 0 if sett.horizonLimitLow is None else int(sett.horizonLimitLow)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
@@ -259,7 +259,7 @@ class MountSett:
             return False
 
     def setSlewRate(self) -> bool:
-        sett = self.app.dReg["mount"].instance.setting
+        sett = self.app.dReg["mount"].setting
         actValue = 0 if sett.slewRate is None else int(sett.slewRate)
         minRate = 0 if sett.slewRateMin is None else int(sett.slewRateMin)
         maxRate = 0 if sett.slewRateMax is None else int(sett.slewRateMax)
@@ -285,7 +285,7 @@ class MountSett:
     def setLocationValues(
         self, lat: Angle | None = None, lon: Angle | None = None, elev: float = None
     ) -> None:
-        obs = self.app.dReg["mount"].instance.obsSite
+        obs = self.app.dReg["mount"].obsSite
         loc = obs.location
         lat = loc.latitude if lat is None else lat
         lon = loc.longitude if lon is None else lon
@@ -301,7 +301,7 @@ class MountSett:
             self.app.dReg["mount"].instance.getLocation()
         else:
             obs.location = topo
-            self.updateLocGUI(self.app.dReg["mount"].instance.obsSite)
+            self.updateLocGUI(self.app.dReg["mount"].obsSite)
 
         t = f"Location set to:     [{lat.degrees:3.2f} deg, "
         t += f"{lon.degrees:3.2f} deg, {elev:4.1f} m]"
@@ -336,7 +336,7 @@ class MountSett:
         self.setLocationValues(lat=value)
 
     def setElevation(self) -> bool:
-        obs = self.app.dReg["mount"].instance.obsSite
+        obs = self.app.dReg["mount"].obsSite
         dlg = QInputDialog()
         value, ok = dlg.getDouble(
             self.mainW,

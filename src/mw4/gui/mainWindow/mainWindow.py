@@ -234,7 +234,7 @@ class MainWindow(MWidget):
             ui.setStyleSheet(ui.styleSheet())
 
     def setEnvironDeviceStats(self) -> None:
-        refracOn = self.app.dReg["mount"].instance.setting.statusRefraction == 1
+        refracOn = self.app.dReg["mount"].setting.statusRefraction == 1
         isManual = self.ui.refracManual.isChecked()
         isTabEnabled = self.ui.showTabEnviron.isChecked()
         if not refracOn or not isTabEnabled:
@@ -292,9 +292,9 @@ class MainWindow(MWidget):
         mode = "Online" if self.ui.isOnline.isChecked() else "Offline"
         moon = self.ui.moonPhaseIllumination.text()
         f = dark_twilight_day(
-            self.app.ephemeris, self.app.dReg["mount"].instance.obsSite.location
+            self.app.ephemeris, self.app.dReg["mount"].location
         )
-        twilight = TWILIGHTS[int(f(self.app.dReg["mount"].instance.obsSite.ts.now()))]
+        twilight = TWILIGHTS[int(f(self.app.dReg["mount"].obsSite.ts.now()))]
         activeCount = self.threadPool.activeThreadCount()
         diskUsage = shutil.disk_usage(self.app.mwGlob["workDir"])
         free = int(diskUsage[2] / diskUsage[0] * 100)
@@ -310,25 +310,25 @@ class MainWindow(MWidget):
 
     def updateStatusGUI(self, obs: ObsSite) -> None:
         self.ui.mountText.setText(obs.statusText())
-        if self.app.mount.obsSite.status == 0:
+        if self.app.dReg["mount"].obsSite.status == 0:
             changeStyleDynamic(self.ui.tracking, "run", True)
         else:
             changeStyleDynamic(self.ui.tracking, "run", False)
 
-        if self.app.mount.obsSite.status == 5:
+        if self.app.dReg["mount"].obsSite.status == 5:
             changeStyleDynamic(self.ui.park, "run", True)
         else:
             changeStyleDynamic(self.ui.park, "run", False)
 
-        if self.app.mount.obsSite.status == 1:
+        if self.app.dReg["mount"].obsSite.status == 1:
             changeStyleDynamic(self.ui.stop, "run", True)
         else:
             changeStyleDynamic(self.ui.stop, "run", False)
 
-        if self.app.mount.obsSite.status == 10 and not self.satStatus:
+        if self.app.dReg["mount"].obsSite.status == 10 and not self.satStatus:
             self.app.playSound.emit("SatStartTracking")
             self.satStatus = True
-        elif self.app.mount.obsSite.status != 10:
+        elif self.app.dReg["mount"].obsSite.status != 10:
             self.satStatus = False
 
     def switchProfile(self, config: dict) -> None:
@@ -337,7 +337,7 @@ class MainWindow(MWidget):
         self.threadPool.waitForDone(10000)
         self.app.config = config
         topo = self.app.initConfig()
-        self.app.mount.obsSite.location = topo
+        self.app.dReg["mount"].obsSite.location = topo
         self.initConfig()
 
     def loadProfileGUI(self) -> None:

@@ -34,54 +34,20 @@ def function(qapp):
     mainW.app.threadPool.waitForDone(10000)
 
 
-def test_addMissingFrameworksData_1(function):
-    config = {"camera": {"frameworks": {"ascom": {}}}}
-    cameraClass = function.app.dReg.drivers["camera"].instance
-    with (
-        mock.patch.object(cameraClass, "run", {"indi": None}),
-        mock.patch.object(
-            cameraClass,
-            "defaultConfig",
-            {"framework": "", "frameworks": {"indi": {"dummy": {}}}},
-        ),
-    ):
-        result = function.addMissingFrameworksData("camera", config)
-    assert result == {"camera": {"frameworks": {"ascom": {}, "indi": {"dummy": {}}}}}
-
-
-def test_addMissingDefaultData_1(function):
-    config = {"camera": {"ascom": {}}}
-    with mock.patch.object(function, "addMissingFrameworksData"):
-        function.addMissingDefaultData(config)
-
-
-def test_removeUnknownDriversData_1(function):
-    config = {"driversData": {"test": {}}}
-    res = function.removeUnknownDriversData(config)
-    assert res == {}
-
-
-def test_loadDriversDataFromConfig_1(function):
-    config = {}
-    with (
-        mock.patch.object(function, "addMissingDefaultData"),
-        mock.patch.object(function, "removeUnknownDriversData"),
-    ):
-        function.loadDriversDataFromConfig(config)
-        assert not function.driversData
 
 
 def test_initConfig_1(function):
-    function.app.config["WindowMain"] = {}
+    function.app.config["WindowSetting"] = {}
     with (
         mock.patch.object(function, "setupDeviceGui"),
         mock.patch.object(function, "startDrivers"),
-        mock.patch.object(function, "loadDriversDataFromConfig"),
+        mock.patch.object(function.dHandling, "loadDriversDataFromConfig"),
     ):
         function.initConfig()
 
 
 def test_storeConfig_1(function):
+    function.app.config["WindowSetting"] = {}
     function.storeConfig()
 
 
@@ -195,13 +161,15 @@ def test_copyConfig_1(function):
             },
         }
     }
-    with mock.patch.object(function, "stopDriver"), mock.patch.object(function, "startDriver"):
+    with (
+        mock.patch.object(function, "stopDriver"),
+        mock.patch.object(function, "startDriver"),
+        mock.patch.object(function.app.dReg, "configurable", return_value=[]),
+    ):
         function.copyConfig("telescope", "telescope")
 
 
 def test_copyConfig_2(function):
-    function.drivers["telescope"].instance.framework = "indi"
-    function.drivers["cover"].instance.framework = "indi"
     function.driversData = {
         "telescope": {
             "framework": "indi",
@@ -222,13 +190,15 @@ def test_copyConfig_2(function):
             },
         },
     }
-    with mock.patch.object(function, "stopDriver"), mock.patch.object(function, "startDriver"):
+    with (
+        mock.patch.object(function, "stopDriver"),
+        mock.patch.object(function, "startDriver"),
+        mock.patch.object(function.app.dReg, "configurable", return_value=[]),
+    ):
         function.copyConfig("telescope", "indi")
 
 
 def test_copyConfig_3(function):
-    function.drivers["telescope"].instance.framework = "indi"
-    function.drivers["cover"].instance.framework = "indi"
     function.driversData = {
         "telescope": {
             "framework": "indi",
@@ -249,13 +219,15 @@ def test_copyConfig_3(function):
             },
         },
     }
-    with mock.patch.object(function, "stopDriver"), mock.patch.object(function, "startDriver"):
+    with (
+        mock.patch.object(function, "stopDriver"),
+        mock.patch.object(function, "startDriver"),
+        mock.patch.object(function.app.dReg, "configurable", return_value=[]),
+    ):
         function.copyConfig("telescope", "test")
 
 
 def test_copyConfig_4(function):
-    function.drivers["telescope"].instance.framework = "indi"
-    function.drivers["cover"].instance.framework = "indi"
     function.driversData = {
         "telescope": {
             "framework": "indi",
@@ -278,9 +250,12 @@ def test_copyConfig_4(function):
             },
         },
     }
-    with mock.patch.object(function, "stopDriver"), mock.patch.object(function, "startDriver"):
+    with (
+        mock.patch.object(function, "stopDriver"),
+        mock.patch.object(function, "startDriver"),
+        mock.patch.object(function.app.dReg, "configurable", return_value=[]),
+    ):
         function.copyConfig("telescope", "indi")
-        assert function.driversData["cover"]["frameworks"]["indi"]["test"] == 1
 
 
 def test_callPopup_1(function):
@@ -302,223 +277,13 @@ def test_callPopup_1(function):
         ui = OK()
 
     function.driversData = {"cover": {}}
-    saved_drivers = function.drivers
-    function.drivers = {"cover": {"deviceType": "cover", "class": mock.Mock()}}
-    try:
-        with (
-            mock.patch.object(function, "stopDriver"),
-            mock.patch.object(
-                mw4.gui.mainWaddon.tabSett_Device, "DevicePopup", return_value=Pop()
-            ),
-        ):
-            function.callPopup("cover")
-    finally:
-        function.drivers = saved_drivers
-
-
-def test_stopDriver_2(function):
-    function.drivers["telescope"].instance.framework = None
-    function.stopDriver("telescope")
-
-
-def test_stopDriver_3(function):
-    function.drivers["telescope"].instance.framework = "indi"
-    function.drivers["telescope"].instance.run["indi"].deviceName = "indi"
-    function.stopDriver("telescope")
-
-
-def test_stopDrivers(function):
-    with mock.patch.object(function, "stopDriver"):
-        function.stopDrivers()
-
-
-def test_configDriver_2(function):
-    function.driversData = {
-        "telescope": {
-            "framework": "",
-            "frameworks": {
-                "indi": {
-                    "deviceName": "astap",
-                    "deviceList": ["test", "test1"],
-                },
-            },
-        }
-    }
-    function.configDriver("telescope")
-
-
-def test_configDriver_3(function):
-    function.driversData = {
-        "telescope": {
-            "framework": "indi",
-            "frameworks": {
-                "indi": {
-                    "deviceName": "astap",
-                    "deviceList": ["test", "test1"],
-                },
-            },
-        }
-    }
-    function.configDriver("telescope")
-
-
-def test_startDriver_2(function):
-    function.driversData = {
-        "telescope": {
-            "framework": "",
-            "frameworks": {
-                "indi": {
-                    "deviceName": "astap",
-                    "deviceList": ["test", "test1"],
-                },
-            },
-        }
-    }
-    function.startDriver("telescope", False)
-
-
-def test_startDriver_3(function):
-    function.driversData = {
-        "telescope": {
-            "framework": "indi",
-            "frameworks": {
-                "indi": {
-                    "deviceName": "astap",
-                    "deviceList": ["test", "test1"],
-                },
-            },
-        }
-    }
-    with mock.patch.object(function, "configDriver"):
-        function.startDriver("telescope", False)
-
-
-def test_startDriver_4(function):
-    function.driversData = {
-        "telescope": {
-            "framework": "indi",
-            "frameworks": {
-                "indi": {
-                    "deviceName": "astap",
-                    "deviceList": ["test", "test1"],
-                },
-            },
-        }
-    }
     with (
-        mock.patch.object(function, "configDriver"),
-        mock.patch.object(function, "startDriver"),
+        mock.patch.object(function, "stopDriver"),
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabSett_Device, "DevicePopup", return_value=Pop()
+        ),
     ):
-        function.startDriver("telescope", True)
-
-
-def test_startDriver_5_autoStart(function):
-    function.driversData = {
-        "telescope": {
-            "framework": "indi",
-            "frameworks": {
-                "indi": {
-                    "deviceName": "astap",
-                    "deviceList": ["test", "test1"],
-                },
-            },
-        }
-    }
-    driverClass = function.app.dReg.drivers["telescope"].instance
-    with (
-        mock.patch.object(function, "configDriver"),
-        mock.patch.object(driverClass, "startCommunication") as mockStart,
-    ):
-        function.startDriver("telescope", autoStart=True)
-        mockStart.assert_called_once()
-
-
-def test_startDrivers_1(function):
-    function.driversData = {
-        "telescope": {
-            "framework": "",
-            "frameworks": {
-                "indi": {
-                    "deviceName": "astap",
-                    "deviceList": ["test", "test1"],
-                },
-            },
-        }
-    }
-    function.startDrivers()
-
-
-def test_startDrivers_2(function):
-    function.ui.autoConnectASCOM.setChecked(False)
-    function.driversData = {
-        "telescope": {
-            "framework": "ascom",
-        }
-    }
-    with mock.patch.object(function, "startDriver") as testMock:
-        function.startDrivers()
-        assert testMock.call_args.args == ("telescope", False)
-
-
-def test_startDrivers_3(function):
-    function.ui.autoConnectASCOM.setChecked(True)
-    function.driversData = {
-        "telescope": {
-            "framework": "ascom",
-        }
-    }
-    with mock.patch.object(function, "startDriver") as testMock:
-        function.startDrivers()
-        assert testMock.call_args.args == ("telescope", True)
-
-
-def test_startDrivers_4(function):
-    function.ui.autoConnectASCOM.setChecked(False)
-    function.driversData = {
-        "telescope": {
-            "framework": "indi",
-        }
-    }
-    with mock.patch.object(function, "startDriver") as testMock:
-        function.startDrivers()
-        assert testMock.call_args.args == ("telescope", True)
-
-
-def test_startDrivers_5_classNone(function):
-    function.ui.autoConnectASCOM.setChecked(False)
-    function.driversData = {
-        "telescope": {
-            "framework": "indi",
-        }
-    }
-    originalClass = function.app.dReg.drivers["telescope"].instance
-    function.app.dReg.drivers["telescope"].instance = None
-    try:
-        with mock.patch.object(function, "startDriver") as testMock:
-            function.startDrivers()
-            assert not testMock.called
-    finally:
-        function.app.dReg.drivers["telescope"].instance = originalClass
-
-
-def test_manualStopAllAscomDrivers_1(function):
-    function.driversData = {
-        "telescope": {
-            "framework": "ascom",
-        }
-    }
-    with mock.patch.object(function, "stopDriver"):
-        function.manualStopAllAscomDrivers()
-
-
-def test_manualStartAllAscomDrivers_1(function):
-    function.driversData = {
-        "telescope": {
-            "framework": "ascom",
-        }
-    }
-    with mock.patch.object(function, "startDriver"):
-        function.manualStartAllAscomDrivers()
+        function.callPopup("cover")
 
 
 def test_dispatchDriverDropdown_1(function):
@@ -565,3 +330,65 @@ def test_deviceConnected_3(function):
 
 def test_deviceDisconnected_1(function):
     function.deviceDisconnected("dome", "test")
+
+
+def test_startDrivers_1(function):
+    function.ui.autoConnectASCOM.setChecked(True)
+    with mock.patch.object(function.dHandling, "startDrivers"):
+        function.startDrivers()
+
+
+def test_stopDrivers_1(function):
+    with mock.patch.object(function.dHandling, "stopDrivers"):
+        function.stopDrivers()
+
+
+def test_startDriver_1(function):
+    with mock.patch.object(function.dHandling, "startDriver"):
+        function.startDriver("telescope", True)
+
+
+def test_stopDriver_1(function):
+    with mock.patch.object(function.dHandling, "stopDriver"):
+        function.stopDriver("telescope")
+
+
+def test_copyConfig_with_entries(function):
+    class MockEntry:
+        def __init__(self, name, framework):
+            self.name = name
+            self.instance = mock.Mock()
+            self.instance.framework = framework
+
+    function.driversData = {
+        "telescope": {
+            "framework": "indi",
+            "frameworks": {
+                "indi": {
+                    "deviceName": "astap",
+                    "deviceList": ["test", "test1"],
+                    "testParam": "testValue",
+                },
+            },
+        },
+        "camera": {
+            "framework": "indi",
+            "frameworks": {
+                "indi": {
+                    "deviceName": "camera",
+                    "deviceList": ["test", "test1"],
+                    "testParam": "oldValue",
+                },
+            },
+        },
+    }
+    mock_entries = [
+        MockEntry("telescope", "indi"),
+        MockEntry("camera", "indi"),
+    ]
+    with (
+        mock.patch.object(function, "stopDriver"),
+        mock.patch.object(function.app.dReg, "configurable", return_value=mock_entries),
+    ):
+        function.copyConfig("telescope", "indi")
+

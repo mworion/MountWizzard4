@@ -341,6 +341,7 @@ def test_loadProfileGUI_3(window):
             mw4.gui.mainWindow.mainWindow, "loadConfig", return_value={"test": 1}
         ),
         mock.patch.object(window, "switchProfile"),
+        mock.patch.object(window, "saveProfile"),
     ):
         window.loadProfileGUI()
 

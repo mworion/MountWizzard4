@@ -52,13 +52,14 @@ class DriverHandling:
 
     def stopDriver(self, driver: str) -> None:
         self.dReg.setStat(driver, None)
-        if self.dReg[driver].framework not in self.dReg[driver].run:
+        framework = self.dReg[driver].instance.framework
+        if framework not in self.dReg[driver].run:
             return
-        if self.dReg[driver].framework.deviceName == "":
+        if self.dReg[driver].run[framework].deviceName == "":
             return
         self.dReg[driver].instance.stopCommunication()
         self.dReg[driver].data.clear()
-        self.dReg[driver].run[self.dReg[driver].framework].deviceName = ""
+        self.dReg[driver].run[framework].deviceName = ""
 
     def stopDrivers(self) -> None:
         for entry in self.dReg.configurable():
@@ -71,16 +72,16 @@ class DriverHandling:
             return
 
         frameworkConfig = self.driversData[driver]["frameworks"][framework]
-        driverClass = self.dReg[driver].run[framework]
+        driverInstance = self.dReg[driver].run[framework]
         for attribute in frameworkConfig:
-            setattr(driverClass, attribute, frameworkConfig[attribute])
+            setattr(driverInstance, attribute, frameworkConfig[attribute])
 
     def startDriver(self, driver: str, autoStart: bool = False) -> None:
         framework = self.driversData[driver]["framework"]
         if framework not in self.dReg[driver].run:
             return
 
-        driverClass = self.dReg[driver].instance
+        driverInstance = self.dReg[driver].instance
         loadConfig = self.driversData[driver]["frameworks"][framework].get("loadConfig", False)
         updateRate = self.driversData[driver]["frameworks"][framework].get("updateRate", 1000)
         self.dReg[driver].instance.updateRate = updateRate
@@ -88,17 +89,16 @@ class DriverHandling:
         self.dReg[driver].instance.framework = framework
         self.configDriver(driver)
         if autoStart:
-            driverClass.startCommunication()
+            driverInstance.startCommunication()
 
-    def startDrivers(self) -> None:
+    def startDrivers(self, autoConnect) -> None:
         for entry in self.dReg.configurable():
             if entry.name not in self.driversData:
                 continue
             if self.driversData[entry.name]["framework"] == "":
                 continue
-            isAscomAutoConnect = self.ui.autoConnectASCOM.isChecked()
             isAscom = self.driversData[entry.name]["framework"] in ["ascom", "alpaca"]
-            autostart = isAscomAutoConnect and isAscom or not isAscom
+            autostart = autoConnect and isAscom or not isAscom
             self.startDriver(entry.name, autostart)
 
     def manualStopAllAscomDrivers(self) -> None:

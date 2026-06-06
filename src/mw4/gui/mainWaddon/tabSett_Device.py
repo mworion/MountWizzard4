@@ -16,7 +16,7 @@
 from functools import partial
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, findIndexValue
-from mw4.logic.driverHandling import DriverHandling
+from mw4.logic.driverHandling.driverHandling import DriverHandling
 from PySide6.QtWidgets import QListView
 from typing import Any
 
@@ -28,7 +28,7 @@ class SettDevice:
         self.msg = mainW.app.msg
         self.ui = mainW.ui
         self.driversData = {}
-        self.dHandling = DriverHandling(mainW.app.dReg, self.driverData)
+        self.dHandling = DriverHandling(mainW.app.dReg, self.driversData)
         self.devicePopup = None
 
         self.setupUiDriver: dict[str, Any] = {
@@ -124,14 +124,14 @@ class SettDevice:
         self.ui.ascomDisconnect.clicked.connect(self.dHandling.manualStopAllAscomDrivers)
 
     def initConfig(self) -> None:
-        config = self.app.config["WindowMain"]
-        self.loadDriversDataFromConfig(self.app.config)
+        config = self.app.config["WindowSetting"]
+        self.dHandling.loadDriversDataFromConfig(self.app.config)
         self.ui.autoConnectASCOM.setChecked(config.get("autoConnectASCOM", False))
         self.setupDeviceGui()
         self.startDrivers()
 
     def storeConfig(self) -> None:
-        config = self.app.config["WindowMain"]
+        config = self.app.config["WindowSetting"]
         self.app.config["driversData"] = self.driversData
         config["autoConnectASCOM"] = self.ui.autoConnectASCOM.isChecked()
 
@@ -191,7 +191,7 @@ class SettDevice:
         for entry in self.app.dReg.configurable():
             if entry.name == driverOrig:
                 continue
-            if entry.framework == framework:
+            if entry.instance.framework == framework:
                 self.stopDriver(driver=driverOrig)
             if entry.name not in self.driversData:
                 continue
@@ -225,13 +225,22 @@ class SettDevice:
         if framework:
             self.startDriver(driver, True)
 
+    def startDrivers(self) -> None:
+        autoConnect = self.ui.autoConnectASCOM.isChecked()
+        self.dHandling.startDrivers(autoConnect)
+
+    def stopDrivers(self) -> None:
+        self.dHandling.stopDrivers()
+
     def startDriver(self, driver: str, auto: bool) -> None:
-        self.dHandling.startDriver()
-        self.msg.emit(0, "Driver", f"{self.app.dReg[driver].framework} enabled", f"{driver}")
+        self.dHandling.startDriver(driver)
+        framework = self.app.dReg[driver].instance.framework
+        self.msg.emit(0, "Driver", f"{framework} enabled", f"{driver}")
 
     def stopDriver(self, driver: str) -> None:
-        self.dHandling.stopDriver()
-        self.msg.emit(0, "Driver", f"{self.app.dReg[driver].framework} disabled", f"{driver}")
+        self.dHandling.stopDriver(driver)
+        framework = self.app.dReg[driver].instance.framework
+        self.msg.emit(0, "Driver", f"{framework} disabled", f"{driver}")
 
     def serverDisconnected(self, driver: str, deviceList: list) -> None:
         self.msg.emit(0, "Driver", "Server disconnected", f"{driver}")

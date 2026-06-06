@@ -61,7 +61,7 @@ class AstroObjects:
         self.downloadPopup = None
         self.tempDir: Path = self.app.mwGlob["tempDir"]
         self.dataDir: Path = self.app.mwGlob["dataDir"]
-        self.loader = self.app.dReg["mount"].instance.obsSite.loader
+        self.loader = self.app.dReg["mount"].obsSite.loader
         self.dbProc = DataWriter(self.app)
         self.buildSourceListDropdown()
         self.uiSourceList.currentIndexChanged.connect(self.loadSourceUrl)

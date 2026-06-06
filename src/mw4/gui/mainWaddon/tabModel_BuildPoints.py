@@ -189,11 +189,11 @@ class BuildPoints:
 
     def genBuildDSO(self) -> None:
         self.lastGenerator = "dso"
-        ha = self.app.dReg["mount"].instance.obsSite.raJNow
-        dec = self.app.dReg["mount"].instance.obsSite.decJNow
-        lst = self.app.dReg["mount"].instance.obsSite.timeSidereal
-        timeJD = self.app.dReg["mount"].instance.obsSite.timeJD
-        location = self.app.dReg["mount"].instance.obsSite.location
+        ha = self.app.dReg["mount"].obsSite.raJNow
+        dec = self.app.dReg["mount"].obsSite.decJNow
+        lst = self.app.dReg["mount"].obsSite.timeSidereal
+        timeJD = self.app.dReg["mount"].obsSite.timeJD
+        location = self.app.dReg["mount"].obsSite.location
 
         if any(x is None for x in [ha, dec, location, lst]):
             self.msg.emit(
@@ -252,7 +252,7 @@ class BuildPoints:
     def genModel(self) -> None:
         self.lastGenerator = "model"
         self.app.buildPoint.clearBuildP()
-        model = self.app.dReg["mount"].instance.model
+        model = self.app.dReg["mount"].model
         for star in model.starList:
             self.app.buildPoint.addBuildP(
                 [int(star.alt.degrees), int(star.az.degrees), self.app.buildPoint.UNPROCESSED]

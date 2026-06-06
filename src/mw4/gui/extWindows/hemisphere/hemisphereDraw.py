@@ -153,7 +153,7 @@ class HemisphereDraw(MWidget):
             plotItem.addItem(textItem)
 
     def calculateRelevance(self, alt: float, az: float) -> float:
-        isNorth = self.app.dReg["mount"].instance.obsSite.location.latitude.degrees > 0
+        isNorth = self.app.dReg["mount"].obsSite.location.latitude.degrees > 0
         altFak = 1 - np.minimum(np.abs(alt - 30), 35) / 35
         if isNorth:
             azFak = 1 - np.minimum(diffModulusAbs(0, az - 180, 360), 75) / 75
@@ -325,7 +325,7 @@ class HemisphereDraw(MWidget):
                 items.append(item)
                 item.setVisible(True)
 
-        obsSite = self.app.dReg["mount"].instance.obsSite
+        obsSite = self.app.dReg["mount"].obsSite
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
         items[0].setData(x=[az], y=[alt])
@@ -349,7 +349,7 @@ class HemisphereDraw(MWidget):
         self.pointerDome.setVisible(visible)
 
     def drawModelIsoCurve(self) -> None:
-        model = self.app.dReg["mount"].instance.model
+        model = self.app.dReg["mount"].model
         if len(model.starList) == 0:
             return
         alt = np.array([x.alt.degrees for x in model.starList])
@@ -388,7 +388,7 @@ class HemisphereDraw(MWidget):
         question += f"<font color={self.M_PRIM}>{name}.</font>"
         question += "<br>Would you like to start alignment?<br>"
 
-        isDAT = self.app.dReg["mount"].instance.setting.statusDualAxisTracking
+        isDAT = self.app.dReg["mount"].setting.statusDualAxisTracking
         warning = f"<br><i><font color={self.M_YELLOW}>"
         warning += "Dual Axis Tracking is actually enabled!<br>"
         warning += "It should be off during alignment process.</font></i>"
@@ -414,7 +414,7 @@ class HemisphereDraw(MWidget):
             self.slewDirect(posView)
 
     def drawTab(self) -> None:
-        hasModel = bool(self.app.dReg["mount"].instance.model.numberStars)
+        hasModel = bool(self.app.dReg["mount"].model.numberStars)
         self.ui.alignmentModeHem.setEnabled(hasModel)
         self.ui.showIsoModel.setEnabled(hasModel)
         isMount = bool(self.app.dReg["mount"].stat)

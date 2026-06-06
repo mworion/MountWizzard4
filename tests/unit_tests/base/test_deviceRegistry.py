@@ -150,6 +150,62 @@ def test_deviceEntryTimeJDProperty() -> None:
     assert isinstance(entry.timeJD, MockTimeJD)
 
 
+def test_deviceEntryModelProperty() -> None:
+    class MockModel:
+        pass
+
+    class MockInstance:
+        def __init__(self):
+            self.model = MockModel()
+
+    entry = DeviceEntry(
+        name="mount", instance=MockInstance(), deviceType=None, isConfigurable=False
+    )
+    assert isinstance(entry.model, MockModel)
+
+
+def test_deviceEntryGeometryProperty() -> None:
+    class MockGeometry:
+        pass
+
+    class MockInstance:
+        def __init__(self):
+            self.geometry = MockGeometry()
+
+    entry = DeviceEntry(
+        name="mount", instance=MockInstance(), deviceType=None, isConfigurable=False
+    )
+    assert isinstance(entry.geometry, MockGeometry)
+
+
+def test_deviceEntryFirmwareProperty() -> None:
+    class MockFirmware:
+        pass
+
+    class MockInstance:
+        def __init__(self):
+            self.firmware = MockFirmware()
+
+    entry = DeviceEntry(
+        name="mount", instance=MockInstance(), deviceType=None, isConfigurable=False
+    )
+    assert isinstance(entry.firmware, MockFirmware)
+
+
+def test_deviceEntrySatelliteProperty() -> None:
+    class MockSatellite:
+        pass
+
+    class MockInstance:
+        def __init__(self):
+            self.satellite = MockSatellite()
+
+    entry = DeviceEntry(
+        name="mount", instance=MockInstance(), deviceType=None, isConfigurable=False
+    )
+    assert isinstance(entry.satellite, MockSatellite)
+
+
 def test_deviceEntrySignalsPropertyRaisesWhenInstanceNone() -> None:
     entry = DeviceEntry(
         name="refraction", instance=None, deviceType=None, isConfigurable=False
@@ -196,6 +252,38 @@ def test_deviceEntryTimeJDPropertyRaisesWhenInstanceNone() -> None:
     )
     with pytest.raises(AttributeError):
         _ = entry.timeJD
+
+
+def test_deviceEntryModelPropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(
+        name="refraction", instance=None, deviceType=None, isConfigurable=False
+    )
+    with pytest.raises(AttributeError):
+        _ = entry.model
+
+
+def test_deviceEntryGeometryPropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(
+        name="refraction", instance=None, deviceType=None, isConfigurable=False
+    )
+    with pytest.raises(AttributeError):
+        _ = entry.geometry
+
+
+def test_deviceEntryFirmwarePropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(
+        name="refraction", instance=None, deviceType=None, isConfigurable=False
+    )
+    with pytest.raises(AttributeError):
+        _ = entry.firmware
+
+
+def test_deviceEntrySatellitePropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(
+        name="refraction", instance=None, deviceType=None, isConfigurable=False
+    )
+    with pytest.raises(AttributeError):
+        _ = entry.satellite
 
 
 # ------------------------------------------------------------------

@@ -123,7 +123,7 @@ class ModelData(QObject):
         self.mountSlewed = False
         self.domeSlewed = False
         self.statusSlew.emit([self.modelRunKey, altitude.degrees, azimuth.degrees])
-        if not self.app.dReg["mount"].instance.obsSite.setTargetAltAz(altitude, azimuth):
+        if not self.app.dReg["mount"].obsSite.setTargetAltAz(altitude, azimuth):
             result = {
                 "success": False,
                 "message": "Slew not possible - limits ?",
@@ -136,15 +136,15 @@ class ModelData(QObject):
         else:
             if self.app.dReg["dome"].stat:
                 self.app.dReg["dome"].instance.slewDome(azimuth)
-            self.app.dReg["mount"].instance.obsSite.startSlewing()
+            self.app.dReg["mount"].obsSite.startSlewing()
             t = f"{'Start slew':15s}: [{self.modelRunKey}], "
             t += f" Alt: [{altitude.degrees:03.0f}], Az: [{azimuth.degrees:03.0f}]"
             self.log.debug(t)
 
     def addMountModelToBuildModel(self) -> None:
-        mount_instance = self.app.dReg["mount"].instance
-        if len(mount_instance.model.starList) == len(self.modelSaveData):
-            self.modelSaveData = writeRetrofitData(mount_instance.model, self.modelSaveData)
+        mount_entry = self.app.dReg["mount"]
+        if len(mount_entry.model.starList) == len(self.modelSaveData):
+            self.modelSaveData = writeRetrofitData(mount_entry.model, self.modelSaveData)
             self.modelSaveData = convertAngleToFloat(self.modelSaveData)
         else:
             self.log.warning("Error in model data: difference in length")

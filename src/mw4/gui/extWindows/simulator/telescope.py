@@ -37,20 +37,20 @@ class SimulatorTelescope:
         if not self.app.dReg["mount"].stat:
             return
 
-        north = self.app.dReg["mount"].instance.geometry.offNorth * 1000
-        east = self.app.dReg["mount"].instance.geometry.offEast * 1000
-        vertical = self.app.dReg["mount"].instance.geometry.offVert * 1000
+        north = self.app.dReg["mount"].geometry.offNorth * 1000
+        east = self.app.dReg["mount"].geometry.offEast * 1000
+        vertical = self.app.dReg["mount"].geometry.offVert * 1000
 
         node = self.parent.entityModel.get("mountBase")
         if node:
             node["trans"].setTranslation(QVector3D(north, -east, 1000 + vertical))
 
-        latitude = self.app.dReg["mount"].instance.obsSite.location.latitude.degrees
+        latitude = self.app.dReg["mount"].obsSite.location.latitude.degrees
         node = self.parent.entityModel.get("lat")
         if node:
             node["trans"].setRotationY(-abs(latitude))
 
-        offPlateOTA = self.app.dReg["mount"].instance.geometry.offPlateOTA * 1000
+        offPlateOTA = self.app.dReg["mount"].geometry.offPlateOTA * 1000
         lat = -self.app.mainW.ui.offLAT.value() * 1000
 
         node = self.parent.entityModel.get("gem")
@@ -88,8 +88,8 @@ class SimulatorTelescope:
 
         :return:
         """
-        angRA = self.app.dReg["mount"].instance.obsSite.angularPosRA
-        angDEC = self.app.dReg["mount"].instance.obsSite.angularPosDEC
+        angRA = self.app.dReg["mount"].obsSite.angularPosRA
+        angDEC = self.app.dReg["mount"].obsSite.angularPosDEC
         if not (angRA and angDEC):
             return
 
@@ -102,7 +102,7 @@ class SimulatorTelescope:
             node["trans"].setRotationZ(-angDEC.degrees)
 
     def create(self):
-        lat = self.app.dReg["mount"].instance.obsSite.location.latitude.degrees
+        lat = self.app.dReg["mount"].obsSite.location.latitude.degrees
         model = {
             "mountRoot": {
                 "parent": "ref_fusion_m",

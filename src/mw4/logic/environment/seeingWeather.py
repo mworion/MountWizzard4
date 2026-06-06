@@ -35,7 +35,7 @@ class SeeingWeather:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = SeeingWeatherSignals()
-        self.location: Any = None
+        self.location = self.app.dReg["mount"].location
         self.b: str = ""
         self.framework: str = ""
         self.run: dict[str, Any] = {"seeing": self}
@@ -57,7 +57,6 @@ class SeeingWeather:
         self.apiKey: str = ""
 
     def startCommunication(self) -> None:
-        self.location = self.app.dReg["mount"].obsSite.location
         self.pollSeeingData()
         self.app.update3s.connect(self.pollSeeingData)
 
@@ -124,7 +123,7 @@ class SeeingWeather:
         if not filePath.is_file():
             return True
 
-        ageData = self.app.dReg["mount"].instance.obsSite.loader.days_old(fileName)
+        ageData = self.app.dReg["mount"].obsSite.loader.days_old(fileName)
         return not ageData < hours / 24
 
     def pollSeeingData(self) -> None:

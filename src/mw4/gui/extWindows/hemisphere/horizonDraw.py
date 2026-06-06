@@ -173,8 +173,8 @@ class HorizonDraw(MWidget):
 
     def addActualPosition(self) -> None:
         vb = self.ui.horizon.p[0].getViewBox()
-        az = self.app.dReg["mount"].instance.obsSite.Az
-        alt = self.app.dReg["mount"].instance.obsSite.Alt
+        az = self.app.dReg["mount"].obsSite.Az
+        alt = self.app.dReg["mount"].obsSite.Alt
         az = az.degrees
         alt = alt.degrees
         index = vb.getNearestPointIndex(QPointF(az, alt))
@@ -205,7 +205,7 @@ class HorizonDraw(MWidget):
         plotItem.addItem(self.pointerHor)
 
     def drawPointer(self) -> None:
-        obsSite = self.app.dReg["mount"].instance.obsSite
+        obsSite = self.app.dReg["mount"].obsSite
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
         self.pointerHor.setData(x=[az], y=[alt])

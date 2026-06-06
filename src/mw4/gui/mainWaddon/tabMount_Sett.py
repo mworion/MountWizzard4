@@ -353,7 +353,7 @@ class MountSett:
         return True
 
     def setUnattendedFlip(self) -> bool:
-        sett = self.app.dReg["mount"].instance.setting
+        sett = self.app.dReg["mount"].setting
         dlg = QInputDialog()
         value, ok = dlg.getItem(
             self.mainW,
@@ -373,7 +373,7 @@ class MountSett:
         return suc
 
     def setDualAxisTracking(self) -> bool:
-        sett = self.app.dReg["mount"].instance.setting
+        sett = self.app.dReg["mount"].setting
         dlg = QInputDialog()
         value, ok = dlg.getItem(
             self.mainW,
@@ -393,7 +393,7 @@ class MountSett:
         return suc
 
     def setWOL(self) -> bool:
-        sett = self.app.dReg["mount"].instance.setting
+        sett = self.app.dReg["mount"].setting
         dlg = QInputDialog()
         act = 0 if sett.wakeOnLan == "ON" else 1
         value, ok = dlg.getItem(
@@ -409,7 +409,7 @@ class MountSett:
         return suc
 
     def setAPO(self) -> bool:
-        sett = self.app.dReg["mount"].instance.setting
+        sett = self.app.dReg["mount"].setting
         dlg = QInputDialog()
         act = 0 if sett.autoPowerOn else 1
         value, ok = dlg.getItem(
@@ -425,7 +425,7 @@ class MountSett:
         return suc
 
     def setRefractionTemp(self) -> bool:
-        sett = self.app.dReg["mount"].instance.setting
+        sett = self.app.dReg["mount"].setting
         actValue = 0 if sett.refractionTemp is None else sett.refractionTemp
         minVal = -40
         maxVal = 75
@@ -449,7 +449,7 @@ class MountSett:
             return False
 
     def setRefractionPress(self) -> bool:
-        sett = self.app.dReg["mount"].instance.setting
+        sett = self.app.dReg["mount"].setting
         actValue = 0 if sett.refractionPress is None else sett.refractionPress
         minVal = 500
         maxVal = 1300
@@ -473,7 +473,7 @@ class MountSett:
             return False
 
     def setRefraction(self) -> bool:
-        sett = self.app.dReg["mount"].instance.setting
+        sett = self.app.dReg["mount"].setting
         dlg = QInputDialog()
         value, ok = dlg.getItem(
             self.mainW,
@@ -493,7 +493,7 @@ class MountSett:
         return suc
 
     def setSettleTimeMount(self) -> bool:
-        sett = self.app.dReg["mount"].instance.setting
+        sett = self.app.dReg["mount"].setting
         actValue = 0 if sett.settleTime is None else int(sett.settleTime)
         dlg = QInputDialog()
         value, ok = dlg.getInt(
@@ -510,7 +510,7 @@ class MountSett:
 
     def showOffset(self) -> None:
         connectSync = self.ui.clockSync.isChecked()
-        delta = self.app.dReg["mount"].instance.obsSite.timeDiff * 1000
+        delta = self.app.dReg["mount"].obsSite.timeDiff * 1000
         ui = self.ui.timeDeltaPC2Mount
         text = f"{delta:4.0f}" if connectSync else "-"
         ui.setText(text)
@@ -522,7 +522,7 @@ class MountSett:
         else:
             changeStyleDynamic(ui, "color", "red")
 
-        timeJD = self.app.dReg["mount"].instance.obsSite.timeJD
+        timeJD = self.app.dReg["mount"].obsSite.timeJD
         if timeJD is not None:
             text = timeJD.utc_strftime("%H:%M:%S")
             self.ui.timeUTC.setText(text)

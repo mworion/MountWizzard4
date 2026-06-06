@@ -79,7 +79,7 @@ class SettMount:
         config["clockSync"] = self.ui.clockSync.isChecked()
 
     def setMountCapabilities(self, fw) -> None:
-        self.ui.GroupWOL.setEnabled(self.app.dReg["mount"].instance.firmware.isHW2012())
+        self.ui.GroupWOL.setEnabled(self.app.dReg["mount"].firmware.isHW2012())
 
     def mountBoot(self) -> None:
         bAddress = self.ui.mountWolAddress.text().strip()

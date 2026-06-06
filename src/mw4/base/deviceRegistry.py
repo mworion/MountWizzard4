@@ -105,6 +105,37 @@ class DeviceEntry:
             raise AttributeError(f"Device '{self.name}' instance is None")
         return self.instance.obsSite.timeJD
 
+    @property
+    def model(self) -> Any:
+        """Convenience property to access instance.model directly (mount-specific)."""
+        if self.instance is None:
+            raise AttributeError(f"Device '{self.name}' instance is None")
+        return self.instance.model
+
+    @property
+    def geometry(self) -> Any:
+        """Convenience property to access instance.geometry directly
+        (mount-specific)."""
+        if self.instance is None:
+            raise AttributeError(f"Device '{self.name}' instance is None")
+        return self.instance.geometry
+
+    @property
+    def firmware(self) -> Any:
+        """Convenience property to access instance.firmware directly
+        (mount-specific)."""
+        if self.instance is None:
+            raise AttributeError(f"Device '{self.name}' instance is None")
+        return self.instance.firmware
+
+    @property
+    def satellite(self) -> Any:
+        """Convenience property to access instance.satellite directly
+        (mount-specific)."""
+        if self.instance is None:
+            raise AttributeError(f"Device '{self.name}' instance is None")
+        return self.instance.satellite
+
 
 class DeviceRegistry:
     """Central registry of all device driver instances.
@@ -138,7 +169,6 @@ class DeviceRegistry:
                 deviceType=None,
                 isConfigurable=False,
             ),
-
         }
 
     # =====================================================================
@@ -147,119 +177,119 @@ class DeviceRegistry:
 
     def addDevices(self, app: Any) -> None:
         self.drivers["camera"] = DeviceEntry(
-                name="camera",
-                instance=Camera(app),  # Can access app.mount
-                deviceType="camera",
-                isConfigurable=True,
-            )
+            name="camera",
+            instance=Camera(app),  # Can access app.mount
+            deviceType="camera",
+            isConfigurable=True,
+        )
         self.drivers["cover"] = DeviceEntry(
-                name="cover",
-                instance=Cover(app),
-                deviceType="covercalibrator",
-                isConfigurable=True,
-            )
+            name="cover",
+            instance=Cover(app),
+            deviceType="covercalibrator",
+            isConfigurable=True,
+        )
         self.drivers["directWeather"] = DeviceEntry(
-                name="directWeather",
-                instance=DirectWeather(app),
-                deviceType=None,
-                isConfigurable=True,
-            )
+            name="directWeather",
+            instance=DirectWeather(app),
+            deviceType=None,
+            isConfigurable=True,
+        )
         self.drivers["dome"] = DeviceEntry(
-                name="dome",
-                instance=Dome(app),
-                deviceType="dome",
-                isConfigurable=True,
-            )
+            name="dome",
+            instance=Dome(app),
+            deviceType="dome",
+            isConfigurable=True,
+        )
         self.drivers["filter"] = DeviceEntry(
-                name="filter",
-                instance=Filter(app),
-                deviceType="filterwheel",
-                isConfigurable=True,
-            )
+            name="filter",
+            instance=Filter(app),
+            deviceType="filterwheel",
+            isConfigurable=True,
+        )
         self.drivers["focuser"] = DeviceEntry(
-                name="focuser",
-                instance=Focuser(app),
-                deviceType="focuser",
-                isConfigurable=True,
-            )
+            name="focuser",
+            instance=Focuser(app),
+            deviceType="focuser",
+            isConfigurable=True,
+        )
         self.drivers["lightPanel"] = DeviceEntry(
-                name="lightPanel",
-                instance=LightPanel(app),
-                deviceType="covercalibrator",
-                isConfigurable=True,
-            )
+            name="lightPanel",
+            instance=LightPanel(app),
+            deviceType="covercalibrator",
+            isConfigurable=True,
+        )
         self.drivers["measure"] = DeviceEntry(
-                name="measure",
-                instance=MeasureData(app),
-                deviceType=None,
-                isConfigurable=True,
-            )
+            name="measure",
+            instance=MeasureData(app),
+            deviceType=None,
+            isConfigurable=True,
+        )
         self.drivers["plateSolve"] = DeviceEntry(
-                name="plateSolve",
-                instance=PlateSolve(app),
-                deviceType="plateSolve",
-                isConfigurable=True,
-            )
+            name="plateSolve",
+            instance=PlateSolve(app),
+            deviceType="plateSolve",
+            isConfigurable=True,
+        )
         self.drivers["power"] = DeviceEntry(
-                name="power",
-                instance=PegasusUPB(app),
-                deviceType="switch",
-                isConfigurable=True,
-            )
+            name="power",
+            instance=PegasusUPB(app),
+            deviceType="switch",
+            isConfigurable=True,
+        )
         self.drivers["relay"] = DeviceEntry(
-                name="relay",
-                instance=KMRelay(),
-                deviceType=None,
-                isConfigurable=True,
-            )
+            name="relay",
+            instance=KMRelay(),
+            deviceType=None,
+            isConfigurable=True,
+        )
         self.drivers["refraction"] = DeviceEntry(
-                name="refraction",
-                instance=None,
-                deviceType=None,
-                isConfigurable=False,
-            )
+            name="refraction",
+            instance=None,
+            deviceType=None,
+            isConfigurable=False,
+        )
         self.drivers["remote"] = DeviceEntry(
-                name="remote",
-                instance=Remote(app),
-                deviceType=None,
-                isConfigurable=True,
-            )
+            name="remote",
+            instance=Remote(app),
+            deviceType=None,
+            isConfigurable=True,
+        )
         self.drivers["seeingWeather"] = DeviceEntry(
-                name="seeingWeather",
-                instance=SeeingWeather(app),  # Can access app.mount
-                deviceType="observingconditions",
-                isConfigurable=True,
-            )
+            name="seeingWeather",
+            instance=SeeingWeather(app),  # Can access app.mount
+            deviceType="observingconditions",
+            isConfigurable=True,
+        )
         self.drivers["sensor1Weather"] = DeviceEntry(
-                name="sensor1Weather",
-                instance=SensorWeather(app),
-                deviceType="observingconditions",
-                isConfigurable=True,
-            )
+            name="sensor1Weather",
+            instance=SensorWeather(app),
+            deviceType="observingconditions",
+            isConfigurable=True,
+        )
         self.drivers["sensor2Weather"] = DeviceEntry(
-                name="sensor2Weather",
-                instance=SensorWeather(app),
-                deviceType="observingconditions",
-                isConfigurable=True,
-            )
+            name="sensor2Weather",
+            instance=SensorWeather(app),
+            deviceType="observingconditions",
+            isConfigurable=True,
+        )
         self.drivers["sensor3Weather"] = DeviceEntry(
-                name="sensor3Weather",
-                instance=SensorWeather(app),
-                deviceType="observingconditions",
-                isConfigurable=True,
-            )
+            name="sensor3Weather",
+            instance=SensorWeather(app),
+            deviceType="observingconditions",
+            isConfigurable=True,
+        )
         self.drivers["sensor4Weather"] = DeviceEntry(
-                name="sensor4Weather",
-                instance=SensorWeather(app),
-                deviceType="observingconditions",
-                isConfigurable=True,
-            )
+            name="sensor4Weather",
+            instance=SensorWeather(app),
+            deviceType="observingconditions",
+            isConfigurable=True,
+        )
         self.drivers["telescope"] = DeviceEntry(
-                name="telescope",
-                instance=Telescope(app),
-                deviceType="telescope",
-                isConfigurable=True,
-            )
+            name="telescope",
+            instance=Telescope(app),
+            deviceType="telescope",
+            isConfigurable=True,
+        )
 
     # ------------------------------------------------------------------
     # Mapping protocol — keeps ``"x" in dReg`` and ``dReg["x"]`` working

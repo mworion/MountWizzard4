@@ -61,7 +61,7 @@ class SimulatorDome:
         likewise some transformations have to be reverted as they are propagated
         through entity linking.
         """
-        radius = self.app.dReg["mount"].instance.geometry.domeRadius * 1000
+        radius = self.app.dReg["mount"].geometry.domeRadius * 1000
         scale = 1 + (radius - 1250) / 1250
         corrZ = -(scale - 1) * 800
 
@@ -83,7 +83,7 @@ class SimulatorDome:
             return
 
         isOpen = self.app.dReg["dome"].data["DOME_SHUTTER.SHUTTER_OPEN"]
-        radius = self.app.dReg["mount"].instance.geometry.domeRadius * 1000
+        radius = self.app.dReg["mount"].geometry.domeRadius * 1000
         scale = 1 + (radius - 1250) / 1250
         width = self.app.dReg["dome"].instance.clearOpening * 1000
         scaleSlit = (1 + (width - 600) / 600 / 2) * 0.9

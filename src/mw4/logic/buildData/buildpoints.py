@@ -75,8 +75,8 @@ class BuildPoint:
         self._buildP = value
 
     def addBuildP(self, value: tuple[float, float, int], position: int = 999) -> None:
-        high = self.app.dReg["mount"].instance.setting.horizonLimitHigh or 90
-        low = self.app.dReg["mount"].instance.setting.horizonLimitLow or 0
+        high = self.app.dReg["mount"].setting.horizonLimitHigh or 90
+        low = self.app.dReg["mount"].setting.horizonLimitLow or 0
 
         if not low <= value[0] <= high:
             return
@@ -145,8 +145,8 @@ class BuildPoint:
         return point[0] > y[int(point[1])]
 
     def isCloseMeridian(self, point: tuple[int, int]) -> bool:
-        slew = self.app.dReg["mount"].instance.setting.meridianLimitSlew
-        track = self.app.dReg["mount"].instance.setting.meridianLimitTrack
+        slew = self.app.dReg["mount"].setting.meridianLimitSlew
+        track = self.app.dReg["mount"].setting.meridianLimitTrack
         value = max(slew, track)
         lower = 180 - value
         upper = 180 + value
@@ -190,7 +190,7 @@ class BuildPoint:
     def sortActualPierside(self) -> None:
         east = [x for x in self._buildP if x[1] <= 180]
         west = [x for x in self._buildP if x[1] > 180]
-        if self.app.dReg["mount"].instance.obsSite.pierside != "E":
+        if self.app.dReg["mount"].obsSite.pierside != "E":
             self._buildP = [p[0:3] for p in east + west]
         else:
             self._buildP = [p[0:3] for p in west + east]
@@ -277,7 +277,7 @@ class BuildPoint:
 
     def genGreaterCircle(self, stepHA: int, stepDec: int, distFlip: int) -> bool:
         self.clearBuildP()
-        lat = self.app.dReg["mount"].instance.obsSite.location.latitude.degrees
+        lat = self.app.dReg["mount"].location.latitude.degrees
         decList = list(range(-15, -15 + int(100 / stepDec) * stepDec, stepDec))
         if lat < 0:
             decList = [-x for x in decList]
@@ -394,10 +394,10 @@ class BuildPoint:
 
     def generateCelestialEquator(self) -> list[tuple[int, int]]:
         celestialEquator = []
-        if not self.app.dReg["mount"].instance.obsSite.location:
+        if not self.app.dReg["mount"].location:
             return celestialEquator
 
-        lat = self.app.dReg["mount"].instance.obsSite.location.latitude.degrees
+        lat = self.app.dReg["mount"].location.latitude.degrees
 
         for dec in range(-75, 90, 15):
             for ha in range(-119, 120, 2):
@@ -444,7 +444,7 @@ class BuildPoint:
 
         star = Star(ra=ha, dec=dec)
         startTime = timeJD
-        ts = self.app.dReg["mount"].instance.obsSite.ts
+        ts = self.app.dReg["mount"].obsSite.ts
         endTime = ts.tt_jd(timeJD.tt + 1.1)
         eph = self.app.ephemeris
         f = almanac.risings_and_settings(eph, star, location)

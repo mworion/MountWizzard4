@@ -108,7 +108,7 @@ class ModelManage:
         self.ui.nameList.sortItems()
 
     def showModelPosition(self) -> None:
-        model = self.app.dReg["mount"].instance.model
+        model = self.app.dReg["mount"].model
         if model.numberStars == 0 or len(model.starList) == 0:
             self.ui.modelPositions.p[0].clear()
             return
@@ -130,12 +130,12 @@ class ModelManage:
             tip="PointNo: {data[0]}\nErrorRMS: {data[1]:0.1f}".format,
         )
         self.ui.modelPositions.plotLoc(
-            self.app.dReg["mount"].instance.obsSite.location.latitude.degrees
+            self.app.dReg["mount"].obsSite.location.latitude.degrees
         )
         self.ui.modelPositions.scatterItem.sigClicked.connect(self.pointClicked)
 
     def showErrorAscending(self) -> None:
-        model = self.app.dReg["mount"].instance.model
+        model = self.app.dReg["mount"].model
         error = np.array([star.errorRMS for star in model.starList])
         if len(error) == 0:
             self.ui.errorAscending.p[0].clear()
@@ -150,7 +150,7 @@ class ModelManage:
         )
 
     def showErrorDistribution(self) -> None:
-        model = self.app.dReg["mount"].instance.model
+        model = self.app.dReg["mount"].model
         error = np.array([x.errorRMS for x in model.starList])
         if len(error) == 0:
             self.ui.errorDistribution.p[0].clear()
@@ -183,7 +183,7 @@ class ModelManage:
             self.msg.emit(2, "Model", "Manage error", "No model name selected")
             return
         modelName = self.ui.nameList.currentItem().text()
-        if not self.app.dReg["mount"].instance.model.loadName(modelName):
+        if not self.app.dReg["mount"].model.loadName(modelName):
             self.msg.emit(2, "Model", "Manage error", f"Model load failed: [{modelName}]")
             return
         self.msg.emit(0, "Model", "Manage", f"Model loaded: [{modelName}]")
@@ -198,7 +198,7 @@ class ModelManage:
             self.msg.emit(2, "Model", "Manage error", "No model name given")
             return
 
-        if not self.app.dReg["mount"].instance.model.storeName(modelName):
+        if not self.app.dReg["mount"].model.storeName(modelName):
             self.msg.emit(2, "Model", "Manage error", f"Model cannot be saved [{modelName}]")
             return
         self.msg.emit(0, "Model", "Manage", f"Model saved: [{modelName}]")
@@ -215,7 +215,7 @@ class ModelManage:
         ):
             return
 
-        if not self.app.dReg["mount"].instance.model.deleteName(modelName):
+        if not self.app.dReg["mount"].model.deleteName(modelName):
             self.msg.emit(2, "Model", "Manage error", f"Model cannot be deleted [{modelName}]")
             return
         self.msg.emit(0, "Model", "Manage", f"Model deleted: [{modelName}]")
@@ -242,7 +242,7 @@ class ModelManage:
                 continue
             newModel.append(element)
 
-        newModel = writeRetrofitData(self.app.dReg["mount"].instance.model, newModel)
+        newModel = writeRetrofitData(self.app.dReg["mount"].model, newModel)
         newModel = convertAngleToFloat(newModel)
         with open(newPath, "w+") as newFile:
             json.dump(newModel, newFile, sort_keys=True, indent=4)
@@ -257,7 +257,7 @@ class ModelManage:
         self.app.dReg["mount"].instance.signals.getModelDone.disconnect(self.clearRefreshModel)
         self.msg.emit(0, "Model", "Manage", "Model data refreshed")
         self.fittedModelPath, pointsOut = findFittingModel(
-            self.app.dReg["mount"].instance.model, self.app.mwGlob["modelDir"]
+            self.app.dReg["mount"].model, self.app.mwGlob["modelDir"]
         )
         self.writeBuildModelOptimized(pointsOut)
         if self.fittedModelPath.is_file():
@@ -284,14 +284,14 @@ class ModelManage:
             self.mainW, "Clear model", "Clear actual alignment model"
         ):
             return
-        if not self.app.dReg["mount"].instance.model.clearModel():
+        if not self.app.dReg["mount"].model.clearModel():
             self.msg.emit(2, "Model", "Manage error", "Actual model cannot be cleared")
             return
         self.msg.emit(0, "Model", "Manage", "Actual model cleared")
         self.refreshModel()
 
     def deleteWorstPoint(self) -> None:
-        model = self.app.dReg["mount"].instance.model
+        model = self.app.dReg["mount"].model
         if not model.numberStars:
             return
 
@@ -401,13 +401,13 @@ class ModelManage:
             return
 
         index = points[0].data()[0]
-        error = self.app.dReg["mount"].instance.model.starList[index].errorRMS
+        error = self.app.dReg["mount"].model.starList[index].errorRMS
         text = f"Do you want to delete \npoint {index:3.0f}"
         text += f"\nRMS of {error:5.1f} arcsec"
 
         if not self.mainW.messageDialog(self.mainW, "Deleting point", text):
             return
-        if not self.app.dReg["mount"].instance.model.deletePoint(index):
+        if not self.app.dReg["mount"].model.deletePoint(index):
             self.msg.emit(2, "Model", "Manage error", f"Point {index:3.0f} cannot be deleted")
             return
 

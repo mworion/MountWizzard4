@@ -69,10 +69,10 @@ class BigPopup(MWidget):
         isMount = self.app.deviceStat.get("mount", False)
         changeStyleDynamic(self.ui.mountOn, "run", isMount)
         changeStyleDynamic(self.ui.mountOff, "run", not isMount)
-        canWOL = self.app.dReg["mount"].instance.firmware.hardware == "Q-TYPE2012"
+        canWOL = self.app.dReg["mount"].firmware.hardware == "Q-TYPE2012"
         self.ui.mountOn.setEnabled(canWOL)
         self.ui.mountOff.setEnabled(canWOL)
 
     def updateStatus(self) -> None:
-        running = self.app.dReg["mount"].instance.obsSite.status == 1
+        running = self.app.dReg["mount"].obsSite.status == 1
         changeStyleDynamic(self.ui.stop, "run", running)

@@ -40,19 +40,19 @@ class MountMove:
         self.slewSpeeds = {
             "max": {
                 "button": self.ui.slewSpeedMax,
-                "func": self.app.dReg["mount"].instance.setting.setSlewSpeedMax,
+                "func": self.app.dReg["mount"].setting.setSlewSpeedMax,
             },
             "high": {
                 "button": self.ui.slewSpeedHigh,
-                "func": self.app.dReg["mount"].instance.setting.setSlewSpeedHigh,
+                "func": self.app.dReg["mount"].setting.setSlewSpeedHigh,
             },
             "med": {
                 "button": self.ui.slewSpeedMed,
-                "func": self.app.dReg["mount"].instance.setting.setSlewSpeedMed,
+                "func": self.app.dReg["mount"].setting.setSlewSpeedMed,
             },
             "low": {
                 "button": self.ui.slewSpeedLow,
-                "func": self.app.dReg["mount"].instance.setting.setSlewSpeedLow,
+                "func": self.app.dReg["mount"].setting.setSlewSpeedLow,
             },
         }
 
@@ -143,7 +143,7 @@ class MountMove:
     def stopMoveAll(self) -> None:
         for uiR in self.setupMoveClassic:
             changeStyleDynamic(self.setupMoveClassic[uiR]["button"], "run", False)
-        self.app.dReg["mount"].instance.obsSite.stopMoveAll()
+        self.app.dReg["mount"].obsSite.stopMoveAll()
 
     def countDuration(self, duration: int) -> None:
         for t in range(duration * 10, -1, -1):
@@ -191,20 +191,20 @@ class MountMove:
 
         coord = uiList[direction]["coord"]
         if coord[0] == 1:
-            self.app.dReg["mount"].instance.obsSite.moveNorth()
+            self.app.dReg["mount"].obsSite.moveNorth()
         elif coord[0] == -1:
-            self.app.dReg["mount"].instance.obsSite.moveSouth()
+            self.app.dReg["mount"].obsSite.moveSouth()
         elif coord[0] == 0:
-            self.app.dReg["mount"].instance.obsSite.stopMoveNorth()
-            self.app.dReg["mount"].instance.obsSite.stopMoveSouth()
+            self.app.dReg["mount"].obsSite.stopMoveNorth()
+            self.app.dReg["mount"].obsSite.stopMoveSouth()
 
         if coord[1] == 1:
-            self.app.dReg["mount"].instance.obsSite.moveEast()
+            self.app.dReg["mount"].obsSite.moveEast()
         elif coord[1] == -1:
-            self.app.dReg["mount"].instance.obsSite.moveWest()
+            self.app.dReg["mount"].obsSite.moveWest()
         elif coord[1] == 0:
-            self.app.dReg["mount"].instance.obsSite.stopMoveEast()
-            self.app.dReg["mount"].instance.obsSite.stopMoveWest()
+            self.app.dReg["mount"].obsSite.stopMoveEast()
+            self.app.dReg["mount"].obsSite.stopMoveWest()
 
         self.moveDuration()
 
@@ -243,7 +243,7 @@ class MountMove:
         self.slewInterface.slewTargetAltAz(targetAlt, targetAz)
 
     def checkRaDecInputs(self) -> None:
-        canSlew = self.app.dReg["mount"].instance.obsSite.setTargetRaDec(
+        canSlew = self.app.dReg["mount"].obsSite.setTargetRaDec(
             self.targetRa, self.targetDec
         )
         self.ui.moveRaDecAbsolute.setEnabled(canSlew)
@@ -283,7 +283,7 @@ class MountMove:
         self.checkRaDecInputs()
 
     def checkAltAzInputs(self) -> None:
-        canSlew = self.app.dReg["mount"].instance.obsSite.setTargetAltAz(
+        canSlew = self.app.dReg["mount"].obsSite.setTargetAltAz(
             self.targetAlt, self.targetAz
         )
         self.ui.moveAltAzAbsolute.setEnabled(canSlew)

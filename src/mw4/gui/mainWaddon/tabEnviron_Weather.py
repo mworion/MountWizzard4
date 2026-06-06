@@ -248,7 +248,7 @@ class EnvironWeather:
 
         temp, press = self.movingAverageRefractionParameters()
         if abs(temp - self.tempLast) > 0.1 or abs(press - self.pressLast) > 5:
-            self.app.dReg["mount"].instance.setting.setRefractionParam(temp, press)
+            self.app.dReg["mount"].setting.setRefractionParam(temp, press)
             self.tempLast = temp
             self.pressLast = press
 

@@ -151,13 +151,13 @@ class Model:
         self.modelData.generateSaveData()
         modelPath = self.app.mwGlob["modelDir"] / (self.modelData.name + ".model")
         self.modelData.saveModelData(modelPath)
-        self.app.dReg["mount"].instance.model.storeName("actual")
+        self.app.dReg["mount"].model.storeName("actual")
 
     def programModelToMount(self) -> None:
         if not self.modelData.modelProgData:
             self.msg.emit(3, "Model", "Run error", "No sufficient model data available")
             return
-        if not self.app.dReg["mount"].instance.model.programModelFromStarList(
+        if not self.app.dReg["mount"].model.programModelFromStarList(
             self.modelData.modelProgData
         ):
             self.msg.emit(3, "Model", "Run error", f"{'Program':12s} Failed - error")
@@ -178,7 +178,7 @@ class Model:
         return True
 
     def clearAlignAndBackup(self) -> bool:
-        if not self.app.dReg["mount"].instance.model.clearModel():
+        if not self.app.dReg["mount"].model.clearModel():
             self.msg.emit(2, "Model", "Run error", "Actual model cannot be cleared")
             self.msg.emit(2, "", "", "Model build cancelled")
             return False
@@ -186,15 +186,13 @@ class Model:
         self.msg.emit(1, "Model", "Clear model", "Waiting 1s ...")
         mainThreadSleep(1000)
         self.msg.emit(1, "Model", "Clear model", "Actual model is cleared")
-        if not self.app.dReg["mount"].instance.model.storeName("backup"):
+        if not self.app.dReg["mount"].model.storeName("backup"):
             t = "Cannot save backup model on mount, proceeding with model run"
             self.msg.emit(2, "Model", "Run error", t)
         return True
 
     def setupFilenamesAndDirectories(self, prefix: str = "", postfix: str = "") -> Path:
-        nameTime = self.app.dReg["mount"].instance.obsSite.timeJD.utc_strftime(
-            "%Y-%m-%d-%H-%M-%S"
-        )
+        nameTime = self.app.dReg["mount"].obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         name = f"{prefix}-{nameTime}-{postfix}"
         imageDir = self.app.mwGlob["imageDir"] / name
         imageDir.mkdir(parents=True, exist_ok=True)
@@ -246,7 +244,7 @@ class Model:
         self.modelData.version = f"{self.app.__version__}"
         self.modelData.profile = self.ui.profileName.text()
         self.modelData.firmware = self.ui.vString.text()
-        obsSite = self.app.dReg["mount"].instance.obsSite
+        obsSite = self.app.dReg["mount"].obsSite
         self.modelData.latitude = obsSite.location.latitude.degrees
         self.modelData.plateSolveApp = self.ui.plateSolveDevice.currentText()
 

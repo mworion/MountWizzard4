@@ -26,8 +26,8 @@ class SlewInterface:
         self.msg = parent.msg
 
     def slewSelectedTargetWithDome(self, slewType: str = "normal") -> bool:
-        azimuthT = self.app.dReg["mount"].instance.obsSite.AzTarget
-        altitudeT = self.app.dReg["mount"].instance.obsSite.AltTarget
+        azimuthT = self.app.dReg["mount"].obsSite.AzTarget
+        altitudeT = self.app.dReg["mount"].obsSite.AltTarget
 
         if self.app.dReg["dome"].stat:
             delta = self.app.dReg["dome"].instance.slewDome(
@@ -38,7 +38,7 @@ class SlewInterface:
             text += f", az: {azimuthT.degrees:3.1f} delta: {delta:3.1f}"
             self.app.msg.emit(0, "Tools", "Slewing dome", text)
 
-        suc = self.app.dReg["mount"].instance.obsSite.startSlewing(slewType=slewType)
+        suc = self.app.dReg["mount"].obsSite.startSlewing(slewType=slewType)
         if suc:
             self.msg.emit(0, "Tools", "Slewing mount", "Slew to target")
         else:
@@ -46,7 +46,7 @@ class SlewInterface:
         return suc
 
     def slewTargetAltAz(self, alt: Angle, az: Angle, slewType: str = "normal") -> bool:
-        suc = self.app.dReg["mount"].instance.obsSite.setTargetAltAz(alt, az)
+        suc = self.app.dReg["mount"].obsSite.setTargetAltAz(alt, az)
         if not suc:
             t = f"Cannot slew to Az:[{az.degrees:3.1f}], Alt:[{alt.degrees:3.1f}]"
             self.msg.emit(2, "Tools", "Slewing error", t)
@@ -58,14 +58,14 @@ class SlewInterface:
     def slewTargetRaDec(
         self, ra: Angle, dec: Angle, slewType: str = "normal", epoch: str = "J2000"
     ) -> bool:
-        timeJD = self.app.dReg["mount"].instance.obsSite.timeJD
+        timeJD = self.app.dReg["mount"].obsSite.timeJD
         if epoch == "J2000":
             raJNow, decJNow = J2000ToJNow(ra, dec, timeJD)
         else:
             raJNow = ra
             decJNow = dec
 
-        suc = self.app.dReg["mount"].instance.obsSite.setTargetRaDec(raJNow, decJNow)
+        suc = self.app.dReg["mount"].obsSite.setTargetRaDec(raJNow, decJNow)
         if not suc:
             t = f"Cannot slew to RA:[{raJNow.hours:3.1f}], "
             t += f"DEC:[{decJNow.degrees:3.1f}]"

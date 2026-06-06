@@ -114,7 +114,7 @@ class SatTrack(SatData):
 
     def enableGuiFunctions(self) -> None:
         useInternal = self.ui.useInternalSatCalc.isChecked()
-        availableInternal = self.app.dReg["mount"].instance.firmware.checkNewer("3")
+        availableInternal = self.app.dReg["mount"].firmware.checkNewer("3")
         if availableInternal is None:
             return
 
@@ -175,8 +175,8 @@ class SatTrack(SatData):
             return
 
         self.clearTrackingParameters()
-        obsSite = self.app.dReg["mount"].instance.obsSite
-        setting = self.app.dReg["mount"].instance.setting
+        obsSite = self.app.dReg["mount"].obsSite
+        setting = self.app.dReg["mount"].setting
         self.satOrbits = calcSatPasses(self.satellite, obsSite, setting)
 
         for i in range(0, 3):
@@ -242,7 +242,7 @@ class SatTrack(SatData):
         epochText = self.satellite.epoch.utc_strftime("%Y-%m-%d, %H:%M")
         self.ui.satelliteEpoch.setText(epochText)
 
-        now = self.app.dReg["mount"].instance.obsSite.ts.now()
+        now = self.app.dReg["mount"].obsSite.ts.now()
         days = now - self.satellite.epoch
         self.ui.satelliteDataAge.setText(f"{days:2.2f}")
 
@@ -254,7 +254,7 @@ class SatTrack(SatData):
             changeStyleDynamic(self.ui.satelliteDataAge, "color", "")
 
     def programSatToMount(self, satName: str) -> None:
-        satellite = self.app.dReg["mount"].instance.satellite
+        satellite = self.app.dReg["mount"].satellite
         self.msg.emit(0, "TLE", "Program", f"Upload satellite: [{satName}]")
         line1, line2 = export_tle(self.satellites.objects[satName].model)
         suc = satellite.setTLE(line0=satName, line1=line1, line2=line2)
@@ -282,8 +282,8 @@ class SatTrack(SatData):
             changeStyleDynamic(self.ui.startSatelliteTracking, "run", False)
             return
 
-        now = self.app.dReg["mount"].instance.obsSite.ts.now()
-        location = self.app.dReg["mount"].instance.obsSite.location
+        now = self.app.dReg["mount"].obsSite.ts.now()
+        location = self.app.dReg["mount"].obsSite.location
         self.app.updateSatellite.emit(now, location)
 
     def selectStartEnd(self) -> tuple[int, int]:
@@ -375,7 +375,7 @@ class SatTrack(SatData):
 
     def changeUnitTimeUTC(self) -> None:
         self.showSatPasses()
-        self.updateSatelliteTrackGui(self.app.dReg["mount"].instance.satellite.tleParams)
+        self.updateSatelliteTrackGui(self.app.dReg["mount"].satellite.tleParams)
 
     def updateSatelliteTrackGui(self, tleParams: TLEParams) -> None:
         title = "Satellite tracking " + self.mainW.timeZoneString()
@@ -410,29 +410,29 @@ class SatTrack(SatData):
             self.msg.emit(2, "TLE", "Program", "Mount is not online")
             return
 
-        if self.app.dReg["mount"].instance.obsSite.status == 5:
-            suc = self.app.dReg["mount"].instance.obsSite.unpark()
+        if self.app.dReg["mount"].obsSite.status == 5:
+            suc = self.app.dReg["mount"].obsSite.unpark()
             if suc:
                 self.msg.emit(0, "TLE", "Command", "Mount unparked")
             else:
                 self.msg.emit(2, "TLE", "Command error", "Cannot unpark mount")
 
         self.app.dReg["dome"].instance.avoidFirstOvershoot()
-        suc, message = self.app.dReg["mount"].instance.satellite.slewTLE()
+        suc, message = self.app.dReg["mount"].satellite.slewTLE()
         if not suc:
             self.msg.emit(2, "TLE", "Command error", f"{message}")
             return
 
         changeStyleDynamic(self.ui.startSatelliteTracking, "run", True)
         self.msg.emit(0, "TLE", "Command ", f"{message}")
-        self.app.dReg["mount"].instance.satellite.setTrackingOffsets()
+        self.app.dReg["mount"].satellite.setTrackingOffsets()
 
     def stopTrack(self) -> None:
         if not self.app.dReg["mount"].stat:
             self.msg.emit(2, "TLE", "Command", "Mount is not online")
             return
 
-        suc = self.app.dReg["mount"].instance.obsSite.startTracking()
+        suc = self.app.dReg["mount"].obsSite.startTracking()
         if not suc:
             self.msg.emit(2, "TLE", "Command", "Cannot stop tracking")
             return
@@ -442,7 +442,7 @@ class SatTrack(SatData):
         self.msg.emit(0, "TLE", "Command", "Stopped tracking")
 
     def toggleTrackingOffset(self, obs: ObsSite) -> None:
-        if not self.app.dReg["mount"].instance.firmware.checkNewer("3"):
+        if not self.app.dReg["mount"].firmware.checkNewer("3"):
             return
 
         if obs.status == 10:
@@ -480,7 +480,7 @@ class SatTrack(SatData):
         valT = self.ui.satOffTime.value()
         valR = self.ui.satOffRa.value()
         valD = self.ui.satOffDec.value()
-        suc = self.app.dReg["mount"].instance.satellite.setTrackingOffsets(
+        suc = self.app.dReg["mount"].satellite.setTrackingOffsets(
             Time=valT, RA=valR, DECcorr=valD
         )
         if not suc:

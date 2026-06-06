@@ -50,7 +50,7 @@ class Mount:
             self.changeTracking()
 
     def changeTracking(self) -> None:
-        obs = self.app.dReg["mount"].instance.obsSite
+        obs = self.app.dReg["mount"].obsSite
         if obs.status == 0:
             if obs.stopTracking():
                 self.msg.emit(0, "Mount", "Command", "Stopped tracking")
@@ -67,7 +67,7 @@ class Mount:
             self.changePark()
 
     def changePark(self) -> None:
-        obs = self.app.dReg["mount"].instance.obsSite
+        obs = self.app.dReg["mount"].obsSite
         if obs.status == 5:
             if obs.unpark():
                 self.msg.emit(0, "Mount", "Command", "Mount unparked")
@@ -80,19 +80,19 @@ class Mount:
                 self.msg.emit(2, "Mount", "Command", "Cannot park mount")
 
     def setLunarTracking(self) -> None:
-        if self.app.dReg["mount"].instance.setting.setLunarTracking():
+        if self.app.dReg["mount"].setting.setLunarTracking():
             self.msg.emit(0, "Mount", "Command", "Tracking set to Lunar")
         else:
             self.msg.emit(2, "Mount", "Command", "Cannot set tracking to Lunar")
 
     def setSiderealTracking(self) -> None:
-        if self.app.dReg["mount"].instance.setting.setSiderealTracking():
+        if self.app.dReg["mount"].setting.setSiderealTracking():
             self.msg.emit(0, "Mount", "Command", "Tracking set to Sidereal")
         else:
             self.msg.emit(2, "Mount", "Command", "Cannot set tracking to Sidereal")
 
     def setSolarTracking(self) -> None:
-        if self.app.dReg["mount"].instance.setting.setSolarTracking():
+        if self.app.dReg["mount"].setting.setSolarTracking():
             self.msg.emit(0, "Mount", "Command", "Tracking set to Solar")
         else:
             self.msg.emit(2, "Mount", "Command", "Cannot set tracking to Solar")
@@ -102,7 +102,7 @@ class Mount:
             self.flipMount()
 
     def flipMount(self) -> None:
-        if self.app.dReg["mount"].instance.obsSite.flip():
+        if self.app.dReg["mount"].obsSite.flip():
             self.msg.emit(0, "Mount", "Command", "Mount flipped")
         else:
             self.msg.emit(2, "Mount", "Command", "Cannot flip mount")
@@ -112,7 +112,7 @@ class Mount:
             self.stop()
 
     def stop(self) -> None:
-        if self.app.dReg["mount"].instance.obsSite.stop():
+        if self.app.dReg["mount"].obsSite.stop():
             self.msg.emit(0, "Mount", "Command", "Mount stopped")
         else:
             self.msg.emit(2, "Mount", "Command", "Cannot stop mount")

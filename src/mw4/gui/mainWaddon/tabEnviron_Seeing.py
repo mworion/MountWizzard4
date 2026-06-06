@@ -65,7 +65,6 @@ class EnvironSeeing:
 
         signals = self.app.dReg["seeingWeather"].signals
         signals.deviceDisconnected.connect(self.clearSeeingEntries)
-        signals = self.app.dReg["seeingWeather"].signals
         signals.deviceConnected.connect(self.prepareSeeingTable)
 
         self.ui.unitTimeUTC.toggled.connect(self.updateSeeingEntries)
@@ -84,7 +83,7 @@ class EnvironSeeing:
         self.ui.seeing.setVisible(False)
 
     def addSkyfieldTimeObject(self, data: dict) -> None:
-        ts = self.app.dReg["mount"].instance.obsSite.ts
+        ts = self.app.dReg["mount"].obsSite.ts
         data["time"] = []
 
         for date, hour in zip(data["date"], data["hour"]):
@@ -153,7 +152,7 @@ class EnvironSeeing:
         if "hourly" not in self.app.dReg["seeingWeather"].data:
             return
         self.ui.seeingGroup.setTitle("Seeing data " + self.mainW.timeZoneString())
-        ts = self.app.dReg["mount"].instance.obsSite.ts
+        ts = self.app.dReg["mount"].obsSite.ts
         colorPrim = colors["M_PRIM"][0]
         colorQuar = colors["M_BACK"][0]
         colorTer = colors["M_TER"][0]

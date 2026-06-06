@@ -29,7 +29,7 @@ class SatelliteHorizonWindow(MWidget):
     def __init__(self, app: Any, title: str) -> None:
         super().__init__()
         self.app = app
-        self.obsSite = app.dReg["mount"].instance.obsSite
+        self.obsSite = app.dReg["mount"].obsSite
         self.threadPool = app.threadPool
         self.ui = satelliteHor_ui.Ui_SatelliteHorizonDialog()
         self.ui.setupUi(self.ws)

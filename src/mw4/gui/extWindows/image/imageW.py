@@ -270,7 +270,7 @@ class ImageWindow(MWidget):
         self.showImage(self.imageFileName)
 
     def exposeRaw(self, exposureTime: float, binning: int) -> None:
-        timeString = self.app.dReg["mount"].instance.obsSite.timeJD.utc_strftime(
+        timeString = self.app.dReg["mount"].obsSite.timeJD.utc_strftime(
             "%Y-%m-%d-%H-%M-%S"
         )
         if self.ui.timeTagImage.isChecked():
@@ -418,7 +418,7 @@ class ImageWindow(MWidget):
             return
 
         self.app.operationRunning.emit(Model.STATUS_MODEL_SYNC)
-        obs = self.app.dReg["mount"].instance.obsSite
+        obs = self.app.dReg["mount"].obsSite
         raJNow, decJNow = J2000ToJNow(ra, dec, obs.timeJD)
         obs.setTargetRaDec(raJNow, decJNow)
 

@@ -215,7 +215,7 @@ class Dome:
             self.log.debug(f"First overshoot disabled: [{az}]")
             return az
 
-        direction = self.app.dReg["mount"].instance.obsSite.AzDirection
+        direction = self.app.dReg["mount"].obsSite.AzDirection
         if direction is None:
             self.log.info(f"Overshoot discarded no direction: [{az}]")
             return az

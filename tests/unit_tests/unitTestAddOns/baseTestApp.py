@@ -164,9 +164,8 @@ class App(QObject):
         self.threadPool = QThreadPool()
         self.uiWindows = {}
         self.mainW = MainW()
-        self.deviceRegistry = DeviceRegistry(self)
-        self.deviceRegistry.addDevices(self)
-        self.dReg = self.deviceRegistry  # alias for compatibility
+        self.dReg = DeviceRegistry(self)
+        self.dReg.addDevices(self)
         self.buildPoint = BuildPoint(self)
         self.onlineMode = False
         # Add onlineWeather to drivers for tests

@@ -113,7 +113,7 @@ class PlateSolve:
         result["success"] = True
         result["message"] = "Solved"
         result.update(solution)
-        timeJD = self.app.dReg["mount"].instance.obsSite.timeJD
+        timeJD = self.app.dReg["mount"].obsSite.timeJD
         result["raJNowS"], result["decJNowS"] = J2000ToJNow(
             result["raJ2000S"], result["decJ2000S"], timeJD
         )

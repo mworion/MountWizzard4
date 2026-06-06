@@ -55,7 +55,7 @@ class MountCommand:
             self.msg.emit(0, "System", "Mount", "update firmware opened")
 
     def openMountDocumentation(self) -> None:
-        mountStrings = self.app.dReg["mount"].instance.firmware.product.split()
+        mountStrings = self.app.dReg["mount"].firmware.product.split()
         if len(mountStrings) != 2:
             self.msg.emit(2, "System", "Mount", "Browser failed")
             return

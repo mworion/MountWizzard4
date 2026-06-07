@@ -34,10 +34,7 @@ def function():
 
 
 def test_setUpdateConfig(function):
-    """setUpdateConfig() puts POLLING_PERIOD with updateRate into txQ."""
     function.txQ = Queue()
     function.deviceName = "test_weather"
-    function.updateRate = 2000
     function.setUpdateConfig("ignored_param")
     assert function.txQ.qsize() == 1
-    assert function.txQ.get() == ("test_weather", "POLLING_PERIOD", {"PERIOD_MS": 2000})

@@ -22,6 +22,3 @@ class SensorWeatherIndi(IndiClass):
         super().__init__(parent=parent)
         self.signals = parent.signals
         self.loadConfig: bool = True
-
-    def setUpdateConfig(self, deviceName: str) -> None:
-        self.txQ.put((self.deviceName, "POLLING_PERIOD", {"PERIOD_MS": self.updateRate}))

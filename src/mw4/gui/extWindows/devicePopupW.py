@@ -60,8 +60,6 @@ class DevicePopup(MWidget):
             "alpaca": {
                 "hostaddress": self.ui.alpacaHostAddress,
                 "port": self.ui.alpacaPort,
-                "user": self.ui.alpacaUser,
-                "password": self.ui.alpacaPassword,
                 "deviceList": self.ui.alpacaDeviceList,
             },
             "ascom": {

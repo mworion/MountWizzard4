@@ -56,9 +56,6 @@ class AlpacaClass(AlpacaAscomCommon):
             "hostaddress": "localhost",
             "port": 11111,
             "apiVersion": 1,
-            "user": "",
-            "password": "",  # nosec B105 — empty-string default, not a hardcoded credential
-            "updateRate": 1000,
         }
 
     @property

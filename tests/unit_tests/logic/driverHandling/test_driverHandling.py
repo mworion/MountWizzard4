@@ -96,7 +96,7 @@ def test_stopDrivers_1(function):
 def test_configDriver_1(function):
     function.driversData["camera"] = {
         "framework": "indi",
-        "frameworks": {"indi": {"loadConfig": True, "updateRate": 500}},
+        "frameworks": {"indi": {"loadConfig": True, }},
     }
     cameraInstance = function.app.dReg["camera"].instance
     mockRun = {"indi": mock.MagicMock()}
@@ -115,7 +115,7 @@ def test_configDriver_2(function):
 def test_startDriver_1(function):
     function.driversData["camera"] = {
         "framework": "indi",
-        "frameworks": {"indi": {"loadConfig": True, "updateRate": 500}},
+        "frameworks": {"indi": {"loadConfig": True}},
     }
     cameraInstance = function.app.dReg["camera"].instance
     mockRun = {"indi": mock.MagicMock()}
@@ -124,14 +124,13 @@ def test_startDriver_1(function):
         mock.patch.object(function, "configDriver"),
     ):
         function.startDriver("camera", False)
-    assert cameraInstance.updateRate == 500
     assert cameraInstance.loadConfig is True
 
 
 def test_startDriver_2(function):
     function.driversData["camera"] = {
         "framework": "indi",
-        "frameworks": {"indi": {"loadConfig": True, "updateRate": 500}},
+        "frameworks": {"indi": {"loadConfig": True}},
     }
     cameraInstance = function.app.dReg["camera"].instance
     mockRun = {"indi": mock.MagicMock()}

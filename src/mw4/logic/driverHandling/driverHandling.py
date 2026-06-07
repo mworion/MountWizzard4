@@ -48,7 +48,6 @@ class DriverHandling:
         return config
 
     def loadDriversDataFromConfig(self, config: dict) -> None:
-        config = config.get("driversData", {})
         self.driversData.clear()
         config = self.addMissingDefaultData(config)
         config = self.removeUnknownDriversData(config)
@@ -87,8 +86,6 @@ class DriverHandling:
 
         driverInstance = self.dReg[driver].instance
         loadConfig = self.driversData[driver]["frameworks"][framework].get("loadConfig", False)
-        updateRate = self.driversData[driver]["frameworks"][framework].get("updateRate", 1000)
-        self.dReg[driver].instance.updateRate = updateRate
         self.dReg[driver].instance.loadConfig = loadConfig
         self.dReg[driver].instance.framework = framework
         self.configDriver(driver)

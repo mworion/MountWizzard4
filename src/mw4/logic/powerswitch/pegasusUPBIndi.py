@@ -24,9 +24,6 @@ class PegasusUPBIndi(IndiClass):
         self.signals = parent.signals
         self.modelVersion: int = 0
 
-    def setUpdateConfig(self, deviceName: str) -> None:
-        self.txQ.put((self.deviceName, "POLLING_PERIOD", {"PERIOD_MS": self.updateRate}))
-
     def checkDriverInfo(self, vectors: dict) -> None:
         driverInfo = vectors.get("DRIVER_INFO", {})
         if not driverInfo:

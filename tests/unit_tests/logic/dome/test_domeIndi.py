@@ -27,7 +27,6 @@ class Parent:
     data = {}
     signals = Signals()
     loadConfig = True
-    updateRate = 1000
 
 
 @pytest.fixture(autouse=True, scope="module")

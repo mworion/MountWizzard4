@@ -114,19 +114,17 @@ class SettDevice:
 
             if hasattr(self.app.dReg[driver].instance, "signals"):
                 signals = self.app.dReg[driver].signals
-                signals.serverDisconnected.connect(self.serverDisconnected)
                 signals.deviceConnected.connect(self.deviceConnected)
                 signals.deviceDisconnected.connect(self.deviceDisconnected)
 
     def initConfig(self) -> None:
-        config = self.app.config["WindowSetting"]
-        self.app.dHandling.loadDriversDataFromConfig(self.app.config)
+        config = self.app.config.get("SettingDriver", {})
+        self.app.dHandling.loadDriversDataFromConfig(config)
         self.setupDeviceGui()
         self.startDrivers()
 
     def storeConfig(self) -> None:
-        config = self.app.config["WindowSetting"]
-        self.app.config["driversData"] = self.driversData
+        self.app.config["SettingDriver"] = self.driversData
 
     def setupIcons(self) -> None:
         for driver in self.setupUiDriver:
@@ -134,16 +132,11 @@ class SettDevice:
                 ui = self.setupUiDriver[driver]["uiSetup"]
                 self.mainW.wIcon(ui, "cogs")
 
-        self.mainW.wIcon(self.ui.ascomConnect, "link")
-        self.mainW.wIcon(self.ui.ascomDisconnect, "unlink")
-
     def closeEvent(self) -> None:
         for driver in self.setupUiDriver:
-            if hasattr(self.app.dReg[driver].instance, "signals"):
-                signals = self.app.dReg[driver].signals
-                signals.serverDisconnected.disconnect(self.serverDisconnected)
-                signals.deviceConnected.disconnect(self.deviceConnected)
-                signals.deviceDisconnected.disconnect(self.deviceDisconnected)
+            signals = self.app.dReg[driver].signals
+            signals.deviceConnected.disconnect(self.deviceConnected)
+            signals.deviceDisconnected.disconnect(self.deviceDisconnected)
 
     def setupDeviceGui(self) -> None:
         dropDowns = [self.setupUiDriver[driver]["uiDropDown"] for driver in self.setupUiDriver]
@@ -241,9 +234,6 @@ class SettDevice:
         self.app.dHandling.stopDriver(driver)
         framework = self.app.dReg[driver].instance.framework
         self.msg.emit(0, "Driver", f"{framework} disabled", f"{driver}")
-
-    def serverDisconnected(self, driver: str, deviceList: list) -> None:
-        self.msg.emit(0, "Driver", "Server disconnected", f"{driver}")
 
     def deviceConnected(self, driver: str, deviceName: str) -> None:
         changeStyleDynamic(self.setupUiDriver[driver]["uiDropDown"], "active", True)

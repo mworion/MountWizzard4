@@ -26,7 +26,6 @@ class Parent:
     DEVICE_TYPE = "filterwheel"
     signals = Signals()
     loadConfig = True
-    updateRate = 1000
 
 
 @pytest.fixture(autouse=True, scope="module")

@@ -32,7 +32,7 @@ def function():
 
 
 def test_properties(function):
-    """host, deviceName, updateRate and loadConfig round-trip correctly."""
+    """host, deviceName, and loadConfig round-trip correctly."""
     function.framework = "indi"
     function.host = ("localhost", 7624)
     assert function.host == ("localhost", 7624)
@@ -40,9 +40,7 @@ def test_properties(function):
     function.deviceName = "test"
     assert function.deviceName == "test"
 
-    function.updateRate = 1000
     function.loadConfig = True
-    assert function.updateRate == 1000
     assert function.loadConfig
 
 

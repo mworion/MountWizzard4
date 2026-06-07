@@ -34,7 +34,6 @@ class Parent:
         self.signals = Signals()
         self.deviceType = "telescope"
         self.loadConfig = True
-        self.updateRate = 1000
 
 
 @pytest.fixture(autouse=False, scope="module")
@@ -135,7 +134,6 @@ def test_populateTabs_1(function):
             "indi": {
                 "deviceName": "test",
                 "deviceList": ["test", "test1"],
-                "updateRate": 30,
                 "hostaddress": "test",
                 "messages": True,
             },
@@ -166,7 +164,6 @@ def test_readTabs_1(function):
             "indi": {
                 "deviceName": "telescope",
                 "deviceList": ["test", "test1"],
-                "updateRate": 30.0,
                 "hostaddress": "test",
                 "messages": True,
                 "port": 10,

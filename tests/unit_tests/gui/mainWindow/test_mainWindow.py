@@ -101,7 +101,6 @@ def test_quitSave_1(window):
     with (
         mock.patch.object(window, "saveProfile"),
         mock.patch.object(window, "close"),
-        mock.patch.object(window.mainWindowAddons.addons["SettDevice"], "stopDrivers"),
     ):
         window.quitSave()
 
@@ -309,7 +308,6 @@ def test_switchProfile_1(window):
         mock.patch.object(window.externalWindows, "showExtendedWindows"),
         mock.patch.object(window, "initConfig"),
         mock.patch.object(window.app, "initConfig", return_value=loc),
-        mock.patch.object(window.mainWindowAddons.addons["SettDevice"], "stopDrivers"),
     ):
         window.switchProfile({"test": 1})
 

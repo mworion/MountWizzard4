@@ -46,7 +46,7 @@ class DirectWeather:
 
     def stopCommunication(self) -> None:
         self.app.dReg["mount"].signals.settingDone.disconnect(self.updateData)
-        self.signals.deviceDisconnected.emit("DirectWeather")
+        self.signals.deviceDisconnected.emit("directWeather", "DirectWeather")
 
     def updateData(self, sett: Setting) -> None:
         if not self.enabled:
@@ -60,10 +60,10 @@ class DirectWeather:
         isValid = None not in [value1, value2, value3, value4, value5]
 
         if not isValid and self.running:
-            self.signals.deviceDisconnected.emit("DirectWeather")
+            self.signals.deviceDisconnected.emit("directWeather", "DirectWeather")
             self.running = False
         elif isValid and not self.running:
-            self.signals.deviceConnected.emit("DirectWeather")
+            self.signals.deviceConnected.emit("directWeather", "DirectWeather")
             self.running = True
 
         self.app.dReg["directWeather"].stat = isValid

@@ -13,9 +13,9 @@
 # License APL2.0
 #
 ###########################################################
-import mw4.gui
+import mw4
 import pytest
-from mw4.gui.mainWaddon.tabSett_Device import SettDevice
+from mw4.gui.extWindows.setting.tabSettDevice import SettDevice
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QPushButton
@@ -280,7 +280,7 @@ def test_callPopup_1(function):
     with (
         mock.patch.object(function, "stopDriver"),
         mock.patch.object(
-            mw4.gui.mainWaddon.tabSett_Device, "DevicePopup", return_value=Pop()
+            mw4.gui.extWindows.setting.tabSettDevice, "DevicePopup", return_value=Pop()
         ),
     ):
         function.callPopup("cover")

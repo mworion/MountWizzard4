@@ -46,7 +46,7 @@ class SeeingWeather:
             "framework": "",
             "frameworks": {
                 "seeing": {
-                    "deviceName": "meteoblue",
+                    "deviceName": "seeingWeather",
                     "apiKey": "free",
                     "hostaddress": "my.meteoblue.com",
                 }
@@ -63,7 +63,7 @@ class SeeingWeather:
     def stopCommunication(self) -> None:
         self.running = False
         self.data.clear()
-        self.signals.deviceDisconnected.emit("SeeingWeather")
+        self.signals.deviceDisconnected.emit("seeingWeather", "SeeingWeather")
         self.app.update3m.disconnect(self.pollSeeingData)
 
     def processSeeingData(self) -> None:
@@ -102,10 +102,10 @@ class SeeingWeather:
 
     def sendStatus(self, status: bool) -> None:
         if not status and self.running:
-            self.signals.deviceDisconnected.emit("SeeingWeather")
+            self.signals.deviceDisconnected.emit("seeingWeather", "SeeingWeather")
             self.running = False
         elif status and not self.running:
-            self.signals.deviceConnected.emit("SeeingWeather")
+            self.signals.deviceConnected.emit("seeingWeather", "SeeingWeather")
             self.running = True
 
     def getSeeingData(self, url: Path) -> None:

@@ -46,13 +46,13 @@ class Remote:
         else:
             self.log.info("Remote access enabled")
             self.tcpServer.newConnection.connect(self.addConnection)
-            self.signals.deviceConnected.emit("TCP")
+            self.signals.deviceConnected.emit("relay", "TCP")
             return True
 
     def stopCommunication(self) -> None:
         if self.tcpServer.isListening():
             self.tcpServer.close()
-        self.signals.deviceDisconnected.emit("TCP")
+        self.signals.deviceDisconnected.emit("relay", "TCP")
 
     def addConnection(self) -> None:
         if self.tcpServer is None:

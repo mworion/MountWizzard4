@@ -14,6 +14,7 @@
 #
 ###########################################################
 import logging
+from mw4.gui.extWindows.setting.tabSettDevice import SettDevice
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import setting_ui
 from typing import Any
@@ -28,11 +29,14 @@ class SettingWindow(MWidget):
         self.ui = setting_ui.Ui_SettingDialog()
         self.ui.setupUi(self.ws)
         self.setWindowTitle("Setting")
+        self.tabSettDevice = SettDevice(self)
+        self.app.colorChange.connect(self.colorChange)
+        self.setupIcons()
 
     def initConfig(self) -> None:
         config = self.app.config.get("WindowSetting", {})
         self.positionWindow(config)
-        self.app.colorChange.connect(self.colorChange)
+        self.tabSettDevice.initConfig()
 
     def storeConfig(self) -> None:
         configMain = self.app.config
@@ -41,13 +45,19 @@ class SettingWindow(MWidget):
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)
         config["height"] = self.height()
+        self.tabSettDevice.storeConfig()
+
+    def setupIcons(self) -> None:
+        self.tabSettDevice.setupIcons()
 
     def closeEvent(self, closeEvent) -> None:
         self.storeConfig()
+        self.tabSettDevice.closeEvent()
         super().closeEvent(closeEvent)
 
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
+        self.setupIcons()
 
     def showWindow(self) -> None:
         self.show()

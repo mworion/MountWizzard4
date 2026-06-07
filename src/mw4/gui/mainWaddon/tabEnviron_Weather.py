@@ -14,9 +14,20 @@
 #
 ###########################################################
 import numpy as np
+from dataclasses import dataclass
 from functools import partial
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import QWidget
 from typing import Any
+
+
+@dataclass
+class RefractionEntry:
+    group: QWidget
+    data: dict
+    signals: Signal
+    uiPost: str
 
 
 class EnvironWeather:
@@ -33,45 +44,42 @@ class EnvironWeather:
         self.refractionEnabled: bool = True
 
         self.refractionSources = {
-            "sensor1Weather": {
-                "group": self.ui.sensor1Group,
-                "data": self.app.dReg["sensor1Weather"].data,
-                "signals": self.app.dReg["sensor1Weather"].signals,
-                "uiPost": "1",
-            },
-            "sensor2Weather": {
-                "group": self.ui.sensor2Group,
-                "data": self.app.dReg["sensor2Weather"].data,
-                "signals": self.app.dReg["sensor2Weather"].signals,
-                "uiPost": "2",
-            },
-            "sensor3Weather": {
-                "group": self.ui.sensor3Group,
-                "data": self.app.dReg["sensor3Weather"].data,
-                "signals": self.app.dReg["sensor3Weather"].signals,
-                "uiPost": "3",
-            },
-            "sensor4Weather": {
-                "group": self.ui.sensor4Group,
-                "data": self.app.dReg["sensor4Weather"].data,
-                "signals": self.app.dReg["sensor4Weather"].signals,
-                "uiPost": "4",
-            },
-            "directWeather": {
-                "group": self.ui.directGroup,
-                "data": self.app.dReg["directWeather"].data,
-                "signals": self.app.dReg["directWeather"].signals,
-                "uiPost": "Direct",
-            },
+            "sensor1Weather": RefractionEntry(
+                group=self.ui.sensor1Group,
+                data=self.app.dReg["sensor1Weather"].data,
+                signals=self.app.dReg["sensor1Weather"].signals,
+                uiPost="1"
+            ),
+            "sensor2Weather": RefractionEntry(
+                group=self.ui.sensor2Group,
+                data=self.app.dReg["sensor2Weather"].data,
+                signals=self.app.dReg["sensor2Weather"].signals,
+                uiPost="2"
+            ),
+            "sensor3Weather": RefractionEntry(
+                group=self.ui.sensor3Group,
+                data=self.app.dReg["sensor3Weather"].data,
+                signals=self.app.dReg["sensor3Weather"].signals,
+                uiPost="3"
+            ),
+            "sensor4Weather": RefractionEntry(
+                group=self.ui.sensor4Group,
+                data=self.app.dReg["sensor4Weather"].data,
+                signals=self.app.dReg["sensor4Weather"].signals,
+                uiPost="4"
+            ),
+            "directWeather": RefractionEntry(
+                group=self.ui.directGroup,
+                data=self.app.dReg["directWeather"].data,
+                signals=self.app.dReg["directWeather"].signals,
+                uiPost="Direct"
+            ),
         }
 
         for source in self.refractionSources:
-            self.refractionSources[source]["signals"].deviceDisconnected.connect(
-                partial(self.clearSourceGui, source)
-            )
-            self.refractionSources[source]["group"].clicked.connect(
-                partial(self.selectRefractionSource, source)
-            )
+            self.refractionSources[source].signals.deviceDisconnected.connect(self.clearSourceGui)
+            self.refractionSources[source].group.clicked.connect(
+                partial(self.selectRefractionSource, source))
 
         self.envFields = {
             "temperature": {
@@ -135,7 +143,7 @@ class EnvironWeather:
     def smartEnvironGui(self) -> None:
         for source in self.refractionSources:
             stat = self.app.dReg[source].stat
-            group = self.refractionSources[source]["group"]
+            group = self.refractionSources[source].group
             if stat is None:
                 group.setFixedWidth(0)
                 group.setEnabled(False)
@@ -179,16 +187,16 @@ class EnvironWeather:
     def setRefractionSourceGui(self) -> None:
         for source in self.refractionSources:
             if self.refractionSource == source:
-                changeStyleDynamic(self.refractionSources[source]["group"], "refraction", True)
-                self.refractionSources[source]["group"].setChecked(True)
+                changeStyleDynamic(self.refractionSources[source].group, "refraction", True)
+                self.refractionSources[source].group.setChecked(True)
             else:
                 changeStyleDynamic(
-                    self.refractionSources[source]["group"], "refraction", False
+                    self.refractionSources[source].group, "refraction", False
                 )
-                self.refractionSources[source]["group"].setChecked(False)
+                self.refractionSources[source].group.setChecked(False)
 
     def selectRefractionSource(self, source: str) -> None:
-        if self.refractionSources[source]["group"].isChecked():
+        if self.refractionSources[source].group.isChecked():
             self.refractionSource = source
         else:
             self.refractionSource = ""
@@ -213,9 +221,9 @@ class EnvironWeather:
             return
 
         key = "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
-        temp = self.refractionSources[self.refractionSource]["data"].get(key, -99)
+        temp = self.refractionSources[self.refractionSource].data.get(key, -99)
         key = "WEATHER_PARAMETERS.WEATHER_PRESSURE"
-        press = self.refractionSources[self.refractionSource]["data"].get(key, 0)
+        press = self.refractionSources[self.refractionSource].data.get(key, 0)
 
         if all(i == -99 for i in self.filteredTemperature):
             self.filteredTemperature = np.full(60, temp)
@@ -251,16 +259,16 @@ class EnvironWeather:
 
     def updateSourceGui(self) -> None:
         for source in self.refractionSources:
-            data = self.refractionSources[source]["data"]
-            uiPost = self.refractionSources[source]["uiPost"]
+            data = self.refractionSources[source].data
+            uiPost = self.refractionSources[source].uiPost
             for field in self.envFields:
                 # Use getattr() instead of eval() to safely resolve UI widget names. (SEC-2)
                 ui = getattr(self.ui, field + uiPost)
                 value = data.get(self.envFields[field]["valueKey"])
                 guiSetText(ui, self.envFields[field]["format"], value)
 
-    def clearSourceGui(self, source: str, sender) -> None:
-        self.refractionSources[source]["data"].clear()
+    def clearSourceGui(self, source: str, deviceName: str) -> None:
+        self.refractionSources[source].data.clear()
         self.ui.seeingIcon.setVisible(False)
         self.ui.seeing.setVisible(False)
         self.updateSourceGui()

@@ -21,6 +21,10 @@ class DriverHandling:
         self.dReg = dReg
         self.driversData = driversData
 
+    def initConfig(self) -> None:
+        self.app.dHandling.loadDriversDataFromConfig(self.app.config)
+        self.startDrivers()
+
     def addMissingFrameworksData(self, driver: str, config: dict) -> dict:
         for framework in self.dReg[driver].run:
             if framework not in config[driver]["frameworks"]:
@@ -76,7 +80,7 @@ class DriverHandling:
         for attribute in frameworkConfig:
             setattr(driverInstance, attribute, frameworkConfig[attribute])
 
-    def startDriver(self, driver: str, autoStart: bool = False) -> None:
+    def startDriver(self, driver: str) -> None:
         framework = self.driversData[driver]["framework"]
         if framework not in self.dReg[driver].run:
             return
@@ -88,29 +92,12 @@ class DriverHandling:
         self.dReg[driver].instance.loadConfig = loadConfig
         self.dReg[driver].instance.framework = framework
         self.configDriver(driver)
-        if autoStart:
-            driverInstance.startCommunication()
+        driverInstance.startCommunication()
 
-    def startDrivers(self, autoConnect) -> None:
+    def startDrivers(self) -> None:
         for entry in self.dReg.configurable():
             if entry.name not in self.driversData:
                 continue
             if self.driversData[entry.name]["framework"] == "":
                 continue
-            isAscom = self.driversData[entry.name]["framework"] in ["ascom", "alpaca"]
-            autostart = autoConnect and isAscom or not isAscom
-            self.startDriver(entry.name, autostart)
-
-    def manualStopAllAscomDrivers(self) -> None:
-        for entry in self.dReg.configurable():
-            if entry.name not in self.driversData:
-                continue
-            if self.driversData[entry.name]["framework"] in ["ascom", "alpaca"]:
-                self.stopDriver(entry.name)
-
-    def manualStartAllAscomDrivers(self) -> None:
-        for entry in self.dReg.configurable():
-            if entry.name not in self.driversData:
-                continue
-            if self.driversData[entry.name]["framework"] in ["ascom", "alpaca"]:
-                self.startDriver(entry.name, True)
+            self.startDriver(entry.name)

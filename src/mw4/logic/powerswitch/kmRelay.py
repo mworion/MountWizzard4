@@ -115,14 +115,14 @@ class KMRelay:
         statusConnected = not statusNotConnected
         if self.deviceConnected:
             if statusNotConnected:
-                self.signals.deviceDisconnected.emit("KMTronic")
+                self.signals.deviceDisconnected.emit("relay", "KMTronic")
                 self.deviceConnected = False
                 return False
             else:
                 return True
         else:
             if statusConnected:
-                self.signals.deviceConnected.emit("KMTronic")
+                self.signals.deviceConnected.emit("relay", "KMTronic")
                 self.deviceConnected = True
                 return True
             else:

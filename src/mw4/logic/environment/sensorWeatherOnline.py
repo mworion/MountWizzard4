@@ -125,10 +125,10 @@ class SensorWeatherOnline:
 
     def sendStatus(self, status: bool) -> None:
         if not status and self.running:
-            self.signals.deviceDisconnected.emit("OnlineWeather")
+            self.signals.deviceDisconnected.emit("observingconditions", "OnlineWeather")
             self.running = False
         elif status and not self.running:
-            self.signals.deviceConnected.emit("OnlineWeather")
+            self.signals.deviceConnected.emit("observingconditions", "OnlineWeather")
             self.running = True
 
     def getOpenWeatherMapData(self, url: Path) -> None:

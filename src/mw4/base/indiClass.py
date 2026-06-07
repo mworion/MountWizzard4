@@ -99,9 +99,9 @@ class IndiClass:
     def setStatusDeviceConnected(self, item: EventItem) -> None:
         status = item.snapshot[self.deviceName]["CONNECTION"].get("CONNECT") == "On"
         if status and not self.deviceConnected:
-            self.signals.deviceConnected.emit(self.deviceName)
+            self.signals.deviceConnected.emit(self.DEVICE_TYPE, self.deviceName)
         if not status and self.deviceConnected:
-            self.signals.deviceDisconnected.emit(self.deviceName)
+            self.signals.deviceDisconnected.emit(self.DEVICE_TYPE, self.deviceName)
         self.deviceConnected = status
 
     def writeVectorsToData(self, item: EventItem, vectors: dict) -> None:
@@ -166,7 +166,7 @@ class IndiClass:
         self.commandRunning = False
         self.deviceName = ""
         self.deviceConnected = False
-        self.signals.deviceDisconnected.emit(self.deviceName)
+        self.signals.deviceDisconnected.emit(self.DEVICE_TYPE, self.deviceName)
 
     def loadIndiConfig(self, deviceName: str) -> None:
         self.txQ.put((deviceName, "CONFIG_PROCESS", {"CONFIG_PROCESS": True}))

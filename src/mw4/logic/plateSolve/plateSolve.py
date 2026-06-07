@@ -165,14 +165,14 @@ class PlateSolve:
         if not sucProgram or not sucIndex:
             return
 
-        self.signals.deviceConnected.emit(name)
+        self.signals.deviceConnected.emit("platesolve", name)
         self.signals.serverConnected.emit()
 
     def stopCommunication(self) -> None:
         self.solveLoopRunning = False
         name = self.run[self.framework].deviceName
-        self.signals.serverDisconnected.emit({name: 0})
-        self.signals.deviceDisconnected.emit(name)
+        self.signals.serverDisconnected.emit("platesolve", name)
+        self.signals.deviceDisconnected.emit("platesolve", name)
 
     def solve(self, imagePath: Path, updateHeader: bool = False) -> None:
         data = (imagePath, updateHeader)

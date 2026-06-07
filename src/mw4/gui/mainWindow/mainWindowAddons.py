@@ -31,7 +31,6 @@ from mw4.gui.mainWaddon.tabMount_Sett import MountSett
 from mw4.gui.mainWaddon.tabPower import Power
 from mw4.gui.mainWaddon.tabSat_Search import SatSearch
 from mw4.gui.mainWaddon.tabSat_Track import SatTrack
-from mw4.gui.mainWaddon.tabSett_Device import SettDevice
 from mw4.gui.mainWaddon.tabSett_Dome import SettDome
 from mw4.gui.mainWaddon.tabSett_Misc import SettMisc
 from mw4.gui.mainWaddon.tabSett_Mount import SettMount
@@ -75,7 +74,6 @@ class MainWindowAddons:
             "SettParkPos": SettParkPos(mainW),
             "SettRelay": SettRelay(mainW),
             "IERSTime": IERSTime(mainW),
-            "SettDevice": SettDevice(mainW),
         }
 
     def initConfig(self) -> None:

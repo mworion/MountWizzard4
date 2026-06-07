@@ -75,7 +75,6 @@ from tests.unit_tests.unitTestAddOns.mountStubs import (  # noqa: F401
 
 class App(QObject):
     __version__ = "test"
-    tabsMovable = Signal(object)
     update10s = Signal()
     timerMgr = QTimer()
     update0_1s = Signal()
@@ -104,6 +103,7 @@ class App(QObject):
     virtualStop = Signal()
     mountOff = Signal()
     mountOn = Signal()
+    stopDrivers = Signal()
     buildPointsChanged = Signal()
     playSound = Signal(object)
     msg = Signal(object, object, object, object)

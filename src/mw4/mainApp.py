@@ -23,6 +23,7 @@ from mw4.base.timerManager import CyclicTimerManager
 from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.logic.buildData.buildpoints import BuildPoint
 from mw4.logic.buildData.hipparcos import Hipparcos
+from mw4.logic.driverHandling.driverHandling import DriverHandling
 from mw4.logic.profiles.profile import loadProfileStart
 from PySide6.QtCore import QObject, QThreadPool, Signal
 from PySide6.QtWidgets import QApplication
@@ -55,6 +56,7 @@ class MountWizzard4(QObject):
     updateDomeSettings = Signal()
     hostChanged = Signal()
     remoteCommand = Signal(object)
+    stopDrivers = Signal()
     # --- Mount signals ---
     virtualStop = Signal()
     mountOff = Signal()
@@ -113,6 +115,8 @@ class MountWizzard4(QObject):
         self.dReg: DeviceRegistry = DeviceRegistry(self)
         self.initConfig()
         self.dReg.addDevices(self)
+        self.driversData: dict = {}
+        self.dHandling = DriverHandling(self.dReg, self.driversData)
         self.buildPoint = BuildPoint(self)
         self.hipparcos = Hipparcos(self)
         self.ephemeris = self.dReg["mount"].obsSite.loader("de440_mw4.bsp")
@@ -127,6 +131,7 @@ class MountWizzard4(QObject):
         """Wire up application-level signal connections."""
         self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
+        self.stopDrivers.connect(self.callStopDrivers)
 
         if test:
             self.update10s.connect(self.quit)
@@ -163,3 +168,6 @@ class MountWizzard4(QObject):
         self.aboutToQuit()
         self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 manual stopped"))
         self.application.quit()
+
+    def callStopDrivers(self) -> None:
+        self.dHandling.stopDrivers()

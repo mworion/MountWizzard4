@@ -80,8 +80,6 @@ class SeeingWeather:
         self.signals.update.emit()
 
     def workerGetSeeingData(self, url: Path) -> bool:
-        if not self.app.onlineMode:
-            return False
         try:
             data = requests.get(url, timeout=30)
             self.log.debug(f"Seeing url: [{url}] response code: [{data.status_code}]")
@@ -125,7 +123,8 @@ class SeeingWeather:
         self.threadPool.start(self.worker)
 
     def pollSeeingData(self) -> None:
-        if not self.apiKey or not self.b:
+        if not self.apiKey or not self.b or not self.app.onlineMode:
+            self.sendStatus(False)
             return
 
         lat = self.location.latitude.degrees

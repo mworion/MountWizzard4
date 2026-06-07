@@ -71,14 +71,12 @@ class SeeingWeather:
         if not dataFile.is_file():
             self.log.info(f"{dataFile} not available")
             return
-
         with open(dataFile) as f:
             try:
                 self.data = json.load(f)
             except Exception as e:
                 self.log.warning(f"Cannot load data file, error: {e}")
                 return
-
         self.signals.update.emit()
 
     def workerGetSeeingData(self, url: Path) -> bool:
@@ -107,6 +105,15 @@ class SeeingWeather:
         elif status and not self.running:
             self.signals.deviceConnected.emit("seeingWeather", "SeeingWeather")
             self.running = True
+        if status:
+            self.processSeeingData()
+
+    def loadingFileNeeded(self, fileName: Path, hours: float) -> bool:
+        filePath = self.app.mwGlob["dataDir"] / fileName
+        if not filePath.is_file():
+            return True
+        ageData = self.app.dReg["mount"].obsSite.loader.days_old(fileName)
+        return not ageData < hours / 24
 
     def getSeeingData(self, url: Path) -> None:
         if not self.loadingFileNeeded("meteoblue.data", 0.5):
@@ -114,17 +121,8 @@ class SeeingWeather:
             self.sendStatus(True)
             return
         self.worker = Worker(self.workerGetSeeingData, url)
-        self.worker.signals.finished.connect(self.processSeeingData)
         self.worker.signals.result.connect(self.sendStatus)
         self.threadPool.start(self.worker)
-
-    def loadingFileNeeded(self, fileName: Path, hours: float) -> bool:
-        filePath = self.app.mwGlob["dataDir"] / fileName
-        if not filePath.is_file():
-            return True
-
-        ageData = self.app.dReg["mount"].obsSite.loader.days_old(fileName)
-        return not ageData < hours / 24
 
     def pollSeeingData(self) -> None:
         if not self.apiKey or not self.b:

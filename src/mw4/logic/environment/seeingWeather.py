@@ -86,11 +86,9 @@ class SeeingWeather:
         except Exception as e:
             self.log.critical(f"[{url}] general exception: [{e}]")
             return False
-
         if data.status_code != 200:
             self.log.warning(f"[{url}] status is not 200")
             return False
-
         self.log.debug(f"Data: [{data}]")
         with open(self.app.mwGlob["dataDir"] / "meteoblue.data", "w+") as f:
             json.dump(data.json(), f, indent=4)

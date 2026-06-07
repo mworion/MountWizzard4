@@ -105,19 +105,15 @@ class SensorWeatherOnline:
             self.data["WEATHER_PARAMETERS.RainVol"] = 0
 
     def workerGetOpenWeatherMapData(self, url: Path) -> bool:
-        if not self.app.onlineMode:
-            return False
         try:
             data = requests.get(url, timeout=30)
             self.log.debug(f"Weather url: [{url}] response code: [{data.status_code}]")
         except Exception as e:
             self.log.critical(f"[{url}] general exception: [{e}]")
             return False
-
         if data.status_code != 200:
             self.log.warning(f"[{url}] status is not 200")
             return False
-
         self.log.debug(f"Data: [{data}]")
         with open(self.app.mwGlob["dataDir"] / "openweathermap.data", "w+") as f:
             json.dump(data.json(), f, indent=4)
@@ -130,6 +126,15 @@ class SensorWeatherOnline:
         elif status and not self.running:
             self.signals.deviceConnected.emit("observingconditions", "OnlineWeather")
             self.running = True
+        if self.status:
+            self.processOpenWeatherMapData()
+
+    def loadingFileNeeded(self, fileName: Path, hours: float) -> bool:
+        filePath = self.app.mwGlob["dataDir"] / fileName
+        if not filePath.is_file():
+            return True
+        ageData = self.app.dReg["mount"].obsSite.loader.days_old(fileName)
+        return ageData > hours / 24
 
     def getOpenWeatherMapData(self, url: Path) -> None:
         if not self.loadingFileNeeded("openweathermap.data", 1):
@@ -137,20 +142,12 @@ class SensorWeatherOnline:
             self.sendStatus(True)
             return
         self.worker = Worker(self.workerGetOpenWeatherMapData, url)
-        self.worker.signals.finished.connect(self.processOpenWeatherMapData)
         self.worker.signals.result.connect(self.sendStatus)
         self.threadPool.start(self.worker)
 
-    def loadingFileNeeded(self, fileName: Path, hours: float) -> bool:
-        filePath = self.app.mwGlob["dataDir"] / fileName
-        if not filePath.is_file():
-            return True
-
-        ageData = self.app.dReg["mount"].obsSite.loader.days_old(fileName)
-        return ageData > hours / 24
-
     def pollOpenWeatherMapData(self) -> None:
-        if not self.apiKey:
+        if not self.apiKey or not self.app.onlineMode:
+            self.sendStatus(False)
             return
 
         lat = self.location.latitude.degrees

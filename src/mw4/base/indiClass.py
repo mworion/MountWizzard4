@@ -29,7 +29,7 @@ from typing import Any
 class DeviceConfigIndi:
     deviceName: str = field(default=None)
     hostAddress: str| None = field(default="127.0.0.1")
-    port: int | None = field(default=11111)
+    port: int | None = field(default=7624)
     protocol: str = field(default="http")
     loadConfig: bool = field(default=False)
     showMessage: bool = field(default=False)
@@ -183,14 +183,14 @@ class IndiClass:
     def loadIndiConfig(self, deviceName: str) -> None:
         self.txQ.put((deviceName, "CONFIG_PROCESS", {"CONFIG_PROCESS": True}))
 
-    def discoverDevices(self, deviceType: str) -> list[str]:
+    def discoverDevices(self, deviceType: str, hostaddress: str, port: int) -> list[str]:
         if not self.discoverMutex.tryLock():
             return []
         n = self.MAX_SEARCH
         txQ = Queue()
         rxQ = Queue()
         discoverSet = set()
-        worker = Worker(runqueclient, txQ, rxQ, indihost=self.hostaddress, indiport=self.port)
+        worker = Worker(runqueclient, txQ, rxQ, indihost=hostaddress, indiport=port)
         self.threadPool.start(worker)
         while n > 0:
             try:

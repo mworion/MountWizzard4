@@ -133,16 +133,16 @@ class AlpacaClass(AlpacaAscomCommon):
             self.log.error(f"Discover API exception: [{e}]")
             return 0
 
-    def discoverAlpacaDevices(self) -> list:
-        address = f"{self._hostaddress}:{self._port}"
+    def discoverAlpacaDevices(self, hostaddress: str, port: int) -> list:
+        address = f"{hostaddress}:{port}"
         try:
             return alpacaMgmt.configureddevices(address)
         except Exception as e:
             self.log.error(f"Search devices exception: [{e}]")
             return []
 
-    def discoverDevices(self, deviceType: str) -> list:
-        devices = self.discoverAlpacaDevices()
+    def discoverDevices(self, deviceType: str, hostaddress: str, port: int) -> list:
+        devices = self.discoverAlpacaDevices(hostaddress, port)
         if not devices:
             return []
 

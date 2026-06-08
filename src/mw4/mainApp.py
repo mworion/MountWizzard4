@@ -108,10 +108,8 @@ class MountWizzard4(QObject):
         self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 started..."))
         self.messageQueue.put((1, "System", "Workdir", f"[{workDir}]"))
         self.messageQueue.put((1, "System", "Profile", f"[{profile}]"))
-
         self.dReg: DeviceRegistry = DeviceRegistry(self)
         self.dReg.addDevices(self)
-
         self.initConfig()
         self.buildPoint = BuildPoint(self)
         self.hipparcos = Hipparcos(self)

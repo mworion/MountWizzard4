@@ -39,7 +39,7 @@ class DeviceRegistry:
 
     def __init__(self, app: Any) -> None:
         self.app = app
-        self.app.stopDevices.connect(self.stopDevice)
+        self.app.stopDevices.connect(self.stopDevices)
 
         if hasattr(app, "mount") and app.mount is not None:
             # Test only: tests inject mock mounts before calling registry
@@ -210,21 +210,24 @@ class DeviceRegistry:
         for entry in self.configurable():
             cfgSetting[entry.name] = self.collectConfigFromSingleDevice(entry.name)
         return cfgSetting
+    
+    def writeConfigToSingleDevice(self, device: str, cfgDevice: dict[str, dict[str, Any]]) -> None:
+        for framework in self.d[device].run:
+            if not hasattr(self.d[device].run[framework], "config"):
+                continue
+            if framework not in cfgDevice:
+                continue
+            for field in fields(self.d[device].run[framework].config):
+                if field.name not in cfgDevice[framework]:
+                    continue
+                value = cfgDevice[framework][field.name]
+                setattr(self.d[device].run[framework].config, field.name, value)
 
     def writeConfigToAllDevices(self, cfgSetting: dict[str, dict[str, dict[str, Any]]]) -> None:
         for entry in self.configurable():
             if entry.name not in cfgSetting:
                 continue
-            for framework in entry.run:
-                if not hasattr(entry.run[framework], "config"):
-                    continue
-                if framework not in cfgSetting[entry.name]:
-                    continue
-                for field in fields(entry.run[framework].config):
-                    if field.name not in cfgSetting[entry.name][framework]:
-                        continue
-                    value = cfgSetting[entry.name][framework][field.name]
-                    setattr(entry.run[framework].config, field.name, value)
+            self.writeConfigToSingleDevice(entry.name, cfgSetting[entry.name])
 
     def initConfig(self) -> None:
         self.writeConfigToAllDevices(self.app.config.get("SettingDevice", {}))

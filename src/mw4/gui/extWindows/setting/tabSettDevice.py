@@ -144,17 +144,16 @@ class SettDevice:
                 deviceName = entry.run[framework].config.deviceName
                 itemText = f"{framework} - {deviceName}"
                 self.setupUiDriver[entry.name]["uiDropDown"].addItem(itemText)
-            selectedFramework = entry.framework
-            index = findIndexValue(self.setupUiDriver[entry.name]["uiDropDown"], selectedFramework)
+            index = findIndexValue(self.setupUiDriver[entry.name]["uiDropDown"], entry.framework)
             self.setupUiDriver[entry.name]["uiDropDown"].setCurrentIndex(index)
 
-    def copyConfig(self, driverOrig: str, framework: str) -> None:
+    def copyConfig(self, device: str, framework: str) -> None:
         return
         for entry in self.app.dReg.configurable():
-            if entry.name == driverOrig:
+            if entry.name == device:
                 continue
             if entry.instance.framework == framework:
-                self.stopDevice(driver=driverOrig)
+                self.stopDevice(driver=device)
             if entry.name not in self.driversData:
                 continue
             if framework not in self.driversData[entry.name]["frameworks"]:
@@ -162,33 +161,32 @@ class SettDevice:
             for param in self.driversData[entry.name]["frameworks"][framework]:
                 if param in ["deviceList", "deviceName"]:
                     continue
-                source = self.driversData[driverOrig]["frameworks"][framework][param]
+                source = self.driversData[device]["frameworks"][framework][param]
                 self.driversData[entry.name]["frameworks"][framework][param] = source
 
     def processPopupResults(self) -> None:
         self.devicePopup.ui.ok.clicked.disconnect(self.processPopupResults)
-        driver = self.devicePopup.returnValues.get("driver")
-        if self.devicePopup.returnValues.get("indiCopyConfig", False):
-            self.copyConfig(driverOrig=driver, framework="indi")
-        if self.devicePopup.returnValues.get("alpacaCopyConfig", False):
-            self.copyConfig(driverOrig=driver, framework="alpaca")
+        device = self.devicePopup.returnValues.get("device")
+        if not device:
+            return
 
-        name = "test"
-        selectedFramework = self.driversData[driver]["framework"]
-        index = findIndexValue(self.setupUiDriver[driver]["uiDropDown"], selectedFramework)
-        itemText = f"{selectedFramework} - {name}"
-        self.setupUiDriver[driver]["uiDropDown"].setCurrentIndex(index)
-        self.setupUiDriver[driver]["uiDropDown"].setItemText(index, itemText)
-        self.app.dReg.startDevice(driver)
+        for framework in self.devicePopup.returnValues.get("copyConfig", []):
+            self.copyConfig(device, framework)
+
+        selectedFramework = self.devicePopup.returnValues.get("framework")
+        index = findIndexValue(self.setupUiDriver[device]["uiDropDown"], selectedFramework)
+        itemText = f"{selectedFramework} - {device}"
+        self.setupUiDriver[device]["uiDropDown"].setCurrentIndex(index)
+        self.setupUiDriver[device]["uiDropDown"].setItemText(index, itemText)
+
+
+        self.app.dReg.startDevice(device)
 
     def callPopup(self, device: str) -> None:
         self.app.dReg.stopDevice(device)
         data = self.app.dReg.collectConfigFromSingleDevice(device)
-        deviceType = self.app.dReg[device].instance.DEVICE_TYPE
-        deviceClass = self.app.dReg[device].instance
-        self.devicePopup = DevicePopup(
-            self.mainW, parent=deviceClass, driver=device, deviceType=deviceType, data=data
-        )
+        framework = self.app.dReg[device].framework
+        self.devicePopup = DevicePopup(self.mainW, device, framework, data)
         self.devicePopup.initConfig()
         self.devicePopup.ui.ok.clicked.connect(self.processPopupResults)
 

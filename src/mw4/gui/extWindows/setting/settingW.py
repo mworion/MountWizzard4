@@ -36,7 +36,6 @@ class SettingWindow(MWidget):
     def initConfig(self) -> None:
         config = self.app.config.get("WindowSetting", {})
         self.positionWindow(config)
-        self.tabSettDevice.initConfig()
 
     def storeConfig(self) -> None:
         configMain = self.app.config
@@ -45,7 +44,6 @@ class SettingWindow(MWidget):
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)
         config["height"] = self.height()
-        self.tabSettDevice.storeConfig()
 
     def setupIcons(self) -> None:
         self.tabSettDevice.setupIcons()

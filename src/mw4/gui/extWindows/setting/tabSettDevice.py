@@ -116,12 +116,7 @@ class SettDevice:
                 signals = self.app.dReg[driver].signals
                 signals.deviceConnected.connect(self.deviceConnected)
                 signals.deviceDisconnected.connect(self.deviceDisconnected)
-
-    def initConfig(self) -> None:
         self.setupDeviceGui()
-
-    def storeConfig(self) -> None:
-        pass
 
     def setupIcons(self) -> None:
         for driver in self.setupUiDriver:

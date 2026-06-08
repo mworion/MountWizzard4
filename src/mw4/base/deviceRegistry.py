@@ -234,6 +234,10 @@ class DeviceRegistry:
         self.app.config["SettingDevice"] = self.collectConfigFromAllDevices()
 
     def stopDevice(self, device: str) -> None:
+        if not self.d[device].framework:
+            return
+        if not self.d[device].run[self.d[device].framework].config.deviceName:
+            return
         self.setStat(device, None)
         self.d[device].instance.stopCommunication()
         self.d[device].data.clear()

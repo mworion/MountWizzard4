@@ -166,7 +166,6 @@ class SettDevice:
                 self.driversData[entry.name]["frameworks"][framework][param] = source
 
     def processPopupResults(self) -> None:
-        return
         self.devicePopup.ui.ok.clicked.disconnect(self.processPopupResults)
         driver = self.devicePopup.returnValues.get("driver")
         if self.devicePopup.returnValues.get("indiCopyConfig", False):
@@ -174,53 +173,49 @@ class SettDevice:
         if self.devicePopup.returnValues.get("alpacaCopyConfig", False):
             self.copyConfig(driverOrig=driver, framework="alpaca")
 
+        name = "test"
         selectedFramework = self.driversData[driver]["framework"]
         index = findIndexValue(self.setupUiDriver[driver]["uiDropDown"], selectedFramework)
-        name = self.driversData[driver]["frameworks"][selectedFramework]["deviceName"]
-
-        if not name:
-            return
-
         itemText = f"{selectedFramework} - {name}"
         self.setupUiDriver[driver]["uiDropDown"].setCurrentIndex(index)
         self.setupUiDriver[driver]["uiDropDown"].setItemText(index, itemText)
         self.app.dReg.startDevice(driver)
 
-    def callPopup(self, driver: str) -> None:
-        self.app.dReg.stopDevice(driver)
-        data = self.app.dReg.collectConfigFromSingleDevice[driver]
-        deviceType = self.app.dReg[driver].instance.DEVICE_TYPE
-        deviceClass = self.app.dReg[driver].instance
+    def callPopup(self, device: str) -> None:
+        self.app.dReg.stopDevice(device)
+        data = self.app.dReg.collectConfigFromSingleDevice(device)
+        deviceType = self.app.dReg[device].instance.DEVICE_TYPE
+        deviceClass = self.app.dReg[device].instance
         self.devicePopup = DevicePopup(
-            self.mainW, parent=deviceClass, driver=driver, deviceType=deviceType, data=data
+            self.mainW, parent=deviceClass, driver=device, deviceType=deviceType, data=data
         )
         self.devicePopup.initConfig()
         self.devicePopup.ui.ok.clicked.connect(self.processPopupResults)
 
-    def dispatchDriverDropdown(self, driver: str, position: int) -> None:
-        dropDownEntry = self.setupUiDriver[driver]["uiDropDown"].currentText()
+    def dispatchDriverDropdown(self, device: str, position: int) -> None:
+        dropDownEntry = self.setupUiDriver[device]["uiDropDown"].currentText()
         isDisabled = position == 0
         framework = "" if isDisabled else dropDownEntry.split("-")[0].rstrip()
-        self.app.dReg[driver].instance.framework = framework
-        changeStyleDynamic(self.setupUiDriver[driver]["uiDropDown"], "active", False)
-        self.app.dReg.stopDevice(driver)
+        self.app.dReg[device].instance.framework = framework
+        changeStyleDynamic(self.setupUiDriver[device]["uiDropDown"], "active", False)
+        self.app.dReg.stopDevice(device)
         if framework:
-            self.app.dReg.startDevice(driver)
+            self.app.dReg.startDevice(device)
 
-    def startDevice(self, driver: str, auto: bool) -> None:
-        self.app.dReg.startDevice(driver)
-        framework = self.app.dReg[driver].framework
-        self.msg.emit(0, "Driver", f"{framework} enabled", f"{driver}")
+    def startDevice(self, device: str, auto: bool) -> None:
+        self.app.dReg.startDevice(device)
+        framework = self.app.dReg[device].framework
+        self.msg.emit(0, "Driver", f"{framework} enabled", f"{device}")
 
-    def stopDevice(self, driver: str) -> None:
-        self.app.dReg.stopDevice(driver)
-        framework = self.app.dReg[driver].framework
-        self.msg.emit(0, "Driver", f"{framework} disabled", f"{driver}")
+    def stopDevice(self, device: str) -> None:
+        self.app.dReg.stopDevice(device)
+        framework = self.app.dReg[device].framework
+        self.msg.emit(0, "Driver", f"{framework} disabled", f"{device}")
 
-    def deviceConnected(self, driver: str, deviceName: str) -> None:
-        changeStyleDynamic(self.setupUiDriver[driver]["uiDropDown"], "active", True)
-        self.app.dReg.setStat(driver, True)
-        self.msg.emit(0, "Driver", "Device connected", f"{deviceName}::{driver}")
+    def deviceConnected(self, device: str, deviceName: str) -> None:
+        changeStyleDynamic(self.setupUiDriver[device]["uiDropDown"], "active", True)
+        self.app.dReg.setStat(device, True)
+        self.msg.emit(0, "Driver", "Device connected", f"{deviceName}::{device}")
 
     def deviceDisconnected(self, driver: str, deviceName: str) -> None:
         changeStyleDynamic(self.setupUiDriver[driver]["uiDropDown"], "active", False)

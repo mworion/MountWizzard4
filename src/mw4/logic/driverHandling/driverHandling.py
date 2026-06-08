@@ -23,31 +23,35 @@ class DriverHandling:
         self.dReg = app.dReg
 
     def initConfig(self) -> None:
-        config = self.app.config.get("SettingDevice", {})
+        cfgSetting = self.app.config.get("SettingDevice", {})
         for entry in self.dReg.configurable():
+            if entry.name not in cfgSetting:
+                continue
             for framework in entry.instance.run:
                 if not hasattr(entry.instance.run[framework], "config"):
                     continue
+                if framework not in cfgSetting[entry.name]:
+                    continue
                 for field in fields(entry.instance.run[framework].config):
-                    if entry.name not in config:
+                    if field.name not in cfgSetting[entry.name][framework]:
                         continue
-                    if field.name not in config[entry.instance.DEVICE_TYPE]:
-                        continue
-                    value = config[entry.instance.DEVICE_TYPE][field.name]
+                    value = cfgSetting[entry.name][framework][field.name]
                     setattr(entry.instance.run[framework].config, field.name, value)
         self.startDevices()
 
     def storeConfig(self) -> None:
-        config = {}
+        cfgSetting = {}
         for entry in self.dReg.configurable():
-            cfg = {}
+            cfgDevice = {}
             for framework in entry.instance.run:
+                cfgFramework = {}
                 if not hasattr(entry.instance.run[framework], "config"):
                     continue
                 for field in fields(entry.instance.run[framework].config):
-                    cfg[field.name] = getattr(entry.instance.run[framework].config, field.name)
-            config[entry.name] = cfg
-        self.app.config["SettingDevice"] = config
+                    cfgFramework[field.name] = getattr(entry.instance.run[framework].config, field.name)
+                cfgDevice[framework] = cfgFramework
+            cfgSetting[entry.name] = cfgDevice
+        self.app.config["SettingDevice"] = cfgSetting
 
     def stopDevice(self, device: str) -> None:
         self.dReg.setStat(device, None)
@@ -63,6 +67,7 @@ class DriverHandling:
             return
         if not self.dReg[device].run[self.dReg[device].framework].config.deviceName:
             return
+        self.dReg.setStat(device, True)
         self.dReg[device].startCommunication()
 
     def startDevices(self) -> None:

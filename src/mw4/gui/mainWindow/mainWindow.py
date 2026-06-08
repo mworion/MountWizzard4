@@ -28,7 +28,6 @@ from mw4.gui.utilities.qtHelpers import (
 )
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.logic.driverHandling.driverHandling import DriverHandling
 from mw4.logic.profiles.profile import loadConfig, saveConfig
 from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path
@@ -173,7 +172,7 @@ class MainWindow(MWidget):
         self.app.quit()
 
     def quitSave(self) -> None:
-        self.app.stopDrivers.emit()
+        self.app.stopDevices.emit()
         self.saveProfile()
         self.close()
 
@@ -255,7 +254,7 @@ class MainWindow(MWidget):
 
     def updateDeviceStats(self) -> None:
         for device, ui in self.deviceStatGui.items():
-            if self.app.dReg.drivers.get(device) is None:
+            if self.app.dReg[device].stat is None:
                 ui.setEnabled(False)
             elif self.app.dReg[device].stat:
                 changeStyleDynamic(ui, "color", "green")

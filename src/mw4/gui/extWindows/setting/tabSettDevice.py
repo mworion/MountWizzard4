@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+from dataclasses import fields
 from functools import partial
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, findIndexValue
@@ -26,7 +27,6 @@ class SettDevice:
         self.app = parentW.app
         self.msg = parentW.app.msg
         self.ui = parentW.ui
-        self.driversData = parentW.app.driversData
         self.devicePopup = None
 
         self.setupUiDriver: dict[str, Any] = {
@@ -142,28 +142,24 @@ class SettDevice:
             dropDown.setView(QListView())
             dropDown.addItem("device disabled")
 
-        for driver in self.driversData:
-            frameworks = self.driversData[driver].get("frameworks")
-
-            if driver not in self.app.dReg.drivers:
-                self.msg.emit(2, "SYSTEM", "Driver setup", f"Missing driver: [{driver}]")
-                continue
-
-            for fw in frameworks:
-                name = frameworks[fw]["deviceName"]
-                itemText = f"{fw} - {name}"
-                self.setupUiDriver[driver]["uiDropDown"].addItem(itemText)
-
-            framework = self.driversData[driver]["framework"]
-            index = findIndexValue(self.setupUiDriver[driver]["uiDropDown"], framework)
-            self.setupUiDriver[driver]["uiDropDown"].setCurrentIndex(index)
+        for entry in self.app.dReg.configurable():
+            for framework in entry.run:
+                if not hasattr(self.app.dReg.d[entry.name].run[framework], "config"):
+                    continue
+                deviceName = entry.run[framework].config.deviceName
+                itemText = f"{framework} - {deviceName}"
+                self.setupUiDriver[entry.name]["uiDropDown"].addItem(itemText)
+            selectedFramework = entry.framework
+            index = findIndexValue(self.setupUiDriver[entry.name]["uiDropDown"], selectedFramework)
+            self.setupUiDriver[entry.name]["uiDropDown"].setCurrentIndex(index)
 
     def copyConfig(self, driverOrig: str, framework: str) -> None:
+        return
         for entry in self.app.dReg.configurable():
             if entry.name == driverOrig:
                 continue
             if entry.instance.framework == framework:
-                self.stopDriver(driver=driverOrig)
+                self.stopDevice(driver=driverOrig)
             if entry.name not in self.driversData:
                 continue
             if framework not in self.driversData[entry.name]["frameworks"]:
@@ -175,6 +171,7 @@ class SettDevice:
                 self.driversData[entry.name]["frameworks"][framework][param] = source
 
     def processPopupResults(self) -> None:
+        return
         self.devicePopup.ui.ok.clicked.disconnect(self.processPopupResults)
         driver = self.devicePopup.returnValues.get("driver")
         if self.devicePopup.returnValues.get("indiCopyConfig", False):
@@ -192,12 +189,12 @@ class SettDevice:
         itemText = f"{selectedFramework} - {name}"
         self.setupUiDriver[driver]["uiDropDown"].setCurrentIndex(index)
         self.setupUiDriver[driver]["uiDropDown"].setItemText(index, itemText)
-        self.startDriver(driver, True)
+        self.app.dReg.startDevice(driver)
 
     def callPopup(self, driver: str) -> None:
-        self.stopDriver(driver)
-        data = self.driversData[driver]
-        deviceType = self.app.dReg[driver].deviceType
+        self.app.dReg.stopDevice(driver)
+        data = self.app.dReg.collectConfigFromSingleDevice[driver]
+        deviceType = self.app.dReg[driver].instance.DEVICE_TYPE
         deviceClass = self.app.dReg[driver].instance
         self.devicePopup = DevicePopup(
             self.mainW, parent=deviceClass, driver=driver, deviceType=deviceType, data=data
@@ -209,35 +206,26 @@ class SettDevice:
         dropDownEntry = self.setupUiDriver[driver]["uiDropDown"].currentText()
         isDisabled = position == 0
         framework = "" if isDisabled else dropDownEntry.split("-")[0].rstrip()
-
-        self.driversData[driver]["framework"] = framework
+        self.app.dReg[driver].instance.framework = framework
         changeStyleDynamic(self.setupUiDriver[driver]["uiDropDown"], "active", False)
-        self.stopDriver(driver)
+        self.app.dReg.stopDevice(driver)
         if framework:
-            self.startDriver(driver, True)
+            self.app.dReg.startDevice(driver)
 
-    def stopDrivers(self) -> None:
-        self.app.dHandling.stopDrivers()
-
-    def startDriver(self, driver: str, auto: bool) -> None:
-        self.app.dHandling.startDriver(driver)
-        framework = self.app.dReg[driver].instance.framework
+    def startDevice(self, driver: str, auto: bool) -> None:
+        self.app.dReg.startDevice(driver)
+        framework = self.app.dReg[driver].framework
         self.msg.emit(0, "Driver", f"{framework} enabled", f"{driver}")
 
-    def stopDriver(self, driver: str) -> None:
-        self.app.dHandling.stopDriver(driver)
-        framework = self.app.dReg[driver].instance.framework
+    def stopDevice(self, driver: str) -> None:
+        self.app.dReg.stopDevice(driver)
+        framework = self.app.dReg[driver].framework
         self.msg.emit(0, "Driver", f"{framework} disabled", f"{driver}")
 
     def deviceConnected(self, driver: str, deviceName: str) -> None:
         changeStyleDynamic(self.setupUiDriver[driver]["uiDropDown"], "active", True)
         self.app.dReg.setStat(driver, True)
         self.msg.emit(0, "Driver", "Device connected", f"{deviceName}::{driver}")
-
-        data = self.driversData[driver]
-        framework = data["framework"]
-        if data["frameworks"][framework].get("loadConfig", False):
-            self.msg.emit(0, "Driver", "Config loaded", f"{deviceName}::{driver}")
 
     def deviceDisconnected(self, driver: str, deviceName: str) -> None:
         changeStyleDynamic(self.setupUiDriver[driver]["uiDropDown"], "active", False)

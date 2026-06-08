@@ -23,7 +23,6 @@ from mw4.base.timerManager import CyclicTimerManager
 from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.logic.buildData.buildpoints import BuildPoint
 from mw4.logic.buildData.hipparcos import Hipparcos
-from mw4.logic.driverHandling.driverHandling import DriverHandling
 from mw4.logic.profiles.profile import loadProfileStart
 from PySide6.QtCore import QObject, QThreadPool, Signal
 from PySide6.QtWidgets import QApplication
@@ -56,7 +55,7 @@ class MountWizzard4(QObject):
     updateDomeSettings = Signal()
     hostChanged = Signal()
     remoteCommand = Signal(object)
-    stopDrivers = Signal()
+    stopDevices = Signal()
     # --- Mount signals ---
     virtualStop = Signal()
     mountOff = Signal()
@@ -112,8 +111,6 @@ class MountWizzard4(QObject):
 
         self.dReg: DeviceRegistry = DeviceRegistry(self)
         self.dReg.addDevices(self)
-        self.driversData: dict = {}
-        self.dHandling = DriverHandling(self)
 
         self.initConfig()
         self.buildPoint = BuildPoint(self)
@@ -130,7 +127,6 @@ class MountWizzard4(QObject):
         """Wire up application-level signal connections."""
         self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
-        self.stopDrivers.connect(self.callStopDrivers)
 
         if test:
             self.update10s.connect(self.quit)
@@ -139,7 +135,7 @@ class MountWizzard4(QObject):
 
     def initConfig(self) -> GeographicPosition | None:
         setCustomLoggingLevel(self, self.config.get("loglevel", "DEBUG"))
-        self.dHandling.initConfig()
+        self.dReg.initConfig()
         lat = self.config.get("topoLat", 51.47)
         lon = self.config.get("topoLon", 0)
         elev = self.config.get("topoElev", 46)
@@ -149,7 +145,7 @@ class MountWizzard4(QObject):
 
     def storeConfig(self) -> None:
         self.config["loglevel"] = logging.getLevelName(self.log.level)
-        self.dHandling.storeConfig()
+        self.dReg.storeConfig()
         location = self.dReg["mount"].location
         if location is not None:
             self.config["topoLat"] = float(location.latitude.degrees)
@@ -168,6 +164,3 @@ class MountWizzard4(QObject):
         self.aboutToQuit()
         self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 manual stopped"))
         self.application.quit()
-
-    def callStopDrivers(self) -> None:
-        self.dHandling.stopDrivers()

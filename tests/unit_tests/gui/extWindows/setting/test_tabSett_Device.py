@@ -345,12 +345,12 @@ def test_stopDrivers_1(function):
 
 def test_startDriver_1(function):
     with mock.patch.object(function.dHandling, "startDriver"):
-        function.startDriver("telescope", True)
+        function.startDevice("telescope", True)
 
 
 def test_stopDriver_1(function):
     with mock.patch.object(function.dHandling, "stopDriver"):
-        function.stopDriver("telescope")
+        function.stopDevice("telescope")
 
 
 def test_copyConfig_with_entries(function):

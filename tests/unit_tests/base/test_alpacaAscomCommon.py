@@ -251,7 +251,6 @@ def test_handleDeviceConnect_success(function):
     function.device.Connected = True
     function.handleDeviceConnect()
     # assert
-    function.signals.serverConnected.emit.assert_called_once()
     function.signals.deviceConnected.emit.assert_called_once_with(function.deviceName)
     assert function.serverConnected is True
     assert function.deviceConnected is True
@@ -337,7 +336,6 @@ def test_stopCommunication(function):
     assert function.deviceConnected is False
     assert function.serverConnected is False
     function.signals.deviceDisconnected.emit.assert_called_once_with(function.deviceName)
-    function.signals.serverDisconnected.emit.assert_called_once()
     # "Connected" must be queued
     item = function.commandQueue.get_nowait()
     assert item.cmdType == "set"

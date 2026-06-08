@@ -27,19 +27,16 @@ from typing import Any
 
 
 class DevicePopup(MWidget):
-    def __init__(self, parentWidget, device: str, framework: str, data: dict):
+    def __init__(self, parentWidget, device: str, framework: str, data: dict[str, Any]):
         super().__init__()
         self.app = parentWidget.app
         self.msg = parentWidget.app.msg
         self.data = data
-        self.device = device
-        self.framework = framework
+        self.device: str = device
+        self.framework: str = framework
 
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self.ws)
-        self.setMinimumSize(500, 340)
-        self.setMaximumSize(500, 340)
-        self.titleBar.windowFixed = True
         self.setWindowTitle("Device Management")
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
@@ -164,36 +161,6 @@ class DevicePopup(MWidget):
             )
         self.ui.selectBoltwoodPath.clicked.connect(self.selectBoltwoodPath)
 
-    def initConfig(self) -> None:
-        self.setWindowTitle(f"Setup driver for {self.device}")
-        self.populateTabs()
-        self.selectTabs()
-        framework = self.data.get("framework", "")
-        if framework in self.platesolvers:
-            self.checkApp(framework, self.platesolvers[framework]["appPath"].text())
-            self.checkIndex(framework, self.platesolvers[framework]["indexPath"].text())
-        self.show()
-
-    def storeConfig(self) -> None:
-        self.readFramework()
-        self.readTabs()
-        self.returnValues["copyConfig"]: list = []
-        if self.ui.indiCopyConfig.isChecked():
-            self.returnValues["copyConfig"].append("indi")
-        if self.ui.alpacaCopyConfig.isChecked():
-            self.returnValues["copyConfig"].append("alpaca")
-        self.returnValues["close"] = "ok"
-        self.returnValues["device"] = self.device
-        self.returnValues["framework"] = self.framework
-        self.close()
-
-    def selectTabs(self) -> None:
-        tabIndex = getTabIndex(self.ui.tab, self.framework)
-        self.ui.tab.setCurrentIndex(tabIndex)
-        for index in range(0, self.ui.tab.count()):
-            isVisible = self.ui.tab.widget(index).objectName() in self.data
-            self.ui.tab.setTabVisible(index, isVisible)
-
     def populateTabs(self) -> None:
         for framework in self.data:
             for element in self.data[framework]:
@@ -208,6 +175,30 @@ class DevicePopup(MWidget):
                     ui.setChecked(self.data[framework][element])
                 elif isinstance(ui, QDoubleSpinBox):
                     ui.setValue(self.data[framework][element])
+
+    def selectTabs(self) -> None:
+        tabIndex = getTabIndex(self.ui.tab, self.framework)
+        self.ui.tab.setCurrentIndex(tabIndex)
+        for index in range(0, self.ui.tab.count()):
+            isVisible = self.ui.tab.widget(index).objectName() in self.data
+            self.ui.tab.setTabVisible(index, isVisible)
+
+    def initConfig(self) -> None:
+        self.setWindowTitle(f"Setup driver for {self.device}")
+        self.populateTabs()
+        self.selectTabs()
+        framework = self.data.get("framework", "")
+        if framework in self.platesolvers:
+            self.checkApp(framework, self.platesolvers[framework]["appPath"].text())
+            self.checkIndex(framework, self.platesolvers[framework]["indexPath"].text())
+        self.show()
+        self.setMinimumSize(500, 340)
+        self.setMaximumSize(500, 340)
+        self.titleBar.windowFixed = True
+
+    def readFramework(self) -> str:
+        index = self.ui.tab.currentIndex()
+        self.framework = self.ui.tab.widget(index).objectName()
 
     def readTabs(self) -> None:
         for element in self.data[self.framework]:
@@ -224,9 +215,19 @@ class DevicePopup(MWidget):
             elif isinstance(ui, QDoubleSpinBox):
                 self.data[self.framework][element] = ui.value()
 
-    def readFramework(self) -> None:
-        index = self.ui.tab.currentIndex()
-        self.framework = self.ui.tab.widget(index).objectName()
+    def storeConfig(self) -> None:
+        self.readFramework()
+        self.readTabs()
+        self.returnValues["copyConfig"]: list = []
+        if self.ui.indiCopyConfig.isChecked():
+            self.returnValues["copyConfig"].append("indi")
+        if self.ui.alpacaCopyConfig.isChecked():
+            self.returnValues["copyConfig"].append("alpaca")
+        self.returnValues["close"] = "ok"
+        self.returnValues["data"] = self.data
+        self.returnValues["device"] = self.device
+        self.returnValues["framework"] = self.framework
+        self.close()
 
     def updateDeviceNameList(self, framework: str, deviceNames: list[str]) -> None:
         self.discovers[framework]["deviceList"].clear()
@@ -237,18 +238,16 @@ class DevicePopup(MWidget):
     def discoverDevices(self, framework: str, widget: object = None) -> None:
         hostaddress = self.discovers[framework]["hostaddress"].text()
         port = self.discovers[framework]["port"].text()
-
         changeStyleDynamic(self.discovers[framework]["button"], "run", True)
         deviceInstance = self.app.dReg[self.device].run[framework]
         deviceType = self.app.dReg[self.device].instance.DEVICE_TYPE
         deviceNames = deviceInstance.discoverDevices(deviceType, hostaddress, port)
         changeStyleDynamic(self.discovers[framework]["button"], "run", False)
-
         if not deviceNames:
-            self.msg.emit(2, framework.upper(), "Device", "No devices found")
+            self.msg.emit(2, framework, "Device", "No devices found")
             return
         for deviceName in deviceNames:
-            self.msg.emit(0, framework.upper(), "Device discovered", f"{deviceName}")
+            self.msg.emit(0, framework, "Device discovered", f"{deviceName}")
         self.updateDeviceNameList(framework, deviceNames)
         self.framework = framework
 

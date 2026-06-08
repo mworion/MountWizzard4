@@ -60,7 +60,7 @@ class PlateSolve:
         for fw in self.run:
             self.defaultConfig["frameworks"].update(self.run[fw].defaultConfig)
 
-        self.signals.serverConnected.connect(self.startSolveLoop)
+        self.signals.deviceConnected.connect(self.startSolveLoop)
 
     def runSolverBin(self, runnable: list[Any]) -> tuple[bool, str]:
         timeStart = time.time()
@@ -166,12 +166,10 @@ class PlateSolve:
             return
 
         self.signals.deviceConnected.emit("platesolve", name)
-        self.signals.serverConnected.emit()
 
     def stopCommunication(self) -> None:
         self.solveLoopRunning = False
         name = self.run[self.framework].deviceName
-        self.signals.serverDisconnected.emit("platesolve", name)
         self.signals.deviceDisconnected.emit("platesolve", name)
 
     def solve(self, imagePath: Path, updateHeader: bool = False) -> None:

@@ -308,10 +308,6 @@ def test_dispatchDriverDropdown_2(function):
         function.dispatchDriverDropdown("dome", 0)
 
 
-def test_serverDisconnected_1(function):
-    function.serverDisconnected("dome", [])
-
-
 def test_deviceConnected_2(function):
     function.driversData = {
         "filter": {"framework": "indi", "frameworks": {"indi": {"loadConfig": True}}}

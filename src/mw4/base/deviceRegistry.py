@@ -194,7 +194,7 @@ class DeviceRegistry:
         self.d[name].stat = value
 
     def collectConfigFromSingleDevice(self, device: str) -> dict[str, dict[str, Any]]:
-        cfgDevice: dict [str, Any] = {}
+        cfgDevice: dict [str, Any] = {"framework": self.d[device].framework}
         for framework in self.d[device].run:
             cfgFramework: dict [str, Any] = {}
             if not hasattr(self.d[device].run[framework], "config"):
@@ -210,8 +210,9 @@ class DeviceRegistry:
         for entry in self.configurable():
             cfgSetting[entry.name] = self.collectConfigFromSingleDevice(entry.name)
         return cfgSetting
-    
+
     def writeConfigToSingleDevice(self, device: str, cfgDevice: dict[str, dict[str, Any]]) -> None:
+        self.d[device].instance.framework = cfgDevice.get("framework", "")
         for framework in self.d[device].run:
             if not hasattr(self.d[device].run[framework], "config"):
                 continue

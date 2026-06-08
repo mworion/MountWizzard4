@@ -138,15 +138,14 @@ class AlpacaAscomCommon(DriverData):
             return
         self.serverConnected = True
         self.deviceConnected = True
-        self.signals.serverConnected.emit()
-        self.signals.deviceConnected.emit(self.DEVICE_TYPE, self.deviceName)
+        self.signals.deviceConnected.emit(self.parent.DEVICE_TYPE, self.deviceName)
         self.msg.emit(0, self.PROTOCOL_NAME, "Device found", self.deviceName)
         self.getInitialConfig()
 
     def handleDeviceDisconnect(self) -> None:
         self.deviceConnected = False
         self.serverConnected = False
-        self.signals.deviceDisconnected.emit(self.DEVICE_TYPE, self.deviceName)
+        self.signals.deviceDisconnected.emit(self.parent.DEVICE_TYPE, self.deviceName)
         self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.deviceName)
 
     def runnerCommunicationLoop(self) -> None:
@@ -165,6 +164,5 @@ class AlpacaAscomCommon(DriverData):
         self.setDevicePropQueued("Connected", False)
         self.deviceConnected = False
         self.serverConnected = False
-        self.signals.deviceDisconnected.emit(self.DEVICE_TYPE, self.deviceName)
-        self.signals.serverDisconnected.emit(self.DEVICE_TYPE, self.deviceName)
+        self.signals.deviceDisconnected.emit(self.parent.DEVICE_TYPE, self.deviceName)
         self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.deviceName)

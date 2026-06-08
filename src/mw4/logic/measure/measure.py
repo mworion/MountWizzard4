@@ -74,7 +74,6 @@ class MeasureData:
     def stopCommunication(self) -> None:
         self.run[self.framework].stopCommunication()
         name = self.run[self.framework].deviceName
-        self.signals.serverDisconnected.emit("measure", name)
         self.signals.deviceDisconnected.emit("measure", name)
 
     def checkStart(self) -> None:

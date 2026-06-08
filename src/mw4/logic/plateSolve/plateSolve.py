@@ -37,7 +37,7 @@ class PlateSolve:
     Keyword definitions could be found under
         https://fits.gsfc.nasa.gov/fits_dictionary.html
     """
-
+    DEVICE_TYPE = "misc"
     log = logging.getLogger("MW4")
 
     def __init__(self, app: Any) -> None:

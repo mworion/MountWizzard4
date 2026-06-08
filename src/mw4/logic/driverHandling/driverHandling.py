@@ -13,88 +13,58 @@
 # License APL2.0
 #
 ###########################################################
-from mw4.base.deviceRegistry import DeviceRegistry
+from dataclasses import fields
+from typing import Any
 
 
 class DriverHandling:
-    def __init__(self, dReg: DeviceRegistry, driversData: dict) -> None:
-        self.dReg = dReg
-        self.driversData = driversData
+    def __init__(self, app: Any) -> None:
+        self.app = app
+        self.dReg = app.dReg
 
     def initConfig(self) -> None:
-        self.app.dHandling.loadDriversDataFromConfig(self.app.config)
-        self.startDrivers()
-
-    def addMissingFrameworksData(self, driver: str, config: dict) -> dict:
-        for framework in self.dReg[driver].run:
-            if framework not in config[driver]["frameworks"]:
-                entry = self.dReg[driver].instance.defaultConfig["frameworks"][framework]
-                config[driver]["frameworks"][framework] = entry
-        return config
-
-    def addMissingDefaultData(self, config: dict) -> dict:
+        config = self.app.config.get("SettingDevice", {})
         for entry in self.dReg.configurable():
-            if entry.name not in config:
-                config[entry.name] = {}
-                config[entry.name].update(entry.instance.defaultConfig)
-                continue
-            config = self.addMissingFrameworksData(entry.name, config)
-        return config
+            for framework in entry.instance.run:
+                if not hasattr(entry.instance.run[framework], "config"):
+                    continue
+                for field in fields(entry.instance.run[framework].config):
+                    if entry.name not in config:
+                        continue
+                    if field.name not in config[entry.instance.DEVICE_TYPE]:
+                        continue
+                    value = config[entry.instance.DEVICE_TYPE][field.name]
+                    setattr(entry.instance.run[framework].config, field.name, value)
+        self.startDevices()
 
-    def removeUnknownDriversData(self, config: dict) -> dict:
-        for driver in list(config):
-            if driver not in self.dReg.drivers:
-                del config[driver]
-        return config
-
-    def loadDriversDataFromConfig(self, config: dict) -> None:
-        self.driversData.clear()
-        config = self.addMissingDefaultData(config)
-        config = self.removeUnknownDriversData(config)
-        self.driversData.update(config)
-
-    def stopDriver(self, driver: str) -> None:
-        self.dReg.setStat(driver, None)
-        framework = self.dReg[driver].instance.framework
-        if framework not in self.dReg[driver].run:
-            return
-        if self.dReg[driver].run[framework].deviceName == "":
-            return
-        self.dReg[driver].instance.stopCommunication()
-        self.dReg[driver].data.clear()
-        self.dReg[driver].run[framework].deviceName = ""
-
-    def stopDrivers(self) -> None:
+    def storeConfig(self) -> None:
+        config = {}
         for entry in self.dReg.configurable():
-            self.stopDriver(driver=entry.name)
+            cfg = {}
+            for framework in entry.instance.run:
+                if not hasattr(entry.instance.run[framework], "config"):
+                    continue
+                for field in fields(entry.instance.run[framework].config):
+                    cfg[field.name] = getattr(entry.instance.run[framework].config, field.name)
+            config[entry.name] = cfg
+        self.app.config["SettingDevice"] = config
 
-    def configDriver(self, driver: str) -> None:
-        self.dReg.setStat(driver, False)
-        framework = self.driversData[driver]["framework"]
-        if self.driversData[driver]["framework"] not in self.dReg[driver].run:
-            return
+    def stopDevice(self, device: str) -> None:
+        self.dReg.setStat(device, None)
+        self.dReg[device].stopCommunication()
+        self.dReg[device].data.clear()
 
-        frameworkConfig = self.driversData[driver]["frameworks"][framework]
-        driverInstance = self.dReg[driver].run[framework]
-        for attribute in frameworkConfig:
-            setattr(driverInstance, attribute, frameworkConfig[attribute])
-
-    def startDriver(self, driver: str) -> None:
-        framework = self.driversData[driver]["framework"]
-        if framework not in self.dReg[driver].run:
-            return
-
-        driverInstance = self.dReg[driver].instance
-        loadConfig = self.driversData[driver]["frameworks"][framework].get("loadConfig", False)
-        self.dReg[driver].instance.loadConfig = loadConfig
-        self.dReg[driver].instance.framework = framework
-        self.configDriver(driver)
-        driverInstance.startCommunication()
-
-    def startDrivers(self) -> None:
+    def stopDevices(self) -> None:
         for entry in self.dReg.configurable():
-            if entry.name not in self.driversData:
-                continue
-            if self.driversData[entry.name]["framework"] == "":
-                continue
-            self.startDriver(entry.name)
+            self.stopDdevice(entry.name)
+
+    def startDevice(self, device: str) -> None:
+        if not self.dReg[device].framework:
+            return
+        if not self.dReg[device].run[self.dReg[device].framework].config.deviceName:
+            return
+        self.dReg[device].startCommunication()
+
+    def startDevices(self) -> None:
+        for entry in self.dReg.configurable():
+            self.startDevice(entry.name)

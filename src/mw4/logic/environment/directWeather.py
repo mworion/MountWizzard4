@@ -20,6 +20,7 @@ from typing import Any
 
 
 class DirectWeather:
+    DEVICE_TYPE = "observingconditions"
     log = logging.getLogger("MW4")
 
     def __init__(self, app: Any = None) -> None:

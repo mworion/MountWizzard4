@@ -28,6 +28,7 @@ class SeeingWeatherSignals(Signals):
 
 
 class SeeingWeather:
+    DEVICE_TYPE = "observingconditions"
     log = logging.getLogger("MW4")
 
     def __init__(self, app: Any = None) -> None:

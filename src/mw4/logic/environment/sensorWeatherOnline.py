@@ -23,6 +23,7 @@ from typing import Any
 
 
 class SensorWeatherOnline:
+    DEVICE_TYPE = "observingconditions"
     log = logging.getLogger("MW4")
 
     def __init__(self, parent: Any) -> None:

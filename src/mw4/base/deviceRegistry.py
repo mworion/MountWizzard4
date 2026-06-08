@@ -69,6 +69,13 @@ class DeviceEntry:
         return self.instance.run
 
     @property
+    def framework(self) -> Any:
+        """Convenience property to access instance.run directly."""
+        if self.instance is None:
+            raise AttributeError(f"Device '{self.name}' instance is None")
+        return self.instance.framework
+
+    @property
     def obsSite(self) -> Any:
         """Convenience property to access instance.obsSite directly (mount-specific)."""
         if self.instance is None:

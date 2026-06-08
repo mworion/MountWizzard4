@@ -16,12 +16,23 @@
 import asyncio
 import logging
 import queue
+from dataclasses import dataclass, field
 from indipyclient.queclient import EventItem, QueClient, runqueclient
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO_CONV
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QThreadPool
 from queue import Queue
 from typing import Any
+
+
+@dataclass
+class DeviceConfigIndi:
+    deviceName: str = field(default=None)
+    hostAddress: str| None = field(default="127.0.0.1")
+    port: int | None = field(default=11111)
+    protocol: str = field(default="http")
+    loadConfig: bool = field(default=False)
+    showMessage: bool = field(default=False)
 
 
 class IndiClass:
@@ -34,6 +45,7 @@ class IndiClass:
         self.msg: Any = parent.app.msg
         self.data: dict = parent.data
         self.signals: Any = parent.signals
+        self.config = DeviceConfigIndi()
         self.loadConfig: bool = parent.loadConfig
         self.threadPool: QThreadPool = parent.app.threadPool
         self.clientMutex: QMutex = QMutex()

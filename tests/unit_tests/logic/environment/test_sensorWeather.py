@@ -36,7 +36,7 @@ def test_properties(function):
 
 def test_properties_2(function):
     function.loadConfig = True
-    function.framework = "indi"0
+    function.framework = "indi"
     assert function.loadConfig
 
 

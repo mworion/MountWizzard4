@@ -17,6 +17,7 @@ import json
 import platform
 import subprocess
 import sys
+from dataclasses import dataclass, field
 from mw4.base.alpacaAscomCommon import AlpacaAscomCommon
 from mw4.base.tpool import Worker
 from typing import Any
@@ -26,12 +27,18 @@ if platform.system() == "Windows":
     from win32com import client
 
 
+@dataclass
+class DeviceConfigAscom:
+    deviceName: str = field(default=None)
+
+
 class AscomClass(AlpacaAscomCommon):
     PROTOCOL_NAME: str = "ASCOM"
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent)
         self.deviceName: str = ""
+        self.config = DeviceConfigAscom()
         self.workerRunnerCoreLoop: Worker | None = None
         self.defaultConfig: dict[str, Any] = {
             "deviceName": "",

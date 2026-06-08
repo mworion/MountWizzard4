@@ -20,6 +20,7 @@ from typing import Any
 
 
 class Remote:
+    DEVICE_TYPE = "misc"
     log = logging.getLogger("MW4")
 
     def __init__(self, app: Any) -> None:

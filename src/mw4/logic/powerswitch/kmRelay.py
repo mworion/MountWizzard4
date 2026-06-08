@@ -27,6 +27,7 @@ class RelaySignals(Signals):
 
 
 class KMRelay:
+    DEVICE_TYPE = "switch"
     log = logging.getLogger("MW4")
 
     UPDATE_RATE = 1000

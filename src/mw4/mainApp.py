@@ -109,14 +109,13 @@ class MountWizzard4(QObject):
         self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 started..."))
         self.messageQueue.put((1, "System", "Workdir", f"[{workDir}]"))
         self.messageQueue.put((1, "System", "Profile", f"[{profile}]"))
-        """Create all devices via DeviceRegistry (which creates mount first).
-        This two-phase initialization ensures mount is available when dependent
-        devices (Camera, SeeingWeather, Hipparcos) initialize."""
+
         self.dReg: DeviceRegistry = DeviceRegistry(self)
-        self.initConfig()
         self.dReg.addDevices(self)
         self.driversData: dict = {}
-        self.dHandling = DriverHandling(self.dReg, self.driversData)
+        self.dHandling = DriverHandling(self)
+
+        self.initConfig()
         self.buildPoint = BuildPoint(self)
         self.hipparcos = Hipparcos(self)
         self.ephemeris = self.dReg["mount"].obsSite.loader("de440_mw4.bsp")
@@ -139,8 +138,8 @@ class MountWizzard4(QObject):
             self.messageQueue.put((1, "System", "Arguments", sys.argv[1]))
 
     def initConfig(self) -> GeographicPosition | None:
-        """Initialize and return the mount location from config."""
         setCustomLoggingLevel(self, self.config.get("loglevel", "DEBUG"))
+        self.dHandling.initConfig()
         lat = self.config.get("topoLat", 51.47)
         lon = self.config.get("topoLon", 0)
         elev = self.config.get("topoElev", 46)
@@ -150,6 +149,7 @@ class MountWizzard4(QObject):
 
     def storeConfig(self) -> None:
         self.config["loglevel"] = logging.getLevelName(self.log.level)
+        self.dHandling.storeConfig()
         location = self.dReg["mount"].location
         if location is not None:
             self.config["topoLat"] = float(location.latitude.degrees)

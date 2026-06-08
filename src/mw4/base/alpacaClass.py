@@ -22,9 +22,21 @@ from alpaca.focuser import Focuser as AlpycaFocuser
 from alpaca.observingconditions import ObservingConditions as AlpycaObsConditions
 from alpaca.switch import Switch as AlpycaSwitch
 from alpaca.telescope import Telescope as AlpycaTelescope
+from dataclasses import dataclass, field
 from mw4.base.alpacaAscomCommon import AlpacaAscomCommon
 from mw4.base.tpool import Worker
 from typing import Any
+
+
+@dataclass
+class DeviceConfigAlpaca:
+    deviceName: str = field(default=None)
+    hostAddress: str| None = field(default="127.0.0.1")
+    port: int | None = field(default=11111)
+    protocol: str = field(default="http")
+    loadConfig: bool = field(default=False)
+    apiVersion: int = field(default=1)
+    number: int = field(default=0)
 
 
 class AlpacaClass(AlpacaAscomCommon):
@@ -48,6 +60,7 @@ class AlpacaClass(AlpacaAscomCommon):
         self.protocol: str = "http"
         self.apiVersion: int = 1
         self.number: int = 0
+        self.config = DeviceConfigAlpaca()
         self.workerCommunicationLoop: Worker | None = None
 
         self.defaultConfig: dict[str, Any] = {

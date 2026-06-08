@@ -118,13 +118,10 @@ class SettDevice:
                 signals.deviceDisconnected.connect(self.deviceDisconnected)
 
     def initConfig(self) -> None:
-        config = self.app.config.get("SettingDriver", {})
-        self.app.dHandling.loadDriversDataFromConfig(config)
         self.setupDeviceGui()
-        self.startDrivers()
 
     def storeConfig(self) -> None:
-        self.app.config["SettingDriver"] = self.driversData
+        pass
 
     def setupIcons(self) -> None:
         for driver in self.setupUiDriver:
@@ -218,9 +215,6 @@ class SettDevice:
         self.stopDriver(driver)
         if framework:
             self.startDriver(driver, True)
-
-    def startDrivers(self) -> None:
-        self.app.dHandling.startDrivers()
 
     def stopDrivers(self) -> None:
         self.app.dHandling.stopDrivers()

@@ -24,6 +24,7 @@ from typing import Any
 
 
 class MeasureData:
+    DEVICE_TYPE = "misc"
     log = logging.getLogger("MW4")
     MAXSIZE = 48 * 60 * 60
     CYCLE_UPDATE_TASK = 1000

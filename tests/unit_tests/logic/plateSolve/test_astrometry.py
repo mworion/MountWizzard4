@@ -45,7 +45,9 @@ def function():
 def test_setDefaultPath_1(function):
     with mock.patch.object(platform, "system", return_value="Darwin"):
         function.config.appPath = function.setDefaultAppPath()
-        assert function.config.appPath == "/Applications/KStars.app/Contents/MacOS/astrometry/bin"
+        assert (
+            function.config.appPath == "/Applications/KStars.app/Contents/MacOS/astrometry/bin"
+        )
 
 
 def test_setDefaultPath_2(function):

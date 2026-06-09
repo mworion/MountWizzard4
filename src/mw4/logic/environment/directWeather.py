@@ -22,7 +22,7 @@ from typing import Any
 
 @dataclass
 class DeviceConfigDirectWeather:
-    deviceName: str = field(default="")
+    deviceName: str = field(default="On Mount")
 
 
 class DirectWeather:

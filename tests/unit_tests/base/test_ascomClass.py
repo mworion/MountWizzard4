@@ -253,7 +253,6 @@ def test_handleDeviceConnect_fail(function):
     with mock.patch.object(function, "connectDevice", return_value=False):
         function.handleDeviceConnect()
     assert not function.deviceConnected
-    assert not function.serverConnected
 
 
 def test_handleDeviceConnect_success(function):
@@ -263,7 +262,6 @@ def test_handleDeviceConnect_success(function):
     ):
         function.handleDeviceConnect()
     assert function.deviceConnected
-    assert function.serverConnected
     m.assert_called_once()
 
 
@@ -411,12 +409,10 @@ def test_startCommunication_success(function):
 
 def test_stopCommunication(function):
     function.deviceConnected = True
-    function.serverConnected = True
     function.deviceName = "test"
     function.stopCommunication()
     assert function.stopEvent.is_set()
     assert not function.deviceConnected
-    assert not function.serverConnected
 
 
 def test_selectAscomDriver_success(function):

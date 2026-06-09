@@ -95,7 +95,6 @@ def test_init(function):
     assert isinstance(function.propertyExceptions, list)
     assert len(function.propertyExceptions) == 0
     assert function.deviceConnected is False
-    assert function.serverConnected is False
     assert function.loggingTrace is False
     assert function.device is not None
 
@@ -249,9 +248,7 @@ def test_handleDeviceConnect_fail(function):
     with mock.patch("time.sleep"):
         function.handleDeviceConnect()
     # assert — signals must NOT have been emitted
-    function.signals.serverConnected.emit.assert_not_called()
     function.signals.deviceConnected.emit.assert_not_called()
-    assert function.serverConnected is False
     assert function.deviceConnected is False
 
 
@@ -261,7 +258,6 @@ def test_handleDeviceConnect_success(function):
     function.handleDeviceConnect()
     # assert
     function.signals.deviceConnected.emit.assert_called_once_with(function.config.deviceName)
-    assert function.serverConnected is True
     assert function.deviceConnected is True
 
 
@@ -340,12 +336,10 @@ def test_runnerCommunicationLoop_pollCycle(function):
 def test_stopCommunication(function):
     # arrange
     function.deviceConnected = True
-    function.serverConnected = True
     function.stopCommunication()
     # assert
     assert function.stopEvent.is_set()
     assert function.deviceConnected is False
-    assert function.serverConnected is False
     function.signals.deviceDisconnected.emit.assert_called_once_with(
         function.config.deviceName
     )

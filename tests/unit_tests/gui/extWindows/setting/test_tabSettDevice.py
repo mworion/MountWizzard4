@@ -30,7 +30,7 @@ def function(qapp):
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
 
-    # Only return devices that have UI elements in setupUiDriver
+    # Only return devices that have UI elements in deviceUi
     validDevices = [
         "camera",
         "cover",
@@ -71,28 +71,21 @@ def test_setupDeviceGui_1(function):
 
 
 def test_setupDeviceGui_2(function):
+    class MockConfig:
+        deviceName = "test_device"
+
     class MockFramework:
-        class Config:
-            deviceName = "test_device"
-
-        config = Config()
-
-    class MockRun:
-        def __init__(self, has_config):
-            if has_config:
-                self.config = MockFramework.Config()
-
-        def __getitem__(self, key):
-            return self
+        config = MockConfig()
 
     class MockEntry:
         def __init__(self):
             self.name = "telescope"
             self.framework = "indi"
-            self.run = {"indi": MockFramework(), "test": object()}
+            self.stat = False
+            self.run = {"indi": MockFramework()}
 
     class MockRegistryEntry:
-        run = {"indi": MockFramework(), "test": object()}
+        run = {"indi": MockFramework()}
 
     class MockD:
         def __getitem__(self, key):
@@ -107,7 +100,7 @@ def test_setupDeviceGui_2(function):
 
 def test_closeEvent_1(function):
     # Connect signals first so they can be disconnected without warnings
-    for driver in function.setupUiDriver:
+    for driver in function.deviceUi:
         signals = function.app.dReg[driver].signals
         signals.deviceConnected.connect(function.deviceConnected)
         signals.deviceDisconnected.connect(function.deviceDisconnected)
@@ -220,7 +213,7 @@ def test_callPopup_1(function):
 
 
 def test_dispatchDriverDropdown_1(function):
-    function.setupUiDriver["telescope"]["uiDropDown"].addItem("indi - test")
+    function.deviceUi["telescope"]["uiDropDown"].addItem("indi - test")
     with (
         mock.patch.object(function.app.dReg, "stopDevice"),
         mock.patch.object(function.app.dReg, "startDevice"),
@@ -229,7 +222,7 @@ def test_dispatchDriverDropdown_1(function):
 
 
 def test_dispatchDriverDropdown_2(function):
-    function.setupUiDriver["dome"]["uiDropDown"].addItem("device disabled")
+    function.deviceUi["dome"]["uiDropDown"].addItem("device disabled")
     with (
         mock.patch.object(function.app.dReg, "stopDevice"),
         mock.patch.object(function.app.dReg, "startDevice"),
@@ -250,13 +243,3 @@ def test_deviceConnected_3(function):
 def test_deviceDisconnected_1(function):
     with mock.patch.object(function.app.dReg, "setStat"):
         function.deviceDisconnected("dome", "test")
-
-
-def test_startDevice_1(function):
-    with mock.patch.object(function.app.dReg, "startDevice"):
-        function.startDevice("telescope", True)
-
-
-def test_stopDevice_1(function):
-    with mock.patch.object(function.app.dReg, "stopDevice"):
-        function.stopDevice("telescope")

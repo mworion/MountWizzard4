@@ -558,18 +558,33 @@ def test_stopCommunication(function):
     function.config.deviceName = "telescope"
     function.deviceConnected = True
     function.commandRunning = True
+    received = []
+
+    def handler(name: str) -> None:
+        received.append(name)
+
+    function.signals.deviceDisconnected.connect(handler)
     function.stopCommunication()
-    assert function.config.deviceName == ""
+    # config.deviceName should remain unchanged
+    assert function.config.deviceName == "telescope"
     assert function.deviceConnected is False
     assert function.commandRunning is False
-    assert not function.txQ.empty()
-    assert function.txQ.get() is None
+    assert received == ["telescope"]
+    # None must be queued to signal stop
+    assert function.txQ.get_nowait() is None
 
 
 # ─── loadIndiConfig ──────────────────────────────────────────────────────────
 
 
 def test_loadIndiConfig(function):
+    # Clear any leftover items in the queue from previous tests
+    while not function.txQ.empty():
+        try:
+            function.txQ.get_nowait()
+        except queue.Empty:
+            break
+
     function.config.deviceName = "TestDevice"
     function.loadIndiConfig("TestDevice")
     item = function.txQ.get_nowait()

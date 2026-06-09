@@ -399,5 +399,3 @@ def test_deviceDisconnectedUpdatesStatBeforeMessage(registry: DeviceRegistry) ->
     assert registry.d["camera"].stat is False
     # Verify message was emitted
     assert registry.app.msg.emit.called
-
-

@@ -275,6 +275,5 @@ def test_startCommunication_2(function):
     with mock.patch.object(function.threadPool, "start") as m_start:
         function.startCommunication()
         assert not function.deviceConnected
-        assert not function.serverConnected
         assert not function.stopEvent.is_set()
         m_start.assert_called_once()

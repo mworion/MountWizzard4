@@ -13,13 +13,13 @@
 # License APL2.0
 #
 ###########################################################
-import asyncio
 import logging
 import queue
 from dataclasses import dataclass, field
 from indipyclient.queclient import EventItem, QueClient, runqueclient
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO_CONV
 from mw4.base.tpool import Worker
+from PySide6 import QtAsyncio
 from PySide6.QtCore import QMutex, QThreadPool
 from queue import Queue
 from typing import Any
@@ -122,7 +122,7 @@ class IndiClass:
             blobfolder=str(self.app.mwGlob["tempDir"]),
         )
         self.queueClient.debug_verbosity(3 if self.loggingTrace else 0)
-        asyncio.run(self.queueClient.asyncrun())
+        QtAsyncio.run(self.queueClient.asyncrun())
 
     def startCommunication(self) -> None:
         if not self.clientMutex.tryLock():

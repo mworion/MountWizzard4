@@ -500,7 +500,7 @@ def test_runQueueClient_loggingTraceOff(function):
     mock_client = mock.MagicMock()
     with (
         mock.patch("mw4.base.indiClass.QueClient", return_value=mock_client) as mock_qc,
-        mock.patch("mw4.base.indiClass.asyncio") as mock_asyncio,
+        mock.patch("mw4.base.indiClass.QtAsyncio") as mock_qtasyncio,
     ):
         function.runQueueClient()
     mock_qc.assert_called_once_with(
@@ -511,7 +511,7 @@ def test_runQueueClient_loggingTraceOff(function):
         blobfolder=mock.ANY,
     )
     mock_client.debug_verbosity.assert_called_once_with(0)
-    mock_asyncio.run.assert_called_once_with(mock_client.asyncrun())
+    mock_qtasyncio.run.assert_called_once_with(mock_client.asyncrun())
     function.queueClient = None
 
 
@@ -521,7 +521,7 @@ def test_runQueueClient_loggingTraceOn(function):
     mock_client = mock.MagicMock()
     with (
         mock.patch("mw4.base.indiClass.QueClient", return_value=mock_client),
-        mock.patch("mw4.base.indiClass.asyncio"),
+        mock.patch("mw4.base.indiClass.QtAsyncio"),
     ):
         function.runQueueClient()
     mock_client.debug_verbosity.assert_called_once_with(3)

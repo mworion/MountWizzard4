@@ -18,6 +18,7 @@ import pytest
 from mw4.gui.extWindows.setting.tabSettDevice import SettDevice
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
+from PySide6.QtTest import QSignalSpy
 from PySide6.QtWidgets import QPushButton
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
@@ -105,6 +106,25 @@ def test_closeEvent_1(function):
         signals.deviceConnected.connect(function.deviceConnected)
         signals.deviceDisconnected.connect(function.deviceDisconnected)
     function.closeEvent()
+
+
+def test_closeEvent_skipsEntriesWithoutSignals(function):
+    class NoSigInstance:
+        pass
+
+    class Entry:
+        name = "telescope"
+
+    realEntry = function.app.dReg["telescope"]
+    origInstance = realEntry.instance
+    realEntry.instance = NoSigInstance()
+    try:
+        with mock.patch.object(
+            function.app.dReg, "configurable", return_value=[Entry()]
+        ):
+            function.closeEvent()
+    finally:
+        realEntry.instance = origInstance
 
 
 def test_processPopupResults_2(function):
@@ -231,49 +251,66 @@ def test_dispatchDriverDropdown_2(function):
 
 
 def test_dispatchDriverDropdownEmitsStartDeviceWhenAllConditionsMet(function) -> None:
-    """Test dispatchDriverDropdown emits startDevice when framework and deviceName exist (line 204)."""
+    """Test dispatchDriverDropdown emits startDevice when framework and deviceName
+    exist (line 210)."""
     from unittest.mock import MagicMock
 
-    # Create proper mock structure for device registry entry
     mock_config = MagicMock()
     mock_config.deviceName = "test_device"
-
-    mock_framework_handler = MagicMock()
-    mock_framework_handler.config = mock_config
-
+    mock_fw = MagicMock()
+    mock_fw.config = mock_config
     mock_instance = MagicMock()
-    mock_instance.framework = "alpaca"  # Different from "indi" to trigger condition
-
+    mock_instance.framework = "alpaca"
     mock_entry = MagicMock()
+    mock_entry.framework = "alpaca"
     mock_entry.instance = mock_instance
-    mock_entry.run = {"alpaca": mock_framework_handler}
+    mock_entry.run = {"alpaca": mock_fw}
 
-    # Setup UI with device item
     function.deviceUi["telescope"]["uiDropDown"].clear()
     function.deviceUi["telescope"]["uiDropDown"].addItem("alpaca - test_device")
     function.deviceUi["telescope"]["uiDropDown"].setCurrentIndex(0)
 
-    with (
-        mock.patch.object(function.app.dReg, "__getitem__", return_value=mock_entry),
-        mock.patch.object(function.app, "stopDevice"),
-    ):
+    spy = QSignalSpy(function.app.startDevice)
+    with mock.patch.object(function.app.dReg, "d", {"telescope": mock_entry}):
         function.dispatchDriverDropdown("telescope", 1)
-        # If we got here without exception, line 204 was reached
+    assert spy.count() == 1
+    assert spy.at(0)[0] == "telescope"
 
 
-def test_deviceConnected_2(function):
-    with mock.patch.object(function.app.dReg, "setStat"):
-        function.deviceConnected("filter", "test")
+def test_applyConnected_1(function):
+    function.applyConnected("filter")
 
 
-def test_deviceConnected_3(function):
-    with mock.patch.object(function.app.dReg, "setStat"):
-        function.deviceConnected("dome", "test")
+def test_applyConnected_2(function):
+    function.applyConnected("dome")
 
 
-def test_deviceDisconnected_1(function):
-    with mock.patch.object(function.app.dReg, "setStat"):
-        function.deviceDisconnected("dome", "test")
+def test_applyDisconnected_1(function):
+    function.applyDisconnected("dome")
+
+
+def test_deviceConnected_resolvesNameViaSender(function):
+    sig = function.app.dReg["dome"].signals
+    function.signalsToName[id(sig)] = "dome"
+    with mock.patch.object(function, "sender", return_value=sig):
+        function.deviceConnected("ignored")
+
+
+def test_deviceConnected_unknownSenderIsNoOp(function):
+    with mock.patch.object(function, "sender", return_value=object()):
+        function.deviceConnected()
+
+
+def test_deviceDisconnected_resolvesNameViaSender(function):
+    sig = function.app.dReg["dome"].signals
+    function.signalsToName[id(sig)] = "dome"
+    with mock.patch.object(function, "sender", return_value=sig):
+        function.deviceDisconnected("ignored")
+
+
+def test_deviceDisconnected_unknownSenderIsNoOp(function):
+    with mock.patch.object(function, "sender", return_value=object()):
+        function.deviceDisconnected()
 
 
 
@@ -302,10 +339,10 @@ def test_setupDeviceGuiCallsDeviceConnectedWhenStatTrue(function) -> None:
     with (
         mock.patch.object(function.app.dReg, "configurable", return_value=[MockEntry()]),
         mock.patch.object(function.app.dReg, "d", MockD()),
-        mock.patch.object(function, "deviceConnected") as mock_connected,
+        mock.patch.object(function, "applyConnected") as mock_connected,
     ):
         function.setupDeviceGui()
-        # Verify deviceConnected was called with the entry name
+        # Verify applyConnected was called with the entry name
         mock_connected.assert_called()
 
 
@@ -334,8 +371,8 @@ def test_setupDeviceGuiCallsDeviceDisconnectedWhenStatFalse(function) -> None:
     with (
         mock.patch.object(function.app.dReg, "configurable", return_value=[MockEntry()]),
         mock.patch.object(function.app.dReg, "d", MockD()),
-        mock.patch.object(function, "deviceDisconnected") as mock_disconnected,
+        mock.patch.object(function, "applyDisconnected") as mock_disconnected,
     ):
         function.setupDeviceGui()
-        # Verify deviceDisconnected was called with the entry name
+        # Verify applyDisconnected was called with the entry name
         mock_disconnected.assert_called()

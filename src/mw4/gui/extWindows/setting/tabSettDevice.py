@@ -16,17 +16,20 @@
 from functools import partial
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, findIndexValue
+from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QListView
 from typing import Any
 
 
-class SettDevice:
+class SettDevice(QObject):
     def __init__(self, parentW: Any) -> None:
+        super().__init__()
         self.mainW = parentW
         self.app = parentW.app
         self.msg = parentW.app.msg
         self.ui = parentW.ui
-        self.devicePopup = None
+        self.devicePopup: DevicePopup | None = None
+        self.signalsToName: dict[int, str] = {}
 
         self.deviceUi: dict[str, Any] = {
             "camera": {
@@ -114,8 +117,9 @@ class SettDevice:
 
             if hasattr(self.app.dReg[entry.name].instance, "signals"):
                 sig = self.app.dReg[entry.name].signals
-                sig.deviceConnected.connect(partial(self.deviceConnected, entry.name))
-                sig.deviceDisconnected.connect(partial(self.deviceDisconnected, entry.name))
+                self.signalsToName[id(sig)] = entry.name
+                sig.deviceConnected.connect(self.deviceConnected)
+                sig.deviceDisconnected.connect(self.deviceDisconnected)
 
         self.setupDeviceGui()
 
@@ -126,8 +130,10 @@ class SettDevice:
                 self.mainW.wIcon(ui, "cogs")
 
     def closeEvent(self) -> None:
-        for driver in self.deviceUi:
-            signals = self.app.dReg[driver].signals
+        for entry in self.app.dReg.configurable():
+            if not hasattr(self.app.dReg[entry.name].instance, "signals"):
+                continue
+            signals = self.app.dReg[entry.name].signals
             signals.deviceConnected.disconnect(self.deviceConnected)
             signals.deviceDisconnected.disconnect(self.deviceDisconnected)
 
@@ -146,9 +152,9 @@ class SettDevice:
             index = findIndexValue(self.deviceUi[entry.name]["uiDropDown"], entry.framework)
             self.deviceUi[entry.name]["uiDropDown"].setCurrentIndex(index)
             if entry.stat:
-                self.deviceConnected(entry.name, "")
+                self.applyConnected(entry.name)
             else:
-                self.deviceDisconnected(entry.name, "")
+                self.applyDisconnected(entry.name)
 
     def copyConfig(self, device: str, framework: str) -> None:
         return
@@ -203,8 +209,21 @@ class SettDevice:
             return
         self.app.startDevice.emit(device)
 
-    def deviceConnected(self, deviceSlot: str, deviceName: str) -> None:
+    def applyConnected(self, deviceSlot: str) -> None:
         changeStyleDynamic(self.deviceUi[deviceSlot]["uiDropDown"], "active", True)
 
-    def deviceDisconnected(self, deviceSlot: str, deviceName: str) -> None:
+    def applyDisconnected(self, deviceSlot: str) -> None:
         changeStyleDynamic(self.deviceUi[deviceSlot]["uiDropDown"], "active", False)
+
+    def deviceConnected(self, *_args: Any) -> None:
+        name = self.signalsToName.get(id(self.sender()))
+        if name is None:
+            return
+        self.applyConnected(name)
+
+    def deviceDisconnected(self, *_args: Any) -> None:
+        name = self.signalsToName.get(id(self.sender()))
+        if name is None:
+            return
+        self.applyDisconnected(name)
+

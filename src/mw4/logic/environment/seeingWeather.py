@@ -26,7 +26,7 @@ from typing import Any
 
 @dataclass
 class DeviceConfigSeeingWeather:
-    deviceName: str = field(default="")
+    deviceName: str = field(default="Meteoblue")
     apiKey: str = field(default="free")
     hostAddress: str = field(default="my.meteoblue.com")
 

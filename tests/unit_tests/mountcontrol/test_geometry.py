@@ -13,10 +13,8 @@
 # License APL2.0
 #
 ###########################################################
-import os
 import pytest
 from mw4.mountcontrol.mount import MountDevice
-from pathlib import Path
 from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -27,7 +25,6 @@ def function():
         app=App(),
         host=None,
         MAC=None,
-        pathToData=Path(os.getcwd() + "/data"),
         verbose=True,
     )
     m.obsSite.location = wgs84.latlon(

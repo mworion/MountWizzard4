@@ -17,6 +17,7 @@ import mw4.gui.utilities.qtMain
 import pytest
 import shutil
 import unittest.mock as mock
+from mw4.base.deviceRegistry import DeviceEntry
 from mw4.gui.mainWindow.mainWindow import MainWindow
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
@@ -100,43 +101,42 @@ def test_quitSave_1(window):
     with (
         mock.patch.object(window, "saveProfile"),
         mock.patch.object(window, "close"),
-        mock.patch.object(window.mainWindowAddons.addons["SettDevice"], "stopDrivers"),
     ):
         window.quitSave()
 
 
 def test_smartFunctionGui_0(window):
-    window.app.deviceStat["mount"] = True
-    window.app.deviceStat["camera"] = True
-    window.app.deviceStat["plateSolve"] = True
-    window.app.data.buildP = []
+    window.app.dReg.d["mount"].stat = True
+    window.app.dReg.d["camera"].stat = True
+    window.app.dReg.d["plateSolve"].stat = True
+    window.app.buildPoint.buildP = []
     window.smartFunctionGui()
 
 
 def test_smartFunctionGui_1(window):
-    window.app.deviceStat["mount"] = True
-    window.app.deviceStat["camera"] = True
-    window.app.deviceStat["plateSolve"] = True
-    window.app.data.buildP = [(0, 0)]
+    window.app.dReg.d["mount"].stat = True
+    window.app.dReg.d["camera"].stat = True
+    window.app.dReg.d["plateSolve"].stat = True
+    window.app.buildPoint.buildP = [(0, 0, 1)]
     window.smartFunctionGui()
-    assert window.ui.runModel.isEnabled()
+    assert window.ui.runModelGroup.isEnabled()
     assert window.ui.runFlexure.isEnabled()
     assert window.ui.runHysteresis.isEnabled()
 
 
 def test_smartFunctionGui_2(window):
-    window.app.deviceStat["mount"] = True
-    window.app.deviceStat["camera"] = False
-    window.app.deviceStat["plateSolve"] = True
-    window.app.data.buildP = [(0, 0)]
+    window.app.dReg.d["mount"].stat = True
+    window.app.dReg.d["camera"].stat = False
+    window.app.dReg.d["plateSolve"].stat = True
+    window.app.buildPoint.buildP = [(0, 0, 1)]
     window.smartFunctionGui()
-    assert not window.ui.runModel.isEnabled()
+    assert not window.ui.runModelGroup.isEnabled()
     assert not window.ui.runFlexure.isEnabled()
     assert not window.ui.runHysteresis.isEnabled()
 
 
 def test_smartFunctionGui_3(window):
-    window.app.deviceStat["mount"] = True
+    window.app.dReg.d["mount"].stat = True
     window.smartFunctionGui()
     assert window.ui.refractionGroup.isEnabled()
     assert window.ui.dsoGroup.isEnabled()
@@ -144,7 +144,7 @@ def test_smartFunctionGui_3(window):
 
 
 def test_smartFunctionGui_4(window):
-    window.app.deviceStat["mount"] = False
+    window.app.dReg.d["mount"].stat = False
     window.smartFunctionGui()
     assert not window.ui.refractionGroup.isEnabled()
     assert not window.ui.dsoGroup.isEnabled()
@@ -165,7 +165,7 @@ def test_setEnvironDeviceStats_1(window):
     window.app.mount.setting.statusRefraction = 0
 
     window.setEnvironDeviceStats()
-    assert window.app.deviceStat["refraction"] is None
+    assert window.app.dReg.d["refraction"].stat is None
 
 
 def test_setEnvironDeviceStats_2(window):
@@ -174,7 +174,7 @@ def test_setEnvironDeviceStats_2(window):
     window.app.mount.setting.statusRefraction = 1
 
     window.setEnvironDeviceStats()
-    assert window.app.deviceStat["refraction"]
+    assert window.app.dReg.d["refraction"].stat
 
 
 def test_setEnvironDeviceStats_3(window):
@@ -182,10 +182,10 @@ def test_setEnvironDeviceStats_3(window):
     window.ui.refracCont.setChecked(True)
     window.app.mount.setting.statusRefraction = 1
     window.mainWindowAddons.addons["EnvironWeather"].refractionSource = "onlineWeather"
-    window.app.deviceStat["onlineWeather"] = False
+    window.app.dReg.d["onlineWeather"].stat = False
 
     window.setEnvironDeviceStats()
-    assert not window.app.deviceStat["refraction"]
+    assert not window.app.dReg.d["refraction"].stat
 
 
 def test_updateDeviceStats_1(window):
@@ -212,7 +212,7 @@ def test_updatePlateSolveStatus_1(window):
 
 def test_updateMountConnStat_1(window):
     window.updateMountConnStat(True)
-    assert window.app.deviceStat["mount"]
+    assert window.app.dReg.d["mount"].stat
 
 
 def test_updatePlateSolveStatus(window):
@@ -308,7 +308,6 @@ def test_switchProfile_1(window):
         mock.patch.object(window.externalWindows, "showExtendedWindows"),
         mock.patch.object(window, "initConfig"),
         mock.patch.object(window.app, "initConfig", return_value=loc),
-        mock.patch.object(window.mainWindowAddons.addons["SettDevice"], "stopDrivers"),
     ):
         window.switchProfile({"test": 1})
 
@@ -340,6 +339,7 @@ def test_loadProfileGUI_3(window):
             mw4.gui.mainWindow.mainWindow, "loadConfig", return_value={"test": 1}
         ),
         mock.patch.object(window, "switchProfile"),
+        mock.patch.object(window, "saveProfile"),
     ):
         window.loadProfileGUI()
 
@@ -404,3 +404,41 @@ def test_remoteCommand_3(window):
 def test_remoteCommand_4(window):
     with mock.patch.object(window.mainWindowAddons.addons["SettMount"], "mountBoot"):
         window.remoteCommand("boot mount")
+
+
+def test_setEnvironDeviceStats_noSource(window):
+    window.ui.refracManual.setChecked(False)
+    window.ui.showTabEnviron.setChecked(True)
+    window.app.dReg.d["mount"].instance.setting.statusRefraction = 1
+    window.mainWindowAddons.addons["EnvironWeather"].refractionSource = None
+    window.setEnvironDeviceStats()
+    assert window.app.dReg.d["refraction"].stat is False
+
+
+def test_updateDeviceStats_noDriver(window):
+    device = "testDevice"
+    ui = mock.MagicMock()
+    window.deviceStatGui[device] = ui
+    window.app.dReg.d[device] = None
+    try:
+        window.updateDeviceStats()
+        ui.setEnabled.assert_called_with(False)
+    finally:
+        window.app.dReg.d.pop(device, None)
+        window.deviceStatGui.pop(device, None)
+
+
+def test_updateDeviceStats_enabledDriver(window):
+    device = "testDevice"
+    ui = mock.MagicMock()
+    window.deviceStatGui[device] = ui
+    window.app.dReg.d[device] = DeviceEntry(
+        name=device, instance=object(), deviceType=None, isConfigurable=True, stat=True
+    )
+    try:
+        with mock.patch("mw4.gui.mainWindow.mainWindow.changeStyleDynamic"):
+            window.updateDeviceStats()
+        ui.setEnabled.assert_called_with(True)
+    finally:
+        window.app.dReg.d.pop(device, None)
+        window.deviceStatGui.pop(device, None)

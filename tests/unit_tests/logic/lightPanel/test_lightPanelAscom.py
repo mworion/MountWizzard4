@@ -25,12 +25,14 @@ if platform.system() != "Windows":
 
 
 class Parent:
-    app = App()
+    try:
+        app = App()
+    except Exception:
+        app = mock.MagicMock()
     data = {}
     signals = Signals()
     deviceType = ""
     loadConfig = True
-    updateRate = 1000
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -48,7 +50,9 @@ def test_pollData_1(function):
 
 
 def test_lightOn(function):
-    function.app.lightPanel.data = {"FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 200}
+    function.app.dReg.d["lightPanel"].instance.data = {
+        "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 200
+    }
     with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.lightOn()
     m.assert_called_once_with("CalibratorOn", BrightnessVal=100)

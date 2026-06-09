@@ -22,7 +22,8 @@ import time
 from mw4.base.alpacaAscomCommon import CommandItem
 from mw4.base.ascomClass import AscomClass
 from mw4.base.signalsDevices import Signals
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from pathlib import Path
+from PySide6.QtCore import QThreadPool
 from unittest import mock
 
 if platform.system() != "Windows":
@@ -30,11 +31,14 @@ if platform.system() != "Windows":
 
 
 class Parent:
-    app = App()
-    data = {}
-    deviceType = ""
-    signals = Signals()
-    loadConfig = True
+    def __init__(self) -> None:
+        self.data: dict = {}
+        self.deviceType = ""
+        self.signals = Signals()
+        self.app = mock.MagicMock()
+        self.app.msg = mock.MagicMock()
+        self.app.threadPool = QThreadPool()
+        self.app.mwGlob = {"tempDir": Path("/tmp")}
 
 
 @pytest.fixture(autouse=True, scope="function")
@@ -249,7 +253,6 @@ def test_handleDeviceConnect_fail(function):
     with mock.patch.object(function, "connectDevice", return_value=False):
         function.handleDeviceConnect()
     assert not function.deviceConnected
-    assert not function.serverConnected
 
 
 def test_handleDeviceConnect_success(function):
@@ -259,7 +262,6 @@ def test_handleDeviceConnect_success(function):
     ):
         function.handleDeviceConnect()
     assert function.deviceConnected
-    assert function.serverConnected
     m.assert_called_once()
 
 
@@ -398,7 +400,7 @@ def test_startCommunication_noDevice(function):
 
 
 def test_startCommunication_success(function):
-    function.deviceName = "test.driver"
+    function.config.deviceName = "test.driver"
     with mock.patch.object(function.threadPool, "start") as m:
         function.startCommunication()
     m.assert_called_once()
@@ -407,12 +409,10 @@ def test_startCommunication_success(function):
 
 def test_stopCommunication(function):
     function.deviceConnected = True
-    function.serverConnected = True
     function.deviceName = "test"
     function.stopCommunication()
     assert function.stopEvent.is_set()
     assert not function.deviceConnected
-    assert not function.serverConnected
 
 
 def test_selectAscomDriver_success(function):

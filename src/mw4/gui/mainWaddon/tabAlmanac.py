@@ -161,7 +161,7 @@ class Almanac:
     def calcTwilightData(
         self, ts, location: GeographicPosition, tWinL: int, tWinH: int
     ) -> (list, list):
-        timeJD = self.app.mount.obsSite.timeJD
+        timeJD = self.app.dReg["mount"].obsSite.timeJD
         t0 = ts.tt_jd(int(timeJD.tt) - tWinL)
         t1 = ts.tt_jd(int(timeJD.tt) + tWinH + 1)
 
@@ -177,7 +177,7 @@ class Almanac:
 
     def showTwilightDataPlot(self) -> None:
         timeWindowParam = [17, 32, 47, 92, 182]
-        location = self.app.mount.obsSite.location
+        location = self.app.dReg["mount"].obsSite.location
         if location is None:
             return
 
@@ -188,18 +188,18 @@ class Almanac:
         t = f"Twilight passes for: {text} {self.mainW.timeZoneString()}"
         self.ui.almanacGroup.setTitle(t)
 
-        ts = self.app.mount.obsSite.ts
+        ts = self.app.dReg["mount"].obsSite.ts
         changeStyleDynamic(self.ui.almanacGroup, "run", True)
         self.worker = Worker(self.workerCalcTwilightDataPlot, ts, location, timeWindow)
         self.worker.signals.result.connect(self.plotTwilightData)
         self.app.threadPool.start(self.worker)
 
     def showTwilightDataList(self) -> None:
-        location = self.app.mount.obsSite.location
+        location = self.app.dReg["mount"].obsSite.location
         if location is None:
             return
 
-        ts = self.app.mount.obsSite.ts
+        ts = self.app.dReg["mount"].obsSite.ts
         result = self.calcTwilightData(ts, location, 0, 1)
         self.twilightTime, self.twilightEvents = result
         self.listTwilightData(self.twilightTime[:8], self.twilightEvents[:8])
@@ -209,10 +209,10 @@ class Almanac:
         sun = ephemeris["sun"]
         moon = ephemeris["moon"]
         earth = ephemeris["earth"]
-        now = self.app.mount.obsSite.ts.now()
-        loc = self.app.mount.obsSite.location
-        ts = self.app.mount.obsSite.ts
-        timeJD = self.app.mount.obsSite.timeJD
+        now = self.app.dReg["mount"].obsSite.ts.now()
+        loc = self.app.dReg["mount"].obsSite.location
+        ts = self.app.dReg["mount"].obsSite.ts
+        timeJD = self.app.dReg["mount"].obsSite.timeJD
         e = earth.at(timeJD)
 
         # calc phases for obstruction

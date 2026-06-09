@@ -139,7 +139,10 @@ def test_buildSeeingItem(function):
 
 
 def test_markActualColumn(function):
-    function.app.seeingWeather.data = {"meta": META, "hourly": dict(HOURLY)}
+    function.app.dReg.d["seeingWeather"].instance.data = {
+        "meta": META,
+        "hourly": dict(HOURLY),
+    }
     data = dict(HOURLY)
     item = QTableWidgetItem()
     result = function.markActualColumn(item, data, 3)
@@ -149,14 +152,14 @@ def test_markActualColumn(function):
 
 
 def test_updateSeeingEntries_1(function):
-    function.app.seeingWeather.data = {
+    function.app.dReg.d["seeingWeather"].instance.data = {
         "test": {"hour": [10, 11], "date": ["2022-01-01", "2022-01-01"]}
     }
     function.updateSeeingEntries()
 
 
 def test_updateSeeingEntries_2(function):
-    function.app.seeingWeather.data = {
+    function.app.dReg.d["seeingWeather"].instance.data = {
         "meta": META,
         "hourly": dict(HOURLY),
     }
@@ -166,7 +169,7 @@ def test_updateSeeingEntries_2(function):
 
 
 def test_updateSeeingEntries_3(function):
-    function.app.seeingWeather.data = {
+    function.app.dReg.d["seeingWeather"].instance.data = {
         "meta": META,
         "hourly": dict(HOURLY),
     }

@@ -158,14 +158,14 @@ class BuildPoints:
         minAlt = int(self.ui.altitudeMin.value())
         maxAlt = int(self.ui.altitudeMax.value())
 
-        if not self.app.data.genGrid(minAlt, maxAlt, numbRows, numbCols):
+        if not self.app.buildPoint.genGrid(minAlt, maxAlt, numbRows, numbCols):
             self.msg.emit(2, "Model", "Buildpoints", "Could not generate grid")
             return
         self.processPoints()
 
     def genBuildAlign(self) -> None:
         self.lastGenerator = "align"
-        suc = self.app.data.genAlign(altBase=55, azBase=10, numberBase=3)
+        suc = self.app.buildPoint.genAlign(altBase=55, azBase=10, numberBase=3)
         if not suc:
             self.msg.emit(2, "Model", "Buildpoints", "Could not generate 3 align stars")
             return
@@ -176,7 +176,7 @@ class BuildPoints:
         stepHA = int(self.ui.numberCelestialStepHA.value())
         stepDec = int(self.ui.numberCelestialStepDEC.value())
         distFlip = int(self.ui.meridianDistanceFlip.value())
-        suc = self.app.data.genGreaterCircle(stepHA, stepDec, distFlip)
+        suc = self.app.buildPoint.genGreaterCircle(stepHA, stepDec, distFlip)
         if not suc:
             self.msg.emit(
                 2, "Model", "Buildpoints", "Build points celestial cannot be generated"
@@ -184,16 +184,16 @@ class BuildPoints:
             return
 
         if self.ui.ditherBuildPoints.isChecked():
-            self.app.data.ditherPoints()
+            self.app.buildPoint.ditherPoints()
         self.processPoints()
 
     def genBuildDSO(self) -> None:
         self.lastGenerator = "dso"
-        ha = self.app.mount.obsSite.raJNow
-        dec = self.app.mount.obsSite.decJNow
-        lst = self.app.mount.obsSite.timeSidereal
-        timeJD = self.app.mount.obsSite.timeJD
-        location = self.app.mount.obsSite.location
+        ha = self.app.dReg["mount"].obsSite.raJNow
+        dec = self.app.dReg["mount"].obsSite.decJNow
+        lst = self.app.dReg["mount"].obsSite.timeSidereal
+        timeJD = self.app.dReg["mount"].obsSite.timeJD
+        location = self.app.dReg["mount"].obsSite.location
 
         if any(x is None for x in [ha, dec, location, lst]):
             self.msg.emit(
@@ -218,14 +218,14 @@ class BuildPoints:
             iteration -= 1
             if iteration <= 0:
                 break
-            self.app.data.generateDSOPath(ha, dec, timeJD, location, numberPoints, keep)
+            self.app.buildPoint.generateDSOPath(ha, dec, timeJD, location, numberPoints, keep)
             self.autoDeletePoints()
-            numberFiltered = len(self.app.data.buildP)
+            numberFiltered = len(self.app.buildPoint.buildP)
             if numberFiltered == 0:
                 break
 
         if self.ui.ditherBuildPoints.isChecked():
-            self.app.data.ditherPoints()
+            self.app.buildPoint.ditherPoints()
         self.processPoints()
         self.ui.genBuildDSO.setEnabled(True)
         self.ui.numberDSOPoints.setEnabled(True)
@@ -243,19 +243,19 @@ class BuildPoints:
             iteration -= 1
             if iteration <= 0:
                 break
-            self.app.data.generateGoldenSpiral(numberPoints=numberPoints)
+            self.app.buildPoint.generateGoldenSpiral(numberPoints=numberPoints)
             self.autoDeletePoints()
-            numberFilter = len(self.app.data.buildP)
+            numberFilter = len(self.app.buildPoint.buildP)
         self.processPoints()
         changeStyleDynamic(self.ui.genBuildSpiral, "run", False)
 
     def genModel(self) -> None:
         self.lastGenerator = "model"
-        self.app.data.clearBuildP()
-        model = self.app.mount.model
+        self.app.buildPoint.clearBuildP()
+        model = self.app.dReg["mount"].model
         for star in model.starList:
-            self.app.data.addBuildP(
-                [int(star.alt.degrees), int(star.az.degrees), self.app.data.UNPROCESSED]
+            self.app.buildPoint.addBuildP(
+                [int(star.alt.degrees), int(star.az.degrees), self.app.buildPoint.UNPROCESSED]
             )
         self.processPoints()
 
@@ -267,7 +267,7 @@ class BuildPoints:
             return
 
         fullFileName = self.app.mwGlob["configDir"] / (fileName + ".bpts")
-        if not self.app.data.loadBuildP(fullFileName):
+        if not self.app.buildPoint.loadBuildP(fullFileName):
             text = f"Build points file [{fileName}] could not be loaded"
             self.msg.emit(2, "Model", "Buildpoints", text)
             return
@@ -281,7 +281,7 @@ class BuildPoints:
         fullFileName = self.mainW.openFile(
             self.mainW, "Open build point file", folder, fileTypes
         )
-        suc = self.app.data.loadBuildP(fullFileName)
+        suc = self.app.buildPoint.loadBuildP(fullFileName)
         if suc:
             self.ui.buildPFileName.setText(fullFileName.stem)
             self.msg.emit(
@@ -302,7 +302,7 @@ class BuildPoints:
             self.msg.emit(0, "Model", "Buildpoints", "Build points file name not given")
             return
 
-        self.app.data.saveBuildP(fileName)
+        self.app.buildPoint.saveBuildP(fileName)
         self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fileName}] saved")
 
     def saveBuildFileAs(self) -> None:
@@ -313,33 +313,33 @@ class BuildPoints:
         if saveFilePath.is_dir() or not saveFilePath.stem:
             return
 
-        self.app.data.saveBuildP(saveFilePath.stem)
+        self.app.buildPoint.saveBuildP(saveFilePath.stem)
         self.ui.buildPFileName.setText(saveFilePath.stem)
         self.msg.emit(0, "Model", "Buildpoints", f"Build file [{saveFilePath.stem}] saved")
 
     def clearBuildP(self) -> None:
-        self.app.data.clearBuildP()
+        self.app.buildPoint.clearBuildP()
         self.app.drawBuildPoints.emit()
         self.app.redrawHemisphere.emit()
 
     def autoDeletePoints(self) -> None:
         if self.ui.autoDeleteHorizon.isChecked():
-            self.app.data.deleteBelowHorizon()
+            self.app.buildPoint.deleteBelowHorizon()
         if self.ui.autoDeleteMeridian.isChecked():
-            self.app.data.deleteCloseMeridian()
+            self.app.buildPoint.deleteCloseMeridian()
         if self.ui.useSafetyMargin.isChecked():
             value = int(self.ui.safetyMarginValue.value())
-            self.app.data.deleteCloseHorizonLine(value)
+            self.app.buildPoint.deleteCloseHorizonLine(value)
 
     def autoSortPoints(self) -> None:
         if self.ui.sortALT.isChecked():
-            self.app.data.sortAlt()
+            self.app.buildPoint.sortAlt()
         if self.ui.sortAZ.isChecked():
-            self.app.data.sortAz()
+            self.app.buildPoint.sortAz()
         if self.ui.sortDomeAZ.isChecked() and bool(self.app.deviceStat.get("dome")):
-            self.app.data.sortDomeAz()
+            self.app.buildPoint.sortDomeAz()
         if self.ui.avoidFlip.isChecked():
-            self.app.data.sortActualPierside()
+            self.app.buildPoint.sortActualPierside()
 
     def buildPointsChanged(self) -> None:
         self.lastGenerator = "none"

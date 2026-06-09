@@ -37,14 +37,14 @@ def test_initConfig_1(function):
 
 
 def test_storeConfig_1(function):
-    if "bigPopupW" in function.app.config:
-        del function.app.config["bigPopupW"]
+    if "WindowBigPopup" in function.app.config:
+        del function.app.config["WindowBigPopup"]
 
     function.storeConfig()
 
 
 def test_storeConfig_2(function):
-    function.app.config["bigPopupW"] = {}
+    function.app.config["WindowBigPopup"] = {}
 
     function.storeConfig()
 

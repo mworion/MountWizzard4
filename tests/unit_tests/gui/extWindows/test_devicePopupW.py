@@ -34,7 +34,6 @@ class Parent:
         self.signals = Signals()
         self.deviceType = "telescope"
         self.loadConfig = True
-        self.updateRate = 1000
 
 
 @pytest.fixture(autouse=False, scope="module")
@@ -44,9 +43,8 @@ def function(qapp):
         "frameworks": {"indi": {"deviceName": "test", "deviceList": ["1", "2"]}},
     }
     widget = MWidget()
-    window = DevicePopup(
-        widget, parent=Parent(), data=data, driver="telescope", deviceType="telescope"
-    )
+    widget.app = App()
+    window = DevicePopup(widget, device="telescope", data=data)
     window.log = logging.getLogger()
     yield window
     QApplication.processEvents()
@@ -130,15 +128,11 @@ def test_selectTabs_3(function):
 
 def test_populateTabs_1(function):
     function.data = {
-        "framework": "indi",
-        "frameworks": {
-            "indi": {
-                "deviceName": "test",
-                "deviceList": ["test", "test1"],
-                "updateRate": 30,
-                "hostaddress": "test",
-                "messages": True,
-            },
+        "indi": {
+            "deviceName": "test",
+            "deviceList": ["test", "test1"],
+            "hostaddress": "test",
+            "messages": True,
         },
     }
     function.populateTabs()
@@ -146,14 +140,11 @@ def test_populateTabs_1(function):
 
 def test_populateTabs_2(function):
     function.data = {
-        "framework": "astap",
-        "frameworks": {
-            "astap": {
-                "deviceName": "test",
-                "deviceList": ["test", "test1"],
-                "searchRadius": 30.0,
-                "timeout": 60.0,
-            },
+        "astap": {
+            "deviceName": "test",
+            "deviceList": ["test", "test1"],
+            "searchRadius": 30.0,
+            "timeout": 60.0,
         },
     }
     function.populateTabs()
@@ -161,31 +152,25 @@ def test_populateTabs_2(function):
 
 def test_readTabs_1(function):
     function.data = {
-        "framework": "indi",
-        "frameworks": {
-            "indi": {
-                "deviceName": "telescope",
-                "deviceList": ["test", "test1"],
-                "updateRate": 30.0,
-                "hostaddress": "test",
-                "messages": True,
-                "port": 10,
-            },
+        "indi": {
+            "deviceName": "telescope",
+            "deviceList": ["test", "test1"],
+            "hostaddress": "test",
+            "messages": True,
+            "port": 10,
         },
     }
     function.readTabs()
 
 
 def test_readTabs_2(function):
+    function.framework = "astap"
     function.data = {
-        "framework": "astap",
-        "frameworks": {
-            "astap": {
-                "deviceName": "test",
-                "deviceList": ["test", "test1"],
-                "searchRadius": 30.0,
-                "timeout": 60.0,
-            },
+        "astap": {
+            "deviceName": "test",
+            "deviceList": ["test", "test1"],
+            "searchRadius": 30.0,
+            "timeout": 60.0,
         },
     }
     function.readTabs()
@@ -340,6 +325,12 @@ def test_selectIndexPath_2(function):
 
 
 def test_selectAscomDriver_1(function):
+    # Create a mock parent with data attribute
+    mockParent = mock.Mock()
+    mockParent.data = {}
+    function.parent = mockParent
+    function.deviceType = "telescope"
+
     with mock.patch.object(AscomClass, "selectAscomDriver", return_value="test"):
         function.selectAscomDriver()
         assert function.ui.ascomDevice.text() == "test"
@@ -363,3 +354,95 @@ def test_selectBoltwoodPath_2(function):
     ):
         function.selectBoltwoodPath()
         assert function.ui.boltwoodPath.text() == ""
+
+
+def test_populateTabsSkipsFrameworkKey(function) -> None:
+    """Test populateTabs skips 'framework' key in data (line 167)."""
+    function.data = {
+        "framework": "indi",  # This should be skipped
+        "indi": {
+            "deviceName": "test",
+            "deviceList": ["test", "test1"],
+            "hostaddress": "localhost",
+            "messages": False,
+        },
+    }
+    # Should not raise error when skipping the "framework" key
+    function.populateTabs()
+    # Verify indi framework was processed
+    assert function.data["indi"]["deviceName"] == "test"
+
+
+def test_storeConfigWithIndiCopyConfig(function) -> None:
+    """Test storeConfig adds 'indi' to copyConfig when checked (line 225)."""
+    function.framework = "indi"
+    function.data = {
+        "indi": {
+            "deviceName": "test_device",
+            "deviceList": ["test", "test1"],
+            "hostaddress": "localhost",
+            "messages": False,
+        },
+    }
+    # Mock the UI checkboxes
+    with (
+        mock.patch.object(function.ui.indiCopyConfig, "isChecked", return_value=True),
+        mock.patch.object(function.ui.alpacaCopyConfig, "isChecked", return_value=False),
+        mock.patch.object(function, "readFramework"),
+        mock.patch.object(function, "readTabs"),
+        mock.patch.object(function, "close"),
+    ):
+        function.storeConfig()
+        # Verify copyConfig contains "indi"
+        assert "indi" in function.returnValues["copyConfig"]
+        assert "alpaca" not in function.returnValues["copyConfig"]
+
+
+def test_storeConfigWithAlpacaCopyConfig(function) -> None:
+    """Test storeConfig adds 'alpaca' to copyConfig when checked (line 227)."""
+    function.framework = "alpaca"
+    function.data = {
+        "alpaca": {
+            "deviceName": "test_device",
+            "deviceList": ["test", "test1"],
+            "hostaddress": "localhost",
+            "port": 8000,
+        },
+    }
+    # Mock the UI checkboxes
+    with (
+        mock.patch.object(function.ui.indiCopyConfig, "isChecked", return_value=False),
+        mock.patch.object(function.ui.alpacaCopyConfig, "isChecked", return_value=True),
+        mock.patch.object(function, "readFramework"),
+        mock.patch.object(function, "readTabs"),
+        mock.patch.object(function, "close"),
+    ):
+        function.storeConfig()
+        # Verify copyConfig contains "alpaca"
+        assert "alpaca" in function.returnValues["copyConfig"]
+        assert "indi" not in function.returnValues["copyConfig"]
+
+
+def test_storeConfigWithBothCopyConfigs(function) -> None:
+    """Test storeConfig adds both 'indi' and 'alpaca' to copyConfig."""
+    function.framework = "indi"
+    function.data = {
+        "indi": {
+            "deviceName": "test_device",
+            "deviceList": ["test", "test1"],
+            "hostaddress": "localhost",
+            "messages": False,
+        },
+    }
+    # Mock the UI checkboxes
+    with (
+        mock.patch.object(function.ui.indiCopyConfig, "isChecked", return_value=True),
+        mock.patch.object(function.ui.alpacaCopyConfig, "isChecked", return_value=True),
+        mock.patch.object(function, "readFramework"),
+        mock.patch.object(function, "readTabs"),
+        mock.patch.object(function, "close"),
+    ):
+        function.storeConfig()
+        # Verify copyConfig contains both
+        assert "indi" in function.returnValues["copyConfig"]
+        assert "alpaca" in function.returnValues["copyConfig"]

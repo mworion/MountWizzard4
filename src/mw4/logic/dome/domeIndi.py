@@ -52,20 +52,20 @@ class DomeIndi(IndiClass):
 
     def slewToAltAz(self, altitude: float, azimuth: float) -> None:
         self.txQ.put(
-            (self.deviceName, "ABS_DOME_POSITION", {"DOME_ABSOLUTE_POSITION": azimuth})
+            (self.config.deviceName, "ABS_DOME_POSITION", {"DOME_ABSOLUTE_POSITION": azimuth})
         )
 
     def openShutter(self) -> None:
-        self.txQ.put((self.deviceName, "DOME_SHUTTER", {"SHUTTER_OPEN": "On"}))
+        self.txQ.put((self.config.deviceName, "DOME_SHUTTER", {"SHUTTER_OPEN": "On"}))
 
     def closeShutter(self) -> None:
-        self.txQ.put((self.deviceName, "DOME_SHUTTER", {"SHUTTER_CLOSE": "On"}))
+        self.txQ.put((self.config.deviceName, "DOME_SHUTTER", {"SHUTTER_CLOSE": "On"}))
 
     def slewCW(self) -> None:
-        self.txQ.put((self.deviceName, "DOME_MOTION", {"DOME_CW": "On"}))
+        self.txQ.put((self.config.deviceName, "DOME_MOTION", {"DOME_CW": "On"}))
 
     def slewCCW(self) -> None:
-        self.txQ.put((self.deviceName, "DOME_MOTION", {"DOME_CCW": "On"}))
+        self.txQ.put((self.config.deviceName, "DOME_MOTION", {"DOME_CCW": "On"}))
 
     def abortSlew(self) -> None:
-        self.txQ.put((self.deviceName, "DOME_ABORT_MOTION", {"ABORT": "On"}))
+        self.txQ.put((self.config.deviceName, "DOME_ABORT_MOTION", {"ABORT": "On"}))

@@ -38,14 +38,14 @@ def test_initConfig_1(function):
 
 
 def test_storeConfig_1(function):
-    if "satelliteW" in function.app.config:
-        del function.app.config["satelliteW"]
+    if "WindowSatelliteMap" in function.app.config:
+        del function.app.config["WindowSatelliteMap"]
 
     function.storeConfig()
 
 
 def test_storeConfig_2(function):
-    function.app.config["satelliteW"] = {}
+    function.app.config["WindowSatelliteMap"] = {}
     function.storeConfig()
 
 

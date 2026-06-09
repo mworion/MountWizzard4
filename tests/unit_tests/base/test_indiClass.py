@@ -19,16 +19,22 @@ import threading
 import time
 from mw4.base.indiClass import IndiClass
 from mw4.base.signalsDevices import Signals
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from pathlib import Path
+from PySide6.QtCore import QThreadPool
 from unittest import mock
 
 
 class Parent:
+    """Minimal parent class for IndiClass testing."""
+
     def __init__(self) -> None:
-        self.app = App()
         self.data: dict = {}
         self.signals = Signals()
-        self.loadConfig = True
+        self.app = mock.MagicMock()
+        self.app.msg = mock.MagicMock()
+        self.app.threadPool = QThreadPool()
+        self.app.mwGlob = {"tempDir": Path("/tmp")}
+        self.DEVICE_TYPE = "TEST"
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -37,52 +43,41 @@ def function():
     yield func
 
 
-# ─── Properties ──────────────────────────────────────────────────────────────
+# ─── Config access ───────────────────────────────────────────────────────────
 
 
-def test_properties_hostaddress(function):
-    function.hostaddress = "192.168.1.1"
-    assert function.hostaddress == "192.168.1.1"
-    function.hostaddress = None
-    assert function.hostaddress is None
+def test_config_deviceName(function):
+    function.config.deviceName = "TestDevice"
+    assert function.config.deviceName == "TestDevice"
 
 
-def test_properties_port_int(function):
-    function.port = 7624
-    assert function.port == 7624
+def test_config_hostAddress(function):
+    function.config.hostAddress = "192.168.1.1"
+    assert function.config.hostAddress == "192.168.1.1"
 
 
-def test_properties_port_str(function):
-    function.port = "8080"
-    assert function.port == 8080
+def test_config_port(function):
+    function.config.port = 8080
+    assert function.config.port == 8080
 
 
-def test_properties_host_getter(function):
-    function._host = ("localhost", 7624)
-    assert function.host == ("localhost", 7624)
+def test_config_loadConfig(function):
+    function.config.loadConfig = True
+    assert function.config.loadConfig is True
 
 
-def test_properties_host_setter(function):
-    function.host = ("localhost", 7624)
-    assert function._host == ("localhost", 7624)
-
-
-def test_defaultConfig(function):
-    assert function.defaultConfig["deviceName"] == ""
-    assert function.defaultConfig["deviceList"] == []
-    assert function.defaultConfig["hostaddress"] == "localhost"
-    assert function.defaultConfig["port"] == 7624
-    assert function.defaultConfig["loadConfig"] is False
-    assert function.defaultConfig["messages"] is False
+def test_config_showMessage(function):
+    function.config.showMessage = True
+    assert function.config.showMessage is True
 
 
 # ─── updateMessage ───────────────────────────────────────────────────────────
 
 
 def test_updateMessage_messagesDisabled(function):
-    """messages == False → early return, msg.emit never called."""
-    function.messages = False
-    function.deviceName = "MyDevice"
+    """showMessage == False → early return, msg.emit never called."""
+    function.config.showMessage = False
+    function.config.deviceName = "MyDevice"
     mock_msg = mock.MagicMock()
     original_msg, function.msg = function.msg, mock_msg
     try:
@@ -93,9 +88,9 @@ def test_updateMessage_messagesDisabled(function):
 
 
 def test_updateMessage_noMessageInSnapshot(function):
-    """messages == True but snapshot contains no messages → early return."""
-    function.messages = True
-    function.deviceName = "MyDevice"
+    """showMessage == True but snapshot contains no messages → early return."""
+    function.config.showMessage = True
+    function.config.deviceName = "MyDevice"
 
     snap_device = mock.MagicMock()
     snap_device.dictdump.return_value = {}  # no "messages" key
@@ -112,9 +107,9 @@ def test_updateMessage_noMessageInSnapshot(function):
 
 
 def test_updateMessage_emitsMessage(function):
-    """messages == True and snapshot contains a message → msg.emit called."""
-    function.messages = True
-    function.deviceName = "MyDevice"
+    """showMessage == True and snapshot contains a message → msg.emit called."""
+    function.config.showMessage = True
+    function.config.deviceName = "MyDevice"
 
     snap_device = mock.MagicMock()
     snap_device.dictdump.return_value = {"messages": [("2024-01-01", "Hello INDI")]}
@@ -148,9 +143,13 @@ def _make_item(deviceName: str, connect_value: str) -> mock.MagicMock:
 
 def test_setStatusDeviceConnected_becomeConnected(function):
     function.deviceConnected = False
-    function.deviceName = "telescope"
+    function.config.deviceName = "telescope"
     received = []
-    function.signals.deviceConnected.connect(lambda name: received.append(name))
+
+    def handler(name: str) -> None:
+        received.append(name)
+
+    function.signals.deviceConnected.connect(handler)
     function.setStatusDeviceConnected(_make_item("telescope", "On"))
     assert received == ["telescope"]
     assert function.deviceConnected is True
@@ -158,9 +157,13 @@ def test_setStatusDeviceConnected_becomeConnected(function):
 
 def test_setStatusDeviceConnected_becomeDisconnected(function):
     function.deviceConnected = True
-    function.deviceName = "telescope"
+    function.config.deviceName = "telescope"
     received = []
-    function.signals.deviceDisconnected.connect(lambda name: received.append(name))
+
+    def handler(name: str) -> None:
+        received.append(name)
+
+    function.signals.deviceDisconnected.connect(handler)
     function.setStatusDeviceConnected(_make_item("telescope", "Off"))
     assert received == ["telescope"]
     assert function.deviceConnected is False
@@ -168,7 +171,7 @@ def test_setStatusDeviceConnected_becomeDisconnected(function):
 
 def test_setStatusDeviceConnected_stayConnected(function):
     function.deviceConnected = True
-    function.deviceName = "telescope"
+    function.config.deviceName = "telescope"
     received = []
     function.signals.deviceConnected.connect(lambda name: received.append(name))
     function.setStatusDeviceConnected(_make_item("telescope", "On"))
@@ -178,7 +181,7 @@ def test_setStatusDeviceConnected_stayConnected(function):
 
 def test_setStatusDeviceConnected_stayDisconnected(function):
     function.deviceConnected = False
-    function.deviceName = "telescope"
+    function.config.deviceName = "telescope"
     received = []
     function.signals.deviceDisconnected.connect(lambda name: received.append(name))
     function.setStatusDeviceConnected(_make_item("telescope", "Off"))
@@ -300,7 +303,7 @@ def test_processRxQueue_emptyQueueThenStop(function):
 
 def test_processRxQueue_deviceNotInSnapshot(function):
     function.commandRunning = True
-    function.deviceName = "MyDevice"
+    function.config.deviceName = "MyDevice"
 
     item = mock.MagicMock()
     item.snapshot = {}  # deviceName not present → .get() returns None → continue
@@ -318,7 +321,7 @@ def test_processRxQueue_deviceNotInSnapshot(function):
 
 def test_processRxQueue_connectionOn(function):
     function.commandRunning = True
-    function.deviceName = "MyDevice"
+    function.config.deviceName = "MyDevice"
     function.deviceConnected = False
 
     conn_data = mock.MagicMock()
@@ -343,7 +346,7 @@ def test_processRxQueue_connectionOn(function):
 
 def test_processRxQueue_connectionOff(function):
     function.commandRunning = True
-    function.deviceName = "MyDevice"
+    function.config.deviceName = "MyDevice"
     function.deviceConnected = True
 
     conn_data = mock.MagicMock()
@@ -369,7 +372,7 @@ def test_processRxQueue_connectionOff(function):
 def test_processRxQueue_devicenameMismatch(function):
     """item.devicename != deviceName → continue before vector processing."""
     function.commandRunning = True
-    function.deviceName = "MyDevice"
+    function.config.deviceName = "MyDevice"
 
     snap_val = _make_snap_val(connection=None, vectors=None)
     item = mock.MagicMock()
@@ -389,7 +392,7 @@ def test_processRxQueue_devicenameMismatch(function):
 
 def test_processRxQueue_withVectors(function):
     function.commandRunning = True
-    function.deviceName = "MyDevice"
+    function.config.deviceName = "MyDevice"
     function.data = {}
 
     vectors = {
@@ -419,7 +422,7 @@ def test_processRxQueue_withVectors(function):
 def test_processRxQueue_noVectors(function):
     """vectors is falsy → writeVectorsToData is NOT called."""
     function.commandRunning = True
-    function.deviceName = "MyDevice"
+    function.config.deviceName = "MyDevice"
     function.data = {}
 
     snap_val = _make_snap_val(connection=None, vectors=None)
@@ -443,8 +446,8 @@ def test_processRxQueue_noVectors(function):
 def test_processRxQueue_messageEvent(function):
     """eventtype == 'Message' → updateMessage is called."""
     function.commandRunning = True
-    function.deviceName = "MyDevice"
-    function.messages = True
+    function.config.deviceName = "MyDevice"
+    function.config.showMessage = True
 
     snap_device = mock.MagicMock()
     snap_device.get.return_value = None  # no CONNECTION key
@@ -491,13 +494,13 @@ def test_cleanupStop(function):
 
 def test_runQueueClient_loggingTraceOff(function):
     """runQueueClient creates QueClient, calls debug_verbosity(0) and runs asyncrun."""
-    function.hostaddress = "localhost"
-    function.port = 7624
+    function.config.hostAddress = "localhost"
+    function.config.port = 7624
     function.loggingTrace = False
     mock_client = mock.MagicMock()
     with (
         mock.patch("mw4.base.indiClass.QueClient", return_value=mock_client) as mock_qc,
-        mock.patch("mw4.base.indiClass.asyncio") as mock_asyncio,
+        mock.patch("mw4.base.indiClass.asyncio.run") as mock_asyncio_run,
     ):
         function.runQueueClient()
     mock_qc.assert_called_once_with(
@@ -508,7 +511,7 @@ def test_runQueueClient_loggingTraceOff(function):
         blobfolder=mock.ANY,
     )
     mock_client.debug_verbosity.assert_called_once_with(0)
-    mock_asyncio.run.assert_called_once_with(mock_client.asyncrun())
+    mock_asyncio_run.assert_called_once_with(mock_client.asyncrun())
     function.queueClient = None
 
 
@@ -518,7 +521,7 @@ def test_runQueueClient_loggingTraceOn(function):
     mock_client = mock.MagicMock()
     with (
         mock.patch("mw4.base.indiClass.QueClient", return_value=mock_client),
-        mock.patch("mw4.base.indiClass.asyncio"),
+        mock.patch("mw4.base.indiClass.asyncio.run"),
     ):
         function.runQueueClient()
     mock_client.debug_verbosity.assert_called_once_with(3)
@@ -552,22 +555,37 @@ def test_startCommunication_success(function):
 
 
 def test_stopCommunication(function):
-    function.deviceName = "telescope"
+    function.config.deviceName = "telescope"
     function.deviceConnected = True
     function.commandRunning = True
+    received = []
+
+    def handler(name: str) -> None:
+        received.append(name)
+
+    function.signals.deviceDisconnected.connect(handler)
     function.stopCommunication()
-    assert function.deviceName == ""
+    # config.deviceName should remain unchanged
+    assert function.config.deviceName == "telescope"
     assert function.deviceConnected is False
     assert function.commandRunning is False
-    assert not function.txQ.empty()
-    assert function.txQ.get() is None
+    assert received == ["telescope"]
+    # None must be queued to signal stop
+    assert function.txQ.get_nowait() is None
 
 
 # ─── loadIndiConfig ──────────────────────────────────────────────────────────
 
 
 def test_loadIndiConfig(function):
-    function.deviceName = "TestDevice"
+    # Clear any leftover items in the queue from previous tests
+    while not function.txQ.empty():
+        try:
+            function.txQ.get_nowait()
+        except queue.Empty:
+            break
+
+    function.config.deviceName = "TestDevice"
     function.loadIndiConfig("TestDevice")
     item = function.txQ.get_nowait()
     assert item == ("TestDevice", "CONFIG_PROCESS", {"CONFIG_PROCESS": True})
@@ -575,7 +593,7 @@ def test_loadIndiConfig(function):
 
 def test_discoverDevices_mutexLocked(function):
     function.discoverMutex.lock()
-    result = function.discoverDevices("dome")
+    result = function.discoverDevices("dome", "localhost", 7624)
     assert result == []
     function.discoverMutex.unlock()
 
@@ -592,7 +610,7 @@ def test_discoverDevices_emptyQueue(function, monkeypatch):
         mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
         mock_rxQ.get.side_effect = queue.Empty()
 
-        result = function.discoverDevices("dome")
+        result = function.discoverDevices("dome", "localhost", 7624)
 
     assert result == []
     mock_txQ.put.assert_called_once_with(None)
@@ -610,7 +628,7 @@ def test_discoverDevices_noneItem(function, monkeypatch):
         mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
         mock_rxQ.get.side_effect = [None, queue.Empty()]
 
-        result = function.discoverDevices("dome")
+        result = function.discoverDevices("dome", "localhost", 7624)
 
     assert result == []
     mock_txQ.put.assert_called_once_with(None)
@@ -631,7 +649,7 @@ def test_discoverDevices_withoutDeviceName(function, monkeypatch):
         mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
         mock_rxQ.get.side_effect = [item, queue.Empty()]
 
-        result = function.discoverDevices("dome")
+        result = function.discoverDevices("dome", "localhost", 7624)
 
     assert result == []
     mock_rxQ.task_done.assert_called_once()
@@ -656,6 +674,6 @@ def test_discoverDevices_driverMatchingType(function, monkeypatch):
         mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
         mock_rxQ.get.side_effect = [item, queue.Empty()]
 
-        result = function.discoverDevices("dome")
+        result = function.discoverDevices("dome", "localhost", 7624)
 
     assert result == ["TestDome"]

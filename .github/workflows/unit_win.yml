@@ -96,25 +96,33 @@ jobs:
     #
     needs: build_package
     runs-on: windows-latest
-    
+
     steps:
       - uses: actions/checkout@v6
+
       - name: install package
         uses: ./.github/actions/setup_test_cov
-  
+
       - name: running_unit_tests
         run: |
           uv run pytest tests/unit_tests/base ${{env.cov}}
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           uv run pytest tests/unit_tests/logic ${{env.cov}}
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           uv run pytest tests/unit_tests/mountcontrol ${{env.cov}}
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: rename_coveragefile
-        run: mv .coverage c2.dat
+        run: |
+          mv .coverage .coverage.combined
+          uv run coverage combine
+          mv .coverage c2.dat
 
       - uses: actions/upload-artifact@v6
         with:
           name: c2
           path: c2.dat
+          overwrite: true
 
   run_tests_windows_3:
     #
@@ -153,16 +161,23 @@ jobs:
       - name: running_unit_tests
         run: |
           uv run pytest tests/unit_tests/gui/utilities ${{env.cov}}
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           uv run pytest tests/unit_tests/gui/styles ${{env.cov}}
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           uv run pytest tests/unit_tests/gui/mainWaddon ${{env.cov}}
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: rename_coveragefile
-        run: mv .coverage c4.dat
+        run: |
+          mv .coverage .coverage.combined
+          uv run coverage combine
+          mv .coverage c4.dat
 
       - uses: actions/upload-artifact@v6
         with:
           name: c4
           path: c4.dat
+          overwrite: true
 
           
   coverage:

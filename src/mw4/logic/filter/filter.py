@@ -20,7 +20,7 @@ from mw4.logic.filter.filterAlpaca import FilterAlpaca
 from mw4.logic.filter.filterIndi import FilterIndi
 from typing import Any
 
-if platform.system() == "Windows":
+if platform.system() == "Windows":  # pragma: no cover
     from mw4.logic.filter.filterAscom import FilterAscom
 
 
@@ -33,20 +33,13 @@ class Filter:
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.data: dict[str, Any] = {}
-        self.loadConfig: bool = True
-        self.deviceType: str = ""
-        self.defaultConfig: dict[str, Any] = {"framework": "", "frameworks": {}}
         self.framework: str = ""
         self.run: dict[str, Any] = {
             "indi": FilterIndi(self),
             "alpaca": FilterAlpaca(self),
         }
-
         if platform.system() == "Windows":
             self.run["ascom"] = FilterAscom(self)
-
-        for fw in self.run:
-            self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
 
     def startCommunication(self) -> None:
         self.run[self.framework].startCommunication()

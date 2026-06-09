@@ -420,3 +420,18 @@ def test_set_3(function):
 
     with mock.patch.object(function, "getRelay", return_value=ret):
         function.set(7, False)
+
+
+def test_startCommunicationWithValidHostAddress(function) -> None:
+    function.config.hostAddress = "192.168.1.100"
+    with mock.patch.object(function.timerTask, "start") as mock_start:
+        function.startCommunication()
+        mock_start.assert_called_once_with(function.UPDATE_RATE)
+        assert function.deviceConnected is False
+
+
+def test_getRelayWithNoneHostAddress(function) -> None:
+    function.config.hostAddress = None
+    result = function.getRelay("/status.xml", False)
+    assert result == ""
+

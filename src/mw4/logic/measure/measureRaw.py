@@ -15,7 +15,13 @@
 ###########################################################
 import logging
 import PySide6
+from dataclasses import dataclass, field
 from typing import Any
+
+
+@dataclass
+class DeviceConfigMeasureRaw:
+    deviceName: str = field(default="")
 
 
 class MeasureDataRaw(PySide6.QtCore.QObject):
@@ -26,13 +32,9 @@ class MeasureDataRaw(PySide6.QtCore.QObject):
 
         self.app = app
         self.parent = parent
-        self.data = data
-        self.deviceName: str = "RAW"
-        self.defaultConfig: dict[str, Any] = {
-            "raw": {
-                "deviceName": "display only",
-            }
-        }
+        self.data = parent.data
+        self.config = DeviceConfigMeasureRaw()
+        self.config.deviceName = "RAW display"
         self.timerTask = PySide6.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.measureTask)

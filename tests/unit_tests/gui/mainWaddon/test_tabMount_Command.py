@@ -14,7 +14,6 @@
 #
 ###########################################################
 
-import mw4.mountcontrol
 import pytest
 import unittest.mock as mock
 import webbrowser
@@ -84,18 +83,20 @@ def test_openMountDocumentation_3(function):
 
 
 def test_commandRaw_1(function):
-    with mock.patch.object(
-        mw4.mountcontrol.connection.Connection,
-        "communicateRaw",
-        return_value=(True, False, ""),
+    with (
+        mock.patch("mw4.gui.mainWaddon.tabMount_Command.Connection") as mock_connection,
     ):
+        mock_instance = mock.MagicMock()
+        mock_instance.communicateRaw.return_value = (True, False, "")
+        mock_connection.return_value = mock_instance
         function.commandRaw()
 
 
 def test_commandRaw_2(function):
-    with mock.patch.object(
-        mw4.mountcontrol.connection.Connection,
-        "communicateRaw",
-        return_value=(True, True, ""),
+    with (
+        mock.patch("mw4.gui.mainWaddon.tabMount_Command.Connection") as mock_connection,
     ):
+        mock_instance = mock.MagicMock()
+        mock_instance.communicateRaw.return_value = (True, True, "")
+        mock_connection.return_value = mock_instance
         function.commandRaw()

@@ -74,12 +74,12 @@ class SimulatorHorizon:
         return e3
 
     def create(self) -> None:
-        if not self.app.data.horizonP:
+        if not self.app.buildPoint.horizonP:
             return
 
         horizonAz = np.linspace(0, 360 - self.WALL_SPACE, int(360 / self.WALL_SPACE))
-        alt = [x[0] for x in self.app.data.horizonP]
-        az = [x[1] for x in self.app.data.horizonP]
+        alt = [x[0] for x in self.app.buildPoint.horizonP]
+        az = [x[1] for x in self.app.buildPoint.horizonP]
         horizonAlt = np.interp(horizonAz, az, alt)
 
         self.clear()

@@ -98,8 +98,8 @@ class SettParkPos:
             self.posButtons[index].setEnabled(text.strip() != "")
 
     def parkAtPos(self) -> None:
-        self.app.mount.signals.slewed.disconnect(self.parkAtPos)
-        if not self.app.mount.obsSite.parkOnActualPosition():
+        self.app.dReg["mount"].signals.slewed.disconnect(self.parkAtPos)
+        if not self.app.dReg["mount"].obsSite.parkOnActualPosition():
             self.msg.emit(2, "Mount", "Command", "Cannot park at current position")
 
     def slewToParkPos(self, index: int) -> None:
@@ -107,13 +107,13 @@ class SettParkPos:
         azValue = self.posAz[index].value()
         posTextValue = self.posTexts[index].text()
 
-        if not self.app.mount.obsSite.setTargetAltAz(
+        if not self.app.dReg["mount"].obsSite.setTargetAltAz(
             alt=Angle(degrees=altValue), az=Angle(degrees=azValue)
         ):
             self.msg.emit(2, "Mount", "Command error", f"Cannot slew to [{posTextValue}]")
             return
 
-        if not self.app.mount.obsSite.startSlewing(slewType="notrack"):
+        if not self.app.dReg["mount"].obsSite.startSlewing(slewType="notrack"):
             self.msg.emit(2, "Mount", "Command error", f"Cannot slew to [{posTextValue}]")
             return
 
@@ -121,9 +121,9 @@ class SettParkPos:
         if not self.ui.parkMountAfterSlew.isChecked():
             return
 
-        self.app.mount.signals.slewed.connect(self.parkAtPos)
+        self.app.dReg["mount"].signals.slewed.connect(self.parkAtPos)
 
     def saveActualPosition(self, index: int) -> None:
-        obs = self.app.mount.obsSite
+        obs = self.app.dReg["mount"].obsSite
         self.posAlt[index].setValue(obs.Alt.degrees)
         self.posAz[index].setValue(obs.Az.degrees)

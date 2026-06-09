@@ -17,9 +17,18 @@ import logging
 import re
 import requests
 import time
+from dataclasses import dataclass, field
 from mw4.base.signalsDevices import Signals
 from PySide6.QtCore import QMutex, QTimer, Signal
 from typing import Any
+
+
+@dataclass
+class DeviceConfigKMRelay:
+    deviceName: str = field(default="KMRelay")
+    hostAddress: str = field(default="")
+    user: str = field(default="")
+    password: str = field(default="")
 
 
 class RelaySignals(Signals):
@@ -27,6 +36,7 @@ class RelaySignals(Signals):
 
 
 class KMRelay:
+    DEVICE_TYPE = "switch"
     log = logging.getLogger("MW4")
 
     UPDATE_RATE = 1000
@@ -39,24 +49,9 @@ class KMRelay:
         self.signals = RelaySignals()
         self.framework: str = ""
         self.data: dict[str, Any] = {}
-        self.defaultConfig: dict[str, Any] = {
-            "framework": "",
-            "frameworks": {
-                "relay": {
-                    "deviceName": "KMRelay",
-                    "hostaddress": "",
-                    "user": "",
-                    "password": "",  # nosec B105 — empty-string default, not a hardcoded credential
-                }
-            },
-        }
+        self.config = DeviceConfigKMRelay()
         self.run: dict[str, Any] = {"relay": self}
-
         self.mutexPoll = QMutex()
-        self.deviceName: str = ""
-        self.hostaddress: str = ""
-        self.user: str = ""
-        self.password: str = ""
         self.status: list[int] = [0] * 8
         self.deviceConnected: bool = False
         self.timerTask = QTimer()
@@ -64,7 +59,7 @@ class KMRelay:
         self.timerTask.timeout.connect(self.cyclePolling)
 
     def startCommunication(self) -> None:
-        if not self.hostaddress:
+        if not self.config.hostAddress:
             return
 
         self.deviceConnected = False
@@ -87,13 +82,13 @@ class KMRelay:
         self.log.debug(f"Result: {url}, {reason}, {status}, {elapsed}, {text}")
 
     def getRelay(self, url: str, debug: bool = False) -> Any:
-        if self.hostaddress is None:
+        if self.config.hostAddress is None:
             return ""
         if not self.mutexPoll.tryLock():
             return ""
 
-        auth = requests.auth.HTTPBasicAuth(self.user, self.password)
-        url = f"http://{self.hostaddress}:80{url}"
+        auth = requests.auth.HTTPBasicAuth(self.config.user, self.config.password)
+        url = f"http://{self.config.hostAddress}:80{url}"
 
         try:
             result = requests.get(url, auth=auth, timeout=self.TIMEOUT)
@@ -108,21 +103,18 @@ class KMRelay:
         return result
 
     def checkConnected(self, value: Any) -> bool:
-        """
-        :return: success
-        """
         statusNotConnected = value is None or value.reason != "OK"
         statusConnected = not statusNotConnected
         if self.deviceConnected:
             if statusNotConnected:
-                self.signals.deviceDisconnected.emit("KMTronic")
+                self.signals.deviceDisconnected.emit(self.config.deviceName)
                 self.deviceConnected = False
                 return False
             else:
                 return True
         else:
             if statusConnected:
-                self.signals.deviceConnected.emit("KMTronic")
+                self.signals.deviceConnected.emit(self.config.deviceName)
                 self.deviceConnected = True
                 return True
             else:
@@ -143,7 +135,7 @@ class KMRelay:
 
         self.signals.statusReady.emit()
 
-    def getByte(self, relayNumber: int, state: bool) -> bool:
+    def getByte(self, relayNumber: int, state: bool) -> int:
         byteStat = 0b0
         for i, status in enumerate(self.status):
             if status:

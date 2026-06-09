@@ -18,8 +18,6 @@ from PySide6.QtCore import QObject, Signal
 
 
 class Signals(QObject):
-    serverConnected = Signal()
-    serverDisconnected = Signal(dict)
     deviceConnected = Signal(str)
     deviceDisconnected = Signal(str)
     exposed = Signal(Path)

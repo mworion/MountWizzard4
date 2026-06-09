@@ -40,7 +40,7 @@ class HorizonDraw(MWidget):
         horizonFile = self.app.mwGlob["configDir"] / (
             self.ui.horizonMaskFileName.text() + ".hpts"
         )
-        self.app.data.loadHorizonP(horizonFile)
+        self.app.buildPoint.loadHorizonP(horizonFile)
         fileName = config.get("terrainFileName", "")
         self.ui.terrainFileName.setText(fileName)
         terrainFile = self.app.mwGlob["configDir"] / self.ui.terrainFileName.text()
@@ -58,16 +58,16 @@ class HorizonDraw(MWidget):
         self.ui.terrainAlpha.valueChanged.connect(self.drawTab)
         self.ui.normalModeHor.clicked.connect(self.setOperationMode)
         self.ui.editModeHor.clicked.connect(self.setOperationMode)
-        self.app.mount.signals.pointDone.connect(self.drawPointer)
-        self.app.mount.signals.settingDone.connect(self.drawTab)
+        self.app.dReg["mount"].signals.pointDone.connect(self.drawPointer)
+        self.app.dReg["mount"].signals.settingDone.connect(self.drawTab)
         self.ui.showMountLimits.clicked.connect(self.drawTab)
         self.ui.horizon.p[0].scene().sigMouseMoved.connect(self.mouseMovedHorizon)
-        self.app.mount.signals.mountIsUp.connect(self.setPointerVisibility)
+        self.app.dReg["mount"].signals.mountIsUp.connect(self.setPointerVisibility)
 
     def closeTab(self):
-        self.app.mount.signals.pointDone.disconnect(self.drawPointer)
-        self.app.mount.signals.settingDone.disconnect(self.drawTab)
-        self.app.mount.signals.mountIsUp.disconnect(self.setPointerVisibility)
+        self.app.dReg["mount"].signals.pointDone.disconnect(self.drawPointer)
+        self.app.dReg["mount"].signals.settingDone.disconnect(self.drawTab)
+        self.app.dReg["mount"].signals.mountIsUp.disconnect(self.setPointerVisibility)
 
     def setPointerVisibility(self, status) -> None:
         self.pointerHor.setVisible(status)
@@ -120,7 +120,7 @@ class HorizonDraw(MWidget):
         if not loadFilePath.is_file():
             return
 
-        self.app.data.loadHorizonP(loadFilePath)
+        self.app.buildPoint.loadHorizonP(loadFilePath)
         self.ui.horizonMaskFileName.setText(loadFilePath.stem)
         self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{loadFilePath.stem}] loaded")
         self.app.redrawHorizon.emit()
@@ -131,7 +131,7 @@ class HorizonDraw(MWidget):
             self.msg.emit(2, "Hemisphere", "Horizon", "Mask file name not given")
             return
 
-        suc = self.app.data.saveHorizonP(fileName)
+        suc = self.app.buildPoint.saveHorizonP(fileName)
         if suc:
             self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{fileName}] saved")
         else:
@@ -145,7 +145,7 @@ class HorizonDraw(MWidget):
         )
         if not saveFilePath.stem:
             return
-        if self.app.data.saveHorizonP(saveFilePath.stem):
+        if self.app.buildPoint.saveHorizonP(saveFilePath.stem):
             self.ui.horizonMaskFileName.setText(saveFilePath.stem)
             self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{saveFilePath.stem}] saved")
         else:
@@ -163,18 +163,18 @@ class HorizonDraw(MWidget):
         hp.sort(key=lambda s: x[1]) if len(x) > 1 else x
         y, x = zip(*hp)
         self.horizonPlot.setData(x=x, y=y)
-        self.app.data.horizonP = hp
+        self.app.buildPoint.horizonP = hp
         self.drawTab()
 
     def clearHorizonMask(self) -> None:
-        self.app.data.horizonP = []
+        self.app.buildPoint.horizonP = []
         self.ui.horizonMaskFileName.setText("")
         self.app.redrawHorizon.emit()
 
     def addActualPosition(self) -> None:
         vb = self.ui.horizon.p[0].getViewBox()
-        az = self.app.mount.obsSite.Az
-        alt = self.app.mount.obsSite.Alt
+        az = self.app.dReg["mount"].obsSite.Az
+        alt = self.app.dReg["mount"].obsSite.Alt
         az = az.degrees
         alt = alt.degrees
         index = vb.getNearestPointIndex(QPointF(az, alt))
@@ -186,7 +186,7 @@ class HorizonDraw(MWidget):
         self.parent.preparePlotItem(plotItem)
 
     def drawView(self) -> None:
-        hp = self.app.data.horizonP
+        hp = self.app.buildPoint.horizonP
         if len(hp) == 0:
             return
         alt, az = zip(*hp)
@@ -205,7 +205,7 @@ class HorizonDraw(MWidget):
         plotItem.addItem(self.pointerHor)
 
     def drawPointer(self) -> None:
-        obsSite = self.app.mount.obsSite
+        obsSite = self.app.dReg["mount"].obsSite
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
         self.pointerHor.setData(x=[az], y=[alt])

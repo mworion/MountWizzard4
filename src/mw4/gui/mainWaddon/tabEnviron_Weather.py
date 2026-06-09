@@ -14,9 +14,20 @@
 #
 ###########################################################
 import numpy as np
+from dataclasses import dataclass
 from functools import partial
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import QWidget
 from typing import Any
+
+
+@dataclass
+class RefractionEntry:
+    group: QWidget
+    data: dict
+    signals: Signal
+    uiPost: str
 
 
 class EnvironWeather:
@@ -33,43 +44,43 @@ class EnvironWeather:
         self.refractionEnabled: bool = True
 
         self.refractionSources = {
-            "sensor1Weather": {
-                "group": self.ui.sensor1Group,
-                "data": self.app.sensor1Weather.data,
-                "signals": self.app.sensor1Weather.signals,
-                "uiPost": "1",
-            },
-            "sensor2Weather": {
-                "group": self.ui.sensor2Group,
-                "data": self.app.sensor2Weather.data,
-                "signals": self.app.sensor2Weather.signals,
-                "uiPost": "2",
-            },
-            "sensor3Weather": {
-                "group": self.ui.sensor3Group,
-                "data": self.app.sensor3Weather.data,
-                "signals": self.app.sensor3Weather.signals,
-                "uiPost": "3",
-            },
-            "sensor4Weather": {
-                "group": self.ui.sensor4Group,
-                "data": self.app.sensor4Weather.data,
-                "signals": self.app.sensor4Weather.signals,
-                "uiPost": "4",
-            },
-            "directWeather": {
-                "group": self.ui.directGroup,
-                "data": self.app.directWeather.data,
-                "signals": self.app.directWeather.signals,
-                "uiPost": "Direct",
-            },
+            "sensor1Weather": RefractionEntry(
+                group=self.ui.sensor1Group,
+                data=self.app.dReg["sensor1Weather"].data,
+                signals=self.app.dReg["sensor1Weather"].signals,
+                uiPost="1",
+            ),
+            "sensor2Weather": RefractionEntry(
+                group=self.ui.sensor2Group,
+                data=self.app.dReg["sensor2Weather"].data,
+                signals=self.app.dReg["sensor2Weather"].signals,
+                uiPost="2",
+            ),
+            "sensor3Weather": RefractionEntry(
+                group=self.ui.sensor3Group,
+                data=self.app.dReg["sensor3Weather"].data,
+                signals=self.app.dReg["sensor3Weather"].signals,
+                uiPost="3",
+            ),
+            "sensor4Weather": RefractionEntry(
+                group=self.ui.sensor4Group,
+                data=self.app.dReg["sensor4Weather"].data,
+                signals=self.app.dReg["sensor4Weather"].signals,
+                uiPost="4",
+            ),
+            "directWeather": RefractionEntry(
+                group=self.ui.directGroup,
+                data=self.app.dReg["directWeather"].data,
+                signals=self.app.dReg["directWeather"].signals,
+                uiPost="Direct",
+            ),
         }
 
         for source in self.refractionSources:
-            self.refractionSources[source]["signals"].deviceDisconnected.connect(
-                partial(self.clearSourceGui, source)
+            self.refractionSources[source].signals.deviceDisconnected.connect(
+                self.clearSourceGui
             )
-            self.refractionSources[source]["group"].clicked.connect(
+            self.refractionSources[source].group.clicked.connect(
                 partial(self.selectRefractionSource, source)
             )
 
@@ -105,8 +116,8 @@ class EnvironWeather:
         }
 
         # weather functions
-        self.app.mount.signals.settingDone.connect(self.updateSourceGui)
-        self.app.mount.signals.settingDone.connect(self.updateRefractionUpdateType)
+        self.app.dReg["mount"].signals.settingDone.connect(self.updateSourceGui)
+        self.app.dReg["mount"].signals.settingDone.connect(self.updateRefractionUpdateType)
         self.ui.refracManual.clicked.connect(self.setRefractionUpdateType)
         self.ui.refracCont.clicked.connect(self.setRefractionUpdateType)
         self.ui.refracNoTrack.clicked.connect(self.setRefractionUpdateType)
@@ -134,8 +145,8 @@ class EnvironWeather:
 
     def smartEnvironGui(self) -> None:
         for source in self.refractionSources:
-            stat = self.app.deviceStat.get(source, None)
-            group = self.refractionSources[source]["group"]
+            stat = self.app.dReg[source].stat
+            group = self.refractionSources[source].group
             if stat is None:
                 group.setFixedWidth(0)
                 group.setEnabled(False)
@@ -150,7 +161,7 @@ class EnvironWeather:
         if self.refractionSource != "directWeather":
             return
 
-        setting = self.app.mount.setting
+        setting = self.app.dReg["mount"].setting
         if setting.weatherStatus == 0:
             self.ui.refracManual.setChecked(True)
         elif setting.weatherStatus == 1:
@@ -162,33 +173,31 @@ class EnvironWeather:
         if not self.ui.showTabEnviron.isChecked():
             return
         if self.refractionSource != "directWeather":
-            self.app.mount.setting.setDirectWeatherUpdateType(0)
+            self.app.dReg["mount"].setting.setDirectWeatherUpdateType(0)
             return
 
-        if self.app.mount.setting.weatherStatus == 0:
+        if self.app.dReg["mount"].setting.weatherStatus == 0:
             self.ui.refracCont.setChecked(True)
 
         # otherwise, we have to switch it on or off
         if self.ui.refracManual.isChecked():
-            self.app.mount.setting.setDirectWeatherUpdateType(0)
+            self.app.dReg["mount"].setting.setDirectWeatherUpdateType(0)
         elif self.ui.refracNoTrack.isChecked():
-            self.app.mount.setting.setDirectWeatherUpdateType(1)
+            self.app.dReg["mount"].setting.setDirectWeatherUpdateType(1)
         else:
-            self.app.mount.setting.setDirectWeatherUpdateType(2)
+            self.app.dReg["mount"].setting.setDirectWeatherUpdateType(2)
 
     def setRefractionSourceGui(self) -> None:
         for source in self.refractionSources:
             if self.refractionSource == source:
-                changeStyleDynamic(self.refractionSources[source]["group"], "refraction", True)
-                self.refractionSources[source]["group"].setChecked(True)
+                changeStyleDynamic(self.refractionSources[source].group, "refraction", True)
+                self.refractionSources[source].group.setChecked(True)
             else:
-                changeStyleDynamic(
-                    self.refractionSources[source]["group"], "refraction", False
-                )
-                self.refractionSources[source]["group"].setChecked(False)
+                changeStyleDynamic(self.refractionSources[source].group, "refraction", False)
+                self.refractionSources[source].group.setChecked(False)
 
     def selectRefractionSource(self, source: str) -> None:
-        if self.refractionSources[source]["group"].isChecked():
+        if self.refractionSources[source].group.isChecked():
             self.refractionSource = source
         else:
             self.refractionSource = ""
@@ -213,9 +222,9 @@ class EnvironWeather:
             return
 
         key = "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
-        temp = self.refractionSources[self.refractionSource]["data"].get(key, -99)
+        temp = self.refractionSources[self.refractionSource].data.get(key, -99)
         key = "WEATHER_PARAMETERS.WEATHER_PRESSURE"
-        press = self.refractionSources[self.refractionSource]["data"].get(key, 0)
+        press = self.refractionSources[self.refractionSource].data.get(key, 0)
 
         if all(i == -99 for i in self.filteredTemperature):
             self.filteredTemperature = np.full(60, temp)
@@ -236,31 +245,31 @@ class EnvironWeather:
             return
         if self.refractionSource == "directWeather":
             return
-        if not self.app.deviceStat["mount"]:
+        if not self.app.dReg["mount"].stat:
             return
         if self.ui.refracManual.isChecked():
             return
-        if self.ui.refracNoTrack.isChecked() and self.app.mount.obsSite.status == 0:
+        if self.ui.refracNoTrack.isChecked() and self.app.dReg["mount"].obsSite.status == 0:
             return
 
         temp, press = self.movingAverageRefractionParameters()
         if abs(temp - self.tempLast) > 0.1 or abs(press - self.pressLast) > 5:
-            self.app.mount.setting.setRefractionParam(temp, press)
+            self.app.dReg["mount"].setting.setRefractionParam(temp, press)
             self.tempLast = temp
             self.pressLast = press
 
     def updateSourceGui(self) -> None:
         for source in self.refractionSources:
-            data = self.refractionSources[source]["data"]
-            uiPost = self.refractionSources[source]["uiPost"]
+            data = self.refractionSources[source].data
+            uiPost = self.refractionSources[source].uiPost
             for field in self.envFields:
                 # Use getattr() instead of eval() to safely resolve UI widget names. (SEC-2)
                 ui = getattr(self.ui, field + uiPost)
                 value = data.get(self.envFields[field]["valueKey"])
                 guiSetText(ui, self.envFields[field]["format"], value)
 
-    def clearSourceGui(self, source: str, sender) -> None:
-        self.refractionSources[source]["data"].clear()
+    def clearSourceGui(self, source: str, deviceName: str) -> None:
+        self.refractionSources[source].data.clear()
         self.ui.seeingIcon.setVisible(False)
         self.ui.seeing.setVisible(False)
         self.updateSourceGui()

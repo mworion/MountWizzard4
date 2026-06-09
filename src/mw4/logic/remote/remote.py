@@ -14,25 +14,28 @@
 #
 ###########################################################
 import logging
+from dataclasses import dataclass, field
 from mw4.base.signalsDevices import Signals
 from PySide6.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer, QTcpSocket
 from typing import Any
 
 
+@dataclass
+class DeviceConfigRemote:
+    deviceName: str = field(default="TCP")
+
+
 class Remote:
+    DEVICE_TYPE = "misc"
     log = logging.getLogger("MW4")
 
     def __init__(self, app: Any) -> None:
         self.signals = Signals()
         self.app = app
         self.data: dict[str, Any] = {}
-        self.defaultConfig: dict[str, Any] = {
-            "framework": "",
-            "frameworks": {"tcp": {"deviceName": "TCP"}},
-        }
+        self.config = DeviceConfigRemote()
         self.framework: str = ""
         self.run: dict[str, Any] = {"tcp": self}
-        self.deviceName: str = ""
         self.clientConnection: QTcpSocket | None = None
         self.tcpServer: QTcpServer | None = None
 
@@ -46,13 +49,13 @@ class Remote:
         else:
             self.log.info("Remote access enabled")
             self.tcpServer.newConnection.connect(self.addConnection)
-            self.signals.deviceConnected.emit("TCP")
+            self.signals.deviceConnected.emit(self.config.deviceName)
             return True
 
     def stopCommunication(self) -> None:
         if self.tcpServer.isListening():
             self.tcpServer.close()
-        self.signals.deviceDisconnected.emit("TCP")
+        self.signals.deviceDisconnected.emit(self.config.deviceName)
 
     def addConnection(self) -> None:
         if self.tcpServer is None:

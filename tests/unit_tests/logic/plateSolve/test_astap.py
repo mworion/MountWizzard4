@@ -44,8 +44,8 @@ def function():
 
 def test_setDefaultPath_1(function):
     with mock.patch.object(platform, "system", return_value="Darwin"):
-        function.setDefaultPath()
-        assert function.appPath == Path("/Applications/ASTAP.app/Contents/MacOS")
+        function.config.appPath = function.setDefaultAppPath()
+        assert function.config.appPath == "/Applications/ASTAP.app/Contents/MacOS"
 
 
 def test_solve_1(function):

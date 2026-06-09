@@ -29,7 +29,7 @@ class SatelliteHorizonWindow(MWidget):
     def __init__(self, app: Any, title: str) -> None:
         super().__init__()
         self.app = app
-        self.obsSite = app.mount.obsSite
+        self.obsSite = app.dReg["mount"].obsSite
         self.threadPool = app.threadPool
         self.ui = satelliteHor_ui.Ui_SatelliteHorizonDialog()
         self.ui.setupUi(self.ws)
@@ -49,7 +49,7 @@ class SatelliteHorizonWindow(MWidget):
         self.app.showSatellite.connect(self.drawSatellite)
         self.app.updateSatellite.connect(self.updatePositions)
         self.app.redrawHorizon.connect(self.drawHorizon)
-        self.app.mount.signals.mountIsUp.connect(self.setPointerVisibility)
+        self.app.dReg["mount"].signals.mountIsUp.connect(self.setPointerVisibility)
 
     def initConfig(self) -> None:
         self.positionWindow(self.app.config.get("WindowSatelliteHor", {}))
@@ -69,13 +69,13 @@ class SatelliteHorizonWindow(MWidget):
         self.app.showSatellite.disconnect(self.drawSatellite)
         self.app.updateSatellite.disconnect(self.updatePositions)
         self.app.redrawHorizon.disconnect(self.drawHorizon)
-        self.app.mount.signals.mountIsUp.disconnect(self.setPointerVisibility)
-        self.app.mount.signals.pointDone.disconnect(self.updatePointerAltAz)
+        self.app.dReg["mount"].signals.mountIsUp.disconnect(self.setPointerVisibility)
+        self.app.dReg["mount"].signals.pointDone.disconnect(self.updatePointerAltAz)
         self.app.colorChange.disconnect(self.colorChange)
         super().closeEvent(closeEvent)
 
     def showWindow(self) -> None:
-        self.app.mount.signals.pointDone.connect(self.updatePointerAltAz)
+        self.app.dReg["mount"].signals.pointDone.connect(self.updatePointerAltAz)
         self.app.colorChange.connect(self.colorChange)
         self.app.sendSatelliteData.emit([], [])
         self.show()
@@ -205,7 +205,7 @@ class SatelliteHorizonWindow(MWidget):
             plotItem.addItem(pd)
 
     def drawHorizon(self) -> None:
-        self.ui.satHorizon.drawHorizon(self.app.data.horizonP)
+        self.ui.satHorizon.drawHorizon(self.app.buildPoint.horizonP)
 
     def drawHorizonView(self, altitude: list[float], azimuth: list[float]) -> None:
         plotItem = self.ui.satHorizon.p[0]

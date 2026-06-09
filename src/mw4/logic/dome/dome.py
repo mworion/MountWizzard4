@@ -36,23 +36,14 @@ class Dome:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
-        self.loadConfig: bool = True
-        self.deviceType: str = ""
-        self.data: dict[str, Any] = {
-            "Slewing": False,
-        }
-        self.defaultConfig: dict[str, Any] = {"framework": "", "frameworks": {}}
+        self.data: dict[str, Any] = {"Slewing": False}
         self.framework: str = ""
         self.run: dict[str, Any] = {
             "indi": DomeIndi(self),
             "alpaca": DomeAlpaca(self),
         }
-
         if platform.system() == "Windows":
             self.run["ascom"] = DomeAscom(self)
-
-        for fw in self.run:
-            self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
 
         self.useGeometry: bool = False
         self.useDynamicFollowing: bool = False
@@ -215,7 +206,7 @@ class Dome:
             self.log.debug(f"First overshoot disabled: [{az}]")
             return az
 
-        direction = self.app.mount.obsSite.AzDirection
+        direction = self.app.dReg["mount"].obsSite.AzDirection
         if direction is None:
             self.log.info(f"Overshoot discarded no direction: [{az}]")
             return az
@@ -243,7 +234,7 @@ class Dome:
         return self.lastFinalAz
 
     def slewDome(self, altitude: float = 0, azimuth: float = 0, follow: bool = False) -> float:
-        mount = self.app.mount
+        mount = self.app.dReg["mount"].instance
         if follow:
             func = mount.calcTransformationMatricesActual
         else:

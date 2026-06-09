@@ -45,7 +45,7 @@ def HaDecToAltAz(ha: float, dec: float, lat: float) -> tuple[float, float]:
     return alt, az
 
 
-class DataPoint:
+class BuildPoint:
     UNPROCESSED = 0
     FAILED = 1
     SOLVED = 2
@@ -75,8 +75,8 @@ class DataPoint:
         self._buildP = value
 
     def addBuildP(self, value: tuple[float, float, int], position: int = 999) -> None:
-        high = self.app.mount.setting.horizonLimitHigh or 90
-        low = self.app.mount.setting.horizonLimitLow or 0
+        high = self.app.dReg["mount"].setting.horizonLimitHigh or 90
+        low = self.app.dReg["mount"].setting.horizonLimitLow or 0
 
         if not low <= value[0] <= high:
             return
@@ -145,8 +145,8 @@ class DataPoint:
         return point[0] > y[int(point[1])]
 
     def isCloseMeridian(self, point: tuple[int, int]) -> bool:
-        slew = self.app.mount.setting.meridianLimitSlew
-        track = self.app.mount.setting.meridianLimitTrack
+        slew = self.app.dReg["mount"].setting.meridianLimitSlew
+        track = self.app.dReg["mount"].setting.meridianLimitTrack
         value = max(slew, track)
         lower = 180 - value
         upper = 180 + value
@@ -178,10 +178,10 @@ class DataPoint:
         for i, point in enumerate(self._buildP):
             alt = point[0]
             az = point[1]
-            _, domeAz = self.app.mount.calcMountAltAzToDomeAltAz(alt, az)
+            _, domeAz = self.app.dReg["mount"].instance.calcMountAltAzToDomeAltAz(alt, az)
             if domeAz is None:
                 continue
-            pointsNew.append([alt, az, self.app.data.UNPROCESSED, domeAz.degrees])
+            pointsNew.append([alt, az, self.app.buildPoint.UNPROCESSED, domeAz.degrees])
         self._buildP = [p[0:3] for p in sorted(pointsNew, key=lambda x: -x[3])]
 
     def sortAlt(self) -> None:
@@ -190,7 +190,7 @@ class DataPoint:
     def sortActualPierside(self) -> None:
         east = [x for x in self._buildP if x[1] <= 180]
         west = [x for x in self._buildP if x[1] > 180]
-        if self.app.mount.obsSite.pierside != "E":
+        if self.app.dReg["mount"].obsSite.pierside != "E":
             self._buildP = [p[0:3] for p in east + west]
         else:
             self._buildP = [p[0:3] for p in west + east]
@@ -277,7 +277,7 @@ class DataPoint:
 
     def genGreaterCircle(self, stepHA: int, stepDec: int, distFlip: int) -> bool:
         self.clearBuildP()
-        lat = self.app.mount.obsSite.location.latitude.degrees
+        lat = self.app.dReg["mount"].location.latitude.degrees
         decList = list(range(-15, -15 + int(100 / stepDec) * stepDec, stepDec))
         if lat < 0:
             decList = [-x for x in decList]
@@ -394,10 +394,10 @@ class DataPoint:
 
     def generateCelestialEquator(self) -> list[tuple[int, int]]:
         celestialEquator = []
-        if not self.app.mount.obsSite.location:
+        if not self.app.dReg["mount"].location:
             return celestialEquator
 
-        lat = self.app.mount.obsSite.location.latitude.degrees
+        lat = self.app.dReg["mount"].location.latitude.degrees
 
         for dec in range(-75, 90, 15):
             for ha in range(-119, 120, 2):
@@ -444,7 +444,7 @@ class DataPoint:
 
         star = Star(ra=ha, dec=dec)
         startTime = timeJD
-        ts = self.app.mount.obsSite.ts
+        ts = self.app.dReg["mount"].obsSite.ts
         endTime = ts.tt_jd(timeJD.tt + 1.1)
         eph = self.app.ephemeris
         f = almanac.risings_and_settings(eph, star, location)

@@ -55,7 +55,7 @@ class MountCommand:
             self.msg.emit(0, "System", "Mount", "update firmware opened")
 
     def openMountDocumentation(self) -> None:
-        mountStrings = self.app.mount.firmware.product.split()
+        mountStrings = self.app.dReg["mount"].firmware.product.split()
         if len(mountStrings) != 2:
             self.msg.emit(2, "System", "Mount", "Browser failed")
             return
@@ -68,7 +68,7 @@ class MountCommand:
             self.msg.emit(0, "System", "Mount", "mount manual opened")
 
     def commandRaw(self) -> None:
-        conn = Connection(self.app.mount)
+        conn = Connection(self.app.dReg["camera"].instance)
         cmd = self.ui.commandInput.text()
         self.ui.commandStatus.clear()
         self.ui.commandOutput.clear()

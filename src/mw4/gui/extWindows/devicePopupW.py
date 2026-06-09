@@ -27,13 +27,13 @@ from typing import Any
 
 
 class DevicePopup(MWidget):
-    def __init__(self, parentWidget, device: str, framework: str, data: dict[str, Any]):
+    def __init__(self, parentWidget, device: str, data: dict[str, Any]):
         super().__init__()
         self.app = parentWidget.app
         self.msg = parentWidget.app.msg
         self.data = data
         self.device: str = device
-        self.framework: str = framework
+        self.framework: str = data["framework"]
 
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self.ws)
@@ -163,6 +163,8 @@ class DevicePopup(MWidget):
 
     def populateTabs(self) -> None:
         for framework in self.data:
+            if framework == "framework":
+                continue
             for element in self.data[framework]:
                 ui = self.framework2gui[framework].get(element)
                 if isinstance(ui, QComboBox):
@@ -196,7 +198,7 @@ class DevicePopup(MWidget):
         self.setMaximumSize(500, 340)
         self.titleBar.windowFixed = True
 
-    def readFramework(self) -> str:
+    def readFramework(self) -> None:
         index = self.ui.tab.currentIndex()
         self.framework = self.ui.tab.widget(index).objectName()
 
@@ -226,7 +228,7 @@ class DevicePopup(MWidget):
         self.returnValues["close"] = "ok"
         self.returnValues["data"] = self.data
         self.returnValues["device"] = self.device
-        self.returnValues["framework"] = self.framework
+        self.returnValues["data"]["framework"] = self.framework
         self.close()
 
     def updateDeviceNameList(self, framework: str, deviceNames: list[str]) -> None:
@@ -253,13 +255,13 @@ class DevicePopup(MWidget):
 
     def checkApp(self, framework: str, folder: str = "") -> None:
         frameworkClass = self.app.plateSolve.run[framework]
-        sucApp = frameworkClass.checkAvailabilityProgram(Path(folder))
+        sucApp = frameworkClass.checkAvailabilityProgram(folder)
         colorP = "green" if sucApp else "red"
         changeStyleDynamic(self.platesolvers[framework]["appPath"], "color", colorP)
 
     def checkIndex(self, framework: str, folder: str = "") -> None:
         frameworkClass = self.app.plateSolve.run[framework]
-        sucIndex = frameworkClass.checkAvailabilityIndex(Path(folder))
+        sucIndex = frameworkClass.checkAvailabilityIndex(folder)
         colorI = "green" if sucIndex else "red"
         changeStyleDynamic(self.platesolvers[framework]["indexPath"], "color", colorI)
 

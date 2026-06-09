@@ -146,12 +146,12 @@ def test_setStatusDeviceConnected_becomeConnected(function):
     function.config.deviceName = "telescope"
     received = []
 
-    def handler(dtype: str, name: str) -> None:
-        received.append((dtype, name))
+    def handler(name: str) -> None:
+        received.append(name)
 
     function.signals.deviceConnected.connect(handler)
     function.setStatusDeviceConnected(_make_item("telescope", "On"))
-    assert received == [("TEST", "telescope")]
+    assert received == ["telescope"]
     assert function.deviceConnected is True
 
 
@@ -160,12 +160,12 @@ def test_setStatusDeviceConnected_becomeDisconnected(function):
     function.config.deviceName = "telescope"
     received = []
 
-    def handler(dtype: str, name: str) -> None:
-        received.append((dtype, name))
+    def handler(name: str) -> None:
+        received.append(name)
 
     function.signals.deviceDisconnected.connect(handler)
     function.setStatusDeviceConnected(_make_item("telescope", "Off"))
-    assert received == [("TEST", "telescope")]
+    assert received == ["telescope"]
     assert function.deviceConnected is False
 
 
@@ -500,7 +500,7 @@ def test_runQueueClient_loggingTraceOff(function):
     mock_client = mock.MagicMock()
     with (
         mock.patch("mw4.base.indiClass.QueClient", return_value=mock_client) as mock_qc,
-        mock.patch("mw4.base.indiClass.QtAsyncio") as mock_qtasyncio,
+        mock.patch("mw4.base.indiClass.asyncio.run") as mock_asyncio_run,
     ):
         function.runQueueClient()
     mock_qc.assert_called_once_with(
@@ -511,7 +511,7 @@ def test_runQueueClient_loggingTraceOff(function):
         blobfolder=mock.ANY,
     )
     mock_client.debug_verbosity.assert_called_once_with(0)
-    mock_qtasyncio.run.assert_called_once_with(mock_client.asyncrun())
+    mock_asyncio_run.assert_called_once_with(mock_client.asyncrun())
     function.queueClient = None
 
 
@@ -521,7 +521,7 @@ def test_runQueueClient_loggingTraceOn(function):
     mock_client = mock.MagicMock()
     with (
         mock.patch("mw4.base.indiClass.QueClient", return_value=mock_client),
-        mock.patch("mw4.base.indiClass.QtAsyncio"),
+        mock.patch("mw4.base.indiClass.asyncio.run"),
     ):
         function.runQueueClient()
     mock_client.debug_verbosity.assert_called_once_with(3)

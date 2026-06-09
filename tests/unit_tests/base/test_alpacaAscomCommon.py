@@ -260,9 +260,7 @@ def test_handleDeviceConnect_success(function):
     function.device.Connected = True
     function.handleDeviceConnect()
     # assert
-    function.signals.deviceConnected.emit.assert_called_once_with(
-        function.parent.DEVICE_TYPE, function.config.deviceName
-    )
+    function.signals.deviceConnected.emit.assert_called_once_with(function.config.deviceName)
     assert function.serverConnected is True
     assert function.deviceConnected is True
 
@@ -274,7 +272,7 @@ def test_handleDeviceDisconnect(function):
     # assert
     assert function.deviceConnected is False
     function.signals.deviceDisconnected.emit.assert_called_once_with(
-        function.parent.DEVICE_TYPE, function.config.deviceName
+        function.config.deviceName
     )
 
 
@@ -349,7 +347,7 @@ def test_stopCommunication(function):
     assert function.deviceConnected is False
     assert function.serverConnected is False
     function.signals.deviceDisconnected.emit.assert_called_once_with(
-        function.parent.DEVICE_TYPE, function.config.deviceName
+        function.config.deviceName
     )
     # "Connected" must be queued
     item = function.commandQueue.get_nowait()

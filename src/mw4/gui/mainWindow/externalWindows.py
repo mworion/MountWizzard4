@@ -144,10 +144,9 @@ class ExternalWindows:
                 changeStyleDynamic(winObj["button"], "run", False)
 
     def storeConfigExtendedWindows(self):
-        config = self.app.config
         for window in self.uiWindows:
-            config[window] = bool(self.uiWindows[window]["classObj"])
-            if config[window]:
+            self.app.config[window] = bool(self.uiWindows[window]["classObj"])
+            if self.app.config[window]:
                 self.uiWindows[window]["classObj"].storeConfig()
 
     def deleteWindowResource(self, window: str) -> None:

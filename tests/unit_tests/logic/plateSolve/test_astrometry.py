@@ -45,21 +45,19 @@ def function():
 def test_setDefaultPath_1(function):
     with mock.patch.object(platform, "system", return_value="Darwin"):
         function.config.appPath = function.setDefaultAppPath()
-        assert function.config.appPath == Path(
-            "/Applications/KStars.app/Contents/MacOS/astrometry/bin"
-        )
+        assert function.config.appPath == "/Applications/KStars.app/Contents/MacOS/astrometry/bin"
 
 
 def test_setDefaultPath_2(function):
     with mock.patch.object(platform, "system", return_value="Linux"):
         function.config.appPath = function.setDefaultAppPath()
-        assert function.config.appPath == Path("/usr/bin")
+        assert function.config.appPath == "/usr/bin"
 
 
 def test_setDefaultPath_3(function):
     with mock.patch.object(platform, "system", return_value="Windows"):
         function.config.appPath = function.setDefaultAppPath()
-        assert function.config.appPath == Path()
+        assert function.config.appPath == ""
 
 
 def test_saveConfigFile(function):
@@ -76,7 +74,7 @@ def test_solve_1(function):
 
 
 def test_solve_2(function):
-    function.config.appPath = Path("test/Astrometry.app")
+    function.config.appPath = "test/Astrometry.app"
     with (
         mock.patch.object(function.parent, "runSolverBin", return_value=(True, "")),
         mock.patch.object(function.parent, "prepareResult"),

@@ -39,6 +39,8 @@ class DeviceRegistry:
     def __init__(self, app: Any) -> None:
         self.app = app
         self.app.stopDevices.connect(self.stopDevices)
+        self.app.startDevice.connect(self.startDevice)
+        self.app.stopDevice.connect(self.stopDevice)
 
         if hasattr(app, "mount") and app.mount is not None:
             # Test only: tests inject mock mounts before calling registry

@@ -25,8 +25,8 @@ class DeviceConfigASTAP:
     deviceName: str = field(default="")
     searchRadius: int = field(default=20)
     timeout: int = field(default=30)
-    appPath: Path = field(default=Path())
-    indexPath: Path = field(default=Path())
+    appPath: str = field(default="")
+    indexPath: str = field(default="")
 
 
 class ASTAP:
@@ -45,16 +45,16 @@ class ASTAP:
     ]
     apps = {
         "Darwin": {
-            "appPath": Path("/Applications/ASTAP.app/Contents/MacOS"),
-            "indexPath": Path("/usr/local/opt/astap"),
+            "appPath": "/Applications/ASTAP.app/Contents/MacOS",
+            "indexPath": "/usr/local/opt/astap",
         },
         "Linux": {
-            "appPath": Path("/opt/astap"),
-            "indexPath": Path("/opt/astap"),
+            "appPath": "/opt/astap",
+            "indexPath": "/opt/astap",
         },
         "Windows": {
-            "appPath": Path("C:\\Program Files\\astap"),
-            "indexPath": Path("C:\\Program Files\\astap"),
+            "appPath": "C:\\Program Files\\astap",
+            "indexPath": "C:\\Program Files\\astap",
         },
     }
     returnCodes = {
@@ -79,20 +79,19 @@ class ASTAP:
         self.config.appPath = self.setDefaultAppPath()
         self.config.indexPath = self.setDefaultIndexPath()
 
-    def setDefaultAppPath(self) -> Path:
+    def setDefaultAppPath(self) -> str:
         return self.apps[platform.system()]["appPath"]
 
-    def setDefaultIndexPath(self) -> Path:
+    def setDefaultIndexPath(self) -> str:
         return self.apps[platform.system()]["indexPath"]
 
     def setDefaultBinPath(self) -> Path:
-        return self.config.appPath / self.GUI
+        return Path(self.config.appPath) / self.GUI
 
     def solve(self, imagePath: Path, updateHeader: bool) -> dict[str, Any]:
         tempPath = self.tempDir / "temp"
         wcsPath = self.tempDir / "temp.wcs"
         wcsPath.unlink(missing_ok=True)
-
         runnable = [self.binPath, "-f", imagePath, "-o", tempPath, "-wcs"]
         options = [
             "-r",
@@ -108,19 +107,16 @@ class ASTAP:
         suc, msg = self.parent.runSolverBin(runnable)
         return self.parent.prepareResult(suc, msg, imagePath, wcsPath, updateHeader)
 
-    def checkAvailabilityProgram(self, appPath: Path) -> bool:
+    def checkAvailabilityProgram(self, appPath: str) -> bool:
         self.config.appPath = appPath
         extension = ".exe" if platform.system() == "Windows" else ""
-
-        bin1 = self.config.appPath / (self.CLI + extension)
-        bin2 = self.config.appPath / (self.GUI + extension)
-
+        bin1 = Path(self.config.appPath) / (self.CLI + extension)
+        bin2 = Path(self.config.appPath) / (self.GUI + extension)
         if bin1.is_file() or bin2.is_file():
             self.binPath = bin1 if bin1.is_file() else bin2
             return True
-
         return False
 
-    def checkAvailabilityIndex(self, indexPath: Path) -> bool:
+    def checkAvailabilityIndex(self, indexPath: str) -> bool:
         self.config.indexPath = indexPath
         return any(len(list(self.config.indexPath.glob(i))) > 0 for i in self.indexes)

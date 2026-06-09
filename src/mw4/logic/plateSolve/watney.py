@@ -25,8 +25,8 @@ class DeviceConfigWatney:
     deviceName: str = field(default="")
     searchRadius: int = field(default=20)
     timeout: int = field(default=30)
-    appPath: Path = field(default=Path())
-    indexPath: Path = field(default=Path())
+    appPath: str = field(default="")
+    indexPath: str = field(default="")
 
 
 class Watney:
@@ -46,11 +46,11 @@ class Watney:
         self.config.indexPath = self.setDefaultIndexPath()
         self.saveConfigFile()
 
-    def setDefaultAppPath(self) -> Path:
-        return self.workDir / "watney-cli"
+    def setDefaultAppPath(self) -> str:
+        return str(self.workDir / "watney-cli")
 
-    def setDefaultIndexPath(self) -> Path:
-        return self.workDir / "watney-index"
+    def setDefaultIndexPath(self) -> str:
+        return str(self.workDir / "watney-index")
 
     def saveConfigFile(self) -> None:
         cfgFile = self.tempDir / "watney-solve-config.yml"
@@ -65,7 +65,7 @@ class Watney:
         wcsPath = self.tempDir / "temp.wcs"
         wcsPath.unlink(missing_ok=True)
 
-        runnable = [self.config.appPath / "watney-solve"]
+        runnable = [Path(self.config.appPath) / "watney-solve"]
         if isBlind:
             runnable += ["blind"]
             runnable += ["--min-radius", "0.15", "--max-radius", "16"]
@@ -89,19 +89,17 @@ class Watney:
         suc, msg = self.parent.runSolverBin(runnable)
         return self.parent.prepareResult(suc, msg, imagePath, wcsPath, updateHeader)
 
-    def checkAvailabilityProgram(self, appPath: Path) -> bool:
+    def checkAvailabilityProgram(self, appPath: str) -> bool:
         self.config.appPath = appPath
-
         if platform.system() == "Darwin" or platform.system() == "Linux":
-            program = self.config.appPath / "watney-solve"
+            program = Path(self.config.appPath) / "watney-solve"
         elif platform.system() == "Windows":
-            program = self.config.appPath / "watney-solve.exe"
+            program = Path(self.config.appPath) / "watney-solve.exe"
         else:
             return False
         return program.is_file()
 
-    def checkAvailabilityIndex(self, indexPath: Path) -> bool:
+    def checkAvailabilityIndex(self, indexPath: str) -> bool:
         self.config.indexPath = indexPath
         self.saveConfigFile()
-
         return len(list(self.config.indexPath.glob("*.*"))) > 0

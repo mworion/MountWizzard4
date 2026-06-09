@@ -28,8 +28,8 @@ class DeviceConfigASTROMETRY:
     deviceName: str = field(default="")
     searchRadius: int = field(default=20)
     timeout: int = field(default=30)
-    appPath: Path = field(default=Path())
-    indexPath: Path = field(default=Path())
+    appPath: str = field(default="")
+    indexPath: str = field(default="")
     apiKey: str = field(default="")
 
 
@@ -39,16 +39,16 @@ class Astrometry:
     home = os.environ.get("HOME", "")
     apps = {
         "Darwin": {
-            "appPath": Path("/Applications/KStars.app/Contents/MacOS/astrometry/bin"),
-            "indexPath": Path(f"{home}/Library/Application Support/Astrometry"),
+            "appPath": "/Applications/KStars.app/Contents/MacOS/astrometry/bin",
+            "indexPath": f"{home}/Library/Application Support/Astrometry",
         },
         "Linux": {
-            "appPath": Path("/usr/bin"),
-            "indexPath": Path("/usr/share/astrometry"),
+            "appPath": "/usr/bin",
+            "indexPath": "/usr/share/astrometry",
         },
         "Windows": {
-            "appPath": Path(),
-            "indexPath": Path(),
+            "appPath": "",
+            "indexPath": "",
         },
     }
 
@@ -64,10 +64,10 @@ class Astrometry:
         self.config.indexPath = self.setDefaultIndexPath()
         self.saveConfigFile()
 
-    def setDefaultAppPath(self) -> Path:
+    def setDefaultAppPath(self) -> str:
         return self.apps[platform.system()]["appPath"]
 
-    def setDefaultIndexPath(self) -> Path:
+    def setDefaultIndexPath(self) -> str:
         return self.apps[platform.system()]["indexPath"]
 
     def saveConfigFile(self) -> None:
@@ -82,9 +82,7 @@ class Astrometry:
         configPath = self.tempDir / "astrometry.cfg"
         wcsPath = self.tempDir / "temp.wcs"
         wcsPath.unlink(missing_ok=True)
-
-        runnable = [self.config.appPath / "image2xy", "-O", "-o", tempPath, imagePath]
-
+        runnable = [Path(self.config.appPath) / "image2xy", "-O", "-o", tempPath, imagePath]
         suc, msg = self.parent.runSolverBin(runnable)
         if not suc:
             self.log.warning(f"IMAGE2XY error in [{imagePath}]")
@@ -98,7 +96,7 @@ class Astrometry:
         scaleHigh = scaleHint * searchRatio
 
         runnable = [
-            self.config.appPath / "solve-field",
+            Path(self.config.appPath) / "solve-field",
             "--overwrite",
             "--no-remove-lines",
             "--no-plots",
@@ -131,21 +129,21 @@ class Astrometry:
         # split between ekos and cloudmakers as cloudmakers use an older version of
         # solve-field, which need the option '--no-fits2fits', whereas the actual
         # version used in KStars throws an error using this option.
-        if "Astrometry.app" in str(self.config.appPath):
+        if "Astrometry.app" in self.config.appPath:
             options.append("--no-fits2fits")
         runnable.extend(options)
         suc, msg = self.parent.runSolverBin(runnable)
         return self.parent.prepareResult(suc, msg, imagePath, wcsPath, updateHeader)
 
-    def checkAvailabilityProgram(self, appPath: Path) -> bool:
+    def checkAvailabilityProgram(self, appPath: str) -> bool:
         self.config.appPath = appPath
         if platform.system() == "Darwin" or platform.system() == "Linux":
-            program = self.config.appPath / "solve-field"
+            program = Path(self.config.appPath) / "solve-field"
         else:
             return False
         return program.is_file()
 
-    def checkAvailabilityIndex(self, indexPath: Path) -> bool:
+    def checkAvailabilityIndex(self, indexPath: str) -> bool:
         self.config.indexPath = indexPath
         self.saveConfigFile()
         return len(list(self.config.indexPath.glob("*.fits"))) > 0

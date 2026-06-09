@@ -18,8 +18,8 @@ from PySide6.QtCore import QObject, Signal
 
 
 class Signals(QObject):
-    deviceConnected = Signal(str, str)
-    deviceDisconnected = Signal(str, str)
+    deviceConnected = Signal(str)
+    deviceDisconnected = Signal(str)
     exposed = Signal(Path)
     downloaded = Signal(Path)
     saved = Signal(Path)

@@ -54,7 +54,7 @@ class SensorWeatherOnline:
     def stopCommunication(self) -> None:
         self.running = False
         self.data.clear()
-        self.signals.deviceDisconnected.emit(self.DEVICE_TYPE, self.config.deviceName)
+        self.signals.deviceDisconnected.emit(self.config.deviceName)
         self.app.update3m.disconnect(self.pollOpenWeatherMapData)
 
     @staticmethod
@@ -125,10 +125,10 @@ class SensorWeatherOnline:
 
     def sendStatus(self, status: bool) -> None:
         if not status and self.running:
-            self.signals.deviceDisconnected.emit(self.DEVICE_TYPE, self.config.deviceName)
+            self.signals.deviceDisconnected.emit(self.config.deviceName)
             self.running = False
         elif status and not self.running:
-            self.signals.deviceConnected.emit(self.DEVICE_TYPE, self.config.deviceName)
+            self.signals.deviceConnected.emit(self.config.deviceName)
             self.running = True
         if self.status:
             self.processOpenWeatherMapData()

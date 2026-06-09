@@ -104,6 +104,8 @@ class App(QObject):
     mountOff = Signal()
     mountOn = Signal()
     stopDevices = Signal()
+    startDevice = Signal(str)
+    stopDevice = Signal(str)
     buildPointsChanged = Signal()
     playSound = Signal(object)
     msg = Signal(object, object, object, object)

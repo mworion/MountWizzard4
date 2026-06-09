@@ -13,13 +13,13 @@
 # License APL2.0
 #
 ###########################################################
+import asyncio
 import logging
 import queue
 from dataclasses import dataclass, field
 from indipyclient.queclient import EventItem, QueClient, runqueclient
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO_CONV
 from mw4.base.tpool import Worker
-from PySide6 import QtAsyncio
 from PySide6.QtCore import QMutex, QThreadPool
 from queue import Queue
 from typing import Any
@@ -73,11 +73,9 @@ class IndiClass:
     def setStatusDeviceConnected(self, item: EventItem) -> None:
         status = item.snapshot[self.config.deviceName]["CONNECTION"].get("CONNECT") == "On"
         if status and not self.deviceConnected:
-            self.signals.deviceConnected.emit(self.parent.DEVICE_TYPE, self.config.deviceName)
+            self.signals.deviceConnected.emit(self.config.deviceName)
         if not status and self.deviceConnected:
-            self.signals.deviceDisconnected.emit(
-                self.parent.DEVICE_TYPE, self.config.deviceName
-            )
+            self.signals.deviceDisconnected.emit(self.config.deviceName)
         self.deviceConnected = status
 
     def writeVectorsToData(self, item: EventItem, vectors: dict) -> None:
@@ -122,7 +120,7 @@ class IndiClass:
             blobfolder=str(self.app.mwGlob["tempDir"]),
         )
         self.queueClient.debug_verbosity(3 if self.loggingTrace else 0)
-        QtAsyncio.run(self.queueClient.asyncrun())
+        asyncio.run(self.queueClient.asyncrun())
 
     def startCommunication(self) -> None:
         if not self.clientMutex.tryLock():
@@ -142,7 +140,7 @@ class IndiClass:
         self.commandRunning = False
         self.config.deviceName = ""
         self.deviceConnected = False
-        self.signals.deviceDisconnected.emit(self.parent.DEVICE_TYPE, self.config.deviceName)
+        self.signals.deviceDisconnected.emit(self.config.deviceName)
 
     def loadIndiConfig(self, deviceName: str) -> None:
         self.txQ.put((deviceName, "CONFIG_PROCESS", {"CONFIG_PROCESS": True}))

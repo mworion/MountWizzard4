@@ -56,6 +56,8 @@ class MountWizzard4(QObject):
     hostChanged = Signal()
     remoteCommand = Signal(object)
     stopDevices = Signal()
+    startDevice = Signal(str)
+    stopDevice = Signal(str)
     # --- Mount signals ---
     virtualStop = Signal()
     mountOff = Signal()

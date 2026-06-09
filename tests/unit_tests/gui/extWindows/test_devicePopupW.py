@@ -44,7 +44,7 @@ def function(qapp):
     }
     widget = MWidget()
     widget.app = App()
-    window = DevicePopup(widget, device="telescope", framework="indi", data=data)
+    window = DevicePopup(widget, device="telescope", data=data)
     window.log = logging.getLogger()
     yield window
     QApplication.processEvents()

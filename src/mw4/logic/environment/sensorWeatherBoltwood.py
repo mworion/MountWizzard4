@@ -46,7 +46,7 @@ class SensorWeatherBoltwood:
         self.data.clear()
         self.deviceConnected = False
         self.enabled = False
-        self.signals.deviceDisconnected.emit("file", "BoltwoodWeather")
+        self.signals.deviceDisconnected.emit("BoltwoodWeather")
 
     @staticmethod
     def convertKnots2Kmh(knots: float) -> float:
@@ -127,4 +127,4 @@ class SensorWeatherBoltwood:
             return
         if not self.deviceConnected:
             self.deviceConnected = True
-            self.signals.deviceConnected.emit(self.DEVICE_TYPE, self.config.deviceName)
+            self.signals.deviceConnected.emit(self.config.deviceName)

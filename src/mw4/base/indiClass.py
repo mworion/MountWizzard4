@@ -138,7 +138,6 @@ class IndiClass:
     def stopCommunication(self) -> None:
         self.txQ.put(None)
         self.commandRunning = False
-        self.config.deviceName = ""
         self.deviceConnected = False
         self.signals.deviceDisconnected.emit(self.config.deviceName)
 

@@ -44,7 +44,6 @@ class AlpacaAscomCommon(DriverData):
         self.propertyExceptions: list[str] = []
         self.device: Any = None
         self.deviceConnected: bool = False
-        self.serverConnected: bool = False
         self.commandQueue: queue.Queue = queue.Queue()
         self.stopEvent: threading.Event = threading.Event()
         self.loggingTrace: bool = False
@@ -145,7 +144,6 @@ class AlpacaAscomCommon(DriverData):
     def handleDeviceConnect(self) -> None:
         if not self.connectDevice():
             return
-        self.serverConnected = True
         self.deviceConnected = True
         self.signals.deviceConnected.emit(self.config.deviceName)
         self.msg.emit(0, self.PROTOCOL_NAME, "Device found", self.config.deviceName)
@@ -153,7 +151,6 @@ class AlpacaAscomCommon(DriverData):
 
     def handleDeviceDisconnect(self) -> None:
         self.deviceConnected = False
-        self.serverConnected = False
         self.signals.deviceDisconnected.emit(self.config.deviceName)
         self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.config.deviceName)
 
@@ -172,6 +169,5 @@ class AlpacaAscomCommon(DriverData):
         self.stopEvent.set()
         self.setDevicePropQueued("Connected", False)
         self.deviceConnected = False
-        self.serverConnected = False
         self.signals.deviceDisconnected.emit(self.config.deviceName)
         self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.config.deviceName)

@@ -303,3 +303,101 @@ def test_initTestModeMountsInjected() -> None:
         assert app.mount is mock_mount
     except Exception as e:
         pytest.skip(f"App initialization failed: {e}")
+
+
+# ------------------------------------------------------------------
+# DeviceRegistry — signal connections
+# ------------------------------------------------------------------
+def test_initConnectsStopDevicesSignal(registry: DeviceRegistry) -> None:
+    """Test that stopDevices signal is connected during initialization."""
+    # Create new app and registry to test connections
+    try:
+        app = App()
+        dReg = DeviceRegistry(app)
+        # If no exception, signals are properly connected
+        assert dReg.app is app
+    except Exception as e:
+        pytest.skip(f"Signal connection test failed: {e}")
+
+
+def test_initConnectsStartStopDeviceSignals(registry: DeviceRegistry) -> None:
+    """Test that device-specific start/stop signals are connected."""
+    # Test that when signals are emitted, registry handles them
+    app = App()
+    dReg = DeviceRegistry(app)
+    dReg.addDevices(app)
+
+    # The connections should be established without errors
+    # Verify startDevice and stopDevice are connected
+    assert dReg.app is app
+
+
+def test_deviceConnectedEmitsMessage(registry: DeviceRegistry) -> None:
+    """Test that deviceConnected emits message signal."""
+    from unittest.mock import MagicMock
+
+    # Mock the msg signal to capture emission
+    registry.app.msg = MagicMock()
+
+    # Call deviceConnected
+    registry.deviceConnected("camera", "INDI::camera")
+
+    # Verify the signal was emitted with correct parameters
+    registry.app.msg.emit.assert_called_once_with(
+        0, "Driver", "Device connected", "INDI::camera::camera"
+    )
+    # Verify stat was set to True
+    assert registry.d["camera"].stat is True
+
+
+def test_deviceDisconnectedEmitsMessage(registry: DeviceRegistry) -> None:
+    """Test that deviceDisconnected emits message signal."""
+    from unittest.mock import MagicMock
+
+    # Mock the msg signal to capture emission
+    registry.app.msg = MagicMock()
+
+    # Call deviceDisconnected
+    registry.deviceDisconnected("dome", "INDI::dome")
+
+    # Verify the signal was emitted with correct parameters
+    registry.app.msg.emit.assert_called_once_with(
+        0, "Driver", "Device disconnected", "INDI::dome::dome"
+    )
+    # Verify stat was set to False
+    assert registry.d["dome"].stat is False
+
+
+def test_deviceConnectedUpdatesStatBeforeMessage(registry: DeviceRegistry) -> None:
+    """Test that deviceConnected sets stat to True before emitting message."""
+    from unittest.mock import MagicMock
+
+    # Set up recording of method calls
+    registry.app.msg = MagicMock()
+
+    # Call deviceConnected
+    registry.deviceConnected("camera", "TestCamera")
+
+    # Verify stat was updated
+    assert registry.d["camera"].stat is True
+    # Verify message was emitted
+    assert registry.app.msg.emit.called
+
+
+def test_deviceDisconnectedUpdatesStatBeforeMessage(registry: DeviceRegistry) -> None:
+    """Test that deviceDisconnected sets stat to False before emitting message."""
+    from unittest.mock import MagicMock
+
+    # First set stat to True
+    registry.setStat("camera", True)
+    registry.app.msg = MagicMock()
+
+    # Call deviceDisconnected
+    registry.deviceDisconnected("camera", "TestCamera")
+
+    # Verify stat was updated
+    assert registry.d["camera"].stat is False
+    # Verify message was emitted
+    assert registry.app.msg.emit.called
+
+

@@ -15,6 +15,7 @@
 ###########################################################
 from collections.abc import Iterator
 from dataclasses import fields
+from functools import partial
 from mw4.base.deviceEntry import DeviceEntry
 from mw4.logic.camera.camera import Camera
 from mw4.logic.cover.cover import Cover
@@ -173,6 +174,11 @@ class DeviceRegistry:
             deviceType="telescope",
             isConfigurable=True,
         )
+        for entry in self.configurable():
+            if hasattr(self.d[entry.name].instance, "signals"):
+                sig = self.d[entry.name].signals
+                sig.deviceConnected.connect(partial(self.deviceConnected, entry.name))
+                sig.deviceDisconnected.connect(partial(self.deviceDisconnected, entry.name))
 
     # ------------------------------------------------------------------
     # Mapping protocol — keeps ``"x" in dReg`` and ``dReg["x"]`` working
@@ -266,3 +272,11 @@ class DeviceRegistry:
     def startDevices(self) -> None:
         for entry in self.configurable():
             self.startDevice(entry.name)
+
+    def deviceConnected(self, deviceSlot: str, deviceName: str) -> None:
+        self.setStat(deviceSlot, True)
+        self.app.msg.emit(0, "Driver", "Device connected", f"{deviceName}::{deviceSlot}")
+
+    def deviceDisconnected(self, deviceSlot: str, deviceName: str) -> None:
+        self.setStat(deviceSlot, False)
+        self.app.msg.emit(0, "Driver", "Device disconnected", f"{deviceName}::{deviceSlot}")

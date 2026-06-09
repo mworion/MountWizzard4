@@ -59,7 +59,6 @@ class AlpacaClass(AlpacaAscomCommon):
 
     def startCommunication(self) -> None:
         self.deviceConnected = False
-        self.serverConnected = False
         self.data.clear()
         self.propertyExceptions.clear()
         self.stopEvent.clear()

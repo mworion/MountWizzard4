@@ -61,7 +61,6 @@ class AscomClass(AlpacaAscomCommon):
 
     def startCommunication(self) -> None:
         self.deviceConnected = False
-        self.serverConnected = False
         self.data.clear()
         self.propertyExceptions.clear()
         if not self.config.deviceName:

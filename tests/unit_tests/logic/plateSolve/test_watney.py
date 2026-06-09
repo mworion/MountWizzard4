@@ -67,6 +67,28 @@ def test_solve_2(function):
         assert res["success"]
 
 
+# ------------------------------------------------------------------
+# Watney — blind mode (searchRadius == 180)
+# ------------------------------------------------------------------
+def test_solveBlindMode(function) -> None:
+    """Test solve() with blind mode (searchRadius == 180) to cover lines 70-71."""
+    # Set searchRadius to 180 to trigger isBlind = True
+    function.config.searchRadius = 180
+
+    with (
+        mock.patch.object(function.parent, "runSolverBin", return_value=(0, "")),
+        mock.patch.object(function.parent, "prepareResult", return_value={"success": True}),
+    ):
+        res = function.solve(Path("tests/work/image/m51.fit"), True)
+        # Verify blind mode was triggered by checking the result
+        assert res["success"]
+        # Verify runSolverBin was called with blind arguments
+        function.parent.runSolverBin.assert_called_once()
+        call_args = function.parent.runSolverBin.call_args[0][0]
+        # Check that "blind" is in the arguments
+        assert "blind" in call_args
+
+
 def test_checkAvailabilityProgram_1(function):
     with (
         mock.patch.object(Path, "is_file", return_value=True),

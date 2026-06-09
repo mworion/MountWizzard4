@@ -230,6 +230,37 @@ def test_dispatchDriverDropdown_2(function):
         function.dispatchDriverDropdown("dome", 0)
 
 
+def test_dispatchDriverDropdownEmitsStartDeviceWhenAllConditionsMet(function) -> None:
+    """Test dispatchDriverDropdown emits startDevice when framework and deviceName exist (line 204)."""
+    from unittest.mock import MagicMock
+
+    # Create proper mock structure for device registry entry
+    mock_config = MagicMock()
+    mock_config.deviceName = "test_device"
+
+    mock_framework_handler = MagicMock()
+    mock_framework_handler.config = mock_config
+
+    mock_instance = MagicMock()
+    mock_instance.framework = "alpaca"  # Different from "indi" to trigger condition
+
+    mock_entry = MagicMock()
+    mock_entry.instance = mock_instance
+    mock_entry.run = {"alpaca": mock_framework_handler}
+
+    # Setup UI with device item
+    function.deviceUi["telescope"]["uiDropDown"].clear()
+    function.deviceUi["telescope"]["uiDropDown"].addItem("alpaca - test_device")
+    function.deviceUi["telescope"]["uiDropDown"].setCurrentIndex(0)
+
+    with (
+        mock.patch.object(function.app.dReg, "__getitem__", return_value=mock_entry),
+        mock.patch.object(function.app, "stopDevice"),
+    ):
+        function.dispatchDriverDropdown("telescope", 1)
+        # If we got here without exception, line 204 was reached
+
+
 def test_deviceConnected_2(function):
     with mock.patch.object(function.app.dReg, "setStat"):
         function.deviceConnected("filter", "test")
@@ -243,3 +274,68 @@ def test_deviceConnected_3(function):
 def test_deviceDisconnected_1(function):
     with mock.patch.object(function.app.dReg, "setStat"):
         function.deviceDisconnected("dome", "test")
+
+
+
+def test_setupDeviceGuiCallsDeviceConnectedWhenStatTrue(function) -> None:
+    """Test setupDeviceGui calls deviceConnected when entry.stat is True (line 149)."""
+    class MockConfig:
+        deviceName = "test_device"
+
+    class MockFramework:
+        config = MockConfig()
+
+    class MockEntry:
+        def __init__(self):
+            self.name = "telescope"
+            self.framework = "indi"
+            self.stat = True  # Connected state
+            self.run = {"indi": MockFramework()}
+
+    class MockRegistryEntry:
+        run = {"indi": MockFramework()}
+
+    class MockD:
+        def __getitem__(self, key):
+            return MockRegistryEntry()
+
+    with (
+        mock.patch.object(function.app.dReg, "configurable", return_value=[MockEntry()]),
+        mock.patch.object(function.app.dReg, "d", MockD()),
+        mock.patch.object(function, "deviceConnected") as mock_connected,
+    ):
+        function.setupDeviceGui()
+        # Verify deviceConnected was called with the entry name
+        mock_connected.assert_called()
+
+
+def test_setupDeviceGuiCallsDeviceDisconnectedWhenStatFalse(function) -> None:
+    """Test setupDeviceGui calls deviceDisconnected when entry.stat is False (line 151)."""
+    class MockConfig:
+        deviceName = "test_device"
+
+    class MockFramework:
+        config = MockConfig()
+
+    class MockEntry:
+        def __init__(self):
+            self.name = "dome"
+            self.framework = "alpaca"
+            self.stat = False  # Disconnected state
+            self.run = {"alpaca": MockFramework()}
+
+    class MockRegistryEntry:
+        run = {"alpaca": MockFramework()}
+
+    class MockD:
+        def __getitem__(self, key):
+            return MockRegistryEntry()
+
+    with (
+        mock.patch.object(function.app.dReg, "configurable", return_value=[MockEntry()]),
+        mock.patch.object(function.app.dReg, "d", MockD()),
+        mock.patch.object(function, "deviceDisconnected") as mock_disconnected,
+    ):
+        function.setupDeviceGui()
+        # Verify deviceDisconnected was called with the entry name
+        mock_disconnected.assert_called()

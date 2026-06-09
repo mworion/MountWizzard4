@@ -188,6 +188,20 @@ def test_deviceEntryFirmwareProperty() -> None:
     assert isinstance(entry.firmware, MockFirmware)
 
 
+def test_deviceEntryFrameworkProperty() -> None:
+    class MockFramework:
+        pass
+
+    class MockInstance:
+        def __init__(self):
+            self.framework = "indi"
+
+    entry = DeviceEntry(
+        name="camera", instance=MockInstance(), deviceType="camera", isConfigurable=True
+    )
+    assert entry.framework == "indi"
+
+
 def test_deviceEntrySatelliteProperty() -> None:
     class MockSatellite:
         pass
@@ -200,3 +214,20 @@ def test_deviceEntrySatelliteProperty() -> None:
         name="mount", instance=MockInstance(), deviceType=None, isConfigurable=False
     )
     assert isinstance(entry.satellite, MockSatellite)
+
+
+def test_deviceEntryNoneInstanceRunProperty() -> None:
+    entry = DeviceEntry(
+        name="test", instance=None, deviceType="camera", isConfigurable=True
+    )
+    with pytest.raises(AttributeError, match="Device 'test' instance is None"):
+        _ = entry.run
+
+
+def test_deviceEntryNoneInstanceFrameworkProperty() -> None:
+    entry = DeviceEntry(
+        name="test", instance=None, deviceType="camera", isConfigurable=True
+    )
+    with pytest.raises(AttributeError, match="Device 'test' instance is None"):
+        _ = entry.framework
+

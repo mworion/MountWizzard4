@@ -399,3 +399,224 @@ def test_deviceDisconnectedUpdatesStatBeforeMessage(registry: DeviceRegistry) ->
     assert registry.d["camera"].stat is False
     # Verify message was emitted
     assert registry.app.msg.emit.called
+
+
+# ------------------------------------------------------------------
+# DeviceRegistry — config management
+# ------------------------------------------------------------------
+def test_collectConfigFromSingleDeviceWithoutConfig(registry: DeviceRegistry) -> None:
+    """Test collectConfigFromSingleDevice when device has no config attribute."""
+    from unittest.mock import MagicMock
+
+    # Mock a device without config attribute
+    mock_device = MagicMock()
+    mock_device.framework = "indi"
+    mock_device.run = {"indi": MagicMock(spec=[])}  # No config attribute
+    registry.d["camera"].instance = mock_device
+
+    result = registry.collectConfigFromSingleDevice("camera")
+    assert "framework" in result
+    assert result["framework"] == "indi"
+
+
+def test_writeConfigToSingleDeviceWithMissingFrameworkConfig(
+    registry: DeviceRegistry,
+) -> None:
+    """Test writeConfigToSingleDevice with config missing framework."""
+    cfgDevice = {"framework": "indi"}
+    # Should not raise error even though alpaca framework not in config
+    registry.writeConfigToSingleDevice("camera", cfgDevice)
+    assert registry.d["camera"].instance.framework == "indi"
+
+
+def test_writeConfigToAllDevicesSkipsUnknownDevices(registry: DeviceRegistry) -> None:
+    """Test writeConfigToAllDevices skips devices not in config."""
+    cfgSetting = {"nonexistent": {"framework": "indi"}}
+    # Should not raise error for nonexistent device in config
+    registry.writeConfigToAllDevices(cfgSetting)
+
+
+def test_stopDeviceWithoutFramework(registry: DeviceRegistry) -> None:
+    """Test stopDevice returns early when framework is empty."""
+    registry.d["camera"].instance.framework = ""
+    registry.setStat("camera", True)
+    registry.stopDevice("camera")
+    # Should return early and not clear data since framework is empty
+    assert registry.d["camera"].instance.framework == ""
+
+
+def test_stopDeviceWithoutDeviceName(registry: DeviceRegistry) -> None:
+    """Test stopDevice returns early when deviceName is empty."""
+    from unittest.mock import MagicMock
+
+    registry.d["camera"].instance.framework = "indi"
+    mock_config = MagicMock()
+    mock_config.deviceName = ""
+    registry.d["camera"].run["indi"].config = mock_config
+    old_data_id = id(registry.d["camera"].data)
+    registry.stopDevice("camera")
+    # Should return early and not clear data
+    assert id(registry.d["camera"].data) == old_data_id
+
+
+def test_startDeviceWithoutFramework(registry: DeviceRegistry) -> None:
+    """Test startDevice returns early when framework is empty."""
+    registry.d["camera"].instance.framework = ""
+    registry.startDevice("camera")
+    # Should return early without setting stat
+    assert registry.d["camera"].stat is None
+
+
+def test_startDeviceWithoutDeviceName(registry: DeviceRegistry) -> None:
+    """Test startDevice returns early when deviceName is empty."""
+    from unittest.mock import MagicMock
+
+    registry.d["camera"].instance.framework = "indi"
+    mock_config = MagicMock()
+    mock_config.deviceName = ""
+    registry.d["camera"].run["indi"].config = mock_config
+    registry.startDevice("camera")
+    # Should return early without setting stat
+    assert registry.d["camera"].stat is None
+
+
+# ------------------------------------------------------------------
+# Additional deviceRegistry tests for complete coverage
+# ------------------------------------------------------------------
+def test_writeConfigToSingleDeviceWithConfigFields(registry: DeviceRegistry) -> None:
+    """Test writeConfigToSingleDevice actually sets config fields."""
+    from dataclasses import dataclass, field
+    from unittest.mock import MagicMock
+
+    # Create a mock config object with fields
+    @dataclass
+    class MockConfig:
+        testField: str = field(default="default")
+
+    # Setup mock device with config
+    mock_device = MagicMock()
+    mock_device.framework = "indi"
+    mock_device.run = {"indi": MagicMock()}
+    mock_device.run["indi"].config = MockConfig()
+    registry.d["camera"].instance = mock_device
+
+    cfgDevice = {
+        "framework": "indi",
+        "indi": {"testField": "new_value"},
+    }
+    registry.writeConfigToSingleDevice("camera", cfgDevice)
+    # Verify config field was set
+    assert registry.d["camera"].instance.run["indi"].config.testField == "new_value"
+
+
+def test_stopDeviceActuallyStopping(registry: DeviceRegistry) -> None:
+    """Test stopDevice calls stopCommunication when framework and deviceName are set."""
+    from unittest.mock import MagicMock
+
+    registry.d["camera"].instance.framework = "indi"
+    mock_config = MagicMock()
+    mock_config.deviceName = "test_camera"
+    registry.d["camera"].run["indi"].config = mock_config
+
+    # Mock instance methods and data
+    registry.d["camera"].instance.stopCommunication = MagicMock()
+    registry.d["camera"].instance.data = {"test": "data"}
+
+    registry.stopDevice("camera")
+    # Verify stopCommunication was called
+    registry.d["camera"].instance.stopCommunication.assert_called_once()
+    # Verify data was cleared
+    assert registry.d["camera"].instance.data == {}
+    # Verify stat was set to None
+    assert registry.d["camera"].stat is None
+
+
+def test_startDeviceActuallyStarting(registry: DeviceRegistry) -> None:
+    """Test startDevice calls startCommunication when framework and deviceName are set."""
+    from unittest.mock import MagicMock
+
+    registry.d["camera"].instance.framework = "indi"
+    mock_config = MagicMock()
+    mock_config.deviceName = "test_camera"
+    registry.d["camera"].run["indi"].config = mock_config
+
+    # Mock instance methods
+    registry.d["camera"].instance.startCommunication = MagicMock()
+
+    registry.startDevice("camera")
+    # Verify startCommunication was called
+    registry.d["camera"].instance.startCommunication.assert_called_once()
+    # Verify stat was set to True
+    assert registry.d["camera"].stat is True
+
+
+def test_writeConfigToAllDevicesCallsWriteConfigToSingleDevice(
+    registry: DeviceRegistry,
+) -> None:
+    """Test writeConfigToAllDevices calls writeConfigToSingleDevice for known devices."""
+    from unittest.mock import MagicMock, patch
+
+    cfgSetting = {"camera": {"framework": "indi"}}
+    with patch.object(
+        registry, "writeConfigToSingleDevice"
+    ) as mock_write_config:
+        registry.writeConfigToAllDevices(cfgSetting)
+        # Verify writeConfigToSingleDevice was called with camera device
+        mock_write_config.assert_called_once()
+        call_args = mock_write_config.call_args
+        assert call_args[0][0] == "camera"
+        assert call_args[0][1] == cfgSetting["camera"]
+
+
+def test_writeConfigToSingleDeviceSkipsFrameworkWithoutConfig(
+    registry: DeviceRegistry,
+) -> None:
+    """Test writeConfigToSingleDevice skips frameworks that don't have config."""
+    from dataclasses import dataclass, field
+    from unittest.mock import MagicMock
+
+    @dataclass
+    class MockConfig:
+        testField: str = field(default="value")
+
+    # Create a device with one framework that has config and one that doesn't
+    mock_device = MagicMock()
+    mock_device.framework = "indi"
+    mock_device.run = {
+        "indi": MagicMock(config=MockConfig()),  # Has config
+        "alpaca": MagicMock(spec=[]),  # No config attribute
+    }
+    registry.d["camera"].instance = mock_device
+
+    cfgDevice = {
+        "framework": "indi",
+        "indi": {"testField": "value"},
+        "alpaca": {"testField": "value"},  # This should be skipped
+    }
+    registry.writeConfigToSingleDevice("camera", cfgDevice)
+    # Should not raise error - alpaca framework without config should be skipped
+
+
+def test_writeConfigToSingleDeviceSkipsMissingConfigField(
+    registry: DeviceRegistry,
+) -> None:
+    """Test writeConfigToSingleDevice skips fields not in config dict."""
+    from dataclasses import dataclass, field
+
+    @dataclass
+    class MockConfig:
+        field1: str = field(default="default")
+        field2: str = field(default="default")
+
+    mock_device = registry.d["camera"].instance
+    mock_device.framework = "indi"
+    mock_device.run["indi"].config = MockConfig()
+
+    # Only provide field1 in config, not field2
+    cfgDevice = {"framework": "indi", "indi": {"field1": "new_value"}}
+    registry.writeConfigToSingleDevice("camera", cfgDevice)
+    # Verify field1 was set, field2 remained default
+    assert mock_device.run["indi"].config.field1 == "new_value"
+    assert mock_device.run["indi"].config.field2 == "default"
+
+

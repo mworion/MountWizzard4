@@ -24,7 +24,7 @@ from typing import Any
 class SettDevice(QObject):
     def __init__(self, parentW: Any) -> None:
         super().__init__()
-        self.mainW = parentW
+        self.parentW = parentW
         self.app = parentW.app
         self.msg = parentW.app.msg
         self.ui = parentW.ui
@@ -127,7 +127,7 @@ class SettDevice(QObject):
         for driver in self.deviceUi:
             if self.deviceUi[driver]["uiSetup"] is not None:
                 ui = self.deviceUi[driver]["uiSetup"]
-                self.mainW.wIcon(ui, "cogs")
+                self.parentW.wIcon(ui, "cogs")
 
     def closeEvent(self) -> None:
         for entry in self.app.dReg.configurable():
@@ -190,7 +190,7 @@ class SettDevice(QObject):
     def callPopup(self, device: str) -> None:
         self.app.dReg.stopDevice(device)
         data = self.app.dReg.collectConfigFromSingleDevice(device)
-        self.devicePopup = DevicePopup(self.mainW, device, data)
+        self.devicePopup = DevicePopup(self.parentW, device, data)
         self.devicePopup.initConfig()
         self.devicePopup.ui.ok.clicked.connect(self.processPopupResults)
 

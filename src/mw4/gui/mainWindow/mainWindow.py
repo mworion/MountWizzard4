@@ -106,7 +106,6 @@ class MainWindow(MWidget):
         setTabAndIndex(self.ui.imagingTabWidget, config, "orderImaging")
         setTabAndIndex(self.ui.modelingTabWidget, config, "orderModeling")
         setTabAndIndex(self.ui.manageTabWidget, config, "orderManage")
-        setTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
         setTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
         setTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
         self.mainWindowAddons.initConfig()
@@ -131,9 +130,7 @@ class MainWindow(MWidget):
         getTabAndIndex(self.ui.imagingTabWidget, config, "orderImaging")
         getTabAndIndex(self.ui.modelingTabWidget, config, "orderModeling")
         getTabAndIndex(self.ui.manageTabWidget, config, "orderManage")
-        getTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
         getTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
-        getTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
         self.externalWindows.storeConfigExtendedWindows()
         self.mainWindowAddons.storeConfig()
         self.app.storeConfig()
@@ -263,11 +260,6 @@ class MainWindow(MWidget):
             else:
                 changeStyleDynamic(ui, "color", "red")
                 ui.setEnabled(True)
-
-        isMount = self.app.dReg["mount"].stat
-        changeStyleDynamic(self.ui.mountOn, "run", isMount)
-        changeStyleDynamic(self.ui.mountOff, "run", not isMount)
-        changeStyleDynamic(self.ui.mountConnected, "run", isMount)
 
     def updateMountConnStat(self, status: bool) -> None:
         self.app.dReg.setStat("mount", status)

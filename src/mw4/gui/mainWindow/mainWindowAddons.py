@@ -33,7 +33,6 @@ from mw4.gui.mainWaddon.tabSat_Search import SatSearch
 from mw4.gui.mainWaddon.tabSat_Track import SatTrack
 from mw4.gui.mainWaddon.tabSett_Dome import SettDome
 from mw4.gui.mainWaddon.tabSett_Misc import SettMisc
-from mw4.gui.mainWaddon.tabSett_Mount import SettMount
 from mw4.gui.mainWaddon.tabSett_ParkPos import SettParkPos
 from mw4.gui.mainWaddon.tabSett_Relay import SettRelay
 from mw4.gui.mainWaddon.tabSett_Update import SettUpdate
@@ -70,7 +69,6 @@ class MainWindowAddons:
             "SatTrack": SatTrack(mainW),
             "SettDome": SettDome(mainW),
             "SettMisc": SettMisc(mainW),
-            "SettMount": SettMount(mainW),
             "SettParkPos": SettParkPos(mainW),
             "SettRelay": SettRelay(mainW),
             "IERSTime": IERSTime(mainW),

@@ -16,18 +16,18 @@
 import socket
 import wakeonlan
 from mw4.base.ethernet import checkFormatMAC
-from mw4.gui.utilities.qtHelpers import guiSetText
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
 from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.setting import Setting
 from typing import Any
 
 
 class SettMount:
-    def __init__(self, mainW: Any) -> None:
-        self.mainW = mainW
-        self.app = mainW.app
-        self.msg = mainW.app.msg
-        self.ui = mainW.ui
+    def __init__(self, parentW: Any) -> None:
+        self.parentW = parentW
+        self.app = parentW.app
+        self.msg = parentW.app.msg
+        self.ui = parentW.ui
 
         self.ui.mountOn.clicked.connect(self.mountBoot)
         self.ui.mountOff.clicked.connect(self.mountShutdown)
@@ -42,10 +42,11 @@ class SettMount:
         self.app.dReg["mount"].signals.settingDone.connect(self.setMountMAC)
         self.app.dReg["mount"].signals.firmwareDone.connect(self.setMountCapabilities)
         self.app.dReg["mount"].signals.firmwareDone.connect(self.updateFwGui)
+        self.app.dReg["mount"].signals.mountIsUp.connect(self.showMountStatus)
         self.app.update30s.connect(self.syncClock)
 
     def initConfig(self) -> None:
-        config = self.app.config["WindowMain"]
+        config = self.app.config.get("SettingDeviceMount", {})
         self.ui.mountHost.setText(config.get("mountHost", ""))
         self.ui.port3492.setChecked(config.get("port3492", True))
         self.mountHost()
@@ -65,7 +66,8 @@ class SettMount:
             self.mountBoot()
 
     def storeConfig(self) -> None:
-        config = self.app.config["WindowMain"]
+        self.app.config["SettingDeviceMount"] = {}
+        config = self.app.config["SettingDeviceMount"]
         config["mountHost"] = self.ui.mountHost.text()
         config["mountMAC"] = self.ui.mountMAC.text()
         config["mountWolAddress"] = self.ui.mountWolAddress.text()
@@ -77,6 +79,11 @@ class SettMount:
         config["syncTimeCont"] = self.ui.syncTimeCont.isChecked()
         config["syncTimeNotTrack"] = self.ui.syncTimeNotTrack.isChecked()
         config["clockSync"] = self.ui.clockSync.isChecked()
+
+    def closeEvent(self) -> None:
+        self.app.dReg["mount"].signals.settingDone.disconnect(self.setMountMAC)
+        self.app.dReg["mount"].signals.firmwareDone.disconnect(self.setMountCapabilities)
+        self.app.dReg["mount"].signals.firmwareDone.disconnect(self.updateFwGui)
 
     def setMountCapabilities(self, fw) -> None:
         self.ui.GroupWOL.setEnabled(self.app.dReg["mount"].firmware.isHW2012())
@@ -133,6 +140,11 @@ class SettMount:
         self.app.dReg["mount"].instance.MAC = sett.addressLanMAC
         self.ui.mountMAC.setText(self.app.dReg["mount"].instance.MAC)
 
+    def showMountStatus(self, status: bool) -> None:
+        changeStyleDynamic(self.ui.mountOn, "run", status)
+        changeStyleDynamic(self.ui.mountOff, "run", not status)
+        changeStyleDynamic(self.ui.mountConnected, "run", status)
+
     def updateFwGui(self, fw: Firmware) -> None:
         guiSetText(self.ui.product, "s", fw.product)
         guiSetText(self.ui.vString, "s", fw.vString.public)
@@ -145,8 +157,6 @@ class SettMount:
         self.ui.syncTimeNone.setEnabled(enableSyncTimer)
         self.ui.syncTimeCont.setEnabled(enableSyncTimer)
         self.ui.syncTimeNotTrack.setEnabled(enableSyncTimer)
-        self.ui.clockOffset.setEnabled(enableSyncTimer)
-        self.ui.clockOffsetMS.setEnabled(enableSyncTimer)
         if enableSyncTimer:
             self.app.dReg["mount"].instance.startMountClockTimer()
         else:

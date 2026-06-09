@@ -131,14 +131,14 @@ def test_runSolverBin_2(function):
 
 
 def test_runSolverBin_3(function):
-    with mock.patch.object(
-        subprocess.Popen,
-        "communicate",
-        return_value=("", ""),
-        side_effect=subprocess.TimeoutExpired("run", 1),
-    ):
+    function.framework = "astap"
+    function.run["astap"].timeout = function.run["astap"].config.timeout
+    mock_proc = mock.MagicMock()
+    mock_proc.communicate.side_effect = subprocess.TimeoutExpired("run", 1)
+    with mock.patch.object(subprocess, "Popen", return_value=mock_proc):
         suc, ret = function.runSolverBin(["test", "test", "test", "test"])
-        assert not suc
+    assert not suc
+    assert ret == "Timeout expired"
 
 
 def test_prepareResult_1(function):

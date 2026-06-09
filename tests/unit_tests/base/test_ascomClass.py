@@ -400,7 +400,7 @@ def test_startCommunication_noDevice(function):
 
 
 def test_startCommunication_success(function):
-    function.deviceName = "test.driver"
+    function.config.deviceName = "test.driver"
     with mock.patch.object(function.threadPool, "start") as m:
         function.startCommunication()
     m.assert_called_once()

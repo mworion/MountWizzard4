@@ -16,6 +16,7 @@
 import pytest
 from mw4.base.deviceRegistry import DeviceEntry, DeviceRegistry
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture()
@@ -339,8 +340,13 @@ def test_deviceConnectedEmitsMessage(registry: DeviceRegistry) -> None:
     # Mock the msg signal to capture emission
     registry.app.msg = MagicMock()
 
-    # Call deviceConnected
-    registry.deviceConnected("camera", "INDI::camera")
+    # Mock sender to return a specific signal object
+    mock_sender = MagicMock()
+    registry.signalsToName[id(mock_sender)] = "camera"
+
+    with mock.patch.object(registry, "sender", return_value=mock_sender):
+        # Call deviceConnected with the device name as parameter
+        registry.deviceConnected("INDI::camera")
 
     # Verify the signal was emitted with correct parameters
     registry.app.msg.emit.assert_called_once_with(
@@ -357,8 +363,13 @@ def test_deviceDisconnectedEmitsMessage(registry: DeviceRegistry) -> None:
     # Mock the msg signal to capture emission
     registry.app.msg = MagicMock()
 
-    # Call deviceDisconnected
-    registry.deviceDisconnected("dome", "INDI::dome")
+    # Mock sender to return a specific signal object
+    mock_sender = MagicMock()
+    registry.signalsToName[id(mock_sender)] = "dome"
+
+    with mock.patch.object(registry, "sender", return_value=mock_sender):
+        # Call deviceDisconnected with the device name as parameter
+        registry.deviceDisconnected("INDI::dome")
 
     # Verify the signal was emitted with correct parameters
     registry.app.msg.emit.assert_called_once_with(
@@ -375,8 +386,13 @@ def test_deviceConnectedUpdatesStatBeforeMessage(registry: DeviceRegistry) -> No
     # Set up recording of method calls
     registry.app.msg = MagicMock()
 
-    # Call deviceConnected
-    registry.deviceConnected("camera", "TestCamera")
+    # Mock sender to return a specific signal object
+    mock_sender = MagicMock()
+    registry.signalsToName[id(mock_sender)] = "camera"
+
+    with mock.patch.object(registry, "sender", return_value=mock_sender):
+        # Call deviceConnected
+        registry.deviceConnected("TestCamera")
 
     # Verify stat was updated
     assert registry.d["camera"].stat is True
@@ -392,8 +408,13 @@ def test_deviceDisconnectedUpdatesStatBeforeMessage(registry: DeviceRegistry) ->
     registry.setStat("camera", True)
     registry.app.msg = MagicMock()
 
-    # Call deviceDisconnected
-    registry.deviceDisconnected("camera", "TestCamera")
+    # Mock sender to return a specific signal object
+    mock_sender = MagicMock()
+    registry.signalsToName[id(mock_sender)] = "camera"
+
+    with mock.patch.object(registry, "sender", return_value=mock_sender):
+        # Call deviceDisconnected
+        registry.deviceDisconnected("TestCamera")
 
     # Verify stat was updated
     assert registry.d["camera"].stat is False
@@ -554,7 +575,7 @@ def test_writeConfigToAllDevicesCallsWriteConfigToSingleDevice(
     registry: DeviceRegistry,
 ) -> None:
     """Test writeConfigToAllDevices calls writeConfigToSingleDevice for known devices."""
-    from unittest.mock import MagicMock, patch
+    from unittest.mock import patch
 
     cfgSetting = {"camera": {"framework": "indi"}}
     with patch.object(

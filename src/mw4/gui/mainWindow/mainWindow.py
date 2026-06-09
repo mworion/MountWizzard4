@@ -70,7 +70,6 @@ class MainWindow(MWidget):
             },
         }
         self.app.dReg["mount"].signals.pointDone.connect(self.updateStatusGUI)
-        self.app.dReg["mount"].signals.mountIsUp.connect(self.updateMountConnStat)
         self.app.remoteCommand.connect(self.remoteCommand)
         self.app.dReg["plateSolve"].signals.message.connect(self.updatePlateSolveStatus)
         self.app.dReg["dome"].signals.message.connect(self.updateDomeStatus)
@@ -260,9 +259,6 @@ class MainWindow(MWidget):
             else:
                 changeStyleDynamic(ui, "color", "red")
                 ui.setEnabled(True)
-
-    def updateMountConnStat(self, status: bool) -> None:
-        self.app.dReg.setStat("mount", status)
 
     def updatePlateSolveStatus(self, text: str) -> None:
         self.ui.plateSolveText.setText(text)

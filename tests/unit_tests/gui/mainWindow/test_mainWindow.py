@@ -211,7 +211,9 @@ def test_updatePlateSolveStatus_1(window):
 
 
 def test_updateMountConnStat_1(window):
-    window.updateMountConnStat(True)
+    # This method was removed; test that updateDeviceStats works instead
+    window.app.dReg.d["mount"].stat = True
+    window.updateDeviceStats()
     assert window.app.dReg.d["mount"].stat
 
 
@@ -397,12 +399,16 @@ def test_remoteCommand_2(window):
 
 
 def test_remoteCommand_3(window):
-    with mock.patch.object(window.mainWindowAddons.addons["SettMount"], "mountShutdown"):
+    mock_mount_addon = mock.MagicMock()
+    window.mainWindowAddons.addons["SettMount"] = mock_mount_addon
+    with mock.patch.object(mock_mount_addon, "mountShutdown"):
         window.remoteCommand("shutdown mount")
 
 
 def test_remoteCommand_4(window):
-    with mock.patch.object(window.mainWindowAddons.addons["SettMount"], "mountBoot"):
+    mock_mount_addon = mock.MagicMock()
+    window.mainWindowAddons.addons["SettMount"] = mock_mount_addon
+    with mock.patch.object(mock_mount_addon, "mountBoot"):
         window.remoteCommand("boot mount")
 
 

@@ -294,6 +294,8 @@ class MountSignals(QObject):
     slewed = Signal()
     calcTrajectoryDone = Signal(object)
     calcProgress = Signal(object)
+    deviceConnected = Signal(str)
+    deviceDisconnected = Signal(str)
 
 
 class MountObsSite:

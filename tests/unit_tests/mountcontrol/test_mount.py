@@ -154,6 +154,11 @@ def test_clearCycleCheckMountIsUp_1(function):
     function.clearCycleCheckMountIsUp()
 
 
+def test_clearCycleCheckMountIsUp_2(function):
+    function.mountIsUp = False
+    function.clearCycleCheckMountIsUp()
+
+
 def test_cycleCheckMountIsUp_1(function):
     function.host = ()
     with mock.patch.object(QThreadPool, "start"):

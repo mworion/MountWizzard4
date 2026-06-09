@@ -14,6 +14,7 @@
 #
 ###########################################################
 import mw4.gui
+import mw4.gui.extWindows.setting.tabSettMount
 import pytest
 import socket
 import unittest.mock as mock
@@ -72,7 +73,7 @@ def test_mountShutdown_2(function):
 def test_bootRackComp_1(function):
     with (
         mock.patch.object(
-            mw4.gui.extWindows.setting.tabSett_Mount, "checkFormatMAC", return_value=False
+            mw4.gui.extWindows.setting.tabSettMount, "checkFormatMAC", return_value=False
         ),
         mock.patch.object(wakeonlan, "send_magic_packet", return_value=False),
     ):
@@ -83,7 +84,7 @@ def test_bootRackComp_2(function):
     function.ui.rackCompMAC.setText("00:00:00:00:00:xy")
     with (
         mock.patch.object(
-            mw4.gui.extWindows.setting.tabSett_Mount, "checkFormatMAC", return_value=True
+            mw4.gui.extWindows.setting.tabSettMount, "checkFormatMAC", return_value=True
         ),
         mock.patch.object(wakeonlan, "send_magic_packet", return_value=True),
     ):

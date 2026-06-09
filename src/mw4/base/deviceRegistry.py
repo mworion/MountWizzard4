@@ -15,7 +15,6 @@
 ###########################################################
 from collections.abc import Iterator
 from dataclasses import fields
-from functools import partial
 from mw4.base.deviceEntry import DeviceEntry
 from mw4.logic.camera.camera import Camera
 from mw4.logic.cover.cover import Cover
@@ -33,12 +32,15 @@ from mw4.logic.powerswitch.pegasusUPB import PegasusUPB
 from mw4.logic.remote.remote import Remote
 from mw4.logic.telescope.telescope import Telescope
 from mw4.mountcontrol.mount import MountDevice
+from PySide6.QtCore import QObject
 from typing import Any
 
 
-class DeviceRegistry:
+class DeviceRegistry(QObject):
     def __init__(self, app: Any) -> None:
+        super().__init__()
         self.app = app
+        self.signalsToName: dict[int, str] = {}
         self.app.stopDevices.connect(self.stopDevices)
         self.app.startDevice.connect(self.startDevice)
         self.app.stopDevice.connect(self.stopDevice)
@@ -177,8 +179,13 @@ class DeviceRegistry:
         for entry in self.configurable():
             if hasattr(self.d[entry.name].instance, "signals"):
                 sig = self.d[entry.name].signals
-                sig.deviceConnected.connect(partial(self.deviceConnected, entry.name))
-                sig.deviceDisconnected.connect(partial(self.deviceDisconnected, entry.name))
+                self.signalsToName[id(sig)] = entry.name
+                sig.deviceConnected.connect(self.deviceConnected)
+                sig.deviceDisconnected.connect(self.deviceDisconnected)
+        sig_mount = self.d["mount"].signals
+        self.signalsToName[id(sig_mount)] = "mount"
+        sig_mount.deviceConnected.connect(self.deviceConnected)
+        sig_mount.deviceDisconnected.connect(self.deviceDisconnected)
 
     # ------------------------------------------------------------------
     # Mapping protocol — keeps ``"x" in dReg`` and ``dReg["x"]`` working
@@ -273,10 +280,18 @@ class DeviceRegistry:
         for entry in self.configurable():
             self.startDevice(entry.name)
 
-    def deviceConnected(self, deviceSlot: str, deviceName: str) -> None:
-        self.setStat(deviceSlot, True)
-        self.app.msg.emit(0, "Driver", "Device connected", f"{deviceName}::{deviceSlot}")
+    def deviceConnected(self, *_args: Any) -> None:
+        name = self.signalsToName.get(id(self.sender()))
+        if name is None:
+            return
+        deviceName = _args[0] if _args else ""
+        self.setStat(name, True)
+        self.app.msg.emit(0, "Driver", "Device connected", f"{deviceName}::{name}")
 
-    def deviceDisconnected(self, deviceSlot: str, deviceName: str) -> None:
-        self.setStat(deviceSlot, False)
-        self.app.msg.emit(0, "Driver", "Device disconnected", f"{deviceName}::{deviceSlot}")
+    def deviceDisconnected(self, *_args: Any) -> None:
+        name = self.signalsToName.get(id(self.sender()))
+        if name is None:
+            return
+        deviceName = _args[0] if _args else ""
+        self.setStat(name, False)
+        self.app.msg.emit(0, "Driver", "Device disconnected", f"{deviceName}::{name}")

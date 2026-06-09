@@ -207,6 +207,10 @@ class MountDevice:
     def clearCycleCheckMountIsUp(self) -> None:
         self.startupMountData(self.mountIsUp)
         self.signals.mountIsUp.emit(self.mountIsUp)
+        if self.mountIsUp:
+            self.signals.deviceConnected.emit("mount")
+        else:
+            self.signals.deviceDisconnected.emit("mount")
         self.mutexCycleMountIsUp.unlock()
 
     def cycleCheckMountIsUp(self) -> None:

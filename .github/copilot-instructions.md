@@ -96,6 +96,8 @@ def test_myFunction(app):
 - Line length must not exceed the limit defined in `pyproject.toml` (Ruff). but still use this length as a guideline for readability.
 - Source code is located in `src/mw4`.
 - Unit tests are located in `tests/unit_tests`.
+- no "# pragma: no cover" comments should be used
+- windows related tests should be added, but only tracked for coverage when run on windos machine.  
 - All code must be covered by tests with a test coverage of 100%.
 - if larger changes (more than one class) are needed, a plan must be created before implementing any changes.
 - The plan will be saved as a Markdown file with an appropriate name in the

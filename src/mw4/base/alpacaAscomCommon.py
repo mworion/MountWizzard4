@@ -41,10 +41,8 @@ class AlpacaAscomCommon(DriverData):
         self.data: dict = parent.data
         self.signals: Any = parent.signals
         self.threadPool: QThreadPool = parent.app.threadPool
-        self.loadConfig: bool = False
         self.propertyExceptions: list[str] = []
         self.device: Any = None
-        self.deviceName: str = ""
         self.deviceConnected: bool = False
         self.serverConnected: bool = False
         self.commandQueue: queue.Queue = queue.Queue()
@@ -57,10 +55,10 @@ class AlpacaAscomCommon(DriverData):
         try:
             returnVal = getattr(self.device, valueProp)
             if self.loggingTrace:
-                self.log.debug(f"[Trace] [{self.deviceName}] [{valueProp}] [{returnVal}]")
+                self.log.debug(f"[Trace] [{self.config.deviceName}] [{valueProp}] [{returnVal}]")
             return returnVal
         except Exception as e:
-            self.log.debug(f"[{self.deviceName}] property [{valueProp}] not implemented: {e}")
+            self.log.debug(f"[{self.config.deviceName}] property [{valueProp}] not implemented: {e}")
             self.propertyExceptions.append(valueProp)
 
     def setDeviceProp(self, valueProp: str, value: Any) -> None:
@@ -69,9 +67,9 @@ class AlpacaAscomCommon(DriverData):
         try:
             setattr(self.device, valueProp, value)
             if self.loggingTrace:
-                self.log.debug(f"[Trace] [{self.deviceName}] [{valueProp}] [{value}]")
+                self.log.debug(f"[Trace] [{self.config.deviceName}] [{valueProp}] [{value}]")
         except Exception as e:
-            self.log.debug(f"[{self.deviceName}] property [{valueProp}] not implemented: {e}")
+            self.log.debug(f"[{self.config.deviceName}] property [{valueProp}] not implemented: {e}")
             self.propertyExceptions.append(valueProp)
 
     def callDeviceMethod(self, valueProp: str, **kwargs: Any) -> Any:
@@ -80,11 +78,11 @@ class AlpacaAscomCommon(DriverData):
         try:
             returnVal = getattr(self.device, valueProp)(**kwargs)
             if self.loggingTrace:
-                t = f"[Trace] [{self.deviceName}] [{valueProp}] [{kwargs}] [{returnVal}]"
+                t = f"[Trace] [{self.config.deviceName}] [{valueProp}] [{kwargs}] [{returnVal}]"
                 self.log.debug(t)
             return returnVal
         except Exception as e:
-            self.log.debug(f"[{self.deviceName}] method [{valueProp}] not implemented: {e}")
+            self.log.debug(f"[{self.config.deviceName}] method [{valueProp}] not implemented: {e}")
             self.propertyExceptions.append(valueProp)
 
     def setDevicePropQueued(self, valueProp: str, value: Any) -> None:
@@ -102,14 +100,14 @@ class AlpacaAscomCommon(DriverData):
             self.setDeviceProp("Connected", True)
             suc = self.getDeviceProp("Connected")
             if suc:
-                self.log.debug(f"[{self.deviceName}] connected, [{retry}] retries")
+                self.log.debug(f"[{self.config.deviceName}] connected, [{retry}] retries")
                 break
             time.sleep(0.2)
         else:
-            self.log.debug(f"[{self.deviceName}] not connected, [{retry}] retries")
+            self.log.debug(f"[{self.config.deviceName}] not connected, [{retry}] retries")
             suc = False
         if not suc:
-            self.msg.emit(2, self.PROTOCOL_NAME, "Connect error", self.deviceName)
+            self.msg.emit(2, self.PROTOCOL_NAME, "Connect error", self.config.deviceName)
         return suc
 
     def getInitialConfig(self) -> None:
@@ -131,22 +129,22 @@ class AlpacaAscomCommon(DriverData):
             elif cmd.cmdType == "set":
                 self.setDeviceProp(cmd.valueProp, cmd.value)
             else:
-                self.log.warning(f"[{self.deviceName}] unknown cmdType: [{cmd.cmdType}]")
+                self.log.warning(f"[{self.config.deviceName}] unknown cmdType: [{cmd.cmdType}]")
 
     def handleDeviceConnect(self) -> None:
         if not self.connectDevice():
             return
         self.serverConnected = True
         self.deviceConnected = True
-        self.signals.deviceConnected.emit(self.parent.DEVICE_TYPE, self.deviceName)
-        self.msg.emit(0, self.PROTOCOL_NAME, "Device found", self.deviceName)
+        self.signals.deviceConnected.emit(self.parent.DEVICE_TYPE, self.config.deviceName)
+        self.msg.emit(0, self.PROTOCOL_NAME, "Device found", self.config.deviceName)
         self.getInitialConfig()
 
     def handleDeviceDisconnect(self) -> None:
         self.deviceConnected = False
         self.serverConnected = False
-        self.signals.deviceDisconnected.emit(self.parent.DEVICE_TYPE, self.deviceName)
-        self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.deviceName)
+        self.signals.deviceDisconnected.emit(self.parent.DEVICE_TYPE, self.config.deviceName)
+        self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.config.deviceName)
 
     def runnerCommunicationLoop(self) -> None:
         while not self.stopEvent.is_set():
@@ -164,5 +162,5 @@ class AlpacaAscomCommon(DriverData):
         self.setDevicePropQueued("Connected", False)
         self.deviceConnected = False
         self.serverConnected = False
-        self.signals.deviceDisconnected.emit(self.parent.DEVICE_TYPE, self.deviceName)
-        self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.deviceName)
+        self.signals.deviceDisconnected.emit(self.parent.DEVICE_TYPE, self.config.deviceName)
+        self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.config.deviceName)

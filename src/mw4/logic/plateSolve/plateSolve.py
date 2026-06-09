@@ -48,18 +48,13 @@ class PlateSolve:
         self.solveLoopRunning: bool = False
         self.worker: Worker = Worker(self.workerSolveLoop)
         self.process: subprocess.Popen | None = None
-
         self.data: dict = {}
-        self.defaultConfig: dict = {"framework": "", "frameworks": {}}
         self.framework: str = ""
         self.run: dict = {
             "astrometry": Astrometry(self),
             "astap": ASTAP(self),
             "watney": Watney(self),
         }
-        for fw in self.run:
-            self.defaultConfig["frameworks"].update(self.run[fw].defaultConfig)
-
         self.signals.deviceConnected.connect(self.startSolveLoop)
 
     def runSolverBin(self, runnable: list[Any]) -> tuple[bool, str]:

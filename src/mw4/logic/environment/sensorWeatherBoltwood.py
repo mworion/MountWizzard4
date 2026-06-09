@@ -14,8 +14,15 @@
 #
 ###########################################################
 import logging
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
+
+
+@dataclass
+class DeviceConfigBoltwood:
+    deviceName: str = field(default="Boltwood II")
+    filePath: str = field(default="")
 
 
 class SensorWeatherBoltwood:
@@ -26,14 +33,10 @@ class SensorWeatherBoltwood:
         self.parent = parent
         self.app = parent.app
         self.data: dict[str, Any] = parent.data
+        self.config = DeviceConfigBoltwood()
         self.signals = parent.signals
         self.enabled: bool = False
-        self.filePath: str = ""
         self.deviceConnected: bool = False
-        self.defaultConfig: dict[str, Any] = {
-            "deviceName": "Boltwood II",
-            "filePath": "",
-        }
         self.app.update3s.connect(self.pollBoltwoodData)
 
     def startCommunication(self) -> None:
@@ -118,10 +121,10 @@ class SensorWeatherBoltwood:
     def pollBoltwoodData(self) -> None:
         if not self.enabled:
             return
-        filePath = Path(self.filePath)
+        filePath = Path(self.config.filePath)
         if not self.processBoltwoodData(filePath):
             self.stopCommunication()
             return
         if not self.deviceConnected:
             self.deviceConnected = True
-            self.signals.deviceConnected.emit("file", "BoltwoodWeather")
+            self.signals.deviceConnected.emit(self.DEVICE_TYPE, self.config.deviceName)

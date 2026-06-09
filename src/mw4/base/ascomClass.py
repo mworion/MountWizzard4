@@ -37,7 +37,6 @@ class AscomClass(AlpacaAscomCommon):
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent)
-        self.deviceName: str = ""
         self.config = DeviceConfigAscom()
         self.workerRunnerCoreLoop: Worker | None = None
         self.defaultConfig: dict[str, Any] = {
@@ -47,10 +46,10 @@ class AscomClass(AlpacaAscomCommon):
     def runnerCoreLoop(self) -> None:
         CoInitialize()
         try:
-            self.device = client.dynamic.Dispatch(self.deviceName)
-            self.log.debug(f"[{self.deviceName}] Dispatching")
+            self.device = client.dynamic.Dispatch(self.config.deviceName)
+            self.log.debug(f"[{self.config.deviceName}] Dispatching")
         except Exception as e:
-            self.log.error(f"[{self.deviceName}] Dispatch error: [{e}]")
+            self.log.error(f"[{self.config.deviceName}] Dispatch error: [{e}]")
             return
         else:
             self.runnerCommunicationLoop()
@@ -65,7 +64,7 @@ class AscomClass(AlpacaAscomCommon):
         self.serverConnected = False
         self.data.clear()
         self.propertyExceptions.clear()
-        if not self.deviceName:
+        if not self.config.deviceName:
             return
         self.stopEvent.clear()
         self.workerRunnerCoreLoop = Worker(self.runnerCoreLoop)

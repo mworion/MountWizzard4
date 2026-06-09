@@ -23,10 +23,10 @@ class CoverIndi(IndiClass):
         self.signals = parent.signals
 
     def closeCover(self) -> None:
-        self.txQ.put((self.deviceName, "CAP_PARK", {"PARK": "On"}))
+        self.txQ.put((self.config.deviceName, "CAP_PARK", {"PARK": "On"}))
 
     def openCover(self) -> None:
-        self.txQ.put((self.deviceName, "CAP_PARK", {"UNPARK": "On"}))
+        self.txQ.put((self.config.deviceName, "CAP_PARK", {"UNPARK": "On"}))
 
     @staticmethod
     def haltCover() -> None:

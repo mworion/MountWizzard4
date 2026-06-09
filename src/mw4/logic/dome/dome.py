@@ -36,23 +36,14 @@ class Dome:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
-        self.loadConfig: bool = True
-        self.deviceType: str = ""
-        self.data: dict[str, Any] = {
-            "Slewing": False,
-        }
-        self.defaultConfig: dict[str, Any] = {"framework": "", "frameworks": {}}
+        self.data: dict[str, Any] = {"Slewing": False}
         self.framework: str = ""
         self.run: dict[str, Any] = {
             "indi": DomeIndi(self),
             "alpaca": DomeAlpaca(self),
         }
-
         if platform.system() == "Windows":
             self.run["ascom"] = DomeAscom(self)
-
-        for fw in self.run:
-            self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
 
         self.useGeometry: bool = False
         self.useDynamicFollowing: bool = False

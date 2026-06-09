@@ -36,7 +36,6 @@ class Camera:
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.data: dict[str, Any] = {}
-        self.loadConfig: bool = True
         self.exposing: bool = False
         self.fastReadout: bool = False
         self.imagePath: Path = Path()
@@ -47,7 +46,6 @@ class Camera:
         self.binningN: int = 1
         self.focalLength: int = 1
         self.framework: str = ""
-        self.defaultConfig: dict = {"framework": "", "frameworks": {}}
         self._binning: int = 1
         self._subFrame: int = 100
         self.posX: int = 0
@@ -65,9 +63,6 @@ class Camera:
         }
         if platform.system() == "Windows":  # pragma: no cover
             self.run["ascom"] = CameraAscom(self)
-
-        for fw in self.run:
-            self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
 
     @property
     def binning(self) -> int:

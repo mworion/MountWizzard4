@@ -16,11 +16,19 @@
 import json
 import logging
 import requests
+from dataclasses import dataclass, field
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker
 from pathlib import Path
 from PySide6.QtCore import Signal
 from typing import Any
+
+
+@dataclass
+class DeviceConfigSeeingWeather:
+    deviceName: str = field(default="")
+    apiKey: str = field(default="free")
+    hostAddress: str = field(default="my.meteoblue.com")
 
 
 class SeeingWeatherSignals(Signals):
@@ -40,22 +48,10 @@ class SeeingWeather:
         self.b: str = ""
         self.framework: str = ""
         self.run: dict[str, Any] = {"seeing": self}
-        self.deviceName: str = ""
         self.data: dict[str, Any] = {}
+        self.config = DeviceConfigSeeingWeather()
         self.worker: Worker | None = None
-        self.defaultConfig: dict[str, Any] = {
-            "framework": "",
-            "frameworks": {
-                "seeing": {
-                    "deviceName": "seeingWeather",
-                    "apiKey": "free",
-                    "hostaddress": "my.meteoblue.com",
-                }
-            },
-        }
         self.running: bool = False
-        self.hostaddress: str = ""
-        self.apiKey: str = ""
 
     def startCommunication(self) -> None:
         self.pollSeeingData()
@@ -64,7 +60,7 @@ class SeeingWeather:
     def stopCommunication(self) -> None:
         self.running = False
         self.data.clear()
-        self.signals.deviceDisconnected.emit("seeingWeather", "SeeingWeather")
+        self.signals.deviceDisconnected.emit(self.DEVICE_TYPE, self.config.deviceName)
         self.app.update3m.disconnect(self.pollSeeingData)
 
     def processSeeingData(self) -> None:
@@ -82,7 +78,7 @@ class SeeingWeather:
 
     def workerGetSeeingData(self, url: Path) -> bool:
         try:
-            data = requests.get(url, timeout=30)
+            data = requests.get(str(url), timeout=30)
             self.log.debug(f"Seeing url: [{url}] response code: [{data.status_code}]")
         except Exception as e:
             self.log.critical(f"[{url}] general exception: [{e}]")
@@ -97,10 +93,10 @@ class SeeingWeather:
 
     def sendStatus(self, status: bool) -> None:
         if not status and self.running:
-            self.signals.deviceDisconnected.emit("seeingWeather", "SeeingWeather")
+            self.signals.deviceDisconnected.emit(self.DEVICE_TYPE, self.config.deviceName)
             self.running = False
         elif status and not self.running:
-            self.signals.deviceConnected.emit("seeingWeather", "SeeingWeather")
+            self.signals.deviceConnected.emit(self.DEVICE_TYPE, self.config.deviceName)
             self.running = True
         if status:
             self.processSeeingData()
@@ -122,13 +118,13 @@ class SeeingWeather:
         self.threadPool.start(self.worker)
 
     def pollSeeingData(self) -> None:
-        if not self.apiKey or not self.b or not self.app.onlineMode:
+        if not self.config.apiKey or not self.b or not self.app.onlineMode:
             self.sendStatus(False)
             return
 
         lat = self.location.latitude.degrees
         lon = self.location.longitude.degrees
 
-        webSite = f"http://{self.hostaddress}/feed/seeing_json"
+        webSite = f"http://{self.config.hostAddress}/feed/seeing_json"
         url = f"{webSite}?lat={lat:1.2f}&lon={lon:1.2f}&tz=utc"
         self.getSeeingData(url=url + f"&apikey={self.b}")

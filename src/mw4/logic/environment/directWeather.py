@@ -14,9 +14,15 @@
 #
 ###########################################################
 import logging
+from dataclasses import dataclass, field
 from mw4.base.signalsDevices import Signals
 from mw4.mountcontrol.setting import Setting
 from typing import Any
+
+
+@dataclass
+class DeviceConfigDirectWeather:
+    deviceName: str = field(default="")
 
 
 class DirectWeather:
@@ -26,16 +32,10 @@ class DirectWeather:
     def __init__(self, app: Any = None) -> None:
         self.app = app
         self.signals = Signals()
-
-        # minimum set for driver package built in
         self.framework: str = ""
         self.run: dict[str, Any] = {"directWeather": self}
-        self.deviceName: str = ""
         self.data: dict[str, Any] = {}
-        self.defaultConfig: dict[str, Any] = {
-            "framework": "",
-            "frameworks": {"directWeather": {"deviceName": "On Mount"}},
-        }
+        self.config = DeviceConfigDirectWeather()
         self.running: bool = False
         self.enabled: bool = False
         # Connection deferred to startCommunication to keep DeviceRegistry interface clean
@@ -61,10 +61,10 @@ class DirectWeather:
         isValid = None not in [value1, value2, value3, value4, value5]
 
         if not isValid and self.running:
-            self.signals.deviceDisconnected.emit("directWeather", "DirectWeather")
+            self.signals.deviceDisconnected.emit(self.DEVICE_TYPE, self.config.deviceName)
             self.running = False
         elif isValid and not self.running:
-            self.signals.deviceConnected.emit("directWeather", "DirectWeather")
+            self.signals.deviceConnected.emit(self.DEVICE_TYPE, self.config.deviceName)
             self.running = True
 
         self.app.dReg["directWeather"].stat = isValid

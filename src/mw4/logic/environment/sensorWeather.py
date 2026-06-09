@@ -35,9 +35,6 @@ class SensorWeather:
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.data: dict[str, Any] = {}
-        self.loadConfig: bool = True
-        self.deviceType: str = ""
-        self.defaultConfig: dict[str, Any] = {"framework": "", "frameworks": {}}
         self.framework: str = ""
         self.run: dict[str, Any] = {
             "indi": SensorWeatherIndi(self),
@@ -45,12 +42,8 @@ class SensorWeather:
             "boltwood": SensorWeatherBoltwood(self),
             "online": SensorWeatherOnline(self),
         }
-
         if platform.system() == "Windows":
             self.run["ascom"] = SensorWeatherAscom(self)
-
-        for fw in self.run:
-            self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
 
     def startCommunication(self) -> None:
         self.run[self.framework].startCommunication()

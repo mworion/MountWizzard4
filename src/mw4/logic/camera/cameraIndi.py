@@ -133,22 +133,22 @@ class CameraIndi(IndiClass):
         self.saveImageBLOB(item, vectors)
 
     def sendDownloadMode(self) -> None:
-        self.txQ.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
-        self.txQ.put((self.deviceName, "CCD_COMPRESSION", {"INDI_DISABLED": "On"}))
+        self.txQ.put((self.config.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
+        self.txQ.put((self.config.deviceName, "CCD_COMPRESSION", {"INDI_DISABLED": "On"}))
 
     def expose(self) -> None:
         self.sendDownloadMode()
-        self.txQ.put((self.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
+        self.txQ.put((self.config.deviceName, "READOUT_QUALITY", {"QUALITY_LOW": "On"}))
         self.txQ.put(
             (
-                self.deviceName,
+                self.config.deviceName,
                 "CCD_BINNING",
                 {"HOR_BIN": self.parent.binning, "VER_BIN": self.parent.binning},
             )
         )
         self.txQ.put(
             (
-                self.deviceName,
+                self.config.deviceName,
                 "CCD_FRAME",
                 {
                     "X": self.parent.posX,
@@ -159,16 +159,16 @@ class CameraIndi(IndiClass):
             )
         )
         self.txQ.put(
-            (self.deviceName, "CCD_EXPOSURE", {"CCD_EXPOSURE_VALUE": self.parent.exposureTime})
+            (self.config.deviceName, "CCD_EXPOSURE", {"CCD_EXPOSURE_VALUE": self.parent.exposureTime})
         )
 
     def abort(self) -> None:
-        self.txQ.put((self.deviceName, "CCD_ABORT_EXPOSURE", {"ABORT": "On"}))
+        self.txQ.put((self.config.deviceName, "CCD_ABORT_EXPOSURE", {"ABORT": "On"}))
 
     def sendCoolerSwitch(self, coolerOn: bool = False) -> None:
         self.txQ.put(
             (
-                self.deviceName,
+                self.config.deviceName,
                 "CCD_COOLER",
                 {
                     "COOLER_ON": "On" if coolerOn else "Off",
@@ -179,11 +179,11 @@ class CameraIndi(IndiClass):
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
         self.txQ.put(
-            (self.deviceName, "CCD_TEMPERATURE", {"CCD_TEMPERATURE_VALUE": temperature})
+            (self.config.deviceName, "CCD_TEMPERATURE", {"CCD_TEMPERATURE_VALUE": temperature})
         )
 
     def sendOffset(self, offset: int = 0) -> None:
-        self.txQ.put((self.deviceName, "CCD_OFFSET", {"OFFSET": offset}))
+        self.txQ.put((self.config.deviceName, "CCD_OFFSET", {"OFFSET": offset}))
 
     def sendGain(self, gain: int = 1) -> None:
-        self.txQ.put((self.deviceName, "CCD_GAIN", {"GAIN": gain}))
+        self.txQ.put((self.config.deviceName, "CCD_GAIN", {"GAIN": gain}))

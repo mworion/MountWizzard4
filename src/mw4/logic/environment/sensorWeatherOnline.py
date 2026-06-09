@@ -15,11 +15,19 @@
 ###########################################################
 import json
 import logging
+from dataclasses import dataclass, field
 import numpy as np
 import requests
 from mw4.base.tpool import Worker
 from pathlib import Path
 from typing import Any
+
+
+@dataclass
+class DeviceConfigOnlineWeather:
+    deviceName: str = field(default="OnlineWeather")
+    hostAddress: str| None = field(default="")
+    apiKey: str = field(default="")
 
 
 class SensorWeatherOnline:
@@ -30,18 +38,13 @@ class SensorWeatherOnline:
         self.parent = parent
         self.app = parent.app
         self.data: dict[str, Any] = parent.data
+        self.config = DeviceConfigOnlineWeather()
         self.signals = parent.signals
         self.location: Any = None
         self.threadPool = parent.app.threadPool
         self.worker: Worker | None = None
         self.running: bool = False
-        self.defaultConfig: dict[str, Any] = {
-            "deviceName": "OnlineWeather",
-            "apiKey": "",
-            "hostaddress": "api.openweathermap.org",
-        }
-        self.hostaddress: str = ""
-        self.apiKey: str = ""
+        self.status: bool = False
 
     def startCommunication(self) -> None:
         self.location = self.app.dReg["mount"].obsSite.location
@@ -107,7 +110,7 @@ class SensorWeatherOnline:
 
     def workerGetOpenWeatherMapData(self, url: Path) -> bool:
         try:
-            data = requests.get(url, timeout=30)
+            data = requests.get(str(url), timeout=30)
             self.log.debug(f"Weather url: [{url}] response code: [{data.status_code}]")
         except Exception as e:
             self.log.critical(f"[{url}] general exception: [{e}]")
@@ -122,10 +125,10 @@ class SensorWeatherOnline:
 
     def sendStatus(self, status: bool) -> None:
         if not status and self.running:
-            self.signals.deviceDisconnected.emit("observingconditions", "OnlineWeather")
+            self.signals.deviceDisconnected.emit(self.DEVICE_TYPE, self.config.deviceName)
             self.running = False
         elif status and not self.running:
-            self.signals.deviceConnected.emit("observingconditions", "OnlineWeather")
+            self.signals.deviceConnected.emit(self.DEVICE_TYPE, self.config.deviceName)
             self.running = True
         if self.status:
             self.processOpenWeatherMapData()
@@ -147,13 +150,13 @@ class SensorWeatherOnline:
         self.threadPool.start(self.worker)
 
     def pollOpenWeatherMapData(self) -> None:
-        if not self.apiKey or not self.app.onlineMode:
+        if not self.config.apiKey or not self.app.onlineMode:
             self.sendStatus(False)
             return
 
         lat = self.location.latitude.degrees
         lon = self.location.longitude.degrees
 
-        webSite = f"http://{self.hostaddress}/data/2.5/weather"
+        webSite = f"http://{self.config.hostAddress}/data/2.5/weather"
         url = f"{webSite}?lat={lat:1.2f}&lon={lon:1.2f}"
-        self.getOpenWeatherMapData(url=url + f"&APPID={self.apiKey}")
+        self.getOpenWeatherMapData(url=url + f"&APPID={self.config.apiKey}")

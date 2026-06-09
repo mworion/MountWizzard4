@@ -15,8 +15,18 @@
 ###########################################################
 import logging
 import platform
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
+
+
+@dataclass
+class DeviceConfigASTAP:
+    deviceName: str = field(default="")
+    searchRadius: int = field(default=20)
+    timeout: int = field(default=30)
+    appPath: Path = field(default=Path())
+    indexPath: Path = field(default=Path())
 
 
 class ASTAP:
@@ -60,32 +70,23 @@ class ASTAP:
     def __init__(self, parent: Any) -> None:
         self.parent = parent
         self.data: dict[str, Any] = parent.data
+        self.config = DeviceConfigASTAP()
         self.tempDir: Path = parent.app.mwGlob["tempDir"]
-
         self.result: dict[str, Any] = {"success": False}
         self.process: Any = None
-        self.indexPath: Path = Path()
-        self.appPath: Path = Path()
-        self.binPath: Path = Path()
-        self.setDefaultPath()
-        self.deviceName: str = "ASTAP"
-        self.timeout: int = 30
-        self.searchRadius: int = 20
-        self.defaultConfig: dict = {
-            "astap": {
-                "deviceName": "ASTAP",
-                "deviceList": ["ASTAP"],
-                "searchRadius": 20,
-                "timeout": 30,
-                "appPath": str(self.appPath),
-                "indexPath": str(self.indexPath),
-            }
-        }
+        self.config.deviceName = "ASTAP"
+        self.binPath: Path = self.setDefaultBinPath()
+        self.config.appPath = self.setDefaultAppPath()
+        self.config.indexPath = self.setDefaultIndexPath()
 
-    def setDefaultPath(self) -> None:
-        self.appPath = self.apps[platform.system()]["appPath"]
-        self.indexPath = self.apps[platform.system()]["indexPath"]
-        self.binPath = self.appPath / self.GUI
+    def setDefaultAppPath(self) -> Path:
+        return self.apps[platform.system()]["appPath"]
+
+    def setDefaultIndexPath(self) -> Path:
+        return self.apps[platform.system()]["indexPath"]
+
+    def setDefaultBinPath(self) -> Path:
+        return self.config.appPath / self.GUI
 
     def solve(self, imagePath: Path, updateHeader: bool) -> dict[str, Any]:
         tempPath = self.tempDir / "temp"
@@ -95,24 +96,24 @@ class ASTAP:
         runnable = [self.binPath, "-f", imagePath, "-o", tempPath, "-wcs"]
         options = [
             "-r",
-            f"{self.searchRadius:1.1f}",
+            f"{self.config.searchRadius:1.1f}",
             "-t",
             "0.005",
             "-z",
             "0",
             "-d",
-            self.indexPath,
+            self.config.indexPath,
         ]
         runnable.extend(options)
         suc, msg = self.parent.runSolverBin(runnable)
         return self.parent.prepareResult(suc, msg, imagePath, wcsPath, updateHeader)
 
     def checkAvailabilityProgram(self, appPath: Path) -> bool:
-        self.appPath = appPath
+        self.config.appPath = appPath
         extension = ".exe" if platform.system() == "Windows" else ""
 
-        bin1 = self.appPath / (self.CLI + extension)
-        bin2 = self.appPath / (self.GUI + extension)
+        bin1 = self.config.appPath / (self.CLI + extension)
+        bin2 = self.config.appPath / (self.GUI + extension)
 
         if bin1.is_file() or bin2.is_file():
             self.binPath = bin1 if bin1.is_file() else bin2
@@ -121,5 +122,5 @@ class ASTAP:
         return False
 
     def checkAvailabilityIndex(self, indexPath: Path) -> bool:
-        self.indexPath = indexPath
-        return any(len(list(self.indexPath.glob(i))) > 0 for i in self.indexes)
+        self.config.indexPath = indexPath
+        return any(len(list(self.config.indexPath.glob(i))) > 0 for i in self.indexes)

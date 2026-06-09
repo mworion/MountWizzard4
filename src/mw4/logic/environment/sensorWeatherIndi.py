@@ -21,4 +21,3 @@ class SensorWeatherIndi(IndiClass):
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)
         self.signals = parent.signals
-        self.loadConfig: bool = True

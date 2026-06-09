@@ -36,28 +36,24 @@ class MeasureData:
         self.mutexMeasure = QMutex()
         self.shorteningStart: bool = True
         self.data: dict[str, Any] = {}
-        self.devices: dict[str, Any] = {}
-        self.deviceName: str = ""
-        self.defaultConfig: dict[str, Any] = {"framework": "", "frameworks": {}}
+        self.measuredDevices: dict[str, Any] = {}
         self.framework: str = ""
         self.run: dict[str, Any] = {
             "raw": MeasureDataRaw(self.app, self, self.data),
             "csv": MeasureDataCSV(self.app, self, self.data),
         }
-        for fw in self.run:
-            self.defaultConfig["frameworks"].update(self.run[fw].defaultConfig)
 
     def collectDataDevices(self) -> None:
-        self.devices.clear()
+        self.measuredDevices.clear()
         for name, entry in self.app.dReg.drivers.items():
             if name not in measure or entry.instance is None:
                 continue
-            self.devices[name] = entry.instance
+            self.measuredDevices[name] = entry.instance
 
     def clearData(self) -> None:
         self.data.clear()
         self.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
-        for device in self.devices:
+        for device in self.measuredDevices:
             if device not in measure:
                 continue
             for source in measure[device]:
@@ -69,12 +65,12 @@ class MeasureData:
         self.clearData()
         name = self.run[self.framework].deviceName
         self.run[self.framework].startCommunication()
-        self.signals.deviceConnected.emit("measure", name)
+        self.signals.deviceConnected.emit(self.DEVICE_TYPE, self.config.deviceName)
 
     def stopCommunication(self) -> None:
         self.run[self.framework].stopCommunication()
         name = self.run[self.framework].deviceName
-        self.signals.deviceDisconnected.emit("measure", name)
+        self.signals.deviceDisconnected.emit(self.DEVICE_TYPE, self.config.deviceName)
 
     def checkStart(self) -> None:
         if self.shorteningStart and len(self.data["time"]) > 2:
@@ -95,9 +91,9 @@ class MeasureData:
         self.checkSize()
         timeStamp = self.app.dReg["mount"].obsSite.timeJD.utc_datetime().replace(tzinfo=None)
         self.data["time"] = np.append(self.data["time"], np.datetime64(timeStamp))
-        for device in self.devices:
+        for device in self.measuredDevices:
             for source in measure[device]:
-                value = self.devices[device].data.get(source, 0)
+                value = self.measuredDevices[device].data.get(source, 0)
                 item = f"{device}-{source}"
                 self.data[item] = np.append(self.data[item], value)
         self.mutexMeasure.unlock()

@@ -185,20 +185,20 @@ def test_syncClock_1(function):
 
 def test_syncClock_2(function):
     function.ui.syncTimeNotTrack.setChecked(True)
-    function.app.dReg.drivers["mount"].stat = False
+    function.app.dReg.d["mount"].stat = False
     function.syncClock()
 
 
 def test_syncClock_3(function):
     function.ui.syncTimeNotTrack.setChecked(True)
-    function.app.dReg.drivers["mount"].stat = True
+    function.app.dReg.d["mount"].stat = True
     function.app.mount.obsSite.status = 0
     function.syncClock()
 
 
 def test_syncClock_4(function):
     function.ui.syncTimeCont.setChecked(True)
-    function.app.dReg.drivers["mount"].stat = True
+    function.app.dReg.d["mount"].stat = True
     function.app.mount.obsSite.status = 1
     function.app.mount.obsSite.timeDiff = 0
     function.syncClock()
@@ -206,7 +206,7 @@ def test_syncClock_4(function):
 
 def test_syncClock_5(function):
     function.ui.syncTimeCont.setChecked(False)
-    function.app.dReg.drivers["mount"].stat = True
+    function.app.dReg.d["mount"].stat = True
     function.app.mount.obsSite.status = 1
     function.app.mount.obsSite.timeDiff = 1
     with mock.patch.object(function.app.mount.obsSite, "adjustClock", return_value=False):
@@ -215,7 +215,7 @@ def test_syncClock_5(function):
 
 def test_syncClock_6(function):
     function.ui.syncTimeCont.setChecked(True)
-    function.app.dReg.drivers["mount"].stat = True
+    function.app.dReg.d["mount"].stat = True
     function.app.mount.obsSite.status = 1
     function.app.mount.obsSite.timeDiff = 1
     with mock.patch.object(function.app.mount.obsSite, "adjustClock", return_value=True):

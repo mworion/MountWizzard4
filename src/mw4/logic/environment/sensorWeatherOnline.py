@@ -15,9 +15,9 @@
 ###########################################################
 import json
 import logging
-from dataclasses import dataclass, field
 import numpy as np
 import requests
+from dataclasses import dataclass, field
 from mw4.base.tpool import Worker
 from pathlib import Path
 from typing import Any
@@ -26,7 +26,7 @@ from typing import Any
 @dataclass
 class DeviceConfigOnlineWeather:
     deviceName: str = field(default="OnlineWeather")
-    hostAddress: str| None = field(default="")
+    hostAddress: str | None = field(default="")
     apiKey: str = field(default="")
 
 
@@ -54,7 +54,7 @@ class SensorWeatherOnline:
     def stopCommunication(self) -> None:
         self.running = False
         self.data.clear()
-        self.signals.deviceDisconnected.emit("OnlineWeather")
+        self.signals.deviceDisconnected.emit(self.DEVICE_TYPE, self.config.deviceName)
         self.app.update3m.disconnect(self.pollOpenWeatherMapData)
 
     @staticmethod
@@ -158,5 +158,5 @@ class SensorWeatherOnline:
         lon = self.location.longitude.degrees
 
         webSite = f"http://{self.config.hostAddress}/data/2.5/weather"
-        url = f"{webSite}?lat={lat:1.2f}&lon={lon:1.2f}"
+        url = Path(f"{webSite}?lat={lat:1.2f}&lon={lon:1.2f}")
         self.getOpenWeatherMapData(url=url + f"&APPID={self.config.apiKey}")

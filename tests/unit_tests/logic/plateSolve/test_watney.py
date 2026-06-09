@@ -45,7 +45,7 @@ def test_saveConfigFile(function):
 
 
 def test_setDefaultPath_1(function):
-    function.setDefaultPath()
+    function.setDefaultAppPath()
 
 
 def test_solve_1(function):

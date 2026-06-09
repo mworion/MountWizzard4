@@ -56,4 +56,3 @@ def test_closeEvent_1(function):
 def test_showWindow(function):
     with mock.patch.object(function, "show"):
         function.showWindow()
-

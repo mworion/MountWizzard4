@@ -254,9 +254,10 @@ class MainWindow(MWidget):
 
     def updateDeviceStats(self) -> None:
         for device, ui in self.deviceStatGui.items():
-            if self.app.dReg[device].stat is None:
+            entry = self.app.dReg[device]
+            if entry is None or entry.stat is None:
                 ui.setEnabled(False)
-            elif self.app.dReg[device].stat:
+            elif entry.stat:
                 changeStyleDynamic(ui, "color", "green")
                 ui.setEnabled(True)
             else:
@@ -331,7 +332,7 @@ class MainWindow(MWidget):
 
     def switchProfile(self, config: dict) -> None:
         self.externalWindows.closeExtendedWindows()
-        self.app.stopDrivers.emit()
+        self.app.stopDevices.emit()
         self.threadPool.waitForDone(10000)
         self.app.config = config
         topo = self.app.initConfig()

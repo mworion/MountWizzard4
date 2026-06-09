@@ -45,7 +45,7 @@ class MeasureData:
 
     def collectDataDevices(self) -> None:
         self.measuredDevices.clear()
-        for name, entry in self.app.dReg.drivers.items():
+        for name, entry in self.app.dReg.d.items():
             if name not in measure or entry.instance is None:
                 continue
             self.measuredDevices[name] = entry.instance
@@ -63,14 +63,12 @@ class MeasureData:
     def startCommunication(self) -> None:
         self.collectDataDevices()
         self.clearData()
-        name = self.run[self.framework].deviceName
         self.run[self.framework].startCommunication()
-        self.signals.deviceConnected.emit(self.DEVICE_TYPE, self.config.deviceName)
+        self.signals.deviceConnected.emit(self.run[self.framework].deviceName)
 
     def stopCommunication(self) -> None:
         self.run[self.framework].stopCommunication()
-        name = self.run[self.framework].deviceName
-        self.signals.deviceDisconnected.emit(self.DEVICE_TYPE, self.config.deviceName)
+        self.signals.deviceDisconnected.emit(self.run[self.framework].deviceName)
 
     def checkStart(self) -> None:
         if self.shorteningStart and len(self.data["time"]) > 2:

@@ -41,7 +41,7 @@ def test_instantiation(signals):
 
 
 def test_signalCount(signals):
-    assert len(EXPECTED_SIGNALS) == 12
+    assert len(EXPECTED_SIGNALS) == 10
 
 
 def test_deviceConnected(signals):

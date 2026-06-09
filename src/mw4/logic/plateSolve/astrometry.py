@@ -60,7 +60,6 @@ class Astrometry:
         self.result: dict[str, Any] = {"success": False}
         self.process: Any = None
         self.config.deviceName = "ASTROMETRY.NET"
-        self.binPath: Path = self.setDefaultBinPath()
         self.config.appPath = self.setDefaultAppPath()
         self.config.indexPath = self.setDefaultIndexPath()
         self.saveConfigFile()

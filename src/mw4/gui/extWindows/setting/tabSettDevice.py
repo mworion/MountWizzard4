@@ -13,7 +13,6 @@
 # License APL2.0
 #
 ###########################################################
-from dataclasses import fields
 from functools import partial
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, findIndexValue
@@ -144,7 +143,9 @@ class SettDevice:
                 deviceName = entry.run[framework].config.deviceName
                 itemText = f"{framework} - {deviceName}"
                 self.setupUiDriver[entry.name]["uiDropDown"].addItem(itemText)
-            index = findIndexValue(self.setupUiDriver[entry.name]["uiDropDown"], entry.framework)
+            index = findIndexValue(
+                self.setupUiDriver[entry.name]["uiDropDown"], entry.framework
+            )
             self.setupUiDriver[entry.name]["uiDropDown"].setCurrentIndex(index)
 
     def copyConfig(self, device: str, framework: str) -> None:
@@ -207,13 +208,11 @@ class SettDevice:
         self.msg.emit(0, "Driver", f"{framework} disabled", f"{device}")
 
     def deviceConnected(self, device: str, deviceName: str) -> None:
-        print("connected", device, deviceName)
         changeStyleDynamic(self.setupUiDriver[device]["uiDropDown"], "active", True)
         self.app.dReg.setStat(device, True)
         self.msg.emit(0, "Driver", "Device connected", f"{deviceName}::{device}")
 
     def deviceDisconnected(self, device: str, deviceName: str) -> None:
-        print("disconnected", device, deviceName)
         changeStyleDynamic(self.setupUiDriver[device]["uiDropDown"], "active", False)
         self.app.dReg.setStat(device, False)
         self.msg.emit(0, "Driver", "Device disconnected", f"{deviceName}::{device}")

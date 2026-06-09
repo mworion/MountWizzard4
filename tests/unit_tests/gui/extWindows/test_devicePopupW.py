@@ -43,9 +43,8 @@ def function(qapp):
         "frameworks": {"indi": {"deviceName": "test", "deviceList": ["1", "2"]}},
     }
     widget = MWidget()
-    window = DevicePopup(
-        widget, parent=Parent(), data=data, driver="telescope", deviceType="telescope"
-    )
+    widget.app = App()
+    window = DevicePopup(widget, device="telescope", framework="indi", data=data)
     window.log = logging.getLogger()
     yield window
     QApplication.processEvents()
@@ -129,14 +128,11 @@ def test_selectTabs_3(function):
 
 def test_populateTabs_1(function):
     function.data = {
-        "framework": "indi",
-        "frameworks": {
-            "indi": {
-                "deviceName": "test",
-                "deviceList": ["test", "test1"],
-                "hostaddress": "test",
-                "messages": True,
-            },
+        "indi": {
+            "deviceName": "test",
+            "deviceList": ["test", "test1"],
+            "hostaddress": "test",
+            "messages": True,
         },
     }
     function.populateTabs()
@@ -144,14 +140,11 @@ def test_populateTabs_1(function):
 
 def test_populateTabs_2(function):
     function.data = {
-        "framework": "astap",
-        "frameworks": {
-            "astap": {
-                "deviceName": "test",
-                "deviceList": ["test", "test1"],
-                "searchRadius": 30.0,
-                "timeout": 60.0,
-            },
+        "astap": {
+            "deviceName": "test",
+            "deviceList": ["test", "test1"],
+            "searchRadius": 30.0,
+            "timeout": 60.0,
         },
     }
     function.populateTabs()
@@ -159,30 +152,25 @@ def test_populateTabs_2(function):
 
 def test_readTabs_1(function):
     function.data = {
-        "framework": "indi",
-        "frameworks": {
-            "indi": {
-                "deviceName": "telescope",
-                "deviceList": ["test", "test1"],
-                "hostaddress": "test",
-                "messages": True,
-                "port": 10,
-            },
+        "indi": {
+            "deviceName": "telescope",
+            "deviceList": ["test", "test1"],
+            "hostaddress": "test",
+            "messages": True,
+            "port": 10,
         },
     }
     function.readTabs()
 
 
 def test_readTabs_2(function):
+    function.framework = "astap"
     function.data = {
-        "framework": "astap",
-        "frameworks": {
-            "astap": {
-                "deviceName": "test",
-                "deviceList": ["test", "test1"],
-                "searchRadius": 30.0,
-                "timeout": 60.0,
-            },
+        "astap": {
+            "deviceName": "test",
+            "deviceList": ["test", "test1"],
+            "searchRadius": 30.0,
+            "timeout": 60.0,
         },
     }
     function.readTabs()
@@ -337,6 +325,12 @@ def test_selectIndexPath_2(function):
 
 
 def test_selectAscomDriver_1(function):
+    # Create a mock parent with data attribute
+    mockParent = mock.Mock()
+    mockParent.data = {}
+    function.parent = mockParent
+    function.deviceType = "telescope"
+
     with mock.patch.object(AscomClass, "selectAscomDriver", return_value="test"):
         function.selectAscomDriver()
         assert function.ui.ascomDevice.text() == "test"

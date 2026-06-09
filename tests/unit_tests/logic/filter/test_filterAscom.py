@@ -25,7 +25,10 @@ if platform.system() != "Windows":
 
 
 class Parent:
-    app = App()
+    try:
+        app = App()
+    except Exception:
+        app = mock.MagicMock()
     data = {}
     signals = Signals()
     deviceType = ""

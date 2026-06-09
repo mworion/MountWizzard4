@@ -331,7 +331,7 @@ def test_drawMeasure_1(function):
 
 
 def test_drawMeasure_2(function):
-    measureClass = function.app.dReg.drivers["measure"].instance
+    measureClass = function.app.dReg.d["measure"].instance
     measureClass.data = function.app.measure.data
     function.drawLock.tryLock()
     with mock.patch.object(function, "processDrawMeasure"):
@@ -347,7 +347,7 @@ def test_drawMeasure_3(function):
 
 
 def test_setTitle_csvFramework(function):
-    measureClass = function.app.dReg.drivers["measure"].instance
+    measureClass = function.app.dReg.d["measure"].instance
     measureClass.framework = "csv"
     measureClass.run["csv"].csvFilename = Path("test_data.csv")
     function.setTitle()
@@ -357,7 +357,7 @@ def test_setTitle_csvFramework(function):
 def test_plotting_withExistingPlotItem(function):
     plotItem = pg.PlotItem()
     values = function.dataPlots["Pressure"]
-    measureClass = function.app.dReg.drivers["measure"].instance
+    measureClass = function.app.dReg.d["measure"].instance
     measureClass.data = function.app.measure.data
     x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
     values["template"]["legendRef"] = pg.LegendItem()
@@ -369,7 +369,7 @@ def test_plotting_withExistingPlotItem(function):
 def test_plotting_newPlotItemWithLegend(function):
     plotItem = pg.PlotItem()
     values = function.dataPlots["Pressure"]
-    measureClass = function.app.dReg.drivers["measure"].instance
+    measureClass = function.app.dReg.d["measure"].instance
     measureClass.data = function.app.measure.data
     x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
     values["template"]["legendRef"] = pg.LegendItem()
@@ -379,7 +379,7 @@ def test_plotting_newPlotItemWithLegend(function):
 
 
 def test_drawMeasure_realData(function):
-    measureClass = function.app.dReg.drivers["measure"].instance
+    measureClass = function.app.dReg.d["measure"].instance
     measureClass.data = function.app.measure.data
     function.drawLock.tryLock()
     function.drawLock.unlock()

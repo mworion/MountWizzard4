@@ -58,12 +58,16 @@ class PegasusUPBIndi(IndiClass):
     def togglePowerPort(self, port: str) -> None:
         if self.isINDIGO:
             value = "On" if self.data[f"AUX_POWER_OUTLET.OUTLET_{port}"] == "Off" else "Off"
-            self.txQ.put((self.config.deviceName, "AUX_POWER_OUTLET", {f"OUTLET_{port}": value}))
+            self.txQ.put(
+                (self.config.deviceName, "AUX_POWER_OUTLET", {f"OUTLET_{port}": value})
+            )
         else:
             value = (
                 "On" if self.data[f"POWER_CONTROL.POWER_CONTROL_{port}"] == "Off" else "Off"
             )
-            self.txQ.put((self.config.deviceName, "POWER_CONTROL", {f"POWER_CONTROL_{port}": value}))
+            self.txQ.put(
+                (self.config.deviceName, "POWER_CONTROL", {f"POWER_CONTROL_{port}": value})
+            )
 
     def togglePowerPortBoot(self, port: str) -> None:
         if self.isINDIGO:
@@ -118,10 +122,16 @@ class PegasusUPBIndi(IndiClass):
 
     def sendAdjustableOutput(self, value: float) -> None:
         if self.isINDIGO:
-            self.txQ.put((self.config.deviceName, "X_AUX_VARIABLE_POWER_OUTLET", {"OUTLET_1": value}))
+            self.txQ.put(
+                (self.config.deviceName, "X_AUX_VARIABLE_POWER_OUTLET", {"OUTLET_1": value})
+            )
         else:
             self.txQ.put(
-                (self.config.deviceName, "ADJUSTABLE_VOLTAGE", {"ADJUSTABLE_VOLTAGE_VALUE": value})
+                (
+                    self.config.deviceName,
+                    "ADJUSTABLE_VOLTAGE",
+                    {"ADJUSTABLE_VOLTAGE_VALUE": value},
+                )
             )
 
     def reboot(self) -> None:

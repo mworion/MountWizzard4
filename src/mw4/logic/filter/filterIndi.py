@@ -23,4 +23,6 @@ class FilterIndi(IndiClass):
         self.signals = parent.signals
 
     def sendFilterNumber(self, filterNumber: int = 1) -> None:
-        self.txQ.put((self.config.deviceName, "FILTER_SLOT", {"FILTER_SLOT_VALUE": filterNumber}))
+        self.txQ.put(
+            (self.config.deviceName, "FILTER_SLOT", {"FILTER_SLOT_VALUE": filterNumber})
+        )

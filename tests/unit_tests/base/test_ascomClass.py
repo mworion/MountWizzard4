@@ -22,7 +22,8 @@ import time
 from mw4.base.alpacaAscomCommon import CommandItem
 from mw4.base.ascomClass import AscomClass
 from mw4.base.signalsDevices import Signals
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from pathlib import Path
+from PySide6.QtCore import QThreadPool
 from unittest import mock
 
 if platform.system() != "Windows":
@@ -30,11 +31,14 @@ if platform.system() != "Windows":
 
 
 class Parent:
-    app = App()
-    data = {}
-    deviceType = ""
-    signals = Signals()
-    loadConfig = True
+    def __init__(self) -> None:
+        self.data: dict = {}
+        self.deviceType = ""
+        self.signals = Signals()
+        self.app = mock.MagicMock()
+        self.app.msg = mock.MagicMock()
+        self.app.threadPool = QThreadPool()
+        self.app.mwGlob = {"tempDir": Path("/tmp")}
 
 
 @pytest.fixture(autouse=True, scope="function")

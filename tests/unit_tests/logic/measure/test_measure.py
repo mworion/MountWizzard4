@@ -43,44 +43,50 @@ def test_property(function):
 def test_collectDataDevices(function):
     # All devices listed in the measure mapping that have an instance are collected.
     function.collectDataDevices()
-    assert "camera" in function.devices
-    assert "focuser" in function.devices
-    assert "directWeather" in function.devices
+    assert "camera" in function.measuredDevices
+    assert "focuser" in function.measuredDevices
+    assert "directWeather" in function.measuredDevices
 
 
 def test_collectDataDevices_unknownActiveDriver(function):
     # Devices not in the measure mapping are excluded.
     function.collectDataDevices()
-    assert "sensor1Weather" in function.devices
-    assert "unknownDevice" not in function.devices
+    assert "sensor1Weather" in function.measuredDevices
+    assert "unknownDevice" not in function.measuredDevices
 
 
 def test_collectDataDevices_driverClassNone(function):
     # collectDataDevices uses dReg directly; devices with a real instance are included.
     function.collectDataDevices()
-    assert "camera" in function.devices
-    assert "focuser" in function.devices
-    assert "directWeather" in function.devices
+    assert "camera" in function.measuredDevices
+    assert "focuser" in function.measuredDevices
+    assert "directWeather" in function.measuredDevices
 
 
 def test_clearData_1(function):
-    function.devices = {"directWeather": object(), "test": object()}
+    function.measuredDevices = {"directWeather": object(), "test": object()}
     function.clearData()
 
 
 def test_startCommunication_1(function):
     function.framework = "raw"
+    function.run["raw"].deviceName = function.run["raw"].config.deviceName
     with (
         mock.patch.object(function.run[function.framework], "startCommunication"),
         mock.patch.object(function, "collectDataDevices"),
         mock.patch.object(function, "clearData"),
+        mock.patch.object(function.signals, "deviceConnected"),
     ):
         function.startCommunication()
 
 
 def test_stopCommunication_1(function):
     function.framework = "raw"
-    with mock.patch.object(function.run[function.framework], "stopCommunication"):
+    function.run["raw"].deviceName = function.run["raw"].config.deviceName
+    with (
+        mock.patch.object(function.run[function.framework], "stopCommunication"),
+        mock.patch.object(function.signals, "deviceDisconnected"),
+    ):
         function.stopCommunication()
 
 
@@ -133,7 +139,7 @@ def test_measureTask_2(function):
         "WEATHER_PARAMETERS.WEATHER_HUMIDITY": 0,
     }
 
-    function.devices = {"directWeather": Data(data=data)}
+    function.measuredDevices = {"directWeather": Data(data=data)}
     function.clearData()
     with (
         mock.patch.object(function, "checkStart"),
@@ -144,19 +150,19 @@ def test_measureTask_2(function):
 
 def test_collectDataDevices_noneClass(function):
     # Entries whose instance is None must not appear in devices.
-    savedDrivers = dict(function.app.dReg.drivers)
-    function.app.dReg.drivers["camera"] = DeviceEntry(
+    savedDrivers = dict(function.app.dReg.d)
+    function.app.dReg.d["camera"] = DeviceEntry(
         name="camera", instance=object(), deviceType="camera", isConfigurable=True
     )
-    function.app.dReg.drivers["focuser"] = DeviceEntry(
+    function.app.dReg.d["focuser"] = DeviceEntry(
         name="focuser", instance=None, deviceType="focuser", isConfigurable=True
     )
     try:
         function.collectDataDevices()
-        assert "camera" in function.devices
-        assert "focuser" not in function.devices
+        assert "camera" in function.measuredDevices
+        assert "focuser" not in function.measuredDevices
     finally:
-        function.app.dReg.drivers.update(savedDrivers)
+        function.app.dReg.d.update(savedDrivers)
 
 
 class TestMeasureDataRaw:
@@ -172,8 +178,8 @@ class TestMeasureDataRaw:
         assert self.raw.app == self.app
         assert self.raw.parent == self.parent
         assert self.raw.data == self.data
-        assert self.raw.deviceName == "RAW"
-        assert "raw" in self.raw.defaultConfig
+        assert self.raw.config.deviceName == "RAW display"
+        assert hasattr(self.raw, "config")
 
     def test_startCommunication(self):
         with mock.patch.object(self.raw.timerTask, "start") as mock_start:
@@ -204,8 +210,8 @@ class TestMeasureDataCSV:
         assert self.csv.app == self.app
         assert self.csv.parent == self.parent
         assert self.csv.data == self.data
-        assert self.csv.deviceName == "CSV"
-        assert "csv" in self.csv.defaultConfig
+        assert self.csv.config.deviceName == "CSV to file"
+        assert hasattr(self.csv, "config")
 
     def test_writeHeaderCSV(self, tmp_path):
         csv_file = tmp_path / "test_header.csv"

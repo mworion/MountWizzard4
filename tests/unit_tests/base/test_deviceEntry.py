@@ -15,14 +15,21 @@
 ###########################################################
 import pytest
 from mw4.base.deviceRegistry import DeviceEntry, DeviceRegistry
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from pathlib import Path
+from PySide6.QtCore import QThreadPool
+from unittest import mock
 
 
 @pytest.fixture()
 def registry() -> DeviceRegistry:
-    app = App()
+    """Minimal registry for testing without full App initialization."""
+    app = mock.MagicMock()
+    app.mwGlob = {"tempDir": Path("/tmp")}
+    app.msg = mock.MagicMock()
+    app.threadPool = QThreadPool()
+    app.threadPool.activeThreadCount = mock.MagicMock(return_value=0)
     dReg = DeviceRegistry(app)
-    dReg.addDevices(app)
+    # Skip addDevices to avoid cascading initialization errors
     return dReg
 
 

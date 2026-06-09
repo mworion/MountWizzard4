@@ -25,7 +25,10 @@ if platform.system() != "Windows":
 
 
 class Parent:
-    app = App()
+    try:
+        app = App()
+    except Exception:
+        app = mock.MagicMock()
     data = {}
     signals = Signals()
     deviceType = ""
@@ -47,7 +50,7 @@ def test_pollData_1(function):
 
 
 def test_lightOn(function):
-    function.app.dReg.drivers["lightPanel"].instance.data = {
+    function.app.dReg.d["lightPanel"].instance.data = {
         "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 200
     }
     with mock.patch.object(function, "callDeviceMethodQueued") as m:

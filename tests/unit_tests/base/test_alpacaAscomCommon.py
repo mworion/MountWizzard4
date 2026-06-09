@@ -18,17 +18,21 @@ import queue
 import threading
 from mw4.base.alpacaAscomCommon import AlpacaAscomCommon, CommandItem
 from mw4.base.signalsDevices import Signals
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from pathlib import Path
+from PySide6.QtCore import QThreadPool
 from typing import Any
 from unittest import mock
 
 
 class Parent:
-    app = App()
-    data = {}
-    deviceType = "test"
-    signals = Signals()
-    loadConfig = True
+    def __init__(self) -> None:
+        self.data: dict = {}
+        self.deviceType = "test"
+        self.signals = Signals()
+        self.app = mock.MagicMock()
+        self.app.msg = mock.MagicMock()
+        self.app.threadPool = QThreadPool()
+        self.app.mwGlob = {"tempDir": Path("/tmp")}
 
 
 class ConcreteDevice(AlpacaAscomCommon):
@@ -56,8 +60,14 @@ class ConcreteDevice(AlpacaAscomCommon):
 def function():
     parent = Parent()
     func = ConcreteDevice(parent=parent)
+    func.parent = parent  # Add parent reference for methods that need it
     func.signals = mock.MagicMock()
     func.device = mock.MagicMock()
+    # Add mock config for tests that need it
+    func.config = mock.MagicMock()
+    func.config.deviceName = "TestDevice"
+    # Add DEVICE_TYPE to parent
+    parent.DEVICE_TYPE = "test"
     yield func
 
 
@@ -86,9 +96,8 @@ def test_init(function):
     assert len(function.propertyExceptions) == 0
     assert function.deviceConnected is False
     assert function.serverConnected is False
-    assert function.loadConfig is False
+    assert function.loggingTrace is False
     assert function.device is not None
-    assert function.deviceName == ""
 
 
 def test_protocolName(function):
@@ -251,7 +260,9 @@ def test_handleDeviceConnect_success(function):
     function.device.Connected = True
     function.handleDeviceConnect()
     # assert
-    function.signals.deviceConnected.emit.assert_called_once_with(function.deviceName)
+    function.signals.deviceConnected.emit.assert_called_once_with(
+        function.parent.DEVICE_TYPE, function.config.deviceName
+    )
     assert function.serverConnected is True
     assert function.deviceConnected is True
 
@@ -262,7 +273,9 @@ def test_handleDeviceDisconnect(function):
     function.handleDeviceDisconnect()
     # assert
     assert function.deviceConnected is False
-    function.signals.deviceDisconnected.emit.assert_called_once_with(function.deviceName)
+    function.signals.deviceDisconnected.emit.assert_called_once_with(
+        function.parent.DEVICE_TYPE, function.config.deviceName
+    )
 
 
 def test_runnerCommunicationLoop_stopImmediate(function):
@@ -335,7 +348,9 @@ def test_stopCommunication(function):
     assert function.stopEvent.is_set()
     assert function.deviceConnected is False
     assert function.serverConnected is False
-    function.signals.deviceDisconnected.emit.assert_called_once_with(function.deviceName)
+    function.signals.deviceDisconnected.emit.assert_called_once_with(
+        function.parent.DEVICE_TYPE, function.config.deviceName
+    )
     # "Connected" must be queued
     item = function.commandQueue.get_nowait()
     assert item.cmdType == "set"
@@ -347,6 +362,8 @@ def test_getDeviceProp_noDevice():
     # arrange — use base class directly, device is None
     parent = Parent()
     base = AlpacaAscomCommon(parent=parent)
+    base.config = mock.MagicMock()
+    base.config.deviceName = "TestDevice"
     # act
     result = base.getDeviceProp("Test")
     # assert — exception is caught, prop added to exceptions, None returned
@@ -358,6 +375,8 @@ def test_getDeviceProp_inPropertyExceptions():
     # arrange
     parent = Parent()
     base = AlpacaAscomCommon(parent=parent)
+    base.config = mock.MagicMock()
+    base.config.deviceName = "TestDevice"
     base.propertyExceptions.append("Test")
     # act
     result = base.getDeviceProp("Test")
@@ -369,6 +388,8 @@ def test_getDeviceProp_withLoggingTrace():
     # arrange
     parent = Parent()
     base = AlpacaAscomCommon(parent=parent)
+    base.config = mock.MagicMock()
+    base.config.deviceName = "TestDevice"
     base.device = mock.MagicMock()
     base.device.Name = "TracedDevice"
     base.loggingTrace = True
@@ -381,6 +402,8 @@ def test_getDeviceProp_withLoggingTrace():
 def test_setDeviceProp_noDevice():
     parent = Parent()
     base = AlpacaAscomCommon(parent=parent)
+    base.config = mock.MagicMock()
+    base.config.deviceName = "TestDevice"
     base.setDeviceProp("Test", True)
     assert "Test" in base.propertyExceptions
 
@@ -389,6 +412,8 @@ def test_setDeviceProp_inPropertyExceptions():
     # arrange
     parent = Parent()
     base = AlpacaAscomCommon(parent=parent)
+    base.config = mock.MagicMock()
+    base.config.deviceName = "TestDevice"
     base.propertyExceptions.append("Test")
     # act — must not raise and must not add a second entry
     base.setDeviceProp("Test", True)
@@ -400,6 +425,8 @@ def test_setDeviceProp_withLoggingTrace():
     # arrange
     parent = Parent()
     base = AlpacaAscomCommon(parent=parent)
+    base.config = mock.MagicMock()
+    base.config.deviceName = "TestDevice"
     base.device = mock.MagicMock()
     base.loggingTrace = True
     # act
@@ -411,6 +438,8 @@ def test_setDeviceProp_withLoggingTrace():
 def test_callDeviceMethod_noDevice():
     parent = Parent()
     base = AlpacaAscomCommon(parent=parent)
+    base.config = mock.MagicMock()
+    base.config.deviceName = "TestDevice"
     result = base.callDeviceMethod("Test")
     assert result is None
     assert "Test" in base.propertyExceptions
@@ -420,6 +449,8 @@ def test_callDeviceMethod_inPropertyExceptions():
     # arrange
     parent = Parent()
     base = AlpacaAscomCommon(parent=parent)
+    base.config = mock.MagicMock()
+    base.config.deviceName = "TestDevice"
     base.propertyExceptions.append("Test")
     # act
     result = base.callDeviceMethod("Test")
@@ -431,6 +462,8 @@ def test_callDeviceMethod_withLoggingTrace():
     # arrange
     parent = Parent()
     base = AlpacaAscomCommon(parent=parent)
+    base.config = mock.MagicMock()
+    base.config.deviceName = "TestDevice"
     base.device = mock.MagicMock()
     base.device.Halt.return_value = "ok"
     base.loggingTrace = True

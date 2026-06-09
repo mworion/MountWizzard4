@@ -159,7 +159,11 @@ class CameraIndi(IndiClass):
             )
         )
         self.txQ.put(
-            (self.config.deviceName, "CCD_EXPOSURE", {"CCD_EXPOSURE_VALUE": self.parent.exposureTime})
+            (
+                self.config.deviceName,
+                "CCD_EXPOSURE",
+                {"CCD_EXPOSURE_VALUE": self.parent.exposureTime},
+            )
         )
 
     def abort(self) -> None:

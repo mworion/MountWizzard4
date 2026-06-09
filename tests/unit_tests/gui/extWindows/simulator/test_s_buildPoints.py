@@ -49,16 +49,16 @@ def test_clear_2(function):
 
 
 def test_updatePositions_1(function):
-    function.app.dReg.drivers["mount"].instance.obsSite.haJNow = None
+    function.app.dReg.d["mount"].instance.obsSite.haJNow = None
     function.updatePositions()
 
 
 def test_updatePositions_2(function):
-    function.app.dReg.drivers["mount"].instance.obsSite.haJNow = Angle(hours=10)
-    function.app.dReg.drivers["mount"].instance.obsSite.timeSidereal = "10:10:10"
+    function.app.dReg.d["mount"].instance.obsSite.haJNow = Angle(hours=10)
+    function.app.dReg.d["mount"].instance.obsSite.timeSidereal = "10:10:10"
 
     with mock.patch.object(
-        function.app.dReg.drivers["mount"].instance,
+        function.app.dReg.d["mount"].instance,
         "calcTransformationMatricesActual",
         return_value=(0, 0, None, None, None),
     ):
@@ -66,12 +66,12 @@ def test_updatePositions_2(function):
 
 
 def test_updatePositions_3(function):
-    function.app.dReg.drivers["mount"].instance.obsSite.haJNow = Angle(hours=10)
-    function.app.dReg.drivers["mount"].instance.obsSite.timeSidereal = "10:10:10"
+    function.app.dReg.d["mount"].instance.obsSite.haJNow = Angle(hours=10)
+    function.app.dReg.d["mount"].instance.obsSite.timeSidereal = "10:10:10"
     function.parent.entityModel["buildPoints"] = {"entity": Qt3DCore.QEntity()}
     function.parent.entityModel["buildPoints"] = {"trans": Qt3DCore.QTransform()}
     with mock.patch.object(
-        function.app.dReg.drivers["mount"].instance,
+        function.app.dReg.d["mount"].instance,
         "calcTransformationMatricesActual",
         return_value=(
             0,

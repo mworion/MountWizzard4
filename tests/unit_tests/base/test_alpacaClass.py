@@ -20,17 +20,24 @@ import threading
 from alpaca.exceptions import NotImplementedException as AlpycaNotImplError
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.signalsDevices import Signals
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from pathlib import Path
+from PySide6.QtCore import QThreadPool
 from unittest import mock
+
+
+class Parent:
+    def __init__(self) -> None:
+        self.data: dict = {}
+        self.deviceType = ""
+        self.signals = Signals()
+        self.app = mock.MagicMock()
+        self.app.msg = mock.MagicMock()
+        self.app.threadPool = QThreadPool()
+        self.app.mwGlob = {"tempDir": Path("/tmp")}
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    class Parent:
-        app = App()
-        data = {}
-        deviceType = ""
-        signals = Signals()
 
     func = AlpacaClass(parent=Parent())
     func.device = mock.MagicMock()
@@ -224,20 +231,20 @@ def test_discoverAPIVersion_3(function):
 
 def test_discoverAlpacaDevices_1(function):
     with mock.patch.object(alpacaMgmt, "configureddevices", side_effect=Exception()):
-        val = function.discoverAlpacaDevices()
+        val = function.discoverAlpacaDevices(function.hostaddress, function.port)
         assert val == []
 
 
 def test_discoverAlpacaDevices_2(function):
     with mock.patch.object(alpacaMgmt, "configureddevices", return_value=[]):
-        val = function.discoverAlpacaDevices()
+        val = function.discoverAlpacaDevices(function.hostaddress, function.port)
         assert val == []
 
 
 def test_discoverAlpacaDevices_3(function):
     devices = [{"DeviceName": "cam", "DeviceType": "Camera", "DeviceNumber": 0}]
     with mock.patch.object(alpacaMgmt, "configureddevices", return_value=devices):
-        val = function.discoverAlpacaDevices()
+        val = function.discoverAlpacaDevices(function.hostaddress, function.port)
         assert val == devices
 
 
@@ -247,13 +254,13 @@ def test_discoverDevices_1(function):
         {"DeviceName": "test1", "DeviceNumber": 3, "DeviceType": "Dome"},
     ]
     with mock.patch.object(function, "discoverAlpacaDevices", return_value=devices):
-        val = function.discoverDevices("dome")
+        val = function.discoverDevices("dome", function.hostaddress, function.port)
         assert val == ["test:dome:1", "test1:dome:3"]
 
 
 def test_discoverDevices_2(function):
     with mock.patch.object(function, "discoverAlpacaDevices", return_value=[]):
-        val = function.discoverDevices("dome")
+        val = function.discoverDevices("dome", function.hostaddress, function.port)
         assert val == []
 
 

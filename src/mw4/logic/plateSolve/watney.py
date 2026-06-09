@@ -42,15 +42,15 @@ class Watney:
         self.result: dict[str, Any] = {"success": False}
         self.process: Any = None
         self.config.deviceName = "Watney"
-        self.binPath: Path = self.setDefaultBinPath()
         self.config.appPath = self.setDefaultAppPath()
+        self.config.indexPath = self.setDefaultIndexPath()
         self.saveConfigFile()
 
-    def setDefaultAppPath(self) -> None:
-        self.config.appPath = self.workDir / "watney-cli"
+    def setDefaultAppPath(self) -> Path:
+        return self.workDir / "watney-cli"
 
-    def setDefaultIndexPath(self) -> None:
-        self.config.indexPath = self.workDir / "watney-index"
+    def setDefaultIndexPath(self) -> Path:
+        return self.workDir / "watney-index"
 
     def saveConfigFile(self) -> None:
         cfgFile = self.tempDir / "watney-solve-config.yml"

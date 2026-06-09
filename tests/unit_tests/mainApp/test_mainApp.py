@@ -96,7 +96,7 @@ def test_getActiveDrivers(app):
     # TODO: This method needs to be implemented in the MountWizzard4 class
     # For now, just check that the app has a dReg (device registry)
     assert hasattr(app, "dReg")
-    assert "camera" in app.dReg.drivers
+    assert "camera" in app.dReg.d
 
 
 # ---------------------------------------------------------------------------

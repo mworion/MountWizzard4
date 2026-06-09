@@ -25,7 +25,35 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    func = SettingWindow(app=App(), title="Setting")
+    app = App()
+    # Only return devices that have UI elements in setupUiDriver
+    validDevices = [
+        "camera",
+        "cover",
+        "directWeather",
+        "dome",
+        "filter",
+        "focuser",
+        "lightPanel",
+        "power",
+        "sensor1Weather",
+        "sensor2Weather",
+        "sensor3Weather",
+        "sensor4Weather",
+        "telescope",
+    ]
+
+    def mockConfigurable():
+        for entry in app.dReg.d.values():
+            if (
+                entry.name in validDevices
+                and entry.isConfigurable
+                and entry.instance is not None
+            ):
+                yield entry
+
+    with mock.patch.object(app.dReg, "configurable", mockConfigurable):
+        func = SettingWindow(app=app, title="Setting")
     yield func
     QApplication.processEvents()
     gc.collect()
@@ -48,7 +76,11 @@ def test_storeConfig_2(function):
 
 
 def test_closeEvent_1(function):
-    with mock.patch.object(function, "show"), mock.patch.object(MWidget, "closeEvent"):
+    with (
+        mock.patch.object(function, "show"),
+        mock.patch.object(MWidget, "closeEvent"),
+        mock.patch.object(function.tabSettDevice, "closeEvent"),
+    ):
         function.showWindow()
         function.closeEvent(QCloseEvent)
 

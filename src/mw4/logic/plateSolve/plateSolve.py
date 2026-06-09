@@ -37,6 +37,7 @@ class PlateSolve:
     Keyword definitions could be found under
         https://fits.gsfc.nasa.gov/fits_dictionary.html
     """
+
     DEVICE_TYPE = "misc"
     log = logging.getLogger("MW4")
 
@@ -146,26 +147,28 @@ class PlateSolve:
         self.threadPool.start(self.worker)
 
     def checkAvailabilityProgram(self, framework: str) -> bool:
-        appPath = Path(self.run[framework].appPath)
+        appPath = Path(self.run[framework].config.appPath)
         return self.run[framework].checkAvailabilityProgram(appPath=appPath)
 
     def checkAvailabilityIndex(self, framework: str) -> bool:
-        indexPath = Path(self.run[framework].indexPath)
+        indexPath = Path(self.run[framework].config.indexPath)
         return self.run[framework].checkAvailabilityIndex(indexPath=indexPath)
 
     def startCommunication(self) -> None:
         sucProgram = self.checkAvailabilityProgram(self.framework)
         sucIndex = self.checkAvailabilityIndex(self.framework)
-        name = self.run[self.framework].deviceName
         if not sucProgram or not sucIndex:
             return
 
-        self.signals.deviceConnected.emit("platesolve", name)
+        self.signals.deviceConnected.emit(
+            "platesolve", self.run[self.framework].config.deviceName
+        )
 
     def stopCommunication(self) -> None:
         self.solveLoopRunning = False
-        name = self.run[self.framework].deviceName
-        self.signals.deviceDisconnected.emit("platesolve", name)
+        self.signals.deviceDisconnected.emit(
+            "platesolve", self.run[self.framework].config.deviceName
+        )
 
     def solve(self, imagePath: Path, updateHeader: bool = False) -> None:
         data = (imagePath, updateHeader)

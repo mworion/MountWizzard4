@@ -106,17 +106,17 @@ def test_quitSave_1(window):
 
 
 def test_smartFunctionGui_0(window):
-    window.app.dReg.drivers["mount"].stat = True
-    window.app.dReg.drivers["camera"].stat = True
-    window.app.dReg.drivers["plateSolve"].stat = True
+    window.app.dReg.d["mount"].stat = True
+    window.app.dReg.d["camera"].stat = True
+    window.app.dReg.d["plateSolve"].stat = True
     window.app.buildPoint.buildP = []
     window.smartFunctionGui()
 
 
 def test_smartFunctionGui_1(window):
-    window.app.dReg.drivers["mount"].stat = True
-    window.app.dReg.drivers["camera"].stat = True
-    window.app.dReg.drivers["plateSolve"].stat = True
+    window.app.dReg.d["mount"].stat = True
+    window.app.dReg.d["camera"].stat = True
+    window.app.dReg.d["plateSolve"].stat = True
     window.app.buildPoint.buildP = [(0, 0, 1)]
     window.smartFunctionGui()
     assert window.ui.runModelGroup.isEnabled()
@@ -125,9 +125,9 @@ def test_smartFunctionGui_1(window):
 
 
 def test_smartFunctionGui_2(window):
-    window.app.dReg.drivers["mount"].stat = True
-    window.app.dReg.drivers["camera"].stat = False
-    window.app.dReg.drivers["plateSolve"].stat = True
+    window.app.dReg.d["mount"].stat = True
+    window.app.dReg.d["camera"].stat = False
+    window.app.dReg.d["plateSolve"].stat = True
     window.app.buildPoint.buildP = [(0, 0, 1)]
     window.smartFunctionGui()
     assert not window.ui.runModelGroup.isEnabled()
@@ -136,7 +136,7 @@ def test_smartFunctionGui_2(window):
 
 
 def test_smartFunctionGui_3(window):
-    window.app.dReg.drivers["mount"].stat = True
+    window.app.dReg.d["mount"].stat = True
     window.smartFunctionGui()
     assert window.ui.refractionGroup.isEnabled()
     assert window.ui.dsoGroup.isEnabled()
@@ -144,7 +144,7 @@ def test_smartFunctionGui_3(window):
 
 
 def test_smartFunctionGui_4(window):
-    window.app.dReg.drivers["mount"].stat = False
+    window.app.dReg.d["mount"].stat = False
     window.smartFunctionGui()
     assert not window.ui.refractionGroup.isEnabled()
     assert not window.ui.dsoGroup.isEnabled()
@@ -165,7 +165,7 @@ def test_setEnvironDeviceStats_1(window):
     window.app.mount.setting.statusRefraction = 0
 
     window.setEnvironDeviceStats()
-    assert window.app.dReg.drivers["refraction"].stat is None
+    assert window.app.dReg.d["refraction"].stat is None
 
 
 def test_setEnvironDeviceStats_2(window):
@@ -174,7 +174,7 @@ def test_setEnvironDeviceStats_2(window):
     window.app.mount.setting.statusRefraction = 1
 
     window.setEnvironDeviceStats()
-    assert window.app.dReg.drivers["refraction"].stat
+    assert window.app.dReg.d["refraction"].stat
 
 
 def test_setEnvironDeviceStats_3(window):
@@ -182,10 +182,10 @@ def test_setEnvironDeviceStats_3(window):
     window.ui.refracCont.setChecked(True)
     window.app.mount.setting.statusRefraction = 1
     window.mainWindowAddons.addons["EnvironWeather"].refractionSource = "onlineWeather"
-    window.app.dReg.drivers["onlineWeather"].stat = False
+    window.app.dReg.d["onlineWeather"].stat = False
 
     window.setEnvironDeviceStats()
-    assert not window.app.dReg.drivers["refraction"].stat
+    assert not window.app.dReg.d["refraction"].stat
 
 
 def test_updateDeviceStats_1(window):
@@ -212,7 +212,7 @@ def test_updatePlateSolveStatus_1(window):
 
 def test_updateMountConnStat_1(window):
     window.updateMountConnStat(True)
-    assert window.app.dReg.drivers["mount"].stat
+    assert window.app.dReg.d["mount"].stat
 
 
 def test_updatePlateSolveStatus(window):
@@ -409,22 +409,22 @@ def test_remoteCommand_4(window):
 def test_setEnvironDeviceStats_noSource(window):
     window.ui.refracManual.setChecked(False)
     window.ui.showTabEnviron.setChecked(True)
-    window.app.dReg.drivers["mount"].instance.setting.statusRefraction = 1
+    window.app.dReg.d["mount"].instance.setting.statusRefraction = 1
     window.mainWindowAddons.addons["EnvironWeather"].refractionSource = None
     window.setEnvironDeviceStats()
-    assert window.app.dReg.drivers["refraction"].stat is False
+    assert window.app.dReg.d["refraction"].stat is False
 
 
 def test_updateDeviceStats_noDriver(window):
     device = "testDevice"
     ui = mock.MagicMock()
     window.deviceStatGui[device] = ui
-    window.app.dReg.drivers[device] = None
+    window.app.dReg.d[device] = None
     try:
         window.updateDeviceStats()
         ui.setEnabled.assert_called_with(False)
     finally:
-        window.app.dReg.drivers.pop(device, None)
+        window.app.dReg.d.pop(device, None)
         window.deviceStatGui.pop(device, None)
 
 
@@ -432,7 +432,7 @@ def test_updateDeviceStats_enabledDriver(window):
     device = "testDevice"
     ui = mock.MagicMock()
     window.deviceStatGui[device] = ui
-    window.app.dReg.drivers[device] = DeviceEntry(
+    window.app.dReg.d[device] = DeviceEntry(
         name=device, instance=object(), deviceType=None, isConfigurable=True, stat=True
     )
     try:
@@ -440,5 +440,5 @@ def test_updateDeviceStats_enabledDriver(window):
             window.updateDeviceStats()
         ui.setEnabled.assert_called_with(True)
     finally:
-        window.app.dReg.drivers.pop(device, None)
+        window.app.dReg.d.pop(device, None)
         window.deviceStatGui.pop(device, None)

@@ -43,11 +43,11 @@ def test_storeConfig_1(function):
 
 
 def test_smartEnvironGui_1(function):
-    function.app.dReg.drivers["sensor1Weather"].stat = False
-    function.app.dReg.drivers["sensor2Weather"].stat = False
-    function.app.dReg.drivers["sensor3Weather"].stat = False
-    function.app.dReg.drivers["sensor4Weather"].stat = False
-    function.app.dReg.drivers["directWeather"].stat = False
+    function.app.dReg.d["sensor1Weather"].stat = False
+    function.app.dReg.d["sensor2Weather"].stat = False
+    function.app.dReg.d["sensor3Weather"].stat = False
+    function.app.dReg.d["sensor4Weather"].stat = False
+    function.app.dReg.d["directWeather"].stat = False
     function.smartEnvironGui()
     assert not function.ui.sensor1Group.isEnabled()
     assert not function.ui.sensor2Group.isEnabled()
@@ -57,11 +57,11 @@ def test_smartEnvironGui_1(function):
 
 
 def test_smartEnvironGui_2(function):
-    function.app.dReg.drivers["sensor1Weather"].stat = True
-    function.app.dReg.drivers["sensor2Weather"].stat = True
-    function.app.dReg.drivers["sensor3Weather"].stat = True
-    function.app.dReg.drivers["sensor4Weather"].stat = True
-    function.app.dReg.drivers["directWeather"].stat = True
+    function.app.dReg.d["sensor1Weather"].stat = True
+    function.app.dReg.d["sensor2Weather"].stat = True
+    function.app.dReg.d["sensor3Weather"].stat = True
+    function.app.dReg.d["sensor4Weather"].stat = True
+    function.app.dReg.d["directWeather"].stat = True
     function.smartEnvironGui()
     assert function.ui.sensor1Group.isEnabled()
     assert function.ui.sensor2Group.isEnabled()
@@ -71,11 +71,11 @@ def test_smartEnvironGui_2(function):
 
 
 def test_smartEnvironGui_3(function):
-    function.app.dReg.drivers["sensor1Weather"].stat = None
-    function.app.dReg.drivers["sensor2Weather"].stat = None
-    function.app.dReg.drivers["sensor3Weather"].stat = None
-    function.app.dReg.drivers["sensor4Weather"].stat = None
-    function.app.dReg.drivers["directWeather"].stat = False
+    function.app.dReg.d["sensor1Weather"].stat = None
+    function.app.dReg.d["sensor2Weather"].stat = None
+    function.app.dReg.d["sensor3Weather"].stat = None
+    function.app.dReg.d["sensor4Weather"].stat = None
+    function.app.dReg.d["directWeather"].stat = False
     function.smartEnvironGui()
     assert not function.ui.sensor1Group.isEnabled()
     assert not function.ui.sensor2Group.isEnabled()
@@ -212,10 +212,10 @@ def test_updateFilterRefractionParameters_1(function):
 
 def test_updateFilterRefractionParameters_2(function):
     function.refractionSource = "sensor1Weather"
-    function.app.dReg.drivers["sensor1Weather"].instance.data[
+    function.app.dReg.d["sensor1Weather"].instance.data[
         "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
     ] = 10
-    function.app.dReg.drivers["sensor1Weather"].instance.data[
+    function.app.dReg.d["sensor1Weather"].instance.data[
         "WEATHER_PARAMETERS.WEATHER_PRESSURE"
     ] = 1000
     function.updateFilterRefractionParameters()
@@ -223,16 +223,16 @@ def test_updateFilterRefractionParameters_2(function):
 
 def test_updateFilterRefractionParameters_3(function):
     function.refractionSource = "sensor1Weather"
-    function.app.dReg.drivers["sensor1Weather"].instance.data.clear()
+    function.app.dReg.d["sensor1Weather"].instance.data.clear()
     function.updateFilterRefractionParameters()
 
 
 def test_updateFilterRefractionParameters_4(function):
     function.refractionSource = "sensor1Weather"
-    function.app.dReg.drivers["sensor1Weather"].instance.data[
+    function.app.dReg.d["sensor1Weather"].instance.data[
         "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
     ] = 10
-    function.app.dReg.drivers["sensor1Weather"].instance.data[
+    function.app.dReg.d["sensor1Weather"].instance.data[
         "WEATHER_PARAMETERS.WEATHER_PRESSURE"
     ] = 1000
     function.updateFilterRefractionParameters()
@@ -241,10 +241,10 @@ def test_updateFilterRefractionParameters_4(function):
 def test_updateFilterRefractionParameters_5(function):
     function.refractionSource = "sensor1Weather"
     function.filteredPressure = np.full(100, 1000)
-    function.app.dReg.drivers["sensor1Weather"].instance.data[
+    function.app.dReg.d["sensor1Weather"].instance.data[
         "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
     ] = 10
-    function.app.dReg.drivers["sensor1Weather"].instance.data[
+    function.app.dReg.d["sensor1Weather"].instance.data[
         "WEATHER_PARAMETERS.WEATHER_PRESSURE"
     ] = 1000
     function.updateFilterRefractionParameters()
@@ -260,21 +260,21 @@ def test_movingAverageRefractionParameters_2(function):
 
 def test_updateRefractionParameters_1(function):
     function.refractionSource = "sensor1Weather"
-    function.app.dReg.drivers["mount"].stat = False
+    function.app.dReg.d["mount"].stat = False
     with mock.patch.object(function, "isValidRefractionSource", return_value=False):
         function.updateRefractionParameters()
 
 
 def test_updateRefractionParameters_2(function):
     function.refractionSource = "directWeather"
-    function.app.dReg.drivers["mount"].stat = True
+    function.app.dReg.d["mount"].stat = True
     with mock.patch.object(function, "isValidRefractionSource", return_value=True):
         function.updateRefractionParameters()
 
 
 def test_updateRefractionParameters_3(function):
     function.refractionSource = "sensor1Weather"
-    function.app.dReg.drivers["mount"].stat = False
+    function.app.dReg.d["mount"].stat = False
     with (
         mock.patch.object(function, "isValidRefractionSource", return_value=True),
         mock.patch.object(
@@ -286,7 +286,7 @@ def test_updateRefractionParameters_3(function):
 
 def test_updateRefractionParameters_4(function):
     function.refractionSource = "sensor1Weather"
-    function.app.dReg.drivers["mount"].stat = True
+    function.app.dReg.d["mount"].stat = True
     with (
         mock.patch.object(function, "isValidRefractionSource", return_value=True),
         mock.patch.object(
@@ -298,7 +298,7 @@ def test_updateRefractionParameters_4(function):
 
 def test_updateRefractionParameters_5(function):
     function.refractionSource = "onlineWeather"
-    function.app.dReg.drivers["mount"].stat = True
+    function.app.dReg.d["mount"].stat = True
     function.ui.refracManual.setChecked(True)
     function.app.mount.obsSite.status = 0
     with (
@@ -312,7 +312,7 @@ def test_updateRefractionParameters_5(function):
 
 def test_updateRefractionParameters_6(function):
     function.refractionSource = "onlineWeather"
-    function.app.dReg.drivers["mount"].stat = True
+    function.app.dReg.d["mount"].stat = True
     function.ui.refracNoTrack.setChecked(True)
     function.app.mount.obsSite.status = 0
     with (
@@ -326,7 +326,7 @@ def test_updateRefractionParameters_6(function):
 
 def test_updateRefractionParameters_7(function):
     function.refractionSource = "onlineWeather"
-    function.app.dReg.drivers["mount"].stat = True
+    function.app.dReg.d["mount"].stat = True
     function.ui.refracNoTrack.setChecked(True)
     function.app.mount.obsSite.status = 1
 
@@ -345,7 +345,7 @@ def test_updateRefractionParameters_7(function):
 
 def test_updateRefractionParameters_8(function):
     function.refractionSource = "onlineWeather"
-    function.app.dReg.drivers["mount"].stat = True
+    function.app.dReg.d["mount"].stat = True
     function.ui.refracNoTrack.setChecked(True)
     function.app.mount.obsSite.status = 1
 
@@ -361,16 +361,16 @@ def test_updateRefractionParameters_8(function):
 
 
 def test_updateSourceGui_1(function):
-    function.app.dReg.drivers["sensor1Weather"].instance.data[
+    function.app.dReg.d["sensor1Weather"].instance.data[
         "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
     ] = 10.5
-    function.app.dReg.drivers["sensor1Weather"].instance.data[
+    function.app.dReg.d["sensor1Weather"].instance.data[
         "WEATHER_PARAMETERS.WEATHER_PRESSURE"
     ] = 1000
-    function.app.dReg.drivers["sensor1Weather"].instance.data[
+    function.app.dReg.d["sensor1Weather"].instance.data[
         "WEATHER_PARAMETERS.WEATHER_DEWPOINT"
     ] = 10.5
-    function.app.dReg.drivers["sensor1Weather"].instance.data[
+    function.app.dReg.d["sensor1Weather"].instance.data[
         "WEATHER_PARAMETERS.WEATHER_HUMIDITY"
     ] = 10
     function.updateSourceGui()

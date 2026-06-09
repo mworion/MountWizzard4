@@ -36,7 +36,6 @@ from typing import Any
 
 
 class DeviceRegistry:
-
     def __init__(self, app: Any) -> None:
         self.app = app
         self.app.stopDevices.connect(self.stopDevices)
@@ -194,9 +193,9 @@ class DeviceRegistry:
         self.d[name].stat = value
 
     def collectConfigFromSingleDevice(self, device: str) -> dict[str, dict[str, Any]]:
-        cfgDevice: dict [str, Any] = {"framework": self.d[device].framework}
+        cfgDevice: dict[str, Any] = {"framework": self.d[device].framework}
         for framework in self.d[device].run:
-            cfgFramework: dict [str, Any] = {}
+            cfgFramework: dict[str, Any] = {}
             if not hasattr(self.d[device].run[framework], "config"):
                 continue
             for field in fields(self.d[device].run[framework].config):
@@ -211,7 +210,9 @@ class DeviceRegistry:
             cfgSetting[entry.name] = self.collectConfigFromSingleDevice(entry.name)
         return cfgSetting
 
-    def writeConfigToSingleDevice(self, device: str, cfgDevice: dict[str, dict[str, Any]]) -> None:
+    def writeConfigToSingleDevice(
+        self, device: str, cfgDevice: dict[str, dict[str, Any]]
+    ) -> None:
         self.d[device].instance.framework = cfgDevice.get("framework", "")
         for framework in self.d[device].run:
             if not hasattr(self.d[device].run[framework], "config"):
@@ -224,7 +225,9 @@ class DeviceRegistry:
                 value = cfgDevice[framework][field.name]
                 setattr(self.d[device].run[framework].config, field.name, value)
 
-    def writeConfigToAllDevices(self, cfgSetting: dict[str, dict[str, dict[str, Any]]]) -> None:
+    def writeConfigToAllDevices(
+        self, cfgSetting: dict[str, dict[str, dict[str, Any]]]
+    ) -> None:
         for entry in self.configurable():
             if entry.name not in cfgSetting:
                 continue

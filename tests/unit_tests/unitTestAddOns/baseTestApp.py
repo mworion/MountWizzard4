@@ -103,7 +103,7 @@ class App(QObject):
     virtualStop = Signal()
     mountOff = Signal()
     mountOn = Signal()
-    stopDrivers = Signal()
+    stopDevices = Signal()
     buildPointsChanged = Signal()
     playSound = Signal(object)
     msg = Signal(object, object, object, object)
@@ -169,7 +169,7 @@ class App(QObject):
         self.buildPoint = BuildPoint(self)
         self.onlineMode = False
         # Add onlineWeather to drivers for tests
-        self.dReg.drivers["onlineWeather"] = DeviceEntry(
+        self.dReg.d["onlineWeather"] = DeviceEntry(
             name="onlineWeather",
             instance=self.onlineWeather,
             deviceType=None,

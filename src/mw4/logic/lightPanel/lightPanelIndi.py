@@ -30,5 +30,9 @@ class LightPanelIndi(IndiClass):
 
     def lightIntensity(self, value: float) -> None:
         self.txQ.put(
-            (self.config.deviceName, "FLAT_LIGHT_INTENSITY", {"FLAT_LIGHT_INTENSITY_VALUE": value})
+            (
+                self.config.deviceName,
+                "FLAT_LIGHT_INTENSITY",
+                {"FLAT_LIGHT_INTENSITY_VALUE": value},
+            )
         )

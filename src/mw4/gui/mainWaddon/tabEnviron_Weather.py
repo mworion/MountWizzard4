@@ -48,38 +48,41 @@ class EnvironWeather:
                 group=self.ui.sensor1Group,
                 data=self.app.dReg["sensor1Weather"].data,
                 signals=self.app.dReg["sensor1Weather"].signals,
-                uiPost="1"
+                uiPost="1",
             ),
             "sensor2Weather": RefractionEntry(
                 group=self.ui.sensor2Group,
                 data=self.app.dReg["sensor2Weather"].data,
                 signals=self.app.dReg["sensor2Weather"].signals,
-                uiPost="2"
+                uiPost="2",
             ),
             "sensor3Weather": RefractionEntry(
                 group=self.ui.sensor3Group,
                 data=self.app.dReg["sensor3Weather"].data,
                 signals=self.app.dReg["sensor3Weather"].signals,
-                uiPost="3"
+                uiPost="3",
             ),
             "sensor4Weather": RefractionEntry(
                 group=self.ui.sensor4Group,
                 data=self.app.dReg["sensor4Weather"].data,
                 signals=self.app.dReg["sensor4Weather"].signals,
-                uiPost="4"
+                uiPost="4",
             ),
             "directWeather": RefractionEntry(
                 group=self.ui.directGroup,
                 data=self.app.dReg["directWeather"].data,
                 signals=self.app.dReg["directWeather"].signals,
-                uiPost="Direct"
+                uiPost="Direct",
             ),
         }
 
         for source in self.refractionSources:
-            self.refractionSources[source].signals.deviceDisconnected.connect(self.clearSourceGui)
+            self.refractionSources[source].signals.deviceDisconnected.connect(
+                self.clearSourceGui
+            )
             self.refractionSources[source].group.clicked.connect(
-                partial(self.selectRefractionSource, source))
+                partial(self.selectRefractionSource, source)
+            )
 
         self.envFields = {
             "temperature": {
@@ -190,9 +193,7 @@ class EnvironWeather:
                 changeStyleDynamic(self.refractionSources[source].group, "refraction", True)
                 self.refractionSources[source].group.setChecked(True)
             else:
-                changeStyleDynamic(
-                    self.refractionSources[source].group, "refraction", False
-                )
+                changeStyleDynamic(self.refractionSources[source].group, "refraction", False)
                 self.refractionSources[source].group.setChecked(False)
 
     def selectRefractionSource(self, source: str) -> None:

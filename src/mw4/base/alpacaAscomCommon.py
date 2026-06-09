@@ -55,10 +55,14 @@ class AlpacaAscomCommon(DriverData):
         try:
             returnVal = getattr(self.device, valueProp)
             if self.loggingTrace:
-                self.log.debug(f"[Trace] [{self.config.deviceName}] [{valueProp}] [{returnVal}]")
+                self.log.debug(
+                    f"[Trace] [{self.config.deviceName}] [{valueProp}] [{returnVal}]"
+                )
             return returnVal
         except Exception as e:
-            self.log.debug(f"[{self.config.deviceName}] property [{valueProp}] not implemented: {e}")
+            self.log.debug(
+                f"[{self.config.deviceName}] property [{valueProp}] not implemented: {e}"
+            )
             self.propertyExceptions.append(valueProp)
 
     def setDeviceProp(self, valueProp: str, value: Any) -> None:
@@ -69,7 +73,9 @@ class AlpacaAscomCommon(DriverData):
             if self.loggingTrace:
                 self.log.debug(f"[Trace] [{self.config.deviceName}] [{valueProp}] [{value}]")
         except Exception as e:
-            self.log.debug(f"[{self.config.deviceName}] property [{valueProp}] not implemented: {e}")
+            self.log.debug(
+                f"[{self.config.deviceName}] property [{valueProp}] not implemented: {e}"
+            )
             self.propertyExceptions.append(valueProp)
 
     def callDeviceMethod(self, valueProp: str, **kwargs: Any) -> Any:
@@ -78,11 +84,14 @@ class AlpacaAscomCommon(DriverData):
         try:
             returnVal = getattr(self.device, valueProp)(**kwargs)
             if self.loggingTrace:
-                t = f"[Trace] [{self.config.deviceName}] [{valueProp}] [{kwargs}] [{returnVal}]"
+                t = f"[Trace] [{self.config.deviceName}] "
+                t += f"[{valueProp}] [{kwargs}] [{returnVal}]"
                 self.log.debug(t)
             return returnVal
         except Exception as e:
-            self.log.debug(f"[{self.config.deviceName}] method [{valueProp}] not implemented: {e}")
+            self.log.debug(
+                f"[{self.config.deviceName}] method [{valueProp}] not implemented: {e}"
+            )
             self.propertyExceptions.append(valueProp)
 
     def setDevicePropQueued(self, valueProp: str, value: Any) -> None:
@@ -129,7 +138,9 @@ class AlpacaAscomCommon(DriverData):
             elif cmd.cmdType == "set":
                 self.setDeviceProp(cmd.valueProp, cmd.value)
             else:
-                self.log.warning(f"[{self.config.deviceName}] unknown cmdType: [{cmd.cmdType}]")
+                self.log.warning(
+                    f"[{self.config.deviceName}] unknown cmdType: [{cmd.cmdType}]"
+                )
 
     def handleDeviceConnect(self) -> None:
         if not self.connectDevice():

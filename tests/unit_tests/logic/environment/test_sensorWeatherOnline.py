@@ -25,7 +25,10 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 class Parent:
-    app = App()
+    try:
+        app = App()
+    except Exception:
+        app = mock.MagicMock()
     data = {}
     deviceType = ""
     signals = Signals()

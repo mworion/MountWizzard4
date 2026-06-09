@@ -14,7 +14,8 @@
 #
 ###########################################################
 # Re-export all stubs so that existing test imports remain unchanged.
-from mw4.base.deviceRegistry import DeviceRegistry
+from mw4.base.deviceRegistry import DeviceEntry, DeviceRegistry
+from mw4.logic.buildData.buildpoints import BuildPoint
 from pathlib import Path
 from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
 from queue import Queue
@@ -74,7 +75,6 @@ from tests.unit_tests.unitTestAddOns.mountStubs import (  # noqa: F401
 
 class App(QObject):
     __version__ = "test"
-    tabsMovable = Signal(object)
     update10s = Signal()
     timerMgr = QTimer()
     update0_1s = Signal()
@@ -103,6 +103,9 @@ class App(QObject):
     virtualStop = Signal()
     mountOff = Signal()
     mountOn = Signal()
+    stopDevices = Signal()
+    startDevice = Signal(str)
+    stopDevice = Signal(str)
     buildPointsChanged = Signal()
     playSound = Signal(object)
     msg = Signal(object, object, object, object)
@@ -121,6 +124,8 @@ class App(QObject):
             "mount": False,
             "camera": False,
             "plateSolve": False,
+            "refraction": None,
+            "onlineWeather": False,
         }
         self.statusOperationRunning = 0
         self.messageQueue = Queue()
@@ -139,6 +144,7 @@ class App(QObject):
         self.sensor4Weather = SensorWeather()
         self.directWeather = DirectWeather()
         self.seeingWeather = SeeingWeather()
+        self.onlineWeather = OnlineWeather()
         self.power = Power()
         self.dome = Dome()
         self.relay = Relay()
@@ -157,11 +163,20 @@ class App(QObject):
             "configDir": Path("tests/work/config"),
             "logDir": Path("tests/work/log"),
         }
+        self.threadPool = QThreadPool()
         self.uiWindows = {}
         self.mainW = MainW()
-        self.deviceRegistry = DeviceRegistry()
-        self.threadPool = QThreadPool()
+        self.dReg = DeviceRegistry(self)
+        self.dReg.addDevices(self)
+        self.buildPoint = BuildPoint(self)
         self.onlineMode = False
+        # Add onlineWeather to drivers for tests
+        self.dReg.d["onlineWeather"] = DeviceEntry(
+            name="onlineWeather",
+            instance=self.onlineWeather,
+            deviceType=None,
+            isConfigurable=True,
+        )
 
     @staticmethod
     def loadConfig():

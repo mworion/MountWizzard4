@@ -24,7 +24,7 @@ class ModelStatus:
         self.msg = mainW.app.msg
         self.ui = mainW.ui
 
-        ms = self.app.mount.signals
+        ms = self.app.dReg["mount"].signals
         ms.getModelDone.connect(self.updateAlignGUI)
         ms.getModelDone.connect(self.updateTurnKnobsGUI)
 

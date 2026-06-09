@@ -24,10 +24,10 @@ from mw4.gui.extWindows.measure.measureW import MeasureWindow
 from mw4.gui.extWindows.messageW import MessageWindow
 from mw4.gui.extWindows.satelliteHorW import SatelliteHorizonWindow
 from mw4.gui.extWindows.satelliteMapW import SatelliteMapWindow
+from mw4.gui.extWindows.setting.settingW import SettingWindow
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 from mw4.gui.extWindows.video.videoW import VideoWindow
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
-from PySide6.QtCore import QPoint, QSize
 
 
 class ExternalWindows:
@@ -120,6 +120,12 @@ class ExternalWindows:
                 "name": "SimulatorDialog",
                 "class": SimulatorWindow,
             },
+            "showSettingW": {
+                "button": self.mainW.ui.setting,
+                "classObj": None,
+                "name": "SettingDialog",
+                "class": SettingWindow,
+            },
         }
 
         for window in self.uiWindows:
@@ -138,10 +144,9 @@ class ExternalWindows:
                 changeStyleDynamic(winObj["button"], "run", False)
 
     def storeConfigExtendedWindows(self):
-        config = self.app.config
         for window in self.uiWindows:
-            config[window] = bool(self.uiWindows[window]["classObj"])
-            if config[window]:
+            self.app.config[window] = bool(self.uiWindows[window]["classObj"])
+            if self.app.config[window]:
                 self.uiWindows[window]["classObj"].storeConfig()
 
     def deleteWindowResource(self, window: str) -> None:

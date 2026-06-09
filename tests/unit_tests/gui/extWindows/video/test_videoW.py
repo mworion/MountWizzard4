@@ -35,14 +35,14 @@ def test_initConfig_1(function):
 
 
 def test_storeConfig_1(function):
-    if "videoW1" in function.app.config:
-        del function.app.config["videoW1"]
+    if "WindowVideo" in function.app.config:
+        del function.app.config["WindowVideo"]
 
     function.storeConfig()
 
 
 def test_storeConfig_2(function):
-    function.app.config["videoW1"] = {}
+    function.app.config["WindowVideo"] = {}
 
     function.storeConfig()
 
@@ -51,3 +51,8 @@ def test_closeEvent_1(function):
     with mock.patch.object(function, "stopVideo"), mock.patch.object(MWidget, "closeEvent"):
         function.showWindow()
         function.closeEvent(QCloseEvent)
+
+
+def test_showWindow(function):
+    with mock.patch.object(function, "show"):
+        function.showWindow()

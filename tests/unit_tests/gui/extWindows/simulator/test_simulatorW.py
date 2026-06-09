@@ -37,21 +37,21 @@ def test_initConfig_1(function):
 
 
 def test_initConfig_2(function):
-    function.app.config["simulatorW"] = {}
-    function.app.config["simulatorW"]["winPosX"] = 100
-    function.app.config["simulatorW"]["winPosY"] = 100
+    function.app.config["WindowSimulator"] = {}
+    function.app.config["WindowSimulator"]["winPosX"] = 100
+    function.app.config["WindowSimulator"]["winPosY"] = 100
     function.initConfig()
 
 
 def test_storeConfig_1(function):
-    if "simulatorW" in function.app.config:
-        del function.app.config["simulatorW"]
+    if "WindowSimulator" in function.app.config:
+        del function.app.config["WindowSimulator"]
 
     function.storeConfig()
 
 
 def test_storeConfig_2(function):
-    function.app.config["simulatorW"] = {}
+    function.app.config["WindowSimulator"] = {}
     function.storeConfig()
 
 

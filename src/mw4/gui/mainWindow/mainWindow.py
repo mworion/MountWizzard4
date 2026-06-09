@@ -69,17 +69,17 @@ class MainWindow(MWidget):
                 "tab": self.ui.settingsTabWidget,
             },
         }
-        self.app.mount.signals.pointDone.connect(self.updateStatusGUI)
-        self.app.mount.signals.mountIsUp.connect(self.updateMountConnStat)
+        self.app.dReg["mount"].signals.pointDone.connect(self.updateStatusGUI)
+        self.app.dReg["mount"].signals.mountIsUp.connect(self.updateMountConnStat)
         self.app.remoteCommand.connect(self.remoteCommand)
-        self.app.plateSolve.signals.message.connect(self.updatePlateSolveStatus)
-        self.app.dome.signals.message.connect(self.updateDomeStatus)
-        self.app.camera.signals.message.connect(self.updateCameraStatus)
+        self.app.dReg["plateSolve"].signals.message.connect(self.updatePlateSolveStatus)
+        self.app.dReg["dome"].signals.message.connect(self.updateDomeStatus)
+        self.app.dReg["camera"].signals.message.connect(self.updateCameraStatus)
         self.ui.saveConfigQuit.clicked.connect(self.quitSave)
         self.ui.loadFrom.clicked.connect(self.loadProfileGUI)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
-        self.app.seeingWeather.b = self.ui.label_b.property("a")
+        self.app.dReg["seeingWeather"].instance.b = self.ui.label_b.property("a")
         self.ui.colorSet.currentIndexChanged.connect(self.updateColorSet)
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateControllerStatus)
@@ -172,7 +172,7 @@ class MainWindow(MWidget):
         self.app.quit()
 
     def quitSave(self) -> None:
-        self.mainWindowAddons.addons["SettDevice"].stopDrivers()
+        self.app.stopDevices.emit()
         self.saveProfile()
         self.close()
 
@@ -185,11 +185,11 @@ class MainWindow(MWidget):
         self.titleBar.windowFixed = True
 
     def smartFunctionGui(self) -> None:
-        isMountReady = bool(self.app.deviceStat.get("mount"))
+        isMountReady = bool(self.app.dReg["mount"].stat)
         isModelingReady = all(
-            bool(self.app.deviceStat.get(x)) for x in ["mount", "camera", "plateSolve"]
+            bool(self.app.dReg[x].stat) for x in ["mount", "camera", "plateSolve"]
         )
-        isModelRun = bool(isModelingReady and self.app.data.buildP)
+        isModelRun = bool(isModelingReady and self.app.buildPoint.buildP)
         self.ui.runModelGroup.setEnabled(isModelRun)
         self.ui.runFlexure.setEnabled(isModelingReady)
         self.ui.runHysteresis.setEnabled(isModelingReady)
@@ -215,7 +215,7 @@ class MainWindow(MWidget):
             tabIndex = getTabIndex(self.smartTabs[key]["tab"], key)
             tabStatus = self.smartTabs[key]["tab"].isTabVisible(tabIndex)
 
-            stat = bool(self.app.deviceStat.get(self.smartTabs[key]["statID"]))
+            stat = bool(self.app.dReg[self.smartTabs[key]["statID"]].stat)
             self.smartTabs[key]["tab"].setTabVisible(tabIndex, stat)
             actChanged = tabStatus != stat
             tabChanged = tabChanged or actChanged
@@ -234,40 +234,43 @@ class MainWindow(MWidget):
             ui.setStyleSheet(ui.styleSheet())
 
     def setEnvironDeviceStats(self) -> None:
-        refracOn = self.app.mount.setting.statusRefraction == 1
+        refracOn = self.app.dReg["mount"].setting.statusRefraction == 1
         isManual = self.ui.refracManual.isChecked()
         isTabEnabled = self.ui.showTabEnviron.isChecked()
         if not refracOn or not isTabEnabled:
-            self.app.deviceStat["refraction"] = None
+            self.app.dReg.setStat("refraction", None)
             self.ui.refractionConnected.setText("Refraction")
         elif isManual:
             self.ui.refractionConnected.setText("Refrac Manu")
-            self.app.deviceStat["refraction"] = True
+            self.app.dReg.setStat("refraction", True)
         else:
             self.ui.refractionConnected.setText("Refrac Auto")
-            isSource = self.app.deviceStat.get(
-                self.mainWindowAddons.addons["EnvironWeather"].refractionSource, False
-            )
-            self.app.deviceStat["refraction"] = isSource
+            source = self.mainWindowAddons.addons["EnvironWeather"].refractionSource
+            if source:
+                isSource = self.app.dReg[source].stat
+                self.app.dReg.setStat("refraction", isSource)
+            else:
+                self.app.dReg.setStat("refraction", False)
 
     def updateDeviceStats(self) -> None:
         for device, ui in self.deviceStatGui.items():
-            if self.app.deviceStat.get(device) is None:
+            entry = self.app.dReg[device]
+            if entry is None or entry.stat is None:
                 ui.setEnabled(False)
-            elif self.app.deviceStat[device]:
+            elif entry.stat:
                 changeStyleDynamic(ui, "color", "green")
                 ui.setEnabled(True)
             else:
                 changeStyleDynamic(ui, "color", "red")
                 ui.setEnabled(True)
 
-        isMount = self.app.deviceStat.get("mount", False)
+        isMount = self.app.dReg["mount"].stat
         changeStyleDynamic(self.ui.mountOn, "run", isMount)
         changeStyleDynamic(self.ui.mountOff, "run", not isMount)
         changeStyleDynamic(self.ui.mountConnected, "run", isMount)
 
     def updateMountConnStat(self, status: bool) -> None:
-        self.app.deviceStat["mount"] = status
+        self.app.dReg.setStat("mount", status)
 
     def updatePlateSolveStatus(self, text: str) -> None:
         self.ui.plateSolveText.setText(text)
@@ -289,8 +292,8 @@ class MainWindow(MWidget):
     def updateThreadAndOnlineStatus(self) -> None:
         mode = "Online" if self.ui.isOnline.isChecked() else "Offline"
         moon = self.ui.moonPhaseIllumination.text()
-        f = dark_twilight_day(self.app.ephemeris, self.app.mount.obsSite.location)
-        twilight = TWILIGHTS[int(f(self.app.mount.obsSite.ts.now()))]
+        f = dark_twilight_day(self.app.ephemeris, self.app.dReg["mount"].location)
+        twilight = TWILIGHTS[int(f(self.app.dReg["mount"].obsSite.ts.now()))]
         activeCount = self.threadPool.activeThreadCount()
         diskUsage = shutil.disk_usage(self.app.mwGlob["workDir"])
         free = int(diskUsage[2] / diskUsage[0] * 100)
@@ -306,34 +309,34 @@ class MainWindow(MWidget):
 
     def updateStatusGUI(self, obs: ObsSite) -> None:
         self.ui.mountText.setText(obs.statusText())
-        if self.app.mount.obsSite.status == 0:
+        if self.app.dReg["mount"].obsSite.status == 0:
             changeStyleDynamic(self.ui.tracking, "run", True)
         else:
             changeStyleDynamic(self.ui.tracking, "run", False)
 
-        if self.app.mount.obsSite.status == 5:
+        if self.app.dReg["mount"].obsSite.status == 5:
             changeStyleDynamic(self.ui.park, "run", True)
         else:
             changeStyleDynamic(self.ui.park, "run", False)
 
-        if self.app.mount.obsSite.status == 1:
+        if self.app.dReg["mount"].obsSite.status == 1:
             changeStyleDynamic(self.ui.stop, "run", True)
         else:
             changeStyleDynamic(self.ui.stop, "run", False)
 
-        if self.app.mount.obsSite.status == 10 and not self.satStatus:
+        if self.app.dReg["mount"].obsSite.status == 10 and not self.satStatus:
             self.app.playSound.emit("SatStartTracking")
             self.satStatus = True
-        elif self.app.mount.obsSite.status != 10:
+        elif self.app.dReg["mount"].obsSite.status != 10:
             self.satStatus = False
 
     def switchProfile(self, config: dict) -> None:
         self.externalWindows.closeExtendedWindows()
-        self.mainWindowAddons.addons["SettDevice"].stopDrivers()
+        self.app.stopDevices.emit()
         self.threadPool.waitForDone(10000)
         self.app.config = config
         topo = self.app.initConfig()
-        self.app.mount.obsSite.location = topo
+        self.app.dReg["mount"].obsSite.location = topo
         self.initConfig()
 
     def loadProfileGUI(self) -> None:

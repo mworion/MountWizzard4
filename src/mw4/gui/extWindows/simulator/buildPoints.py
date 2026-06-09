@@ -56,10 +56,10 @@ class SimulatorBuildPoints:
         self.points = []
 
     def updatePositions(self) -> None:
-        if not self.app.mount.obsSite.haJNow:
+        if not self.app.dReg["mount"].obsSite.haJNow:
             return
 
-        _, _, _, PB, PD = self.app.mount.calcTransformationMatricesActual()
+        _, _, _, PB, PD = self.app.dReg["mount"].instance.calcTransformationMatricesActual()
         if PB is None or PD is None:
             return
         PB[2] += 1
@@ -189,7 +189,7 @@ class SimulatorBuildPoints:
         isNumber = self.parent.ui.showNumbers.isChecked()
         isSlewPath = self.parent.ui.showSlewPath.isChecked()
 
-        for index, point in enumerate(self.app.data.buildP):
+        for index, point in enumerate(self.app.buildPoint.buildP):
             status = point[2]
             e, x, y, z = self.createPoint(
                 buildPointEntity, np.radians(point[0]), np.radians(-point[1]), status
@@ -221,7 +221,7 @@ class SimulatorBuildPoints:
         upwards), which means an angle around z (which is azimuth) turns
         counterclockwise. So we have to set - azimuth for coordinate calculation
         """
-        if len(self.app.data.buildP) == 0:
+        if len(self.app.buildPoint.buildP) == 0:
             return False
         ref_fusion = self.parent.entityModel.get("ref_fusion")
         if not ref_fusion:

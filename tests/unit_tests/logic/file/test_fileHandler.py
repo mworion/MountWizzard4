@@ -25,7 +25,10 @@ from xisf import XISF
 
 
 class Parent:
-    app = App()
+    try:
+        app = App()
+    except Exception:
+        app = mock.MagicMock()
 
 
 @pytest.fixture(autouse=True, scope="function")

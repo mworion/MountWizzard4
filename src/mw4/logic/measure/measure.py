@@ -24,6 +24,7 @@ from typing import Any
 
 
 class MeasureData:
+    DEVICE_TYPE = "misc"
     log = logging.getLogger("MW4")
     MAXSIZE = 48 * 60 * 60
     CYCLE_UPDATE_TASK = 1000
@@ -35,33 +36,24 @@ class MeasureData:
         self.mutexMeasure = QMutex()
         self.shorteningStart: bool = True
         self.data: dict[str, Any] = {}
-        self.devices: dict[str, Any] = {}
-        self.deviceName: str = ""
-        self.defaultConfig: dict[str, Any] = {"framework": "", "frameworks": {}}
+        self.measuredDevices: dict[str, Any] = {}
         self.framework: str = ""
         self.run: dict[str, Any] = {
             "raw": MeasureDataRaw(self.app, self, self.data),
             "csv": MeasureDataCSV(self.app, self, self.data),
         }
-        for fw in self.run:
-            self.defaultConfig["frameworks"].update(self.run[fw].defaultConfig)
 
     def collectDataDevices(self) -> None:
-        self.devices.clear()
-        deviceDrivers = self.app.getActiveDrivers()
-        for device, driver in deviceDrivers.items():
-            if device not in measure:
+        self.measuredDevices.clear()
+        for name, entry in self.app.dReg.d.items():
+            if name not in measure or entry.instance is None:
                 continue
-            deviceClass = driver.get("class") if isinstance(driver, dict) else driver
-            if deviceClass is None:
-                continue
-            self.devices[device] = deviceClass
-        self.devices["mount"] = self.app.mount
+            self.measuredDevices[name] = entry.instance
 
     def clearData(self) -> None:
         self.data.clear()
         self.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
-        for device in self.devices:
+        for device in self.measuredDevices:
             if device not in measure:
                 continue
             for source in measure[device]:
@@ -71,15 +63,12 @@ class MeasureData:
     def startCommunication(self) -> None:
         self.collectDataDevices()
         self.clearData()
-        name = self.run[self.framework].deviceName
         self.run[self.framework].startCommunication()
-        self.signals.deviceConnected.emit(name)
+        self.signals.deviceConnected.emit(self.run[self.framework].deviceName)
 
     def stopCommunication(self) -> None:
         self.run[self.framework].stopCommunication()
-        name = self.run[self.framework].deviceName
-        self.signals.serverDisconnected.emit({name: 0})
-        self.signals.deviceDisconnected.emit(name)
+        self.signals.deviceDisconnected.emit(self.run[self.framework].deviceName)
 
     def checkStart(self) -> None:
         if self.shorteningStart and len(self.data["time"]) > 2:
@@ -98,11 +87,11 @@ class MeasureData:
             return
         self.checkStart()
         self.checkSize()
-        timeStamp = self.app.mount.obsSite.timeJD.utc_datetime().replace(tzinfo=None)
+        timeStamp = self.app.dReg["mount"].obsSite.timeJD.utc_datetime().replace(tzinfo=None)
         self.data["time"] = np.append(self.data["time"], np.datetime64(timeStamp))
-        for device in self.devices:
+        for device in self.measuredDevices:
             for source in measure[device]:
-                value = self.devices[device].data.get(source, 0)
+                value = self.measuredDevices[device].data.get(source, 0)
                 item = f"{device}-{source}"
                 self.data[item] = np.append(self.data[item], value)
         self.mutexMeasure.unlock()

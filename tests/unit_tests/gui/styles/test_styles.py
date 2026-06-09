@@ -73,6 +73,14 @@ def test_mw4Style_2(function):
         assert ret.startswith("\n")
 
 
+def test_mw4Style_nonDarwin_nocache(function):
+    function.cachedStyle = None
+    function.cachedColorSet = None
+    with mock.patch.object(platform, "system", return_value="Linux"):
+        ret = function.mw4Style
+        assert ret.startswith("\n")
+
+
 def test_calcHexColor_1(function):
     val = function.calcHexColor("#808080", 1)
     assert val == "#808080"

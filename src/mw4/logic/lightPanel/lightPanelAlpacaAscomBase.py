@@ -36,7 +36,7 @@ class LightPanelAlpacaAscomBase(AlpacaAscomCommon):
             self.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = 0
 
     def lightOn(self) -> None:
-        maxBrightness = self.app.lightPanel.data.get(
+        maxBrightness = self.app.dReg["lightPanel"].data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
         )
         brightness = int(maxBrightness / 2)

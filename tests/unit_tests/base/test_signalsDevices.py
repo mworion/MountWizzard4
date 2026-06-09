@@ -18,8 +18,6 @@ import pytest
 from mw4.base.signalsDevices import Signals
 
 EXPECTED_SIGNALS = [
-    "serverConnected",
-    "serverDisconnected",
     "deviceConnected",
     "deviceDisconnected",
     "exposed",
@@ -43,17 +41,7 @@ def test_instantiation(signals):
 
 
 def test_signalCount(signals):
-    assert len(EXPECTED_SIGNALS) == 12
-
-
-def test_serverConnected(signals):
-    assert hasattr(signals, "serverConnected")
-    assert callable(signals.serverConnected.connect)
-
-
-def test_serverDisconnected(signals):
-    assert hasattr(signals, "serverDisconnected")
-    assert callable(signals.serverDisconnected.connect)
+    assert len(EXPECTED_SIGNALS) == 10
 
 
 def test_deviceConnected(signals):

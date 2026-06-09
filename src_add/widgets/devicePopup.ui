@@ -227,150 +227,6 @@
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="label_mountIP_11">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>130</y>
-       <width>91</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>User</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_mountIP_12">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>160</y>
-       <width>91</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Password</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="alpacaUser">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>130</y>
-       <width>201</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>10</pointsize>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="mouseTracking">
-      <bool>false</bool>
-     </property>
-     <property name="acceptDrops">
-      <bool>false</bool>
-     </property>
-     <property name="toolTip">
-      <string>User for alpaca device</string>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LayoutDirection::RightToLeft</enum>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="maxLength">
-      <number>50</number>
-     </property>
-     <property name="frame">
-      <bool>false</bool>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-     </property>
-     <property name="dragEnabled">
-      <bool>true</bool>
-     </property>
-     <property name="readOnly">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="alpacaPassword">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>160</y>
-       <width>201</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>10</pointsize>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="mouseTracking">
-      <bool>false</bool>
-     </property>
-     <property name="acceptDrops">
-      <bool>false</bool>
-     </property>
-     <property name="toolTip">
-      <string>Passwor for alpaca device</string>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LayoutDirection::RightToLeft</enum>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="maxLength">
-      <number>50</number>
-     </property>
-     <property name="frame">
-      <bool>false</bool>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-     </property>
-     <property name="dragEnabled">
-      <bool>true</bool>
-     </property>
-     <property name="readOnly">
-      <bool>false</bool>
-     </property>
-    </widget>
     <widget class="QComboBox" name="alpacaDeviceList">
      <property name="geometry">
       <rect>
@@ -388,7 +244,7 @@
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>190</y>
+       <y>185</y>
        <width>201</width>
        <height>20</height>
       </rect>
@@ -2645,8 +2501,6 @@
   <tabstop>alpacaPort</tabstop>
   <tabstop>alpacaDeviceList</tabstop>
   <tabstop>alpacaDiscover</tabstop>
-  <tabstop>alpacaUser</tabstop>
-  <tabstop>alpacaPassword</tabstop>
   <tabstop>alpacaCopyConfig</tabstop>
   <tabstop>ascomDevice</tabstop>
   <tabstop>ascomSelector</tabstop>

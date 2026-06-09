@@ -38,6 +38,7 @@ class PlateSolve:
         https://fits.gsfc.nasa.gov/fits_dictionary.html
     """
 
+    DEVICE_TYPE = "misc"
     log = logging.getLogger("MW4")
 
     def __init__(self, app: Any) -> None:
@@ -48,19 +49,14 @@ class PlateSolve:
         self.solveLoopRunning: bool = False
         self.worker: Worker = Worker(self.workerSolveLoop)
         self.process: subprocess.Popen | None = None
-
         self.data: dict = {}
-        self.defaultConfig: dict = {"framework": "", "frameworks": {}}
         self.framework: str = ""
         self.run: dict = {
             "astrometry": Astrometry(self),
             "astap": ASTAP(self),
             "watney": Watney(self),
         }
-        for fw in self.run:
-            self.defaultConfig["frameworks"].update(self.run[fw].defaultConfig)
-
-        self.signals.serverConnected.connect(self.startSolveLoop)
+        self.signals.deviceConnected.connect(self.startSolveLoop)
 
     def runSolverBin(self, runnable: list[Any]) -> tuple[bool, str]:
         timeStart = time.time()
@@ -113,8 +109,9 @@ class PlateSolve:
         result["success"] = True
         result["message"] = "Solved"
         result.update(solution)
+        timeJD = self.app.dReg["mount"].obsSite.timeJD
         result["raJNowS"], result["decJNowS"] = J2000ToJNow(
-            result["raJ2000S"], result["decJ2000S"], self.app.mount.obsSite.timeJD
+            result["raJ2000S"], result["decJ2000S"], timeJD
         )
         self.log.debug(f"Solve result:  [{imagePath.stem:10s}], [{result}]")
         return result
@@ -150,28 +147,24 @@ class PlateSolve:
         self.threadPool.start(self.worker)
 
     def checkAvailabilityProgram(self, framework: str) -> bool:
-        appPath = Path(self.run[framework].appPath)
+        appPath = Path(self.run[framework].config.appPath)
         return self.run[framework].checkAvailabilityProgram(appPath=appPath)
 
     def checkAvailabilityIndex(self, framework: str) -> bool:
-        indexPath = Path(self.run[framework].indexPath)
+        indexPath = Path(self.run[framework].config.indexPath)
         return self.run[framework].checkAvailabilityIndex(indexPath=indexPath)
 
     def startCommunication(self) -> None:
         sucProgram = self.checkAvailabilityProgram(self.framework)
         sucIndex = self.checkAvailabilityIndex(self.framework)
-        name = self.run[self.framework].deviceName
         if not sucProgram or not sucIndex:
             return
 
-        self.signals.deviceConnected.emit(name)
-        self.signals.serverConnected.emit()
+        self.signals.deviceConnected.emit(self.run[self.framework].config.deviceName)
 
     def stopCommunication(self) -> None:
         self.solveLoopRunning = False
-        name = self.run[self.framework].deviceName
-        self.signals.serverDisconnected.emit({name: 0})
-        self.signals.deviceDisconnected.emit(name)
+        self.signals.deviceDisconnected.emit(self.run[self.framework].config.deviceName)
 
     def solve(self, imagePath: Path, updateHeader: bool = False) -> None:
         data = (imagePath, updateHeader)

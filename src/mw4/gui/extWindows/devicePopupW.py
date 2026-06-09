@@ -23,23 +23,20 @@ from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
 from pathlib import Path
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QCheckBox, QComboBox, QDoubleSpinBox, QLineEdit, QListView
+from typing import Any
 
 
 class DevicePopup(MWidget):
-    def __init__(self, parentWidget, parent, driver: str, deviceType: str, data: dict):
+    def __init__(self, parentWidget, device: str, data: dict[str, Any]):
         super().__init__()
-        self.parent = parent
-        self.app = parent.app
-        self.msg = parent.app.msg
+        self.app = parentWidget.app
+        self.msg = parentWidget.app.msg
         self.data = data
-        self.driver = driver
-        self.deviceType = deviceType
+        self.device: str = device
+        self.framework: str = data["framework"]
 
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self.ws)
-        self.setMinimumSize(500, 340)
-        self.setMaximumSize(500, 340)
-        self.titleBar.windowFixed = True
         self.setWindowTitle("Device Management")
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
@@ -48,21 +45,19 @@ class DevicePopup(MWidget):
         pixmap = svg2pixmap("assets/icon/cogs.svg", self.M_PRIM)
         self.ui.iconPixmap.setPixmap(pixmap)
 
-        self.returnValues = {"close": "cancel"}
+        self.returnValues: dict[str, Any] = {"close": "cancel"}
         self.framework2gui = {
             "indi": {
                 "hostaddress": self.ui.indiHostAddress,
                 "port": self.ui.indiPort,
-                "deviceList": self.ui.indiDeviceList,
+                "deviceName": self.ui.indiDeviceList,
                 "messages": self.ui.indiMessages,
                 "loadConfig": self.ui.indiLoadConfig,
             },
             "alpaca": {
                 "hostaddress": self.ui.alpacaHostAddress,
                 "port": self.ui.alpacaPort,
-                "user": self.ui.alpacaUser,
-                "password": self.ui.alpacaPassword,
-                "deviceList": self.ui.alpacaDeviceList,
+                "deviceName": self.ui.alpacaDeviceList,
             },
             "ascom": {
                 "deviceName": self.ui.ascomDevice,
@@ -71,21 +66,21 @@ class DevicePopup(MWidget):
                 "filePath": self.ui.boltwoodPath,
             },
             "astrometry": {
-                "deviceList": self.ui.astrometryDeviceList,
+                "deviceName": self.ui.astrometryDeviceList,
                 "searchRadius": self.ui.astrometrySearchRadius,
                 "timeout": self.ui.astrometryTimeout,
                 "appPath": self.ui.astrometryAppPath,
                 "indexPath": self.ui.astrometryIndexPath,
             },
             "astap": {
-                "deviceList": self.ui.astapDeviceList,
+                "deviceName": self.ui.astapDeviceList,
                 "searchRadius": self.ui.astapSearchRadius,
                 "timeout": self.ui.astapTimeout,
                 "appPath": self.ui.astapAppPath,
                 "indexPath": self.ui.astapIndexPath,
             },
             "watney": {
-                "deviceList": self.ui.watneyDeviceList,
+                "deviceName": self.ui.watneyDeviceList,
                 "searchRadius": self.ui.watneySearchRadius,
                 "timeout": self.ui.watneyTimeout,
                 "appPath": self.ui.watneyAppPath,
@@ -127,7 +122,7 @@ class DevicePopup(MWidget):
             },
         }
 
-        self.discovers = {
+        self.discovers: dict[str, dict[str, Any]] = {
             "indi": {
                 "deviceList": self.ui.indiDeviceList,
                 "hostaddress": self.ui.indiHostAddress,
@@ -166,8 +161,32 @@ class DevicePopup(MWidget):
             )
         self.ui.selectBoltwoodPath.clicked.connect(self.selectBoltwoodPath)
 
+    def populateTabs(self) -> None:
+        for framework in self.data:
+            if framework == "framework":
+                continue
+            for element in self.data[framework]:
+                ui = self.framework2gui[framework].get(element)
+                if isinstance(ui, QComboBox):
+                    ui.clear()
+                    ui.setView(QListView())
+                    ui.addItem(self.data[framework]["deviceName"])
+                elif isinstance(ui, QLineEdit):
+                    ui.setText(f"{self.data[framework][element]}")
+                elif isinstance(ui, QCheckBox):
+                    ui.setChecked(self.data[framework][element])
+                elif isinstance(ui, QDoubleSpinBox):
+                    ui.setValue(self.data[framework][element])
+
+    def selectTabs(self) -> None:
+        tabIndex = getTabIndex(self.ui.tab, self.framework)
+        self.ui.tab.setCurrentIndex(tabIndex)
+        for index in range(0, self.ui.tab.count()):
+            isVisible = self.ui.tab.widget(index).objectName() in self.data
+            self.ui.tab.setTabVisible(index, isVisible)
+
     def initConfig(self) -> None:
-        self.setWindowTitle(f"Setup driver for {self.deviceType}")
+        self.setWindowTitle(f"Setup driver for {self.device}")
         self.populateTabs()
         self.selectTabs()
         framework = self.data.get("framework", "")
@@ -175,80 +194,42 @@ class DevicePopup(MWidget):
             self.checkApp(framework, self.platesolvers[framework]["appPath"].text())
             self.checkIndex(framework, self.platesolvers[framework]["indexPath"].text())
         self.show()
+        self.setMinimumSize(500, 340)
+        self.setMaximumSize(500, 340)
+        self.titleBar.windowFixed = True
+
+    def readFramework(self) -> None:
+        index = self.ui.tab.currentIndex()
+        self.framework = self.ui.tab.widget(index).objectName()
+
+    def readTabs(self) -> None:
+        for element in self.data[self.framework]:
+            ui = self.framework2gui[self.framework].get(element)
+            if isinstance(ui, QComboBox):
+                self.data[self.framework]["deviceName"] = ui.currentText()
+            elif isinstance(ui, QLineEdit):
+                if isinstance(self.data[self.framework][element], int):
+                    self.data[self.framework][element] = int(ui.text())
+                else:
+                    self.data[self.framework][element] = ui.text()
+            elif isinstance(ui, QCheckBox):
+                self.data[self.framework][element] = ui.isChecked()
+            elif isinstance(ui, QDoubleSpinBox):
+                self.data[self.framework][element] = ui.value()
 
     def storeConfig(self) -> None:
         self.readFramework()
         self.readTabs()
-        self.returnValues["indiCopyConfig"] = self.ui.indiCopyConfig.isChecked()
-        self.returnValues["alpacaCopyConfig"] = self.ui.alpacaCopyConfig.isChecked()
+        self.returnValues["copyConfig"]: list = []
+        if self.ui.indiCopyConfig.isChecked():
+            self.returnValues["copyConfig"].append("indi")
+        if self.ui.alpacaCopyConfig.isChecked():
+            self.returnValues["copyConfig"].append("alpaca")
         self.returnValues["close"] = "ok"
-        self.returnValues["driver"] = self.driver
+        self.returnValues["data"] = self.data
+        self.returnValues["device"] = self.device
+        self.returnValues["data"]["framework"] = self.framework
         self.close()
-
-    def selectTabs(self) -> None:
-        firstFramework = next(iter(self.data["frameworks"]))
-        framework = self.data.get("framework")
-        if not framework:
-            framework = firstFramework
-
-        tabIndex = getTabIndex(self.ui.tab, framework)
-        self.ui.tab.setCurrentIndex(tabIndex)
-
-        for index in range(0, self.ui.tab.count()):
-            isVisible = self.ui.tab.widget(index).objectName() in self.data["frameworks"]
-            self.ui.tab.setTabVisible(index, isVisible)
-
-    def populateTabs(self) -> None:
-        frameworks = self.data["frameworks"]
-        for fw in frameworks:
-            frameworkElements = frameworks[fw]
-            for element in frameworkElements:
-                ui = self.framework2gui[fw].get(element)
-
-                if isinstance(ui, QComboBox):
-                    ui.clear()
-                    ui.setView(QListView())
-                    for i, deviceName in enumerate(frameworks[fw][element]):
-                        ui.addItem(deviceName)
-                        if frameworks[fw]["deviceName"] == deviceName:
-                            ui.setCurrentIndex(i)
-
-                elif isinstance(ui, QLineEdit):
-                    ui.setText(f"{frameworks[fw][element]}")
-
-                elif isinstance(ui, QCheckBox):
-                    ui.setChecked(frameworks[fw][element])
-
-                elif isinstance(ui, QDoubleSpinBox):
-                    ui.setValue(frameworks[fw][element])
-
-    def readTabs(self) -> None:
-        framework = self.data["framework"]
-        frameworkData = self.data["frameworks"][framework]
-
-        for element in list(frameworkData):
-            ui = self.framework2gui[framework].get(element)
-            if isinstance(ui, QComboBox):
-                frameworkData["deviceName"] = ui.currentText()
-                frameworkData[element].clear()
-                for index in range(ui.model().rowCount()):
-                    frameworkData[element].append(ui.model().item(index).text())
-
-            elif isinstance(ui, QLineEdit):
-                if isinstance(frameworkData[element], int):
-                    frameworkData[element] = int(ui.text())
-                else:
-                    frameworkData[element] = ui.text()
-
-            elif isinstance(ui, QCheckBox):
-                frameworkData[element] = ui.isChecked()
-            elif isinstance(ui, QDoubleSpinBox):
-                frameworkData[element] = ui.value()
-
-    def readFramework(self) -> None:
-        index = self.ui.tab.currentIndex()
-        framework = self.ui.tab.widget(index).objectName()
-        self.data["framework"] = framework
 
     def updateDeviceNameList(self, framework: str, deviceNames: list[str]) -> None:
         self.discovers[framework]["deviceList"].clear()
@@ -257,32 +238,30 @@ class DevicePopup(MWidget):
             self.discovers[framework]["deviceList"].addItem(deviceName)
 
     def discoverDevices(self, framework: str, widget: object = None) -> None:
-        device = self.discovers[framework]["class"](parent=self.parent)
-
-        if framework in ["indi", "alpaca"]:
-            device.hostaddress = self.discovers[framework]["hostaddress"].text()
-            device.port = self.discovers[framework]["port"].text()
-
+        hostaddress = self.discovers[framework]["hostaddress"].text()
+        port = self.discovers[framework]["port"].text()
         changeStyleDynamic(self.discovers[framework]["button"], "run", True)
-        deviceNames = device.discoverDevices(deviceType=self.deviceType)
+        deviceInstance = self.app.dReg[self.device].run[framework]
+        deviceType = self.app.dReg[self.device].instance.DEVICE_TYPE
+        deviceNames = deviceInstance.discoverDevices(deviceType, hostaddress, port)
         changeStyleDynamic(self.discovers[framework]["button"], "run", False)
-
         if not deviceNames:
-            self.msg.emit(2, framework.upper(), "Device", "No devices found")
+            self.msg.emit(2, framework, "Device", "No devices found")
             return
         for deviceName in deviceNames:
-            self.msg.emit(0, framework.upper(), "Device discovered", f"{deviceName}")
+            self.msg.emit(0, framework, "Device discovered", f"{deviceName}")
         self.updateDeviceNameList(framework, deviceNames)
+        self.framework = framework
 
     def checkApp(self, framework: str, folder: str = "") -> None:
         frameworkClass = self.app.plateSolve.run[framework]
-        sucApp = frameworkClass.checkAvailabilityProgram(Path(folder))
+        sucApp = frameworkClass.checkAvailabilityProgram(folder)
         colorP = "green" if sucApp else "red"
         changeStyleDynamic(self.platesolvers[framework]["appPath"], "color", colorP)
 
     def checkIndex(self, framework: str, folder: str = "") -> None:
         frameworkClass = self.app.plateSolve.run[framework]
-        sucIndex = frameworkClass.checkAvailabilityIndex(Path(folder))
+        sucIndex = frameworkClass.checkAvailabilityIndex(folder)
         colorI = "green" if sucIndex else "red"
         changeStyleDynamic(self.platesolvers[framework]["indexPath"], "color", colorI)
 

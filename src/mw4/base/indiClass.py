@@ -16,12 +16,23 @@
 import asyncio
 import logging
 import queue
+from dataclasses import dataclass, field
 from indipyclient.queclient import EventItem, QueClient, runqueclient
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO_CONV
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QThreadPool
 from queue import Queue
 from typing import Any
+
+
+@dataclass
+class DeviceConfigIndi:
+    deviceName: str = field(default="")
+    hostAddress: str = field(default="127.0.0.1")
+    port: int = field(default=7624)
+    protocol: str = field(default="http")
+    loadConfig: bool = field(default=False)
+    showMessage: bool = field(default=False)
 
 
 class IndiClass:
@@ -34,19 +45,13 @@ class IndiClass:
         self.msg: Any = parent.app.msg
         self.data: dict = parent.data
         self.signals: Any = parent.signals
-        self.loadConfig: bool = parent.loadConfig
+        self.config = DeviceConfigIndi()
         self.threadPool: QThreadPool = parent.app.threadPool
         self.clientMutex: QMutex = QMutex()
         self.discoverMutex: QMutex = QMutex()
-
-        self.deviceName: str = ""
         self.deviceConnected: bool = False
-        self._hostaddress: str | None = None
-        self._host: tuple[str, int] | None = None
-        self._port: int | None = None
         self.discoverList: list[str] = []
         self.isINDIGO: bool = False
-        self.messages: bool = False
         self.commandRunning: bool = False
         self.loggingTrace: bool = False
         self.rxQ: Queue = Queue()
@@ -55,53 +60,22 @@ class IndiClass:
         self.workerIndiQueueClient: Worker | None = None
         self.workerProcessRxQueue: Worker | None = None
 
-        self.defaultConfig: dict[str, Any] = {
-            "deviceName": "",
-            "deviceList": [],
-            "hostaddress": "localhost",
-            "port": 7624,
-            "loadConfig": False,
-            "messages": False,
-        }
-
-    @property
-    def host(self) -> tuple[str, int] | None:
-        return self._host
-
-    @host.setter
-    def host(self, value: tuple[str, int] | None) -> None:
-        self._host = value
-
-    @property
-    def hostaddress(self) -> str | None:
-        return self._hostaddress
-
-    @hostaddress.setter
-    def hostaddress(self, value: str | None) -> None:
-        self._hostaddress = value
-
-    @property
-    def port(self) -> int | None:
-        return self._port
-
-    @port.setter
-    def port(self, value: int | str) -> None:
-        self._port = int(value)
-
     def updateMessage(self, item: EventItem) -> None:
-        if not self.messages:
+        if not self.config.showMessage:
             return
-        message = item.snapshot[self.deviceName].dictdump().get("messages")
+        message = item.snapshot[self.config.deviceName].dictdump().get("messages")
         if not message:
             return
-        self.msg.emit(0, "INDI", "Device message", f"{self.deviceName:15s} {message[0][1]}")
+        self.msg.emit(
+            0, "INDI", "Device message", f"{self.config.deviceName:15s} {message[0][1]}"
+        )
 
     def setStatusDeviceConnected(self, item: EventItem) -> None:
-        status = item.snapshot[self.deviceName]["CONNECTION"].get("CONNECT") == "On"
+        status = item.snapshot[self.config.deviceName]["CONNECTION"].get("CONNECT") == "On"
         if status and not self.deviceConnected:
-            self.signals.deviceConnected.emit(self.deviceName)
+            self.signals.deviceConnected.emit(self.config.deviceName)
         if not status and self.deviceConnected:
-            self.signals.deviceDisconnected.emit(self.deviceName)
+            self.signals.deviceDisconnected.emit(self.config.deviceName)
         self.deviceConnected = status
 
     def writeVectorsToData(self, item: EventItem, vectors: dict) -> None:
@@ -121,15 +95,15 @@ class IndiClass:
                 item = self.rxQ.get(timeout=0.01)
             except queue.Empty:
                 continue
-            if item.snapshot.get(self.deviceName) is None:
+            if item.snapshot.get(self.config.deviceName) is None:
                 continue
-            if item.devicename != self.deviceName:
+            if item.devicename != self.config.deviceName:
                 continue
-            if item.snapshot[self.deviceName].get("CONNECTION"):
+            if item.snapshot[self.config.deviceName].get("CONNECTION"):
                 self.setStatusDeviceConnected(item)
             if item.eventtype == "Message":
                 self.updateMessage(item)
-            vectors = item.snapshot[self.deviceName].dictdump().get("vectors")
+            vectors = item.snapshot[self.config.deviceName].dictdump().get("vectors")
             if vectors:
                 self.writeVectorsToData(item, vectors)
 
@@ -141,8 +115,8 @@ class IndiClass:
         self.queueClient = QueClient(
             self.txQ,
             self.rxQ,
-            indihost=self.hostaddress,
-            indiport=self.port,
+            indihost=self.config.hostAddress,
+            indiport=self.config.port,
             blobfolder=str(self.app.mwGlob["tempDir"]),
         )
         self.queueClient.debug_verbosity(3 if self.loggingTrace else 0)
@@ -164,21 +138,20 @@ class IndiClass:
     def stopCommunication(self) -> None:
         self.txQ.put(None)
         self.commandRunning = False
-        self.deviceName = ""
         self.deviceConnected = False
-        self.signals.deviceDisconnected.emit(self.deviceName)
+        self.signals.deviceDisconnected.emit(self.config.deviceName)
 
     def loadIndiConfig(self, deviceName: str) -> None:
         self.txQ.put((deviceName, "CONFIG_PROCESS", {"CONFIG_PROCESS": True}))
 
-    def discoverDevices(self, deviceType: str) -> list[str]:
+    def discoverDevices(self, deviceType: str, hostaddress: str, port: int) -> list[str]:
         if not self.discoverMutex.tryLock():
             return []
         n = self.MAX_SEARCH
         txQ = Queue()
         rxQ = Queue()
         discoverSet = set()
-        worker = Worker(runqueclient, txQ, rxQ, indihost=self.hostaddress, indiport=self.port)
+        worker = Worker(runqueclient, txQ, rxQ, indihost=hostaddress, indiport=port)
         self.threadPool.start(worker)
         while n > 0:
             try:

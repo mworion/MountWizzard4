@@ -147,7 +147,7 @@ def test_loadHorizonMask_1(function):
 def test_loadHorizonMask_2(function):
     with (
         mock.patch.object(function, "openFile", return_value=Path("test.bpts")),
-        mock.patch.object(function.app.data, "loadHorizonP", return_value=False),
+        mock.patch.object(function.app.buildPoint, "loadHorizonP", return_value=False),
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(function, "drawTab"),
     ):
@@ -157,7 +157,7 @@ def test_loadHorizonMask_2(function):
 def test_loadHorizonMask_3(function):
     with (
         mock.patch.object(function, "openFile", return_value=Path("test.bpts")),
-        mock.patch.object(function.app.data, "loadHorizonP", return_value=True),
+        mock.patch.object(function.app.buildPoint, "loadHorizonP", return_value=True),
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(function, "drawTab"),
     ):
@@ -168,7 +168,7 @@ def test_saveHorizonMask_1(function):
     function.ui.horizonMaskFileName.setText("test")
     with (
         mock.patch.object(function, "openFile", return_value=Path("test.bpts")),
-        mock.patch.object(function.app.data, "saveHorizonP", return_value=True),
+        mock.patch.object(function.app.buildPoint, "saveHorizonP", return_value=True),
     ):
         function.saveHorizonMask()
 
@@ -182,7 +182,7 @@ def test_saveHorizonMaskFile_3(function):
     function.ui.horizonMaskFileName.setText("test")
     with (
         mock.patch.object(function, "saveFile", return_value=Path("build.bpts")),
-        mock.patch.object(function.app.data, "saveHorizonP", return_value=False),
+        mock.patch.object(function.app.buildPoint, "saveHorizonP", return_value=False),
     ):
         function.saveHorizonMask()
 
@@ -190,7 +190,7 @@ def test_saveHorizonMaskFile_3(function):
 def test_saveHorizonMaskFileAs_1(function):
     with (
         mock.patch.object(function, "saveFile", return_value=Path("build.bpts")),
-        mock.patch.object(function.app.data, "saveHorizonP", return_value=True),
+        mock.patch.object(function.app.buildPoint, "saveHorizonP", return_value=True),
     ):
         function.saveHorizonMaskAs()
 
@@ -287,3 +287,14 @@ def test_drawTab_1(function):
         mock.patch.object(function.parent, "drawHorizonLimits"),
     ):
         function.drawTab()
+
+
+def test_drawView_3(function):
+    function.app.buildPoint.horizonP = [(30, 0), (30, 90), (30, 180), (30, 270)]
+    function.horizonPlot = pg.PlotDataItem()
+    function.drawView()
+
+
+def test_drawView_empty_list(function):
+    function.app.buildPoint.horizonP = []
+    function.drawView()

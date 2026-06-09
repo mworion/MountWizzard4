@@ -41,8 +41,9 @@ jobs:
 
     steps:
       - name: install uv
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@v8.2.0
         with:
+          enable-cache: true
           python-version: ${{ matrix.python-version }}
      
       - name: MountWizzard4 Install
@@ -76,8 +77,9 @@ jobs:
           sudo apt-get install -y libxcb-cursor0 libegl1-mesa
           
       - name: install uv
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@v8.2.0
         with:
+          enable-cache: true
           python-version: ${{ matrix.python-version }}
           
       - name: MountWizzard4 Install
@@ -101,8 +103,9 @@ jobs:
     
     steps:
       - name: install uv
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@v8.2.0
         with:
+          enable-cache: true
           python-version: ${{ matrix.python-version }}
           
       - name: MountWizzard4 Install

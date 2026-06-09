@@ -31,7 +31,7 @@ class SatelliteMapWindow(MWidget):
     def __init__(self, app: Any, title: str) -> None:
         super().__init__()
         self.app = app
-        self.obsSite = app.mount.obsSite
+        self.obsSite = app.dReg["mount"].obsSite
         self.threadPool = app.threadPool
         self.ui = satelliteMap_ui.Ui_SatelliteMapDialog()
         self.ui.setupUi(self.ws)

@@ -32,7 +32,6 @@ class Hipparcos:
 
     def __init__(self, app: Any = None) -> None:
         self.app = app
-        self.lat: float = app.mount.obsSite.location.latitude.degrees
         self.name: list[str] = []
         self.alt: list[float] = []
         self.az: list[float] = []
@@ -54,12 +53,12 @@ class Hipparcos:
         :return: lists for alt, az and name of star
         """
 
-        location = self.app.mount.obsSite.location
+        location = self.app.dReg["mount"].obsSite.location
 
         if location is None:
             return False
 
-        t = self.app.mount.obsSite.timeJD
+        t = self.app.dReg["mount"].obsSite.timeJD
         star = list(self.alignStars.values())
         self.name = list(self.alignStars.keys())
 
@@ -106,7 +105,7 @@ class Hipparcos:
 
         if name not in self.alignStars:
             return None, None
-        timeJD = self.app.mount.obsSite.timeJD
+        timeJD = self.app.dReg["mount"].timeJD
         values = self.alignStars[name]
 
         ra, dec, eo = erfa.atci13(

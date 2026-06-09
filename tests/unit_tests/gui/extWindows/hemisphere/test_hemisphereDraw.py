@@ -260,13 +260,13 @@ def test_setDomeAzimuth(function):
 
 def test_drawDome_1(function):
     function.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
-    function.app.deviceStat["dome"] = False
+    function.app.dReg.d["dome"].stat = False
     function.drawDome()
 
 
 def test_drawDome_2(function):
     function.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
-    function.app.deviceStat["dome"] = True
+    function.app.dReg.d["dome"].stat = True
     function.drawDome()
 
 
@@ -415,7 +415,7 @@ def test_drawTab_1(function):
     function.ui.showTerrain.setChecked(True)
     function.ui.showMountLimits.setChecked(True)
     function.ui.showHorizon.setChecked(True)
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     function.app.mount.model.numberStars = 5
     with (
         mock.patch.object(function, "drawCelestialEquator"),
@@ -434,6 +434,37 @@ def test_drawTab_2(function):
     function.ui.showTerrain.setChecked(False)
     function.ui.showMountLimits.setChecked(False)
     function.ui.showHorizon.setChecked(False)
-    function.app.deviceStat["mount"] = False
+    function.app.dReg.d["mount"].stat = False
     function.app.mount.model.numberStars = 0
     function.drawTab()
+
+
+def test_drawCelestialEquator_empty(function):
+    with mock.patch.object(
+        function.app.buildPoint, "generateCelestialEquator", return_value=None
+    ):
+        function.drawCelestialEquator()
+
+
+def test_drawModelPoints_no_items(function):
+    function.app.buildPoint.buildP = []
+    function.drawModelPoints()
+
+
+def test_drawModelText_empty(function):
+    function.app.buildPoint.buildP = []
+    function.drawModelText()
+
+
+def test_drawModelPoints_with_findItem_returning_none(function):
+    function.app.buildPoint.buildP = [(10, 20, 1), (30, 40, 2)]
+    with mock.patch.object(function.ui.hemisphere, "findItemByName", return_value=None):
+        function.drawModelPoints()
+
+
+def test_drawModelText_with_existing_text_items(function):
+    function.app.buildPoint.buildP = [(10, 20, 1)]
+    fakeTextItem = mock.MagicMock()
+    function.modelPointsText = [fakeTextItem]
+    with mock.patch.object(function.ui.hemisphere.p[0], "removeItem"):
+        function.drawModelText()

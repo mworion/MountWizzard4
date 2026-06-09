@@ -42,8 +42,6 @@ class PlateSolve:
 class CameraSignals(QObject):
     saved = Signal()
     message = Signal(object)
-    serverConnected = Signal()
-    serverDisconnected = Signal(object)
     deviceConnected = Signal(object)
     deviceDisconnected = Signal(object)
     exposed = Signal()
@@ -63,7 +61,7 @@ class Camera:
         self.subFrame = 100
         self.fastReadout = False
         self.data = {}
-        self.framework = None
+        self.framework = "indi"
         self.defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
         self.run = {"indi": "dummy"}
 
@@ -115,8 +113,6 @@ class Camera:
 
 class CoverSignals(QObject):
     message = Signal(object)
-    serverConnected = Signal()
-    serverDisconnected = Signal(object)
     deviceConnected = Signal(object)
     deviceDisconnected = Signal(object)
 
@@ -144,8 +140,6 @@ class Cover:
 
 class LightPanelSignals(QObject):
     message = Signal(object)
-    serverConnected = Signal()
-    serverDisconnected = Signal(object)
     deviceConnected = Signal(object)
     deviceDisconnected = Signal(object)
 
@@ -177,7 +171,6 @@ class DomeSignals(QObject):
     slewed = Signal()
     deviceDisconnected = Signal()
     deviceConnected = Signal()
-    serverDisconnected = Signal()
 
 
 class Dome:
@@ -230,8 +223,6 @@ class Dome:
 
 class SensorWeatherSignals(QObject):
     message = Signal(object)
-    serverConnected = Signal()
-    serverDisconnected = Signal(object)
     deviceConnected = Signal(object)
     deviceDisconnected = Signal(object)
 
@@ -246,8 +237,6 @@ class SensorWeather:
 
 
 class OnlineWeatherSignals(QObject):
-    serverConnected = Signal()
-    serverDisconnected = Signal(object)
     deviceConnected = Signal(object)
     deviceDisconnected = Signal(object)
 
@@ -262,8 +251,6 @@ class OnlineWeather:
 
 class DirectWeatherSignals(QObject):
     message = Signal(object)
-    serverConnected = Signal()
-    serverDisconnected = Signal(object)
     deviceConnected = Signal(object)
     deviceDisconnected = Signal(object)
 
@@ -278,8 +265,6 @@ class DirectWeather:
 
 
 class SeeingWeatherSignals(QObject):
-    serverConnected = Signal()
-    serverDisconnected = Signal(object)
     deviceConnected = Signal(object)
     deviceDisconnected = Signal(object)
     update = Signal()
@@ -296,8 +281,6 @@ class SeeingWeather:
 
 class FilterSignals(QObject):
     message = Signal(object)
-    serverConnected = Signal()
-    serverDisconnected = Signal(object)
     deviceConnected = Signal(object)
     deviceDisconnected = Signal(object)
 
@@ -321,8 +304,6 @@ class Filter:
 
 class FocuserSignals(QObject):
     message = Signal(object)
-    serverConnected = Signal()
-    serverDisconnected = Signal(object)
     deviceConnected = Signal(object)
     deviceDisconnected = Signal(object)
 
@@ -346,8 +327,6 @@ class Focuser:
 
 class MeasureSignals(QObject):
     message = Signal(object)
-    serverConnected = Signal()
-    serverDisconnected = Signal(object)
     deviceConnected = Signal(object)
     deviceDisconnected = Signal(object)
 
@@ -369,8 +348,6 @@ class Measure:
 class RelaySignals(QObject):
     message = Signal(object)
     statusReady = Signal()
-    serverConnected = Signal()
-    serverDisconnected = Signal(object)
     deviceConnected = Signal(object)
     deviceDisconnected = Signal(object)
 
@@ -398,8 +375,6 @@ class Relay:
 
 class RemoteSignals(QObject):
     message = Signal(object)
-    serverConnected = Signal()
-    serverDisconnected = Signal(object)
     deviceConnected = Signal(object)
     deviceDisconnected = Signal(object)
 
@@ -414,8 +389,6 @@ class Remote:
 class Telescope:
     class TelescopeSignals(QObject):
         message = Signal(object)
-        serverConnected = Signal()
-        serverDisconnected = Signal(object)
         deviceConnected = Signal(object)
         deviceDisconnected = Signal(object)
 
@@ -456,8 +429,6 @@ class Hipparcos:
 class PowerSignals(QObject):
     version = Signal()
     message = Signal(object)
-    serverConnected = Signal()
-    serverDisconnected = Signal(object)
     deviceConnected = Signal(object)
     deviceDisconnected = Signal(object)
 

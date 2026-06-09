@@ -400,10 +400,10 @@ class AnalyseWindow(MWidget):
         if not self.ui.showHorizon.isChecked():
             return
 
-        self.ui.raErrors.drawHorizon(self.app.data.horizonP)
-        self.ui.decErrors.drawHorizon(self.app.data.horizonP)
-        self.ui.raRawErrors.drawHorizon(self.app.data.horizonP)
-        self.ui.decRawErrors.drawHorizon(self.app.data.horizonP)
+        self.ui.raErrors.drawHorizon(self.app.buildPoint.horizonP)
+        self.ui.decErrors.drawHorizon(self.app.buildPoint.horizonP)
+        self.ui.raRawErrors.drawHorizon(self.app.buildPoint.horizonP)
+        self.ui.decRawErrors.drawHorizon(self.app.buildPoint.horizonP)
 
     def linkViewsAltAz(self) -> None:
         isLinked = self.ui.linkViews.isChecked()

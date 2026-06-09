@@ -35,12 +35,12 @@ def test_showEnable_1(function):
 
 
 def test_updatePositions_1(function):
-    function.app.deviceStat["mount"] = False
+    function.app.dReg.d["mount"].stat = False
     function.updatePositions()
 
 
 def test_updatePositions_2(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     with mock.patch.object(
         function.app.mount,
         "calcTransformationMatricesActual",
@@ -50,7 +50,7 @@ def test_updatePositions_2(function):
 
 
 def test_updatePositions_3(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     with mock.patch.object(
         function.app.mount,
         "calcTransformationMatricesActual",

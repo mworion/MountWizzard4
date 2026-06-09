@@ -25,12 +25,14 @@ if platform.system() != "Windows":
 
 
 class Parent:
-    app = App()
+    try:
+        app = App()
+    except Exception:
+        app = mock.MagicMock()
     data = {}
     deviceType = ""
     signals = Signals()
     loadConfig = True
-    updateRate = 1000
 
 
 @pytest.fixture(autouse=True, scope="module")

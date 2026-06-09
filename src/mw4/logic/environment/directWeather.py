@@ -14,40 +14,39 @@
 #
 ###########################################################
 import logging
+from dataclasses import dataclass, field
 from mw4.base.signalsDevices import Signals
 from mw4.mountcontrol.setting import Setting
 from typing import Any
 
 
+@dataclass
+class DeviceConfigDirectWeather:
+    deviceName: str = field(default="On Mount")
+
+
 class DirectWeather:
+    DEVICE_TYPE = "observingconditions"
     log = logging.getLogger("MW4")
 
     def __init__(self, app: Any = None) -> None:
         self.app = app
         self.signals = Signals()
-
-        # minimum set for driver package built in
         self.framework: str = ""
         self.run: dict[str, Any] = {"directWeather": self}
-        self.deviceName: str = ""
         self.data: dict[str, Any] = {}
-        self.defaultConfig: dict[str, Any] = {
-            "framework": "",
-            "frameworks": {"directWeather": {"deviceName": "On Mount"}},
-        }
+        self.config = DeviceConfigDirectWeather()
         self.running: bool = False
         self.enabled: bool = False
-        self.app.mount.signals.settingDone.connect(self.updateData)
+        # Connection deferred to startCommunication to keep DeviceRegistry interface clean
 
     def startCommunication(self) -> None:
+        self.app.dReg["mount"].signals.settingDone.connect(self.updateData)
         self.enabled = True
-        self.app.deviceStat["directWeather"] = False
+        self.app.dReg["directWeather"].stat = False
 
     def stopCommunication(self) -> None:
-        self.enabled = False
-        self.running = False
-        self.app.deviceStat["directWeather"] = None
-        self.data.clear()
+        self.app.dReg["mount"].signals.settingDone.disconnect(self.updateData)
         self.signals.deviceDisconnected.emit("DirectWeather")
 
     def updateData(self, sett: Setting) -> None:
@@ -62,13 +61,13 @@ class DirectWeather:
         isValid = None not in [value1, value2, value3, value4, value5]
 
         if not isValid and self.running:
-            self.signals.deviceDisconnected.emit("DirectWeather")
+            self.signals.deviceDisconnected.emit(self.config.deviceName)
             self.running = False
         elif isValid and not self.running:
-            self.signals.deviceConnected.emit("DirectWeather")
+            self.signals.deviceConnected.emit(self.config.deviceName)
             self.running = True
 
-        self.app.deviceStat["directWeather"] = isValid
+        self.app.dReg["directWeather"].stat = isValid
         self.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = value1
         self.data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = value2
         self.data["WEATHER_PARAMETERS.WEATHER_DEWPOINT"] = value3

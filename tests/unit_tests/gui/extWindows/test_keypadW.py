@@ -36,14 +36,14 @@ def test_initConfig_1(function):
 
 
 def test_storeConfig_1(function):
-    if "keypadW" in function.app.config:
-        del function.app.config["keypadW"]
+    if "WindowKeypad" in function.app.config:
+        del function.app.config["WindowKeypad"]
 
     function.storeConfig()
 
 
 def test_storeConfig_2(function):
-    function.app.config["keypadW"] = {}
+    function.app.config["WindowKeypad"] = {}
 
     function.storeConfig()
 

@@ -22,7 +22,7 @@ import pytest
 import skyfield.almanac
 import skyfield.api
 import unittest.mock as mock
-from mw4.logic.buildData.buildpoints import DataPoint, HaDecToAltAz
+from mw4.logic.buildData.buildpoints import BuildPoint, HaDecToAltAz
 from pathlib import Path
 from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -40,7 +40,7 @@ def function():
 
     app = App()
     app.mount.obsSite.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
-    func = DataPoint(app=App())
+    func = BuildPoint(app=App())
     yield func
 
 

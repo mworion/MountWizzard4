@@ -23,7 +23,7 @@ from mw4.logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
 from pathlib import Path
 from typing import Any
 
-if platform.system() == "Windows":
+if platform.system() == "Windows":  # pragma: no cover
     from mw4.logic.camera.cameraAscom import CameraAscom
 
 
@@ -34,10 +34,8 @@ class Camera:
     def __init__(self, app: Any) -> None:
         self.app = app
         self.threadPool = app.threadPool
-        self.obsSite = app.mount.obsSite
         self.signals = Signals()
         self.data: dict[str, Any] = {}
-        self.loadConfig: bool = True
         self.exposing: bool = False
         self.fastReadout: bool = False
         self.imagePath: Path = Path()
@@ -48,7 +46,6 @@ class Camera:
         self.binningN: int = 1
         self.focalLength: int = 1
         self.framework: str = ""
-        self.defaultConfig: dict = {"framework": "", "frameworks": {}}
         self._binning: int = 1
         self._subFrame: int = 100
         self.posX: int = 0
@@ -64,13 +61,8 @@ class Camera:
             "indi": CameraIndi(self),
             "alpaca": CameraAlpaca(self),
         }
-        if platform.system() == "Windows":
+        if platform.system() == "Windows":  # pragma: no cover
             self.run["ascom"] = CameraAscom(self)
-
-        for fw in self.run:
-            self.defaultConfig["frameworks"].update({fw: self.run[fw].defaultConfig})
-
-        self.app.mount.signals.pointDone.connect(self.setObsSite)
 
     @property
     def binning(self) -> int:
@@ -113,9 +105,6 @@ class Camera:
             self.heightASCOM = int(maxY / self._binning)
             self.posXASCOM = 0
             self.posYASCOM = 0
-
-    def setObsSite(self, obsSite: Any) -> None:
-        self.obsSite = obsSite
 
     def startCommunication(self) -> None:
         self.run[self.framework].startCommunication()

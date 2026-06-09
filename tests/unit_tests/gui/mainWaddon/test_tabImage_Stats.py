@@ -47,20 +47,20 @@ def test_updateImageStats_1(function):
 
 
 def test_updateImageStats_2(function):
-    function.app.camera.data["CCD_INFO.CCD_PIXEL_SIZE_X"] = 1
-    function.app.camera.data["CCD_INFO.CCD_PIXEL_SIZE_Y"] = 1
-    function.app.camera.data["CCD_INFO.CCD_MAX_X"] = 100
-    function.app.camera.data["CCD_INFO.CCD_MAX_Y"] = 100
+    function.app.dReg.d["camera"].instance.data["CCD_INFO.CCD_PIXEL_SIZE_X"] = 1
+    function.app.dReg.d["camera"].instance.data["CCD_INFO.CCD_PIXEL_SIZE_Y"] = 1
+    function.app.dReg.d["camera"].instance.data["CCD_INFO.CCD_MAX_X"] = 100
+    function.app.dReg.d["camera"].instance.data["CCD_INFO.CCD_MAX_Y"] = 100
     function.ui.focalLength.setValue(0)
     function.ui.aperture.setValue(0)
     function.updateImageStats()
 
 
 def test_updateImageStats_3(function):
-    function.app.camera.data["CCD_INFO.CCD_PIXEL_SIZE_X"] = 1
-    function.app.camera.data["CCD_INFO.CCD_PIXEL_SIZE_Y"] = 1
-    function.app.camera.data["CCD_INFO.CCD_MAX_X"] = 100
-    function.app.camera.data["CCD_INFO.CCD_MAX_Y"] = 100
+    function.app.dReg.d["camera"].instance.data["CCD_INFO.CCD_PIXEL_SIZE_X"] = 1
+    function.app.dReg.d["camera"].instance.data["CCD_INFO.CCD_PIXEL_SIZE_Y"] = 1
+    function.app.dReg.d["camera"].instance.data["CCD_INFO.CCD_MAX_X"] = 100
+    function.app.dReg.d["camera"].instance.data["CCD_INFO.CCD_MAX_Y"] = 100
     function.ui.aperture.setValue(100)
     function.ui.focalLength.setValue(100)
     function.updateImageStats()
@@ -99,8 +99,8 @@ def test_openAstrometryCatalog_2(function):
 
 
 def test_updateTelescopeParametersToGui_1(function):
-    function.app.telescope.data["TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH"] = 1
-    function.app.telescope.data["TELESCOPE_INFO.TELESCOPE_APERTURE"] = 1
+    function.app.dReg.d["telescope"].instance.data["TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH"] = 1
+    function.app.dReg.d["telescope"].instance.data["TELESCOPE_INFO.TELESCOPE_APERTURE"] = 1
 
     function.updateTelescopeParametersToGui()
 

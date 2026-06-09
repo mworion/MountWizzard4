@@ -24,9 +24,11 @@ class SimulatorDome:
         super().__init__()
         self.parent = parent
         self.app = app
-        self.app.dome.signals.deviceConnected.connect(lambda: self.showEnable(True))
-        self.app.dome.signals.deviceDisconnected.connect(lambda: self.showEnable(False))
-        self.app.dome.signals.azimuth.connect(self.updateAzimuth)
+        self.app.dReg["dome"].signals.deviceConnected.connect(lambda: self.showEnable(True))
+        self.app.dReg["dome"].signals.deviceDisconnected.connect(
+            lambda: self.showEnable(False)
+        )
+        self.app.dReg["dome"].signals.azimuth.connect(self.updateAzimuth)
         self.app.update1s.connect(self.updateShutter)
         self.parent.ui.domeTransparent.checkStateChanged.connect(self.setTransparency)
 
@@ -59,7 +61,7 @@ class SimulatorDome:
         likewise some transformations have to be reverted as they are propagated
         through entity linking.
         """
-        radius = self.app.mount.geometry.domeRadius * 1000
+        radius = self.app.dReg["mount"].geometry.domeRadius * 1000
         scale = 1 + (radius - 1250) / 1250
         corrZ = -(scale - 1) * 800
 
@@ -77,13 +79,13 @@ class SimulatorDome:
             node["trans"].setRotationZ(-azimuth)
 
     def updateShutter(self) -> None:
-        if "DOME_SHUTTER.SHUTTER_OPEN" not in self.app.dome.data:
+        if "DOME_SHUTTER.SHUTTER_OPEN" not in self.app.dReg["dome"].data:
             return
 
-        isOpen = self.app.dome.data["DOME_SHUTTER.SHUTTER_OPEN"]
-        radius = self.app.mount.geometry.domeRadius * 1000
+        isOpen = self.app.dReg["dome"].data["DOME_SHUTTER.SHUTTER_OPEN"]
+        radius = self.app.dReg["mount"].geometry.domeRadius * 1000
         scale = 1 + (radius - 1250) / 1250
-        width = self.app.dome.clearOpening * 1000
+        width = self.app.dReg["dome"].instance.clearOpening * 1000
         scaleSlit = (1 + (width - 600) / 600 / 2) * 0.9
         shiftShutter = width / 2 / scale if isOpen else 0
 
@@ -152,7 +154,7 @@ class SimulatorDome:
             },
         }
         linkModel(model, self.parent.entityModel)
-        self.showEnable(self.app.deviceStat["dome"] is True)
+        self.showEnable(self.app.dReg["dome"].stat is True)
         self.updateAzimuth(0)
         self.updateShutter()
         self.updateSize()

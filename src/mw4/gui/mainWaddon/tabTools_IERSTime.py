@@ -72,7 +72,7 @@ class IERSTime:
             self.msg.emit(2, "IERS", "Data error", "Data could not be exported - stopping")
             return
         dataTypes = ["finalsdata", "leapsec"]
-        url = self.app.mount.host[0]
+        url = self.app.dReg["mount"].instance.host[0]
         self.msg.emit(0, "IERS", "Uploading", "Upload to mount running")
         self.uploadPopup = UploadPopup(
             self.mainW, url=url, dataTypes=dataTypes, dataFilePath=self.tempDir

@@ -16,8 +16,15 @@
 import csv
 import logging
 import PySide6
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
+
+
+@dataclass
+class DeviceConfigMeasureCSV:
+    deviceName: str = field(default="")
+    filePath: str = field(default="")
 
 
 class MeasureDataCSV(PySide6.QtCore.QObject):
@@ -81,14 +88,10 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
 
         self.app = app
         self.parent = parent
-        self.data = data
-        self.deviceName: str = "CSV"
+        self.data = parent.data
+        self.config = DeviceConfigMeasureCSV()
+        self.config.deviceName = "CSV to file"
         self.csvFilename: Path = Path()
-        self.defaultConfig: dict[str, Any] = {
-            "csv": {
-                "deviceName": "save to file",
-            }
-        }
         self.csvFile: Any = None
         self.csvWriter: Any = None
 
@@ -112,7 +115,7 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
 
     def startCommunication(self) -> None:
         self.timerTask.start(self.parent.CYCLE_UPDATE_TASK)
-        nameTime = self.app.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
+        nameTime = self.app.dReg["mount"].timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         self.csvFilename = self.app.mwGlob["measureDir"] / f"measure-{nameTime}.csv"
         self.writeHeaderCSV()
 

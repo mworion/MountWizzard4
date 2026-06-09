@@ -13,13 +13,11 @@
 # License APL2.0
 #
 ###########################################################
-import os
 import pytest
 import socket
 import wakeonlan
 from mw4.mountcontrol.mount import MountDevice
 from mw4.mountcontrol.mountSignals import MountSignals
-from pathlib import Path
 from PySide6.QtCore import QThreadPool, QTimer
 from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -32,7 +30,6 @@ def function():
         app=App(),
         host=None,
         MAC="00:00:00:00:00:00",
-        pathToData=Path(os.getcwd() + "/data"),
         verbose=False,
     )
     yield m

@@ -25,6 +25,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function():
     class Test1:
         CYCLE_UPDATE_TASK = 1000
+        data = {}
 
         @staticmethod
         def setEmptyData():

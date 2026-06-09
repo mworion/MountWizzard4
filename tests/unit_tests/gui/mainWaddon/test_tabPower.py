@@ -46,7 +46,7 @@ def test_updatePowerGui_1(function):
 
 
 def test_updatePowerGui_2(function):
-    function.app.power.data = {"FIRMWARE_INFO.VERSION": "1.5"}
+    function.app.dReg.d["power"].instance.data = {"FIRMWARE_INFO.VERSION": "1.5"}
     function.updatePowerGui()
 
 
@@ -67,38 +67,62 @@ def test_setDew_3(function):
 
 
 def test_setDew_4(function):
-    with mock.patch.object(QInputDialog, "getInt", return_value=(0, True)):
+    with (
+        mock.patch.object(QInputDialog, "getInt", return_value=(0, True)),
+        mock.patch.object(function.app.dReg.d["power"].instance, "sendDew", return_value=True),
+    ):
         function.setDew("A")
 
 
 def test_setDew_5(function):
-    with mock.patch.object(QInputDialog, "getInt", return_value=(0, True)):
+    with (
+        mock.patch.object(QInputDialog, "getInt", return_value=(0, True)),
+        mock.patch.object(function.app.dReg.d["power"].instance, "sendDew", return_value=True),
+    ):
         function.ui.dewA.setText("10")
         function.setDew("A")
 
 
 def test_togglePowerPort_1(function):
-    function.togglePowerPort("1")
+    with mock.patch.object(
+        function.app.dReg.d["power"].instance, "togglePowerPort", return_value=True
+    ):
+        function.togglePowerPort("1")
 
 
 def test_togglePowerBootPort_1(function):
-    function.togglePowerBootPort("2")
+    with mock.patch.object(
+        function.app.dReg.d["power"].instance, "togglePowerPortBoot", return_value=True
+    ):
+        function.togglePowerBootPort("2")
 
 
 def test_togglePowerBootPort_2(function):
-    function.togglePowerBootPort("1")
+    with mock.patch.object(
+        function.app.dReg.d["power"].instance, "togglePowerPortBoot", return_value=True
+    ):
+        function.togglePowerBootPort("1")
 
 
 def test_toggleHubUSB_1(function):
-    function.toggleHubUSB()
+    with mock.patch.object(
+        function.app.dReg.d["power"].instance, "toggleHubUSB", return_value=True
+    ):
+        function.toggleHubUSB()
 
 
 def test_togglePortUSB_1(function):
-    function.togglePortUSB("1")
+    with mock.patch.object(
+        function.app.dReg.d["power"].instance, "togglePortUSB", return_value=True
+    ):
+        function.togglePortUSB("1")
 
 
 def test_toggleAutoDew_1(function):
-    function.toggleAutoDew()
+    with mock.patch.object(
+        function.app.dReg.d["power"].instance, "toggleAutoDew", return_value=True
+    ):
+        function.toggleAutoDew()
 
 
 def test_setAdjustableOutput_2(function):
@@ -109,17 +133,26 @@ def test_setAdjustableOutput_2(function):
 
 def test_setAdjustableOutput_3(function):
     function.ui.adjustableOutput.setText("10")
-    with mock.patch.object(QInputDialog, "getDouble", return_value=(0, True)):
+    with (
+        mock.patch.object(QInputDialog, "getDouble", return_value=(0, True)),
+        mock.patch.object(
+            function.app.dReg.d["power"].instance,
+            "sendAdjustableOutput",
+            return_value=True,
+        ),
+    ):
         function.setAdjustableOutput()
 
 
 def test_rebootUPB_1(function):
-    with mock.patch.object(function.app.power, "reboot", return_value=False):
+    with mock.patch.object(
+        function.app.dReg.d["power"].instance, "reboot", return_value=False
+    ):
         suc = function.rebootUPB()
         assert not suc
 
 
 def test_rebootUPB_2(function):
-    with mock.patch.object(function.app.power, "reboot", return_value=True):
+    with mock.patch.object(function.app.dReg.d["power"].instance, "reboot", return_value=True):
         suc = function.rebootUPB()
         assert suc

@@ -135,7 +135,7 @@ def test_genBuildDSO_3(function):
     function.simbadDec = None
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(function.app.data, "generateDSOPath"):
+    with mock.patch.object(function.app.buildPoint, "generateDSOPath"):
         function.genBuildDSO()
     function.autoDeletePoints = t
 
@@ -151,7 +151,7 @@ def test_genBuildDSO_4(function):
     function.simbadDec = None
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(function.app.data, "generateDSOPath"):
+    with mock.patch.object(function.app.buildPoint, "generateDSOPath"):
         function.genBuildDSO()
     function.autoDeletePoints = t
 
@@ -252,7 +252,7 @@ def test_loadBuildFile_3(function):
     with (
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(MWidget, "openFile", return_value=Path("test.bpts")),
-        mock.patch.object(function.app.data, "loadBuildP", return_value=False),
+        mock.patch.object(function.app.buildPoint, "loadBuildP", return_value=False),
     ):
         function.loadBuildFile()
 
@@ -356,7 +356,7 @@ def test_autoSortPoints_3(function):
 
 
 def test_autoSortPoints_4(function):
-    function.app.deviceStat["dome"] = True
+    function.app.dReg.d["dome"].stat = True
     function.ui.sortDomeAZ.setChecked(True)
     function.autoSortPoints()
 
@@ -410,3 +410,131 @@ def test_querySimbad_4(function):
     function.ui.generateQuery.setText("m31")
     with mock.patch.object(Simbad, "query_object", return_value=result):
         function.querySimbad()
+
+
+def test_genBuildGrid_fail(function):
+    function.ui.numberGridPointsRow.setValue(10)
+    function.ui.numberGridPointsCol.setValue(10)
+    function.ui.altitudeMin.setValue(10)
+    function.ui.altitudeMax.setValue(60)
+    with (
+        mock.patch.object(function.app.buildPoint, "genGrid", return_value=False),
+        mock.patch.object(function, "msg") as mock_msg,
+    ):
+        function.genBuildGrid()
+        mock_msg.emit.assert_called_once()
+
+
+def test_genBuildAlign_fail(function):
+    with (
+        mock.patch.object(function.app.buildPoint, "genAlign", return_value=False),
+        mock.patch.object(function, "msg") as mock_msg,
+    ):
+        function.genBuildAlign()
+        mock_msg.emit.assert_called_once()
+
+
+def test_genBuildCelestial_fail(function):
+    with (
+        mock.patch.object(function.app.buildPoint, "genGreaterCircle", return_value=False),
+        mock.patch.object(function, "msg") as mock_msg,
+    ):
+        function.genBuildCelestial()
+        mock_msg.emit.assert_called_once()
+
+
+def test_genBuildCelestial_success_with_dither(function):
+    function.ui.ditherBuildPoints.setChecked(True)
+    with (
+        mock.patch.object(function.app.buildPoint, "genGreaterCircle", return_value=True),
+        mock.patch.object(function.app.buildPoint, "ditherPoints"),
+        mock.patch.object(function, "processPoints"),
+    ):
+        function.genBuildCelestial()
+
+
+def test_genBuildGrid_success(function):
+    function.ui.numberGridPointsRow.setValue(10)
+    function.ui.numberGridPointsCol.setValue(10)
+    function.ui.altitudeMin.setValue(10)
+    function.ui.altitudeMax.setValue(60)
+    with (
+        mock.patch.object(function.app.buildPoint, "genGrid", return_value=True),
+        mock.patch.object(function, "processPoints") as mockProc,
+    ):
+        function.genBuildGrid()
+        mockProc.assert_called_once()
+
+
+def test_genBuildDSO_iteration_zero(function):
+    function.app.mount.obsSite.raJNow = 0
+    function.app.mount.obsSite.decJNow = 0
+    function.app.mount.obsSite.timeSidereal = Angle(hours=0)
+    function.simbadRa = None
+    function.simbadDec = None
+    function.app.buildPoint.buildP = []
+    with (
+        mock.patch.object(function.app.buildPoint, "generateDSOPath"),
+        mock.patch.object(function, "autoDeletePoints"),
+        mock.patch.object(function, "processPoints"),
+    ):
+        function.genBuildDSO()
+
+
+def test_genBuildFile_loadFails(function):
+    function.ui.buildPFileName.setText("nonexistent_file")
+    with (
+        mock.patch.object(function.app.buildPoint, "loadBuildP", return_value=False),
+        mock.patch.object(function, "msg") as mockMsg,
+    ):
+        function.genBuildFile()
+        mockMsg.emit.assert_called_once()
+
+
+def test_autoSortPoints_dome_active(function):
+    function.app.deviceStat["dome"] = True
+    function.ui.sortDomeAZ.setChecked(True)
+    with mock.patch.object(function.app.buildPoint, "sortDomeAz") as mockSort:
+        function.autoSortPoints()
+        mockSort.assert_called_once()
+    function.app.deviceStat["dome"] = None
+    function.ui.sortDomeAZ.setChecked(False)
+
+
+def test_genBuildDSO_iteration_exhausted(function):
+    function.app.mount.obsSite.raJNow = 0
+    function.app.mount.obsSite.decJNow = 0
+    function.app.mount.obsSite.timeSidereal = Angle(hours=0)
+    function.simbadRa = None
+    function.simbadDec = None
+    function.ui.ditherBuildPoints.setChecked(False)
+    function.ui.numberDSOPoints.blockSignals(True)
+    function.ui.numberDSOPoints.setValue(50)
+    function.ui.numberDSOPoints.blockSignals(False)
+
+    def autoDelStub():
+        function.app.buildPoint.buildP = [(10, 20, 1)]
+
+    t = function.autoDeletePoints
+    function.autoDeletePoints = autoDelStub
+    with mock.patch.object(function.app.buildPoint, "generateDSOPath"):
+        function.genBuildDSO()
+    function.autoDeletePoints = t
+
+
+def test_genBuildGoldenSpiral_iteration_exhausted(function):
+    function.ui.numberSpiral.blockSignals(True)
+    function.ui.numberSpiral.setValue(100)
+    function.ui.numberSpiral.blockSignals(False)
+
+    def keepBuildP(**kwargs):
+        function.app.buildPoint.buildP = [1]
+
+    with (
+        mock.patch.object(
+            function.app.buildPoint, "generateGoldenSpiral", side_effect=keepBuildP
+        ),
+        mock.patch.object(function, "autoDeletePoints"),
+        mock.patch.object(function, "processPoints"),
+    ):
+        function.genBuildGoldenSpiral()

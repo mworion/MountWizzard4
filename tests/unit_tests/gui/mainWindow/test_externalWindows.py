@@ -150,4 +150,3 @@ def test_closeExtendedWindows_2(function):
     function.uiWindows = {"showMessageW": {"classObj": None, "button": QPushButton()}}
     function.closeExtendedWindows()
     function.uiWindows = test
-

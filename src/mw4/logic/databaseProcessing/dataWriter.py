@@ -163,7 +163,7 @@ class DataWriter:
         if not epoch:
             return "xxxxx"
 
-        date = self.app.mount.obsSite.ts.tt_jd(int(epoch + 0.5))
+        date = self.app.dReg["mount"].obsSite.ts.tt_jd(int(epoch + 0.5))
         year, month, day = date.tt_strftime("%Y-%m-%d").split("-")
         century = year[0:2]
         centuryPacked = self.generateCenturyPacked(century)

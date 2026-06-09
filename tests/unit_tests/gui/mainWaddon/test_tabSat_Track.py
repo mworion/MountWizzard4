@@ -109,14 +109,14 @@ def test_calcTrajectoryData_2(function):
 
 
 def test_calcTrajectoryAndShow_1(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     function.ui.useInternalSatCalc.setChecked(True)
     with mock.patch.object(function, "selectStartEnd", return_value=(0, 0)):
         function.calcTrajectoryAndShow()
 
 
 def test_calcTrajectoryAndShow_2(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     function.ui.useInternalSatCalc.setChecked(True)
     with (
         mock.patch.object(function, "selectStartEnd", return_value=(1, 1)),
@@ -128,7 +128,7 @@ def test_calcTrajectoryAndShow_2(function):
 
 
 def test_calcTrajectoryAndShow_3(function):
-    function.app.deviceStat["mount"] = False
+    function.app.dReg.d["mount"].stat = False
     function.ui.useInternalSatCalc.setChecked(False)
     with (
         mock.patch.object(function, "selectStartEnd", return_value=(1, 1)),
@@ -139,7 +139,7 @@ def test_calcTrajectoryAndShow_3(function):
 
 
 def test_calcTrajectoryAndShow_4(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     function.ui.useInternalSatCalc.setChecked(False)
     with (
         mock.patch.object(function, "selectStartEnd", return_value=(1, 1)),
@@ -377,14 +377,14 @@ def test_programSatToMount_4(function):
 
 def test_chooseSatellite_1(function):
     satTab = function.ui.listSats
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     with mock.patch.object(satTab, "item"), mock.patch.object(function, "programSatToMount"):
         function.chooseSatellite()
 
 
 def test_chooseSatellite_2(function):
     satTab = function.ui.listSats
-    function.app.deviceStat["mount"] = False
+    function.app.dReg.d["mount"].stat = False
     with (
         mock.patch.object(satTab, "item"),
         mock.patch.object(function, "extractSatelliteData"),
@@ -438,7 +438,7 @@ def test_selectStartEnd_3(function):
 
 
 def test_selectStartEnd_4(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [
         {
@@ -453,7 +453,7 @@ def test_selectStartEnd_4(function):
 
 
 def test_selectStartEnd_5(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [
         {
@@ -470,7 +470,7 @@ def test_selectStartEnd_5(function):
 
 
 def test_selectStartEnd_6(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [
         {
@@ -487,7 +487,7 @@ def test_selectStartEnd_6(function):
 
 
 def test_selectStartEnd_7(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [
         {
@@ -504,7 +504,7 @@ def test_selectStartEnd_7(function):
 
 
 def test_selectStartEnd_8(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     ts = function.app.mount.obsSite.ts
     function.satOrbits = [
         {
@@ -524,7 +524,7 @@ def test_filterHorizonForward_1(function):
     alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
     az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     function.app.data.horizonP = [[40, 0], [40, 360]]
-    with mock.patch.object(function.app.data, "isAboveHorizon", return_value=False):
+    with mock.patch.object(function.app.buildPoint, "isAboveHorizon", return_value=False):
         alt, az, delay = function.filterHorizonForward(alt, az)
         assert delay == 10
 
@@ -542,7 +542,7 @@ def test_filterHorizonReverse_1(function):
     alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
     az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     function.app.data.horizonP = [[40, 0], [40, 360]]
-    with mock.patch.object(function.app.data, "isAboveHorizon", return_value=False):
+    with mock.patch.object(function.app.buildPoint, "isAboveHorizon", return_value=False):
         alt, az, delay = function.filterHorizonReverse(alt, az)
         assert delay == 10
 
@@ -698,12 +698,12 @@ def test_updateInternalTrackGui_1(function):
 
 
 def test_startTrack_1(function):
-    function.app.deviceStat["mount"] = False
+    function.app.dReg.d["mount"].stat = False
     function.startTrack()
 
 
 def test_startTrack_2(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     with mock.patch.object(
         function.app.mount.satellite, "slewTLE", return_value=(False, "test")
     ):
@@ -712,7 +712,7 @@ def test_startTrack_2(function):
 
 def test_startTrack_3(function):
     """Mount online, status != 5, slewTLE succeeds → full success path."""
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     function.app.mount.obsSite.status = 1
     with mock.patch.object(
         function.app.mount.satellite, "slewTLE", return_value=(True, "test")
@@ -721,7 +721,7 @@ def test_startTrack_3(function):
 
 
 def test_startTrack_4(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     function.app.mount.obsSite.status = 5
     with mock.patch.object(
         function.app.mount.satellite, "slewTLE", return_value=(False, "test")
@@ -730,7 +730,7 @@ def test_startTrack_4(function):
 
 
 def test_startTrack_5(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     function.app.mount.obsSite.status = 5
     with mock.patch.object(
         function.app.mount.satellite, "slewTLE", return_value=(True, "test")
@@ -739,7 +739,7 @@ def test_startTrack_5(function):
 
 
 def test_startTrack_6(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     function.app.mount.obsSite.status = 5
     with (
         mock.patch.object(
@@ -751,7 +751,7 @@ def test_startTrack_6(function):
 
 
 def test_startTrack_7(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     function.app.mount.obsSite.status = 5
     with (
         mock.patch.object(
@@ -766,18 +766,18 @@ def test_startTrack_7(function):
 
 
 def test_stopTrack_1(function):
-    function.app.deviceStat["mount"] = False
+    function.app.dReg.d["mount"].stat = False
     function.stopTrack()
 
 
 def test_stopTrack_2(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     with mock.patch.object(function.app.mount.obsSite, "startTracking", return_value=False):
         function.stopTrack()
 
 
 def test_stopTrack_3(function):
-    function.app.deviceStat["mount"] = True
+    function.app.dReg.d["mount"].stat = True
     with mock.patch.object(function.app.mount.obsSite, "startTracking", return_value=True):
         function.stopTrack()
 
@@ -824,7 +824,7 @@ def test_followMount_3(function):
     obs = function.app.mount.obsSite
     obs.status = 10
     function.ui.domeAutoFollowSat.setChecked(True)
-    function.app.deviceStat["dome"] = False
+    function.app.dReg.d["dome"].stat = False
     function.followMount(obs)
 
 
@@ -832,10 +832,11 @@ def test_followMount_4(function):
     obs = function.app.mount.obsSite
     obs.status = 10
     function.ui.domeAutoFollowSat.setChecked(True)
-    function.app.deviceStat["dome"] = True
+    function.app.dReg.d["dome"].stat = True
     obs.Az = Angle(degrees=1)
     obs.Alt = Angle(degrees=1)
-    function.followMount(obs)
+    with mock.patch.object(function.app.dReg.d["dome"].instance, "slewDome"):
+        function.followMount(obs)
 
 
 def test_setTrackingOffsets_1(function):

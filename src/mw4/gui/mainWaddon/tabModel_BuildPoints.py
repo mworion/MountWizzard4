@@ -15,13 +15,14 @@
 ###########################################################
 from astroquery.simbad import Simbad
 from mw4.base.tpool import Worker
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from PySide6.QtCore import QMutex
 from skyfield.api import Angle
 from typing import Any
 
 
-class BuildPoints:
+class BuildPoints(TabAddon):
     def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app

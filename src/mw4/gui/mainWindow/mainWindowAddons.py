@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.mainWaddon.tabAlmanac import Almanac
 from mw4.gui.mainWaddon.tabAsteroid import Asteroid
 from mw4.gui.mainWaddon.tabComet import Comet
@@ -46,7 +47,7 @@ class MainWindowAddons:
         self.mainW = mainW
         self.app = mainW.app
 
-        self.addons = {
+        self.addons: dict[str, TabAddon] = {
             "Almanac": Almanac(mainW),
             "SettUpdate": SettUpdate(mainW),  # set isOnline state first
             "Asteroid": Asteroid(mainW),
@@ -75,21 +76,17 @@ class MainWindowAddons:
         }
 
     def initConfig(self) -> None:
-        for addon in self.addons:
-            if hasattr(self.addons[addon], "initConfig"):
-                self.addons[addon].initConfig()
+        for addon in self.addons.values():
+            addon.initConfig()
 
     def storeConfig(self) -> None:
-        for addon in self.addons:
-            if hasattr(self.addons[addon], "storeConfig"):
-                self.addons[addon].storeConfig()
+        for addon in self.addons.values():
+            addon.storeConfig()
 
     def setupIcons(self) -> None:
-        for addon in self.addons:
-            if hasattr(self.addons[addon], "setupIcons"):
-                self.addons[addon].setupIcons()
+        for addon in self.addons.values():
+            addon.setupIcons()
 
     def updateColorSet(self) -> None:
-        for addon in self.addons:
-            if hasattr(self.addons[addon], "updateColorSet"):
-                self.addons[addon].updateColorSet()
+        for addon in self.addons.values():
+            addon.updateColorSet()

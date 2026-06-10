@@ -15,6 +15,7 @@
 ###########################################################
 import datetime
 from mw4.base import transform
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
 from mw4.mountcontrol.convert import (
     convertLatToAngle,
@@ -30,7 +31,7 @@ from skyfield.api import Angle, wgs84
 from typing import Any
 
 
-class MountSett:
+class MountSett(TabAddon):
     def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app

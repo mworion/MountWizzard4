@@ -13,10 +13,11 @@
 # License APL2.0
 #
 ###########################################################
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from typing import Any
 
 
-class Mount:
+class Mount(TabAddon):
     def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app

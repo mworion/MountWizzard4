@@ -16,6 +16,7 @@
 from functools import partial
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable
 from mw4.mountcontrol.convert import (
     convertDecToAngle,
@@ -29,7 +30,7 @@ from skyfield.api import Angle
 from typing import Any
 
 
-class MountMove:
+class MountMove(TabAddon):
     def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app

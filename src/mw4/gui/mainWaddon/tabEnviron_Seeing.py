@@ -14,6 +14,7 @@
 #
 ###########################################################
 import webbrowser
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.styles.colors import colors
 from mw4.gui.utilities.qtHelpers import clickable, svg2pixmap
 from PySide6.QtCore import Qt
@@ -22,7 +23,7 @@ from PySide6.QtWidgets import QLabel, QTableWidgetItem
 from typing import Any
 
 
-class EnvironSeeing:
+class EnvironSeeing(TabAddon):
     VerticalListEntries = [
         "Date [dd mon]",
         "Hour [hh:mm]",

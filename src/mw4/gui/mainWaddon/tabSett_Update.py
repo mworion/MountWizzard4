@@ -16,10 +16,11 @@
 import logging
 from astropy.utils import data, iers
 from mw4.base.loggerMW import setCustomLoggingLevel
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from typing import Any
 
 
-class SettUpdate:
+class SettUpdate(TabAddon):
     log = logging.getLogger("MW4")
 
     def __init__(self, mainW: Any) -> None:

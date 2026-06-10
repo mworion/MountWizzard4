@@ -16,6 +16,7 @@
 import time
 from datetime import datetime
 from mw4.base.threadUtils import mainThreadSleep
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.logic.modelBuild.modelRun import ModelData
 from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile
@@ -23,7 +24,7 @@ from pathlib import Path
 from typing import Any
 
 
-class Model:
+class Model(TabAddon):
     STATUS_IDLE = 0
     STATUS_MODEL_BATCH = 1
     STATUS_MODEL_FILE = 2

@@ -15,12 +15,13 @@
 ###########################################################
 from astropy.io import fits
 from collections.abc import Callable
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from pathlib import Path
 from PySide6.QtWidgets import QApplication, QListView
 from typing import Any
 
 
-class Rename:
+class Rename(TabAddon):
     HEADER_FORMATTERS: dict[str, Callable[[str | float], str]] = {
         "DATE-OBS": lambda e: str(e).replace(":", "-").replace("T", "_").split(".")[0],
         "XBINNING": lambda e: f"Bin{e:1.0f}",

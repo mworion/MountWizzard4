@@ -16,6 +16,7 @@
 import numpy as np
 from dataclasses import dataclass
 from functools import partial
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QWidget
@@ -30,7 +31,7 @@ class RefractionEntry:
     uiPost: str
 
 
-class EnvironWeather:
+class EnvironWeather(TabAddon):
     def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app

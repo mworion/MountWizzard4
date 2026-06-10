@@ -15,13 +15,14 @@
 ###########################################################
 from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.logic.databaseProcessing.dataWriter import DataWriter
 from pathlib import Path
 from PySide6.QtWidgets import QListView
 from typing import Any
 
 
-class IERSTime:
+class IERSTime(TabAddon):
     iersSourceURLs: dict[str, str] = {
         "Datacenter from IERS": "https://datacenter.iers.org/products/eop/rapid/standard/",
         "Maia from usno.navy.mil": "https://maia.usno.navy.mil/ser7/",

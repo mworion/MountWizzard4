@@ -16,12 +16,13 @@
 import hid
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import getTabIndex, svg2pixmap
 from PySide6.QtMultimedia import QSoundEffect
 from typing import Any
 
 
-class SettMisc:
+class SettMisc(TabAddon):
     def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app

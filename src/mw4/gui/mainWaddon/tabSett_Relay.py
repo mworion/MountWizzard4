@@ -14,12 +14,13 @@
 #
 ###########################################################
 from functools import partial
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from PySide6.QtWidgets import QListView
 from typing import Any
 
 
-class SettRelay:
+class SettRelay(TabAddon):
     def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app

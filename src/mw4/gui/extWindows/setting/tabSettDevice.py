@@ -233,4 +233,3 @@ class SettDevice(QObject):
         if name is None:
             return
         self.applyDisconnected(name)
-

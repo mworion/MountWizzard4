@@ -19,7 +19,7 @@ from mw4.gui.extWindows.setting.tabSettDevice import SettDevice
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtTest import QSignalSpy
-from PySide6.QtWidgets import QPushButton
+from PySide6.QtWidgets import QComboBox, QPushButton
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
@@ -30,6 +30,44 @@ def function(qapp):
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
+
+    # Mock all the device UI elements
+    devices = [
+        "camera",
+        "cover",
+        "directWeather",
+        "dome",
+        "filter",
+        "focuser",
+        "lightPanel",
+        "measure",
+        "plateSolve",
+        "power",
+        "relay",
+        "remote",
+        "seeingWeather",
+        "sensor1Weather",
+        "sensor2Weather",
+        "sensor3Weather",
+        "sensor4Weather",
+        "telescope",
+    ]
+
+    for device in devices:
+        # Create real QComboBox for dropdowns
+        dropdown_name = f"{device}Device"
+        dropdown = QComboBox()
+        dropdown.addItem("No device")
+        setattr(mainW.ui, dropdown_name, dropdown)
+
+        # Mock the setup button (or create mock for some devices)
+        setup_name = f"{device}Setup"
+        if device not in ["directWeather", "measure", "remote"]:
+            button = QPushButton()
+            setattr(mainW.ui, setup_name, button)
+
+    mainW.ui.cameraDevice = QComboBox()
+    mainW.ui.cameraDevice.addItem("No device")
 
     # Only return devices that have UI elements in deviceUi
     validDevices = [
@@ -119,9 +157,7 @@ def test_closeEvent_skipsEntriesWithoutSignals(function):
     origInstance = realEntry.instance
     realEntry.instance = NoSigInstance()
     try:
-        with mock.patch.object(
-            function.app.dReg, "configurable", return_value=[Entry()]
-        ):
+        with mock.patch.object(function.app.dReg, "configurable", return_value=[Entry()]):
             function.closeEvent()
     finally:
         realEntry.instance = origInstance
@@ -313,9 +349,9 @@ def test_deviceDisconnected_unknownSenderIsNoOp(function):
         function.deviceDisconnected()
 
 
-
 def test_setupDeviceGuiCallsDeviceConnectedWhenStatTrue(function) -> None:
     """Test setupDeviceGui calls deviceConnected when entry.stat is True (line 149)."""
+
     class MockConfig:
         deviceName = "test_device"
 
@@ -348,6 +384,7 @@ def test_setupDeviceGuiCallsDeviceConnectedWhenStatTrue(function) -> None:
 
 def test_setupDeviceGuiCallsDeviceDisconnectedWhenStatFalse(function) -> None:
     """Test setupDeviceGui calls deviceDisconnected when entry.stat is False (line 151)."""
+
     class MockConfig:
         deviceName = "test_device"
 

@@ -31,6 +31,10 @@ def function(qapp):
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
+    mainW.ui.clockSync = mock.MagicMock()
+    mainW.ui.clockSync.isChecked.return_value = False
+    mainW.ui.clockSync.setChecked = mock.MagicMock()
+    mainW.app.dReg["mount"].instance.workerCycleClock = None
     window = MountSett(mainW)
     yield window
     mainW.app.threadPool.waitForDone(10000)

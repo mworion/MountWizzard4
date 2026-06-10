@@ -300,9 +300,10 @@ def test_pollOpenWeatherMapDataExtractsLocationLatLon(function) -> None:
     function.location.longitude.degrees = -122.5
 
     # Mock getOpenWeatherMapData to prevent the Path+str error
-    with mock.patch.object(function, "getOpenWeatherMapData"), mock.patch(
-        "mw4.logic.environment.sensorWeatherOnline.Path"
-    ) as mock_path:
+    with (
+        mock.patch.object(function, "getOpenWeatherMapData"),
+        mock.patch("mw4.logic.environment.sensorWeatherOnline.Path") as mock_path,
+    ):
         # Make Path return a string-like object that supports + operator
         mock_instance = mock.MagicMock()
         mock_instance.__add__ = mock.MagicMock(return_value="test_url")
@@ -312,5 +313,3 @@ def test_pollOpenWeatherMapDataExtractsLocationLatLon(function) -> None:
         # Verify that the location attributes were accessed
         assert function.location.latitude.degrees == 45.5
         assert function.location.longitude.degrees == -122.5
-
-

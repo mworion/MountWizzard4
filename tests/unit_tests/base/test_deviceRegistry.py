@@ -578,9 +578,7 @@ def test_writeConfigToAllDevicesCallsWriteConfigToSingleDevice(
     from unittest.mock import patch
 
     cfgSetting = {"camera": {"framework": "indi"}}
-    with patch.object(
-        registry, "writeConfigToSingleDevice"
-    ) as mock_write_config:
+    with patch.object(registry, "writeConfigToSingleDevice") as mock_write_config:
         registry.writeConfigToAllDevices(cfgSetting)
         # Verify writeConfigToSingleDevice was called with camera device
         mock_write_config.assert_called_once()
@@ -639,5 +637,3 @@ def test_writeConfigToSingleDeviceSkipsMissingConfigField(
     # Verify field1 was set, field2 remained default
     assert mock_device.run["indi"].config.field1 == "new_value"
     assert mock_device.run["indi"].config.field2 == "default"
-
-

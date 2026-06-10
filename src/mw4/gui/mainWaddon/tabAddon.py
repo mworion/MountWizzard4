@@ -34,4 +34,3 @@ class TabAddon:
 
     def updateColorSet(self) -> None:
         """React to a global color-set change."""
-

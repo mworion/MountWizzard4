@@ -392,13 +392,17 @@ class Telescope:
         deviceConnected = Signal(object)
         deviceDisconnected = Signal(object)
 
-    class Test:
+    class TestConfig:
         deviceName = ""
+
+    class TestFramework:
+        def __init__(self):
+            self.config = Telescope.TestConfig()
 
     signals = TelescopeSignals()
     data = {}
     framework = None
-    run = {"indi": Test()}
+    run = {"indi": None}  # Will be set after class definition
     focalLength = 100
     aperture = 100
     defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
@@ -410,6 +414,9 @@ class Telescope:
     @staticmethod
     def startCommunication(loadConfig=None):
         return
+
+
+Telescope.run["indi"] = Telescope.TestFramework()
 
 
 class Hipparcos:

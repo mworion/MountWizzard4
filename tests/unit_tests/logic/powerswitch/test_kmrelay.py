@@ -434,4 +434,3 @@ def test_getRelayWithNoneHostAddress(function) -> None:
     function.config.hostAddress = None
     result = function.getRelay("/status.xml", False)
     assert result == ""
-

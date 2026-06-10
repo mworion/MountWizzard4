@@ -35,14 +35,16 @@ class MountCommand(TabAddon):
         self.ui.mountDocumentation.clicked.connect(self.openMountDocumentation)
 
     def openCommandProtocol(self) -> None:
-        url = "http://" + self.ui.mountHost.text() + "/manuals/command-protocol.pdf"
+        host = self.app.dReg["mount"].instance.host
+        url = "http://" + host + "/manuals/command-protocol.pdf"
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "Mount", "Browser failed")
         else:
             self.msg.emit(0, "System", "Mount", "command protocol opened")
 
     def openUpdateTimeDelta(self) -> None:
-        url = "http://" + self.ui.mountHost.text() + "/updatetime.html"
+        host = self.app.dReg["mount"].instance.host
+        url = "http://" + host + "/updatetime.html"
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "Mount", "Browser failed")
         else:

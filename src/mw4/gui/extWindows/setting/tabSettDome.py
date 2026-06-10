@@ -17,7 +17,7 @@ from mw4.gui.utilities.qtHelpers import img2pixmap
 from typing import Any
 
 
-class SettDome():
+class SettDome:
     def __init__(self, parentW: Any) -> None:
         self.parentW = parentW
         self.app = parentW.app

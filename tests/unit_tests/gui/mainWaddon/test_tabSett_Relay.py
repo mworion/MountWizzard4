@@ -28,6 +28,8 @@ def function(qapp):
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
+    mainW.ui.relayDevice = mock.MagicMock()
+    mainW.ui.relayDevice.currentIndex.return_value = 0
     window = SettRelay(mainW)
     yield window
     mainW.app.threadPool.waitForDone(10000)

@@ -244,10 +244,10 @@ class Model(TabAddon):
         self.modelData.waitTimeExposure = self.ui.waitTimeExposure.value()
         self.modelData.version = f"{self.app.__version__}"
         self.modelData.profile = self.ui.profileName.text()
-        self.modelData.firmware = self.ui.vString.text()
+        self.modelData.firmware = self.app.dReg["mount"].instance.firmware.vString
         obsSite = self.app.dReg["mount"].obsSite
         self.modelData.latitude = obsSite.location.latitude.degrees
-        self.modelData.plateSolveApp = self.ui.plateSolveDevice.currentText()
+        self.modelData.plateSolveApp = self.app.dReg["plateSolve"].framework
 
     def setModelTiming(self) -> None:
         if self.ui.progressiveTiming.isChecked():

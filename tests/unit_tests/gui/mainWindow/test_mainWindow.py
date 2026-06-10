@@ -247,6 +247,26 @@ def test_updateThreadAndOnlineStatus_2(window):
         window.updateThreadAndOnlineStatus()
 
 
+def test_updateTwilightAndDisk_1(window):
+    window.app.mwGlob["workDir"] = Path("tests/work")
+    with mock.patch.object(shutil, "disk_usage", return_value=(100, 100, 50)):
+        window.updateTwilightAndDisk()
+    assert window._diskFreePct == 50
+    assert window._twilightText != ""
+
+
+def test_updateThreadAndOnlineStatus_cached(window):
+    window.app.mwGlob["workDir"] = Path("tests/work")
+    window.ui.isOnline.setChecked(True)
+    window._twilightText = "Night"
+    window._diskFreePct = 42
+    with mock.patch.object(shutil, "disk_usage") as mDisk:
+        window.updateThreadAndOnlineStatus()
+        mDisk.assert_not_called()
+    assert "Night" in window.ui.statusOnlineGroup.title()
+    assert "42%" in window.ui.statusOnlineGroup.title()
+
+
 def test_updateTime_1(window):
     window.updateTime()
 

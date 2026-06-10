@@ -327,6 +327,22 @@ class MountObsSite:
         self.statusSat = "E"
         self.UTC2TT = 69.184
 
+    @property
+    def isTracking(self) -> bool:
+        return self.status == 0
+
+    @property
+    def isStopped(self) -> bool:
+        return self.status == 1
+
+    @property
+    def isParked(self) -> bool:
+        return self.status == 5
+
+    @property
+    def isFollowingSatellite(self) -> bool:
+        return self.status == 10
+
     @staticmethod
     def setLongitude(a):
         return True

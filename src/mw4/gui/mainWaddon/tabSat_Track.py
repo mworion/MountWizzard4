@@ -410,7 +410,7 @@ class SatTrack(SatData):
             self.msg.emit(2, "TLE", "Program", "Mount is not online")
             return
 
-        if self.app.dReg["mount"].obsSite.status == 5:
+        if self.app.dReg["mount"].obsSite.isParked:
             suc = self.app.dReg["mount"].obsSite.unpark()
             if suc:
                 self.msg.emit(0, "TLE", "Command", "Mount unparked")

@@ -74,5 +74,5 @@ class BigPopup(MWidget):
         self.ui.mountOff.setEnabled(canWOL)
 
     def updateStatus(self) -> None:
-        running = self.app.dReg["mount"].obsSite.status == 1
+        running = self.app.dReg["mount"].obsSite.isStopped
         changeStyleDynamic(self.ui.stop, "run", running)

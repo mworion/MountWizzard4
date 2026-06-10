@@ -94,7 +94,7 @@ class MountWizzard4(QObject):
         test: int = 0,
     ) -> None:
         super().__init__()
-        """Set up global references, thread pool, flags, and profile."""
+        # Set up global references, thread pool, flags, and profile.
         self.mwGlob = mwGlob
         self.application = application
         self.threadPool = QThreadPool()
@@ -104,7 +104,7 @@ class MountWizzard4(QObject):
         self.statusOperationRunning: int = 0
         self.messageQueue: Queue = Queue()
         self.config = loadProfileStart(self.mwGlob["configDir"])
-        """Push initial lifecycle messages into the message queue."""
+        # Push initial lifecycle messages into the message queue.
         profile = self.config.get("profileName", "-")
         workDir = self.mwGlob["workDir"]
         self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 started..."))
@@ -116,15 +116,15 @@ class MountWizzard4(QObject):
         self.buildPoint = BuildPoint(self)
         self.hipparcos = Hipparcos(self)
         self.ephemeris = self.dReg["mount"].obsSite.loader("de440_mw4.bsp")
-        """Create, configure, and show the main window."""
+        # Create, configure, and show the main window.
         self.mainW = MainWindow(self)
         self.mainW.initConfig()
         self.mainW.showWindow()
-        """Set up the cyclic timer manager and start the mount timers."""
+        # Set up the cyclic timer manager and start the mount timers.
         self.dReg["mount"].instance.startMountTimers()
         self.timerMgr = CyclicTimerManager(app=self, parent=self)
         self.timerMgr.start()
-        """Wire up application-level signal connections."""
+        # Wire up application-level signal connections.
         self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
 

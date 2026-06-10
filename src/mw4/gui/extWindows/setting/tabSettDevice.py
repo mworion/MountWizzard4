@@ -130,10 +130,17 @@ class SettDevice(QObject):
                 self.parentW.wIcon(ui, "cogs")
 
     def closeEvent(self) -> None:
+        # Disconnect only the signals we actually connected during setup.
+        # ``signalsToName`` is populated in lockstep with the ``connect`` calls
+        # above, so iterating it avoids the libpyside "Failed to disconnect"
+        # warning that occurs when a signal was never connected (e.g. for stub
+        # devices that grow a ``signals`` attribute only at runtime).
         for entry in self.app.dReg.configurable():
             if not hasattr(self.app.dReg[entry.name].instance, "signals"):
                 continue
             signals = self.app.dReg[entry.name].signals
+            if id(signals) not in self.signalsToName:
+                continue
             signals.deviceConnected.disconnect(self.deviceConnected)
             signals.deviceDisconnected.disconnect(self.deviceDisconnected)
 

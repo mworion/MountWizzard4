@@ -75,6 +75,7 @@ from tests.unit_tests.unitTestAddOns.mountStubs import (  # noqa: F401
 
 class App(QObject):
     __version__ = "test"
+    MAX_THREAD_COUNT = 30
     update10s = Signal()
     timerMgr = QTimer()
     update0_1s = Signal()

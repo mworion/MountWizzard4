@@ -249,7 +249,7 @@ class EnvironWeather:
             return
         if self.ui.refracManual.isChecked():
             return
-        if self.ui.refracNoTrack.isChecked() and self.app.dReg["mount"].obsSite.status == 0:
+        if self.ui.refracNoTrack.isChecked() and self.app.dReg["mount"].obsSite.isTracking:
             return
 
         temp, press = self.movingAverageRefractionParameters()

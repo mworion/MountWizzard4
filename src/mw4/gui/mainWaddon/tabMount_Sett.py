@@ -153,7 +153,7 @@ class MountSett:
             changeStyleDynamic(self.ui.setSiderealTracking, "run", False)
             changeStyleDynamic(self.ui.setSolarTracking, "run", False)
 
-        elif self.app.dReg["mount"].obsSite.status == 10:
+        elif self.app.dReg["mount"].obsSite.isFollowingSatellite:
             changeStyleDynamic(self.ui.followSat, "run", True)
             changeStyleDynamic(self.ui.setLunarTracking, "run", False)
             changeStyleDynamic(self.ui.setSiderealTracking, "run", False)

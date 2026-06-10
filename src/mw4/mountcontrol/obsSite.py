@@ -25,11 +25,60 @@ from .convert import (
     valueToFloat,
     valueToInt,
 )
+from enum import IntEnum
 from mw4.base.transform import diffModulusSign
 from skyfield.api import Angle, Loader, load, wgs84
 from skyfield.timelib import Time, Timescale
 from skyfield.toposlib import GeographicPosition
 from typing import Any
+
+
+class MountStatus(IntEnum):
+    """Numeric status codes reported by the 10micron mount.
+
+    Defined as an :class:`IntEnum` so existing integer comparisons keep
+    working while consumers can refer to symbolic names. The human-readable
+    label associated with each code lives in :data:`_STATUS_LABELS` and is
+    the single source of truth for both the valid-code set and the textual
+    descriptions exposed through :class:`ObsSite`.
+    """
+
+    TRACKING = 0
+    STOPPED = 1
+    SLEWING_TO_PARK = 2
+    UNPARKING = 3
+    SLEWING_TO_HOME = 4
+    PARKED = 5
+    SLEWING = 6
+    TRACKING_OFF = 7
+    MOTOR_LOW_TEMP = 8
+    TRACKING_OUTSIDE_LIMITS = 9
+    FOLLOWING_SATELLITE = 10
+    USER_OK_NEEDED = 11
+    UNKNOWN = 98
+    ERROR = 99
+
+
+# Single source of truth for the mount status codes and their human-readable
+# labels. The valid-code set and the legacy ``STAT`` mapping used by the GUI
+# are derived from this dictionary so a new status only needs to be added in
+# one place (plus the :class:`MountStatus` enum above).
+_STATUS_LABELS: dict[MountStatus, str] = {
+    MountStatus.TRACKING: "tracking",
+    MountStatus.STOPPED: "stopped after STOP",
+    MountStatus.SLEWING_TO_PARK: "slewing park position",
+    MountStatus.UNPARKING: "unparking",
+    MountStatus.SLEWING_TO_HOME: "slewing home position",
+    MountStatus.PARKED: "parked",
+    MountStatus.SLEWING: "slewing / going to stop",
+    MountStatus.TRACKING_OFF: "tracking Off",
+    MountStatus.MOTOR_LOW_TEMP: "motor low temperature",
+    MountStatus.TRACKING_OUTSIDE_LIMITS: "tracking outside limits",
+    MountStatus.FOLLOWING_SATELLITE: "following satellite",
+    MountStatus.USER_OK_NEEDED: "user OK needed",
+    MountStatus.UNKNOWN: "unknown status",
+    MountStatus.ERROR: "error",
+}
 
 
 class ObsSite:
@@ -49,24 +98,9 @@ class ObsSite:
 
     log = logging.getLogger("MW4")
 
-    _STATUS_VALID: frozenset = frozenset({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 98, 99})
-
-    STAT = {
-        "0": "tracking",
-        "1": "stopped after STOP",
-        "2": "slewing park position",
-        "3": "unparking",
-        "4": "slewing home position",
-        "5": "parked",
-        "6": "slewing / going to stop",
-        "7": "tracking Off",
-        "8": "motor low temperature",
-        "9": "tracking outside limits",
-        "10": "following satellite",
-        "11": "user OK needed",
-        "98": "unknown status",
-        "99": "error",
-    }
+    # Derived from MountStatus / _STATUS_LABELS — do not duplicate.
+    _STATUS_VALID: frozenset[int] = frozenset(int(s) for s in MountStatus)
+    STAT: dict[str, str] = {str(int(s)): label for s, label in _STATUS_LABELS.items()}
 
     STAT_SAT = {
         "V": "slewing to transit",
@@ -112,7 +146,7 @@ class ObsSite:
         self._AltTarget: Angle = Angle(degrees=0)
         self._Az: Angle = Angle(degrees=0)
         self._AzTarget: Angle = Angle(degrees=0)
-        self._status: int = 99
+        self._status: int = MountStatus.ERROR
         self._statusSat: str = "E"
         self._statusSlew: bool = False
         self.UTC2TT: float = 0
@@ -403,12 +437,30 @@ class ObsSite:
     def status(self, value: Any) -> None:
         self._status = valueToInt(value)
         if self._status not in self._STATUS_VALID:
-            self._status = 99
+            self._status = MountStatus.ERROR
+
+    @property
+    def isTracking(self) -> bool:
+        return self._status == MountStatus.TRACKING
+
+    @property
+    def isStopped(self) -> bool:
+        return self._status == MountStatus.STOPPED
+
+    @property
+    def isParked(self) -> bool:
+        return self._status == MountStatus.PARKED
+
+    @property
+    def isFollowingSatellite(self) -> bool:
+        return self._status == MountStatus.FOLLOWING_SATELLITE
 
     def statusText(self) -> str:
         reference = f"{self._status:d}"
         text = self.STAT.get(reference, "unknown Status")
-        if self._status in [2, 6]:
+        # Slewing states already convey motion; the "settle" suffix only
+        # applies to other states while the mount is settling.
+        if self._status in (MountStatus.SLEWING_TO_PARK, MountStatus.SLEWING):
             return text
         return text + " - settle" if self.statusSlew else text
 

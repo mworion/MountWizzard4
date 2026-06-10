@@ -497,6 +497,38 @@ def test_status_3():
     assert obsSite.status == 5
 
 
+def test_status_isTracking():
+    obsSite = ObsSite(parent=Parent())
+    obsSite.status = "0"
+    assert obsSite.isTracking is True
+    obsSite.status = "5"
+    assert obsSite.isTracking is False
+
+
+def test_status_isStopped():
+    obsSite = ObsSite(parent=Parent())
+    obsSite.status = "1"
+    assert obsSite.isStopped is True
+    obsSite.status = "0"
+    assert obsSite.isStopped is False
+
+
+def test_status_isParked():
+    obsSite = ObsSite(parent=Parent())
+    obsSite.status = "5"
+    assert obsSite.isParked is True
+    obsSite.status = "0"
+    assert obsSite.isParked is False
+
+
+def test_status_isFollowingSatellite():
+    obsSite = ObsSite(parent=Parent())
+    obsSite.status = "10"
+    assert obsSite.isFollowingSatellite is True
+    obsSite.status = "0"
+    assert obsSite.isFollowingSatellite is False
+
+
 def test_Site_statusText_2():
     obsSite = ObsSite(parent=Parent())
 

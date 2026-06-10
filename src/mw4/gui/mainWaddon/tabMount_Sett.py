@@ -510,10 +510,10 @@ class MountSett(TabAddon):
             return False
 
     def showOffset(self) -> None:
-        connectSync = self.ui.clockSync.isChecked()
+        connectSync = bool(self.app.dReg["mount"].instance.workerCycleClock)
         delta = self.app.dReg["mount"].obsSite.timeDiff * 1000
         ui = self.ui.timeDeltaPC2Mount
-        text = f"{delta:4.0f}" if connectSync else "-"
+        text = f"{delta:4.0f}"
         ui.setText(text)
 
         if not connectSync or abs(delta) < 100:

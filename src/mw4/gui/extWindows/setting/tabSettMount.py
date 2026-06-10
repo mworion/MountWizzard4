@@ -60,8 +60,8 @@ class SettMount:
         self.ui.syncTimeCont.setChecked(config.get("syncTimeCont", False))
         self.ui.syncTimeNotTrack.setChecked(config.get("syncTimeNotTrack", False))
         self.ui.clockSync.setChecked(config.get("clockSync", False))
+        self.app.dReg["mount"].instance.getFW()
         self.toggleClockSync()
-
         if self.ui.automaticWOL.isChecked():
             self.mountBoot()
 
@@ -84,6 +84,10 @@ class SettMount:
         self.app.dReg["mount"].signals.settingDone.disconnect(self.setMountMAC)
         self.app.dReg["mount"].signals.firmwareDone.disconnect(self.setMountCapabilities)
         self.app.dReg["mount"].signals.firmwareDone.disconnect(self.updateFwGui)
+
+    def setupIcons(self) -> None:
+        self.parentW.wIcon(self.ui.mountOn, "power-on")
+        self.parentW.wIcon(self.ui.mountOff, "power-off")
 
     def setMountCapabilities(self, fw) -> None:
         self.ui.GroupWOL.setEnabled(self.app.dReg["mount"].firmware.isHW2012())
@@ -143,7 +147,7 @@ class SettMount:
     def showMountStatus(self, status: bool) -> None:
         changeStyleDynamic(self.ui.mountOn, "run", status)
         changeStyleDynamic(self.ui.mountOff, "run", not status)
-        changeStyleDynamic(self.ui.mountConnected, "run", status)
+        self.ui.use10micronDef.setEnabled(status)
 
     def updateFwGui(self, fw: Firmware) -> None:
         guiSetText(self.ui.product, "s", fw.product)

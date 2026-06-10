@@ -15,6 +15,7 @@
 ###########################################################
 import logging
 from mw4.gui.extWindows.setting.tabSettDevice import SettDevice
+from mw4.gui.extWindows.setting.tabSettDome import SettDome
 from mw4.gui.extWindows.setting.tabSettMount import SettMount
 from mw4.gui.utilities.qtHelpers import getTabAndIndex, setTabAndIndex
 from mw4.gui.utilities.qtMain import MWidget
@@ -33,6 +34,7 @@ class SettingWindow(MWidget):
         self.setWindowTitle("Setting")
         self.tabSettDevice = SettDevice(self)
         self.tabSettMount = SettMount(self)
+        self.tabSettDome = SettDome(self)
         self.app.colorChange.connect(self.colorChange)
         self.setupIcons()
 
@@ -41,6 +43,7 @@ class SettingWindow(MWidget):
         self.positionWindow(config)
         setTabAndIndex(self.ui.tabWidget, config, "TabOrder")
         self.tabSettMount.initConfig()
+        self.tabSettDome.initConfig()
 
     def storeConfig(self) -> None:
         configMain = self.app.config
@@ -51,9 +54,12 @@ class SettingWindow(MWidget):
         config["height"] = self.height()
         getTabAndIndex(self.ui.tabWidget, config, "TabOrder")
         self.tabSettMount.storeConfig()
+        self.tabSettDome.storeConfig()
 
     def setupIcons(self) -> None:
         self.tabSettDevice.setupIcons()
+        self.tabSettMount.setupIcons()
+        self.tabSettDome.setupIcons()
 
     def closeEvent(self, closeEvent) -> None:
         self.storeConfig()

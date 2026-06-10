@@ -13,17 +13,16 @@
 # License APL2.0
 #
 ###########################################################
-from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import img2pixmap
 from typing import Any
 
 
-class SettDome(TabAddon):
-    def __init__(self, mainW: Any) -> None:
-        self.mainW = mainW
-        self.app = mainW.app
-        self.msg = mainW.app.msg
-        self.ui = mainW.ui
+class SettDome():
+    def __init__(self, parentW: Any) -> None:
+        self.parentW = parentW
+        self.app = parentW.app
+        self.msg = parentW.app.msg
+        self.ui = parentW.ui
 
         self.ui.domeRadius.valueChanged.connect(self.setUseGeometry)
         self.ui.offGEM.valueChanged.connect(self.setUseGeometry)
@@ -80,7 +79,7 @@ class SettDome(TabAddon):
         self.ui.tabDomeExplain.setCurrentIndex(8)
 
     def initConfig(self) -> None:
-        config = self.app.config["WindowMain"]
+        config = self.app.config.get("SettingDeviceDome", {})
         self.ui.domeClearOpening.setValue(config.get("domeClearOpening", 0.4))
         self.ui.domeOpeningHysteresis.setValue(config.get("domeOpeningHysteresis", 0.0))
         self.ui.domeClearanceZenith.setValue(config.get("domeClearanceZenith", 0.2))
@@ -99,7 +98,8 @@ class SettDome(TabAddon):
         self.setUseGeometry()
 
     def storeConfig(self) -> None:
-        config = self.app.config["WindowMain"]
+        self.app.config["SettingDeviceDome"] = {}
+        config = self.app.config["SettingDeviceDome"]
         config["domeRadius"] = self.ui.domeRadius.value()
         config["domeClearOpening"] = self.ui.domeClearOpening.value()
         config["domeOpeningHysteresis"] = self.ui.domeOpeningHysteresis.value()
@@ -147,10 +147,7 @@ class SettDome(TabAddon):
         pixmap = img2pixmap("assets/dome/zenith.png")
         self.ui.picDome9.setPixmap(pixmap)
 
-        self.mainW.wIcon(self.ui.copyFromDomeDriver, "copy")
-        self.mainW.wIcon(self.ui.domeCloseShutter, "exit-down")
-        self.mainW.wIcon(self.ui.domeOpenShutter, "exit-up")
-        self.mainW.wIcon(self.ui.domeAbortSlew, "bolt-alt")
+        self.parentW.wIcon(self.ui.copyFromDomeDriver, "copy")
 
     def updateDomeGeometryToGui(self) -> None:
         value = float(self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_OTA_OFFSET", 0))

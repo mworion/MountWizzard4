@@ -446,6 +446,7 @@ class MountObsSite:
 
 class Mount(QObject):
     def __init__(self):
+        super().__init__()
         self.signals = MountSignals()
         self.obsSite = MountObsSite()
         self.geometry = MountGeometry()
@@ -454,8 +455,14 @@ class Mount(QObject):
         self.satellite = MountSatellite()
         self.model = MountModel()
         self.host = None
+        self.MAC = None
         self.loggingTrace = False
         self.stat = False
+        self.instance = self
+
+    @staticmethod
+    def getFW():
+        return True
 
     @staticmethod
     def bootMount():

@@ -31,6 +31,78 @@ def function(qapp):
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
+
+    # Helper to create mock widgets that store values
+    def create_mock_lineedit(default_value=""):
+        m = mock.MagicMock()
+        m._value = default_value
+        m.text = mock.MagicMock(side_effect=lambda: m._value)
+        m.setText = mock.MagicMock(side_effect=lambda v: setattr(m, "_value", v))
+        return m
+
+    def create_mock_checkbox(default_value=False):
+        m = mock.MagicMock()
+        m._checked = default_value
+        m.isChecked = mock.MagicMock(side_effect=lambda: m._checked)
+        m.setChecked = mock.MagicMock(side_effect=lambda v: setattr(m, "_checked", v))
+        return m
+
+    # Add mock UI elements needed by SettMount
+    mainW.ui.mountOn = mock.MagicMock()
+    mainW.ui.mountOff = mock.MagicMock()
+    mainW.ui.mountHost = create_mock_lineedit()
+    mainW.ui.port3492 = create_mock_checkbox(default_value=True)
+    mainW.ui.port3490 = create_mock_checkbox(default_value=False)
+
+    # Make port3492 and port3490 mutually exclusive
+    def set_port3492(v):
+        mainW.ui.port3492._checked = v
+        if v:
+            mainW.ui.port3490._checked = False
+
+    def set_port3490(v):
+        mainW.ui.port3490._checked = v
+        if v:
+            mainW.ui.port3492._checked = False
+
+    mainW.ui.port3492.setChecked = mock.MagicMock(side_effect=set_port3492)
+    mainW.ui.port3490.setChecked = mock.MagicMock(side_effect=set_port3490)
+
+    mainW.ui.mountMAC = create_mock_lineedit()
+    mainW.ui.bootRackComp = mock.MagicMock()
+    mainW.ui.mountWolAddress = create_mock_lineedit(default_value="255.255.255.255")
+    mainW.ui.mountWolPort = create_mock_lineedit(default_value="9")
+    mainW.ui.rackCompMAC = create_mock_lineedit()
+    mainW.ui.automaticWOL = create_mock_checkbox()
+    mainW.ui.clockSync = create_mock_checkbox()
+    mainW.ui.syncTimeNone = create_mock_checkbox(default_value=True)
+    mainW.ui.syncTimeCont = create_mock_checkbox()
+    mainW.ui.syncTimeNotTrack = create_mock_checkbox()
+    mainW.ui.GroupWOL = mock.MagicMock()
+    mainW.ui.product = mock.MagicMock()
+    mainW.ui.vString = mock.MagicMock()
+    mainW.ui.fwdate = mock.MagicMock()
+    mainW.ui.fwtime = mock.MagicMock()
+    mainW.ui.hardware = mock.MagicMock()
+    mainW.ui.mount_productRAM = mock.MagicMock()
+    mainW.ui.mount_productROM = mock.MagicMock()
+    mainW.ui.mointAlt = mock.MagicMock()
+    mainW.ui.mointAz = mock.MagicMock()
+    mainW.ui.mointHA = mock.MagicMock()
+    mainW.ui.mointDEC = mock.MagicMock()
+    mainW.ui.mointRA = mock.MagicMock()
+    mainW.ui.mount_time = mock.MagicMock()
+    mainW.ui.mount_SID = mock.MagicMock()
+    mainW.ui.mount_siteLat = mock.MagicMock()
+    mainW.ui.mount_siteLon = mock.MagicMock()
+    mainW.ui.mount_alignment = mock.MagicMock()
+    mainW.ui.mount_tracking = mock.MagicMock()
+    mainW.ui.mount_pierE = mock.MagicMock()
+    mainW.ui.mount_pierW = mock.MagicMock()
+
+    # Add wIcon method to mainW for setupIcons
+    mainW.wIcon = mock.MagicMock()
+
     window = SettMount(mainW)
     yield window
     mainW.app.threadPool.waitForDone(1000)

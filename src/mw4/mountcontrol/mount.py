@@ -198,8 +198,12 @@ class MountDevice:
             self.log.info("Mount connection timed out")
         except Exception as e:
             self.log.error(f"Mount {e}")
+            if self.mountIsUp:
+                self.signals.deviceDisconnected.emit("mount")
             self.mountIsUp = False
         else:
+            if not self.mountIsUp:
+                self.signals.deviceConnected.emit("mount")
             self.mountIsUp = True
         finally:
             client.close()
@@ -207,10 +211,6 @@ class MountDevice:
     def clearCycleCheckMountIsUp(self) -> None:
         self.startupMountData(self.mountIsUp)
         self.signals.mountIsUp.emit(self.mountIsUp)
-        if self.mountIsUp:
-            self.signals.deviceConnected.emit("mount")
-        else:
-            self.signals.deviceDisconnected.emit("mount")
         self.mutexCycleMountIsUp.unlock()
 
     def cycleCheckMountIsUp(self) -> None:
@@ -288,9 +288,6 @@ class MountDevice:
         self.threadPool.start(self.workerGetNames)
 
     def clearGetFW(self) -> None:
-        self.log.info(f"[SYS] 10micron product : {self.firmware.product}")
-        self.log.info(f"[SYS] 10micron firmware: {self.firmware.vString}")
-        self.log.info(f"[SYS] 10micron host    : {self.host}")
         self.geometry.initializeGeometry(self.firmware.product)
         self.signals.firmwareDone.emit(self.firmware)
 
@@ -387,11 +384,11 @@ class MountDevice:
 
     def clearCycleClock(self) -> None:
         self.mutexCycleClock.unlock()
+        self.workerCycleClock = None
 
     def cycleClock(self) -> None:
         if not self.mountIsUp:
             return
-
         if not self.mutexCycleClock.tryLock():
             return
 

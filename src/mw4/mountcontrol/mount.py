@@ -340,9 +340,7 @@ class MountDevice(QObject):
         self.signals.locationDone.emit(self.obsSite)
 
     def getLocation(self) -> None:
-        self.runWorker(
-            self.obsSite.getLocation, self.clearGetLocation, "workerGetLocation"
-        )
+        self.runWorker(self.obsSite.getLocation, self.clearGetLocation, "workerGetLocation")
 
     def clearCalcTLE(self) -> None:
         self.mutexCalcTLE.unlock()

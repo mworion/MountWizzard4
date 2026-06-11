@@ -257,47 +257,47 @@ def test_syncClock_1(function):
 
 
 def test_syncClock_2(function):
-     function.ui.syncTimeNone.setChecked(False)
-     function.ui.syncTimeNotTrack.setChecked(True)
-     function.app.dReg.d["mount"].stat = False
-     function.syncClock()
+    function.ui.syncTimeNone.setChecked(False)
+    function.ui.syncTimeNotTrack.setChecked(True)
+    function.app.dReg.d["mount"].stat = False
+    function.syncClock()
 
 
 def test_syncClock_3(function):
-     function.ui.syncTimeNone.setChecked(False)
-     function.ui.syncTimeNotTrack.setChecked(True)
-     function.app.dReg.d["mount"].stat = True
-     function.app.mount.obsSite.status = 0
-     function.syncClock()
+    function.ui.syncTimeNone.setChecked(False)
+    function.ui.syncTimeNotTrack.setChecked(True)
+    function.app.dReg.d["mount"].stat = True
+    function.app.mount.obsSite.status = 0
+    function.syncClock()
 
 
 def test_syncClock_4(function):
-     function.ui.syncTimeNone.setChecked(False)
-     function.ui.syncTimeCont.setChecked(True)
-     function.app.dReg.d["mount"].stat = True
-     function.app.mount.obsSite.status = 1
-     function.app.mount.obsSite.timeDiff = 0
-     function.syncClock()
+    function.ui.syncTimeNone.setChecked(False)
+    function.ui.syncTimeCont.setChecked(True)
+    function.app.dReg.d["mount"].stat = True
+    function.app.mount.obsSite.status = 1
+    function.app.mount.obsSite.timeDiff = 0
+    function.syncClock()
 
 
 def test_syncClock_5(function):
-     function.ui.syncTimeNone.setChecked(False)
-     function.ui.syncTimeCont.setChecked(False)
-     function.app.dReg.d["mount"].stat = True
-     function.app.mount.obsSite.status = 1
-     function.app.mount.obsSite.timeDiff = 1
-     with mock.patch.object(function.app.mount.obsSite, "adjustClock", return_value=False):
-         function.syncClock()
+    function.ui.syncTimeNone.setChecked(False)
+    function.ui.syncTimeCont.setChecked(False)
+    function.app.dReg.d["mount"].stat = True
+    function.app.mount.obsSite.status = 1
+    function.app.mount.obsSite.timeDiff = 1
+    with mock.patch.object(function.app.mount.obsSite, "adjustClock", return_value=False):
+        function.syncClock()
 
 
 def test_syncClock_6(function):
-     function.ui.syncTimeNone.setChecked(False)
-     function.ui.syncTimeCont.setChecked(True)
-     function.app.dReg.d["mount"].stat = True
-     function.app.mount.obsSite.status = 1
-     function.app.mount.obsSite.timeDiff = 1
-     with mock.patch.object(function.app.mount.obsSite, "adjustClock", return_value=True):
-         function.syncClock()
+    function.ui.syncTimeNone.setChecked(False)
+    function.ui.syncTimeCont.setChecked(True)
+    function.app.dReg.d["mount"].stat = True
+    function.app.mount.obsSite.status = 1
+    function.app.mount.obsSite.timeDiff = 1
+    with mock.patch.object(function.app.mount.obsSite, "adjustClock", return_value=True):
+        function.syncClock()
 
 
 def test_closeEvent(function):
@@ -313,72 +313,72 @@ def test_showMountStatus_1(function):
 
 
 def test_showMountStatus_2(function):
-     function.showMountStatus(False)
+    function.showMountStatus(False)
 
 
 def test_initConfig_with_automaticWOL_checked(function):
-     """Test initConfig calls mountBoot when automaticWOL is checked."""
-     function.app.config["SettingDeviceMount"] = {"automaticWOL": True}
-     with mock.patch.object(function, "mountBoot"):
-         function.initConfig()
-         function.mountBoot.assert_called()
+    """Test initConfig calls mountBoot when automaticWOL is checked."""
+    function.app.config["SettingDeviceMount"] = {"automaticWOL": True}
+    with mock.patch.object(function, "mountBoot"):
+        function.initConfig()
+        function.mountBoot.assert_called()
 
 
 def test_syncClock_with_syncTimeNotTrack_and_tracking(function):
-     """Test syncClock returns early when tracking and doSyncNotTrack is checked."""
-     function.ui.syncTimeNone.setChecked(False)
-     function.ui.syncTimeNotTrack.setChecked(True)
-     function.app.dReg.d["mount"].stat = True
-     function.app.mount.obsSite.status = 10
-     function.msg = mock.MagicMock()
-     function.syncClock()
+    """Test syncClock returns early when tracking and doSyncNotTrack is checked."""
+    function.ui.syncTimeNone.setChecked(False)
+    function.ui.syncTimeNotTrack.setChecked(True)
+    function.app.dReg.d["mount"].stat = True
+    function.app.mount.obsSite.status = 10
+    function.msg = mock.MagicMock()
+    function.syncClock()
 
 
 def test_syncClock_with_small_delta(function):
-     """Test syncClock returns early when delta is below threshold."""
-     function.ui.syncTimeNone.setChecked(False)
-     function.ui.syncTimeCont.setChecked(True)
-     function.app.dReg.d["mount"].stat = True
-     function.app.mount.obsSite.status = 1
-     function.app.mount.obsSite.timeDiff = 0.005
-     function.msg = mock.MagicMock()
-     function.syncClock()
-     function.msg.emit.assert_not_called()
+    """Test syncClock returns early when delta is below threshold."""
+    function.ui.syncTimeNone.setChecked(False)
+    function.ui.syncTimeCont.setChecked(True)
+    function.app.dReg.d["mount"].stat = True
+    function.app.mount.obsSite.status = 1
+    function.app.mount.obsSite.timeDiff = 0.005
+    function.msg = mock.MagicMock()
+    function.syncClock()
+    function.msg.emit.assert_not_called()
 
 
 def test_syncClock_with_large_positive_delta(function):
-     """Test syncClock clamps large positive delta to 999."""
-     function.ui.syncTimeNone.setChecked(False)
-     function.ui.syncTimeCont.setChecked(True)
-     function.app.dReg.d["mount"].stat = True
-     function.app.mount.obsSite.status = 1
-     function.app.mount.obsSite.timeDiff = 2.0
-     with mock.patch.object(
-         function.app.mount.obsSite, "adjustClock", return_value=True
-     ) as mock_adjust:
-         function.msg = mock.MagicMock()
-         function.syncClock()
-         # Verify adjustClock was called
-         assert mock_adjust.called
-         call_args = mock_adjust.call_args[0]
-         # Delta is 2000ms, clamped to 999
-         assert call_args[0] == 999
+    """Test syncClock clamps large positive delta to 999."""
+    function.ui.syncTimeNone.setChecked(False)
+    function.ui.syncTimeCont.setChecked(True)
+    function.app.dReg.d["mount"].stat = True
+    function.app.mount.obsSite.status = 1
+    function.app.mount.obsSite.timeDiff = 2.0
+    with mock.patch.object(
+        function.app.mount.obsSite, "adjustClock", return_value=True
+    ) as mock_adjust:
+        function.msg = mock.MagicMock()
+        function.syncClock()
+        # Verify adjustClock was called
+        assert mock_adjust.called
+        call_args = mock_adjust.call_args[0]
+        # Delta is 2000ms, clamped to 999
+        assert call_args[0] == 999
 
 
 def test_syncClock_with_large_negative_delta(function):
-     """Test syncClock clamps large negative delta to -999."""
-     function.ui.syncTimeNone.setChecked(False)
-     function.ui.syncTimeCont.setChecked(True)
-     function.app.dReg.d["mount"].stat = True
-     function.app.mount.obsSite.status = 1
-     function.app.mount.obsSite.timeDiff = -2.0
-     with mock.patch.object(
-         function.app.mount.obsSite, "adjustClock", return_value=True
-     ) as mock_adjust:
-         function.msg = mock.MagicMock()
-         function.syncClock()
-         # Verify adjustClock was called
-         assert mock_adjust.called
-         call_args = mock_adjust.call_args[0]
-         # Delta is -2000ms, clamped to -999
-         assert call_args[0] == -999
+    """Test syncClock clamps large negative delta to -999."""
+    function.ui.syncTimeNone.setChecked(False)
+    function.ui.syncTimeCont.setChecked(True)
+    function.app.dReg.d["mount"].stat = True
+    function.app.mount.obsSite.status = 1
+    function.app.mount.obsSite.timeDiff = -2.0
+    with mock.patch.object(
+        function.app.mount.obsSite, "adjustClock", return_value=True
+    ) as mock_adjust:
+        function.msg = mock.MagicMock()
+        function.syncClock()
+        # Verify adjustClock was called
+        assert mock_adjust.called
+        call_args = mock_adjust.call_args[0]
+        # Delta is -2000ms, clamped to -999
+        assert call_args[0] == -999

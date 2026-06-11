@@ -387,5 +387,3 @@ def test_tabaddon_can_add_attributes():
     addon = TabAddon()
     addon.custom_attr = "value"
     assert addon.custom_attr == "value"
-
-

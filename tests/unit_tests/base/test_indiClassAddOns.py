@@ -318,9 +318,3 @@ def test_indi_types_compound_values():
     assert INDI_TYPES["skymeter"] == 32768 + 524288
     assert INDI_TYPES["covercalibrator"] == 512 + 1024
     assert INDI_TYPES["switch"] == 128 + 8 + 32768 + 262144
-
-
-
-
-
-

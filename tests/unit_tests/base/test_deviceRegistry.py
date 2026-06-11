@@ -14,9 +14,11 @@
 #
 ###########################################################
 import pytest
+from dataclasses import dataclass, field
 from mw4.base.deviceRegistry import DeviceEntry, DeviceRegistry
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
+from unittest.mock import MagicMock, patch
 
 
 @pytest.fixture()
@@ -617,23 +619,130 @@ def test_writeConfigToSingleDeviceSkipsFrameworkWithoutConfig(
 
 
 def test_writeConfigToSingleDeviceSkipsMissingConfigField(
-    registry: DeviceRegistry,
-) -> None:
-    """Test writeConfigToSingleDevice skips fields not in config dict."""
-    from dataclasses import dataclass, field
+     registry: DeviceRegistry,
+ ) -> None:
+     """Test writeConfigToSingleDevice skips fields not in config dict."""
+     from dataclasses import dataclass, field
 
-    @dataclass
-    class MockConfig:
-        field1: str = field(default="default")
-        field2: str = field(default="default")
+     @dataclass
+     class MockConfig:
+         field1: str = field(default="default")
+         field2: str = field(default="default")
 
-    mock_device = registry.d["camera"].instance
-    mock_device.framework = "indi"
-    mock_device.run["indi"].config = MockConfig()
+     mock_device = registry.d["camera"].instance
+     mock_device.framework = "indi"
+     mock_device.run["indi"].config = MockConfig()
 
-    # Only provide field1 in config, not field2
-    cfgDevice = {"framework": "indi", "indi": {"field1": "new_value"}}
-    registry.writeConfigToSingleDevice("camera", cfgDevice)
-    # Verify field1 was set, field2 remained default
-    assert mock_device.run["indi"].config.field1 == "new_value"
-    assert mock_device.run["indi"].config.field2 == "default"
+     # Only provide field1 in config, not field2
+     cfgDevice = {"framework": "indi", "indi": {"field1": "new_value"}}
+     registry.writeConfigToSingleDevice("camera", cfgDevice)
+     # Verify field1 was set, field2 remained default
+     assert mock_device.run["indi"].config.field1 == "new_value"
+     assert mock_device.run["indi"].config.field2 == "default"
+
+
+def test_collectConfigFromSingleDeviceWithFields(registry: DeviceRegistry) -> None:
+     """Test collectConfigFromSingleDevice collects fields from config."""
+     @dataclass
+     class MockConfig:
+         testField1: str = field(default="value1")
+         testField2: str = field(default="value2")
+
+     mock_device = registry.d["camera"].instance
+     mock_device.framework = "indi"
+     mock_device.run["indi"] = MagicMock()
+     mock_device.run["indi"].config = MockConfig()
+
+     result = registry.collectConfigFromSingleDevice("camera")
+     assert "framework" in result
+     assert result["framework"] == "indi"
+     assert "indi" in result
+     assert result["indi"]["testField1"] == "value1"
+     assert result["indi"]["testField2"] == "value2"
+
+
+def test_collectConfigFromAllDevices(registry: DeviceRegistry) -> None:
+     """Test collectConfigFromAllDevices collects config from all devices."""
+     @dataclass
+     class MockConfig:
+         testField: str = field(default="test_value")
+
+     # Setup mock device
+     mock_device = registry.d["camera"].instance
+     mock_device.framework = "indi"
+     mock_device.run["indi"] = MagicMock()
+     mock_device.run["indi"].config = MockConfig()
+
+     result = registry.collectConfigFromAllDevices()
+     assert isinstance(result, dict)
+     assert "camera" in result
+
+
+def test_initConfig(registry: DeviceRegistry) -> None:
+     """Test initConfig chains writeConfigToAllDevices and startDevices."""
+     with (
+         patch.object(registry, "writeConfigToAllDevices") as mock_write,
+         patch.object(registry, "startDevices") as mock_start,
+     ):
+         registry.app.config["SettingDevice"] = {}
+         registry.initConfig()
+         mock_write.assert_called_once_with({})
+         mock_start.assert_called_once()
+
+
+def test_storeConfig(registry: DeviceRegistry) -> None:
+     """Test storeConfig saves collected config to app.config."""
+     @dataclass
+     class MockConfig:
+         testField: str = field(default="test_value")
+
+     mock_device = registry.d["camera"].instance
+     mock_device.framework = "indi"
+     mock_device.run["indi"] = MagicMock()
+     mock_device.run["indi"].config = MockConfig()
+
+     registry.storeConfig()
+     assert "SettingDevice" in registry.app.config
+     assert isinstance(registry.app.config["SettingDevice"], dict)
+
+
+def test_stopDevicesIteratesConfigurable(registry: DeviceRegistry) -> None:
+     """Test stopDevices calls stopDevice for all configurable devices."""
+     with patch.object(registry, "stopDevice") as mock_stop:
+         registry.stopDevices()
+         assert mock_stop.called
+
+
+def test_startDevicesIteratesConfigurable(registry: DeviceRegistry) -> None:
+     """Test startDevices calls startDevice for all configurable devices."""
+     with patch.object(registry, "startDevice") as mock_start:
+         registry.startDevices()
+         assert mock_start.called
+
+
+def test_deviceConnectedWithUnknownSender(registry: DeviceRegistry) -> None:
+     """Test deviceConnected returns early when sender is not in signalsToName."""
+     registry.app.msg = MagicMock()
+     unknown_sender = MagicMock()
+     # Don't add to signalsToName
+
+     with mock.patch.object(registry, "sender", return_value=unknown_sender):
+         registry.deviceConnected("test_device")
+
+     # Verify msg.emit was not called
+     registry.app.msg.emit.assert_not_called()
+
+
+def test_deviceDisconnectedWithUnknownSender(registry: DeviceRegistry) -> None:
+     """Test deviceDisconnected returns early when sender is not in signalsToName."""
+     registry.app.msg = MagicMock()
+     unknown_sender = MagicMock()
+     # Don't add to signalsToName
+
+     with mock.patch.object(registry, "sender", return_value=unknown_sender):
+         registry.deviceDisconnected("test_device")
+
+     # Verify msg.emit was not called
+     registry.app.msg.emit.assert_not_called()
+
+

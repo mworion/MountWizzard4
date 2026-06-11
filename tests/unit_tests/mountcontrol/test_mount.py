@@ -69,7 +69,7 @@ def test_waitAfterSettlingAndEmit(function):
 
 def test_startTimers(function):
     with mock.patch.object(QTimer, "start"):
-        function.startMountTimers()
+        function.startMountCoreTimers()
 
 
 def test_stopTimers(function):

@@ -99,6 +99,7 @@ def function(qapp):
     mainW.ui.mount_tracking = mock.MagicMock()
     mainW.ui.mount_pierE = mock.MagicMock()
     mainW.ui.mount_pierW = mock.MagicMock()
+    mainW.ui.use10micronDef = mock.MagicMock()
 
     # Add wIcon method to mainW for setupIcons
     mainW.wIcon = mock.MagicMock()
@@ -292,3 +293,21 @@ def test_syncClock_6(function):
     function.app.mount.obsSite.timeDiff = 1
     with mock.patch.object(function.app.mount.obsSite, "adjustClock", return_value=True):
         function.syncClock()
+
+
+def test_closeEvent(function):
+    function.closeEvent()
+
+
+def test_setupIcons(function):
+    function.setupIcons()
+
+
+def test_showMountStatus_1(function):
+    function.showMountStatus(True)
+
+
+def test_showMountStatus_2(function):
+    function.showMountStatus(False)
+
+

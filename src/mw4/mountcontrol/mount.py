@@ -190,22 +190,23 @@ class MountDevice:
     def checkMountIsUp(self) -> None:
         client = socket.socket()
         client.settimeout(self.SOCKET_TIMEOUT)
+        newStatus = False
         try:
             client.connect(self.host)
             client.shutdown(socket.SHUT_RDWR)
+            newStatus = True
         except TimeoutError:
-            self.mountIsUp = False
+            newStatus = False
             self.log.info("Mount connection timed out")
         except Exception as e:
             self.log.error(f"Mount {e}")
+            newStatus = False
+        finally:
             if self.mountIsUp:
                 self.signals.deviceDisconnected.emit("mount")
-            self.mountIsUp = False
-        else:
             if not self.mountIsUp:
                 self.signals.deviceConnected.emit("mount")
-            self.mountIsUp = True
-        finally:
+            self.mountIsUp = newStatus
             client.close()
 
     def clearCycleCheckMountIsUp(self) -> None:

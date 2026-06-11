@@ -564,6 +564,18 @@ def test_setLocationValues_2(function):
         function.setLocationValues()
 
 
+def test_setLocationValues_3(function):
+    function.app.mount.obsSite.location = wgs84.latlon(
+        longitude_degrees=1, latitude_degrees=2, elevation_m=3
+    )
+    function.app.dReg.d["mount"].stat = True
+    lat = Angle(degrees=10)
+    lon = Angle(degrees=20)
+    elev = 500
+    with mock.patch.object(function.app.mount, "getLocation"):
+        function.setLocationValues(lat=lat, lon=lon, elev=elev)
+
+
 def test_setLongitude_2(function):
     function.app.mount.obsSite.location = wgs84.latlon(
         longitude_degrees=1, latitude_degrees=2, elevation_m=3
@@ -587,7 +599,7 @@ def test_setLongitude_3(function):
         function.setLongitude()
 
 
-def test_setLatitude_2(function):
+def test_setLatitude_1(function):
     function.app.mount.obsSite.location = wgs84.latlon(
         longitude_degrees=1, latitude_degrees=2, elevation_m=3
     )
@@ -597,7 +609,7 @@ def test_setLatitude_2(function):
         function.setLatitude()
 
 
-def test_setLatitude_3(function):
+def test_setLatitude_2(function):
     function.app.mount.obsSite.location = wgs84.latlon(
         longitude_degrees=1, latitude_degrees=2, elevation_m=3
     )
@@ -928,3 +940,7 @@ def test_showOffset_4(function):
     function.app.mount.obsSite.timeDiff = 0.6
     function.ui.clockSync.setChecked(True)
     function.showOffset()
+
+
+
+

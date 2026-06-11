@@ -566,3 +566,85 @@ def test_calcMountAltAzToDomeAltAz_2(function):
         valAlt, valAz = function.calcMountAltAzToDomeAltAz(10, 5)
         assert valAlt is None
         assert valAz is None
+
+
+def test_startupMountData_refreshModel(function):
+    function.mountIsUpLastStatus = False
+    with (
+        mock.patch.object(function.app, "refreshModel"),
+        mock.patch.object(function.app, "refreshName"),
+        mock.patch.object(function, "getFW"),
+        mock.patch.object(function, "getLocation"),
+        mock.patch.object(function, "getTLE"),
+        mock.patch.object(function.obsSite, "setHighPrecision"),
+    ):
+        function.startupMountData(True)
+        assert function.app.refreshModel.emit.called
+        assert function.app.refreshName.emit.called
+
+
+def test_clearCyclePointing_alert_status_1_98(function):
+    function.obsSite.status = 98
+    function.statusAlert = False
+    with mock.patch.object(function.signals, "alert"):
+        function.clearCyclePointing(True)
+        assert function.statusAlert
+
+
+def test_clearCyclePointing_alert_status_99(function):
+    function.obsSite.status = 99
+    function.statusAlert = False
+    with mock.patch.object(function.signals, "alert"):
+        function.clearCyclePointing(True)
+        assert function.statusAlert
+
+
+def test_clearCyclePointing_settlingWait(function):
+    function.obsSite.status = 0
+    function.obsSite.flipped = True
+    function._waitTimeFlip = 5000
+    function.obsSite.statusSlew = False
+    function.statusSlew = True
+    with mock.patch.object(function.settlingWait, "start"):
+        function.clearCyclePointing(True)
+        assert function.settlingWait.start.called
+
+
+def test_collectData_no_slew(function):
+    function.obsSite.statusSlew = False
+    function.raRef = 100.0
+    function.decRef = 50.0
+    function.collectData()
+    assert function.raRef == 100.0
+    assert function.decRef == 50.0
+
+
+def test_bootMount_with_bAddress_only(function):
+    function._MAC = "00:00:00:00:00:00"
+    with mock.patch.object(wakeonlan, "send_magic_packet"):
+        suc = function.bootMount(bAddress="255.255.255.255", bPort=0)
+        assert suc
+
+
+def test_clearStatTLE_signal(function):
+    with mock.patch.object(function.signals, "statTLEdone"):
+        function.clearStatTLE()
+        assert function.signals.statTLEdone.emit.called
+
+
+def test_clearGetTLE_signal(function):
+    with mock.patch.object(function.signals, "getTLEdone"):
+        function.clearGetTLE()
+        assert function.signals.getTLEdone.emit.called
+
+
+def test_clearCalcTLE_signal(function):
+    with mock.patch.object(function.signals, "calcTLEdone"):
+        function.clearCalcTLE()
+        assert function.signals.calcTLEdone.emit.called
+
+
+def test_clearProgTrajectory_signal(function):
+    with mock.patch.object(function.signals, "calcTrajectoryDone"):
+        function.clearProgTrajectory()
+        assert function.signals.calcTrajectoryDone.emit.called

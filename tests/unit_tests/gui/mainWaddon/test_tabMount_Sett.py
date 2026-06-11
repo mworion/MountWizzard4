@@ -942,5 +942,220 @@ def test_showOffset_4(function):
     function.showOffset()
 
 
+def test_init(function):
+    mainW = QWidget()
+    mainW.app = App()
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
+    mainW.ui.clockSync = mock.MagicMock()
+    mainW.ui.clockSync.isChecked.return_value = False
+    mainW.ui.clockSync.setChecked = mock.MagicMock()
+    mainW.app.dReg["mount"].instance.workerCycleClock = None
+    window = MountSett(mainW)
+    assert window.mainW is mainW
+    assert window.app is mainW.app
+    assert window.msg is mainW.app.msg
+    assert window.ui is mainW.ui
 
 
+def test_showOffset_5(function):
+    function.app.mount.obsSite.timeDiff = 0.2
+    function.app.dReg["mount"].instance.workerCycleClock = True
+    function.showOffset()
+
+
+def test_showOffset_6(function):
+    function.app.mount.obsSite.timeDiff = 0.3
+    function.app.dReg["mount"].instance.workerCycleClock = True
+    function.showOffset()
+
+
+def test_showOffset_7(function):
+    function.app.mount.obsSite.timeDiff = 0.6
+    function.app.dReg["mount"].instance.workerCycleClock = True
+    function.showOffset()
+
+
+def test_setMeridianLimitTrack_1(function):
+    function.app.mount.setting.meridianLimitTrack = 10
+    with (
+        mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)),
+        mock.patch.object(
+            function.app.mount.setting, "setMeridianLimitTrack", return_value=True
+        ),
+    ):
+        suc = function.setMeridianLimitTrack()
+        assert suc
+
+
+def test_setMeridianLimitSlew_1(function):
+    function.app.mount.setting.meridianLimitSlew = 10
+    with (
+        mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)),
+        mock.patch.object(
+            function.app.mount.setting, "setMeridianLimitSlew", return_value=True
+        ),
+    ):
+        suc = function.setMeridianLimitSlew()
+        assert suc
+
+
+def test_setHorizonLimitHigh_1(function):
+    function.app.mount.setting.horizonLimitHigh = 10
+    with (
+        mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)),
+        mock.patch.object(
+            function.app.mount.setting, "setHorizonLimitHigh", return_value=True
+        ),
+    ):
+        suc = function.setHorizonLimitHigh()
+        assert suc
+
+
+def test_setHorizonLimitLow_1(function):
+    function.app.mount.setting.horizonLimitLow = 10
+    with (
+        mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)),
+        mock.patch.object(function.app.mount.setting, "setHorizonLimitLow", return_value=True),
+    ):
+        suc = function.setHorizonLimitLow()
+        assert suc
+
+
+def test_setSlewRate_1(function):
+    function.app.mount.setting.slewRate = 10
+    with (
+        mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)),
+        mock.patch.object(function.app.mount.setting, "setSlewRate", return_value=True),
+    ):
+        suc = function.setSlewRate()
+        assert suc
+
+
+def test_setElevation_1(function):
+    function.app.mount.obsSite.location = wgs84.latlon(
+        longitude_degrees=1, latitude_degrees=2, elevation_m=3
+    )
+    with (
+        mock.patch.object(
+            PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(10.0, True)
+        ),
+        mock.patch.object(function, "setLocationValues"),
+    ):
+        suc = function.setElevation()
+        assert suc
+
+
+def test_setLongitude_1(function):
+    function.app.mount.obsSite.location = wgs84.latlon(
+        longitude_degrees=1, latitude_degrees=2, elevation_m=3
+    )
+    with mock.patch.object(
+        PySide6.QtWidgets.QInputDialog, "getText", return_value=("011E 40 40", False)
+    ):
+        function.setLongitude()
+
+
+def test_setUnattendedFlip_1(function):
+    function.app.mount.setting.statusUnattendedFlip = True
+    with (
+        mock.patch.object(
+            PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
+        ),
+        mock.patch.object(function.app.mount.setting, "setUnattendedFlip", return_value=True),
+    ):
+        suc = function.setUnattendedFlip()
+        assert suc
+
+
+def test_setDualAxisTracking_1(function):
+    function.app.mount.setting.statusDualAxisTracking = True
+    with (
+        mock.patch.object(
+            PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
+        ),
+        mock.patch.object(
+            function.app.mount.setting, "setDualAxisTracking", return_value=True
+        ),
+    ):
+        suc = function.setDualAxisTracking()
+        assert suc
+
+
+def test_setWOL_1(function):
+    function.app.mount.setting.wakeOnLan = "ON"
+    with (
+        mock.patch.object(
+            PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
+        ),
+        mock.patch.object(function.app.mount.setting, "setWOL", return_value=True),
+    ):
+        suc = function.setWOL()
+        assert suc
+
+
+def test_setAPO_1(function):
+    function.app.mount.setting.autoPowerOn = True
+    with (
+        mock.patch.object(
+            PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
+        ),
+        mock.patch.object(function.app.mount.setting, "setAutoPower", return_value=True),
+    ):
+        suc = function.setAPO()
+        assert suc
+
+
+def test_setRefractionTemp_1(function):
+    function.app.mount.setting.refractionTemp = 10
+    with (
+        mock.patch.object(
+            PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(10, True)
+        ),
+        mock.patch.object(function.app.mount.setting, "setRefractionTemp", return_value=True),
+    ):
+        suc = function.setRefractionTemp()
+        assert suc
+
+
+def test_setRefractionPress_1(function):
+    function.app.mount.setting.refractionPress = 1000
+    with (
+        mock.patch.object(
+            PySide6.QtWidgets.QInputDialog, "getDouble", return_value=(1000, True)
+        ),
+        mock.patch.object(function.app.mount.setting, "setRefractionPress", return_value=True),
+    ):
+        suc = function.setRefractionPress()
+        assert suc
+
+
+def test_setRefraction_1(function):
+    function.app.mount.setting.statusRefraction = True
+    with (
+        mock.patch.object(
+            PySide6.QtWidgets.QInputDialog, "getItem", return_value=("ON", True)
+        ),
+        mock.patch.object(function.app.mount.setting, "setRefraction", return_value=True),
+    ):
+        suc = function.setRefraction()
+        assert suc
+
+
+def test_setSettleTimeMount_1(function):
+    function.app.mount.setting.settleTime = 10
+    with (
+        mock.patch.object(PySide6.QtWidgets.QInputDialog, "getInt", return_value=(10, True)),
+        mock.patch.object(function.app.mount.setting, "setSettleTime", return_value=True),
+    ):
+        suc = function.setSettleTimeMount()
+        assert suc
+
+
+def test_showOffset_8(function):
+    function.app.mount.obsSite.timeDiff = 0.003
+    function.app.mount.obsSite.timeJD = mock.MagicMock()
+    function.app.mount.obsSite.timeJD.utc_strftime.return_value = "12:34:56"
+    function.ui.clockSync.setChecked(True)
+    function.showOffset()
+    assert function.ui.timeUTC.text() == "12:34:56"

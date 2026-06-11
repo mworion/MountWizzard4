@@ -98,6 +98,7 @@ def test_stopClockTimer(function):
 
 
 def test_startupMountData_1(function):
+    function.mountIsUp = True
     function.mountIsUpLastStatus = False
     with (
         mock.patch.object(function, "cycleSetting"),
@@ -106,25 +107,28 @@ def test_startupMountData_1(function):
         mock.patch.object(function, "getTLE"),
         mock.patch.object(function.obsSite, "setHighPrecision"),
     ):
-        function.startupMountData(True)
+        function.startupMountData()
         assert function.mountIsUpLastStatus
 
 
 def test_startupMountData_2(function):
+    function.mountIsUp = False
     function.mountIsUpLastStatus = False
-    function.startupMountData(False)
+    function.startupMountData()
     assert not function.mountIsUpLastStatus
 
 
 def test_startupMountData_3(function):
+    function.mountIsUp = False
     function.mountIsUpLastStatus = True
-    function.startupMountData(False)
+    function.startupMountData()
     assert not function.mountIsUpLastStatus
 
 
 def test_startupMountData_4(function):
+    function.mountIsUp = True
     function.mountIsUpLastStatus = True
-    function.startupMountData(True)
+    function.startupMountData()
     assert function.mountIsUpLastStatus
 
 
@@ -569,6 +573,7 @@ def test_calcMountAltAzToDomeAltAz_2(function):
 
 
 def test_startupMountData_refreshModel(function):
+    function.mountIsUp = True
     function.mountIsUpLastStatus = False
     with (
         mock.patch.object(function.app, "refreshModel"),
@@ -578,7 +583,7 @@ def test_startupMountData_refreshModel(function):
         mock.patch.object(function, "getTLE"),
         mock.patch.object(function.obsSite, "setHighPrecision"),
     ):
-        function.startupMountData(True)
+        function.startupMountData()
         assert function.app.refreshModel.emit.called
         assert function.app.refreshName.emit.called
 
@@ -648,3 +653,53 @@ def test_clearProgTrajectory_signal(function):
     with mock.patch.object(function.signals, "calcTrajectoryDone"):
         function.clearProgTrajectory()
         assert function.signals.calcTrajectoryDone.emit.called
+
+
+def test_waitTimeFlip_setter_rejects_negative(function):
+    with pytest.raises(ValueError):
+        function.waitTimeFlip = -1
+
+
+def test_runWorker_skips_when_mount_down(function):
+    function.mountIsUp = False
+    with mock.patch.object(QThreadPool, "start") as start:
+        function.runWorker(lambda: None, lambda: None, "workerGetFW")
+        assert not start.called
+
+
+def test_runWorker_skips_when_mutex_locked(function):
+    function.mountIsUp = True
+    function.mutexCalcTLE.lock()
+    with mock.patch.object(QThreadPool, "start") as start:
+        function.runWorker(
+            lambda: None,
+            lambda: None,
+            "workerCalcTLE",
+            mutex=function.mutexCalcTLE,
+        )
+        assert not start.called
+    function.mutexCalcTLE.unlock()
+
+
+def test_runWorker_uses_result_signal(function):
+    function.mountIsUp = True
+    with mock.patch.object(QThreadPool, "start"):
+        function.runWorker(
+            lambda: None,
+            lambda _r: None,
+            "workerCyclePointing",
+            useResult=True,
+        )
+        assert function.workerCyclePointing is not None
+
+
+def test_runWorker_requireMountUp_false(function):
+    function.mountIsUp = False
+    with mock.patch.object(QThreadPool, "start") as start:
+        function.runWorker(
+            lambda: None,
+            lambda: None,
+            "workerMountIsUp",
+            requireMountUp=False,
+        )
+        assert start.called

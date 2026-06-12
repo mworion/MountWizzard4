@@ -152,3 +152,9 @@ no-sections = true
 max-complexity = 10
 
 [tool.ruff.lint.per-file-ignores]
+
+
+# tasklist
+# online status verteilen isOnline
+# zeitbasis verteilung UTC, Local
+# verstellung beides über setting, sollte beides in das moutn device ?

@@ -15,7 +15,7 @@
 ###########################################################
 
 import pytest
-from mw4.gui.mainWaddon.tabSett_ParkPos import SettParkPos
+from mw4.gui.extWindows.setting.tabSettParkPos import SettParkPos
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from skyfield.api import Angle
@@ -25,13 +25,13 @@ from unittest import mock
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = MWidget()
-    mainW.app = App()
-    mainW.ui = Ui_MainWindow()
-    mainW.ui.setupUi(mainW)
-    window = SettParkPos(mainW)
+    parentW = MWidget()
+    parentW.app = App()
+    parentW.ui = Ui_MainWindow()
+    parentW.ui.setupUi(parentW)
+    window = SettParkPos(parentW)
     yield window
-    mainW.app.threadPool.waitForDone(1000)
+    parentW.app.threadPool.waitForDone(1000)
 
 
 def test_initConfig_1(function):

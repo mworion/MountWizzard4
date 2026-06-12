@@ -68,7 +68,7 @@ class EnvironSeeing(TabAddon):
         signals.deviceDisconnected.connect(self.clearSeeingEntries)
         signals.deviceConnected.connect(self.prepareSeeingTable)
 
-        self.ui.unitTimeUTC.toggled.connect(self.updateSeeingEntries)
+        self.app.timebaseChanged.connect(self.updateSeeingEntries)
         self.app.dReg["seeingWeather"].signals.update.connect(self.prepareSeeingTable)
         clickable(self.ui.seeingIcon).connect(self.openWeb)
         self.app.colorChange.connect(self.updateSeeingEntries)

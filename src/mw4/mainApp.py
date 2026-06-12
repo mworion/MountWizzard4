@@ -43,6 +43,7 @@ class MountWizzard4(QObject):
     playSound = Signal(object)
     showImage = Signal(object)
     showAnalyse = Signal(object)
+    timebaseChanged = Signal()
     # --- Hemisphere / build point signals ---
     redrawHemisphere = Signal()
     redrawHorizon = Signal()
@@ -134,7 +135,8 @@ class MountWizzard4(QObject):
             self.messageQueue.put((1, "System", "Arguments", sys.argv[1]))
 
     def initConfig(self) -> GeographicPosition | None:
-        setCustomLoggingLevel(self, self.config.get("loglevel", "DEBUG"))
+        cfgSetting = self.config.get("SettingUpdate", {})
+        setCustomLoggingLevel(self, cfgSetting.get("loglevel", "DEBUG"))
         self.dReg.initConfig()
         lat = self.config.get("topoLat", 51.47)
         lon = self.config.get("topoLon", 0)

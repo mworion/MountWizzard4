@@ -21,11 +21,11 @@ from typing import Any
 
 
 class SettRelay(TabAddon):
-    def __init__(self, mainW: Any) -> None:
-        self.mainW = mainW
-        self.app = mainW.app
+    def __init__(self, parentW: Any) -> None:
+        self.parentW = parentW
+        self.app = parentW.app
         self.msg = self.app.msg
-        self.ui = mainW.ui
+        self.ui = parentW.ui
 
         # define lists for the entries
         self.relayDropDowns = [
@@ -90,7 +90,7 @@ class SettRelay(TabAddon):
             self.relayButtons[button].clicked.connect(partial(self.relayButtonPressed, button))
 
     def initConfig(self) -> None:
-        config = self.app.config["WindowMain"]
+        config = self.app.config.get("SettingRelay", {})
         for button, key in zip(self.relayButtonTexts, self.relayButtonTextKeys):
             button.setText(config.get(key, ""))
         for dropDown, key in zip(self.relayDropDowns, self.relayDropDownKeys):
@@ -98,7 +98,8 @@ class SettRelay(TabAddon):
         self.updateRelayButtonText()
 
     def storeConfig(self) -> None:
-        config = self.app.config["WindowMain"]
+        self.app.config["SettingRelay"] = {}
+        config = self.app.config["SettingRelay"]
         for button, key in zip(self.relayButtonTexts, self.relayButtonTextKeys):
             config[key] = button.text()
         for dropDown, key in zip(self.relayDropDowns, self.relayDropDownKeys):

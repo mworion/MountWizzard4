@@ -16,7 +16,7 @@
 
 import pytest
 import unittest.mock as mock
-from mw4.gui.mainWaddon.tabSett_Relay import SettRelay
+from mw4.gui.extWindows.setting.tabSettRelay import SettRelay
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -24,15 +24,15 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = QWidget()
-    mainW.app = App()
-    mainW.ui = Ui_MainWindow()
-    mainW.ui.setupUi(mainW)
-    mainW.ui.relayDevice = mock.MagicMock()
-    mainW.ui.relayDevice.currentIndex.return_value = 0
-    window = SettRelay(mainW)
+    parentW = QWidget()
+    parentW.app = App()
+    parentW.ui = Ui_MainWindow()
+    parentW.ui.setupUi(parentW)
+    parentW.ui.relayDevice = mock.MagicMock()
+    parentW.ui.relayDevice.currentIndex.return_value = 0
+    window = SettRelay(parentW)
     yield window
-    mainW.app.threadPool.waitForDone(10000)
+    parentW.app.threadPool.waitForDone(10000)
 
 
 def test_initConfig_1(function):

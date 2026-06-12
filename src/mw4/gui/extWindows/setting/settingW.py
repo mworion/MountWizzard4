@@ -16,7 +16,11 @@
 import logging
 from mw4.gui.extWindows.setting.tabSettDevice import SettDevice
 from mw4.gui.extWindows.setting.tabSettDome import SettDome
+from mw4.gui.extWindows.setting.tabSettMisc import SettMisc
 from mw4.gui.extWindows.setting.tabSettMount import SettMount
+from mw4.gui.extWindows.setting.tabSettParkPos import SettParkPos
+from mw4.gui.extWindows.setting.tabSettRelay import SettRelay
+from mw4.gui.extWindows.setting.tabSettUpdate import SettUpdate
 from mw4.gui.utilities.qtHelpers import getTabAndIndex, setTabAndIndex
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import setting_ui
@@ -35,6 +39,10 @@ class SettingWindow(MWidget):
         self.tabSettDevice = SettDevice(self)
         self.tabSettMount = SettMount(self)
         self.tabSettDome = SettDome(self)
+        self.tabSettMisc = SettMisc(self)
+        self.tabSettParkPos = SettParkPos(self)
+        self.tabSettRelay = SettRelay(self)
+        self.tabSettUpdate = SettUpdate(self)
         self.app.colorChange.connect(self.colorChange)
         self.setupIcons()
 

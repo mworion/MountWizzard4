@@ -16,7 +16,7 @@
 
 import logging
 import pytest
-from mw4.gui.mainWaddon.tabSett_Update import SettUpdate
+from mw4.gui.extWindows.setting.tabSettUpdate import SettUpdate
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -24,13 +24,13 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = MWidget()
-    mainW.app = App()
-    mainW.ui = Ui_MainWindow()
-    mainW.ui.setupUi(mainW)
-    window = SettUpdate(mainW)
+    parentW = MWidget()
+    parentW.app = App()
+    parentW.ui = Ui_MainWindow()
+    parentW.ui.setupUi(parentW)
+    window = SettUpdate(parentW)
     yield window
-    mainW.app.threadPool.waitForDone(1000)
+    parentW.app.threadPool.waitForDone(1000)
 
 
 def test_initConfig_1(function):

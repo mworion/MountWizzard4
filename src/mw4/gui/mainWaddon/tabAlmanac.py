@@ -61,9 +61,9 @@ class Almanac(TabAddon):
         self.setColors()
         self.app.update30m.connect(self.showMoonPhase)
         self.app.colorChange.connect(self.updateColorSet)
-        self.ui.unitTimeUTC.toggled.connect(self.showTwilightDataList)
-        self.ui.unitTimeUTC.toggled.connect(self.showTwilightDataPlot)
-        self.ui.unitTimeUTC.toggled.connect(self.showMoonPhase)
+        self.app.timebaseChanged.connect(self.showTwilightDataList)
+        self.app.timebaseChanged.connect(self.showTwilightDataPlot)
+        self.app.timebaseChanged.connect(self.showMoonPhase)
 
     def initConfig(self) -> None:
         config = self.app.config["WindowMain"]

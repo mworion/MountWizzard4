@@ -138,7 +138,6 @@ def build_widgets(c):
         "simulator",
         "setting",
         "video",
-        "bigPopup",
         "uploadPopup",
         "material",
     ]

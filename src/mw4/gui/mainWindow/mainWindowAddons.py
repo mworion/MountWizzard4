@@ -32,10 +32,6 @@ from mw4.gui.mainWaddon.tabMount_Sett import MountSett
 from mw4.gui.mainWaddon.tabPower import Power
 from mw4.gui.mainWaddon.tabSat_Search import SatSearch
 from mw4.gui.mainWaddon.tabSat_Track import SatTrack
-from mw4.gui.mainWaddon.tabSett_Misc import SettMisc
-from mw4.gui.mainWaddon.tabSett_ParkPos import SettParkPos
-from mw4.gui.mainWaddon.tabSett_Relay import SettRelay
-from mw4.gui.mainWaddon.tabSett_Update import SettUpdate
 from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
 from mw4.gui.mainWaddon.tabTools_Rename import Rename
 from typing import Any
@@ -48,7 +44,6 @@ class MainWindowAddons:
 
         self.addons: dict[str, TabAddon] = {
             "Almanac": Almanac(mainW),
-            "SettUpdate": SettUpdate(mainW),  # set isOnline state first
             "Asteroid": Asteroid(mainW),
             "BuildPoints": BuildPoints(mainW),
             "Comet": Comet(mainW),
@@ -67,9 +62,6 @@ class MainWindowAddons:
             "Rename": Rename(mainW),
             "SatSearch": SatSearch(mainW),
             "SatTrack": SatTrack(mainW),
-            "SettMisc": SettMisc(mainW),
-            "SettParkPos": SettParkPos(mainW),
-            "SettRelay": SettRelay(mainW),
             "IERSTime": IERSTime(mainW),
         }
 

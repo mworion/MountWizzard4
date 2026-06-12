@@ -23,11 +23,11 @@ from typing import Any
 class SettUpdate(TabAddon):
     log = logging.getLogger("MW4")
 
-    def __init__(self, mainW: Any) -> None:
-        self.mainW = mainW
-        self.app = mainW.app
-        self.msg = mainW.app.msg
-        self.ui = mainW.ui
+    def __init__(self, parentW: Any) -> None:
+        self.parentW = parentW
+        self.app = parentW.app
+        self.msg = parentW.app.msg
+        self.ui = parentW.ui
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
@@ -35,7 +35,7 @@ class SettUpdate(TabAddon):
         self.ui.isOnline.clicked.connect(self.setupIERS)
 
     def initConfig(self) -> None:
-        config = self.app.config["WindowMain"]
+        config = self.app.config.get("SettingUpdate", {})
         self.ui.loglevelInfo.setChecked(config.get("loglevelInfo", False))
         self.ui.loglevelDebug.setChecked(config.get("loglevelDebug", True))
         self.ui.loglevelTrace.setChecked(config.get("loglevelTrace", False))
@@ -46,7 +46,8 @@ class SettUpdate(TabAddon):
         self.setupIERS()
 
     def storeConfig(self) -> None:
-        config = self.app.config["WindowMain"]
+        self.app.config["SettingUpdate"] = {}
+        config = self.app.config["SettingUpdate"]
         config["isOnline"] = self.ui.isOnline.isChecked()
         config["loglevelInfo"] = self.ui.loglevelInfo.isChecked()
         config["loglevelDebug"] = self.ui.loglevelDebug.isChecked()

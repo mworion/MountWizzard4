@@ -14,9 +14,9 @@
 #
 ###########################################################
 import hid
-import mw4.gui.mainWaddon.tabSett_Misc
+import mw4.gui.extWindows.setting.tabSettMisc
 import pytest
-from mw4.gui.mainWaddon.tabSett_Misc import SettMisc
+from mw4.gui.extWindows.setting.tabSettMisc import SettMisc
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtMultimedia import QSoundEffect
@@ -26,14 +26,14 @@ from unittest import mock
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
-    mainW = MWidget()
-    mainW.gameControllerRunning = False
-    mainW.app = App()
-    mainW.ui = Ui_MainWindow()
-    mainW.ui.setupUi(mainW)
-    window = SettMisc(mainW)
+    parentW = MWidget()
+    parentW.gameControllerRunning = False
+    parentW.app = App()
+    parentW.ui = Ui_MainWindow()
+    parentW.ui.setupUi(parentW)
+    window = SettMisc(parentW)
     yield window
-    mainW.app.threadPool.waitForDone(1000)
+    parentW.app.threadPool.waitForDone(1000)
 
 
 def test_initConfig_1(function):
@@ -62,7 +62,7 @@ def test_readGameController_1(function):
         def read(a):
             return [0] * 12
 
-    function.mainW.gameControllerRunning = True
+    function.parentW.gameControllerRunning = True
     with mock.patch.object(Gamepad, "read", side_effect=Exception):
         val = function.readGameController(Gamepad())
         assert len(val) == 0
@@ -74,7 +74,7 @@ def test_readGameController_2(function):
         def read(a):
             return []
 
-    function.mainW.gameControllerRunning = False
+    function.parentW.gameControllerRunning = False
     val = function.readGameController(Gamepad())
     assert len(val) == 0
 
@@ -83,10 +83,10 @@ def test_readGameController_3(function):
     class Gamepad:
         @staticmethod
         def read(a):
-            function.mainW.gameControllerRunning = False
+            function.parentW.gameControllerRunning = False
             return [0] * 12
 
-    function.mainW.gameControllerRunning = True
+    function.parentW.gameControllerRunning = True
     val = function.readGameController(Gamepad())
     assert len(val) == 12
 
@@ -95,16 +95,16 @@ def test_readGameController_4(function):
     class Gamepad:
         @staticmethod
         def read(a):
-            function.mainW.gameControllerRunning = False
+            function.parentW.gameControllerRunning = False
             return []
 
-    function.mainW.gameControllerRunning = True
+    function.parentW.gameControllerRunning = True
     val = function.readGameController(Gamepad())
     assert len(val) == 0
 
 
 def test_workerGameController_1(function):
-    function.mainW.gameControllerRunning = False
+    function.parentW.gameControllerRunning = False
     function.workerGameController()
 
 
@@ -226,7 +226,7 @@ def test_workerGameController_2(function):
         def set_nonblocking(a):
             return
 
-    function.mainW.gameControllerRunning = False
+    function.parentW.gameControllerRunning = False
     function.ui.gameControllerList.clear()
     function.ui.gameControllerList.addItem("test")
     function.ui.gameControllerList.setCurrentIndex(0)
@@ -250,10 +250,10 @@ def test_workerGameController_3(function):
             return
 
     def gc(a):
-        function.mainW.gameControllerRunning = False
+        function.parentW.gameControllerRunning = False
         return []
 
-    function.mainW.gameControllerRunning = True
+    function.parentW.gameControllerRunning = True
     temp = function.readGameController
     function.readGameController = gc
     function.ui.gameControllerList.clear()
@@ -262,7 +262,7 @@ def test_workerGameController_3(function):
     function.gameControllerList["test"] = {"vendorId": 1, "productId": 1}
     with (
         mock.patch.object(hid, "device", return_value=Gamepad()),
-        mock.patch.object(mw4.gui.mainWaddon.tabSett_Misc, "mainThreadSleep"),
+        mock.patch.object(mw4.gui.extWindows.setting.tabSett_Misc, "mainThreadSleep"),
     ):
         function.workerGameController()
     function.readGameController = temp
@@ -283,10 +283,10 @@ def test_workerGameController_4(function):
             return
 
     def gc(a):
-        function.mainW.gameControllerRunning = False
+        function.parentW.gameControllerRunning = False
         return [1] * 12
 
-    function.mainW.gameControllerRunning = True
+    function.parentW.gameControllerRunning = True
     temp = function.readGameController
     function.readGameController = gc
     function.ui.gameControllerList.clear()
@@ -295,7 +295,7 @@ def test_workerGameController_4(function):
     function.gameControllerList["test"] = {"vendorId": 1, "productId": 1}
     with (
         mock.patch.object(hid, "device", return_value=Gamepad()),
-        mock.patch.object(mw4.gui.mainWaddon.tabSett_Misc, "mainThreadSleep"),
+        mock.patch.object(mw4.gui.extWindows.setting.tabSett_Misc, "mainThreadSleep"),
         mock.patch.object(function, "sendGameControllerSignals"),
     ):
         function.workerGameController()
@@ -319,19 +319,19 @@ def test_isValidGameControllers_2(function):
 
 def test_populateGameControllerList_1(function):
     function.ui.gameControllerGroup.setChecked(False)
-    function.mainW.gameControllerRunning = True
+    function.parentW.gameControllerRunning = True
     function.populateGameControllerList()
 
 
 def test_populateGameControllerList_2(function):
     function.ui.gameControllerGroup.setChecked(True)
-    function.mainW.gameControllerRunning = True
+    function.parentW.gameControllerRunning = True
     function.populateGameControllerList()
 
 
 def test_populateGameControllerList_3(function):
     function.ui.gameControllerGroup.setChecked(True)
-    function.mainW.gameControllerRunning = False
+    function.parentW.gameControllerRunning = False
     device = [{"product_string": "test", "vendor_id": 1, "product_id": 1}]
     with (
         mock.patch.object(hid, "enumerate", return_value=device),
@@ -342,7 +342,7 @@ def test_populateGameControllerList_3(function):
 
 def test_populateGameControllerList_4(function):
     function.ui.gameControllerGroup.setChecked(True)
-    function.mainW.gameControllerRunning = False
+    function.parentW.gameControllerRunning = False
     device = [{"product_string": "test", "vendor_id": 1, "product_id": 1}]
     with (
         mock.patch.object(hid, "enumerate", return_value=device),
@@ -350,7 +350,7 @@ def test_populateGameControllerList_4(function):
         mock.patch.object(function, "startGameController"),
     ):
         function.populateGameControllerList()
-        assert function.mainW.gameControllerRunning
+        assert function.parentW.gameControllerRunning
 
 
 def test_playAudioDomeSlewFinished_1(function):

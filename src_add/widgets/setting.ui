@@ -1464,7 +1464,7 @@
           <x>5</x>
           <y>125</y>
           <width>356</width>
-          <height>141</height>
+          <height>241</height>
          </rect>
         </property>
         <property name="title">
@@ -1601,7 +1601,7 @@
            <x>5</x>
            <y>105</y>
            <width>166</width>
-           <height>26</height>
+           <height>136</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -1692,7 +1692,7 @@
            <x>185</x>
            <y>105</y>
            <width>166</width>
-           <height>26</height>
+           <height>136</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -6190,19 +6190,6 @@
           <string>Light Day Theme</string>
          </property>
         </item>
-       </widget>
-       <widget class="QPushButton" name="big">
-        <property name="geometry">
-         <rect>
-          <x>190</x>
-          <y>60</y>
-          <width>166</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Show big buttons</string>
-        </property>
        </widget>
       </widget>
       <widget class="QGroupBox" name="GroupAlamanc">

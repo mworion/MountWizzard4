@@ -23,11 +23,11 @@ from typing import Any
 
 
 class SettMisc(TabAddon):
-    def __init__(self, mainW: Any) -> None:
-        self.mainW = mainW
-        self.app = mainW.app
-        self.msg = mainW.app.msg
-        self.ui = mainW.ui
+    def __init__(self, parentW: Any) -> None:
+        self.parentW = parentW
+        self.app = parentW.app
+        self.msg = parentW.app.msg
+        self.ui = parentW.ui
         self.worker: Worker | None = None
 
         self.audioSignalsSet = {}
@@ -83,7 +83,7 @@ class SettMisc(TabAddon):
         self.app.playSound.connect(self.playSound)
 
     def initConfig(self) -> None:
-        config = self.app.config["WindowMain"]
+        config = self.app.config.get("SettingMisc", {})
         self.setupAudioGui()
         self.ui.unitTimeUTC.setChecked(config.get("unitTimeUTC", True))
         self.ui.unitTimeLocal.setChecked(config.get("unitTimeLocal", False))
@@ -106,11 +106,10 @@ class SettMisc(TabAddon):
         self.ui.gameControllerGroup.setChecked(config.get("gameControllerGroup", False))
         self.ui.gameControllerList.setCurrentIndex(config.get("gameControllerList", 0))
         self.populateGameControllerList()
-        self.ui.unitTimeUTC.toggled.emit(True)
-        # self.minimizeGUI()
 
     def storeConfig(self) -> None:
-        config = self.app.config["WindowMain"]
+        self.app.config["SettingMisc"] = {}
+        config = self.app.config["SettingMisc"]
         config["unitTimeUTC"] = self.ui.unitTimeUTC.isChecked()
         config["unitTimeLocal"] = self.ui.unitTimeLocal.isChecked()
         config["showTabAlmanac"] = self.ui.showTabAlmanac.isChecked()
@@ -133,13 +132,13 @@ class SettMisc(TabAddon):
         config["gameControllerList"] = self.ui.gameControllerList.currentIndex()
 
     def setupIcons(self) -> None:
-        pixmap = svg2pixmap("assets/icon/controller.svg", self.mainW.M_PRIM)
+        pixmap = svg2pixmap("assets/icon/controller.svg", self.parentW.M_PRIM)
         self.ui.controller1.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller2.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller3.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller4.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller5.setPixmap(pixmap.scaled(16, 16))
-        pixmap = svg2pixmap("assets/icon/controllerNew.svg", self.mainW.M_PRIM)
+        pixmap = svg2pixmap("assets/icon/controllerNew.svg", self.parentW.M_PRIM)
         self.ui.controllerOverview.setPixmap(pixmap)
         self.ui.controller1.setEnabled(False)
         self.ui.controller2.setEnabled(False)
@@ -161,12 +160,12 @@ class SettMisc(TabAddon):
 
     def readGameController(self, gamepad: hid.device) -> list:
         result = []
-        while self.mainW.gameControllerRunning:
+        while self.parentW.gameControllerRunning:
             try:
                 data = gamepad.read(64)
             except Exception as e:
-                self.mainW.gameControllerRunning = False
-                self.mainW.log.warning(f"GameController error {e}")
+                self.parentW.gameControllerRunning = False
+                self.parentW.log.warning(f"GameController error {e}")
                 return []
 
             if len(data) == 0:
@@ -192,7 +191,7 @@ class SettMisc(TabAddon):
             else:
                 val = 0b00001111
             oR = [iR[10], 0, val, iR[1], iR[3], iR[5], iR[7]]
-        self.mainW.log.info(f"Controller: [{name}], values: [{oR}]")
+        self.parentW.log.info(f"Controller: [{name}], values: [{oR}]")
         return oR
 
     @staticmethod
@@ -216,13 +215,13 @@ class SettMisc(TabAddon):
         vendorId = gameController["vendorId"]
         productId = gameController["productId"]
 
-        self.mainW.log.debug(f"GameController: [{name} {vendorId}:{productId}]")
+        self.parentW.log.debug(f"GameController: [{name} {vendorId}:{productId}]")
         self.msg.emit(1, "System", "GameController", f"Starting {[name]}")
         gameControllerDevice.open(vendorId, productId)
         gameControllerDevice.set_nonblocking(True)
 
         reportOld = [0] * 16
-        while self.mainW.gameControllerRunning:
+        while self.parentW.gameControllerRunning:
             mainThreadSleep(100)
             report = self.readGameController(gameControllerDevice)
             if not self.isNewerData(report, reportOld):
@@ -248,9 +247,9 @@ class SettMisc(TabAddon):
     def populateGameControllerList(self) -> None:
         isController = self.ui.gameControllerGroup.isChecked()
         if not isController:
-            self.mainW.gameControllerRunning = False
+            self.parentW.gameControllerRunning = False
             return
-        if self.mainW.gameControllerRunning:
+        if self.parentW.gameControllerRunning:
             return
 
         self.ui.gameControllerList.clear()
@@ -269,7 +268,7 @@ class SettMisc(TabAddon):
         if len(self.gameControllerList) == 0:
             return
 
-        self.mainW.gameControllerRunning = True
+        self.parentW.gameControllerRunning = True
         self.startGameController()
 
     def setupAudioGui(self) -> None:

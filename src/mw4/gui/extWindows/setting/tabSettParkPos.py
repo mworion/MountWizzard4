@@ -21,11 +21,11 @@ from typing import Any
 
 
 class SettParkPos(TabAddon):
-    def __init__(self, mainW: Any) -> None:
-        self.mainW = mainW
-        self.app = mainW.app
-        self.msg = mainW.app.msg
-        self.ui = mainW.ui
+    def __init__(self, parentW: Any) -> None:
+        self.parentW = parentW
+        self.app = parentW.app
+        self.msg = parentW.app.msg
+        self.ui = parentW.ui
 
         self.posButtons = {}
         self.posTexts = {}
@@ -50,7 +50,7 @@ class SettParkPos(TabAddon):
             self.posButtons[index].clicked.connect(partial(self.saveActualPosition, index))
 
     def initConfig(self) -> None:
-        config = self.app.config["WindowMain"]
+        config = self.app.config.get("SettingParkPos", {})
         for index in self.posTexts:
             keyConfig = f"posText{index:1d}"
             self.posTexts[index].setText(config.get(keyConfig, f"Park Pos {index:1d}"))
@@ -68,7 +68,8 @@ class SettParkPos(TabAddon):
         self.ui.parkMountAfterSlew.setChecked(config.get("parkMountAfterSlew", False))
 
     def storeConfig(self) -> None:
-        config = self.app.config["WindowMain"]
+        self.app.config["SettingParkPos"] = {}
+        config = self.app.config["SettingParkPos"]
         for index in self.posTexts:
             keyConfig = f"posText{index:1d}"
             config[keyConfig] = self.posTexts[index].text()
@@ -81,16 +82,16 @@ class SettParkPos(TabAddon):
         config["parkMountAfterSlew"] = self.ui.parkMountAfterSlew.isChecked()
 
     def setupIcons(self) -> None:
-        self.mainW.wIcon(self.ui.posSave0, "download")
-        self.mainW.wIcon(self.ui.posSave1, "download")
-        self.mainW.wIcon(self.ui.posSave2, "download")
-        self.mainW.wIcon(self.ui.posSave3, "download")
-        self.mainW.wIcon(self.ui.posSave4, "download")
-        self.mainW.wIcon(self.ui.posSave5, "download")
-        self.mainW.wIcon(self.ui.posSave6, "download")
-        self.mainW.wIcon(self.ui.posSave7, "download")
-        self.mainW.wIcon(self.ui.posSave8, "download")
-        self.mainW.wIcon(self.ui.posSave9, "download")
+        self.parentW.wIcon(self.ui.posSave0, "download")
+        self.parentW.wIcon(self.ui.posSave1, "download")
+        self.parentW.wIcon(self.ui.posSave2, "download")
+        self.parentW.wIcon(self.ui.posSave3, "download")
+        self.parentW.wIcon(self.ui.posSave4, "download")
+        self.parentW.wIcon(self.ui.posSave5, "download")
+        self.parentW.wIcon(self.ui.posSave6, "download")
+        self.parentW.wIcon(self.ui.posSave7, "download")
+        self.parentW.wIcon(self.ui.posSave8, "download")
+        self.parentW.wIcon(self.ui.posSave9, "download")
 
     def updateParkPosButtonText(self) -> None:
         for index in self.posButtons:

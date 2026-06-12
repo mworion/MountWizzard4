@@ -84,6 +84,7 @@ class SettMount:
         self.app.dReg["mount"].signals.settingDone.disconnect(self.setMountMAC)
         self.app.dReg["mount"].signals.firmwareDone.disconnect(self.setMountCapabilities)
         self.app.dReg["mount"].signals.firmwareDone.disconnect(self.updateFwGui)
+        self.app.dReg["mount"].signals.mountIsUp.disconnect(self.showMountStatus)
 
     def setupIcons(self) -> None:
         self.parentW.wIcon(self.ui.mountOn, "power-on")

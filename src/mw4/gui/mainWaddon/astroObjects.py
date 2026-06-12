@@ -95,7 +95,7 @@ class AstroObjects:
         self.threadPool.start(self.workerSource)
 
     def runDownloadPopup(self, url: Path, unzip: bool) -> None:
-        if not self.window.ui.isOnline.isChecked():
+        if not self.app.isOnline:
             return
         self.downloadPopup = DownloadPopup(self.window, url, self.dest, unzip)
         self.downloadPopup.show()
@@ -107,7 +107,7 @@ class AstroObjects:
             return False
         daysOld = self.loader.days_old(fileName)
         self.setAge(daysOld)
-        return daysOld < self.window.ui.ageDatabases.value()
+        return daysOld < 1 # self.window.ui.ageDatabases.value()
 
     def loadSourceUrl(self) -> None:
         entry = self.uiSourceList.currentText()

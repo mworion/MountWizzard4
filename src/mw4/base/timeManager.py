@@ -13,7 +13,9 @@
 # License APL2.0
 #
 ###########################################################
+from dateutil.tz import tzlocal
 from PySide6.QtCore import QObject, QTimer
+from skyfield.api import Time
 
 TICK_INTERVAL_MS: int = 100
 CYCLIC_SCHEDULE: list[tuple[int, str]] = [
@@ -30,9 +32,9 @@ START_SCHEDULE: list[tuple[int, str]] = [
 ]
 
 
-class CyclicTimerManager(QObject):
-    def __init__(self, app: QObject, parent: QObject | None = None) -> None:
-        super().__init__(parent)
+class TimeManager(QObject):
+    def __init__(self, app: QObject) -> None:
+        super().__init__()
         self.app: QObject = app
         self.counter: int = 0
         self.timer: QTimer = QTimer(self)
@@ -59,3 +61,15 @@ class CyclicTimerManager(QObject):
         for tick, signalName in START_SCHEDULE:
             if self.counter == tick:
                 getattr(self.app, signalName).emit()
+
+    def timeZoneString(self) -> str:
+        if self.app.config.get("unitTimeUTC", True):
+            return "(time is UTC)"
+        else:
+            return "(time is local)"
+
+    def convertTime(self, value: Time, fString: str) -> str:
+        if self.app.config.get("unitTimeUTC", True):
+            return value.utc_strftime(fString)
+        else:
+            return value.astimezone(tzlocal()).strftime(fString)

@@ -429,7 +429,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The mount Computer Settings are peseisted thrugh the mount itself. MW4 only reads them and sets them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <property name="elideMode">
         <enum>Qt::TextElideMode::ElideLeft</enum>

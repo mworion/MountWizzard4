@@ -15,7 +15,6 @@
 ###########################################################
 import datetime
 import logging
-from dateutil.tz import tzlocal
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtCustomWindow import CustomTitleBar
 from mw4.gui.utilities.qtHelpers import svg2icon
@@ -34,7 +33,6 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
-from skyfield.api import Time
 
 
 class MWidget(QMainWindow, Styles):
@@ -246,19 +244,6 @@ class MWidget(QMainWindow, Styles):
             return Path()
 
         return Path(dlg.selectedFiles()[0])
-
-    def convertTime(self, value: Time, fString: str) -> str:
-        isUTC = self.ui.unitTimeUTC.isChecked()
-        if isUTC:
-            return value.utc_strftime(fString)
-        else:
-            return value.astimezone(tzlocal()).strftime(fString)
-
-    def timeZoneString(self) -> str:
-        if self.ui.unitTimeUTC.isChecked():
-            return "(time is UTC)"
-        else:
-            return "(time is local)"
 
     def positionWindow(self, config: dict) -> None:
         height = config.get("height", 600)

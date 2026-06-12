@@ -172,7 +172,7 @@ class SatSearch(QObject, SatData):
         self.setSatListItem.emit(row, 5, entry)
 
         if isUp:
-            t = self.mainW.convertTime(isUp[0], "%H:%M") if len(isUp) else ""
+            t = self.app.timeMgr.convertTime(isUp[0], "%H:%M") if len(isUp) else ""
             entry = QTableWidgetItem(t)
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.setSatListItem.emit(row, 6, entry)
@@ -278,7 +278,7 @@ class SatSearch(QObject, SatData):
         changeStyleDynamic(self.ui.satFilterGroup, "run", False)
 
     def calcSatList(self) -> None:
-        title = "Setup " + self.mainW.timeZoneString()
+        title = "Setup " + self.app.timeMgr.timeZoneString()
         self.ui.satSetupGroup.setTitle(title)
         self.worker = Worker(self.workerCalcSatList)
         self.worker.signals.finished.connect(self.filterListSats)

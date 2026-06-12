@@ -65,15 +65,6 @@ class Almanac(TabAddon):
         self.app.timebaseChanged.connect(self.showTwilightDataPlot)
         self.app.timebaseChanged.connect(self.showMoonPhase)
 
-    def initConfig(self) -> None:
-        config = self.app.config["WindowMain"]
-        self.ui.almanacPrediction.currentIndexChanged.connect(self.showTwilightDataPlot)
-        self.ui.almanacPrediction.setCurrentIndex(config.get("almanacPrediction", 0))
-
-    def storeConfig(self) -> None:
-        config = self.app.config["WindowMain"]
-        config["almanacPrediction"] = self.ui.almanacPrediction.currentIndex()
-
     def setColors(self) -> None:
         self.ui.almanacCivil.setStyleSheet(f"background-color: {self.mainW.M_PRIM1};")
         self.ui.almanacNautical.setStyleSheet(f"background-color: {self.mainW.M_PRIM2};")
@@ -152,11 +143,11 @@ class Almanac(TabAddon):
         self.ui.twilightEvents.setTextColor(QColor(self.mainW.M_PRIM))
 
         for timeEvent, event in zip(timeEvents, events):
-            text += f"{self.mainW.convertTime(timeEvent, '%H:%M:%S')} "
+            text += f"{self.app.timeMgr.convertTime(timeEvent, '%H:%M:%S')} "
             text += f"{almanac.TWILIGHTS[event]}"
             self.ui.twilightEvents.insertPlainText(text)
             text = "\n"
-        title = "Sun " + self.mainW.timeZoneString()
+        title = "Sun " + self.app.timeMgr.timeZoneString()
         self.ui.sunAlmanacGroup.setTitle(title)
 
     def calcTwilightData(
@@ -177,18 +168,12 @@ class Almanac(TabAddon):
         return ts, t, e
 
     def showTwilightDataPlot(self) -> None:
-        timeWindowParam = [17, 32, 47, 92, 182]
         location = self.app.dReg["mount"].obsSite.location
         if location is None:
             return
-
-        index = self.ui.almanacPrediction.currentIndex()
-        text = self.ui.almanacPrediction.currentText()
-        timeWindow = timeWindowParam[index]
-
-        t = f"Twilight passes for: {text} {self.mainW.timeZoneString()}"
+        timeWindow = 182
+        t = f"Twilight passes for: 1 year {self.app.timeMgr.timeZoneString()}"
         self.ui.almanacGroup.setTitle(t)
-
         ts = self.app.dReg["mount"].obsSite.ts
         changeStyleDynamic(self.ui.almanacGroup, "run", True)
         self.worker = Worker(self.workerCalcTwilightDataPlot, ts, location, timeWindow)
@@ -331,11 +316,11 @@ class Almanac(TabAddon):
         self.ui.riseSetEventsMoon.setTextColor(QColor(self.mainW.M_PRIM))
         moon = ["set", "rise"]
         for moonTime, moonEvent in zip(moonTimes, moonEvents):
-            textTime = self.mainW.convertTime(moonTime, "%d.%m. %H:%M")
+            textTime = self.app.timeMgr.convertTime(moonTime, "%d.%m. %H:%M")
             text += f"{textTime} {moon[moonEvent]}"
             self.ui.riseSetEventsMoon.insertPlainText(text)
             text = "\n"
-        title = "Moon " + self.mainW.timeZoneString()
+        title = "Moon " + self.app.timeMgr.timeZoneString()
         self.ui.moonAlmanacGroup.setTitle(title)
 
         self.ui.moonPhaseText.setText(self.phasesText[mpPercent])
@@ -346,7 +331,7 @@ class Almanac(TabAddon):
         self.ui.nodeEvents.setTextColor(QColor(self.mainW.M_PRIM))
         node = ["ascending", "descending"]
         for nodeTime, nodeEvent in zip(nodeTimes, nodeEvents):
-            textTime = self.mainW.convertTime(nodeTime, "%d.%m. %H:%M")
+            textTime = self.app.timeMgr.convertTime(nodeTime, "%d.%m. %H:%M")
             text += f"{textTime} {node[nodeEvent]}"
             self.ui.nodeEvents.insertPlainText(text)
             text = "\n"

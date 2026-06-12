@@ -118,7 +118,7 @@ class SeeingWeather:
         self.threadPool.start(self.worker)
 
     def pollSeeingData(self) -> None:
-        if not self.config.apiKey or not self.b or not self.app.onlineMode:
+        if not self.config.apiKey or not self.b or not self.app.isOnline:
             self.sendStatus(False)
             return
 

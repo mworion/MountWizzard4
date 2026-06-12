@@ -17,6 +17,7 @@ import hid
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.tabAddon import TabAddon
+from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtHelpers import getTabIndex, svg2pixmap
 from PySide6.QtMultimedia import QSoundEffect
 from typing import Any
@@ -29,49 +30,14 @@ class SettMisc(TabAddon):
         self.msg = parentW.app.msg
         self.ui = parentW.ui
         self.worker: Worker | None = None
-
         self.audioSignalsSet = {}
         self.guiAudioList = {}
         self.gameControllerList = {}
-
-        self.uiTabs = {
-            "Almanac": {"cb": self.ui.showTabAlmanac, "tab": self.ui.mainTabWidget},
-            "Environ": {"cb": self.ui.showTabEnviron, "tab": self.ui.mainTabWidget},
-            "Satellite": {
-                "cb": self.ui.showTabSatellite,
-                "tab": self.ui.mainTabWidget,
-            },
-            "MPC": {
-                "cb": self.ui.showTabMPC,
-                "tab": self.ui.mainTabWidget,
-            },
-            "Tools": {
-                "cb": self.ui.showTabTools,
-                "tab": self.ui.mainTabWidget,
-            },
-            "Dome": {
-                "cb": self.ui.showTabDome,
-                "tab": self.ui.settingsTabWidget,
-            },
-            "ParkPos": {
-                "cb": self.ui.showTabParkPos,
-                "tab": self.ui.settingsTabWidget,
-            },
-            "Profile": {
-                "cb": self.ui.showTabProfile,
-                "tab": self.ui.settingsTabWidget,
-            },
-        }
         self.app.update3s.connect(self.populateGameControllerList)
         self.ui.gameControllerGroup.clicked.connect(self.populateGameControllerList)
-        self.ui.showTabAlmanac.clicked.connect(self.minimizeGUI)
-        self.ui.showTabEnviron.clicked.connect(self.minimizeGUI)
-        self.ui.showTabSatellite.clicked.connect(self.minimizeGUI)
-        self.ui.showTabMPC.clicked.connect(self.minimizeGUI)
-        self.ui.showTabTools.clicked.connect(self.minimizeGUI)
-        self.ui.showTabDome.clicked.connect(self.minimizeGUI)
-        self.ui.showTabParkPos.clicked.connect(self.minimizeGUI)
-        self.ui.showTabProfile.clicked.connect(self.minimizeGUI)
+        self.ui.unitTimeUTC.clicked.connect(self.setTimeBaseUTC)
+        self.ui.unitTimeLocal.clicked.connect(self.setTimeBaseLocal)
+        self.ui.colorSet.currentIndexChanged.connect(self.updateColorSet)
         self.setupAudioSignals()
         self.app.dReg["mount"].signals.alert.connect(lambda: self.playSound("MountAlert"))
         self.app.dReg["dome"].signals.slewed.connect(lambda: self.playSound("DomeSlew"))
@@ -84,17 +50,11 @@ class SettMisc(TabAddon):
 
     def initConfig(self) -> None:
         config = self.app.config.get("SettingMisc", {})
+        colSet = config.get("colorSet", 0)
+        self.ui.colorSet.setCurrentIndex(colSet)
         self.setupAudioGui()
         self.ui.unitTimeUTC.setChecked(config.get("unitTimeUTC", True))
         self.ui.unitTimeLocal.setChecked(config.get("unitTimeLocal", False))
-        self.ui.showTabAlmanac.setChecked(config.get("showTabAlmanac", True))
-        self.ui.showTabEnviron.setChecked(config.get("showTabEnviron", True))
-        self.ui.showTabSatellite.setChecked(config.get("showTabSatellite", True))
-        self.ui.showTabMPC.setChecked(config.get("showTabMPC", True))
-        self.ui.showTabTools.setChecked(config.get("showTabTools", True))
-        self.ui.showTabDome.setChecked(config.get("showTabDome", True))
-        self.ui.showTabParkPos.setChecked(config.get("showTabParkPos", True))
-        self.ui.showTabProfile.setChecked(config.get("showTabProfile", True))
         self.ui.soundMountSlewFinished.setCurrentIndex(config.get("soundMountSlewFinished", 0))
         self.ui.soundDomeSlewFinished.setCurrentIndex(config.get("soundDomeSlewFinished", 0))
         self.ui.soundMountAlert.setCurrentIndex(config.get("soundMountAlert", 0))
@@ -110,16 +70,9 @@ class SettMisc(TabAddon):
     def storeConfig(self) -> None:
         self.app.config["SettingMisc"] = {}
         config = self.app.config["SettingMisc"]
+        config["colorSet"] = self.ui.colorSet.currentIndex()
         config["unitTimeUTC"] = self.ui.unitTimeUTC.isChecked()
         config["unitTimeLocal"] = self.ui.unitTimeLocal.isChecked()
-        config["showTabAlmanac"] = self.ui.showTabAlmanac.isChecked()
-        config["showTabEnviron"] = self.ui.showTabEnviron.isChecked()
-        config["showTabSatellite"] = self.ui.showTabSatellite.isChecked()
-        config["showTabMPC"] = self.ui.showTabMPC.isChecked()
-        config["showTabTools"] = self.ui.showTabTools.isChecked()
-        config["showTabDome"] = self.ui.showTabDome.isChecked()
-        config["showTabParkPos"] = self.ui.showTabParkPos.isChecked()
-        config["showTabProfile"] = self.ui.showTabProfile.isChecked()
         config["soundMountSlewFinished"] = self.ui.soundMountSlewFinished.currentIndex()
         config["soundDomeSlewFinished"] = self.ui.soundDomeSlewFinished.currentIndex()
         config["soundMountAlert"] = self.ui.soundMountAlert.currentIndex()
@@ -160,11 +113,11 @@ class SettMisc(TabAddon):
 
     def readGameController(self, gamepad: hid.device) -> list:
         result = []
-        while self.parentW.gameControllerRunning:
+        while self.parentW.app.mainW.gameControllerRunning:
             try:
                 data = gamepad.read(64)
             except Exception as e:
-                self.parentW.gameControllerRunning = False
+                self.parentW.app.mainW.gameControllerRunning = False
                 self.parentW.log.warning(f"GameController error {e}")
                 return []
 
@@ -221,7 +174,7 @@ class SettMisc(TabAddon):
         gameControllerDevice.set_nonblocking(True)
 
         reportOld = [0] * 16
-        while self.parentW.gameControllerRunning:
+        while self.parentW.app.mainW.gameControllerRunning:
             mainThreadSleep(100)
             report = self.readGameController(gameControllerDevice)
             if not self.isNewerData(report, reportOld):
@@ -247,9 +200,9 @@ class SettMisc(TabAddon):
     def populateGameControllerList(self) -> None:
         isController = self.ui.gameControllerGroup.isChecked()
         if not isController:
-            self.parentW.gameControllerRunning = False
+            self.parentW.app.mainW.gameControllerRunning = False
             return
-        if self.parentW.gameControllerRunning:
+        if self.parentW.app.mainW.gameControllerRunning:
             return
 
         self.ui.gameControllerList.clear()
@@ -268,7 +221,7 @@ class SettMisc(TabAddon):
         if len(self.gameControllerList) == 0:
             return
 
-        self.parentW.gameControllerRunning = True
+        self.parentW.app.mainW.gameControllerRunning = True
         self.startGameController()
 
     def setupAudioGui(self) -> None:
@@ -315,3 +268,17 @@ class SettMisc(TabAddon):
             isVisible = self.uiTabs[tab]["cb"].isChecked()
             tabIndex = getTabIndex(self.uiTabs[tab]["tab"], tab)
             self.uiTabs[tab]["tab"].setTabVisible(tabIndex, isVisible)
+
+    def setTimeBaseUTC(self) -> None:
+        self.app.config["unitTimeUTC"] = True
+        self.app.timebaseChanged.emit()
+
+    def setTimeBaseLocal(self) -> None:
+        self.app.config["unitTimeUTC"] = False
+        self.app.timebaseChanged.emit()
+
+    def updateColorSet(self) -> None:
+        Styles.colorSet = self.ui.colorSet.currentIndex()
+        self.setStyleSheet(self.mw4Style)
+        self.setupIcons()
+        self.app.colorChange.emit()

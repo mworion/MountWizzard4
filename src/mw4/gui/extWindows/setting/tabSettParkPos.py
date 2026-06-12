@@ -35,7 +35,7 @@ class SettParkPos(TabAddon):
 
         for i in range(0, 10):
             # Use getattr() instead of eval() to safely resolve UI widget names. (SEC-2)
-            self.posButtons[i] = getattr(self.ui, f"posButton{i:1d}")
+            #self.posButtons[i] = getattr(self.ui, f"posButton{i:1d}")
             self.posSaveButtons[i] = getattr(self.ui, f"posSave{i:1d}")
 
             self.posTexts[i] = getattr(self.ui, f"posText{i:1d}")
@@ -44,10 +44,10 @@ class SettParkPos(TabAddon):
 
         for index in self.posTexts:
             self.posTexts[index].editingFinished.connect(self.updateParkPosButtonText)
-        for index in self.posButtons:
-            self.posButtons[index].clicked.connect(partial(self.slewToParkPos, index))
-        for index in self.posSaveButtons:
-            self.posButtons[index].clicked.connect(partial(self.saveActualPosition, index))
+        #for index in self.posButtons:
+        #    self.posButtons[index].clicked.connect(partial(self.slewToParkPos, index))
+        #for index in self.posSaveButtons:
+        #    self.posButtons[index].clicked.connect(partial(self.saveActualPosition, index))
 
     def initConfig(self) -> None:
         config = self.app.config.get("SettingParkPos", {})

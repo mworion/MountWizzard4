@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+
 import gc
 import pytest
 import unittest.mock as mock
@@ -24,8 +25,10 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def settingWindow(qapp):
+    """Setup SettingWindow fixture for testing."""
     app = App()
+
     # Only return devices that have UI elements in setupUiDriver
     validDevices = [
         "camera",
@@ -60,35 +63,62 @@ def function(qapp):
     QApplication.processEvents()
 
 
-def test_initConfig_1(function):
-    function.initConfig()
+def test_initConfig_loads_config(settingWindow):
+    """Test initConfig loads configuration."""
+    settingWindow.initConfig()
 
 
-def test_storeConfig_1(function):
-    if "WindowSetting" in function.app.config:
-        del function.app.config["WindowSetting"]
-    function.storeConfig()
+def test_storeConfig_when_config_missing(settingWindow):
+    """Test storeConfig when WindowSetting config missing."""
+    if "WindowSetting" in settingWindow.app.config:
+        del settingWindow.app.config["WindowSetting"]
+    settingWindow.storeConfig()
+
+    assert "WindowSetting" in settingWindow.app.config
 
 
-def test_storeConfig_2(function):
-    function.app.config["WindowSetting"] = {}
-    function.storeConfig()
+def test_storeConfig_when_config_exists(settingWindow):
+    """Test storeConfig when WindowSetting config exists."""
+    settingWindow.app.config["WindowSetting"] = {}
+    settingWindow.storeConfig()
+
+    assert "WindowSetting" in settingWindow.app.config
 
 
-def test_closeEvent_1(function):
+def test_closeEvent_closes_properly(settingWindow):
+    """Test closeEvent closes window properly."""
     with (
-        mock.patch.object(function, "show"),
+        mock.patch.object(settingWindow, "show"),
         mock.patch.object(MWidget, "closeEvent"),
-        mock.patch.object(function.tabSettDevice, "closeEvent"),
+        mock.patch.object(settingWindow.tabSettDevice, "closeEvent"),
     ):
-        function.showWindow()
-        function.closeEvent(QCloseEvent)
+        settingWindow.showWindow()
+        settingWindow.closeEvent(QCloseEvent)
 
 
-def test_showWindow(function):
-    with mock.patch.object(function, "show"):
-        function.showWindow()
+def test_showWindow_shows_window(settingWindow):
+    """Test showWindow displays window."""
+    with mock.patch.object(settingWindow, "show"):
+        settingWindow.showWindow()
 
 
-def test_colorChange(function):
-    function.colorChange()
+def test_colorChange_updates_style(settingWindow):
+    """Test colorChange updates window style."""
+    settingWindow.colorChange()
+
+
+def test_setupIcons_creates_icons(settingWindow):
+    """Test setupIcons initializes icons."""
+    settingWindow.setupIcons()
+
+
+def test_window_has_all_tabs(settingWindow):
+    """Test window has all setting tabs."""
+    assert hasattr(settingWindow, "tabSettDevice")
+    assert hasattr(settingWindow, "tabSettMount")
+    assert hasattr(settingWindow, "tabSettDome")
+    assert hasattr(settingWindow, "tabSettMisc")
+    assert hasattr(settingWindow, "tabSettParkPos")
+    assert hasattr(settingWindow, "tabSettRelay")
+    assert hasattr(settingWindow, "tabSettUpdate")
+

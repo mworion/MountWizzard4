@@ -150,7 +150,7 @@ class SensorWeatherOnline:
         self.threadPool.start(self.worker)
 
     def pollOpenWeatherMapData(self) -> None:
-        if not self.config.apiKey or not self.app.onlineMode:
+        if not self.config.apiKey or not self.app.isOnline:
             self.sendStatus(False)
             return
 

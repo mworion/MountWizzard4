@@ -19,7 +19,7 @@ from importlib.metadata import version
 from mw4.base.bootstrap import MwGlob
 from mw4.base.deviceRegistry import DeviceRegistry
 from mw4.base.loggerMW import setCustomLoggingLevel
-from mw4.base.timerManager import CyclicTimerManager
+from mw4.base.timeManager import TimeManager
 from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.logic.buildData.buildpoints import BuildPoint
 from mw4.logic.buildData.hipparcos import Hipparcos
@@ -44,6 +44,7 @@ class MountWizzard4(QObject):
     showImage = Signal(object)
     showAnalyse = Signal(object)
     timebaseChanged = Signal()
+    onlineModeChanged= Signal()
     # --- Hemisphere / build point signals ---
     redrawHemisphere = Signal()
     redrawHorizon = Signal()
@@ -101,7 +102,7 @@ class MountWizzard4(QObject):
         self.threadPool = QThreadPool()
         self.threadPool.setMaxThreadCount(self.MAX_THREAD_COUNT)
         self.expireData: bool = False
-        self.onlineMode: bool = False
+        self.isOnline: bool = False
         self.statusOperationRunning: int = 0
         self.messageQueue: Queue = Queue()
         self.config = loadProfileStart(self.mwGlob["configDir"])
@@ -123,8 +124,8 @@ class MountWizzard4(QObject):
         self.mainW.showWindow()
         # Set up the cyclic timer manager and start the mount timers.
         self.dReg["mount"].instance.startMountCoreTimers()
-        self.timerMgr = CyclicTimerManager(app=self, parent=self)
-        self.timerMgr.start()
+        self.timeMgr = TimeManager(app=self)
+        self.timeMgr.start()
         # Wire up application-level signal connections.
         self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
@@ -158,7 +159,7 @@ class MountWizzard4(QObject):
         self.statusOperationRunning = status
 
     def aboutToQuit(self) -> None:
-        self.timerMgr.stop()
+        self.timeMgr.stop()
         self.dReg["mount"].instance.stopAllMountTimers()
 
     def quit(self) -> None:

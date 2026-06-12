@@ -84,7 +84,7 @@ def test_workerGetSeeingData_0(function):
     class Test:
         status_code = 300
 
-    function.app.onlineMode = False
+    function.app.isOnline = False
     with mock.patch.object(requests, "get", return_value=Test()):
         function.workerGetSeeingData("http://localhost")
 
@@ -93,7 +93,7 @@ def test_workerGetSeeingData_1(function):
     class Test:
         status_code = 300
 
-    function.app.onlineMode = True
+    function.app.isOnline = True
     with mock.patch.object(requests, "get", return_value=Test()):
         function.workerGetSeeingData("http://localhost")
 
@@ -102,7 +102,7 @@ def test_workerGetSeeingData_3(function):
     class Test:
         status_code = 300
 
-    function.app.onlineMode = True
+    function.app.isOnline = True
     with mock.patch.object(requests, "get", side_effect=Exception(), return_value=Test()):
         function.workerGetSeeingData("http://localhost")
 
@@ -111,7 +111,7 @@ def test_workerGetSeeingData_4(function):
     class Test:
         status_code = 300
 
-    function.app.onlineMode = True
+    function.app.isOnline = True
     with mock.patch.object(requests, "get", side_effect=TimeoutError(), return_value=Test()):
         function.workerGetSeeingData("http://localhost")
 
@@ -124,7 +124,7 @@ def test_workerGetSeeingData_5(function):
         def json():
             return "test"
 
-    function.app.onlineMode = True
+    function.app.isOnline = True
     with mock.patch.object(requests, "get", return_value=Test()):
         function.workerGetSeeingData("http://localhost")
 
@@ -193,7 +193,7 @@ def test_pollSeeingData_2(function):
     function.app.mwGlob["dataDir"] = Path("tests/work/assets")
     function.apiKey = "test"
     function.b = "test"
-    function.app.onlineMode = False
+    function.app.isOnline = False
     function.running = True
     function.pollSeeingData()
 
@@ -202,7 +202,7 @@ def test_pollSeeingData_3(function):
     function.app.mwGlob["dataDir"] = Path("tests/work/assets")
     function.apiKey = "test"
     function.b = "test"
-    function.app.onlineMode = True
+    function.app.isOnline = True
     function.pollSeeingData()
 
 
@@ -210,7 +210,7 @@ def test_pollSeeingData_4(function):
     function.app.mwGlob["dataDir"] = Path("tests/work/assets")
     function.apiKey = "test"
     function.b = "test"
-    function.app.onlineMode = True
+    function.app.isOnline = True
     with mock.patch.object(function, "loadingFileNeeded", return_value=False):
         function.pollSeeingData()
 
@@ -219,7 +219,7 @@ def test_pollSeeingData_5(function):
     function.app.mwGlob["dataDir"] = Path("tests/work/assets")
     function.apiKey = "test"
     function.b = "test"
-    function.app.onlineMode = True
+    function.app.isOnline = True
     with (
         mock.patch.object(function, "loadingFileNeeded", return_value=True),
         mock.patch.object(function, "getSeeingData"),

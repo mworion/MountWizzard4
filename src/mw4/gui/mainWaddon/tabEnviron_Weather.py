@@ -171,8 +171,6 @@ class EnvironWeather(TabAddon):
             self.ui.refracCont.setChecked(True)
 
     def setRefractionUpdateType(self) -> None:
-        if not self.ui.showTabEnviron.isChecked():
-            return
         if self.refractionSource != "directWeather":
             self.app.dReg["mount"].setting.setDirectWeatherUpdateType(0)
             return

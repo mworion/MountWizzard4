@@ -247,34 +247,6 @@ def test_openDir_5(function):
         assert full == Path()
 
 
-def test_convertTime_1(function):
-    ts = load.timescale()
-    t = ts.tt(2000, 1, 1, 12, 0)
-    function.ui.unitTimeUTC.setChecked(True)
-    val = function.convertTime(t, "%H:%M")
-    assert val
-
-
-def test_convertTime_2(function):
-    ts = load.timescale()
-    t = ts.tt(2000, 1, 1, 12, 0)
-    function.ui.unitTimeLocal.setChecked(True)
-    val = function.convertTime(t, "%H:%M")
-    assert val
-
-
-def test_timeZoneString_1(function):
-    function.ui.unitTimeUTC.setChecked(True)
-    val = function.timeZoneString()
-    assert val == "(time is UTC)"
-
-
-def test_timeZoneString_2(function):
-    function.ui.unitTimeLocal.setChecked(True)
-    val = function.timeZoneString()
-    assert val == "(time is local)"
-
-
 def test_positionWindow_1(function):
     config = {"winPosX": 100, "winPosY": 100, "height": 400, "width": 600}
     function.screenSizeX = 1000

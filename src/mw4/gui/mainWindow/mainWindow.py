@@ -64,10 +64,6 @@ class MainWindow(MWidget):
                 "statID": "relay",
                 "tab": self.ui.toolsTabWidget,
             },
-            "RelaySett": {
-                "statID": "relay",
-                "tab": self.ui.settingsTabWidget,
-            },
         }
         self.app.dReg["mount"].signals.pointDone.connect(self.updateStatusGUI)
         self.app.remoteCommand.connect(self.remoteCommand)
@@ -79,7 +75,6 @@ class MainWindow(MWidget):
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
         self.app.dReg["seeingWeather"].instance.b = self.ui.label_b.property("a")
-        self.ui.colorSet.currentIndexChanged.connect(self.updateColorSet)
         self.app.update1s.connect(self.updateTime)
         self.app.update1s.connect(self.updateControllerStatus)
         self.app.update1s.connect(self.updateThreadAndOnlineStatus)
@@ -88,20 +83,20 @@ class MainWindow(MWidget):
         self.app.update1s.connect(self.setEnvironDeviceStats)
         self.app.update1s.connect(self.updateDeviceStats)
         self.app.update30s.connect(self.updateTwilightAndDisk)
+        self.app.colorChange.connect(self.updateColorSet)
         # Cached values for status title; refreshed on the slower cadence so we
         # don't hit disk and recompute twilight every second on the GUI thread.
         self._twilightText: str = ""
         self._diskFreePct: int = 0
 
     def initConfig(self) -> None:
+        config = self.app.config.get("SettingMisc", {})
+        colSet = config.get("colorSet", 0)
+        Styles.colorSet = colSet
+
         config = self.app.config
         if "WindowMain" not in config:
             config["WindowMain"] = {}
-
-        colSet = config.get("colorSet", 0)
-        Styles.colorSet = colSet
-        self.ui.colorSet.setCurrentIndex(colSet)
-        self.setStyleSheet(self.mw4Style)
         self.ui.profileName.setText(config.get("profileName"))
         config = config["WindowMain"]
         self.positionWindow(config)
@@ -119,7 +114,6 @@ class MainWindow(MWidget):
 
     def storeConfig(self) -> None:
         config = self.app.config
-        config["colorSet"] = self.ui.colorSet.currentIndex()
         config["profileName"] = self.ui.profileName.text()
         if "WindowMain" not in config:
             config["WindowMain"] = {}
@@ -156,15 +150,12 @@ class MainWindow(MWidget):
         self.mainWindowAddons.setupIcons()
 
     def updateColorSet(self) -> None:
-        Styles.colorSet = self.ui.colorSet.currentIndex()
         self.setStyleSheet(self.mw4Style)
         self.setupIcons()
         self.mainWindowAddons.updateColorSet()
-        self.app.colorChange.emit()
 
     def closeEvent(self, closeEvent) -> None:
         self.gameControllerRunning = False
-        self.app.timerMgr.stop()
         changeStyleDynamic(self.ui.pauseModel, "pause", False)
         self.externalWindows.closeExtendedWindows()
         self.threadPool.waitForDone(10000)
@@ -233,10 +224,8 @@ class MainWindow(MWidget):
             ui.setStyleSheet(ui.styleSheet())
 
     def setEnvironDeviceStats(self) -> None:
-        refracOn = self.app.dReg["mount"].setting.statusRefraction == 1
         isManual = self.ui.refracManual.isChecked()
-        isTabEnabled = self.ui.showTabEnviron.isChecked()
-        if not refracOn or not isTabEnabled:
+        if not (self.app.dReg["mount"].setting.statusRefraction == 1):
             self.app.dReg.setStat("refraction", None)
             self.ui.refractionConnected.setText("Refraction")
         elif isManual:
@@ -281,7 +270,7 @@ class MainWindow(MWidget):
         self.ui.controller5.setEnabled(gcStatus)
 
     def updateThreadAndOnlineStatus(self) -> None:
-        mode = "Online" if self.ui.isOnline.isChecked() else "Offline"
+        mode = "Online" if self.app.isOnline else "Offline"
         moon = self.ui.moonPhaseIllumination.text()
         if not self._twilightText:
             self.updateTwilightAndDisk()

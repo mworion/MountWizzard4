@@ -32,7 +32,7 @@ class SatTrack(SatData):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-        self.satellite: EarthSatellite = None
+        self.satellite: EarthSatellite | None = None
         self.satellitesRawTLE = {}
         self.nextSatPass = [None, None, None]
         self.lastMeridianLimit = None
@@ -92,8 +92,7 @@ class SatTrack(SatData):
         self.ui.satAfterFlip.setChecked(config.get("satAfterFlip", True))
         self.ui.avoidHorizon.setChecked(config.get("avoidHorizon", False))
         self.ui.trackingReplay.setChecked(config.get("trackingReplay", False))
-        self.ui.unitTimeUTC.clicked.connect(self.changeUnitTimeUTC)
-        self.ui.unitTimeLocal.clicked.connect(self.changeUnitTimeUTC)
+        self.app.timebaseChanged.connect(self.changeUnitTimeUTC)
 
     def storeConfig(self) -> None:
         config = self.app.config["WindowMain"]
@@ -168,7 +167,7 @@ class SatTrack(SatData):
             self.signalSatelliteData(alt=[], az=[])
 
     def workerShowSatPasses(self) -> None:
-        title = "Satellite passes " + self.mainW.timeZoneString()
+        title = "Satellite passes " + self.app.timeMgr.timeZoneString()
         self.ui.satPassesGroup.setTitle(title)
 
         if not self.satellite:
@@ -191,24 +190,24 @@ class SatTrack(SatData):
         for i, satOrbit in enumerate(self.satOrbits):
             riseT = satOrbit.get("rise", None)
             if riseT is not None:
-                riseStr = self.mainW.convertTime(riseT, fString)
-                dateStr = self.mainW.convertTime(riseT, fStringDate)
+                riseStr = self.app.timeMgr.convertTime(riseT, fString)
+                dateStr = self.app.timeMgr.convertTime(riseT, fStringDate)
             else:
                 riseStr = "unknown"
                 dateStr = "---"
             culminateT = satOrbit.get("culminate", None)
             if culminateT is not None:
-                culminateStr = self.mainW.convertTime(culminateT, fString)
+                culminateStr = self.app.timeMgr.convertTime(culminateT, fString)
             else:
                 culminateStr = "unknown"
             settleT = satOrbit.get("settle", None)
             if settleT is not None:
-                settleStr = self.mainW.convertTime(settleT, fString)
+                settleStr = self.app.timeMgr.convertTime(settleT, fString)
             else:
                 settleStr = "unknown"
             flipT = satOrbit.get("flip", None)
             if flipT is not None:
-                flipStr = self.mainW.convertTime(flipT, fString)
+                flipStr = self.app.timeMgr.convertTime(flipT, fString)
             else:
                 flipStr = "no flip"
 
@@ -378,12 +377,12 @@ class SatTrack(SatData):
         self.updateSatelliteTrackGui(self.app.dReg["mount"].satellite.tleParams)
 
     def updateSatelliteTrackGui(self, tleParams: TLEParams) -> None:
-        title = "Satellite tracking " + self.mainW.timeZoneString()
+        title = "Satellite tracking " + self.app.timeMgr.timeZoneString()
         self.ui.satTrackGroup.setTitle(title)
         if self.satOrbits:
-            t = self.mainW.convertTime(tleParams.jdStart, "%d %b  %H:%M:%S")
+            t = self.app.timeMgr.convertTime(tleParams.jdStart, "%d %b  %H:%M:%S")
             self.ui.satTrajectoryStart.setText(t)
-            t = self.mainW.convertTime(tleParams.jdEnd, "%d %b  %H:%M:%S")
+            t = self.app.timeMgr.convertTime(tleParams.jdEnd, "%d %b  %H:%M:%S")
             self.ui.satTrajectoryEnd.setText(t)
             self.ui.stopSatelliteTracking.setEnabled(True)
             self.ui.startSatelliteTracking.setEnabled(True)

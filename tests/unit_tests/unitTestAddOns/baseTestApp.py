@@ -77,7 +77,7 @@ class App(QObject):
     __version__ = "test"
     MAX_THREAD_COUNT = 30
     update10s = Signal()
-    timerMgr = QTimer()
+    timeMgr = QTimer()
     update0_1s = Signal()
     update1s = Signal()
     update3s = Signal()
@@ -116,6 +116,8 @@ class App(QObject):
     gameDirection = Signal(object)
     gameSL = Signal(object, object)
     gameSR = Signal(object, object)
+    onlineModeChanged = Signal()
+    timebaseChanged = Signal()
 
     def __init__(self):
         super().__init__()
@@ -170,7 +172,7 @@ class App(QObject):
         self.dReg = DeviceRegistry(self)
         self.dReg.addDevices(self)
         self.buildPoint = BuildPoint(self)
-        self.onlineMode = False
+        self.isOnline = False
         # Add onlineWeather to drivers for tests
         self.dReg.d["onlineWeather"] = DeviceEntry(
             name="onlineWeather",

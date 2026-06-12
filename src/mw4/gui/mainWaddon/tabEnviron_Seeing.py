@@ -103,9 +103,9 @@ class EnvironSeeing(TabAddon):
     ) -> str:
         t = f"{data[field][i]}"
         if j == 0:
-            t = self.mainW.convertTime(data[field][i], "%d%b")
+            t = self.app.timeMgr.convertTime(data[field][i], "%d%b")
         elif j == 1:
-            t = self.mainW.convertTime(data[field][i], "%H:00")
+            t = self.app.timeMgr.convertTime(data[field][i], "%H:00")
         elif j in [2, 3, 4]:
             color = self.mainW.calcHexColor(colorPrim, data[field][i] / 100)
             item.setBackground(QColor(color))
@@ -151,7 +151,7 @@ class EnvironSeeing(TabAddon):
     def updateSeeingEntries(self) -> None:
         if "hourly" not in self.app.dReg["seeingWeather"].data:
             return
-        self.ui.seeingGroup.setTitle("Seeing data " + self.mainW.timeZoneString())
+        self.ui.seeingGroup.setTitle("Seeing data " + self.app.timeMgr.timeZoneString())
         ts = self.app.dReg["mount"].obsSite.ts
         colorPrim = colors["M_PRIM"][0]
         colorQuar = colors["M_BACK"][0]

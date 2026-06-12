@@ -36,6 +36,9 @@ def function(qapp):
     mainW.satellites = Test()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
+    # Mock timeMgr methods
+    mainW.app.timeMgr.convertTime = mock.MagicMock(return_value="12:00")
+    mainW.app.timeMgr.timeZoneString = mock.MagicMock(return_value="(UTC)")
     window = SatSearch(mainW)
     yield window
     mainW.app.threadPool.waitForDone(1000)

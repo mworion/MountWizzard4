@@ -55,6 +55,9 @@ def function(qapp):
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
+    # Mock timeMgr methods
+    mainW.app.timeMgr.convertTime = mock.MagicMock(return_value="12:00")
+    mainW.app.timeMgr.timeZoneString = mock.MagicMock(return_value="(UTC)")
     window = EnvironSeeing(mainW)
     yield window
     mainW.app.threadPool.waitForDone(1000)

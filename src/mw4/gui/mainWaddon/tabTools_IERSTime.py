@@ -116,7 +116,7 @@ class IERSTime(TabAddon):
         )
 
     def loadTimeDataFromSourceURLs(self) -> None:
-        if not self.ui.isOnline.isChecked():
+        if not self.app.isOnline:
             return
 
         sourceKey = self.ui.iersSource.currentText()

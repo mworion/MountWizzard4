@@ -48,6 +48,7 @@ class SettRelay(TabAddon):
             "relay6index",
             "relay7index",
         ]
+        """
         self.relayButtons = {
             0: self.ui.relayButton0,
             1: self.ui.relayButton1,
@@ -58,6 +59,7 @@ class SettRelay(TabAddon):
             6: self.ui.relayButton6,
             7: self.ui.relayButton7,
         }
+        """
         self.relayButtonTexts = [
             self.ui.relayButtonText0,
             self.ui.relayButtonText1,
@@ -86,8 +88,8 @@ class SettRelay(TabAddon):
         # make the gui signals linked to slots
         for relayButtonText in self.relayButtonTexts:
             relayButtonText.editingFinished.connect(self.updateRelayButtonText)
-        for button in self.relayButtons:
-            self.relayButtons[button].clicked.connect(partial(self.relayButtonPressed, button))
+        #for button in self.relayButtons:
+        #    self.relayButtons[button].clicked.connect(partial(self.relayButtonPressed, button))
 
     def initConfig(self) -> None:
         config = self.app.config.get("SettingRelay", {})

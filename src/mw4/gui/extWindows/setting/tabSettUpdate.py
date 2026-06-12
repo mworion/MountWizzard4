@@ -32,7 +32,7 @@ class SettUpdate(TabAddon):
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelTrace.clicked.connect(self.setLoggingLevel)
         self.ui.isOnline.clicked.connect(self.setOnlineMode)
-        self.ui.isOnline.clicked.connect(self.setupIERS)
+        self.app.onlineModeChanged.connect(self.setupIERS)
 
     def initConfig(self) -> None:
         config = self.app.config.get("SettingUpdate", {})
@@ -54,25 +54,24 @@ class SettUpdate(TabAddon):
         config["loglevelTrace"] = self.ui.loglevelTrace.isChecked()
         config["ageDatabases"] = self.ui.ageDatabases.value()
 
-    def setOnlineMode(self) -> None:
-        isOnline = self.ui.isOnline.isChecked()
-        self.app.onlineMode = isOnline
-        if isOnline:
-            self.msg.emit(0, "System", "Online", "Online mode activated")
-        else:
-            self.msg.emit(0, "System", "Online", "Online mode deactivated")
-
     def setupIERS(self) -> None:
-        isOnline = self.ui.isOnline.isChecked()
-        if isOnline:
+        if self.app.isOnline:
             iers.conf.auto_download = True
             iers.conf.auto_max_age = 30
             data.conf.allow_internet = True
-
         else:
             iers.conf.auto_download = False
             iers.conf.auto_max_age = 99999
             data.conf.allow_internet = False
+
+    def setOnlineMode(self) -> None:
+        isOnline = self.ui.isOnline.isChecked()
+        self.app.isOnline = isOnline
+        if isOnline:
+            self.msg.emit(0, "System", "Online", "Online mode activated")
+        else:
+            self.msg.emit(0, "System", "Online", "Online mode deactivated")
+        self.app.onlineModeChanged.emit()
 
     def setLoggingLevel(self) -> None:
         if self.ui.loglevelInfo.isChecked():

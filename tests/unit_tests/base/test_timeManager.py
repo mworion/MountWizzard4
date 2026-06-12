@@ -14,11 +14,11 @@
 #
 ###########################################################
 import pytest
-from mw4.base.timerManager import (
+from mw4.base.timeManager import (
     CYCLIC_SCHEDULE,
     START_SCHEDULE,
     TICK_INTERVAL_MS,
-    CyclicTimerManager,
+    TimeManager,
 )
 from PySide6.QtCore import QObject, Signal
 
@@ -43,7 +43,7 @@ def mock_app(qapp):
 
 @pytest.fixture()
 def mgr(mock_app):
-    return CyclicTimerManager(app=mock_app)
+    return TimeManager(app=mock_app)
 
 
 def test_init(mgr):

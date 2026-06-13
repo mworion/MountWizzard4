@@ -120,4 +120,3 @@ def test_window_has_all_tabs(settingWindow):
     assert hasattr(settingWindow, "tabSettGui")
     assert hasattr(settingWindow, "tabSettAudio")
     assert hasattr(settingWindow, "tabSettUpdate")
-

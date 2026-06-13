@@ -217,5 +217,3 @@ def test_convert_time_utc_false(mgr, ts):
     assert isinstance(result, str)
     assert len(result) > 0
     assert "2024" in result
-
-

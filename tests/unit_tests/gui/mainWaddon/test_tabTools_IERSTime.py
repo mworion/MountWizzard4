@@ -145,5 +145,3 @@ def test_loadTimeDataFromSourceURLs_when_online(function):
     # This test just verifies that the method executes the full code path
     # when app.isOnline is True (lines 122-131 will be executed)
     function.loadTimeDataFromSourceURLs()
-
-

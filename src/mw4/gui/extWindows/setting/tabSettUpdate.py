@@ -38,7 +38,6 @@ class SettUpdate(TabAddon):
         self.ui.unitTimeUTC.clicked.connect(self.setTimeBaseUTC)
         self.ui.unitTimeLocal.clicked.connect(self.setTimeBaseLocal)
 
-
     def initConfig(self) -> None:
         config = self.app.config.get("SettingUpdate", {})
         self.ui.loglevelInfo.setChecked(config.get("loglevelInfo", False))

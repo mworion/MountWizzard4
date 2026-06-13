@@ -246,12 +246,12 @@ def test_setOnlineMode_emits_deactivated_message(settUpdate):
 def test_initConfig_calls_setup_methods(settUpdate):
     """Test initConfig calls all setup methods."""
     settUpdate.app.config["SettingUpdate"] = {}
-    with mock.patch.object(settUpdate, "setLoggingLevel"), \
-         mock.patch.object(settUpdate, "setOnlineMode"), \
-         mock.patch.object(settUpdate, "setupIERS"):
+    with (
+        mock.patch.object(settUpdate, "setLoggingLevel"),
+        mock.patch.object(settUpdate, "setOnlineMode"),
+        mock.patch.object(settUpdate, "setupIERS"),
+    ):
         settUpdate.initConfig()
 
         assert settUpdate.ui.loglevelInfo.isChecked() is False
         assert settUpdate.ui.loglevelDebug.isChecked() is True
-
-

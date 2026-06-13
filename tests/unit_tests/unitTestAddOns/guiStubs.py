@@ -39,6 +39,7 @@ class LineEdit:
 class UIStub(QObject):
     def __init__(self):
         from tests.unit_tests.unitTestAddOns.guiStubs import LineEdit
+
         self.offLAT = LineEdit()
 
 

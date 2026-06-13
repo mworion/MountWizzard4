@@ -177,9 +177,7 @@ def test_workerShowSatPasses_1(function):
         mock.patch.object(
             function.app.timeMgr, "timeZoneString", return_value="", create=True
         ),
-        mock.patch.object(
-            function.app.timeMgr, "convertTime", return_value="", create=True
-        ),
+        mock.patch.object(function.app.timeMgr, "convertTime", return_value="", create=True),
         mock.patch.object(function, "clearTrackingParameters"),
         mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
@@ -210,9 +208,7 @@ def test_workerShowSatPasses_2(function):
         mock.patch.object(
             function.app.timeMgr, "timeZoneString", return_value="", create=True
         ),
-        mock.patch.object(
-            function.app.timeMgr, "convertTime", return_value="", create=True
-        ),
+        mock.patch.object(function.app.timeMgr, "convertTime", return_value="", create=True),
         mock.patch.object(function, "clearTrackingParameters"),
         mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
@@ -241,9 +237,7 @@ def test_workerShowSatPasses_3(function):
         mock.patch.object(
             function.app.timeMgr, "timeZoneString", return_value="", create=True
         ),
-        mock.patch.object(
-            function.app.timeMgr, "convertTime", return_value="", create=True
-        ),
+        mock.patch.object(function.app.timeMgr, "convertTime", return_value="", create=True),
         mock.patch.object(function, "clearTrackingParameters"),
         mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
@@ -662,9 +656,7 @@ def test_updateSatelliteTrackGui_1(function):
         mock.patch.object(
             function.app.timeMgr, "timeZoneString", return_value="", create=True
         ),
-        mock.patch.object(
-            function.app.timeMgr, "convertTime", return_value="", create=True
-        ),
+        mock.patch.object(function.app.timeMgr, "convertTime", return_value="", create=True),
     ):
         function.updateSatelliteTrackGui(Test())
 
@@ -692,9 +684,7 @@ def test_updateSatelliteTrackGui_2(function):
         mock.patch.object(
             function.app.timeMgr, "timeZoneString", return_value="", create=True
         ),
-        mock.patch.object(
-            function.app.timeMgr, "convertTime", return_value="", create=True
-        ),
+        mock.patch.object(function.app.timeMgr, "convertTime", return_value="", create=True),
     ):
         function.updateSatelliteTrackGui(Test())
 

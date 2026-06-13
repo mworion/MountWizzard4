@@ -208,6 +208,3 @@ def test_updateParkPosButtonText_updates_button(settParkPos):
     """Test updateParkPosButtonText updates button text."""
     settParkPos.ui.posText0.setText("Test Position")
     settParkPos.updateParkPosButtonText()
-
-
-

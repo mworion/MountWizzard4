@@ -104,6 +104,7 @@ def test_sendGameControllerSignals_with_changed_values(settGui):
 
 def test_readGameController_returns_empty_on_exception(settGui):
     """Test readGameController returns empty list on exception."""
+
     class Gamepad:
         @staticmethod
         def read(a):
@@ -117,6 +118,7 @@ def test_readGameController_returns_empty_on_exception(settGui):
 
 def test_readGameController_returns_empty_when_disconnected(settGui):
     """Test readGameController returns empty when disconnected."""
+
     class Gamepad:
         @staticmethod
         def read(a):
@@ -129,6 +131,7 @@ def test_readGameController_returns_empty_when_disconnected(settGui):
 
 def test_readGameController_returns_data_when_running(settGui):
     """Test readGameController behavior when running."""
+
     # Just verify the method doesn't crash
     class MockGamepad:
         def read(self, a):
@@ -142,6 +145,7 @@ def test_readGameController_returns_data_when_running(settGui):
 
 def test_readGameController_stops_on_empty(settGui):
     """Test readGameController stops on empty data."""
+
     class Gamepad:
         @staticmethod
         def read(a):
@@ -242,6 +246,7 @@ def test_isNewerData_with_different_data(settGui):
 
 def test_workerGameController_with_return_early(settGui):
     """Test workerGameController returns early when no controller."""
+
     class Gamepad:
         @staticmethod
         def read(a):
@@ -350,6 +355,7 @@ def test_switchStatusGameController_already_running(settGui):
 
 def test_readGameController_returns_data_on_success(settGui):
     """Test readGameController returns data when read succeeds (lines 71-80)."""
+
     class Gamepad:
         def __init__(self):
             self.call_count = 0

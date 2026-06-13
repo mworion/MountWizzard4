@@ -302,6 +302,7 @@ def test_updateTime_displays_time(mainWindow):
 
 def test_updateStatusGUI_with_status_zero(mainWindow):
     """Test updateStatusGUI with status 0."""
+
     class OB:
         @staticmethod
         def statusText():
@@ -313,6 +314,7 @@ def test_updateStatusGUI_with_status_zero(mainWindow):
 
 def test_updateStatusGUI_displays_text(mainWindow):
     """Test updateStatusGUI displays status text."""
+
     class OB:
         @staticmethod
         def statusText():
@@ -362,9 +364,7 @@ def test_saveProfileAs_valid_config(mainWindow):
     """Test saveProfileAs with valid configuration."""
     with (
         mock.patch.object(mainWindow, "saveFile", return_value=Path("test.cfg")),
-        mock.patch.object(
-            mw4.gui.mainWindow.mainWindow, "saveConfig", return_value=True
-        ),
+        mock.patch.object(mw4.gui.mainWindow.mainWindow, "saveConfig", return_value=True),
         mock.patch.object(mainWindow.app, "storeConfig"),
         mock.patch.object(mainWindow, "storeConfig"),
     ):
@@ -376,9 +376,7 @@ def test_saveProfile_successful(mainWindow):
     with (
         mock.patch.object(mainWindow, "storeConfig"),
         mock.patch.object(mainWindow.app, "storeConfig"),
-        mock.patch.object(
-            mw4.gui.mainWindow.mainWindow, "saveConfig", return_value=True
-        ),
+        mock.patch.object(mw4.gui.mainWindow.mainWindow, "saveConfig", return_value=True),
     ):
         mainWindow.saveProfile()
 
@@ -481,6 +479,7 @@ def test_updateStatusGUI_satellite_tracking_starts(mainWindow):
         mock.patch.object(mainWindow.app, "playSound"),
         mock.patch("mw4.gui.mainWindow.mainWindow.changeStyleDynamic"),
     ):
+
         class MockOB:
             @staticmethod
             def statusText():
@@ -503,5 +502,3 @@ def test_saveProfileBase_with_empty_path(mainWindow):
     empty_path = Path("")
     mainWindow.saveProfileBase(empty_path)
     # Should return early without calling storeConfig or saveConfig
-
-

@@ -13,7 +13,6 @@
 # License APL2.0
 #
 ###########################################################
-from functools import partial
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.mountcontrol.convert import valueToFloat
@@ -37,7 +36,7 @@ class SettParkRelay(TabAddon):
 
         for i in range(0, 10):
             # Use getattr() instead of eval() to safely resolve UI widget names. (SEC-2)
-            #self.posButtons[i] = getattr(self.ui, f"posButton{i:1d}")
+            # self.posButtons[i] = getattr(self.ui, f"posButton{i:1d}")
             self.posSaveButtons[i] = getattr(self.ui, f"posSave{i:1d}")
 
             self.posTexts[i] = getattr(self.ui, f"posText{i:1d}")
@@ -46,9 +45,9 @@ class SettParkRelay(TabAddon):
 
         for index in self.posTexts:
             self.posTexts[index].editingFinished.connect(self.updateParkPosButtonText)
-        #for index in self.posButtons:
+        # for index in self.posButtons:
         #    self.posButtons[index].clicked.connect(partial(self.slewToParkPos, index))
-        #for index in self.posSaveButtons:
+        # for index in self.posSaveButtons:
         #    self.posButtons[index].clicked.connect(partial(self.saveActualPosition, index))
 
         # define lists for the entries
@@ -112,9 +111,8 @@ class SettParkRelay(TabAddon):
         # make the gui signals linked to slots
         for relayButtonText in self.relayButtonTexts:
             relayButtonText.editingFinished.connect(self.updateRelayButtonText)
-        #for button in self.relayButtons:
+        # for button in self.relayButtons:
         #    self.relayButtons[button].clicked.connect(partial(self.relayButtonPressed, button))
-
 
     def initConfig(self) -> None:
         config = self.app.config.get("SettingParkRelay", {})
@@ -132,13 +130,14 @@ class SettParkRelay(TabAddon):
             if val:
                 self.posAz[index].setValue(val)
         self.updateParkPosButtonText()
-        self.parentW.app.mainW.ui.parkMountAfterSlew.setChecked(config.get("parkMountAfterSlew", False))
+        self.parentW.app.mainW.ui.parkMountAfterSlew.setChecked(
+            config.get("parkMountAfterSlew", False)
+        )
         for button, key in zip(self.relayButtonTexts, self.relayButtonTextKeys):
             button.setText(config.get(key, ""))
         for dropDown, key in zip(self.relayDropDowns, self.relayDropDownKeys):
             dropDown.setCurrentIndex(config.get(key, 0))
         self.updateRelayButtonText()
-
 
     def storeConfig(self) -> None:
         self.app.config["SettingParkRelay"] = {}
@@ -159,7 +158,6 @@ class SettParkRelay(TabAddon):
             config[key] = button.text()
         for dropDown, key in zip(self.relayDropDowns, self.relayDropDownKeys):
             config[key] = dropDown.currentIndex()
-
 
     def setupIcons(self) -> None:
         self.parentW.wIcon(self.ui.posSave0, "download")

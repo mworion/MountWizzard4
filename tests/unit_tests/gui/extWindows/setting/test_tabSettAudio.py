@@ -157,6 +157,5 @@ def test_updateColorSet_updates_app(settAudio):
     settAudio.updateColorSet()
 
     from mw4.gui.styles.styles import Styles
+
     assert Styles.colorSet == 1
-
-

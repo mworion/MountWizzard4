@@ -356,4 +356,3 @@ def test_loadSourceUrl_online_with_old_file(function):
         function.loadSourceUrl()
         function.setAge.assert_called_once_with(0)
         function.runDownloadPopup.assert_called_once()
-

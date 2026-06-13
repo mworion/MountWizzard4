@@ -236,7 +236,7 @@ class MainWindow(MWidget):
 
     def setEnvironDeviceStats(self) -> None:
         isManual = self.ui.refracManual.isChecked()
-        if (self.app.dReg["mount"].setting.statusRefraction != 1):
+        if self.app.dReg["mount"].setting.statusRefraction != 1:
             self.app.dReg.setStat("refraction", None)
             self.ui.refractionConnected.setText("Refraction")
         elif isManual:

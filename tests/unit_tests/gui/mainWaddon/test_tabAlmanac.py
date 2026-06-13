@@ -226,5 +226,3 @@ def test_plotTwilightData_with_low_hour_values(almanac):
     result = (ts, t, e)
     # Just call the method - it will exercise the code paths
     almanac.plotTwilightData(result)
-
-

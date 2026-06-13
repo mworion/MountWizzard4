@@ -13,12 +13,8 @@
 # License APL2.0
 #
 ###########################################################
-import hid
-from mw4.base.threadUtils import mainThreadSleep
-from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.styles.styles import Styles
-from mw4.gui.utilities.qtHelpers import svg2pixmap
 from PySide6.QtMultimedia import QSoundEffect
 from typing import Any
 
@@ -36,7 +32,9 @@ class SettAudio(TabAddon):
         self.app.dReg["dome"].signals.slewed.connect(lambda: self.playSound("DomeSlew"))
         self.app.dReg["mount"].signals.slewed.connect(lambda: self.playSound("MountSlew"))
         self.app.dReg["camera"].signals.saved.connect(lambda: self.playSound("ImageSaved"))
-        self.app.dReg["plateSolve"].signals.result.connect(lambda: self.playSound("ImageSolved"))
+        self.app.dReg["plateSolve"].signals.result.connect(
+            lambda: self.playSound("ImageSolved")
+        )
         self.app.playSound.connect(self.playSound)
 
     def initConfig(self) -> None:

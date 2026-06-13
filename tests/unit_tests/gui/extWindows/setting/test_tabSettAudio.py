@@ -66,6 +66,9 @@ def settAudio(qapp):
     parentW.ui.soundImageSolved = createMockComboBox()
     parentW.ui.soundConnectionLost = createMockComboBox()
     parentW.ui.soundSatStartTracking = createMockComboBox()
+    parentW.ui.colorSet = QComboBox()
+    parentW.ui.colorSet.addItem("Dark")
+    parentW.ui.colorSet.addItem("Light")
 
     window = SettAudio(parentW)
     yield window
@@ -109,3 +112,51 @@ def test_setupAudioSignals(settAudio):
     settAudio.setupAudioSignals()
     assert "Beep" in settAudio.audioSignalsSet
     assert "Pan1" in settAudio.audioSignalsSet
+
+
+def test_storeConfig_saves_audio_settings(settAudio):
+    """Test storeConfig saves all audio UI state."""
+    settAudio.setupAudioGui()
+    settAudio.ui.soundMountSlewFinished.setCurrentIndex(1)
+    settAudio.ui.soundDomeSlewFinished.setCurrentIndex(2)
+    settAudio.ui.soundMountAlert.setCurrentIndex(1)
+    settAudio.ui.soundRunFinished.setCurrentIndex(2)
+    settAudio.ui.soundImageSaved.setCurrentIndex(1)
+    settAudio.ui.soundImageSolved.setCurrentIndex(2)
+    settAudio.ui.soundConnectionLost.setCurrentIndex(1)
+    settAudio.ui.soundSatStartTracking.setCurrentIndex(2)
+
+    settAudio.storeConfig()
+
+    config = settAudio.app.config["SettingAudio"]
+    assert config["soundMountSlewFinished"] == 1
+    assert config["soundDomeSlewFinished"] == 2
+    assert config["soundMountAlert"] == 1
+
+
+def test_setupAudioGui_populates_dropdowns(settAudio):
+    """Test setupAudioGui initializes all audio dropdowns."""
+    # Create fresh combo boxes to test setupAudioGui
+    fresh_combo = QComboBox()
+    original_soundMountSlewFinished = settAudio.ui.soundMountSlewFinished
+    settAudio.ui.soundMountSlewFinished = fresh_combo
+    settAudio.ui.soundMountSlewFinished.clear()
+
+    settAudio.setupAudioGui()
+
+    assert settAudio.ui.soundMountSlewFinished.count() > 0
+    assert settAudio.ui.soundMountSlewFinished.itemText(0) == "None"
+
+    # Restore original
+    settAudio.ui.soundMountSlewFinished = original_soundMountSlewFinished
+
+
+def test_updateColorSet_updates_app(settAudio):
+    """Test updateColorSet updates color set."""
+    settAudio.ui.colorSet.setCurrentIndex(1)
+    settAudio.updateColorSet()
+
+    from mw4.gui.styles.styles import Styles
+    assert Styles.colorSet == 1
+
+

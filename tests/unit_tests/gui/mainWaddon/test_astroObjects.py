@@ -154,14 +154,14 @@ def test_runDownloadPopup_2(function):
 
 
 def test_checkFileAgeOK_1(function):
-    function.window.ui.ageDatabases.setValue(3)
+    function.app.config["SettingUpdate"] = {"ageDatabases": 3}
     with mock.patch.object(Path, "is_file", return_value=False):
         val = function.checkFileAgeOK(Path())
         assert not val
 
 
 def test_checkFileAgeOK_2(function):
-    function.window.ui.ageDatabases.setValue(3)
+    function.app.config["SettingUpdate"] = {"ageDatabases": 3}
     with (
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(function.loader, "days_old", return_value=1),
@@ -171,7 +171,7 @@ def test_checkFileAgeOK_2(function):
 
 
 def test_checkFileAgeOK_3(function):
-    function.window.ui.ageDatabases.setValue(3)
+    function.app.config["SettingUpdate"] = {"ageDatabases": 3}
     with (
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(function.loader, "days_old", return_value=5),

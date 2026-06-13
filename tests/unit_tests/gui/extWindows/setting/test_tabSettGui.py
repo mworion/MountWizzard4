@@ -319,3 +319,32 @@ def test_populateGameControllerList_starts_valid_controller(settGui):
         mock.patch.object(settGui, "startGameController"),
     ):
         settGui.populateGameControllerList()
+
+
+def test_switchStatusGameController_enabled(settGui):
+    """Test switchStatusGameController enables controller when checked."""
+    settGui.ui.gameControllerGroup.setChecked(True)
+    settGui.gameControllerRunning = False
+    with mock.patch.object(settGui, "populateGameControllerList"):
+        settGui.switchStatusGameController()
+
+
+def test_switchStatusGameController_disabled(settGui):
+    """Test switchStatusGameController disables controller when unchecked."""
+    settGui.ui.gameControllerGroup.setChecked(False)
+    settGui.gameControllerRunning = True
+    settGui.switchStatusGameController()
+
+    assert settGui.gameControllerRunning is False
+
+
+def test_switchStatusGameController_already_running(settGui):
+    """Test switchStatusGameController skips when already running."""
+    settGui.ui.gameControllerGroup.setChecked(True)
+    settGui.gameControllerRunning = True
+    with mock.patch.object(settGui, "populateGameControllerList") as mock_pop:
+        settGui.switchStatusGameController()
+
+        mock_pop.assert_not_called()
+
+

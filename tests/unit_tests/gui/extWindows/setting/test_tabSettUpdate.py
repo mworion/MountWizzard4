@@ -57,6 +57,8 @@ def settUpdate(qapp):
     parentW.ui.loglevelTrace = createMockCheckbox(defaultValue=False)
     parentW.ui.isOnline = createMockCheckbox(defaultValue=False)
     parentW.ui.ageDatabases = createMockSpinBox(defaultValue=1)
+    parentW.ui.unitTimeUTC = createMockCheckbox(defaultValue=True)
+    parentW.ui.unitTimeLocal = createMockCheckbox(defaultValue=False)
 
     window = SettUpdate(parentW)
     yield window
@@ -192,4 +194,64 @@ def test_setLoggingLevel_priority_info_over_trace(settUpdate):
 
     val = logging.getLogger("MW4").getEffectiveLevel()
     assert val == 20
+
+
+def test_setTimeBaseUTC_sets_config(settUpdate):
+    """Test setTimeBaseUTC sets config and emits signal."""
+    settUpdate.setTimeBaseUTC()
+
+    assert settUpdate.app.config["unitTimeUTC"] is True
+
+
+def test_setTimeBaseLocal_sets_config(settUpdate):
+    """Test setTimeBaseLocal sets config and emits signal."""
+    settUpdate.setTimeBaseLocal()
+
+    assert settUpdate.app.config["unitTimeUTC"] is False
+
+
+def test_storeConfig_with_timebase(settUpdate):
+    """Test storeConfig saves timebase settings."""
+    settUpdate.ui.loglevelInfo.setChecked(False)
+    settUpdate.ui.loglevelDebug.setChecked(True)
+    settUpdate.ui.loglevelTrace.setChecked(False)
+    settUpdate.ui.isOnline.setChecked(False)
+    settUpdate.ui.ageDatabases.setValue(3)
+    settUpdate.ui.unitTimeUTC.setChecked(True)
+    settUpdate.ui.unitTimeLocal.setChecked(False)
+
+    settUpdate.storeConfig()
+
+    config = settUpdate.app.config["SettingUpdate"]
+    assert config["unitTimeUTC"] is True
+    assert config["unitTimeLocal"] is False
+
+
+def test_setOnlineMode_emits_activated_message(settUpdate):
+    """Test setOnlineMode sets isOnline when activated."""
+    settUpdate.ui.isOnline.setChecked(True)
+    settUpdate.setOnlineMode()
+
+    assert settUpdate.app.isOnline is True
+
+
+def test_setOnlineMode_emits_deactivated_message(settUpdate):
+    """Test setOnlineMode clears isOnline when deactivated."""
+    settUpdate.ui.isOnline.setChecked(False)
+    settUpdate.setOnlineMode()
+
+    assert settUpdate.app.isOnline is False
+
+
+def test_initConfig_calls_setup_methods(settUpdate):
+    """Test initConfig calls all setup methods."""
+    settUpdate.app.config["SettingUpdate"] = {}
+    with mock.patch.object(settUpdate, "setLoggingLevel"), \
+         mock.patch.object(settUpdate, "setOnlineMode"), \
+         mock.patch.object(settUpdate, "setupIERS"):
+        settUpdate.initConfig()
+
+        assert settUpdate.ui.loglevelInfo.isChecked() is False
+        assert settUpdate.ui.loglevelDebug.isChecked() is True
+
 

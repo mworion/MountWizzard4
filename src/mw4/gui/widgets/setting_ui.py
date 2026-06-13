@@ -1476,9 +1476,10 @@ class Ui_SettingDialog(object):
         self.tabWidget.addTab(self.ParkRelay, "")
         self.Gui = QWidget()
         self.Gui.setObjectName(u"Gui")
+        self.Gui.setEnabled(True)
         self.GroupGuiAddOns = QGroupBox(self.Gui)
         self.GroupGuiAddOns.setObjectName(u"GroupGuiAddOns")
-        self.GroupGuiAddOns.setGeometry(QRect(10, 5, 366, 91))
+        self.GroupGuiAddOns.setGeometry(QRect(10, 10, 366, 66))
         self.GroupGuiAddOns.setProperty(u"large", True)
         self.label_85 = QLabel(self.GroupGuiAddOns)
         self.label_85.setObjectName(u"label_85")
@@ -1493,7 +1494,7 @@ class Ui_SettingDialog(object):
         self.gameControllerGroup = QGroupBox(self.Gui)
         self.gameControllerGroup.setObjectName(u"gameControllerGroup")
         self.gameControllerGroup.setEnabled(True)
-        self.gameControllerGroup.setGeometry(QRect(415, 390, 366, 116))
+        self.gameControllerGroup.setGeometry(QRect(10, 115, 366, 116))
         self.gameControllerGroup.setCheckable(True)
         self.gameControllerGroup.setProperty(u"large", True)
         self.gameControllerList = QComboBox(self.gameControllerGroup)
@@ -1655,7 +1656,7 @@ class Ui_SettingDialog(object):
 
         self.retranslateUi(SettingDialog)
 
-        self.tabWidget.setCurrentIndex(3)
+        self.tabWidget.setCurrentIndex(4)
         self.tabDomeExplain.setCurrentIndex(2)
 
 

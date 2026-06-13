@@ -99,7 +99,7 @@
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>4</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -6122,6 +6122,9 @@
       </widget>
      </widget>
      <widget class="QWidget" name="Gui">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <attribute name="title">
        <string>User Interface</string>
       </attribute>
@@ -6129,9 +6132,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>5</y>
+         <y>10</y>
          <width>366</width>
-         <height>91</height>
+         <height>66</height>
         </rect>
        </property>
        <property name="title">
@@ -6193,8 +6196,8 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>415</x>
-         <y>390</y>
+         <x>10</x>
+         <y>115</y>
          <width>366</width>
          <height>116</height>
         </rect>

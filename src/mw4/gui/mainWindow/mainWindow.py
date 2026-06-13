@@ -25,6 +25,7 @@ from mw4.gui.utilities.qtHelpers import (
     getTabAndIndex,
     getTabIndex,
     setTabAndIndex,
+    svg2pixmap,
 )
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
@@ -47,7 +48,6 @@ class MainWindow(MWidget):
         self.externalWindows = ExternalWindows(self)
         self.mainWindowAddons = MainWindowAddons(self)
         self.satStatus: bool = False
-        self.gameControllerRunning: bool = False
         self.deviceStatGui: dict = {
             "dome": self.ui.domeConnected,
             "camera": self.ui.cameraConnected,
@@ -147,6 +147,17 @@ class MainWindow(MWidget):
         self.wIcon(self.ui.setSolarTracking, "solar")
         self.wIcon(self.ui.park, "park")
         self.wIcon(self.ui.setting, "cogs")
+        pixmap = svg2pixmap("assets/icon/controller.svg", self.M_PRIM)
+        self.ui.controller1.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller2.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller3.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller4.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller5.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller1.setEnabled(False)
+        self.ui.controller2.setEnabled(False)
+        self.ui.controller3.setEnabled(False)
+        self.ui.controller4.setEnabled(False)
+        self.ui.controller5.setEnabled(False)
         self.mainWindowAddons.setupIcons()
 
     def updateColorSet(self) -> None:
@@ -155,10 +166,10 @@ class MainWindow(MWidget):
         self.mainWindowAddons.updateColorSet()
 
     def closeEvent(self, closeEvent) -> None:
-        self.gameControllerRunning = False
+        self.app.timeMgr.stop()
         changeStyleDynamic(self.ui.pauseModel, "pause", False)
         self.externalWindows.closeExtendedWindows()
-        self.threadPool.waitForDone(10000)
+        self.threadPool.waitForDone(5000)
         super().closeEvent(closeEvent)
         self.app.quit()
 
@@ -225,7 +236,7 @@ class MainWindow(MWidget):
 
     def setEnvironDeviceStats(self) -> None:
         isManual = self.ui.refracManual.isChecked()
-        if not (self.app.dReg["mount"].setting.statusRefraction == 1):
+        if (self.app.dReg["mount"].setting.statusRefraction != 1):
             self.app.dReg.setStat("refraction", None)
             self.ui.refractionConnected.setText("Refraction")
         elif isManual:
@@ -261,8 +272,7 @@ class MainWindow(MWidget):
     def updateCameraStatus(self, text: str) -> None:
         self.ui.cameraText.setText(text)
 
-    def updateControllerStatus(self) -> None:
-        gcStatus = self.gameControllerRunning
+    def updateControllerStatus(self, gcStatus: bool) -> None:
         self.ui.controller1.setEnabled(gcStatus)
         self.ui.controller2.setEnabled(gcStatus)
         self.ui.controller3.setEnabled(gcStatus)

@@ -116,6 +116,7 @@ class App(QObject):
     gameDirection = Signal(object)
     gameSL = Signal(object, object)
     gameSR = Signal(object, object)
+    gameControllerIsRunning = Signal(bool)
     onlineModeChanged = Signal()
     timebaseChanged = Signal()
 

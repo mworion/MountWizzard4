@@ -28,6 +28,7 @@ class DownloadPopup(MWidget):
     signalProgress = Signal(object)
     signalStatus = Signal(object)
     signalProgressBarColor = Signal(object)
+    TIMEOUT_SOURCE = 5
 
     def __init__(self, parentWidget: MWidget, url: str, dest: Path, unzip: bool = False):
         super().__init__()
@@ -69,7 +70,7 @@ class DownloadPopup(MWidget):
         self.ui.statusText.setText(statusText)
 
     def getFileFromUrl(self, url: str, dest: Path) -> bool:
-        r = requests.get(url, stream=True, timeout=3)
+        r = requests.get(url, stream=True, timeout=self.TIMEOUT_SOURCE)
         totalSizeBytes = int(r.headers.get("content-length", 1))
         if r.status_code != 200:
             return False

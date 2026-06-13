@@ -44,7 +44,8 @@ class MountWizzard4(QObject):
     showImage = Signal(object)
     showAnalyse = Signal(object)
     timebaseChanged = Signal()
-    onlineModeChanged= Signal()
+    onlineModeChanged = Signal()
+    gameControllerIsRunning = Signal(bool)
     # --- Hemisphere / build point signals ---
     redrawHemisphere = Signal()
     redrawHorizon = Signal()

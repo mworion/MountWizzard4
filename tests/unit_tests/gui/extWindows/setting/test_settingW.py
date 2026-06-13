@@ -117,8 +117,7 @@ def test_window_has_all_tabs(settingWindow):
     assert hasattr(settingWindow, "tabSettDevice")
     assert hasattr(settingWindow, "tabSettMount")
     assert hasattr(settingWindow, "tabSettDome")
-    assert hasattr(settingWindow, "tabSettMisc")
-    assert hasattr(settingWindow, "tabSettParkPos")
-    assert hasattr(settingWindow, "tabSettRelay")
+    assert hasattr(settingWindow, "tabSettGui")
+    assert hasattr(settingWindow, "tabSettAudio")
     assert hasattr(settingWindow, "tabSettUpdate")
 

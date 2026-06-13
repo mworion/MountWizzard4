@@ -14,6 +14,7 @@
 #
 ###########################################################
 import logging
+from mw4.gui.extWindows.setting.tabSettAudio import SettAudio
 from mw4.gui.extWindows.setting.tabSettDevice import SettDevice
 from mw4.gui.extWindows.setting.tabSettDome import SettDome
 from mw4.gui.extWindows.setting.tabSettGui import SettGui
@@ -40,6 +41,7 @@ class SettingWindow(MWidget):
         self.tabSettDome = SettDome(self)
         self.tabSettUpdate = SettUpdate(self)
         self.tabSettGui = SettGui(self)
+        self.tabSettAudio = SettAudio(self)
         #self.tabSettParkPos = SettParkRelay(self)
         self.app.colorChange.connect(self.colorChange)
         self.setupIcons()
@@ -52,6 +54,7 @@ class SettingWindow(MWidget):
         self.tabSettDome.initConfig()
         self.tabSettUpdate.initConfig()
         self.tabSettGui.initConfig()
+        self.tabSettAudio.initConfig()
         #self.tabSettParkRelay.initConfig()
 
     def storeConfig(self) -> None:
@@ -65,6 +68,7 @@ class SettingWindow(MWidget):
         self.tabSettMount.storeConfig()
         self.tabSettDome.storeConfig()
         self.tabSettGui.storeConfig()
+        self.tabSettAudio.storeConfig()
         self.tabSettUpdate.storeConfig()
         #self.tabSettParkRelay.storeConfig()
 

@@ -15,7 +15,7 @@
 ###########################################################
 
 import pytest
-from mw4.gui.extWindows.setting.tabSettParkPos import SettParkPos
+from mw4.gui.extWindows.setting.tabSettParkRelay import SettParkPos
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QDoubleSpinBox, QLineEdit

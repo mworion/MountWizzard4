@@ -107,7 +107,8 @@ class AstroObjects:
             return False
         daysOld = self.loader.days_old(fileName)
         self.setAge(daysOld)
-        return daysOld < 1 # self.window.ui.ageDatabases.value()
+        cfg = self.app.config.get("SettingUpdate", {})
+        return daysOld < cfg.get("ageDatabases", 1)
 
     def loadSourceUrl(self) -> None:
         entry = self.uiSourceList.currentText()

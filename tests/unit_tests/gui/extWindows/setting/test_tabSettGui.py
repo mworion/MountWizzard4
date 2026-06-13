@@ -17,7 +17,7 @@
 import contextlib
 import hid
 import pytest
-from mw4.gui.extWindows.setting.tabSettMisc import SettMisc
+from mw4.gui.extWindows.setting.tabSettGui import SettMisc
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtMultimedia import QSoundEffect

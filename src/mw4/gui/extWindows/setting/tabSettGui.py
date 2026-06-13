@@ -18,12 +18,12 @@ from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.styles.styles import Styles
-from mw4.gui.utilities.qtHelpers import getTabIndex, svg2pixmap
+from mw4.gui.utilities.qtHelpers import svg2pixmap
 from PySide6.QtMultimedia import QSoundEffect
 from typing import Any
 
 
-class SettMisc(TabAddon):
+class SettGui(TabAddon):
     def __init__(self, parentW: Any) -> None:
         self.parentW = parentW
         self.app = parentW.app
@@ -35,8 +35,6 @@ class SettMisc(TabAddon):
         self.gameControllerList = {}
         self.app.update3s.connect(self.populateGameControllerList)
         self.ui.gameControllerGroup.clicked.connect(self.populateGameControllerList)
-        self.ui.unitTimeUTC.clicked.connect(self.setTimeBaseUTC)
-        self.ui.unitTimeLocal.clicked.connect(self.setTimeBaseLocal)
         self.ui.colorSet.currentIndexChanged.connect(self.updateColorSet)
         self.setupAudioSignals()
         self.app.dReg["mount"].signals.alert.connect(lambda: self.playSound("MountAlert"))
@@ -49,12 +47,10 @@ class SettMisc(TabAddon):
         self.app.playSound.connect(self.playSound)
 
     def initConfig(self) -> None:
-        config = self.app.config.get("SettingMisc", {})
+        config = self.app.config.get("SettingGui", {})
         colSet = config.get("colorSet", 0)
         self.ui.colorSet.setCurrentIndex(colSet)
         self.setupAudioGui()
-        self.ui.unitTimeUTC.setChecked(config.get("unitTimeUTC", True))
-        self.ui.unitTimeLocal.setChecked(config.get("unitTimeLocal", False))
         self.ui.soundMountSlewFinished.setCurrentIndex(config.get("soundMountSlewFinished", 0))
         self.ui.soundDomeSlewFinished.setCurrentIndex(config.get("soundDomeSlewFinished", 0))
         self.ui.soundMountAlert.setCurrentIndex(config.get("soundMountAlert", 0))
@@ -68,11 +64,9 @@ class SettMisc(TabAddon):
         self.populateGameControllerList()
 
     def storeConfig(self) -> None:
-        self.app.config["SettingMisc"] = {}
-        config = self.app.config["SettingMisc"]
+        self.app.config["SettingGui"] = {}
+        config = self.app.config["SettingGui"]
         config["colorSet"] = self.ui.colorSet.currentIndex()
-        config["unitTimeUTC"] = self.ui.unitTimeUTC.isChecked()
-        config["unitTimeLocal"] = self.ui.unitTimeLocal.isChecked()
         config["soundMountSlewFinished"] = self.ui.soundMountSlewFinished.currentIndex()
         config["soundDomeSlewFinished"] = self.ui.soundDomeSlewFinished.currentIndex()
         config["soundMountAlert"] = self.ui.soundMountAlert.currentIndex()
@@ -86,18 +80,18 @@ class SettMisc(TabAddon):
 
     def setupIcons(self) -> None:
         pixmap = svg2pixmap("assets/icon/controller.svg", self.parentW.M_PRIM)
-        self.ui.controller1.setPixmap(pixmap.scaled(16, 16))
-        self.ui.controller2.setPixmap(pixmap.scaled(16, 16))
-        self.ui.controller3.setPixmap(pixmap.scaled(16, 16))
-        self.ui.controller4.setPixmap(pixmap.scaled(16, 16))
-        self.ui.controller5.setPixmap(pixmap.scaled(16, 16))
+        self.parentW.app.mainW.ui.controller1.setPixmap(pixmap.scaled(16, 16))
+        self.parentW.app.mainW.ui.controller2.setPixmap(pixmap.scaled(16, 16))
+        self.parentW.app.mainW.ui.controller3.setPixmap(pixmap.scaled(16, 16))
+        self.parentW.app.mainW.ui.controller4.setPixmap(pixmap.scaled(16, 16))
+        self.parentW.app.mainW.ui.controller5.setPixmap(pixmap.scaled(16, 16))
         pixmap = svg2pixmap("assets/icon/controllerNew.svg", self.parentW.M_PRIM)
         self.ui.controllerOverview.setPixmap(pixmap)
-        self.ui.controller1.setEnabled(False)
-        self.ui.controller2.setEnabled(False)
-        self.ui.controller3.setEnabled(False)
-        self.ui.controller4.setEnabled(False)
-        self.ui.controller5.setEnabled(False)
+        self.parentW.app.mainW.ui.controller1.setEnabled(False)
+        self.parentW.app.mainW.ui.controller2.setEnabled(False)
+        self.parentW.app.mainW.ui.controller3.setEnabled(False)
+        self.parentW.app.mainW.ui.controller4.setEnabled(False)
+        self.parentW.app.mainW.ui.controller5.setEnabled(False)
 
     def sendGameControllerSignals(self, act: list, old: list) -> None:
         if act[0] != old[0]:
@@ -263,22 +257,8 @@ class SettMisc(TabAddon):
         if sound in self.audioSignalsSet:
             QSoundEffect.play(self.audioSignalsSet[sound])
 
-    def minimizeGUI(self) -> None:
-        for tab in self.uiTabs:
-            isVisible = self.uiTabs[tab]["cb"].isChecked()
-            tabIndex = getTabIndex(self.uiTabs[tab]["tab"], tab)
-            self.uiTabs[tab]["tab"].setTabVisible(tabIndex, isVisible)
-
-    def setTimeBaseUTC(self) -> None:
-        self.app.config["unitTimeUTC"] = True
-        self.app.timebaseChanged.emit()
-
-    def setTimeBaseLocal(self) -> None:
-        self.app.config["unitTimeUTC"] = False
-        self.app.timebaseChanged.emit()
-
     def updateColorSet(self) -> None:
         Styles.colorSet = self.ui.colorSet.currentIndex()
-        self.setStyleSheet(self.mw4Style)
+        self.parentW.setStyleSheet(self.parentW.mw4Style)
         self.setupIcons()
         self.app.colorChange.emit()

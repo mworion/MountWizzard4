@@ -99,7 +99,7 @@
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -3610,9 +3610,9 @@
        </widget>
       </widget>
      </widget>
-     <widget class="QWidget" name="Park">
+     <widget class="QWidget" name="ParkRelay">
       <attribute name="title">
-       <string>Park</string>
+       <string>Park/Relay</string>
       </attribute>
       <widget class="QGroupBox" name="GroupParkPositionsSettings">
        <property name="geometry">
@@ -5500,15 +5500,10 @@
         </property>
        </widget>
       </widget>
-     </widget>
-     <widget class="QWidget" name="Relais">
-      <attribute name="title">
-       <string>Relais</string>
-      </attribute>
       <widget class="QGroupBox" name="GroupRelaySettings">
        <property name="geometry">
         <rect>
-         <x>0</x>
+         <x>415</x>
          <y>5</y>
          <width>366</width>
          <height>371</height>
@@ -6192,93 +6187,6 @@
         </item>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="automateGroup_2">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>105</y>
-         <width>366</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The timing speed changes waiting times before a next action will take place. The faster you choose, the faster executions will happen. Please check, how fast your system response before getting a timeout.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="title">
-        <string>Time units</string>
-       </property>
-       <property name="large" stdset="0">
-        <bool>true</bool>
-       </property>
-       <widget class="QLabel" name="label_163">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>166</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Sat, Environ and Almanac</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="unitTimeUTC">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>20</y>
-          <width>86</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches time units in satellite and almanac to UTC times&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>UTC</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="unitTimeLocal">
-        <property name="geometry">
-         <rect>
-          <x>275</x>
-          <y>20</y>
-          <width>66</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches time units in satellite and almanac to local times&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Local</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </widget>
       <widget class="QGroupBox" name="gameControllerGroup">
        <property name="enabled">
         <bool>true</bool>
@@ -6636,8 +6544,8 @@
       <widget class="QGroupBox" name="LoglevelGroup">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>105</y>
+         <x>410</x>
+         <y>5</y>
          <width>366</width>
          <height>46</height>
         </rect>
@@ -6840,6 +6748,93 @@
         </property>
         <property name="text">
          <string>days</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="automateGroup_2">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>95</y>
+         <width>366</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The timing speed changes waiting times before a next action will take place. The faster you choose, the faster executions will happen. Please check, how fast your system response before getting a timeout.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="title">
+        <string>Time units</string>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QLabel" name="label_163">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>166</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Sat, Environ and Almanac</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="unitTimeUTC">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>20</y>
+          <width>86</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches time units in satellite and almanac to UTC times&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>UTC</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="unitTimeLocal">
+        <property name="geometry">
+         <rect>
+          <x>275</x>
+          <y>20</y>
+          <width>66</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches time units in satellite and almanac to local times&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Local</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
         </property>
        </widget>
       </widget>

@@ -99,7 +99,7 @@
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -3624,7 +3624,7 @@
         </rect>
        </property>
        <property name="title">
-        <string>Park position button setup</string>
+        <string>Park position setup</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -3632,7 +3632,7 @@
        <widget class="QLabel" name="label_243">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>225</x>
           <y>200</y>
           <width>16</width>
           <height>21</height>
@@ -3655,7 +3655,7 @@
        <widget class="QLabel" name="label_262">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>305</x>
           <y>260</y>
           <width>16</width>
           <height>21</height>
@@ -3678,7 +3678,7 @@
        <widget class="QLabel" name="label_250">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>305</x>
           <y>80</y>
           <width>16</width>
           <height>21</height>
@@ -3701,7 +3701,7 @@
        <widget class="QLabel" name="label_244">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>305</x>
           <y>50</y>
           <width>16</width>
           <height>21</height>
@@ -3721,10 +3721,10 @@
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posText4">
+       <widget class="QLineEdit" name="parkText4">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>30</x>
           <y>170</y>
           <width>121</width>
           <height>21</height>
@@ -3765,7 +3765,7 @@
        <widget class="QLabel" name="label_101">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>5</x>
           <y>230</y>
           <width>21</width>
           <height>21</height>
@@ -3781,31 +3781,14 @@
         <property name="text">
          <string>7</string>
         </property>
-       </widget>
-       <widget class="QLabel" name="label_92">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>25</y>
-          <width>56</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Button</string>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posText2">
+       <widget class="QLineEdit" name="parkText2">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>30</x>
           <y>110</y>
           <width>121</width>
           <height>21</height>
@@ -3846,7 +3829,7 @@
        <widget class="QLabel" name="label_93">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>225</x>
           <y>50</y>
           <width>16</width>
           <height>21</height>
@@ -3866,10 +3849,10 @@
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posText0">
+       <widget class="QLineEdit" name="parkText0">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>30</x>
           <y>50</y>
           <width>121</width>
           <height>21</height>
@@ -3910,7 +3893,7 @@
        <widget class="QLabel" name="label_257">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>225</x>
           <y>230</y>
           <width>16</width>
           <height>21</height>
@@ -3933,7 +3916,7 @@
        <widget class="QLabel" name="label_261">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>225</x>
           <y>260</y>
           <width>16</width>
           <height>21</height>
@@ -3953,10 +3936,10 @@
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posText3">
+       <widget class="QLineEdit" name="parkText3">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>30</x>
           <y>140</y>
           <width>121</width>
           <height>21</height>
@@ -4014,10 +3997,10 @@
          <string>Azimuth</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posText5">
+       <widget class="QLineEdit" name="parkText5">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>30</x>
           <y>200</y>
           <width>121</width>
           <height>21</height>
@@ -4058,7 +4041,7 @@
        <widget class="QLabel" name="label_47">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>5</x>
           <y>140</y>
           <width>21</width>
           <height>21</height>
@@ -4074,11 +4057,14 @@
         <property name="text">
          <string>4</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
        </widget>
        <widget class="QLabel" name="label_249">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>305</x>
           <y>140</y>
           <width>16</width>
           <height>21</height>
@@ -4101,7 +4087,7 @@
        <widget class="QLabel" name="label_103">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>5</x>
           <y>260</y>
           <width>21</width>
           <height>21</height>
@@ -4117,11 +4103,14 @@
         <property name="text">
          <string>8</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
        </widget>
        <widget class="QLabel" name="label_247">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>305</x>
           <y>170</y>
           <width>16</width>
           <height>21</height>
@@ -4144,7 +4133,7 @@
        <widget class="QLabel" name="label_131">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>225</x>
           <y>170</y>
           <width>16</width>
           <height>21</height>
@@ -4167,7 +4156,7 @@
        <widget class="QLabel" name="label_258">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>305</x>
           <y>230</y>
           <width>16</width>
           <height>21</height>
@@ -4190,7 +4179,7 @@
        <widget class="QLabel" name="label_50">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>5</x>
           <y>170</y>
           <width>21</width>
           <height>21</height>
@@ -4206,11 +4195,14 @@
         <property name="text">
          <string>5</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
        </widget>
        <widget class="QLabel" name="label_209">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>225</x>
           <y>140</y>
           <width>16</width>
           <height>21</height>
@@ -4230,10 +4222,10 @@
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posText7">
+       <widget class="QLineEdit" name="parkText7">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>30</x>
           <y>260</y>
           <width>121</width>
           <height>21</height>
@@ -4274,7 +4266,7 @@
        <widget class="QLabel" name="label_97">
         <property name="geometry">
          <rect>
-          <x>55</x>
+          <x>30</x>
           <y>25</y>
           <width>86</width>
           <height>16</height>
@@ -4294,7 +4286,7 @@
        <widget class="QLabel" name="label_246">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>225</x>
           <y>110</y>
           <width>16</width>
           <height>21</height>
@@ -4317,7 +4309,7 @@
        <widget class="QLabel" name="label_251">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>305</x>
           <y>200</y>
           <width>16</width>
           <height>21</height>
@@ -4337,10 +4329,10 @@
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posText1">
+       <widget class="QLineEdit" name="parkText1">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>30</x>
           <y>80</y>
           <width>121</width>
           <height>21</height>
@@ -4381,7 +4373,7 @@
        <widget class="QLabel" name="label_2">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>5</x>
           <y>80</y>
           <width>21</width>
           <height>21</height>
@@ -4397,11 +4389,14 @@
         <property name="text">
          <string>2</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
        </widget>
        <widget class="QLabel" name="label_245">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>225</x>
           <y>80</y>
           <width>16</width>
           <height>21</height>
@@ -4424,7 +4419,7 @@
        <widget class="QLabel" name="label_95">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>5</x>
           <y>200</y>
           <width>21</width>
           <height>21</height>
@@ -4440,11 +4435,14 @@
         <property name="text">
          <string>6</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
        </widget>
        <widget class="QLabel" name="label_44">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>5</x>
           <y>110</y>
           <width>21</width>
           <height>21</height>
@@ -4459,6 +4457,9 @@
         </property>
         <property name="text">
          <string>3</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
        <widget class="QLabel" name="label_94">
@@ -4484,7 +4485,7 @@
        <widget class="QLabel" name="label_248">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>305</x>
           <y>110</y>
           <width>16</width>
           <height>21</height>
@@ -4504,10 +4505,10 @@
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posText6">
+       <widget class="QLineEdit" name="parkText6">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>30</x>
           <y>230</y>
           <width>121</width>
           <height>21</height>
@@ -4548,7 +4549,7 @@
        <widget class="QLabel" name="label_22">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>5</x>
           <y>50</y>
           <width>21</width>
           <height>21</height>
@@ -4564,13 +4565,16 @@
         <property name="text">
          <string>1</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
        </widget>
-       <widget class="QPushButton" name="posSave0">
+       <widget class="QPushButton" name="parkSave0">
         <property name="geometry">
          <rect>
-          <x>330</x>
+          <x>325</x>
           <y>50</y>
-          <width>46</width>
+          <width>51</width>
           <height>21</height>
          </rect>
         </property>
@@ -4581,12 +4585,12 @@
          <string>Fill</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="posSave1">
+       <widget class="QPushButton" name="parkSave1">
         <property name="geometry">
          <rect>
-          <x>330</x>
+          <x>325</x>
           <y>80</y>
-          <width>46</width>
+          <width>51</width>
           <height>21</height>
          </rect>
         </property>
@@ -4597,12 +4601,12 @@
          <string>Fill</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="posSave2">
+       <widget class="QPushButton" name="parkSave2">
         <property name="geometry">
          <rect>
-          <x>330</x>
+          <x>325</x>
           <y>110</y>
-          <width>46</width>
+          <width>51</width>
           <height>21</height>
          </rect>
         </property>
@@ -4613,12 +4617,12 @@
          <string>Fill</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="posSave3">
+       <widget class="QPushButton" name="parkSave3">
         <property name="geometry">
          <rect>
-          <x>330</x>
+          <x>325</x>
           <y>140</y>
-          <width>46</width>
+          <width>51</width>
           <height>21</height>
          </rect>
         </property>
@@ -4629,12 +4633,12 @@
          <string>Fill</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="posSave4">
+       <widget class="QPushButton" name="parkSave4">
         <property name="geometry">
          <rect>
-          <x>330</x>
+          <x>325</x>
           <y>170</y>
-          <width>46</width>
+          <width>51</width>
           <height>21</height>
          </rect>
         </property>
@@ -4645,12 +4649,12 @@
          <string>Fill</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="posSave5">
+       <widget class="QPushButton" name="parkSave5">
         <property name="geometry">
          <rect>
-          <x>330</x>
+          <x>325</x>
           <y>200</y>
-          <width>46</width>
+          <width>51</width>
           <height>21</height>
          </rect>
         </property>
@@ -4661,12 +4665,12 @@
          <string>Fill</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="posSave6">
+       <widget class="QPushButton" name="parkSave6">
         <property name="geometry">
          <rect>
-          <x>330</x>
+          <x>325</x>
           <y>230</y>
-          <width>46</width>
+          <width>51</width>
           <height>21</height>
          </rect>
         </property>
@@ -4677,12 +4681,12 @@
          <string>Fill</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="posSave7">
+       <widget class="QPushButton" name="parkSave7">
         <property name="geometry">
          <rect>
-          <x>330</x>
+          <x>325</x>
           <y>260</y>
-          <width>46</width>
+          <width>51</width>
           <height>21</height>
          </rect>
         </property>
@@ -4696,7 +4700,7 @@
        <widget class="QLabel" name="label_127">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>5</x>
           <y>290</y>
           <width>21</width>
           <height>21</height>
@@ -4712,11 +4716,14 @@
         <property name="text">
          <string>9</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
        </widget>
        <widget class="QLabel" name="label_128">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>5</x>
           <y>320</y>
           <width>21</width>
           <height>21</height>
@@ -4732,11 +4739,14 @@
         <property name="text">
          <string>10</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
        </widget>
-       <widget class="QLineEdit" name="posText8">
+       <widget class="QLineEdit" name="parkText8">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>30</x>
           <y>290</y>
           <width>121</width>
           <height>21</height>
@@ -4774,10 +4784,10 @@
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="posText9">
+       <widget class="QLineEdit" name="parkText9">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>30</x>
           <y>320</y>
           <width>121</width>
           <height>21</height>
@@ -4818,7 +4828,7 @@
        <widget class="QLabel" name="label_263">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>305</x>
           <y>290</y>
           <width>16</width>
           <height>21</height>
@@ -4841,7 +4851,7 @@
        <widget class="QLabel" name="label_264">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>225</x>
           <y>290</y>
           <width>16</width>
           <height>21</height>
@@ -4861,12 +4871,12 @@
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QPushButton" name="posSave8">
+       <widget class="QPushButton" name="parkSave8">
         <property name="geometry">
          <rect>
-          <x>330</x>
+          <x>325</x>
           <y>290</y>
-          <width>46</width>
+          <width>51</width>
           <height>21</height>
          </rect>
         </property>
@@ -4880,7 +4890,7 @@
        <widget class="QLabel" name="label_265">
         <property name="geometry">
          <rect>
-          <x>310</x>
+          <x>305</x>
           <y>320</y>
           <width>16</width>
           <height>21</height>
@@ -4903,7 +4913,7 @@
        <widget class="QLabel" name="label_267">
         <property name="geometry">
          <rect>
-          <x>230</x>
+          <x>225</x>
           <y>320</y>
           <width>16</width>
           <height>21</height>
@@ -4923,12 +4933,12 @@
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QPushButton" name="posSave9">
+       <widget class="QPushButton" name="parkSave9">
         <property name="geometry">
          <rect>
-          <x>330</x>
+          <x>325</x>
           <y>320</y>
-          <width>46</width>
+          <width>51</width>
           <height>21</height>
          </rect>
         </property>
@@ -4939,10 +4949,10 @@
          <string>Fill</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAlt0">
+       <widget class="QDoubleSpinBox" name="parkAlt0">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>165</x>
           <y>50</y>
           <width>56</width>
           <height>21</height>
@@ -4967,10 +4977,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAz0">
+       <widget class="QDoubleSpinBox" name="parkAz0">
         <property name="geometry">
          <rect>
-          <x>250</x>
+          <x>245</x>
           <y>50</y>
           <width>56</width>
           <height>21</height>
@@ -4995,10 +5005,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAz1">
+       <widget class="QDoubleSpinBox" name="parkAz1">
         <property name="geometry">
          <rect>
-          <x>250</x>
+          <x>245</x>
           <y>80</y>
           <width>56</width>
           <height>21</height>
@@ -5023,10 +5033,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAlt1">
+       <widget class="QDoubleSpinBox" name="parkAlt1">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>165</x>
           <y>80</y>
           <width>56</width>
           <height>21</height>
@@ -5051,10 +5061,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAz2">
+       <widget class="QDoubleSpinBox" name="parkAz2">
         <property name="geometry">
          <rect>
-          <x>250</x>
+          <x>245</x>
           <y>110</y>
           <width>56</width>
           <height>21</height>
@@ -5079,10 +5089,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAlt2">
+       <widget class="QDoubleSpinBox" name="parkAlt2">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>165</x>
           <y>110</y>
           <width>56</width>
           <height>21</height>
@@ -5107,10 +5117,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAz3">
+       <widget class="QDoubleSpinBox" name="parkAz3">
         <property name="geometry">
          <rect>
-          <x>250</x>
+          <x>245</x>
           <y>140</y>
           <width>56</width>
           <height>21</height>
@@ -5135,10 +5145,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAlt3">
+       <widget class="QDoubleSpinBox" name="parkAlt3">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>165</x>
           <y>140</y>
           <width>56</width>
           <height>21</height>
@@ -5163,10 +5173,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAz4">
+       <widget class="QDoubleSpinBox" name="parkAz4">
         <property name="geometry">
          <rect>
-          <x>250</x>
+          <x>245</x>
           <y>170</y>
           <width>56</width>
           <height>21</height>
@@ -5191,10 +5201,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAlt4">
+       <widget class="QDoubleSpinBox" name="parkAlt4">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>165</x>
           <y>170</y>
           <width>56</width>
           <height>21</height>
@@ -5219,10 +5229,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAz5">
+       <widget class="QDoubleSpinBox" name="parkAz5">
         <property name="geometry">
          <rect>
-          <x>250</x>
+          <x>245</x>
           <y>200</y>
           <width>56</width>
           <height>21</height>
@@ -5247,10 +5257,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAlt5">
+       <widget class="QDoubleSpinBox" name="parkAlt5">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>165</x>
           <y>200</y>
           <width>56</width>
           <height>21</height>
@@ -5275,10 +5285,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAz6">
+       <widget class="QDoubleSpinBox" name="parkAz6">
         <property name="geometry">
          <rect>
-          <x>250</x>
+          <x>245</x>
           <y>230</y>
           <width>56</width>
           <height>21</height>
@@ -5303,10 +5313,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAlt6">
+       <widget class="QDoubleSpinBox" name="parkAlt6">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>165</x>
           <y>230</y>
           <width>56</width>
           <height>21</height>
@@ -5331,10 +5341,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAz7">
+       <widget class="QDoubleSpinBox" name="parkAz7">
         <property name="geometry">
          <rect>
-          <x>250</x>
+          <x>245</x>
           <y>260</y>
           <width>56</width>
           <height>21</height>
@@ -5359,10 +5369,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAlt7">
+       <widget class="QDoubleSpinBox" name="parkAlt7">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>165</x>
           <y>260</y>
           <width>56</width>
           <height>21</height>
@@ -5387,10 +5397,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAz8">
+       <widget class="QDoubleSpinBox" name="parkAz8">
         <property name="geometry">
          <rect>
-          <x>250</x>
+          <x>245</x>
           <y>290</y>
           <width>56</width>
           <height>21</height>
@@ -5415,10 +5425,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAlt8">
+       <widget class="QDoubleSpinBox" name="parkAlt8">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>165</x>
           <y>290</y>
           <width>56</width>
           <height>21</height>
@@ -5443,10 +5453,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAz9">
+       <widget class="QDoubleSpinBox" name="parkAz9">
         <property name="geometry">
          <rect>
-          <x>250</x>
+          <x>245</x>
           <y>320</y>
           <width>56</width>
           <height>21</height>
@@ -5471,10 +5481,10 @@
          <double>5.000000000000000</double>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="posAlt9">
+       <widget class="QDoubleSpinBox" name="parkAlt9">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>165</x>
           <y>320</y>
           <width>56</width>
           <height>21</height>
@@ -5510,7 +5520,7 @@
         </rect>
        </property>
        <property name="title">
-        <string>Relay button setup</string>
+        <string>Relay setup</string>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
@@ -5533,6 +5543,9 @@
         </property>
         <property name="text">
          <string>5</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
        <widget class="QLineEdit" name="relayButtonText2">
@@ -5698,6 +5711,9 @@
         <property name="text">
          <string>4</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
        </widget>
        <widget class="QLabel" name="label_129">
         <property name="geometry">
@@ -5718,6 +5734,9 @@
         <property name="text">
          <string>3</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
        </widget>
        <widget class="QLabel" name="label_211">
         <property name="geometry">
@@ -5737,6 +5756,9 @@
         </property>
         <property name="text">
          <string>2</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
        <widget class="QLineEdit" name="relayButtonText4">
@@ -5872,25 +5894,8 @@
         <property name="text">
          <string>8</string>
         </property>
-       </widget>
-       <widget class="QLabel" name="label_56">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>25</y>
-          <width>51</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Relay</string>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
        <widget class="QLabel" name="label_199">
@@ -5911,6 +5916,9 @@
         </property>
         <property name="text">
          <string>7</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
        <widget class="QComboBox" name="relayFun1">
@@ -5982,11 +5990,14 @@
         <property name="text">
          <string>1</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
        </widget>
        <widget class="QLabel" name="label_45">
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>45</x>
           <y>25</y>
           <width>71</width>
           <height>16</height>
@@ -6107,6 +6118,9 @@
         </property>
         <property name="text">
          <string>6</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
        </widget>
        <widget class="QComboBox" name="relayFun7">

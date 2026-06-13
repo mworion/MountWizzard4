@@ -120,6 +120,7 @@ class App(QObject):
     onlineModeChanged = Signal()
     timebaseChanged = Signal()
     relayChanged = Signal()
+    parkChanged = Signal()
 
     def __init__(self):
         super().__init__()

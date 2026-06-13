@@ -28,6 +28,7 @@ from mw4.gui.mainWaddon.tabModel_Status import ModelStatus
 from mw4.gui.mainWaddon.tabMount import Mount
 from mw4.gui.mainWaddon.tabMount_Command import MountCommand
 from mw4.gui.mainWaddon.tabMount_Move import MountMove
+from mw4.gui.mainWaddon.tabMount_Park import Park
 from mw4.gui.mainWaddon.tabMount_Sett import MountSett
 from mw4.gui.mainWaddon.tabPower import Power
 from mw4.gui.mainWaddon.tabRelay import Relay
@@ -59,6 +60,7 @@ class MainWindowAddons:
             "MountCommand": MountCommand(mainW),
             "MountMove": MountMove(mainW),
             "MountSett": MountSett(mainW),
+            "Park": Park(mainW),
             "Power": Power(mainW),
             "Relay": Relay(mainW),
             "Rename": Rename(mainW),

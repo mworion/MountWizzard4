@@ -482,10 +482,10 @@ def test_populateGameControllerList_when_no_devices(settGui):
         mock_start.assert_not_called()
 
 
-def test_updateColorSet_updates_app(settAudio):
+def test_updateColorSet_updates_app(settGui):
     """Test updateColorSet updates color set."""
-    settAudio.ui.colorSet.setCurrentIndex(1)
-    settAudio.updateColorSet()
+    settGui.ui.colorSet.setCurrentIndex(1)
+    settGui.updateColorSet()
 
     from mw4.gui.styles.styles import Styles
 

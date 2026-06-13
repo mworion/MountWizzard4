@@ -2549,7 +2549,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          <property name="large" stdset="0">
           <bool>true</bool>
          </property>
-         <widget class="QPushButton" name="posButton0">
+         <widget class="QPushButton" name="parkButton0">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2578,7 +2578,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <string>Button 0</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="posButton8">
+         <widget class="QPushButton" name="parkButton8">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2607,7 +2607,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <string>Button 8</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="posButton1">
+         <widget class="QPushButton" name="parkButton1">
           <property name="geometry">
            <rect>
             <x>205</x>
@@ -2636,7 +2636,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <string>Button 1</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="posButton6">
+         <widget class="QPushButton" name="parkButton6">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2665,7 +2665,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <string>Button 6</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="posButton9">
+         <widget class="QPushButton" name="parkButton9">
           <property name="geometry">
            <rect>
             <x>205</x>
@@ -2694,7 +2694,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <string>Button 9</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="posButton3">
+         <widget class="QPushButton" name="parkButton3">
           <property name="geometry">
            <rect>
             <x>205</x>
@@ -2723,7 +2723,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <string>Button 3</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="posButton4">
+         <widget class="QPushButton" name="parkButton4">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2752,7 +2752,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <string>Button 4</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="posButton5">
+         <widget class="QPushButton" name="parkButton5">
           <property name="geometry">
            <rect>
             <x>205</x>
@@ -2781,7 +2781,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <string>Button 5</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="posButton7">
+         <widget class="QPushButton" name="parkButton7">
           <property name="geometry">
            <rect>
             <x>205</x>
@@ -2810,7 +2810,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <string>Button 7</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="posButton2">
+         <widget class="QPushButton" name="parkButton2">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -21346,7 +21346,7 @@ Next point in time when satellite settles.</string>
         </rect>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>3</number>
        </property>
        <property name="elideMode">
         <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -25239,17 +25239,17 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
   <tabstop>mountCommandTable</tabstop>
   <tabstop>timeDeltaPC2Mount</tabstop>
   <tabstop>mountTypeConnection</tabstop>
-  <tabstop>posButton0</tabstop>
-  <tabstop>posButton2</tabstop>
-  <tabstop>posButton4</tabstop>
-  <tabstop>posButton6</tabstop>
-  <tabstop>posButton8</tabstop>
+  <tabstop>parkButton0</tabstop>
+  <tabstop>parkButton2</tabstop>
+  <tabstop>parkButton4</tabstop>
+  <tabstop>parkButton6</tabstop>
+  <tabstop>parkButton8</tabstop>
   <tabstop>parkMountAfterSlew</tabstop>
-  <tabstop>posButton1</tabstop>
-  <tabstop>posButton3</tabstop>
-  <tabstop>posButton5</tabstop>
-  <tabstop>posButton7</tabstop>
-  <tabstop>posButton9</tabstop>
+  <tabstop>parkButton1</tabstop>
+  <tabstop>parkButton3</tabstop>
+  <tabstop>parkButton5</tabstop>
+  <tabstop>parkButton7</tabstop>
+  <tabstop>parkButton9</tabstop>
   <tabstop>moveCoordinateAlt</tabstop>
   <tabstop>moveCoordinateAz</tabstop>
   <tabstop>moveAltAzAbsolute</tabstop>

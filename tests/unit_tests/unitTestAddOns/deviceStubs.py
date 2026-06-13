@@ -353,24 +353,25 @@ class RelaySignals(QObject):
 
 
 class Relay:
-    def __init__(self):
-        self.signals = RelaySignals()
-        self.data = {}
-        self.framework = None
-        self.defaultConfig = {"framework": "", "frameworks": {}}
-        self.timerTask = QTimer()
+     def __init__(self):
+         self.signals = RelaySignals()
+         self.data = {}
+         self.framework = None
+         self.defaultConfig = {"framework": "", "frameworks": {}}
+         self.timerTask = QTimer()
+         self.status = [0, 0, 0, 0, 0, 0, 0, 0]
 
-    @staticmethod
-    def getRelay():
-        return
+     @staticmethod
+     def getRelay():
+         return
 
-    @staticmethod
-    def pulse(a):
-        return
+     @staticmethod
+     def pulse(a):
+         return True
 
-    @staticmethod
-    def switch(a):
-        return
+     @staticmethod
+     def switch(a):
+         return True
 
 
 class RemoteSignals(QObject):

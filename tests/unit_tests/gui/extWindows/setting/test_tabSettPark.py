@@ -13,9 +13,8 @@
 # License APL2.0
 #
 ###########################################################
-
 import pytest
-from mw4.gui.extWindows.setting.tabSettParkRelay import SettParkPos
+from mw4.gui.extWindows.setting.tabSettPark import SettPark
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QDoubleSpinBox, QLineEdit
@@ -44,7 +43,7 @@ def createMockButton():
 
 
 @pytest.fixture(autouse=True, scope="module")
-def settParkPos(qapp):
+def settPark(qapp):
     """Setup SettParkPos fixture for testing."""
     parentW = MWidget()
     parentW.app = App()
@@ -69,7 +68,7 @@ def settParkPos(qapp):
         side_effect=lambda v: setattr(parentW.ui.parkMountAfterSlew, "_checked", v)
     )
 
-    window = SettParkPos(parentW)
+    window = SettPark(parentW)
     yield window
     parentW.app.threadPool.waitForDone(1000)
 

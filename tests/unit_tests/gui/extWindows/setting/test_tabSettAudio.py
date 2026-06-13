@@ -149,13 +149,3 @@ def test_setupAudioGui_populates_dropdowns(settAudio):
 
     # Restore original
     settAudio.ui.soundMountSlewFinished = original_soundMountSlewFinished
-
-
-def test_updateColorSet_updates_app(settAudio):
-    """Test updateColorSet updates color set."""
-    settAudio.ui.colorSet.setCurrentIndex(1)
-    settAudio.updateColorSet()
-
-    from mw4.gui.styles.styles import Styles
-
-    assert Styles.colorSet == 1

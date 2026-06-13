@@ -480,3 +480,13 @@ def test_populateGameControllerList_when_no_devices(settGui):
         settGui.populateGameControllerList()
         # Should not start game controller if no devices found
         mock_start.assert_not_called()
+
+
+def test_updateColorSet_updates_app(settAudio):
+    """Test updateColorSet updates color set."""
+    settAudio.ui.colorSet.setCurrentIndex(1)
+    settAudio.updateColorSet()
+
+    from mw4.gui.styles.styles import Styles
+
+    assert Styles.colorSet == 1

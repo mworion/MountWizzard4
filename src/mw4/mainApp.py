@@ -45,6 +45,7 @@ class MountWizzard4(QObject):
     showAnalyse = Signal(object)
     timebaseChanged = Signal()
     onlineModeChanged = Signal()
+    relayChanged = Signal()
     gameControllerIsRunning = Signal(bool)
     # --- Hemisphere / build point signals ---
     redrawHemisphere = Signal()
@@ -113,6 +114,7 @@ class MountWizzard4(QObject):
         self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 started..."))
         self.messageQueue.put((1, "System", "Workdir", f"[{workDir}]"))
         self.messageQueue.put((1, "System", "Profile", f"[{profile}]"))
+        self.timeMgr = TimeManager(app=self)
         self.dReg: DeviceRegistry = DeviceRegistry(self)
         self.dReg.addDevices(self)
         self.initConfig()
@@ -125,7 +127,6 @@ class MountWizzard4(QObject):
         self.mainW.showWindow()
         # Set up the cyclic timer manager and start the mount timers.
         self.dReg["mount"].instance.startMountCoreTimers()
-        self.timeMgr = TimeManager(app=self)
         self.timeMgr.start()
         # Wire up application-level signal connections.
         self.application.aboutToQuit.connect(self.aboutToQuit)

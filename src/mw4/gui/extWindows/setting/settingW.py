@@ -19,6 +19,7 @@ from mw4.gui.extWindows.setting.tabSettDevice import SettDevice
 from mw4.gui.extWindows.setting.tabSettDome import SettDome
 from mw4.gui.extWindows.setting.tabSettGui import SettGui
 from mw4.gui.extWindows.setting.tabSettMount import SettMount
+from mw4.gui.extWindows.setting.tabSettRelay import SettRelay
 from mw4.gui.extWindows.setting.tabSettUpdate import SettUpdate
 from mw4.gui.utilities.qtHelpers import getTabAndIndex, setTabAndIndex
 from mw4.gui.utilities.qtMain import MWidget
@@ -41,7 +42,7 @@ class SettingWindow(MWidget):
         self.tabSettUpdate = SettUpdate(self)
         self.tabSettGui = SettGui(self)
         self.tabSettAudio = SettAudio(self)
-        # self.tabSettParkPos = SettParkRelay(self)
+        self.tabSettRelay = SettRelay(self)
         self.app.colorChange.connect(self.colorChange)
         self.setupIcons()
 
@@ -54,7 +55,7 @@ class SettingWindow(MWidget):
         self.tabSettUpdate.initConfig()
         self.tabSettGui.initConfig()
         self.tabSettAudio.initConfig()
-        # self.tabSettParkRelay.initConfig()
+        self.tabSettRelay.initConfig()
 
     def storeConfig(self) -> None:
         configMain = self.app.config
@@ -69,7 +70,7 @@ class SettingWindow(MWidget):
         self.tabSettGui.storeConfig()
         self.tabSettAudio.storeConfig()
         self.tabSettUpdate.storeConfig()
-        # self.tabSettParkRelay.storeConfig()
+        self.tabSettRelay.storeConfig()
 
     def setupIcons(self) -> None:
         self.tabSettDevice.setupIcons()

@@ -16,12 +16,12 @@
 import hid
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
-from mw4.gui.mainWaddon.tabAddon import TabAddon
+from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtHelpers import svg2pixmap
 from typing import Any
 
 
-class SettGui(TabAddon):
+class SettGui:
     def __init__(self, parentW: Any) -> None:
         self.parentW = parentW
         self.app = parentW.app
@@ -52,6 +52,12 @@ class SettGui(TabAddon):
     def setupIcons(self) -> None:
         pixmap = svg2pixmap("assets/icon/controllerNew.svg", self.parentW.M_PRIM)
         self.ui.controllerOverview.setPixmap(pixmap)
+
+    def updateColorSet(self) -> None:
+        Styles.colorSet = self.ui.colorSet.currentIndex()
+        self.parentW.setStyleSheet(self.parentW.mw4Style)
+        self.setupIcons()
+        self.app.colorChange.emit()
 
     def sendGameControllerSignals(self, act: list, old: list) -> None:
         if act[0] != old[0]:

@@ -119,6 +119,7 @@ class App(QObject):
     gameControllerIsRunning = Signal(bool)
     onlineModeChanged = Signal()
     timebaseChanged = Signal()
+    relayChanged = Signal()
 
     def __init__(self):
         super().__init__()

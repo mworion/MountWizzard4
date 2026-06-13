@@ -30,6 +30,7 @@ from mw4.gui.mainWaddon.tabMount_Command import MountCommand
 from mw4.gui.mainWaddon.tabMount_Move import MountMove
 from mw4.gui.mainWaddon.tabMount_Sett import MountSett
 from mw4.gui.mainWaddon.tabPower import Power
+from mw4.gui.mainWaddon.tabRelay import Relay
 from mw4.gui.mainWaddon.tabSat_Search import SatSearch
 from mw4.gui.mainWaddon.tabSat_Track import SatTrack
 from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
@@ -59,6 +60,7 @@ class MainWindowAddons:
             "MountMove": MountMove(mainW),
             "MountSett": MountSett(mainW),
             "Power": Power(mainW),
+            "Relay": Relay(mainW),
             "Rename": Rename(mainW),
             "SatSearch": SatSearch(mainW),
             "SatTrack": SatTrack(mainW),

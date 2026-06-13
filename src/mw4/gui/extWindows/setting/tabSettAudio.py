@@ -13,13 +13,11 @@
 # License APL2.0
 #
 ###########################################################
-from mw4.gui.mainWaddon.tabAddon import TabAddon
-from mw4.gui.styles.styles import Styles
 from PySide6.QtMultimedia import QSoundEffect
 from typing import Any
 
 
-class SettAudio(TabAddon):
+class SettAudio:
     def __init__(self, parentW: Any) -> None:
         self.parentW = parentW
         self.app = parentW.app
@@ -99,9 +97,3 @@ class SettAudio(TabAddon):
         sound = self.guiAudioList[value].currentText()
         if sound in self.audioSignalsSet:
             QSoundEffect.play(self.audioSignalsSet[sound])
-
-    def updateColorSet(self) -> None:
-        Styles.colorSet = self.ui.colorSet.currentIndex()
-        self.parentW.setStyleSheet(self.parentW.mw4Style)
-        self.setupIcons()
-        self.app.colorChange.emit()

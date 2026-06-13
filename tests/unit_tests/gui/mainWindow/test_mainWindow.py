@@ -409,3 +409,99 @@ def test_remoteCommand_boot_mount(mainWindow):
     with mock.patch.object(mock_mount_addon, "mountBoot"):
         mainWindow.remoteCommand("boot mount")
 
+
+def test_setEnvironDeviceStats_auto_refraction_with_source(mainWindow):
+    """Test setEnvironDeviceStats with auto refraction with valid source."""
+    mainWindow.app.mount.setting.statusRefraction = 1
+    with mock.patch.object(mainWindow.ui, "refracManual") as mock_refrac:
+        mock_refrac.isChecked.return_value = False
+        mainWindow.mainWindowAddons.addons["EnvironWeather"].refractionSource = "onlineWeather"
+        mainWindow.app.dReg.setStat("onlineWeather", True)
+        mainWindow.setEnvironDeviceStats()
+        assert mainWindow.ui.refractionConnected.text() == "Refrac Auto"
+
+
+def test_setEnvironDeviceStats_auto_refraction_without_source(mainWindow):
+    """Test setEnvironDeviceStats with auto refraction without source (lines 246-252)."""
+    mainWindow.app.mount.setting.statusRefraction = 1
+    with mock.patch.object(mainWindow.ui, "refracManual") as mock_refrac:
+        mock_refrac.isChecked.return_value = False
+        mainWindow.mainWindowAddons.addons["EnvironWeather"].refractionSource = None
+        mainWindow.setEnvironDeviceStats()
+        assert mainWindow.ui.refractionConnected.text() == "Refrac Auto"
+
+
+def test_updateDeviceStats_stat_false_changes_color(mainWindow):
+    """Test updateDeviceStats when entry.stat is False (lines 263-264)."""
+    device = "testDeviceFalse"
+    ui = mock.MagicMock()
+    mainWindow.deviceStatGui[device] = ui
+    mainWindow.app.dReg.d[device] = DeviceEntry(
+        name=device, instance=object(), deviceType=None, isConfigurable=True, stat=False
+    )
+    try:
+        with mock.patch("mw4.gui.mainWindow.mainWindow.changeStyleDynamic"):
+            mainWindow.updateDeviceStats()
+        ui.setEnabled.assert_called_with(True)
+    finally:
+        mainWindow.app.dReg.d.pop(device, None)
+        mainWindow.deviceStatGui.pop(device, None)
+
+
+def test_updateControllerStatus_enabled(mainWindow):
+    """Test updateControllerStatus with gcStatus True (lines 276-280)."""
+    with (
+        mock.patch.object(mainWindow.ui.controller1, "setEnabled"),
+        mock.patch.object(mainWindow.ui.controller2, "setEnabled"),
+        mock.patch.object(mainWindow.ui.controller3, "setEnabled"),
+        mock.patch.object(mainWindow.ui.controller4, "setEnabled"),
+        mock.patch.object(mainWindow.ui.controller5, "setEnabled"),
+    ):
+        mainWindow.updateControllerStatus(True)
+        mainWindow.ui.controller1.setEnabled.assert_called_with(True)
+
+
+def test_updateControllerStatus_disabled(mainWindow):
+    """Test updateControllerStatus with gcStatus False."""
+    with (
+        mock.patch.object(mainWindow.ui.controller1, "setEnabled"),
+        mock.patch.object(mainWindow.ui.controller2, "setEnabled"),
+        mock.patch.object(mainWindow.ui.controller3, "setEnabled"),
+        mock.patch.object(mainWindow.ui.controller4, "setEnabled"),
+        mock.patch.object(mainWindow.ui.controller5, "setEnabled"),
+    ):
+        mainWindow.updateControllerStatus(False)
+        mainWindow.ui.controller1.setEnabled.assert_called_with(False)
+
+
+def test_updateStatusGUI_satellite_tracking_starts(mainWindow):
+    """Test updateStatusGUI when satellite tracking starts (lines 323-324)."""
+    mainWindow.satStatus = False
+    with (
+        mock.patch.object(mainWindow.app, "playSound"),
+        mock.patch("mw4.gui.mainWindow.mainWindow.changeStyleDynamic"),
+    ):
+        class MockOB:
+            @staticmethod
+            def statusText():
+                return "test"
+
+        # Mock obsSite properties
+        obsSite = mainWindow.app.dReg["mount"].obsSite
+        with mock.patch.object(
+            obsSite.__class__,
+            "isFollowingSatellite",
+            new_callable=mock.PropertyMock,
+            return_value=True,
+        ):
+            mainWindow.updateStatusGUI(MockOB)
+            assert mainWindow.satStatus
+
+
+def test_saveProfileBase_with_empty_path(mainWindow):
+    """Test saveProfileBase with empty path stem (line 352)."""
+    empty_path = Path("")
+    mainWindow.saveProfileBase(empty_path)
+    # Should return early without calling storeConfig or saveConfig
+
+

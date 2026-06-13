@@ -21,6 +21,7 @@ from mw4.base.timeManager import (
     TimeManager,
 )
 from PySide6.QtCore import QObject, Signal
+from skyfield.api import load
 
 
 class MockApp(QObject):
@@ -35,6 +36,10 @@ class MockApp(QObject):
     update30m = Signal()
     start3s = Signal()
 
+    def __init__(self):
+        super().__init__()
+        self.config = {}
+
 
 @pytest.fixture()
 def mock_app(qapp):
@@ -44,6 +49,12 @@ def mock_app(qapp):
 @pytest.fixture()
 def mgr(mock_app):
     return TimeManager(app=mock_app)
+
+
+@pytest.fixture()
+def ts():
+    """Fixture for Skyfield timescale."""
+    return load.timescale()
 
 
 def test_init(mgr):
@@ -170,3 +181,41 @@ def test_on_tick_emits_signals(mock_app, mgr):
 def test_schedules_are_not_empty():
     assert len(CYCLIC_SCHEDULE) > 0
     assert len(START_SCHEDULE) > 0
+
+
+def test_time_zone_string_utc_true(mgr):
+    """Test timeZoneString returns UTC message when config unitTimeUTC is True."""
+    mgr.app.config["unitTimeUTC"] = True
+    result = mgr.timeZoneString()
+    assert result == "(time is UTC)"
+
+
+def test_time_zone_string_utc_false(mgr):
+    """Test timeZoneString returns local message when config unitTimeUTC is False."""
+    mgr.app.config["unitTimeUTC"] = False
+    result = mgr.timeZoneString()
+    assert result == "(time is local)"
+
+
+def test_convert_time_utc_true(mgr, ts):
+    """Test convertTime uses UTC format when config unitTimeUTC is True."""
+    mgr.app.config["unitTimeUTC"] = True
+    test_time = ts.utc(2024, 6, 13, 12, 0, 0)
+    format_string = "%Y-%m-%d %H:%M:%S"
+    result = mgr.convertTime(test_time, format_string)
+    assert isinstance(result, str)
+    assert len(result) > 0
+    assert "2024" in result
+
+
+def test_convert_time_utc_false(mgr, ts):
+    """Test convertTime uses local timezone when config unitTimeUTC is False."""
+    mgr.app.config["unitTimeUTC"] = False
+    test_time = ts.utc(2024, 6, 13, 12, 0, 0)
+    format_string = "%Y-%m-%d %H:%M:%S"
+    result = mgr.convertTime(test_time, format_string)
+    assert isinstance(result, str)
+    assert len(result) > 0
+    assert "2024" in result
+
+

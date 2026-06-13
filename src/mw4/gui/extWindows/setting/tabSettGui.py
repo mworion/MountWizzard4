@@ -67,11 +67,11 @@ class SettGui(TabAddon):
 
     def readGameController(self, gamepad: hid.device) -> list:
         result = []
-        while self.parentW.app.mainW.gameControllerRunning:
+        while self.gameControllerRunning:
             try:
                 data = gamepad.read(64)
             except Exception as e:
-                self.parentW.app.mainW.gameControllerRunning = False
+                self.gameControllerRunning = False
                 self.parentW.log.warning(f"GameController error {e}")
                 return []
 

@@ -328,3 +328,32 @@ def test_progFiltered_2(function):
 def test_progFull_1(function):
     with mock.patch.object(function, "progGUI"), mock.patch.object(function, "progObjects"):
         function.progFull()
+
+
+def test_runDownloadPopup_when_online(function):
+    """Test runDownloadPopup when app is online (lines 100-103)."""
+    function.app.isOnline = True
+    with mock.patch("mw4.gui.mainWaddon.astroObjects.DownloadPopup") as mock_dl:
+        popup_instance = mock.MagicMock()
+        mock_dl.return_value = popup_instance
+        function.runDownloadPopup(Path(), False)
+        popup_instance.show.assert_called_once()
+        popup_instance.downloadFile.assert_called_once()
+
+
+def test_loadSourceUrl_online_with_old_file(function):
+    """Test loadSourceUrl when file is old and app is online (lines 132-135)."""
+    function.uiSourceList.clear()
+    function.uiSourceList.addItem("100 brightest")
+    function.app.isOnline = True
+    function.window.ui.isOnline.setChecked(True)
+
+    with (
+        mock.patch.object(function, "checkFileAgeOK", return_value=False),
+        mock.patch.object(function, "runDownloadPopup"),
+        mock.patch.object(function, "setAge"),
+    ):
+        function.loadSourceUrl()
+        function.setAge.assert_called_once_with(0)
+        function.runDownloadPopup.assert_called_once()
+

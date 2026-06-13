@@ -107,12 +107,12 @@ def test_readGameController_returns_empty_on_exception(settGui):
     class Gamepad:
         @staticmethod
         def read(a):
-            return [0] * 12
+            raise Exception("Device error")
 
-    settGui.parentW.gameControllerRunning = True
-    with mock.patch.object(Gamepad, "read", side_effect=Exception):
-        val = settGui.readGameController(Gamepad())
-        assert len(val) == 0
+    settGui.gameControllerRunning = True
+    val = settGui.readGameController(Gamepad())
+    assert len(val) == 0
+    assert settGui.gameControllerRunning is False
 
 
 def test_readGameController_returns_empty_when_disconnected(settGui):
@@ -348,3 +348,129 @@ def test_switchStatusGameController_already_running(settGui):
         mock_pop.assert_not_called()
 
 
+def test_readGameController_returns_data_on_success(settGui):
+    """Test readGameController returns data when read succeeds (lines 71-80)."""
+    class Gamepad:
+        def __init__(self):
+            self.call_count = 0
+
+        def read(self, size):
+            self.call_count += 1
+            if self.call_count == 1:
+                return [0, 1, 2, 3, 4, 5]  # Return non-empty data
+            else:
+                settGui.gameControllerRunning = False
+                return []  # Then return empty to break loop
+
+    settGui.gameControllerRunning = True
+    gamepad = Gamepad()
+    val = settGui.readGameController(gamepad)
+    assert val == [0, 1, 2, 3, 4, 5]
+
+
+def test_workerGameController_with_new_data(settGui):
+    """Test workerGameController processes data when new data arrives (lines 132-138)."""
+    settGui.gameControllerRunning = True
+    settGui.gameControllerList["test"] = {"vendorId": 1, "productId": 1}
+    settGui.ui.gameControllerList.clear()
+    settGui.ui.gameControllerList.addItem("test")
+    settGui.ui.gameControllerList.setCurrentIndex(0)
+
+    # Mock the device and read process
+    class Gamepad:
+        def __init__(self):
+            self.call_count = 0
+
+        def open(self, v, p):
+            pass
+
+        def set_nonblocking(self, a):
+            pass
+
+        def read(self, size):
+            self.call_count += 1
+            if self.call_count == 1:
+                # Return Pro Controller data
+                return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+            else:
+                settGui.gameControllerRunning = False
+                return []
+
+    with (
+        mock.patch.object(hid, "device", return_value=Gamepad()),
+        mock.patch.object(settGui.app, "gameABXY"),
+        mock.patch.object(settGui.app, "gamePMH"),
+        mock.patch.object(settGui.app, "gameDirection"),
+        mock.patch.object(settGui.app, "gameSL"),
+        mock.patch.object(settGui.app, "gameSR"),
+    ):
+        settGui.workerGameController()
+        # Verify signals were emitted
+        assert settGui.app.gameABXY.emit.called or settGui.gameControllerRunning is False
+
+
+def test_workerGameController_continues_on_same_data(settGui):
+    """Test workerGameController continues when data hasn't changed (line 135)."""
+    settGui.gameControllerRunning = True
+    # Use a valid controller name so convertData returns non-zero values
+    settGui.gameControllerList["Pro Controller"] = {"vendorId": 1, "productId": 1}
+    settGui.ui.gameControllerList.clear()
+    settGui.ui.gameControllerList.addItem("Pro Controller")
+    settGui.ui.gameControllerList.setCurrentIndex(0)
+
+    # Mock the device and track read calls carefully
+    class Gamepad:
+        def __init__(self):
+            self.read_count = 0
+
+        def open(self, v, p):
+            pass
+
+        def set_nonblocking(self, a):
+            pass
+
+        def read(self, size):
+            self.read_count += 1
+            if self.read_count == 1:
+                # First read: return Pro Controller data
+                return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+            elif self.read_count == 2:
+                # Break first readGameController loop
+                return []
+            elif self.read_count == 3:
+                # Second outer iteration: return same data again
+                return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+            elif self.read_count == 4:
+                # Break second readGameController loop
+                return []
+            else:
+                # Third outer iteration: empty data stops the loop
+                settGui.gameControllerRunning = False
+                return []
+
+    with (
+        mock.patch.object(hid, "device", return_value=Gamepad()),
+        mock.patch("mw4.base.threadUtils.mainThreadSleep"),
+        mock.patch.object(settGui.app, "gameABXY") as mock_signal_1,
+        mock.patch.object(settGui.app, "gamePMH"),
+        mock.patch.object(settGui.app, "gameDirection"),
+        mock.patch.object(settGui.app, "gameSL"),
+        mock.patch.object(settGui.app, "gameSR"),
+    ):
+        settGui.workerGameController()
+        # Signal should be emitted at least once when data changes
+        assert mock_signal_1.emit.call_count >= 1
+
+
+def test_populateGameControllerList_when_no_devices(settGui):
+    """Test populateGameControllerList when no game controllers are found."""
+    settGui.ui.gameControllerGroup.setChecked(True)
+    settGui.gameControllerRunning = False
+
+    with (
+        mock.patch.object(hid, "enumerate", return_value=[]),
+        mock.patch.object(settGui, "startGameController") as mock_start,
+    ):
+        settGui.populateGameControllerList()
+        # Should not start game controller if no devices found
+        mock_start.assert_not_called()

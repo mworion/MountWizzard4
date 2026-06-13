@@ -137,3 +137,13 @@ def test_loadTimeDataFromSourceURLs_1(function):
 def test_loadTimeDataFromSourceURLs_2(function):
     function.ui.isOnline.isChecked.return_value = True
     function.loadTimeDataFromSourceURLs()
+
+
+def test_loadTimeDataFromSourceURLs_when_online(function):
+    """Test loadTimeDataFromSourceURLs when app is online (lines 122-131)."""
+    function.app.isOnline = True
+    # This test just verifies that the method executes the full code path
+    # when app.isOnline is True (lines 122-131 will be executed)
+    function.loadTimeDataFromSourceURLs()
+
+

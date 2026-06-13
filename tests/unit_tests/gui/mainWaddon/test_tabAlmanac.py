@@ -206,3 +206,25 @@ def test_showMoonPhase_handles_data(almanac):
     with mock.patch.object(almanac, "calcMoonPhase", return_value=val):
         almanac.showMoonPhase()
 
+
+def test_plotTwilightData_with_low_hour_values(almanac):
+    """Test plotTwilightData with diverse data to exercise all branches."""
+    from datetime import datetime
+    from dateutil.tz import tzlocal
+
+    almanac.closing = False
+    ts = almanac.app.mount.obsSite.ts
+    # Create time entries spread across the day to potentially trigger both branches
+    t_early = ts.from_datetime(
+        datetime.now(tz=tzlocal()).replace(hour=3, minute=0, second=0, microsecond=0)
+    )
+    t_late = ts.from_datetime(
+        datetime.now(tz=tzlocal()).replace(hour=15, minute=0, second=0, microsecond=0)
+    )
+    t = ts.tt_jd([t_early.tt, t_late.tt])
+    e = np.array([1, 1])
+    result = (ts, t, e)
+    # Just call the method - it will exercise the code paths
+    almanac.plotTwilightData(result)
+
+

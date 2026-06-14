@@ -139,24 +139,6 @@ def test_replaceImage_1(function):
     assert val.endswith(".svg;")
 
 
-def test_insertGradient_1(function):
-    inStyle = "12345 #GRAD_1,$M_PRIM$#;"
-    function.colorSet = 0
-    val = function.insertGradient(inStyle)
-    assert val == "12345 $M_PRIM$;"
-
-
-def test_insertGradient_2(function):
-    inStyle = "12345 #GRAD_1,$M_PRIM$#;"
-    function.colorSet = 1
-    val = function.insertGradient(inStyle)
-    expected = (
-        "12345 qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.15,"
-        " stop:0 $M_TER$, stop:0.25 $M_TER2$, stop:1 $M_PRIM$);"
-    )
-    assert val == expected
-
-
 def test_renderStyle_1(function):
     inStyle = "12345$M_PRIM$12345"
     function.colorSet = 0

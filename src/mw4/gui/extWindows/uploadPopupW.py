@@ -27,7 +27,6 @@ from PySide6.QtCore import Qt, Signal
 class UploadPopup(MWidget):
     signalProgress = Signal(object)
     signalStatus = Signal(object)
-    signalProgressBarColor = Signal(object)
     dataNames = {
         "comet": {
             "file": "comets.mpc",
@@ -77,7 +76,6 @@ class UploadPopup(MWidget):
         self.setWindowTitle("Uploading to mount")
         self.signalStatus.connect(self.setStatusTextToValue)
         self.signalProgress.connect(self.setProgressBarToValue)
-        self.signalProgressBarColor.connect(self.setProgressBarColor)
         self.setIcon()
 
     def setIcon(self) -> None:
@@ -92,10 +90,6 @@ class UploadPopup(MWidget):
         self.titleBar.normButton.setVisible(False)
         self.titleBar.maxButton.setVisible(False)
         self.titleBar.windowFixed = True
-
-    def setProgressBarColor(self, colorstr: str) -> None:
-        css = "QProgressBar::chunk {background-color: " + colorstr + ";}"
-        self.ui.progressBar.setStyleSheet(css)
 
     def setProgressBarToValue(self, progressPercent: int) -> None:
         self.ui.progressBar.setValue(progressPercent)
@@ -195,10 +189,7 @@ class UploadPopup(MWidget):
         else:
             while self.pollStatusRunState:
                 mainThreadSleep(100)
-            if self.returnValues["successMount"]:
-                self.signalProgressBarColor.emit("green")
-            else:
-                self.signalProgressBarColor.emit("red")
+            if not self.returnValues["successMount"]:
                 self.msg.emit(2, "Upload", "Error", "Uploaded but mount failed to save data")
         mainThreadSleep(500)
         self.close()

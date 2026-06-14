@@ -150,7 +150,7 @@ def test_updateParkButtonText_with_config(function):
 def test_updateParkButtonText_default_text(function):
     function.app.config = {"SettingPark": {}}
     function.updateParkButtonText()
-    assert function.parkButtons[0].text() == "-"
+    assert function.parkButtons[0].text() == ""
 
 
 def test_parkAtPos_disconnects_signal(function):

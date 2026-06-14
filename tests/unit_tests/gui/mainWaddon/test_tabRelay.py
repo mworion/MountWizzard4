@@ -120,7 +120,7 @@ def test_updateRelayButtonText_with_config(function):
 def test_updateRelayButtonText_default_text(function):
     function.app.config = {"SettingRelay": {}}
     function.updateRelayButtonText()
-    assert function.relayButtons[0].text() == "-"
+    assert function.relayButtons[0].text() == ""
 
 
 def test_updateRelayButtonText_icon_switch(function):

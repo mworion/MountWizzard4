@@ -59,10 +59,6 @@ def test_showWindow(function):
         assert function.minimumWidth() <= 400
 
 
-def set_setProgressBarColor(function):
-    function.setProgressBarColor("red")
-
-
 def test_setProgressBarToValue(function):
     function.setProgressBarToValue(0)
     assert function.ui.progressBar.value() == 0

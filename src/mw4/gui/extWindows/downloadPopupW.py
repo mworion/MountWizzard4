@@ -41,9 +41,6 @@ class DownloadPopup(MWidget):
         self.unzip = unzip
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self.ws)
-        self.setMinimumSize(400, 120)
-        self.setMaximumSize(400, 120)
-        self.titleBar.windowFixed = True
         self.setWindowTitle("Downloading from Web")
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
@@ -58,6 +55,14 @@ class DownloadPopup(MWidget):
         pixmap = svg2pixmap("assets/icon/download_pop.svg", self.M_PRIM)
         pixmap = pixmap.scaled(64, 64, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.icon.setPixmap(pixmap)
+
+    def showWindow(self) -> None:
+        self.show()
+        self.setMinimumSize(400, 120)
+        self.setMaximumSize(400, 120)
+        self.titleBar.normButton.setVisible(False)
+        self.titleBar.maxButton.setVisible(False)
+        self.titleBar.windowFixed = True
 
     def setProgressBarColor(self, color: str) -> None:
         css = "QProgressBar::chunk {background-color: " + color + ";}"

@@ -28,6 +28,7 @@ class Park(TabAddon):
         self.parkButtons: list = []
         for i in range(10):
             self.parkButtons.append(getattr(self.ui, f"parkButton{i:1d}"))
+            self.parkButtons[i].setEnabled(False)
             self.parkButtons[i].clicked.connect(partial(self.slewToPark, i))
         self.app.parkChanged.connect(self.updateParkButtonText)
 
@@ -41,10 +42,13 @@ class Park(TabAddon):
         config["ParkMountAfterSlew"] = self.mainW.ui.parkMountAfterSlew.isChecked()
 
     def updateParkButtonText(self) -> None:
-        print("ping")
         config = self.app.config.get("SettingPark", {})
-        for i, button in enumerate(self.parkButtons):
-            button.setText(config.get(f"ParkText{i:1d}", "-"))
+        for i in range(10):
+            text = config.get(f"ParkText{i:1d}")
+            self.parkButtons[i].setText(text)
+            self.parkButtons[i].setEnabled(bool(text))
+            icon = "park" if bool(text) else "question"
+            self.mainW.wIcon(self.parkButtons[i], icon)
 
     def parkAtPos(self) -> None:
         self.app.dReg["mount"].signals.slewed.disconnect(self.parkAtPos)
@@ -52,22 +56,17 @@ class Park(TabAddon):
             self.msg.emit(2, "Mount", "Command", "Cannot park at current position")
 
     def slewToPark(self, index: int) -> None:
-        altValue = self.posAlt[index].value()
-        azValue = self.posAz[index].value()
-        posTextValue = self.posTexts[index].text()
-
-        if not self.app.dReg["mount"].obsSite.setTargetAltAz(
-            alt=Angle(degrees=altValue), az=Angle(degrees=azValue)
-        ):
-            self.msg.emit(2, "Mount", "Command error", f"Cannot slew to [{posTextValue}]")
+        config = self.app.config.get("SettingPark", {})
+        altValue = Angle(degrees=config.get(f"ParkAlt{index:1d}"))
+        azValue = Angle(degrees=config.get(f"ParkAz{index:1d}"))
+        parkTextValue = config.get(f"ParkText{index:1d}")
+        if not self.app.dReg["mount"].obsSite.setTargetAltAz(altValue, azValue):
+            self.msg.emit(2, "Mount", "Command error", f"Cannot slew to [{parkTextValue}]")
             return
-
         if not self.app.dReg["mount"].obsSite.startSlewing(slewType="notrack"):
-            self.msg.emit(2, "Mount", "Command error", f"Cannot slew to [{posTextValue}]")
+            self.msg.emit(2, "Mount", "Command error", f"Cannot slew to [{parkTextValue}]")
             return
-
-        self.msg.emit(0, "Mount", "Command", f"Slew to [{posTextValue}]")
+        self.msg.emit(0, "Mount", "Command", f"Slew to [{parkTextValue}]")
         if not self.ui.parkMountAfterSlew.isChecked():
             return
-
         self.app.dReg["mount"].signals.slewed.connect(self.parkAtPos)

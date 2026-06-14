@@ -98,7 +98,7 @@ class AstroObjects:
         if not self.app.isOnline:
             return
         self.downloadPopup = DownloadPopup(self.window, url, self.dest, unzip)
-        self.downloadPopup.show()
+        self.downloadPopup.showWindow()
         self.downloadPopup.downloadFile()
         self.downloadPopup.worker.signals.finished.connect(self.procSourceData)
 
@@ -142,7 +142,7 @@ class AstroObjects:
 
     def runUploadPopup(self, url: Path) -> None:
         self.uploadPopup = UploadPopup(self.window, url, [self.objectText], self.tempDir)
-        self.uploadPopup.show()
+        self.uploadPopup.showWindow()
         self.uploadPopup.uploadFile()
         self.uploadPopup.worker.signals.finished.connect(self.finishProgObjects)
 

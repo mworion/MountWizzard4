@@ -145,3 +145,47 @@ def test_loadTimeDataFromSourceURLs_when_online(function):
     # This test just verifies that the method executes the full code path
     # when app.isOnline is True (lines 122-131 will be executed)
     function.loadTimeDataFromSourceURLs()
+
+
+def test_progEarthRotationData_calls_showWindow(function):
+    """Test progEarthRotationData calls showWindow on uploadPopup (line 81)."""
+    function.app.mount.host = ("127.0.0.1", 3294)
+    with (
+        mock.patch.object(
+            function.databaseProcessing, "writeEarthRotationData", return_value=True
+        ),
+        mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.UploadPopup") as mock_ul,
+    ):
+        popup_instance = mock.MagicMock()
+        mock_ul.return_value = popup_instance
+        function.progEarthRotationData()
+        popup_instance.showWindow.assert_called_once()
+        popup_instance.uploadFile.assert_called_once()
+
+
+def test_finishLoadFinalsFromSourceURLs_calls_showWindow(function):
+    """Test finishLoadFinalsFromSourceURLs calls showWindow on downloadPopup (line 112)."""
+    class MockPopup:
+        returnValues = {"success": True}
+        worker = mock.MagicMock()
+
+    function.downloadPopup = MockPopup()
+    with mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup") as mock_dl:
+        popup_instance = mock.MagicMock()
+        mock_dl.return_value = popup_instance
+        function.finishLoadFinalsFromSourceURLs()
+        popup_instance.showWindow.assert_called_once()
+        popup_instance.downloadFile.assert_called_once()
+
+
+def test_loadTimeDataFromSourceURLs_calls_showWindow(function):
+    """Test loadTimeDataFromSourceURLs calls showWindow on downloadPopup (line 129)."""
+    function.app.isOnline = True
+    with mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup") as mock_dl:
+        popup_instance = mock.MagicMock()
+        mock_dl.return_value = popup_instance
+        function.loadTimeDataFromSourceURLs()
+        popup_instance.showWindow.assert_called_once()
+        popup_instance.downloadFile.assert_called_once()
+
+

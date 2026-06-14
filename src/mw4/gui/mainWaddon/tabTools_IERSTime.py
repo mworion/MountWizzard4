@@ -78,7 +78,7 @@ class IERSTime(TabAddon):
         self.uploadPopup = UploadPopup(
             self.mainW, url=url, dataTypes=dataTypes, dataFilePath=self.tempDir
         )
-        self.uploadPopup.show()
+        self.uploadPopup.showWindow()
         self.uploadPopup.uploadFile()
         self.uploadPopup.worker.signals.finished.connect(self.finishProgEarthRotationData)
 
@@ -109,7 +109,7 @@ class IERSTime(TabAddon):
         url = urlMain + source
         dest = self.app.mwGlob["dataDir"] / source
         self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
-        self.downloadPopup.show()
+        self.downloadPopup.showWindow()
         self.downloadPopup.downloadFile()
         self.downloadPopup.worker.signals.finished.connect(
             self.finishLoadTimeDataFromSourceURLs
@@ -126,6 +126,6 @@ class IERSTime(TabAddon):
         url = urlMain + source
         dest = self.app.mwGlob["dataDir"] / source
         self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
-        self.downloadPopup.show()
+        self.downloadPopup.showWindow()
         self.downloadPopup.downloadFile()
         self.downloadPopup.worker.signals.finished.connect(self.finishLoadFinalsFromSourceURLs)

@@ -34,9 +34,6 @@ class SettPark:
             self.parkTexts.append(getattr(self.ui, f"parkText{i:1d}"))
             self.parkAlt.append(getattr(self.ui, f"parkAlt{i:1d}"))
             self.parkAz.append(getattr(self.ui, f"parkAz{i:1d}"))
-        for i in range(10):
-            self.parkTexts[i].textChanged.connect(self.storeConfig)
-            self.parkSaveButtons[i].clicked.connect(partial(self.saveActualPosition, i))
 
     def initConfig(self) -> None:
         config = self.app.config.get("SettingPark", {})
@@ -44,6 +41,9 @@ class SettPark:
             self.parkTexts[i].setText(config.get(f"ParkText{i:1d}"))
             self.parkAlt[i].setValue(valueToFloat(config.get(f"ParkAlt{i:1d}", 0)))
             self.parkAz[i].setValue(valueToFloat(config.get(f"ParkAz{i:1d}", 0)))
+        for i in range(10):
+            self.parkTexts[i].textChanged.connect(self.storeConfig)
+            self.parkSaveButtons[i].clicked.connect(partial(self.saveActualPosition, i))
         self.app.parkChanged.emit()
 
     def storeConfig(self) -> None:

@@ -57,9 +57,6 @@ class UploadPopup(MWidget):
         super().__init__()
         self.ui = Ui_UploadPopup()
         self.ui.setupUi(self.ws)
-        self.setMinimumSize(400, 120)
-        self.setMaximumSize(400, 120)
-        self.titleBar.windowFixed = True
         self.setWindowTitle("Mount Upload")
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.returnValues = {"success": False, "successMount": False}
@@ -87,6 +84,14 @@ class UploadPopup(MWidget):
         pixmap = svg2pixmap("assets/icon/upload_pop.svg", self.M_PRIM)
         pixmap = pixmap.scaled(64, 64, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.icon.setPixmap(pixmap)
+
+    def showWindow(self) -> None:
+        self.show()
+        self.setMinimumSize(400, 120)
+        self.setMaximumSize(400, 120)
+        self.titleBar.normButton.setVisible(False)
+        self.titleBar.maxButton.setVisible(False)
+        self.titleBar.windowFixed = True
 
     def setProgressBarColor(self, colorstr: str) -> None:
         css = "QProgressBar::chunk {background-color: " + colorstr + ";}"

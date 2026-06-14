@@ -50,6 +50,15 @@ def set_setIcon(function):
     function.setIcon()
 
 
+def test_showWindow(function):
+    with mock.patch.object(function, "show"):
+        function.showWindow()
+        function.show.assert_called_once()
+        assert function.titleBar.windowFixed
+        assert function.minimumHeight() <= 120
+        assert function.minimumWidth() <= 400
+
+
 def set_setProgressBarColor(function):
     function.setProgressBarColor("red")
 

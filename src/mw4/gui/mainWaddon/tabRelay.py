@@ -39,11 +39,13 @@ class Relay(TabAddon):
 
     def updateRelayButtonText(self) -> None:
         config = self.app.config.get("SettingRelay", {})
-        for i, button in enumerate(self.relayButtons):
-            button.setText(config.get(f"RelayText{i:1d}", "-"))
+        for i in range(8):
+            text = config.get(f"RelayText{i:1d}")
+            self.relayButtons[i].setText(text)
+            self.relayButtons[i].setEnabled(bool(text))
             action = config.get(f"Action{i:1d}", 0)
             icon = "cogs" if action else "flip"
-            self.mainW.wIcon(button, icon)
+            self.mainW.wIcon(self.relayButtons[i], icon)
 
     def doRelayAction(self, relayIndex: int) -> bool:
         cfg = self.app.config.get("SettingRelay", {})

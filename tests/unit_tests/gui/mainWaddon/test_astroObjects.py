@@ -240,6 +240,16 @@ def test_runUploadPopup_1(function):
         function.uploadPopup = None
 
 
+def test_runUploadPopup_calls_showWindow(function):
+    """Test runUploadPopup calls showWindow (lines 144-147)."""
+    with mock.patch("mw4.gui.mainWaddon.astroObjects.UploadPopup") as mock_ul:
+        popup_instance = mock.MagicMock()
+        mock_ul.return_value = popup_instance
+        function.runUploadPopup(Path())
+        popup_instance.showWindow.assert_called_once()
+        popup_instance.uploadFile.assert_called_once()
+
+
 def test_progObjects_1(function):
     function.progObjects([])
 
@@ -337,7 +347,7 @@ def test_runDownloadPopup_when_online(function):
         popup_instance = mock.MagicMock()
         mock_dl.return_value = popup_instance
         function.runDownloadPopup(Path(), False)
-        popup_instance.show.assert_called_once()
+        popup_instance.showWindow.assert_called_once()
         popup_instance.downloadFile.assert_called_once()
 
 

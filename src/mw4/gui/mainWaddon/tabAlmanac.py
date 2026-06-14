@@ -64,6 +64,7 @@ class Almanac(TabAddon):
         self.app.timebaseChanged.connect(self.showTwilightDataList)
         self.app.timebaseChanged.connect(self.showTwilightDataPlot)
         self.app.timebaseChanged.connect(self.showMoonPhase)
+        self.plotAll()
 
     def setColors(self) -> None:
         self.ui.almanacCivil.setStyleSheet(f"background-color: {self.mainW.M_PRIM1};")
@@ -78,12 +79,15 @@ class Almanac(TabAddon):
             self.mainW.M_BACK,
         ]
 
-    def updateColorSet(self) -> None:
-        self.setColors()
-        self.ui.twilight.colorChange()
+    def plotAll(self) -> None:
         self.showTwilightDataList()
         self.showTwilightDataPlot()
         self.showMoonPhase()
+
+    def updateColorSet(self) -> None:
+        self.setColors()
+        self.ui.twilight.colorChange()
+        self.plotAll()
 
     def plotTwilightData(self, result) -> None:
         ts, t, e = result

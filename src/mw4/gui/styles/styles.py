@@ -17,7 +17,6 @@ import platform
 from importlib.resources import as_file, files
 from mw4.gui.styles.colors import colors
 from mw4.gui.styles.forms import forms
-from mw4.gui.styles.gradients import gradients
 from mw4.gui.styles.images import images
 from mw4.gui.styles.styleSheets import BASIC_STYLE, MAC_STYLE, NON_MAC_STYLE
 from PySide6.QtGui import QIcon
@@ -218,21 +217,10 @@ class Styles:
             line = line.replace(f"%{key}%", forms[key][self.colorSet])
         return line
 
-    def insertGradient(self, line: str) -> str:
-        for key in self.findKeysInLine(line, "#"):
-            keyPair = key.split(",")
-            if len(keyPair) != 2 or keyPair[0] not in gradients:
-                continue
-            insertItem = gradients[keyPair[0]][self.colorSet]
-            insertItem = insertItem.replace("#", keyPair[1]) if insertItem else keyPair[1]
-            line = line.replace(f"#{key}#", insertItem)
-        return line
-
     def renderStyle(self, styleRaw: str) -> str:
         lines = []
         for lineItem in styleRaw.split("\n"):
-            line = self.insertGradient(lineItem)
-            line = self.replaceForm(line)
+            line = self.replaceForm(lineItem)
             line = self.replaceImage(line)
             line = self.replaceColor(line)
             lines.append(line)

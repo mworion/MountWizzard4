@@ -50,23 +50,23 @@ class MWidget(QMainWindow, Styles):
         self.setWindowIcon(self.mwIcon)
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.titleBar = CustomTitleBar(self)
 
         self.ws = QWidget()
+        self.ws.setObjectName("ContainerContent")
         workSpaceLayout = QVBoxLayout()
         workSpaceLayout.setContentsMargins(0, 0, 0, 0)
         workSpaceLayout.addWidget(self.ws)
-
         centralWidgetLayout = QVBoxLayout()
         centralWidgetLayout.setContentsMargins(0, 0, 0, 0)
         centralWidgetLayout.addWidget(self.titleBar)
         centralWidgetLayout.addLayout(workSpaceLayout)
         centralWidgetLayout.setSpacing(4)
-
         centralWidget = QWidget()
+        centralWidget.setObjectName("ContainerCentral")
         centralWidget.setLayout(centralWidgetLayout)
-
         self.setCentralWidget(centralWidget)
 
     def changeEvent(self, event: QEvent) -> None:

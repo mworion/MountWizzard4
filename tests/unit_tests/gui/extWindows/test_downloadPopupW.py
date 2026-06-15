@@ -46,7 +46,7 @@ def mocked_sleepAndEvents(monkeypatch, function):
     monkeypatch.setattr("time.sleep", test)
 
 
-def set_setIcon(function):
+def test_setIcon(function):
     function.setIcon()
 
 
@@ -57,6 +57,11 @@ def test_showWindow(function):
         assert function.titleBar.windowFixed
         assert function.minimumHeight() <= 120
         assert function.minimumWidth() <= 400
+
+
+def test_setProgressBarColor(function):
+    function.setProgressBarColor("red")
+    assert "red" in function.ui.progressBar.styleSheet()
 
 
 def test_setProgressBarToValue(function):

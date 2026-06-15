@@ -27,6 +27,7 @@ from PySide6.QtCore import Qt, Signal
 class DownloadPopup(MWidget):
     signalProgress = Signal(object)
     signalStatus = Signal(object)
+    signalProgressBarColor = Signal(object)
     TIMEOUT_SOURCE = 5
 
     def __init__(self, parentWidget: MWidget, url: str, dest: Path, unzip: bool = False):
@@ -47,6 +48,7 @@ class DownloadPopup(MWidget):
         self.returnValues = {"success": False}
         self.signalStatus.connect(self.setStatusTextToValue)
         self.signalProgress.connect(self.setProgressBarToValue)
+        self.signalProgressBarColor.connect(self.setProgressBarColor)
         self.setIcon()
 
     def setIcon(self) -> None:
@@ -61,6 +63,10 @@ class DownloadPopup(MWidget):
         self.titleBar.normButton.setVisible(False)
         self.titleBar.maxButton.setVisible(False)
         self.titleBar.windowFixed = True
+
+    def setProgressBarColor(self, color: str) -> None:
+        css = "QProgressBar::chunk {background-color: " + color + ";}"
+        self.ui.progressBar.setStyleSheet(css)
 
     def setProgressBarToValue(self, progressPercent: int) -> None:
         self.ui.progressBar.setValue(progressPercent)
@@ -119,8 +125,10 @@ class DownloadPopup(MWidget):
     def closePopup(self, result: bool) -> None:
         self.signalProgress.emit(100)
         if result:
+            self.signalProgressBarColor.emit("green")
             self.signalStatus.emit("Download successful")
         else:
+            self.signalProgressBarColor.emit("red")
             self.signalStatus.emit("Download failed")
 
         self.returnValues["success"] = result

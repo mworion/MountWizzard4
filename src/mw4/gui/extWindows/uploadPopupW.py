@@ -27,6 +27,8 @@ from PySide6.QtCore import Qt, Signal
 class UploadPopup(MWidget):
     signalProgress = Signal(object)
     signalStatus = Signal(object)
+    signalProgressBarColor = Signal(object)
+    TIMEOUT_UPLOAD = 5
     dataNames = {
         "comet": {
             "file": "comets.mpc",
@@ -67,7 +69,6 @@ class UploadPopup(MWidget):
         self.url: Path = url
         self.dataTypes: list[str] = dataTypes
         self.dataFilePath: Path = dataFilePath
-
         self.pollStatusRunState: bool = False
         self.timeoutCounter: int = 0
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
@@ -76,6 +77,7 @@ class UploadPopup(MWidget):
         self.setWindowTitle("Uploading to mount")
         self.signalStatus.connect(self.setStatusTextToValue)
         self.signalProgress.connect(self.setProgressBarToValue)
+        self.signalProgressBarColor.connect(self.setProgressBarColor)
         self.setIcon()
 
     def setIcon(self) -> None:
@@ -90,6 +92,10 @@ class UploadPopup(MWidget):
         self.titleBar.normButton.setVisible(False)
         self.titleBar.maxButton.setVisible(False)
         self.titleBar.windowFixed = True
+
+    def setProgressBarColor(self, colorstr: str) -> None:
+        css = "QProgressBar::chunk {background-color: " + colorstr + ";}"
+        self.ui.progressBar.setStyleSheet(css)
 
     def setProgressBarToValue(self, progressPercent: int) -> None:
         self.ui.progressBar.setValue(progressPercent)
@@ -128,7 +134,7 @@ class UploadPopup(MWidget):
         return f"http://{str(self.url)}/bin/uploadst"
 
     def getStatus(self) -> list[str]:
-        returnValues = requests.get(self.generateURLStatus(), timeout=1)
+        returnValues = requests.get(self.generateURLStatus(), timeout=self.TIMEOUT_UPLOAD)
         self.returnValues["successMount"] = True
         if returnValues.status_code != 200:
             self.log.debug(f"Error status: {returnValues.status_code}")
@@ -189,7 +195,10 @@ class UploadPopup(MWidget):
         else:
             while self.pollStatusRunState:
                 mainThreadSleep(100)
-            if not self.returnValues["successMount"]:
+            if self.returnValues["successMount"]:
+                self.signalProgressBarColor.emit("green")
+            else:
+                self.signalProgressBarColor.emit("red")
                 self.msg.emit(2, "Upload", "Error", "Uploaded but mount failed to save data")
         mainThreadSleep(500)
         self.close()

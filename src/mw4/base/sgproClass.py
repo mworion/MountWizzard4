@@ -14,6 +14,7 @@
 #
 ###########################################################
 import json
+import queue
 import requests
 import threading
 import time
@@ -22,6 +23,14 @@ from mw4.base.driverDataClass import DriverData, RemoteDeviceShutdown
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QThreadPool, QTimer
 from typing import Any
+
+
+@dataclass
+class CommandItem:
+    cmdType: str
+    valueProp: str
+    kwargs: dict = field(default_factory=dict)
+    value: Any = None
 
 
 @dataclass
@@ -43,13 +52,13 @@ class SGProClass(DriverData):
         self.data: dict = parent.data
         self.msg: Any = parent.app.msg
         self.signals: Any = parent.signals
-        self.stopEvent: threading.Event = threading.Event()
         self.threadPool: QThreadPool = parent.app.threadPool
-        self.config = DeviceConfigSGPro()
-        self.signalRS: RemoteDeviceShutdown = RemoteDeviceShutdown()
         self.deviceConnected: bool = False
-        self.runnerCommunicationLoop: Worker | None = None
-        self.signalRS.signalRemoteShutdown.connect(self.stopCommunication)
+        self.commandQueue: queue.Queue = queue.Queue()
+        self.stopEvent: threading.Event = threading.Event()
+        self.loggingTrace: bool = False
+        self.config = DeviceConfigSGPro()
+        self.workerCommunicationLoop: Worker | None = None
 
     def requestProperty(self, valueProp: str, params: dict | None = None) -> dict:
         try:
@@ -88,11 +97,6 @@ class SGProClass(DriverData):
         response = self.requestProperty(prop)
         return response.get("Success", False)
 
-    def sgDisconnectDevice(self) -> bool:
-        prop = f"disconnectdevice/{self.DEVICE_TYPE}"
-        response = self.requestProperty(prop)
-        return response.get("Success", False)
-
     def sgEnumerateDevice(self) -> list:
         prop = f"enumdevices/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
@@ -111,15 +115,18 @@ class SGProClass(DriverData):
         if response.get("State", "") == "DISCONNECTED":
             if self.deviceConnected:
                 self.deviceConnected = False
-                self.signals.deviceDisconnected.emit(f"{self.deviceName}")
-                self.msg.emit(0, "SGPRO", "Device remove", f"{self.deviceName}")
+                self.signals.deviceDisconnected.emit(f"{self.config.deviceName}")
+                self.msg.emit(0, "SGPRO", "Device remove", f"{self.config.deviceName}")
 
         else:
             if not self.deviceConnected:
                 self.deviceConnected = True
                 self.getInitialConfig()
-                self.signals.deviceConnected.emit(f"{self.deviceName}")
-                self.msg.emit(0, "SGPRO", "Device found", f"{self.deviceName}")
+                self.signals.deviceConnected.emit(f"{self.config.deviceName}")
+                self.msg.emit(0, "SGPRO", "Device found", f"{self.config.deviceName}")
+
+    def callDeviceMethodQueued(self, valueProp: str, **kwargs: Any) -> None:
+        self.commandQueue.put(CommandItem(cmdType="call", valueProp=valueProp, kwargs=kwargs))
 
     def connectDevice(self) -> bool:
         for retry in range(25):
@@ -132,11 +139,27 @@ class SGProClass(DriverData):
             self.log.debug(f"[{self.config.deviceName}] not connected, [{retry}] retries")
             suc = False
         if not suc:
-            self.msg.emit(2, self.PROTOCOL_NAME, "Connect error", self.config.deviceName)
+            self.msg.emit(2, self.config.PROTOCOL_NAME, "Connect error", self.config.deviceName)
         return suc
+
+    def getInitialConfig(self) -> None:
+        pass
 
     def pollData(self) -> None:
         pass
+
+    def processCommandQueue(self) -> None:
+        while not self.commandQueue.empty():
+            try:
+                cmd = self.commandQueue.get_nowait()
+            except queue.Empty:
+                break
+            if cmd.cmdType == "call":
+                self.callDeviceMethod(cmd.valueProp, **cmd.kwargs)
+            else:
+                self.log.warning(
+                    f"[{self.config.deviceName}] unknown cmdType: [{cmd.cmdType}]"
+                )
 
     def handleDeviceConnect(self) -> None:
         if not self.connectDevice():

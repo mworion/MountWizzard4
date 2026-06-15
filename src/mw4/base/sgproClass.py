@@ -15,71 +15,58 @@
 ###########################################################
 import json
 import requests
+import threading
+import time
+from dataclasses import dataclass, field
 from mw4.base.driverDataClass import DriverData, RemoteDeviceShutdown
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QThreadPool, QTimer
 from typing import Any
 
 
+@dataclass
+class DeviceConfigSGPro:
+    deviceName: str = field(default="")
+    hostAddress: str = field(default="127.0.0.1")
+    port: int = field(default=59590)
+    UPDATE_RATE: float = 0.25
+    PROTOCOL_NAME: str = "SGPro"
+
+
 class SGProClass(DriverData):
     SGPRO_TIMEOUT: int = 3
-    HOST_ADDR: str = "localhost"
-    PORT: int = 59590
-    PROTOCOL: str = "http"
-    BASE_URL: str = f"{PROTOCOL}://{HOST_ADDR}:{PORT}"
     DEVICE_TYPE: str = "Camera"
-    UPDATE_RATE: int = 1000
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
-        self.parent: Any = parent
         self.app: Any = parent.app
         self.data: dict = parent.data
         self.msg: Any = parent.app.msg
         self.signals: Any = parent.signals
+        self.stopEvent: threading.Event = threading.Event()
         self.threadPool: QThreadPool = parent.app.threadPool
-        self.loadConfig: bool = False
-        self._deviceName: str = ""
-        self.defaultConfig: dict[str, Any] = {
-            "deviceList": ["SGPro"],
-            "deviceName": "SGPro",
-        }
+        self.config = DeviceConfigSGPro()
         self.signalRS: RemoteDeviceShutdown = RemoteDeviceShutdown()
-
         self.deviceConnected: bool = False
-        self.serverConnected: bool = False
-        self.workerGetConfig: Worker | None = None
-        self.workerStatus: Worker | None = None
-        self.mutexPollStatus: QMutex = QMutex()
-
-        self.cycleDevice: QTimer = QTimer()
-        self.cycleDevice.setSingleShot(False)
-        self.cycleDevice.timeout.connect(self.pollStatus)
+        self.runnerCommunicationLoop: Worker | None = None
         self.signalRS.signalRemoteShutdown.connect(self.stopCommunication)
-
-    @property
-    def deviceName(self) -> str:
-        return self._deviceName
-
-    @deviceName.setter
-    def deviceName(self, value: str) -> None:
-        self._deviceName = value
 
     def requestProperty(self, valueProp: str, params: dict | None = None) -> dict:
         try:
-            t = f"SGPro: [{self.BASE_URL}/{valueProp}?format=json]"
+            url = f"http://{self.config.hostAddress}:{self.config.port}"
+            t = f"SGPro: [{url}/{valueProp}?format=json]"
             if params:
                 t += f" data: [{bytes(json.dumps(params).encode('utf-8'))}]"
                 self.log.trace("POST " + t)
                 response = requests.post(
-                    f"{self.BASE_URL}/{valueProp}?format=json",
+                    f"{url}/{valueProp}?format=json",
                     json=params,
                     timeout=self.SGPRO_TIMEOUT,
                 )
             else:
                 self.log.trace("GET " + t)
                 response = requests.get(
-                    f"{self.BASE_URL}/{valueProp}?format=json",
+                    f"{url}/{valueProp}?format=json",
                     timeout=self.SGPRO_TIMEOUT,
                 )
         except Exception as e:
@@ -96,7 +83,7 @@ class SGProClass(DriverData):
         return response
 
     def sgConnectDevice(self) -> bool:
-        devName = self.deviceName.replace(" ", "%20")
+        devName = self.config.deviceName.replace(" ", "%20")
         prop = f"connectdevice/{self.DEVICE_TYPE}/{devName}"
         response = self.requestProperty(prop)
         return response.get("Success", False)
@@ -110,19 +97,6 @@ class SGProClass(DriverData):
         prop = f"enumdevices/{self.DEVICE_TYPE}"
         response = self.requestProperty(prop)
         return response.get("Devices", [])
-
-    def startSGProTimer(self) -> None:
-        self.cycleDevice.start(self.UPDATE_RATE)
-
-    def stopSGProTimer(self) -> None:
-        self.cycleDevice.stop()
-
-    def workerGetInitialConfig(self) -> None:
-        pass
-
-    def getInitialConfig(self) -> None:
-        self.workerGetConfig = Worker(self.workerGetInitialConfig)
-        self.threadPool.start(self.workerGetConfig)
 
     def workerPollStatus(self) -> None:
         prop = f"devicestatus/{self.DEVICE_TYPE}"
@@ -147,31 +121,58 @@ class SGProClass(DriverData):
                 self.signals.deviceConnected.emit(f"{self.deviceName}")
                 self.msg.emit(0, "SGPRO", "Device found", f"{self.deviceName}")
 
-    def clearPollStatus(self) -> None:
-        self.mutexPollStatus.unlock()
+    def connectDevice(self) -> bool:
+        for retry in range(25):
+            suc = self.sgConnectDevice()
+            if suc:
+                self.log.debug(f"[{self.config.deviceName}] connected, [{retry}] retries")
+                break
+            time.sleep(0.2)
+        else:
+            self.log.debug(f"[{self.config.deviceName}] not connected, [{retry}] retries")
+            suc = False
+        if not suc:
+            self.msg.emit(2, self.PROTOCOL_NAME, "Connect error", self.config.deviceName)
+        return suc
 
-    def pollStatus(self) -> None:
-        if not self.mutexPollStatus.tryLock():
+    def pollData(self) -> None:
+        pass
+
+    def handleDeviceConnect(self) -> None:
+        if not self.connectDevice():
             return
+        self.deviceConnected = True
+        self.signals.deviceConnected.emit(self.config.deviceName)
+        self.msg.emit(0, self.PROTOCOL_NAME, "Device found", self.config.deviceName)
+        self.getInitialConfig()
 
-        self.workerStatus = Worker(self.workerPollStatus)
-        self.workerStatus.signals.finished.connect(self.clearPollStatus)
-        self.threadPool.start(self.workerStatus)
+    def handleDeviceDisconnect(self) -> None:
+        self.deviceConnected = False
+        self.signals.deviceDisconnected.emit(self.config.deviceName)
+        self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.config.deviceName)
+
+    def runnerCommunicationLoop(self) -> None:
+        while not self.stopEvent.is_set():
+            if not self.deviceConnected:
+                self.handleDeviceConnect()
+            elif not self.getDeviceProp("Connected"):
+                self.handleDeviceDisconnect()
+            else:
+                self.pollData()
+                self.processCommandQueue()
+            self.stopEvent.wait(timeout=self.UPDATE_RATE)
 
     def startCommunication(self) -> None:
         self.data.clear()
-        if not self.serverConnected:
-            self.serverConnected = True
-            self.signals.serverConnected.emit()
-        self.startSGProTimer()
+        self.deviceConnected = False
+        self.stopEvent.clear()
+        self.workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
+        self.threadPool.start(self.workerCommunicationLoop)
 
     def stopCommunication(self) -> None:
-        self.stopSGProTimer()
+        self.stopEvent.set()
         self.deviceConnected = False
-        self.serverConnected = False
-        self.signals.deviceDisconnected.emit(f"{self.deviceName}")
-        self.signals.serverDisconnected.emit({f"{self.deviceName}": 0})
-        self.msg.emit(0, "SGPRO", "Device remove", f"{self.deviceName}")
+        self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", f"{self.config.deviceName}")
 
     def discoverDevices(self, deviceType: str) -> list:
         discoverList = self.sgEnumerateDevice()

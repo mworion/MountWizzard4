@@ -141,6 +141,7 @@ class MountWizzard4(QObject):
     def initConfig(self) -> GeographicPosition | None:
         cfgSetting = self.config.get("SettingUpdate", {})
         setCustomLoggingLevel(self, cfgSetting.get("loglevel", "DEBUG"))
+        self.isOnline = cfgSetting.get("isOnline", False)
         self.dReg.initConfig()
         lat = self.config.get("topoLat", 51.47)
         lon = self.config.get("topoLon", 0)

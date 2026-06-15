@@ -19,9 +19,9 @@ import requests
 import threading
 import time
 from dataclasses import dataclass, field
-from mw4.base.driverDataClass import DriverData, RemoteDeviceShutdown
+from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker
-from PySide6.QtCore import QMutex, QThreadPool, QTimer
+from PySide6.QtCore import QThreadPool
 from typing import Any
 
 
@@ -63,31 +63,29 @@ class SGProClass(DriverData):
     def requestProperty(self, valueProp: str, params: dict | None = None) -> dict:
         try:
             url = f"http://{self.config.hostAddress}:{self.config.port}"
-            t = f"SGPro: [{url}/{valueProp}?format=json]"
             if params:
-                t += f" data: [{bytes(json.dumps(params).encode('utf-8'))}]"
-                self.log.trace("POST " + t)
                 response = requests.post(
                     f"{url}/{valueProp}?format=json",
                     json=params,
                     timeout=self.SGPRO_TIMEOUT,
                 )
             else:
-                self.log.trace("GET " + t)
                 response = requests.get(
                     f"{url}/{valueProp}?format=json",
                     timeout=self.SGPRO_TIMEOUT,
                 )
         except Exception as e:
-            self.log.error(f"Request SGPro error: [{e}]")
+            self.log.debug(
+                f"[{self.config.deviceName}] method [{valueProp}] not implemented: {e}"
+            )
             return {}
 
         if response.status_code != 200:
-            t = f"Request SGPro response invalid: [{response.status_code}]"
+            t = f"Response invalid: [{response.status_code}]"
             self.log.warning(t)
             return {}
 
-        self.log.trace(f"Request SGpro response: [{response.json()}]")
+        self.log.debug(f"[Trace] Response: [{response.json()}]")
         response = response.json()
         return response
 

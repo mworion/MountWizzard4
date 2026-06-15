@@ -121,6 +121,7 @@ class MWidget(QMainWindow, Styles):
     def prepareFileDialog(self, window: QWidget, enableDir: bool = False) -> QFileDialog:
         dlg = QFileDialog()
         dlg.setOptions(QFileDialog.Option.DontUseNativeDialog)
+        dlg.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         dlg.setWindowIcon(self.mwIcon)
         dlg.setStyleSheet(self.mw4Style)
         dlg.setViewMode(QFileDialog.ViewMode.List)

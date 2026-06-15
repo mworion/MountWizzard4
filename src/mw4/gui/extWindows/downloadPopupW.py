@@ -16,6 +16,7 @@
 import gzip
 import requests
 import shutil
+from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.qtHelpers import svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
@@ -130,7 +131,7 @@ class DownloadPopup(MWidget):
         else:
             self.signalProgressBarColor.emit("red")
             self.signalStatus.emit("Download failed")
-
+        mainThreadSleep(500)
         self.returnValues["success"] = result
         self.close()
 

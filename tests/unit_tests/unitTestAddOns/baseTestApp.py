@@ -15,9 +15,10 @@
 ###########################################################
 # Re-export all stubs so that existing test imports remain unchanged.
 from mw4.base.deviceRegistry import DeviceEntry, DeviceRegistry
+from mw4.base.timeManager import TimeManager
 from mw4.logic.buildData.buildpoints import BuildPoint
 from pathlib import Path
-from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
+from PySide6.QtCore import QObject, QThreadPool, Signal
 from queue import Queue
 from skyfield.api import load_file
 from tests.unit_tests.unitTestAddOns.deviceStubs import (  # noqa: F401
@@ -77,7 +78,6 @@ class App(QObject):
     __version__ = "test"
     MAX_THREAD_COUNT = 30
     update10s = Signal()
-    timeMgr = QTimer()
     update0_1s = Signal()
     update1s = Signal()
     update3s = Signal()
@@ -124,6 +124,7 @@ class App(QObject):
 
     def __init__(self):
         super().__init__()
+        self.timeMgr = TimeManager(app=self)
         self.config = {"WindowMain": {}}
         self.deviceStat = {
             "dome": False,

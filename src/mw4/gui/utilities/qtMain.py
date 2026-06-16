@@ -121,7 +121,7 @@ class MWidget(QMainWindow, Styles):
     def prepareFileDialog(self, window: QWidget, enableDir: bool = False) -> QFileDialog:
         dlg = QFileDialog()
         dlg.setOptions(QFileDialog.Option.DontUseNativeDialog)
-        dlg.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        # dlg.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         dlg.setWindowIcon(self.mwIcon)
         dlg.setStyleSheet(self.mw4Style)
         dlg.setViewMode(QFileDialog.ViewMode.List)
@@ -130,17 +130,9 @@ class MWidget(QMainWindow, Styles):
             dlg.setFilter(QDir.Filter.Files | QDir.Filter.AllDirs)
         else:
             dlg.setFilter(QDir.Filter.Files)
-
-        width = 600
-        height = 400
-        ph = window.geometry().height()
-        pw = window.geometry().width()
-        px = window.geometry().x()
-        py = window.geometry().y()
-
-        dlg.setGeometry(
-            px + int(0.5 * (pw - width)), py + int(0.5 * (ph - height)), width, height
-        )
+        x = window.x() + int((window.width() - dlg.width()) / 2)
+        y = window.y() + int((window.height() - dlg.height()) / 2)
+        dlg.move(x, y)
         return dlg
 
     @staticmethod

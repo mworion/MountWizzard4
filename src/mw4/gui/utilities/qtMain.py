@@ -122,6 +122,13 @@ class MWidget(QMainWindow, Styles):
         dlg = QFileDialog()
         dlg.setOptions(QFileDialog.Option.DontUseNativeDialog)
         # dlg.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        # mainLayout = QVBoxLayout()
+        # Add the new widget first (on top)
+        # mainLayout.addWidget(self.titleBar)
+        # Add the existing grid below
+        # mainLayout.addLayout(dlg.layout())
+        # Replace parent's layout
+        # dlg.setLayout(mainLayout)
         dlg.setWindowIcon(self.mwIcon)
         dlg.setStyleSheet(self.mw4Style)
         dlg.setViewMode(QFileDialog.ViewMode.List)

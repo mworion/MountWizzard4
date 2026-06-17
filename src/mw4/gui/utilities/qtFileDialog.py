@@ -66,7 +66,7 @@ class MWFileDialog(MWidget):
         self,
         parent: QWidget | None = None,
         title: str = "Select",
-        folder: Path | str = Path("../../src/mw4/gui/utilities"),
+        folder: Path | str = Path(""),
         filterSet: str = "All files (*)",
         acceptMode: "MWFileDialog.AcceptMode" = AcceptMode.AcceptOpen,
         fileMode: "MWFileDialog.FileMode" = FileMode.ExistingFile,

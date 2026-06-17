@@ -179,14 +179,14 @@ class ImageWindow(MWidget):
             self.ui.load.setEnabled(True)
             self.ui.abortExpose.setEnabled(False)
 
-        isPlateSolve = bool(self.app.deviceStat.get("plateSolve", False))
+        isPlateSolve = bool(self.app.dReg["plateSolve"].stat)
         isSolving = bool(self.imagingDeviceStat.get("solve", False))
         isImage = self.imageFileName.is_file()
 
         self.ui.solve.setEnabled(isPlateSolve and isImage)
         self.ui.abortSolve.setEnabled(isPlateSolve and isImage and isSolving)
 
-        if not self.app.deviceStat.get("camera", False):
+        if not self.app.dReg["camera"]:
             self.ui.expose.setEnabled(False)
             self.ui.exposeN.setEnabled(False)
 

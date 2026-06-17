@@ -465,6 +465,8 @@ BASIC_STYLE = """
         padding: 0px;
         margin: 0px;
         border: 0px;
+        color: $M_PRIM$;
+        background-color: $M_BACK$;
     }
     /* Table Widget */
     QTableWidget {
@@ -489,13 +491,6 @@ BASIC_STYLE = """
         height: 6px;
     }
     QTableView::item {
-        color: $M_PRIM$;
-    }
-    QTreeView QHeaderView:section{
-        border-width: %WIDTH%;
-        border-style: plain;
-        border-radius: %ROUND%;
-        background-color: $M_BACK1$;
         color: $M_PRIM$;
     }
     /* Combo Boxes */
@@ -680,22 +675,17 @@ BASIC_STYLE = """
         border-radius: 2px;
         background-color: $M_PRIM$;
     }
-    /* System Dialogs */
-    QFileDialog QListView {
-        text-align: right;
-        border-width: %WIDTH%;
-        border-color: $M_SEC$;
-        border-style: outset;
-        border-radius: %ROUND%;
-    }
-    QFileDialog QListView:enabled {
+    /* system replacements */
+    QTreeView{
         color: $M_PRIM$;
+        background-color: $M_BACK$;
     }
-    QFileDialog QListView:disabled {
-        color: $M_PRIM2$;
+    QTreeView QHeaderView:section{
+        border-width: %WIDTH%;
+        border-style: plain;
+        border-radius: %ROUND%;
+        color: $M_PRIM$;
+        background-color: $M_BACK1$;
     }
-    QFileDialog QPushButton {
-        min-width: 50px;
-        min-height: 20px;
-    }
+
     """

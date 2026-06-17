@@ -79,8 +79,8 @@ class MWFileDialog(MWidget):
         self.currentDir: Path = Path(folder)
         self.eventLoop = QEventLoop()
         self.setWindowTitle(title)
-        self.resize(self.HALF_WIDTH, self.FULL_HEIGHT)
-
+        self.setMinimumSize(600, 400)
+        self.setMaximumSize(600, 800)
         self.model = QFileSystemModel(self)
         self.model.setRootPath("")
         if fileMode == self.FileMode.Directory:
@@ -101,7 +101,7 @@ class MWFileDialog(MWidget):
         self.tree.doubleClicked.connect(self.onDoubleClicked)
 
         self.upButton = QToolButton()
-        self.upButton.setText("⬆")
+        self.wIcon(self.upButton,"arrow-up0")
         self.upButton.setToolTip("Parent directory")
         self.upButton.clicked.connect(self.onUp)
 
@@ -122,8 +122,10 @@ class MWFileDialog(MWidget):
         if fileMode == self.FileMode.Directory:
             acceptText = "Choose"
         self.btnAccept = QPushButton(acceptText)
+        self.btnAccept.setMinimumSize(80,25)
         self.btnAccept.clicked.connect(self.onAccept)
         self.btnCancel = QPushButton("Cancel")
+        self.btnCancel.setMinimumSize(80, 25)
         self.btnCancel.clicked.connect(self.onReject)
 
         topRow = QHBoxLayout()

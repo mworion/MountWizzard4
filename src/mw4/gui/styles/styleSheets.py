@@ -293,16 +293,20 @@ BASIC_STYLE = """
         width: 10px;
         height: 10px;
     }
-    QInputDialog QSpinBox {
+    QSpinBox {
         color: $M_PRIM$;
         border-color: $M_SEC$;
         border-width: %WIDTH%;
         border-style: outset;
         border-radius: %ROUND%;
         padding-left: 2px;
-        height: 25px;
+        selection-background-color: $M_BACK$;
+        selection-color: $M_PRIM$;
     }
-    QInputDialog QSpinBox::up-button {
+    QSpinBox:disabled {
+        color: $M_PRIM2$;
+    }
+    QSpinBox::up-button {
         subcontrol-origin: border;
         subcontrol-position: top right;
         width: 12px;
@@ -311,12 +315,12 @@ BASIC_STYLE = """
         border-color: $M_SEC$;
         border-style: outset;
     }
-    QInputDialog QSpinBox::up-arrow {
+    QSpinBox::up-arrow {
         image: url($arrow-up$);
         width: 10px;
         height: 10px;
     }
-    QInputDialog QSpinBox::down-button {
+    QSpinBox::down-button {
         subcontrol-origin: border;
         subcontrol-position: bottom right;
         width: 12px;
@@ -325,64 +329,10 @@ BASIC_STYLE = """
         border-width: %WIDTH%;
         border-color: $M_SEC$;
    }
-    QInputDialog QSpinBox::down-arrow {
+    QSpinBox::down-arrow {
         image: url($arrow-down$);
         width: 10px;
         height: 10px;
-    }
-    QInputDialog QComboBox {
-        combobox-popup: 0;
-        color: $M_TER$;
-        border-color: $M_SEC$;
-        border-width: 1px;
-        border-style: outset;
-        border-radius: %ROUND%;
-        padding-left: 5px;
-        height: 25px;
-    }
-    QInputDialog QComboBox::drop-down {
-        subcontrol-origin: border;
-        subcontrol-position: right;
-        width: 24px;
-        border-color: $M_SEC$;
-        border-style: outset;
-        border-width: 1px;
-        border-radius: %ROUND%;
-    }
-    QInputDialog QComboBox[active=true]::drop-down {
-            border-color: $M_GREEN$;
-        }
-    QInputDialog QComboBox::down-arrow {
-        image: url($arrow-down$);
-        width: 16px;
-        height: 16px;
-    }
-    QInputDialog QComboBox QListView {
-        border-width: %WIDTH%;
-        border-style: outset;
-        border-color: $M_SEC$;
-        border-radius: %ROUND%;
-        color: $M_TER$;
-        min-height: 60px;
-    }
-    QInputDialog QComboBox QListView::item {
-        border-color: $M_SEC$;
-        min-height: 28px;
-    }
-    QInputDialog QLineEdit {
-        color: $M_PRIM$;
-        height: 25px;
-        font-weight: bold;
-        text-align: right;
-    }
-    QInputDialog QPushButton {
-        color: $M_TER$;
-        min-width: 90px;
-        height: 25px;
-    }
-    QInputDialog QPushButton:default {
-        border-width: %WIDTH%;
-        border-color: $M_PRIM$;
     }
     /* Push Buttons */
     QPushButton {

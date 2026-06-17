@@ -192,8 +192,9 @@ class MountSett(TabAddon):
     def setMeridianLimitTrack(self) -> bool:
         sett = self.app.dReg["mount"].setting
         actValue = 0 if not sett.meridianLimitTrack else int(sett.meridianLimitTrack)
-        dlg = QInputDialog()
-        value, ok = dlg.getInt(
+        from mw4.gui.utilities.qtInputDialog import MWInputDialog
+
+        value, ok = MWInputDialog.getInt(
             self.mainW, "Set Meridian Limit Track", "Value (1-30):", actValue, 1, 30, 1
         )
         if not ok:

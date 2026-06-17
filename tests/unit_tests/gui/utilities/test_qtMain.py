@@ -12,22 +12,19 @@
 # written in python3, (c) 2019-2026 by mworion
 # License APL2.0
 #
-###########################################################
 import logging
-import os
 import pytest
 import unittest.mock as mock
+from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
+from mw4.gui.utilities.qtMessageDialog import MWMessageDialog
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path
 from PySide6.QtWidgets import (
-    QFileDialog,
     QMainWindow,
-    QMessageBox,
     QPushButton,
     QWidget,
 )
-from skyfield.api import load
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -142,109 +139,118 @@ def test_initUI_1(function):
         function.initUI()
 
 
-def test_prepareFileDialog_1(function):
-    window = QWidget()
-    suc = function.prepareFileDialog(window=window)
-    assert suc
-
-
-def test_prepareFileDialog_2(function):
-    window = QWidget()
-    suc = function.prepareFileDialog(window=window, enableDir=True)
-    assert suc
-
-
-def test_runDialog_1(function):
-    dialog = QFileDialog()
-    with mock.patch.object(QFileDialog, "exec", return_value=0):
-        val = function.runDialog(dialog)
-        assert val == 0
-
-
-def test_messageDialog_1(function):
+def test_messageDialog_yes(function):
     widget = QWidget()
-    with mock.patch.object(function, "runDialog", return_value=QMessageBox.StandardButton.No):
-        suc = function.messageDialog(widget, "test", "test")
-        assert not suc
+    with mock.patch.object(MWMessageDialog, "question", return_value=True):
+        result = function.messageDialog(widget, "title", "question?")
+        assert result is True
 
 
-def test_messageDialog_2(function):
+def test_messageDialog_no(function):
     widget = QWidget()
-    with mock.patch.object(function, "runDialog", return_value=QMessageBox.StandardButton.Yes):
-        suc = function.messageDialog(widget, "test", "test")
-        assert suc
+    with mock.patch.object(MWMessageDialog, "question", return_value=False):
+        result = function.messageDialog(widget, "title", "question?")
+        assert result is False
 
 
-def test_messageDialog_3(function):
+def test_messageDialog_customButtons(function):
     widget = QWidget()
-    with mock.patch.object(function, "runDialog", return_value=QMessageBox.StandardButton.Yes):
-        suc = function.messageDialog(widget, "test", "test", ["A", "B"])
-        assert suc
+    with mock.patch.object(MWMessageDialog, "question", return_value=2):
+        result = function.messageDialog(widget, "title", "question?", ["A", "B", "C"])
+        assert result == 2
 
 
-def test_openFile_5(function):
+def test_messageDialog_customButtonsCancelled(function):
+    widget = QWidget()
+    with mock.patch.object(MWMessageDialog, "question", return_value=MWMessageDialog.Rejected):
+        result = function.messageDialog(widget, "title", "question?", ["A", "B"])
+        assert result == MWMessageDialog.Rejected
+
+
+def test_openFile_success(function, tmp_path):
     window = QWidget()
-    with mock.patch.object(function, "runDialog", return_value=0):
-        full = function.openFile(
-            window=window, title="title", folder=Path("."), filterSet="*.*"
+    expected = tmp_path / "test.fits"
+    with mock.patch.object(MWFileDialog, "getOpenFileName", return_value=expected):
+        result = function.openFile(
+            window=window, title="title", folder=tmp_path, filterSet="*.fits"
         )
-        assert full == Path()
+        assert result == expected
 
 
-def test_openFile_6(function):
+def test_openFile_cancelled(function, tmp_path):
     window = QWidget()
-    with (
-        mock.patch.object(function, "runDialog", return_value=1),
-        mock.patch.object(QFileDialog, "selectedFiles", return_value=["test1"]),
-    ):
-        full = function.openFile(
-            window=window, title="title", folder=Path("."), filterSet="*.*"
+    with mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path()):
+        result = function.openFile(
+            window=window, title="title", folder=tmp_path, filterSet="*.*"
         )
-        assert full == Path("test1")
+        assert result == Path()
 
 
-def test_openMultipleFiles_1(function):
+def test_openMultipleFiles_success(function, tmp_path):
     window = QWidget()
-    with (
-        mock.patch.object(function, "runDialog", return_value=1),
-        mock.patch.object(QFileDialog, "selectedFiles", return_value=["test1", "test2"]),
-    ):
-        full = function.openMultipleFiles(
-            window=window, title="title", folder=Path("."), filterSet="*.*"
+    expected = [tmp_path / "a.fits", tmp_path / "b.fits"]
+    with mock.patch.object(MWFileDialog, "getOpenFileNames", return_value=expected):
+        result = function.openMultipleFiles(
+            window=window, title="title", folder=tmp_path, filterSet="*.fits"
         )
-        assert full == [Path("test1"), Path("test2")]
+        assert result == expected
 
 
-def test_saveFile_5(function):
+def test_openMultipleFiles_cancelled(function, tmp_path):
     window = QWidget()
-    with mock.patch.object(function, "runDialog", return_value=0):
-        full = function.saveFile(
-            window=window, title="title", folder=Path("."), filterSet="*.*"
+    with mock.patch.object(MWFileDialog, "getOpenFileNames", return_value=[]):
+        result = function.openMultipleFiles(
+            window=window, title="title", folder=tmp_path, filterSet="*.*"
         )
-        assert full == Path()
+        assert result == []
 
 
-def test_saveFile_6(function):
+def test_saveFile_success(function, tmp_path):
     window = QWidget()
-    with (
-        mock.patch.object(function, "runDialog", return_value=1),
-        mock.patch.object(QFileDialog, "selectedFiles", return_value=["tests/test.txt"]),
-    ):
-        function.saveFile(window=window, title="title", folder=Path("."), filterSet="*.*")
+    expected = tmp_path / "config.cfg"
+    with mock.patch.object(MWFileDialog, "getSaveFileName", return_value=expected):
+        result = function.saveFile(
+            window=window, title="title", folder=tmp_path, filterSet="*.cfg"
+        )
+        assert result == expected
 
 
-def test_openDir_4(function):
+def test_saveFile_cancelled(function, tmp_path):
     window = QWidget()
-    with mock.patch.object(function, "runDialog", return_value=1):
-        full = function.openDir(window=window, title="title", folder=Path("."))
-        assert full == Path(os.getcwd())
+    with mock.patch.object(MWFileDialog, "getSaveFileName", return_value=Path()):
+        result = function.saveFile(
+            window=window, title="title", folder=tmp_path, filterSet="*.*"
+        )
+        assert result == Path()
 
 
-def test_openDir_5(function):
+def test_saveFile_enableDir_ignored(function, tmp_path):
     window = QWidget()
-    with mock.patch.object(function, "runDialog", return_value=None):
-        full = function.openDir(window=window, title="title", folder=Path("."))
-        assert full == Path()
+    expected = tmp_path / "out.cfg"
+    with mock.patch.object(MWFileDialog, "getSaveFileName", return_value=expected):
+        result = function.saveFile(
+            window=window,
+            title="title",
+            folder=tmp_path,
+            filterSet="*.cfg",
+            enableDir=True,
+        )
+        assert result == expected
+
+
+def test_openDir_success(function, tmp_path):
+    window = QWidget()
+    expected = tmp_path / "data"
+    with mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=expected):
+        result = function.openDir(window=window, title="title", folder=tmp_path)
+        assert result == expected
+
+
+def test_openDir_cancelled(function, tmp_path):
+    window = QWidget()
+    with mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=Path()):
+        result = function.openDir(window=window, title="title", folder=tmp_path)
+        assert result == Path()
 
 
 def test_positionWindow_1(function):

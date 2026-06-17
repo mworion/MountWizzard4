@@ -19,16 +19,13 @@ from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtCustomWindow import CustomTitleBar
 from mw4.gui.utilities.qtHelpers import svg2icon
 from pathlib import Path
-from PySide6.QtCore import QDir, QEvent, QSize, Qt
+from PySide6.QtCore import QEvent, QSize, Qt
 from PySide6.QtGui import (
     QGuiApplication,
     QKeyEvent,
-    QPixmap,
 )
 from PySide6.QtWidgets import (
-    QFileDialog,
     QMainWindow,
-    QMessageBox,
     QPushButton,
     QVBoxLayout,
     QWidget,
@@ -118,93 +115,17 @@ class MWidget(QMainWindow, Styles):
         self.setMouseTracking(True)
         self.setWindowIcon(self.mwIcon)
 
-    def prepareFileDialog(self, window: QWidget, enableDir: bool = False) -> QFileDialog:
-        dlg = QFileDialog()
-        dlg.setOptions(QFileDialog.Option.DontUseNativeDialog)
-        dlg.setWindowIcon(self.mwIcon)
-        dlg.setStyleSheet(self.mw4Style)
-        dlg.setViewMode(QFileDialog.ViewMode.List)
-        dlg.setModal(True)
-        if enableDir:
-            dlg.setFilter(QDir.Filter.Files | QDir.Filter.AllDirs)
-        else:
-            dlg.setFilter(QDir.Filter.Files)
-        x = window.x() + int((window.width() - dlg.width()) / 2)
-        y = window.y() + int((window.height() - dlg.height()) / 2)
-        dlg.move(x, y)
-        return dlg
+    def openFile(self, window: QWidget, title: str, folder: Path, filterSet: str) -> Path:
+        from mw4.gui.utilities.qtFileDialog import MWFileDialog
 
-    @staticmethod
-    def runDialog(dlg: QMessageBox | QFileDialog) -> int:
-        return dlg.exec()
-
-    def messageDialog(
-        self,
-        parentWidget: QWidget,
-        title: str,
-        question: str,
-        buttons: list[str] = [],
-        iconType: int = 0,
-    ) -> int:
-        msg = QMessageBox()
-        msg.setWindowModality(Qt.WindowModality.ApplicationModal)
-        msg.setStyleSheet(self.mw4Style)
-        msg.setTextFormat(Qt.TextFormat.AutoText)
-        msg.setWindowTitle(title)
-        icons = [
-            "assets/icon/question.svg",
-            "assets/icon/information.svg",
-            "assets/icon/warning.svg",
-            "assets/icon/question.svg",
-        ]
-        pixmap = QPixmap(icons[iconType]).scaled(64, 64)
-        msg.setIconPixmap(pixmap)
-        msg.setText(question)
-        if not buttons:
-            msg.setStandardButtons(msg.StandardButton.Yes | msg.StandardButton.No)
-            msg.setDefaultButton(msg.StandardButton.No)
-        else:
-            for button in buttons:
-                msg.addButton(button, QMessageBox.ButtonRole.AcceptRole)
-            msg.setDefaultButton(QMessageBox.StandardButton.Cancel)
-        msg.adjustSize()
-        x = parentWidget.x() + int((parentWidget.width() - msg.width()) / 2)
-        y = parentWidget.y() + int((parentWidget.height() - msg.height()) / 2)
-        msg.move(x, y)
-        reply = self.runDialog(msg)
-
-        if not buttons:
-            return reply == msg.StandardButton.Yes
-        else:
-            return reply
-
-    def openFileBase(
-        self, window: QWidget, title: str, folder: Path, filterSet: str, multiple: bool = False
-    ) -> list[str]:
-        dlg = self.prepareFileDialog(window=window)
-        dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
-        dlg.setWindowTitle(title)
-        dlg.setNameFilter(filterSet)
-        dlg.setDirectory(str(folder))
-        fileMode = (
-            QFileDialog.FileMode.ExistingFiles
-            if multiple
-            else QFileDialog.FileMode.ExistingFile
-        )
-        dlg.setFileMode(fileMode)
-        self.runDialog(dlg)
-        return dlg.selectedFiles()
+        return MWFileDialog.getOpenFileName(window, title, folder, filterSet)
 
     def openMultipleFiles(
         self, window: QWidget, title: str, folder: Path, filterSet: str
     ) -> list[Path]:
-        files = self.openFileBase(window, title, folder, filterSet, multiple=True)
-        return [Path(f) for f in files]
+        from mw4.gui.utilities.qtFileDialog import MWFileDialog
 
-    def openFile(self, window: QWidget, title: str, folder: Path, filterSet: str) -> Path:
-        files = self.openFileBase(window, title, folder, filterSet)
-        file = files[0] if files else ""
-        return Path(file)
+        return MWFileDialog.getOpenFileNames(window, title, folder, filterSet)
 
     def saveFile(
         self,
@@ -214,28 +135,26 @@ class MWidget(QMainWindow, Styles):
         filterSet: str,
         enableDir: bool = False,
     ) -> Path:
-        dlg = self.prepareFileDialog(window, enableDir)
-        dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
-        dlg.setWindowTitle(title)
-        dlg.setNameFilter(filterSet)
-        dlg.setDirectory(str(folder))
-        result = self.runDialog(dlg)
-        if not result:
-            return Path()
+        from mw4.gui.utilities.qtFileDialog import MWFileDialog
 
-        return Path(dlg.selectedFiles()[0])
+        return MWFileDialog.getSaveFileName(window, title, folder, filterSet)
 
     def openDir(self, window: QWidget, title: str, folder: Path) -> Path:
-        dlg = self.prepareFileDialog(window=window, enableDir=True)
-        dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
-        dlg.setWindowTitle(title)
-        dlg.setDirectory(str(folder))
-        dlg.setFileMode(QFileDialog.FileMode.Directory)
-        result = self.runDialog(dlg)
-        if not result:
-            return Path()
+        from mw4.gui.utilities.qtFileDialog import MWFileDialog
 
-        return Path(dlg.selectedFiles()[0])
+        return MWFileDialog.getExistingDirectory(window, title, folder)
+
+    def messageDialog(
+        self,
+        parentWidget: QWidget,
+        title: str,
+        question: str,
+        buttons: list[str] | None = None,
+        iconType: int = 0,
+    ) -> bool | int:
+        from mw4.gui.utilities.qtMessageDialog import MWMessageDialog
+
+        return MWMessageDialog.question(parentWidget, title, question, buttons, iconType)
 
     def positionWindow(self, config: dict) -> None:
         height = config.get("height", 600)

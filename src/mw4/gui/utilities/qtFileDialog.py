@@ -79,7 +79,7 @@ class MWFileDialog(MWidget):
         self.currentDir: Path = Path(folder)
         self.eventLoop = QEventLoop()
         self.setWindowTitle(title)
-        self.resize(self.FULL_WIDTH, self.FULL_HEIGHT)
+        self.resize(self.HALF_WIDTH, self.FULL_HEIGHT)
 
         self.model = QFileSystemModel(self)
         self.model.setRootPath("")

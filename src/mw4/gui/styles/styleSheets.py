@@ -491,7 +491,13 @@ BASIC_STYLE = """
     QTableView::item {
         color: $M_PRIM$;
     }
-
+    QTreeView QHeaderView:section{
+        border-width: %WIDTH%;
+        border-style: plain;
+        border-radius: %ROUND%;
+        background-color: $M_BACK1$;
+        color: $M_PRIM$;
+    }
     /* Combo Boxes */
     QComboBox {
         combobox-popup: 0;

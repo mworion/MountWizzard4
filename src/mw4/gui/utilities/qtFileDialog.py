@@ -84,9 +84,9 @@ class MWFileDialog(MWidget):
         self.model = QFileSystemModel(self)
         self.model.setRootPath("")
         if fileMode == self.FileMode.Directory:
-            self.model.setFilter(QDir.Filter.AllDirs | QDir.Filter.NoDotAndDotDot)
+            self.model.setFilter(QDir.Filter.AllDirs)
         else:
-            self.model.setFilter(QDir.Filter.AllEntries | QDir.Filter.NoDotAndDotDot)
+            self.model.setFilter(QDir.Filter.AllEntries)
 
         self.tree = QTreeView()
         self.tree.setModel(self.model)
@@ -97,20 +97,24 @@ class MWFileDialog(MWidget):
         )
         self.tree.setSortingEnabled(True)
         self.tree.sortByColumn(0, Qt.SortOrder.AscendingOrder)
-        self.tree.header().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         self.tree.doubleClicked.connect(self.onDoubleClicked)
+        self.tree.hideColumn(3)
+        self.tree.setColumnWidth(0, 350)
+        self.tree.setColumnWidth(1, 100)
+        self.tree.setColumnWidth(2, 100)
+        header = self.tree.header()
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Interactive)
+        header.setSectionResizeMode(1, QHeaderView.ResizeMode.Interactive)
+        header.setSectionResizeMode(2, QHeaderView.ResizeMode.Interactive)
 
         self.upButton = QToolButton()
         self.wIcon(self.upButton,"arrow-up0")
         self.upButton.setToolTip("Parent directory")
         self.upButton.clicked.connect(self.onUp)
-
         self.pathEdit = QLineEdit()
         self.pathEdit.returnPressed.connect(self.onPathEntered)
-
         self.fileNameEdit = QLineEdit()
         self.fileNameEdit.returnPressed.connect(self.onAccept)
-
         self.filterCombo = QComboBox()
         for entry in [f.strip() for f in filterSet.split(";;") if f.strip()]:
             self.filterCombo.addItem(entry)
@@ -124,6 +128,7 @@ class MWFileDialog(MWidget):
         self.btnAccept = QPushButton(acceptText)
         self.btnAccept.setMinimumSize(80,25)
         self.btnAccept.clicked.connect(self.onAccept)
+        self.btnAccept.setDefault(True)
         self.btnCancel = QPushButton("Cancel")
         self.btnCancel.setMinimumSize(80, 25)
         self.btnCancel.clicked.connect(self.onReject)

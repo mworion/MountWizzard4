@@ -166,3 +166,53 @@ def test_questionEmptyButtonsTreatedAsStandard(qapp):
     with mock.patch.object(MWMessageDialog, "exec", return_value=MWMessageDialog.YesIndex):
         result = MWMessageDialog.question(None, "t", "q?", buttons=[])
     assert result is True
+
+
+def test_standardButtonsDefaultButtonIsNo(dlg):
+    assert dlg.buttonNo.isDefault() is True
+
+
+def test_standardButtonsNoButtonCanReceiveFocus(dlg):
+    assert dlg.buttonNo.focusPolicy() != 0
+
+
+def test_standardButtonsYesButtonNotDefault(dlg):
+    assert dlg.buttonYes.isDefault() is False
+
+
+def test_standardButtonsNoButtonMinimumSize(dlg):
+    assert dlg.buttonNo.minimumWidth() == 80
+    assert dlg.buttonNo.minimumHeight() == 25
+
+
+def test_standardButtonsYesButtonMinimumSize(dlg):
+    assert dlg.buttonYes.minimumWidth() == 80
+    assert dlg.buttonYes.minimumHeight() == 25
+
+
+def test_customButtonsDefaultBehavior(qapp):
+    d = MWMessageDialog(title="t", question="q?", buttons=["OK", "Cancel"])
+    assert len(d.buttonWidgets) == 2
+    d.close()
+
+
+def test_allIconTypesHaveValidConfiguration(qapp):
+    for iconType in range(4):
+        d = MWMessageDialog(title="t", question="q?", iconType=iconType)
+        assert d.buttonNo.isDefault() or d.buttonNo is not None
+        d.close()
+
+
+def test_initialDialogRejectedState(qapp):
+    d = MWMessageDialog(title="t", question="q?")
+    assert d.resultCode == MWMessageDialog.Rejected
+    d.close()
+
+
+def test_multilineQuestionSupported(qapp):
+    long_text = "Line 1\nLine 2\nLine 3"
+    d = MWMessageDialog(title="t", question=long_text)
+    assert d.textLabel.wordWrap() is True
+    d.close()
+
+

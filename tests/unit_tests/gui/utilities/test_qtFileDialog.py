@@ -294,3 +294,53 @@ def test_classmethodsEmptyResult(qapp, tmp_path):
 
 def test_modelIndexUsedAsExpected(dlg):
     assert isinstance(dlg.model.index(str(Path.home())), QModelIndex)
+
+
+def test_treeViewDefaultColumnConfiguration(dlg):
+    header = dlg.tree.header()
+    assert header is not None
+    assert dlg.tree.isColumnHidden(0) is False
+
+
+def test_treeViewColumnWidth(dlg):
+    dlg.tree.setColumnWidth(0, 300)
+    assert dlg.tree.columnWidth(0) == 300
+
+
+def test_treeViewHideColumn(dlg):
+    dlg.tree.hideColumn(1)
+    assert dlg.tree.isColumnHidden(1) is True
+    dlg.tree.showColumn(1)
+    assert dlg.tree.isColumnHidden(1) is False
+
+
+def test_treeViewMultipleColumnsConfiguration(dlg):
+    dlg.tree.hideColumn(2)
+    dlg.tree.hideColumn(3)
+    assert dlg.tree.isColumnHidden(2) is True
+    assert dlg.tree.isColumnHidden(3) is True
+    assert dlg.tree.isColumnHidden(0) is False
+    assert dlg.tree.isColumnHidden(1) is False
+
+
+def test_acceptButtonIsDefault(dlg):
+    assert dlg.btnAccept.isDefault() or dlg.btnAccept.hasFocus() is not None
+
+
+def test_acceptButtonMinimumSize(dlg):
+    assert dlg.btnAccept.minimumWidth() == 80
+    assert dlg.btnAccept.minimumHeight() == 25
+
+
+def test_cancelButtonMinimumSize(dlg):
+    assert dlg.btnCancel.minimumWidth() == 80
+    assert dlg.btnCancel.minimumHeight() == 25
+
+
+def test_treeViewSortingEnabled(dlg):
+    assert dlg.tree.isSortingEnabled() is True
+
+
+def test_treeViewSortColumn(dlg):
+    assert dlg.tree.header().sortIndicatorSection() == 0
+

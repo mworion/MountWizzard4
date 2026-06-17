@@ -13,9 +13,10 @@
 # License APL2.0
 #
 ###########################################################
+from mw4.gui.utilities.qtHelpers import svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from PySide6.QtCore import QEventLoop, Qt
-from PySide6.QtGui import QCloseEvent, QPixmap
+from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
@@ -49,9 +50,6 @@ class MWMessageDialog(MWidget):
         "assets/icon/question.svg",
     )
 
-    DEFAULT_WIDTH = 420
-    DEFAULT_HEIGHT = 180
-
     def __init__(
         self,
         parent: QWidget | None = None,
@@ -65,18 +63,12 @@ class MWMessageDialog(MWidget):
         self.resultCode: int = self.Rejected
         self.eventLoop = QEventLoop()
         self.setWindowTitle(title)
-        self.resize(self.DEFAULT_WIDTH, self.DEFAULT_HEIGHT)
 
         iconLabel = QLabel()
         iconLabel.setFixedSize(72, 72)
         iconLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         iconIndex = iconType if 0 <= iconType < len(self.ICONS) else 0
-        pixmap = QPixmap(self.ICONS[iconIndex]).scaled(
-            64,
-            64,
-            Qt.AspectRatioMode.KeepAspectRatio,
-            Qt.TransformationMode.SmoothTransformation,
-        )
+        pixmap = svg2pixmap(self.ICONS[iconIndex], self.M_PRIM).scaled(64, 64)
         iconLabel.setPixmap(pixmap)
 
         self.textLabel = QLabel(question)
@@ -95,8 +87,10 @@ class MWMessageDialog(MWidget):
             self.buttonNo = QPushButton("No")
             self.buttonNo.clicked.connect(lambda: self.onClick(self.NoIndex))
             self.buttonYes = QPushButton("Yes")
+            self.buttonYes.setMinimumSize(80, 25)
             self.buttonYes.clicked.connect(lambda: self.onClick(self.YesIndex))
             self.buttonNo.setDefault(True)
+            self.buttonNo.setMinimumSize(80, 25)
             self.buttonNo.setFocus()
             buttonRow.addWidget(self.buttonNo)
             buttonRow.addWidget(self.buttonYes)
@@ -138,6 +132,12 @@ class MWMessageDialog(MWidget):
     def exec(self) -> int:
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.show()
+        self.setMinimumSize(400, 200)
+        self.setMaximumSize(400, 200)
+        self.titleBar.normButton.setVisible(False)
+        self.titleBar.maxButton.setVisible(False)
+        self.titleBar.minButton.setVisible(False)
+        self.titleBar.windowFixed = True
         self.eventLoop.exec()
         return self.resultCode
 

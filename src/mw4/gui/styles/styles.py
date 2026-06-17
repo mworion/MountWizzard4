@@ -26,6 +26,10 @@ class Styles:
     colorSet = 0
     cachedStyle = None
     cachedColorSet = None
+    if platform.system() == "Darwin":
+        STYLE = MAC_STYLE + BASIC_STYLE
+    else:
+        STYLE = NON_MAC_STYLE + BASIC_STYLE
 
     @property
     def M_TRANS(self) -> str:
@@ -150,11 +154,7 @@ class Styles:
     @property
     def mw4Style(self) -> str:
         if self.cachedStyle is None or self.cachedColorSet != self.colorSet:
-            if platform.system() == "Darwin":
-                styleRaw = MAC_STYLE + BASIC_STYLE
-            else:
-                styleRaw = NON_MAC_STYLE + BASIC_STYLE
-            self.cachedStyle = self.renderStyle(styleRaw)
+            self.cachedStyle = self.renderStyle(self.STYLE)
             self.cachedColorSet = self.colorSet
         return self.cachedStyle
 

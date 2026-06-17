@@ -343,4 +343,3 @@ def test_treeViewSortingEnabled(dlg):
 
 def test_treeViewSortColumn(dlg):
     assert dlg.tree.header().sortIndicatorSection() == 0
-

@@ -165,6 +165,7 @@ def test_progEarthRotationData_calls_showWindow(function):
 
 def test_finishLoadFinalsFromSourceURLs_calls_showWindow(function):
     """Test finishLoadFinalsFromSourceURLs calls showWindow on downloadPopup (line 112)."""
+
     class MockPopup:
         returnValues = {"success": True}
         worker = mock.MagicMock()
@@ -187,5 +188,3 @@ def test_loadTimeDataFromSourceURLs_calls_showWindow(function):
         function.loadTimeDataFromSourceURLs()
         popup_instance.showWindow.assert_called_once()
         popup_instance.downloadFile.assert_called_once()
-
-

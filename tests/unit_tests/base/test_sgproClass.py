@@ -45,6 +45,7 @@ def function():
 
 # ─── Initialization and Configuration ───────────────────────────────────────
 
+
 def test_init_default_values(function):
     """Test that SGProClass initializes with correct default values."""
     assert function.deviceConnected is False
@@ -77,11 +78,7 @@ def test_config_deviceConfigSGPro():
 
 def test_config_deviceConfigSGPro_custom():
     """Test DeviceConfigSGPro with custom values."""
-    config = DeviceConfigSGPro(
-        deviceName="MyCamera",
-        hostAddress="192.168.1.100",
-        port=8080
-    )
+    config = DeviceConfigSGPro(deviceName="MyCamera", hostAddress="192.168.1.100", port=8080)
     assert config.deviceName == "MyCamera"
     assert config.hostAddress == "192.168.1.100"
     assert config.port == 8080
@@ -105,6 +102,7 @@ def test_command_item_with_kwargs():
 
 # ─── Request Property ────────────────────────────────────────────────────────
 
+
 def test_requestProperty_get_success(function):
     """Test successful GET request."""
     function.config.hostAddress = "localhost"
@@ -118,8 +116,7 @@ def test_requestProperty_get_success(function):
         result = function.requestProperty("testProp")
         assert result == response_data
         mock_get.assert_called_once_with(
-            "http://localhost:59590/testProp?format=json",
-            timeout=3
+            "http://localhost:59590/testProp?format=json", timeout=3
         )
 
 
@@ -137,9 +134,7 @@ def test_requestProperty_post_with_params(function):
         result = function.requestProperty("testProp", params)
         assert result == response_data
         mock_post.assert_called_once_with(
-            "http://localhost:59590/testProp?format=json",
-            json=params,
-            timeout=3
+            "http://localhost:59590/testProp?format=json", json=params, timeout=3
         )
 
 
@@ -176,6 +171,7 @@ def test_requestProperty_invalid_status_code(function):
 
 
 # ─── Device Connection ──────────────────────────────────────────────────────
+
 
 def test_sgConnectDevice_success(function):
     """Test successful device connection."""
@@ -217,6 +213,7 @@ def test_sgConnectDevice_with_spaces(function):
 
 # ─── Device Enumeration ─────────────────────────────────────────────────────
 
+
 def test_sgEnumerateDevice_success(function):
     """Test successful device enumeration."""
     devices = ["Camera1", "Camera2"]
@@ -245,14 +242,12 @@ def test_sgEnumerateDevice_empty_response(function):
 
 # ─── Poll Status ────────────────────────────────────────────────────────────
 
+
 def test_workerPollStatus_connected_to_disconnected(function):
     """Test transitioning from connected to disconnected state."""
     function.config.deviceName = "TestCamera"
     function.deviceConnected = True
-    response = {
-        "State": "DISCONNECTED",
-        "Message": "Device disconnected"
-    }
+    response = {"State": "DISCONNECTED", "Message": "Device disconnected"}
     with mock.patch.object(function, "requestProperty") as mock_request:
         mock_request.return_value = response
         function.workerPollStatus()
@@ -263,10 +258,7 @@ def test_workerPollStatus_disconnected_to_connected(function):
     """Test transitioning from disconnected to connected state."""
     function.config.deviceName = "TestCamera"
     function.deviceConnected = False
-    response = {
-        "State": "CONNECTED",
-        "Message": "Device ready"
-    }
+    response = {"State": "CONNECTED", "Message": "Device ready"}
     with (
         mock.patch.object(function, "getInitialConfig"),
         mock.patch.object(function, "requestProperty") as mock_request,
@@ -280,10 +272,7 @@ def test_workerPollStatus_already_connected(function):
     """Test poll status when already connected."""
     function.config.deviceName = "TestCamera"
     function.deviceConnected = True
-    response = {
-        "State": "CONNECTED",
-        "Message": "Device ready"
-    }
+    response = {"State": "CONNECTED", "Message": "Device ready"}
     with mock.patch.object(function, "requestProperty") as mock_request:
         mock_request.return_value = response
         function.workerPollStatus()
@@ -299,6 +288,7 @@ def test_workerPollStatus_none_response(function):
 
 
 # ─── Command Queuing ────────────────────────────────────────────────────────
+
 
 def test_callDeviceMethodQueued_single_call(function):
     """Test queuing a single device method call."""
@@ -320,6 +310,7 @@ def test_callDeviceMethodQueued_multiple_calls(function):
 
 
 # ─── Connect Device with Retries ────────────────────────────────────────────
+
 
 def test_connectDevice_success_first_try(function):
     """Test immediate connection success."""
@@ -365,12 +356,11 @@ def test_connectDevice_emits_error_on_failure(function):
     ):
         mock_connect.return_value = False
         function.connectDevice()
-        function.msg.emit.assert_called_with(
-            2, "SGPro", "Connect error", "TestCamera"
-        )
+        function.msg.emit.assert_called_with(2, "SGPro", "Connect error", "TestCamera")
 
 
 # ─── Process Command Queue ──────────────────────────────────────────────────
+
 
 def test_processCommandQueue_empty(function):
     """Test processing empty command queue."""
@@ -381,7 +371,7 @@ def test_processCommandQueue_empty(function):
 def test_processCommandQueue_single_command(function):
     """Test processing single command from queue."""
     function.commandQueue = queue.Queue()
-    with mock.patch.object(type(function), 'callDeviceMethod', create=True) as mock_call:
+    with mock.patch.object(type(function), "callDeviceMethod", create=True) as mock_call:
         function.commandQueue.put(
             CommandItem(cmdType="call", valueProp="focus", kwargs={"value": 100})
         )
@@ -392,7 +382,7 @@ def test_processCommandQueue_single_command(function):
 def test_processCommandQueue_multiple_commands(function):
     """Test processing multiple commands from queue."""
     function.commandQueue = queue.Queue()
-    with mock.patch.object(type(function), 'callDeviceMethod', create=True) as mock_call:
+    with mock.patch.object(type(function), "callDeviceMethod", create=True) as mock_call:
         function.commandQueue.put(
             CommandItem(cmdType="call", valueProp="focus", kwargs={"value": 100})
         )
@@ -407,13 +397,12 @@ def test_processCommandQueue_unknown_cmdtype(function):
     """Test processing unknown command type."""
     function.config.deviceName = "TestCamera"
     function.commandQueue = queue.Queue()
-    function.commandQueue.put(
-        CommandItem(cmdType="unknown", valueProp="test")
-    )
+    function.commandQueue.put(CommandItem(cmdType="unknown", valueProp="test"))
     function.processCommandQueue()
 
 
 # ─── Handle Device Connect/Disconnect ────────────────────────────────────────
+
 
 def test_handleDeviceConnect_success(function):
     """Test successful device connection handling."""
@@ -453,6 +442,7 @@ def test_handleDeviceDisconnect(function):
 
 
 # ─── Communication Loop ──────────────────────────────────────────────────────
+
 
 def test_runnerCommunicationLoop_disconnected_state(function):
     """Test communication loop when device is disconnected."""
@@ -494,6 +484,7 @@ def test_runnerCommunicationLoop_stop_event_set(function):
 
 
 # ─── Start and Stop Communication ───────────────────────────────────────────
+
 
 def test_startCommunication_clears_data(function):
     """Test that startCommunication clears data."""
@@ -549,6 +540,7 @@ def test_stopCommunication_emits_message(function):
 
 # ─── Discover Devices ────────────────────────────────────────────────────────
 
+
 def test_discoverDevices_camera(function):
     """Test device discovery for camera type."""
     devices = ["Camera1", "Camera2"]
@@ -568,6 +560,7 @@ def test_discoverDevices_empty_result(function):
 
 # ─── Base Methods (inherited from DriverData) ───────────────────────────────
 
+
 def test_getInitialConfig_override(function):
     """Test that getInitialConfig is overrideable."""
     function.getInitialConfig()
@@ -579,6 +572,7 @@ def test_pollData_override(function):
 
 
 # ─── Edge Cases and Integration ──────────────────────────────────────────────
+
 
 def test_multiple_queue_operations(function):
     """Test multiple queue operations in sequence."""
@@ -644,9 +638,7 @@ def test_device_state_persistence(function):
 def test_processCommandQueue_queue_empty_during_iteration(function):
     """Test processing command queue race condition when it becomes empty."""
     function.commandQueue = queue.Queue()
-    function.commandQueue.put(
-        CommandItem(cmdType="call", valueProp="focus", kwargs={})
-    )
+    function.commandQueue.put(CommandItem(cmdType="call", valueProp="focus", kwargs={}))
     call_count = 0
 
     def mock_empty():
@@ -682,28 +674,3 @@ def test_runnerCommunicationLoop_device_disconnection_during_polling(function):
         with contextlib.suppress(KeyboardInterrupt):
             function.runnerCommunicationLoop()
         mock_disconnect.assert_called()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

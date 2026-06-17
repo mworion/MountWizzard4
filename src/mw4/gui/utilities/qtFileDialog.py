@@ -108,7 +108,7 @@ class MWFileDialog(MWidget):
         header.setSectionResizeMode(2, QHeaderView.ResizeMode.Interactive)
 
         self.upButton = QToolButton()
-        self.wIcon(self.upButton,"arrow-up0")
+        self.wIcon(self.upButton, "arrow-up0")
         self.upButton.setToolTip("Parent directory")
         self.upButton.clicked.connect(self.onUp)
         self.pathEdit = QLineEdit()
@@ -126,7 +126,7 @@ class MWFileDialog(MWidget):
         if fileMode == self.FileMode.Directory:
             acceptText = "Choose"
         self.btnAccept = QPushButton(acceptText)
-        self.btnAccept.setMinimumSize(80,25)
+        self.btnAccept.setMinimumSize(80, 25)
         self.btnAccept.clicked.connect(self.onAccept)
         self.btnAccept.setDefault(True)
         self.btnCancel = QPushButton("Cancel")

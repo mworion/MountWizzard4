@@ -13,7 +13,6 @@
 # License APL2.0
 #
 ###########################################################
-import json
 import queue
 import requests
 import threading
@@ -137,7 +136,9 @@ class SGProClass(DriverData):
             self.log.debug(f"[{self.config.deviceName}] not connected, [{retry}] retries")
             suc = False
         if not suc:
-            self.msg.emit(2, self.config.PROTOCOL_NAME, "Connect error", self.config.deviceName)
+            self.msg.emit(
+                2, self.config.PROTOCOL_NAME, "Connect error", self.config.deviceName
+            )
         return suc
 
     def getInitialConfig(self) -> None:

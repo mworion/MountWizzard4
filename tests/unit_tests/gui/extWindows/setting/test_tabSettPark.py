@@ -75,7 +75,6 @@ def settPark(qapp):
     parentW.app.threadPool.waitForDone(1000)
 
 
-
 def test_initConfig_with_default_config(settPark):
     """Test initConfig loads defaults when config empty."""
     settPark.app.config["SettingPark"] = {}
@@ -351,4 +350,3 @@ def test_settpark_has_saveActualPosition_method(settPark):
     """Test SettPark has saveActualPosition method."""
     assert hasattr(settPark, "saveActualPosition")
     assert callable(settPark.saveActualPosition)
-

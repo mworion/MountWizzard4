@@ -214,5 +214,3 @@ def test_multilineQuestionSupported(qapp):
     d = MWMessageDialog(title="t", question=long_text)
     assert d.textLabel.wordWrap() is True
     d.close()
-
-

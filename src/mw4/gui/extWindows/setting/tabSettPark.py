@@ -25,9 +25,9 @@ class SettPark:
         self.msg = parentW.app.msg
         self.ui = parentW.ui
         self.parkTexts: list = []
-        self.parkAlt:list = []
-        self.parkAz:list = []
-        self.parkSaveButtons:list = []
+        self.parkAlt: list = []
+        self.parkAz: list = []
+        self.parkSaveButtons: list = []
 
         for i in range(10):
             self.parkSaveButtons.append(getattr(self.ui, f"parkSave{i:1d}"))

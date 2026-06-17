@@ -326,5 +326,3 @@ def test_relay_settings_roundtrip(settRelay):
     assert saved_config["RelayText1"] == "Light"
     assert saved_config["Action0"] == 0
     assert saved_config["Action1"] == 1
-
-

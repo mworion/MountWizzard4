@@ -15,7 +15,6 @@
 ###########################################################
 import re
 import shlex
-from enum import IntEnum
 from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
 from PySide6.QtCore import QDir, QEventLoop, QModelIndex, Qt
@@ -23,6 +22,7 @@ from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QComboBox,
+    QFileDialog,
     QFileSystemModel,
     QHBoxLayout,
     QHeaderView,
@@ -49,16 +49,6 @@ class MWFileDialog(MWidget):
     Qt's own ``QDialog.exec()`` semantics.
     """
 
-    class AcceptMode(IntEnum):
-        AcceptOpen = 0
-        AcceptSave = 1
-
-    class FileMode(IntEnum):
-        AnyFile = 0
-        ExistingFile = 1
-        ExistingFiles = 2
-        Directory = 3
-
     Accepted = 1
     Rejected = 0
 
@@ -68,8 +58,8 @@ class MWFileDialog(MWidget):
         title: str = "Select",
         folder: Path | str = Path(""),
         filterSet: str = "All files (*)",
-        acceptMode: "MWFileDialog.AcceptMode" = AcceptMode.AcceptOpen,
-        fileMode: "MWFileDialog.FileMode" = FileMode.ExistingFile,
+        acceptMode: QFileDialog.AcceptMode = QFileDialog.AcceptMode.AcceptOpen,
+        fileMode: QFileDialog.FileMode = QFileDialog.FileMode.ExistingFile,
     ) -> None:
         super().__init__()
         self.acceptMode = acceptMode
@@ -83,7 +73,7 @@ class MWFileDialog(MWidget):
         self.setMaximumSize(600, 800)
         self.model = QFileSystemModel(self)
         self.model.setRootPath("")
-        if fileMode == self.FileMode.Directory:
+        if fileMode == QFileDialog.FileMode.Directory:
             self.model.setFilter(QDir.Filter.AllDirs)
         else:
             self.model.setFilter(QDir.Filter.AllEntries)
@@ -92,7 +82,7 @@ class MWFileDialog(MWidget):
         self.tree.setModel(self.model)
         self.tree.setSelectionMode(
             QAbstractItemView.SelectionMode.ExtendedSelection
-            if fileMode == self.FileMode.ExistingFiles
+            if fileMode == QFileDialog.FileMode.ExistingFiles
             else QAbstractItemView.SelectionMode.SingleSelection
         )
         self.tree.setSortingEnabled(True)
@@ -122,8 +112,12 @@ class MWFileDialog(MWidget):
             self.filterCombo.addItem("All files (*)")
         self.filterCombo.currentTextChanged.connect(self.onFilterChanged)
 
-        acceptText = "Open" if acceptMode == self.AcceptMode.AcceptOpen else "Save"
-        if fileMode == self.FileMode.Directory:
+        acceptText = (
+            "Open"
+            if acceptMode == QFileDialog.AcceptMode.AcceptOpen
+            else "Save"
+        )
+        if fileMode == QFileDialog.FileMode.Directory:
             acceptText = "Choose"
         self.btnAccept = QPushButton(acceptText)
         self.btnAccept.setMinimumSize(80, 25)
@@ -196,11 +190,15 @@ class MWFileDialog(MWidget):
         self.model.setNameFilterDisables(False)
 
     def onSelectionChanged(self, *_: object) -> None:
-        indexes = [i for i in self.tree.selectionModel().selectedIndexes() if i.column() == 0]
+        indexes = [
+            i
+            for i in self.tree.selectionModel().selectedIndexes()
+            if i.column() == 0
+        ]
         names: list[str] = []
         for idx in indexes:
             path = Path(self.model.filePath(idx))
-            if self.fileMode == self.FileMode.Directory:
+            if self.fileMode == QFileDialog.FileMode.Directory:
                 if path.is_dir():
                     names.append(path.name)
             else:
@@ -216,7 +214,7 @@ class MWFileDialog(MWidget):
         path = Path(self.model.filePath(idx))
         if path.is_dir():
             self.setCurrentDir(path)
-        elif path.is_file() and self.fileMode != self.FileMode.Directory:
+        elif path.is_file() and self.fileMode != QFileDialog.FileMode.Directory:
             self.fileNameEdit.setText(path.name)
             self.onAccept()
 
@@ -224,7 +222,7 @@ class MWFileDialog(MWidget):
         text = text.strip()
         if not text:
             return []
-        if self.fileMode == self.FileMode.ExistingFiles:
+        if self.fileMode == QFileDialog.FileMode.ExistingFiles:
             try:
                 return [n for n in shlex.split(text) if n]
             except ValueError:
@@ -234,7 +232,7 @@ class MWFileDialog(MWidget):
     def resolveSelection(self) -> list[Path]:
         text = self.fileNameEdit.text()
         names = self.parseFileNames(text)
-        if self.fileMode == self.FileMode.Directory:
+        if self.fileMode == QFileDialog.FileMode.Directory:
             if not names:
                 return [self.currentDir]
             return [self.currentDir / names[0]]
@@ -244,13 +242,19 @@ class MWFileDialog(MWidget):
         selection = self.resolveSelection()
         if not selection:
             return
-        if self.fileMode == self.FileMode.ExistingFile and not selection[0].is_file():
+        if (
+            self.fileMode == QFileDialog.FileMode.ExistingFile
+            and not selection[0].is_file()
+        ):
             return
-        if self.fileMode == self.FileMode.ExistingFiles and not all(
+        if self.fileMode == QFileDialog.FileMode.ExistingFiles and not all(
             p.is_file() for p in selection
         ):
             return
-        if self.fileMode == self.FileMode.Directory and not selection[0].is_dir():
+        if (
+            self.fileMode == QFileDialog.FileMode.Directory
+            and not selection[0].is_dir()
+        ):
             return
         self.selected = selection
         self.resultCode = self.Accepted
@@ -296,8 +300,8 @@ class MWFileDialog(MWidget):
             title=title,
             folder=folder,
             filterSet=filterSet,
-            acceptMode=cls.AcceptMode.AcceptOpen,
-            fileMode=cls.FileMode.ExistingFile,
+            acceptMode=QFileDialog.AcceptMode.AcceptOpen,
+            fileMode=QFileDialog.FileMode.ExistingFile,
         )
         dlg.exec()
         files = dlg.selectedFiles()
@@ -316,8 +320,8 @@ class MWFileDialog(MWidget):
             title=title,
             folder=folder,
             filterSet=filterSet,
-            acceptMode=cls.AcceptMode.AcceptOpen,
-            fileMode=cls.FileMode.ExistingFiles,
+            acceptMode=QFileDialog.AcceptMode.AcceptOpen,
+            fileMode=QFileDialog.FileMode.ExistingFiles,
         )
         dlg.exec()
         return dlg.selectedFiles()
@@ -335,8 +339,8 @@ class MWFileDialog(MWidget):
             title=title,
             folder=folder,
             filterSet=filterSet,
-            acceptMode=cls.AcceptMode.AcceptSave,
-            fileMode=cls.FileMode.AnyFile,
+            acceptMode=QFileDialog.AcceptMode.AcceptSave,
+            fileMode=QFileDialog.FileMode.AnyFile,
         )
         dlg.exec()
         files = dlg.selectedFiles()
@@ -353,8 +357,8 @@ class MWFileDialog(MWidget):
             parent=parent,
             title=title,
             folder=folder,
-            acceptMode=cls.AcceptMode.AcceptOpen,
-            fileMode=cls.FileMode.Directory,
+            acceptMode=QFileDialog.AcceptMode.AcceptOpen,
+            fileMode=QFileDialog.FileMode.Directory,
         )
         dlg.exec()
         files = dlg.selectedFiles()

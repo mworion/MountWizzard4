@@ -18,7 +18,7 @@ import unittest.mock as mock
 from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from pathlib import Path
 from PySide6.QtCore import QModelIndex
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QFileDialog, QWidget
 
 
 @pytest.fixture(scope="function")
@@ -39,9 +39,9 @@ def dlg(qapp, tmp_path):
 
 
 def test_initFileMode(qapp, tmp_path):
-    d = MWFileDialog(folder=tmp_path, fileMode=MWFileDialog.FileMode.Directory)
-    assert d.acceptMode == MWFileDialog.AcceptMode.AcceptOpen
-    assert d.fileMode == MWFileDialog.FileMode.Directory
+    d = MWFileDialog(folder=tmp_path, fileMode=QFileDialog.FileMode.Directory)
+    assert d.acceptMode == QFileDialog.AcceptMode.AcceptOpen
+    assert d.fileMode == QFileDialog.FileMode.Directory
     assert d.btnAccept.text() == "Choose"
     d.close()
 
@@ -49,7 +49,7 @@ def test_initFileMode(qapp, tmp_path):
 def test_initSaveMode(qapp, tmp_path):
     d = MWFileDialog(
         folder=tmp_path,
-        acceptMode=MWFileDialog.AcceptMode.AcceptSave,
+        acceptMode=QFileDialog.AcceptMode.AcceptSave,
     )
     assert d.btnAccept.text() == "Save"
     d.close()
@@ -101,13 +101,13 @@ def test_onFilterChanged(dlg):
 def test_parseFileNamesSingleAndMulti(dlg):
     assert dlg.parseFileNames("") == []
     assert dlg.parseFileNames("a.txt") == ["a.txt"]
-    dlg.fileMode = MWFileDialog.FileMode.ExistingFiles
+    dlg.fileMode = QFileDialog.FileMode.ExistingFiles
     assert dlg.parseFileNames('"a b.txt" c.txt') == ["a b.txt", "c.txt"]
     assert dlg.parseFileNames('"unterminated') == ['"unterminated']
 
 
 def test_resolveSelectionDirectoryDefault(qapp, tmp_path):
-    d = MWFileDialog(folder=tmp_path, fileMode=MWFileDialog.FileMode.Directory)
+    d = MWFileDialog(folder=tmp_path, fileMode=QFileDialog.FileMode.Directory)
     assert d.resolveSelection() == [tmp_path]
     d.fileNameEdit.setText("sub")
     (tmp_path / "sub").mkdir(exist_ok=True)
@@ -125,7 +125,7 @@ def test_onSelectionChangedFiles(dlg, tmp_path):
 def test_onSelectionChangedMultiple(qapp, tmp_path):
     (tmp_path / "x.txt").write_text("x")
     (tmp_path / "y y.txt").write_text("y")
-    d = MWFileDialog(folder=tmp_path, fileMode=MWFileDialog.FileMode.ExistingFiles)
+    d = MWFileDialog(folder=tmp_path, fileMode=QFileDialog.FileMode.ExistingFiles)
     sm = d.tree.selectionModel()
     sm.select(
         d.model.index(str(tmp_path / "x.txt")),
@@ -143,7 +143,7 @@ def test_onSelectionChangedMultiple(qapp, tmp_path):
 
 def test_onSelectionChangedDirectoryMode(qapp, tmp_path):
     (tmp_path / "sub").mkdir(exist_ok=True)
-    d = MWFileDialog(folder=tmp_path, fileMode=MWFileDialog.FileMode.Directory)
+    d = MWFileDialog(folder=tmp_path, fileMode=QFileDialog.FileMode.Directory)
     sm = d.tree.selectionModel()
     sm.select(
         d.model.index(str(tmp_path / "sub")),
@@ -170,7 +170,7 @@ def test_onDoubleClickedFileAccepts(dlg, tmp_path):
 
 def test_onDoubleClickedIgnoredInDirMode(qapp, tmp_path):
     (tmp_path / "a.txt").write_text("a")
-    d = MWFileDialog(folder=tmp_path, fileMode=MWFileDialog.FileMode.Directory)
+    d = MWFileDialog(folder=tmp_path, fileMode=QFileDialog.FileMode.Directory)
     idx = d.model.index(str(tmp_path / "a.txt"))
     with mock.patch.object(d, "onAccept") as m:
         d.onDoubleClicked(idx)
@@ -201,7 +201,7 @@ def test_onAcceptEmptyIsNoop(dlg):
 def test_onAcceptExistingFiles(qapp, tmp_path):
     (tmp_path / "a.txt").write_text("a")
     (tmp_path / "b.txt").write_text("b")
-    d = MWFileDialog(folder=tmp_path, fileMode=MWFileDialog.FileMode.ExistingFiles)
+    d = MWFileDialog(folder=tmp_path, fileMode=QFileDialog.FileMode.ExistingFiles)
     d.fileNameEdit.setText("a.txt b.txt")
     with mock.patch.object(d, "close"):
         d.onAccept()
@@ -211,7 +211,7 @@ def test_onAcceptExistingFiles(qapp, tmp_path):
 
 def test_onAcceptExistingFilesRejectsMissing(qapp, tmp_path):
     (tmp_path / "a.txt").write_text("a")
-    d = MWFileDialog(folder=tmp_path, fileMode=MWFileDialog.FileMode.ExistingFiles)
+    d = MWFileDialog(folder=tmp_path, fileMode=QFileDialog.FileMode.ExistingFiles)
     d.fileNameEdit.setText("a.txt nope.txt")
     d.onAccept()
     assert d.resultCode == MWFileDialog.Rejected
@@ -220,7 +220,7 @@ def test_onAcceptExistingFilesRejectsMissing(qapp, tmp_path):
 
 def test_onAcceptDirectoryRejectsFile(qapp, tmp_path):
     (tmp_path / "a.txt").write_text("a")
-    d = MWFileDialog(folder=tmp_path, fileMode=MWFileDialog.FileMode.Directory)
+    d = MWFileDialog(folder=tmp_path, fileMode=QFileDialog.FileMode.Directory)
     d.fileNameEdit.setText("a.txt")
     d.onAccept()
     assert d.resultCode == MWFileDialog.Rejected
@@ -263,33 +263,67 @@ def test_exec(dlg):
         assert dlg.exec() == MWFileDialog.Accepted
 
 
-def test_classmethodsInvokeExec(qapp, tmp_path):
+def test_directInstantiationOpenSingleFile(qapp, tmp_path):
     (tmp_path / "a.txt").write_text("a")
-    with (
-        mock.patch.object(MWFileDialog, "exec", return_value=1),
-        mock.patch.object(
-            MWFileDialog,
-            "selectedFiles",
-            return_value=[tmp_path / "a.txt"],
-        ),
-    ):
-        assert MWFileDialog.getOpenFileName(None, "t", tmp_path, "*.*") == tmp_path / "a.txt"
-        assert MWFileDialog.getOpenFileNames(None, "t", tmp_path, "*.*") == [
-            tmp_path / "a.txt"
-        ]
-        assert MWFileDialog.getSaveFileName(None, "t", tmp_path, "*.*") == tmp_path / "a.txt"
-        assert MWFileDialog.getExistingDirectory(None, "t", tmp_path) == tmp_path / "a.txt"
+    dlg = MWFileDialog(
+        parent=None,
+        title="Open File",
+        folder=tmp_path,
+        filterSet="*.txt",
+        acceptMode=QFileDialog.AcceptMode.AcceptOpen,
+        fileMode=QFileDialog.FileMode.ExistingFile,
+    )
+    with mock.patch.object(dlg, "close"):
+        dlg.fileNameEdit.setText("a.txt")
+        dlg.onAccept()
+    assert dlg.selectedFiles() == [tmp_path / "a.txt"]
+    dlg.close()
 
 
-def test_classmethodsEmptyResult(qapp, tmp_path):
-    with (
-        mock.patch.object(MWFileDialog, "exec", return_value=0),
-        mock.patch.object(MWFileDialog, "selectedFiles", return_value=[]),
-    ):
-        assert MWFileDialog.getOpenFileName(None, "t", tmp_path, "*.*") == Path()
-        assert MWFileDialog.getOpenFileNames(None, "t", tmp_path, "*.*") == []
-        assert MWFileDialog.getSaveFileName(None, "t", tmp_path, "*.*") == Path()
-        assert MWFileDialog.getExistingDirectory(None, "t", tmp_path) == Path()
+def test_directInstantiationOpenMultipleFiles(qapp, tmp_path):
+    (tmp_path / "a.txt").write_text("a")
+    (tmp_path / "b.txt").write_text("b")
+    dlg = MWFileDialog(
+        parent=None,
+        title="Open Files",
+        folder=tmp_path,
+        filterSet="*.txt",
+        acceptMode=QFileDialog.AcceptMode.AcceptOpen,
+        fileMode=QFileDialog.FileMode.ExistingFiles,
+    )
+    with mock.patch.object(dlg, "close"):
+        dlg.fileNameEdit.setText("a.txt b.txt")
+        dlg.onAccept()
+    assert dlg.selectedFiles() == [tmp_path / "a.txt", tmp_path / "b.txt"]
+    dlg.close()
+
+
+def test_directInstantiationSaveFile(qapp, tmp_path):
+    dlg = MWFileDialog(
+        parent=None,
+        title="Save File",
+        folder=tmp_path,
+        filterSet="*.txt",
+        acceptMode=QFileDialog.AcceptMode.AcceptSave,
+        fileMode=QFileDialog.FileMode.AnyFile,
+    )
+    assert dlg.acceptMode == QFileDialog.AcceptMode.AcceptSave
+    assert dlg.btnAccept.text() == "Save"
+    dlg.close()
+
+
+def test_directInstantiationSelectDirectory(qapp, tmp_path):
+    (tmp_path / "subdir").mkdir(exist_ok=True)
+    dlg = MWFileDialog(
+        parent=None,
+        title="Select Directory",
+        folder=tmp_path,
+        acceptMode=QFileDialog.AcceptMode.AcceptOpen,
+        fileMode=QFileDialog.FileMode.Directory,
+    )
+    assert dlg.fileMode == QFileDialog.FileMode.Directory
+    assert dlg.btnAccept.text() == "Choose"
+    dlg.close()
 
 
 def test_modelIndexUsedAsExpected(dlg):

@@ -14,6 +14,7 @@
 #
 ###########################################################
 import pytest
+from PySide6.QtWidgets import QApplication
 from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
@@ -43,6 +44,7 @@ def window(qapp):
     window = MainWindowAddons(mainW)
     window.addons = {"test": Test()}
     yield window
+    QApplication.processEvents()
     mainW.app.threadPool.waitForDone(10000)
 
 

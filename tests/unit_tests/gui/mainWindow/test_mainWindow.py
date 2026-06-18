@@ -21,7 +21,7 @@ from mw4.base.deviceRegistry import DeviceEntry
 from mw4.gui.mainWindow.mainWindow import MainWindow
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QApplication, QWidget
 from skyfield.api import wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -31,6 +31,7 @@ def mainWindow(qapp):
     """Setup MainWindow fixture for testing."""
     window = MainWindow(app=App())
     yield window
+    QApplication.processEvents()
     window.app.threadPool.waitForDone(10000)
 
 

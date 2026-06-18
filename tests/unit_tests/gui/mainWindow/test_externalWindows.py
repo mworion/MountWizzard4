@@ -19,7 +19,7 @@ from mw4.base import packageConfig
 from mw4.gui.mainWindow.externalWindows import ExternalWindows
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtCore import QObject, Signal
-from PySide6.QtWidgets import QPushButton, QWidget
+from PySide6.QtWidgets import QPushButton, QWidget, QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -33,6 +33,7 @@ def function(qapp):
 
     func = ExternalWindows(window)
     yield func
+    QApplication.processEvents()
     window.app.threadPool.waitForDone(10000)
 
 

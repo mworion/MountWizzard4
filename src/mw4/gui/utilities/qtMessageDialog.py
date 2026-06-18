@@ -63,6 +63,8 @@ class MWMessageDialog(MWidget):
         self.resultCode: int = self.Rejected
         self.eventLoop = QEventLoop()
         self.setWindowTitle(title)
+        self.setFixedSize(400, 200)
+
 
         iconLabel = QLabel()
         iconLabel.setFixedSize(72, 72)

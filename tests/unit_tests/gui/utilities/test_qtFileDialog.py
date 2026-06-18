@@ -377,3 +377,120 @@ def test_treeViewSortingEnabled(dlg):
 
 def test_treeViewSortColumn(dlg):
     assert dlg.tree.header().sortIndicatorSection() == 0
+
+
+def test_classMethodGetOpenFileName(qapp, tmp_path):
+    (tmp_path / "test.txt").write_text("content")
+    with (
+        mock.patch.object(MWFileDialog, "exec"),
+        mock.patch.object(MWFileDialog, "selectedFiles", return_value=[tmp_path / "test.txt"]),
+    ):
+        result = MWFileDialog.getOpenFileName(
+            parent=None,
+            title="Open File",
+            folder=tmp_path,
+            filterSet="Text (*.txt)",
+        )
+        assert result == tmp_path / "test.txt"
+
+
+def test_classMethodGetOpenFileNameEmpty(qapp, tmp_path):
+    with (
+        mock.patch.object(MWFileDialog, "exec"),
+        mock.patch.object(MWFileDialog, "selectedFiles", return_value=[]),
+    ):
+        result = MWFileDialog.getOpenFileName(
+            parent=None,
+            title="Open File",
+            folder=tmp_path,
+            filterSet="Text (*.txt)",
+        )
+        assert result == Path()
+
+
+def test_classMethodGetOpenFileNames(qapp, tmp_path):
+    (tmp_path / "a.txt").write_text("a")
+    (tmp_path / "b.txt").write_text("b")
+    with (
+        mock.patch.object(MWFileDialog, "exec"),
+        mock.patch.object(
+            MWFileDialog,
+            "selectedFiles",
+            return_value=[tmp_path / "a.txt", tmp_path / "b.txt"],
+        ),
+    ):
+        result = MWFileDialog.getOpenFileNames(
+            parent=None,
+            title="Open Files",
+            folder=tmp_path,
+            filterSet="Text (*.txt)",
+        )
+        assert result == [tmp_path / "a.txt", tmp_path / "b.txt"]
+
+
+def test_classMethodGetOpenFileNamesEmpty(qapp, tmp_path):
+    with (
+        mock.patch.object(MWFileDialog, "exec"),
+        mock.patch.object(MWFileDialog, "selectedFiles", return_value=[]),
+    ):
+        result = MWFileDialog.getOpenFileNames(
+            parent=None,
+            title="Open Files",
+            folder=tmp_path,
+            filterSet="Text (*.txt)",
+        )
+        assert result == []
+
+
+def test_classMethodGetSaveFileName(qapp, tmp_path):
+    with (
+        mock.patch.object(MWFileDialog, "exec"),
+        mock.patch.object(MWFileDialog, "selectedFiles", return_value=[tmp_path / "new.txt"]),
+    ):
+        result = MWFileDialog.getSaveFileName(
+            parent=None,
+            title="Save File",
+            folder=tmp_path,
+            filterSet="Text (*.txt)",
+        )
+        assert result == tmp_path / "new.txt"
+
+
+def test_classMethodGetSaveFileNameEmpty(qapp, tmp_path):
+    with (
+        mock.patch.object(MWFileDialog, "exec"),
+        mock.patch.object(MWFileDialog, "selectedFiles", return_value=[]),
+    ):
+        result = MWFileDialog.getSaveFileName(
+            parent=None,
+            title="Save File",
+            folder=tmp_path,
+            filterSet="Text (*.txt)",
+        )
+        assert result == Path()
+
+
+def test_classMethodGetExistingDirectory(qapp, tmp_path):
+    with (
+        mock.patch.object(MWFileDialog, "exec"),
+        mock.patch.object(MWFileDialog, "selectedFiles", return_value=[tmp_path / "subdir"]),
+    ):
+        result = MWFileDialog.getExistingDirectory(
+            parent=None,
+            title="Select Directory",
+            folder=tmp_path,
+        )
+        assert result == tmp_path / "subdir"
+
+
+def test_classMethodGetExistingDirectoryEmpty(qapp, tmp_path):
+    with (
+        mock.patch.object(MWFileDialog, "exec"),
+        mock.patch.object(MWFileDialog, "selectedFiles", return_value=[]),
+    ):
+        result = MWFileDialog.getExistingDirectory(
+            parent=None,
+            title="Select Directory",
+            folder=tmp_path,
+        )
+        assert result == Path()

@@ -88,6 +88,7 @@ class MWInputDialog(MWidget):
         self.items = items if items is not None else []
         self.currentIndex = currentIndex
         self.setWindowTitle(title)
+        self.setFixedSize(350, 150)
 
         labelWidget = QLabel(label)
         labelWidget.setAlignment(Qt.AlignmentFlag.AlignLeft)

@@ -60,7 +60,7 @@ dependencies = [
     "numpy==2.4.6",
     "opencv-python-headless==4.13.0.92",
     "scipy==1.17.1",
-    "astropy==7.2.0",
+    "astropy==8.0.0",
     "pyerfa==2.0.1.5",
     "astroquery==0.4.11",
     "indipyclient==0.9.1",

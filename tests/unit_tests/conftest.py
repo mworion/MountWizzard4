@@ -21,8 +21,44 @@ that individual test files do not need to call setupLogging() at module level.
 
 import logging
 import pytest
+import sys
 import warnings
 from mw4.base.loggerMW import setupLogging
+
+
+class FilteredStderr:
+    """Wrapper for stderr that filters PyQtGraph cleanup errors."""
+
+    def __init__(self, original_stderr):
+        self._stderr = original_stderr
+
+    def write(self, message):
+        """Write to stderr, filtering PyQtGraph errors."""
+        if "Exception ignored in atexit" in message and any(
+            keyword in message
+            for keyword in [
+                "pyqtgraph",
+                "sizeHint",
+                "resizeEvent",
+                "boundingRect",
+                "itemChange",
+                "already deleted",
+            ]
+        ):
+            return len(message)
+        return self._stderr.write(message)
+
+    def flush(self):
+        """Flush stderr."""
+        self._stderr.flush()
+
+    def isatty(self):
+        """Check if stderr is a tty."""
+        return getattr(self._stderr, "isatty", lambda: False)()
+
+    def __getattr__(self, name):
+        """Delegate all other attributes to the real stderr."""
+        return getattr(self._stderr, name)
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -40,3 +76,17 @@ def setupTestLogging():
     for handler in logging.root.handlers[:]:
         handler.close()
         logging.root.removeHandler(handler)
+
+
+def pytest_configure(config):
+    """Install stderr wrapper before tests start."""
+    sys.stderr = FilteredStderr(sys.stderr)
+
+
+
+
+
+
+
+
+

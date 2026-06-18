@@ -44,6 +44,7 @@ def mainWindow(qapp):
     window = MainWindow(app=App())
     yield window
     window.app.threadPool.waitForDone(10000)
+    qapp.processEvents()
 
 
 def test_initConfig_without_windowmain_config(mainWindow):

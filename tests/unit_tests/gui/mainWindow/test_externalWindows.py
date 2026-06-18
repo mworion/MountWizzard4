@@ -46,6 +46,7 @@ def function(qapp):
     func = ExternalWindows(window)
     yield func
     window.app.threadPool.waitForDone(10000)
+    qapp.processEvents()
 
 
 def test_storeConfig_1(function):

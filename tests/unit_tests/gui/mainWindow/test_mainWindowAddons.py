@@ -57,6 +57,7 @@ def window(qapp):
     window.addons = {"test": Test()}
     yield window
     mainW.app.threadPool.waitForDone(10000)
+    qapp.processEvents()
 
 
 def test_initConfig_loads_addons_config(window):

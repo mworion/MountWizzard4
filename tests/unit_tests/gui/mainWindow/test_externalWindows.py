@@ -23,18 +23,6 @@ from PySide6.QtWidgets import QApplication, QPushButton, QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture
-def app():
-    # Erstelle die Anwendung
-    qapp = QApplication.instance()
-    if qapp is None:
-        qapp = QApplication([])
-    yield qapp
-    # ZWINGEND: Hier wird das Aufräumen eingeleitet,
-    # bevor Python das Modul schließt
-    qapp.processEvents()
-
-
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     packageConfig.isAvailable = True

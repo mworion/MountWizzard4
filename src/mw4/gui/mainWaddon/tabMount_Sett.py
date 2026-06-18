@@ -17,6 +17,7 @@ import datetime
 from mw4.base import transform
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
+from mw4.gui.utilities.qtInputDialog import MWInputDialog
 from mw4.mountcontrol.convert import (
     convertLatToAngle,
     convertLonToAngle,
@@ -26,7 +27,7 @@ from mw4.mountcontrol.convert import (
 from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.setting import Setting
-from PySide6.QtWidgets import QInputDialog, QLineEdit
+from PySide6.QtWidgets import QLineEdit
 from skyfield.api import Angle, wgs84
 from typing import Any
 
@@ -209,8 +210,7 @@ class MountSett(TabAddon):
     def setMeridianLimitSlew(self) -> bool:
         sett = self.app.dReg["mount"].setting
         actValue = 0 if not sett.meridianLimitSlew else int(sett.meridianLimitSlew)
-        dlg = QInputDialog()
-        value, ok = dlg.getInt(
+        value, ok = MWInputDialog.getInt(
             self.mainW, "Set Meridian Limit Slew", "Value (0-30):", actValue, 0, 30, 1
         )
         if not ok:
@@ -225,8 +225,7 @@ class MountSett(TabAddon):
     def setHorizonLimitHigh(self) -> bool:
         sett = self.app.dReg["mount"].setting
         actValue = 0 if sett.horizonLimitHigh is None else int(sett.horizonLimitHigh)
-        dlg = QInputDialog()
-        value, ok = dlg.getInt(
+        value, ok = MWInputDialog.getInt(
             self.mainW, "Set Horizon Limit High", "Value (0-90):", actValue, 0, 90, 1
         )
         if not ok:
@@ -241,8 +240,7 @@ class MountSett(TabAddon):
     def setHorizonLimitLow(self) -> bool:
         sett = self.app.dReg["mount"].setting
         actValue = 0 if sett.horizonLimitLow is None else int(sett.horizonLimitLow)
-        dlg = QInputDialog()
-        value, ok = dlg.getInt(
+        value, ok = MWInputDialog.getInt(
             self.mainW,
             "Set Horizon Limit Low",
             "Value (-5 - 90):",
@@ -265,8 +263,7 @@ class MountSett(TabAddon):
         actValue = 0 if sett.slewRate is None else int(sett.slewRate)
         minRate = 0 if sett.slewRateMin is None else int(sett.slewRateMin)
         maxRate = 0 if sett.slewRateMax is None else int(sett.slewRateMax)
-        dlg = QInputDialog()
-        value, ok = dlg.getInt(
+        value, ok = MWInputDialog.getInt(
             self.mainW,
             "Set Slew Rate",
             f"Value ({minRate}...{maxRate}):",
@@ -310,8 +307,7 @@ class MountSett(TabAddon):
         self.msg.emit(0, "Mount", "Setting", t)
 
     def setLongitude(self) -> None:
-        dlg = QInputDialog()
-        value, ok = dlg.getText(
+        value, ok = MWInputDialog.getText(
             self.mainW,
             "Set Site Longitude",
             "Format: <dd[EW] mm ss.s> or <[+-]d.d>, East is positive",
@@ -324,8 +320,7 @@ class MountSett(TabAddon):
         self.setLocationValues(lon=value)
 
     def setLatitude(self) -> None:
-        dlg = QInputDialog()
-        value, ok = dlg.getText(
+        value, ok = MWInputDialog.getText(
             self.mainW,
             "Set Site Latitude",
             "Format: <dd[SN] mm ss.s> or <[+-]d.d>",
@@ -339,8 +334,7 @@ class MountSett(TabAddon):
 
     def setElevation(self) -> bool:
         obs = self.app.dReg["mount"].obsSite
-        dlg = QInputDialog()
-        value, ok = dlg.getDouble(
+        value, ok = MWInputDialog.getDouble(
             self.mainW,
             "Set Site Elevation",
             "Format: d.d",
@@ -356,8 +350,7 @@ class MountSett(TabAddon):
 
     def setUnattendedFlip(self) -> bool:
         sett = self.app.dReg["mount"].setting
-        dlg = QInputDialog()
-        value, ok = dlg.getItem(
+        value, ok = MWInputDialog.getItem(
             self.mainW,
             "Set Unattended Flip",
             "Value: On / Off",
@@ -376,8 +369,7 @@ class MountSett(TabAddon):
 
     def setDualAxisTracking(self) -> bool:
         sett = self.app.dReg["mount"].setting
-        dlg = QInputDialog()
-        value, ok = dlg.getItem(
+        value, ok = MWInputDialog.getItem(
             self.mainW,
             "Set Dual Axis Tracking",
             "Value: On / Off",
@@ -396,9 +388,8 @@ class MountSett(TabAddon):
 
     def setWOL(self) -> bool:
         sett = self.app.dReg["mount"].setting
-        dlg = QInputDialog()
         act = 0 if sett.wakeOnLan == "ON" else 1
-        value, ok = dlg.getItem(
+        value, ok = MWInputDialog.getItem(
             self.mainW, "Set Wake On Lan", "Value: On / Off", ["ON", "OFF"], act, False
         )
         if not ok:
@@ -412,9 +403,8 @@ class MountSett(TabAddon):
 
     def setAPO(self) -> bool:
         sett = self.app.dReg["mount"].setting
-        dlg = QInputDialog()
         act = 0 if sett.autoPowerOn else 1
-        value, ok = dlg.getItem(
+        value, ok = MWInputDialog.getItem(
             self.mainW, "Set Auto Power On", "Value: On / Off", ["ON", "OFF"], act, False
         )
         if not ok:
@@ -431,8 +421,7 @@ class MountSett(TabAddon):
         actValue = 0 if sett.refractionTemp is None else sett.refractionTemp
         minVal = -40
         maxVal = 75
-        dlg = QInputDialog()
-        value, ok = dlg.getDouble(
+        value, ok = MWInputDialog.getDouble(
             self.mainW,
             "Set Refraction Temperature",
             f"Value ({minVal}...{maxVal}):",
@@ -455,8 +444,7 @@ class MountSett(TabAddon):
         actValue = 0 if sett.refractionPress is None else sett.refractionPress
         minVal = 500
         maxVal = 1300
-        dlg = QInputDialog()
-        value, ok = dlg.getDouble(
+        value, ok = MWInputDialog.getDouble(
             self.mainW,
             "Set Refraction Pressure",
             f"Value ({minVal}...{maxVal}):",
@@ -476,8 +464,7 @@ class MountSett(TabAddon):
 
     def setRefraction(self) -> bool:
         sett = self.app.dReg["mount"].setting
-        dlg = QInputDialog()
-        value, ok = dlg.getItem(
+        value, ok = MWInputDialog.getItem(
             self.mainW,
             "Set Refraction Correction",
             "Value: On / Off",
@@ -497,8 +484,7 @@ class MountSett(TabAddon):
     def setSettleTimeMount(self) -> bool:
         sett = self.app.dReg["mount"].setting
         actValue = 0 if sett.settleTime is None else int(sett.settleTime)
-        dlg = QInputDialog()
-        value, ok = dlg.getInt(
+        value, ok = MWInputDialog.getInt(
             self.mainW, "Set Settle Time", "Value (0-999):", actValue, 0, 999, 1
         )
         if not ok:

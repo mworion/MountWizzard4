@@ -15,7 +15,7 @@
 ###########################################################
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
-from PySide6.QtWidgets import QInputDialog
+from mw4.gui.utilities.qtInputDialog import MWInputDialog
 from typing import Any
 
 
@@ -207,8 +207,7 @@ class ImageManage(TabAddon):
             return
 
         actValue = int(actValue)
-        dlg = QInputDialog()
-        value, ok = dlg.getInt(
+        value, ok = MWInputDialog.getInt(
             self.mainW, "Set cooler temperature", "Value (-30..+20):", actValue, -30, 20, 1
         )
         if ok:
@@ -220,13 +219,12 @@ class ImageManage(TabAddon):
             return
 
         actValue = int(actValue)
-        dlg = QInputDialog()
         offsetList = self.app.dReg["camera"].data.get("CCD_OFFSET.OFFSET_LIST")
         offsetMin = self.app.dReg["camera"].data.get("CCD_OFFSET.OFFSET_MIN")
         offsetMax = self.app.dReg["camera"].data.get("CCD_OFFSET.OFFSET_MAX")
         if offsetList is not None:
             offsetList = list(offsetList)
-            value, ok = dlg.getItem(
+            value, ok = MWInputDialog.getItem(
                 self.mainW, "Set offset", "Offset entry: ", offsetList, actValue
             )
             value = offsetList.index(value)
@@ -234,7 +232,7 @@ class ImageManage(TabAddon):
         elif offsetMin is not None and offsetMax is not None:
             offsetMin = int(offsetMin)
             offsetMax = int(offsetMax)
-            value, ok = dlg.getInt(
+            value, ok = MWInputDialog.getInt(
                 self.mainW,
                 "Set offset",
                 f"Values ({offsetMin:4}..{offsetMax:4}):",
@@ -244,7 +242,7 @@ class ImageManage(TabAddon):
                 int((offsetMax - offsetMin) / 20),
             )
         else:
-            value, ok = dlg.getInt(self.mainW, "Set offset", "Values:", actValue)
+            value, ok = MWInputDialog.getInt(self.mainW, "Set offset", "Values:", actValue)
         if ok:
             self.app.dReg["camera"].instance.sendOffset(offset=value)
 
@@ -253,19 +251,20 @@ class ImageManage(TabAddon):
         if actValue is None:
             return
         actValue = int(actValue)
-        dlg = QInputDialog()
         gainList = self.app.dReg["camera"].data.get("CCD_GAIN.GAIN_LIST")
         gainMin = self.app.dReg["camera"].data.get("CCD_GAIN.GAIN_MIN")
         gainMax = self.app.dReg["camera"].data.get("CCD_GAIN.GAIN_MAX")
         if gainList is not None:
             gainList = list(gainList)
-            value, ok = dlg.getItem(self.mainW, "Set gain", "Gain entry: ", gainList, actValue)
+            value, ok = MWInputDialog.getItem(
+                self.mainW, "Set gain", "Gain entry: ", gainList, actValue
+            )
             value = gainList.index(value)
 
         elif gainMin is not None and gainMax is not None:
             gainMin = int(gainMin)
             gainMax = int(gainMax)
-            value, ok = dlg.getInt(
+            value, ok = MWInputDialog.getInt(
                 self.mainW,
                 "Set gain",
                 f"Values ({gainMin:4}..{gainMax:4}):",
@@ -275,7 +274,7 @@ class ImageManage(TabAddon):
                 int((gainMax - gainMin) / 20),
             )
         else:
-            value, ok = dlg.getInt(self.mainW, "Set gain", "Values:", actValue)
+            value, ok = MWInputDialog.getInt(self.mainW, "Set gain", "Values:", actValue)
 
         if ok:
             self.app.dReg["camera"].instance.sendGain(gain=value)
@@ -297,8 +296,7 @@ class ImageManage(TabAddon):
             start = 1
             end = numberFilter
 
-        dlg = QInputDialog()
-        value, ok = dlg.getInt(
+        value, ok = MWInputDialog.getInt(
             self.mainW,
             "Set filter number",
             f"Value ({start}..{end}):",
@@ -319,8 +317,7 @@ class ImageManage(TabAddon):
 
         availNames = [data[key] for key in data if "FILTER_NAME.FILTER_SLOT_NAME_" in key]
 
-        dlg = QInputDialog()
-        value, ok = dlg.getItem(
+        value, ok = MWInputDialog.getItem(
             self.mainW, "Set filter", "Filter Name: ", availNames, actValue - 1
         )
         self.mainW.log.debug(f"FilterSelected: [{value}], FilterList: [{availNames}]")
@@ -409,8 +406,7 @@ class ImageManage(TabAddon):
         maxBrightness = self.app.dReg["lightPanel"].data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
         )
-        dlg = QInputDialog()
-        value, ok = dlg.getInt(
+        value, ok = MWInputDialog.getInt(
             self.mainW,
             "Set intensity",
             f"Value (0..{maxBrightness}):",

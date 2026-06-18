@@ -410,9 +410,7 @@ def test_echoModePassword(qapp):
 
 
 def test_intMinMaxValid(qapp):
-    d = MWInputDialog(
-        title="title", label="label", inputMode="int", minValue=10, maxValue=50
-    )
+    d = MWInputDialog(title="title", label="label", inputMode="int", minValue=10, maxValue=50)
     d.inputWidget.setValue(30)
     with mock.patch.object(d, "close"):
         d.onAccept()
@@ -421,9 +419,7 @@ def test_intMinMaxValid(qapp):
 
 
 def test_intMinMaxTooLow(qapp):
-    d = MWInputDialog(
-        title="title", label="label", inputMode="int", minValue=10, maxValue=50
-    )
+    d = MWInputDialog(title="title", label="label", inputMode="int", minValue=10, maxValue=50)
     # QSpinBox enforces min value automatically
     d.inputWidget.setValue(5)
     assert d.inputWidget.value() == 10
@@ -431,9 +427,7 @@ def test_intMinMaxTooLow(qapp):
 
 
 def test_intMinMaxTooHigh(qapp):
-    d = MWInputDialog(
-        title="title", label="label", inputMode="int", minValue=10, maxValue=50
-    )
+    d = MWInputDialog(title="title", label="label", inputMode="int", minValue=10, maxValue=50)
     # QSpinBox enforces max value automatically
     d.inputWidget.setValue(100)
     assert d.inputWidget.value() == 50
@@ -612,4 +606,238 @@ def test_doubleWidgetMinimumHeight(qapp):
     d.close()
 
 
+def test_initItemMode(qapp):
+    items = ["Item 1", "Item 2", "Item 3"]
+    d = MWInputDialog(
+        title="title",
+        label="label",
+        inputMode="item",
+        items=items,
+        currentIndex=1,
+    )
+    assert d.inputMode == "item"
+    assert d.items == items
+    assert d.currentIndex == 1
+    d.close()
 
+
+def test_directInstantiationItem(qapp):
+    from PySide6.QtWidgets import QComboBox
+
+    items = ["Option A", "Option B", "Option C"]
+    dlg = MWInputDialog(
+        parent=None,
+        title="Item Input",
+        label="Choose an item:",
+        inputMode="item",
+        items=items,
+        currentIndex=0,
+    )
+    assert dlg.inputMode == "item"
+    assert isinstance(dlg.inputWidget, QComboBox)
+    assert dlg.inputWidget.count() == 3
+    assert dlg.inputWidget.currentText() == "Option A"
+    dlg.close()
+
+
+def test_itemModeUsesQComboBox(qapp):
+    from PySide6.QtWidgets import QComboBox
+
+    d = MWInputDialog(
+        inputMode="item",
+        title="title",
+        label="label",
+        items=["a", "b"],
+    )
+    assert isinstance(d.inputWidget, QComboBox)
+    d.close()
+
+
+def test_itemWidgetMinimumHeight(qapp):
+    d = MWInputDialog(
+        inputMode="item",
+        title="title",
+        label="label",
+        items=["a", "b"],
+    )
+    assert d.inputWidget.minimumHeight() == 25
+    d.close()
+
+
+def test_onAcceptValidItem(qapp):
+    items = ["Apple", "Banana", "Cherry"]
+    d = MWInputDialog(
+        title="title",
+        label="label",
+        inputMode="item",
+        items=items,
+        currentIndex=1,
+    )
+    with mock.patch.object(d, "close"):
+        d.onAccept()
+    assert d.resultCode == MWInputDialog.Accepted
+    assert d.inputValue == "Banana"
+    d.close()
+
+
+def test_validateInputItem(qapp):
+    d = MWInputDialog(
+        title="title",
+        label="label",
+        inputMode="item",
+        items=["Item 1", "Item 2"],
+    )
+    assert d.validateInput("Item 1") is True
+    assert d.validateInput("Item 2") is True
+    assert d.validateInput("") is False
+    d.close()
+
+
+def test_classMethodGetItem(qapp):
+    items = ["Red", "Green", "Blue"]
+    with (
+        mock.patch.object(MWInputDialog, "exec"),
+        mock.patch.object(MWInputDialog, "getValue", return_value="Green"),
+        mock.patch.object(MWInputDialog, "wasAccepted", return_value=True),
+    ):
+        item, accepted = MWInputDialog.getItem(
+            None,
+            "Color",
+            "Select a color:",
+            items,
+            currentIndex=1,
+        )
+        assert item == "Green"
+        assert accepted is True
+
+
+def test_classMethodGetItemRejected(qapp):
+    items = ["Red", "Green", "Blue"]
+    with (
+        mock.patch.object(MWInputDialog, "exec"),
+        mock.patch.object(MWInputDialog, "getValue", return_value=""),
+        mock.patch.object(MWInputDialog, "wasAccepted", return_value=False),
+    ):
+        item, accepted = MWInputDialog.getItem(
+            None,
+            "Color",
+            "Select a color:",
+            items,
+            currentIndex=0,
+        )
+        assert item == ""
+        assert accepted is False
+
+
+def test_itemWithDifferentCurrentIndex(qapp):
+    items = ["First", "Second", "Third", "Fourth"]
+    d = MWInputDialog(
+        title="title",
+        label="label",
+        inputMode="item",
+        items=items,
+        currentIndex=2,
+    )
+    assert d.inputWidget.currentIndex() == 2
+    assert d.inputWidget.currentText() == "Third"
+    d.close()
+
+
+def test_itemWithEmptyList(qapp):
+    d = MWInputDialog(
+        title="title",
+        label="label",
+        inputMode="item",
+        items=[],
+    )
+    assert d.inputWidget.count() == 0
+    d.close()
+
+
+def test_itemMultipleAccepts(qapp):
+    items = ["A", "B", "C"]
+    d = MWInputDialog(
+        title="title",
+        label="label",
+        inputMode="item",
+        items=items,
+        currentIndex=0,
+    )
+    # First accept
+    with mock.patch.object(d, "close"):
+        d.onAccept()
+    assert d.resultCode == MWInputDialog.Accepted
+    assert d.inputValue == "A"
+
+    # Change selection and accept again
+    d.inputWidget.setCurrentIndex(1)
+    d.resultCode = MWInputDialog.Rejected
+    d.inputValue = ""
+    with mock.patch.object(d, "close"):
+        d.onAccept()
+    assert d.resultCode == MWInputDialog.Accepted
+    assert d.inputValue == "B"
+    d.close()
+
+
+def test_getItemDefaultCurrentIndex(qapp):
+    items = ["Option 1", "Option 2", "Option 3"]
+    with (
+        mock.patch.object(MWInputDialog, "exec"),
+        mock.patch.object(MWInputDialog, "getValue", return_value="Option 1"),
+        mock.patch.object(MWInputDialog, "wasAccepted", return_value=True),
+    ):
+        item, accepted = MWInputDialog.getItem(
+            None,
+            "Choose",
+            "Select option:",
+            items,
+        )
+        assert item == "Option 1"
+        assert accepted is True
+
+
+def test_initIntModeWithInvalidValue(qapp):
+    d = MWInputDialog(
+        title="title",
+        label="label",
+        inputMode="int",
+        actualValue="not_a_number",
+    )
+    # Should default to 0 due to exception handling
+    assert d.inputWidget.value() == 0
+    d.close()
+
+
+def test_initDoubleModeWithInvalidValue(qapp):
+    d = MWInputDialog(
+        title="title",
+        label="label",
+        inputMode="double",
+        actualValue="not_a_number",
+    )
+    # Should default to 0.0 due to exception handling
+    assert d.inputWidget.value() == 0.0
+    d.close()
+
+
+def test_classMethodGetIntWithInvalidValue(qapp):
+    with (
+        mock.patch.object(MWInputDialog, "exec"),
+        mock.patch.object(MWInputDialog, "getValue", return_value="not_an_int"),
+        mock.patch.object(MWInputDialog, "wasAccepted", return_value=True),
+    ):
+        value, accepted = MWInputDialog.getInt(None, "title", "label")
+        assert value == 0
+        assert accepted is False
+
+
+def test_classMethodGetDoubleWithInvalidValue(qapp):
+    with (
+        mock.patch.object(MWInputDialog, "exec"),
+        mock.patch.object(MWInputDialog, "getValue", return_value="not_a_float"),
+        mock.patch.object(MWInputDialog, "wasAccepted", return_value=True),
+    ):
+        value, accepted = MWInputDialog.getDouble(None, "title", "label")
+        assert value == 0.0
+        assert accepted is False

@@ -19,11 +19,11 @@ import json
 import mw4.gui
 import mw4.gui.mainWaddon.tabModel_Manage
 import os
-import PySide6
 import pytest
 import shutil
 import unittest.mock as mock
 from mw4.gui.mainWaddon.tabModel_Manage import ModelManage
+from mw4.gui.utilities.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.mountcontrol.modelStar import ModelStar
@@ -208,29 +208,23 @@ def test_loadName_3(function):
 
 
 def test_saveName_1(function):
-    with mock.patch.object(PySide6.QtWidgets.QInputDialog, "getText", return_value=("", True)):
+    with mock.patch.object(MWInputDialog, "getText", return_value=("", True)):
         function.saveName()
 
 
 def test_saveName_2(function):
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getText", return_value=(None, True)
-    ):
+    with mock.patch.object(MWInputDialog, "getText", return_value=(None, True)):
         function.saveName()
 
 
 def test_saveName_3(function):
-    with mock.patch.object(
-        PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", False)
-    ):
+    with mock.patch.object(MWInputDialog, "getText", return_value=("test", False)):
         function.saveName()
 
 
 def test_saveName_4(function):
     with (
-        mock.patch.object(
-            PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", True)
-        ),
+        mock.patch.object(MWInputDialog, "getText", return_value=("test", True)),
         mock.patch.object(function.app.mount.model, "storeName", return_value=False),
     ):
         function.saveName()
@@ -238,9 +232,7 @@ def test_saveName_4(function):
 
 def test_saveName_5(function):
     with (
-        mock.patch.object(
-            PySide6.QtWidgets.QInputDialog, "getText", return_value=("test", True)
-        ),
+        mock.patch.object(MWInputDialog, "getText", return_value=("test", True)),
         mock.patch.object(function.app.mount.model, "storeName", return_value=True),
     ):
         function.saveName()

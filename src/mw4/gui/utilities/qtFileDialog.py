@@ -112,11 +112,7 @@ class MWFileDialog(MWidget):
             self.filterCombo.addItem("All files (*)")
         self.filterCombo.currentTextChanged.connect(self.onFilterChanged)
 
-        acceptText = (
-            "Open"
-            if acceptMode == QFileDialog.AcceptMode.AcceptOpen
-            else "Save"
-        )
+        acceptText = "Open" if acceptMode == QFileDialog.AcceptMode.AcceptOpen else "Save"
         if fileMode == QFileDialog.FileMode.Directory:
             acceptText = "Choose"
         self.btnAccept = QPushButton(acceptText)
@@ -190,11 +186,7 @@ class MWFileDialog(MWidget):
         self.model.setNameFilterDisables(False)
 
     def onSelectionChanged(self, *_: object) -> None:
-        indexes = [
-            i
-            for i in self.tree.selectionModel().selectedIndexes()
-            if i.column() == 0
-        ]
+        indexes = [i for i in self.tree.selectionModel().selectedIndexes() if i.column() == 0]
         names: list[str] = []
         for idx in indexes:
             path = Path(self.model.filePath(idx))
@@ -242,19 +234,13 @@ class MWFileDialog(MWidget):
         selection = self.resolveSelection()
         if not selection:
             return
-        if (
-            self.fileMode == QFileDialog.FileMode.ExistingFile
-            and not selection[0].is_file()
-        ):
+        if self.fileMode == QFileDialog.FileMode.ExistingFile and not selection[0].is_file():
             return
         if self.fileMode == QFileDialog.FileMode.ExistingFiles and not all(
             p.is_file() for p in selection
         ):
             return
-        if (
-            self.fileMode == QFileDialog.FileMode.Directory
-            and not selection[0].is_dir()
-        ):
+        if self.fileMode == QFileDialog.FileMode.Directory and not selection[0].is_dir():
             return
         self.selected = selection
         self.resultCode = self.Accepted

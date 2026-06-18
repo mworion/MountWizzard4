@@ -17,6 +17,7 @@ from mw4.gui.utilities.qtMain import MWidget
 from PySide6.QtCore import QEventLoop, Qt
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import (
+    QComboBox,
     QDoubleSpinBox,
     QHBoxLayout,
     QLabel,
@@ -54,6 +55,8 @@ class MWInputDialog(MWidget):
         maxValue: int | float = 2147483647,
         step: int = 1,
         decimals: int = 1,
+        items: list[str] | None = None,
+        currentIndex: int = 0,
     ) -> None:
         """
         Initialize input dialog.
@@ -63,12 +66,14 @@ class MWInputDialog(MWidget):
             title: Dialog window title
             label: Label text for the input field
             actualValue: Default value to show in input field
-            inputMode: Type of input ("text", "int", "double")
+            inputMode: Type of input ("text", "int", "double", "item")
             echoMode: QLineEdit echo mode for text input
             minValue: Minimum acceptable value for int/double modes
             maxValue: Maximum acceptable value for int/double modes
             step: Step increment for int mode
             decimals: Number of decimal places for double mode
+            items: List of items for item mode
+            currentIndex: Current item index for item mode
         """
         super().__init__()
         self.inputMode = inputMode
@@ -80,6 +85,8 @@ class MWInputDialog(MWidget):
         self.maxValue = maxValue
         self.step = step
         self.decimals = decimals
+        self.items = items if items is not None else []
+        self.currentIndex = currentIndex
         self.setWindowTitle(title)
 
         labelWidget = QLabel(label)
@@ -89,22 +96,16 @@ class MWInputDialog(MWidget):
         parsedValue: int | float | str = ""
         if self.inputMode == "int":
             try:
-                parsedValue = (
-                    int(float(str(actualValue)))
-                    if actualValue is not None
-                    else 0
-                )
+                parsedValue = int(float(str(actualValue))) if actualValue is not None else 0
             except (ValueError, TypeError):
                 parsedValue = 0
         elif self.inputMode == "double":
             try:
-                parsedValue = (
-                    float(actualValue)
-                    if actualValue is not None
-                    else 0.0
-                )
+                parsedValue = float(actualValue) if actualValue is not None else 0.0
             except (ValueError, TypeError):
                 parsedValue = 0.0
+        elif self.inputMode == "item":
+            parsedValue = str(actualValue) if actualValue else ""
         else:  # text mode
             parsedValue = str(actualValue) if actualValue else ""
 
@@ -124,6 +125,10 @@ class MWInputDialog(MWidget):
             self.inputWidget.setSingleStep(1.0)
             self.inputWidget.setValue(float(parsedValue))
             self.inputWidget.returnPressed.connect(self.onAccept)
+        elif self.inputMode == "item":
+            self.inputWidget = QComboBox()
+            self.inputWidget.addItems(self.items)
+            self.inputWidget.setCurrentIndex(self.currentIndex)
         else:  # text mode
             self.inputWidget = QLineEdit()
             self.inputWidget.setEchoMode(self.echoMode)
@@ -167,6 +172,8 @@ class MWInputDialog(MWidget):
         """Handle OK button click."""
         if self.inputMode in ("int", "double"):
             text = str(self.inputWidget.value())
+        elif self.inputMode == "item":
+            text = self.inputWidget.currentText()
         else:  # text mode
             text = self.inputWidget.text()
 
@@ -352,15 +359,36 @@ class MWInputDialog(MWidget):
                 return 0.0, False
         return 0.0, False
 
+    @classmethod
+    def getItem(
+        cls,
+        parent: QWidget | None,
+        title: str,
+        label: str,
+        items: list[str],
+        currentIndex: int = 0,
+    ) -> tuple[str, bool]:
+        """
+        Get item selection from user via combo box.
 
+        Args:
+            parent: Parent widget
+            title: Dialog title
+            label: Input label
+            items: List of items to choose from
+            currentIndex: Index of the item to select initially
 
-
-
-
-
-
-
-
-
-
-
+        Returns:
+            Tuple of (item_text, accepted) where accepted is True if OK
+            was clicked
+        """
+        dlg = cls(
+            parent=parent,
+            title=title,
+            label=label,
+            inputMode="item",
+            items=items,
+            currentIndex=currentIndex,
+        )
+        dlg.exec()
+        return dlg.getValue(), dlg.wasAccepted()

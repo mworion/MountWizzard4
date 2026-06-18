@@ -16,8 +16,8 @@
 from functools import partial
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
+from mw4.gui.utilities.qtInputDialog import MWInputDialog
 from mw4.mountcontrol.convert import valueToInt
-from PySide6.QtWidgets import QInputDialog
 from typing import Any
 
 
@@ -177,8 +177,7 @@ class Power(TabAddon):
 
     def setDew(self, name: str) -> bool:
         actValue = valueToInt(self.dew[name].text())
-        dlg = QInputDialog()
-        value, ok = dlg.getInt(
+        value, ok = MWInputDialog.getInt(
             self,
             f"Set dew PWM {name}",
             "Value (0-100):",
@@ -208,8 +207,7 @@ class Power(TabAddon):
 
     def setAdjustableOutput(self) -> bool:
         actValue = float(self.ui.adjustableOutput.text())
-        dlg = QInputDialog()
-        value, ok = dlg.getDouble(
+        value, ok = MWInputDialog.getDouble(
             self, "Set Voltage Output", "Value (3-12):", actValue, 3, 12, 1
         )
 

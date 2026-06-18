@@ -17,8 +17,9 @@ import mw4.gui.mainWaddon.tabMount
 import pytest
 import unittest.mock as mock
 from mw4.gui.mainWaddon.tabMount_Move import MountMove
+from mw4.gui.utilities.qtInputDialog import MWInputDialog
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from PySide6.QtWidgets import QInputDialog, QWidget
+from PySide6.QtWidgets import QWidget
 from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -179,32 +180,32 @@ def test_moveAltAz_3(function):
 
 
 def test_setRA_1(function):
-    with mock.patch.object(QInputDialog, "getText", return_value=("", False)):
+    with mock.patch.object(MWInputDialog, "getText", return_value=("", False)):
         function.setRA()
 
 
 def test_setRA_2(function):
-    with mock.patch.object(QInputDialog, "getText", return_value=("", True)):
+    with mock.patch.object(MWInputDialog, "getText", return_value=("", True)):
         function.setRA()
 
 
 def test_setRA_3(function):
-    with mock.patch.object(QInputDialog, "getText", return_value=("12H", True)):
+    with mock.patch.object(MWInputDialog, "getText", return_value=("12H", True)):
         function.setRA()
 
 
 def test_setDEC_1(function):
-    with mock.patch.object(QInputDialog, "getText", return_value=("", False)):
+    with mock.patch.object(MWInputDialog, "getText", return_value=("", False)):
         function.setDEC()
 
 
 def test_setDEC_2(function):
-    with mock.patch.object(QInputDialog, "getText", return_value=("", True)):
+    with mock.patch.object(MWInputDialog, "getText", return_value=("", True)):
         function.setDEC()
 
 
 def test_setDEC_3(function):
-    with mock.patch.object(QInputDialog, "getText", return_value=("12", True)):
+    with mock.patch.object(MWInputDialog, "getText", return_value=("12", True)):
         function.setDEC()
 
 

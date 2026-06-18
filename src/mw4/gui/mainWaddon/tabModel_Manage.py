@@ -17,6 +17,7 @@ import json
 import numpy as np
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
+from mw4.gui.utilities.qtInputDialog import MWInputDialog
 from mw4.logic.modelBuild.modelRunSupport import (
     convertAngleToFloat,
     convertFloatToAngle,
@@ -26,7 +27,7 @@ from mw4.logic.modelBuild.modelRunSupport import (
 from mw4.mountcontrol.model import Model
 from pathlib import Path
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QInputDialog, QLineEdit
+from PySide6.QtWidgets import QLineEdit
 from typing import Any
 
 
@@ -191,8 +192,7 @@ class ModelManage(TabAddon):
         self.refreshModel()
 
     def saveName(self) -> None:
-        dlg = QInputDialog()
-        modelName, ok = dlg.getText(
+        modelName, ok = MWInputDialog.getText(
             self.mainW, "Save model", "New model name", QLineEdit.EchoMode.Normal, ""
         )
         if modelName is None or not modelName or not ok:

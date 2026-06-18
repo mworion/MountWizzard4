@@ -18,6 +18,7 @@ from mw4.base.threadUtils import mainThreadSleep
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable
+from mw4.gui.utilities.qtInputDialog import MWInputDialog
 from mw4.mountcontrol.convert import (
     convertDecToAngle,
     convertRaToAngle,
@@ -25,7 +26,7 @@ from mw4.mountcontrol.convert import (
     formatHstrToText,
     valueToAngle,
 )
-from PySide6.QtWidgets import QInputDialog, QLineEdit
+from PySide6.QtWidgets import QLineEdit
 from skyfield.api import Angle
 from typing import Any
 
@@ -248,8 +249,7 @@ class MountMove(TabAddon):
         self.ui.moveRaDecAbsolute.setEnabled(canSlew)
 
     def setRA(self) -> None:
-        dlg = QInputDialog()
-        value, ok = dlg.getText(
+        value, ok = MWInputDialog.getText(
             self.mainW,
             "Set telescope RA",
             "Format: <dd[H] mm ss.s> in hours or <[+]d.d> in degrees",
@@ -265,8 +265,7 @@ class MountMove(TabAddon):
         self.checkRaDecInputs()
 
     def setDEC(self) -> None:
-        dlg = QInputDialog()
-        value, ok = dlg.getText(
+        value, ok = MWInputDialog.getText(
             self.mainW,
             "Set telescope DEC",
             "Format: <dd[Deg] mm ss.s> or <[+]d.d> in degrees",

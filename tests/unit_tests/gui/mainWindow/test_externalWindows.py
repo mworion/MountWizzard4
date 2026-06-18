@@ -19,8 +19,20 @@ from mw4.base import packageConfig
 from mw4.gui.mainWindow.externalWindows import ExternalWindows
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtCore import QObject, Signal
-from PySide6.QtWidgets import QPushButton, QWidget, QApplication
+from PySide6.QtWidgets import QApplication, QPushButton, QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+
+
+@pytest.fixture
+def app():
+    # Erstelle die Anwendung
+    qapp = QApplication.instance()
+    if qapp is None:
+        qapp = QApplication([])
+    yield qapp
+    # ZWINGEND: Hier wird das Aufräumen eingeleitet,
+    # bevor Python das Modul schließt
+    qapp.processEvents()
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -33,7 +45,6 @@ def function(qapp):
 
     func = ExternalWindows(window)
     yield func
-    QApplication.processEvents()
     window.app.threadPool.waitForDone(10000)
 
 

@@ -35,6 +35,18 @@ class Test:
         pass
 
 
+@pytest.fixture
+def app():
+    # Erstelle die Anwendung
+    qapp = QApplication.instance()
+    if qapp is None:
+        qapp = QApplication([])
+    yield qapp
+    # ZWINGEND: Hier wird das Aufräumen eingeleitet,
+    # bevor Python das Modul schließt
+    qapp.processEvents()
+
+
 @pytest.fixture(autouse=True, scope="module")
 def window(qapp):
     mainW = MWidget()
@@ -44,7 +56,6 @@ def window(qapp):
     window = MainWindowAddons(mainW)
     window.addons = {"test": Test()}
     yield window
-    QApplication.processEvents()
     mainW.app.threadPool.waitForDone(10000)
 
 

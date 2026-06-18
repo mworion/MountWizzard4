@@ -174,14 +174,6 @@ def test_startKeypad_2(function):
         function.websocketMutex.unlock()
 
 
-def test_hostChanged_1(function):
-    with (
-        mock.patch.object(function.keypad, "closeWebsocket"),
-        mock.patch.object(function, "startKeypad"),
-    ):
-        function.hostChanged()
-
-
 def test_buttonPressed_1(function):
     function.setupButtons()
     function.buttonPressed("key_0")

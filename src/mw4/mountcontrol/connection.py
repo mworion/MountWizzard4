@@ -284,7 +284,7 @@ class Connection:
     )
 
     def __init__(self, parent: Any) -> None:
-        self.host = parent.host
+        self.host = (parent.config.hostAddress, parent.config.port)
         self.loggingTrace = parent.loggingTrace
         self.id = str(uuid.uuid4())[:8]
 

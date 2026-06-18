@@ -167,10 +167,12 @@ class DeviceRegistry(QObject):
 
     def initConfig(self) -> None:
         self.writeConfigToAllDevices(self.app.config.get("SettingDevice", {}))
+        self.writeConfigToSingleDevice("mount", self.app.config.get("SettingDeviceMount", {}))
         self.startDevices()
 
     def storeConfig(self) -> None:
         self.app.config["SettingDevice"] = self.collectConfigFromAllDevices()
+        self.app.config["SettingDeviceMount"] = self.collectConfigFromSingleDevice("mount")
 
     def stopDevice(self, device: str) -> None:
         if not self.d[device].framework:

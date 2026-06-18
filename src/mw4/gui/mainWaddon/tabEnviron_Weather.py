@@ -79,7 +79,7 @@ class EnvironWeather(TabAddon):
 
         for source in self.refractionSources:
             self.refractionSources[source].signals.deviceDisconnected.connect(
-                self.clearSourceGui
+                partial(self.clearSourceGui, source)
             )
             self.refractionSources[source].group.clicked.connect(
                 partial(self.selectRefractionSource, source)
@@ -262,7 +262,6 @@ class EnvironWeather(TabAddon):
             data = self.refractionSources[source].data
             uiPost = self.refractionSources[source].uiPost
             for field in self.envFields:
-                # Use getattr() instead of eval() to safely resolve UI widget names. (SEC-2)
                 ui = getattr(self.ui, field + uiPost)
                 value = data.get(self.envFields[field]["valueKey"])
                 guiSetText(ui, self.envFields[field]["format"], value)

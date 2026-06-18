@@ -233,4 +233,3 @@ class Styles:
 
 
 Styles.STYLE = Styles.getStyle()
-

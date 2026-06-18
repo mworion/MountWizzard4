@@ -17,7 +17,7 @@ import logging
 import socket
 import wakeonlan
 from collections.abc import Callable
-from mw4.base.ethernet import checkFormatMAC
+from dataclasses import dataclass, field
 from mw4.base.tpool import Worker
 from mw4.mountcontrol.dome import Dome
 from mw4.mountcontrol.firmware import Firmware
@@ -31,6 +31,21 @@ from pathlib import Path
 from PySide6.QtCore import QMutex, QObject, QTimer
 from skyfield.api import Angle
 from typing import Any, Final
+
+
+@dataclass
+class DeviceConfigMount:
+    deviceName: str = field(default="10micron")
+    hostAddress: str = field(default="127.0.0.1")
+    port: int = field(default=3492)
+    MAC: str = field(default="00:00:00:00:00:00")
+    clockSync: bool = field(default=False)
+    syncTimeNone: bool = field(default=True)
+    syncTimeCont: bool = field(default=False)
+    syncTimeNotTrack: bool = field(default=False)
+    wolAutomatic: bool = field(default=False)
+    wolAddress: str = field(default="255.255.255.255")
+    wolPort: int = field(default=9)
 
 
 class MountDevice(QObject):
@@ -55,7 +70,6 @@ class MountDevice(QObject):
     CYCLE_CLOCK: Final[int] = 1000
     CYCLE_MOUNT_UP: Final[int] = 1000
     CYCLE_SETTING: Final[int] = 3100
-    DEFAULT_PORT: Final[int] = 3492
     SOCKET_TIMEOUT: Final[int] = 1
     ALERT_STATUS_CODES: Final[frozenset[MountStatus]] = frozenset(
         {MountStatus.STOPPED, MountStatus.UNKNOWN, MountStatus.ERROR}
@@ -73,8 +87,9 @@ class MountDevice(QObject):
         self._waitTime = 0
         self._waitTimeFlip = 0
         self.app = app
-        self.host = host
-        self.MAC = MAC
+        self.config = DeviceConfigMount()
+        self.run: dict[str, Any] = {"10micron": self}
+        self.framework: str = "10micron"
         self.threadPool = app.threadPool
         self.pathToData: Path = app.mwGlob["dataDir"]
         self.verbose: bool = verbose
@@ -133,19 +148,11 @@ class MountDevice(QObject):
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitAfterSettlingAndEmit)
         self.app.update1s.connect(self.collectData)
+        self.app.update30s.connect(self.syncClock)
         self.app.start3s.connect(self.resetAfterStart)
         self.data: dict = {}
         self.raRef: float = 0.0
         self.decRef: float = 0.0
-
-    @property
-    def MAC(self) -> str:
-        return self._MAC
-
-    @MAC.setter
-    def MAC(self, value: Any) -> None:
-        value = checkFormatMAC(value)
-        self._MAC = value
 
     @property
     def waitTimeFlip(self) -> float:
@@ -189,16 +196,6 @@ class MountDevice(QObject):
         requireMountUp: bool = True,
         **kwargs: Any,
     ) -> None:
-        """Schedule ``target`` on the thread pool and wire up its callback.
-
-        Centralises the boilerplate shared by every cycle/get/poll method:
-
-        - Optional ``mountIsUp`` gate (default on).
-        - Optional non-blocking mutex acquisition (returns silently if busy).
-        - Worker creation, ``finished`` / ``result`` signal connection, and
-          storage of the worker on ``self`` under ``workerAttr`` so callers
-          can introspect it.
-        """
         if requireMountUp and not self.mountIsUp:
             return
         if mutex is not None and not mutex.tryLock():
@@ -252,7 +249,7 @@ class MountDevice(QObject):
         try:
             with socket.socket() as client:
                 client.settimeout(self.SOCKET_TIMEOUT)
-                client.connect(self.host)
+                client.connect((self.config.hostAddress, self.config.port))
                 client.shutdown(socket.SHUT_RDWR)
                 self.mountIsUp = True
         except TimeoutError:
@@ -266,7 +263,7 @@ class MountDevice(QObject):
         self.mutexCycleMountIsUp.unlock()
 
     def cycleCheckMountIsUp(self) -> None:
-        if not self.host:
+        if not self.config.hostAddress or not self.config.port:
             self.signals.mountIsUp.emit(False)
             return
         self.runWorker(
@@ -373,16 +370,16 @@ class MountDevice(QObject):
             mutex=self.mutexGetTLE,
         )
 
-    def bootMount(self, bAddress: str = "", bPort: int = 0) -> bool:
-        t = f"MAC: [{self.MAC}], broadcast address: [{bAddress}], port: [{bPort}]"
+    def bootMount(self) -> bool:
+        t = f"MAC: [{self.config.MAC}], [{self.config.wolAddress}]:[{self.config.wolPort}]"
         self.log.debug(t)
         if self.MAC is None:
             return False
         kwargs: dict[str, Any] = {}
-        if bAddress:
-            kwargs["ip_address"] = bAddress
-        if bPort:
-            kwargs["port"] = bPort
+        if self.config.wolAddress:
+            kwargs["ip_address"] = self.config.wolAddress
+        if self.config.wolPort:
+            kwargs["port"] = self.config.wolPort
         try:
             wakeonlan.send_magic_packet(self.MAC, **kwargs)
         except Exception as e:
@@ -410,12 +407,24 @@ class MountDevice(QObject):
             useResult=True,
         )
 
+    def syncClock(self) -> None:
+        if self.config.syncTimeNone or not self.mountIsUp:
+            return
+        mountTracks = self.app.dReg["mount"].obsSite.status in [
+            MountStatus.TRACKING,
+            MountStatus.FOLLOWING_SATELLITE,
+        ]
+        if mountTracks and self.config.syncTimeNotTrack:
+            return
+
+        delta = self.obsSite.timeDiff * 1000
+        if abs(delta) < 10:
+            return
+        delta = int(max(min(delta, 999), -999))
+        if not self.obsSite.adjustClock(delta):
+            self.log.warning(f"Clock sync failed with delta {delta} ms")
+
     def clearCycleClock(self) -> None:
-        # Intentional: ``workerCycleClock`` is the public liveness indicator
-        # consumed by ``tabMount_Sett.showOffset`` to colour-code the
-        # PC↔mount time delta. Resetting it here lets that consumer see when
-        # the periodic clock sync has stopped running. Other workers are not
-        # cleared because no caller depends on their post-run state.
         self.mutexCycleClock.unlock()
         self.workerCycleClock = None
 

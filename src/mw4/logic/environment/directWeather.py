@@ -32,7 +32,7 @@ class DirectWeather:
     def __init__(self, app: Any = None) -> None:
         self.app = app
         self.signals = Signals()
-        self.framework: str = ""
+        self.framework: str = "directWeather"
         self.run: dict[str, Any] = {"directWeather": self}
         self.data: dict[str, Any] = {}
         self.config = DeviceConfigDirectWeather()

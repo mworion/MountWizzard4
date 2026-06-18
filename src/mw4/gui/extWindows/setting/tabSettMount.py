@@ -13,7 +13,6 @@
 # License APL2.0
 #
 ###########################################################
-import socket
 import wakeonlan
 from mw4.base.ethernet import checkFormatMAC
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
@@ -33,52 +32,60 @@ class SettMount:
         self.ui.mountOff.clicked.connect(self.mountShutdown)
         self.app.mountOn.connect(self.mountBoot)
         self.app.mountOff.connect(self.mountShutdown)
-        self.ui.mountHost.editingFinished.connect(self.mountHost)
-        self.ui.port3492.clicked.connect(self.mountHost)
-        self.ui.port3490.clicked.connect(self.mountHost)
-        self.ui.mountMAC.editingFinished.connect(self.mountMAC)
-        self.ui.bootRackComp.clicked.connect(self.bootRackComp)
-        self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
         self.app.dReg["mount"].signals.settingDone.connect(self.setMountMAC)
         self.app.dReg["mount"].signals.firmwareDone.connect(self.setMountCapabilities)
         self.app.dReg["mount"].signals.firmwareDone.connect(self.updateFwGui)
         self.app.dReg["mount"].signals.mountIsUp.connect(self.showMountStatus)
-        self.app.update30s.connect(self.syncClock)
+        self.ui.bootRackComp.clicked.connect(self.bootRackComp)
 
     def initConfig(self) -> None:
-        config = self.app.config.get("SettingDeviceMount", {})
-        self.ui.mountHost.setText(config.get("mountHost", ""))
-        self.ui.port3492.setChecked(config.get("port3492", True))
-        self.mountHost()
-        self.ui.mountMAC.setText(config.get("mountMAC", ""))
-        self.mountMAC()
-        self.ui.mountWolAddress.setText(config.get("mountWolAddress", "255.255.255.255"))
-        self.ui.mountWolPort.setText(config.get("mountWolPort", "9"))
-        self.ui.rackCompMAC.setText(config.get("rackCompMAC", ""))
-        self.ui.automaticWOL.setChecked(config.get("automaticWOL", False))
-        self.ui.syncTimeNone.setChecked(config.get("syncTimeNone", True))
-        self.ui.syncTimeCont.setChecked(config.get("syncTimeCont", False))
-        self.ui.syncTimeNotTrack.setChecked(config.get("syncTimeNotTrack", False))
-        self.ui.clockSync.setChecked(config.get("clockSync", False))
         self.app.dReg["mount"].instance.getFW()
-        self.toggleClockSync()
-        if self.ui.automaticWOL.isChecked():
-            self.mountBoot()
+        config = self.app.config.get("SettingMount", {})
+        self.ui.rackCompMAC.setText(config.get("rackCompMAC", "00:00:00:00:00"))
+        self.ui.rackCompWolAddress.setText(config.get("rackCompWolAddress", "255.255.255.255"))
+        self.ui.rackCompWolPort.setText(config.get("rackCompWolPort", "9"))
+        self.ui.hostAddress.setText(self.app.dReg["mount"].instance.config.hostAddress)
+        self.ui.port3492.setChecked(self.app.dReg["mount"].instance.config.port == 3492)
+        self.ui.MAC.setText(self.app.dReg["mount"].instance.config.MAC)
+        self.ui.wolAddress.setText(self.app.dReg["mount"].instance.config.wolAddress)
+        self.ui.wolPort.setText(str(self.app.dReg["mount"].instance.config.wolPort))
+        self.ui.wolAutomatic.setChecked(self.app.dReg["mount"].instance.config.wolAutomatic)
+        self.ui.clockSync.setChecked(self.app.dReg["mount"].instance.config.clockSync)
+        self.ui.syncTimeNone.setChecked(self.app.dReg["mount"].instance.config.syncTimeNone)
+        self.ui.syncTimeCont.setChecked(self.app.dReg["mount"].instance.config.syncTimeCont)
+        self.ui.syncTimeNotTrack.setChecked(
+            self.app.dReg["mount"].instance.config.syncTimeNotTrack
+        )
+        self.ui.hostAddress.textChanged.connect(self.storeConfig)
+        self.ui.MAC.textChanged.connect(self.storeConfig)
+        self.ui.wolAddress.textChanged.connect(self.storeConfig)
+        self.ui.wolPort.textChanged.connect(self.storeConfig)
+        self.ui.wolAutomatic.clicked.connect(self.storeConfig)
+        self.ui.port3492.clicked.connect(self.storeConfig)
+        self.ui.port3490.clicked.connect(self.storeConfig)
+        self.ui.clockSync.stateChanged.connect(self.toggleClockSync)
 
     def storeConfig(self) -> None:
-        self.app.config["SettingDeviceMount"] = {}
-        config = self.app.config["SettingDeviceMount"]
-        config["mountHost"] = self.ui.mountHost.text()
-        config["mountMAC"] = self.ui.mountMAC.text()
-        config["mountWolAddress"] = self.ui.mountWolAddress.text()
-        config["mountWolPort"] = self.ui.mountWolPort.text()
+        self.app.config["SettingMount"] = {}
+        config = self.app.config["SettingMount"]
         config["rackCompMAC"] = self.ui.rackCompMAC.text()
-        config["port3492"] = self.ui.port3492.isChecked()
-        config["automaticWOL"] = self.ui.automaticWOL.isChecked()
-        config["syncTimeNone"] = self.ui.syncTimeNone.isChecked()
-        config["syncTimeCont"] = self.ui.syncTimeCont.isChecked()
-        config["syncTimeNotTrack"] = self.ui.syncTimeNotTrack.isChecked()
-        config["clockSync"] = self.ui.clockSync.isChecked()
+        config["rackCompWolAddress"] = self.ui.rackCompWolAddress.text()
+        config["rackCompWolPort"] = self.ui.rackCompWolPort.text()
+
+        port = 3492 if self.ui.port3492.isChecked() else 3490
+        host = self.ui.hostAddress.text()
+        self.app.dReg["mount"].instance.config.hostAddress = host
+        self.app.dReg["mount"].instance.config.port = port
+        self.app.dReg["mount"].instance.config.MAC = self.ui.MAC.text()
+        self.app.dReg["mount"].instance.config.wolAddress = self.ui.wolAddress.text()
+        self.app.dReg["mount"].instance.config.wolPort = int(self.ui.wolPort.text())
+        self.app.dReg["mount"].instance.config.wolAutomatic = self.ui.wolAutomatic.isChecked()
+        self.app.dReg["mount"].instance.config.syncTimeNone = self.ui.syncTimeNone.isChecked()
+        self.app.dReg["mount"].instance.config.syncTimeCont = self.ui.syncTimeCont.isChecked()
+        self.app.dReg[
+            "mount"
+        ].instance.config.syncTimeNotTrack = self.ui.syncTimeNotTrack.isChecked()
+        self.app.dReg["mount"].instance.config.clockSync = self.ui.clockSync.isChecked()
 
     def closeEvent(self) -> None:
         self.app.dReg["mount"].signals.settingDone.disconnect(self.setMountMAC)
@@ -94,10 +101,7 @@ class SettMount:
         self.ui.GroupWOL.setEnabled(self.app.dReg["mount"].firmware.isHW2012())
 
     def mountBoot(self) -> None:
-        bAddress = self.ui.mountWolAddress.text().strip()
-        bPort = self.ui.mountWolPort.text().strip()
-        bPort = int(bPort) if bPort else 0
-        if self.app.dReg["mount"].instance.bootMount(bAddress=bAddress, bPort=bPort):
+        if self.app.dReg["mount"].instance.bootMount():
             self.msg.emit(0, "Mount", "Command", "Sent boot command to mount")
         else:
             self.msg.emit(2, "Mount", "Command", "Mount cannot be booted")
@@ -117,33 +121,13 @@ class SettMount:
         else:
             self.msg.emit(2, "Rack", "Command", "Rack computer cannot be booted")
 
-    def mountHost(self) -> None:
-        port = 3492 if self.ui.port3492.isChecked() else 3490
-        host = self.ui.mountHost.text()
-        if not host:
-            return
-        try:
-            socket.gethostbyname(host)
-        except Exception as e:
-            self.msg.emit(2, "Mount", "Setting error", f"{e}")
-            return
-
-        self.app.dReg["mount"].instance.host = (host, port)
-        self.app.hostChanged.emit()
-
-    def mountMAC(self) -> None:
-        self.app.dReg["mount"].instance.MAC = self.ui.mountMAC.text()
-
     def setMountMAC(self, sett: Setting | None = None) -> None:
         if sett is None:
             return
-        if sett.addressLanMAC is None:
-            return
         if not sett.addressLanMAC:
             return
-
-        self.app.dReg["mount"].instance.MAC = sett.addressLanMAC
-        self.ui.mountMAC.setText(self.app.dReg["mount"].instance.MAC)
+        self.app.dReg["mount"].instance.config.MAC = sett.addressLanMAC
+        self.ui.MAC.setText(self.app.dReg["mount"].instance.config.MAC)
 
     def showMountStatus(self, status: bool) -> None:
         changeStyleDynamic(self.ui.mountOn, "run", status)
@@ -166,25 +150,3 @@ class SettMount:
             self.app.dReg["mount"].instance.startMountClockTimer()
         else:
             self.app.dReg["mount"].instance.stopMountClockTimer()
-
-    def syncClock(self) -> None:
-        if self.ui.syncTimeNone.isChecked():
-            return
-        if not self.app.dReg["mount"].stat:
-            return
-
-        doSyncNotTrack = self.ui.syncTimeNotTrack.isChecked()
-        mountTracks = self.app.dReg["mount"].obsSite.status in [0, 10]
-        if doSyncNotTrack and mountTracks:
-            return
-
-        delta = self.app.dReg["mount"].obsSite.timeDiff * 1000
-        if abs(delta) < 10:
-            return
-
-        delta = int(max(min(delta, 999), -999))
-
-        if self.app.dReg["mount"].obsSite.adjustClock(delta):
-            self.msg.emit(0, "System", "Clock", f"Correction: [{-delta} ms]")
-        else:
-            self.msg.emit(2, "System", "Clock", "Cannot adjust mount clock")

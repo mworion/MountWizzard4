@@ -14,9 +14,25 @@
 #
 ###########################################################
 import numpy as np
+from dataclasses import dataclass, field
 from packaging.version import Version
 from PySide6.QtCore import QObject, Signal
 from skyfield.api import Angle, Loader, load, wgs84
+
+
+@dataclass
+class DeviceConfigMount:
+    deviceName: str = field(default="10micron")
+    hostAddress: str = field(default="127.0.0.1")
+    port: int = field(default=3492)
+    MAC: str = field(default="00:00:00:00:00:00")
+    clockSync: bool = field(default=False)
+    syncTimeNone: bool = field(default=True)
+    syncTimeCont: bool = field(default=False)
+    syncTimeNotTrack: bool = field(default=False)
+    wolAutomatic: bool = field(default=False)
+    wolAddress: str = field(default="255.255.255.255")
+    wolPort: int = field(default=9)
 
 
 class Name:
@@ -459,6 +475,9 @@ class Mount(QObject):
         self.loggingTrace = False
         self.stat = False
         self.instance = self
+        self.run = {}
+        self.framework = ""
+        self.config = DeviceConfigMount()
 
     @staticmethod
     def getFW():

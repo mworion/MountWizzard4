@@ -99,7 +99,7 @@
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -1202,7 +1202,7 @@
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QLineEdit" name="mountHost">
+       <widget class="QLineEdit" name="hostAddress">
         <property name="geometry">
          <rect>
           <x>115</x>
@@ -1292,15 +1292,15 @@
          <string>MAC Address</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="mountMAC">
+       <widget class="QLineEdit" name="MAC">
         <property name="enabled">
          <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
-          <x>155</x>
+          <x>185</x>
           <y>75</y>
-          <width>126</width>
+          <width>121</width>
           <height>21</height>
          </rect>
         </property>
@@ -1348,7 +1348,7 @@
        <widget class="QRadioButton" name="port3492">
         <property name="geometry">
          <rect>
-          <x>225</x>
+          <x>255</x>
           <y>50</y>
           <width>56</width>
           <height>21</height>
@@ -1374,7 +1374,7 @@
        <widget class="QRadioButton" name="port3490">
         <property name="geometry">
          <rect>
-          <x>155</x>
+          <x>185</x>
           <y>50</y>
           <width>66</width>
           <height>21</height>
@@ -1476,7 +1476,7 @@
         <property name="frameless" stdset="0">
          <bool>true</bool>
         </property>
-        <widget class="QCheckBox" name="automaticWOL">
+        <widget class="QCheckBox" name="wolAutomatic">
          <property name="geometry">
           <rect>
            <x>5</x>
@@ -1525,12 +1525,12 @@
           <string>WOL broadcast address</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="mountWolPort">
+        <widget class="QLineEdit" name="wolPort">
          <property name="geometry">
           <rect>
-           <x>150</x>
+           <x>180</x>
            <y>25</y>
-           <width>116</width>
+           <width>121</width>
            <height>21</height>
           </rect>
          </property>
@@ -1601,7 +1601,7 @@
            <x>5</x>
            <y>105</y>
            <width>166</width>
-           <height>136</height>
+           <height>26</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -1636,12 +1636,12 @@
           <string>On</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="mountWolAddress">
+        <widget class="QLineEdit" name="wolAddress">
          <property name="geometry">
           <rect>
-           <x>150</x>
+           <x>180</x>
            <y>0</y>
-           <width>116</width>
+           <width>121</width>
            <height>21</height>
           </rect>
          </property>
@@ -1692,7 +1692,7 @@
            <x>185</x>
            <y>105</y>
            <width>166</width>
-           <height>136</height>
+           <height>26</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -1767,10 +1767,10 @@
        <widget class="QPushButton" name="bootRackComp">
         <property name="geometry">
          <rect>
-          <x>280</x>
+          <x>300</x>
           <y>25</y>
-          <width>76</width>
-          <height>21</height>
+          <width>56</width>
+          <height>76</height>
          </rect>
         </property>
         <property name="minimumSize">
@@ -1786,7 +1786,7 @@
        <widget class="QLineEdit" name="rackCompMAC">
         <property name="geometry">
          <rect>
-          <x>155</x>
+          <x>165</x>
           <y>25</y>
           <width>116</width>
           <height>21</height>
@@ -1805,10 +1805,10 @@
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="rackCompMACWolAddress">
+       <widget class="QLineEdit" name="rackCompWolAddress">
         <property name="geometry">
          <rect>
-          <x>155</x>
+          <x>165</x>
           <y>50</y>
           <width>116</width>
           <height>21</height>
@@ -1875,10 +1875,10 @@
          <string>WOL broadcast address</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="rackCompMACWolPort">
+       <widget class="QLineEdit" name="rackCompWolPort">
         <property name="geometry">
          <rect>
-          <x>155</x>
+          <x>165</x>
           <y>75</y>
           <width>116</width>
           <height>21</height>

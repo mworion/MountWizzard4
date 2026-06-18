@@ -58,7 +58,6 @@ class MountWizzard4(QObject):
     # --- Device signals ---
     operationRunning = Signal(object)
     updateDomeSettings = Signal()
-    hostChanged = Signal()
     remoteCommand = Signal(object)
     stopDevices = Signal()
     startDevice = Signal(str)

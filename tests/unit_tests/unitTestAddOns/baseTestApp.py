@@ -85,7 +85,6 @@ class App(QObject):
     update3m = Signal()
     update30m = Signal()
     start3s = Signal()
-    hostChanged = Signal()
     sendSatelliteData = Signal(object, object)
     updateSatellite = Signal(object, object)
     showSatellite = Signal(object, object, object, object, object)

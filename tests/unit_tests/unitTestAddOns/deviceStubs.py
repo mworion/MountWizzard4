@@ -13,7 +13,15 @@
 # License APL2.0
 #
 ###########################################################
+from dataclasses import dataclass, field
 from PySide6.QtCore import QObject, QTimer, Signal
+
+
+@dataclass
+class DeviceConfigOnlineWeather:
+    deviceName: str = field(default="OnlineWeather")
+    hostAddress: str | None = field(default="")
+    apiKey: str = field(default="")
 
 
 class PlateSolve:
@@ -247,6 +255,8 @@ class OnlineWeather:
         self.framework = None
         self.defaultConfig = {"framework": "", "frameworks": {}}
         self.data = {}
+        self.run = {}
+        self.config = DeviceConfigOnlineWeather()
 
 
 class DirectWeatherSignals(QObject):

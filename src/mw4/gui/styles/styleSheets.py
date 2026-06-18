@@ -253,6 +253,11 @@ BASIC_STYLE = """
         background-color: $M_PRIM2$;
         image: url($radio$);
     }
+    QRadioButton::indicator:checked:disabled {
+        border-color: $M_PRIM2$;
+        background-color: $M_PRIM4$;
+        image: url($radio$);
+    }
     /* Spin Boxes */
     QDoubleSpinBox {
         color: $M_PRIM$;

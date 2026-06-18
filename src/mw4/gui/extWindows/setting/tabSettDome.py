@@ -146,8 +146,10 @@ class SettDome:
         self.ui.picDome8.setPixmap(pixmap)
         pixmap = img2pixmap("assets/dome/zenith.png")
         self.ui.picDome9.setPixmap(pixmap)
-
         self.parentW.wIcon(self.ui.copyFromDomeDriver, "copy")
+
+    def closeEvent(self) -> None:
+        self.app.dReg["mount"].signals.firmwareDone.disonnect(self.setUseGeometry)
 
     def updateDomeGeometryToGui(self) -> None:
         value = float(self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_OTA_OFFSET", 0))

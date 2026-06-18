@@ -19,7 +19,7 @@ from mw4.base import packageConfig
 from mw4.gui.mainWindow.externalWindows import ExternalWindows
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtCore import QObject, Signal
-from PySide6.QtWidgets import QApplication, QPushButton, QWidget
+from PySide6.QtWidgets import QPushButton, QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 

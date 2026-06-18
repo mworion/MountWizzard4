@@ -65,7 +65,6 @@ class MWMessageDialog(MWidget):
         self.setWindowTitle(title)
         self.setFixedSize(400, 200)
 
-
         iconLabel = QLabel()
         iconLabel.setFixedSize(72, 72)
         iconLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)

@@ -76,6 +76,16 @@ def test_pollData_stateOpen(function):
         m.assert_called_once_with("Open", "Status.Cover")
 
 
+def test_pollData_stateMoving(function):
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=2),
+        mock.patch.object(function, "storePropertyToData") as m,
+    ):
+        function.pollData()
+        m.assert_called_once_with("Moving", "Status.Cover")
+        assert function.data["CAP_PARK.PARK"] is None
+
+
 def test_closeCover(function):
     while not function.commandQueue.empty():
         function.commandQueue.get_nowait()

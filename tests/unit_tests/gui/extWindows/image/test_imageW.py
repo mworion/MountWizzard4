@@ -134,6 +134,21 @@ def test_updateWindowsStats_3(function):
     function.updateWindowsStats()
 
 
+def test_updateWindowsStats_noCameraDevice(function):
+    function.imagingDeviceStat["expose"] = False
+    function.imagingDeviceStat["exposeN"] = False
+    function.imagingDeviceStat["solve"] = False
+    function.app.deviceStat["plateSolve"] = True
+    function.imagingDeviceStat["imaging"] = False
+    function.imagingDeviceStat["plateSolve"] = False
+    original_camera = function.app.dReg.d["camera"]
+    try:
+        function.app.dReg.d["camera"] = None
+        function.updateWindowsStats()
+    finally:
+        function.app.dReg.d["camera"] = original_camera
+
+
 def test_selectImage_1(function):
     function.ui.autoSolve.setChecked(False)
     with mock.patch.object(MWidget, "openFile", return_value=Path("xyz.fits")):

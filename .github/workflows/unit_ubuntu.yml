@@ -103,7 +103,7 @@ jobs:
         run: |
           xvfb-run --auto-servernum uv run pytest tests/unit_tests/gui/mainWaddon
           xvfb-run --auto-servernum uv run pytest tests/unit_tests/gui/extWindows
-          # xvfb-run --auto-servernum uv run pytest tests/unit_tests/gui/mainWindow
+          xvfb-run --auto-servernum uv run pytest tests/unit_tests/gui/mainWindow
 
   run_tests_ubuntu_4:
     #

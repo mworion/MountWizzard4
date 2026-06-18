@@ -213,6 +213,12 @@ class MWInputDialog(MWidget):
         """Execute dialog modally."""
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.show()
+        self.setMinimumSize(350, 150)
+        self.setMaximumSize(350, 150)
+        self.titleBar.normButton.setVisible(False)
+        self.titleBar.maxButton.setVisible(False)
+        self.titleBar.minButton.setVisible(False)
+        self.titleBar.windowFixed = True
         self.inputWidget.setFocus()
         self.eventLoop.exec()
         return self.resultCode

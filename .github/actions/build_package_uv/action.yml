@@ -11,7 +11,7 @@ runs:
       uses: astral-sh/setup-uv@v8.2.0
       with:
         enable-cache: true
-        python-version: '3.13'
+        python-version: '3.12'
 
     - name: build package
       shell: bash

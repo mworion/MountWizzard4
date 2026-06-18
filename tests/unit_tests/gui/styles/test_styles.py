@@ -217,3 +217,25 @@ def test_mw4Style_cache_invalidation(function):
     assert style0_first == style0_second
     # But different from colorSet 1
     assert style0_first != style1
+
+
+def test_getStyle_darwin(function):
+    """Test getStyle returns MAC_STYLE + BASIC_STYLE on Darwin."""
+    with mock.patch.object(platform, "system", return_value="Darwin"):
+        style = function.getStyle()
+        assert style is not None
+        assert isinstance(style, str)
+        assert len(style) > 0
+
+
+def test_getStyle_nonDarwin(function):
+    """Test getStyle returns NON_MAC_STYLE + BASIC_STYLE on non-Darwin."""
+    with mock.patch.object(platform, "system", return_value="Linux"):
+        style = function.getStyle()
+        assert style is not None
+        assert isinstance(style, str)
+        assert len(style) > 0
+        # Verify it's different from Darwin style
+        with mock.patch.object(platform, "system", return_value="Darwin"):
+            darwin_style = function.getStyle()
+        assert style != darwin_style

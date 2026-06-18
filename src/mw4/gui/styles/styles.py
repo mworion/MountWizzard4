@@ -26,10 +26,15 @@ class Styles:
     colorSet = 0
     cachedStyle = None
     cachedColorSet = None
-    if platform.system() == "Darwin":
-        STYLE = MAC_STYLE + BASIC_STYLE
-    else:
-        STYLE = NON_MAC_STYLE + BASIC_STYLE
+
+    @staticmethod
+    def getStyle() -> str:
+        """Get the appropriate stylesheet based on the platform."""
+        if platform.system() == "Darwin":
+            return MAC_STYLE + BASIC_STYLE
+        return NON_MAC_STYLE + BASIC_STYLE
+
+    STYLE = None
 
     @property
     def M_TRANS(self) -> str:
@@ -225,3 +230,7 @@ class Styles:
             line = self.replaceColor(line)
             lines.append(line)
         return "\n".join(lines) + "\n"
+
+
+Styles.STYLE = Styles.getStyle()
+

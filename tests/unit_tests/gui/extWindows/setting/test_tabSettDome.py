@@ -168,3 +168,7 @@ def test_updateDomeGeometry_1(function):
 
 def test_setDomeSettlingTime_1(function):
     function.setDomeSettlingTime()
+
+
+def test_closeEvent_1(function):
+    function.closeEvent()

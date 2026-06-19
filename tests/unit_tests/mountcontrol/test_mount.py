@@ -712,3 +712,31 @@ def test_runWorker_requireMountUp_false(function):
             requireMountUp=False,
         )
         assert start.called
+
+
+def test_syncClock_coverage(function):
+    """Test syncClock to improve code coverage."""
+    # Save original values
+    orig_syncTimeNone = function.config.syncTimeNone
+    orig_mountIsUp = function.mountIsUp
+    orig_syncTimeNotTrack = function.config.syncTimeNotTrack
+    orig_status = function.app.dReg["mount"].obsSite.status
+    orig_timeDiff = function.obsSite.timeDiff
+
+    try:
+        # Configure for syncClock to execute the delta calculation
+        function.config.syncTimeNone = False
+        function.mountIsUp = True
+        function.config.syncTimeNotTrack = False
+        function.app.dReg["mount"].obsSite.status = 0  # TRACKING
+        function.obsSite.timeDiff = 1.0  # 1000ms
+
+        # Call syncClock - should reach lines 421-423
+        function.syncClock()
+    finally:
+        # Restore original values
+        function.config.syncTimeNone = orig_syncTimeNone
+        function.mountIsUp = orig_mountIsUp
+        function.config.syncTimeNotTrack = orig_syncTimeNotTrack
+        function.app.dReg["mount"].obsSite.status = orig_status
+        function.obsSite.timeDiff = orig_timeDiff

@@ -149,7 +149,7 @@ class SettDome:
         self.parentW.wIcon(self.ui.copyFromDomeDriver, "copy")
 
     def closeEvent(self) -> None:
-        self.app.dReg["mount"].signals.firmwareDone.disonnect(self.setUseGeometry)
+        self.app.dReg["mount"].signals.firmwareDone.disconnect(self.setUseGeometry)
 
     def updateDomeGeometryToGui(self) -> None:
         value = float(self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_OTA_OFFSET", 0))

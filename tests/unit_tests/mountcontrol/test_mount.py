@@ -28,10 +28,9 @@ from unittest import mock
 def function():
     m = MountDevice(
         app=App(),
-        host=None,
-        MAC="00:00:00:00:00:00",
         verbose=False,
     )
+    m.config.MAC = "00:00:00:00:00:00"
     yield m
 
 
@@ -40,8 +39,8 @@ def test_mountSignals(function):
 
 
 def test_properties_MAC(function):
-    function.MAC = "00:00:00:00:00:00"
-    assert function.MAC == "00:00:00:00:00:00"
+    function.config.MAC = "00:00:00:00:00:00"
+    assert function.config.MAC == "00:00:00:00:00:00"
 
 
 def test_properties_waitTimeFlip_1(function):
@@ -164,13 +163,15 @@ def test_clearCycleCheckMountIsUp_2(function):
 
 
 def test_cycleCheckMountIsUp_1(function):
-    function.host = ()
+    function.config.hostAddress = ""
+    function.config.port = 0
     with mock.patch.object(QThreadPool, "start"):
         function.cycleCheckMountIsUp()
 
 
 def test_cycleCheckMountIsUp_2(function):
-    function.host = ("localhost", 80)
+    function.config.hostAddress = "localhost"
+    function.config.port = 80
     function.mutexCycleMountIsUp.lock()
     with mock.patch.object(function.threadPool, "start"):
         function.cycleCheckMountIsUp()
@@ -178,7 +179,8 @@ def test_cycleCheckMountIsUp_2(function):
 
 
 def test_cycleCheckMountIsUp_3(function):
-    function.host = ("localhost", 80)
+    function.config.hostAddress = "localhost"
+    function.config.port = 80
     with mock.patch.object(function.threadPool, "start"):
         function.cycleCheckMountIsUp()
     function.mutexCycleMountIsUp.unlock()
@@ -394,37 +396,42 @@ def test_GetTLE_3(function):
 
 
 def test_bootMount_1(function):
-    function._MAC = None
+    function.config.MAC = None
     with mock.patch.object(wakeonlan, "send_magic_packet"):
         suc = function.bootMount()
         assert not suc
 
 
 def test_bootMount_2(function):
-    function._MAC = "00:00:00:00:00:00"
+    function.config.MAC = "00:00:00:00:00:00"
     with mock.patch.object(wakeonlan, "send_magic_packet"):
         suc = function.bootMount()
         assert suc
 
 
 def test_bootMount_3(function):
-    function._MAC = "00:00:00:00:00:00"
+    function.config.MAC = "00:00:00:00:00:00"
+    function.config.wolAddress = "255.255.255.255"
     with mock.patch.object(wakeonlan, "send_magic_packet"):
-        suc = function.bootMount(bAddress="255.255.255.255")
+        suc = function.bootMount()
         assert suc
 
 
 def test_bootMount_4(function):
-    function._MAC = "00:00:00:00:00:00"
+    function.config.MAC = "00:00:00:00:00:00"
+    function.config.wolAddress = "255.255.255.255"
+    function.config.wolPort = 9
     with mock.patch.object(wakeonlan, "send_magic_packet"):
-        suc = function.bootMount(bAddress="255.255.255.255", bPort=9)
+        suc = function.bootMount()
         assert suc
 
 
 def test_bootMount_5(function):
-    function._MAC = "00:00:00:00:00:00"
+    function.config.MAC = "00:00:00:00:00:00"
+    function.config.wolAddress = "255.255.255.255"
+    function.config.wolPort = 9
     with mock.patch.object(wakeonlan, "send_magic_packet", side_effect=Exception):
-        suc = function.bootMount(bAddress="255.255.255.255", bPort=9)
+        suc = function.bootMount()
         assert not suc
 
 
@@ -625,9 +632,11 @@ def test_collectData_no_slew(function):
 
 
 def test_bootMount_with_bAddress_only(function):
-    function._MAC = "00:00:00:00:00:00"
+    function.config.MAC = "00:00:00:00:00:00"
+    function.config.wolAddress = "255.255.255.255"
+    function.config.wolPort = 0
     with mock.patch.object(wakeonlan, "send_magic_packet"):
-        suc = function.bootMount(bAddress="255.255.255.255", bPort=0)
+        suc = function.bootMount()
         assert suc
 
 

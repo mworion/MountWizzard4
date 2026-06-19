@@ -36,7 +36,10 @@ def almanac(qapp):
     # Mock timeMgr methods
     mainW.app.timeMgr.convertTime = mock.MagicMock(return_value="12:00:00")
     mainW.app.timeMgr.timeZoneString = mock.MagicMock(return_value="(UTC)")
-    window = Almanac(mainW)
+    # Avoid kicking off the heavy full-year twilight worker during construction;
+    # it is covered explicitly by the showTwilightDataPlot tests.
+    with mock.patch.object(Almanac, "showTwilightDataPlot"):
+        window = Almanac(mainW)
     yield window
     mainW.app.threadPool.waitForDone(1000)
 

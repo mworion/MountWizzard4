@@ -105,6 +105,8 @@ def test_pollData_shutterNone(function):
 def test_slewToAltAz_noFlags(function):
     function.data.pop("CanSetAzimuth", None)
     function.data.pop("CanSetAltitude", None)
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
     function.slewToAltAz(0, 0)
     assert function.commandQueue.empty()
 

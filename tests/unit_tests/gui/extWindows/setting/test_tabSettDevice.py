@@ -269,7 +269,10 @@ def test_callPopup_1(function):
 
 
 def test_dispatchDriverDropdown_1(function):
-    function.deviceUi["telescope"]["uiDropDown"].addItem("indi - test")
+    dropDown = function.deviceUi["telescope"]["uiDropDown"]
+    dropDown.clear()
+    dropDown.addItem("indi - test")
+    dropDown.setCurrentIndex(0)
     with (
         mock.patch.object(function.app.dReg, "stopDevice"),
         mock.patch.object(function.app.dReg, "startDevice"),

@@ -439,6 +439,7 @@ def test_selectStartEnd_1(function):
 
 
 def test_selectStartEnd_2(function):
+    function.satOrbits = []
     s, e = function.selectStartEnd()
     assert s == 0
     assert e == 0

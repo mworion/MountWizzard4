@@ -19,12 +19,27 @@ from mw4.mountcontrol.connection import Connection
 
 
 def makeParent(host=None, loggingTrace: bool = False) -> object:
+    class Config:
+        pass
+
     class Parent:
         pass
 
     p = Parent()
-    p.host = host
     p.loggingTrace = loggingTrace
+    
+    config = Config()
+    if isinstance(host, tuple) and len(host) == 2:
+        config.hostAddress = host[0]
+        config.port = host[1]
+    elif host is not None and not isinstance(host, tuple):
+        config.hostAddress = host
+        config.port = None
+    else:
+        config.hostAddress = None
+        config.port = None
+    
+    p.config = config
     return p
 
 
@@ -253,7 +268,12 @@ def test_notok_response_check():
 
 
 def test_no_host_defined():
-    with mock.patch("socket.socket") as m_socket:
+    with mock.patch("mw4.mountcontrol.connection.socket.socket") as m_socket:
+        def connect_side_effect(addr):
+            if addr == (None, None):
+                raise socket.error("Invalid host")
+            return None
+        m_socket.return_value.connect.side_effect = connect_side_effect
         m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
         conn = Connection(makeParent())
         suc, response, chunks = conn.communicate(":GVN#")
@@ -262,7 +282,12 @@ def test_no_host_defined():
 
 
 def test_no_port_defined():
-    with mock.patch("socket.socket") as m_socket:
+    with mock.patch("mw4.mountcontrol.connection.socket.socket") as m_socket:
+        def connect_side_effect(addr):
+            if addr == ("localhost", None) or addr[1] is None:
+                raise socket.error("Invalid port")
+            return None
+        m_socket.return_value.connect.side_effect = connect_side_effect
         m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
         conn = Connection(makeParent(host="localhost"))
         suc, response, chunks = conn.communicate(":GVN#")

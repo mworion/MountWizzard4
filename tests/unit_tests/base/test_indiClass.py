@@ -15,8 +15,6 @@
 ###########################################################
 import pytest
 import queue
-import threading
-import time
 from mw4.base.indiClass import IndiClass
 from mw4.base.signalsDevices import Signals
 from pathlib import Path
@@ -283,44 +281,51 @@ def _make_snap_val(connection=None, vectors=None):
     return snap_val
 
 
+def runLoopOnce(function):
+    """Drive processRxQueue's while-loop for exactly one iteration.
+
+    A commandRunning mock evaluates truthy once and then resets the
+    attribute back to a real ``False`` so no state leaks into the shared
+    module-scoped fixture. This keeps the test deterministic and avoids
+    real threads or sleeps that could hang the test run.
+    """
+    states = iter([True])
+
+    def booler():
+        try:
+            return next(states)
+        except StopIteration:
+            function.commandRunning = False
+            return False
+
+    flag = mock.MagicMock()
+    flag.__bool__.side_effect = booler
+    function.commandRunning = flag
+
+
 def test_processRxQueue_commandNotRunning(function):
     function.commandRunning = False
     function.processRxQueue()
 
 
 def test_processRxQueue_emptyQueueThenStop(function):
-    function.commandRunning = True
-
-    def stopper():
-        time.sleep(0.01)
-        function.commandRunning = False
-
-    t = threading.Thread(target=stopper)
-    t.start()
+    runLoopOnce(function)
     function.processRxQueue()
-    t.join()
 
 
 def test_processRxQueue_deviceNotInSnapshot(function):
-    function.commandRunning = True
+    runLoopOnce(function)
     function.config.deviceName = "MyDevice"
 
     item = mock.MagicMock()
     item.snapshot = {}  # deviceName not present → .get() returns None → continue
     function.rxQ.put(item)
 
-    def stopper():
-        time.sleep(0.01)
-        function.commandRunning = False
-
-    t = threading.Thread(target=stopper)
-    t.start()
     function.processRxQueue()
-    t.join()
 
 
 def test_processRxQueue_connectionOn(function):
-    function.commandRunning = True
+    runLoopOnce(function)
     function.config.deviceName = "MyDevice"
     function.deviceConnected = False
 
@@ -333,19 +338,12 @@ def test_processRxQueue_connectionOn(function):
     item.devicename = "MyDevice"
     function.rxQ.put(item)
 
-    def stopper():
-        time.sleep(0.01)
-        function.commandRunning = False
-
-    t = threading.Thread(target=stopper)
-    t.start()
     function.processRxQueue()
-    t.join()
     assert function.deviceConnected is True
 
 
 def test_processRxQueue_connectionOff(function):
-    function.commandRunning = True
+    runLoopOnce(function)
     function.config.deviceName = "MyDevice"
     function.deviceConnected = True
 
@@ -358,20 +356,13 @@ def test_processRxQueue_connectionOff(function):
     item.devicename = "MyDevice"
     function.rxQ.put(item)
 
-    def stopper():
-        time.sleep(0.01)
-        function.commandRunning = False
-
-    t = threading.Thread(target=stopper)
-    t.start()
     function.processRxQueue()
-    t.join()
     assert function.deviceConnected is False
 
 
 def test_processRxQueue_devicenameMismatch(function):
     """item.devicename != deviceName → continue before vector processing."""
-    function.commandRunning = True
+    runLoopOnce(function)
     function.config.deviceName = "MyDevice"
 
     snap_val = _make_snap_val(connection=None, vectors=None)
@@ -380,18 +371,11 @@ def test_processRxQueue_devicenameMismatch(function):
     item.devicename = "OtherDevice"
     function.rxQ.put(item)
 
-    def stopper():
-        time.sleep(0.01)
-        function.commandRunning = False
-
-    t = threading.Thread(target=stopper)
-    t.start()
     function.processRxQueue()
-    t.join()
 
 
 def test_processRxQueue_withVectors(function):
-    function.commandRunning = True
+    runLoopOnce(function)
     function.config.deviceName = "MyDevice"
     function.data = {}
 
@@ -408,20 +392,13 @@ def test_processRxQueue_withVectors(function):
     item.devicename = "MyDevice"
     function.rxQ.put(item)
 
-    def stopper():
-        time.sleep(0.01)
-        function.commandRunning = False
-
-    t = threading.Thread(target=stopper)
-    t.start()
     function.processRxQueue()
-    t.join()
     assert function.data["TEST_VECTOR.M1"] == 99
 
 
 def test_processRxQueue_noVectors(function):
     """vectors is falsy → writeVectorsToData is NOT called."""
-    function.commandRunning = True
+    runLoopOnce(function)
     function.config.deviceName = "MyDevice"
     function.data = {}
 
@@ -432,20 +409,13 @@ def test_processRxQueue_noVectors(function):
     item.devicename = "MyDevice"
     function.rxQ.put(item)
 
-    def stopper():
-        time.sleep(0.01)
-        function.commandRunning = False
-
-    t = threading.Thread(target=stopper)
-    t.start()
     function.processRxQueue()
-    t.join()
     assert function.data == {}
 
 
 def test_processRxQueue_messageEvent(function):
     """eventtype == 'Message' → updateMessage is called."""
-    function.commandRunning = True
+    runLoopOnce(function)
     function.config.deviceName = "MyDevice"
     function.config.showMessage = True
 
@@ -462,17 +432,10 @@ def test_processRxQueue_messageEvent(function):
     mock_msg = mock.MagicMock()
     original_msg, function.msg = function.msg, mock_msg
 
-    def stopper():
-        time.sleep(0.01)
-        function.commandRunning = False
-
-    t = threading.Thread(target=stopper)
-    t.start()
     try:
         function.processRxQueue()
     finally:
         function.msg = original_msg
-    t.join()
     mock_msg.emit.assert_called_once_with(
         0, "INDI", "Device message", f"{'MyDevice':15s} test msg"
     )

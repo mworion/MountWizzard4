@@ -37,6 +37,13 @@ def function(qapp):
     mainW.app.threadPool.waitForDone(1000)
 
 
+@pytest.fixture(autouse=True)
+def resetState(function):
+    # chooseDir tests leave renameDir as a tuple; reset to a Path before each test.
+    function.renameDir = Path("tests/work/image")
+    yield
+
+
 def test_initConfig_1(function):
     function.app.config["WindowMain"] = {}
     function.initConfig()
@@ -166,6 +173,7 @@ def test_processSelectors_imagetyp(function):
 
 
 def test_renameFile_1(function):
+    function.renameDir = Path("tests/work/image")
     hdu = fits.PrimaryHDU(np.arange(100.0))
     hduList = fits.HDUList([hdu])
     hduList.writeto(Path("tests/work/image/m01.fit"), overwrite=True)
@@ -174,6 +182,7 @@ def test_renameFile_1(function):
 
 
 def test_renameFile_2(function):
+    function.renameDir = Path("tests/work/image")
     hdu = fits.PrimaryHDU(np.arange(100.0))
     hduList = fits.HDUList([hdu])
     hduList.writeto(Path("tests/work/image/m02.fit"), overwrite=True)
@@ -183,6 +192,7 @@ def test_renameFile_2(function):
 
 
 def test_renameFile_3(function):
+    function.renameDir = Path("tests/work/image")
     hdu = fits.PrimaryHDU(np.arange(100.0))
     hduList = fits.HDUList([hdu])
     function.ui.newObjectName.setText("test")

@@ -404,6 +404,7 @@ def test_workerGameController_with_new_data(settGui):
 
     with (
         mock.patch.object(hid, "device", return_value=Gamepad()),
+        mock.patch("mw4.gui.extWindows.setting.tabSettGui.mainThreadSleep"),
         mock.patch.object(settGui.app, "gameABXY"),
         mock.patch.object(settGui.app, "gamePMH"),
         mock.patch.object(settGui.app, "gameDirection"),
@@ -456,7 +457,7 @@ def test_workerGameController_continues_on_same_data(settGui):
 
     with (
         mock.patch.object(hid, "device", return_value=Gamepad()),
-        mock.patch("mw4.base.threadUtils.mainThreadSleep"),
+        mock.patch("mw4.gui.extWindows.setting.tabSettGui.mainThreadSleep"),
         mock.patch.object(settGui.app, "gameABXY") as mock_signal_1,
         mock.patch.object(settGui.app, "gamePMH"),
         mock.patch.object(settGui.app, "gameDirection"),

@@ -1082,8 +1082,9 @@ def test_setSettleTimeMount_1(function):
 
 def test_showOffset_8(function):
     function.app.mount.obsSite.timeDiff = 0.003
-    function.app.mount.obsSite.timeJD = mock.MagicMock()
-    function.app.mount.obsSite.timeJD.utc_strftime.return_value = "12:34:56"
+    timeJD = mock.MagicMock()
+    timeJD.utc_strftime.return_value = "12:34:56"
     function.ui.clockSync.setChecked(True)
-    function.showOffset()
+    with mock.patch.object(function.app.mount.obsSite, "timeJD", timeJD):
+        function.showOffset()
     assert function.ui.timeUTC.text() == "12:34:56"

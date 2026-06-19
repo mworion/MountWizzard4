@@ -46,8 +46,9 @@ def function():
 # ─── Initialization and Configuration ───────────────────────────────────────
 
 
-def test_init_default_values(function):
+def test_init_default_values():
     """Test that SGProClass initializes with correct default values."""
+    function = SGProClass(parent=Parent())
     assert function.deviceConnected is False
     assert isinstance(function.commandQueue, queue.Queue)
     assert isinstance(function.stopEvent, threading.Event)
@@ -57,8 +58,9 @@ def test_init_default_values(function):
     assert function.DEVICE_TYPE == "Camera"
 
 
-def test_init_config(function):
+def test_init_config():
     """Test that config is properly initialized."""
+    function = SGProClass(parent=Parent())
     assert function.config.deviceName == ""
     assert function.config.hostAddress == "127.0.0.1"
     assert function.config.port == 59590

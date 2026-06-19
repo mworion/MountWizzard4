@@ -25,9 +25,14 @@ from skyfield.api import Angle, Loader, Timescale, wgs84
 
 
 class Parent:
-    host = None
     loggingTrace = False
     pathToData = Path(os.getcwd() + "/data")
+
+    class Config:
+        hostAddress = None
+        port = None
+
+    config = Config()
 
 
 #

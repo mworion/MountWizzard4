@@ -295,12 +295,13 @@ def test_pollOpenWeatherMapDataExtractsLocationLatLon(function) -> None:
     function.config.apiKey = "test_key"
     function.config.hostAddress = "localhost"
     function.app.isOnline = True
-    function.location = mock.MagicMock()
-    function.location.latitude.degrees = 45.5
-    function.location.longitude.degrees = -122.5
+    location = mock.MagicMock()
+    location.latitude.degrees = 45.5
+    location.longitude.degrees = -122.5
 
     # Mock getOpenWeatherMapData to prevent the Path+str error
     with (
+        mock.patch.object(function, "location", location),
         mock.patch.object(function, "getOpenWeatherMapData"),
         mock.patch("mw4.logic.environment.sensorWeatherOnline.Path") as mock_path,
     ):

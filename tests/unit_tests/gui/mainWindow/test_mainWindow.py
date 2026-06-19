@@ -18,6 +18,7 @@ import pytest
 import shutil
 import unittest.mock as mock
 from mw4.base.deviceRegistry import DeviceEntry
+from mw4.gui.mainWaddon.tabAlmanac import Almanac
 from mw4.gui.mainWindow.mainWindow import MainWindow
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
@@ -29,7 +30,10 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 @pytest.fixture(autouse=True, scope="module")
 def mainWindow(qapp):
     """Setup MainWindow fixture for testing."""
-    window = MainWindow(app=App())
+    # Avoid the heavy full-year twilight worker started by the Almanac addon
+    # during construction; it is covered in the Almanac tests.
+    with mock.patch.object(Almanac, "showTwilightDataPlot"):
+        window = MainWindow(app=App())
     yield window
     window.app.threadPool.waitForDone(10000)
     qapp.processEvents()
@@ -37,7 +41,7 @@ def mainWindow(qapp):
 
 def test_initConfig_without_windowmain_config(mainWindow):
     """Test initConfig when WindowMain config is missing."""
-    del mainWindow.app.config["WindowMain"]
+    mainWindow.app.config.pop("WindowMain", None)
     with (
         mock.patch.object(mainWindow.mainWindowAddons, "initConfig"),
         mock.patch.object(mainWindow, "smartTabGui"),
@@ -58,7 +62,7 @@ def test_storeConfig_with_existing_config(mainWindow):
 
 def test_storeConfig_without_windowmain_config(mainWindow):
     """Test storeConfig when WindowMain config is missing."""
-    del mainWindow.app.config["WindowMain"]
+    mainWindow.app.config.pop("WindowMain", None)
     with (
         mock.patch.object(mainWindow.mainWindowAddons, "storeConfig"),
         mock.patch.object(mainWindow.externalWindows, "storeConfigExtendedWindows"),
@@ -332,6 +336,7 @@ def test_switchProfile_switches_config(mainWindow):
     with (
         mock.patch.object(mainWindow.externalWindows, "closeExtendedWindows"),
         mock.patch.object(mainWindow.externalWindows, "showExtendedWindows"),
+        mock.patch.object(mainWindow.threadPool, "waitForDone"),
         mock.patch.object(mainWindow, "initConfig"),
         mock.patch.object(mainWindow.app, "initConfig", return_value=loc),
     ):

@@ -39,11 +39,10 @@ def function(qapp):
 
 
 @pytest.fixture
-def mocked_sleepAndEvents(monkeypatch, function):
-    def test(_):
-        function.pollStatusRunState = False
-
-    monkeypatch.setattr("time.sleep", test)
+def mockedSleep(monkeypatch):
+    monkeypatch.setattr(
+        "mw4.gui.extWindows.downloadPopupW.mainThreadSleep", lambda _: None
+    )
 
 
 def test_setIcon(function):
@@ -200,7 +199,7 @@ def test_downloadFileWorker_8(function):
         assert suc
 
 
-def test_downloadFileWorker_9(function, mocked_sleepAndEvents):
+def test_downloadFileWorker_9(function):
     with (
         mock.patch.object(function, "getFileFromUrl", return_value=False),
         mock.patch.object(function, "unzipFile"),
@@ -209,14 +208,12 @@ def test_downloadFileWorker_9(function, mocked_sleepAndEvents):
         assert not suc
 
 
-def test_closePopup_1(function, mocked_sleepAndEvents):
-    function.pollStatusRunState = True
+def test_closePopup_1(function, mockedSleep):
     with mock.patch.object(function, "close"):
         function.closePopup(True)
 
 
-def test_closePopup_2(function, mocked_sleepAndEvents):
-    function.pollStatusRunState = True
+def test_closePopup_2(function, mockedSleep):
     with mock.patch.object(function, "close"):
         function.closePopup(False)
 

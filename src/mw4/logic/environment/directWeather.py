@@ -13,7 +13,9 @@
 # License APL2.0
 #
 ###########################################################
+import contextlib
 import logging
+import warnings
 from dataclasses import dataclass, field
 from mw4.base.signalsDevices import Signals
 from mw4.mountcontrol.setting import Setting
@@ -46,7 +48,14 @@ class DirectWeather:
         self.app.dReg["directWeather"].stat = False
 
     def stopCommunication(self) -> None:
-        self.app.dReg["mount"].signals.settingDone.disconnect(self.updateData)
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+                "ignore",
+                message=".*Failed to disconnect.*",
+                category=RuntimeWarning,
+            )
+            with contextlib.suppress(RuntimeError):
+                self.app.dReg["mount"].signals.settingDone.disconnect(self.updateData)
         self.signals.deviceDisconnected.emit("DirectWeather")
 
     def updateData(self, sett: Setting) -> None:

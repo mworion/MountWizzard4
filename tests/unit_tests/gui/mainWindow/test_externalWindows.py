@@ -37,6 +37,14 @@ def function(qapp):
     qapp.processEvents()
 
 
+@pytest.fixture(autouse=True)
+def resetState(function):
+    # Clear every window's classObj so tests don't inherit a leftover object.
+    for window in function.uiWindows:
+        function.uiWindows[window]["classObj"] = None
+    yield
+
+
 def test_storeConfig_1(function):
     class Test:
         def storeConfig(self):

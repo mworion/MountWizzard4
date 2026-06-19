@@ -714,29 +714,107 @@ def test_runWorker_requireMountUp_false(function):
         assert start.called
 
 
-def test_syncClock_coverage(function):
-    """Test syncClock to improve code coverage."""
-    # Save original values
+def test_syncClock_early_return_syncTimeNone(function):
+    """Test syncClock line 410 - early return when syncTimeNone is True."""
     orig_syncTimeNone = function.config.syncTimeNone
-    orig_mountIsUp = function.mountIsUp
-    orig_syncTimeNotTrack = function.config.syncTimeNotTrack
-    orig_status = function.app.dReg["mount"].obsSite.status
-    orig_timeDiff = function.obsSite.timeDiff
-
     try:
-        # Configure for syncClock to execute the delta calculation
+        function.config.syncTimeNone = True
+        function.mountIsUp = True
+        # Should return early without calling adjustClock
+        function.syncClock()
+    finally:
+        function.config.syncTimeNone = orig_syncTimeNone
+
+
+def test_syncClock_early_return_mountNotUp(function):
+    """Test syncClock line 410 - early return when mountIsUp is False."""
+    orig_mountIsUp = function.mountIsUp
+    try:
+        function.config.syncTimeNone = False
+        function.mountIsUp = False
+        # Should return early without calling adjustClock
+        function.syncClock()
+    finally:
+        function.mountIsUp = orig_mountIsUp
+
+
+def test_syncClock_tracking_no_sync(function):
+    """Test syncClock line 416 - return when tracking and config forbids sync."""
+    from mw4.mountcontrol.mount import MountStatus
+
+    orig_status = function.app.dReg["mount"].obsSite.status
+    orig_syncTimeNotTrack = function.config.syncTimeNotTrack
+    try:
+        function.config.syncTimeNone = False
+        function.mountIsUp = True
+        function.config.syncTimeNotTrack = True
+        function.app.dReg["mount"].obsSite.status = MountStatus.TRACKING
+        # Should return early due to tracking and syncTimeNotTrack config
+        function.syncClock()
+    finally:
+        function.app.dReg["mount"].obsSite.status = orig_status
+        function.config.syncTimeNotTrack = orig_syncTimeNotTrack
+
+
+def test_syncClock_small_delta_return(function):
+    """Test syncClock line 420 - early return when delta < 10."""
+    import numpy as np
+
+    orig_status = function.app.dReg["mount"].obsSite.status
+    orig_timeDiff = function.obsSite._timeDiff.copy()
+    try:
         function.config.syncTimeNone = False
         function.mountIsUp = True
         function.config.syncTimeNotTrack = False
-        function.app.dReg["mount"].obsSite.status = 0  # TRACKING
-        function.obsSite.timeDiff = 1.0  # 1000ms
+        function.app.dReg["mount"].obsSite.status = 1  # Not TRACKING
+        # Set _timeDiff to 0.005 seconds (5ms), which is < 10
+        function.obsSite._timeDiff = np.full(25, 0.005)
+        # Should return early at line 420 without calling adjustClock
+        with mock.patch.object(function.obsSite, "adjustClock") as mock_adjust:
+            function.syncClock()
+            # adjustClock should not be called since delta < 10
+            mock_adjust.assert_not_called()
+    finally:
+        function.app.dReg["mount"].obsSite.status = orig_status
+        function.obsSite._timeDiff = orig_timeDiff
 
-        # Call syncClock - should reach lines 421-423
+
+def test_syncClock_delta_capping_and_adjust(function):
+    """Test syncClock lines 421-423 - delta capping and adjustClock."""
+    import numpy as np
+
+    orig_status = function.app.dReg["mount"].obsSite.status
+    orig_timeDiff = function.obsSite._timeDiff.copy()
+    try:
+        function.config.syncTimeNone = False
+        function.mountIsUp = True
+        function.config.syncTimeNotTrack = False
+        function.app.dReg["mount"].obsSite.status = 1  # Not TRACKING
+        # Set _timeDiff internal array to return 2.0 seconds when averaged
+        function.obsSite._timeDiff = np.full(25, 2.0)
         function.syncClock()
     finally:
-        # Restore original values
-        function.config.syncTimeNone = orig_syncTimeNone
-        function.mountIsUp = orig_mountIsUp
-        function.config.syncTimeNotTrack = orig_syncTimeNotTrack
         function.app.dReg["mount"].obsSite.status = orig_status
-        function.obsSite.timeDiff = orig_timeDiff
+        function.obsSite._timeDiff = orig_timeDiff
+
+
+def test_syncClock_adjustClock_failure(function):
+    """Test syncClock lines 421-423 - when adjustClock returns False."""
+    import numpy as np
+
+    orig_status = function.app.dReg["mount"].obsSite.status
+    orig_timeDiff = function.obsSite._timeDiff.copy()
+    try:
+        function.config.syncTimeNone = False
+        function.mountIsUp = True
+        function.config.syncTimeNotTrack = False
+        function.app.dReg["mount"].obsSite.status = 1  # Not TRACKING
+        # Set _timeDiff internal array to return 0.5 seconds
+        function.obsSite._timeDiff = np.full(25, 0.5)
+        with mock.patch.object(
+            function.obsSite, "adjustClock", return_value=False
+        ):
+            function.syncClock()
+    finally:
+        function.app.dReg["mount"].obsSite.status = orig_status
+        function.obsSite._timeDiff = orig_timeDiff

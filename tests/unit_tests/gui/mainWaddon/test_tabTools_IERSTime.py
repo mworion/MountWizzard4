@@ -73,13 +73,11 @@ def test_progEarthRotationData_2(function):
         mock.patch.object(
             function.databaseProcessing, "writeEarthRotationData", return_value=True
         ),
-        mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.UploadPopup") as mock_ul,
+        mock.patch(
+            "mw4.gui.mainWaddon.tabTools_IERSTime.UploadPopup.upload", return_value=True
+        ),
     ):
-        popup_instance = mock.MagicMock()
-        popup_instance.exec.return_value = True
-        mock_ul.return_value = popup_instance
         function.progEarthRotationData()
-        popup_instance.exec.assert_called_once()
 
 
 def test_progEarthRotationData_3(function):
@@ -88,13 +86,11 @@ def test_progEarthRotationData_3(function):
         mock.patch.object(
             function.databaseProcessing, "writeEarthRotationData", return_value=True
         ),
-        mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.UploadPopup") as mock_ul,
+        mock.patch(
+            "mw4.gui.mainWaddon.tabTools_IERSTime.UploadPopup.upload", return_value=False
+        ),
     ):
-        popup_instance = mock.MagicMock()
-        popup_instance.exec.return_value = False
-        mock_ul.return_value = popup_instance
         function.progEarthRotationData()
-        popup_instance.exec.assert_called_once()
 
 
 def test_loadTimeDataFromSourceURLs_1(function):
@@ -104,29 +100,27 @@ def test_loadTimeDataFromSourceURLs_1(function):
 
 def test_loadTimeDataFromSourceURLs_2(function):
     function.app.isOnline = True
-    with mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup") as mock_dl:
-        popup_instance = mock.MagicMock()
-        popup_instance.exec.return_value = False
-        mock_dl.return_value = popup_instance
+    with mock.patch(
+        "mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup.download", return_value=False
+    ) as mock_dl:
         function.loadTimeDataFromSourceURLs()
-        assert popup_instance.exec.call_count == 1
+        assert mock_dl.call_count == 1
 
 
 def test_loadTimeDataFromSourceURLs_3(function):
     function.app.isOnline = True
-    with mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup") as mock_dl:
-        popup_instance = mock.MagicMock()
-        popup_instance.exec.return_value = True
-        mock_dl.return_value = popup_instance
+    with mock.patch(
+        "mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup.download", return_value=True
+    ) as mock_dl:
         function.loadTimeDataFromSourceURLs()
-        assert popup_instance.exec.call_count == 2
+        assert mock_dl.call_count == 2
 
 
 def test_loadTimeDataFromSourceURLs_4(function):
     function.app.isOnline = True
-    with mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup") as mock_dl:
-        popup_instance = mock.MagicMock()
-        popup_instance.exec.side_effect = [True, False]
-        mock_dl.return_value = popup_instance
+    with mock.patch(
+        "mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup.download",
+        side_effect=[True, False],
+    ) as mock_dl:
         function.loadTimeDataFromSourceURLs()
-        assert popup_instance.exec.call_count == 2
+        assert mock_dl.call_count == 2

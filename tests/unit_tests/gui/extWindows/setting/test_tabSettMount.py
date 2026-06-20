@@ -173,4 +173,3 @@ def test_showMountStatus_1(function):
 
 def test_showMountStatus_2(function):
     function.showMountStatus(False)
-

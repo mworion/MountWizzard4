@@ -323,3 +323,13 @@ def test_exec_2(function):
         mock_loop.exec.assert_called_once()
 
 
+def test_upload_1(function):
+    with mock.patch.object(UploadPopup, "exec", return_value=True):
+        result = UploadPopup.upload(function.parentWidget, Path(), [], Path())
+        assert result
+
+
+def test_upload_2(function):
+    with mock.patch.object(UploadPopup, "exec", return_value=False):
+        result = UploadPopup.upload(function.parentWidget, Path(), [], Path())
+        assert not result

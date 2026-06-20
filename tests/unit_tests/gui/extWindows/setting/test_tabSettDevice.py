@@ -163,50 +163,46 @@ def test_closeEvent_skipsEntriesWithoutSignals(function):
 
 
 def test_processPopupResults_2(function):
-    class Test:
-        returnValues = {
-            "device": "telescope",
+    returnValues = {
+        "device": "telescope",
+        "close": "ok",
+        "framework": "indi",
+        "data": {
             "framework": "indi",
-            "data": {
-                "framework": "indi",
-                "indi": {
-                    "deviceName": "",
-                    "deviceList": ["test", "test1"],
-                },
+            "indi": {
+                "deviceName": "",
+                "deviceList": ["test", "test1"],
             },
-            "copyConfig": [],
-        }
-
-    function.devicePopup = Test()
+        },
+        "copyConfig": [],
+    }
     with (
         mock.patch.object(function.app.dReg, "writeConfigToSingleDevice"),
         mock.patch.object(function.app.dReg, "startDevice"),
     ):
-        function.processPopupResults()
+        function.processPopupResults(returnValues)
 
 
 def test_processPopupResults_3(function):
-    class Test:
-        returnValues = {
-            "device": "telescope",
+    returnValues = {
+        "device": "telescope",
+        "close": "ok",
+        "framework": "indi",
+        "data": {
             "framework": "indi",
-            "data": {
-                "framework": "indi",
-                "indi": {
-                    "deviceName": "test_device",
-                    "deviceList": ["test", "test1"],
-                },
+            "indi": {
+                "deviceName": "test_device",
+                "deviceList": ["test", "test1"],
             },
-            "copyConfig": ["indi"],
-        }
-
-    function.devicePopup = Test()
+        },
+        "copyConfig": ["indi"],
+    }
     with (
         mock.patch.object(function, "copyConfig"),
         mock.patch.object(function.app.dReg, "writeConfigToSingleDevice"),
         mock.patch.object(function.app.dReg, "startDevice"),
     ):
-        function.processPopupResults()
+        function.processPopupResults(returnValues)
 
 
 def test_copyConfig_1(function):
@@ -233,28 +229,32 @@ def test_callPopup_1(function):
     with (
         mock.patch.object(function.app.dReg, "stopDevice"),
         mock.patch.object(function.app.dReg, "collectConfigFromSingleDevice", return_value={}),
-        mock.patch("mw4.gui.extWindows.setting.tabSettDevice.DevicePopup") as mock_popup,
+        mock.patch(
+            "mw4.gui.extWindows.setting.tabSettDevice.DevicePopup.configure",
+            return_value={"close": "cancel"},
+        ),
     ):
-        popup_instance = mock.MagicMock()
-        popup_instance.exec.return_value = False
-        mock_popup.return_value = popup_instance
         function.callPopup("cover")
-        popup_instance.exec.assert_called_once()
 
 
 def test_callPopup_2(function):
+    returnValues = {
+        "close": "ok",
+        "device": "telescope",
+        "data": {"framework": "indi", "indi": {"deviceName": "test"}},
+        "copyConfig": [],
+    }
     with (
         mock.patch.object(function.app.dReg, "stopDevice"),
         mock.patch.object(function.app.dReg, "collectConfigFromSingleDevice", return_value={}),
-        mock.patch("mw4.gui.extWindows.setting.tabSettDevice.DevicePopup") as mock_popup,
+        mock.patch(
+            "mw4.gui.extWindows.setting.tabSettDevice.DevicePopup.configure",
+            return_value=returnValues,
+        ),
         mock.patch.object(function, "processPopupResults") as mock_process,
     ):
-        popup_instance = mock.MagicMock()
-        popup_instance.exec.return_value = True
-        mock_popup.return_value = popup_instance
         function.callPopup("cover")
-        popup_instance.exec.assert_called_once()
-        mock_process.assert_called_once()
+        mock_process.assert_called_once_with(returnValues)
 
 
 def test_dispatchDriverDropdown_1(function):

@@ -811,9 +811,7 @@ def test_syncClock_adjustClock_failure(function):
         function.app.dReg["mount"].obsSite.status = 1  # Not TRACKING
         # Set _timeDiff internal array to return 0.5 seconds
         function.obsSite._timeDiff = np.full(25, 0.5)
-        with mock.patch.object(
-            function.obsSite, "adjustClock", return_value=False
-        ):
+        with mock.patch.object(function.obsSite, "adjustClock", return_value=False):
             function.syncClock()
     finally:
         function.app.dReg["mount"].obsSite.status = orig_status

@@ -59,6 +59,7 @@ class UploadPopup(MWidget):
         self.ui = Ui_UploadPopup()
         self.ui.setupUi(self.ws)
         self.setWindowTitle("Mount Upload")
+        self.setFixedSize(400, 120)
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.returnValues = {"success": False, "successMount": False}
         self.parentWidget = parentWidget
@@ -67,7 +68,7 @@ class UploadPopup(MWidget):
         self.worker: Worker | None = None
         self.workerStatus: Worker | None = None
         self.loop: QEventLoop | None = None
-        self.url: Path = url
+        self.url: str = url
         self.dataTypes: list[str] = dataTypes
         self.dataFilePath: Path = dataFilePath
         self.pollStatusRunState: bool = False
@@ -104,6 +105,17 @@ class UploadPopup(MWidget):
         self.threadPool.start(self.worker)
         self.loop.exec()
         return self.returnValues["success"]
+
+    @classmethod
+    def upload(
+        cls,
+        parentWidget: MWidget,
+        url: str,
+        dataTypes: list[str],
+        dataFilePath: Path,
+    ) -> bool:
+        dlg = cls(parentWidget, url, dataTypes, dataFilePath)
+        return dlg.exec()
 
     def setProgressBarColor(self, colorstr: str) -> None:
         css = "QProgressBar::chunk {background-color: " + colorstr + ";}"
@@ -214,4 +226,3 @@ class UploadPopup(MWidget):
                 self.msg.emit(2, "Upload", "Error", "Uploaded but mount failed to save data")
         mainThreadSleep(500)
         self.close()
-

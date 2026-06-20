@@ -210,6 +210,12 @@ class DevicePopup(MWidget):
         self.loop.exec()
         return self.returnValues["close"] == "ok"
 
+    @classmethod
+    def configure(cls, parentWidget: Any, device: str, data: dict[str, Any]) -> dict[str, Any]:
+        dlg = cls(parentWidget, device, data)
+        dlg.exec()
+        return dlg.returnValues
+
     def readFramework(self) -> None:
         index = self.ui.tab.currentIndex()
         self.framework = self.ui.tab.widget(index).objectName()

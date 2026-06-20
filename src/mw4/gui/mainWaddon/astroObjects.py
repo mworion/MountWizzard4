@@ -56,8 +56,6 @@ class AstroObjects:
         self.workerSource: Worker | None = None
         self.workerTable: Worker | None = None
         self.objects: dict = {}
-        self.uploadPopup = None
-        self.downloadPopup = None
         self.tempDir: Path = self.app.mwGlob["tempDir"]
         self.dataDir: Path = self.app.mwGlob["dataDir"]
         self.loader = self.app.dReg["mount"].obsSite.loader
@@ -91,10 +89,8 @@ class AstroObjects:
         self.workerSource = Worker(self.workerProcessSource)
         self.threadPool.start(self.workerSource)
 
-    def runDownloadPopup(self, url: Path, unzip: bool) -> None:
-        self.downloadPopup = DownloadPopup(self.window, url, self.dest, unzip)
-        suc = self.downloadPopup.exec()
-        if suc:
+    def runDownloadPopup(self, url: str, unzip: bool) -> None:
+        if DownloadPopup.download(self.window, url, self.dest, unzip):
             self.procSourceData()
 
     def checkFileAgeOK(self, fileName: Path) -> bool:
@@ -129,14 +125,12 @@ class AstroObjects:
         self.log.info(f"Using data for {self.objectText}  {url}, {unzip}, {fileName}")
         self.runDownloadPopup(url, unzip)
 
-    def runUploadPopup(self, url: Path) -> None:
-        self.uploadPopup = UploadPopup(self.window, url, [self.objectText], self.tempDir)
-        suc = self.uploadPopup.exec()
+    def runUploadPopup(self, url: str) -> None:
+        suc = UploadPopup.upload(self.window, url, [self.objectText], self.tempDir)
         if suc:
             self.msg.emit(1, self.objectText.capitalize(), "Mount upload", "Successful")
         else:
             self.msg.emit(2, self.objectText.capitalize(), "Mount upload", "Failed")
-
 
     def progObjects(self, objects: list) -> None:
         if len(objects) == 0:
@@ -148,7 +142,7 @@ class AstroObjects:
             )
             return
         self.dbProcFuncs[self.objectText](objects, dataFilePath=self.tempDir)
-        url = Path(self.app.dReg["mount"].instance.config.hostAddress)
+        url = self.app.dReg["mount"].instance.config.hostAddress
         self.runUploadPopup(url)
 
     def progGUI(self, text: str) -> None:

@@ -28,7 +28,6 @@ class SettDevice(QObject):
         self.app = parentW.app
         self.msg = parentW.app.msg
         self.ui = parentW.ui
-        self.devicePopup: DevicePopup | None = None
         self.signalsToName: dict[int, str] = {}
 
         self.deviceUi: dict[str, Any] = {
@@ -175,15 +174,15 @@ class SettDevice(QObject):
                 source = self.driversData[device]["frameworks"][framework][param]
                 self.driversData[entry.name]["frameworks"][framework][param] = source
 
-    def processPopupResults(self) -> None:
-        device = self.devicePopup.returnValues["device"]
-        framework = self.devicePopup.returnValues["data"]["framework"]
-        deviceName = self.devicePopup.returnValues["data"][framework]["deviceName"]
-        for framework in self.devicePopup.returnValues.get("copyConfig", []):
+    def processPopupResults(self, returnValues: dict[str, Any]) -> None:
+        device = returnValues["device"]
+        framework = returnValues["data"]["framework"]
+        deviceName = returnValues["data"][framework]["deviceName"]
+        for framework in returnValues.get("copyConfig", []):
             self.copyConfig(device, framework)
         index = findIndexValue(self.deviceUi[device]["uiDropDown"], framework)
         itemText = f"{framework} - {deviceName}"
-        self.app.dReg.writeConfigToSingleDevice(device, self.devicePopup.returnValues["data"])
+        self.app.dReg.writeConfigToSingleDevice(device, returnValues["data"])
         self.deviceUi[device]["uiDropDown"].setCurrentIndex(index)
         self.deviceUi[device]["uiDropDown"].setItemText(index, itemText)
         self.app.startDevice.emit(device)
@@ -191,10 +190,9 @@ class SettDevice(QObject):
     def callPopup(self, device: str) -> None:
         self.app.dReg.stopDevice(device)
         data = self.app.dReg.collectConfigFromSingleDevice(device)
-        self.devicePopup = DevicePopup(self.parentW, device, data)
-        suc = self.devicePopup.exec()
-        if suc:
-            self.processPopupResults()
+        returnValues = DevicePopup.configure(self.parentW, device, data)
+        if returnValues["close"] == "ok":
+            self.processPopupResults(returnValues)
 
     def dispatchDriverDropdown(self, device: str, position: int) -> None:
         dropDownEntry = self.deviceUi[device]["uiDropDown"].currentText()

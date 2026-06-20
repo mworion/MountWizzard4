@@ -491,3 +491,23 @@ def test_exec_2(function):
         assert not result
         mock_loop.exec.assert_called_once()
 
+
+def test_configure_1(function):
+    parent = MWidget()
+    parent.app = App()
+
+    def mock_exec_ok(self: DevicePopup) -> bool:
+        self.returnValues["close"] = "ok"
+        return True
+
+    with mock.patch.object(DevicePopup, "exec", mock_exec_ok):
+        rv = DevicePopup.configure(parent, "telescope", {"framework": "indi"})
+        assert rv["close"] == "ok"
+
+
+def test_configure_2(function):
+    parent = MWidget()
+    parent.app = App()
+    with mock.patch.object(DevicePopup, "exec", return_value=False):
+        rv = DevicePopup.configure(parent, "telescope", {"framework": "indi"})
+        assert rv["close"] == "cancel"

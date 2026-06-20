@@ -41,9 +41,7 @@ def function(qapp):
 
 @pytest.fixture
 def mockedSleep(monkeypatch):
-    monkeypatch.setattr(
-        "mw4.gui.extWindows.downloadPopupW.mainThreadSleep", lambda _: None
-    )
+    monkeypatch.setattr("mw4.gui.extWindows.downloadPopupW.mainThreadSleep", lambda _: None)
 
 
 def test_setIcon(function):
@@ -245,3 +243,15 @@ def test_exec_2(function):
         result = function.exec()
         assert not result
         mock_loop.exec.assert_called_once()
+
+
+def test_download_1(function):
+    with mock.patch.object(DownloadPopup, "exec", return_value=True):
+        result = DownloadPopup.download(function.parentWidget, Path(), Path())
+        assert result
+
+
+def test_download_2(function):
+    with mock.patch.object(DownloadPopup, "exec", return_value=False):
+        result = DownloadPopup.download(function.parentWidget, Path(), Path())
+        assert not result

@@ -34,8 +34,6 @@ class IERSTime(TabAddon):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
         self.tempDir: Path = self.app.mwGlob["tempDir"]
-        self.uploadPopup: Any = None
-        self.downloadPopup: Any = None
         self.databaseProcessing = DataWriter(self.app)
         self.ui.progEarthRotationData.clicked.connect(self.progEarthRotationData)
         self.ui.downloadIERS.clicked.connect(self.loadTimeDataFromSourceURLs)
@@ -68,10 +66,9 @@ class IERSTime(TabAddon):
         dataTypes = ["finalsdata", "leapsec"]
         url = self.app.dReg["mount"].instance.config.hostAddress
         self.msg.emit(0, "IERS", "Uploading", "Upload to mount running")
-        self.uploadPopup = UploadPopup(
+        suc = UploadPopup.upload(
             self.mainW, url=url, dataTypes=dataTypes, dataFilePath=self.tempDir
         )
-        suc = self.uploadPopup.exec()
         if suc:
             self.msg.emit(1, "IERS", "Upload", "Successfully uploaded")
         else:
@@ -88,20 +85,15 @@ class IERSTime(TabAddon):
         source = "finals2000A.all"
         url = urlMain + source
         dest = self.app.mwGlob["dataDir"] / source
-        self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
-        suc = self.downloadPopup.exec()
-        if not suc:
+        if not DownloadPopup.download(self.mainW, url=url, dest=dest):
             self.msg.emit(2, "IERS", "Download", "Download failed")
             return
 
         self.msg.emit(0, "IERS", "Download", "Received [finals2000A.all]")
-
         source = "finals.data"
         url = urlMain + source
         dest = self.app.mwGlob["dataDir"] / source
-        self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
-        suc = self.downloadPopup.exec()
-        if suc:
+        if DownloadPopup.download(self.mainW, url=url, dest=dest):
             self.msg.emit(0, "IERS", "Download", "Received [finals.data]")
             self.msg.emit(1, "IERS", "Download", "Downloaded complete")
         else:

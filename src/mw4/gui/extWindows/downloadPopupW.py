@@ -44,6 +44,7 @@ class DownloadPopup(MWidget):
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self.ws)
         self.setWindowTitle("Downloading from Web")
+        self.setFixedSize(400, 120)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)
@@ -75,6 +76,13 @@ class DownloadPopup(MWidget):
         self.threadPool.start(self.worker)
         self.loop.exec()
         return self.returnValues["success"]
+
+    @classmethod
+    def download(
+        cls, parentWidget: MWidget, url: str, dest: Path, unzip: bool = False
+    ) -> bool:
+        dlg = cls(parentWidget, url, dest, unzip)
+        return dlg.exec()
 
     def setProgressBarColor(self, color: str) -> None:
         css = "QProgressBar::chunk {background-color: " + color + ";}"
@@ -145,4 +153,3 @@ class DownloadPopup(MWidget):
         mainThreadSleep(500)
         self.returnValues["success"] = result
         self.close()
-

@@ -55,7 +55,6 @@ class AstroObjects:
         self.processSource = processSource
         self.workerSource: Worker | None = None
         self.workerTable: Worker | None = None
-
         self.objects: dict = {}
         self.uploadPopup = None
         self.downloadPopup = None
@@ -87,20 +86,16 @@ class AstroObjects:
         self.processSource()
         self.signals.dataLoaded.emit()
 
-    def procSourceData(self, direct: bool = False) -> None:
-        if not direct and not self.downloadPopup.returnValues["success"]:
-            return
+    def procSourceData(self) -> None:
         self.dataValid = False
         self.workerSource = Worker(self.workerProcessSource)
         self.threadPool.start(self.workerSource)
 
     def runDownloadPopup(self, url: Path, unzip: bool) -> None:
-        if not self.app.isOnline:
-            return
         self.downloadPopup = DownloadPopup(self.window, url, self.dest, unzip)
-        self.downloadPopup.showWindow()
-        self.downloadPopup.downloadFile()
-        self.downloadPopup.worker.signals.finished.connect(self.procSourceData)
+        suc = self.downloadPopup.exec()
+        if suc:
+            self.procSourceData()
 
     def checkFileAgeOK(self, fileName: Path) -> bool:
         if not fileName.is_file():
@@ -121,7 +116,7 @@ class AstroObjects:
         self.dest = self.dataDir / fileName
 
         if self.checkFileAgeOK(self.dest):
-            self.procSourceData(direct=True)
+            self.procSourceData()
             self.log.info(f"Using local source data for {self.objectText}")
             return
 
@@ -134,17 +129,14 @@ class AstroObjects:
         self.log.info(f"Using data for {self.objectText}  {url}, {unzip}, {fileName}")
         self.runDownloadPopup(url, unzip)
 
-    def finishProgObjects(self) -> None:
-        if self.uploadPopup.returnValues["success"]:
+    def runUploadPopup(self, url: Path) -> None:
+        self.uploadPopup = UploadPopup(self.window, url, [self.objectText], self.tempDir)
+        suc = self.uploadPopup.exec()
+        if suc:
             self.msg.emit(1, self.objectText.capitalize(), "Mount upload", "Successful")
         else:
             self.msg.emit(2, self.objectText.capitalize(), "Mount upload", "Failed")
 
-    def runUploadPopup(self, url: Path) -> None:
-        self.uploadPopup = UploadPopup(self.window, url, [self.objectText], self.tempDir)
-        self.uploadPopup.showWindow()
-        self.uploadPopup.uploadFile()
-        self.uploadPopup.worker.signals.finished.connect(self.finishProgObjects)
 
     def progObjects(self, objects: list) -> None:
         if len(objects) == 0:
@@ -156,7 +148,7 @@ class AstroObjects:
             )
             return
         self.dbProcFuncs[self.objectText](objects, dataFilePath=self.tempDir)
-        url = Path(self.app.dReg["mount"].instance.host[0])
+        url = Path(self.app.dReg["mount"].instance.config.hostAddress)
         self.runUploadPopup(url)
 
     def progGUI(self, text: str) -> None:

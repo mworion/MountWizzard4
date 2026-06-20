@@ -59,13 +59,6 @@ class IERSTime(TabAddon):
         for name in self.iersSourceURLs:
             self.ui.iersSource.addItem(name)
 
-    def finishProgEarthRotationData(self) -> None:
-        self.uploadPopup.worker.signals.finished.disconnect(self.finishProgEarthRotationData)
-        if self.uploadPopup.returnValues["success"]:
-            self.msg.emit(1, "IERS", "Upload", "Successfully uploaded")
-        else:
-            self.msg.emit(2, "IERS", "Upload", "Upload failed")
-
     def progEarthRotationData(self) -> None:
         self.msg.emit(1, "IERS", "Program", "Earth rotation data")
         suc = self.databaseProcessing.writeEarthRotationData(self.tempDir)
@@ -73,47 +66,16 @@ class IERSTime(TabAddon):
             self.msg.emit(2, "IERS", "Data error", "Data could not be exported - stopping")
             return
         dataTypes = ["finalsdata", "leapsec"]
-        url = self.app.dReg["mount"].instance.host[0]
+        url = self.app.dReg["mount"].instance.config.hostAddress
         self.msg.emit(0, "IERS", "Uploading", "Upload to mount running")
         self.uploadPopup = UploadPopup(
             self.mainW, url=url, dataTypes=dataTypes, dataFilePath=self.tempDir
         )
-        self.uploadPopup.showWindow()
-        self.uploadPopup.uploadFile()
-        self.uploadPopup.worker.signals.finished.connect(self.finishProgEarthRotationData)
-
-    def finishLoadTimeDataFromSourceURLs(self) -> None:
-        self.downloadPopup.worker.signals.finished.disconnect(
-            self.finishLoadTimeDataFromSourceURLs
-        )
-        if self.downloadPopup.returnValues["success"]:
-            self.msg.emit(0, "IERS", "Download", "Received [finals.data]")
-            self.msg.emit(1, "IERS", "Download", "Downloaded complete")
+        suc = self.uploadPopup.exec()
+        if suc:
+            self.msg.emit(1, "IERS", "Upload", "Successfully uploaded")
         else:
-            self.msg.emit(2, "IERS", "Download", "Download failed")
-
-    def finishLoadFinalsFromSourceURLs(self) -> None:
-        self.downloadPopup.worker.signals.finished.disconnect(
-            self.finishLoadFinalsFromSourceURLs
-        )
-        if not self.downloadPopup.returnValues["success"]:
-            self.msg.emit(2, "IERS", "Download", "Download failed")
-            return
-
-        self.msg.emit(0, "IERS", "Download", "Received [finals2000A.all]")
-
-        sourceURL = self.ui.iersSource.currentText()
-        urlMain = self.iersSourceURLs[sourceURL]
-
-        source = "finals.data"
-        url = urlMain + source
-        dest = self.app.mwGlob["dataDir"] / source
-        self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
-        self.downloadPopup.showWindow()
-        self.downloadPopup.downloadFile()
-        self.downloadPopup.worker.signals.finished.connect(
-            self.finishLoadTimeDataFromSourceURLs
-        )
+            self.msg.emit(2, "IERS", "Upload", "Upload failed")
 
     def loadTimeDataFromSourceURLs(self) -> None:
         if not self.app.isOnline:
@@ -122,10 +84,25 @@ class IERSTime(TabAddon):
         sourceKey = self.ui.iersSource.currentText()
         urlMain = self.iersSourceURLs[sourceKey]
         self.msg.emit(1, "IERS", "Download", f"Source: [{sourceKey}, {urlMain}]")
+
         source = "finals2000A.all"
         url = urlMain + source
         dest = self.app.mwGlob["dataDir"] / source
         self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
-        self.downloadPopup.showWindow()
-        self.downloadPopup.downloadFile()
-        self.downloadPopup.worker.signals.finished.connect(self.finishLoadFinalsFromSourceURLs)
+        suc = self.downloadPopup.exec()
+        if not suc:
+            self.msg.emit(2, "IERS", "Download", "Download failed")
+            return
+
+        self.msg.emit(0, "IERS", "Download", "Received [finals2000A.all]")
+
+        source = "finals.data"
+        url = urlMain + source
+        dest = self.app.mwGlob["dataDir"] / source
+        self.downloadPopup = DownloadPopup(self.mainW, url=url, dest=dest)
+        suc = self.downloadPopup.exec()
+        if suc:
+            self.msg.emit(0, "IERS", "Download", "Received [finals.data]")
+            self.msg.emit(1, "IERS", "Download", "Downloaded complete")
+        else:
+            self.msg.emit(2, "IERS", "Download", "Download failed")

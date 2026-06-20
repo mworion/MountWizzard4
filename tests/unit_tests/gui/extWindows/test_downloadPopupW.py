@@ -23,6 +23,7 @@ import unittest.mock as mock
 from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
+from PySide6.QtCore import QEventLoop
 from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -218,17 +219,29 @@ def test_closePopup_2(function, mockedSleep):
         function.closePopup(False)
 
 
-def test_downloadFile_1(function):
-    function.callBack = 1
-    function.url = ""
-    function.dest = Path()
-    with mock.patch.object(function.threadPool, "start"):
-        function.downloadFile()
+def test_exec_1(function):
+    with (
+        mock.patch.object(function, "showWindow"),
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch("mw4.gui.extWindows.downloadPopupW.QEventLoop") as mock_loop_cls,
+    ):
+        mock_loop = mock.MagicMock(spec=QEventLoop)
+        mock_loop_cls.return_value = mock_loop
+        function.returnValues["success"] = True
+        result = function.exec()
+        assert result
+        mock_loop.exec.assert_called_once()
 
 
-def test_downloadFile_2(function):
-    function.callBack = None
-    function.url = ""
-    function.dest = Path()
-    with mock.patch.object(function.threadPool, "start"):
-        function.downloadFile()
+def test_exec_2(function):
+    with (
+        mock.patch.object(function, "showWindow"),
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch("mw4.gui.extWindows.downloadPopupW.QEventLoop") as mock_loop_cls,
+    ):
+        mock_loop = mock.MagicMock(spec=QEventLoop)
+        mock_loop_cls.return_value = mock_loop
+        function.returnValues["success"] = False
+        result = function.exec()
+        assert not result
+        mock_loop.exec.assert_called_once()

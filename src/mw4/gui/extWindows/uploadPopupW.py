@@ -21,7 +21,7 @@ from mw4.gui.utilities.qtHelpers import svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.uploadPopup_ui import Ui_UploadPopup
 from pathlib import Path
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import QEventLoop, Qt, Signal
 
 
 class UploadPopup(MWidget):
@@ -66,6 +66,7 @@ class UploadPopup(MWidget):
         self.threadPool = parentWidget.app.threadPool
         self.worker: Worker | None = None
         self.workerStatus: Worker | None = None
+        self.loop: QEventLoop | None = None
         self.url: Path = url
         self.dataTypes: list[str] = dataTypes
         self.dataFilePath: Path = dataFilePath
@@ -92,6 +93,17 @@ class UploadPopup(MWidget):
         self.titleBar.normButton.setVisible(False)
         self.titleBar.maxButton.setVisible(False)
         self.titleBar.windowFixed = True
+
+    def exec(self) -> bool:
+        self.showWindow()
+        self.loop = QEventLoop()
+        self.workerStatus = Worker(self.pollStatus)
+        self.worker = Worker(self.uploadFileWorker)
+        self.worker.signals.result.connect(self.closePopup)
+        self.worker.signals.finished.connect(self.loop.quit)
+        self.threadPool.start(self.worker)
+        self.loop.exec()
+        return self.returnValues["success"]
 
     def setProgressBarColor(self, colorstr: str) -> None:
         css = "QProgressBar::chunk {background-color: " + colorstr + ";}"
@@ -203,8 +215,3 @@ class UploadPopup(MWidget):
         mainThreadSleep(500)
         self.close()
 
-    def uploadFile(self) -> None:
-        self.worker = Worker(self.uploadFileWorker)
-        self.workerStatus = Worker(self.pollStatus)
-        self.worker.signals.result.connect(self.closePopup)
-        self.threadPool.start(self.worker)

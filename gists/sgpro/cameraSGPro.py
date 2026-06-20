@@ -13,7 +13,7 @@
 # License APL2.0
 #
 ###########################################################
-from mw4.base.sgproClass import SGProClass
+from gists.sgpro.sgproClass import SGProClass
 from mw4.base.tpool import Worker
 from pathlib import Path
 from typing import Any

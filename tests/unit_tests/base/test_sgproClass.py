@@ -17,7 +17,7 @@ import contextlib
 import pytest
 import queue
 import threading
-from mw4.base.sgproClass import CommandItem, DeviceConfigSGPro, SGProClass
+from gists.sgpro.sgproClass import CommandItem, DeviceConfigSGPro, SGProClass
 from mw4.base.signalsDevices import Signals
 from pathlib import Path
 from PySide6.QtCore import QThreadPool

@@ -59,24 +59,6 @@ def test_setupIERSSourceURLsDropDown(function):
     function.setupIERSSourceURLsDropDown()
 
 
-def test_finishProgEarthRotationData_1(function):
-    class Test:
-        returnValues = {"success": False}
-        worker = mock.MagicMock()
-
-    function.uploadPopup = Test()
-    function.finishProgEarthRotationData()
-
-
-def test_finishProgEarthRotationData_2(function):
-    class Test:
-        returnValues = {"success": True}
-        worker = mock.MagicMock()
-
-    function.uploadPopup = Test()
-    function.finishProgEarthRotationData()
-
-
 def test_progEarthRotationData_1(function):
     function.app.mount.host = ("127.0.0.1", 3294)
     with mock.patch.object(
@@ -87,68 +69,20 @@ def test_progEarthRotationData_1(function):
 
 def test_progEarthRotationData_2(function):
     function.app.mount.host = ("127.0.0.1", 3294)
-    with mock.patch.object(
-        function.databaseProcessing, "writeEarthRotationData", return_value=True
+    with (
+        mock.patch.object(
+            function.databaseProcessing, "writeEarthRotationData", return_value=True
+        ),
+        mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.UploadPopup") as mock_ul,
     ):
+        popup_instance = mock.MagicMock()
+        popup_instance.exec.return_value = True
+        mock_ul.return_value = popup_instance
         function.progEarthRotationData()
+        popup_instance.exec.assert_called_once()
 
 
-def test_finishLoadTimeDataFromSourceURLs_1(function):
-    class Test:
-        returnValues = {"success": False}
-        worker = mock.MagicMock()
-
-    function.downloadPopup = Test()
-    function.finishLoadTimeDataFromSourceURLs()
-
-
-def test_finishLoadTimeDataFromSourceURLs_2(function):
-    class Test:
-        returnValues = {"success": True}
-        worker = mock.MagicMock()
-
-    function.downloadPopup = Test()
-    function.finishLoadTimeDataFromSourceURLs()
-
-
-def test_finishLoadFinalsFromSourceURLs_1(function):
-    class Test:
-        returnValues = {"success": False}
-        worker = mock.MagicMock()
-
-    function.downloadPopup = Test()
-    function.finishLoadFinalsFromSourceURLs()
-
-
-def test_finishLoadFinalsFromSourceURLs_2(function):
-    class Test:
-        returnValues = {"success": True}
-        worker = mock.MagicMock()
-
-    function.downloadPopup = Test()
-    function.finishLoadFinalsFromSourceURLs()
-
-
-def test_loadTimeDataFromSourceURLs_1(function):
-    function.ui.isOnline.isChecked.return_value = False
-    function.loadTimeDataFromSourceURLs()
-
-
-def test_loadTimeDataFromSourceURLs_2(function):
-    function.ui.isOnline.isChecked.return_value = True
-    function.loadTimeDataFromSourceURLs()
-
-
-def test_loadTimeDataFromSourceURLs_when_online(function):
-    """Test loadTimeDataFromSourceURLs when app is online (lines 122-131)."""
-    function.app.isOnline = True
-    # This test just verifies that the method executes the full code path
-    # when app.isOnline is True (lines 122-131 will be executed)
-    function.loadTimeDataFromSourceURLs()
-
-
-def test_progEarthRotationData_calls_showWindow(function):
-    """Test progEarthRotationData calls showWindow on uploadPopup (line 81)."""
+def test_progEarthRotationData_3(function):
     function.app.mount.host = ("127.0.0.1", 3294)
     with (
         mock.patch.object(
@@ -157,34 +91,42 @@ def test_progEarthRotationData_calls_showWindow(function):
         mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.UploadPopup") as mock_ul,
     ):
         popup_instance = mock.MagicMock()
+        popup_instance.exec.return_value = False
         mock_ul.return_value = popup_instance
         function.progEarthRotationData()
-        popup_instance.showWindow.assert_called_once()
-        popup_instance.uploadFile.assert_called_once()
+        popup_instance.exec.assert_called_once()
 
 
-def test_finishLoadFinalsFromSourceURLs_calls_showWindow(function):
-    """Test finishLoadFinalsFromSourceURLs calls showWindow on downloadPopup (line 112)."""
-
-    class MockPopup:
-        returnValues = {"success": True}
-        worker = mock.MagicMock()
-
-    function.downloadPopup = MockPopup()
-    with mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup") as mock_dl:
-        popup_instance = mock.MagicMock()
-        mock_dl.return_value = popup_instance
-        function.finishLoadFinalsFromSourceURLs()
-        popup_instance.showWindow.assert_called_once()
-        popup_instance.downloadFile.assert_called_once()
+def test_loadTimeDataFromSourceURLs_1(function):
+    function.app.isOnline = False
+    function.loadTimeDataFromSourceURLs()
 
 
-def test_loadTimeDataFromSourceURLs_calls_showWindow(function):
-    """Test loadTimeDataFromSourceURLs calls showWindow on downloadPopup (line 129)."""
+def test_loadTimeDataFromSourceURLs_2(function):
     function.app.isOnline = True
     with mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup") as mock_dl:
         popup_instance = mock.MagicMock()
+        popup_instance.exec.return_value = False
         mock_dl.return_value = popup_instance
         function.loadTimeDataFromSourceURLs()
-        popup_instance.showWindow.assert_called_once()
-        popup_instance.downloadFile.assert_called_once()
+        assert popup_instance.exec.call_count == 1
+
+
+def test_loadTimeDataFromSourceURLs_3(function):
+    function.app.isOnline = True
+    with mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup") as mock_dl:
+        popup_instance = mock.MagicMock()
+        popup_instance.exec.return_value = True
+        mock_dl.return_value = popup_instance
+        function.loadTimeDataFromSourceURLs()
+        assert popup_instance.exec.call_count == 2
+
+
+def test_loadTimeDataFromSourceURLs_4(function):
+    function.app.isOnline = True
+    with mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup") as mock_dl:
+        popup_instance = mock.MagicMock()
+        popup_instance.exec.side_effect = [True, False]
+        mock_dl.return_value = popup_instance
+        function.loadTimeDataFromSourceURLs()
+        assert popup_instance.exec.call_count == 2

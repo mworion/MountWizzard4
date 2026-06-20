@@ -22,7 +22,7 @@ from mw4.gui.utilities.qtHelpers import svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.downloadPopup_ui import Ui_DownloadPopup
 from pathlib import Path
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import QEventLoop, Qt, Signal
 
 
 class DownloadPopup(MWidget):
@@ -37,6 +37,7 @@ class DownloadPopup(MWidget):
         self.msg = parentWidget.app.msg
         self.threadPool = parentWidget.app.threadPool
         self.worker: Worker | None = None
+        self.loop: QEventLoop | None = None
         self.url = url
         self.dest = dest
         self.unzip = unzip
@@ -64,6 +65,16 @@ class DownloadPopup(MWidget):
         self.titleBar.normButton.setVisible(False)
         self.titleBar.maxButton.setVisible(False)
         self.titleBar.windowFixed = True
+
+    def exec(self) -> bool:
+        self.showWindow()
+        self.loop = QEventLoop()
+        self.worker = Worker(self.downloadFileWorker, self.url, self.dest, self.unzip)
+        self.worker.signals.result.connect(self.closePopup)
+        self.worker.signals.finished.connect(self.loop.quit)
+        self.threadPool.start(self.worker)
+        self.loop.exec()
+        return self.returnValues["success"]
 
     def setProgressBarColor(self, color: str) -> None:
         css = "QProgressBar::chunk {background-color: " + color + ";}"
@@ -135,7 +146,3 @@ class DownloadPopup(MWidget):
         self.returnValues["success"] = result
         self.close()
 
-    def downloadFile(self) -> None:
-        self.worker = Worker(self.downloadFileWorker, self.url, self.dest, self.unzip)
-        self.worker.signals.result.connect(self.closePopup)
-        self.threadPool.start(self.worker)

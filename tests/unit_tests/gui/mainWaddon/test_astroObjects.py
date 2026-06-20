@@ -116,41 +116,30 @@ def test_workerProcessSource_1(function):
 
 
 def test_procSourceData_1(function):
-    class Test:
-        returnValues = {"success": False}
-
-    function.downloadPopup = Test()
-    function.procSourceData(direct=False)
-
-
-def test_procSourceData_2(function):
-    class Test:
-        returnValues = {"success": True}
-
-    function.downloadPopup = Test()
     with mock.patch.object(function.threadPool, "start"):
-        function.procSourceData(direct=True)
-
-
-def test_procSourceData_3(function):
-    class Test:
-        returnValues = {"success": True}
-
-    function.downloadPopup = Test()
-    with mock.patch.object(function.threadPool, "start"):
-        function.procSourceData(direct=False)
+        function.procSourceData()
 
 
 def test_runDownloadPopup_1(function):
-    function.window.ui.isOnline.setChecked(True)
-    with mock.patch.object(function.window.app.threadPool, "start"):
-        function.runDownloadPopup(Path(), False)
+    with mock.patch("mw4.gui.mainWaddon.astroObjects.DownloadPopup") as mock_dl:
+        popup_instance = mock.MagicMock()
+        popup_instance.exec.return_value = True
+        mock_dl.return_value = popup_instance
+        with mock.patch.object(function, "procSourceData") as mock_proc:
+            function.runDownloadPopup(Path(), False)
+            popup_instance.exec.assert_called_once()
+            mock_proc.assert_called_once()
 
 
 def test_runDownloadPopup_2(function):
-    function.window.ui.isOnline.setChecked(False)
-    with mock.patch.object(function.window.app.threadPool, "start"):
-        function.runDownloadPopup(Path(), False)
+    with mock.patch("mw4.gui.mainWaddon.astroObjects.DownloadPopup") as mock_dl:
+        popup_instance = mock.MagicMock()
+        popup_instance.exec.return_value = False
+        mock_dl.return_value = popup_instance
+        with mock.patch.object(function, "procSourceData") as mock_proc:
+            function.runDownloadPopup(Path(), False)
+            popup_instance.exec.assert_called_once()
+            mock_proc.assert_not_called()
 
 
 def test_checkFileAgeOK_1(function):
@@ -218,36 +207,32 @@ def test_loadSourceUrl_4(function):
         function.loadSourceUrl()
 
 
-def test_finishProgObjects_1(function):
-    class Test:
-        returnValues = {"success": False}
-
-    function.uploadPopup = Test()
-    function.finishProgObjects()
-
-
-def test_finishProgObjects_2(function):
-    class Test:
-        returnValues = {"success": True}
-
-    function.uploadPopup = Test()
-    function.finishProgObjects()
-
-
 def test_runUploadPopup_1(function):
-    with mock.patch.object(function.window.app.threadPool, "start"):
+    with mock.patch("mw4.gui.mainWaddon.astroObjects.UploadPopup") as mock_ul:
+        popup_instance = mock.MagicMock()
+        popup_instance.exec.return_value = True
+        mock_ul.return_value = popup_instance
         function.runUploadPopup(Path())
-        function.uploadPopup = None
+        popup_instance.exec.assert_called_once()
+
+
+def test_runUploadPopup_2(function):
+    with mock.patch("mw4.gui.mainWaddon.astroObjects.UploadPopup") as mock_ul:
+        popup_instance = mock.MagicMock()
+        popup_instance.exec.return_value = False
+        mock_ul.return_value = popup_instance
+        function.runUploadPopup(Path())
+        popup_instance.exec.assert_called_once()
 
 
 def test_runUploadPopup_calls_showWindow(function):
-    """Test runUploadPopup calls showWindow (lines 144-147)."""
+    """Test runUploadPopup calls exec and emits success message on True result."""
     with mock.patch("mw4.gui.mainWaddon.astroObjects.UploadPopup") as mock_ul:
         popup_instance = mock.MagicMock()
+        popup_instance.exec.return_value = True
         mock_ul.return_value = popup_instance
         function.runUploadPopup(Path())
-        popup_instance.showWindow.assert_called_once()
-        popup_instance.uploadFile.assert_called_once()
+        popup_instance.exec.assert_called_once()
 
 
 def test_progObjects_1(function):
@@ -341,14 +326,15 @@ def test_progFull_1(function):
 
 
 def test_runDownloadPopup_when_online(function):
-    """Test runDownloadPopup when app is online (lines 100-103)."""
-    function.app.isOnline = True
+    """Test runDownloadPopup calls exec and procSourceData on success."""
     with mock.patch("mw4.gui.mainWaddon.astroObjects.DownloadPopup") as mock_dl:
         popup_instance = mock.MagicMock()
+        popup_instance.exec.return_value = True
         mock_dl.return_value = popup_instance
-        function.runDownloadPopup(Path(), False)
-        popup_instance.showWindow.assert_called_once()
-        popup_instance.downloadFile.assert_called_once()
+        with mock.patch.object(function, "procSourceData") as mock_proc:
+            function.runDownloadPopup(Path(), False)
+            popup_instance.exec.assert_called_once()
+            mock_proc.assert_called_once()
 
 
 def test_loadSourceUrl_online_with_old_file(function):

@@ -13,7 +13,6 @@
 # License APL2.0
 #
 ###########################################################
-import mw4
 import pytest
 from mw4.gui.extWindows.setting.tabSettDevice import SettDevice
 from mw4.gui.utilities.qtMain import MWidget
@@ -164,9 +163,6 @@ def test_closeEvent_skipsEntriesWithoutSignals(function):
 
 
 def test_processPopupResults_2(function):
-    class UI:
-        ok = QPushButton()
-
     class Test:
         returnValues = {
             "device": "telescope",
@@ -180,10 +176,8 @@ def test_processPopupResults_2(function):
             },
             "copyConfig": [],
         }
-        ui = UI()
 
     function.devicePopup = Test()
-    function.devicePopup.ui.ok.clicked.connect(function.processPopupResults)
     with (
         mock.patch.object(function.app.dReg, "writeConfigToSingleDevice"),
         mock.patch.object(function.app.dReg, "startDevice"),
@@ -192,9 +186,6 @@ def test_processPopupResults_2(function):
 
 
 def test_processPopupResults_3(function):
-    class UI:
-        ok = QPushButton()
-
     class Test:
         returnValues = {
             "device": "telescope",
@@ -208,10 +199,8 @@ def test_processPopupResults_3(function):
             },
             "copyConfig": ["indi"],
         }
-        ui = UI()
 
     function.devicePopup = Test()
-    function.devicePopup.ui.ok.clicked.connect(function.processPopupResults)
     with (
         mock.patch.object(function, "copyConfig"),
         mock.patch.object(function.app.dReg, "writeConfigToSingleDevice"),
@@ -241,31 +230,31 @@ def test_copyConfig_4(function):
 
 
 def test_callPopup_1(function):
-    class Pop:
-        class OK:
-            class Clicked:
-                class Connect:
-                    @staticmethod
-                    def connect(a):
-                        return
-
-                clicked = Connect()
-
-            ok = Clicked()
-
-        def initConfig(self):
-            pass
-
-        ui = OK()
-
     with (
         mock.patch.object(function.app.dReg, "stopDevice"),
         mock.patch.object(function.app.dReg, "collectConfigFromSingleDevice", return_value={}),
-        mock.patch.object(
-            mw4.gui.extWindows.setting.tabSettDevice, "DevicePopup", return_value=Pop()
-        ),
+        mock.patch("mw4.gui.extWindows.setting.tabSettDevice.DevicePopup") as mock_popup,
     ):
+        popup_instance = mock.MagicMock()
+        popup_instance.exec.return_value = False
+        mock_popup.return_value = popup_instance
         function.callPopup("cover")
+        popup_instance.exec.assert_called_once()
+
+
+def test_callPopup_2(function):
+    with (
+        mock.patch.object(function.app.dReg, "stopDevice"),
+        mock.patch.object(function.app.dReg, "collectConfigFromSingleDevice", return_value={}),
+        mock.patch("mw4.gui.extWindows.setting.tabSettDevice.DevicePopup") as mock_popup,
+        mock.patch.object(function, "processPopupResults") as mock_process,
+    ):
+        popup_instance = mock.MagicMock()
+        popup_instance.exec.return_value = True
+        mock_popup.return_value = popup_instance
+        function.callPopup("cover")
+        popup_instance.exec.assert_called_once()
+        mock_process.assert_called_once()
 
 
 def test_dispatchDriverDropdown_1(function):

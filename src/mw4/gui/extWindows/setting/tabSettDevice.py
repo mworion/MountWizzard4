@@ -130,11 +130,6 @@ class SettDevice(QObject):
                 self.parentW.wIcon(ui, "cogs")
 
     def closeEvent(self) -> None:
-        # Disconnect only the signals we actually connected during setup.
-        # ``signalsToName`` is populated in lockstep with the ``connect`` calls
-        # above, so iterating it avoids the libpyside "Failed to disconnect"
-        # warning that occurs when a signal was never connected (e.g. for stub
-        # devices that grow a ``signals`` attribute only at runtime).
         for entry in self.app.dReg.configurable():
             if not hasattr(self.app.dReg[entry.name].instance, "signals"):
                 continue
@@ -181,7 +176,6 @@ class SettDevice(QObject):
                 self.driversData[entry.name]["frameworks"][framework][param] = source
 
     def processPopupResults(self) -> None:
-        self.devicePopup.ui.ok.clicked.disconnect(self.processPopupResults)
         device = self.devicePopup.returnValues["device"]
         framework = self.devicePopup.returnValues["data"]["framework"]
         deviceName = self.devicePopup.returnValues["data"][framework]["deviceName"]
@@ -198,8 +192,9 @@ class SettDevice(QObject):
         self.app.dReg.stopDevice(device)
         data = self.app.dReg.collectConfigFromSingleDevice(device)
         self.devicePopup = DevicePopup(self.parentW, device, data)
-        self.devicePopup.initConfig()
-        self.devicePopup.ui.ok.clicked.connect(self.processPopupResults)
+        suc = self.devicePopup.exec()
+        if suc:
+            self.processPopupResults()
 
     def dispatchDriverDropdown(self, device: str, position: int) -> None:
         dropDownEntry = self.deviceUi[device]["uiDropDown"].currentText()

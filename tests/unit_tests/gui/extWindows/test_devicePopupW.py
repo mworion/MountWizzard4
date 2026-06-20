@@ -23,6 +23,8 @@ from mw4.base.signalsDevices import Signals
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
+from PySide6.QtCore import QEventLoop
+from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication, QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -446,3 +448,46 @@ def test_storeConfigWithBothCopyConfigs(function) -> None:
         # Verify copyConfig contains both
         assert "indi" in function.returnValues["copyConfig"]
         assert "alpaca" in function.returnValues["copyConfig"]
+
+
+def test_closeEvent_1(function):
+    function.loop = mock.MagicMock(spec=QEventLoop)
+    event = QCloseEvent()
+    with mock.patch("PySide6.QtWidgets.QMainWindow.closeEvent"):
+        function.closeEvent(event)
+    function.loop.quit.assert_called_once()
+    function.loop = None
+
+
+def test_closeEvent_2(function):
+    function.loop = None
+    event = QCloseEvent()
+    with mock.patch("PySide6.QtWidgets.QMainWindow.closeEvent"):
+        function.closeEvent(event)
+
+
+def test_exec_1(function):
+    with (
+        mock.patch.object(function, "initConfig"),
+        mock.patch("mw4.gui.extWindows.devicePopupW.QEventLoop") as mock_loop_cls,
+    ):
+        mock_loop = mock.MagicMock(spec=QEventLoop)
+        mock_loop_cls.return_value = mock_loop
+        function.returnValues["close"] = "ok"
+        result = function.exec()
+        assert result
+        mock_loop.exec.assert_called_once()
+
+
+def test_exec_2(function):
+    with (
+        mock.patch.object(function, "initConfig"),
+        mock.patch("mw4.gui.extWindows.devicePopupW.QEventLoop") as mock_loop_cls,
+    ):
+        mock_loop = mock.MagicMock(spec=QEventLoop)
+        mock_loop_cls.return_value = mock_loop
+        function.returnValues["close"] = "cancel"
+        result = function.exec()
+        assert not result
+        mock_loop.exec.assert_called_once()
+

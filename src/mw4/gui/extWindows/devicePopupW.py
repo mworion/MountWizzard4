@@ -21,7 +21,7 @@ from mw4.gui.utilities.qtHelpers import changeStyleDynamic, getTabIndex, svg2pix
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
 from pathlib import Path
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QEventLoop, Qt
 from PySide6.QtWidgets import QCheckBox, QComboBox, QDoubleSpinBox, QLineEdit, QListView
 from typing import Any
 
@@ -46,6 +46,7 @@ class DevicePopup(MWidget):
         self.ui.iconPixmap.setPixmap(pixmap)
 
         self.returnValues: dict[str, Any] = {"close": "cancel"}
+        self.loop: QEventLoop | None = None
         self.framework2gui = {
             "indi": {
                 "hostaddress": self.ui.indiHostAddress,
@@ -197,6 +198,17 @@ class DevicePopup(MWidget):
         self.setMinimumSize(500, 340)
         self.setMaximumSize(500, 340)
         self.titleBar.windowFixed = True
+
+    def closeEvent(self, event: Any) -> None:
+        if self.loop is not None:
+            self.loop.quit()
+        super().closeEvent(event)
+
+    def exec(self) -> bool:
+        self.loop = QEventLoop()
+        self.initConfig()
+        self.loop.exec()
+        return self.returnValues["close"] == "ok"
 
     def readFramework(self) -> None:
         index = self.ui.tab.currentIndex()

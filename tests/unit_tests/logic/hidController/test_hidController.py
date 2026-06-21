@@ -36,7 +36,6 @@ def hc(qapp):
 def test_deviceConfigDefaults():
     cfg = DeviceConfigHidController()
     assert cfg.deviceName == ""
-    assert cfg.autoStart is False
     assert cfg.moveRaDec is True
     assert cfg.moveAltAz is True
     assert cfg.tracking is True
@@ -347,20 +346,24 @@ def test_runnerHidController_processesNewData(hc):
 
 
 def test_startCommunication_autoStartFalse(hc):
-    hc.config.autoStart = False
     hc.running = False
     hc.workerHidController = None
+    hc.config.deviceName = "TestController"
     connected = []
     hc.signals.deviceConnected.connect(lambda n: connected.append(n))
-    hc.startCommunication()
-    assert hc.running is False
-    assert hc.workerHidController is None
-    assert connected == []
+    with mock.patch.object(hc.threadPool, "start") as mock_start:
+        hc.startCommunication()
+    assert hc.running is True
+    assert hc.workerHidController is not None
+    mock_start.assert_called_once()
+    assert connected == ["TestController"]
+    hc.running = False
     hc.signals.deviceConnected.disconnect()
 
 
 def test_startCommunication_autoStartTrue(hc):
-    hc.config.autoStart = True
+    hc.running = False
+    hc.workerHidController = None
     hc.config.deviceName = "TestController"
     connected = []
     hc.signals.deviceConnected.connect(lambda n: connected.append(n))

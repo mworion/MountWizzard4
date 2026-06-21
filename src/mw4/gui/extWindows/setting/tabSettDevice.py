@@ -24,11 +24,10 @@ from typing import Any
 class SettDevice(QObject):
     def __init__(self, parentW: Any) -> None:
         super().__init__()
-        self.mainW = parentW
+        self.parentW = parentW
         self.app = parentW.app
         self.msg = parentW.app.msg
         self.ui = parentW.ui
-        self.devicePopup: DevicePopup | None = None
         self.signalsToName: dict[int, str] = {}
 
         self.deviceUi: dict[str, Any] = {
@@ -55,6 +54,10 @@ class SettDevice(QObject):
             "focuser": {
                 "uiDropDown": self.ui.focuserDevice,
                 "uiSetup": self.ui.focuserSetup,
+            },
+            "hidController": {
+                "uiDropDown": self.ui.hidDevice,
+                "uiSetup": self.ui.hidSetup,
             },
             "lightPanel": {
                 "uiDropDown": self.ui.lightPanelDevice,
@@ -127,13 +130,15 @@ class SettDevice(QObject):
         for driver in self.deviceUi:
             if self.deviceUi[driver]["uiSetup"] is not None:
                 ui = self.deviceUi[driver]["uiSetup"]
-                self.mainW.wIcon(ui, "cogs")
+                self.parentW.wIcon(ui, "cogs")
 
     def closeEvent(self) -> None:
         for entry in self.app.dReg.configurable():
             if not hasattr(self.app.dReg[entry.name].instance, "signals"):
                 continue
             signals = self.app.dReg[entry.name].signals
+            if id(signals) not in self.signalsToName:
+                continue
             signals.deviceConnected.disconnect(self.deviceConnected)
             signals.deviceDisconnected.disconnect(self.deviceDisconnected)
 
@@ -173,16 +178,15 @@ class SettDevice(QObject):
                 source = self.driversData[device]["frameworks"][framework][param]
                 self.driversData[entry.name]["frameworks"][framework][param] = source
 
-    def processPopupResults(self) -> None:
-        self.devicePopup.ui.ok.clicked.disconnect(self.processPopupResults)
-        device = self.devicePopup.returnValues["device"]
-        framework = self.devicePopup.returnValues["data"]["framework"]
-        deviceName = self.devicePopup.returnValues["data"][framework]["deviceName"]
-        for framework in self.devicePopup.returnValues.get("copyConfig", []):
+    def processPopupResults(self, returnValues: dict[str, Any]) -> None:
+        device = returnValues["device"]
+        framework = returnValues["data"]["framework"]
+        deviceName = returnValues["data"][framework]["deviceName"]
+        for framework in returnValues.get("copyConfig", []):
             self.copyConfig(device, framework)
         index = findIndexValue(self.deviceUi[device]["uiDropDown"], framework)
         itemText = f"{framework} - {deviceName}"
-        self.app.dReg.writeConfigToSingleDevice(device, self.devicePopup.returnValues["data"])
+        self.app.dReg.writeConfigToSingleDevice(device, returnValues["data"])
         self.deviceUi[device]["uiDropDown"].setCurrentIndex(index)
         self.deviceUi[device]["uiDropDown"].setItemText(index, itemText)
         self.app.startDevice.emit(device)
@@ -190,9 +194,9 @@ class SettDevice(QObject):
     def callPopup(self, device: str) -> None:
         self.app.dReg.stopDevice(device)
         data = self.app.dReg.collectConfigFromSingleDevice(device)
-        self.devicePopup = DevicePopup(self.mainW, device, data)
-        self.devicePopup.initConfig()
-        self.devicePopup.ui.ok.clicked.connect(self.processPopupResults)
+        returnValues = DevicePopup.configure(self.parentW, device, data)
+        if returnValues["close"] == "ok":
+            self.processPopupResults(returnValues)
 
     def dispatchDriverDropdown(self, device: str, position: int) -> None:
         dropDownEntry = self.deviceUi[device]["uiDropDown"].currentText()
@@ -226,4 +230,3 @@ class SettDevice(QObject):
         if name is None:
             return
         self.applyDisconnected(name)
-

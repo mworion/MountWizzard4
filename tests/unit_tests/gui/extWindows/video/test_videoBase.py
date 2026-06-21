@@ -19,9 +19,10 @@ import numpy as np
 import pytest
 import unittest.mock as mock
 from mw4.gui.extWindows.video.videoBase import VideoWindowBase
+from mw4.gui.utilities.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtMain import MWidget
 from PySide6.QtGui import QCloseEvent, QPixmap
-from PySide6.QtWidgets import QApplication, QInputDialog
+from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -179,7 +180,7 @@ def test_authPopup_1(function):
     with (
         mock.patch.object(function, "checkAuth"),
         mock.patch.object(function, "restartVideo"),
-        mock.patch.object(QInputDialog, "getText", return_value=("test", False)),
+        mock.patch.object(MWInputDialog, "getText", return_value=("test", False)),
     ):
         function.authPopup()
         assert function.user == "test"
@@ -192,7 +193,7 @@ def test_authPopup_2(function):
     with (
         mock.patch.object(function, "checkAuth"),
         mock.patch.object(function, "restartVideo"),
-        mock.patch.object(QInputDialog, "getText", return_value=("test1", True)),
+        mock.patch.object(MWInputDialog, "getText", return_value=("test1", True)),
     ):
         function.authPopup()
         assert function.user == "test1"

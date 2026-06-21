@@ -217,17 +217,12 @@ def test_deviceEntrySatelliteProperty() -> None:
 
 
 def test_deviceEntryNoneInstanceRunProperty() -> None:
-    entry = DeviceEntry(
-        name="test", instance=None, deviceType="camera", isConfigurable=True
-    )
+    entry = DeviceEntry(name="test", instance=None, deviceType="camera", isConfigurable=True)
     with pytest.raises(AttributeError, match="Device 'test' instance is None"):
         _ = entry.run
 
 
 def test_deviceEntryNoneInstanceFrameworkProperty() -> None:
-    entry = DeviceEntry(
-        name="test", instance=None, deviceType="camera", isConfigurable=True
-    )
+    entry = DeviceEntry(name="test", instance=None, deviceType="camera", isConfigurable=True)
     with pytest.raises(AttributeError, match="Device 'test' instance is None"):
         _ = entry.framework
-

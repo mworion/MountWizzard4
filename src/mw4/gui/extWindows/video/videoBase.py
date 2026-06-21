@@ -18,11 +18,12 @@ import qimage2ndarray
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
+from mw4.gui.utilities.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import video_ui
 from PySide6.QtCore import Signal
 from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QInputDialog, QLineEdit, QSizePolicy
+from PySide6.QtWidgets import QLineEdit, QSizePolicy
 from typing import Any
 
 
@@ -153,15 +154,14 @@ class VideoWindowBase(MWidget):
         changeStyleDynamic(self.ui.authPopup, "run", hasAuth)
 
     def authPopup(self) -> None:
-        dlg = QInputDialog()
-        value1, ok1 = dlg.getText(
+        value1, ok1 = MWInputDialog.getText(
             self,
             "Get authentication",
             "Username: ",
             QLineEdit.EchoMode.Normal,
             self.user,
         )
-        value2, ok2 = dlg.getText(
+        value2, ok2 = MWInputDialog.getText(
             self,
             "Get authentication",
             "Password: ",

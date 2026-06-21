@@ -28,10 +28,9 @@ from unittest import mock
 def function():
     m = MountDevice(
         app=App(),
-        host=None,
-        MAC="00:00:00:00:00:00",
         verbose=False,
     )
+    m.config.MAC = "00:00:00:00:00:00"
     yield m
 
 
@@ -40,8 +39,8 @@ def test_mountSignals(function):
 
 
 def test_properties_MAC(function):
-    function.MAC = "00:00:00:00:00:00"
-    assert function.MAC == "00:00:00:00:00:00"
+    function.config.MAC = "00:00:00:00:00:00"
+    assert function.config.MAC == "00:00:00:00:00:00"
 
 
 def test_properties_waitTimeFlip_1(function):
@@ -69,7 +68,7 @@ def test_waitAfterSettlingAndEmit(function):
 
 def test_startTimers(function):
     with mock.patch.object(QTimer, "start"):
-        function.startMountTimers()
+        function.startMountCoreTimers()
 
 
 def test_stopTimers(function):
@@ -98,6 +97,7 @@ def test_stopClockTimer(function):
 
 
 def test_startupMountData_1(function):
+    function.mountIsUp = True
     function.mountIsUpLastStatus = False
     with (
         mock.patch.object(function, "cycleSetting"),
@@ -106,25 +106,28 @@ def test_startupMountData_1(function):
         mock.patch.object(function, "getTLE"),
         mock.patch.object(function.obsSite, "setHighPrecision"),
     ):
-        function.startupMountData(True)
+        function.startupMountData()
         assert function.mountIsUpLastStatus
 
 
 def test_startupMountData_2(function):
+    function.mountIsUp = False
     function.mountIsUpLastStatus = False
-    function.startupMountData(False)
+    function.startupMountData()
     assert not function.mountIsUpLastStatus
 
 
 def test_startupMountData_3(function):
+    function.mountIsUp = False
     function.mountIsUpLastStatus = True
-    function.startupMountData(False)
+    function.startupMountData()
     assert not function.mountIsUpLastStatus
 
 
 def test_startupMountData_4(function):
+    function.mountIsUp = True
     function.mountIsUpLastStatus = True
-    function.startupMountData(True)
+    function.startupMountData()
     assert function.mountIsUpLastStatus
 
 
@@ -154,14 +157,21 @@ def test_clearCycleCheckMountIsUp_1(function):
     function.clearCycleCheckMountIsUp()
 
 
+def test_clearCycleCheckMountIsUp_2(function):
+    function.mountIsUp = False
+    function.clearCycleCheckMountIsUp()
+
+
 def test_cycleCheckMountIsUp_1(function):
-    function.host = ()
+    function.config.hostAddress = ""
+    function.config.port = 0
     with mock.patch.object(QThreadPool, "start"):
         function.cycleCheckMountIsUp()
 
 
 def test_cycleCheckMountIsUp_2(function):
-    function.host = ("localhost", 80)
+    function.config.hostAddress = "localhost"
+    function.config.port = 80
     function.mutexCycleMountIsUp.lock()
     with mock.patch.object(function.threadPool, "start"):
         function.cycleCheckMountIsUp()
@@ -169,7 +179,8 @@ def test_cycleCheckMountIsUp_2(function):
 
 
 def test_cycleCheckMountIsUp_3(function):
-    function.host = ("localhost", 80)
+    function.config.hostAddress = "localhost"
+    function.config.port = 80
     with mock.patch.object(function.threadPool, "start"):
         function.cycleCheckMountIsUp()
     function.mutexCycleMountIsUp.unlock()
@@ -385,37 +396,42 @@ def test_GetTLE_3(function):
 
 
 def test_bootMount_1(function):
-    function._MAC = None
+    function.config.MAC = None
     with mock.patch.object(wakeonlan, "send_magic_packet"):
         suc = function.bootMount()
         assert not suc
 
 
 def test_bootMount_2(function):
-    function._MAC = "00:00:00:00:00:00"
+    function.config.MAC = "00:00:00:00:00:00"
     with mock.patch.object(wakeonlan, "send_magic_packet"):
         suc = function.bootMount()
         assert suc
 
 
 def test_bootMount_3(function):
-    function._MAC = "00:00:00:00:00:00"
+    function.config.MAC = "00:00:00:00:00:00"
+    function.config.wolAddress = "255.255.255.255"
     with mock.patch.object(wakeonlan, "send_magic_packet"):
-        suc = function.bootMount(bAddress="255.255.255.255")
+        suc = function.bootMount()
         assert suc
 
 
 def test_bootMount_4(function):
-    function._MAC = "00:00:00:00:00:00"
+    function.config.MAC = "00:00:00:00:00:00"
+    function.config.wolAddress = "255.255.255.255"
+    function.config.wolPort = 9
     with mock.patch.object(wakeonlan, "send_magic_packet"):
-        suc = function.bootMount(bAddress="255.255.255.255", bPort=9)
+        suc = function.bootMount()
         assert suc
 
 
 def test_bootMount_5(function):
-    function._MAC = "00:00:00:00:00:00"
+    function.config.MAC = "00:00:00:00:00:00"
+    function.config.wolAddress = "255.255.255.255"
+    function.config.wolPort = 9
     with mock.patch.object(wakeonlan, "send_magic_packet", side_effect=Exception):
-        suc = function.bootMount(bAddress="255.255.255.255", bPort=9)
+        suc = function.bootMount()
         assert not suc
 
 
@@ -561,3 +577,242 @@ def test_calcMountAltAzToDomeAltAz_2(function):
         valAlt, valAz = function.calcMountAltAzToDomeAltAz(10, 5)
         assert valAlt is None
         assert valAz is None
+
+
+def test_startupMountData_refreshModel(function):
+    function.mountIsUp = True
+    function.mountIsUpLastStatus = False
+    with (
+        mock.patch.object(function.app, "refreshModel"),
+        mock.patch.object(function.app, "refreshName"),
+        mock.patch.object(function, "getFW"),
+        mock.patch.object(function, "getLocation"),
+        mock.patch.object(function, "getTLE"),
+        mock.patch.object(function.obsSite, "setHighPrecision"),
+    ):
+        function.startupMountData()
+        assert function.app.refreshModel.emit.called
+        assert function.app.refreshName.emit.called
+
+
+def test_clearCyclePointing_alert_status_1_98(function):
+    function.obsSite.status = 98
+    function.statusAlert = False
+    with mock.patch.object(function.signals, "alert"):
+        function.clearCyclePointing(True)
+        assert function.statusAlert
+
+
+def test_clearCyclePointing_alert_status_99(function):
+    function.obsSite.status = 99
+    function.statusAlert = False
+    with mock.patch.object(function.signals, "alert"):
+        function.clearCyclePointing(True)
+        assert function.statusAlert
+
+
+def test_clearCyclePointing_settlingWait(function):
+    function.obsSite.status = 0
+    function.obsSite.flipped = True
+    function._waitTimeFlip = 5000
+    function.obsSite.statusSlew = False
+    function.statusSlew = True
+    with mock.patch.object(function.settlingWait, "start"):
+        function.clearCyclePointing(True)
+        assert function.settlingWait.start.called
+
+
+def test_collectData_no_slew(function):
+    function.obsSite.statusSlew = False
+    function.raRef = 100.0
+    function.decRef = 50.0
+    function.collectData()
+    assert function.raRef == 100.0
+    assert function.decRef == 50.0
+
+
+def test_bootMount_with_bAddress_only(function):
+    function.config.MAC = "00:00:00:00:00:00"
+    function.config.wolAddress = "255.255.255.255"
+    function.config.wolPort = 0
+    with mock.patch.object(wakeonlan, "send_magic_packet"):
+        suc = function.bootMount()
+        assert suc
+
+
+def test_clearStatTLE_signal(function):
+    with mock.patch.object(function.signals, "statTLEdone"):
+        function.clearStatTLE()
+        assert function.signals.statTLEdone.emit.called
+
+
+def test_clearGetTLE_signal(function):
+    with mock.patch.object(function.signals, "getTLEdone"):
+        function.clearGetTLE()
+        assert function.signals.getTLEdone.emit.called
+
+
+def test_clearCalcTLE_signal(function):
+    with mock.patch.object(function.signals, "calcTLEdone"):
+        function.clearCalcTLE()
+        assert function.signals.calcTLEdone.emit.called
+
+
+def test_clearProgTrajectory_signal(function):
+    with mock.patch.object(function.signals, "calcTrajectoryDone"):
+        function.clearProgTrajectory()
+        assert function.signals.calcTrajectoryDone.emit.called
+
+
+def test_waitTimeFlip_setter_rejects_negative(function):
+    with pytest.raises(ValueError):
+        function.waitTimeFlip = -1
+
+
+def test_runWorker_skips_when_mount_down(function):
+    function.mountIsUp = False
+    with mock.patch.object(QThreadPool, "start") as start:
+        function.runWorker(lambda: None, lambda: None, "workerGetFW")
+        assert not start.called
+
+
+def test_runWorker_skips_when_mutex_locked(function):
+    function.mountIsUp = True
+    function.mutexCalcTLE.lock()
+    with mock.patch.object(QThreadPool, "start") as start:
+        function.runWorker(
+            lambda: None,
+            lambda: None,
+            "workerCalcTLE",
+            mutex=function.mutexCalcTLE,
+        )
+        assert not start.called
+    function.mutexCalcTLE.unlock()
+
+
+def test_runWorker_uses_result_signal(function):
+    function.mountIsUp = True
+    with mock.patch.object(QThreadPool, "start"):
+        function.runWorker(
+            lambda: None,
+            lambda _r: None,
+            "workerCyclePointing",
+            useResult=True,
+        )
+        assert function.workerCyclePointing is not None
+
+
+def test_runWorker_requireMountUp_false(function):
+    function.mountIsUp = False
+    with mock.patch.object(QThreadPool, "start") as start:
+        function.runWorker(
+            lambda: None,
+            lambda: None,
+            "workerMountIsUp",
+            requireMountUp=False,
+        )
+        assert start.called
+
+
+def test_syncClock_early_return_syncTimeNone(function):
+    """Test syncClock line 410 - early return when syncTimeNone is True."""
+    orig_syncTimeNone = function.config.syncTimeNone
+    try:
+        function.config.syncTimeNone = True
+        function.mountIsUp = True
+        # Should return early without calling adjustClock
+        function.syncClock()
+    finally:
+        function.config.syncTimeNone = orig_syncTimeNone
+
+
+def test_syncClock_early_return_mountNotUp(function):
+    """Test syncClock line 410 - early return when mountIsUp is False."""
+    orig_mountIsUp = function.mountIsUp
+    try:
+        function.config.syncTimeNone = False
+        function.mountIsUp = False
+        # Should return early without calling adjustClock
+        function.syncClock()
+    finally:
+        function.mountIsUp = orig_mountIsUp
+
+
+def test_syncClock_tracking_no_sync(function):
+    """Test syncClock line 416 - return when tracking and config forbids sync."""
+    from mw4.mountcontrol.mount import MountStatus
+
+    orig_status = function.app.dReg["mount"].obsSite.status
+    orig_syncTimeNotTrack = function.config.syncTimeNotTrack
+    try:
+        function.config.syncTimeNone = False
+        function.mountIsUp = True
+        function.config.syncTimeNotTrack = True
+        function.app.dReg["mount"].obsSite.status = MountStatus.TRACKING
+        # Should return early due to tracking and syncTimeNotTrack config
+        function.syncClock()
+    finally:
+        function.app.dReg["mount"].obsSite.status = orig_status
+        function.config.syncTimeNotTrack = orig_syncTimeNotTrack
+
+
+def test_syncClock_small_delta_return(function):
+    """Test syncClock line 420 - early return when delta < 10."""
+    import numpy as np
+
+    orig_status = function.app.dReg["mount"].obsSite.status
+    orig_timeDiff = function.obsSite._timeDiff.copy()
+    try:
+        function.config.syncTimeNone = False
+        function.mountIsUp = True
+        function.config.syncTimeNotTrack = False
+        function.app.dReg["mount"].obsSite.status = 1  # Not TRACKING
+        # Set _timeDiff to 0.005 seconds (5ms), which is < 10
+        function.obsSite._timeDiff = np.full(25, 0.005)
+        # Should return early at line 420 without calling adjustClock
+        with mock.patch.object(function.obsSite, "adjustClock") as mock_adjust:
+            function.syncClock()
+            # adjustClock should not be called since delta < 10
+            mock_adjust.assert_not_called()
+    finally:
+        function.app.dReg["mount"].obsSite.status = orig_status
+        function.obsSite._timeDiff = orig_timeDiff
+
+
+def test_syncClock_delta_capping_and_adjust(function):
+    """Test syncClock lines 421-423 - delta capping and adjustClock."""
+    import numpy as np
+
+    orig_status = function.app.dReg["mount"].obsSite.status
+    orig_timeDiff = function.obsSite._timeDiff.copy()
+    try:
+        function.config.syncTimeNone = False
+        function.mountIsUp = True
+        function.config.syncTimeNotTrack = False
+        function.app.dReg["mount"].obsSite.status = 1  # Not TRACKING
+        # Set _timeDiff internal array to return 2.0 seconds when averaged
+        function.obsSite._timeDiff = np.full(25, 2.0)
+        function.syncClock()
+    finally:
+        function.app.dReg["mount"].obsSite.status = orig_status
+        function.obsSite._timeDiff = orig_timeDiff
+
+
+def test_syncClock_adjustClock_failure(function):
+    """Test syncClock lines 421-423 - when adjustClock returns False."""
+    import numpy as np
+
+    orig_status = function.app.dReg["mount"].obsSite.status
+    orig_timeDiff = function.obsSite._timeDiff.copy()
+    try:
+        function.config.syncTimeNone = False
+        function.mountIsUp = True
+        function.config.syncTimeNotTrack = False
+        function.app.dReg["mount"].obsSite.status = 1  # Not TRACKING
+        # Set _timeDiff internal array to return 0.5 seconds
+        function.obsSite._timeDiff = np.full(25, 0.5)
+        with mock.patch.object(function.obsSite, "adjustClock", return_value=False):
+            function.syncClock()
+    finally:
+        function.app.dReg["mount"].obsSite.status = orig_status
+        function.obsSite._timeDiff = orig_timeDiff

@@ -15,9 +15,9 @@
 ###########################################################
 import pytest
 from mw4.gui.mainWaddon.tabImage_Manage import ImageManage
+from mw4.gui.utilities.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from PySide6.QtWidgets import QInputDialog
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
@@ -206,13 +206,13 @@ def test_setCoolerTemp_1(function):
 
 def test_setCoolerTemp_2(function):
     function.app.dReg.d["camera"].instance.data["CAN_SET_CCD_TEMPERATURE"] = False
-    with mock.patch.object(QInputDialog, "getInt", return_value=(10, False)):
+    with mock.patch.object(MWInputDialog, "getInt", return_value=(10, False)):
         function.setCoolerTemp()
 
 
 def test_setCoolerTemp_3(function):
     function.app.dReg.d["camera"].instance.data["CAN_SET_CCD_TEMPERATURE"] = True
-    with mock.patch.object(QInputDialog, "getInt", return_value=(10, True)):
+    with mock.patch.object(MWInputDialog, "getInt", return_value=(10, True)):
         function.setCoolerTemp()
 
 
@@ -220,7 +220,7 @@ def test_setCoolerTemp_4(function):
     function.app.dReg.d["camera"].instance.data["CAN_SET_CCD_TEMPERATURE"] = True
     function.app.dReg.d["camera"].instance.data["CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"] = 10
     with (
-        mock.patch.object(QInputDialog, "getInt", return_value=(10, True)),
+        mock.patch.object(MWInputDialog, "getInt", return_value=(10, True)),
         mock.patch.object(
             function.app.dReg.d["camera"].instance,
             "sendCoolerTemp",
@@ -233,7 +233,7 @@ def test_setCoolerTemp_4(function):
 def test_setCoolerTemp_5(function):
     function.app.dReg.d["camera"].instance.data["CAN_SET_CCD_TEMPERATURE"] = True
     function.app.dReg.d["camera"].instance.data["CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"] = 10
-    with mock.patch.object(QInputDialog, "getInt", return_value=(10, False)):
+    with mock.patch.object(MWInputDialog, "getInt", return_value=(10, False)):
         function.setCoolerTemp()
 
 
@@ -247,7 +247,7 @@ def test_setOffset_2(function):
     function.app.dReg.d["camera"].instance.data["CCD_OFFSET.OFFSET_MIN"] = 1
     function.app.dReg.d["camera"].instance.data["CCD_OFFSET.OFFSET_MAX"] = 1
     function.app.dReg.d["camera"].instance.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
-    with mock.patch.object(QInputDialog, "getItem", return_value=("1", False)):
+    with mock.patch.object(MWInputDialog, "getItem", return_value=("1", False)):
         function.setOffset()
 
 
@@ -257,7 +257,7 @@ def test_setOffset_3(function):
     function.app.dReg.d["camera"].instance.data["CCD_OFFSET.OFFSET_MAX"] = 1
     function.app.dReg.d["camera"].instance.data["CCD_OFFSET.OFFSET_LIST"] = ["1"]
     with (
-        mock.patch.object(QInputDialog, "getItem", return_value=("1", True)),
+        mock.patch.object(MWInputDialog, "getItem", return_value=("1", True)),
         mock.patch.object(
             function.app.dReg.d["camera"].instance,
             "sendOffset",
@@ -273,7 +273,7 @@ def test_setOffset_4(function):
     function.app.dReg.d["camera"].instance.data["CCD_OFFSET.OFFSET_MAX"] = 1
     function.app.dReg.d["camera"].instance.data["CCD_OFFSET.OFFSET_LIST"] = None
     with (
-        mock.patch.object(QInputDialog, "getInt", return_value=("1", True)),
+        mock.patch.object(MWInputDialog, "getInt", return_value=("1", True)),
         mock.patch.object(
             function.app.dReg.d["camera"].instance,
             "sendOffset",
@@ -289,7 +289,7 @@ def test_setOffset_5(function):
     function.app.dReg.d["camera"].instance.data["CCD_OFFSET.OFFSET_MAX"] = None
     function.app.dReg.d["camera"].instance.data["CCD_OFFSET.OFFSET_LIST"] = None
     with (
-        mock.patch.object(QInputDialog, "getInt", return_value=("1", True)),
+        mock.patch.object(MWInputDialog, "getInt", return_value=("1", True)),
         mock.patch.object(
             function.app.dReg.d["camera"].instance,
             "sendOffset",
@@ -309,7 +309,7 @@ def test_setGain_2(function):
     function.app.dReg.d["camera"].instance.data["CCD_GAIN.GAIN_MIN"] = 1
     function.app.dReg.d["camera"].instance.data["CCD_GAIN.GAIN_MAX"] = 1
     function.app.dReg.d["camera"].instance.data["CCD_GAIN.GAIN_LIST"] = ["1"]
-    with mock.patch.object(QInputDialog, "getItem", return_value=("1", False)):
+    with mock.patch.object(MWInputDialog, "getItem", return_value=("1", False)):
         function.setGain()
 
 
@@ -319,7 +319,7 @@ def test_setGain_3(function):
     function.app.dReg.d["camera"].instance.data["CCD_GAIN.GAIN_MAX"] = 1
     function.app.dReg.d["camera"].instance.data["CCD_GAIN.GAIN_LIST"] = ["1"]
     with (
-        mock.patch.object(QInputDialog, "getItem", return_value=("1", True)),
+        mock.patch.object(MWInputDialog, "getItem", return_value=("1", True)),
         mock.patch.object(
             function.app.dReg.d["camera"].instance,
             "sendGain",
@@ -335,7 +335,7 @@ def test_setGain_4(function):
     function.app.dReg.d["camera"].instance.data["CCD_GAIN.GAIN_MAX"] = 1
     function.app.dReg.d["camera"].instance.data["CCD_GAIN.GAIN_LIST"] = None
     with (
-        mock.patch.object(QInputDialog, "getInt", return_value=("1", True)),
+        mock.patch.object(MWInputDialog, "getInt", return_value=("1", True)),
         mock.patch.object(
             function.app.dReg.d["camera"].instance,
             "sendGain",
@@ -351,7 +351,7 @@ def test_setGain_5(function):
     function.app.dReg.d["camera"].instance.data["CCD_GAIN.GAIN_MAX"] = None
     function.app.dReg.d["camera"].instance.data["CCD_GAIN.GAIN_LIST"] = None
     with (
-        mock.patch.object(QInputDialog, "getInt", return_value=("1", True)),
+        mock.patch.object(MWInputDialog, "getInt", return_value=("1", True)),
         mock.patch.object(
             function.app.dReg.d["camera"].instance,
             "sendGain",
@@ -368,13 +368,13 @@ def test_setFilterNumber_1(function):
 def test_setFilterNumber_2(function):
     function.app.dReg.d["filter"].instance.data["FILTER_SLOT.FILTER_SLOT_VALUE"] = 10
     function.app.dReg.d["filter"].instance.data["FILTER_NAME.FILTER_SLOT_NAME_0"] = "test"
-    with mock.patch.object(QInputDialog, "getInt", return_value=(10, False)):
+    with mock.patch.object(MWInputDialog, "getInt", return_value=(10, False)):
         function.setFilterNumber()
 
 
 def test_setFilterNumber_3(function):
     function.app.dReg.d["filter"].instance.data = {"FILTER_SLOT.FILTER_SLOT_VALUE": 10}
-    with mock.patch.object(QInputDialog, "getInt", return_value=(10, True)):
+    with mock.patch.object(MWInputDialog, "getInt", return_value=(10, True)):
         function.setFilterNumber()
 
 
@@ -387,7 +387,7 @@ def test_setFilterName_2(function):
     function.app.dReg.d["filter"].instance.data["FILTER_SLOT.FILTER_SLOT_VALUE"] = 1
     function.app.dReg.d["filter"].instance.data["FILTER_NAME.FILTER_SLOT_NAME_0"] = "test1"
     function.app.dReg.d["filter"].instance.data["FILTER_NAME.FILTER_SLOT_NAME_1"] = "test2"
-    with mock.patch.object(QInputDialog, "getItem", return_value=(10, False)):
+    with mock.patch.object(MWInputDialog, "getItem", return_value=(10, False)):
         function.setFilterName()
 
 
@@ -395,7 +395,7 @@ def test_setFilterName_3(function):
     function.app.dReg.d["filter"].instance.data["FILTER_SLOT.FILTER_SLOT_VALUE"] = 1
     function.app.dReg.d["filter"].instance.data["FILTER_NAME.FILTER_SLOT_NAME_0"] = "test1"
     function.app.dReg.d["filter"].instance.data["FILTER_NAME.FILTER_SLOT_NAME_1"] = "test2"
-    with mock.patch.object(QInputDialog, "getItem", return_value=("test1", True)):
+    with mock.patch.object(MWInputDialog, "getItem", return_value=("test1", True)):
         function.setFilterName()
 
 
@@ -405,7 +405,7 @@ def test_setFilterName_4(function):
         "FILTER_NAME.FILTER_SLOT_NAME_1": "test1",
         "FILTER_NAME.FILTER_SLOT_NAME_2": "test2",
     }
-    with mock.patch.object(QInputDialog, "getItem", return_value=("test1", True)):
+    with mock.patch.object(MWInputDialog, "getItem", return_value=("test1", True)):
         function.setFilterName()
 
 
@@ -585,7 +585,7 @@ def test_setLightPanelIntensity_2(function):
     function.app.dReg.d["cover"].instance.data[
         "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"
     ] = 10
-    with mock.patch.object(QInputDialog, "getInt", return_value=(10, False)):
+    with mock.patch.object(MWInputDialog, "getInt", return_value=(10, False)):
         function.setLightPanelIntensity()
 
 
@@ -594,7 +594,7 @@ def test_setLightPanelIntensity_3(function):
         "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"
     ] = 10
     with (
-        mock.patch.object(QInputDialog, "getInt", return_value=(10, True)),
+        mock.patch.object(MWInputDialog, "getInt", return_value=(10, True)),
         mock.patch.object(
             function.app.dReg.d["lightPanel"].instance,
             "lightIntensity",
@@ -609,7 +609,7 @@ def test_setLightPanelIntensity_4(function):
         "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"
     ] = 10
     with (
-        mock.patch.object(QInputDialog, "getInt", return_value=(10, True)),
+        mock.patch.object(MWInputDialog, "getInt", return_value=(10, True)),
         mock.patch.object(
             function.app.dReg.d["lightPanel"].instance,
             "lightIntensity",

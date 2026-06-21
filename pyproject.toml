@@ -60,7 +60,7 @@ dependencies = [
     "numpy==2.4.6",
     "opencv-python-headless==4.13.0.92",
     "scipy==1.17.1",
-    "astropy==7.2.0",
+    "astropy==8.0.0",
     "pyerfa==2.0.1.5",
     "astroquery==0.4.11",
     "indipyclient==0.9.1",
@@ -79,7 +79,7 @@ dependencies = [
     "range-key-dict==1.1.0",
     "packaging==26.2",
     "lz4==4.4.5",
-    "xisf==0.9.6",
+    "xisf==0.9.7",
     "pyside6==6.11.1",
     "pyyaml==6.0.3",
     "pywin32==311; platform_system == 'Windows'",
@@ -101,12 +101,12 @@ Forum = "https://www.10micron.eu/forum/"
 
 [dependency-groups]
 dev = [
-    "pytest==9.0.3",
+    "pytest==9.1.1",
     "pytest-qt==4.5.0",
     "pytest-cov==7.1.0",
     "pytest-xdist==3.8.0",
     "invoke==3.0.3",
-    "ruff==0.15.16",
+    "ruff==0.15.18",
     "coverage==7.14.1",
     "scipy-stubs==1.17.1.5",
 ]
@@ -115,7 +115,10 @@ dev = [
 minversion = "9.0"
 pythonpath = ["src"]
 testpaths = ["tests"]
-addopts = ["--import-mode=importlib"]
+# Default runs are deterministic. To audit test isolation, opt in with:
+#   pytest -p randomly            (random order)
+#   pytest -p randomly -p no:cacheprovider --randomly-seed=<n>   (reproduce)
+addopts = ["--import-mode=importlib", "-p", "no:randomly"]
 qt_api = "pyside6"
 filterwarnings = ["ignore::DeprecationWarning"]
 markers = [

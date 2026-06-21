@@ -15,12 +15,13 @@
 ###########################################################
 import numpy as np
 import webbrowser
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import guiSetText
 from range_key_dict import RangeKeyDict
 from typing import Any
 
 
-class ImageStats:
+class ImageStats(TabAddon):
     WATNEY = RangeKeyDict(
         {
             (0.001, 0.2): "Passes 14 (watneyqdb-14-20)",

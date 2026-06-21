@@ -14,7 +14,15 @@
 #
 ###########################################################
 import logging
+from mw4.gui.extWindows.setting.tabSettAudio import SettAudio
 from mw4.gui.extWindows.setting.tabSettDevice import SettDevice
+from mw4.gui.extWindows.setting.tabSettDome import SettDome
+from mw4.gui.extWindows.setting.tabSettGui import SettGui
+from mw4.gui.extWindows.setting.tabSettMount import SettMount
+from mw4.gui.extWindows.setting.tabSettPark import SettPark
+from mw4.gui.extWindows.setting.tabSettRelay import SettRelay
+from mw4.gui.extWindows.setting.tabSettUpdate import SettUpdate
+from mw4.gui.utilities.qtHelpers import getTabAndIndex, setTabAndIndex
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import setting_ui
 from typing import Any
@@ -30,12 +38,27 @@ class SettingWindow(MWidget):
         self.ui.setupUi(self.ws)
         self.setWindowTitle("Setting")
         self.tabSettDevice = SettDevice(self)
+        self.tabSettMount = SettMount(self)
+        self.tabSettDome = SettDome(self)
+        self.tabSettUpdate = SettUpdate(self)
+        self.tabSettGui = SettGui(self)
+        self.tabSettAudio = SettAudio(self)
+        self.tabSettRelay = SettRelay(self)
+        self.tabSettPark = SettPark(self)
         self.app.colorChange.connect(self.colorChange)
         self.setupIcons()
 
     def initConfig(self) -> None:
         config = self.app.config.get("WindowSetting", {})
         self.positionWindow(config)
+        setTabAndIndex(self.ui.tabWidget, config, "TabOrder")
+        self.tabSettMount.initConfig()
+        self.tabSettDome.initConfig()
+        self.tabSettUpdate.initConfig()
+        self.tabSettGui.initConfig()
+        self.tabSettAudio.initConfig()
+        self.tabSettRelay.initConfig()
+        self.tabSettPark.initConfig()
 
     def storeConfig(self) -> None:
         configMain = self.app.config
@@ -44,13 +67,26 @@ class SettingWindow(MWidget):
         config["winPosX"] = max(self.pos().x(), 0)
         config["winPosY"] = max(self.pos().y(), 0)
         config["height"] = self.height()
+        getTabAndIndex(self.ui.tabWidget, config, "TabOrder")
+        self.tabSettMount.storeConfig()
+        self.tabSettDome.storeConfig()
+        self.tabSettGui.storeConfig()
+        self.tabSettAudio.storeConfig()
+        self.tabSettUpdate.storeConfig()
+        self.tabSettRelay.storeConfig()
+        self.tabSettPark.storeConfig()
 
     def setupIcons(self) -> None:
         self.tabSettDevice.setupIcons()
+        self.tabSettMount.setupIcons()
+        self.tabSettDome.setupIcons()
+        self.tabSettGui.setupIcons()
+        self.tabSettPark.setupIcons()
 
     def closeEvent(self, closeEvent) -> None:
         self.storeConfig()
         self.tabSettDevice.closeEvent()
+        self.tabSettMount.closeEvent()
         super().closeEvent(closeEvent)
 
     def colorChange(self) -> None:

@@ -41,10 +41,6 @@ class Connection:
 
     log = logging.getLogger("MW4")
     SOCKET_TIMEOUT = 10
-
-    # All three command lists are pre-sorted in reverse lexicographic order so that
-    # longer (more-specific) prefixes are tested before shorter ones. Sorting is done
-    # once at class-definition time to avoid repeated O(n log n) calls per command.
     COMMANDS: tuple[str, ...] = tuple(
         sorted(
             [
@@ -284,7 +280,7 @@ class Connection:
     )
 
     def __init__(self, parent: Any) -> None:
-        self.host = parent.host
+        self.host = (parent.config.hostAddress, parent.config.port)
         self.loggingTrace = parent.loggingTrace
         self.id = str(uuid.uuid4())[:8]
 
@@ -300,15 +296,6 @@ class Connection:
         return True
 
     def analyseCommand(self, commandString: str) -> tuple[int, bool, int]:
-        """
-        analyseCommand parses the provided commandString against the two command
-        types A and B to evaluate if a response is expected and how many chunks of
-        data show be received.
-
-        the command slots will be sorted in reverse order to ensure that longer
-        commands with the same leading characters will be tested first. otherwise,
-        the test will be ended before testing al commands.
-        """
         chunksToReceive = 0
         getData = False
         commandSet = commandString.split("#")[:-1]

@@ -89,13 +89,9 @@ def setupLogging() -> None:
 
 
 def setTrace(app: Any, enable: bool = False) -> None:
-    """
-    drivers = app.getActiveDrivers()
-    for device in drivers:
-        for framework in drivers[device]["class"].run:
-            drivers[device]["class"].run[framework].loggingTrace = enable
-    """
-    pass
+    for device in app.dReg.configurable():
+        for framework in device.run:
+            device.instance.run[framework].loggingTrace = enable
 
 
 def setCustomLoggingLevel(app: Any, level: str = "DEBUG") -> None:

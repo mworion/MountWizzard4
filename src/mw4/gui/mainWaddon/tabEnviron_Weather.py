@@ -16,6 +16,7 @@
 import numpy as np
 from dataclasses import dataclass
 from functools import partial
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QWidget
@@ -30,7 +31,7 @@ class RefractionEntry:
     uiPost: str
 
 
-class EnvironWeather:
+class EnvironWeather(TabAddon):
     def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
@@ -78,7 +79,7 @@ class EnvironWeather:
 
         for source in self.refractionSources:
             self.refractionSources[source].signals.deviceDisconnected.connect(
-                self.clearSourceGui
+                partial(self.clearSourceGui, source)
             )
             self.refractionSources[source].group.clicked.connect(
                 partial(self.selectRefractionSource, source)
@@ -170,8 +171,6 @@ class EnvironWeather:
             self.ui.refracCont.setChecked(True)
 
     def setRefractionUpdateType(self) -> None:
-        if not self.ui.showTabEnviron.isChecked():
-            return
         if self.refractionSource != "directWeather":
             self.app.dReg["mount"].setting.setDirectWeatherUpdateType(0)
             return
@@ -249,7 +248,7 @@ class EnvironWeather:
             return
         if self.ui.refracManual.isChecked():
             return
-        if self.ui.refracNoTrack.isChecked() and self.app.dReg["mount"].obsSite.status == 0:
+        if self.ui.refracNoTrack.isChecked() and self.app.dReg["mount"].obsSite.isTracking:
             return
 
         temp, press = self.movingAverageRefractionParameters()
@@ -263,7 +262,6 @@ class EnvironWeather:
             data = self.refractionSources[source].data
             uiPost = self.refractionSources[source].uiPost
             for field in self.envFields:
-                # Use getattr() instead of eval() to safely resolve UI widget names. (SEC-2)
                 ui = getattr(self.ui, field + uiPost)
                 value = data.get(self.envFields[field]["valueKey"])
                 guiSetText(ui, self.envFields[field]["format"], value)

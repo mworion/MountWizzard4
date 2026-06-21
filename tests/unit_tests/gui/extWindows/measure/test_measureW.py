@@ -56,6 +56,8 @@ def function(qapp):
 def prepareFunctionState(function):
     value = np.datetime64("2014-12-12 20:20:20")
     function.app.measure.framework = ""
+    # setTitle() reads the framework from the registry instance, so reset it too.
+    function.app.dReg["measure"].instance.framework = ""
     function.app.measure.devices["directWeather"] = ""
     function.app.measure.data = {
         "time": np.array([value] * 5, dtype="datetime64[s]"),
@@ -146,12 +148,12 @@ def test_colorChange(function):
 
 
 def test_setTitle_1(function):
-    function.app.measure.framework = ""
+    function.app.dReg["measure"].instance.framework = ""
     function.setTitle()
 
 
 def test_setTitle_2(function):
-    function.app.measure.framework = "csv"
+    function.app.dReg["measure"].instance.framework = "csv"
     function.app.measure.run["csv"].csvFilename = Path("csv")
     function.setTitle()
 
@@ -349,7 +351,7 @@ def test_drawMeasure_3(function):
 def test_setTitle_csvFramework(function):
     measureClass = function.app.dReg.d["measure"].instance
     measureClass.framework = "csv"
-    measureClass.run["csv"].csvFilename = Path("test_data.csv")
+    function.app.measure.run["csv"].csvFilename = Path("test_data.csv")
     function.setTitle()
     measureClass.framework = ""
 

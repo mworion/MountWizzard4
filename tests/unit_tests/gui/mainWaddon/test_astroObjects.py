@@ -116,52 +116,41 @@ def test_workerProcessSource_1(function):
 
 
 def test_procSourceData_1(function):
-    class Test:
-        returnValues = {"success": False}
-
-    function.downloadPopup = Test()
-    function.procSourceData(direct=False)
-
-
-def test_procSourceData_2(function):
-    class Test:
-        returnValues = {"success": True}
-
-    function.downloadPopup = Test()
     with mock.patch.object(function.threadPool, "start"):
-        function.procSourceData(direct=True)
-
-
-def test_procSourceData_3(function):
-    class Test:
-        returnValues = {"success": True}
-
-    function.downloadPopup = Test()
-    with mock.patch.object(function.threadPool, "start"):
-        function.procSourceData(direct=False)
+        function.procSourceData()
 
 
 def test_runDownloadPopup_1(function):
-    function.window.ui.isOnline.setChecked(True)
-    with mock.patch.object(function.window.app.threadPool, "start"):
+    with (
+        mock.patch(
+            "mw4.gui.mainWaddon.astroObjects.DownloadPopup.download", return_value=True
+        ),
+        mock.patch.object(function, "procSourceData") as mock_proc,
+    ):
         function.runDownloadPopup(Path(), False)
+        mock_proc.assert_called_once()
 
 
 def test_runDownloadPopup_2(function):
-    function.window.ui.isOnline.setChecked(False)
-    with mock.patch.object(function.window.app.threadPool, "start"):
+    with (
+        mock.patch(
+            "mw4.gui.mainWaddon.astroObjects.DownloadPopup.download", return_value=False
+        ),
+        mock.patch.object(function, "procSourceData") as mock_proc,
+    ):
         function.runDownloadPopup(Path(), False)
+        mock_proc.assert_not_called()
 
 
 def test_checkFileAgeOK_1(function):
-    function.window.ui.ageDatabases.setValue(3)
+    function.app.config["SettingUpdate"] = {"ageDatabases": 3}
     with mock.patch.object(Path, "is_file", return_value=False):
         val = function.checkFileAgeOK(Path())
         assert not val
 
 
 def test_checkFileAgeOK_2(function):
-    function.window.ui.ageDatabases.setValue(3)
+    function.app.config["SettingUpdate"] = {"ageDatabases": 3}
     with (
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(function.loader, "days_old", return_value=1),
@@ -171,7 +160,7 @@ def test_checkFileAgeOK_2(function):
 
 
 def test_checkFileAgeOK_3(function):
-    function.window.ui.ageDatabases.setValue(3)
+    function.app.config["SettingUpdate"] = {"ageDatabases": 3}
     with (
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(function.loader, "days_old", return_value=5),
@@ -218,26 +207,20 @@ def test_loadSourceUrl_4(function):
         function.loadSourceUrl()
 
 
-def test_finishProgObjects_1(function):
-    class Test:
-        returnValues = {"success": False}
-
-    function.uploadPopup = Test()
-    function.finishProgObjects()
-
-
-def test_finishProgObjects_2(function):
-    class Test:
-        returnValues = {"success": True}
-
-    function.uploadPopup = Test()
-    function.finishProgObjects()
-
-
 def test_runUploadPopup_1(function):
-    with mock.patch.object(function.window.app.threadPool, "start"):
+    with mock.patch("mw4.gui.mainWaddon.astroObjects.UploadPopup.upload", return_value=True):
         function.runUploadPopup(Path())
-        function.uploadPopup = None
+
+
+def test_runUploadPopup_2(function):
+    with mock.patch("mw4.gui.mainWaddon.astroObjects.UploadPopup.upload", return_value=False):
+        function.runUploadPopup(Path())
+
+
+def test_runUploadPopup_calls_showWindow(function):
+    """Test runUploadPopup calls exec and emits success message on True result."""
+    with mock.patch("mw4.gui.mainWaddon.astroObjects.UploadPopup.upload", return_value=True):
+        function.runUploadPopup(Path())
 
 
 def test_progObjects_1(function):
@@ -328,3 +311,32 @@ def test_progFiltered_2(function):
 def test_progFull_1(function):
     with mock.patch.object(function, "progGUI"), mock.patch.object(function, "progObjects"):
         function.progFull()
+
+
+def test_runDownloadPopup_when_online(function):
+    """Test runDownloadPopup calls download and procSourceData on success."""
+    with (
+        mock.patch(
+            "mw4.gui.mainWaddon.astroObjects.DownloadPopup.download", return_value=True
+        ),
+        mock.patch.object(function, "procSourceData") as mock_proc,
+    ):
+        function.runDownloadPopup(Path(), False)
+        mock_proc.assert_called_once()
+
+
+def test_loadSourceUrl_online_with_old_file(function):
+    """Test loadSourceUrl when file is old and app is online (lines 132-135)."""
+    function.uiSourceList.clear()
+    function.uiSourceList.addItem("100 brightest")
+    function.app.isOnline = True
+    function.window.ui.isOnline.setChecked(True)
+
+    with (
+        mock.patch.object(function, "checkFileAgeOK", return_value=False),
+        mock.patch.object(function, "runDownloadPopup"),
+        mock.patch.object(function, "setAge"),
+    ):
+        function.loadSourceUrl()
+        function.setAge.assert_called_once_with(0)
+        function.runDownloadPopup.assert_called_once()

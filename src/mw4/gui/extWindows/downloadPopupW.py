@@ -16,18 +16,20 @@
 import gzip
 import requests
 import shutil
+from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
 from mw4.gui.utilities.qtHelpers import svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.downloadPopup_ui import Ui_DownloadPopup
 from pathlib import Path
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import QEventLoop, Qt, Signal
 
 
 class DownloadPopup(MWidget):
     signalProgress = Signal(object)
     signalStatus = Signal(object)
     signalProgressBarColor = Signal(object)
+    TIMEOUT_SOURCE = 5
 
     def __init__(self, parentWidget: MWidget, url: str, dest: Path, unzip: bool = False):
         super().__init__()
@@ -35,15 +37,14 @@ class DownloadPopup(MWidget):
         self.msg = parentWidget.app.msg
         self.threadPool = parentWidget.app.threadPool
         self.worker: Worker | None = None
+        self.loop: QEventLoop | None = None
         self.url = url
         self.dest = dest
         self.unzip = unzip
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self.ws)
-        self.setMinimumSize(400, 120)
-        self.setMaximumSize(400, 120)
-        self.titleBar.windowFixed = True
         self.setWindowTitle("Downloading from Web")
+        self.setFixedSize(400, 120)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)
@@ -58,6 +59,31 @@ class DownloadPopup(MWidget):
         pixmap = pixmap.scaled(64, 64, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.icon.setPixmap(pixmap)
 
+    def showWindow(self) -> None:
+        self.show()
+        self.setMinimumSize(400, 120)
+        self.setMaximumSize(400, 120)
+        self.titleBar.normButton.setVisible(False)
+        self.titleBar.maxButton.setVisible(False)
+        self.titleBar.windowFixed = True
+
+    def exec(self) -> bool:
+        self.showWindow()
+        self.loop = QEventLoop()
+        self.worker = Worker(self.downloadFileWorker, self.url, self.dest, self.unzip)
+        self.worker.signals.result.connect(self.closePopup)
+        self.worker.signals.finished.connect(self.loop.quit)
+        self.threadPool.start(self.worker)
+        self.loop.exec()
+        return self.returnValues["success"]
+
+    @classmethod
+    def download(
+        cls, parentWidget: MWidget, url: str, dest: Path, unzip: bool = False
+    ) -> bool:
+        dlg = cls(parentWidget, url, dest, unzip)
+        return dlg.exec()
+
     def setProgressBarColor(self, color: str) -> None:
         css = "QProgressBar::chunk {background-color: " + color + ";}"
         self.ui.progressBar.setStyleSheet(css)
@@ -69,7 +95,7 @@ class DownloadPopup(MWidget):
         self.ui.statusText.setText(statusText)
 
     def getFileFromUrl(self, url: str, dest: Path) -> bool:
-        r = requests.get(url, stream=True, timeout=3)
+        r = requests.get(url, stream=True, timeout=self.TIMEOUT_SOURCE)
         totalSizeBytes = int(r.headers.get("content-length", 1))
         if r.status_code != 200:
             return False
@@ -124,11 +150,6 @@ class DownloadPopup(MWidget):
         else:
             self.signalProgressBarColor.emit("red")
             self.signalStatus.emit("Download failed")
-
+        mainThreadSleep(500)
         self.returnValues["success"] = result
         self.close()
-
-    def downloadFile(self) -> None:
-        self.worker = Worker(self.downloadFileWorker, self.url, self.dest, self.unzip)
-        self.worker.signals.result.connect(self.closePopup)
-        self.threadPool.start(self.worker)

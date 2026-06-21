@@ -15,13 +15,14 @@
 ###########################################################
 from astroquery.simbad import Simbad
 from mw4.base.tpool import Worker
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from PySide6.QtCore import QMutex
 from skyfield.api import Angle
 from typing import Any
 
 
-class BuildPoints:
+class BuildPoints(TabAddon):
     def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
@@ -73,7 +74,7 @@ class BuildPoints:
         self.ui.useSafetyMargin.clicked.connect(self.rebuildPoints)
         self.app.buildPointsChanged.connect(self.buildPointsChanged)
         self.ui.generateQuery.editingFinished.connect(self.querySimbad)
-        self.ui.isOnline.stateChanged.connect(self.setupDsoGui)
+        self.app.onlineModeChanged.connect(self.setupDsoGui)
 
     def initConfig(self) -> None:
         config = self.app.config["WindowMain"]
@@ -356,7 +357,7 @@ class BuildPoints:
         self.processPoints()
 
     def setupDsoGui(self) -> None:
-        isOnline = self.ui.isOnline.isChecked()
+        isOnline = self.app.isOnline
         self.ui.generateQuery.setEnabled(isOnline)
         self.ui.generateRa.setEnabled(isOnline)
         self.ui.generateDec.setEnabled(isOnline)
@@ -365,7 +366,7 @@ class BuildPoints:
         self.ui.generateDecText.setEnabled(isOnline)
 
     def querySimbad(self) -> None:
-        if not self.ui.isOnline.isChecked():
+        if not self.app.isOnline:
             self.msg.emit(2, "Model", "Buildpoints", "MW4 is offline")
             return
 

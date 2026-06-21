@@ -386,18 +386,18 @@ def test_setupDsoGui(function):
 
 
 def test_querySimbad_1(function):
-    function.ui.isOnline.setChecked(False)
+    function.app.isOnline = False
     function.querySimbad()
 
 
 def test_querySimbad_2(function):
-    function.ui.isOnline.setChecked(True)
+    function.app.isOnline = True
     function.ui.generateQuery.setText("")
     function.querySimbad()
 
 
 def test_querySimbad_3(function):
-    function.ui.isOnline.setChecked(True)
+    function.app.isOnline = True
     function.ui.generateQuery.setText("m31")
     with mock.patch.object(Simbad, "query_object", return_value=None):
         function.querySimbad()
@@ -406,7 +406,7 @@ def test_querySimbad_3(function):
 def test_querySimbad_4(function):
     result = {"ra": 1.0, "dec": 2.5}
 
-    function.ui.isOnline.setChecked(True)
+    function.app.isOnline = True
     function.ui.generateQuery.setText("m31")
     with mock.patch.object(Simbad, "query_object", return_value=result):
         function.querySimbad()

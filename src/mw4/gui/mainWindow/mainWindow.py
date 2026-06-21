@@ -25,6 +25,7 @@ from mw4.gui.utilities.qtHelpers import (
     getTabAndIndex,
     getTabIndex,
     setTabAndIndex,
+    svg2pixmap,
 )
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
@@ -47,7 +48,6 @@ class MainWindow(MWidget):
         self.externalWindows = ExternalWindows(self)
         self.mainWindowAddons = MainWindowAddons(self)
         self.satStatus: bool = False
-        self.gameControllerRunning: bool = False
         self.deviceStatGui: dict = {
             "dome": self.ui.domeConnected,
             "camera": self.ui.cameraConnected,
@@ -64,13 +64,8 @@ class MainWindow(MWidget):
                 "statID": "relay",
                 "tab": self.ui.toolsTabWidget,
             },
-            "RelaySett": {
-                "statID": "relay",
-                "tab": self.ui.settingsTabWidget,
-            },
         }
         self.app.dReg["mount"].signals.pointDone.connect(self.updateStatusGUI)
-        self.app.dReg["mount"].signals.mountIsUp.connect(self.updateMountConnStat)
         self.app.remoteCommand.connect(self.remoteCommand)
         self.app.dReg["plateSolve"].signals.message.connect(self.updatePlateSolveStatus)
         self.app.dReg["dome"].signals.message.connect(self.updateDomeStatus)
@@ -80,24 +75,26 @@ class MainWindow(MWidget):
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
         self.app.dReg["seeingWeather"].instance.b = self.ui.label_b.property("a")
-        self.ui.colorSet.currentIndexChanged.connect(self.updateColorSet)
-        self.app.update1s.connect(self.updateTime)
-        self.app.update1s.connect(self.updateControllerStatus)
         self.app.update1s.connect(self.updateThreadAndOnlineStatus)
         self.app.update1s.connect(self.smartFunctionGui)
         self.app.update1s.connect(self.smartTabGui)
         self.app.update1s.connect(self.setEnvironDeviceStats)
         self.app.update1s.connect(self.updateDeviceStats)
+        self.app.update30s.connect(self.updateTwilightAndDisk)
+        self.app.colorChange.connect(self.updateColorSet)
+        # Cached values for status title; refreshed on the slower cadence so we
+        # don't hit disk and recompute twilight every second on the GUI thread.
+        self._twilightText: str = ""
+        self._diskFreePct: int = 0
 
     def initConfig(self) -> None:
+        config = self.app.config.get("SettingMisc", {})
+        colSet = config.get("colorSet", 0)
+        Styles.colorSet = colSet
+
         config = self.app.config
         if "WindowMain" not in config:
             config["WindowMain"] = {}
-
-        colSet = config.get("colorSet", 0)
-        Styles.colorSet = colSet
-        self.ui.colorSet.setCurrentIndex(colSet)
-        self.setStyleSheet(self.mw4Style)
         self.ui.profileName.setText(config.get("profileName"))
         config = config["WindowMain"]
         self.positionWindow(config)
@@ -106,7 +103,6 @@ class MainWindow(MWidget):
         setTabAndIndex(self.ui.imagingTabWidget, config, "orderImaging")
         setTabAndIndex(self.ui.modelingTabWidget, config, "orderModeling")
         setTabAndIndex(self.ui.manageTabWidget, config, "orderManage")
-        setTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
         setTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
         setTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
         self.mainWindowAddons.initConfig()
@@ -116,7 +112,6 @@ class MainWindow(MWidget):
 
     def storeConfig(self) -> None:
         config = self.app.config
-        config["colorSet"] = self.ui.colorSet.currentIndex()
         config["profileName"] = self.ui.profileName.text()
         if "WindowMain" not in config:
             config["WindowMain"] = {}
@@ -131,9 +126,7 @@ class MainWindow(MWidget):
         getTabAndIndex(self.ui.imagingTabWidget, config, "orderImaging")
         getTabAndIndex(self.ui.modelingTabWidget, config, "orderModeling")
         getTabAndIndex(self.ui.manageTabWidget, config, "orderManage")
-        getTabAndIndex(self.ui.settingsTabWidget, config, "orderSettings")
         getTabAndIndex(self.ui.toolsTabWidget, config, "orderTools")
-        getTabAndIndex(self.ui.satTabWidget, config, "orderSatellite")
         self.externalWindows.storeConfigExtendedWindows()
         self.mainWindowAddons.storeConfig()
         self.app.storeConfig()
@@ -143,8 +136,6 @@ class MainWindow(MWidget):
         self.wIcon(self.ui.loadFrom, "load")
         self.wIcon(self.ui.saveConfig, "save")
         self.wIcon(self.ui.saveConfigQuit, "save")
-        self.wIcon(self.ui.mountOn, "power-on")
-        self.wIcon(self.ui.mountOff, "power-off")
         self.wIcon(self.ui.stop, "hand")
         self.wIcon(self.ui.tracking, "target")
         self.wIcon(self.ui.followSat, "satellite")
@@ -153,21 +144,30 @@ class MainWindow(MWidget):
         self.wIcon(self.ui.setLunarTracking, "lunar")
         self.wIcon(self.ui.setSolarTracking, "solar")
         self.wIcon(self.ui.park, "park")
+        self.wIcon(self.ui.setting, "cogs")
+        pixmap = svg2pixmap("assets/icon/controller.svg", self.M_PRIM)
+        self.ui.controller1.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller2.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller3.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller4.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller5.setPixmap(pixmap.scaled(16, 16))
+        self.ui.controller1.setEnabled(False)
+        self.ui.controller2.setEnabled(False)
+        self.ui.controller3.setEnabled(False)
+        self.ui.controller4.setEnabled(False)
+        self.ui.controller5.setEnabled(False)
         self.mainWindowAddons.setupIcons()
 
     def updateColorSet(self) -> None:
-        Styles.colorSet = self.ui.colorSet.currentIndex()
         self.setStyleSheet(self.mw4Style)
         self.setupIcons()
         self.mainWindowAddons.updateColorSet()
-        self.app.colorChange.emit()
 
     def closeEvent(self, closeEvent) -> None:
-        self.gameControllerRunning = False
-        self.app.timerMgr.stop()
+        self.app.timeMgr.stop()
         changeStyleDynamic(self.ui.pauseModel, "pause", False)
         self.externalWindows.closeExtendedWindows()
-        self.threadPool.waitForDone(10000)
+        self.threadPool.waitForDone(5000)
         super().closeEvent(closeEvent)
         self.app.quit()
 
@@ -203,7 +203,6 @@ class MainWindow(MWidget):
         self.ui.cometProgDatabaseGroup.setEnabled(isMountReady)
         self.ui.asteroidProgDatabaseGroup.setEnabled(isMountReady)
         self.ui.progEarthRotationData.setEnabled(isMountReady)
-        self.ui.use10micronDef.setEnabled(isMountReady)
         self.ui.mountTabWidget.setEnabled(isMountReady)
         self.ui.telescopePointingGroup.setEnabled(isMountReady)
         self.ui.trackingGroup.setEnabled(isMountReady)
@@ -234,10 +233,8 @@ class MainWindow(MWidget):
             ui.setStyleSheet(ui.styleSheet())
 
     def setEnvironDeviceStats(self) -> None:
-        refracOn = self.app.dReg["mount"].setting.statusRefraction == 1
         isManual = self.ui.refracManual.isChecked()
-        isTabEnabled = self.ui.showTabEnviron.isChecked()
-        if not refracOn or not isTabEnabled:
+        if self.app.dReg["mount"].setting.statusRefraction != 1:
             self.app.dReg.setStat("refraction", None)
             self.ui.refractionConnected.setText("Refraction")
         elif isManual:
@@ -264,14 +261,6 @@ class MainWindow(MWidget):
                 changeStyleDynamic(ui, "color", "red")
                 ui.setEnabled(True)
 
-        isMount = self.app.dReg["mount"].stat
-        changeStyleDynamic(self.ui.mountOn, "run", isMount)
-        changeStyleDynamic(self.ui.mountOff, "run", not isMount)
-        changeStyleDynamic(self.ui.mountConnected, "run", isMount)
-
-    def updateMountConnStat(self, status: bool) -> None:
-        self.app.dReg.setStat("mount", status)
-
     def updatePlateSolveStatus(self, text: str) -> None:
         self.ui.plateSolveText.setText(text)
 
@@ -281,8 +270,7 @@ class MainWindow(MWidget):
     def updateCameraStatus(self, text: str) -> None:
         self.ui.cameraText.setText(text)
 
-    def updateControllerStatus(self) -> None:
-        gcStatus = self.gameControllerRunning
+    def updateControllerStatus(self, gcStatus: bool) -> None:
         self.ui.controller1.setEnabled(gcStatus)
         self.ui.controller2.setEnabled(gcStatus)
         self.ui.controller3.setEnabled(gcStatus)
@@ -290,16 +278,26 @@ class MainWindow(MWidget):
         self.ui.controller5.setEnabled(gcStatus)
 
     def updateThreadAndOnlineStatus(self) -> None:
-        mode = "Online" if self.ui.isOnline.isChecked() else "Offline"
+        mode = "Online" if self.app.isOnline else "Offline"
         moon = self.ui.moonPhaseIllumination.text()
-        f = dark_twilight_day(self.app.ephemeris, self.app.dReg["mount"].location)
-        twilight = TWILIGHTS[int(f(self.app.dReg["mount"].obsSite.ts.now()))]
+        if not self._twilightText:
+            self.updateTwilightAndDisk()
         activeCount = self.threadPool.activeThreadCount()
-        diskUsage = shutil.disk_usage(self.app.mwGlob["workDir"])
-        free = int(diskUsage[2] / diskUsage[0] * 100)
-        t = f"{mode} - {twilight} - Moon: {moon}%"
-        t += f" - Threads:{activeCount:2d} / 30 - Disk free: {free}%"
+        maxCount = self.app.MAX_THREAD_COUNT
+        t = f"{mode} - {self._twilightText} - Moon: {moon}%"
+        t += f" - Threads:{activeCount:2d} / {maxCount} - Disk free: {self._diskFreePct}%"
         self.ui.statusOnlineGroup.setTitle(t)
+
+    def updateTwilightAndDisk(self) -> None:
+        """Refresh slowly-changing values used by the status title.
+
+        Twilight only changes every few minutes and ``shutil.disk_usage``
+        does I/O, so both are evaluated on the slower cadence and cached.
+        """
+        f = dark_twilight_day(self.app.ephemeris, self.app.dReg["mount"].location)
+        self._twilightText = TWILIGHTS[int(f(self.app.dReg["mount"].obsSite.ts.now()))]
+        diskUsage = shutil.disk_usage(self.app.mwGlob["workDir"])
+        self._diskFreePct = int(diskUsage[2] / diskUsage[0] * 100)
 
     def updateTime(self) -> None:
         self.ui.timeComputer.setText(datetime.now().strftime("%H:%M:%S"))
@@ -309,25 +307,20 @@ class MainWindow(MWidget):
 
     def updateStatusGUI(self, obs: ObsSite) -> None:
         self.ui.mountText.setText(obs.statusText())
-        if self.app.dReg["mount"].obsSite.status == 0:
-            changeStyleDynamic(self.ui.tracking, "run", True)
-        else:
-            changeStyleDynamic(self.ui.tracking, "run", False)
+        obsSite = self.app.dReg["mount"].obsSite
+        # Map UI element to the predicate that determines its "run" highlight.
+        statusFlags = (
+            (self.ui.tracking, obsSite.isTracking),
+            (self.ui.park, obsSite.isParked),
+            (self.ui.stop, obsSite.isStopped),
+        )
+        for widget, isActive in statusFlags:
+            changeStyleDynamic(widget, "run", isActive)
 
-        if self.app.dReg["mount"].obsSite.status == 5:
-            changeStyleDynamic(self.ui.park, "run", True)
-        else:
-            changeStyleDynamic(self.ui.park, "run", False)
-
-        if self.app.dReg["mount"].obsSite.status == 1:
-            changeStyleDynamic(self.ui.stop, "run", True)
-        else:
-            changeStyleDynamic(self.ui.stop, "run", False)
-
-        if self.app.dReg["mount"].obsSite.status == 10 and not self.satStatus:
+        if obsSite.isFollowingSatellite and not self.satStatus:
             self.app.playSound.emit("SatStartTracking")
             self.satStatus = True
-        elif self.app.dReg["mount"].obsSite.status != 10:
+        elif not obsSite.isFollowingSatellite:
             self.satStatus = False
 
     def switchProfile(self, config: dict) -> None:

@@ -23,8 +23,6 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function():
     m = MountDevice(
         app=App(),
-        host=None,
-        MAC=None,
         verbose=True,
     )
     m.obsSite.location = wgs84.latlon(

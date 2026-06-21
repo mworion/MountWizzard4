@@ -54,11 +54,12 @@ def test_cameraAlpacaAscomBase_cameraStates(function):
 
 
 def test_cameraAlpacaAscomBase_initAttributes(function):
-    assert hasattr(function, "parent")
-    assert hasattr(function, "startTimeExposure")
-    assert hasattr(function, "exposing")
-    assert function.startTimeExposure == 0
-    assert function.exposing is False
+    fresh = CameraAlpaca(function.parent)
+    assert hasattr(fresh, "parent")
+    assert hasattr(fresh, "startTimeExposure")
+    assert hasattr(fresh, "exposing")
+    assert fresh.startTimeExposure == 0
+    assert fresh.exposing is False
 
 
 def test_getInitialConfig(function):

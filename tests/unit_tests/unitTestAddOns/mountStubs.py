@@ -14,9 +14,25 @@
 #
 ###########################################################
 import numpy as np
+from dataclasses import dataclass, field
 from packaging.version import Version
 from PySide6.QtCore import QObject, Signal
 from skyfield.api import Angle, Loader, load, wgs84
+
+
+@dataclass
+class DeviceConfigMount:
+    deviceName: str = field(default="10micron")
+    hostAddress: str = field(default="127.0.0.1")
+    port: int = field(default=3492)
+    MAC: str = field(default="00:00:00:00:00:00")
+    clockSync: bool = field(default=False)
+    syncTimeNone: bool = field(default=True)
+    syncTimeCont: bool = field(default=False)
+    syncTimeNotTrack: bool = field(default=False)
+    wolAutomatic: bool = field(default=False)
+    wolAddress: str = field(default="255.255.255.255")
+    wolPort: int = field(default=9)
 
 
 class Name:
@@ -294,6 +310,8 @@ class MountSignals(QObject):
     slewed = Signal()
     calcTrajectoryDone = Signal(object)
     calcProgress = Signal(object)
+    deviceConnected = Signal(str)
+    deviceDisconnected = Signal(str)
 
 
 class MountObsSite:
@@ -324,6 +342,22 @@ class MountObsSite:
         self.status = 0
         self.statusSat = "E"
         self.UTC2TT = 69.184
+
+    @property
+    def isTracking(self) -> bool:
+        return self.status == 0
+
+    @property
+    def isStopped(self) -> bool:
+        return self.status == 1
+
+    @property
+    def isParked(self) -> bool:
+        return self.status == 5
+
+    @property
+    def isFollowingSatellite(self) -> bool:
+        return self.status == 10
 
     @staticmethod
     def setLongitude(a):
@@ -428,6 +462,7 @@ class MountObsSite:
 
 class Mount(QObject):
     def __init__(self):
+        super().__init__()
         self.signals = MountSignals()
         self.obsSite = MountObsSite()
         self.geometry = MountGeometry()
@@ -436,8 +471,17 @@ class Mount(QObject):
         self.satellite = MountSatellite()
         self.model = MountModel()
         self.host = None
+        self.MAC = None
         self.loggingTrace = False
         self.stat = False
+        self.instance = self
+        self.run = {}
+        self.framework = ""
+        self.config = DeviceConfigMount()
+
+    @staticmethod
+    def getFW():
+        return True
 
     @staticmethod
     def bootMount():

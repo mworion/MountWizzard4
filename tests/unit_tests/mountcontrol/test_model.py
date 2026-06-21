@@ -30,6 +30,21 @@ class ObsSite:
     location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 
 
+class Config:
+    def __init__(self):
+        self.hostAddress = None
+        self.port = None
+
+
+def makeParent():
+    class Parent:
+        config = Config()
+        loggingTrace = False
+        obsSite = ObsSite()
+
+    return Parent()
+
+
 class Parent:
     obsSite = ObsSite()
 
@@ -42,144 +57,88 @@ class Parent:
 
 
 def test_Model_altitudeError():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    align = Model(parent=Parent())
+    align = Model(parent=makeParent())
     align.altitudeError = Angle(degrees=67)
     assert align.altitudeError.degrees == 67
 
 
 def test_Model_azimuthError():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    align = Model(parent=Parent())
+    align = Model(parent=makeParent())
     align.azimuthError = Angle(degrees=67)
     assert align.azimuthError.degrees == 67
 
 
 def test_Model_polarError():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    align = Model(parent=Parent())
+    align = Model(parent=makeParent())
     align.polarError = Angle(degrees=67)
     assert align.polarError.degrees == 67
 
 
 def test_Model_positionAngle1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    align = Model(parent=Parent())
+    align = Model(parent=makeParent())
     align.positionAngle = Angle(degrees=67)
     assert align.positionAngle.degrees == 67
 
 
 def test_Model_positionAngle2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    align = Model(parent=Parent())
+    align = Model(parent=makeParent())
     align.positionAngle = Angle(degrees=67)
     assert align.positionAngle != 67
 
 
 def test_Model_orthoError():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    align = Model(parent=Parent())
+    align = Model(parent=makeParent())
     align.orthoError = Angle(degrees=67)
     assert align.orthoError.degrees == 67
 
 
 def test_Model_altitudeTurns():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    align = Model(parent=Parent())
+    align = Model(parent=makeParent())
     align.altitudeTurns = 67
     assert align.altitudeTurns == 67
 
 
 def test_Model_azimuthTurns():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    align = Model(parent=Parent())
+    align = Model(parent=makeParent())
     align.azimuthTurns = 67
     assert align.azimuthTurns == 67
 
 
 def test_Model_terms():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    align = Model(parent=Parent())
+    align = Model(parent=makeParent())
     align.terms = 67
     assert align.terms == 67
 
 
 def test_Model_errorRMS():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    align = Model(parent=Parent())
+    align = Model(parent=makeParent())
     align.errorRMS = 67
     assert align.errorRMS == 67
 
 
 def test_Model_numberStars_1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    align = Model(parent=Parent())
+    align = Model(parent=makeParent())
     align.numberStars = "67"
     assert align.numberStars == 67
     assert align._numberStars == 67
 
 
 def test_Model_numberStars_2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    align = Model(parent=Parent())
+    align = Model(parent=makeParent())
     align.numberStars = None
     assert align.numberStars == 0
     assert align._numberStars == 0
 
 
 def test_Model_numberNames_1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    align = Model(parent=Parent())
+    align = Model(parent=makeParent())
     align.numberNames = "67"
     assert align.numberNames == 67
     assert align._numberNames == 67
 
 
 def test_Model_numberNames_2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    align = Model(parent=Parent())
+    align = Model(parent=makeParent())
     align.numberNames = None
     assert align.numberNames == 0
     assert align._numberNames == 0
@@ -191,11 +150,7 @@ def test_Model_starList1():
     s = Star(ra_hours=12.7580583333, dec_degrees=56.5001388889)
     modelStar1 = ModelStar(s, p3, p4, number=1)
 
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     assert len(model.starList) == 0
     model.starList = [modelStar1]
@@ -212,11 +167,7 @@ def test_add_del_Star():
     modelStar3 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=3)
     modelStar4 = ModelStar(coord=(p1, p2), errorRMS=p3, errorAngle=p4, number=4)
 
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     assert len(model.starList) == 0
     model.addStar(modelStar1)
@@ -238,23 +189,14 @@ def test_add_del_Star():
 
 
 def test_addStar_ok():
-    class Parent:
-        host = None
-        loggingTrace = False
-        obsSite = None
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     assert len(model.starList) == 0
     model.addStar("12:45:33.01,+56*30:00.5,1234.5,90,1")
     assert len(model.starList) == 1
 
 
 def test_StarList_iteration():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     p4 = Angle(degrees=90)
     s = Star(ra_hours=12.7580583333, dec_degrees=56.5001388889)
 
@@ -268,12 +210,7 @@ def test_StarList_iteration():
 
 
 def test_StarList_checkStarListOK():
-    class Parent:
-        host = None
-        loggingTrace = False
-        obsSite = None
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     assert len(model.starList) == 0
     model.addStar("12:45:33.01,+56*30:00.5,1234.5,90,1")
     model.numberStars = 1
@@ -281,34 +218,20 @@ def test_StarList_checkStarListOK():
 
 
 def test_StarList_checkStarList_not_OK1():
-    class Parent:
-        host = None
-        loggingTrace = False
-        obsSite = None
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     assert len(model.starList) == 0
     model.addStar("12:45:33.01,+56*30:00.5,1234.5,90,1")
     model.numberStars = 2
     assert not model.checkStarListOK()
 
-    class Parent:
-        host = None
-        loggingTrace = False
-        obsSite = None
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     assert len(model.starList) == 0
     model.addStar("12:45:33.01,+56*30:00.5,1234.5,90,1")
     assert not model.checkStarListOK()
 
 
 def test_Model_nameList1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     assert len(model.nameList) == 0
     model.nameList = 67
@@ -316,11 +239,7 @@ def test_Model_nameList1():
 
 
 def test_Model_nameList2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     assert len(model.nameList) == 0
     model.nameList = ["67"]
@@ -328,11 +247,7 @@ def test_Model_nameList2():
 
 
 def test_Model_nameList3():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     assert len(model.nameList) == 0
     model.nameList = ["67", "78"]
@@ -340,11 +255,7 @@ def test_Model_nameList3():
 
 
 def test_Model_nameList4():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     assert len(model.nameList) == 0
     model.nameList = ["67", 67]
@@ -352,11 +263,7 @@ def test_Model_nameList4():
 
 
 def test_add_del_Name():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     assert len(model.nameList) == 0
     model.addName("the first one")
@@ -370,11 +277,7 @@ def test_add_del_Name():
 
 
 def test_addName_not_ok():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     assert len(model.nameList) == 0
     model.addName(45)
@@ -389,31 +292,19 @@ def test_addName_not_ok():
 
 
 def test_errorRMS_HPS():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     model.errorRMS = 36.8
     assert model.errorRMS == 36.8
 
 
 def test_errorRMS_HPS_float():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     model.errorRMS = 36.8
     assert model.errorRMS == 36.8
 
 
 def test_errorRMS_HPS_int():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     model.errorRMS = 36
     assert model.errorRMS == 36.0
 
@@ -488,66 +379,42 @@ def test_AlignStar_error_DEC_RA():
 
 
 def test_Model_parseNumberName_ok():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = ["5"]
     suc = model.parseNumberNames(response, 1)
     assert suc
 
 
 def test_Model_parseNumberName_not_ok1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = ["df"]
     suc = model.parseNumberNames(response, 1)
     assert suc
 
 
 def test_Model_parseNumberName_not_ok2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = [""]
     suc = model.parseNumberNames(response, 1)
     assert suc
 
 
 def test_Model_parseNumberName_not_ok3():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = ["5a"]
     suc = model.parseNumberNames(response, 1)
     assert suc
 
 
 def test_Model_parseNumberName_not_ok4():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = ["5", "4"]
     suc = model.parseNumberNames(response, 1)
     assert not suc
 
 
 def test_Model_parseNumberName_not_ok5():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = ["5", "g"]
     suc = model.parseNumberNames(response, 1)
     assert not suc
@@ -561,77 +428,49 @@ def test_Model_parseNumberName_not_ok5():
 
 
 def test_Model_parseNames_ok1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = ["test"]
     suc = model.parseNames(response, 1)
     assert suc
 
 
 def test_Model_parseNames_ok2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = ["sd", "", None]
     suc = model.parseNames(response, 3)
     assert suc
 
 
 def test_Model_parseNumberNames_ok3():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = ["5"]
     suc = model.parseNumberNames(response, 1)
     assert suc
 
 
 def test_Model_parseNames_not_ok1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = ["sd"]
     suc = model.parseNames(response, 3)
     assert not suc
 
 
 def test_Model_parseNumberNames_not_ok2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = ["sd"]
     suc = model.parseNumberNames(response, 1)
     assert suc
 
 
 def test_Model_parseNumberNames_not_ok3():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = ["5", "6"]
     suc = model.parseNumberNames(response, 2)
     assert not suc
 
 
 def test_getNameCount_1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     with mock.patch.object(
         mw4.mountcontrol.model.Connection,
         "communicate",
@@ -642,11 +481,7 @@ def test_getNameCount_1():
 
 
 def test_getNameCount_2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     with mock.patch.object(
         mw4.mountcontrol.model.Connection,
         "communicate",
@@ -657,11 +492,7 @@ def test_getNameCount_2():
 
 
 def test_getNames_1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     model.numberNames = 1
     with mock.patch.object(
         mw4.mountcontrol.model.Connection,
@@ -673,11 +504,7 @@ def test_getNames_1():
 
 
 def test_getNames_2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     model.numberNames = 1
     with mock.patch.object(
         mw4.mountcontrol.model.Connection,
@@ -689,22 +516,14 @@ def test_getNames_2():
 
 
 def test_pollNames_1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     with mock.patch.object(model, "getNameCount", return_value=False):
         suc = model.pollNames()
         assert not suc
 
 
 def test_pollNames_2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     with mock.patch.object(model, "getNameCount", return_value=True):
         with mock.patch.object(model, "getNames", return_value=False):
             suc = model.pollNames()
@@ -712,11 +531,7 @@ def test_pollNames_2():
 
 
 def test_pollNames_3():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     with mock.patch.object(model, "getNameCount", return_value=True):
         with mock.patch.object(model, "getNames", return_value=True):
             suc = model.pollNames()
@@ -731,22 +546,14 @@ def test_pollNames_3():
 
 
 def test_Model_parseNumberStars_ok1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = ["0", "E"]
     suc = model.parseNumberStars(response, 2)
     assert suc
 
 
 def test_Model_parseNumberStars_ok2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = [
         "1",
         "023.8311, +24.8157, 29.8580, 227.45, -12.9985, +26.98, -08.97, 11, 97751.6",
@@ -765,44 +572,28 @@ def test_Model_parseNumberStars_ok2():
 
 
 def test_Model_parseNumberStars_not_ok0():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = ["4", "E"]
     suc = model.parseNumberStars(response, 1)
     assert not suc
 
 
 def test_Model_parseNumberStars_not_ok1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = ["4"]
     suc = model.parseNumberStars(response, 1)
     assert not suc
 
 
 def test_Model_parseNumberStars_not_ok2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = ["4", "4, 4, 4"]
     suc = model.parseNumberStars(response, 2)
     assert not suc
 
 
 def test_Model_parseNumberStars_not_ok3():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = ["4", "4"]
     suc = model.parseNumberStars(response, 2)
     assert not suc
@@ -812,12 +603,7 @@ def test_Model_parseStars_ok():
     obsSite = App().mount.obsSite
     obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 
-    class Parent:
-        host = None
-        loggingTrace = False
-        obsSite = obsSite
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = [
         "21:52:58.95,+08*56:10.1,   5.7,201",
         "21:06:10.79,+45*20:52.8,  12.1,329",
@@ -840,12 +626,7 @@ def test_Model_parseStars_not_ok1():
     obsSite = App().mount.obsSite
     obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 
-    class Parent:
-        host = None
-        loggingTrace = False
-        obsSite = obsSite
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     response = [
         "21:52:58.95,+08*56:10.1,   5.7,201",
         "21:06:10.79,+45*20:52.8,  12.1,329",
@@ -860,11 +641,7 @@ def test_Model_parseStars_not_ok1():
 
 
 def test_getStarCount_1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     with (
         mock.patch.object(
             mw4.mountcontrol.model.Connection, "communicate", return_value=(False, ["100"], 1)
@@ -876,11 +653,7 @@ def test_getStarCount_1():
 
 
 def test_getStarCount_2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     with (
         mock.patch.object(
             mw4.mountcontrol.model.Connection, "communicate", return_value=(True, ["100"], 1)
@@ -892,11 +665,7 @@ def test_getStarCount_2():
 
 
 def test_getStarCount_3():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     with (
         mock.patch.object(
             mw4.mountcontrol.model.Connection, "communicate", return_value=(True, ["100"], 1)
@@ -908,22 +677,14 @@ def test_getStarCount_3():
 
 
 def test_getStars_0():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     model.numberStars = 0
     suc = model.getStars()
     assert suc
 
 
 def test_getStars_1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     model.numberStars = 1
     with mock.patch.object(
         mw4.mountcontrol.model.Connection,
@@ -938,12 +699,7 @@ def test_getStars_2():
     obsSite = App().mount.obsSite
     obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 
-    class Parent:
-        host = None
-        loggingTrace = False
-        obsSite = obsSite
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     model.numberStars = 1
     with mock.patch.object(
         mw4.mountcontrol.model.Connection,
@@ -955,21 +711,13 @@ def test_getStars_2():
 
 
 def test_pollStars_1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     with mock.patch.object(model, "getStarCount", return_value=False):
         model.pollStars()
 
 
 def test_pollStars_2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     with (
         mock.patch.object(model, "getStarCount", return_value=True),
         mock.patch.object(model, "getStars", return_value=False),
@@ -978,11 +726,7 @@ def test_pollStars_2():
 
 
 def test_pollStars_3():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     with (
         mock.patch.object(model, "getStarCount", return_value=True),
         mock.patch.object(model, "getStars", return_value=True),
@@ -998,11 +742,7 @@ def test_pollStars_3():
 
 
 def test_Model_clearAlign_ok():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     response = [""]
     with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
@@ -1012,11 +752,7 @@ def test_Model_clearAlign_ok():
 
 
 def test_Model_clearAlign_not_ok1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     response = [""]
     with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
@@ -1033,11 +769,7 @@ def test_Model_clearAlign_not_ok1():
 
 
 def test_Model_deletePoint_ok():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     model.numberStars = 5
     response = ["1"]
     with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
@@ -1047,11 +779,7 @@ def test_Model_deletePoint_ok():
 
 
 def test_Model_deletePoint_not_ok1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     model.numberStars = 5
     response = ["1#"]
     with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
@@ -1061,11 +789,7 @@ def test_Model_deletePoint_not_ok1():
 
 
 def test_Model_deletePoint_not_ok4():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
     model.numberStars = 5
     response = ["1"]
     with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
@@ -1082,11 +806,7 @@ def test_Model_deletePoint_not_ok4():
 
 
 def test_Model_storeName_ok1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     response = ["1", "1"]
     with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
@@ -1096,11 +816,7 @@ def test_Model_storeName_ok1():
 
 
 def test_Model_storeName_ok2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     response = ["0", "1"]
     with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
@@ -1117,11 +833,7 @@ def test_Model_storeName_ok2():
 
 
 def test_Model_loadName_ok():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
@@ -1131,11 +843,7 @@ def test_Model_loadName_ok():
 
 
 def test_Model_loadName_not_ok2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
@@ -1152,11 +860,7 @@ def test_Model_loadName_not_ok2():
 
 
 def test_Model_deleteName_ok():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
@@ -1166,11 +870,7 @@ def test_Model_deleteName_ok():
 
 
 def test_Model_deleteName_not_ok2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
@@ -1187,11 +887,7 @@ def test_Model_deleteName_not_ok2():
 
 
 def test_Model_programAlign_ok1():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     aPoint = ProgStar(
         Star(ra_hours=0, dec_degrees=0),
@@ -1207,11 +903,7 @@ def test_Model_programAlign_ok1():
 
 
 def test_Model_programAlign_ok2():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     build = gatherData(1)
     with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
@@ -1221,11 +913,7 @@ def test_Model_programAlign_ok2():
 
 
 def test_Model_programAlign_ok3():
-    class Parent:
-        host = None
-        loggingTrace = False
-
-    model = Model(parent=Parent())
+    model = Model(parent=makeParent())
 
     build = gatherData(3)
     with mock.patch("mw4.mountcontrol.model.Connection") as mConn:

@@ -34,6 +34,15 @@ def function(qapp):
     func = ExternalWindows(window)
     yield func
     window.app.threadPool.waitForDone(10000)
+    qapp.processEvents()
+
+
+@pytest.fixture(autouse=True)
+def resetState(function):
+    # Clear every window's classObj so tests don't inherit a leftover object.
+    for window in function.uiWindows:
+        function.uiWindows[window]["classObj"] = None
+    yield
 
 
 def test_storeConfig_1(function):

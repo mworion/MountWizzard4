@@ -14,6 +14,8 @@
 #
 ###########################################################
 import pytest
+import unittest.mock as mock
+from mw4.gui.mainWaddon.tabAlmanac import Almanac
 from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
@@ -40,23 +42,31 @@ def window(qapp):
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
-    window = MainWindowAddons(mainW)
+    # Avoid the heavy full-year twilight worker started by the Almanac addon
+    # during construction; it is covered in the Almanac tests.
+    with mock.patch.object(Almanac, "showTwilightDataPlot"):
+        window = MainWindowAddons(mainW)
     window.addons = {"test": Test()}
     yield window
     mainW.app.threadPool.waitForDone(10000)
+    qapp.processEvents()
 
 
-def test_initConfig_1(window):
+def test_initConfig_loads_addons_config(window):
+    """Test initConfig loads configuration for all addons."""
     window.initConfig()
 
 
-def test_storeConfig_1(window):
+def test_storeConfig_saves_addons_config(window):
+    """Test storeConfig saves configuration for all addons."""
     window.storeConfig()
 
 
-def test_setupIcons_1(window):
+def test_setupIcons_creates_addon_icons(window):
+    """Test setupIcons creates icons for all addons."""
     window.setupIcons()
 
 
-def test_updateColorSet_1(window):
+def test_updateColorSet_updates_addon_colors(window):
+    """Test updateColorSet updates colors for all addons."""
     window.updateColorSet()

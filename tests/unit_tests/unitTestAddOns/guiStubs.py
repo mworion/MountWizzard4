@@ -38,9 +38,8 @@ class LineEdit:
 
 class UIStub(QObject):
     def __init__(self):
-        from tests.unit_tests.unitTestAddOns.guiStubs import CheckBox, LineEdit
+        from tests.unit_tests.unitTestAddOns.guiStubs import LineEdit
 
-        self.tabsMovable = CheckBox()
         self.offLAT = LineEdit()
 
 

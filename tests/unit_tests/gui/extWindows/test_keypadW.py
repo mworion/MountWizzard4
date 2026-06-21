@@ -100,7 +100,10 @@ def test_keyPressEvent_3(function):
             return 6
 
     function.inputActive = False
-    with mock.patch.object(MWidget, "keyPressEvent"):
+    with (
+        mock.patch.object(MWidget, "keyPressEvent"),
+        mock.patch.object(function.keypad, "send"),
+    ):
         function.keyPressEvent(QKeyEvent())
 
 
@@ -115,7 +118,10 @@ def test_keyPressEvent_4(function):
             return 6
 
     function.inputActive = False
-    with mock.patch.object(MWidget, "keyPressEvent"):
+    with (
+        mock.patch.object(MWidget, "keyPressEvent"),
+        mock.patch.object(function.keypad, "send"),
+    ):
         function.keyPressEvent(QKeyEvent())
 
 
@@ -174,17 +180,10 @@ def test_startKeypad_2(function):
         function.websocketMutex.unlock()
 
 
-def test_hostChanged_1(function):
-    with (
-        mock.patch.object(function.keypad, "closeWebsocket"),
-        mock.patch.object(function, "startKeypad"),
-    ):
-        function.hostChanged()
-
-
 def test_buttonPressed_1(function):
     function.setupButtons()
-    function.buttonPressed("key_0")
+    with mock.patch.object(function.keypad, "send"):
+        function.buttonPressed("key_0")
 
 
 def test_buttonPressed_2(function):
@@ -195,7 +194,8 @@ def test_buttonPressed_2(function):
 
 def test_buttonReleased_1(function):
     function.setupButtons()
-    function.buttonReleased("key_0")
+    with mock.patch.object(function.keypad, "send"):
+        function.buttonReleased("key_0")
 
 
 def test_buttonReleased_2(function):

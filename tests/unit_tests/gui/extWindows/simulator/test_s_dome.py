@@ -30,6 +30,14 @@ def function(qapp):
         QApplication.processEvents()
 
 
+@pytest.fixture(autouse=True)
+def resetEntityModel(function):
+    # Each test builds the entity nodes it needs; clear leftovers so iteration
+    # over the model does not hit nodes missing expected keys.
+    function.parent.entityModel.clear()
+    yield
+
+
 def test_setTransparency_1(function):
     function.parent.entityModel["domeWall"] = {"entity": Qt3DCore.QEntity()}
     mat = Materials().walls
@@ -55,6 +63,11 @@ def test_showEnable_disconnect(function):
 
 
 def test_updateSize_1(function):
+    function.parent.entityModel["domeFloor"] = {"entity": Qt3DCore.QEntity()}
+    t = Qt3DCore.QTransform()
+    function.parent.entityModel["domeFloor"]["entity"].addComponent(t)
+    function.parent.entityModel["domeFloor"]["trans"] = t
+
     function.parent.entityModel["domeWall"] = {"entity": Qt3DCore.QEntity()}
     t = Qt3DCore.QTransform()
     function.parent.entityModel["domeWall"]["entity"].addComponent(t)
@@ -99,6 +112,7 @@ def test_updateShutter_1(function):
 
 
 def test_create_1(function):
+    function.parent.entityModel["ref_fusion_m"] = {"entity": Qt3DCore.QEntity()}
     with (
         mock.patch.object(function, "updateAzimuth"),
         mock.patch.object(function, "updateShutter"),

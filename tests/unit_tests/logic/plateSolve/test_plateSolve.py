@@ -197,6 +197,8 @@ def test_processSolveQueue_2(function):
 
 
 def test_workerSolveLoop_1(function, mocked_sleepAndEvents):
+    with function.solveQueue.mutex:
+        function.solveQueue.queue.clear()
     function.solveLoopRunning = True
     function.workerSolveLoop()
 

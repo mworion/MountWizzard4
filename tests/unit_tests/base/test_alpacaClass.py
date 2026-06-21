@@ -53,6 +53,7 @@ def resetState(function):
     function.stopEvent.clear()
     function.commandQueue = queue.Queue()
     function.propertyExceptions.clear()
+    function.host = ("localhost", 11111)
     function.hostaddress = "localhost"
     function.port = 11111
     function.deviceName = ""

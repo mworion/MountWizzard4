@@ -151,7 +151,10 @@ def test_calcTrajectoryAndShow_4(function):
 
 def test_workerShowSatPasses_0(function):
     function.satellite = None
-    function.workerShowSatPasses()
+    with mock.patch.object(
+        function.app.timeMgr, "timeZoneString", return_value="", create=True
+    ):
+        function.workerShowSatPasses()
 
 
 def test_workerShowSatPasses_1(function):
@@ -171,6 +174,10 @@ def test_workerShowSatPasses_1(function):
         {"rise": ts.tt_jd(2459216.5), "settle": ts.tt_jd(2459216.7)},
     ]
     with (
+        mock.patch.object(
+            function.app.timeMgr, "timeZoneString", return_value="", create=True
+        ),
+        mock.patch.object(function.app.timeMgr, "convertTime", return_value="", create=True),
         mock.patch.object(function, "clearTrackingParameters"),
         mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
@@ -198,6 +205,10 @@ def test_workerShowSatPasses_2(function):
         {"rise": ts.tt_jd(2459216.5), "settle": ts.tt_jd(2459216.7)},
     ]
     with (
+        mock.patch.object(
+            function.app.timeMgr, "timeZoneString", return_value="", create=True
+        ),
+        mock.patch.object(function.app.timeMgr, "convertTime", return_value="", create=True),
         mock.patch.object(function, "clearTrackingParameters"),
         mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
@@ -223,6 +234,10 @@ def test_workerShowSatPasses_3(function):
         {"rise": ts.tt_jd(2459216.5), "settle": ts.tt_jd(2459216.7)},
     ]
     with (
+        mock.patch.object(
+            function.app.timeMgr, "timeZoneString", return_value="", create=True
+        ),
+        mock.patch.object(function.app.timeMgr, "convertTime", return_value="", create=True),
         mock.patch.object(function, "clearTrackingParameters"),
         mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
@@ -424,6 +439,7 @@ def test_selectStartEnd_1(function):
 
 
 def test_selectStartEnd_2(function):
+    function.satOrbits = []
     s, e = function.selectStartEnd()
     assert s == 0
     assert e == 0
@@ -637,7 +653,13 @@ def test_updateSatelliteTrackGui_1(function):
         }
     ]
 
-    function.updateSatelliteTrackGui(Test())
+    with (
+        mock.patch.object(
+            function.app.timeMgr, "timeZoneString", return_value="", create=True
+        ),
+        mock.patch.object(function.app.timeMgr, "convertTime", return_value="", create=True),
+    ):
+        function.updateSatelliteTrackGui(Test())
 
 
 def test_updateSatelliteTrackGui_2(function):
@@ -659,7 +681,13 @@ def test_updateSatelliteTrackGui_2(function):
         }
     ]
 
-    function.updateSatelliteTrackGui(Test())
+    with (
+        mock.patch.object(
+            function.app.timeMgr, "timeZoneString", return_value="", create=True
+        ),
+        mock.patch.object(function.app.timeMgr, "convertTime", return_value="", create=True),
+    ):
+        function.updateSatelliteTrackGui(Test())
 
 
 def test_updateSatelliteTrackGui_3(function):
@@ -674,7 +702,10 @@ def test_updateSatelliteTrackGui_3(function):
 
     function.satOrbits = []
 
-    function.updateSatelliteTrackGui(Test())
+    with mock.patch.object(
+        function.app.timeMgr, "timeZoneString", return_value="", create=True
+    ):
+        function.updateSatelliteTrackGui(Test())
 
 
 def test_tle_export_1(function):

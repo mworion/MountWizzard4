@@ -119,12 +119,10 @@ def test_updateRefractionUpdateType_5(function):
 
 
 def test_setRefractionUpdateType_0(function):
-    function.ui.showTabEnviron.setChecked(False)
     function.setRefractionUpdateType()
 
 
 def test_setRefractionUpdateType_1(function):
-    function.ui.showTabEnviron.setChecked(True)
     function.refractionSource = "onlineWeather"
     with mock.patch.object(
         function.app.mount.setting, "setDirectWeatherUpdateType", return_value=True
@@ -133,7 +131,6 @@ def test_setRefractionUpdateType_1(function):
 
 
 def test_setRefractionUpdateType_2(function):
-    function.ui.showTabEnviron.setChecked(True)
     function.app.mount.setting.weatherStatus = 1
     function.refractionSource = "directWeather"
     function.ui.refracManual.setChecked(True)
@@ -144,7 +141,6 @@ def test_setRefractionUpdateType_2(function):
 
 
 def test_setRefractionUpdateType_3(function):
-    function.ui.showTabEnviron.setChecked(True)
     function.refractionSource = "directWeather"
     function.app.mount.setting.weatherStatus = 1
     function.ui.refracNoTrack.setChecked(True)
@@ -155,7 +151,6 @@ def test_setRefractionUpdateType_3(function):
 
 
 def test_setRefractionUpdateType_4(function):
-    function.ui.showTabEnviron.setChecked(True)
     function.refractionSource = "directWeather"
     function.app.mount.setting.weatherStatus = 0
     function.ui.refracCont.setChecked(True)

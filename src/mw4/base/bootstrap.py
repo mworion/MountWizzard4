@@ -35,8 +35,6 @@ from typing import TypedDict
 
 
 class MwGlob(TypedDict):
-    """Typed mapping for the application's standard directory structure."""
-
     workDir: Path
     configDir: Path
     dataDir: Path
@@ -61,9 +59,7 @@ def configureEnvironment() -> None:
 
 
 def exceptHook(
-    exc_type: type[BaseException],
-    exc_value: BaseException,
-    exc_tb: types.TracebackType | None,
+    exc_type: type[BaseException], exc_value: BaseException, exc_tb: types.TracebackType | None
 ) -> None:
     """Log uncaught exceptions before delegating to the default hook."""
     formatted = "".join(traceback.format_exception(exc_type, exc_value, exc_tb))

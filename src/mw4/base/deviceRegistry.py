@@ -15,7 +15,6 @@
 ###########################################################
 from collections.abc import Iterator
 from dataclasses import fields
-from functools import partial
 from mw4.base.deviceEntry import DeviceEntry
 from mw4.logic.camera.camera import Camera
 from mw4.logic.cover.cover import Cover
@@ -25,6 +24,7 @@ from mw4.logic.environment.seeingWeather import SeeingWeather
 from mw4.logic.environment.sensorWeather import SensorWeather
 from mw4.logic.filter.filter import Filter
 from mw4.logic.focuser.focuser import Focuser
+from mw4.logic.hidController.hidController import HidController
 from mw4.logic.lightPanel.lightPanel import LightPanel
 from mw4.logic.measure.measure import MeasureData
 from mw4.logic.plateSolve.plateSolve import PlateSolve
@@ -33,12 +33,15 @@ from mw4.logic.powerswitch.pegasusUPB import PegasusUPB
 from mw4.logic.remote.remote import Remote
 from mw4.logic.telescope.telescope import Telescope
 from mw4.mountcontrol.mount import MountDevice
+from PySide6.QtCore import QObject
 from typing import Any
 
 
-class DeviceRegistry:
+class DeviceRegistry(QObject):
     def __init__(self, app: Any) -> None:
+        super().__init__()
         self.app = app
+        self.signalsToName: dict[int, str] = {}
         self.app.stopDevices.connect(self.stopDevices)
         self.app.startDevice.connect(self.startDevice)
         self.app.stopDevice.connect(self.stopDevice)
@@ -60,125 +63,48 @@ class DeviceRegistry:
         }
 
     def addDevices(self, app: Any) -> None:
-        self.d["camera"] = DeviceEntry(
-            name="camera",
-            instance=Camera(app),  # Can access app.mount
-            deviceType="camera",
-            isConfigurable=True,
-        )
-        self.d["cover"] = DeviceEntry(
-            name="cover",
-            instance=Cover(app),
-            deviceType="covercalibrator",
-            isConfigurable=True,
-        )
-        self.d["directWeather"] = DeviceEntry(
-            name="directWeather",
-            instance=DirectWeather(app),
-            deviceType=None,
-            isConfigurable=True,
-        )
-        self.d["dome"] = DeviceEntry(
-            name="dome",
-            instance=Dome(app),
-            deviceType="dome",
-            isConfigurable=True,
-        )
-        self.d["filter"] = DeviceEntry(
-            name="filter",
-            instance=Filter(app),
-            deviceType="filterwheel",
-            isConfigurable=True,
-        )
-        self.d["focuser"] = DeviceEntry(
-            name="focuser",
-            instance=Focuser(app),
-            deviceType="focuser",
-            isConfigurable=True,
-        )
-        self.d["lightPanel"] = DeviceEntry(
-            name="lightPanel",
-            instance=LightPanel(app),
-            deviceType="covercalibrator",
-            isConfigurable=True,
-        )
-        self.d["measure"] = DeviceEntry(
-            name="measure",
-            instance=MeasureData(app),
-            deviceType=None,
-            isConfigurable=True,
-        )
-        self.d["plateSolve"] = DeviceEntry(
-            name="plateSolve",
-            instance=PlateSolve(app),
-            deviceType="plateSolve",
-            isConfigurable=True,
-        )
-        self.d["power"] = DeviceEntry(
-            name="power",
-            instance=PegasusUPB(app),
-            deviceType="switch",
-            isConfigurable=True,
-        )
-        self.d["relay"] = DeviceEntry(
-            name="relay",
-            instance=KMRelay(),
-            deviceType=None,
-            isConfigurable=True,
-        )
-        self.d["refraction"] = DeviceEntry(
-            name="refraction",
-            instance=None,
-            deviceType=None,
-            isConfigurable=False,
-        )
-        self.d["remote"] = DeviceEntry(
-            name="remote",
-            instance=Remote(app),
-            deviceType=None,
-            isConfigurable=True,
-        )
-        self.d["seeingWeather"] = DeviceEntry(
-            name="seeingWeather",
-            instance=SeeingWeather(app),  # Can access app.mount
-            deviceType="observingconditions",
-            isConfigurable=True,
-        )
-        self.d["sensor1Weather"] = DeviceEntry(
-            name="sensor1Weather",
-            instance=SensorWeather(app),
-            deviceType="observingconditions",
-            isConfigurable=True,
-        )
-        self.d["sensor2Weather"] = DeviceEntry(
-            name="sensor2Weather",
-            instance=SensorWeather(app),
-            deviceType="observingconditions",
-            isConfigurable=True,
-        )
-        self.d["sensor3Weather"] = DeviceEntry(
-            name="sensor3Weather",
-            instance=SensorWeather(app),
-            deviceType="observingconditions",
-            isConfigurable=True,
-        )
-        self.d["sensor4Weather"] = DeviceEntry(
-            name="sensor4Weather",
-            instance=SensorWeather(app),
-            deviceType="observingconditions",
-            isConfigurable=True,
-        )
-        self.d["telescope"] = DeviceEntry(
-            name="telescope",
-            instance=Telescope(app),
-            deviceType="telescope",
-            isConfigurable=True,
-        )
+        # Declarative device table: (name, factory, deviceType, isConfigurable).
+        # ``factory`` is called with ``app`` (except where noted) and returns the
+        # device instance. Adding a new device is now a single-row change.
+        deviceSpec: list[tuple[str, Any, str | None, bool]] = [
+            ("camera", Camera, "camera", True),
+            ("cover", Cover, "covercalibrator", True),
+            ("directWeather", DirectWeather, None, True),
+            ("dome", Dome, "dome", True),
+            ("filter", Filter, "filterwheel", True),
+            ("focuser", Focuser, "focuser", True),
+            ("hidController", HidController, "hid", True),
+            ("lightPanel", LightPanel, "covercalibrator", True),
+            ("measure", MeasureData, None, True),
+            ("plateSolve", PlateSolve, "plateSolve", True),
+            ("power", PegasusUPB, "switch", True),
+            ("relay", lambda _app: KMRelay(), None, True),
+            ("refraction", lambda _app: None, None, False),
+            ("remote", Remote, None, True),
+            ("seeingWeather", SeeingWeather, "observingconditions", True),
+            ("sensor1Weather", SensorWeather, "observingconditions", True),
+            ("sensor2Weather", SensorWeather, "observingconditions", True),
+            ("sensor3Weather", SensorWeather, "observingconditions", True),
+            ("sensor4Weather", SensorWeather, "observingconditions", True),
+            ("telescope", Telescope, "telescope", True),
+        ]
+        for name, factory, deviceType, isConfigurable in deviceSpec:
+            self.d[name] = DeviceEntry(
+                name=name,
+                instance=factory(app),
+                deviceType=deviceType,
+                isConfigurable=isConfigurable,
+            )
         for entry in self.configurable():
             if hasattr(self.d[entry.name].instance, "signals"):
                 sig = self.d[entry.name].signals
-                sig.deviceConnected.connect(partial(self.deviceConnected, entry.name))
-                sig.deviceDisconnected.connect(partial(self.deviceDisconnected, entry.name))
+                self.signalsToName[id(sig)] = entry.name
+                sig.deviceConnected.connect(self.deviceConnected)
+                sig.deviceDisconnected.connect(self.deviceDisconnected)
+        sig_mount = self.d["mount"].signals
+        self.signalsToName[id(sig_mount)] = "mount"
+        sig_mount.deviceConnected.connect(self.deviceConnected)
+        sig_mount.deviceDisconnected.connect(self.deviceDisconnected)
 
     # ------------------------------------------------------------------
     # Mapping protocol — keeps ``"x" in dReg`` and ``dReg["x"]`` working
@@ -243,10 +169,12 @@ class DeviceRegistry:
 
     def initConfig(self) -> None:
         self.writeConfigToAllDevices(self.app.config.get("SettingDevice", {}))
+        self.writeConfigToSingleDevice("mount", self.app.config.get("SettingDeviceMount", {}))
         self.startDevices()
 
     def storeConfig(self) -> None:
         self.app.config["SettingDevice"] = self.collectConfigFromAllDevices()
+        self.app.config["SettingDeviceMount"] = self.collectConfigFromSingleDevice("mount")
 
     def stopDevice(self, device: str) -> None:
         if not self.d[device].framework:
@@ -273,10 +201,18 @@ class DeviceRegistry:
         for entry in self.configurable():
             self.startDevice(entry.name)
 
-    def deviceConnected(self, deviceSlot: str, deviceName: str) -> None:
-        self.setStat(deviceSlot, True)
-        self.app.msg.emit(0, "Driver", "Device connected", f"{deviceName}::{deviceSlot}")
+    def deviceConnected(self, *_args: Any) -> None:
+        name = self.signalsToName.get(id(self.sender()))
+        if name is None:
+            return
+        deviceName = _args[0] if _args else ""
+        self.setStat(name, True)
+        self.app.msg.emit(0, "Driver", "Device connected", f"{deviceName}::{name}")
 
-    def deviceDisconnected(self, deviceSlot: str, deviceName: str) -> None:
-        self.setStat(deviceSlot, False)
-        self.app.msg.emit(0, "Driver", "Device disconnected", f"{deviceName}::{deviceSlot}")
+    def deviceDisconnected(self, *_args: Any) -> None:
+        name = self.signalsToName.get(id(self.sender()))
+        if name is None:
+            return
+        deviceName = _args[0] if _args else ""
+        self.setStat(name, False)
+        self.app.msg.emit(0, "Driver", "Device disconnected", f"{deviceName}::{name}")

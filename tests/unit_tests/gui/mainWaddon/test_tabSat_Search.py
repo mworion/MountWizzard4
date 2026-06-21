@@ -19,6 +19,7 @@ import pytest
 from mw4.gui.mainWaddon.tabSat_Search import SatSearch
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
+from pathlib import Path
 from PySide6.QtCore import QRect
 from PySide6.QtWidgets import QTableWidgetItem
 from skyfield.api import EarthSatellite
@@ -36,9 +37,24 @@ def function(qapp):
     mainW.satellites = Test()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
+    # Mock timeMgr methods
+    mainW.app.timeMgr.convertTime = mock.MagicMock(return_value="12:00")
+    mainW.app.timeMgr.timeZoneString = mock.MagicMock(return_value="(UTC)")
     window = SatSearch(mainW)
     yield window
     mainW.app.threadPool.waitForDone(1000)
+
+
+@pytest.fixture(autouse=True)
+def resetSatellites(function):
+    # Provide a complete satellites baseline so tests don't inherit a partial
+    # stub left behind by another test in this module-scoped fixture.
+    sats = mock.MagicMock()
+    sats.objects = {}
+    sats.dataValid = False
+    sats.dest = Path("tests/work/temp/satellites.tle")
+    function.satellites = sats
+    yield
 
 
 def test_initConfig_1(function):

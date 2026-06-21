@@ -21,13 +21,14 @@ from mw4.gui.utilities.qtHelpers import svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.uploadPopup_ui import Ui_UploadPopup
 from pathlib import Path
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import QEventLoop, Qt, Signal
 
 
 class UploadPopup(MWidget):
     signalProgress = Signal(object)
     signalStatus = Signal(object)
     signalProgressBarColor = Signal(object)
+    TIMEOUT_UPLOAD = 5
     dataNames = {
         "comet": {
             "file": "comets.mpc",
@@ -57,10 +58,8 @@ class UploadPopup(MWidget):
         super().__init__()
         self.ui = Ui_UploadPopup()
         self.ui.setupUi(self.ws)
-        self.setMinimumSize(400, 120)
-        self.setMaximumSize(400, 120)
-        self.titleBar.windowFixed = True
         self.setWindowTitle("Mount Upload")
+        self.setFixedSize(400, 120)
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.returnValues = {"success": False, "successMount": False}
         self.parentWidget = parentWidget
@@ -68,10 +67,10 @@ class UploadPopup(MWidget):
         self.threadPool = parentWidget.app.threadPool
         self.worker: Worker | None = None
         self.workerStatus: Worker | None = None
-        self.url: Path = url
+        self.loop: QEventLoop | None = None
+        self.url: str = url
         self.dataTypes: list[str] = dataTypes
         self.dataFilePath: Path = dataFilePath
-
         self.pollStatusRunState: bool = False
         self.timeoutCounter: int = 0
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
@@ -87,6 +86,36 @@ class UploadPopup(MWidget):
         pixmap = svg2pixmap("assets/icon/upload_pop.svg", self.M_PRIM)
         pixmap = pixmap.scaled(64, 64, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.icon.setPixmap(pixmap)
+
+    def showWindow(self) -> None:
+        self.show()
+        self.setMinimumSize(400, 120)
+        self.setMaximumSize(400, 120)
+        self.titleBar.normButton.setVisible(False)
+        self.titleBar.maxButton.setVisible(False)
+        self.titleBar.windowFixed = True
+
+    def exec(self) -> bool:
+        self.showWindow()
+        self.loop = QEventLoop()
+        self.workerStatus = Worker(self.pollStatus)
+        self.worker = Worker(self.uploadFileWorker)
+        self.worker.signals.result.connect(self.closePopup)
+        self.worker.signals.finished.connect(self.loop.quit)
+        self.threadPool.start(self.worker)
+        self.loop.exec()
+        return self.returnValues["success"]
+
+    @classmethod
+    def upload(
+        cls,
+        parentWidget: MWidget,
+        url: str,
+        dataTypes: list[str],
+        dataFilePath: Path,
+    ) -> bool:
+        dlg = cls(parentWidget, url, dataTypes, dataFilePath)
+        return dlg.exec()
 
     def setProgressBarColor(self, colorstr: str) -> None:
         css = "QProgressBar::chunk {background-color: " + colorstr + ";}"
@@ -129,7 +158,7 @@ class UploadPopup(MWidget):
         return f"http://{str(self.url)}/bin/uploadst"
 
     def getStatus(self) -> list[str]:
-        returnValues = requests.get(self.generateURLStatus(), timeout=1)
+        returnValues = requests.get(self.generateURLStatus(), timeout=self.TIMEOUT_UPLOAD)
         self.returnValues["successMount"] = True
         if returnValues.status_code != 200:
             self.log.debug(f"Error status: {returnValues.status_code}")
@@ -197,9 +226,3 @@ class UploadPopup(MWidget):
                 self.msg.emit(2, "Upload", "Error", "Uploaded but mount failed to save data")
         mainThreadSleep(500)
         self.close()
-
-    def uploadFile(self) -> None:
-        self.worker = Worker(self.uploadFileWorker)
-        self.workerStatus = Worker(self.pollStatus)
-        self.worker.signals.result.connect(self.closePopup)
-        self.threadPool.start(self.worker)

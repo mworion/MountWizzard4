@@ -65,20 +65,20 @@ def test_store_status_operation_running(app):
 
 def test_sendStart(app):
     for a in [10, 30, 50, 100, 300]:
-        app.timerMgr.counter = a
-        app.timerMgr.emitStart()
+        app.timeMgr.counter = a
+        app.timeMgr.emitStart()
 
 
 def test_send_cyclic(app):
     for a in [0, 4, 19, 79, 274, 574, 1787, 5986, 17985, 35984]:
-        app.timerMgr.counter = a
-        app.timerMgr.emitCyclic()
+        app.timeMgr.counter = a
+        app.timeMgr.emitCyclic()
 
 
 def test_aboutToQuit(app):
     """aboutToQuit must stop the timer manager and all mount timers."""
     with (
-        mock.patch.object(app.timerMgr, "stop") as mockStop,
+        mock.patch.object(app.timeMgr, "stop") as mockStop,
         mock.patch.object(app.mount, "stopAllMountTimers") as mockStopMount,
     ):
         app.aboutToQuit()

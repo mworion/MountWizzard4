@@ -59,24 +59,6 @@ def test_setupIERSSourceURLsDropDown(function):
     function.setupIERSSourceURLsDropDown()
 
 
-def test_finishProgEarthRotationData_1(function):
-    class Test:
-        returnValues = {"success": False}
-        worker = mock.MagicMock()
-
-    function.uploadPopup = Test()
-    function.finishProgEarthRotationData()
-
-
-def test_finishProgEarthRotationData_2(function):
-    class Test:
-        returnValues = {"success": True}
-        worker = mock.MagicMock()
-
-    function.uploadPopup = Test()
-    function.finishProgEarthRotationData()
-
-
 def test_progEarthRotationData_1(function):
     function.app.mount.host = ("127.0.0.1", 3294)
     with mock.patch.object(
@@ -87,53 +69,58 @@ def test_progEarthRotationData_1(function):
 
 def test_progEarthRotationData_2(function):
     function.app.mount.host = ("127.0.0.1", 3294)
-    with mock.patch.object(
-        function.databaseProcessing, "writeEarthRotationData", return_value=True
+    with (
+        mock.patch.object(
+            function.databaseProcessing, "writeEarthRotationData", return_value=True
+        ),
+        mock.patch(
+            "mw4.gui.mainWaddon.tabTools_IERSTime.UploadPopup.upload", return_value=True
+        ),
     ):
         function.progEarthRotationData()
 
 
-def test_finishLoadTimeDataFromSourceURLs_1(function):
-    class Test:
-        returnValues = {"success": False}
-        worker = mock.MagicMock()
-
-    function.downloadPopup = Test()
-    function.finishLoadTimeDataFromSourceURLs()
-
-
-def test_finishLoadTimeDataFromSourceURLs_2(function):
-    class Test:
-        returnValues = {"success": True}
-        worker = mock.MagicMock()
-
-    function.downloadPopup = Test()
-    function.finishLoadTimeDataFromSourceURLs()
-
-
-def test_finishLoadFinalsFromSourceURLs_1(function):
-    class Test:
-        returnValues = {"success": False}
-        worker = mock.MagicMock()
-
-    function.downloadPopup = Test()
-    function.finishLoadFinalsFromSourceURLs()
-
-
-def test_finishLoadFinalsFromSourceURLs_2(function):
-    class Test:
-        returnValues = {"success": True}
-        worker = mock.MagicMock()
-
-    function.downloadPopup = Test()
-    function.finishLoadFinalsFromSourceURLs()
+def test_progEarthRotationData_3(function):
+    function.app.mount.host = ("127.0.0.1", 3294)
+    with (
+        mock.patch.object(
+            function.databaseProcessing, "writeEarthRotationData", return_value=True
+        ),
+        mock.patch(
+            "mw4.gui.mainWaddon.tabTools_IERSTime.UploadPopup.upload", return_value=False
+        ),
+    ):
+        function.progEarthRotationData()
 
 
 def test_loadTimeDataFromSourceURLs_1(function):
-    function.ui.isOnline.isChecked.return_value = False
+    function.app.isOnline = False
     function.loadTimeDataFromSourceURLs()
 
 
 def test_loadTimeDataFromSourceURLs_2(function):
-    function.ui.isOnline.isChecked.return_value = True
-    function.loadTimeDataFromSourceURLs()
+    function.app.isOnline = True
+    with mock.patch(
+        "mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup.download", return_value=False
+    ) as mock_dl:
+        function.loadTimeDataFromSourceURLs()
+        assert mock_dl.call_count == 1
+
+
+def test_loadTimeDataFromSourceURLs_3(function):
+    function.app.isOnline = True
+    with mock.patch(
+        "mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup.download", return_value=True
+    ) as mock_dl:
+        function.loadTimeDataFromSourceURLs()
+        assert mock_dl.call_count == 2
+
+
+def test_loadTimeDataFromSourceURLs_4(function):
+    function.app.isOnline = True
+    with mock.patch(
+        "mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup.download",
+        side_effect=[True, False],
+    ) as mock_dl:
+        function.loadTimeDataFromSourceURLs()
+        assert mock_dl.call_count == 2

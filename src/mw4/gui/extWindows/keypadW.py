@@ -119,7 +119,6 @@ class KeypadWindow(MWidget):
 
     def showWindow(self) -> None:
         self.app.colorChange.connect(self.colorChange)
-        self.app.hostChanged.connect(self.hostChanged)
         self.signals.textRow.connect(self.writeTextRow)
         self.signals.cursorPos.connect(self.setCursorPos)
         self.signals.imgChunk.connect(self.buildGraphics)
@@ -154,14 +153,13 @@ class KeypadWindow(MWidget):
 
         self.clearDisplay()
         self.writeTextRow(2, "Connecting ...")
-        self.worker = Worker(self.keypad.workerWebsocket, self.app.dReg["mount"].instance.host)
+        host = (
+            self.app.dReg["mount"].instance.config.hostAddress,
+            self.app.dReg["mount"].instance.config.port,
+        )
+        self.worker = Worker(self.keypad.workerWebsocket, host)
         self.worker.signals.finished.connect(self.websocketClear)
         self.threadPool.start(self.worker)
-
-    def hostChanged(self) -> None:
-        self.keypad.closeWebsocket()
-        self.websocketMutex.unlock()
-        self.startKeypad()
 
     def buttonPressed(self, button: str) -> None:
         self.signals.mousePressed.emit(button)

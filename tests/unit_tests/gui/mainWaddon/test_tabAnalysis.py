@@ -29,6 +29,8 @@ def function(qapp):
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
+    mainW.ui.plateSolveDevice = mock.MagicMock()
+    mainW.ui.plateSolveDevice.currentText.return_value = "Astrometry.net"
     window = Analysis(mainW)
     yield window
     mainW.app.threadPool.waitForDone(1000)

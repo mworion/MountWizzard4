@@ -13,10 +13,13 @@
 # License APL2.0
 #
 ###########################################################
+from collections.abc import Callable
 from functools import partial
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable
+from mw4.gui.utilities.qtInputDialog import MWInputDialog
 from mw4.mountcontrol.convert import (
     convertDecToAngle,
     convertRaToAngle,
@@ -24,12 +27,13 @@ from mw4.mountcontrol.convert import (
     formatHstrToText,
     valueToAngle,
 )
-from PySide6.QtWidgets import QInputDialog, QLineEdit
+from PySide6.QtWidgets import QLineEdit
+from pytestqt.qtbot import QWidget
 from skyfield.api import Angle
 from typing import Any
 
 
-class MountMove:
+class MountMove(TabAddon):
     def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
@@ -37,7 +41,7 @@ class MountMove:
         self.ui = mainW.ui
         self.slewInterface = SlewInterface(self)
 
-        self.slewSpeeds = {
+        self.slewSpeeds: dict[str, dict[str, QWidget | Callable]] = {
             "max": {
                 "button": self.ui.slewSpeedMax,
                 "func": self.app.dReg["mount"].setting.setSlewSpeedMax,
@@ -56,7 +60,7 @@ class MountMove:
             },
         }
 
-        self.setupMoveClassic = {
+        self.setupMoveClassic: dict[str, dict[str, Any]] = {
             "N": {"button": self.ui.moveNorth, "coord": [1, 0]},
             "NE": {"button": self.ui.moveNorthEast, "coord": [1, 1]},
             "E": {"button": self.ui.moveEast, "coord": [0, 1]},
@@ -68,7 +72,7 @@ class MountMove:
             "STOP": {"button": self.ui.stopMoveAll, "coord": [0, 0]},
         }
 
-        self.setupMoveAltAz = {
+        self.setupMoveAltAz: dict[str, dict[str, Any]] = {
             "N": {"button": self.ui.moveNorthAltAz, "coord": [1, 0]},
             "NE": {"button": self.ui.moveNorthEastAltAz, "coord": [1, 1]},
             "E": {"button": self.ui.moveEastAltAz, "coord": [0, 1]},
@@ -79,14 +83,14 @@ class MountMove:
             "NW": {"button": self.ui.moveNorthWestAltAz, "coord": [1, -1]},
         }
 
-        self.setupStepsizes = {
+        self.setupStepsizes: dict[str, float] = {
             "Stepsize 0.25°": 0.25,
             "Stepsize 0.5°": 0.5,
-            "Stepsize 1.0°": 1,
-            "Stepsize 2.0°": 2,
-            "Stepsize 5.0°": 5,
-            "Stepsize 10°": 10,
-            "Stepsize 20°": 20,
+            "Stepsize 1.0°": 1.0,
+            "Stepsize 2.0°": 2.0,
+            "Stepsize 5.0°": 5.0,
+            "Stepsize 10°": 10.0,
+            "Stepsize 20°": 20.0,
         }
         self.targetAlt: Angle = Angle(degrees=0)
         self.targetAz: Angle = Angle(degrees=0)
@@ -100,8 +104,10 @@ class MountMove:
         self.ui.moveCoordinateAlt.textEdited.connect(self.setAlt)
         self.ui.moveCoordinateAz.textEdited.connect(self.setAz)
         self.app.dReg["mount"].signals.slewed.connect(self.moveAltAzDefault)
-        self.app.gameDirection.connect(self.moveAltAzGameController)
-        self.app.gameSR.connect(self.moveClassicGameController)
+        self.app.dReg["hidController"].signals.hidDirection.connect(
+            self.moveAltAzGameController
+        )
+        self.app.dReg["hidController"].signals.hidSR.connect(self.moveClassicGameController)
         self.setupGuiMount()
 
     def initConfig(self) -> None:
@@ -141,9 +147,10 @@ class MountMove:
             self.ui.moveStepSizeAltAz.addItem(text)
 
     def stopMoveAll(self) -> None:
+        self.app.dReg["mount"].obsSite.stopMoveAll()
+        mainThreadSleep(250)
         for uiR in self.setupMoveClassic:
             changeStyleDynamic(self.setupMoveClassic[uiR]["button"], "run", False)
-        self.app.dReg["mount"].obsSite.stopMoveAll()
 
     def countDuration(self, duration: int) -> None:
         for t in range(duration * 10, -1, -1):
@@ -164,32 +171,38 @@ class MountMove:
             return
         self.stopMoveAll()
 
+    def convertDirection(self, directionVector: list[int]) -> str:
+        for direction in self.setupMoveClassic:
+            if self.setupMoveClassic[direction]["coord"] == directionVector:
+                return direction
+        return "STOP"
+
     def moveClassicGameController(self, decVal: int, raVal: int) -> None:
         dirRa = 0
         dirDec = 0
-        if raVal < 64:
+        if raVal < 108:
             dirRa = 1
-        elif raVal > 192:
+        elif raVal > 152:
             dirRa = -1
-        if decVal < 64:
+        if decVal < 108:
             dirDec = -1
-        elif decVal > 192:
+        elif decVal > 152:
             dirDec = 1
 
-        direction = [dirRa, dirDec]
-        if direction == [0, 0]:
-            self.stopMoveAll()
-        else:
-            self.moveClassic(direction)
+        directionVector = [dirRa, dirDec]
+        direction = self.convertDirection(directionVector)
+        self.moveClassic(direction)
 
     def moveClassic(self, direction: str) -> None:
         uiList = self.setupMoveClassic
         for key in uiList:
             changeStyleDynamic(uiList[key]["button"], "run", False)
-
         changeStyleDynamic(uiList[direction]["button"], "run", True)
 
         coord = uiList[direction]["coord"]
+        if coord == [0, 0]:
+            self.stopMoveAll()
+
         if coord[0] == 1:
             self.app.dReg["mount"].obsSite.moveNorth()
         elif coord[0] == -1:
@@ -229,26 +242,21 @@ class MountMove:
         self.moveAltAz(direction)
 
     def moveAltAz(self, direction: str) -> None:
-        uiList = self.setupMoveAltAz
-        changeStyleDynamic(uiList[direction]["button"], "run", True)
-
-        key = list(self.setupStepsizes)[self.ui.moveStepSizeAltAz.currentIndex()]
-        step = self.setupStepsizes[key]
-
+        changeStyleDynamic(self.setupMoveAltAz[direction]["button"], "run", True)
+        step = self.setupStepsizes[self.ui.moveStepSizeAltAz.currentText()]
         coord = self.setupMoveAltAz[direction]["coord"]
-        targetAlt = self.targetAlt = Angle(degrees=self.targetAlt.degrees + coord[0] * step)
-        targetAz = self.targetAz = Angle(
-            degrees=(self.targetAz.degrees + coord[1] * step) % 360
-        )
-        self.slewInterface.slewTargetAltAz(targetAlt, targetAz)
+        obs = self.app.dReg["mount"].obsSite
+        targetAlt = Angle(degrees=obs.Alt.degrees + coord[0] * step)
+        targetAz = Angle(degrees=(obs.Az.degrees + coord[1] * step) % 360)
+        suc = self.slewInterface.slewTargetAltAz(targetAlt, targetAz)
+        print(suc)
 
     def checkRaDecInputs(self) -> None:
         canSlew = self.app.dReg["mount"].obsSite.setTargetRaDec(self.targetRa, self.targetDec)
         self.ui.moveRaDecAbsolute.setEnabled(canSlew)
 
     def setRA(self) -> None:
-        dlg = QInputDialog()
-        value, ok = dlg.getText(
+        value, ok = MWInputDialog.getText(
             self.mainW,
             "Set telescope RA",
             "Format: <dd[H] mm ss.s> in hours or <[+]d.d> in degrees",
@@ -264,8 +272,7 @@ class MountMove:
         self.checkRaDecInputs()
 
     def setDEC(self) -> None:
-        dlg = QInputDialog()
-        value, ok = dlg.getText(
+        value, ok = MWInputDialog.getText(
             self.mainW,
             "Set telescope DEC",
             "Format: <dd[Deg] mm ss.s> or <[+]d.d> in degrees",

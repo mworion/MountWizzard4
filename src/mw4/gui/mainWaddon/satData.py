@@ -13,5 +13,8 @@
 # License APL2.0
 #
 ###########################################################
-class SatData:
+from mw4.gui.mainWaddon.tabAddon import TabAddon
+
+
+class SatData(TabAddon):
     satellites = None

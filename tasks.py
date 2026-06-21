@@ -136,8 +136,8 @@ def build_widgets(c):
         "satelliteHor",
         "satelliteMap",
         "simulator",
+        "setting",
         "video",
-        "bigPopup",
         "uploadPopup",
         "material",
     ]

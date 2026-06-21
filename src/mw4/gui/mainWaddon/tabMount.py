@@ -13,20 +13,23 @@
 # License APL2.0
 #
 ###########################################################
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from typing import Any
 
 
-class Mount:
+class Mount(TabAddon):
     def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
 
-        self.app.gameABXY.connect(self.changeParkGameController)
-        self.app.gameABXY.connect(self.stopGameController)
-        self.app.gameABXY.connect(self.changeTrackingGameController)
-        self.app.gameABXY.connect(self.flipMountGameController)
+        self.app.dReg["hidController"].signals.hidABXY.connect(self.changeParkGameController)
+        self.app.dReg["hidController"].signals.hidABXY.connect(self.stopGameController)
+        self.app.dReg["hidController"].signals.hidABXY.connect(
+            self.changeTrackingGameController
+        )
+        self.app.dReg["hidController"].signals.hidABXY.connect(self.flipMountGameController)
         self.ui.flipMount.clicked.connect(self.flipMount)
         self.ui.tracking.clicked.connect(self.changeTracking)
         self.ui.setLunarTracking.clicked.connect(self.setLunarTracking)

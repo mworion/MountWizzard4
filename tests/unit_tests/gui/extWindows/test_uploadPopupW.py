@@ -20,6 +20,7 @@ import unittest.mock as mock
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
 from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
+from PySide6.QtCore import QEventLoop
 from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -47,8 +48,18 @@ def test_setIcon(function):
     function.setIcon()
 
 
+def test_showWindow(function):
+    with mock.patch.object(function, "show"):
+        function.showWindow()
+        function.show.assert_called_once()
+        assert function.titleBar.windowFixed
+        assert function.minimumHeight() <= 120
+        assert function.minimumWidth() <= 400
+
+
 def test_setProgressBarColor(function):
     function.setProgressBarColor("red")
+    assert "red" in function.ui.progressBar.styleSheet()
 
 
 def test_setProgressBarToValue(function):
@@ -284,6 +295,41 @@ def test_closePopup_3(function, mocked_sleepAndEvents):
         function.closePopup(True)
 
 
-def test_uploadFile_1(function):
-    with mock.patch.object(function.threadPool, "start"):
-        function.uploadFile()
+def test_exec_1(function):
+    with (
+        mock.patch.object(function, "showWindow"),
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch("mw4.gui.extWindows.uploadPopupW.QEventLoop") as mock_loop_cls,
+    ):
+        mock_loop = mock.MagicMock(spec=QEventLoop)
+        mock_loop_cls.return_value = mock_loop
+        function.returnValues["success"] = True
+        result = function.exec()
+        assert result
+        mock_loop.exec.assert_called_once()
+
+
+def test_exec_2(function):
+    with (
+        mock.patch.object(function, "showWindow"),
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch("mw4.gui.extWindows.uploadPopupW.QEventLoop") as mock_loop_cls,
+    ):
+        mock_loop = mock.MagicMock(spec=QEventLoop)
+        mock_loop_cls.return_value = mock_loop
+        function.returnValues["success"] = False
+        result = function.exec()
+        assert not result
+        mock_loop.exec.assert_called_once()
+
+
+def test_upload_1(function):
+    with mock.patch.object(UploadPopup, "exec", return_value=True):
+        result = UploadPopup.upload(function.parentWidget, Path(), [], Path())
+        assert result
+
+
+def test_upload_2(function):
+    with mock.patch.object(UploadPopup, "exec", return_value=False):
+        result = UploadPopup.upload(function.parentWidget, Path(), [], Path())
+        assert not result

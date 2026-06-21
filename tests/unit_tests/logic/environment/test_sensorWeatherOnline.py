@@ -139,7 +139,7 @@ def test_workerGetOpenWeatherMapData_1(function):
     class Test:
         status_code = 300
 
-    function.app.onlineMode = False
+    function.app.isOnline = False
     with mock.patch.object(requests, "get", return_value=Test()):
         function.workerGetOpenWeatherMapData("http://localhost")
 
@@ -148,7 +148,7 @@ def test_workerGetOpenWeatherMapData_2(function):
     class Test:
         status_code = 300
 
-    function.app.onlineMode = True
+    function.app.isOnline = True
     with mock.patch.object(requests, "get", return_value=Test()):
         function.workerGetOpenWeatherMapData("http://localhost")
 
@@ -157,7 +157,7 @@ def test_workerGetOpenWeatherMapData_3(function):
     class Test:
         status_code = 300
 
-    function.app.onlineMode = True
+    function.app.isOnline = True
     with mock.patch.object(requests, "get", side_effect=Exception(), return_value=Test()):
         function.workerGetOpenWeatherMapData("http://localhost")
 
@@ -166,7 +166,7 @@ def test_workerGetOpenWeatherMapData_4(function):
     class Test:
         status_code = 300
 
-    function.app.onlineMode = True
+    function.app.isOnline = True
     with mock.patch.object(requests, "get", side_effect=TimeoutError(), return_value=Test()):
         function.workerGetOpenWeatherMapData("http://localhost")
 
@@ -179,7 +179,7 @@ def test_workerGetOpenWeatherMapData_5(function):
         def json():
             return "test"
 
-    function.app.onlineMode = True
+    function.app.isOnline = True
     with mock.patch.object(requests, "get", return_value=Test()):
         function.workerGetOpenWeatherMapData("http://localhost")
 
@@ -245,27 +245,27 @@ def test_pollOpenWeatherMapData_1(function):
 
 def test_pollOpenWeatherMapData_2(function):
     function.apiKey = "test"
-    function.app.onlineMode = False
+    function.app.isOnline = False
     function.running = True
     function.pollOpenWeatherMapData()
 
 
 def test_pollOpenWeatherMapData_3(function):
     function.apiKey = "test"
-    function.app.onlineMode = True
+    function.app.isOnline = True
     function.pollOpenWeatherMapData()
 
 
 def test_pollOpenWeatherMapData_4(function):
     function.apiKey = "test"
-    function.app.onlineMode = True
+    function.app.isOnline = True
     with mock.patch.object(function, "loadingFileNeeded", return_value=False):
         function.pollOpenWeatherMapData()
 
 
 def test_pollOpenWeatherMapData_5(function):
     function.apiKey = "test"
-    function.app.onlineMode = True
+    function.app.isOnline = True
     with (
         mock.patch.object(function, "loadingFileNeeded", return_value=True),
         mock.patch.object(function, "getOpenWeatherMapData"),
@@ -294,15 +294,17 @@ def test_pollOpenWeatherMapDataExtractsLocationLatLon(function) -> None:
     # So we can only test the condition that leads to line 157-158
     function.config.apiKey = "test_key"
     function.config.hostAddress = "localhost"
-    function.app.onlineMode = True
-    function.location = mock.MagicMock()
-    function.location.latitude.degrees = 45.5
-    function.location.longitude.degrees = -122.5
+    function.app.isOnline = True
+    location = mock.MagicMock()
+    location.latitude.degrees = 45.5
+    location.longitude.degrees = -122.5
 
     # Mock getOpenWeatherMapData to prevent the Path+str error
-    with mock.patch.object(function, "getOpenWeatherMapData"), mock.patch(
-        "mw4.logic.environment.sensorWeatherOnline.Path"
-    ) as mock_path:
+    with (
+        mock.patch.object(function, "location", location),
+        mock.patch.object(function, "getOpenWeatherMapData"),
+        mock.patch("mw4.logic.environment.sensorWeatherOnline.Path") as mock_path,
+    ):
         # Make Path return a string-like object that supports + operator
         mock_instance = mock.MagicMock()
         mock_instance.__add__ = mock.MagicMock(return_value="test_url")
@@ -312,5 +314,3 @@ def test_pollOpenWeatherMapDataExtractsLocationLatLon(function) -> None:
         # Verify that the location attributes were accessed
         assert function.location.latitude.degrees == 45.5
         assert function.location.longitude.degrees == -122.5
-
-

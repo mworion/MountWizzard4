@@ -23,6 +23,8 @@ from mw4.base.signalsDevices import Signals
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
+from PySide6.QtCore import QEventLoop
+from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication, QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -192,6 +194,31 @@ def test_discoverDevices_1(function):
 def test_discoverDevices_2(function):
     with mock.patch.object(IndiClass, "discoverDevices", return_value=("Test1", "Test2")):
         function.discoverDevices("indi", QWidget())
+
+
+def test_discoverDevices_hid_empty(function):
+    """Test discoverDevices for hid framework with no devices found."""
+    from mw4.logic.hidController.hidController import HidController
+
+    function.device = "hidController"
+    with mock.patch.object(HidController, "discoverDevices", return_value=[]):
+        function.discoverDevices("hid")
+    function.device = "telescope"
+
+
+def test_discoverDevices_hid_devices_found(function):
+    """Test discoverDevices for hid framework with devices found."""
+    from mw4.logic.hidController.hidController import HidController
+
+    function.device = "hidController"
+
+    with mock.patch.object(
+        HidController, "discoverDevices", return_value=["Pro Controller", "Game Pad"]
+    ):
+        function.discoverDevices("hid")
+
+    assert function.framework == "hid"
+    function.device = "telescope"
 
 
 def test_checkApp_1(function):
@@ -446,3 +473,66 @@ def test_storeConfigWithBothCopyConfigs(function) -> None:
         # Verify copyConfig contains both
         assert "indi" in function.returnValues["copyConfig"]
         assert "alpaca" in function.returnValues["copyConfig"]
+
+
+def test_closeEvent_1(function):
+    function.loop = mock.MagicMock(spec=QEventLoop)
+    event = QCloseEvent()
+    with mock.patch("PySide6.QtWidgets.QMainWindow.closeEvent"):
+        function.closeEvent(event)
+    function.loop.quit.assert_called_once()
+    function.loop = None
+
+
+def test_closeEvent_2(function):
+    function.loop = None
+    event = QCloseEvent()
+    with mock.patch("PySide6.QtWidgets.QMainWindow.closeEvent"):
+        function.closeEvent(event)
+
+
+def test_exec_1(function):
+    with (
+        mock.patch.object(function, "initConfig"),
+        mock.patch("mw4.gui.extWindows.devicePopupW.QEventLoop") as mock_loop_cls,
+    ):
+        mock_loop = mock.MagicMock(spec=QEventLoop)
+        mock_loop_cls.return_value = mock_loop
+        function.returnValues["close"] = "ok"
+        result = function.exec()
+        assert result
+        mock_loop.exec.assert_called_once()
+
+
+def test_exec_2(function):
+    with (
+        mock.patch.object(function, "initConfig"),
+        mock.patch("mw4.gui.extWindows.devicePopupW.QEventLoop") as mock_loop_cls,
+    ):
+        mock_loop = mock.MagicMock(spec=QEventLoop)
+        mock_loop_cls.return_value = mock_loop
+        function.returnValues["close"] = "cancel"
+        result = function.exec()
+        assert not result
+        mock_loop.exec.assert_called_once()
+
+
+def test_configure_1(function):
+    parent = MWidget()
+    parent.app = App()
+
+    def mock_exec_ok(self: DevicePopup) -> bool:
+        self.returnValues["close"] = "ok"
+        return True
+
+    with mock.patch.object(DevicePopup, "exec", mock_exec_ok):
+        rv = DevicePopup.configure(parent, "telescope", {"framework": "indi"})
+        assert rv["close"] == "ok"
+
+
+def test_configure_2(function):
+    parent = MWidget()
+    parent.app = App()
+    with mock.patch.object(DevicePopup, "exec", return_value=False):
+        rv = DevicePopup.configure(parent, "telescope", {"framework": "indi"})
+        assert rv["close"] == "cancel"

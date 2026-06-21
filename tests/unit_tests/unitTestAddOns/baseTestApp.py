@@ -15,9 +15,10 @@
 ###########################################################
 # Re-export all stubs so that existing test imports remain unchanged.
 from mw4.base.deviceRegistry import DeviceEntry, DeviceRegistry
+from mw4.base.timeManager import TimeManager
 from mw4.logic.buildData.buildpoints import BuildPoint
 from pathlib import Path
-from PySide6.QtCore import QObject, QThreadPool, QTimer, Signal
+from PySide6.QtCore import QObject, QThreadPool, Signal
 from queue import Queue
 from skyfield.api import load_file
 from tests.unit_tests.unitTestAddOns.deviceStubs import (  # noqa: F401
@@ -75,8 +76,8 @@ from tests.unit_tests.unitTestAddOns.mountStubs import (  # noqa: F401
 
 class App(QObject):
     __version__ = "test"
+    MAX_THREAD_COUNT = 30
     update10s = Signal()
-    timerMgr = QTimer()
     update0_1s = Signal()
     update1s = Signal()
     update3s = Signal()
@@ -84,7 +85,6 @@ class App(QObject):
     update3m = Signal()
     update30m = Signal()
     start3s = Signal()
-    hostChanged = Signal()
     sendSatelliteData = Signal(object, object)
     updateSatellite = Signal(object, object)
     showSatellite = Signal(object, object, object, object, object)
@@ -110,14 +110,14 @@ class App(QObject):
     playSound = Signal(object)
     msg = Signal(object, object, object, object)
     remoteCommand = Signal(object)
-    gameABXY = Signal(object)
-    gamePMH = Signal(object)
-    gameDirection = Signal(object)
-    gameSL = Signal(object, object)
-    gameSR = Signal(object, object)
+    onlineModeChanged = Signal()
+    timebaseChanged = Signal()
+    relayChanged = Signal()
+    parkChanged = Signal()
 
     def __init__(self):
         super().__init__()
+        self.timeMgr = TimeManager(app=self)
         self.config = {"WindowMain": {}}
         self.deviceStat = {
             "dome": False,
@@ -169,7 +169,7 @@ class App(QObject):
         self.dReg = DeviceRegistry(self)
         self.dReg.addDevices(self)
         self.buildPoint = BuildPoint(self)
-        self.onlineMode = False
+        self.isOnline = False
         # Add onlineWeather to drivers for tests
         self.dReg.d["onlineWeather"] = DeviceEntry(
             name="onlineWeather",

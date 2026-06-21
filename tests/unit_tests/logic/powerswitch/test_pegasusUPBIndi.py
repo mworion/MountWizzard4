@@ -36,19 +36,6 @@ def function():
 
 
 # ---------------------------------------------------------------------------
-# setUpdateConfig - DEPRECATED: method doesn't exist in PegasusUPBIndi
-# ---------------------------------------------------------------------------
-# Skipping this test as the setUpdateConfig method is not implemented
-
-
-@pytest.mark.skip(reason="setUpdateConfig method does not exist in PegasusUPBIndi")
-def test_setUpdateConfig(function):
-    function.txQ = Queue()
-    function.setUpdateConfig("ignored")
-    assert function.txQ.qsize() == 1
-
-
-# ---------------------------------------------------------------------------
 # checkDriverInfo
 # ---------------------------------------------------------------------------
 

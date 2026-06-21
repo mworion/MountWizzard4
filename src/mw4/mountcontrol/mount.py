@@ -16,40 +16,78 @@
 import logging
 import socket
 import wakeonlan
-from mw4.base.ethernet import checkFormatMAC
+from collections.abc import Callable
+from dataclasses import dataclass, field
 from mw4.base.tpool import Worker
 from mw4.mountcontrol.dome import Dome
 from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.geometry import Geometry
 from mw4.mountcontrol.model import Model
 from mw4.mountcontrol.mountSignals import MountSignals
-from mw4.mountcontrol.obsSite import ObsSite
+from mw4.mountcontrol.obsSite import MountStatus, ObsSite
 from mw4.mountcontrol.satellite import Satellite
 from mw4.mountcontrol.setting import Setting
 from pathlib import Path
-from PySide6.QtCore import QMutex, QTimer
+from PySide6.QtCore import QMutex, QObject, QTimer
 from skyfield.api import Angle
-from typing import Any
+from typing import Any, Final
 
 
-class MountDevice:
-    CYCLE_POINTING = 500
-    CYCLE_DOME = 950
-    CYCLE_CLOCK = 1000
-    CYCLE_MOUNT_UP = 1000
-    CYCLE_SETTING = 3100
-    DEFAULT_PORT = 3492
-    SOCKET_TIMEOUT = 1
+@dataclass
+class DeviceConfigMount:
+    deviceName: str = field(default="10micron")
+    hostAddress: str = field(default="127.0.0.1")
+    port: int = field(default=3492)
+    MAC: str = field(default="00:00:00:00:00:00")
+    clockSync: bool = field(default=False)
+    syncTimeNone: bool = field(default=True)
+    syncTimeCont: bool = field(default=False)
+    syncTimeNotTrack: bool = field(default=False)
+    wolAutomatic: bool = field(default=False)
+    wolAddress: str = field(default="255.255.255.255")
+    wolPort: int = field(default=9)
+
+
+class MountDevice(QObject):
+    """Top-level controller for a 10micron mount.
+
+    Owns device sub-objects (firmware, setting, obsSite, satellite, geometry,
+    dome, model), manages cyclic polling via QTimers and worker threads, and
+    re-emits results through ``MountSignals``.
+
+    Return-value convention used throughout the public API:
+
+    - Imperative commands that can fail (``bootMount``, ``shutdown``) return
+      ``bool`` so callers can react to success/failure.
+    - Scheduler / cycle / get methods communicate exclusively through Qt
+      signals and therefore return ``None``.
+    - Pure computations (``calc*``) return their computed values and use
+      ``None`` to signal invalid input.
+    """
+
+    CYCLE_POINTING: Final[int] = 500
+    CYCLE_DOME: Final[int] = 950
+    CYCLE_CLOCK: Final[int] = 1000
+    CYCLE_MOUNT_UP: Final[int] = 1000
+    CYCLE_SETTING: Final[int] = 3100
+    SOCKET_TIMEOUT: Final[int] = 1
+    ALERT_STATUS_CODES: Final[frozenset[MountStatus]] = frozenset(
+        {MountStatus.STOPPED, MountStatus.UNKNOWN, MountStatus.ERROR}
+    )
     log = logging.getLogger("MW4")
 
     def __init__(
-        self, app: Any, host=None, MAC: str = "00.00.00.00.00.00", verbose: bool = False
+        self,
+        app: Any,
+        verbose: bool = False,
     ) -> None:
+        super().__init__()
         self._waitTime = 0
         self._waitTimeFlip = 0
         self.app = app
-        self.host = host
-        self.MAC = MAC
+        self.config = DeviceConfigMount()
+        self.run: dict[str, Any] = {"10micron": self}
+        self.framework: str = "10micron"
         self.threadPool = app.threadPool
         self.pathToData: Path = app.mwGlob["dataDir"]
         self.verbose: bool = verbose
@@ -108,19 +146,11 @@ class MountDevice:
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitAfterSettlingAndEmit)
         self.app.update1s.connect(self.collectData)
+        self.app.update30s.connect(self.syncClock)
         self.app.start3s.connect(self.resetAfterStart)
         self.data: dict = {}
         self.raRef: float = 0.0
         self.decRef: float = 0.0
-
-    @property
-    def MAC(self) -> str:
-        return self._MAC
-
-    @MAC.setter
-    def MAC(self, value: Any) -> None:
-        value = checkFormatMAC(value)
-        self._MAC = value
 
     @property
     def waitTimeFlip(self) -> float:
@@ -128,6 +158,8 @@ class MountDevice:
 
     @waitTimeFlip.setter
     def waitTimeFlip(self, value: float) -> None:
+        if value < 0:
+            raise ValueError("waitTimeFlip must be non-negative")
         self._waitTimeFlip = int(value * 1000)
 
     def resetAfterStart(self) -> None:
@@ -151,7 +183,28 @@ class MountDevice:
     def waitAfterSettlingAndEmit(self) -> None:
         self.signals.slewed.emit()
 
-    def startMountTimers(self) -> None:
+    def runWorker(
+        self,
+        target: Callable[..., Any],
+        clearMethod: Callable[..., Any],
+        workerAttr: str,
+        *args: Any,
+        mutex: QMutex | None = None,
+        useResult: bool = False,
+        requireMountUp: bool = True,
+        **kwargs: Any,
+    ) -> None:
+        if requireMountUp and not self.mountIsUp:
+            return
+        if mutex is not None and not mutex.tryLock():
+            return
+        worker = Worker(target, *args, **kwargs)
+        sig = worker.signals.result if useResult else worker.signals.finished
+        sig.connect(clearMethod)
+        setattr(self, workerAttr, worker)
+        self.threadPool.start(worker)
+
+    def startMountCoreTimers(self) -> None:
         self.timerMountIsUp.start(self.CYCLE_MOUNT_UP)
         self.timerPointing.start(self.CYCLE_POINTING)
         self.timerSetting.start(self.CYCLE_SETTING)
@@ -175,8 +228,8 @@ class MountDevice:
     def stopMountClockTimer(self) -> None:
         self.timerClock.stop()
 
-    def startupMountData(self, mountIsUp: bool) -> None:
-        if mountIsUp and not self.mountIsUpLastStatus:
+    def startupMountData(self) -> None:
+        if self.mountIsUp and not self.mountIsUpLastStatus:
             self.mountIsUpLastStatus = True
             self.obsSite.setHighPrecision()
             self.getFW()
@@ -184,44 +237,43 @@ class MountDevice:
             self.app.refreshModel.emit()
             self.app.refreshName.emit()
             self.getTLE()
-        elif not mountIsUp:
+            self.signals.deviceConnected.emit("mount")
+        elif not self.mountIsUp and self.mountIsUpLastStatus:
+            self.signals.deviceDisconnected.emit("mount")
             self.mountIsUpLastStatus = False
 
     def checkMountIsUp(self) -> None:
-        client = socket.socket()
-        client.settimeout(self.SOCKET_TIMEOUT)
+        self.mountIsUp = False
         try:
-            client.connect(self.host)
-            client.shutdown(socket.SHUT_RDWR)
+            with socket.socket() as client:
+                client.settimeout(self.SOCKET_TIMEOUT)
+                client.connect((self.config.hostAddress, self.config.port))
+                client.shutdown(socket.SHUT_RDWR)
+                self.mountIsUp = True
         except TimeoutError:
-            self.mountIsUp = False
             self.log.info("Mount connection timed out")
         except Exception as e:
             self.log.error(f"Mount {e}")
-            self.mountIsUp = False
-        else:
-            self.mountIsUp = True
-        finally:
-            client.close()
 
     def clearCycleCheckMountIsUp(self) -> None:
-        self.startupMountData(self.mountIsUp)
+        self.startupMountData()
         self.signals.mountIsUp.emit(self.mountIsUp)
         self.mutexCycleMountIsUp.unlock()
 
     def cycleCheckMountIsUp(self) -> None:
-        if not self.host:
+        if not self.config.hostAddress or not self.config.port:
             self.signals.mountIsUp.emit(False)
             return
-        if not self.mutexCycleMountIsUp.tryLock():
-            return
-
-        self.workerMountIsUp = Worker(self.checkMountIsUp)
-        self.workerMountIsUp.signals.finished.connect(self.clearCycleCheckMountIsUp)
-        self.threadPool.start(self.workerMountIsUp)
+        self.runWorker(
+            self.checkMountIsUp,
+            self.clearCycleCheckMountIsUp,
+            "workerMountIsUp",
+            mutex=self.mutexCycleMountIsUp,
+            requireMountUp=False,
+        )
 
     def clearCyclePointing(self, result: bool) -> None:
-        if self.obsSite.status in [1, 98, 99]:
+        if self.obsSite.status in self.ALERT_STATUS_CODES:
             if not self.statusAlert:
                 self.signals.alert.emit()
             self.statusAlert = True
@@ -238,14 +290,13 @@ class MountDevice:
         self.mutexCyclePointing.unlock()
 
     def cyclePointing(self) -> None:
-        if not self.mountIsUp:
-            return
-        if not self.mutexCyclePointing.tryLock():
-            return
-
-        self.workerCyclePointing = Worker(self.obsSite.pollPointing)
-        self.workerCyclePointing.signals.result.connect(self.clearCyclePointing)
-        self.threadPool.start(self.workerCyclePointing)
+        self.runWorker(
+            self.obsSite.pollPointing,
+            self.clearCyclePointing,
+            "workerCyclePointing",
+            mutex=self.mutexCyclePointing,
+            useResult=True,
+        )
 
     def clearCycleSetting(self, result: bool) -> None:
         self.mutexCycleSetting.unlock()
@@ -253,108 +304,82 @@ class MountDevice:
             self.signals.settingDone.emit(self.setting)
 
     def cycleSetting(self) -> None:
-        if not self.mountIsUp:
-            return
-        if not self.mutexCycleSetting.tryLock():
-            return
-
-        self.workerCycleSetting = Worker(self.setting.pollSetting)
-        self.workerCycleSetting.signals.result.connect(self.clearCycleSetting)
-        self.threadPool.start(self.workerCycleSetting)
+        self.runWorker(
+            self.setting.pollSetting,
+            self.clearCycleSetting,
+            "workerCycleSetting",
+            mutex=self.mutexCycleSetting,
+            useResult=True,
+        )
 
     def clearGetModel(self) -> None:
         self.signals.getModelDone.emit(self.model)
 
     def getModel(self) -> None:
-        if not self.mountIsUp:
-            return
-        self.workerGetModel = Worker(self.model.pollStars)
-        self.workerGetModel.signals.finished.connect(self.clearGetModel)
-        self.threadPool.start(self.workerGetModel)
+        self.runWorker(self.model.pollStars, self.clearGetModel, "workerGetModel")
 
     def clearGetNames(self) -> None:
         self.signals.namesDone.emit(self.model)
 
     def getNames(self) -> None:
-        if not self.mountIsUp:
-            return
-
-        self.workerGetNames = Worker(self.model.pollNames)
-        self.workerGetNames.signals.finished.connect(self.clearGetNames)
-        self.threadPool.start(self.workerGetNames)
+        self.runWorker(self.model.pollNames, self.clearGetNames, "workerGetNames")
 
     def clearGetFW(self) -> None:
-        self.log.info(f"[SYS] 10micron product : {self.firmware.product}")
-        self.log.info(f"[SYS] 10micron firmware: {self.firmware.vString}")
-        self.log.info(f"[SYS] 10micron host    : {self.host}")
         self.geometry.initializeGeometry(self.firmware.product)
         self.signals.firmwareDone.emit(self.firmware)
 
     def getFW(self) -> None:
-        if not self.mountIsUp:
-            return
-
-        self.workerGetFW = Worker(self.firmware.poll)
-        self.workerGetFW.signals.finished.connect(self.clearGetFW)
-        self.threadPool.start(self.workerGetFW)
+        self.runWorker(self.firmware.poll, self.clearGetFW, "workerGetFW")
 
     def clearGetLocation(self) -> None:
         self.signals.locationDone.emit(self.obsSite)
 
     def getLocation(self) -> None:
-        if not self.mountIsUp:
-            return
-
-        self.workerGetLocation = Worker(self.obsSite.getLocation)
-        self.workerGetLocation.signals.finished.connect(self.clearGetLocation)
-        self.threadPool.start(self.workerGetLocation)
+        self.runWorker(self.obsSite.getLocation, self.clearGetLocation, "workerGetLocation")
 
     def clearCalcTLE(self) -> None:
         self.mutexCalcTLE.unlock()
         self.signals.calcTLEdone.emit(self.satellite.tleParams)
 
     def calcTLE(self, start: float) -> None:
-        if not self.mountIsUp:
-            return
-        if not self.mutexCalcTLE.tryLock():
-            return
-
-        self.workerCalcTLE = Worker(self.satellite.calcTLE, start)
-        self.workerCalcTLE.signals.finished.connect(self.clearCalcTLE)
-        self.threadPool.start(self.workerCalcTLE)
+        self.runWorker(
+            self.satellite.calcTLE,
+            self.clearCalcTLE,
+            "workerCalcTLE",
+            start,
+            mutex=self.mutexCalcTLE,
+        )
 
     def clearStatTLE(self) -> None:
         self.signals.statTLEdone.emit(self.satellite.tleParams)
 
     def statTLE(self) -> None:
-        self.workerStatTLE = Worker(self.satellite.statTLE)
-        self.workerStatTLE.signals.finished.connect(self.clearStatTLE)
-        self.threadPool.start(self.workerStatTLE)
+        self.runWorker(self.satellite.statTLE, self.clearStatTLE, "workerStatTLE")
 
     def clearGetTLE(self) -> None:
         self.mutexGetTLE.unlock()
         self.signals.getTLEdone.emit(self.satellite.tleParams)
 
     def getTLE(self) -> None:
-        if not self.mountIsUp:
-            return
-        if not self.mutexGetTLE.tryLock():
-            return
+        self.runWorker(
+            self.satellite.getTLE,
+            self.clearGetTLE,
+            "workerGetTLE",
+            mutex=self.mutexGetTLE,
+        )
 
-        self.workerGetTLE = Worker(self.satellite.getTLE)
-        self.workerGetTLE.signals.finished.connect(self.clearGetTLE)
-        self.threadPool.start(self.workerGetTLE)
-
-    def bootMount(self, bAddress: str = "", bPort: int = 0) -> bool:
-        t = f"MAC: [{self.MAC}], broadcast address: [{bAddress}], port: [{bPort}]"
+    def bootMount(self) -> bool:
+        t = f"MAC: [{self.config.MAC}], [{self.config.wolAddress}]:[{self.config.wolPort}]"
         self.log.debug(t)
-        if self.MAC is None:
+        if self.config.MAC is None:
             return False
+        kwargs: dict[str, Any] = {}
+        if self.config.wolAddress:
+            kwargs["ip_address"] = self.config.wolAddress
+        if self.config.wolPort:
+            kwargs["port"] = self.config.wolPort
         try:
-            if bAddress and bPort:
-                wakeonlan.send_magic_packet(self.MAC, ip_address=bAddress, port=bPort)
-            else:
-                wakeonlan.send_magic_packet(self.MAC)
+            wakeonlan.send_magic_packet(self.config.MAC, **kwargs)
         except Exception as e:
             self.log.warning(f"Boot mount failed: {e}")
             return False
@@ -372,28 +397,42 @@ class MountDevice:
             self.signals.domeDone.emit(self.dome)
 
     def cycleDome(self) -> None:
-        if not self.mountIsUp:
+        self.runWorker(
+            self.dome.poll,
+            self.clearDome,
+            "workerCycleDome",
+            mutex=self.mutexCycleDome,
+            useResult=True,
+        )
+
+    def syncClock(self) -> None:
+        if self.config.syncTimeNone or not self.mountIsUp:
             return
-        if not self.mutexCycleDome.tryLock():
+        mountTracks = self.app.dReg["mount"].obsSite.status in [
+            MountStatus.TRACKING,
+            MountStatus.FOLLOWING_SATELLITE,
+        ]
+        if mountTracks and self.config.syncTimeNotTrack:
             return
 
-        self.workerCycleDome = Worker(self.dome.poll)
-        self.workerCycleDome.signals.result.connect(self.clearDome)
-        self.threadPool.start(self.workerCycleDome)
+        delta = self.obsSite.timeDiff * 1000
+        if abs(delta) < 10:
+            return
+        delta = int(max(min(delta, 999), -999))
+        if not self.obsSite.adjustClock(delta):
+            self.log.warning(f"Clock sync failed with delta {delta} ms")
 
     def clearCycleClock(self) -> None:
         self.mutexCycleClock.unlock()
+        self.workerCycleClock = None
 
     def cycleClock(self) -> None:
-        if not self.mountIsUp:
-            return
-
-        if not self.mutexCycleClock.tryLock():
-            return
-
-        self.workerCycleClock = Worker(self.obsSite.pollSyncClock)
-        self.workerCycleClock.signals.finished.connect(self.clearCycleClock)
-        self.threadPool.start(self.workerCycleClock)
+        self.runWorker(
+            self.obsSite.pollSyncClock,
+            self.clearCycleClock,
+            "workerCycleClock",
+            mutex=self.mutexCycleClock,
+        )
 
     def clearProgTrajectory(self) -> None:
         self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
@@ -408,11 +447,16 @@ class MountDevice:
     ) -> None:
         if not self.mountIsUp:
             return
-
         self.satellite.startProgTrajectory(julD=start)
-        self.workerTrajectory = Worker(self.runnerProgTrajectory, alt, az, replay=replay)
-        self.workerTrajectory.signals.result.connect(self.clearProgTrajectory)
-        self.threadPool.start(self.workerTrajectory)
+        self.runWorker(
+            self.runnerProgTrajectory,
+            self.clearProgTrajectory,
+            "workerTrajectory",
+            alt,
+            az,
+            replay=replay,
+            useResult=True,
+        )
 
     def calcTransformationMatricesTarget(
         self,

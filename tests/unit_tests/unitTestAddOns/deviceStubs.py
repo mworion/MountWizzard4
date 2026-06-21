@@ -13,7 +13,15 @@
 # License APL2.0
 #
 ###########################################################
+from dataclasses import dataclass, field
 from PySide6.QtCore import QObject, QTimer, Signal
+
+
+@dataclass
+class DeviceConfigOnlineWeather:
+    deviceName: str = field(default="OnlineWeather")
+    hostAddress: str | None = field(default="")
+    apiKey: str = field(default="")
 
 
 class PlateSolve:
@@ -247,6 +255,8 @@ class OnlineWeather:
         self.framework = None
         self.defaultConfig = {"framework": "", "frameworks": {}}
         self.data = {}
+        self.run = {}
+        self.config = DeviceConfigOnlineWeather()
 
 
 class DirectWeatherSignals(QObject):
@@ -359,6 +369,7 @@ class Relay:
         self.framework = None
         self.defaultConfig = {"framework": "", "frameworks": {}}
         self.timerTask = QTimer()
+        self.status = [0, 0, 0, 0, 0, 0, 0, 0]
 
     @staticmethod
     def getRelay():
@@ -366,11 +377,11 @@ class Relay:
 
     @staticmethod
     def pulse(a):
-        return
+        return True
 
     @staticmethod
     def switch(a):
-        return
+        return True
 
 
 class RemoteSignals(QObject):
@@ -392,13 +403,17 @@ class Telescope:
         deviceConnected = Signal(object)
         deviceDisconnected = Signal(object)
 
-    class Test:
+    class TestConfig:
         deviceName = ""
+
+    class TestFramework:
+        def __init__(self):
+            self.config = Telescope.TestConfig()
 
     signals = TelescopeSignals()
     data = {}
     framework = None
-    run = {"indi": Test()}
+    run = {"indi": None}  # Will be set after class definition
     focalLength = 100
     aperture = 100
     defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
@@ -410,6 +425,9 @@ class Telescope:
     @staticmethod
     def startCommunication(loadConfig=None):
         return
+
+
+Telescope.run["indi"] = Telescope.TestFramework()
 
 
 class Hipparcos:

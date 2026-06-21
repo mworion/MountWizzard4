@@ -23,6 +23,7 @@ import unittest.mock as mock
 from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
+from PySide6.QtCore import QEventLoop
 from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
@@ -39,19 +40,26 @@ def function(qapp):
 
 
 @pytest.fixture
-def mocked_sleepAndEvents(monkeypatch, function):
-    def test(_):
-        function.pollStatusRunState = False
-
-    monkeypatch.setattr("time.sleep", test)
+def mockedSleep(monkeypatch):
+    monkeypatch.setattr("mw4.gui.extWindows.downloadPopupW.mainThreadSleep", lambda _: None)
 
 
-def set_setIcon(function):
+def test_setIcon(function):
     function.setIcon()
 
 
-def set_setProgressBarColor(function):
+def test_showWindow(function):
+    with mock.patch.object(function, "show"):
+        function.showWindow()
+        function.show.assert_called_once()
+        assert function.titleBar.windowFixed
+        assert function.minimumHeight() <= 120
+        assert function.minimumWidth() <= 400
+
+
+def test_setProgressBarColor(function):
     function.setProgressBarColor("red")
+    assert "red" in function.ui.progressBar.styleSheet()
 
 
 def test_setProgressBarToValue(function):
@@ -190,7 +198,7 @@ def test_downloadFileWorker_8(function):
         assert suc
 
 
-def test_downloadFileWorker_9(function, mocked_sleepAndEvents):
+def test_downloadFileWorker_9(function):
     with (
         mock.patch.object(function, "getFileFromUrl", return_value=False),
         mock.patch.object(function, "unzipFile"),
@@ -199,29 +207,51 @@ def test_downloadFileWorker_9(function, mocked_sleepAndEvents):
         assert not suc
 
 
-def test_closePopup_1(function, mocked_sleepAndEvents):
-    function.pollStatusRunState = True
+def test_closePopup_1(function, mockedSleep):
     with mock.patch.object(function, "close"):
         function.closePopup(True)
 
 
-def test_closePopup_2(function, mocked_sleepAndEvents):
-    function.pollStatusRunState = True
+def test_closePopup_2(function, mockedSleep):
     with mock.patch.object(function, "close"):
         function.closePopup(False)
 
 
-def test_downloadFile_1(function):
-    function.callBack = 1
-    function.url = ""
-    function.dest = Path()
-    with mock.patch.object(function.threadPool, "start"):
-        function.downloadFile()
+def test_exec_1(function):
+    with (
+        mock.patch.object(function, "showWindow"),
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch("mw4.gui.extWindows.downloadPopupW.QEventLoop") as mock_loop_cls,
+    ):
+        mock_loop = mock.MagicMock(spec=QEventLoop)
+        mock_loop_cls.return_value = mock_loop
+        function.returnValues["success"] = True
+        result = function.exec()
+        assert result
+        mock_loop.exec.assert_called_once()
 
 
-def test_downloadFile_2(function):
-    function.callBack = None
-    function.url = ""
-    function.dest = Path()
-    with mock.patch.object(function.threadPool, "start"):
-        function.downloadFile()
+def test_exec_2(function):
+    with (
+        mock.patch.object(function, "showWindow"),
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch("mw4.gui.extWindows.downloadPopupW.QEventLoop") as mock_loop_cls,
+    ):
+        mock_loop = mock.MagicMock(spec=QEventLoop)
+        mock_loop_cls.return_value = mock_loop
+        function.returnValues["success"] = False
+        result = function.exec()
+        assert not result
+        mock_loop.exec.assert_called_once()
+
+
+def test_download_1(function):
+    with mock.patch.object(DownloadPopup, "exec", return_value=True):
+        result = DownloadPopup.download(function.parentWidget, Path(), Path())
+        assert result
+
+
+def test_download_2(function):
+    with mock.patch.object(DownloadPopup, "exec", return_value=False):
+        result = DownloadPopup.download(function.parentWidget, Path(), Path())
+        assert not result

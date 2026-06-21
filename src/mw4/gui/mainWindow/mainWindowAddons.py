@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.mainWaddon.tabAlmanac import Almanac
 from mw4.gui.mainWaddon.tabAsteroid import Asteroid
 from mw4.gui.mainWaddon.tabComet import Comet
@@ -27,16 +28,12 @@ from mw4.gui.mainWaddon.tabModel_Status import ModelStatus
 from mw4.gui.mainWaddon.tabMount import Mount
 from mw4.gui.mainWaddon.tabMount_Command import MountCommand
 from mw4.gui.mainWaddon.tabMount_Move import MountMove
+from mw4.gui.mainWaddon.tabMount_Park import Park
 from mw4.gui.mainWaddon.tabMount_Sett import MountSett
 from mw4.gui.mainWaddon.tabPower import Power
+from mw4.gui.mainWaddon.tabRelay import Relay
 from mw4.gui.mainWaddon.tabSat_Search import SatSearch
 from mw4.gui.mainWaddon.tabSat_Track import SatTrack
-from mw4.gui.mainWaddon.tabSett_Dome import SettDome
-from mw4.gui.mainWaddon.tabSett_Misc import SettMisc
-from mw4.gui.mainWaddon.tabSett_Mount import SettMount
-from mw4.gui.mainWaddon.tabSett_ParkPos import SettParkPos
-from mw4.gui.mainWaddon.tabSett_Relay import SettRelay
-from mw4.gui.mainWaddon.tabSett_Update import SettUpdate
 from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
 from mw4.gui.mainWaddon.tabTools_Rename import Rename
 from typing import Any
@@ -47,9 +44,8 @@ class MainWindowAddons:
         self.mainW = mainW
         self.app = mainW.app
 
-        self.addons = {
+        self.addons: dict[str, TabAddon] = {
             "Almanac": Almanac(mainW),
-            "SettUpdate": SettUpdate(mainW),  # set isOnline state first
             "Asteroid": Asteroid(mainW),
             "BuildPoints": BuildPoints(mainW),
             "Comet": Comet(mainW),
@@ -64,34 +60,27 @@ class MainWindowAddons:
             "MountCommand": MountCommand(mainW),
             "MountMove": MountMove(mainW),
             "MountSett": MountSett(mainW),
+            "Park": Park(mainW),
             "Power": Power(mainW),
+            "Relay": Relay(mainW),
             "Rename": Rename(mainW),
             "SatSearch": SatSearch(mainW),
             "SatTrack": SatTrack(mainW),
-            "SettDome": SettDome(mainW),
-            "SettMisc": SettMisc(mainW),
-            "SettMount": SettMount(mainW),
-            "SettParkPos": SettParkPos(mainW),
-            "SettRelay": SettRelay(mainW),
             "IERSTime": IERSTime(mainW),
         }
 
     def initConfig(self) -> None:
-        for addon in self.addons:
-            if hasattr(self.addons[addon], "initConfig"):
-                self.addons[addon].initConfig()
+        for addon in self.addons.values():
+            addon.initConfig()
 
     def storeConfig(self) -> None:
-        for addon in self.addons:
-            if hasattr(self.addons[addon], "storeConfig"):
-                self.addons[addon].storeConfig()
+        for addon in self.addons.values():
+            addon.storeConfig()
 
     def setupIcons(self) -> None:
-        for addon in self.addons:
-            if hasattr(self.addons[addon], "setupIcons"):
-                self.addons[addon].setupIcons()
+        for addon in self.addons.values():
+            addon.setupIcons()
 
     def updateColorSet(self) -> None:
-        for addon in self.addons:
-            if hasattr(self.addons[addon], "updateColorSet"):
-                self.addons[addon].updateColorSet()
+        for addon in self.addons.values():
+            addon.updateColorSet()

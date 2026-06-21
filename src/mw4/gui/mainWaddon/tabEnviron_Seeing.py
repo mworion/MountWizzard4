@@ -14,6 +14,7 @@
 #
 ###########################################################
 import webbrowser
+from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.styles.colors import colors
 from mw4.gui.utilities.qtHelpers import clickable, svg2pixmap
 from PySide6.QtCore import Qt
@@ -22,7 +23,7 @@ from PySide6.QtWidgets import QLabel, QTableWidgetItem
 from typing import Any
 
 
-class EnvironSeeing:
+class EnvironSeeing(TabAddon):
     VerticalListEntries = [
         "Date [dd mon]",
         "Hour [hh:mm]",
@@ -67,7 +68,7 @@ class EnvironSeeing:
         signals.deviceDisconnected.connect(self.clearSeeingEntries)
         signals.deviceConnected.connect(self.prepareSeeingTable)
 
-        self.ui.unitTimeUTC.toggled.connect(self.updateSeeingEntries)
+        self.app.timebaseChanged.connect(self.updateSeeingEntries)
         self.app.dReg["seeingWeather"].signals.update.connect(self.prepareSeeingTable)
         clickable(self.ui.seeingIcon).connect(self.openWeb)
         self.app.colorChange.connect(self.updateSeeingEntries)
@@ -102,9 +103,9 @@ class EnvironSeeing:
     ) -> str:
         t = f"{data[field][i]}"
         if j == 0:
-            t = self.mainW.convertTime(data[field][i], "%d%b")
+            t = self.app.timeMgr.convertTime(data[field][i], "%d%b")
         elif j == 1:
-            t = self.mainW.convertTime(data[field][i], "%H:00")
+            t = self.app.timeMgr.convertTime(data[field][i], "%H:00")
         elif j in [2, 3, 4]:
             color = self.mainW.calcHexColor(colorPrim, data[field][i] / 100)
             item.setBackground(QColor(color))
@@ -150,7 +151,7 @@ class EnvironSeeing:
     def updateSeeingEntries(self) -> None:
         if "hourly" not in self.app.dReg["seeingWeather"].data:
             return
-        self.ui.seeingGroup.setTitle("Seeing data " + self.mainW.timeZoneString())
+        self.ui.seeingGroup.setTitle("Seeing data " + self.app.timeMgr.timeZoneString())
         ts = self.app.dReg["mount"].obsSite.ts
         colorPrim = colors["M_PRIM"][0]
         colorQuar = colors["M_BACK"][0]

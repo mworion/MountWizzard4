@@ -690,6 +690,8 @@ def test_genGrid7(function):
 
 
 def test_genGridData1(function):
+    function.app.mount.setting.horizonLimitHigh = 80
+    function.app.mount.setting.horizonLimitLow = 5
     function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=10, maxAlt=40, numbRows=4, numbCols=4)
@@ -697,6 +699,8 @@ def test_genGridData1(function):
 
 
 def test_genGridData2(function):
+    function.app.mount.setting.horizonLimitHigh = 80
+    function.app.mount.setting.horizonLimitLow = 5
     function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=5, maxAlt=85, numbRows=4, numbCols=4)
@@ -704,6 +708,8 @@ def test_genGridData2(function):
 
 
 def test_genGridData3(function):
+    function.app.mount.setting.horizonLimitHigh = 80
+    function.app.mount.setting.horizonLimitLow = 5
     function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=5, maxAlt=85, numbRows=8, numbCols=8)
@@ -711,6 +717,8 @@ def test_genGridData3(function):
 
 
 def test_genGridData4(function):
+    function.app.mount.setting.horizonLimitHigh = 80
+    function.app.mount.setting.horizonLimitLow = 5
     function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=10, maxAlt=40, numbRows=6, numbCols=6)
@@ -718,6 +726,8 @@ def test_genGridData4(function):
 
 
 def test_genGridData5(function):
+    function.app.mount.setting.horizonLimitHigh = 80
+    function.app.mount.setting.horizonLimitLow = 5
     function.buildP = []
     function.horizonP = []
     function.genGrid(minAlt=10, maxAlt=40, numbRows=6, numbCols=12)

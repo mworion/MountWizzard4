@@ -19,7 +19,7 @@ from importlib.metadata import version
 from mw4.base.bootstrap import MwGlob
 from mw4.base.deviceRegistry import DeviceRegistry
 from mw4.base.loggerMW import setCustomLoggingLevel
-from mw4.base.timerManager import CyclicTimerManager
+from mw4.base.timeManager import TimeManager
 from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.logic.buildData.buildpoints import BuildPoint
 from mw4.logic.buildData.hipparcos import Hipparcos
@@ -43,6 +43,10 @@ class MountWizzard4(QObject):
     playSound = Signal(object)
     showImage = Signal(object)
     showAnalyse = Signal(object)
+    timebaseChanged = Signal()
+    onlineModeChanged = Signal()
+    relayChanged = Signal()
+    parkChanged = Signal()
     # --- Hemisphere / build point signals ---
     redrawHemisphere = Signal()
     redrawHorizon = Signal()
@@ -53,7 +57,6 @@ class MountWizzard4(QObject):
     # --- Device signals ---
     operationRunning = Signal(object)
     updateDomeSettings = Signal()
-    hostChanged = Signal()
     remoteCommand = Signal(object)
     stopDevices = Signal()
     startDevice = Signal(str)
@@ -68,12 +71,6 @@ class MountWizzard4(QObject):
     sendSatelliteData = Signal(object, object)
     updateSatellite = Signal(object, object)
     showSatellite = Signal(object, object, object, object, object)
-    # --- Gamepad signals ---
-    gameABXY = Signal(object)
-    gamePMH = Signal(object)
-    gameDirection = Signal(object)
-    gameSL = Signal(object, object)
-    gameSR = Signal(object, object)
     # --- Cyclic update signals (emitted by CyclicTimerManager) ---
     update0_1s = Signal()
     update1s = Signal()
@@ -94,37 +91,37 @@ class MountWizzard4(QObject):
         test: int = 0,
     ) -> None:
         super().__init__()
-        """Set up global references, thread pool, flags, and profile."""
+        # Set up global references, thread pool, flags, and profile.
         self.mwGlob = mwGlob
         self.application = application
         self.threadPool = QThreadPool()
         self.threadPool.setMaxThreadCount(self.MAX_THREAD_COUNT)
         self.expireData: bool = False
-        self.onlineMode: bool = False
+        self.isOnline: bool = False
         self.statusOperationRunning: int = 0
         self.messageQueue: Queue = Queue()
         self.config = loadProfileStart(self.mwGlob["configDir"])
-        """Push initial lifecycle messages into the message queue."""
+        # Push initial lifecycle messages into the message queue.
         profile = self.config.get("profileName", "-")
         workDir = self.mwGlob["workDir"]
         self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 started..."))
         self.messageQueue.put((1, "System", "Workdir", f"[{workDir}]"))
         self.messageQueue.put((1, "System", "Profile", f"[{profile}]"))
+        self.timeMgr = TimeManager(app=self)
         self.dReg: DeviceRegistry = DeviceRegistry(self)
         self.dReg.addDevices(self)
         self.initConfig()
         self.buildPoint = BuildPoint(self)
         self.hipparcos = Hipparcos(self)
         self.ephemeris = self.dReg["mount"].obsSite.loader("de440_mw4.bsp")
-        """Create, configure, and show the main window."""
+        # Create, configure, and show the main window.
         self.mainW = MainWindow(self)
         self.mainW.initConfig()
         self.mainW.showWindow()
-        """Set up the cyclic timer manager and start the mount timers."""
-        self.dReg["mount"].instance.startMountTimers()
-        self.timerMgr = CyclicTimerManager(app=self, parent=self)
-        self.timerMgr.start()
-        """Wire up application-level signal connections."""
+        # Set up the cyclic timer manager and start the mount timers.
+        self.dReg["mount"].instance.startMountCoreTimers()
+        self.timeMgr.start()
+        # Wire up application-level signal connections.
         self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
 
@@ -134,7 +131,9 @@ class MountWizzard4(QObject):
             self.messageQueue.put((1, "System", "Arguments", sys.argv[1]))
 
     def initConfig(self) -> GeographicPosition | None:
-        setCustomLoggingLevel(self, self.config.get("loglevel", "DEBUG"))
+        cfgSetting = self.config.get("SettingUpdate", {})
+        setCustomLoggingLevel(self, cfgSetting.get("loglevel", "DEBUG"))
+        self.isOnline = cfgSetting.get("isOnline", False)
         self.dReg.initConfig()
         lat = self.config.get("topoLat", 51.47)
         lon = self.config.get("topoLon", 0)
@@ -156,7 +155,7 @@ class MountWizzard4(QObject):
         self.statusOperationRunning = status
 
     def aboutToQuit(self) -> None:
-        self.timerMgr.stop()
+        self.timeMgr.stop()
         self.dReg["mount"].instance.stopAllMountTimers()
 
     def quit(self) -> None:

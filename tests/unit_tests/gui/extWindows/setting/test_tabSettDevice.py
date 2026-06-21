@@ -13,13 +13,12 @@
 # License APL2.0
 #
 ###########################################################
-import mw4
 import pytest
 from mw4.gui.extWindows.setting.tabSettDevice import SettDevice
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtTest import QSignalSpy
-from PySide6.QtWidgets import QPushButton
+from PySide6.QtWidgets import QComboBox, QPushButton
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
@@ -31,6 +30,50 @@ def function(qapp):
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
 
+    # Mock all the device UI elements
+    devices = [
+        "camera",
+        "cover",
+        "directWeather",
+        "dome",
+        "filter",
+        "focuser",
+        "hidController",
+        "lightPanel",
+        "measure",
+        "plateSolve",
+        "power",
+        "relay",
+        "remote",
+        "seeingWeather",
+        "sensor1Weather",
+        "sensor2Weather",
+        "sensor3Weather",
+        "sensor4Weather",
+        "telescope",
+    ]
+
+    for device in devices:
+        # Create real QComboBox for dropdowns
+        dropdown_name = f"{device}Device"
+        dropdown = QComboBox()
+        dropdown.addItem("No device")
+        setattr(mainW.ui, dropdown_name, dropdown)
+
+        # Mock the setup button (or create mock for some devices)
+        setup_name = f"{device}Setup"
+        if device not in ["directWeather", "measure", "remote"]:
+            button = QPushButton()
+            setattr(mainW.ui, setup_name, button)
+
+    # hidController uses hidDevice/hidSetup (not hidControllerDevice/Setup)
+    mainW.ui.hidDevice = QComboBox()
+    mainW.ui.hidDevice.addItem("No device")
+    mainW.ui.hidSetup = QPushButton()
+
+    mainW.ui.cameraDevice = QComboBox()
+    mainW.ui.cameraDevice.addItem("No device")
+
     # Only return devices that have UI elements in deviceUi
     validDevices = [
         "camera",
@@ -39,6 +82,7 @@ def function(qapp):
         "dome",
         "filter",
         "focuser",
+        "hidController",
         "lightPanel",
         "power",
         "sensor1Weather",
@@ -119,69 +163,53 @@ def test_closeEvent_skipsEntriesWithoutSignals(function):
     origInstance = realEntry.instance
     realEntry.instance = NoSigInstance()
     try:
-        with mock.patch.object(
-            function.app.dReg, "configurable", return_value=[Entry()]
-        ):
+        with mock.patch.object(function.app.dReg, "configurable", return_value=[Entry()]):
             function.closeEvent()
     finally:
         realEntry.instance = origInstance
 
 
 def test_processPopupResults_2(function):
-    class UI:
-        ok = QPushButton()
-
-    class Test:
-        returnValues = {
-            "device": "telescope",
+    returnValues = {
+        "device": "telescope",
+        "close": "ok",
+        "framework": "indi",
+        "data": {
             "framework": "indi",
-            "data": {
-                "framework": "indi",
-                "indi": {
-                    "deviceName": "",
-                    "deviceList": ["test", "test1"],
-                },
+            "indi": {
+                "deviceName": "",
+                "deviceList": ["test", "test1"],
             },
-            "copyConfig": [],
-        }
-        ui = UI()
-
-    function.devicePopup = Test()
-    function.devicePopup.ui.ok.clicked.connect(function.processPopupResults)
+        },
+        "copyConfig": [],
+    }
     with (
         mock.patch.object(function.app.dReg, "writeConfigToSingleDevice"),
         mock.patch.object(function.app.dReg, "startDevice"),
     ):
-        function.processPopupResults()
+        function.processPopupResults(returnValues)
 
 
 def test_processPopupResults_3(function):
-    class UI:
-        ok = QPushButton()
-
-    class Test:
-        returnValues = {
-            "device": "telescope",
+    returnValues = {
+        "device": "telescope",
+        "close": "ok",
+        "framework": "indi",
+        "data": {
             "framework": "indi",
-            "data": {
-                "framework": "indi",
-                "indi": {
-                    "deviceName": "test_device",
-                    "deviceList": ["test", "test1"],
-                },
+            "indi": {
+                "deviceName": "test_device",
+                "deviceList": ["test", "test1"],
             },
-            "copyConfig": ["indi"],
-        }
-        ui = UI()
-
-    function.devicePopup = Test()
-    function.devicePopup.ui.ok.clicked.connect(function.processPopupResults)
+        },
+        "copyConfig": ["indi"],
+    }
     with (
         mock.patch.object(function, "copyConfig"),
         mock.patch.object(function.app.dReg, "writeConfigToSingleDevice"),
         mock.patch.object(function.app.dReg, "startDevice"),
     ):
-        function.processPopupResults()
+        function.processPopupResults(returnValues)
 
 
 def test_copyConfig_1(function):
@@ -205,35 +233,42 @@ def test_copyConfig_4(function):
 
 
 def test_callPopup_1(function):
-    class Pop:
-        class OK:
-            class Clicked:
-                class Connect:
-                    @staticmethod
-                    def connect(a):
-                        return
-
-                clicked = Connect()
-
-            ok = Clicked()
-
-        def initConfig(self):
-            pass
-
-        ui = OK()
-
     with (
         mock.patch.object(function.app.dReg, "stopDevice"),
         mock.patch.object(function.app.dReg, "collectConfigFromSingleDevice", return_value={}),
-        mock.patch.object(
-            mw4.gui.extWindows.setting.tabSettDevice, "DevicePopup", return_value=Pop()
+        mock.patch(
+            "mw4.gui.extWindows.setting.tabSettDevice.DevicePopup.configure",
+            return_value={"close": "cancel"},
         ),
     ):
         function.callPopup("cover")
 
 
+def test_callPopup_2(function):
+    returnValues = {
+        "close": "ok",
+        "device": "telescope",
+        "data": {"framework": "indi", "indi": {"deviceName": "test"}},
+        "copyConfig": [],
+    }
+    with (
+        mock.patch.object(function.app.dReg, "stopDevice"),
+        mock.patch.object(function.app.dReg, "collectConfigFromSingleDevice", return_value={}),
+        mock.patch(
+            "mw4.gui.extWindows.setting.tabSettDevice.DevicePopup.configure",
+            return_value=returnValues,
+        ),
+        mock.patch.object(function, "processPopupResults") as mock_process,
+    ):
+        function.callPopup("cover")
+        mock_process.assert_called_once_with(returnValues)
+
+
 def test_dispatchDriverDropdown_1(function):
-    function.deviceUi["telescope"]["uiDropDown"].addItem("indi - test")
+    dropDown = function.deviceUi["telescope"]["uiDropDown"]
+    dropDown.clear()
+    dropDown.addItem("indi - test")
+    dropDown.setCurrentIndex(0)
     with (
         mock.patch.object(function.app.dReg, "stopDevice"),
         mock.patch.object(function.app.dReg, "startDevice"),
@@ -313,9 +348,9 @@ def test_deviceDisconnected_unknownSenderIsNoOp(function):
         function.deviceDisconnected()
 
 
-
 def test_setupDeviceGuiCallsDeviceConnectedWhenStatTrue(function) -> None:
     """Test setupDeviceGui calls deviceConnected when entry.stat is True (line 149)."""
+
     class MockConfig:
         deviceName = "test_device"
 
@@ -348,6 +383,7 @@ def test_setupDeviceGuiCallsDeviceConnectedWhenStatTrue(function) -> None:
 
 def test_setupDeviceGuiCallsDeviceDisconnectedWhenStatFalse(function) -> None:
     """Test setupDeviceGui calls deviceDisconnected when entry.stat is False (line 151)."""
+
     class MockConfig:
         deviceName = "test_device"
 
@@ -376,3 +412,11 @@ def test_setupDeviceGuiCallsDeviceDisconnectedWhenStatFalse(function) -> None:
         function.setupDeviceGui()
         # Verify applyDisconnected was called with the entry name
         mock_disconnected.assert_called()
+
+
+def test_gameControllerEntryInDeviceUi(function) -> None:
+    """Test hidController is registered in deviceUi with hidDevice and hidSetup."""
+    assert "hidController" in function.deviceUi
+    entry = function.deviceUi["hidController"]
+    assert entry["uiDropDown"] is not None
+    assert entry["uiSetup"] is not None

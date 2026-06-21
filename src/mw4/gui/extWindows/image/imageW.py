@@ -28,7 +28,7 @@ from mw4.logic.photometry.photometry import Photometry
 from mw4.mountcontrol.convert import convertToDMS, convertToHMS
 from pathlib import Path
 from skyfield.api import Angle
-from typing import Any
+from collections.abc import Any
 
 
 class ImageWindow(MWidget):

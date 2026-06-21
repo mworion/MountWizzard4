@@ -429,7 +429,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The mount Computer Settings are peseisted thrugh the mount itself. MW4 only reads them and sets them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="elideMode">
         <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -3005,7 +3005,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <rect>
              <x>10</x>
              <y>25</y>
-             <width>36</width>
+             <width>26</width>
              <height>21</height>
             </rect>
            </property>
@@ -3024,7 +3024,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <rect>
              <x>10</x>
              <y>80</y>
-             <width>36</width>
+             <width>26</width>
              <height>21</height>
             </rect>
            </property>
@@ -3042,7 +3042,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="geometry">
             <rect>
              <x>45</x>
-             <y>100</y>
+             <y>105</y>
              <width>106</width>
              <height>16</height>
             </rect>
@@ -3061,7 +3061,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <property name="geometry">
             <rect>
              <x>50</x>
-             <y>45</y>
+             <y>50</y>
              <width>106</width>
              <height>16</height>
             </rect>
@@ -3202,7 +3202,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <rect>
              <x>10</x>
              <y>25</y>
-             <width>36</width>
+             <width>26</width>
              <height>21</height>
             </rect>
            </property>
@@ -3221,7 +3221,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <rect>
              <x>10</x>
              <y>80</y>
-             <width>36</width>
+             <width>26</width>
              <height>21</height>
             </rect>
            </property>

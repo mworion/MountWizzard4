@@ -18,7 +18,7 @@ import platform
 from mw4.base.signalsDevices import Signals
 from mw4.logic.filter.filterAlpaca import FilterAlpaca
 from mw4.logic.filter.filterIndi import FilterIndi
-from typing import Any
+from collections.abc import Any
 
 if platform.system() == "Windows":
     from mw4.logic.filter.filterAscom import FilterAscom

@@ -15,7 +15,7 @@
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.logic.powerswitch.pegasusUPBAlpacaAscomBase import PegasusUPBAlpacaAscomBase
-from typing import Any
+from collections.abc import Any
 
 
 class PegasusUPBAlpaca(PegasusUPBAlpacaAscomBase, AlpacaClass):

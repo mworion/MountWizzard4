@@ -14,7 +14,7 @@
 #
 ###########################################################
 from mw4.base.indiClass import IndiClass
-from typing import Any
+from collections.abc import Any
 
 
 class LightPanelIndi(IndiClass):

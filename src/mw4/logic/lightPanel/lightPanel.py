@@ -18,7 +18,7 @@ import platform
 from mw4.base.signalsDevices import Signals
 from mw4.logic.lightPanel.lightPanelAlpaca import LightPanelAlpaca
 from mw4.logic.lightPanel.lightPanelIndi import LightPanelIndi
-from typing import Any
+from collections.abc import Any
 
 if platform.system() == "Windows":
     from mw4.logic.lightPanel.lightPanelAscom import LightPanelAscom

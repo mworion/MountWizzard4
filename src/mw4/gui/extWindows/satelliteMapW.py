@@ -24,7 +24,7 @@ from mw4.gui.widgets import satelliteMap_ui
 from PySide6.QtCore import Qt
 from skyfield.api import EarthSatellite, Timescale, wgs84
 from skyfield.toposlib import GeographicPosition
-from typing import Any
+from collections.abc import Any
 
 
 class SatelliteMapWindow(MWidget):

@@ -16,7 +16,7 @@
 from mw4.gui.extWindows.simulator.materials import Materials
 from mw4.gui.extWindows.simulator.tools import linkModel
 from PySide6.QtGui import QVector3D
-from typing import Any
+from collections.abc import Any
 
 
 class SimulatorDome:

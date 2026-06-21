@@ -20,7 +20,7 @@ from mw4.logic.measure.measureAddOns import measure
 from mw4.logic.measure.measureCSV import MeasureDataCSV
 from mw4.logic.measure.measureRaw import MeasureDataRaw
 from PySide6.QtCore import QMutex
-from typing import Any
+from collections.abc import Any
 
 
 class MeasureData:

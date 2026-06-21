@@ -21,7 +21,7 @@ from mw4.logic.camera.cameraAlpaca import CameraAlpaca
 from mw4.logic.camera.cameraIndi import CameraIndi
 from mw4.logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
 from pathlib import Path
-from typing import Any
+from collections.abc import Any
 
 if platform.system() == "Windows":
     from mw4.logic.camera.cameraAscom import CameraAscom

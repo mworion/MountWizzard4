@@ -15,7 +15,7 @@
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.logic.cover.coverAlpacaAscomBase import CoverAlpacaAscomBase
-from typing import Any
+from collections.abc import Any
 
 
 class CoverAlpaca(CoverAlpacaAscomBase, AlpacaClass):

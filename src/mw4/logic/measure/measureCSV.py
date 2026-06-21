@@ -18,7 +18,7 @@ import logging
 import PySide6
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from collections.abc import Any
 
 
 @dataclass

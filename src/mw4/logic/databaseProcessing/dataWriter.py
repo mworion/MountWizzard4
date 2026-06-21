@@ -17,7 +17,7 @@ import logging
 import shutil
 from pathlib import Path
 from sgp4.exporter import export_tle
-from typing import Any
+from collections.abc import Any
 
 
 class DataWriter:

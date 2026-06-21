@@ -15,7 +15,7 @@
 ###########################################################
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
-from typing import Any
+from collections.abc import Any
 
 
 class Relay(TabAddon):

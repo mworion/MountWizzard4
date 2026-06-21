@@ -16,7 +16,7 @@
 import logging
 from astropy.utils import data, iers
 from mw4.base.loggerMW import setCustomLoggingLevel
-from typing import Any
+from collections.abc import Any
 
 
 class SettUpdate:

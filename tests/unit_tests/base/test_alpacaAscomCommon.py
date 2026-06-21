@@ -20,7 +20,7 @@ from mw4.base.alpacaAscomCommon import AlpacaAscomCommon, CommandItem
 from mw4.base.signalsDevices import Signals
 from pathlib import Path
 from PySide6.QtCore import QThreadPool
-from typing import Any
+from collections.abc import Any
 from unittest import mock
 
 

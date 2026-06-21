@@ -19,7 +19,7 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from PySide6.QtCore import QMutex
 from skyfield.api import Angle
-from typing import Any
+from collections.abc import Any
 
 
 class BuildPoints(TabAddon):

@@ -19,7 +19,7 @@ from datetime import datetime
 from mw4.mountcontrol.model import Model
 from pathlib import Path
 from skyfield.api import Angle, load
-from typing import Any
+from collections.abc import Any
 
 log = logging.getLogger("MW4")
 ts = load.timescale()

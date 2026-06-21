@@ -25,7 +25,7 @@ from mw4.gui.extWindows.setting.tabSettUpdate import SettUpdate
 from mw4.gui.utilities.qtHelpers import getTabAndIndex, setTabAndIndex
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import setting_ui
-from typing import Any
+from collections.abc import Any
 
 
 class SettingWindow(MWidget):

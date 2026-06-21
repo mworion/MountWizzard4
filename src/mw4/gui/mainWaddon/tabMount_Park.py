@@ -16,7 +16,7 @@
 from functools import partial
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from skyfield.api import Angle
-from typing import Any
+from collections.abc import Any
 
 
 class Park(TabAddon):

@@ -20,7 +20,7 @@ from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QObject, Signal
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
-from typing import Any
+from collections.abc import Any
 
 
 class PhotometrySignals(QObject):

@@ -33,7 +33,7 @@ from mw4.logic.profiles.profile import loadConfig, saveConfig
 from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path
 from skyfield.almanac import TWILIGHTS, dark_twilight_day
-from typing import Any
+from collections.abc import Any
 
 
 class MainWindow(MWidget):

@@ -19,7 +19,7 @@ import sys
 from collections.abc import Callable
 from PySide6.QtCore import QObject, QRunnable, Signal, Slot
 from types import TracebackType
-from typing import Any
+from collections.abc import Any
 
 
 class WorkerSignals(QObject):

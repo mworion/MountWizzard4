@@ -18,7 +18,7 @@ from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, findIndexValue
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QListView
-from typing import Any
+from collections.abc import Any
 
 
 class SettDevice(QObject):

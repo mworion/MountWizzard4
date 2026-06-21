@@ -22,7 +22,7 @@ from mw4.gui.widgets import measure_ui
 from PySide6.QtCore import QMutex
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QListView
-from typing import Any
+from collections.abc import Any
 
 
 class MeasureWindow(MWidget):

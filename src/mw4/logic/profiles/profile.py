@@ -15,18 +15,19 @@
 ###########################################################
 import logging
 import yaml
+from collections.abc import Any
 from pathlib import Path
 
 log: logging.Logger = logging.getLogger("MW4")
 profileVersion = "4.3"
 
 
-def defaultConfig() -> dict[str, str]:
+def defaultConfig() -> dict[str, Any]:
     config = {"profileName": "config", "version": profileVersion}
     return config
 
 
-def loadConfig(loadConfigPath: Path) -> dict[str, str]:
+def loadConfig(loadConfigPath: Path) -> dict[str, Any]:
     try:
         with open(loadConfigPath, encoding="utf-8") as configFile:
             config = yaml.safe_load(configFile)
@@ -42,7 +43,7 @@ def loadConfig(loadConfigPath: Path) -> dict[str, str]:
     return config
 
 
-def loadProfileStart(configDir: Path) -> dict[str, str]:
+def loadProfileStart(configDir: Path) -> dict[str, Any]:
     config = defaultConfig()
     profilePath = configDir / "profile"
     if not profilePath.exists():
@@ -57,7 +58,7 @@ def loadProfileStart(configDir: Path) -> dict[str, str]:
     return config
 
 
-def saveConfig(saveProfilePath: Path, config: dict) -> None:
+def saveConfig(saveProfilePath: Path, config: dict[str, Any]) -> None:
     with open(saveProfilePath.parent / "profile", "w", encoding="utf-8") as profile:
         profile.writelines(saveProfilePath.stem)
 

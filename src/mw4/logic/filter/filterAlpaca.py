@@ -15,7 +15,7 @@
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.logic.filter.filterAlpacaAscomBase import FilterAlpacaAscomBase
-from typing import Any
+from collections.abc import Any
 
 
 class FilterAlpaca(FilterAlpacaAscomBase, AlpacaClass):

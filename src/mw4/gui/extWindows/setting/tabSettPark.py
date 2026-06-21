@@ -15,7 +15,7 @@
 ###########################################################
 from functools import partial
 from mw4.mountcontrol.convert import valueToFloat
-from typing import Any
+from collections.abc import Any
 
 
 class SettPark:

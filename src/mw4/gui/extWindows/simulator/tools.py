@@ -19,7 +19,7 @@ from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.Qt3DRender import Qt3DRender
 from PySide6.QtCore import QUrl
 from PySide6.QtGui import QColor, QFont, QVector3D
-from typing import Any
+from collections.abc import Any
 
 
 def linkLight(

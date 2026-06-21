@@ -18,7 +18,7 @@ from mw4.base.ethernet import checkFormatMAC
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
 from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.setting import Setting
-from typing import Any
+from collections.abc import Any
 
 
 class SettMount:

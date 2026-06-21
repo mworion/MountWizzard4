@@ -18,7 +18,7 @@ import platform
 from mw4.base.signalsDevices import Signals
 from mw4.logic.telescope.telescopeAlpaca import TelescopeAlpaca
 from mw4.logic.telescope.telescopeIndi import TelescopeIndi
-from typing import Any
+from collections.abc import Any
 
 if platform.system() == "Windows":
     from mw4.logic.telescope.telescopeAscom import TelescopeAscom

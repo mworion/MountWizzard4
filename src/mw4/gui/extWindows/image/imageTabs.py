@@ -25,7 +25,7 @@ from mw4.logic.fits.fitsFunction import (
 )
 from PySide6.QtCore import QRectF
 from PySide6.QtGui import QFont
-from typing import Any
+from collections.abc import Any
 
 
 class ImageTabs:

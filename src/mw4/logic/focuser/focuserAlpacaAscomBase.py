@@ -14,7 +14,7 @@
 #
 ###########################################################
 from mw4.base.alpacaAscomCommon import AlpacaAscomCommon
-from typing import Any
+from collections.abc import Any
 
 
 class FocuserAlpacaAscomBase(AlpacaAscomCommon):

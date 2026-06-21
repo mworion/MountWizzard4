@@ -36,7 +36,7 @@ from mw4.gui.mainWaddon.tabSat_Search import SatSearch
 from mw4.gui.mainWaddon.tabSat_Track import SatTrack
 from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
 from mw4.gui.mainWaddon.tabTools_Rename import Rename
-from typing import Any
+from collections.abc import Any
 
 
 class MainWindowAddons:

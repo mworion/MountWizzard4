@@ -22,7 +22,7 @@ from mw4.gui.widgets import satelliteHor_ui
 from PySide6.QtCore import Qt
 from skyfield.api import EarthSatellite, Timescale
 from skyfield.toposlib import GeographicPosition
-from typing import Any
+from collections.abc import Any
 
 
 class SatelliteHorizonWindow(MWidget):

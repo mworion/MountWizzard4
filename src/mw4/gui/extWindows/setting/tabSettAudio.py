@@ -14,7 +14,7 @@
 #
 ###########################################################
 from PySide6.QtMultimedia import QSoundEffect
-from typing import Any
+from collections.abc import Any
 
 
 class SettAudio:

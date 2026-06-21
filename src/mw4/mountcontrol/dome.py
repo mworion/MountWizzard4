@@ -17,7 +17,7 @@ import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat, valueToInt
 from skyfield.api import Angle
-from typing import Any
+from collections.abc import Any
 
 
 class Dome:

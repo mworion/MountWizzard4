@@ -20,7 +20,7 @@ from mw4.base.threadUtils import mainThreadSleep
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import analyse_ui
 from pathlib import Path
-from typing import Any
+from collections.abc import Any
 
 
 class AnalyseWindow(MWidget):

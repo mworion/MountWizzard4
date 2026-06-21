@@ -18,7 +18,7 @@ import webbrowser
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import guiSetText
 from range_key_dict import RangeKeyDict
-from typing import Any
+from collections.abc import Any
 
 
 class ImageStats(TabAddon):

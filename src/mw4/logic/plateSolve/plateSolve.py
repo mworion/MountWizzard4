@@ -29,7 +29,7 @@ from mw4.logic.plateSolve.astap import ASTAP
 from mw4.logic.plateSolve.astrometry import Astrometry
 from mw4.logic.plateSolve.watney import Watney
 from pathlib import Path
-from typing import Any
+from collections.abc import Any
 
 
 class PlateSolve:

@@ -19,7 +19,7 @@ from mw4.base.signalsDevices import Signals
 from mw4.logic.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
 from mw4.logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
 from mw4.logic.powerswitch.pegasusUPBIndi import PegasusUPBIndi
-from typing import Any
+from collections.abc import Any
 
 
 class PegasusUPB:

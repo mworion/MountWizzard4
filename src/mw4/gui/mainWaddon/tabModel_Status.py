@@ -15,7 +15,7 @@
 ###########################################################
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import guiSetText, img2pixmap
-from typing import Any
+from collections.abc import Any
 
 
 class ModelStatus(TabAddon):

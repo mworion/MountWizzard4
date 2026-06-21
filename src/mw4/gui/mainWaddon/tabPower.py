@@ -18,7 +18,7 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
 from mw4.gui.utilities.qtInputDialog import MWInputDialog
 from mw4.mountcontrol.convert import valueToInt
-from typing import Any
+from collections.abc import Any
 
 
 class Power(TabAddon):

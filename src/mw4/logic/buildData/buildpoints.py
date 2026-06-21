@@ -24,7 +24,7 @@ from scipy.spatial import distance
 from skyfield import almanac
 from skyfield.api import Angle, Star, Timescale
 from skyfield.toposlib import GeographicPosition
-from typing import Any
+from collections.abc import Any
 
 
 def HaDecToAltAz(ha: float, dec: float, lat: float) -> tuple[float, float]:

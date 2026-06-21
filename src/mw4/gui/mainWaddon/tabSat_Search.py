@@ -31,7 +31,7 @@ from PySide6.QtCore import QObject, QPoint, QRect, Qt, Signal
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 from skyfield.api import EarthSatellite, Time
 from skyfield.toposlib import GeographicPosition
-from typing import Any
+from collections.abc import Any
 
 
 class SatSearch(QObject, SatData):

@@ -15,7 +15,7 @@
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.logic.camera.cameraAlpacaAscomBase import CameraAlpacaAscomBase
-from typing import Any
+from collections.abc import Any
 
 
 class CameraAlpaca(CameraAlpacaAscomBase, AlpacaClass):

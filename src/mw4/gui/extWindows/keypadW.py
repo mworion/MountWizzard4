@@ -22,7 +22,7 @@ from mw4.logic.keypad.keypad import KeyPad
 from PySide6.QtCore import QMutex, QObject, Signal
 from PySide6.QtGui import QPixmap
 from qimage2ndarray import array2qimage
-from typing import Any
+from collections.abc import Any
 
 
 class KeypadSignals(QObject):

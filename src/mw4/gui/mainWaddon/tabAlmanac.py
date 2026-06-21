@@ -26,7 +26,7 @@ from range_key_dict import RangeKeyDict
 from skyfield import almanac
 from skyfield.toposlib import GeographicPosition
 from skyfield.trigonometry import position_angle_of
-from typing import Any
+from collections.abc import Any
 
 
 class Almanac(TabAddon):

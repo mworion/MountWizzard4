@@ -431,6 +431,8 @@ BASIC_STYLE = """
         padding: 0px;
         margin: 0px;
         border: 0px;
+        selection-background-color: $M_PRIM2$;
+        selection-color: $M_TER$;
     }
     QTableWidget QHeaderView:section{
         border-width: %WIDTH%;
@@ -524,7 +526,6 @@ BASIC_STYLE = """
         background-color: transparent;
     }
     QTabBar::tab {
-        color: $M_TER$;
         border-radius: %ROUND%;
         border-width: %WIDTH%;
         border-style: outset;

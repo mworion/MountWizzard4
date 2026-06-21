@@ -28,7 +28,7 @@ from mw4.mountcontrol.model import Model
 from pathlib import Path
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLineEdit
-from typing import Any
+from collections.abc import Any
 
 
 class ModelManage(TabAddon):

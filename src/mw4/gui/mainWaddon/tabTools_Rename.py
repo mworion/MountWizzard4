@@ -18,7 +18,7 @@ from collections.abc import Callable
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from pathlib import Path
 from PySide6.QtWidgets import QApplication, QListView
-from typing import Any
+from collections.abc import Any
 
 
 class Rename(TabAddon):

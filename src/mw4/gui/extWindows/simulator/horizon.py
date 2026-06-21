@@ -18,7 +18,7 @@ from mw4.gui.extWindows.simulator.materials import Materials
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.QtGui import QVector3D
-from typing import Any
+from collections.abc import Any
 
 
 class SimulatorHorizon:

@@ -18,7 +18,7 @@ import webbrowser
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.mountcontrol.connection import Connection
 from PySide6.QtGui import QTextCursor
-from typing import Any
+from collections.abc import Any
 
 
 class MountCommand(TabAddon):

@@ -14,7 +14,7 @@
 #
 ###########################################################
 from PySide6.QtWidgets import QListView
-from collections.abc import Any
+from typing import Any
 
 
 class SettRelay:

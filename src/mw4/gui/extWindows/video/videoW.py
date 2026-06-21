@@ -14,7 +14,7 @@
 #
 ###########################################################
 from mw4.gui.extWindows.video.videoBase import VideoWindowBase
-from collections.abc import Any
+from typing import Any
 
 
 class VideoWindow(VideoWindowBase):

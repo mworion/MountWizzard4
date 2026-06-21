@@ -14,7 +14,7 @@
 #
 ###########################################################
 from mw4.gui.utilities.qtHelpers import img2pixmap
-from collections.abc import Any
+from typing import Any
 
 
 class SettDome:

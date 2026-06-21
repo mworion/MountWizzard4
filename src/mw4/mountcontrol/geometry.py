@@ -17,7 +17,7 @@ import logging
 import numpy as np
 from mw4.mountcontrol.convert import valueToFloat
 from skyfield.api import Angle
-from collections.abc import Any
+from typing import Any
 
 
 class Geometry:

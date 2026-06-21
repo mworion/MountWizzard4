@@ -20,7 +20,7 @@ import requests
 from dataclasses import dataclass, field
 from mw4.base.tpool import Worker
 from pathlib import Path
-from collections.abc import Any
+from typing import Any
 
 
 @dataclass

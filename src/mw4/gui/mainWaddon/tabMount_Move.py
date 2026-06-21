@@ -30,7 +30,7 @@ from mw4.mountcontrol.convert import (
 from PySide6.QtWidgets import QLineEdit
 from pytestqt.qtbot import QWidget
 from skyfield.api import Angle
-from collections.abc import Any
+from typing import Any
 
 
 class MountMove(TabAddon):

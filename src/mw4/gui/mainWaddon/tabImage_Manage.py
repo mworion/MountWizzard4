@@ -16,7 +16,7 @@
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
 from mw4.gui.utilities.qtInputDialog import MWInputDialog
-from collections.abc import Any
+from typing import Any
 
 
 class ImageManage(TabAddon):

@@ -19,7 +19,7 @@ from mw4.mountcontrol.convert import valueToAngle, valueToFloat
 from mw4.mountcontrol.tleParams import TLEParams
 from mw4.mountcontrol.trajectoryParams import TrajectoryParams
 from skyfield.api import Angle
-from collections.abc import Any
+from typing import Any
 
 
 class Satellite:

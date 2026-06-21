@@ -17,7 +17,7 @@ import erfa
 import logging
 import numpy as np
 from mw4.logic.buildData.alignstars import generateAlignStars
-from collections.abc import Any
+from typing import Any
 
 
 class Hipparcos:

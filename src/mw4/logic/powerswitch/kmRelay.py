@@ -20,7 +20,7 @@ import time
 from dataclasses import dataclass, field
 from mw4.base.signalsDevices import Signals
 from PySide6.QtCore import QMutex, QTimer, Signal
-from collections.abc import Any
+from typing import Any
 
 
 @dataclass

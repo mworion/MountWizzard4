@@ -16,7 +16,7 @@
 import logging
 from mw4.mountcontrol.connection import Connection
 from packaging.version import Version
-from collections.abc import Any
+from typing import Any
 
 
 class Firmware:

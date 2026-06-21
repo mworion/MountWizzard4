@@ -20,7 +20,7 @@ import time
 from collections.abc import Callable
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
-from collections.abc import Any
+from typing import Any
 
 if not hasattr(logging.Logger, "_set_defaults"):
     # noinspection PyUnusedLocal

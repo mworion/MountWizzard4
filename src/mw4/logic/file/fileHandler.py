@@ -22,7 +22,7 @@ from mw4.base.tpool import Worker
 from mw4.mountcontrol.convert import valueToFloat
 from pathlib import Path
 from PySide6.QtCore import QObject, Signal
-from collections.abc import Any
+from typing import Any
 from xisf import XISF
 
 

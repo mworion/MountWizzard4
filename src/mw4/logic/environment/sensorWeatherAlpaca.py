@@ -15,7 +15,7 @@
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.logic.environment.sensorWeatherAlpacaAscomBase import SensorWeatherAlpacaAscomBase
-from collections.abc import Any
+from typing import Any
 
 
 class SensorWeatherAlpaca(SensorWeatherAlpacaAscomBase, AlpacaClass):

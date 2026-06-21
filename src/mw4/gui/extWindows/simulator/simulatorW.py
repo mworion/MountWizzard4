@@ -30,7 +30,7 @@ from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.QtGui import QColor, QVector3D
 from PySide6.QtWidgets import QWidget
-from collections.abc import Any
+from typing import Any
 
 
 class SimulatorWindow(MWidget):

@@ -16,7 +16,7 @@
 import numpy as np
 import re
 from skyfield.api import Angle
-from collections.abc import Any
+from typing import Any
 
 
 def stringToDegree(value: str) -> float:

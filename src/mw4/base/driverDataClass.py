@@ -15,7 +15,7 @@
 ############################################################
 import logging
 from PySide6.QtCore import QObject, Signal
-from collections.abc import Any
+from typing import Any
 
 
 class RemoteDeviceShutdown(QObject):

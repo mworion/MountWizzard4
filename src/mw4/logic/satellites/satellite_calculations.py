@@ -21,7 +21,7 @@ from skyfield import almanac
 from skyfield.api import EarthSatellite, Time
 from skyfield.toposlib import GeographicPosition
 from skyfield.units import Angle
-from collections.abc import Any
+from typing import Any
 
 
 def findSunlit(sat: EarthSatellite, ephemeris: Any, tEvent: tuple) -> bool:

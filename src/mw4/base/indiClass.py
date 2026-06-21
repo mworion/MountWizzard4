@@ -22,7 +22,7 @@ from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO_CONV
 from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QThreadPool
 from queue import Queue
-from collections.abc import Any
+from typing import Any
 
 
 @dataclass

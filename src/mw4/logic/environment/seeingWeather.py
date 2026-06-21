@@ -21,7 +21,7 @@ from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker
 from pathlib import Path
 from PySide6.QtCore import Signal
-from collections.abc import Any
+from typing import Any
 
 
 @dataclass

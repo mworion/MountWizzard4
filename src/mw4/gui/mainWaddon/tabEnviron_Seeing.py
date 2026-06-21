@@ -20,7 +20,7 @@ from mw4.gui.utilities.qtHelpers import clickable, svg2pixmap
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QTransform
 from PySide6.QtWidgets import QLabel, QTableWidgetItem
-from collections.abc import Any
+from typing import Any
 
 
 class EnvironSeeing(TabAddon):

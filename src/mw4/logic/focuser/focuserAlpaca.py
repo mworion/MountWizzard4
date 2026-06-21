@@ -15,7 +15,7 @@
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.logic.focuser.focuserAlpacaAscomBase import FocuserAlpacaAscomBase
-from collections.abc import Any
+from typing import Any
 
 
 class FocuserAlpaca(FocuserAlpacaAscomBase, AlpacaClass):

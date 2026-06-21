@@ -33,7 +33,7 @@ from mw4.logic.remote.remote import Remote
 from mw4.logic.telescope.telescope import Telescope
 from mw4.mountcontrol.mount import MountDevice
 from PySide6.QtCore import QObject
-from collections.abc import Any
+from typing import Any
 
 
 class DeviceRegistry(QObject):

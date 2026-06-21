@@ -22,7 +22,7 @@ from mw4.base.signalsDevices import Signals
 from mw4.base.transform import diffModulusAbs
 from mw4.logic.dome.domeAlpaca import DomeAlpaca
 from mw4.logic.dome.domeIndi import DomeIndi
-from collections.abc import Any
+from typing import Any
 
 if platform.system() == "Windows":
     from mw4.logic.dome.domeAscom import DomeAscom

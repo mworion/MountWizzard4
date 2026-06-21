@@ -21,7 +21,7 @@ from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.logic.modelBuild.modelRun import ModelData
 from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile
 from pathlib import Path
-from collections.abc import Any
+from typing import Any
 
 
 class Model(TabAddon):

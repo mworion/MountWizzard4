@@ -30,7 +30,7 @@ from mw4.base.transform import diffModulusSign
 from skyfield.api import Angle, Loader, load, wgs84
 from skyfield.timelib import Time, Timescale
 from skyfield.toposlib import GeographicPosition
-from collections.abc import Any
+from typing import Any
 
 
 class MountStatus(IntEnum):

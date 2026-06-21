@@ -15,7 +15,7 @@
 ###########################################################
 import logging
 import yaml
-from collections.abc import Any
+from typing import Any
 from pathlib import Path
 
 log: logging.Logger = logging.getLogger("MW4")

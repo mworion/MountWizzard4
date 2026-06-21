@@ -14,7 +14,7 @@
 #
 ###########################################################
 from mw4.gui.mainWaddon.tabAddon import TabAddon
-from collections.abc import Any
+from typing import Any
 
 
 class Mount(TabAddon):

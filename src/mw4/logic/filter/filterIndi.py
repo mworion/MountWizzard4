@@ -14,7 +14,7 @@
 #
 ###########################################################
 from mw4.base.indiClass import IndiClass
-from collections.abc import Any
+from typing import Any
 
 
 class FilterIndi(IndiClass):

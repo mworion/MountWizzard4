@@ -26,12 +26,12 @@ import types
 import warnings
 from astropy.utils import data, iers
 from astropy.wcs import FITSFixedWarning
-from collections.abc import TypedDict
 from importlib.metadata import version
 from importlib.resources import as_file, files
 from mw4.base.loggerMW import setupLogging
 from pathlib import Path
 from PySide6.QtCore import qVersion
+from typing import TypedDict
 
 
 class MwGlob(TypedDict):

@@ -29,7 +29,7 @@ from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.setting import Setting
 from PySide6.QtWidgets import QLineEdit
 from skyfield.api import Angle, wgs84
-from collections.abc import Any
+from typing import Any
 
 
 class MountSett(TabAddon):

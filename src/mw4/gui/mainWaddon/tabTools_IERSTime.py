@@ -19,7 +19,7 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.logic.databaseProcessing.dataWriter import DataWriter
 from pathlib import Path
 from PySide6.QtWidgets import QListView
-from collections.abc import Any
+from typing import Any
 
 
 class IERSTime(TabAddon):

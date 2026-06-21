@@ -20,7 +20,7 @@ from mw4.logic.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
 from mw4.logic.environment.sensorWeatherBoltwood import SensorWeatherBoltwood
 from mw4.logic.environment.sensorWeatherIndi import SensorWeatherIndi
 from mw4.logic.environment.sensorWeatherOnline import SensorWeatherOnline
-from collections.abc import Any
+from typing import Any
 
 if platform.system() == "Windows":
     from mw4.logic.environment.sensorWeatherAscom import SensorWeatherAscom

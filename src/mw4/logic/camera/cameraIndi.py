@@ -16,7 +16,7 @@
 from indipyclient.queclient import EventItem
 from mw4.base.indiClass import IndiClass
 from pathlib import Path
-from collections.abc import Any
+from typing import Any
 from xisf import XISF
 
 

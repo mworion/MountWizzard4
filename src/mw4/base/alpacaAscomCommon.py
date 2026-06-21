@@ -19,7 +19,7 @@ import time
 from dataclasses import dataclass, field
 from mw4.base.driverDataClass import DriverData
 from PySide6.QtCore import QThreadPool
-from collections.abc import Any
+from typing import Any
 
 
 @dataclass

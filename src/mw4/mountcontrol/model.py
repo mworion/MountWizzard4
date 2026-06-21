@@ -28,7 +28,7 @@ from mw4.mountcontrol.convert import (
 from mw4.mountcontrol.modelStar import ModelStar
 from mw4.mountcontrol.progStar import ProgStar
 from skyfield.api import Angle, Star
-from collections.abc import Any
+from typing import Any
 
 
 class Model:

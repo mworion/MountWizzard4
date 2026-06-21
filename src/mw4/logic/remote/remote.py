@@ -17,7 +17,7 @@ import logging
 from dataclasses import dataclass, field
 from mw4.base.signalsDevices import Signals
 from PySide6.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer, QTcpSocket
-from collections.abc import Any
+from typing import Any
 
 
 @dataclass

@@ -23,7 +23,7 @@ from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
 from pathlib import Path
 from PySide6.QtCore import QEventLoop, Qt
 from PySide6.QtWidgets import QCheckBox, QComboBox, QDoubleSpinBox, QLineEdit, QListView
-from collections.abc import Any
+from typing import Any
 
 
 class DevicePopup(MWidget):

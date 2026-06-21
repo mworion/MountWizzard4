@@ -18,7 +18,7 @@ import platform
 from mw4.base.signalsDevices import Signals
 from mw4.logic.focuser.focuserAlpaca import FocuserAlpaca
 from mw4.logic.focuser.focuserIndi import FocuserIndi
-from collections.abc import Any
+from typing import Any
 
 if platform.system() == "Windows":
     from mw4.logic.focuser.focuserAscom import FocuserAscom

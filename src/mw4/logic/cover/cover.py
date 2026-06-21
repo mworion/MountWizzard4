@@ -18,7 +18,7 @@ import platform
 from mw4.base.signalsDevices import Signals
 from mw4.logic.cover.coverAlpaca import CoverAlpaca
 from mw4.logic.cover.coverIndi import CoverIndi
-from collections.abc import Any
+from typing import Any
 
 if platform.system() == "Windows":
     from mw4.logic.cover.coverAscom import CoverAscom

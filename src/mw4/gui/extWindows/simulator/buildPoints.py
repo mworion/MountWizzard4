@@ -19,7 +19,7 @@ from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.QtGui import QFont, QVector3D
 from skyfield import functions
-from collections.abc import Any
+from typing import Any
 
 
 class SimulatorBuildPoints:

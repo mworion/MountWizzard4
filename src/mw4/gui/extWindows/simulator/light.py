@@ -14,7 +14,7 @@
 #
 ###########################################################
 from mw4.gui.extWindows.simulator.tools import linkModel
-from collections.abc import Any
+from typing import Any
 
 
 class SimulatorLight:

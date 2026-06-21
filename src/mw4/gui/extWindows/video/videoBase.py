@@ -24,7 +24,7 @@ from mw4.gui.widgets import video_ui
 from PySide6.QtCore import Signal
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QLineEdit, QSizePolicy
-from collections.abc import Any
+from typing import Any
 
 
 class VideoWindowBase(MWidget):

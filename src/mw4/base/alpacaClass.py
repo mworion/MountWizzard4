@@ -25,7 +25,7 @@ from alpaca.telescope import Telescope as AlpycaTelescope
 from dataclasses import dataclass, field
 from mw4.base.alpacaAscomCommon import AlpacaAscomCommon
 from mw4.base.tpool import Worker
-from collections.abc import Any
+from typing import Any
 
 
 @dataclass

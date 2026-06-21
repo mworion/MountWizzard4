@@ -21,7 +21,7 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.logic.databaseProcessing.sourceURL import cometSourceURLs
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
-from collections.abc import Any
+from typing import Any
 
 
 class Comet(TabAddon):

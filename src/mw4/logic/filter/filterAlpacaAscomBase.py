@@ -14,7 +14,7 @@
 #
 ###########################################################
 from mw4.base.alpacaAscomCommon import AlpacaAscomCommon
-from collections.abc import Any
+from typing import Any
 
 
 class FilterAlpacaAscomBase(AlpacaAscomCommon):

@@ -27,7 +27,7 @@ from mw4.mountcontrol.convert import (
 )
 from pathlib import Path
 from skyfield.units import Angle
-from collections.abc import Any
+from typing import Any
 
 log = logging.getLogger()
 

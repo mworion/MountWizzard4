@@ -30,7 +30,7 @@ from mw4.mountcontrol.setting import Setting
 from pathlib import Path
 from PySide6.QtCore import QMutex, QObject, QTimer
 from skyfield.api import Angle
-from collections.abc import Any, Final
+from typing import Any, Final
 
 
 @dataclass

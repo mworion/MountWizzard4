@@ -18,7 +18,7 @@ from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtHelpers import svg2pixmap
-from collections.abc import Any
+from typing import Any
 
 
 class SettGui:

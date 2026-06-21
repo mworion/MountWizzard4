@@ -24,7 +24,7 @@ from mw4.mountcontrol.progStar import ProgStar
 from pathlib import Path
 from PySide6.QtCore import QObject, Signal
 from skyfield.api import Angle, Star
-from collections.abc import Any
+from typing import Any
 
 
 class ModelData(QObject):

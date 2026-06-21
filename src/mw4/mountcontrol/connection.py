@@ -16,7 +16,7 @@
 import logging
 import socket
 import uuid
-from collections.abc import Any
+from typing import Any
 
 
 class Connection:

@@ -16,7 +16,7 @@
 import logging
 import numpy as np
 import websocket
-from collections.abc import Any
+from typing import Any
 
 
 class KeyPad:

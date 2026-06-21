@@ -15,7 +15,7 @@
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.logic.lightPanel.lightPanelAlpacaAscomBase import LightPanelAlpacaAscomBase
-from collections.abc import Any
+from typing import Any
 
 
 class LightPanelAlpaca(LightPanelAlpacaAscomBase, AlpacaClass):

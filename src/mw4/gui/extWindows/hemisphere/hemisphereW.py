@@ -22,7 +22,7 @@ from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import hemisphere_ui
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QCursor, QGuiApplication
-from collections.abc import Any
+from typing import Any
 
 
 class HemisphereWindow(MWidget):

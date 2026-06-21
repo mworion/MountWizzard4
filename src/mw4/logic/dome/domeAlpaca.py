@@ -15,7 +15,7 @@
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.logic.dome.domeAlpacaAscomBase import DomeAlpacaAscomBase
-from collections.abc import Any
+from typing import Any
 
 
 class DomeAlpaca(DomeAlpacaAscomBase, AlpacaClass):

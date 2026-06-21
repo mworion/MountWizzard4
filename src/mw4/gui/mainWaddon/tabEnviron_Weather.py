@@ -20,7 +20,7 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QWidget
-from collections.abc import Any
+from typing import Any
 
 
 @dataclass

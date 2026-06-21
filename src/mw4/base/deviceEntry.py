@@ -14,7 +14,7 @@
 #
 ###########################################################
 from dataclasses import dataclass, field
-from collections.abc import Any
+from typing import Any
 
 
 @dataclass

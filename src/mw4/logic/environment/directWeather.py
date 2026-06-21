@@ -19,7 +19,7 @@ import warnings
 from dataclasses import dataclass, field
 from mw4.base.signalsDevices import Signals
 from mw4.mountcontrol.setting import Setting
-from collections.abc import Any
+from typing import Any
 
 
 @dataclass

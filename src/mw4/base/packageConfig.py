@@ -13,7 +13,7 @@
 # License APL2.0
 #
 ###########################################################
-from typing import Final
+from collections.abc import Final
 
 # Feature flags – set once at import time; never mutated at runtime.
 isAnalyse: Final[bool] = False

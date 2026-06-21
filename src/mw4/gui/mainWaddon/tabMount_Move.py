@@ -41,7 +41,7 @@ class MountMove(TabAddon):
         self.ui = mainW.ui
         self.slewInterface = SlewInterface(self)
 
-        self.slewSpeeds: dict[str, dict[str, QWidget | Callable ]] = {
+        self.slewSpeeds: dict[str, dict[str, QWidget | Callable]] = {
             "max": {
                 "button": self.ui.slewSpeedMax,
                 "func": self.app.dReg["mount"].setting.setSlewSpeedMax,
@@ -104,8 +104,10 @@ class MountMove(TabAddon):
         self.ui.moveCoordinateAlt.textEdited.connect(self.setAlt)
         self.ui.moveCoordinateAz.textEdited.connect(self.setAz)
         self.app.dReg["mount"].signals.slewed.connect(self.moveAltAzDefault)
-        self.app.gameDirection.connect(self.moveAltAzGameController)
-        self.app.gameSR.connect(self.moveClassicGameController)
+        self.app.dReg["hidController"].signals.hidDirection.connect(
+            self.moveAltAzGameController
+        )
+        self.app.dReg["hidController"].signals.hidSR.connect(self.moveClassicGameController)
         self.setupGuiMount()
 
     def initConfig(self) -> None:
@@ -178,13 +180,13 @@ class MountMove(TabAddon):
     def moveClassicGameController(self, decVal: int, raVal: int) -> None:
         dirRa = 0
         dirDec = 0
-        if raVal < 64:
+        if raVal < 108:
             dirRa = 1
-        elif raVal > 192:
+        elif raVal > 152:
             dirRa = -1
-        if decVal < 64:
+        if decVal < 108:
             dirDec = -1
-        elif decVal > 192:
+        elif decVal > 152:
             dirDec = 1
 
         directionVector = [dirRa, dirDec]
@@ -243,11 +245,11 @@ class MountMove(TabAddon):
         changeStyleDynamic(self.setupMoveAltAz[direction]["button"], "run", True)
         step = self.setupStepsizes[self.ui.moveStepSizeAltAz.currentText()]
         coord = self.setupMoveAltAz[direction]["coord"]
-        targetAlt = self.targetAlt = Angle(degrees=self.targetAlt.degrees + coord[0] * step)
-        targetAz = self.targetAz = Angle(
-            degrees=(self.targetAz.degrees + coord[1] * step) % 360
-        )
-        self.slewInterface.slewTargetAltAz(targetAlt, targetAz)
+        obs = self.app.dReg["mount"].obsSite
+        targetAlt = Angle(degrees=obs.Alt.degrees + coord[0] * step)
+        targetAz = Angle(degrees=(obs.Az.degrees + coord[1] * step) % 360)
+        suc = self.slewInterface.slewTargetAltAz(targetAlt, targetAz)
+        print(suc)
 
     def checkRaDecInputs(self) -> None:
         canSlew = self.app.dReg["mount"].obsSite.setTargetRaDec(self.targetRa, self.targetDec)

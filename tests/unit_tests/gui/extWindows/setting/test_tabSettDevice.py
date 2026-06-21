@@ -38,6 +38,7 @@ def function(qapp):
         "dome",
         "filter",
         "focuser",
+        "gameController",
         "lightPanel",
         "measure",
         "plateSolve",
@@ -65,6 +66,11 @@ def function(qapp):
             button = QPushButton()
             setattr(mainW.ui, setup_name, button)
 
+    # gameController uses hidDevice/hidSetup (not gameControllerDevice/Setup)
+    mainW.ui.hidDevice = QComboBox()
+    mainW.ui.hidDevice.addItem("No device")
+    mainW.ui.hidSetup = QPushButton()
+
     mainW.ui.cameraDevice = QComboBox()
     mainW.ui.cameraDevice.addItem("No device")
 
@@ -76,6 +82,7 @@ def function(qapp):
         "dome",
         "filter",
         "focuser",
+        "gameController",
         "lightPanel",
         "power",
         "sensor1Weather",
@@ -405,3 +412,11 @@ def test_setupDeviceGuiCallsDeviceDisconnectedWhenStatFalse(function) -> None:
         function.setupDeviceGui()
         # Verify applyDisconnected was called with the entry name
         mock_disconnected.assert_called()
+
+
+def test_gameControllerEntryInDeviceUi(function) -> None:
+    """Test gameController is registered in deviceUi with hidDevice and hidSetup."""
+    assert "gameController" in function.deviceUi
+    entry = function.deviceUi["gameController"]
+    assert entry["uiDropDown"] is not None
+    assert entry["uiSetup"] is not None

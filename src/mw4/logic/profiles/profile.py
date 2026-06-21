@@ -15,8 +15,8 @@
 ###########################################################
 import logging
 import yaml
-from typing import Any
 from pathlib import Path
+from typing import Any
 
 log: logging.Logger = logging.getLogger("MW4")
 profileVersion = "4.3"

@@ -65,7 +65,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>4</number>
    </property>
    <property name="elideMode">
     <enum>Qt::TextElideMode::ElideNone</enum>
@@ -781,6 +781,65 @@
      </property>
      <property name="text">
       <string>Boltwood II File</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="hid">
+    <attribute name="title">
+     <string>Controller</string>
+    </attribute>
+    <widget class="QLabel" name="label_mountIP_9">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>100</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Device Name</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="hidDeviceList">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>100</y>
+       <width>201</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="hidDiscover">
+     <property name="geometry">
+      <rect>
+       <x>305</x>
+       <y>100</y>
+       <width>51</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Search collects a list of available ALPACA devices&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Search</string>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
      </property>
     </widget>
    </widget>

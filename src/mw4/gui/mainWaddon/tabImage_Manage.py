@@ -57,7 +57,7 @@ class ImageManage(TabAddon):
         self.ui.haltFocuser.clicked.connect(self.haltFocuser)
         self.ui.moveFocuserIn.clicked.connect(self.moveFocuserIn)
         self.ui.moveFocuserOut.clicked.connect(self.moveFocuserOut)
-        self.app.gameSL.connect(self.domeMoveGameController)
+        self.app.dReg["hidController"].signals.hidSL.connect(self.domeMoveGameController)
 
         self.app.update1s.connect(self.updateCoverStatGui)
         self.app.update1s.connect(self.updateLightPanelGui)

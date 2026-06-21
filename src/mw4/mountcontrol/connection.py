@@ -38,6 +38,7 @@ class Connection:
     The class itself needs parameters for the host and port to be able to interact
     with the mount.
     """
+
     log = logging.getLogger("MW4")
     SOCKET_TIMEOUT = 10
     COMMANDS: tuple[str, ...] = tuple(

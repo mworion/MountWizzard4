@@ -47,7 +47,6 @@ class MountWizzard4(QObject):
     onlineModeChanged = Signal()
     relayChanged = Signal()
     parkChanged = Signal()
-    gameControllerIsRunning = Signal(bool)
     # --- Hemisphere / build point signals ---
     redrawHemisphere = Signal()
     redrawHorizon = Signal()
@@ -72,12 +71,6 @@ class MountWizzard4(QObject):
     sendSatelliteData = Signal(object, object)
     updateSatellite = Signal(object, object)
     showSatellite = Signal(object, object, object, object, object)
-    # --- Gamepad signals ---
-    gameABXY = Signal(object)
-    gamePMH = Signal(object)
-    gameDirection = Signal(object)
-    gameSL = Signal(object, object)
-    gameSR = Signal(object, object)
     # --- Cyclic update signals (emitted by CyclicTimerManager) ---
     update0_1s = Signal()
     update1s = Signal()

@@ -20,6 +20,7 @@ from mw4.base.indiClass import IndiClass
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, getTabIndex, svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
+from mw4.logic.hidController.hidController import HidController
 from pathlib import Path
 from PySide6.QtCore import QEventLoop, Qt
 from PySide6.QtWidgets import QCheckBox, QComboBox, QDoubleSpinBox, QLineEdit, QListView
@@ -100,6 +101,9 @@ class DevicePopup(MWidget):
                 "user": self.ui.relayUser,
                 "password": self.ui.relayPassword,
             },
+            "hid": {
+                "deviceName": self.ui.hidDeviceList,
+            },
         }
 
         self.platesolvers = {
@@ -137,6 +141,11 @@ class DevicePopup(MWidget):
                 "button": self.ui.alpacaDiscover,
                 "port": self.ui.alpacaPort,
                 "class": AlpacaClass,
+            },
+            "hid": {
+                "deviceList": self.ui.hidDeviceList,
+                "button": self.ui.hidDiscover,
+                "class": HidController,
             },
         }
 
@@ -256,12 +265,15 @@ class DevicePopup(MWidget):
             self.discovers[framework]["deviceList"].addItem(deviceName)
 
     def discoverDevices(self, framework: str, widget: object = None) -> None:
-        hostaddress = self.discovers[framework]["hostaddress"].text()
-        port = self.discovers[framework]["port"].text()
         changeStyleDynamic(self.discovers[framework]["button"], "run", True)
-        deviceInstance = self.app.dReg[self.device].run[framework]
         deviceType = self.app.dReg[self.device].instance.DEVICE_TYPE
-        deviceNames = deviceInstance.discoverDevices(deviceType, hostaddress, port)
+        deviceInstance = self.app.dReg[self.device].run[framework]
+        if framework in ["alpaca", "indi"]:
+            hostaddress = self.discovers[framework]["hostaddress"].text()
+            port = self.discovers[framework]["port"].text()
+            deviceNames = deviceInstance.discoverDevices(deviceType, hostaddress, port)
+        else:
+            deviceNames = deviceInstance.discoverDevices(deviceType)
         changeStyleDynamic(self.discovers[framework]["button"], "run", False)
         if not deviceNames:
             self.msg.emit(2, framework, "Device", "No devices found")

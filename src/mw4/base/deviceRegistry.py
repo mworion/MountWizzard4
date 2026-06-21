@@ -24,6 +24,7 @@ from mw4.logic.environment.seeingWeather import SeeingWeather
 from mw4.logic.environment.sensorWeather import SensorWeather
 from mw4.logic.filter.filter import Filter
 from mw4.logic.focuser.focuser import Focuser
+from mw4.logic.hidController.hidController import HidController
 from mw4.logic.lightPanel.lightPanel import LightPanel
 from mw4.logic.measure.measure import MeasureData
 from mw4.logic.plateSolve.plateSolve import PlateSolve
@@ -72,6 +73,7 @@ class DeviceRegistry(QObject):
             ("dome", Dome, "dome", True),
             ("filter", Filter, "filterwheel", True),
             ("focuser", Focuser, "focuser", True),
+            ("hidController", HidController, "hid", True),
             ("lightPanel", LightPanel, "covercalibrator", True),
             ("measure", MeasureData, None, True),
             ("plateSolve", PlateSolve, "plateSolve", True),

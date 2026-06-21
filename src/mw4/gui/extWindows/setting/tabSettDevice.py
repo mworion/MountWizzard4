@@ -55,6 +55,10 @@ class SettDevice(QObject):
                 "uiDropDown": self.ui.focuserDevice,
                 "uiSetup": self.ui.focuserSetup,
             },
+            "hidController": {
+                "uiDropDown": self.ui.hidDevice,
+                "uiSetup": self.ui.hidSetup,
+            },
             "lightPanel": {
                 "uiDropDown": self.ui.lightPanelDevice,
                 "uiSetup": self.ui.lightPanelSetup,

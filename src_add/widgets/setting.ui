@@ -99,7 +99,7 @@
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -120,7 +120,7 @@
          <x>415</x>
          <y>5</y>
          <width>366</width>
-         <height>231</height>
+         <height>271</height>
         </rect>
        </property>
        <property name="title">
@@ -395,7 +395,7 @@
          <rect>
           <x>11</x>
           <y>200</y>
-          <width>76</width>
+          <width>71</width>
           <height>21</height>
          </rect>
         </property>
@@ -504,6 +504,67 @@
         </property>
         <property name="toolTip">
          <string>Configure the cover device. A popup will open and ask for the parameters.</string>
+        </property>
+        <property name="text">
+         <string>Set</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="hidDevice">
+        <property name="geometry">
+         <rect>
+          <x>85</x>
+          <y>230</y>
+          <width>221</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is not a telecope driver for the interaction for modeling etc. This driver is used for capturing the configured optics data like focal length from a telecope driver !&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="dome_5">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>230</y>
+          <width>71</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>21</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Controller</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="hidSetup">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>230</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure a driver to access optics data like focal length and aperture. Normally this is configured  in the telescope driver. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Set</string>

@@ -24,10 +24,12 @@ class Mount(TabAddon):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
 
-        self.app.gameABXY.connect(self.changeParkGameController)
-        self.app.gameABXY.connect(self.stopGameController)
-        self.app.gameABXY.connect(self.changeTrackingGameController)
-        self.app.gameABXY.connect(self.flipMountGameController)
+        self.app.dReg["hidController"].signals.hidABXY.connect(self.changeParkGameController)
+        self.app.dReg["hidController"].signals.hidABXY.connect(self.stopGameController)
+        self.app.dReg["hidController"].signals.hidABXY.connect(
+            self.changeTrackingGameController
+        )
+        self.app.dReg["hidController"].signals.hidABXY.connect(self.flipMountGameController)
         self.ui.flipMount.clicked.connect(self.flipMount)
         self.ui.tracking.clicked.connect(self.changeTracking)
         self.ui.setLunarTracking.clicked.connect(self.setLunarTracking)

@@ -196,6 +196,31 @@ def test_discoverDevices_2(function):
         function.discoverDevices("indi", QWidget())
 
 
+def test_discoverDevices_hid_empty(function):
+    """Test discoverDevices for hid framework with no devices found."""
+    from mw4.logic.hidController.hidController import HidController
+
+    function.device = "hidController"
+    with mock.patch.object(HidController, "discoverDevices", return_value=[]):
+        function.discoverDevices("hid")
+    function.device = "telescope"
+
+
+def test_discoverDevices_hid_devices_found(function):
+    """Test discoverDevices for hid framework with devices found."""
+    from mw4.logic.hidController.hidController import HidController
+
+    function.device = "hidController"
+
+    with mock.patch.object(
+        HidController, "discoverDevices", return_value=["Pro Controller", "Game Pad"]
+    ):
+        function.discoverDevices("hid")
+
+    assert function.framework == "hid"
+    function.device = "telescope"
+
+
 def test_checkApp_1(function):
     class Avail:
         @staticmethod

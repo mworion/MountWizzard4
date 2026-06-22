@@ -38,7 +38,6 @@ class MountWizzard4(QObject):
     # --- UI signals ---
     material = Signal(object, object)
     msg = Signal(object, object, object, object)
-    tabsMovable = Signal(object)
     colorChange = Signal()
     playSound = Signal(object)
     showImage = Signal(object)
@@ -47,26 +46,21 @@ class MountWizzard4(QObject):
     onlineModeChanged = Signal()
     relayChanged = Signal()
     parkChanged = Signal()
-    # --- Hemisphere / build point signals ---
     redrawHemisphere = Signal()
     redrawHorizon = Signal()
     updatePointMarker = Signal()
     drawBuildPoints = Signal()
     buildPointsChanged = Signal()
     drawHorizonPoints = Signal()
-    # --- Device signals ---
     operationRunning = Signal(object)
     updateDomeSettings = Signal()
     remoteCommand = Signal(object)
-    # --- Mount signals ---
-    virtualStop = Signal()
     refreshModel = Signal()
     refreshName = Signal()
-    # --- Satellite signals ---
     sendSatelliteData = Signal(object, object)
     updateSatellite = Signal(object, object)
     showSatellite = Signal(object, object, object, object, object)
-    # --- Thread pool configuration ---
+
     MAX_THREAD_COUNT: int = 30  # allows concurrent device polling + model workers
 
     def __init__(

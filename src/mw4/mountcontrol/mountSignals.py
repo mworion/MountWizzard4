@@ -13,10 +13,11 @@
 # License APL2.0
 #
 ###########################################################
-from PySide6.QtCore import QObject, Signal
+from mw4.base.signalsDevices import Signals
+from PySide6.QtCore import Signal
 
 
-class MountSignals(QObject):
+class MountSignals(Signals):
     pointDone = Signal(object)
     domeDone = Signal(object)
     settingDone = Signal(object)
@@ -29,7 +30,5 @@ class MountSignals(QObject):
     getTLEdone = Signal(object)
     calcTrajectoryDone = Signal(object)
     mountIsUp = Signal(object)
-    deviceConnected = Signal(str)
-    deviceDisconnected = Signal(str)
     slewed = Signal()
     alert = Signal()

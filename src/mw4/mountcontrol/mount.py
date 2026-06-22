@@ -49,28 +49,12 @@ class DeviceConfigMount:
 
 
 class MountDevice(QObject):
-    """Top-level controller for a 10micron mount.
-
-    Owns device sub-objects (firmware, setting, obsSite, satellite, geometry,
-    dome, model), manages cyclic polling via QTimers and worker threads, and
-    re-emits results through ``MountSignals``.
-
-    Return-value convention used throughout the public API:
-
-    - Imperative commands that can fail (``bootMount``, ``shutdown``) return
-      ``bool`` so callers can react to success/failure.
-    - Scheduler / cycle / get methods communicate exclusively through Qt
-      signals and therefore return ``None``.
-    - Pure computations (``calc*``) return their computed values and use
-      ``None`` to signal invalid input.
-    """
-
     CYCLE_POINTING: Final[int] = 500
     CYCLE_DOME: Final[int] = 950
     CYCLE_CLOCK: Final[int] = 1000
     CYCLE_MOUNT_UP: Final[int] = 1000
     CYCLE_SETTING: Final[int] = 3100
-    SOCKET_TIMEOUT: Final[int] = 1
+    SOCKET_TIMEOUT: Final[float] = 1.0
     ALERT_STATUS_CODES: Final[frozenset[MountStatus]] = frozenset(
         {MountStatus.STOPPED, MountStatus.UNKNOWN, MountStatus.ERROR}
     )
@@ -92,7 +76,6 @@ class MountDevice(QObject):
         self.pathToData: Path = app.mwGlob["dataDir"]
         self.verbose: bool = verbose
         self.loggingTrace: bool = False
-
         self.signals = MountSignals()
         self.firmware = Firmware(parent=self)
         self.setting = Setting(parent=self)

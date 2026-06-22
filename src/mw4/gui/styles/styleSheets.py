@@ -439,7 +439,7 @@ BASIC_STYLE = """
         border-style: plain;
         border-radius: %ROUND%;
         background-color: $M_BACK1$;
-        color: $M_PRIM$;
+        color: $M_TER$;
     }
     QTableWidget QHeaderView::down-arrow{
         subcontrol-position: upper;

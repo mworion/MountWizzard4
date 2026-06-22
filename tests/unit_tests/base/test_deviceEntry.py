@@ -226,3 +226,164 @@ def test_deviceEntryNoneInstanceFrameworkProperty() -> None:
     entry = DeviceEntry(name="test", instance=None, deviceType="camera", isConfigurable=True)
     with pytest.raises(AttributeError, match="Device 'test' instance is None"):
         _ = entry.framework
+
+
+def test_deviceEntryConfigProperty() -> None:
+    """Test config property returns config from run[framework]."""
+    class MockConfig:
+        value = "test_config"
+
+    class MockFramework:
+        def __init__(self):
+            self.config = MockConfig()
+
+    class MockInstance:
+        def __init__(self):
+            self.framework = "indi"
+            self.run = {"indi": MockFramework()}
+
+    entry = DeviceEntry(
+        name="camera", instance=MockInstance(), deviceType="camera", isConfigurable=True
+    )
+    assert entry.config.value == "test_config"
+
+
+# ------------------------------------------------------------------
+# DeviceEntry — error handling for None instance
+# ------------------------------------------------------------------
+def test_deviceEntryNoneInstanceSignalsProperty() -> None:
+    entry = DeviceEntry(name="test", instance=None, deviceType="camera", isConfigurable=True)
+    with pytest.raises(AttributeError, match="Device 'test' instance is None"):
+        _ = entry.signals
+
+
+def test_deviceEntryNoneInstanceDataProperty() -> None:
+    entry = DeviceEntry(name="test", instance=None, deviceType="camera", isConfigurable=True)
+    with pytest.raises(AttributeError, match="Device 'test' instance is None"):
+        _ = entry.data
+
+
+def test_deviceEntryNoneInstanceObsSiteProperty() -> None:
+    entry = DeviceEntry(name="test", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError, match="Device 'test' instance is None"):
+        _ = entry.obsSite
+
+
+def test_deviceEntryNoneInstanceSettingProperty() -> None:
+    entry = DeviceEntry(name="test", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError, match="Device 'test' instance is None"):
+        _ = entry.setting
+
+
+def test_deviceEntryNoneInstanceLocationProperty() -> None:
+    entry = DeviceEntry(name="test", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError, match="Device 'test' instance is None"):
+        _ = entry.location
+
+
+def test_deviceEntryNoneInstanceTimeJDProperty() -> None:
+    entry = DeviceEntry(name="test", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError, match="Device 'test' instance is None"):
+        _ = entry.timeJD
+
+
+def test_deviceEntryNoneInstanceModelProperty() -> None:
+    entry = DeviceEntry(name="test", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError, match="Device 'test' instance is None"):
+        _ = entry.model
+
+
+def test_deviceEntryNoneInstanceGeometryProperty() -> None:
+    entry = DeviceEntry(name="test", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError, match="Device 'test' instance is None"):
+        _ = entry.geometry
+
+
+def test_deviceEntryNoneInstanceFirmwareProperty() -> None:
+    entry = DeviceEntry(name="test", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError, match="Device 'test' instance is None"):
+        _ = entry.firmware
+
+
+def test_deviceEntryNoneInstanceSatelliteProperty() -> None:
+    entry = DeviceEntry(name="test", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError, match="Device 'test' instance is None"):
+        _ = entry.satellite
+
+
+def test_deviceEntryNoneInstanceConfigProperty() -> None:
+    entry = DeviceEntry(name="test", instance=None, deviceType="camera", isConfigurable=True)
+    with pytest.raises(AttributeError, match="Device 'test' instance is None"):
+        _ = entry.config
+
+
+# ------------------------------------------------------------------
+# DeviceEntry — multiple properties on same entry
+# ------------------------------------------------------------------
+def test_deviceEntryMultipleProperties() -> None:
+    """Test accessing multiple properties on the same entry."""
+    class MockConfig:
+        hostAddress = "192.168.1.1"
+
+    class MockFramework:
+        def __init__(self):
+            self.config = MockConfig()
+
+    class MockObsSite:
+        def __init__(self):
+            self.location = "Observatory"
+            self.timeJD = 2459000
+
+    class MockInstance:
+        def __init__(self):
+            self.signals = "camera_signals"
+            self.data = {"exposure": 1.0}
+            self.run = {"indi": MockFramework()}
+            self.framework = "indi"
+            self.obsSite = MockObsSite()
+            self.model = "ModelX"
+            self.geometry = "GeometryY"
+            self.firmware = "FirmwareZ"
+            self.satellite = "SatelliteW"
+
+    entry = DeviceEntry(
+        name="camera", instance=MockInstance(), deviceType="camera", isConfigurable=True
+    )
+
+    assert entry.signals == "camera_signals"
+    assert entry.data == {"exposure": 1.0}
+    assert "indi" in entry.run
+    assert entry.run["indi"].config.hostAddress == "192.168.1.1"
+    assert entry.framework == "indi"
+    assert entry.obsSite.location == "Observatory"
+    assert entry.config.hostAddress == "192.168.1.1"
+    assert entry.model == "ModelX"
+    assert entry.geometry == "GeometryY"
+    assert entry.firmware == "FirmwareZ"
+    assert entry.satellite == "SatelliteW"
+
+
+# ------------------------------------------------------------------
+# DeviceEntry — stat field variations
+# ------------------------------------------------------------------
+def test_deviceEntryStatFieldNone() -> None:
+    entry = DeviceEntry(
+        name="test", instance=object(), deviceType="camera", isConfigurable=True, stat=None
+    )
+    assert entry.stat is None
+
+
+def test_deviceEntryStatFieldTrue() -> None:
+    entry = DeviceEntry(
+        name="test", instance=object(), deviceType="camera", isConfigurable=True, stat=True
+    )
+    assert entry.stat is True
+
+
+def test_deviceEntryStatFieldFalse() -> None:
+    entry = DeviceEntry(
+        name="test", instance=object(), deviceType="camera", isConfigurable=True, stat=False
+    )
+    assert entry.stat is False
+
+

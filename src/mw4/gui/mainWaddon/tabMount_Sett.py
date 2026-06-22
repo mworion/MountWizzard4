@@ -497,20 +497,18 @@ class MountSett(TabAddon):
             return False
 
     def showOffset(self) -> None:
-        connectSync = bool(self.app.dReg["mount"].instance.workerCycleClock)
         delta = self.app.dReg["mount"].obsSite.timeDiff * 1000
-        ui = self.ui.timeDeltaPC2Mount
-        text = f"{delta:4.0f}"
-        ui.setText(text)
+        guiSetText(self.ui.timeDeltaPC2Mount, "4.0f", delta)
+        guiSetText(self.ui.timeUTC, "s",
+                   self.app.dReg["mount"].timeJD.utc_strftime("%H:%M:%S"))
 
-        if not connectSync or abs(delta) < 100:
-            changeStyleDynamic(ui, "color", "")
+        if not self.app.dReg["mount"].config.clockSync:
+            changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "")
+            return
+        if abs(delta) < 100:
+            changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "")
         elif abs(delta) < 500:
-            changeStyleDynamic(ui, "color", "yellow")
+            changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "yellow")
         else:
-            changeStyleDynamic(ui, "color", "red")
+            changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "red")
 
-        timeJD = self.app.dReg["mount"].obsSite.timeJD
-        if timeJD is not None:
-            text = timeJD.utc_strftime("%H:%M:%S")
-            self.ui.timeUTC.setText(text)

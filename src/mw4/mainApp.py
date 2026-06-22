@@ -63,8 +63,6 @@ class MountWizzard4(QObject):
     stopDevice = Signal(str)
     # --- Mount signals ---
     virtualStop = Signal()
-    mountOff = Signal()
-    mountOn = Signal()
     refreshModel = Signal()
     refreshName = Signal()
     # --- Satellite signals ---

@@ -101,8 +101,6 @@ class App(QObject):
     operationRunning = Signal(object)
     colorChange = Signal()
     virtualStop = Signal()
-    mountOff = Signal()
-    mountOn = Signal()
     stopDevices = Signal()
     startDevice = Signal(str)
     stopDevice = Signal(str)

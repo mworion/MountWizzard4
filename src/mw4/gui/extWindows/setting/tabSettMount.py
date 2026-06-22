@@ -30,8 +30,6 @@ class SettMount:
 
         self.ui.mountOn.clicked.connect(self.mountBoot)
         self.ui.mountOff.clicked.connect(self.mountShutdown)
-        self.app.mountOn.connect(self.mountBoot)
-        self.app.mountOff.connect(self.mountShutdown)
         self.app.dReg["mount"].signals.settingDone.connect(self.setMountMAC)
         self.app.dReg["mount"].signals.firmwareDone.connect(self.setMountCapabilities)
         self.app.dReg["mount"].signals.firmwareDone.connect(self.updateFwGui)

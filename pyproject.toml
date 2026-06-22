@@ -24,7 +24,7 @@ package-data = ["data/**/*.*"]
 
 [project]
 name = "mountwizzard4"
-version = "4.0.0b11"
+version = "4.0.0b12"
 license = "Apache-2.0"
 description = "Tool for managing 10_micron mounts"
 readme = "README.rst"
@@ -56,7 +56,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "numpy==2.4.6",
+    "numpy==2.5.0",
     "opencv-python-headless==4.13.0.92",
     "scipy==1.18.0",
     "astropy==8.0.0",

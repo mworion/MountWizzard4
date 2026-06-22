@@ -99,7 +99,7 @@
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -2370,6 +2370,12 @@
        <property name="title">
         <string>Clock sync from computer to mount</string>
        </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
@@ -2379,7 +2385,7 @@
         </property>
         <property name="geometry">
          <rect>
-          <x>185</x>
+          <x>60</x>
           <y>40</y>
           <width>171</width>
           <height>21</height>
@@ -2411,7 +2417,7 @@
         </property>
         <property name="geometry">
          <rect>
-          <x>185</x>
+          <x>60</x>
           <y>60</y>
           <width>176</width>
           <height>21</height>
@@ -2437,45 +2443,13 @@
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QCheckBox" name="clockSync">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>166</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="mouseTracking">
-         <bool>false</bool>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will enable measure and compares the mount clock to the PC clock like 10micron tool does.&lt;/p&gt;&lt;p&gt;Please be aware, that you need a very goog connection to the mount e.g. a wired connection to make the measurements reliable.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Enable clock compare</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QRadioButton" name="syncTimeNone">
         <property name="enabled">
          <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
-          <x>185</x>
+          <x>60</x>
           <y>20</y>
           <width>171</width>
           <height>21</height>

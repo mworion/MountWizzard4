@@ -502,7 +502,7 @@ class MountSett(TabAddon):
         guiSetText(self.ui.timeUTC, "s",
                    self.app.dReg["mount"].timeJD.utc_strftime("%H:%M:%S"))
 
-        if not self.app.dReg["mount"].config.clockSync:
+        if not self.app.dReg["mount"].instance.config.clockSync:
             changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "")
             return
         if abs(delta) < 100:

@@ -124,10 +124,10 @@ class EnvironWeather(TabAddon):
         self.ui.refracNoTrack.clicked.connect(self.setRefractionUpdateType)
 
         # cyclic functions
-        self.app.update1s.connect(self.smartEnvironGui)
-        self.app.update1s.connect(self.updateSourceGui)
-        self.app.update1s.connect(self.updateFilterRefractionParameters)
-        self.app.update1s.connect(self.updateRefractionParameters)
+        self.app.timeMgr.update1s.connect(self.smartEnvironGui)
+        self.app.timeMgr.update1s.connect(self.updateSourceGui)
+        self.app.timeMgr.update1s.connect(self.updateFilterRefractionParameters)
+        self.app.timeMgr.update1s.connect(self.updateRefractionParameters)
 
     def initConfig(self) -> None:
         config = self.app.config["WindowMain"]

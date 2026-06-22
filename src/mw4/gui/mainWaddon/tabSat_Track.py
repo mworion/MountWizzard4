@@ -82,7 +82,7 @@ class SatTrack(SatData):
         self.ui.satOffTime.valueChanged.connect(self.setTrackingOffsets)
         self.ui.satOffRa.valueChanged.connect(self.setTrackingOffsets)
         self.ui.satOffDec.valueChanged.connect(self.setTrackingOffsets)
-        self.app.update1s.connect(self.updateOrbit)
+        self.app.timeMgr.update1s.connect(self.updateOrbit)
 
     def initConfig(self) -> None:
         config = self.app.config["WindowMain"]

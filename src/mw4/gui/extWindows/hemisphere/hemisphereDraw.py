@@ -47,7 +47,7 @@ class HemisphereDraw(MWidget):
         self.app.redrawHemisphere.connect(self.drawTab)
         self.app.redrawHorizon.connect(self.drawHorizon)
         self.app.operationRunning.connect(self.enableOperationModeChange)
-        self.app.update3s.connect(self.drawAlignmentStars)
+        self.app.timeMgr.update3s.connect(self.drawAlignmentStars)
         self.ui.showSlewPath.clicked.connect(self.drawTab)
         self.ui.showHorizon.clicked.connect(self.drawTab)
         self.ui.showAlignStar.clicked.connect(self.drawTab)
@@ -74,7 +74,7 @@ class HemisphereDraw(MWidget):
         self.app.redrawHemisphere.disconnect(self.drawTab)
         self.app.redrawHorizon.disconnect(self.drawHorizon)
         self.app.operationRunning.disconnect(self.enableOperationModeChange)
-        self.app.update3s.disconnect(self.drawAlignmentStars)
+        self.app.timeMgr.update3s.disconnect(self.drawAlignmentStars)
 
     def setPointerVisibility(self) -> None:
         visible = bool(self.app.deviceStat.get("mount"))

@@ -77,7 +77,6 @@ class ImageWindow(MWidget):
         self.ui.showValues.setChecked(config.get("showValues", False))
         self.ui.offsetTiltAngle.setValue(config.get("offsetTiltAngle", 0))
         self.ui.timeTagImage.setChecked(config.get("timeTagImage", True))
-        self.app.config["WindowMain"].get("tabsMovable", False)
         self.tabs.setCrosshair()
 
     def storeConfig(self) -> None:
@@ -107,7 +106,7 @@ class ImageWindow(MWidget):
     def showWindow(self) -> None:
         self.fileHandler.signals.imageLoaded.connect(self.processPhotometry)
         self.photometry.signals.sepFinished.connect(self.resultPhotometry)
-        self.app.update1s.connect(self.updateWindowsStats)
+        self.app.timeMgr.update1s.connect(self.updateWindowsStats)
         self.ui.load.clicked.connect(self.selectImage)
         self.ui.flipH.clicked.connect(self.showCurrent)
         self.ui.flipV.clicked.connect(self.showCurrent)

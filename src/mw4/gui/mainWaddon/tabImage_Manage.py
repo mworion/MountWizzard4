@@ -52,17 +52,17 @@ class ImageManage(TabAddon):
         self.ui.exposureTimeN.valueChanged.connect(self.updateImagingParam)
         self.ui.binningN.valueChanged.connect(self.updateImagingParam)
         self.ui.subFrame.valueChanged.connect(self.updateImagingParam)
-        self.app.update1s.connect(self.updateImagingParam)
+        self.app.timeMgr.update1s.connect(self.updateImagingParam)
 
         self.ui.haltFocuser.clicked.connect(self.haltFocuser)
         self.ui.moveFocuserIn.clicked.connect(self.moveFocuserIn)
         self.ui.moveFocuserOut.clicked.connect(self.moveFocuserOut)
         self.app.dReg["hidController"].signals.hidSL.connect(self.domeMoveGameController)
 
-        self.app.update1s.connect(self.updateCoverStatGui)
-        self.app.update1s.connect(self.updateLightPanelGui)
-        self.app.update1s.connect(self.updateDomeGui)
-        self.app.update1s.connect(self.updateShutterStatGui)
+        self.app.timeMgr.update1s.connect(self.updateCoverStatGui)
+        self.app.timeMgr.update1s.connect(self.updateLightPanelGui)
+        self.app.timeMgr.update1s.connect(self.updateDomeGui)
+        self.app.timeMgr.update1s.connect(self.updateShutterStatGui)
 
     def initConfig(self) -> None:
         config = self.app.config["WindowMain"]

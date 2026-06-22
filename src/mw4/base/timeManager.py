@@ -14,7 +14,7 @@
 #
 ###########################################################
 from dateutil.tz import tzlocal
-from PySide6.QtCore import QObject, QTimer
+from PySide6.QtCore import QObject, QTimer, Signal
 from skyfield.api import Time
 
 TICK_INTERVAL_MS: int = 100
@@ -33,6 +33,17 @@ START_SCHEDULE: list[tuple[int, str]] = [
 
 
 class TimeManager(QObject):
+    # --- Cyclic update signals (emitted every 100ms tick) ---
+    update0_1s = Signal()
+    update1s = Signal()
+    update3s = Signal()
+    update10s = Signal()
+    update30s = Signal()
+    update3m = Signal()
+    update30m = Signal()
+    # --- Startup signals (emitted once after 3s) ---
+    start3s = Signal()
+
     def __init__(self, app: QObject) -> None:
         super().__init__()
         self.app: QObject = app
@@ -55,12 +66,12 @@ class TimeManager(QObject):
     def emitCyclic(self) -> None:
         for interval, signalName in CYCLIC_SCHEDULE:
             if self.counter % interval == 0:
-                getattr(self.app, signalName).emit()
+                getattr(self, signalName).emit()
 
     def emitStart(self) -> None:
         for tick, signalName in START_SCHEDULE:
             if self.counter == tick:
-                getattr(self.app, signalName).emit()
+                getattr(self, signalName).emit()
 
     def timeZoneString(self) -> str:
         if self.app.config.get("unitTimeUTC", True):

@@ -37,7 +37,7 @@ class SensorWeatherBoltwood:
         self.signals = parent.signals
         self.enabled: bool = False
         self.deviceConnected: bool = False
-        self.app.update3s.connect(self.pollBoltwoodData)
+        self.app.timeMgr.update3s.connect(self.pollBoltwoodData)
 
     def startCommunication(self) -> None:
         self.enabled = True

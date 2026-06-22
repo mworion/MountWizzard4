@@ -61,7 +61,7 @@ class VideoWindowBase(MWidget):
         self.ui.frameRate.currentIndexChanged.connect(self.restartVideo)
         self.ui.authPopup.clicked.connect(self.authPopup)
         self.app.colorChange.connect(self.colorChange)
-        self.app.update0_1s.connect(self.count)
+        self.app.timeMgr.update0_1s.connect(self.count)
         changeStyleDynamic(self.ui.videoStop, "run", True)
         self.checkAuth()
         self.show()

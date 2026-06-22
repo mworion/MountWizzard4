@@ -128,9 +128,9 @@ class MountDevice(QObject):
         self.settlingWait = QTimer()
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitAfterSettlingAndEmit)
-        self.app.update1s.connect(self.collectData)
-        self.app.update30s.connect(self.syncClock)
-        self.app.start3s.connect(self.resetAfterStart)
+        self.app.timeMgr.update1s.connect(self.collectData)
+        self.app.timeMgr.update30s.connect(self.syncClock)
+        self.app.timeMgr.start3s.connect(self.resetAfterStart)
         self.data: dict = {}
         self.raRef: float = 0.0
         self.decRef: float = 0.0

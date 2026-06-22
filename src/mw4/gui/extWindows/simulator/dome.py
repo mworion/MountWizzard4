@@ -29,7 +29,7 @@ class SimulatorDome:
             lambda: self.showEnable(False)
         )
         self.app.dReg["dome"].signals.azimuth.connect(self.updateAzimuth)
-        self.app.update1s.connect(self.updateShutter)
+        self.app.timeMgr.update1s.connect(self.updateShutter)
         self.parent.ui.domeTransparent.checkStateChanged.connect(self.setTransparency)
 
     def setTransparency(self) -> None:

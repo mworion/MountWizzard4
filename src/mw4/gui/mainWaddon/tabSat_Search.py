@@ -65,7 +65,7 @@ class SatSearch(QObject, SatData):
         self.ui.progSatFull.clicked.connect(self.satellites.progFull)
         self.ui.progSatFiltered.clicked.connect(self.satellites.progFiltered)
         self.ui.progSatSelected.clicked.connect(self.satellites.progSelected)
-        self.app.update3s.connect(self.calcSatListDynamic)
+        self.app.timeMgr.update3s.connect(self.calcSatListDynamic)
 
     def initConfig(self) -> None:
         config = self.app.config["WindowMain"]

@@ -77,8 +77,8 @@ class ImageStats(TabAddon):
         self.ui.openASTAPCatalog.clicked.connect(self.openASTAPCatalog)
         self.ui.openAstrometryCatalog.clicked.connect(self.openAstrometryCatalog)
         self.ui.copyFromTelescopeDriver.clicked.connect(self.updateTelescopeParametersToGui)
-        self.app.update1s.connect(self.updateImageStats)
-        self.app.update3s.connect(self.updateTelescopeParametersToGuiCyclic)
+        self.app.timeMgr.update1s.connect(self.updateImageStats)
+        self.app.timeMgr.update3s.connect(self.updateTelescopeParametersToGuiCyclic)
         self.fovHint: float = 0
 
     def initConfig(self) -> None:

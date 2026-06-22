@@ -55,13 +55,13 @@ class SeeingWeather:
 
     def startCommunication(self) -> None:
         self.pollSeeingData()
-        self.app.update3s.connect(self.pollSeeingData)
+        self.app.timeMgr.update3s.connect(self.pollSeeingData)
 
     def stopCommunication(self) -> None:
         self.running = False
         self.data.clear()
         self.signals.deviceDisconnected.emit(self.config.deviceName)
-        self.app.update3m.disconnect(self.pollSeeingData)
+        self.app.timeMgr.update3m.disconnect(self.pollSeeingData)
 
     def processSeeingData(self) -> None:
         dataFile = self.app.mwGlob["dataDir"] / "meteoblue.data"

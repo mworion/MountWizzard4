@@ -72,7 +72,7 @@ class EnvironSeeing(TabAddon):
         self.app.dReg["seeingWeather"].signals.update.connect(self.prepareSeeingTable)
         clickable(self.ui.seeingIcon).connect(self.openWeb)
         self.app.colorChange.connect(self.updateSeeingEntries)
-        self.app.update30m.connect(self.updateSeeingEntries)
+        self.app.timeMgr.update30m.connect(self.updateSeeingEntries)
 
     def setupIcons(self) -> None:
         pixmap = svg2pixmap("assets/icon/meteoblue.svg", "#124673")

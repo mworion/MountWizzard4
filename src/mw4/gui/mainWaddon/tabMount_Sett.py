@@ -44,7 +44,7 @@ class MountSett(TabAddon):
         ms.locationDone.connect(self.updateLocGUI)
         ms.pointDone.connect(self.updatePointGUI)
         ms.settingDone.connect(self.updateSettingGUI)
-        self.app.update1s.connect(self.showOffset)
+        self.app.timeMgr.update1s.connect(self.showOffset)
         clickable(self.ui.refractionTemp).connect(self.setRefractionTemp)
         clickable(self.ui.refractionPress).connect(self.setRefractionPress)
         clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)

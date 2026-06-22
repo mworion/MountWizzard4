@@ -76,8 +76,8 @@ def prepareFunctionState(function):
 
         for signal, slot in (
             (function.app.colorChange, function.colorChange),
-            (function.app.update1s, function.drawMeasure),
-            (function.app.update1s, function.setTitle),
+            (function.app.timeMgr.update1s, function.drawMeasure),
+            (function.app.timeMgr.update1s, function.setTitle),
         ):
             with contextlib.suppress(TypeError, RuntimeError):
                 signal.disconnect(slot)
@@ -129,8 +129,8 @@ def test_showWindow_1(function):
 
 
 def test_closeEvent_1(function):
-    function.app.update1s.connect(function.drawMeasure)
-    function.app.update1s.connect(function.setTitle)
+    function.app.timeMgr.update1s.connect(function.drawMeasure)
+    function.app.timeMgr.update1s.connect(function.setTitle)
     with (
         mock.patch.object(function, "show"),
         mock.patch.object(MWidget, "closeEvent"),

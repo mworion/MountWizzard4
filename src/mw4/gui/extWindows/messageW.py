@@ -94,7 +94,7 @@ class MessageWindow(MWidget):
     def showWindow(self) -> None:
         self.ui.clear.clicked.connect(self.clearMessageTable)
         self.clearMessageTable()
-        self.app.update1s.connect(self.writeMessage)
+        self.app.timeMgr.update1s.connect(self.writeMessage)
         self.app.colorChange.connect(self.colorChange)
         self.show()
 

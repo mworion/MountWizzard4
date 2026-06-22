@@ -27,14 +27,6 @@ from skyfield.api import load
 class MockApp(QObject):
     """Minimal app stub with the signal attributes needed by CyclicTimerManager."""
 
-    update0_1s = Signal()
-    update1s = Signal()
-    update3s = Signal()
-    update10s = Signal()
-    update30s = Signal()
-    update3m = Signal()
-    update30m = Signal()
-    start3s = Signal()
 
     def __init__(self):
         super().__init__()
@@ -92,9 +84,9 @@ def _collect_emitted(mock_app, mgr, method_name, counter_value):
     """Set the counter and call the named method, returning emitted signal names."""
     emitted = []
     for _, sig_name in CYCLIC_SCHEDULE:
-        getattr(mock_app, sig_name).connect(lambda name=sig_name: emitted.append(name))
+        getattr(mgr, sig_name).connect(lambda name=sig_name: emitted.append(name))
     for _, sig_name in START_SCHEDULE:
-        getattr(mock_app, sig_name).connect(lambda name=sig_name: emitted.append(name))
+        getattr(mgr, sig_name).connect(lambda name=sig_name: emitted.append(name))
     mgr.counter = counter_value
     getattr(mgr, method_name)()
     return emitted
@@ -172,7 +164,7 @@ def test_emit_start_does_not_fire_at_other_ticks(mock_app, mgr):
 def test_on_tick_emits_signals(mock_app, mgr):
     """onTick should increment the counter and emit cyclic + start signals."""
     emitted = []
-    mock_app.update0_1s.connect(lambda: emitted.append("update0_1s"))
+    mgr.update0_1s.connect(lambda: emitted.append("update0_1s"))
     mgr.onTick()
     assert mgr.counter == 1
     assert "update0_1s" in emitted

@@ -59,7 +59,7 @@ class Almanac(TabAddon):
         self.colors = None
         self.worker: Worker | None = None
         self.setColors()
-        self.app.update30m.connect(self.showMoonPhase)
+        self.app.timeMgr.update30m.connect(self.showMoonPhase)
         self.app.colorChange.connect(self.updateColorSet)
         self.app.timebaseChanged.connect(self.showTwilightDataList)
         self.app.timebaseChanged.connect(self.showTwilightDataPlot)

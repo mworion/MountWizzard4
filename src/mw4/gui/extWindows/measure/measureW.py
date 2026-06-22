@@ -74,13 +74,13 @@ class MeasureWindow(MWidget):
                 partial(self.changeChart, setName)
             )
         self.app.colorChange.connect(self.colorChange)
-        self.app.update1s.connect(self.drawMeasure)
-        self.app.update1s.connect(self.setTitle)
+        self.app.timeMgr.update1s.connect(self.drawMeasure)
+        self.app.timeMgr.update1s.connect(self.setTitle)
         self.show()
 
     def closeEvent(self, closeEvent: QCloseEvent) -> None:
-        self.app.update1s.disconnect(self.drawMeasure)
-        self.app.update1s.disconnect(self.setTitle)
+        self.app.timeMgr.update1s.disconnect(self.drawMeasure)
+        self.app.timeMgr.update1s.disconnect(self.setTitle)
         self.storeConfig()
         super().closeEvent(closeEvent)
 

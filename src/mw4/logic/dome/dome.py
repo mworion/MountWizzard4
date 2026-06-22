@@ -64,14 +64,14 @@ class Dome:
 
     def startCommunication(self) -> None:
         self.run[self.framework].startCommunication()
-        self.app.update1s.connect(self.checkSlewingDome)
+        self.app.timeMgr.update1s.connect(self.checkSlewingDome)
         self.domeStarted = True
 
     def stopCommunication(self) -> None:
         self.signals.message.emit("")
         self.run[self.framework].stopCommunication()
         if self.domeStarted:
-            self.app.update1s.disconnect(self.checkSlewingDome)
+            self.app.timeMgr.update1s.disconnect(self.checkSlewingDome)
             self.domeStarted = False
 
     def waitSettlingAndEmit(self) -> None:

@@ -77,14 +77,6 @@ from tests.unit_tests.unitTestAddOns.mountStubs import (  # noqa: F401
 class App(QObject):
     __version__ = "test"
     MAX_THREAD_COUNT = 30
-    update10s = Signal()
-    update0_1s = Signal()
-    update1s = Signal()
-    update3s = Signal()
-    update30s = Signal()
-    update3m = Signal()
-    update30m = Signal()
-    start3s = Signal()
     sendSatelliteData = Signal(object, object)
     updateSatellite = Signal(object, object)
     showSatellite = Signal(object, object, object, object, object)

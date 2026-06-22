@@ -61,7 +61,7 @@ def test_startCommunication_3(function):
 def test_stopCommunication_2(function):
     function.framework = "indi"
     function.domeStarted = True
-    function.app.update1s.connect(function.checkSlewingDome)
+    function.app.timeMgr.update1s.connect(function.checkSlewingDome)
     with mock.patch.object(function.run["indi"], "startCommunication", return_value=True):
         function.stopCommunication()
         assert not function.domeStarted
@@ -70,7 +70,7 @@ def test_stopCommunication_2(function):
 def test_stopCommunication_3(function):
     function.framework = "indi"
     function.domeStarted = True
-    function.app.update1s.connect(function.checkSlewingDome)
+    function.app.timeMgr.update1s.connect(function.checkSlewingDome)
     with mock.patch.object(function.run["indi"], "startCommunication", return_value=False):
         function.stopCommunication()
         assert not function.domeStarted

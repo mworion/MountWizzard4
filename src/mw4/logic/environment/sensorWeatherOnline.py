@@ -49,13 +49,13 @@ class SensorWeatherOnline:
     def startCommunication(self) -> None:
         self.location = self.app.dReg["mount"].obsSite.location
         self.pollOpenWeatherMapData()
-        self.app.update3s.connect(self.pollOpenWeatherMapData)
+        self.app.timeMgr.update3s.connect(self.pollOpenWeatherMapData)
 
     def stopCommunication(self) -> None:
         self.running = False
         self.data.clear()
         self.signals.deviceDisconnected.emit(self.config.deviceName)
-        self.app.update3m.disconnect(self.pollOpenWeatherMapData)
+        self.app.timeMgr.update3m.disconnect(self.pollOpenWeatherMapData)
 
     @staticmethod
     def getDewPoint(tempAir: float, relativeHumidity: float) -> float:

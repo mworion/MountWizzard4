@@ -75,12 +75,12 @@ class MainWindow(MWidget):
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
         self.app.dReg["seeingWeather"].instance.b = self.ui.label_b.property("a")
-        self.app.update1s.connect(self.updateThreadAndOnlineStatus)
-        self.app.update1s.connect(self.smartFunctionGui)
-        self.app.update1s.connect(self.smartTabGui)
-        self.app.update1s.connect(self.setEnvironDeviceStats)
-        self.app.update1s.connect(self.updateDeviceStats)
-        self.app.update30s.connect(self.updateTwilightAndDisk)
+        self.app.timeMgr.update1s.connect(self.updateThreadAndOnlineStatus)
+        self.app.timeMgr.update1s.connect(self.smartFunctionGui)
+        self.app.timeMgr.update1s.connect(self.smartTabGui)
+        self.app.timeMgr.update1s.connect(self.setEnvironDeviceStats)
+        self.app.timeMgr.update1s.connect(self.updateDeviceStats)
+        self.app.timeMgr.update30s.connect(self.updateTwilightAndDisk)
         self.app.colorChange.connect(self.updateColorSet)
         # Cached values for status title; refreshed on the slower cadence so we
         # don't hit disk and recompute twilight every second on the GUI thread.

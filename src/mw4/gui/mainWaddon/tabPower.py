@@ -90,7 +90,7 @@ class Power(TabAddon):
         self.app.dReg["power"].signals.version.connect(self.setGuiVersion)
 
         # cyclic tasks
-        self.app.update1s.connect(self.updatePowerGui)
+        self.app.timeMgr.update1s.connect(self.updatePowerGui)
 
     def setGuiVersion(self, version=1) -> None:
         if version == 1:

@@ -69,16 +69,6 @@ class MountWizzard4(QObject):
     sendSatelliteData = Signal(object, object)
     updateSatellite = Signal(object, object)
     showSatellite = Signal(object, object, object, object, object)
-    # --- Cyclic update signals (emitted by CyclicTimerManager) ---
-    update0_1s = Signal()
-    update1s = Signal()
-    update3s = Signal()
-    update10s = Signal()
-    update30s = Signal()
-    update3m = Signal()
-    update30m = Signal()
-    # --- Startup signals (emitted once by CyclicTimerManager) ---
-    start3s = Signal()
     # --- Thread pool configuration ---
     MAX_THREAD_COUNT: int = 30  # allows concurrent device polling + model workers
 
@@ -124,7 +114,7 @@ class MountWizzard4(QObject):
         self.operationRunning.connect(self.storeStatusOperationRunning)
 
         if test:
-            self.update10s.connect(self.quit)
+            self.timeMgr.update10s.connect(self.quit)
         if len(sys.argv) > 1:
             self.messageQueue.put((1, "System", "Arguments", sys.argv[1]))
 

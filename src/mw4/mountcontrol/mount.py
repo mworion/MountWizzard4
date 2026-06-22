@@ -51,7 +51,6 @@ class DeviceConfigMount:
 class MountDevice(QObject):
     CYCLE_POINTING: Final[int] = 500
     CYCLE_DOME: Final[int] = 950
-    CYCLE_CLOCK: Final[int] = 1000
     CYCLE_MOUNT_UP: Final[int] = 1000
     CYCLE_SETTING: Final[int] = 3100
     SOCKET_TIMEOUT: Final[float] = 1.0
@@ -116,9 +115,6 @@ class MountDevice(QObject):
         self.timerDome = QTimer()
         self.timerDome.setSingleShot(False)
         self.timerDome.timeout.connect(self.cycleDome)
-        self.timerClock = QTimer()
-        self.timerClock.setSingleShot(False)
-        self.timerClock.timeout.connect(self.cycleClock)
         self.timerSetting = QTimer()
         self.timerSetting.setSingleShot(False)
         self.timerSetting.timeout.connect(self.cycleSetting)
@@ -129,6 +125,7 @@ class MountDevice(QObject):
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitAfterSettlingAndEmit)
         self.app.timeMgr.update1s.connect(self.collectData)
+        self.app.timeMgr.update1s.connect(self.cycleClock)
         self.app.timeMgr.update30s.connect(self.syncClock)
         self.app.timeMgr.start3s.connect(self.resetAfterStart)
         self.data: dict = {}
@@ -195,7 +192,6 @@ class MountDevice(QObject):
     def stopAllMountTimers(self) -> None:
         self.timerMountIsUp.stop()
         self.timerPointing.stop()
-        self.timerClock.stop()
         self.timerDome.stop()
         self.timerSetting.stop()
 
@@ -204,12 +200,6 @@ class MountDevice(QObject):
 
     def stopDomeTimer(self) -> None:
         self.timerDome.stop()
-
-    def startMountClockTimer(self) -> None:
-        self.timerClock.start(self.CYCLE_CLOCK)
-
-    def stopMountClockTimer(self) -> None:
-        self.timerClock.stop()
 
     def startupMountData(self) -> None:
         if self.mountIsUp and not self.mountIsUpLastStatus:
@@ -407,9 +397,10 @@ class MountDevice(QObject):
 
     def clearCycleClock(self) -> None:
         self.mutexCycleClock.unlock()
-        self.workerCycleClock = None
 
     def cycleClock(self) -> None:
+        if not self.config.clockSync:
+            return
         self.runWorker(
             self.obsSite.pollSyncClock,
             self.clearCycleClock,

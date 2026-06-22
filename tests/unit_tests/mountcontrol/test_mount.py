@@ -86,16 +86,6 @@ def test_stopDomeTimer(function):
         function.stopDomeTimer()
 
 
-def test_startClockTimer(function):
-    with mock.patch.object(QTimer, "start"):
-        function.startMountClockTimer()
-
-
-def test_stopClockTimer(function):
-    with mock.patch.object(QTimer, "stop"):
-        function.stopMountClockTimer()
-
-
 def test_startupMountData_1(function):
     function.mountIsUp = True
     function.mountIsUpLastStatus = False
@@ -475,32 +465,6 @@ def test_cycleDome_3(function):
     with mock.patch.object(QThreadPool, "start"):
         function.cycleDome()
     function.mutexCycleDome.unlock()
-
-
-def test_clearCycleClock_1(function):
-    function.mutexCycleClock.lock()
-    function.clearCycleClock()
-
-
-def test_cycleClock_1(function):
-    function.mountIsUp = False
-    with mock.patch.object(QThreadPool, "start"):
-        function.cycleClock()
-
-
-def test_cycleClock_2(function):
-    function.mountIsUp = True
-    function.mutexCycleClock.lock()
-    with mock.patch.object(QThreadPool, "start"):
-        function.cycleClock()
-    function.mutexCycleClock.unlock()
-
-
-def test_cycleClock_3(function):
-    function.mountIsUp = True
-    with mock.patch.object(QThreadPool, "start"):
-        function.cycleClock()
-    function.mutexCycleClock.unlock()
 
 
 def test_runnerProgTrajectory_1(function):

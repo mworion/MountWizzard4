@@ -22,170 +22,173 @@ from mw4.logic.powerswitch.kmRelay import KMRelay
 from unittest import mock
 
 
-@pytest.fixture(autouse=True, scope="module")
-def function():
+@pytest.fixture()
+def kmRelay() -> KMRelay:
+    """Create a KMRelay instance with mocked app."""
+    app = mock.MagicMock()
     with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = KMRelay()
-        yield func
+        relay = KMRelay(app)
+    return relay
 
 
-def test_startCommunication_1(function):
-    function.host = None
-    with mock.patch.object(function.timerTask, "start"):
-        function.startCommunication()
-
-
-def test_startCommunications_2(function):
-    function.hostaddress = "localhost"
-    with mock.patch.object(function.timerTask, "start"):
-        function.startCommunication()
-
-
-def test_stopTimers_1(function):
-    with mock.patch.object(
-        function.timerTask,
-        "stop",
-    ):
-        function.stopCommunication()
-
-
-def test_debugOutput_2(function):
-    class Test:
-        reason = "reason"
+def test_getRelayWithDebugOutput(kmRelay: KMRelay) -> None:
+    class MockResult:
+        text = "test response"
+        reason = "OK"
         status_code = 200
-        elapsed = 1
-        text = "test"
-        url = "test"
+        elapsed = "0.1s"
+        url = "http://localhost/status.xml"
 
-    function.debugOutput(Test())
-
-
-def test_getRelay_1(function):
-    function.hostaddress = None
-    suc = function.getRelay("test", True)
-    assert suc == ""
-
-
-def test_getRelay_2(function):
-    function.hostaddress = "localhost"
-    function.mutexPoll.lock()
-    suc = function.getRelay("test", True)
-    assert suc == ""
-    function.mutexPoll.unlock()
+    kmRelay.config.hostAddress = "localhost"
+    kmRelay.config.user = "test"
+    kmRelay.config.password = "test"
+    with mock.patch.object(requests, "get", return_value=MockResult()):
+        result = kmRelay.getRelay("/status.xml", debug=True)
+        assert result is not None
+        assert result.reason == "OK"
 
 
-def test_getRelay_3(function):
-    function.hostaddress = "localhost"
-    with mock.patch.object(
-        requests, "get", return_value=None, side_effect=requests.exceptions.Timeout
-    ):
-        suc = function.getRelay("test", True)
-        assert not suc
+def test_startCommunicationWithoutHostAddress(kmRelay: KMRelay) -> None:
+    kmRelay.config.hostAddress = ""
+    kmRelay.startCommunication()
+    assert kmRelay.deviceConnected is False
 
 
-def test_getRelay_4(function):
-    function.hostaddress = "localhost"
-    with mock.patch.object(
-        requests,
-        "get",
-        return_value=None,
-        side_effect=requests.exceptions.ConnectionError,
-    ):
-        suc = function.getRelay("test", True)
-        assert not suc
+def test_startCommunicationWithHostAddress(kmRelay: KMRelay) -> None:
+    kmRelay.config.hostAddress = "localhost"
+    kmRelay.startCommunication()
+    assert kmRelay.deviceConnected is False
 
 
-def test_getRelay_5(function):
-    function.hostaddress = "localhost"
-    with mock.patch.object(requests, "get", return_value=None, side_effect=Exception()):
-        suc = function.getRelay("test", True)
-        assert not suc
+def test_stopCommunication(kmRelay: KMRelay) -> None:
+    kmRelay.deviceConnected = True
+    kmRelay.stopCommunication()
+    assert kmRelay.deviceConnected is False
 
 
-def test_checkConnected_1(function):
-    class Test:
-        reason = "NotOk"
+def test_debugOutputWithValidResult(kmRelay: KMRelay) -> None:
+    class MockResult:
+        reason = "OK"
+        status_code = 200
+        elapsed = "0.1s"
+        text = "test\r\nresponse"
+        url = "http://localhost/status.xml"
 
-    function.deviceConnected = True
-    suc = function.checkConnected(None)
-    assert not suc
-    assert not function.deviceConnected
+    kmRelay.debugOutput(MockResult())
 
 
-def test_checkConnected_2(function):
-    class Test:
+def test_debugOutputWithNone(kmRelay: KMRelay) -> None:
+    kmRelay.debugOutput(None)
+
+
+def test_getRelayWithNoneHostAddress(kmRelay: KMRelay) -> None:
+    kmRelay.config.hostAddress = None
+    result = kmRelay.getRelay("/status.xml", False)
+    assert result == ""
+
+
+def test_getRelayWithLockedMutex(kmRelay: KMRelay) -> None:
+    kmRelay.config.hostAddress = "localhost"
+    kmRelay.mutexPoll.lock()
+    result = kmRelay.getRelay("/status.xml", False)
+    assert result == ""
+    kmRelay.mutexPoll.unlock()
+
+
+def test_getRelayWithTimeoutException(kmRelay: KMRelay) -> None:
+    kmRelay.config.hostAddress = "localhost"
+    with mock.patch.object(requests, "get", side_effect=requests.exceptions.Timeout):
+        result = kmRelay.getRelay("/status.xml", False)
+        assert result == ""
+
+
+def test_getRelayWithConnectionError(kmRelay: KMRelay) -> None:
+    kmRelay.config.hostAddress = "localhost"
+    with mock.patch.object(requests, "get", side_effect=requests.exceptions.ConnectionError):
+        result = kmRelay.getRelay("/status.xml", False)
+        assert result == ""
+
+
+def test_getRelayWithGenericException(kmRelay: KMRelay) -> None:
+    kmRelay.config.hostAddress = "localhost"
+    with mock.patch.object(requests, "get", side_effect=Exception("Test error")):
+        result = kmRelay.getRelay("/status.xml", False)
+        assert result == ""
+
+
+def test_checkConnectedNotConnectedWithNone(kmRelay: KMRelay) -> None:
+    kmRelay.deviceConnected = False
+    result = kmRelay.checkConnected(None)
+    assert result is False
+    assert kmRelay.deviceConnected is False
+
+
+def test_checkConnectedNotConnectedWithOK(kmRelay: KMRelay) -> None:
+    class MockResult:
         reason = "OK"
 
-    function.deviceConnected = False
-    suc = function.checkConnected(Test())
-    assert suc
-    assert function.deviceConnected
+    kmRelay.deviceConnected = False
+    result = kmRelay.checkConnected(MockResult())
+    assert result is True
+    assert kmRelay.deviceConnected is True
 
 
-def test_checkConnected_3(function):
-    class Test:
-        reason = "NotOk"
-
-    function.deviceConnected = False
-    suc = function.checkConnected(None)
-    assert not suc
-    assert not function.deviceConnected
-
-
-def test_checkConnected_4(function):
-    class Test:
+def test_checkConnectedConnectedWithOK(kmRelay: KMRelay) -> None:
+    class MockResult:
         reason = "OK"
 
-    function.deviceConnected = True
-    suc = function.checkConnected(Test())
-    assert suc
-    assert function.deviceConnected
+    kmRelay.deviceConnected = True
+    result = kmRelay.checkConnected(MockResult())
+    assert result is True
+    assert kmRelay.deviceConnected is True
 
 
-def test_cyclePolling_1(function):
-    function.user = "test"
-    function.password = "test"
-    function.hostaddress = "localhost"
+def test_checkConnectedConnectedWithoutOK(kmRelay: KMRelay) -> None:
+    class MockResult:
+        reason = "NotFound"
+
+    kmRelay.deviceConnected = True
+    result = kmRelay.checkConnected(MockResult())
+    assert result is False
+    assert kmRelay.deviceConnected is False
+
+
+def test_cyclePollingNotConnected(kmRelay: KMRelay) -> None:
     with (
-        mock.patch.object(function, "getRelay"),
-        mock.patch.object(function, "checkConnected", return_value=False),
+        mock.patch.object(kmRelay, "getRelay", return_value=None),
+        mock.patch.object(kmRelay, "checkConnected", return_value=False),
     ):
-        function.cyclePolling()
+        kmRelay.cyclePolling()
 
 
-def test_cyclePolling_2(function):
-    class Test:
-        reason = "NotOk"
-        text = "test"
-
-    function.user = "test"
-    function.password = "test"
-    function.hostaddress = "localhost"
-    with (
-        mock.patch.object(function, "getRelay", return_value=Test()),
-        mock.patch.object(function, "checkConnected", return_value=True),
-    ):
-        function.cyclePolling()
-
-
-def test_cyclePolling_3(function):
-    class Test:
+def test_cyclePollingConnected(kmRelay: KMRelay) -> None:
+    class MockResult:
+        text = "<relay0>0</relay0>\n<relay1>1</relay1>"
         reason = "OK"
-        text = "test"
 
-    function.user = "test"
-    function.password = "test"
-    function.hostaddress = "localhost"
     with (
-        mock.patch.object(function, "getRelay", return_value=Test()),
-        mock.patch.object(function, "checkConnected", return_value=True),
+        mock.patch.object(kmRelay, "getRelay", return_value=MockResult()),
+        mock.patch.object(kmRelay, "checkConnected", return_value=True),
     ):
-        function.cyclePolling()
+        kmRelay.cyclePolling()
 
 
-def test_status1(function):
+def test_cyclePollingParseXml(kmRelay: KMRelay) -> None:
+    class MockResult:
+        text = "<response>\n<relay1>0</relay1>\n<relay2>1</relay2>\n</response>"
+        reason = "OK"
+
+    with (
+        mock.patch.object(kmRelay, "getRelay", return_value=MockResult()),
+        mock.patch.object(kmRelay, "checkConnected", return_value=True),
+    ):
+        kmRelay.cyclePolling()
+        assert kmRelay.status[0] == 0
+        assert kmRelay.status[1] == 1
+
+
+def test_statusAllZero(kmRelay: KMRelay) -> None:
     returnValue = """<response>
-                     <relay0>0</relay0>
                      <relay1>0</relay1>
                      <relay2>0</relay2>
                      <relay3>0</relay3>
@@ -196,25 +199,20 @@ def test_status1(function):
                      <relay8>0</relay8>
                      </response>"""
 
-    class Test:
-        pass
+    class MockResult:
+        text = returnValue
+        reason = "OK"
+        status_code = 200
 
-    ret = Test()
-    ret.text = returnValue
-    ret.reason = "OK"
-    ret.status_code = 200
-
-    with mock.patch.object(function, "getRelay", return_value=ret):
+    with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
         for i in range(0, 8):
-            function.set(i, 0)
+            kmRelay.set(i, False)
+        kmRelay.cyclePolling()
+        assert kmRelay.status == [0, 0, 0, 0, 0, 0, 0, 0]
 
-        function.cyclePolling()
-        assert function.status == [0, 0, 0, 0, 0, 0, 0, 0]
 
-
-def test_status2(function):
+def test_statusAllOne(kmRelay: KMRelay) -> None:
     returnValue = """<response>
-                     <relay0>1</relay0>
                      <relay1>1</relay1>
                      <relay2>1</relay2>
                      <relay3>1</relay3>
@@ -225,25 +223,20 @@ def test_status2(function):
                      <relay8>1</relay8>
                      </response>"""
 
-    class Test:
-        pass
+    class MockResult:
+        text = returnValue
+        reason = "OK"
+        status_code = 200
 
-    ret = Test()
-    ret.text = returnValue
-    ret.reason = "OK"
-    ret.status_code = 200
-
-    with mock.patch.object(function, "getRelay", return_value=ret):
+    with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
         for i in range(0, 8):
-            function.set(i, 1)
+            kmRelay.set(i, True)
+        kmRelay.cyclePolling()
+        assert kmRelay.status == [1, 1, 1, 1, 1, 1, 1, 1]
 
-        function.cyclePolling()
-        assert function.status == [1, 1, 1, 1, 1, 1, 1, 1]
 
-
-def test_status3(function):
+def test_statusAfterSwitch(kmRelay: KMRelay) -> None:
     returnValue = """<response>
-                     <relay0>1</relay0>
                      <relay1>1</relay1>
                      <relay2>1</relay2>
                      <relay3>1</relay3>
@@ -254,25 +247,20 @@ def test_status3(function):
                      <relay8>1</relay8>
                      </response>"""
 
-    class Test:
-        pass
+    class MockResult:
+        text = returnValue
+        reason = "OK"
+        status_code = 200
 
-    ret = Test()
-    ret.text = returnValue
-    ret.reason = "OK"
-    ret.status_code = 200
-
-    with mock.patch.object(function, "getRelay", return_value=ret):
+    with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
         for i in range(0, 8):
-            function.switch(i)
+            kmRelay.switch(i)
+        kmRelay.cyclePolling()
+        assert kmRelay.status == [1, 1, 1, 1, 1, 1, 1, 1]
 
-        function.cyclePolling()
-        assert function.status == [1, 1, 1, 1, 1, 1, 1, 1]
 
-
-def test_status4(function):
+def test_statusAfterPulse(kmRelay: KMRelay) -> None:
     returnValue = """<response>
-                     <relay0>0</relay0>
                      <relay1>0</relay1>
                      <relay2>0</relay2>
                      <relay3>0</relay3>
@@ -283,154 +271,125 @@ def test_status4(function):
                      <relay8>0</relay8>
                      </response>"""
 
-    class Test:
-        pass
-
-    ret = Test()
-    ret.text = returnValue
-    ret.reason = "OK"
-    ret.status_code = 200
+    class MockResult:
+        text = returnValue
+        reason = "OK"
+        status_code = 200
 
     with (
-        mock.patch.object(function, "getRelay", return_value=ret),
+        mock.patch.object(kmRelay, "getRelay", return_value=MockResult()),
         mock.patch.object(time, "sleep"),
     ):
         for i in range(0, 8):
-            function.pulse(i)
+            kmRelay.pulse(i)
+        kmRelay.cyclePolling()
+        assert kmRelay.status == [0, 0, 0, 0, 0, 0, 0, 0]
 
-        function.cyclePolling()
-        assert function.status == [0, 0, 0, 0, 0, 0, 0, 0]
 
-
-def test_getByte_1(function):
-    relay = 7
-    state = True
-    function.status = [False] * 8
-
-    value = function.getByte(relayNumber=relay, state=state)
+def test_getByteOn(kmRelay: KMRelay) -> None:
+    kmRelay.status = [False] * 8
+    value = kmRelay.getByte(relayNumber=7, state=True)
     assert value == 0x80
 
 
-def test_getByte_2(function):
-    relay = 7
-    state = False
-    function.status = [True] * 8
-
-    value = function.getByte(relayNumber=relay, state=state)
+def test_getByteOff(kmRelay: KMRelay) -> None:
+    kmRelay.status = [True] * 8
+    value = kmRelay.getByte(relayNumber=7, state=False)
     assert value == 0x7F
 
 
-def test_pulse_1(function):
-    ret = None
+def test_getByteMixed(kmRelay: KMRelay) -> None:
+    kmRelay.status = [True, False, True, False, True, False, True, False]
+    value = kmRelay.getByte(relayNumber=0, state=False)
+    assert value == 0x54
 
+
+def test_pulseWithNoneResponse(kmRelay: KMRelay) -> None:
     with (
-        mock.patch.object(function, "getRelay", return_value=ret),
+        mock.patch.object(kmRelay, "getRelay", return_value=None),
         mock.patch.object(time, "sleep"),
     ):
-        function.pulse(7)
+        kmRelay.pulse(7)
 
 
-def test_pulse_2(function):
-    class Test:
-        pass
-
-    ret = Test()
-    ret.reason = "False"
-    ret.status_code = 200
+def test_pulseWithBadResponse(kmRelay: KMRelay) -> None:
+    class MockResult:
+        reason = "Failed"
+        status_code = 500
 
     with (
-        mock.patch.object(function, "getRelay", return_value=ret),
+        mock.patch.object(kmRelay, "getRelay", return_value=MockResult()),
         mock.patch.object(time, "sleep"),
     ):
-        function.pulse(7)
+        kmRelay.pulse(7)
 
 
-def test_pulse_3(function):
-    class Test:
-        pass
-
-    ret = Test()
-    ret.reason = "OK"
-    ret.status_code = 200
+def test_pulseWithGoodResponse(kmRelay: KMRelay) -> None:
+    class MockResult:
+        reason = "OK"
+        status_code = 200
 
     with (
-        mock.patch.object(function, "getRelay", return_value=ret),
+        mock.patch.object(kmRelay, "getRelay", return_value=MockResult()),
         mock.patch.object(time, "sleep"),
     ):
-        function.pulse(7)
+        kmRelay.pulse(7)
 
 
-def test_switch_1(function):
-    ret = None
-
-    with mock.patch.object(function, "getRelay", return_value=ret):
-        function.switch(7)
+def test_switchWithNoneResponse(kmRelay: KMRelay) -> None:
+    with mock.patch.object(kmRelay, "getRelay", return_value=None):
+        kmRelay.switch(7)
 
 
-def test_switch_2(function):
-    class Test:
-        pass
+def test_switchWithBadResponse(kmRelay: KMRelay) -> None:
+    class MockResult:
+        reason = "Failed"
+        status_code = 500
 
-    ret = Test()
-    ret.reason = "False"
-    ret.status_code = 200
-
-    with mock.patch.object(function, "getRelay", return_value=ret):
-        function.switch(7)
+    with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
+        kmRelay.switch(7)
 
 
-def test_switch_3(function):
-    class Test:
-        pass
+def test_switchWithGoodResponse(kmRelay: KMRelay) -> None:
+    class MockResult:
+        reason = "OK"
+        status_code = 200
 
-    ret = Test()
-    ret.reason = "OK"
-    ret.status_code = 200
-
-    with mock.patch.object(function, "getRelay", return_value=ret):
-        function.switch(7)
+    with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
+        kmRelay.switch(7)
 
 
-def test_set_1(function):
-    ret = None
-
-    with mock.patch.object(function, "getRelay", return_value=ret):
-        function.set(7, True)
+def test_setWithNoneResponse(kmRelay: KMRelay) -> None:
+    with mock.patch.object(kmRelay, "getRelay", return_value=None):
+        kmRelay.set(7, True)
 
 
-def test_set_2(function):
-    class Test:
-        pass
+def test_setWithBadResponse(kmRelay: KMRelay) -> None:
+    class MockResult:
+        reason = "Failed"
+        status_code = 500
 
-    ret = Test()
-    ret.reason = "False"
-    ret.status_code = 200
-
-    with mock.patch.object(function, "getRelay", return_value=ret):
-        function.set(7, True)
+    with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
+        kmRelay.set(7, True)
 
 
-def test_set_3(function):
-    class Test:
-        pass
+def test_setWithGoodResponse(kmRelay: KMRelay) -> None:
+    class MockResult:
+        reason = "OK"
+        status_code = 200
 
-    ret = Test()
-    ret.reason = "OK"
-    ret.status_code = 200
-
-    with mock.patch.object(function, "getRelay", return_value=ret):
-        function.set(7, False)
+    with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
+        kmRelay.set(7, False)
 
 
-def test_startCommunicationWithValidHostAddress(function) -> None:
-    function.config.hostAddress = "192.168.1.100"
-    with mock.patch.object(function.timerTask, "start") as mock_start:
-        function.startCommunication()
-        mock_start.assert_called_once_with(function.UPDATE_RATE)
-        assert function.deviceConnected is False
+def test_initialization(kmRelay: KMRelay) -> None:
+    assert kmRelay.framework == ""
+    assert kmRelay.data == {}
+    assert kmRelay.status == [0] * 8
+    assert kmRelay.deviceConnected is False
 
 
-def test_getRelayWithNoneHostAddress(function) -> None:
-    function.config.hostAddress = None
-    result = function.getRelay("/status.xml", False)
-    assert result == ""
+def test_signals(kmRelay: KMRelay) -> None:
+    assert hasattr(kmRelay.signals, "statusReady")
+    assert hasattr(kmRelay.signals, "deviceConnected")
+    assert hasattr(kmRelay.signals, "deviceDisconnected")

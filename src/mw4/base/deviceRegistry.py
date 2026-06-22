@@ -75,7 +75,7 @@ class DeviceRegistry(QObject):
             ("measure", MeasureData, None, True),
             ("plateSolve", PlateSolve, "plateSolve", True),
             ("power", PegasusUPB, "switch", True),
-            ("relay", lambda _app: KMRelay(), None, True),
+            ("relay", KMRelay, None, True),
             ("refraction", lambda _app: None, None, False),
             ("remote", Remote, None, True),
             ("seeingWeather", SeeingWeather, "observingconditions", True),
@@ -92,16 +92,12 @@ class DeviceRegistry(QObject):
                 deviceType=deviceType,
                 isConfigurable=isConfigurable,
             )
-        for entry in self.configurable():
+        for entry in self.realDrivers():
             if hasattr(self.d[entry.name].instance, "signals"):
                 sig = self.d[entry.name].signals
                 self.signalsToName[id(sig)] = entry.name
                 sig.deviceConnected.connect(self.deviceConnected)
                 sig.deviceDisconnected.connect(self.deviceDisconnected)
-        sig_mount = self.d["mount"].signals
-        self.signalsToName[id(sig_mount)] = "mount"
-        sig_mount.deviceConnected.connect(self.deviceConnected)
-        sig_mount.deviceDisconnected.connect(self.deviceDisconnected)
 
     # ------------------------------------------------------------------
     # Mapping protocol — keeps ``"x" in dReg`` and ``dReg["x"]`` working
@@ -118,6 +114,11 @@ class DeviceRegistry(QObject):
     def configurable(self) -> Iterator[DeviceEntry]:
         for entry in self.d.values():
             if entry.isConfigurable and entry.instance is not None:
+                yield entry
+
+    def realDrivers(self) -> Iterator[DeviceEntry]:
+        for entry in self.d.values():
+            if entry.instance is not None:
                 yield entry
 
     def setStat(self, name: str, value: bool | None) -> None:

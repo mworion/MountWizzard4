@@ -13,8 +13,6 @@
 # License APL2.0
 #
 ###########################################################
-"""Entry point for the MountWizzard4 application."""
-
 import locale
 import sys
 from importlib.resources import as_file, files
@@ -39,7 +37,6 @@ def setAppIcon(app: QApplication) -> None:
 
 
 def main(test: int = 0) -> None:
-    """Bootstrap and launch the MountWizzard4 application."""
     configureEnvironment()
     locale.setlocale(locale.LC_ALL, "")
 

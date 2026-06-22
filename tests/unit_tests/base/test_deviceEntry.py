@@ -230,6 +230,7 @@ def test_deviceEntryNoneInstanceFrameworkProperty() -> None:
 
 def test_deviceEntryConfigProperty() -> None:
     """Test config property returns config from run[framework]."""
+
     class MockConfig:
         value = "test_config"
 
@@ -322,6 +323,7 @@ def test_deviceEntryNoneInstanceConfigProperty() -> None:
 # ------------------------------------------------------------------
 def test_deviceEntryMultipleProperties() -> None:
     """Test accessing multiple properties on the same entry."""
+
     class MockConfig:
         hostAddress = "192.168.1.1"
 
@@ -385,5 +387,3 @@ def test_deviceEntryStatFieldFalse() -> None:
         name="test", instance=object(), deviceType="camera", isConfigurable=True, stat=False
     )
     assert entry.stat is False
-
-

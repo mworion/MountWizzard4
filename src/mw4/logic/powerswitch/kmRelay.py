@@ -44,8 +44,9 @@ class KMRelay:
     TIMEOUT = 0.5
     PULSEWIDTH = 0.5
 
-    def __init__(self) -> None:
+    def __init__(self, app: Any) -> None:
         super().__init__()
+        self.app = app
         self.signals = RelaySignals()
         self.framework: str = ""
         self.data: dict[str, Any] = {}

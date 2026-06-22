@@ -49,7 +49,6 @@ log: logging.Logger = logging.getLogger("MW4")
 
 
 def configureEnvironment() -> None:
-    """Configure warnings, logging, and astropy settings for startup."""
     faulthandler.enable()
     warnings.filterwarnings("ignore", category=RuntimeWarning)
     warnings.filterwarnings("ignore", category=FITSFixedWarning)
@@ -61,14 +60,12 @@ def configureEnvironment() -> None:
 def exceptHook(
     exc_type: type[BaseException], exc_value: BaseException, exc_tb: types.TracebackType | None
 ) -> None:
-    """Log uncaught exceptions before delegating to the default hook."""
     formatted = "".join(traceback.format_exception(exc_type, exc_value, exc_tb))
     log.critical("Uncaught exception:\n%s", formatted)
     sys.__excepthook__(exc_type, exc_value, exc_tb)
 
 
 def setupWorkDirs(workDir: Path) -> MwGlob:
-    """Create and return the standard directory structure."""
     mwGlob: MwGlob = {
         "workDir": workDir,
         "configDir": workDir / "config",
@@ -84,7 +81,6 @@ def setupWorkDirs(workDir: Path) -> MwGlob:
     return mwGlob
 
 
-# noinspection PyUnresolvedReferences
 def writeSystemInfo(mwGlob: MwGlob) -> None:
     log.info(f"[SYS] mountwizzard4    : {version('mountwizzard4')}")
     log.info(f"[SYS] platform         : {platform.system()}")
@@ -100,7 +96,6 @@ def writeSystemInfo(mwGlob: MwGlob) -> None:
 
 
 def extractDataFiles(mwGlob: MwGlob) -> None:
-    """Copy bundled asset data files to the work data directory if newer."""
     sourceFiles = files("mw4").joinpath("assets/data").glob("*.*")
     for file in sourceFiles:
         with as_file(file) as src:
@@ -111,8 +106,6 @@ def extractDataFiles(mwGlob: MwGlob) -> None:
 
 
 def minimizeStartTerminal() -> None:
-    """Minimize the console window on Windows."""
     if platform.system() == "Windows":
         import ctypes
-
         ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)

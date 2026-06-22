@@ -62,12 +62,6 @@ class DeviceEntry:
         return self.instance.setting
 
     @property
-    def config(self) -> Any:
-        if self.instance is None:
-            raise AttributeError(f"Device '{self.name}' instance is None")
-        return self.instance.run[self.instance.framework].config
-
-    @property
     def location(self) -> Any:
         if self.instance is None:
             raise AttributeError(f"Device '{self.name}' instance is None")
@@ -102,3 +96,9 @@ class DeviceEntry:
         if self.instance is None:
             raise AttributeError(f"Device '{self.name}' instance is None")
         return self.instance.satellite
+
+    @property
+    def config(self) -> Any:
+        if self.instance is None:
+            raise AttributeError(f"Device '{self.name}' instance is None")
+        return self.instance.run[self.instance.framework].config

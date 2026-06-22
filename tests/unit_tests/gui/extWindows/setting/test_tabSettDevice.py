@@ -17,7 +17,6 @@ import pytest
 from mw4.gui.extWindows.setting.tabSettDevice import SettDevice
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from PySide6.QtTest import QSignalSpy
 from PySide6.QtWidgets import QComboBox, QPushButton
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
@@ -305,11 +304,12 @@ def test_dispatchDriverDropdownEmitsStartDeviceWhenAllConditionsMet(function) ->
     function.deviceUi["telescope"]["uiDropDown"].addItem("alpaca - test_device")
     function.deviceUi["telescope"]["uiDropDown"].setCurrentIndex(0)
 
-    spy = QSignalSpy(function.app.startDevice)
-    with mock.patch.object(function.app.dReg, "d", {"telescope": mock_entry}):
+    with (
+        mock.patch.object(function.app.dReg, "d", {"telescope": mock_entry}),
+        mock.patch.object(function.app.dReg, "startDevice") as mock_start,
+    ):
         function.dispatchDriverDropdown("telescope", 1)
-    assert spy.count() == 1
-    assert spy.at(0)[0] == "telescope"
+    mock_start.assert_called_once_with("telescope")
 
 
 def test_applyConnected_1(function):

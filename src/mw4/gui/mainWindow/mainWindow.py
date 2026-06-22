@@ -172,7 +172,7 @@ class MainWindow(MWidget):
         self.app.quit()
 
     def quitSave(self) -> None:
-        self.app.stopDevices.emit()
+        self.app.dReg.stopDevices()
         self.saveProfile()
         self.close()
 
@@ -325,7 +325,7 @@ class MainWindow(MWidget):
 
     def switchProfile(self, config: dict) -> None:
         self.externalWindows.closeExtendedWindows()
-        self.app.stopDevices.emit()
+        self.app.dReg.stopDevices()
         self.threadPool.waitForDone(10000)
         self.app.config = config
         topo = self.app.initConfig()

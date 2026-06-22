@@ -189,7 +189,7 @@ class SettDevice(QObject):
         self.app.dReg.writeConfigToSingleDevice(device, returnValues["data"])
         self.deviceUi[device]["uiDropDown"].setCurrentIndex(index)
         self.deviceUi[device]["uiDropDown"].setItemText(index, itemText)
-        self.app.startDevice.emit(device)
+        self.app.dReg.startDevice(device)
 
     def callPopup(self, device: str) -> None:
         self.app.dReg.stopDevice(device)
@@ -203,7 +203,7 @@ class SettDevice(QObject):
         isDisabled = position == 0
         framework = "" if isDisabled else dropDownEntry.split("-")[0].rstrip()
         if self.app.dReg[device].instance.framework != framework:
-            self.app.stopDevice.emit(device)
+            self.app.dReg.stopDevice(device)
         self.app.dReg[device].instance.framework = framework
         changeStyleDynamic(self.deviceUi[device]["uiDropDown"], "active", False)
         if not framework:
@@ -211,7 +211,7 @@ class SettDevice(QObject):
         deviceName = self.app.dReg[device].run[framework].config.deviceName
         if not deviceName:
             return
-        self.app.startDevice.emit(device)
+        self.app.dReg.startDevice(device)
 
     def applyConnected(self, deviceSlot: str) -> None:
         changeStyleDynamic(self.deviceUi[deviceSlot]["uiDropDown"], "active", True)

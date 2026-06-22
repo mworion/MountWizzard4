@@ -99,7 +99,7 @@
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>6</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -1252,9 +1252,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>5</y>
+         <y>10</y>
          <width>366</width>
-         <height>371</height>
+         <height>366</height>
         </rect>
        </property>
        <property name="title">
@@ -2011,7 +2011,7 @@
        <property name="geometry">
         <rect>
          <x>420</x>
-         <y>5</y>
+         <y>10</y>
          <width>366</width>
          <height>106</height>
         </rect>
@@ -2362,7 +2362,7 @@
        <property name="geometry">
         <rect>
          <x>420</x>
-         <y>140</y>
+         <y>145</y>
          <width>366</width>
          <height>86</height>
         </rect>
@@ -2485,7 +2485,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>5</y>
+         <y>10</y>
          <width>366</width>
          <height>316</height>
         </rect>
@@ -2559,7 +2559,7 @@
        <widget class="QLabel" name="label_108">
         <property name="geometry">
          <rect>
-          <x>200</x>
+          <x>195</x>
           <y>50</y>
           <width>81</width>
           <height>21</height>
@@ -2579,9 +2579,9 @@
        <widget class="QLabel" name="label_110">
         <property name="geometry">
          <rect>
-          <x>200</x>
+          <x>195</x>
           <y>75</y>
-          <width>76</width>
+          <width>81</width>
           <height>21</height>
          </rect>
         </property>
@@ -2862,9 +2862,9 @@
        <widget class="QPushButton" name="copyFromDomeDriver">
         <property name="geometry">
          <rect>
-          <x>205</x>
+          <x>195</x>
           <y>290</y>
-          <width>156</width>
+          <width>161</width>
           <height>21</height>
          </rect>
         </property>
@@ -2877,7 +2877,7 @@
          <rect>
           <x>15</x>
           <y>290</y>
-          <width>211</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
@@ -2949,7 +2949,7 @@
        <widget class="QLabel" name="label_137">
         <property name="geometry">
          <rect>
-          <x>200</x>
+          <x>195</x>
           <y>125</y>
           <width>81</width>
           <height>21</height>
@@ -3094,7 +3094,7 @@
        <widget class="QCheckBox" name="useDynamicFollowing">
         <property name="geometry">
          <rect>
-          <x>200</x>
+          <x>195</x>
           <y>240</y>
           <width>166</width>
           <height>21</height>
@@ -3262,7 +3262,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>325</y>
+         <y>330</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -3653,9 +3653,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>5</y>
+         <y>10</y>
          <width>386</width>
-         <height>371</height>
+         <height>366</height>
         </rect>
        </property>
        <property name="title">
@@ -5549,7 +5549,7 @@
        <property name="geometry">
         <rect>
          <x>415</x>
-         <y>5</y>
+         <y>10</y>
          <width>366</width>
          <height>371</height>
         </rect>
@@ -6248,7 +6248,7 @@
          <x>10</x>
          <y>115</y>
          <width>366</width>
-         <height>116</height>
+         <height>126</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -6258,42 +6258,11 @@
         <string>Game controller support</string>
        </property>
        <property name="checkable">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="large" stdset="0">
         <bool>true</bool>
        </property>
-       <widget class="QComboBox" name="gameControllerList">
-        <property name="geometry">
-         <rect>
-          <x>5</x>
-          <y>55</y>
-          <width>161</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the game controller to be used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <item>
-         <property name="text">
-          <string>No controller available</string>
-         </property>
-        </item>
-       </widget>
-       <widget class="QLabel" name="label_171">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>161</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Select game controller</string>
-        </property>
-       </widget>
        <widget class="QLabel" name="controllerOverview">
         <property name="geometry">
          <rect>
@@ -6307,12 +6276,88 @@
          <string>TextLabel</string>
         </property>
        </widget>
+       <widget class="QCheckBox" name="hidDome">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>25</y>
+          <width>141</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which were lit be sun.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Enable dome</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="hidTracking">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>141</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which were lit be sun.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Enable tracking</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="hidAltAz">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>75</y>
+          <width>141</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which were lit be sun.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Enable Alt/Az</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="hidRaDec">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>100</y>
+          <width>141</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which were lit be sun.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Enable Ra/Dec</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="AudioGroup">
        <property name="geometry">
         <rect>
          <x>420</x>
-         <y>5</y>
+         <y>10</y>
          <width>366</width>
          <height>226</height>
         </rect>
@@ -6597,7 +6642,7 @@
        <property name="geometry">
         <rect>
          <x>410</x>
-         <y>5</y>
+         <y>10</y>
          <width>366</width>
          <height>46</height>
         </rect>
@@ -6704,7 +6749,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>5</y>
+         <y>10</y>
          <width>366</width>
          <height>71</height>
         </rect>
@@ -6810,7 +6855,7 @@
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>95</y>
+         <y>100</y>
          <width>366</width>
          <height>51</height>
         </rect>
@@ -6898,10 +6943,10 @@
       <widget class="QGroupBox" name="CopyrightGroup_2">
        <property name="geometry">
         <rect>
-         <x>200</x>
-         <y>220</y>
+         <x>10</x>
+         <y>10</y>
          <width>366</width>
-         <height>91</height>
+         <height>156</height>
         </rect>
        </property>
        <property name="title">
@@ -6914,15 +6959,15 @@
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>15</y>
+          <y>30</y>
           <width>356</width>
-          <height>71</height>
+          <height>116</height>
          </rect>
         </property>
         <property name="font">
          <font>
           <family>Courier New</family>
-          <pointsize>12</pointsize>
+          <pointsize>14</pointsize>
           <bold>false</bold>
          </font>
         </property>
@@ -6933,7 +6978,7 @@ p, li { white-space: pre-wrap; }
 hr { height: 1px; border-width: 0; }
 li.unchecked::marker { content: &quot;\2610&quot;; }
 li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Courier New'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Courier New'; font-size:14pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:10pt;&quot;&gt;astropy, deepdiff, hdiapi, importlib_metadata, pyside6, pywin32, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan, hdiapi, tange-dict-key, xisf, packaging, deepdiff, sgp4&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>

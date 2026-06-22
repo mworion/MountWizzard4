@@ -450,6 +450,18 @@ BASIC_STYLE = """
     QTableView::item {
         color: $M_PRIM$;
     }
+    QTextBrowser {
+        border-width: 0px;
+        border-style: plain;
+        border-radius: 0px;
+        padding: 0px;
+        margin: 0px;
+        border: 0px;
+        color: $M_PRIM$;
+        font-family: Arial;
+        font-weight: normal;
+        font-size: 15pt;
+    }
     /* Combo Boxes */
     QComboBox {
         combobox-popup: 0;

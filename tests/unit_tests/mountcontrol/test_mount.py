@@ -66,24 +66,14 @@ def test_waitAfterSettlingAndEmit(function):
     function.waitAfterSettlingAndEmit()
 
 
-def test_startTimers(function):
+def test_startMountCoreTimers(function):
     with mock.patch.object(QTimer, "start"):
         function.startMountCoreTimers()
 
 
-def test_stopTimers(function):
+def test_stopAllMountTimers(function):
     with mock.patch.object(QTimer, "stop"):
         function.stopAllMountTimers()
-
-
-def test_startDomeTimer(function):
-    with mock.patch.object(QTimer, "start"):
-        function.startDomeTimer()
-
-
-def test_stopDomeTimer(function):
-    with mock.patch.object(QTimer, "stop"):
-        function.stopDomeTimer()
 
 
 def test_startupMountData_1(function):
@@ -441,30 +431,28 @@ def test_shutdown_2(function):
         assert function.mountIsUp
 
 
-def test_clearDome_1(function):
-    function.mutexCycleDome.lock()
-    function.clearDome(True)
-
-
-def test_cycleDome_1(function):
-    function.mountIsUp = False
-    with mock.patch.object(QThreadPool, "start"):
-        function.cycleDome()
-
-
-def test_cycleDome_2(function):
+def test_cycleClock_configClockSyncFalse(function):
+    """Test cycleClock returns early when clockSync config is False."""
     function.mountIsUp = True
-    function.mutexCycleDome.lock()
-    with mock.patch.object(QThreadPool, "start"):
-        function.cycleDome()
-    function.mutexCycleDome.unlock()
+    function.config.clockSync = False
+    with mock.patch.object(QThreadPool, "start") as mock_start:
+        function.cycleClock()
+        # Should return early without starting worker
+        assert not mock_start.called
 
 
-def test_cycleDome_3(function):
+def test_cycleClock_runWorker(function):
+    """Test cycleClock runs worker when clockSync is enabled and mount is up."""
     function.mountIsUp = True
+    function.config.clockSync = True
     with mock.patch.object(QThreadPool, "start"):
-        function.cycleDome()
-    function.mutexCycleDome.unlock()
+        function.cycleClock()
+    function.mutexCycleClock.unlock()
+
+
+def test_clearCycleClock_1(function):
+    function.mutexCycleClock.lock()
+    function.clearCycleClock()
 
 
 def test_runnerProgTrajectory_1(function):

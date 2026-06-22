@@ -1088,3 +1088,27 @@ def test_showOffset_8(function):
     with mock.patch.object(function.app.mount.obsSite, "timeJD", timeJD):
         function.showOffset()
     assert function.ui.timeUTC.text() == "12:34:56"
+
+
+def test_showOffset_colorGreen(function):
+    """Test showOffset with delta < 100ms when clockSync is enabled."""
+    function.app.mount.obsSite.timeDiff = 0.05
+    function.app.dReg["mount"].instance.config.clockSync = True
+    function.showOffset()
+    # Color should be cleared for green (< 100ms)
+
+
+def test_showOffset_colorYellow(function):
+    """Test showOffset with 100ms <= delta < 500ms when clockSync is enabled."""
+    function.app.mount.obsSite.timeDiff = 0.2
+    function.app.dReg["mount"].instance.config.clockSync = True
+    function.showOffset()
+    # Color should be yellow (100-500ms)
+
+
+def test_showOffset_colorRed(function):
+    """Test showOffset with delta >= 500ms when clockSync is enabled."""
+    function.app.mount.obsSite.timeDiff = 0.6
+    function.app.dReg["mount"].instance.config.clockSync = True
+    function.showOffset()
+    # Color should be red (>= 500ms)

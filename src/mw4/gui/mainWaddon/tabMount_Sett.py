@@ -499,8 +499,9 @@ class MountSett(TabAddon):
     def showOffset(self) -> None:
         delta = self.app.dReg["mount"].obsSite.timeDiff * 1000
         guiSetText(self.ui.timeDeltaPC2Mount, "4.0f", delta)
-        guiSetText(self.ui.timeUTC, "s",
-                   self.app.dReg["mount"].timeJD.utc_strftime("%H:%M:%S"))
+        guiSetText(
+            self.ui.timeUTC, "s", self.app.dReg["mount"].timeJD.utc_strftime("%H:%M:%S")
+        )
 
         if not self.app.dReg["mount"].instance.config.clockSync:
             changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "")
@@ -511,4 +512,3 @@ class MountSett(TabAddon):
             changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "yellow")
         else:
             changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "red")
-

@@ -20,13 +20,12 @@ from mw4.base.timeManager import (
     TICK_INTERVAL_MS,
     TimeManager,
 )
-from PySide6.QtCore import QObject, Signal
+from PySide6.QtCore import QObject
 from skyfield.api import load
 
 
 class MockApp(QObject):
     """Minimal app stub with the signal attributes needed by CyclicTimerManager."""
-
 
     def __init__(self):
         super().__init__()

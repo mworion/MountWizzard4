@@ -15,7 +15,7 @@
 ###########################################################
 
 import unittest.mock as mock
-from mw4.mountcontrol.dome import Dome
+from gists.mountDome.dome import Dome
 from skyfield.api import Angle
 
 

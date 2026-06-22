@@ -248,8 +248,7 @@ class MountMove(TabAddon):
         obs = self.app.dReg["mount"].obsSite
         targetAlt = Angle(degrees=obs.Alt.degrees + coord[0] * step)
         targetAz = Angle(degrees=(obs.Az.degrees + coord[1] * step) % 360)
-        suc = self.slewInterface.slewTargetAltAz(targetAlt, targetAz)
-        print(suc)
+        self.slewInterface.slewTargetAltAz(targetAlt, targetAz)
 
     def checkRaDecInputs(self) -> None:
         canSlew = self.app.dReg["mount"].obsSite.setTargetRaDec(self.targetRa, self.targetDec)

@@ -19,7 +19,6 @@ import wakeonlan
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from mw4.base.tpool import Worker
-from mw4.mountcontrol.dome import Dome
 from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.geometry import Geometry
 from mw4.mountcontrol.model import Model
@@ -81,7 +80,6 @@ class MountDevice(QObject):
         self.obsSite = ObsSite(parent=self, verbose=self.verbose)
         self.satellite = Satellite(parent=self)
         self.geometry = Geometry(parent=self)
-        self.dome = Dome(parent=self)
         self.model = Model(parent=self)
 
         self.workerMountIsUp: Worker | None = None
@@ -96,10 +94,8 @@ class MountDevice(QObject):
         self.workerGetModel: Worker | None = None
         self.workerGetNames: Worker | None = None
         self.workerTrajectory: Worker | None = None
-        self.workerCycleDome: Worker | None = None
         self.mutexCycleMountIsUp = QMutex()
         self.mutexCycleClock = QMutex()
-        self.mutexCycleDome = QMutex()
         self.mutexCycleSetting = QMutex()
         self.mutexCyclePointing = QMutex()
         self.mutexGetTLE = QMutex()
@@ -112,9 +108,6 @@ class MountDevice(QObject):
         self.timerPointing = QTimer()
         self.timerPointing.setSingleShot(False)
         self.timerPointing.timeout.connect(self.cyclePointing)
-        self.timerDome = QTimer()
-        self.timerDome.setSingleShot(False)
-        self.timerDome.timeout.connect(self.cycleDome)
         self.timerSetting = QTimer()
         self.timerSetting.setSingleShot(False)
         self.timerSetting.timeout.connect(self.cycleSetting)
@@ -192,14 +185,7 @@ class MountDevice(QObject):
     def stopAllMountTimers(self) -> None:
         self.timerMountIsUp.stop()
         self.timerPointing.stop()
-        self.timerDome.stop()
         self.timerSetting.stop()
-
-    def startDomeTimer(self) -> None:
-        self.timerDome.start(self.CYCLE_DOME)
-
-    def stopDomeTimer(self) -> None:
-        self.timerDome.stop()
 
     def startupMountData(self) -> None:
         if self.mountIsUp and not self.mountIsUpLastStatus:
@@ -363,20 +349,6 @@ class MountDevice(QObject):
         if suc:
             self.mountIsUp = False
         return suc
-
-    def clearDome(self, result: bool) -> None:
-        self.mutexCycleDome.unlock()
-        if result:
-            self.signals.domeDone.emit(self.dome)
-
-    def cycleDome(self) -> None:
-        self.runWorker(
-            self.dome.poll,
-            self.clearDome,
-            "workerCycleDome",
-            mutex=self.mutexCycleDome,
-            useResult=True,
-        )
 
     def syncClock(self) -> None:
         if self.config.syncTimeNone or not self.mountIsUp:

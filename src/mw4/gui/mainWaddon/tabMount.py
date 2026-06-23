@@ -13,8 +13,6 @@
 # License APL2.0
 #
 ###########################################################
-from pytestqt.qtbot import QWidget
-
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import svg2pixmap
 from typing import Any
@@ -50,13 +48,13 @@ class Mount(TabAddon):
         config["coordsJ2000"] = self.ui.coordsJ2000.isChecked()
         config["coordsJNow"] = self.ui.coordsJNow.isChecked()
 
-    def setHidIcon(self, ui: QWidget, status: int = 0):
+    def setHidIcon(self, ui: Any, status: int = 0) -> None:
         colors = [self.mainW.M_PRIM, self.mainW.M_TER, self.mainW.M_GREEN]
         color = colors[status]
         pixmap = svg2pixmap("assets/icon/controller.svg", color).scaled(16, 16)
         ui.setPixmap(pixmap)
 
-    def setHidIcons(self):
+    def setHidIcons(self) -> None:
         for ui in [self.ui.controller1, self.ui.controller2, self.ui.controller3,
                    self.ui.controller4, self.ui.controller5]:
             self.setHidIcon(ui, 1)

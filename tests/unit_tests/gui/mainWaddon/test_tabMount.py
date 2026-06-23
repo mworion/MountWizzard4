@@ -17,8 +17,8 @@
 import pytest
 import unittest.mock as mock
 from mw4.gui.mainWaddon.tabMount import Mount
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from PySide6.QtWidgets import QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
@@ -28,7 +28,7 @@ def function(qapp):
         def __init__(self):
             self.addons = {"MountSett": mock.Mock()}
 
-    mainW = QWidget()
+    mainW = MWidget()
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
@@ -179,3 +179,28 @@ def test_stop_1(function):
 def test_stop_2(function):
     with mock.patch.object(function.app.mount.obsSite, "stop", return_value=False):
         function.stop()
+
+
+def test_setHidIcon_status0(function):
+    ui = mock.Mock()
+    function.setHidIcon(ui, status=0)
+    ui.setPixmap.assert_called_once()
+
+
+def test_setHidIcon_status1(function):
+    ui = mock.Mock()
+    function.setHidIcon(ui, status=1)
+    ui.setPixmap.assert_called_once()
+
+
+def test_setHidIcon_status2(function):
+    ui = mock.Mock()
+    function.setHidIcon(ui, status=2)
+    ui.setPixmap.assert_called_once()
+
+
+def test_setHidIcons(function):
+    with mock.patch.object(function, "setHidIcon") as mock_setHidIcon:
+        function.setHidIcons()
+        assert mock_setHidIcon.call_count == 5
+

@@ -153,9 +153,10 @@ class MainWindow(MWidget):
         self.ui.controller5.setPixmap(pixmap.scaled(16, 16))
         self.ui.controller1.setEnabled(False)
         self.ui.controller2.setEnabled(False)
-        self.ui.controller3.setEnabled(False)
+        self.ui.controller3.setEnabled(True)
         self.ui.controller4.setEnabled(False)
         self.ui.controller5.setEnabled(False)
+        changeStyleDynamic(self.ui.controller3, "hid", "green")
         self.mainWindowAddons.setupIcons()
 
     def updateColorSet(self) -> None:

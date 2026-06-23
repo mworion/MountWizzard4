@@ -129,6 +129,12 @@ BASIC_STYLE = """
     QLabel[color='red'] {
         color: $M_RED$;
     }
+    QLabel[hid='green'] {
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 1px;
+        border-color: $M_GREEN$;
+    }
     /* QLine Edit*/
     QLineEdit {
         color: $M_PRIM$;

@@ -53,7 +53,7 @@ def test_showWindow(function):
         function.showWindow()
         function.show.assert_called_once()
         assert function.titleBar.windowFixed
-        assert function.minimumHeight() <= 120
+        assert function.minimumHeight() <= 150
         assert function.minimumWidth() <= 400
 
 

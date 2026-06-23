@@ -13,7 +13,10 @@
 # License APL2.0
 #
 ###########################################################
+from pytestqt.qtbot import QWidget
+
 from mw4.gui.mainWaddon.tabAddon import TabAddon
+from mw4.gui.utilities.qtHelpers import svg2pixmap
 from typing import Any
 
 
@@ -40,11 +43,23 @@ class Mount(TabAddon):
         config = self.app.config.get("WindowMain", {})
         self.ui.coordsJ2000.setChecked(config.get("coordsJ2000", False))
         self.ui.coordsJNow.setChecked(config.get("coordsJNow", False))
+        self.setHidIcons()
 
     def storeConfig(self) -> None:
         config = self.app.config["WindowMain"]
         config["coordsJ2000"] = self.ui.coordsJ2000.isChecked()
         config["coordsJNow"] = self.ui.coordsJNow.isChecked()
+
+    def setHidIcon(self, ui: QWidget, status: int = 0):
+        colors = [self.mainW.M_PRIM, self.mainW.M_TER, self.mainW.M_GREEN]
+        color = colors[status]
+        pixmap = svg2pixmap("assets/icon/controller.svg", color).scaled(16, 16)
+        ui.setPixmap(pixmap)
+
+    def setHidIcons(self):
+        for ui in [self.ui.controller1, self.ui.controller2, self.ui.controller3,
+                   self.ui.controller4, self.ui.controller5]:
+            self.setHidIcon(ui, 1)
 
     def changeTrackingHid(self, value: bytes) -> None:
         if value == 0b00000100:

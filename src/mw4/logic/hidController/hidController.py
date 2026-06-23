@@ -29,6 +29,7 @@ class DeviceConfigHidController:
     moveRaDec: bool = field(default=True)
     moveAltAz: bool = field(default=True)
     tracking: bool = field(default=True)
+    dome: bool = field(default=True)
 
 
 class HidControllerSignals(Signals):
@@ -86,15 +87,15 @@ class HidController:
         return oR
 
     def sendHidControllerSignals(self, act: list, old: list) -> None:
-        if act[0] != old[0]:
+        if (act[0] != old[0]) and self.config.tracking:
             self.signals.hidABXY.emit(act[0])
         if act[1] != old[1]:
             self.signals.hidPMH.emit(act[1])
-        if act[2] != old[2]:
+        if (act[2] != old[2]) and self.config.moveAltAz:
             self.signals.hidDirection.emit(act[2])
-        if act[3] != old[3] or act[4] != old[4]:
+        if (act[3] != old[3] or act[4] != old[4]) and self.config.dome:
             self.signals.hidSL.emit(act[3], act[4])
-        if act[5] != old[5] or act[6] != old[6]:
+        if (act[5] != old[5] or act[6] != old[6]) and self.config.moveRaDec:
             self.signals.hidSR.emit(act[5], act[6])
 
     def readHidController(self, hidpad: hid.device) -> list:

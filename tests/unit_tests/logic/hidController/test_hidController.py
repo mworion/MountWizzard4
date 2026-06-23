@@ -39,6 +39,7 @@ def test_deviceConfigDefaults():
     assert cfg.moveRaDec is True
     assert cfg.moveAltAz is True
     assert cfg.tracking is True
+    assert cfg.dome is True
 
 
 def test_hidControllerSignalsInstantiable():
@@ -215,6 +216,54 @@ def test_sendHidControllerSignals_sr(hc):
     hc.sendHidControllerSignals(act, old)
     spy.assert_called_once_with(3, 4)
     hc.signals.hidSR.disconnect(spy)
+
+
+def test_sendHidControllerSignals_trackingDisabled(hc):
+    hc.config.tracking = False
+    act = [1, 0, 0, 0, 0, 0, 0]
+    old = [0, 0, 0, 0, 0, 0, 0]
+    spy = MagicMock()
+    hc.signals.hidABXY.connect(spy)
+    hc.sendHidControllerSignals(act, old)
+    spy.assert_not_called()
+    hc.signals.hidABXY.disconnect(spy)
+    hc.config.tracking = True
+
+
+def test_sendHidControllerSignals_altAzDisabled(hc):
+    hc.config.moveAltAz = False
+    act = [0, 0, 1, 0, 0, 0, 0]
+    old = [0, 0, 0, 0, 0, 0, 0]
+    spy = MagicMock()
+    hc.signals.hidDirection.connect(spy)
+    hc.sendHidControllerSignals(act, old)
+    spy.assert_not_called()
+    hc.signals.hidDirection.disconnect(spy)
+    hc.config.moveAltAz = True
+
+
+def test_sendHidControllerSignals_domeDisabled(hc):
+    hc.config.dome = False
+    act = [0, 0, 0, 1, 2, 0, 0]
+    old = [0, 0, 0, 0, 0, 0, 0]
+    spy = MagicMock()
+    hc.signals.hidSL.connect(spy)
+    hc.sendHidControllerSignals(act, old)
+    spy.assert_not_called()
+    hc.signals.hidSL.disconnect(spy)
+    hc.config.dome = True
+
+
+def test_sendHidControllerSignals_raDecDisabled(hc):
+    hc.config.moveRaDec = False
+    act = [0, 0, 0, 0, 0, 3, 4]
+    old = [0, 0, 0, 0, 0, 0, 0]
+    spy = MagicMock()
+    hc.signals.hidSR.connect(spy)
+    hc.sendHidControllerSignals(act, old)
+    spy.assert_not_called()
+    hc.signals.hidSR.disconnect(spy)
+    hc.config.moveRaDec = True
 
 
 def test_sendHidControllerSignals_noChange(hc):

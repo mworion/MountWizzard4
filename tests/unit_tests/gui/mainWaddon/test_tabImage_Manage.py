@@ -754,30 +754,30 @@ def test_domeCloseShutter_2(function):
         function.domeCloseShutter()
 
 
-def test_domeMoveGameController_0(function):
+def test_domeMoveHid_0(function):
     function.app.dReg.d["dome"].stat = False
-    function.domeMoveGameController(128, 128)
+    function.domeMoveHid(128, 128)
 
 
-def test_domeMoveGameController_1(function):
+def test_domeMoveHid_1(function):
     function.app.dReg.d["dome"].stat = True
     with mock.patch.object(function, "domeAbortSlew"):
-        function.domeMoveGameController(128, 128)
+        function.domeMoveHid(128, 128)
 
 
-def test_domeMoveGameController_2(function):
+def test_domeMoveHid_2(function):
     function.app.dReg.d["dome"].stat = True
     with (
         mock.patch.object(function, "domeSlewCCW"),
         mock.patch.object(function, "domeOpenShutter"),
     ):
-        function.domeMoveGameController(0, 0)
+        function.domeMoveHid(0, 0)
 
 
-def test_domeMoveGameController_3(function):
+def test_domeMoveHid_3(function):
     function.app.dReg.d["dome"].stat = True
     with (
         mock.patch.object(function, "domeSlewCW"),
         mock.patch.object(function, "domeCloseShutter"),
     ):
-        function.domeMoveGameController(255, 255)
+        function.domeMoveHid(255, 255)

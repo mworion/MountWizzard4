@@ -53,9 +53,9 @@ def test_storeConfig_1(function):
     function.storeConfig()
 
 
-def test_changeTrackingGameController_1(function):
+def test_changeTrackingHid_1(function):
     with mock.patch.object(function, "changeTracking"):
-        function.changeTrackingGameController(4)
+        function.changeTrackingHid(4)
 
 
 def test_changeTracking_ok2(function, qtbot):
@@ -82,9 +82,9 @@ def test_changeTracking_ok5(function):
         function.changeTracking()
 
 
-def test_changeParkGameController_1(function):
+def test_changeParkHid_1(function):
     with mock.patch.object(function, "changePark"):
-        function.changeParkGameController(1)
+        function.changeParkHid(1)
 
 
 def test_changePark_ok1(function):
@@ -151,9 +151,9 @@ def test_setSolarTracking_2(function):
         function.setSolarTracking()
 
 
-def test_flipMountGameController_1(function):
+def test_flipMountHid_1(function):
     with mock.patch.object(function, "flipMount"):
-        function.flipMountGameController(2)
+        function.flipMountHid(2)
 
 
 def test_flipMount_1(function):
@@ -166,9 +166,9 @@ def test_flipMount_2(function):
         function.flipMount()
 
 
-def test_stopGameController_1(function):
-    with mock.patch.object(function, "flipMount"):
-        function.stopGameController(8)
+def test_stopHid_1(function):
+    with mock.patch.object(function, "stop"):
+        function.stopHid(8)
 
 
 def test_stop_1(function):

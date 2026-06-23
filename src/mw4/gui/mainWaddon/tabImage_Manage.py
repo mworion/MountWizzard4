@@ -57,7 +57,7 @@ class ImageManage(TabAddon):
         self.ui.haltFocuser.clicked.connect(self.haltFocuser)
         self.ui.moveFocuserIn.clicked.connect(self.moveFocuserIn)
         self.ui.moveFocuserOut.clicked.connect(self.moveFocuserOut)
-        self.app.dReg["hidController"].signals.hidSL.connect(self.domeMoveGameController)
+        self.app.dReg["hidController"].signals.hidSL.connect(self.domeMoveHid)
 
         self.app.timeMgr.update1s.connect(self.updateCoverStatGui)
         self.app.timeMgr.update1s.connect(self.updateLightPanelGui)
@@ -477,7 +477,7 @@ class ImageManage(TabAddon):
             return
         self.app.dReg["dome"].instance.closeShutter()
 
-    def domeMoveGameController(self, turnVal: int, openVal: int) -> None:
+    def domeMoveHid(self, turnVal: int, openVal: int) -> None:
         if not self.app.dReg["dome"].stat:
             return
 

@@ -17,7 +17,7 @@ import pytest
 from mw4.gui.extWindows.setting.tabSettGui import SettGui
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from PySide6.QtWidgets import QComboBox
+from PySide6.QtWidgets import QCheckBox, QComboBox
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
@@ -38,6 +38,10 @@ def settGui(qapp):
     parentW.ui.soundSatStartTracking.addItem("None")
     parentW.ui.soundSatStartTracking.addItem("Beep")
     parentW.ui.controllerOverview = mock.MagicMock()
+    parentW.ui.hidDome = QCheckBox()
+    parentW.ui.hidAltAz = QCheckBox()
+    parentW.ui.hidRaDec = QCheckBox()
+    parentW.ui.hidTracking = QCheckBox()
 
     window = SettGui(parentW)
     yield window

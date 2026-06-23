@@ -104,10 +104,8 @@ class MountMove(TabAddon):
         self.ui.moveCoordinateAlt.textEdited.connect(self.setAlt)
         self.ui.moveCoordinateAz.textEdited.connect(self.setAz)
         self.app.dReg["mount"].signals.slewed.connect(self.moveAltAzDefault)
-        self.app.dReg["hidController"].signals.hidDirection.connect(
-            self.moveAltAzGameController
-        )
-        self.app.dReg["hidController"].signals.hidSR.connect(self.moveClassicGameController)
+        self.app.dReg["hidController"].signals.hidDirection.connect(self.moveAltAzHid)
+        self.app.dReg["hidController"].signals.hidSR.connect(self.moveRaDecHid)
         self.setupGuiMount()
 
     def initConfig(self) -> None:
@@ -131,7 +129,7 @@ class MountMove(TabAddon):
     def setupGuiMount(self) -> None:
         for direction in self.setupMoveClassic:
             self.setupMoveClassic[direction]["button"].clicked.connect(
-                partial(self.moveClassic, direction)
+                partial(self.moveRaDec, direction)
             )
 
         for direction in self.setupMoveAltAz:
@@ -177,7 +175,7 @@ class MountMove(TabAddon):
                 return direction
         return "STOP"
 
-    def moveClassicGameController(self, decVal: int, raVal: int) -> None:
+    def moveRaDecHid(self, decVal: int, raVal: int) -> None:
         dirRa = 0
         dirDec = 0
         if raVal < 108:
@@ -191,9 +189,9 @@ class MountMove(TabAddon):
 
         directionVector = [dirRa, dirDec]
         direction = self.convertDirection(directionVector)
-        self.moveClassic(direction)
+        self.moveRaDec(direction)
 
-    def moveClassic(self, direction: str) -> None:
+    def moveRaDec(self, direction: str) -> None:
         uiList = self.setupMoveClassic
         for key in uiList:
             changeStyleDynamic(uiList[key]["button"], "run", False)
@@ -228,7 +226,7 @@ class MountMove(TabAddon):
         for key in self.setupMoveAltAz:
             changeStyleDynamic(self.setupMoveAltAz[key]["button"], "run", False)
 
-    def moveAltAzGameController(self, value: int) -> None:
+    def moveAltAzHid(self, value: int) -> None:
         if value == 0b00000000:
             direction = "N"
         elif value == 0b00000010:

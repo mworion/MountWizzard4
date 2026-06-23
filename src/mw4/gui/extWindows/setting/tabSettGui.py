@@ -30,11 +30,25 @@ class SettGui:
         config = self.app.config.get("SettingGui", {})
         colSet = config.get("colorSet", 0)
         self.ui.colorSet.setCurrentIndex(colSet)
+        cfg = self.app.dReg["hidController"].instance.config
+        self.ui.hidDome.setChecked(cfg.dome)
+        self.ui.hidAltAz.setChecked(cfg.moveAltAz)
+        self.ui.hidRaDec.setChecked(cfg.moveRaDec)
+        self.ui.hidTracking.setChecked(cfg.tracking)
+        self.ui.hidDome.checkStateChanged.connect(self.storeConfig)
+        self.ui.hidAltAz.checkStateChanged.connect(self.storeConfig)
+        self.ui.hidRaDec.checkStateChanged.connect(self.storeConfig)
+        self.ui.hidTracking.checkStateChanged.connect(self.storeConfig)
 
     def storeConfig(self) -> None:
         self.app.config["SettingGui"] = {}
         config = self.app.config["SettingGui"]
         config["colorSet"] = self.ui.colorSet.currentIndex()
+        cfg = self.app.dReg["hidController"].instance.config
+        cfg.dome = self.ui.hidDome.isChecked()
+        cfg.moveAltAz = self.ui.hidAltAz.isChecked()
+        cfg.moveRaDec = self.ui.hidRaDec.isChecked()
+        cfg.tracking = self.ui.hidTracking.isChecked()
 
     def setupIcons(self) -> None:
         pixmap = svg2pixmap("assets/icon/controllerNew.svg", self.parentW.M_PRIM)

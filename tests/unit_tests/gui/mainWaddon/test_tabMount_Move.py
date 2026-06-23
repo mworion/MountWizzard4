@@ -106,34 +106,42 @@ def test_moveDuration_5(function):
         function.moveDuration()
 
 
-def test_moveClassicGameController_1(function):
+def test_moveRaDecHid_1(function):
     with mock.patch.object(function, "stopMoveAll"):
-        function.moveClassicGameController(128, 128)
+        function.moveRaDecHid(128, 128)
 
 
-def test_moveClassicGameController_2(function):
-    with mock.patch.object(function, "moveClassic"):
-        function.moveClassicGameController(0, 0)
+def test_moveRaDecHid_2(function):
+    with mock.patch.object(function, "moveRaDec"):
+        function.moveRaDecHid(0, 0)
 
 
-def test_moveClassicGameController_3(function):
-    with mock.patch.object(function, "moveClassic"):
-        function.moveClassicGameController(255, 255)
+def test_moveRaDecHid_3(function):
+    with mock.patch.object(function, "moveRaDec"):
+        function.moveRaDecHid(255, 255)
 
 
-def test_moveClassic_1(function):
+def test_moveRaDec_1(function):
     with mock.patch.object(function, "moveDuration"):
-        function.moveClassic("NE")
+        function.moveRaDec("NE")
 
 
-def test_moveClassic_2(function):
+def test_moveRaDec_2(function):
     with mock.patch.object(function, "moveDuration"):
-        function.moveClassic("SW")
+        function.moveRaDec("SW")
 
 
-def test_moveClassic_3(function):
+def test_moveRaDec_3(function):
     with mock.patch.object(function, "moveDuration"):
-        function.moveClassic("STOP")
+        function.moveRaDec("STOP")
+
+
+def test_convertDirection_1(function):
+    assert function.convertDirection([1, 0]) == "N"
+
+
+def test_convertDirection_2(function):
+    assert function.convertDirection([2, 2]) == "STOP"
 
 
 def test_setSlewSpeed_1(function):
@@ -144,29 +152,29 @@ def test_moveAltAzDefault(function):
     function.moveAltAzDefault()
 
 
-def test_moveAltAzGameController_1(function):
+def test_moveAltAzHid_1(function):
     with mock.patch.object(function, "moveAltAz"):
-        function.moveAltAzGameController(0)
+        function.moveAltAzHid(0)
 
 
-def test_moveAltAzGameController_2(function):
+def test_moveAltAzHid_2(function):
     with mock.patch.object(function, "moveAltAz"):
-        function.moveAltAzGameController(2)
+        function.moveAltAzHid(2)
 
 
-def test_moveAltAzGameController_3(function):
+def test_moveAltAzHid_3(function):
     with mock.patch.object(function, "moveAltAz"):
-        function.moveAltAzGameController(4)
+        function.moveAltAzHid(4)
 
 
-def test_moveAltAzGameController_4(function):
+def test_moveAltAzHid_4(function):
     with mock.patch.object(function, "moveAltAz"):
-        function.moveAltAzGameController(6)
+        function.moveAltAzHid(6)
 
 
-def test_moveAltAzGameController_5(function):
+def test_moveAltAzHid_5(function):
     with mock.patch.object(function, "moveAltAz"):
-        function.moveAltAzGameController(99)
+        function.moveAltAzHid(99)
 
 
 def test_moveAltAz_3(function):

@@ -24,12 +24,10 @@ class Mount(TabAddon):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
 
-        self.app.dReg["hidController"].signals.hidABXY.connect(self.changeParkGameController)
-        self.app.dReg["hidController"].signals.hidABXY.connect(self.stopGameController)
-        self.app.dReg["hidController"].signals.hidABXY.connect(
-            self.changeTrackingGameController
-        )
-        self.app.dReg["hidController"].signals.hidABXY.connect(self.flipMountGameController)
+        self.app.dReg["hidController"].signals.hidABXY.connect(self.changeParkHid)
+        self.app.dReg["hidController"].signals.hidABXY.connect(self.stopHid)
+        self.app.dReg["hidController"].signals.hidABXY.connect(self.changeTrackingHid)
+        self.app.dReg["hidController"].signals.hidABXY.connect(self.flipMountHid)
         self.ui.flipMount.clicked.connect(self.flipMount)
         self.ui.tracking.clicked.connect(self.changeTracking)
         self.ui.setLunarTracking.clicked.connect(self.setLunarTracking)
@@ -48,7 +46,7 @@ class Mount(TabAddon):
         config["coordsJ2000"] = self.ui.coordsJ2000.isChecked()
         config["coordsJNow"] = self.ui.coordsJNow.isChecked()
 
-    def changeTrackingGameController(self, value: bytes) -> None:
+    def changeTrackingHid(self, value: bytes) -> None:
         if value == 0b00000100:
             self.changeTracking()
 
@@ -65,7 +63,7 @@ class Mount(TabAddon):
             else:
                 self.msg.emit(2, "Mount", "Command", "Cannot start tracking")
 
-    def changeParkGameController(self, value: bytes) -> None:
+    def changeParkHid(self, value: bytes) -> None:
         if value == 0b00000001:
             self.changePark()
 
@@ -100,7 +98,7 @@ class Mount(TabAddon):
         else:
             self.msg.emit(2, "Mount", "Command", "Cannot set tracking to Solar")
 
-    def flipMountGameController(self, value: bytes) -> None:
+    def flipMountHid(self, value: bytes) -> None:
         if value == 0b00000010:
             self.flipMount()
 
@@ -110,7 +108,7 @@ class Mount(TabAddon):
         else:
             self.msg.emit(2, "Mount", "Command", "Cannot flip mount")
 
-    def stopGameController(self, value: bytes) -> None:
+    def stopHid(self, value: bytes) -> None:
         if value == 0b00001000:
             self.stop()
 

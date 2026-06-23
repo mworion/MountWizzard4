@@ -59,7 +59,7 @@ class UploadPopup(MWidget):
         self.ui = Ui_UploadPopup()
         self.ui.setupUi(self.ws)
         self.setWindowTitle("Mount Upload")
-        self.setFixedSize(400, 120)
+        self.setFixedSize(self.HALF_WIDTH, self.POPUP_HEIGHT)
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.returnValues = {"success": False, "successMount": False}
         self.parentWidget = parentWidget
@@ -89,8 +89,6 @@ class UploadPopup(MWidget):
 
     def showWindow(self) -> None:
         self.show()
-        self.setMinimumSize(400, 120)
-        self.setMaximumSize(400, 120)
         self.titleBar.normButton.setVisible(False)
         self.titleBar.maxButton.setVisible(False)
         self.titleBar.windowFixed = True
@@ -107,14 +105,8 @@ class UploadPopup(MWidget):
         return self.returnValues["success"]
 
     @classmethod
-    def upload(
-        cls,
-        parentWidget: MWidget,
-        url: str,
-        dataTypes: list[str],
-        dataFilePath: Path,
-    ) -> bool:
-        dlg = cls(parentWidget, url, dataTypes, dataFilePath)
+    def upload(cls, parentW: MWidget, url: str, dTypes: list[str], dFilePath: Path) -> bool:
+        dlg = cls(parentW, url, dTypes, dFilePath)
         return dlg.exec()
 
     def setProgressBarColor(self, colorstr: str) -> None:

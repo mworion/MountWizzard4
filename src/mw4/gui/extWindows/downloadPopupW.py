@@ -44,7 +44,7 @@ class DownloadPopup(MWidget):
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self.ws)
         self.setWindowTitle("Downloading from Web")
-        self.setFixedSize(400, 120)
+        self.setFixedSize(self.HALF_WIDTH, self.POPUP_HEIGHT)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)
@@ -61,8 +61,6 @@ class DownloadPopup(MWidget):
 
     def showWindow(self) -> None:
         self.show()
-        self.setMinimumSize(400, 120)
-        self.setMaximumSize(400, 120)
         self.titleBar.normButton.setVisible(False)
         self.titleBar.maxButton.setVisible(False)
         self.titleBar.windowFixed = True
@@ -78,10 +76,8 @@ class DownloadPopup(MWidget):
         return self.returnValues["success"]
 
     @classmethod
-    def download(
-        cls, parentWidget: MWidget, url: str, dest: Path, unzip: bool = False
-    ) -> bool:
-        dlg = cls(parentWidget, url, dest, unzip)
+    def download(cls, parentW: MWidget, url: str, dest: Path, unzip: bool = False) -> bool:
+        dlg = cls(parentW, url, dest, unzip)
         return dlg.exec()
 
     def setProgressBarColor(self, color: str) -> None:

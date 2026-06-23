@@ -38,6 +38,7 @@ class MWidget(QMainWindow, Styles):
     FULL_HEIGHT = 620
     HALF_WIDTH = 400
     HALF_HEIGHT = 310
+    POPUP_HEIGHT = 150
 
     def __init__(self) -> None:
         super().__init__()
@@ -54,7 +55,7 @@ class MWidget(QMainWindow, Styles):
         self.ws = QWidget()
         self.ws.setObjectName("ContainerContent")
         workSpaceLayout = QVBoxLayout()
-        workSpaceLayout.setContentsMargins(0, 0, 0, 0)
+        workSpaceLayout.setContentsMargins(2, 0, 2, 2)
         workSpaceLayout.addWidget(self.ws)
         centralWidgetLayout = QVBoxLayout()
         centralWidgetLayout.setContentsMargins(0, 0, 0, 0)

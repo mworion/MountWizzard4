@@ -40,6 +40,7 @@ class DevicePopup(MWidget):
         self.ui.setupUi(self.ws)
         self.setWindowTitle("Device Management")
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
+        self.setFixedSize(500, 350)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
         self.move(x, y)
@@ -204,8 +205,6 @@ class DevicePopup(MWidget):
             self.checkApp(framework, self.platesolvers[framework]["appPath"].text())
             self.checkIndex(framework, self.platesolvers[framework]["indexPath"].text())
         self.show()
-        self.setMinimumSize(500, 340)
-        self.setMaximumSize(500, 340)
         self.titleBar.windowFixed = True
 
     def closeEvent(self, event: Any) -> None:

@@ -93,6 +93,9 @@ BASIC_STYLE = """
     }
     QWidget #ContainerCentral {
         border-radius: 3px;
+        border-style: solid;
+        border-color: $M_PRIM$;
+        border-width: 2px;
     }
     QToolTip {
         border-width: %WIDTH%;

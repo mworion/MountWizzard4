@@ -654,3 +654,79 @@ def test_runnerHidController_cleansUpOnExit(hc):
     ):
         hc.runnerHidController()
     assert len(close_called) == 1
+
+
+def test_runnerHidController_handlesDisconnectionDuringRun(hc):
+    hc.config.deviceName = "Pro Controller"
+    hc.running = True
+    call_count = [0]
+
+    class MockDevice:
+        def open(self, vid, pid):
+            pass
+
+        def set_nonblocking(self, val):
+            pass
+
+        def read(self, size, timeout_ms=None):
+            call_count[0] += 1
+            if timeout_ms == 0:
+                if call_count[0] == 1:
+                    return [1, 2, 3]
+                if call_count[0] == 2:
+                    return [1, 2, 3]
+                hc.running = False
+                raise OSError("Device disconnected")
+            return []
+
+        def close(self):
+            pass
+
+    hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
+    with (
+        mock.patch.object(hid, "enumerate", return_value=hid_devices),
+        mock.patch.object(hid, "device", return_value=MockDevice()),
+        mock.patch("time.sleep"),
+    ):
+        hc.runnerHidController()
+    assert hc.running is False
+
+
+def test_runnerHidController_unknownDeviceType(hc):
+    hc.config.deviceName = "Unknown Controller"
+    hc.running = True
+    call_count = [0]
+
+    class MockDevice:
+        def open(self, vid, pid):
+            pass
+
+        def set_nonblocking(self, val):
+            pass
+
+        def read(self, size, timeout_ms=None):
+            call_count[0] += 1
+            if timeout_ms == 0:
+                return [1, 2, 3]
+            if call_count[0] == 1:
+                return [0, 1, 2, 3, 0, 5, 0, 7, 0, 9, 0, 11]
+            hc.running = False
+            return []
+
+        def close(self):
+            pass
+
+    hid_devices = [{"product_string": "Unknown Controller", "vendor_id": 1, "product_id": 2}]
+    with (
+        mock.patch.object(hid, "enumerate", return_value=hid_devices),
+        mock.patch.object(hid, "device", return_value=MockDevice()),
+        mock.patch("time.sleep"),
+    ):
+        hc.runnerHidController()
+    assert hc.running is False
+
+
+def test_convertData_unknownDevice(hc):
+    iR = [0, 1, 2, 3, 0, 5, 0, 7, 0, 9, 0, 11]
+    result = hc.convertData("UnknownDevice", iR)
+    assert result == [0, 0, 0, 0, 0, 0, 0]

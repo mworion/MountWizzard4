@@ -394,7 +394,6 @@ def test_intMinMaxValid(qapp):
 
 def test_intMinMaxTooLow(qapp):
     d = MWInputDialog(title="title", label="label", inputMode="int", minValue=10, maxValue=50)
-    # QSpinBox enforces min value automatically
     d.inputWidget.setValue(5)
     assert d.inputWidget.value() == 10
     d.close()
@@ -402,7 +401,6 @@ def test_intMinMaxTooLow(qapp):
 
 def test_intMinMaxTooHigh(qapp):
     d = MWInputDialog(title="title", label="label", inputMode="int", minValue=10, maxValue=50)
-    # QSpinBox enforces max value automatically
     d.inputWidget.setValue(100)
     assert d.inputWidget.value() == 50
     d.close()
@@ -431,7 +429,6 @@ def test_doubleMinMaxTooLow(qapp):
         minValue=0.0,
         maxValue=100.0,
     )
-    # QDoubleSpinBox enforces min value automatically
     d.inputWidget.setValue(-5.5)
     assert d.inputWidget.value() == pytest.approx(0.0)
     d.close()
@@ -445,7 +442,6 @@ def test_doubleMinMaxTooHigh(qapp):
         minValue=0.0,
         maxValue=100.0,
     )
-    # QDoubleSpinBox enforces max value automatically
     d.inputWidget.setValue(150.5)
     assert d.inputWidget.value() == pytest.approx(100.0)
     d.close()

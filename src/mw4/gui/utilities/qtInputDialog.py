@@ -30,16 +30,6 @@ from PySide6.QtWidgets import (
 
 
 class MWInputDialog(MWidget):
-    """
-    Lightweight, themed input dialog built on top of the frameless
-    :class:`MWidget`. Provides text input functionality with a consistent
-    look and feel matching MW4's design.
-
-    The dialog is not a :class:`QDialog` – :meth:`exec` runs a local
-    :class:`QEventLoop` so the call site can stay synchronous, mirroring
-    Qt's own ``QInputDialog.exec()`` semantics.
-    """
-
     Accepted = 1
     Rejected = 0
 
@@ -88,10 +78,9 @@ class MWInputDialog(MWidget):
                 parsedValue = 0.0
         elif self.inputMode == "item":
             parsedValue = str(actualValue) if actualValue else ""
-        else:  # text mode
+        else:
             parsedValue = str(actualValue) if actualValue else ""
 
-        # Create appropriate input widget based on mode
         if self.inputMode == "int":
             self.inputWidget = QSpinBox()
             self.inputWidget.setMinimum(int(self.minValue))
@@ -111,25 +100,19 @@ class MWInputDialog(MWidget):
             self.inputWidget = QComboBox()
             self.inputWidget.addItems(self.items)
             self.inputWidget.setCurrentIndex(self.currentIndex)
-        else:  # text mode
+        else:
             self.inputWidget = QLineEdit()
             self.inputWidget.setText(str(parsedValue))
             self.inputWidget.returnPressed.connect(self.onAccept)
 
-        # Set minimum height for input widget
         self.inputWidget.setMinimumHeight(25)
-
-        # Keep reference for backward compatibility
         self.inputEdit = self.inputWidget
-
         buttonRow = QHBoxLayout()
         buttonRow.addStretch(1)
-
         self.btnOk = QPushButton("OK")
         self.btnOk.setMinimumSize(80, 25)
         self.btnOk.clicked.connect(self.onAccept)
         self.btnOk.setDefault(True)
-
         self.btnCancel = QPushButton("Cancel")
         self.btnCancel.setMinimumSize(80, 25)
         self.btnCancel.clicked.connect(self.onReject)
@@ -150,7 +133,6 @@ class MWInputDialog(MWidget):
             )
 
     def onAccept(self) -> None:
-        """Handle OK button click."""
         if self.inputMode in ("int", "double"):
             text = str(self.inputWidget.value())
         elif self.inputMode == "item":
@@ -166,31 +148,23 @@ class MWInputDialog(MWidget):
         self.close()
 
     def validateInput(self, text: str) -> bool:
-        """Validate input based on input mode and constraints."""
         if not text:
             return False
-        if self.inputMode == "int":
-            # QSpinBox automatically enforces bounds
-            return True
-        elif self.inputMode == "double":
-            # QDoubleSpinBox automatically enforces bounds
+        if self.inputMode == "int" or self.inputMode == "double":
             return True
         return True
 
     def onReject(self) -> None:
-        """Handle Cancel button click."""
         self.inputValue = ""
         self.resultCode = self.Rejected
         self.finishLoop()
         self.close()
 
     def finishLoop(self) -> None:
-        """Quit the event loop if running."""
         if self.eventLoop.isRunning():
             self.eventLoop.quit()
 
     def closeEvent(self, event: QCloseEvent) -> None:
-        """Handle window close event."""
         if self.eventLoop.isRunning():
             self.inputValue = ""
             self.resultCode = self.Rejected
@@ -198,7 +172,6 @@ class MWInputDialog(MWidget):
         super().closeEvent(event)
 
     def exec(self) -> int:
-        """Execute dialog modally."""
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.show()
         self.setMinimumSize(350, 150)
@@ -212,11 +185,9 @@ class MWInputDialog(MWidget):
         return self.resultCode
 
     def getValue(self) -> str:
-        """Get the input value."""
         return self.inputValue
 
     def wasAccepted(self) -> bool:
-        """Check if dialog was accepted."""
         return self.resultCode == self.Accepted
 
     @classmethod
@@ -226,7 +197,6 @@ class MWInputDialog(MWidget):
         title: str,
         label: str,
         actualValue: str = "",
-        echoMode: QLineEdit.EchoMode = QLineEdit.EchoMode.Normal,
     ) -> tuple[str, bool]:
         dlg = cls(
             parent=parent,

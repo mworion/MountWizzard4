@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Changelog &#8212; MountWizzard4 4.0.0a38 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=4cc4bb76" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/drawio.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56c4699f" />
+    <script src="../_static/documentation_options.js?v=e3c06d64"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Architectural topics and math" href="../architecture/index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/mw4.png" alt="Logo" />
+    
+    <h1 class="logo logo-name">MountWizzard4</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../config/index.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workflows/index.html">Workflows and functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help/index.html">Troubleshooting Q&amp;A and hints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#beta-versions">Beta versions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#version-4-x">Version 4.x</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../architecture/index.html" title="previous chapter">Architectural topics and math</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">¶</a></h1>
+<section id="beta-versions">
+<h2>Beta versions<a class="headerlink" href="#beta-versions" title="Link to this heading">¶</a></h2>
+<section id="version-4-x">
+<h3>Version 4.x<a class="headerlink" href="#version-4-x" title="Link to this heading">¶</a></h3>
+<p>4.0.0b0</p>
+<ul class="simple">
+<li><p>this is a major release !
+please try out in a separate work folder for test!
+for 2024 Hardware, please use the 3.2.5 or later firmware!</p></li>
+<li><p>add: support for python 3.12 and 3.13, remove 3.7 - 3.10</p></li>
+<li><p>add: native support for Macs with Apple silicon</p></li>
+<li><p>add: comets / asteroids uploads now without 10micron installer</p></li>
+<li><p>add: support uploading mechanism for databases for macos and linux</p></li>
+<li><p>add: show free disk space of work dir in the status bar</p></li>
+<li><p>add: support for comet and asteroid data in extended downloads</p></li>
+<li><p>add: age parameter for MPC SAT databases before auto download</p></li>
+<li><p>add: new way of defining build point along celestial paths</p></li>
+<li><p>add: support for boltwood file reading</p></li>
+<li><p>add: support for new 2024 HW - disabling WOL if not supported</p></li>
+<li><p>add: support for new 2024 HW - enabling auto power on setting if supported</p></li>
+<li><p>add: support for status of GPS modul with PPS capability (no PPS functionality)</p></li>
+<li><p>add: split Satellite window into satellite world map and satellite horizon view</p></li>
+<li><p>add: support for compressed / uncompressed xisf files for image display (simple versions)</p></li>
+<li><p>add: support for compressed fits files for image display (gzip, bzip2)</p></li>
+<li><p>add: support for NINA alpaca devices, please install Alpaca plugin for NINA and enable in settings.</p></li>
+<li><p>add: all settings are now available in separate windows -&gt; easier to find and better overview</p></li>
+<li><p>change: faster and more reliable uploading mechanism for databases</p></li>
+<li><p>change: celestrak interface url’s and retrieval strategy</p></li>
+<li><p>change: moving PyQt5 to major PySide6</p></li>
+<li><p>change: moving libraries to latest versions</p></li>
+<li><p>change: remove old windows automation as it is not needed anymore</p></li>
+<li><p>change: remove embedded documentation and replace with online link</p></li>
+<li><p>refactor: environment devices (now 4 generic ones), online and boltwood are generic</p></li>
+<li><p>refactor: remove installer to separate repo (InstallerMW4)</p></li>
+<li><p>refactor: optimizing code for better performance</p></li>
+<li><p>refactor: plate solving features more reliable</p></li>
+<li><p>refactor: camera handling</p></li>
+<li><p>refactor: satellite handling</p></li>
+<li><p>refactor: database handling for MPC files</p></li>
+<li><p>refactor: move INDI support to indipyclient library</p></li>
+<li><p>refactor: move ASCOM / ALPACA support to official Alpaca python library</p></li>
+<li><p>improve: faster calculation of satellite track using internal calculations</p></li>
+<li><p>improve: reworked filter set with clear behavior auf selections</p></li>
+<li><p>improve: optimized poll settings</p></li>
+<li><p>improve: refraction update only when needed</p></li>
+<li><p>improve: reduced cpu memory size of app</p></li>
+<li><p>improve: faster startup time</p></li>
+<li><p>improve: faster database loading</p></li>
+<li><p>improve: better visibility of editable fields</p></li>
+<li><p>improve: better status information</p></li>
+<li><p>improve: optimizing material look &amp; feel for simulator</p></li>
+<li><p>improve: don’t delete message list when color change</p></li>
+<li><p>improve: rewrite of the online documentation</p></li>
+<li><p>improve: no 10micron installer needed anymore for object data</p></li>
+<li><p>improve: schedule and threads in waiting times (slow machines)</p></li>
+<li><p>improve: change from complicated json dump to YAML format for config file</p></li>
+<li><p>improve: more detailed earth map in satellite view</p></li>
+<li><p>improve: optimized GUI (imaging settings together ect.)</p></li>
+<li><p>remove: automation of 10micron installer, replaced with web interface</p></li>
+<li><p>remove: updater for MW4 (use uv installer instead)</p></li>
+<li><p>remove: automatic profile conversion from x.x to 4.x (too complex)</p></li>
+<li><p>remove: blending profiles as it did not work so far.</p></li>
+<li><p>remove: native support for SGPro and NINA</p></li>
+<li><p>fix: typos</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, mworion.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/changelog/changelog.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

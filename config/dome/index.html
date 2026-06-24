@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Dome geometry &#8212; MountWizzard4 4.0.0a38 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=4cc4bb76" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/drawio.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=56c4699f" />
+    <script src="../../_static/documentation_options.js?v=e3c06d64"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="GUI adaptations" href="../gui/index.html" />
+    <link rel="prev" title="Adding the camera" href="../camera/index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/mw4.png" alt="Logo" />
+    
+    <h1 class="logo logo-name">MountWizzard4</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Configuration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../camera/index.html">Adding the camera</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Dome geometry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#area-1-dome-geometry-parameters">Area 1: dome geometry parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#area-2-dome-settle-time">Area 2: dome settle time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#area-3-dome-geometry-help">Area 3: dome geometry help</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dome-dynamic-follow">Dome dynamic follow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../gui/index.html">GUI adaptations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imaging/index.html">Imaging setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mount/index.html">Mount setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../parkpos/index.html">Park Positions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../terrain/index.html">Terrain image &amp; horizon mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../themes/index.html">Themes selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../workflows/index.html">Workflows and functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../help/index.html">Troubleshooting Q&amp;A and hints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture/index.html">Architectural topics and math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog/changelog.html">Changelog</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Configuration</a><ul>
+      <li>Previous: <a href="../camera/index.html" title="previous chapter">Adding the camera</a></li>
+      <li>Next: <a href="../gui/index.html" title="next chapter">GUI adaptations</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="dome-geometry">
+<h1>Dome geometry<a class="headerlink" href="#dome-geometry" title="Link to this heading">¶</a></h1>
+<p>If you using dome, you should set up the parameters to get a good
+performance of the slew calculations. To use the calculations, please check the
+“Enable dome geometry offset calculations”. If checked, MountWizzard4 will
+calculate the correct dome azimuth in relation to the desired target of the
+mount. It take the pierside already into account, so you could slew mount and
+dome at the same time.</p>
+<a class="reference internal image-reference" href="../../_images/dome_settings.png"><img alt="../../_images/dome_settings.png" class="align-center" height="426" src="../../_images/dome_settings.png" width="568" />
+</a>
+<section id="area-1-dome-geometry-parameters">
+<h2>Area 1: dome geometry parameters<a class="headerlink" href="#area-1-dome-geometry-parameters" title="Link to this heading">¶</a></h2>
+<p>I this section the geometry parameters of the dome and mount in relation to the
+dome are set. The dome center - the center point of the dome hemisphere - is
+always the reference point from where the measurements are taken. All measure
+are in meters. It starts with the radius</p>
+<img alt="../../_images/radius.png" class="align-center" src="../../_images/radius.png" />
+<p>followed by the displacement of the mount in north and east direction. A
+displacement to the north is treated positive as well as a displacement to
+the east.</p>
+<img alt="../../_images/north.png" class="align-center" src="../../_images/north.png" />
+<img alt="../../_images/east.png" class="align-center" src="../../_images/east.png" />
+<p>For the vertical displacement you have to take car about different definitions
+of how to measure this value. A common way many ASCOM drivers do is measuring
+the distance between the dome center and the GEM point of the mount. The GEM
+point of the mount is the intersection of the RA and DEC axis. Ideally you will
+have that point fitting to the dome center. In the 10micron handbook, the
+measurement is done between the dome center and the base of the mount. This
+value is mostly negative, because the mount base level is on lower height than
+the dome center.</p>
+<img alt="../../_images/z_10micron.png" class="align-center" src="../../_images/z_10micron.png" />
+<img alt="../../_images/z_ascom.png" class="align-center" src="../../_images/z_ascom.png" />
+<p>If you have mor than one telescope mounted, you will experience a lateral
+displacement of the OTA you would like to use for reference. The measurement is
+taken from mw4.base plate of the mount to the OTA axis. Displacement to the right
+(east) is treated positive.</p>
+<img alt="../../_images/lat.png" class="align-center" src="../../_images/lat.png" />
+</section>
+<section id="area-2-dome-settle-time">
+<h2>Area 2: dome settle time<a class="headerlink" href="#area-2-dome-settle-time" title="Link to this heading">¶</a></h2>
+<p>With the dome settle time you define the waiting time from reaching the target
+azimuth until the dome emits slew finished. This could be used for avoiding
+mechanical influence on the mount. This settle time in handled in MountWizzard4
+only. If you could enter a settle time in your dome driver etc. the times will
+add up.</p>
+</section>
+<section id="area-3-dome-geometry-help">
+<h2>Area 3: dome geometry help<a class="headerlink" href="#area-3-dome-geometry-help" title="Link to this heading">¶</a></h2>
+<p>As geometry parameters are difficult to remember, MountWizzard4 will show you a
+short explanation picture of the parameter you are currently changing.</p>
+</section>
+<section id="dome-dynamic-follow">
+<h2>Dome dynamic follow<a class="headerlink" href="#dome-dynamic-follow" title="Link to this heading">¶</a></h2>
+<p>For satellite tracking moving the dome adequately is very important. If you have
+following on your dome controller, you might have set a hysteresis to avoid
+continuous dome movements. These values normally are between 1 and 3 degrees.
+MountWizzard4 could handle this different. If you set your dome geometry
+correctly, you could add parameters for target shutter distance and shutter
+zenith distance (better terminus ???). With these parameters MountWizzard4 will
+calculate if the viewing spot of you telescope moves with the next slew command
+in the “red zone”. If so, the dome azimuth will be corrected and the dome will
+slew to it’s new centered position. If there is still a reasonable distance,
+your telescope still could view your target and no dome movement is necessary.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>See also on youtube: <a class="reference external" href="https://youtu.be/ZmDz-rtvFzc">https://youtu.be/ZmDz-rtvFzc</a></p>
+</div>
+<p>Top view of your dome setup:</p>
+<img alt="../../_images/dome_math_1.drawio" class="align-center" src="../../_images/dome_math_1.drawio" />
+<img alt="../../_images/dome_opening_hysteresis.png" class="align-center" src="../../_images/dome_opening_hysteresis.png" />
+<img alt="../../_images/dome_clearance_zenith.png" class="align-center" src="../../_images/dome_clearance_zenith.png" />
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, mworion.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../../_sources/config/dome/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

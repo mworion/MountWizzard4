@@ -194,8 +194,8 @@ class SettDome:
         self.ui.domeVerticalOffset.valueChanged.connect(self.setUseGeometry)
 
     def setUseGeometry(self) -> None:
-        if self.ui.automaticDome.isChecked():
-            self.updateDomeGeometryToGui()
+        # toDo: if self.ui.automaticDome.isChecked():
+        # toDo:    self.updateDomeGeometryToGui()
 
         mount = self.app.dReg["mount"].instance
         dome = self.app.dReg["dome"].instance

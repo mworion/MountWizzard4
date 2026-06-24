@@ -296,7 +296,8 @@ def test_readHidController_returnsData(hc):
             return []
 
     hc.hidControllerDevice = MockGamepad()
-    result = hc.readHidController()
+    connect, result = hc.readHidController()
+    assert connect is True
     assert result == [1, 2, 3]
 
 
@@ -306,7 +307,8 @@ def test_readHidController_emptyRead(hc):
             return []
 
     hc.hidControllerDevice = MockGamepad()
-    result = hc.readHidController()
+    connect, result = hc.readHidController()
+    assert connect is True
     assert result == []
 
 
@@ -316,25 +318,9 @@ def test_readHidController_exception(hc):
             raise OSError("Device error")
 
     hc.hidControllerDevice = MockGamepad()
-    result = hc.readHidController()
+    connect, result = hc.readHidController()
+    assert connect is False
     assert result == []
-
-
-def test_isConnected_deviceResponsive(hc):
-    mock_device = MagicMock()
-    mock_device.read.return_value = [1, 2, 3]
-    hc.hidControllerDevice = mock_device
-    result = hc.isConnected()
-    assert result is True
-    mock_device.read.assert_called_once_with(64, timeout_ms=0)
-
-
-def test_isConnected_deviceException(hc):
-    mock_device = MagicMock()
-    mock_device.read.side_effect = OSError("Device error")
-    hc.hidControllerDevice = mock_device
-    result = hc.isConnected()
-    assert result is False
 
 
 def test_connectDevice_success(hc):
@@ -371,8 +357,51 @@ def test_connectDevice_exceptionOnOpen(hc):
     assert result is False
 
 
+def test_runnerHidController_noNewData(hc):
+    """Test runnerHidController when no new data received."""
+    reportOld = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    class MockGamepad:
+        def read(self, size):
+            return []
+
+    hc.hidControllerDevice = MockGamepad()
+    connect, reportNew = hc.runnerHidController(reportOld)
+    # Should return same report when empty data received
+    assert connect is True
+    assert reportNew == reportOld
+
+
+def test_runnerHidController_withNewData(hc):
+    """Test runnerHidController with new data."""
+    reportOld = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    class MockGamepad:
+        def read(self, size):
+            return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+    hc.hidControllerDevice = MockGamepad()
+    connect, reportNew = hc.runnerHidController(reportOld)
+    assert connect is True
+
+
+def test_runnerHidController_disconnected(hc):
+    """Test runnerHidController when device disconnected."""
+    reportOld = [0] * 16
+
+    class MockGamepad:
+        def read(self, size):
+            raise OSError("Device error")
+
+    hc.hidControllerDevice = MockGamepad()
+    connect, reportNew = hc.runnerHidController(reportOld)
+    assert connect is False
+    assert reportNew == reportOld
+
+
 def test_handleDeviceConnect_success(hc):
     hc.config.deviceName = "Pro Controller"
+    hc.deviceConnected = False
     hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
     mock_device = MagicMock()
     connected = []
@@ -384,6 +413,24 @@ def test_handleDeviceConnect_success(hc):
         hc.handleDeviceConnect()
     assert hc.deviceConnected is True
     assert "Pro Controller" in connected
+    hc.signals.deviceConnected.disconnect()
+
+
+def test_handleDeviceConnect_alreadyConnected(hc):
+    """Test that deviceConnected signal is not emitted if already connected."""
+    hc.config.deviceName = "Pro Controller"
+    hc.deviceConnected = True
+    hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
+    mock_device = MagicMock()
+    connected = []
+    hc.signals.deviceConnected.connect(lambda n: connected.append(n))
+    with (
+        mock.patch.object(hid, "enumerate", return_value=hid_devices),
+        mock.patch.object(hid, "device", return_value=mock_device),
+    ):
+        hc.handleDeviceConnect()
+    assert hc.deviceConnected is True
+    assert len(connected) == 0
     hc.signals.deviceConnected.disconnect()
 
 

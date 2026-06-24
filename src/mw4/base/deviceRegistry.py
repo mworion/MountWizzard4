@@ -60,9 +60,6 @@ class DeviceRegistry(QObject):
         }
 
     def addDevices(self, app: Any) -> None:
-        # Declarative device table: (name, factory, deviceType, isConfigurable).
-        # ``factory`` is called with ``app`` (except where noted) and returns the
-        # device instance. Adding a new device is now a single-row change.
         deviceSpec: list[tuple[str, Any, str | None, bool]] = [
             ("camera", Camera, "camera", True),
             ("cover", Cover, "covercalibrator", True),
@@ -192,7 +189,7 @@ class DeviceRegistry(QObject):
             return
         if not self.d[device].run[self.d[device].framework].config.deviceName:
             return
-        self.setStat(device, True)
+        self.setStat(device, False)
         self.d[device].instance.startCommunication()
 
     def startDevices(self) -> None:

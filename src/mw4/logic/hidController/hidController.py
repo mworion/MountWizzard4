@@ -44,7 +44,7 @@ class HidControllerSignals(Signals):
 class HidController:
     DEVICE_TYPE = "hid"
     log = logging.getLogger("MW4")
-    UPDATE_RATE: float = 0.1
+    UPDATE_RATE: float = 0.05
 
     def __init__(self, app: Any) -> None:
         self.app = app
@@ -103,13 +103,13 @@ class HidController:
         if (act[5] != old[5] or act[6] != old[6]) and self.config.moveRaDec:
             self.signals.hidSR.emit(act[5], act[6])
 
-    def readHidController(self) -> list:
+    def readHidController(self) -> tuple[bool, list]:
         try:
             data = self.hidControllerDevice.read(64)
         except Exception as e:
             self.log.warning(f"HidController error {e}")
-            return []
-        return data
+            return False, []
+        return True, data
 
     def connectDevice(self) -> bool:
         vendorId = productId = 0
@@ -132,29 +132,24 @@ class HidController:
         self.log.debug(f"HidController: [{self.config.deviceName} {vendorId}:{productId}]")
         return True
 
-    def isConnected(self) -> bool:
-        try:
-            self.hidControllerDevice.read(64, timeout_ms=0)
-            return True
-        except Exception as e:
-            self.log.warning(f"Failed to read HID device: {e}")
-            return False
-
-    def runnerHidController(self, reportOld) -> list:
-        report = self.readHidController()
+    def runnerHidController(self, reportOld) -> tuple[bool, list]:
+        connect, report = self.readHidController()
+        if not connect:
+            return False, reportOld
         if len(report) == 0:
-            return reportOld
+            return True, reportOld
         if not self.isNewerData(report, reportOld):
-            return report
+            return True, report
         report = self.convertData(self.config.deviceName, report)
         self.sendHidControllerSignals(report, reportOld)
-        return report
+        return True, report
 
     def handleDeviceConnect(self) -> None:
         if not self.connectDevice():
             return
-        self.deviceConnected = True
-        self.signals.deviceConnected.emit(self.config.deviceName)
+        if not self.deviceConnected:
+            self.signals.deviceConnected.emit(self.config.deviceName)
+            self.deviceConnected = True
 
     def handleDeviceDisconnect(self) -> None:
         self.deviceConnected = False
@@ -168,10 +163,10 @@ class HidController:
         while not self.stopEvent.is_set():
             if not self.deviceConnected:
                 self.handleDeviceConnect()
-            elif not self.isConnected():
-                self.handleDeviceDisconnect()
             else:
-                reportOld = self.runnerHidController(reportOld)
+                connect, reportOld = self.runnerHidController(reportOld)
+                if not connect:
+                    self.handleDeviceDisconnect()
             self.stopEvent.wait(timeout=self.UPDATE_RATE)
 
     def startCommunication(self) -> None:

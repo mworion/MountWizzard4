@@ -27,7 +27,6 @@ from mw4.mountcontrol.convert import (
 from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.setting import Setting
-from PySide6.QtWidgets import QLineEdit
 from skyfield.api import Angle, wgs84
 from typing import Any
 
@@ -311,7 +310,6 @@ class MountSett(TabAddon):
             self.mainW,
             "Set Site Longitude",
             "Format: <dd[EW] mm ss.s> or <[+-]d.d>, East is positive",
-            QLineEdit.EchoMode.Normal,
             self.ui.siteLongitude.text(),
         )
         if not ok:
@@ -324,7 +322,6 @@ class MountSett(TabAddon):
             self.mainW,
             "Set Site Latitude",
             "Format: <dd[SN] mm ss.s> or <[+-]d.d>",
-            QLineEdit.EchoMode.Normal,
             self.ui.siteLatitude.text(),
         )
         if not ok:
@@ -356,7 +353,6 @@ class MountSett(TabAddon):
             "Value: On / Off",
             ["ON", "OFF"],
             0,
-            False,
         )
         if not ok:
             return False
@@ -375,7 +371,6 @@ class MountSett(TabAddon):
             "Value: On / Off",
             ["ON", "OFF"],
             0,
-            False,
         )
         if not ok:
             return False
@@ -390,7 +385,7 @@ class MountSett(TabAddon):
         sett = self.app.dReg["mount"].setting
         act = 0 if sett.wakeOnLan == "ON" else 1
         value, ok = MWInputDialog.getItem(
-            self.mainW, "Set Wake On Lan", "Value: On / Off", ["ON", "OFF"], act, False
+            self.mainW, "Set Wake On Lan", "Value: On / Off", ["ON", "OFF"], act
         )
         if not ok:
             return False
@@ -405,7 +400,7 @@ class MountSett(TabAddon):
         sett = self.app.dReg["mount"].setting
         act = 0 if sett.autoPowerOn else 1
         value, ok = MWInputDialog.getItem(
-            self.mainW, "Set Auto Power On", "Value: On / Off", ["ON", "OFF"], act, False
+            self.mainW, "Set Auto Power On", "Value: On / Off", ["ON", "OFF"], act
         )
         if not ok:
             return False
@@ -470,7 +465,6 @@ class MountSett(TabAddon):
             "Value: On / Off",
             ["ON", "OFF"],
             0,
-            False,
         )
         if not ok:
             return False

@@ -12,14 +12,13 @@ Version 4.x
   please try out in a separate work folder for test!
   for 2024 Hardware, please use the 3.2.5 or later firmware!
 
-- add: support for python 3.11, 3.12 and 3.13, remove 3.7, 3.8, 3.9
+- add: support for python 3.12 and 3.13, remove 3.7 - 3.10
 - add: native support for Macs with Apple silicon
 - add: comets / asteroids uploads now without 10micron installer
 - add: support uploading mechanism for databases for macos and linux
 - add: show free disk space of work dir in the status bar
 - add: support for comet and asteroid data in extended downloads
 - add: age parameter for MPC SAT databases before auto download
-- add: new theme with 3d buttons for selection
 - add: new way of defining build point along celestial paths
 - add: support for boltwood file reading
 - add: support for new 2024 HW - disabling WOL if not supported
@@ -29,6 +28,7 @@ Version 4.x
 - add: support for compressed / uncompressed xisf files for image display (simple versions)
 - add: support for compressed fits files for image display (gzip, bzip2)
 - add: support for NINA alpaca devices, please install Alpaca plugin for NINA and enable in settings.
+- add: all settings are now available in separate windows -> easier to find and better overview
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
 - change: moving PyQt5 to major PySide6
@@ -48,18 +48,19 @@ Version 4.x
 - improve: reworked filter set with clear behavior auf selections
 - improve: optimized poll settings
 - improve: refraction update only when needed
-- improve: reduced size of app
+- improve: reduced cpu memory size of app
 - improve: faster startup time
 - improve: faster database loading
 - improve: better visibility of editable fields
 - improve: better status information
-- improve: optimizing material look & feel fpr simulator
+- improve: optimizing material look & feel for simulator
 - improve: don't delete message list when color change
 - improve: rewrite of the online documentation
 - improve: no 10micron installer needed anymore for object data
 - improve: schedule and threads in waiting times (slow machines)
-- improve: change von complicated json dump to YAML format for config file
+- improve: change from complicated json dump to YAML format for config file
 - improve: more detailed earth map in satellite view
+- improve: optimized GUI (imaging settings together ect.)
 - remove: automation of 10micron installer, replaced with web interface
 - remove: updater for MW4 (use uv installer instead)
 - remove: automatic profile conversion from x.x to 4.x (too complex)

@@ -27,7 +27,6 @@ from mw4.logic.modelBuild.modelRunSupport import (
 from mw4.mountcontrol.model import Model
 from pathlib import Path
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QLineEdit
 from typing import Any
 
 
@@ -192,9 +191,7 @@ class ModelManage(TabAddon):
         self.refreshModel()
 
     def saveName(self) -> None:
-        modelName, ok = MWInputDialog.getText(
-            self.mainW, "Save model", "New model name", QLineEdit.EchoMode.Normal, ""
-        )
+        modelName, ok = MWInputDialog.getText(self.mainW, "Save model", "New model name", "")
         if modelName is None or not modelName or not ok:
             self.msg.emit(2, "Model", "Manage error", "No model name given")
             return

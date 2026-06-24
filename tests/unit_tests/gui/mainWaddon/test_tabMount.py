@@ -203,4 +203,3 @@ def test_setHidIcons(function):
     with mock.patch.object(function, "setHidIcon") as mock_setHidIcon:
         function.setHidIcons()
         assert mock_setHidIcon.call_count == 5
-

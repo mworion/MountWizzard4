@@ -55,8 +55,13 @@ class Mount(TabAddon):
         ui.setPixmap(pixmap)
 
     def setHidIcons(self) -> None:
-        for ui in [self.ui.controller1, self.ui.controller2, self.ui.controller3,
-                   self.ui.controller4, self.ui.controller5]:
+        for ui in [
+            self.ui.controller1,
+            self.ui.controller2,
+            self.ui.controller3,
+            self.ui.controller4,
+            self.ui.controller5,
+        ]:
             self.setHidIcon(ui, 1)
 
     def changeTrackingHid(self, value: bytes) -> None:

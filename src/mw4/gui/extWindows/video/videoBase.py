@@ -23,7 +23,7 @@ from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import video_ui
 from PySide6.QtCore import Signal
 from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QLineEdit, QSizePolicy
+from PySide6.QtWidgets import QSizePolicy
 from typing import Any
 
 
@@ -158,14 +158,12 @@ class VideoWindowBase(MWidget):
             self,
             "Get authentication",
             "Username: ",
-            QLineEdit.EchoMode.Normal,
             self.user,
         )
         value2, ok2 = MWInputDialog.getText(
             self,
             "Get authentication",
             "Password: ",
-            QLineEdit.EchoMode.Normal,
             self.password,
         )
         if not ok1 or not ok2:

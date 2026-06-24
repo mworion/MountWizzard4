@@ -383,32 +383,6 @@ def test_directInstantiationDouble(qapp):
     dlg.close()
 
 
-def test_echoModeNormal(qapp):
-    from PySide6.QtWidgets import QLineEdit
-
-    d = MWInputDialog(
-        title="title",
-        label="label",
-        echoMode=QLineEdit.EchoMode.Normal,
-    )
-    assert d.echoMode == QLineEdit.EchoMode.Normal
-    assert d.inputEdit.echoMode() == QLineEdit.EchoMode.Normal
-    d.close()
-
-
-def test_echoModePassword(qapp):
-    from PySide6.QtWidgets import QLineEdit
-
-    d = MWInputDialog(
-        title="title",
-        label="label",
-        echoMode=QLineEdit.EchoMode.Password,
-    )
-    assert d.echoMode == QLineEdit.EchoMode.Password
-    assert d.inputEdit.echoMode() == QLineEdit.EchoMode.Password
-    d.close()
-
-
 def test_intMinMaxValid(qapp):
     d = MWInputDialog(title="title", label="label", inputMode="int", minValue=10, maxValue=50)
     d.inputWidget.setValue(30)

@@ -50,7 +50,6 @@ class MWInputDialog(MWidget):
         label: str = "Enter value:",
         actualValue: str | int | float | None = None,
         inputMode: str = "text",
-        echoMode: QLineEdit.EchoMode = QLineEdit.EchoMode.Normal,
         minValue: int | float = 0,
         maxValue: int | float = 2147483647,
         step: int = 1,
@@ -58,29 +57,11 @@ class MWInputDialog(MWidget):
         items: list[str] | None = None,
         currentIndex: int = 0,
     ) -> None:
-        """
-        Initialize input dialog.
-
-        Args:
-            parent: Parent widget for centering
-            title: Dialog window title
-            label: Label text for the input field
-            actualValue: Default value to show in input field
-            inputMode: Type of input ("text", "int", "double", "item")
-            echoMode: QLineEdit echo mode for text input
-            minValue: Minimum acceptable value for int/double modes
-            maxValue: Maximum acceptable value for int/double modes
-            step: Step increment for int mode
-            decimals: Number of decimal places for double mode
-            items: List of items for item mode
-            currentIndex: Current item index for item mode
-        """
         super().__init__()
         self.inputMode = inputMode
         self.resultCode: int = self.Rejected
         self.inputValue: str = ""
         self.eventLoop = QEventLoop()
-        self.echoMode = echoMode
         self.minValue = minValue
         self.maxValue = maxValue
         self.step = step
@@ -132,7 +113,6 @@ class MWInputDialog(MWidget):
             self.inputWidget.setCurrentIndex(self.currentIndex)
         else:  # text mode
             self.inputWidget = QLineEdit()
-            self.inputWidget.setEchoMode(self.echoMode)
             self.inputWidget.setText(str(parsedValue))
             self.inputWidget.returnPressed.connect(self.onAccept)
 
@@ -248,26 +228,12 @@ class MWInputDialog(MWidget):
         actualValue: str = "",
         echoMode: QLineEdit.EchoMode = QLineEdit.EchoMode.Normal,
     ) -> tuple[str, bool]:
-        """
-        Get text input from user.
-
-        Args:
-            parent: Parent widget
-            title: Dialog title
-            label: Input label
-            actualValue: Default text value
-            echoMode: QLineEdit echo mode
-
-        Returns:
-            Tuple of (text, accepted) where accepted is True if OK was clicked
-        """
         dlg = cls(
             parent=parent,
             title=title,
             label=label,
             actualValue=actualValue,
             inputMode="text",
-            echoMode=echoMode,
         )
         dlg.exec()
         return dlg.getValue(), dlg.wasAccepted()
@@ -283,21 +249,6 @@ class MWInputDialog(MWidget):
         maxValue: int = 2147483647,
         step: int = 1,
     ) -> tuple[int, bool]:
-        """
-        Get integer input from user.
-
-        Args:
-            parent: Parent widget
-            title: Dialog title
-            label: Input label
-            actualValue: Default integer value
-            minValue: Minimum acceptable value
-            maxValue: Maximum acceptable value
-            step: Step increment
-
-        Returns:
-            Tuple of (value, accepted) where accepted is True if OK was clicked
-        """
         dlg = cls(
             parent=parent,
             title=title,
@@ -327,21 +278,6 @@ class MWInputDialog(MWidget):
         maxValue: float = 2147483647.0,
         decimals: int = 1,
     ) -> tuple[float, bool]:
-        """
-        Get double input from user.
-
-        Args:
-            parent: Parent widget
-            title: Dialog title
-            label: Input label
-            actualValue: Default float value
-            minValue: Minimum acceptable value
-            maxValue: Maximum acceptable value
-            decimals: Number of decimal places
-
-        Returns:
-            Tuple of (value, accepted) where accepted is True if OK was clicked
-        """
         dlg = cls(
             parent=parent,
             title=title,
@@ -369,20 +305,6 @@ class MWInputDialog(MWidget):
         items: list[str],
         currentIndex: int = 0,
     ) -> tuple[str, bool]:
-        """
-        Get item selection from user via combo box.
-
-        Args:
-            parent: Parent widget
-            title: Dialog title
-            label: Input label
-            items: List of items to choose from
-            currentIndex: Index of the item to select initially
-
-        Returns:
-            Tuple of (item_text, accepted) where accepted is True if OK
-            was clicked
-        """
         dlg = cls(
             parent=parent,
             title=title,

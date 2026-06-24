@@ -27,7 +27,6 @@ from mw4.mountcontrol.convert import (
     formatHstrToText,
     valueToAngle,
 )
-from PySide6.QtWidgets import QLineEdit
 from pytestqt.qtbot import QWidget
 from skyfield.api import Angle
 from typing import Any
@@ -257,7 +256,6 @@ class MountMove(TabAddon):
             self.mainW,
             "Set telescope RA",
             "Format: <dd[H] mm ss.s> in hours or <[+]d.d> in degrees",
-            QLineEdit.EchoMode.Normal,
             self.ui.moveCoordinateRa.text(),
         )
         if not ok:
@@ -273,7 +271,6 @@ class MountMove(TabAddon):
             self.mainW,
             "Set telescope DEC",
             "Format: <dd[Deg] mm ss.s> or <[+]d.d> in degrees",
-            QLineEdit.EchoMode.Normal,
             self.ui.moveCoordinateDec.text(),
         )
         if not ok:

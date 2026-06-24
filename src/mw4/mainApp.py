@@ -44,6 +44,7 @@ class MountWizzard4(QObject):
     showAnalyse = Signal(object)
     timebaseChanged = Signal()
     onlineModeChanged = Signal()
+    hidModeChanged = Signal()
     relayChanged = Signal()
     parkChanged = Signal()
     redrawHemisphere = Signal()

@@ -35,10 +35,12 @@ class SettGui:
         self.ui.hidAltAz.setChecked(cfg.moveAltAz)
         self.ui.hidRaDec.setChecked(cfg.moveRaDec)
         self.ui.hidTracking.setChecked(cfg.tracking)
-        self.ui.hidDome.checkStateChanged.connect(self.storeConfig)
-        self.ui.hidAltAz.checkStateChanged.connect(self.storeConfig)
-        self.ui.hidRaDec.checkStateChanged.connect(self.storeConfig)
-        self.ui.hidTracking.checkStateChanged.connect(self.storeConfig)
+        self.ui.hidParkStop.setChecked(cfg.parkStop)
+        self.ui.hidDome.clicked.connect(self.storeConfig)
+        self.ui.hidParkStop.clicked.connect(self.storeConfig)
+        self.ui.hidAltAz.clicked.connect(self.storeConfig)
+        self.ui.hidRaDec.clicked.connect(self.storeConfig)
+        self.ui.hidTracking.clicked.connect(self.storeConfig)
 
     def storeConfig(self) -> None:
         self.app.config["SettingGui"] = {}
@@ -48,7 +50,9 @@ class SettGui:
         cfg.dome = self.ui.hidDome.isChecked()
         cfg.moveAltAz = self.ui.hidAltAz.isChecked()
         cfg.moveRaDec = self.ui.hidRaDec.isChecked()
+        cfg.parkStop = self.ui.hidParkStop.isChecked()
         cfg.tracking = self.ui.hidTracking.isChecked()
+        self.app.hidModeChanged.emit()
 
     def setupIcons(self) -> None:
         pixmap = svg2pixmap("assets/icon/controllerNew.svg", self.parentW.M_PRIM)

@@ -15,7 +15,7 @@
 ###########################################################
 import hid
 import logging
-import time
+import threading
 from dataclasses import dataclass, field
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker
@@ -29,6 +29,7 @@ class DeviceConfigHidController:
     moveRaDec: bool = field(default=True)
     moveAltAz: bool = field(default=True)
     tracking: bool = field(default=True)
+    parkStop: bool = field(default=True)
     dome: bool = field(default=True)
 
 
@@ -43,17 +44,21 @@ class HidControllerSignals(Signals):
 class HidController:
     DEVICE_TYPE = "hid"
     log = logging.getLogger("MW4")
+    UPDATE_RATE: float = 0.1
 
     def __init__(self, app: Any) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = HidControllerSignals()
+        self.deviceConnected: bool = False
+        self.hidControllerDevice = None
         self.data: dict[str, Any] = {}
         self.framework: str = "hid"
         self.run: dict[str, Any] = {"hid": self}
         self.config = DeviceConfigHidController()
-        self.workerHidController: Worker | None = None
-        self.running: bool = False
+        self.workerCommunicationLoop: Worker | None = None
+        self.stopEvent: threading.Event = threading.Event()
+        self.loggingTrace: bool = False
 
     @staticmethod
     def isNewerData(act: list, old: list) -> bool:
@@ -98,95 +103,86 @@ class HidController:
         if (act[5] != old[5] or act[6] != old[6]) and self.config.moveRaDec:
             self.signals.hidSR.emit(act[5], act[6])
 
-    def readHidController(self, hidpad: hid.device) -> list:
-        result = []
-        while self.running:
-            try:
-                data = hidpad.read(64)
-            except Exception as e:
-                self.running = False
-                self.log.warning(f"HidController error {e}")
-                return []
-            if len(data) == 0:
-                break
-            result = data
-        return result
-
-    def isConnected(self, hidpad: hid.device) -> bool:
+    def readHidController(self) -> list:
         try:
-            hidpad.read(64, timeout_ms=0)
-            return True
-        except Exception:
-            return False
+            data = self.hidControllerDevice.read(64)
+        except Exception as e:
+            self.log.warning(f"HidController error {e}")
+            return []
+        return data
 
-    def handleConnect(self) -> tuple[hid.device | None, int, int]:
+    def connectDevice(self) -> bool:
         vendorId = productId = 0
         for device in hid.enumerate():
             if device["product_string"] == self.config.deviceName:
                 vendorId = device["vendor_id"]
                 productId = device["product_id"]
                 break
-
         if not vendorId:
-            return None, 0, 0
-
+            self.hidControllerDevice = None
+            return False
         try:
-            hidControllerDevice = hid.device()
-            hidControllerDevice.open(vendorId, productId)
-            hidControllerDevice.set_nonblocking(True)
-            self.log.debug(f"HidController: [{self.config.deviceName} {vendorId}:{productId}]")
-            return hidControllerDevice, vendorId, productId
+            self.hidControllerDevice = hid.device()
+            self.hidControllerDevice.open(vendorId, productId)
+            self.hidControllerDevice.set_nonblocking(True)
         except Exception as e:
+            self.hidControllerDevice = None
             self.log.warning(f"Failed to open HID device: {e}")
-            return None, 0, 0
+            return False
+        self.log.debug(f"HidController: [{self.config.deviceName} {vendorId}:{productId}]")
+        return True
 
-    def handleDisconnect(self, hidpad: hid.device) -> None:
+    def isConnected(self) -> bool:
         try:
-            hidpad.close()
+            self.hidControllerDevice.read(64, timeout_ms=0)
+            return True
         except Exception as e:
-            self.log.warning(f"Error closing HID device: {e}")
+            self.log.warning(f"Failed to read HID device: {e}")
+            return False
 
-    def runnerHidController(self) -> None:
-        hidControllerDevice = None
-        deviceConnected = False
+    def runnerHidController(self, reportOld) -> list:
+        report = self.readHidController()
+        if len(report) == 0:
+            return reportOld
+        if not self.isNewerData(report, reportOld):
+            return report
+        report = self.convertData(self.config.deviceName, report)
+        self.sendHidControllerSignals(report, reportOld)
+        return report
+
+    def handleDeviceConnect(self) -> None:
+        if not self.connectDevice():
+            return
+        self.deviceConnected = True
+        self.signals.deviceConnected.emit(self.config.deviceName)
+
+    def handleDeviceDisconnect(self) -> None:
+        self.deviceConnected = False
+        if self.hidControllerDevice:
+            self.hidControllerDevice.close()
+            self.hidControllerDevice = None
+        self.signals.deviceDisconnected.emit(self.config.deviceName)
+
+    def runnerCommunicationLoop(self) -> None:
         reportOld = [0] * 16
-
-        while self.running:
-            if not deviceConnected:
-                hidControllerDevice, vendorId, productId = self.handleConnect()
-                if hidControllerDevice is None:
-                    self.log.warning(f"HID device [{self.config.deviceName}] not found")
-                    self.signals.deviceDisconnected.emit(self.config.deviceName)
-                    time.sleep(0.5)
-                    continue
-
-                deviceConnected = True
-                self.signals.deviceConnected.emit(self.config.deviceName)
-
-            if not self.isConnected(hidControllerDevice):
-                self.log.warning(f"HID device [{self.config.deviceName}] disconnected")
-                self.handleDisconnect(hidControllerDevice)
-                deviceConnected = False
-                continue
-
-            time.sleep(0.1)
-            report = self.readHidController(hidControllerDevice)
-            if not self.isNewerData(report, reportOld):
-                continue
-            report = self.convertData(self.config.deviceName, report)
-            self.sendHidControllerSignals(report, reportOld)
-            reportOld = report
-
-        if hidControllerDevice is not None:
-            self.handleDisconnect(hidControllerDevice)
+        while not self.stopEvent.is_set():
+            if not self.deviceConnected:
+                self.handleDeviceConnect()
+            elif not self.isConnected():
+                self.handleDeviceDisconnect()
+            else:
+                reportOld = self.runnerHidController(reportOld)
+            self.stopEvent.wait(timeout=self.UPDATE_RATE)
 
     def startCommunication(self) -> None:
-        self.running = True
-        self.workerHidController = Worker(self.runnerHidController)
-        self.threadPool.start(self.workerHidController)
+        self.deviceConnected = False
+        self.stopEvent.clear()
+        self.workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
+        self.threadPool.start(self.workerCommunicationLoop)
 
     def stopCommunication(self) -> None:
-        self.running = False
+        self.stopEvent.set()
+        self.deviceConnected = False
         self.signals.deviceDisconnected.emit(self.config.deviceName)
 
     @staticmethod

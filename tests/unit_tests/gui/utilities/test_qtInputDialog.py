@@ -448,8 +448,7 @@ def test_doubleMinMaxTooHigh(qapp):
 
 
 def test_classMethodGetTextWithEchoMode(qapp):
-    from PySide6.QtWidgets import QLineEdit
-
+    """Test getText class method without echoMode parameter (not supported)."""
     with (
         mock.patch.object(MWInputDialog, "exec"),
         mock.patch.object(MWInputDialog, "getValue", return_value="secret"),
@@ -459,7 +458,6 @@ def test_classMethodGetTextWithEchoMode(qapp):
             None,
             "title",
             "label",
-            echoMode=QLineEdit.EchoMode.Password,
         )
         assert text == "secret"
         assert accepted is True

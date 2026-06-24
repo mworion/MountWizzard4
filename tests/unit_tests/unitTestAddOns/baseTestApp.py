@@ -92,10 +92,6 @@ class App(QObject):
     updatePointMarker = Signal()
     operationRunning = Signal(object)
     colorChange = Signal()
-    virtualStop = Signal()
-    stopDevices = Signal()
-    startDevice = Signal(str)
-    stopDevice = Signal(str)
     buildPointsChanged = Signal()
     playSound = Signal(object)
     msg = Signal(object, object, object, object)
@@ -104,6 +100,7 @@ class App(QObject):
     timebaseChanged = Signal()
     relayChanged = Signal()
     parkChanged = Signal()
+    hidModeChanged = Signal()
 
     def __init__(self):
         super().__init__()

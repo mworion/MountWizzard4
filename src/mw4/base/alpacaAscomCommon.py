@@ -37,7 +37,6 @@ class AlpacaAscomCommon(DriverData):
     def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
         self.app: Any = parent.app
-        self.msg: Any = parent.app.msg
         self.data: dict = parent.data
         self.signals: Any = parent.signals
         self.threadPool: QThreadPool = parent.app.threadPool
@@ -114,8 +113,6 @@ class AlpacaAscomCommon(DriverData):
         else:
             self.log.debug(f"[{self.config.deviceName}] not connected, [{retry}] retries")
             suc = False
-        if not suc:
-            self.msg.emit(2, self.PROTOCOL_NAME, "Connect error", self.config.deviceName)
         return suc
 
     def getInitialConfig(self) -> None:
@@ -146,13 +143,11 @@ class AlpacaAscomCommon(DriverData):
             return
         self.deviceConnected = True
         self.signals.deviceConnected.emit(self.config.deviceName)
-        self.msg.emit(0, self.PROTOCOL_NAME, "Device found", self.config.deviceName)
         self.getInitialConfig()
 
     def handleDeviceDisconnect(self) -> None:
         self.deviceConnected = False
         self.signals.deviceDisconnected.emit(self.config.deviceName)
-        self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.config.deviceName)
 
     def runnerCommunicationLoop(self) -> None:
         while not self.stopEvent.is_set():
@@ -170,4 +165,3 @@ class AlpacaAscomCommon(DriverData):
         self.setDevicePropQueued("Connected", False)
         self.deviceConnected = False
         self.signals.deviceDisconnected.emit(self.config.deviceName)
-        self.msg.emit(0, self.PROTOCOL_NAME, "Device remove", self.config.deviceName)

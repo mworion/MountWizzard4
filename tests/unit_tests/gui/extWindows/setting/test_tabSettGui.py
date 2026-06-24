@@ -42,6 +42,7 @@ def settGui(qapp):
     parentW.ui.hidAltAz = QCheckBox()
     parentW.ui.hidRaDec = QCheckBox()
     parentW.ui.hidTracking = QCheckBox()
+    parentW.ui.hidParkStop = QCheckBox()
 
     window = SettGui(parentW)
     yield window
@@ -53,6 +54,7 @@ def test_initConfig_with_defaults(settGui):
     settGui.app.config["SettingGui"] = {}
     settGui.initConfig()
     assert settGui.ui.colorSet.currentIndex() == 0
+    assert settGui.ui.hidParkStop.isChecked() is True
 
 
 def test_storeConfig_saves_color(settGui):
@@ -61,6 +63,22 @@ def test_storeConfig_saves_color(settGui):
     settGui.storeConfig()
     config = settGui.app.config["SettingGui"]
     assert config["colorSet"] == 1
+
+
+def test_storeConfig_saves_hidParkStop(settGui):
+    """Test storeConfig saves hidParkStop."""
+    settGui.ui.hidParkStop.setChecked(False)
+    settGui.storeConfig()
+    cfg = settGui.app.dReg["hidController"].instance.config
+    assert cfg.parkStop is False
+
+
+def test_initConfig_hidParkStop_unchecked(settGui):
+    """Test initConfig with hidParkStop unchecked."""
+    settGui.app.dReg["hidController"].instance.config.parkStop = False
+    settGui.ui.hidParkStop.setChecked(True)
+    settGui.initConfig()
+    assert settGui.ui.hidParkStop.isChecked() is False
 
 
 def test_setupIcons_creates_icons(settGui):

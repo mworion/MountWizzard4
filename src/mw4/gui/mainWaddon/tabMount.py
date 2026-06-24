@@ -29,6 +29,9 @@ class Mount(TabAddon):
         self.app.dReg["hidController"].signals.hidABXY.connect(self.stopHid)
         self.app.dReg["hidController"].signals.hidABXY.connect(self.changeTrackingHid)
         self.app.dReg["hidController"].signals.hidABXY.connect(self.flipMountHid)
+        self.app.dReg["hidController"].signals.deviceConnected.connect(self.setHidIcons)
+        self.app.dReg["hidController"].signals.deviceDisconnected.connect(self.setHidIcons)
+        self.app.hidModeChanged.connect(self.setHidIcons)
         self.ui.flipMount.clicked.connect(self.flipMount)
         self.ui.tracking.clicked.connect(self.changeTracking)
         self.ui.setLunarTracking.clicked.connect(self.setLunarTracking)
@@ -49,20 +52,28 @@ class Mount(TabAddon):
         config["coordsJNow"] = self.ui.coordsJNow.isChecked()
 
     def setHidIcon(self, ui: Any, status: int = 0) -> None:
-        colors = [self.mainW.M_PRIM, self.mainW.M_TER, self.mainW.M_GREEN]
+        colors = [self.mainW.M_PRIM2, self.mainW.M_TER, self.mainW.M_GREEN]
         color = colors[status]
         pixmap = svg2pixmap("assets/icon/controller.svg", color).scaled(16, 16)
         ui.setPixmap(pixmap)
 
     def setHidIcons(self) -> None:
-        for ui in [
-            self.ui.controller1,
-            self.ui.controller2,
-            self.ui.controller3,
-            self.ui.controller4,
-            self.ui.controller5,
-        ]:
-            self.setHidIcon(ui, 1)
+        base = {
+            self.ui.controller1: self.app.dReg["hidController"].instance.config.moveAltAz,
+            self.ui.controller2: self.app.dReg["hidController"].instance.config.moveRaDec,
+            self.ui.controller3: self.app.dReg["hidController"].instance.config.tracking,
+            self.ui.controller4: self.app.dReg["hidController"].instance.config.parkStop,
+            self.ui.controller5: self.app.dReg["hidController"].instance.config.dome,
+        }
+        connected = self.app.dReg["hidController"].stat
+        for ui, statFlag in base.items():
+            if connected and statFlag:
+                status = 2
+            elif connected and not statFlag:
+                status = 1
+            else:
+                status = 0
+            self.setHidIcon(ui, status)
 
     def changeTrackingHid(self, value: bytes) -> None:
         if value == 0b00000100:

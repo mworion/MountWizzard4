@@ -58,8 +58,8 @@ def test_initAttributes(hc):
     assert hc.DEVICE_TYPE == "hid"
     assert hc.run["hid"] is hc
     assert isinstance(hc.config, DeviceConfigHidController)
-    assert hc.running is False
-    assert hc.workerHidController is None
+    assert hc.deviceConnected is False
+    assert hc.workerCommunicationLoop is None
     assert isinstance(hc.data, dict)
 
 
@@ -293,11 +293,10 @@ def test_readHidController_returnsData(hc):
             self.count += 1
             if self.count == 1:
                 return [1, 2, 3]
-            hc.running = False
             return []
 
-    hc.running = True
-    result = hc.readHidController(MockGamepad())
+    hc.hidControllerDevice = MockGamepad()
+    result = hc.readHidController()
     assert result == [1, 2, 3]
 
 
@@ -306,8 +305,8 @@ def test_readHidController_emptyRead(hc):
         def read(self, size):
             return []
 
-    hc.running = True
-    result = hc.readHidController(MockGamepad())
+    hc.hidControllerDevice = MockGamepad()
+    result = hc.readHidController()
     assert result == []
 
 
@@ -316,16 +315,16 @@ def test_readHidController_exception(hc):
         def read(self, size):
             raise OSError("Device error")
 
-    hc.running = True
-    result = hc.readHidController(MockGamepad())
+    hc.hidControllerDevice = MockGamepad()
+    result = hc.readHidController()
     assert result == []
-    assert hc.running is False
 
 
 def test_isConnected_deviceResponsive(hc):
     mock_device = MagicMock()
     mock_device.read.return_value = [1, 2, 3]
-    result = hc.isConnected(mock_device)
+    hc.hidControllerDevice = mock_device
+    result = hc.isConnected()
     assert result is True
     mock_device.read.assert_called_once_with(64, timeout_ms=0)
 
@@ -333,11 +332,12 @@ def test_isConnected_deviceResponsive(hc):
 def test_isConnected_deviceException(hc):
     mock_device = MagicMock()
     mock_device.read.side_effect = OSError("Device error")
-    result = hc.isConnected(mock_device)
+    hc.hidControllerDevice = mock_device
+    result = hc.isConnected()
     assert result is False
 
 
-def test_handleConnect_success(hc):
+def test_connectDevice_success(hc):
     hc.config.deviceName = "Pro Controller"
     hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
     mock_device = MagicMock()
@@ -345,24 +345,20 @@ def test_handleConnect_success(hc):
         mock.patch.object(hid, "enumerate", return_value=hid_devices),
         mock.patch.object(hid, "device", return_value=mock_device),
     ):
-        device, vid, pid = hc.handleConnect()
-    assert device is mock_device
-    assert vid == 1
-    assert pid == 2
+        result = hc.connectDevice()
+    assert result is True
     mock_device.open.assert_called_once_with(1, 2)
     mock_device.set_nonblocking.assert_called_once_with(True)
 
 
-def test_handleConnect_deviceNotFound(hc):
+def test_connectDevice_deviceNotFound(hc):
     hc.config.deviceName = "NotExisting"
     with mock.patch.object(hid, "enumerate", return_value=[]):
-        device, vid, pid = hc.handleConnect()
-    assert device is None
-    assert vid == 0
-    assert pid == 0
+        result = hc.connectDevice()
+    assert result is False
 
 
-def test_handleConnect_exceptionOnOpen(hc):
+def test_connectDevice_exceptionOnOpen(hc):
     hc.config.deviceName = "Pro Controller"
     hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
     mock_device = MagicMock()
@@ -371,330 +367,65 @@ def test_handleConnect_exceptionOnOpen(hc):
         mock.patch.object(hid, "enumerate", return_value=hid_devices),
         mock.patch.object(hid, "device", return_value=mock_device),
     ):
-        device, vid, pid = hc.handleConnect()
-    assert device is None
-    assert vid == 0
-    assert pid == 0
+        result = hc.connectDevice()
+    assert result is False
 
 
-def test_handleDisconnect_success(hc):
+def test_handleDeviceConnect_success(hc):
+    hc.config.deviceName = "Pro Controller"
+    hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
     mock_device = MagicMock()
-    hc.handleDisconnect(mock_device)
-    mock_device.close.assert_called_once()
+    connected = []
+    hc.signals.deviceConnected.connect(lambda n: connected.append(n))
+    with (
+        mock.patch.object(hid, "enumerate", return_value=hid_devices),
+        mock.patch.object(hid, "device", return_value=mock_device),
+    ):
+        hc.handleDeviceConnect()
+    assert hc.deviceConnected is True
+    assert "Pro Controller" in connected
+    hc.signals.deviceConnected.disconnect()
 
 
-def test_handleDisconnect_exception(hc):
+def test_handleDeviceDisconnect_success(hc):
     mock_device = MagicMock()
-    mock_device.close.side_effect = OSError("Cannot close device")
-    hc.handleDisconnect(mock_device)
-    mock_device.close.assert_called_once()
-
-
-def test_runnerHidController_deviceNotFound_emitsDisconnect(hc):
-    hc.config.deviceName = "NotExisting"
-    hc.running = True
+    hc.hidControllerDevice = mock_device
+    hc.deviceConnected = True
     disconnected = []
-    hc.signals.deviceDisconnected.connect(lambda name: disconnected.append(name))
+    hc.signals.deviceDisconnected.connect(lambda n: disconnected.append(n))
+    hc.config.deviceName = "Pro Controller"
+    hc.handleDeviceDisconnect()
+    assert hc.deviceConnected is False
+    mock_device.close.assert_called_once()
+    assert "Pro Controller" in disconnected
+    hc.signals.deviceDisconnected.disconnect()
+
+
+def test_runnerHidController_deviceNotFound_Attempts(hc):
+    hc.config.deviceName = "NotExisting"
+    hc.stopEvent.clear()
     attempt_count = [0]
 
-    def sleep_side_effect(duration):
+    def enumerate_mock():
         attempt_count[0] += 1
-        if attempt_count[0] > 1:
-            hc.running = False
+        if attempt_count[0] > 2:
+            hc.stopEvent.set()
+        return []
+
+    def wait_side_effect(timeout=None):
+        return False
 
     with (
-        mock.patch.object(hid, "enumerate", return_value=[]),
-        mock.patch("time.sleep", side_effect=sleep_side_effect),
+        mock.patch.object(hid, "enumerate", side_effect=enumerate_mock),
+        mock.patch.object(hc.stopEvent, "wait", side_effect=wait_side_effect),
     ):
-        hc.runnerHidController()
-    assert "NotExisting" in disconnected
-    hc.signals.deviceDisconnected.disconnect()
+        hc.runnerCommunicationLoop()
+    assert attempt_count[0] >= 3
 
 
 def test_runnerHidController_normalRun(hc):
     hc.config.deviceName = "Pro Controller"
-    hc.running = True
-
-    class MockDevice:
-        def __init__(self):
-            self.iteration = 0
-
-        def open(self, vid, pid):
-            pass
-
-        def set_nonblocking(self, val):
-            pass
-
-        def read(self, size, timeout_ms=None):
-            self.iteration += 1
-            if timeout_ms == 0:
-                return [1, 2, 3]
-            if self.iteration == 1:
-                return [0, 1, 2, 3, 0, 5, 0, 7, 0, 9, 0, 11]
-            hc.running = False
-            return []
-
-        def close(self):
-            pass
-
-    hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
-    with (
-        mock.patch.object(hid, "enumerate", return_value=hid_devices),
-        mock.patch.object(hid, "device", return_value=MockDevice()),
-        mock.patch("time.sleep"),
-    ):
-        hc.runnerHidController()
-    assert hc.running is False
-
-
-def test_runnerHidController_processesNewData(hc):
-    hc.config.deviceName = "Pro Controller"
-    hc.running = True
-    call_count = [0]
-
-    class MockDevice:
-        def open(self, vid, pid):
-            pass
-
-        def set_nonblocking(self, val):
-            pass
-
-        def read(self, size, timeout_ms=None):
-            call_count[0] += 1
-            if timeout_ms == 0:
-                return [1, 2, 3]
-            if call_count[0] <= 2:
-                return [0, 1, 2, 3, 0, 5, 0, 7, 0, 9, 0, 11]
-            hc.running = False
-            return []
-
-        def close(self):
-            pass
-
-    hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
-    with (
-        mock.patch.object(hid, "enumerate", return_value=hid_devices),
-        mock.patch.object(hid, "device", return_value=MockDevice()),
-        mock.patch.object(hc, "sendHidControllerSignals") as mock_send,
-        mock.patch("time.sleep"),
-    ):
-        hc.runnerHidController()
-    mock_send.assert_called_once()
-
-
-def test_startCommunication_noEarlySignal(hc):
-    hc.running = False
-    hc.workerHidController = None
-    hc.config.deviceName = "TestController"
-    connected = []
-    hc.signals.deviceConnected.connect(lambda n: connected.append(n))
-    with mock.patch.object(hc.threadPool, "start") as mock_start:
-        hc.startCommunication()
-    assert hc.running is True
-    assert hc.workerHidController is not None
-    mock_start.assert_called_once()
-    assert connected == []
-    hc.running = False
-    hc.signals.deviceConnected.disconnect()
-
-
-def test_startCommunication_autoStartTrue(hc):
-    hc.running = False
-    hc.workerHidController = None
-    hc.config.deviceName = "TestController"
-    connected = []
-    hc.signals.deviceConnected.connect(lambda n: connected.append(n))
-    with mock.patch.object(hc.threadPool, "start") as mock_start:
-        hc.startCommunication()
-    assert hc.running is True
-    assert hc.workerHidController is not None
-    mock_start.assert_called_once()
-    assert connected == []
-    hc.running = False
-    hc.signals.deviceConnected.disconnect()
-
-
-def test_stopCommunication(hc):
-    hc.running = True
-    hc.config.deviceName = "TestController"
-    disconnected = []
-    hc.signals.deviceDisconnected.connect(lambda n: disconnected.append(n))
-    hc.stopCommunication()
-    assert hc.running is False
-    assert "TestController" in disconnected
-    hc.signals.deviceDisconnected.disconnect()
-
-
-def test_runnerHidController_emitsConnectedSignal(hc):
-    hc.config.deviceName = "Pro Controller"
-    hc.running = True
-    connected = []
-    hc.signals.deviceConnected.connect(lambda name: connected.append(name))
-
-    class MockDevice:
-        def open(self, vid, pid):
-            pass
-
-        def set_nonblocking(self, val):
-            pass
-
-        def read(self, size, timeout_ms=None):
-            if timeout_ms == 0:
-                return [1, 2, 3]
-            hc.running = False
-            return []
-
-        def close(self):
-            pass
-
-    hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
-    with (
-        mock.patch.object(hid, "enumerate", return_value=hid_devices),
-        mock.patch.object(hid, "device", return_value=MockDevice()),
-        mock.patch("time.sleep"),
-    ):
-        hc.runnerHidController()
-    assert "Pro Controller" in connected
-    hc.signals.deviceConnected.disconnect()
-
-
-def test_runnerHidController_reconnectionOnDisconnect(hc):
-    hc.config.deviceName = "Pro Controller"
-    hc.running = True
-    connected = []
-    disconnected = []
-    hc.signals.deviceConnected.connect(lambda name: connected.append(name))
-    hc.signals.deviceDisconnected.connect(lambda name: disconnected.append(name))
-
-    device_call_count = [0]
-
-    class MockDevice:
-        def open(self, vid, pid):
-            pass
-
-        def set_nonblocking(self, val):
-            pass
-
-        def read(self, size, timeout_ms=None):
-            device_call_count[0] += 1
-            if timeout_ms == 0:
-                if device_call_count[0] == 1:
-                    return [1, 2, 3]
-                raise OSError("Device disconnected")
-            if device_call_count[0] <= 2:
-                return [0, 1, 2, 3, 0, 5, 0, 7, 0, 9, 0, 11]
-            hc.running = False
-            return []
-
-        def close(self):
-            pass
-
-    hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
-    with (
-        mock.patch.object(hid, "enumerate", return_value=hid_devices),
-        mock.patch.object(hid, "device", return_value=MockDevice()),
-        mock.patch("time.sleep"),
-    ):
-        hc.runnerHidController()
-    assert "Pro Controller" in connected
-    hc.signals.deviceConnected.disconnect()
-    hc.signals.deviceDisconnected.disconnect()
-
-
-def test_runnerHidController_retryOnInitialConnectionFailure(hc):
-    hc.config.deviceName = "Pro Controller"
-    hc.running = True
-    disconnected = []
-    hc.signals.deviceDisconnected.connect(lambda name: disconnected.append(name))
-    enumerate_call_count = [0]
-
-    def enumerate_mock():
-        enumerate_call_count[0] += 1
-        if enumerate_call_count[0] <= 2:
-            return []
-        hc.running = False
-        return []
-
-    with (
-        mock.patch.object(hid, "enumerate", side_effect=enumerate_mock),
-        mock.patch("time.sleep") as mock_sleep,
-    ):
-        hc.runnerHidController()
-    assert enumerate_call_count[0] >= 2
-    mock_sleep.assert_called_with(0.5)
-    hc.signals.deviceDisconnected.disconnect()
-
-
-def test_runnerHidController_cleansUpOnExit(hc):
-    hc.config.deviceName = "Pro Controller"
-    hc.running = True
-    close_called = []
-
-    class MockDevice:
-        def open(self, vid, pid):
-            pass
-
-        def set_nonblocking(self, val):
-            pass
-
-        def read(self, size, timeout_ms=None):
-            if timeout_ms == 0:
-                return [1, 2, 3]
-            hc.running = False
-            return []
-
-        def close(self):
-            close_called.append(True)
-
-    hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
-    with (
-        mock.patch.object(hid, "enumerate", return_value=hid_devices),
-        mock.patch.object(hid, "device", return_value=MockDevice()),
-        mock.patch("time.sleep"),
-    ):
-        hc.runnerHidController()
-    assert len(close_called) == 1
-
-
-def test_runnerHidController_handlesDisconnectionDuringRun(hc):
-    hc.config.deviceName = "Pro Controller"
-    hc.running = True
-    call_count = [0]
-
-    class MockDevice:
-        def open(self, vid, pid):
-            pass
-
-        def set_nonblocking(self, val):
-            pass
-
-        def read(self, size, timeout_ms=None):
-            call_count[0] += 1
-            if timeout_ms == 0:
-                if call_count[0] == 1:
-                    return [1, 2, 3]
-                if call_count[0] == 2:
-                    return [1, 2, 3]
-                hc.running = False
-                raise OSError("Device disconnected")
-            return []
-
-        def close(self):
-            pass
-
-    hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
-    with (
-        mock.patch.object(hid, "enumerate", return_value=hid_devices),
-        mock.patch.object(hid, "device", return_value=MockDevice()),
-        mock.patch("time.sleep"),
-    ):
-        hc.runnerHidController()
-    assert hc.running is False
-
-
-def test_runnerHidController_unknownDeviceType(hc):
-    hc.config.deviceName = "Unknown Controller"
-    hc.running = True
+    hc.stopEvent.clear()
     call_count = [0]
 
     class MockDevice:
@@ -710,20 +441,202 @@ def test_runnerHidController_unknownDeviceType(hc):
                 return [1, 2, 3]
             if call_count[0] == 1:
                 return [0, 1, 2, 3, 0, 5, 0, 7, 0, 9, 0, 11]
-            hc.running = False
+            hc.stopEvent.set()
             return []
 
         def close(self):
             pass
 
+    def wait_side_effect(timeout=None):
+        return False
+
+    hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
+    with (
+        mock.patch.object(hid, "enumerate", return_value=hid_devices),
+        mock.patch.object(hid, "device", return_value=MockDevice()),
+        mock.patch.object(hc.stopEvent, "wait", side_effect=wait_side_effect),
+    ):
+        hc.runnerCommunicationLoop()
+    assert hc.stopEvent.is_set() is True
+
+
+def test_runnerHidController_processesNewData(hc):
+    hc.config.deviceName = "Pro Controller"
+    hc.stopEvent.clear()
+
+    class MockDevice:
+        def open(self, vid, pid):
+            pass
+
+        def set_nonblocking(self, val):
+            pass
+
+        def read(self, size, timeout_ms=None):
+            if timeout_ms == 0:
+                return [1, 2, 3]
+            hc.stopEvent.set()
+            return []
+
+        def close(self):
+            pass
+
+    def wait_side_effect(timeout=None):
+        return False
+
+    hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
+    with (
+        mock.patch.object(hid, "enumerate", return_value=hid_devices),
+        mock.patch.object(hid, "device", return_value=MockDevice()),
+        mock.patch.object(hc.stopEvent, "wait", side_effect=wait_side_effect),
+    ):
+        hc.runnerCommunicationLoop()
+    assert hc.stopEvent.is_set() is True
+
+
+def test_startCommunication_noEarlySignal(hc):
+    hc.stopEvent.clear()
+    hc.workerCommunicationLoop = None
+    hc.config.deviceName = "TestController"
+    connected = []
+    hc.signals.deviceConnected.connect(lambda n: connected.append(n))
+    with mock.patch.object(hc.threadPool, "start") as mock_start:
+        hc.startCommunication()
+    assert hc.stopEvent.is_set() is False
+    assert hc.workerCommunicationLoop is not None
+    mock_start.assert_called_once()
+    assert connected == []
+    hc.signals.deviceConnected.disconnect()
+
+
+def test_startCommunication_autoStartTrue(hc):
+    hc.stopEvent.clear()
+    hc.workerCommunicationLoop = None
+    hc.config.deviceName = "TestController"
+    connected = []
+    hc.signals.deviceConnected.connect(lambda n: connected.append(n))
+    with mock.patch.object(hc.threadPool, "start") as mock_start:
+        hc.startCommunication()
+    assert hc.stopEvent.is_set() is False
+    assert hc.workerCommunicationLoop is not None
+    mock_start.assert_called_once()
+    assert connected == []
+    hc.signals.deviceConnected.disconnect()
+
+
+def test_stopCommunication(hc):
+    hc.deviceConnected = True
+    hc.config.deviceName = "TestController"
+    disconnected = []
+    hc.signals.deviceDisconnected.connect(lambda n: disconnected.append(n))
+    hc.stopCommunication()
+    assert hc.deviceConnected is False
+    assert "TestController" in disconnected
+    hc.signals.deviceDisconnected.disconnect()
+
+
+def test_runnerCommunicationLoop_emitsConnectedSignal(hc):
+    hc.config.deviceName = "Pro Controller"
+    hc.stopEvent.clear()
+
+    class MockDevice:
+        def open(self, vid, pid):
+            pass
+
+        def set_nonblocking(self, val):
+            pass
+
+        def read(self, size, timeout_ms=None):
+            if timeout_ms == 0:
+                return [1, 2, 3]
+            hc.stopEvent.set()
+            return []
+
+        def close(self):
+            pass
+
+    def wait_side_effect(timeout=None):
+        return False
+
+    hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
+    with (
+        mock.patch.object(hid, "enumerate", return_value=hid_devices),
+        mock.patch.object(hid, "device", return_value=MockDevice()),
+        mock.patch.object(hc.stopEvent, "wait", side_effect=wait_side_effect),
+    ):
+        hc.runnerCommunicationLoop()
+    assert hc.deviceConnected is True
+
+
+def test_runnerCommunicationLoop_handlesDisconnectionDuringRun(hc):
+    hc.config.deviceName = "Pro Controller"
+    hc.stopEvent.clear()
+
+    class MockDevice:
+        def __init__(self):
+            self.call_count = 0
+
+        def open(self, vid, pid):
+            pass
+
+        def set_nonblocking(self, val):
+            pass
+
+        def read(self, size, timeout_ms=None):
+            self.call_count += 1
+            if timeout_ms == 0:
+                if self.call_count == 1:
+                    return [1, 2, 3]
+                hc.stopEvent.set()
+                raise OSError("Device disconnected")
+            return []
+
+        def close(self):
+            pass
+
+    def wait_side_effect(timeout=None):
+        return False
+
+    hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
+    with (
+        mock.patch.object(hid, "enumerate", return_value=hid_devices),
+        mock.patch.object(hid, "device", return_value=MockDevice()),
+        mock.patch.object(hc.stopEvent, "wait", side_effect=wait_side_effect),
+    ):
+        hc.runnerCommunicationLoop()
+    assert hc.stopEvent.is_set() is True
+
+
+def test_runnerCommunicationLoop_unknownDeviceType(hc):
+    hc.config.deviceName = "Unknown Controller"
+    hc.stopEvent.clear()
+
+    class MockDevice:
+        def open(self, vid, pid):
+            pass
+
+        def set_nonblocking(self, val):
+            pass
+
+        def read(self, size, timeout_ms=None):
+            if timeout_ms == 0:
+                return [1, 2, 3]
+            hc.stopEvent.set()
+            return []
+
+        def close(self):
+            pass
+
+    def wait_side_effect(timeout=None):
+        return False
+
     hid_devices = [{"product_string": "Unknown Controller", "vendor_id": 1, "product_id": 2}]
     with (
         mock.patch.object(hid, "enumerate", return_value=hid_devices),
         mock.patch.object(hid, "device", return_value=MockDevice()),
-        mock.patch("time.sleep"),
+        mock.patch.object(hc.stopEvent, "wait", side_effect=wait_side_effect),
     ):
-        hc.runnerHidController()
-    assert hc.running is False
+        hc.runnerCommunicationLoop()
+    assert hc.stopEvent.is_set() is True
 
 
 def test_convertData_unknownDevice(hc):

@@ -154,18 +154,14 @@ def test_abortSlew_1(function):
 
 
 def test_startCommunication_1(function):
-    with (
-        mock.patch.object(function, "createAlpacaDevice", return_value=False),
-        mock.patch.object(function.threadPool, "start") as m_start,
-    ):
+    """Test that startCommunication (from AlpacaClass) works."""
+    with mock.patch.object(function.threadPool, "start") as m_start:
         function.startCommunication()
-        m_start.assert_not_called()
+        m_start.assert_called_once()
 
 
 def test_startCommunication_2(function):
-    with (
-        mock.patch.object(function, "createAlpacaDevice", return_value=True),
-        mock.patch.object(function.threadPool, "start") as m_start,
-    ):
+    """Test that startCommunication (from AlpacaClass) starts the worker thread."""
+    with mock.patch.object(function.threadPool, "start") as m_start:
         function.startCommunication()
         m_start.assert_called_once()

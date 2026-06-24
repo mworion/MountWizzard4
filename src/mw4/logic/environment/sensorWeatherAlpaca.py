@@ -15,16 +15,7 @@
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.logic.environment.sensorWeatherAlpacaAscomBase import SensorWeatherAlpacaAscomBase
-from typing import Any
 
 
 class SensorWeatherAlpaca(SensorWeatherAlpacaAscomBase, AlpacaClass):
-    def __init__(self, parent: Any) -> None:
-        super().__init__(parent)
-        self.deviceType = parent.DEVICE_TYPE
-
-    def startCommunication(self) -> None:
-        if not self.createAlpacaDevice(self.deviceType):
-            self.msg.emit(2, "ALPACA", "Device type error", self.deviceName)
-            return
-        super().startCommunication()
+    pass

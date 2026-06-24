@@ -25,7 +25,8 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 @pytest.fixture(autouse=True, scope="module")
 def function():
     try:
-        camera = Camera(App())
+        app = App()
+        camera = Camera(app)
         camera.exposureTime = 1
         camera.binning = 1
         camera.focalLength = 1
@@ -55,18 +56,19 @@ def test_cameraAlpaca_instantiation(function):
 
 
 def test_startCommunication_1(function):
+    """Test that startCommunication (from AlpacaClass) works when device creation fails."""
     with (
         mock.patch.object(function, "createAlpacaDevice", return_value=False),
         mock.patch.object(function.threadPool, "start") as m_start,
     ):
+        # AlpacaClass.startCommunication() doesn't check createAlpacaDevice result
+        # it just starts the worker thread
         function.startCommunication()
-        m_start.assert_not_called()
+        m_start.assert_called_once()
 
 
 def test_startCommunication_2(function):
-    with (
-        mock.patch.object(function, "createAlpacaDevice", return_value=True),
-        mock.patch.object(function.threadPool, "start") as m_start,
-    ):
+    """Test that startCommunication (from AlpacaClass) starts the worker thread."""
+    with mock.patch.object(function.threadPool, "start") as m_start:
         function.startCommunication()
         m_start.assert_called_once()

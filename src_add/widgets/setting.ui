@@ -99,7 +99,7 @@
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>4</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -6248,7 +6248,7 @@
          <x>10</x>
          <y>115</y>
          <width>366</width>
-         <height>126</height>
+         <height>151</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -6283,7 +6283,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>25</y>
+          <y>125</y>
           <width>141</width>
           <height>21</height>
          </rect>
@@ -6321,7 +6321,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>75</y>
+          <y>100</y>
           <width>141</width>
           <height>21</height>
          </rect>
@@ -6340,7 +6340,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>100</y>
+          <y>75</y>
           <width>141</width>
           <height>21</height>
          </rect>
@@ -6350,6 +6350,25 @@
         </property>
         <property name="text">
          <string>Enable Ra/Dec</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="hidParkStop">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>25</y>
+          <width>141</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which were lit be sun.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Enable Park/Stop</string>
         </property>
        </widget>
       </widget>

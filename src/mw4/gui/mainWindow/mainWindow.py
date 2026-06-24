@@ -191,9 +191,6 @@ class MainWindow(MWidget):
         self.ui.cometProgDatabaseGroup.setEnabled(isMountReady)
         self.ui.asteroidProgDatabaseGroup.setEnabled(isMountReady)
         self.ui.progEarthRotationData.setEnabled(isMountReady)
-        #self.ui.telescopePointingGroup.setEnabled(isMountReady)
-        #self.ui.trackingGroup.setEnabled(isMountReady)
-        #self.ui.parkingGroup.setEnabled(isMountReady)
 
     def smartTabGui(self) -> None:
         tabChanged = False

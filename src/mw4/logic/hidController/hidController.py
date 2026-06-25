@@ -111,6 +111,18 @@ class HidController:
             return False, []
         return True, data
 
+    def processHidController(self, report) -> tuple[bool, list]:
+        connect, reportNew = self.readHidController()
+        if not connect:
+            return False, report
+        if len(reportNew) == 0:
+            return True, report
+        if not self.isNewerData(reportNew, report):
+            return True, reportNew
+        reportNew = self.convertData(self.config.deviceName, reportNew)
+        self.sendHidControllerSignals(reportNew, report)
+        return True, reportNew
+
     def setupDevice(self) -> bool:
         vendorId = productId = 0
         for device in hid.enumerate():
@@ -131,18 +143,6 @@ class HidController:
             return False
         self.log.debug(f"HidController: [{self.config.deviceName} {vendorId}:{productId}]")
         return True
-
-    def processHidController(self, report) -> tuple[bool, list]:
-        connect, reportNew = self.readHidController()
-        if not connect:
-            return False, report
-        if len(reportNew) == 0:
-            return True, report
-        if not self.isNewerData(reportNew, report):
-            return True, report
-        reportNew = self.convertData(self.config.deviceName, reportNew)
-        self.sendHidControllerSignals(reportNew, report)
-        return True, reportNew
 
     def handleDeviceConnect(self) -> None:
         if not self.setupDevice() :

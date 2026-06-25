@@ -357,8 +357,8 @@ def test_connectDevice_exceptionOnOpen(hc):
     assert result is False
 
 
-def test_runnerHidController_noNewData(hc):
-    """Test runnerHidController when no new data received."""
+def test_processHidController_noNewData(hc):
+    """Test processHidController when no new data received."""
     reportOld = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     class MockGamepad:
@@ -372,8 +372,8 @@ def test_runnerHidController_noNewData(hc):
     assert reportNew == reportOld
 
 
-def test_runnerHidController_withNewData(hc):
-    """Test runnerHidController with new data."""
+def test_processHidController_withNewData(hc):
+    """Test processHidController with new data."""
     reportOld = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     class MockGamepad:
@@ -385,8 +385,8 @@ def test_runnerHidController_withNewData(hc):
     assert connect is True
 
 
-def test_runnerHidController_disconnected(hc):
-    """Test runnerHidController when device disconnected."""
+def test_processHidController_disconnected(hc):
+    """Test processHidController when device disconnected."""
     reportOld = [0] * 16
 
     class MockGamepad:
@@ -448,7 +448,7 @@ def test_handleDeviceDisconnect_success(hc):
     hc.signals.deviceDisconnected.disconnect()
 
 
-def test_runnerHidController_deviceNotFound_Attempts(hc):
+def test_processHidController_deviceNotFound_Attempts(hc):
     hc.config.deviceName = "NotExisting"
     hc.stopEvent.clear()
     attempt_count = [0]
@@ -470,7 +470,7 @@ def test_runnerHidController_deviceNotFound_Attempts(hc):
     assert attempt_count[0] >= 3
 
 
-def test_runnerHidController_normalRun(hc):
+def test_processHidController_normalRun(hc):
     hc.config.deviceName = "Pro Controller"
     hc.stopEvent.clear()
     call_count = [0]
@@ -507,7 +507,7 @@ def test_runnerHidController_normalRun(hc):
     assert hc.stopEvent.is_set() is True
 
 
-def test_runnerHidController_processesNewData(hc):
+def test_processHidController_processesNewData(hc):
     hc.config.deviceName = "Pro Controller"
     hc.stopEvent.clear()
 
@@ -692,8 +692,8 @@ def test_convertData_unknownDevice(hc):
     assert result == [0, 0, 0, 0, 0, 0, 0]
 
 
-def test_runnerHidController_sameDataNoProcessing(hc):
-    """Test runnerHidController when data is same as old (not newer)."""
+def test_processHidController_sameDataNoProcessing(hc):
+    """Test processHidController when data is same as old (not newer)."""
     reportOld = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 0, 0, 0]
 
     class MockGamepad:
@@ -712,7 +712,7 @@ def test_runnerHidController_sameDataNoProcessing(hc):
 
 
 def test_runnerCommunicationLoop_callsDisconnect(hc):
-    """Test that line 169 (handleDeviceDisconnect) is called when runnerHidController returns False."""
+    """Test that line 169 (handleDeviceDisconnect) is called when processHidController returns False."""
     hc.config.deviceName = "Test Device"
     hc.stopEvent.clear()
     hc.deviceConnected = True
@@ -739,7 +739,7 @@ def test_runnerCommunicationLoop_callsDisconnect(hc):
     mock_device = mock.Mock()
     hc.hidControllerDevice = mock_device
 
-    with mock.patch.object(hc, "runnerHidController", side_effect=mock_runner):
+    with mock.patch.object(hc, "processHidController", side_effect=mock_runner):
         with mock.patch.object(hc.stopEvent, "wait", side_effect=wait_callback):
             hc.runnerCommunicationLoop()
 

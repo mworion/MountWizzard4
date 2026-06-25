@@ -111,7 +111,7 @@ class HidController:
             return False, []
         return True, data
 
-    def connectDevice(self) -> bool:
+    def setupDevice(self) -> bool:
         vendorId = productId = 0
         for device in hid.enumerate():
             if device["product_string"] == self.config.deviceName:
@@ -132,20 +132,20 @@ class HidController:
         self.log.debug(f"HidController: [{self.config.deviceName} {vendorId}:{productId}]")
         return True
 
-    def runnerHidController(self, reportOld) -> tuple[bool, list]:
-        connect, report = self.readHidController()
+    def processHidController(self, report) -> tuple[bool, list]:
+        connect, reportNew = self.readHidController()
         if not connect:
-            return False, reportOld
-        if len(report) == 0:
-            return True, reportOld
-        if not self.isNewerData(report, reportOld):
+            return False, report
+        if len(reportNew) == 0:
             return True, report
-        report = self.convertData(self.config.deviceName, report)
-        self.sendHidControllerSignals(report, reportOld)
-        return True, report
+        if not self.isNewerData(reportNew, report):
+            return True, report
+        reportNew = self.convertData(self.config.deviceName, reportNew)
+        self.sendHidControllerSignals(reportNew, report)
+        return True, reportNew
 
     def handleDeviceConnect(self) -> None:
-        if not self.connectDevice():
+        if not self.setupDevice() :
             return
         if not self.deviceConnected:
             self.signals.deviceConnected.emit(self.config.deviceName)
@@ -159,12 +159,12 @@ class HidController:
         self.signals.deviceDisconnected.emit(self.config.deviceName)
 
     def runnerCommunicationLoop(self) -> None:
-        reportOld = [0] * 16
+        report = [0] * 16
         while not self.stopEvent.is_set():
             if not self.deviceConnected:
                 self.handleDeviceConnect()
             else:
-                connect, reportOld = self.runnerHidController(reportOld)
+                connect, report = self.processHidController(report)
                 if not connect:
                     self.handleDeviceDisconnect()
             self.stopEvent.wait(timeout=self.UPDATE_RATE)

@@ -331,7 +331,7 @@ def test_connectDevice_success(hc):
         mock.patch.object(hid, "enumerate", return_value=hid_devices),
         mock.patch.object(hid, "device", return_value=mock_device),
     ):
-        result = hc.connectDevice()
+        result = hc.setupDevice()
     assert result is True
     mock_device.open.assert_called_once_with(1, 2)
     mock_device.set_nonblocking.assert_called_once_with(True)
@@ -340,7 +340,7 @@ def test_connectDevice_success(hc):
 def test_connectDevice_deviceNotFound(hc):
     hc.config.deviceName = "NotExisting"
     with mock.patch.object(hid, "enumerate", return_value=[]):
-        result = hc.connectDevice()
+        result = hc.setupDevice()
     assert result is False
 
 
@@ -353,7 +353,7 @@ def test_connectDevice_exceptionOnOpen(hc):
         mock.patch.object(hid, "enumerate", return_value=hid_devices),
         mock.patch.object(hid, "device", return_value=mock_device),
     ):
-        result = hc.connectDevice()
+        result = hc.setupDevice()
     assert result is False
 
 
@@ -366,7 +366,7 @@ def test_runnerHidController_noNewData(hc):
             return []
 
     hc.hidControllerDevice = MockGamepad()
-    connect, reportNew = hc.runnerHidController(reportOld)
+    connect, reportNew = hc.processHidController(reportOld)
     # Should return same report when empty data received
     assert connect is True
     assert reportNew == reportOld
@@ -381,7 +381,7 @@ def test_runnerHidController_withNewData(hc):
             return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
     hc.hidControllerDevice = MockGamepad()
-    connect, reportNew = hc.runnerHidController(reportOld)
+    connect, reportNew = hc.processHidController(reportOld)
     assert connect is True
 
 
@@ -394,7 +394,7 @@ def test_runnerHidController_disconnected(hc):
             raise OSError("Device error")
 
     hc.hidControllerDevice = MockGamepad()
-    connect, reportNew = hc.runnerHidController(reportOld)
+    connect, reportNew = hc.processHidController(reportOld)
     assert connect is False
     assert reportNew == reportOld
 
@@ -703,7 +703,7 @@ def test_runnerHidController_sameDataNoProcessing(hc):
 
     hc.hidControllerDevice = MockGamepad()
     with mock.patch.object(hc, "sendHidControllerSignals") as mock_send:
-        connect, reportNew = hc.runnerHidController(reportOld)
+        connect, reportNew = hc.processHidController(reportOld)
         # Should return without processing when data is not newer
         assert connect is True
         assert reportNew == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]

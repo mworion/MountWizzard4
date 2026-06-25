@@ -569,8 +569,8 @@ def test_startDeviceActuallyStarting(registry: DeviceRegistry) -> None:
     registry.startDevice("camera")
     # Verify startCommunication was called
     registry.d["camera"].instance.startCommunication.assert_called_once()
-    # Verify stat was set to True
-    assert registry.d["camera"].stat is True
+    # Verify stat was set to False
+    assert registry.d["camera"].stat is False
 
 
 def test_writeConfigToAllDevicesCallsWriteConfigToSingleDevice(

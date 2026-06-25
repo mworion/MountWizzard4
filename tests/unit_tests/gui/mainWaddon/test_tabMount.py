@@ -199,6 +199,27 @@ def test_setHidIcon_status2(function):
     ui.setPixmap.assert_called_once()
 
 
+def test_setHidIcons_connectedWithFeatureDisabled(function):
+    """Test setHidIcons when connected but feature disabled (status=1)."""
+    with mock.patch.object(function, "setHidIcon") as mock_setHidIcon:
+        # Set connected status
+        function.app.dReg["hidController"].stat = True
+        # Set one config flag to False (feature disabled)
+        function.app.dReg["hidController"].instance.config.moveAltAz = False
+        function.app.dReg["hidController"].instance.config.moveRaDec = True
+        function.app.dReg["hidController"].instance.config.tracking = True
+        function.app.dReg["hidController"].instance.config.parkStop = True
+        function.app.dReg["hidController"].instance.config.dome = True
+        
+        function.setHidIcons()
+        
+        # Verify all 5 icons were updated
+        assert mock_setHidIcon.call_count == 5
+        # Verify first call (moveAltAz) got status=1 (connected but disabled)
+        calls = mock_setHidIcon.call_args_list
+        assert calls[0][0][1] == 1  # First icon should have status=1
+
+
 def test_setHidIcons(function):
     with mock.patch.object(function, "setHidIcon") as mock_setHidIcon:
         function.setHidIcons()

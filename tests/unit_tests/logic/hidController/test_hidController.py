@@ -690,3 +690,63 @@ def test_convertData_unknownDevice(hc):
     iR = [0, 1, 2, 3, 0, 5, 0, 7, 0, 9, 0, 11]
     result = hc.convertData("UnknownDevice", iR)
     assert result == [0, 0, 0, 0, 0, 0, 0]
+
+
+def test_runnerHidController_sameDataNoProcessing(hc):
+    """Test runnerHidController when data is same as old (not newer)."""
+    reportOld = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 0, 0, 0]
+
+    class MockGamepad:
+        def read(self, size):
+            # Return same data as before
+            return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+    hc.hidControllerDevice = MockGamepad()
+    with mock.patch.object(hc, "sendHidControllerSignals") as mock_send:
+        connect, reportNew = hc.runnerHidController(reportOld)
+        # Should return without processing when data is not newer
+        assert connect is True
+        assert reportNew == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        # Verify no signals were sent
+        mock_send.assert_not_called()
+
+
+def test_runnerCommunicationLoop_callsDisconnect(hc):
+    """Test that line 169 (handleDeviceDisconnect) is called when runnerHidController returns False."""
+    hc.config.deviceName = "Test Device"
+    hc.stopEvent.clear()
+    hc.deviceConnected = True
+
+    call_count = [0]
+
+    def mock_runner(reportOld):
+        call_count[0] += 1
+        if call_count[0] == 1:
+            # Return False to trigger disconnect path
+            return False, reportOld
+        # After disconnect, return True to avoid issues
+        return True, reportOld
+
+    disconnected_signals = []
+    hc.signals.deviceDisconnected.connect(lambda n: disconnected_signals.append(n))
+
+    def wait_callback(timeout=None):
+        # Set stop event after first wait to exit loop
+        hc.stopEvent.set()
+        return False
+
+    # Create a mock device with close method
+    mock_device = mock.Mock()
+    hc.hidControllerDevice = mock_device
+
+    with mock.patch.object(hc, "runnerHidController", side_effect=mock_runner):
+        with mock.patch.object(hc.stopEvent, "wait", side_effect=wait_callback):
+            hc.runnerCommunicationLoop()
+
+    # Verify runner was called
+    assert call_count[0] == 1
+    # Verify disconnect was called
+    assert len(disconnected_signals) == 1
+    assert disconnected_signals[0] == "Test Device"
+    # Verify device was closed
+    mock_device.close.assert_called_once()

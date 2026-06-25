@@ -59,7 +59,7 @@ class MountMove(TabAddon):
             },
         }
 
-        self.setupMoveClassic: dict[str, dict[str, Any]] = {
+        self.setRaDec: dict[str, dict[str, Any]] = {
             "N": {"button": self.ui.moveNorth, "coord": [1, 0]},
             "NE": {"button": self.ui.moveNorthEast, "coord": [1, 1]},
             "E": {"button": self.ui.moveEast, "coord": [0, 1]},
@@ -71,7 +71,7 @@ class MountMove(TabAddon):
             "STOP": {"button": self.ui.stopMoveAll, "coord": [0, 0]},
         }
 
-        self.setupMoveAltAz: dict[str, dict[str, Any]] = {
+        self.setAltAz: dict[str, dict[str, Any]] = {
             "N": {"button": self.ui.moveNorthAltAz, "coord": [1, 0]},
             "NE": {"button": self.ui.moveNorthEastAltAz, "coord": [1, 1]},
             "E": {"button": self.ui.moveEastAltAz, "coord": [0, 1]},
@@ -126,19 +126,12 @@ class MountMove(TabAddon):
         config["moveStepSizeAltAz"] = self.ui.moveStepSizeAltAz.currentIndex()
 
     def setupGuiMount(self) -> None:
-        for direction in self.setupMoveClassic:
-            self.setupMoveClassic[direction]["button"].clicked.connect(
-                partial(self.moveRaDec, direction)
-            )
-
-        for direction in self.setupMoveAltAz:
-            self.setupMoveAltAz[direction]["button"].clicked.connect(
-                partial(self.moveAltAz, direction)
-            )
-
-        for speed in self.slewSpeeds:
-            self.slewSpeeds[speed]["button"].clicked.connect(partial(self.setSlewSpeed, speed))
-
+        for d in self.setRaDec:
+            self.setRaDec[d]["button"].clicked.connect(partial(self.moveRaDec, d))
+        for d in self.setAltAz:
+            self.setAltAz[d]["button"].clicked.connect(partial(self.moveAltAz, d))
+        for s in self.slewSpeeds:
+            self.slewSpeeds[s]["button"].clicked.connect(partial(self.setSlewSpeed, s))
         self.ui.moveStepSizeAltAz.clear()
         for text in self.setupStepsizes:
             self.ui.moveStepSizeAltAz.addItem(text)
@@ -146,8 +139,8 @@ class MountMove(TabAddon):
     def stopMoveAll(self) -> None:
         self.app.dReg["mount"].obsSite.stopMoveAll()
         mainThreadSleep(250)
-        for uiR in self.setupMoveClassic:
-            changeStyleDynamic(self.setupMoveClassic[uiR]["button"], "run", False)
+        for uiR in self.setRaDec:
+            changeStyleDynamic(self.setRaDec[uiR]["button"], "run", False)
 
     def countDuration(self, duration: int) -> None:
         for t in range(duration * 10, -1, -1):
@@ -169,8 +162,8 @@ class MountMove(TabAddon):
         self.stopMoveAll()
 
     def convertDirection(self, directionVector: list[int]) -> str:
-        for direction in self.setupMoveClassic:
-            if self.setupMoveClassic[direction]["coord"] == directionVector:
+        for direction in self.setRaDec:
+            if self.setRaDec[direction]["coord"] == directionVector:
                 return direction
         return "STOP"
 
@@ -191,15 +184,13 @@ class MountMove(TabAddon):
         self.moveRaDec(direction)
 
     def moveRaDec(self, direction: str) -> None:
-        uiList = self.setupMoveClassic
+        uiList = self.setRaDec
         for key in uiList:
             changeStyleDynamic(uiList[key]["button"], "run", False)
         changeStyleDynamic(uiList[direction]["button"], "run", True)
-
         coord = uiList[direction]["coord"]
         if coord == [0, 0]:
             self.stopMoveAll()
-
         if coord[0] == 1:
             self.app.dReg["mount"].obsSite.moveNorth()
         elif coord[0] == -1:
@@ -207,7 +198,6 @@ class MountMove(TabAddon):
         elif coord[0] == 0:
             self.app.dReg["mount"].obsSite.stopMoveNorth()
             self.app.dReg["mount"].obsSite.stopMoveSouth()
-
         if coord[1] == 1:
             self.app.dReg["mount"].obsSite.moveEast()
         elif coord[1] == -1:
@@ -215,15 +205,14 @@ class MountMove(TabAddon):
         elif coord[1] == 0:
             self.app.dReg["mount"].obsSite.stopMoveEast()
             self.app.dReg["mount"].obsSite.stopMoveWest()
-
         self.moveDuration()
 
     def setSlewSpeed(self, speed):
         self.slewSpeeds[speed]["func"]()
 
     def moveAltAzDefault(self) -> None:
-        for key in self.setupMoveAltAz:
-            changeStyleDynamic(self.setupMoveAltAz[key]["button"], "run", False)
+        for key in self.setAltAz:
+            changeStyleDynamic(self.setAltAz[key]["button"], "run", False)
 
     def moveAltAzHid(self, value: int) -> None:
         if value == 0b00000000:
@@ -239,9 +228,9 @@ class MountMove(TabAddon):
         self.moveAltAz(direction)
 
     def moveAltAz(self, direction: str) -> None:
-        changeStyleDynamic(self.setupMoveAltAz[direction]["button"], "run", True)
+        changeStyleDynamic(self.setAltAz[direction]["button"], "run", True)
         step = self.setupStepsizes[self.ui.moveStepSizeAltAz.currentText()]
-        coord = self.setupMoveAltAz[direction]["coord"]
+        coord = self.setAltAz[direction]["coord"]
         obs = self.app.dReg["mount"].obsSite
         targetAlt = Angle(degrees=obs.Alt.degrees + coord[0] * step)
         targetAz = Angle(degrees=(obs.Az.degrees + coord[1] * step) % 360)

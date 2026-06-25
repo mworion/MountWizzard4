@@ -196,7 +196,7 @@ class Geometry:
             self.log.warning(f"[{mountType}] not in database")
             return False
 
-        self.log.info(f"using [{mountType}] geometry")
+        self.log.info(f"Using [{mountType}] geometry")
         vars(self).update(self.geometryData[mountType])
         return True
 

@@ -568,21 +568,21 @@ class Ui_SettingDialog(object):
         self.GroupClockSync.setProperty(u"large", True)
         self.syncTimeCont = QRadioButton(self.GroupClockSync)
         self.syncTimeCont.setObjectName(u"syncTimeCont")
-        self.syncTimeCont.setEnabled(False)
+        self.syncTimeCont.setEnabled(True)
         self.syncTimeCont.setGeometry(QRect(60, 40, 171, 21))
         self.syncTimeCont.setFont(font1)
         self.syncTimeCont.setMouseTracking(False)
         self.syncTimeCont.setChecked(False)
         self.syncTimeNotTrack = QRadioButton(self.GroupClockSync)
         self.syncTimeNotTrack.setObjectName(u"syncTimeNotTrack")
-        self.syncTimeNotTrack.setEnabled(False)
+        self.syncTimeNotTrack.setEnabled(True)
         self.syncTimeNotTrack.setGeometry(QRect(60, 60, 176, 21))
         self.syncTimeNotTrack.setFont(font1)
         self.syncTimeNotTrack.setMouseTracking(False)
         self.syncTimeNotTrack.setChecked(False)
         self.syncTimeNone = QRadioButton(self.GroupClockSync)
         self.syncTimeNone.setObjectName(u"syncTimeNone")
-        self.syncTimeNone.setEnabled(False)
+        self.syncTimeNone.setEnabled(True)
         self.syncTimeNone.setGeometry(QRect(60, 20, 171, 21))
         self.syncTimeNone.setFont(font1)
         self.syncTimeNone.setMouseTracking(False)
@@ -1683,7 +1683,7 @@ class Ui_SettingDialog(object):
 
         self.retranslateUi(SettingDialog)
 
-        self.tabWidget.setCurrentIndex(4)
+        self.tabWidget.setCurrentIndex(0)
         self.tabDomeExplain.setCurrentIndex(2)
 
 

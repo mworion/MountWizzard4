@@ -20,6 +20,7 @@ import unittest.mock as mock
 from mw4.base.deviceRegistry import DeviceEntry
 from mw4.gui.mainWaddon.tabAlmanac import Almanac
 from mw4.gui.mainWindow.mainWindow import MainWindow
+from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QWidget
@@ -346,7 +347,7 @@ def test_switchProfile_switches_config(mainWindow):
 def test_loadProfileGUI_invalid_file(mainWindow):
     """Test loadProfileGUI when file invalid."""
     with (
-        mock.patch.object(mainWindow, "openFile", return_value=Path("")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("")),
         mock.patch.object(Path, "is_file", return_value=False),
     ):
         mainWindow.loadProfileGUI()
@@ -355,7 +356,7 @@ def test_loadProfileGUI_invalid_file(mainWindow):
 def test_loadProfileGUI_valid_config(mainWindow):
     """Test loadProfileGUI with valid configuration."""
     with (
-        mock.patch.object(mainWindow, "openFile", return_value=Path("test.cfg")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("test.cfg")),
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(
             mw4.gui.mainWindow.mainWindow, "loadConfig", return_value={"test": 1}
@@ -369,7 +370,7 @@ def test_loadProfileGUI_valid_config(mainWindow):
 def test_saveProfileAs_valid_config(mainWindow):
     """Test saveProfileAs with valid configuration."""
     with (
-        mock.patch.object(mainWindow, "saveFile", return_value=Path("test.cfg")),
+        mock.patch.object(MWFileDialog, "getSaveFileName", return_value=Path("test.cfg")),
         mock.patch.object(mw4.gui.mainWindow.mainWindow, "saveConfig", return_value=True),
         mock.patch.object(mainWindow.app, "storeConfig"),
         mock.patch.object(mainWindow, "storeConfig"),

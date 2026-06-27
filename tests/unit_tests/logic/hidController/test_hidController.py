@@ -712,7 +712,8 @@ def test_processHidController_sameDataNoProcessing(hc):
 
 
 def test_runnerCommunicationLoop_callsDisconnect(hc):
-    """Test that line 169 (handleDeviceDisconnect) is called when processHidController returns False."""
+    """Test that handleDeviceDisconnect is called when processHidController
+    returns False (line 169)."""
     hc.config.deviceName = "Test Device"
     hc.stopEvent.clear()
     hc.deviceConnected = True
@@ -739,9 +740,11 @@ def test_runnerCommunicationLoop_callsDisconnect(hc):
     mock_device = mock.Mock()
     hc.hidControllerDevice = mock_device
 
-    with mock.patch.object(hc, "processHidController", side_effect=mock_runner):
-        with mock.patch.object(hc.stopEvent, "wait", side_effect=wait_callback):
-            hc.runnerCommunicationLoop()
+    with (
+        mock.patch.object(hc, "processHidController", side_effect=mock_runner),
+        mock.patch.object(hc.stopEvent, "wait", side_effect=wait_callback),
+    ):
+        hc.runnerCommunicationLoop()
 
     # Verify runner was called
     assert call_count[0] == 1

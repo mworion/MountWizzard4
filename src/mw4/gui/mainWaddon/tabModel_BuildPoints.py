@@ -16,6 +16,7 @@
 from astroquery.simbad import Simbad
 from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.tabAddon import TabAddon
+from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from PySide6.QtCore import QMutex
 from skyfield.api import Angle
@@ -279,7 +280,7 @@ class BuildPoints(TabAddon):
         fileTypes = "Build Point Files (*.bpts)"
         fileTypes += ";; CSV Files (*.csv)"
         fileTypes += ";; Model Files (*.model)"
-        fullFileName = self.mainW.openFile(
+        fullFileName = MWFileDialog.getOpenFileName(
             self.mainW, "Open build point file", folder, fileTypes
         )
         suc = self.app.buildPoint.loadBuildP(fullFileName)
@@ -308,7 +309,7 @@ class BuildPoints(TabAddon):
 
     def saveBuildFileAs(self) -> None:
         folder = self.app.mwGlob["configDir"]
-        saveFilePath = self.mainW.saveFile(
+        saveFilePath = MWFileDialog.getSaveFileName(
             self.mainW, "Save build point file", folder, "Build point files (*.bpts)"
         )
         if saveFilePath.is_dir() or not saveFilePath.stem:

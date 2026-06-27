@@ -20,6 +20,7 @@ import shutil
 import unittest.mock as mock
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
 from mw4.gui.extWindows.image.imageW import ImageWindow
+from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
@@ -151,14 +152,16 @@ def test_updateWindowsStats_noCameraDevice(function):
 
 def test_selectImage_1(function):
     function.ui.autoSolve.setChecked(False)
-    with mock.patch.object(MWidget, "openFile", return_value=Path("xyz.fits")):
+    with mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("xyz.fits")):
         function.selectImage()
 
 
 def test_selectImage_2(function):
     function.ui.autoSolve.setChecked(False)
     with (
-        mock.patch.object(MWidget, "openFile", return_value=Path("c:/test/test.fits")),
+        mock.patch.object(
+            MWFileDialog, "getOpenFileName", return_value=Path("c:/test/test.fits")
+        ),
         mock.patch.object(Path, "is_file", return_value=True),
     ):
         function.selectImage()
@@ -168,7 +171,9 @@ def test_selectImage_2(function):
 def test_selectImage_3(function):
     function.ui.autoSolve.setChecked(True)
     with (
-        mock.patch.object(MWidget, "openFile", return_value=Path("c:/test/test.fits")),
+        mock.patch.object(
+            MWFileDialog, "getOpenFileName", return_value=Path("c:/test/test.fits")
+        ),
         mock.patch.object(Path, "is_file", return_value=True),
     ):
         function.selectImage()
@@ -434,14 +439,20 @@ def test_slewDirect_1(function):
 
 def test_slewDirect_2(function):
     function.app.dReg.d["mount"].stat = True
-    with mock.patch.object(function, "messageDialog", return_value=False):
+    with mock.patch(
+        "mw4.gui.extWindows.image.imageW.MWMessageDialog.question",
+        return_value=False,
+    ):
         function.slewDirect(Angle(hours=0), Angle(degrees=0))
 
 
 def test_slewDirect_3(function):
     function.app.dReg.d["mount"].stat = True
     with (
-        mock.patch.object(function, "messageDialog", return_value=True),
+        mock.patch(
+            "mw4.gui.extWindows.image.imageW.MWMessageDialog.question",
+            return_value=True,
+        ),
         mock.patch.object(function.slewInterface, "slewTargetRaDec", return_value=True),
     ):
         function.slewDirect(Angle(hours=0), Angle(degrees=0))

@@ -16,6 +16,7 @@
 from astropy.io import fits
 from collections.abc import Callable
 from mw4.gui.mainWaddon.tabAddon import TabAddon
+from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from pathlib import Path
 from PySide6.QtWidgets import QApplication, QListView
 from typing import Any
@@ -145,6 +146,8 @@ class Rename(TabAddon):
 
     def chooseDir(self) -> None:
         folder = self.ui.renameDir.text()
-        self.renameDir = self.mainW.openDir(self.mainW, "Choose Input Dir", folder)
+        self.renameDir = MWFileDialog.getExistingDirectory(
+            self.mainW, "Choose Input Dir", folder
+        )
         self.ui.renameDir.setText(str(self.renameDir))
         self.ui.renameProgress.setValue(0)

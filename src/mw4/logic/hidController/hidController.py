@@ -145,7 +145,7 @@ class HidController:
         return True
 
     def handleDeviceConnect(self) -> None:
-        if not self.setupDevice() :
+        if not self.setupDevice():
             return
         if not self.deviceConnected:
             self.signals.deviceConnected.emit(self.config.deviceName)

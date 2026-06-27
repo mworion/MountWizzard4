@@ -18,6 +18,7 @@ import numpy as np
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.gui.utilities.qtInputDialog import MWInputDialog
+from mw4.gui.utilities.qtMessageDialog import MWMessageDialog
 from mw4.logic.modelBuild.modelRunSupport import (
     convertAngleToFloat,
     convertFloatToAngle,
@@ -208,7 +209,7 @@ class ModelManage(TabAddon):
             return
 
         modelName = self.ui.nameList.currentItem().text()
-        if not self.mainW.messageDialog(
+        if not MWMessageDialog.question(
             self.mainW, "Delete model", f"Delete model [{modelName}] from database?"
         ):
             return
@@ -278,7 +279,7 @@ class ModelManage(TabAddon):
         self.app.dReg["mount"].instance.getModel()
 
     def clearModel(self) -> None:
-        if not self.mainW.messageDialog(
+        if not MWMessageDialog.question(
             self.mainW, "Clear model", "Clear actual alignment model"
         ):
             return
@@ -403,7 +404,7 @@ class ModelManage(TabAddon):
         text = f"Do you want to delete \npoint {index:3.0f}"
         text += f"\nRMS of {error:5.1f} arcsec"
 
-        if not self.mainW.messageDialog(self.mainW, "Deleting point", text):
+        if not MWMessageDialog.question(self.mainW, "Deleting point", text):
             return
         if not self.app.dReg["mount"].model.deletePoint(index):
             self.msg.emit(2, "Model", "Manage error", f"Point {index:3.0f} cannot be deleted")

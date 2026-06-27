@@ -210,9 +210,9 @@ def test_setHidIcons_connectedWithFeatureDisabled(function):
         function.app.dReg["hidController"].instance.config.tracking = True
         function.app.dReg["hidController"].instance.config.parkStop = True
         function.app.dReg["hidController"].instance.config.dome = True
-        
+
         function.setHidIcons()
-        
+
         # Verify all 5 icons were updated
         assert mock_setHidIcon.call_count == 5
         # Verify first call (moveAltAz) got status=1 (connected but disabled)

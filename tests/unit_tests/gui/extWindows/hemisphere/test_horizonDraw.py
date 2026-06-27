@@ -24,6 +24,7 @@ import unittest.mock as mock
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from mw4.gui.extWindows.hemisphere.horizonDraw import HorizonDraw
 from mw4.gui.utilities.gCustomViewBox import CustomViewBox
+from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from pathlib import Path
 from PySide6.QtCore import QPointF
 from PySide6.QtWidgets import QApplication
@@ -93,7 +94,7 @@ def test_mouseMovedHorizon_2(function):
 
 def test_loadTerrainImage_1(function):
     with (
-        mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("terrain.jpg")),
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(cv2, "imread", return_value=np.array([[0, 0], [0, 0]])),
         mock.patch.object(cv2, "resize", return_value=np.ones((360, 180))),
@@ -104,7 +105,7 @@ def test_loadTerrainImage_1(function):
 
 def test_loadTerrainImage_2(function):
     with (
-        mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("terrain.jpg")),
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(cv2, "imread", return_value=np.array([[0, 0, 0, 0], [0, 0, 0, 0]])),
         mock.patch.object(cv2, "resize", return_value=np.ones((360, 180))),
@@ -115,7 +116,7 @@ def test_loadTerrainImage_2(function):
 
 def test_selectTerrainFile_1(function):
     with (
-        mock.patch.object(function, "openFile", return_value=Path("")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("")),
         mock.patch.object(Path, "is_file", return_value=False),
     ):
         function.selectTerrainFile()
@@ -123,7 +124,7 @@ def test_selectTerrainFile_1(function):
 
 def test_selectTerrainFile_2(function):
     with (
-        mock.patch.object(function, "openFile", return_value=Path("terrain.jpg")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("terrain.jpg")),
         mock.patch.object(function.parent, "redrawAll"),
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(function, "loadTerrainImage"),
@@ -138,7 +139,7 @@ def test_clearTerrainFile(function):
 
 def test_loadHorizonMask_1(function):
     with (
-        mock.patch.object(function, "openFile", return_value=Path("test.test")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("test.test")),
         mock.patch.object(Path, "is_file", return_value=False),
     ):
         function.loadHorizonMask()
@@ -146,7 +147,7 @@ def test_loadHorizonMask_1(function):
 
 def test_loadHorizonMask_2(function):
     with (
-        mock.patch.object(function, "openFile", return_value=Path("test.bpts")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("test.bpts")),
         mock.patch.object(function.app.buildPoint, "loadHorizonP", return_value=False),
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(function, "drawTab"),
@@ -156,7 +157,7 @@ def test_loadHorizonMask_2(function):
 
 def test_loadHorizonMask_3(function):
     with (
-        mock.patch.object(function, "openFile", return_value=Path("test.bpts")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("test.bpts")),
         mock.patch.object(function.app.buildPoint, "loadHorizonP", return_value=True),
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(function, "drawTab"),
@@ -167,7 +168,7 @@ def test_loadHorizonMask_3(function):
 def test_saveHorizonMask_1(function):
     function.ui.horizonMaskFileName.setText("test")
     with (
-        mock.patch.object(function, "openFile", return_value=Path("test.bpts")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("test.bpts")),
         mock.patch.object(function.app.buildPoint, "saveHorizonP", return_value=True),
     ):
         function.saveHorizonMask()
@@ -181,7 +182,7 @@ def test_saveHorizonMaskFile_2(function):
 def test_saveHorizonMaskFile_3(function):
     function.ui.horizonMaskFileName.setText("test")
     with (
-        mock.patch.object(function, "saveFile", return_value=Path("build.bpts")),
+        mock.patch.object(MWFileDialog, "getSaveFileName", return_value=Path("build.bpts")),
         mock.patch.object(function.app.buildPoint, "saveHorizonP", return_value=False),
     ):
         function.saveHorizonMask()
@@ -189,20 +190,20 @@ def test_saveHorizonMaskFile_3(function):
 
 def test_saveHorizonMaskFileAs_1(function):
     with (
-        mock.patch.object(function, "saveFile", return_value=Path("build.bpts")),
+        mock.patch.object(MWFileDialog, "getSaveFileName", return_value=Path("build.bpts")),
         mock.patch.object(function.app.buildPoint, "saveHorizonP", return_value=True),
     ):
         function.saveHorizonMaskAs()
 
 
 def test_saveHorizonMaskFileAs_2(function):
-    with mock.patch.object(function, "saveFile", return_value=(Path(""))):
+    with mock.patch.object(MWFileDialog, "getSaveFileName", return_value=(Path(""))):
         function.saveHorizonMaskAs()
 
 
 def test_saveHorizonMaskFileAs_3(function):
     with (
-        mock.patch.object(function, "saveFile", return_value=Path("build.bpts")),
+        mock.patch.object(MWFileDialog, "getSaveFileName", return_value=Path("build.bpts")),
         mock.patch.object(function.app.data, "saveHorizonP", return_value=False),
     ):
         function.saveHorizonMaskAs()

@@ -20,6 +20,7 @@ import shutil
 import unittest.mock as mock
 from astropy.io import fits
 from mw4.gui.mainWaddon.tabTools_Rename import Rename
+from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path
@@ -243,10 +244,10 @@ def test_renameRunGUI_4(function):
 
 
 def test_chooseDir_1(function):
-    with mock.patch.object(MWidget, "openDir", return_value=("", "", "")):
+    with mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=("", "", "")):
         function.chooseDir()
 
 
 def test_chooseDir_2(function):
-    with mock.patch.object(MWidget, "openDir", return_value=("test", "", "")):
+    with mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=("test", "", "")):
         function.chooseDir()

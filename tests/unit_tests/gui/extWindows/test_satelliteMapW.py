@@ -33,7 +33,10 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
-    with mock.patch.object(function, "setPositionWindow"), mock.patch.object(function, "loadMap"):
+    with (
+        mock.patch.object(function, "setPositionWindow"),
+        mock.patch.object(function, "loadMap"),
+    ):
         function.initConfig()
 
 

@@ -19,6 +19,7 @@ from mw4.base.transform import diffModulusAbs
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from mw4.gui.utilities.generateSprites import makePointer
 from mw4.gui.utilities.qtMain import MWidget
+from mw4.gui.utilities.qtMessageDialog import MWMessageDialog
 from pyqtgraph.GraphicsScene.mouseEvents import MouseClickEvent
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QFont
@@ -366,8 +367,7 @@ class HemisphereDraw(MWidget):
         question += f"   Azimuth: {azimuth.degrees:3.1f}°</font>"
         question += "<br><br>Would you like to start slewing?<br>"
 
-        suc = self.messageDialog(self.parent, "Slewing mount", question)
-        if not suc:
+        if not MWMessageDialog.question(self.parent, "Slewing mount", question):
             return
         self.slewInterface.slewTargetAltAz(altitude, azimuth)
 
@@ -393,7 +393,7 @@ class HemisphereDraw(MWidget):
 
         buttons = ["Cancel", "Ortho Align", "Polar Align"]
         question = question + warning if isDAT else question
-        reply = self.messageDialog(self.parent, "Slewing mount", question, buttons)
+        reply = MWMessageDialog.question(self.parent, "Slewing mount", question, buttons)
         if reply == 0:
             return
         elif reply == 1:

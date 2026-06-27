@@ -19,6 +19,7 @@ import numpy as np
 import pytest
 import unittest.mock as mock
 from mw4.gui.extWindows.analyseW import AnalyseWindow
+from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
@@ -104,7 +105,7 @@ def test_processModel_2(function):
 
 def test_loadModel_1(function):
     with (
-        mock.patch.object(function, "openFile", return_value=Path("test.test")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("test.test")),
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(function, "processModel"),
     ):
@@ -113,7 +114,7 @@ def test_loadModel_1(function):
 
 def test_loadModel_2(function):
     with (
-        mock.patch.object(function, "openFile", return_value=Path("test.test")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("test.test")),
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(function, "processModel"),
     ):

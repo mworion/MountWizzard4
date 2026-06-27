@@ -17,6 +17,7 @@ from functools import partial
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.ascomClass import AscomClass
 from mw4.base.indiClass import IndiClass
+from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, getTabIndex, svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
@@ -296,14 +297,14 @@ class DevicePopup(MWidget):
 
     def selectAppPath(self, framework: str) -> None:
         folder = Path(self.platesolvers[framework]["appPath"].text())
-        appFolderPath = self.openDir(self, "Select App Path", folder)
+        appFolderPath = MWFileDialog.getExistingDirectory(self, "Select App Path", folder)
         if not appFolderPath.is_dir():
             return
         self.platesolvers[framework]["appPath"].setText(str(appFolderPath))
 
     def selectIndexPath(self, framework: str) -> None:
         folder = Path(self.platesolvers[framework]["indexPath"].text())
-        indexFolderPath = self.openDir(self, "Select Index Path", folder)
+        indexFolderPath = MWFileDialog.getExistingDirectory(self, "Select Index Path", folder)
         if not indexFolderPath.is_dir():
             return
         self.platesolvers[framework]["indexPath"].setText(str(indexFolderPath))
@@ -315,7 +316,7 @@ class DevicePopup(MWidget):
 
     def selectBoltwoodPath(self) -> None:
         folder = Path(self.ui.boltwoodPath.text()).parent
-        boltwoodFilePath = self.openFile(
+        boltwoodFilePath = MWFileDialog.getOpenFileName(
             self, "Select Boltwood Filepath", folder, "All Files (*)"
         )
         if not boltwoodFilePath.is_file():

@@ -17,6 +17,7 @@
 import pytest
 from astroquery.simbad import Simbad
 from mw4.gui.mainWaddon.tabModel_BuildPoints import BuildPoints
+from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path
@@ -233,7 +234,7 @@ def test_genModel_1(function):
 def test_loadBuildFile_1(function):
     with (
         mock.patch.object(Path, "is_file", return_value=False),
-        mock.patch.object(MWidget, "openFile", return_value=Path("test.bpts")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("test.bpts")),
         mock.patch.object(function.app.data, "loadBuildP", return_value=True),
     ):
         function.loadBuildFile()
@@ -243,7 +244,7 @@ def test_loadBuildFile_2(function):
     with (
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(function.app.data, "loadBuildP", return_value=True),
-        mock.patch.object(MWidget, "openFile", return_value=Path("")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("")),
     ):
         function.loadBuildFile()
 
@@ -251,7 +252,7 @@ def test_loadBuildFile_2(function):
 def test_loadBuildFile_3(function):
     with (
         mock.patch.object(Path, "is_file", return_value=True),
-        mock.patch.object(MWidget, "openFile", return_value=Path("test.bpts")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("test.bpts")),
         mock.patch.object(function.app.buildPoint, "loadBuildP", return_value=False),
     ):
         function.loadBuildFile()
@@ -260,7 +261,7 @@ def test_loadBuildFile_3(function):
 def test_saveBuildFile_1(function):
     function.ui.buildPFileName.setText("test")
     with (
-        mock.patch.object(MWidget, "saveFile", return_value=Path("test.bpts")),
+        mock.patch.object(MWFileDialog, "getSaveFileName", return_value=Path("test.bpts")),
         mock.patch.object(function.app.data, "saveBuildP", return_value=True),
     ):
         function.saveBuildFile()
@@ -274,7 +275,7 @@ def test_saveBuildFile_2(function):
 def test_saveBuildFile_3(function):
     function.ui.buildPFileName.setText("test")
     with (
-        mock.patch.object(MWidget, "saveFile", return_value=Path("test.bpts")),
+        mock.patch.object(MWFileDialog, "getSaveFileName", return_value=Path("test.bpts")),
         mock.patch.object(function.app.data, "saveBuildP", return_value=False),
     ):
         function.saveBuildFile()
@@ -282,20 +283,20 @@ def test_saveBuildFile_3(function):
 
 def test_saveBuildFileAs_1(function):
     with (
-        mock.patch.object(MWidget, "saveFile", return_value=Path("test.bpts")),
+        mock.patch.object(MWFileDialog, "getSaveFileName", return_value=Path("test.bpts")),
         mock.patch.object(function.app.data, "saveBuildP", return_value=True),
     ):
         function.saveBuildFileAs()
 
 
 def test_saveBuildFileAs_2(function):
-    with mock.patch.object(MWidget, "saveFile", return_value=Path("")):
+    with mock.patch.object(MWFileDialog, "getSaveFileName", return_value=Path("")):
         function.saveBuildFileAs()
 
 
 def test_saveBuildFileAs_3(function):
     with (
-        mock.patch.object(MWidget, "saveFile", return_value=Path("test.bpts")),
+        mock.patch.object(MWFileDialog, "getSaveFileName", return_value=Path("test.bpts")),
         mock.patch.object(function.app.data, "saveBuildP", return_value=False),
     ):
         function.saveBuildFileAs()

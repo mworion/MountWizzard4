@@ -21,6 +21,7 @@ import pytest
 import time
 import unittest.mock as mock
 from mw4.gui.mainWaddon.tabModel import Model
+from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.logic.modelBuild.modelRun import ModelData
@@ -350,7 +351,7 @@ def test_runBatch_4(function):
 
 
 def test_runFileModel_1(function):
-    with mock.patch.object(MWidget, "openMultipleFiles", return_value=[]):
+    with mock.patch.object(MWFileDialog, "getOpenFileNames", return_value=[]):
         function.runFileModel()
 
 
@@ -385,7 +386,7 @@ def test_runFileModel_2(function):
     val = (model, "Error")
     function.modelData = ModelData(App)
     with (
-        mock.patch.object(MWidget, "openMultipleFiles", return_value=[Path("test.model")]),
+        mock.patch.object(MWFileDialog, "getOpenFileNames", return_value=[Path("test.model")]),
         mock.patch.object(function, "clearAlignAndBackup", return_value=True),
         mock.patch.object(function.modelData, "buildProgModel"),
         mock.patch.object(mw4.gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val),
@@ -403,7 +404,7 @@ def test_runFileModel_3(function):
     files = [Path("test1.model"), Path("test2.model")]
     with (
         mock.patch.object(function, "clearAlignAndBackup", return_value=True),
-        mock.patch.object(MWidget, "openMultipleFiles", return_value=files),
+        mock.patch.object(MWFileDialog, "getOpenFileNames", return_value=files),
         mock.patch.object(
             function, "setupFilenamesAndDirectories", return_value=Path("m-test1-add")
         ),
@@ -423,7 +424,7 @@ def test_runFileModel_4(function):
     files = [Path("test1.model"), Path("test2.model")]
     with (
         mock.patch.object(function, "clearAlignAndBackup", return_value=False),
-        mock.patch.object(MWidget, "openMultipleFiles", return_value=files),
+        mock.patch.object(MWFileDialog, "getOpenFileNames", return_value=files),
         mock.patch.object(
             function, "setupFilenamesAndDirectories", return_value=Path("m-test1-add")
         ),

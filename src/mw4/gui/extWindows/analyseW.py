@@ -17,6 +17,7 @@ import json
 import numpy as np
 from collections.abc import Iterable
 from mw4.base.threadUtils import mainThreadSleep
+from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import analyse_ui
 from pathlib import Path
@@ -195,7 +196,9 @@ class AnalyseWindow(MWidget):
 
     def loadModel(self) -> None:
         folder = self.app.mwGlob["modelDir"]
-        loadFilePath = self.openFile(self, "Open model file", folder, "Model files (*.model)")
+        loadFilePath = MWFileDialog.getOpenFileName(
+            self, "Open model file", folder, "Model files (*.model)"
+        )
         if loadFilePath.is_file():
             self.processModel(loadFilePath)
 

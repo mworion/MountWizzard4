@@ -287,13 +287,19 @@ def test_drawModelIsoCurve_2(function):
 
 
 def test_slewDirect_1(function):
-    with mock.patch.object(function, "messageDialog", return_value=False):
+    with mock.patch(
+        "mw4.gui.extWindows.hemisphere.hemisphereDraw.MWMessageDialog.question",
+        return_value=False,
+    ):
         function.slewDirect(QPointF(1, 1))
 
 
 def test_slewDirect_2(function):
     with (
-        mock.patch.object(function, "messageDialog", return_value=True),
+        mock.patch(
+            "mw4.gui.extWindows.hemisphere.hemisphereDraw.MWMessageDialog.question",
+            return_value=True,
+        ),
         mock.patch.object(function.slewInterface, "slewTargetAltAz", return_value=False),
     ):
         function.slewDirect(QPointF(1, 1))
@@ -316,7 +322,10 @@ def test_slewStar_2(function):
     function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
     with (
         mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]),
-        mock.patch.object(function, "messageDialog", return_value=0),
+        mock.patch(
+            "mw4.gui.extWindows.hemisphere.hemisphereDraw.MWMessageDialog.question",
+            return_value=0,
+        ),
         mock.patch.object(
             function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
         ),
@@ -336,7 +345,10 @@ def test_slewStar_3(function):
     function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
     with (
         mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]),
-        mock.patch.object(function, "messageDialog", return_value=0),
+        mock.patch(
+            "mw4.gui.extWindows.hemisphere.hemisphereDraw.MWMessageDialog.question",
+            return_value=0,
+        ),
         mock.patch.object(
             function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
         ),
@@ -355,7 +367,10 @@ def test_slewStar_4(function):
     function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
     with (
         mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]),
-        mock.patch.object(function, "messageDialog", return_value=1),
+        mock.patch(
+            "mw4.gui.extWindows.hemisphere.hemisphereDraw.MWMessageDialog.question",
+            return_value=1,
+        ),
         mock.patch.object(
             function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
         ),
@@ -375,7 +390,10 @@ def test_slewStar_5(function):
     function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
     with (
         mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]),
-        mock.patch.object(function, "messageDialog", return_value=2),
+        mock.patch(
+            "mw4.gui.extWindows.hemisphere.hemisphereDraw.MWMessageDialog.question",
+            return_value=2,
+        ),
         mock.patch.object(
             function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
         ),

@@ -18,7 +18,6 @@ import logging
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtCustomWindow import CustomTitleBar
 from mw4.gui.utilities.qtHelpers import svg2icon
-from pathlib import Path
 from PySide6.QtCore import QEvent, QSize, Qt
 from PySide6.QtGui import (
     QGuiApplication,
@@ -115,42 +114,6 @@ class MWidget(QMainWindow, Styles):
         self.setStyleSheet(self.mw4Style)
         self.setMouseTracking(True)
         self.setWindowIcon(self.mwIcon)
-
-    def openFile(self, window: QWidget, title: str, folder: Path, filterSet: str) -> Path:
-        from mw4.gui.utilities.qtFileDialog import MWFileDialog
-        return MWFileDialog.getOpenFileName(window, title, folder, filterSet)
-
-    def openMultipleFiles(
-        self, window: QWidget, title: str, folder: Path, filterSet: str
-    ) -> list[Path]:
-        from mw4.gui.utilities.qtFileDialog import MWFileDialog
-        return MWFileDialog.getOpenFileNames(window, title, folder, filterSet)
-
-    def saveFile(
-        self,
-        window: QWidget,
-        title: str,
-        folder: Path,
-        filterSet: str,
-        enableDir: bool = False,
-    ) -> Path:
-        from mw4.gui.utilities.qtFileDialog import MWFileDialog
-        return MWFileDialog.getSaveFileName(window, title, folder, filterSet)
-
-    def openDir(self, window: QWidget, title: str, folder: Path) -> Path:
-        from mw4.gui.utilities.qtFileDialog import MWFileDialog
-        return MWFileDialog.getExistingDirectory(window, title, folder)
-
-    def messageDialog(
-        self,
-        parentWidget: QWidget,
-        title: str,
-        question: str,
-        buttons: list[str] | None = None,
-        iconType: int = 0,
-    ) -> bool | int:
-        from mw4.gui.utilities.qtMessageDialog import MWMessageDialog
-        return MWMessageDialog.question(parentWidget, title, question, buttons, iconType)
 
     def setPositionWindow(self, config: dict) -> None:
         height = config.get("height", self.minimumHeight())

@@ -18,6 +18,7 @@ import pyqtgraph as pg
 from functools import partial
 from mw4.gui.extWindows.measure.measureAddons import dataPlots
 from mw4.gui.utilities.qtMain import MWidget
+from mw4.gui.utilities.qtMessageDialog import MWMessageDialog
 from mw4.gui.widgets import measure_ui
 from PySide6.QtCore import QMutex
 from PySide6.QtGui import QCloseEvent
@@ -163,7 +164,7 @@ class MeasureWindow(MWidget):
         self.resize(self.width() + 1, self.height())
 
     def inUseMessage(self) -> None:
-        self.messageDialog(
+        MWMessageDialog.question(
             self,
             "Chart selection",
             "Chart already in use\n\n     Cannot be selected!",

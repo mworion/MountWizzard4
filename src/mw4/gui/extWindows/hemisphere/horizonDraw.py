@@ -17,6 +17,7 @@ import cv2
 import numpy as np
 import pyqtgraph as pg
 from mw4.gui.utilities.generateSprites import makePointer
+from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
 from PySide6.QtCore import QPointF
@@ -98,7 +99,9 @@ class HorizonDraw(MWidget):
     def selectTerrainFile(self) -> None:
         folder = self.app.mwGlob["configDir"]
         fileTypes = "Terrain images (*.jpg)"
-        loadFilePath = self.openFile(self.parent, "Open terrain image", folder, fileTypes)
+        loadFilePath = MWFileDialog.getOpenFileName(
+            self.parent, "Open terrain image", folder, fileTypes
+        )
         if not loadFilePath.is_file():
             return
 
@@ -116,7 +119,9 @@ class HorizonDraw(MWidget):
     def loadHorizonMask(self) -> None:
         folder = self.app.mwGlob["configDir"]
         fileTypes = "Horizon mask files (*.hpts);; CSV Files (*.csv);; MW3 Files (*.txt)"
-        loadFilePath = self.openFile(self.parent, "Open horizon mask file", folder, fileTypes)
+        loadFilePath = MWFileDialog.getOpenFileName(
+            self.parent, "Open horizon mask file", folder, fileTypes
+        )
         if not loadFilePath.is_file():
             return
 
@@ -140,7 +145,7 @@ class HorizonDraw(MWidget):
 
     def saveHorizonMaskAs(self) -> None:
         folder = self.app.mwGlob["configDir"]
-        saveFilePath = self.saveFile(
+        saveFilePath = MWFileDialog.getSaveFileName(
             self.parent, "Save horizon mask file", folder, "Horizon mask files (*.hpts)"
         )
         if not saveFilePath.stem:

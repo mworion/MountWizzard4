@@ -21,6 +21,7 @@ from mw4.base.ascomClass import AscomClass
 from mw4.base.indiClass import IndiClass
 from mw4.base.signalsDevices import Signals
 from mw4.gui.extWindows.devicePopupW import DevicePopup
+from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
 from PySide6.QtCore import QEventLoop
@@ -289,7 +290,7 @@ def test_selectAppPath_1(function):
 
     function.app.plateSolve.run["astrometry"] = Avail()
     with (
-        mock.patch.object(MWidget, "openDir", return_value=Path("/test")),
+        mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=Path("/test")),
         mock.patch.object(Path, "is_dir", return_value=False),
     ):
         function.selectAppPath("astap")
@@ -303,7 +304,7 @@ def test_selectAppPath_2(function):
 
     function.app.plateSolve.run["astap"] = Avail()
     with (
-        mock.patch.object(MWidget, "openDir", return_value=Path("/test.app")),
+        mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=Path("/test.app")),
         mock.patch.object(Path, "is_dir", return_value=True),
     ):
         function.selectAppPath("astap")
@@ -317,7 +318,7 @@ def test_selectAppPath_3(function):
 
     function.app.plateSolve.run["astap"] = Avail()
     with (
-        mock.patch.object(MWidget, "openDir", return_value=Path("/Astrometry.app")),
+        mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=Path("/Astrometry.app")),
         mock.patch.object(Path, "is_dir", return_value=True),
     ):
         function.selectAppPath("astap")
@@ -331,7 +332,7 @@ def test_selectIndexPath_1(function):
 
     function.app.plateSolve.run["astap"] = Avail()
     with (
-        mock.patch.object(MWidget, "openDir", return_value=Path("/test")),
+        mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=Path("/test")),
         mock.patch.object(Path, "is_dir", return_value=False),
     ):
         function.selectIndexPath("astap")
@@ -345,7 +346,7 @@ def test_selectIndexPath_2(function):
 
     function.app.plateSolve.run = {"astap": Avail()}
     with (
-        mock.patch.object(MWidget, "openDir", return_value=Path("/test")),
+        mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=Path("/test")),
         mock.patch.object(Path, "is_dir", return_value=True),
     ):
         function.selectIndexPath("astap")
@@ -366,7 +367,7 @@ def test_selectAscomDriver_1(function):
 def test_selectBoltwoodPath_1(function):
     function.ui.boltwoodPath.setText("")
     with (
-        mock.patch.object(MWidget, "openFile", return_value=Path("/test/file.txt")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("/test/file.txt")),
         mock.patch.object(Path, "is_file", return_value=True),
     ):
         function.selectBoltwoodPath()
@@ -376,7 +377,7 @@ def test_selectBoltwoodPath_1(function):
 def test_selectBoltwoodPath_2(function):
     function.ui.boltwoodPath.setText("")
     with (
-        mock.patch.object(MWidget, "openFile", return_value=Path("/test/file.txt")),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("/test/file.txt")),
         mock.patch.object(Path, "is_file", return_value=False),
     ):
         function.selectBoltwoodPath()

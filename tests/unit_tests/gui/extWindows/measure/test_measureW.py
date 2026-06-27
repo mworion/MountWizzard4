@@ -211,7 +211,7 @@ def test_triggerUpdate(function):
 
 
 def test_inUseMessage(function):
-    with mock.patch.object(function, "messageDialog"):
+    with mock.patch("mw4.gui.extWindows.measure.measureW.MWMessageDialog.question"):
         function.inUseMessage()
 
 

@@ -20,6 +20,7 @@ from mw4.base import packageConfig
 from mw4.gui.mainWindow.externalWindows import ExternalWindows
 from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
 from mw4.gui.styles.styles import Styles
+from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtHelpers import (
     changeStyleDynamic,
     getTabAndIndex,
@@ -318,7 +319,7 @@ class MainWindow(MWidget):
 
     def loadProfileGUI(self) -> None:
         folder = self.app.mwGlob["configDir"]
-        loadProfilePath = self.openFile(
+        loadProfilePath = MWFileDialog.getOpenFileName(
             self, "Open config file", folder, "Config files (*.yaml)"
         )
         if not loadProfilePath.is_file():
@@ -339,8 +340,8 @@ class MainWindow(MWidget):
 
     def saveProfileAs(self) -> None:
         folder = self.app.mwGlob["configDir"]
-        saveProfilePath = self.saveFile(
-            self, "Save config file", folder, "Config files (*.yaml)", enableDir=False
+        saveProfilePath = MWFileDialog.getSaveFileName(
+            self, "Save config file", folder, "Config files (*.yaml)"
         )
         self.saveProfileBase(saveProfilePath)
 

@@ -17,6 +17,7 @@ import time
 from datetime import datetime
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.gui.mainWaddon.tabAddon import TabAddon
+from mw4.gui.utilities.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.logic.modelBuild.modelRun import ModelData
 from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile
@@ -280,7 +281,7 @@ class Model(TabAddon):
     def runFileModel(self) -> None:
         self.msg.emit(1, "Model", "Run", "Model from file")
         folder = self.app.mwGlob["modelDir"]
-        modelFilesPath = self.mainW.openMultipleFiles(
+        modelFilesPath = MWFileDialog.getOpenFileNames(
             self.mainW, "Open model file(s)", folder, "Model files (*.model)"
         )
         if len(modelFilesPath) > 1:

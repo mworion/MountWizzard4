@@ -18,11 +18,6 @@ from PySide6.QtWidgets import QTableWidgetItem
 
 
 class QCustomTableWidgetItem(QTableWidgetItem):
-    """
-    This class reimplements the comparison for item, which are normally float
-    values as the standard sorting in this item only supports strings.
-    """
-
     def __init__(self, value):
         super().__init__(value)
 

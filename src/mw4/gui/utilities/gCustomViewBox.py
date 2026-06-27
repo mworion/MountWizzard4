@@ -44,25 +44,25 @@ class CustomViewBox(pg.ViewBox):
         pass
 
     @staticmethod
-    def distance(a: (int, int), b: (int, int)) -> float:
+    def distance(a: tuple[int, int], b: tuple[int, int]) -> float:
         return np.sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)
 
-    def isBetween(self, a: int, b: int, c: int) -> float:
+    def isBetween(self, a: tuple[int, int], b: tuple[int, int], c: tuple[int, int]) -> float:
         d = self.distance(a, c) + self.distance(c, b) - self.distance(a, b)
         return np.abs(d)
 
-    def getCurveIndex(self, pos: pg.Point) -> int:
+    def getCurveIndex(self, pos: pg.Point) -> int | None:
         data = self.plotDataItem.curve.getData()
         curve = [(x, y) for x, y in zip(data[0], data[1])]
         for index in range(0, len(curve) - 1):
-            d = self.isBetween(curve[index], curve[index + 1], (pos.x(), pos.y()))
+            d = self.isBetween(curve[index], curve[index + 1], (int(pos.x()), int(pos.y())))
             if d < self.epsilonCurve:
                 break
         else:
             return None
         return index + 1
 
-    def getNearestPointIndex(self, pos: pg.Point) -> int:
+    def getNearestPointIndex(self, pos: pg.Point) -> int | None:
         data = self.plotDataItem.getData()
         if data[0] is None or data[1] is None:
             return 0
@@ -103,7 +103,8 @@ class CustomViewBox(pg.ViewBox):
             return float(np.clip(value, limits[0], limits[1]))
         return value
 
-    def clampXToNeighbors(self, x: np.ndarray, index: int, px: float) -> float:
+    @staticmethod
+    def clampXToNeighbors(x: np.ndarray, index: int, px: float) -> float:
         if index == 0:
             return float(np.minimum(px, x[index + 1]))
         if index == len(x) - 1:
@@ -112,7 +113,7 @@ class CustomViewBox(pg.ViewBox):
 
     def checkLimits(
         self, data: tuple[float, float], index: int, pos: pg.Point
-    ) -> tuple[float, float]:
+    ) -> tuple[int, int]:
         xRange = self.state["limits"]["xLimits"]
         yRange = self.state["limits"]["yLimits"]
         px = self.clampToRange(pos.x(), xRange)

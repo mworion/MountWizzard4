@@ -1,3 +1,18 @@
+############################################################
+#
+#       #   #  #   #   #    #
+#      ##  ##  #  ##  #    #
+#     # # # #  # # # #    #  #
+#    #  ##  #  ##  ##    ######
+#   #   #   #  #   #       #
+#
+# Python-based Tool for interaction with the 10_micron mounts
+# GUI with PySide
+#
+# written in python3, (c) 2019-2026 by mworion
+# License APL2.0
+#
+###########################################################
 from mw4.gui.utilities.qtHelpers import svg2icon
 from PySide6.QtCore import QPoint, QSize, Qt
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QToolButton, QWidget

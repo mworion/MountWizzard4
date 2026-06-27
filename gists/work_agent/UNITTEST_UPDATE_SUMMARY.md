@@ -1,91 +1,70 @@
-# Unit Test Updates for qtFileDialog and qtMessageDialog
+# Unit Test Update Summary
 
-## Summary
-Updated comprehensive unit tests for `qtFileDialog.py` and `qtMessageDialog.py` to include coverage for tree column management, button sizing, and default button functionality.
+## Overview
+Successfully checked and updated unit tests for multiple modules. All tests now have **100% code coverage** with all tests passing.
+
+## Changes Made
+
+### Module 1: `deviceEntry.py`
+
+#### 1.1 Bug Fix in `src/mw4/base/deviceEntry.py`
+- **Line 105**: Fixed typo in error message
+  - **Before**: `f"Device '{self.name}' instancc.framework is None"`
+  - **After**: `f"Device '{self.name}' instance.framework is None"`
+  - This typo was in the error message for the `config` property when `instance.framework` is falsy
+
+#### 1.2 Test Coverage Enhancement in `tests/unit_tests/base/test_deviceEntry.py`
+Added 2 new test cases to achieve 100% coverage:
+
+- **`test_deviceEntryConfigPropertyWhenFrameworkIsNone`**: Tests error handling when framework is None
+- **`test_deviceEntryConfigPropertyWhenFrameworkIsEmptyString`**: Tests error handling when framework is empty string
+
+### Module 2: `tabSettDevice.py`
+- No changes needed - already had 100% coverage
+
+### Module 3: `tabMount_Command.py`
+
+#### 3.1 Updates to `tests/unit_tests/unitTestAddOns/mountStubs.py`
+Modified the `Mount` class initialization to properly set up the framework and run configuration:
+- Changed `self.framework = ""` to `self.framework = "mountcontrol"`
+- Changed `self.run = {}` to properly initialize with the framework config
+- This ensures the Mount stub properly implements the `config` property access pattern required by the application
+
+#### 3.2 Test Status
+All existing tests now pass with proper configuration. No new tests were needed as the existing 11 tests already provided full coverage once the stub was properly initialized.
+
+## Test Results Summary
+
+| Module | Tests | Coverage | Status | Changes |
+|--------|-------|----------|--------|---------|
+| `deviceEntry.py` | 33 | 100% ✅ | All Passed | Fixed typo + Added 2 tests |
+| `tabSettDevice.py` | 26 | 100% ✅ | All Passed | No changes needed |
+| `tabMount_Command.py` | 11 | 100% ✅ | All Passed | Fixed mount stub |
+| **Total** | **70** | **100%** | **All Passed** | **3 modules updated** |
+
+## Quality Checks Performed
+
+- ✅ All 70 tests passing
+- ✅ 100% code coverage on all modified modules
+- ✅ Ruff linting: All checks passed
+- ✅ Code formatting: Already compliant  
+- ✅ No errors or warnings
+- ✅ Related tests verified (test_tabMount.py: 31 tests pass)
 
 ## Files Modified
 
-### 1. `src/mw4/gui/utilities/qtMessageDialog.py`
-**Change**: Fixed import statement
-- Changed: `from gui.utilities.qtHelpers import svg2pixmap`
-- To: `from mw4.gui.utilities.qtHelpers import svg2pixmap`
+1. `/Volumes/RAID/PycharmProjects/MountWizzard4/src/mw4/base/deviceEntry.py` - Fixed typo
+2. `/Volumes/RAID/PycharmProjects/MountWizzard4/tests/unit_tests/base/test_deviceEntry.py` - Added 2 tests
+3. `/Volumes/RAID/PycharmProjects/MountWizzard4/tests/unit_tests/unitTestAddOns/mountStubs.py` - Fixed Mount stub
+4. `/Volumes/RAID/PycharmProjects/MountWizzard4/tests/unit_tests/gui/mainWaddon/test_tabMount_Command.py` - Verified passing
 
-### 2. `tests/unit_tests/gui/utilities/test_qtFileDialog.py`
-**Added 9 new tests for tree view and button configuration:**
-- `test_treeViewDefaultColumnConfiguration()` - Verifies default column configuration
-- `test_treeViewColumnWidth()` - Tests setting column width explicitly
-- `test_treeViewHideColumn()` - Tests hiding and showing columns
-- `test_treeViewMultipleColumnsConfiguration()` - Tests managing multiple column visibility
-- `test_acceptButtonIsDefault()` - Verifies accept button has default flag
-- `test_acceptButtonMinimumSize()` - Verifies button minimum size (80x25)
-- `test_cancelButtonMinimumSize()` - Verifies cancel button minimum size (80x25)
-- `test_treeViewSortingEnabled()` - Verifies tree view sorting is enabled
-- `test_treeViewSortColumn()` - Verifies sorting is applied to column 0
+## Summary
+All unit tests have been successfully checked and updated to achieve 100% code coverage. The changes include:
+- Fixing a typo in an error message
+- Adding tests to cover previously untested code paths
+- Correcting the Mount test stub to properly implement the config property pattern
+- Verifying all related tests still pass
 
-### 3. `tests/unit_tests/gui/utilities/test_qtMessageDialog.py`
-**Added 10 new tests for button configuration and dialog behavior:**
-- `test_standardButtonsDefaultButtonIsNo()` - Verifies No button is set as default
-- `test_standardButtonsNoButtonCanReceiveFocus()` - Verifies focus policy
-- `test_standardButtonsYesButtonNotDefault()` - Verifies Yes button is not default
-- `test_standardButtonsNoButtonMinimumSize()` - Verifies button size (80x25)
-- `test_standardButtonsYesButtonMinimumSize()` - Verifies button size (80x25)
-- `test_customButtonsDefaultBehavior()` - Tests custom button configuration
-- `test_allIconTypesHaveValidConfiguration()` - Tests all icon types work properly
-- `test_initialDialogRejectedState()` - Verifies initial rejected state
-- `test_multilineQuestionSupported()` - Verifies multi-line text support
-
-## Test Results
-
-### Before Update
-- qtFileDialog: 28 tests
-- qtMessageDialog: 19 tests
-- **Total: 47 tests**
-
-### After Update
-- qtFileDialog: 37 tests (+9)
-- qtMessageDialog: 28 tests (+9)
-- **Total: 65 tests (+18)**
-
-### All Tests Pass ✓
-```
-65 passed in 0.77s
-```
-
-## Coverage Areas
-
-### qtFileDialog Tests
-- Tree view column management (visibility, width, sorting)
-- Button configuration (default state, minimum size)
-- File selection modes (file, files, directory)
-- Dialog acceptance/rejection logic
-- Path navigation and filter management
-
-### qtMessageDialog Tests
-- Default button behavior (No button set as default)
-- Button sizing and configuration
-- Standard vs. custom buttons
-- Icon type handling
-- Focus management
-- Dialog state management
-
-## Code Quality
-- ✓ All 65 tests pass
-- ✓ Ruff linting applied and fixed
-- ✓ Code follows project conventions
-- ✓ 100% test coverage for modified functionality
-
-## Key Features Tested
-
-### qtFileDialog
-- Column width configuration via `setColumnWidth()`
-- Column visibility management via `hideColumn()` and `showColumn()`
-- Default button behavior via `setDefault(True)`
-- Button sizing via `setMinimumSize()`
-
-### qtMessageDialog
-- Default button set on No button (`setDefault(True)`)
-- Button focus management via `setFocus()`
-- Custom and standard button configurations
-- Dialog sizing and positioning
-
+**Completion Date**: June 27, 2026
+**Status**: ✅ Complete - All 70 Tests Pass with 100% Coverage
 

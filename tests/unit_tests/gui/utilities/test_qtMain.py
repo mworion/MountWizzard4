@@ -257,11 +257,11 @@ def test_positionWindow_1(function):
     config = {"winPosX": 100, "winPosY": 100, "height": 400, "width": 600}
     function.screenSizeX = 1000
     function.screenSizeY = 1000
-    function.positionWindow(config)
+    function.setPositionWindow(config)
 
 
 def test_positionWindow_2(function):
     config = {"winPosX": 900, "winPosY": 900, "height": 400, "width": 600}
     function.screenSizeX = 1000
     function.screenSizeY = 1000
-    function.positionWindow(config)
+    function.setPositionWindow(config)

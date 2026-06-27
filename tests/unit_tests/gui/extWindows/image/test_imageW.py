@@ -41,7 +41,7 @@ def function(qapp):
 
 def test_initConfig_1(function):
     with (
-        mock.patch.object(function, "positionWindow"),
+        mock.patch.object(function, "setPositionWindow"),
         mock.patch.object(function.tabs, "setCrosshair"),
     ):
         function.initConfig()

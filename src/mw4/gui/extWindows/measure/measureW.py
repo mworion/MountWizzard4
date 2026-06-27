@@ -50,7 +50,7 @@ class MeasureWindow(MWidget):
 
     def initConfig(self) -> None:
         config = self.app.config.get("WindowMeasure", {})
-        self.positionWindow(config)
+        self.setPositionWindow(config)
         self.setupButtons()
         self.drawMeasure()
         for setName in self.mSetUI:
@@ -61,10 +61,7 @@ class MeasureWindow(MWidget):
         configMain["WindowMeasure"] = {}
         config = configMain["WindowMeasure"]
 
-        config["winPosX"] = max(self.pos().x(), 0)
-        config["winPosY"] = max(self.pos().y(), 0)
-        config["height"] = self.height()
-        config["width"] = self.width()
+        config = self.getPositionWindow(config)
         for setName in self.mSetUI:
             config[setName] = self.mSetUI[setName].currentIndex()
 

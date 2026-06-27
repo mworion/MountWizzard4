@@ -96,7 +96,7 @@ class MainWindow(MWidget):
             config["WindowMain"] = {}
         self.ui.profileName.setText(config.get("profileName"))
         config = config["WindowMain"]
-        self.positionWindow(config)
+        self.setPositionWindow(config)
         setTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
         setTabAndIndex(self.ui.mountTabWidget, config, "orderMount")
         setTabAndIndex(self.ui.imagingTabWidget, config, "orderImaging")

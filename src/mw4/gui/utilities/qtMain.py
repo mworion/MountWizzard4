@@ -118,14 +118,12 @@ class MWidget(QMainWindow, Styles):
 
     def openFile(self, window: QWidget, title: str, folder: Path, filterSet: str) -> Path:
         from mw4.gui.utilities.qtFileDialog import MWFileDialog
-
         return MWFileDialog.getOpenFileName(window, title, folder, filterSet)
 
     def openMultipleFiles(
         self, window: QWidget, title: str, folder: Path, filterSet: str
     ) -> list[Path]:
         from mw4.gui.utilities.qtFileDialog import MWFileDialog
-
         return MWFileDialog.getOpenFileNames(window, title, folder, filterSet)
 
     def saveFile(
@@ -137,12 +135,10 @@ class MWidget(QMainWindow, Styles):
         enableDir: bool = False,
     ) -> Path:
         from mw4.gui.utilities.qtFileDialog import MWFileDialog
-
         return MWFileDialog.getSaveFileName(window, title, folder, filterSet)
 
     def openDir(self, window: QWidget, title: str, folder: Path) -> Path:
         from mw4.gui.utilities.qtFileDialog import MWFileDialog
-
         return MWFileDialog.getExistingDirectory(window, title, folder)
 
     def messageDialog(
@@ -154,13 +150,14 @@ class MWidget(QMainWindow, Styles):
         iconType: int = 0,
     ) -> bool | int:
         from mw4.gui.utilities.qtMessageDialog import MWMessageDialog
-
         return MWMessageDialog.question(parentWidget, title, question, buttons, iconType)
 
-    def positionWindow(self, config: dict) -> None:
-        height = config.get("height", 600)
-        width = config.get("width", 800)
+    def setPositionWindow(self, config: dict) -> None:
+        height = config.get("height", self.minimumHeight())
+        width = config.get("width", self.minimumWidth())
         self.resize(width, height)
+        if height == self.maximumHeight() and width == self.maximumWidth():
+            self.setWindowState(Qt.WindowState.WindowMaximized)
         x = config.get("winPosX", 0)
         y = config.get("winPosY", 0)
         if x > self.screenSizeX - width:
@@ -171,3 +168,10 @@ class MWidget(QMainWindow, Styles):
         y = max(y, 0)
         if x != 0 and y != 0:
             self.move(x, y)
+
+    def getPositionWindow(self, config: dict[str, int]) -> dict[str, int]:
+        config["winPosX"] = self.pos().x()
+        config["winPosY"] = self.pos().y()
+        config["height"] = self.frameGeometry().height()
+        config["width"] = self.frameGeometry().width()
+        return config

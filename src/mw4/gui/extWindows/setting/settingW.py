@@ -50,7 +50,7 @@ class SettingWindow(MWidget):
 
     def initConfig(self) -> None:
         config = self.app.config.get("WindowSetting", {})
-        self.positionWindow(config)
+        self.setPositionWindow(config)
         setTabAndIndex(self.ui.tabWidget, config, "TabOrder")
         self.tabSettMount.initConfig()
         self.tabSettDome.initConfig()
@@ -64,9 +64,7 @@ class SettingWindow(MWidget):
         configMain = self.app.config
         configMain["WindowSetting"] = {}
         config = configMain["WindowSetting"]
-        config["winPosX"] = max(self.pos().x(), 0)
-        config["winPosY"] = max(self.pos().y(), 0)
-        config["height"] = self.height()
+        config = self.getPositionWindow(config)
         getTabAndIndex(self.ui.tabWidget, config, "TabOrder")
         self.tabSettMount.storeConfig()
         self.tabSettDome.storeConfig()

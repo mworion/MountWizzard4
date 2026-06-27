@@ -26,7 +26,7 @@ class VideoWindow(VideoWindowBase):
     def initConfig(self) -> None:
         config = self.app.config.get(self.title, {})
 
-        self.positionWindow(config)
+        self.setPositionWindow(config)
         self.ui.videoURL.setText(config.get("videoURL", ""))
         self.ui.videoSource.setCurrentIndex(config.get("videoSource", 0))
         self.ui.frameRate.setCurrentIndex(config.get("frameRate", 2))
@@ -38,10 +38,7 @@ class VideoWindow(VideoWindowBase):
         configMain[self.title] = {}
         config = configMain[self.title]
 
-        config["winPosX"] = max(self.pos().x(), 0)
-        config["winPosY"] = max(self.pos().y(), 0)
-        config["height"] = self.height()
-        config["width"] = self.width()
+        config = self.getPositionWindow(config)
         config["videoURL"] = self.ui.videoURL.text()
         config["videoSource"] = self.ui.videoSource.currentIndex()
         config["frameRate"] = self.ui.frameRate.currentIndex()

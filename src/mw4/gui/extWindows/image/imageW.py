@@ -60,7 +60,7 @@ class ImageWindow(MWidget):
 
     def initConfig(self) -> None:
         config = self.app.config.get("WindowImage", {})
-        self.positionWindow(config)
+        self.setPositionWindow(config)
         self.ui.color.setCurrentIndex(config.get("color", 0))
         self.ui.snTarget.setCurrentIndex(config.get("snTarget", 0))
         self.ui.tabImage.setCurrentIndex(config.get("tabImage", 0))
@@ -83,10 +83,7 @@ class ImageWindow(MWidget):
         configMain = self.app.config
         configMain["WindowImage"] = {}
         config = configMain["WindowImage"]
-        config["winPosX"] = max(self.pos().x(), 0)
-        config["winPosY"] = max(self.pos().y(), 0)
-        config["height"] = self.height()
-        config["width"] = self.width()
+        config = self.getPositionWindow(config)
         config["color"] = self.ui.color.currentIndex()
         config["snTarget"] = self.ui.snTarget.currentIndex()
         config["tabImage"] = self.ui.tabImage.currentIndex()

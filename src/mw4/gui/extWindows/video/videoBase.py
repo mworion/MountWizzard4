@@ -39,11 +39,11 @@ class VideoWindowBase(MWidget):
         self.ui.setupUi(self.ws)
         self.setMinimumSize(self.HALF_WIDTH, self.HALF_HEIGHT)
         self.setMaximumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
-        self.running = False
+        self.running: bool = False
         self.capture = None
-        self.user = ""
-        self.password = ""  # nosec B105 — empty-string default, not a hardcoded credential
-        self.runningCounter = 0
+        self.user: str = ""
+        self.password: str = ""  # nosec B105 — empty-string default, not a hardcoded credential
+        self.runningCounter: int = 0
         self.worker: Worker | None = None
 
     def closeEvent(self, closeEvent) -> None:

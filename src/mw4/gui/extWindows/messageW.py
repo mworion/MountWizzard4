@@ -45,15 +45,13 @@ class MessageWindow(MWidget):
 
     def initConfig(self) -> None:
         config = self.app.config.get("WindowMessage", {})
-        self.positionWindow(config)
+        self.setPositionWindow(config)
 
     def storeConfig(self) -> None:
         configMain = self.app.config
         configMain["WindowMessage"] = {}
         config = configMain["WindowMessage"]
-        config["winPosX"] = max(self.pos().x(), 0)
-        config["winPosY"] = max(self.pos().y(), 0)
-        config["height"] = self.height()
+        config = self.getPositionWindow(config)
 
     def closeEvent(self, closeEvent) -> None:
         self.storeConfig()

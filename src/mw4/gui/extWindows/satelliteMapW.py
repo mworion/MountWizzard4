@@ -53,16 +53,13 @@ class SatelliteMapWindow(MWidget):
 
     def initConfig(self) -> None:
         self.world: dict = self.loadMap()
-        self.positionWindow(self.app.config.get("WindowSatelliteMap", {}))
+        self.setPositionWindow(self.app.config.get("WindowSatelliteMap", {}))
 
     def storeConfig(self) -> None:
         configMain = self.app.config
         configMain["WindowSatelliteMap"] = {}
         config = configMain["WindowSatelliteMap"]
-        config["winPosX"] = max(self.pos().x(), 0)
-        config["winPosY"] = max(self.pos().y(), 0)
-        config["height"] = self.height()
-        config["width"] = self.width()
+        config = self.getPositionWindow(config)
 
     def closeEvent(self, closeEvent) -> None:
         self.storeConfig()

@@ -70,7 +70,7 @@ class AnalyseWindow(MWidget):
 
     def initConfig(self) -> None:
         config = self.app.config.get("WindowAnalyse", {})
-        self.positionWindow(config)
+        self.setPositionWindow(config)
         self.ui.showHorizon.setChecked(config.get("showHorizon", False))
         self.ui.linkViews.setChecked(config.get("linkViews", False))
 
@@ -79,10 +79,7 @@ class AnalyseWindow(MWidget):
         configMain["WindowAnalyse"] = {}
         config = configMain["WindowAnalyse"]
 
-        config["winPosX"] = max(self.pos().x(), 0)
-        config["winPosY"] = max(self.pos().y(), 0)
-        config["height"] = self.height()
-        config["width"] = self.width()
+        config = self.getPositionWindow(config)
         config["showHorizon"] = self.ui.showHorizon.isChecked()
         config["linkViews"] = self.ui.linkViews.isChecked()
 

@@ -55,7 +55,7 @@ class HemisphereWindow(MWidget):
 
     def initConfig(self) -> None:
         config = self.app.config.get("WindowHemisphere", {})
-        self.positionWindow(config)
+        self.setPositionWindow(config)
         self.ui.showSlewPath.setChecked(config.get("showSlewPath", False))
         self.ui.showMountLimits.setChecked(config.get("showMountLimits", False))
         self.ui.showCelestial.setChecked(config.get("showCelestial", False))
@@ -76,10 +76,7 @@ class HemisphereWindow(MWidget):
         configMain["WindowHemisphere"] = {}
         config = configMain["WindowHemisphere"]
 
-        config["winPosX"] = max(self.pos().x(), 0)
-        config["winPosY"] = max(self.pos().y(), 0)
-        config["height"] = self.height()
-        config["width"] = self.width()
+        config = self.getPositionWindow(config)
         config["showSlewPath"] = self.ui.showSlewPath.isChecked()
         config["showMountLimits"] = self.ui.showMountLimits.isChecked()
         config["showCelestial"] = self.ui.showCelestial.isChecked()

@@ -54,7 +54,7 @@ class DeviceRegistry(QObject):
             "mount": DeviceEntry(
                 name="mount",
                 instance=mount_instance,
-                deviceType=None,
+                deviceType="10micron",
                 isConfigurable=False,
             ),
         }

@@ -1437,7 +1437,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>7</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -5138,9 +5138,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           </property>
           <property name="geometry">
            <rect>
-            <x>65</x>
+            <x>75</x>
             <y>25</y>
-            <width>296</width>
+            <width>286</width>
             <height>21</height>
            </rect>
           </property>
@@ -5189,9 +5189,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           </property>
           <property name="geometry">
            <rect>
-            <x>65</x>
+            <x>75</x>
             <y>110</y>
-            <width>296</width>
+            <width>286</width>
             <height>81</height>
            </rect>
           </property>
@@ -5205,9 +5205,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           </property>
           <property name="geometry">
            <rect>
-            <x>65</x>
+            <x>75</x>
             <y>55</y>
-            <width>296</width>
+            <width>286</width>
             <height>41</height>
            </rect>
           </property>
@@ -5234,7 +5234,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <rect>
            <x>425</x>
            <y>15</y>
-           <width>256</width>
+           <width>341</width>
            <height>25</height>
           </rect>
          </property>
@@ -5278,7 +5278,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <rect>
            <x>425</x>
            <y>85</y>
-           <width>256</width>
+           <width>341</width>
            <height>25</height>
           </rect>
          </property>
@@ -5322,7 +5322,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <rect>
            <x>425</x>
            <y>120</y>
-           <width>256</width>
+           <width>341</width>
            <height>25</height>
           </rect>
          </property>
@@ -5366,7 +5366,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <rect>
            <x>425</x>
            <y>50</y>
-           <width>256</width>
+           <width>341</width>
            <height>25</height>
           </rect>
          </property>
@@ -13823,7 +13823,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </rect>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <property name="elideMode">
         <enum>Qt::TextElideMode::ElideLeft</enum>

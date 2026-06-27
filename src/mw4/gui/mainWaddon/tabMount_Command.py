@@ -35,7 +35,7 @@ class MountCommand(TabAddon):
         self.ui.mountDocumentation.clicked.connect(self.openMountDocumentation)
 
     def openCommandProtocol(self) -> None:
-        host = self.app.dReg["mount"].instance.host
+        host = self.app.dReg["mount"].config.hostAddress
         url = "http://" + host + "/manuals/command-protocol.pdf"
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "Mount", "Browser failed")
@@ -43,7 +43,7 @@ class MountCommand(TabAddon):
             self.msg.emit(0, "System", "Mount", "command protocol opened")
 
     def openUpdateTimeDelta(self) -> None:
-        host = self.app.dReg["mount"].instance.host
+        host = self.app.dReg["mount"].config.hostAddress
         url = "http://" + host + "/updatetime.html"
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "Mount", "Browser failed")
@@ -51,7 +51,8 @@ class MountCommand(TabAddon):
             self.msg.emit(0, "System", "Mount", "update time delta opened")
 
     def openUpdateFirmware(self) -> None:
-        url = "http://" + self.ui.mountHost.text() + "/updatefirmware.html"
+        host = self.app.dReg["mount"].config.hostAddress
+        url = "http://" + host + "/updatefirmware.html"
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "Mount", "Browser failed")
         else:
@@ -63,7 +64,7 @@ class MountCommand(TabAddon):
             self.msg.emit(2, "System", "Mount", "Browser failed")
             return
         mountType = mountStrings[1]
-        host = self.ui.mountHost.text()
+        host = self.app.dReg["mount"].config.hostAddress
         url = f"http://{host}/manuals/{mountType}-en.pdf"
         if not webbrowser.open(url, new=0):
             self.msg.emit(2, "System", "Mount", "Browser failed")
@@ -71,7 +72,7 @@ class MountCommand(TabAddon):
             self.msg.emit(0, "System", "Mount", "mount manual opened")
 
     def commandRaw(self) -> None:
-        conn = Connection(self.app.dReg["camera"].instance)
+        conn = Connection(self.app.dReg["mount"].instance)
         cmd = self.ui.commandInput.text()
         self.ui.commandStatus.clear()
         self.ui.commandOutput.clear()

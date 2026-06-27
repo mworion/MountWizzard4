@@ -79,7 +79,8 @@ class SettMount:
         self.app.dReg["mount"].instance.config.port = port
         self.app.dReg["mount"].instance.config.MAC = self.ui.MAC.text()
         self.app.dReg["mount"].instance.config.wolAddress = self.ui.wolAddress.text()
-        self.app.dReg["mount"].instance.config.wolPort = int(self.ui.wolPort.text())
+        value = int(self.ui.wolPort.text()) if self.ui.wolPort.text().isnumeric() else 9
+        self.app.dReg["mount"].instance.config.wolPort = value
         self.app.dReg["mount"].instance.config.wolAutomatic = self.ui.wolAutomatic.isChecked()
         self.app.dReg["mount"].instance.config.syncTimeNone = self.ui.syncTimeNone.isChecked()
         self.app.dReg["mount"].instance.config.syncTimeCont = self.ui.syncTimeCont.isChecked()

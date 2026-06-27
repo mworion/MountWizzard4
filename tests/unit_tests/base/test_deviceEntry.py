@@ -249,6 +249,34 @@ def test_deviceEntryConfigProperty() -> None:
     assert entry.config.value == "test_config"
 
 
+def test_deviceEntryConfigPropertyWhenFrameworkIsNone() -> None:
+    """Test config property raises error when framework is None (falsy)."""
+
+    class MockInstance:
+        def __init__(self):
+            self.framework = None
+
+    entry = DeviceEntry(
+        name="camera", instance=MockInstance(), deviceType="camera", isConfigurable=True
+    )
+    with pytest.raises(AttributeError, match="Device 'camera' instance.framework is None"):
+        _ = entry.config
+
+
+def test_deviceEntryConfigPropertyWhenFrameworkIsEmptyString() -> None:
+    """Test config property raises error when framework is empty string."""
+
+    class MockInstance:
+        def __init__(self):
+            self.framework = ""
+
+    entry = DeviceEntry(
+        name="camera", instance=MockInstance(), deviceType="camera", isConfigurable=True
+    )
+    with pytest.raises(AttributeError, match="Device 'camera' instance.framework is None"):
+        _ = entry.config
+
+
 # ------------------------------------------------------------------
 # DeviceEntry — error handling for None instance
 # ------------------------------------------------------------------

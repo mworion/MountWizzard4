@@ -101,4 +101,6 @@ class DeviceEntry:
     def config(self) -> Any:
         if self.instance is None:
             raise AttributeError(f"Device '{self.name}' instance is None")
+        if not self.instance.framework:
+            raise AttributeError(f"Device '{self.name}' instance.framework is None")
         return self.instance.run[self.instance.framework].config

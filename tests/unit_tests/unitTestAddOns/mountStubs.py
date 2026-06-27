@@ -475,9 +475,13 @@ class Mount(QObject):
         self.loggingTrace = False
         self.stat = False
         self.instance = self
-        self.run = {}
-        self.framework = ""
+        self.framework = "mountcontrol"
         self.config = DeviceConfigMount()
+
+        class FrameworkConfig:
+            config = DeviceConfigMount()
+
+        self.run = {"mountcontrol": FrameworkConfig()}
 
     @staticmethod
     def getFW():

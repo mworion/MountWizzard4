@@ -27,7 +27,7 @@ from mw4.mountcontrol.convert import (
     formatHstrToText,
     valueToAngle,
 )
-from pytestqt.qtbot import QWidget
+from PySide6.QtWidgets import QWidget
 from skyfield.api import Angle
 from typing import Any
 
@@ -39,6 +39,7 @@ class MountMove(TabAddon):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
         self.slewInterface = SlewInterface(self)
+        self.oldDirection: str = "STOP"
 
         self.slewSpeeds: dict[str, dict[str, QWidget | Callable]] = {
             "max": {
@@ -167,22 +168,6 @@ class MountMove(TabAddon):
                 return direction
         return "STOP"
 
-    def moveRaDecHid(self, decVal: int, raVal: int) -> None:
-        dirRa = 0
-        dirDec = 0
-        if raVal < 108:
-            dirRa = 1
-        elif raVal > 152:
-            dirRa = -1
-        if decVal < 108:
-            dirDec = -1
-        elif decVal > 152:
-            dirDec = 1
-
-        directionVector = [dirRa, dirDec]
-        direction = self.convertDirection(directionVector)
-        self.moveRaDec(direction)
-
     def moveRaDec(self, direction: str) -> None:
         uiList = self.setRaDec
         for key in uiList:
@@ -207,25 +192,30 @@ class MountMove(TabAddon):
             self.app.dReg["mount"].obsSite.stopMoveWest()
         self.moveDuration()
 
+    def moveRaDecHid(self, decVal: int, raVal: int) -> None:
+        dirRa = 0
+        dirDec = 0
+        if raVal < 108:
+            dirRa = 1
+        elif raVal > 152:
+            dirRa = -1
+        if decVal < 108:
+            dirDec = -1
+        elif decVal > 152:
+            dirDec = 1
+
+        directionVector = [dirRa, dirDec]
+        direction = self.convertDirection(directionVector)
+        if direction != self.oldDirection:
+            self.moveRaDec(direction)
+            self.oldDirection = direction
+
     def setSlewSpeed(self, speed):
         self.slewSpeeds[speed]["func"]()
 
     def moveAltAzDefault(self) -> None:
         for key in self.setAltAz:
             changeStyleDynamic(self.setAltAz[key]["button"], "run", False)
-
-    def moveAltAzHid(self, value: int) -> None:
-        if value == 0b00000000:
-            direction = "N"
-        elif value == 0b00000010:
-            direction = "E"
-        elif value == 0b00000100:
-            direction = "W"
-        elif value == 0b00000110:
-            direction = "S"
-        else:
-            return
-        self.moveAltAz(direction)
 
     def moveAltAz(self, direction: str) -> None:
         changeStyleDynamic(self.setAltAz[direction]["button"], "run", True)
@@ -235,6 +225,19 @@ class MountMove(TabAddon):
         targetAlt = Angle(degrees=obs.Alt.degrees + coord[0] * step)
         targetAz = Angle(degrees=(obs.Az.degrees + coord[1] * step) % 360)
         self.slewInterface.slewTargetAltAz(targetAlt, targetAz)
+
+    def moveAltAzHid(self, value: int) -> None:
+        if value == 0b00000000:
+            direction = "N"
+        elif value == 0b00000010:
+            direction = "E"
+        elif value == 0b00000100:
+            direction = "S"
+        elif value == 0b00000110:
+            direction = "W"
+        else:
+            return
+        self.moveAltAz(direction)
 
     def checkRaDecInputs(self) -> None:
         canSlew = self.app.dReg["mount"].obsSite.setTargetRaDec(self.targetRa, self.targetDec)

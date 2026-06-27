@@ -13,7 +13,7 @@
 # License APL2.0
 #
 ###########################################################
-import mw4.gui.mainWaddon.tabMount
+import mw4.gui.mainWaddon.tabMount_Move
 import pytest
 import unittest.mock as mock
 from mw4.gui.mainWaddon.tabMount_Move import MountMove

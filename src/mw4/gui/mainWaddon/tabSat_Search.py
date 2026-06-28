@@ -34,17 +34,19 @@ from skyfield.toposlib import GeographicPosition
 from typing import Any
 
 
-class SatSearch(QObject, SatData):
+class SatSearchSignals(QObject):
     setSatListItem = Signal(int, int, object)
 
+
+class SatSearch(SatData):
     def __init__(self, mainW: Any) -> None:
         super().__init__()
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
+        self.signals = SatSearchSignals()
         self.worker: Worker | None = None
-
         SatData.satellites = AstroObjects(
             self.mainW,
             "satellite",
@@ -60,8 +62,10 @@ class SatSearch(QObject, SatData):
         self.ui.satFilterText.textChanged.connect(self.filterListSats)
         self.ui.satIsSunlit.clicked.connect(self.filterListSats)
         self.ui.satRemoveSO.clicked.connect(self.filterListSats)
+        self.ui.satRemoveK.clicked.connect(self.filterListSats)
+        self.ui.satRemoveDQ.clicked.connect(self.filterListSats)
         self.ui.satTwilight.activated.connect(self.filterListSats)
-        self.setSatListItem.connect(self.setListSatsEntry)
+        self.signals.setSatListItem.connect(self.setListSatsEntry)
         self.ui.progSatFull.clicked.connect(self.satellites.progFull)
         self.ui.progSatFiltered.clicked.connect(self.satellites.progFiltered)
         self.ui.progSatSelected.clicked.connect(self.satellites.progSelected)
@@ -74,6 +78,8 @@ class SatSearch(QObject, SatData):
         self.ui.satCyclicUpdates.setChecked(config.get("satCyclicUpdates", False))
         self.ui.satIsSunlit.setChecked(config.get("satIsSunlit", False))
         self.ui.satRemoveSO.setChecked(config.get("satRemoveSO", False))
+        self.ui.satRemoveK.setChecked(config.get("satRemoveK", False))
+        self.ui.satRemoveDQ.setChecked(config.get("satRemoveDQ", False))
         self.ui.satAltitudeMin.setValue(config.get("satAltitudeMin", 30))
         self.ui.satSourceList.setCurrentIndex(config.get("satSource", 0))
 
@@ -85,6 +91,8 @@ class SatSearch(QObject, SatData):
         config["satCyclicUpdates"] = self.ui.satCyclicUpdates.isChecked()
         config["satIsSunlit"] = self.ui.satIsSunlit.isChecked()
         config["satRemoveSO"] = self.ui.satRemoveSO.isChecked()
+        config["satRemoveK"] = self.ui.satRemoveK.isChecked()
+        config["satRemoveDQ"] = self.ui.satRemoveDQ.isChecked()
         config["satAltitudeMin"] = self.ui.satAltitudeMin.value()
 
     def prepareSatTable(self) -> None:
@@ -121,6 +129,8 @@ class SatSearch(QObject, SatData):
         filterStr = self.ui.satFilterText.text().lower()
         checkIsSunlit = self.ui.satIsSunlit.isChecked()
         checkRemoveSO = self.ui.satRemoveSO.isChecked()
+        checkRemoveK = self.ui.satRemoveK.isChecked()
+        checkRemoveDQ = self.ui.satRemoveDQ.isChecked()
         selectTwilight = self.ui.satTwilight.currentIndex()
 
         for row in range(self.ui.listSats.model().rowCount()):
@@ -134,6 +144,11 @@ class SatSearch(QObject, SatData):
                 show = show and "oneweb" not in name
                 show = show and "globalstar" not in name
                 show = show and "navstar" not in name
+            if checkRemoveK:
+                show = show and "KUIPER" not in name
+            if checkRemoveDQ:
+                show = show and "QUIANFAN" not in name
+                show = show and "DIGUI" not in name
             if selectTwilight < 5:
                 value = self.ui.listSats.model().index(row, 8).data()
                 actTwilight = int(value) if value is not None else 6
@@ -157,36 +172,36 @@ class SatSearch(QObject, SatData):
     ) -> None:
         entry = QTableWidgetItem(f"{satParam[0]:5.0f}")
         entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-        self.setSatListItem.emit(row, 2, entry)
+        self.signals.setSatListItem.emit(row, 2, entry)
 
         entry = QTableWidgetItem(f"{satParam[1]:+2.2f}")
         entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-        self.setSatListItem.emit(row, 3, entry)
+        self.signals.setSatListItem.emit(row, 3, entry)
 
         entry = QTableWidgetItem(f"{satParam[2]:+2.2f}")
         entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-        self.setSatListItem.emit(row, 4, entry)
+        self.signals.setSatListItem.emit(row, 4, entry)
 
         entry = QTableWidgetItem(f"{satParam[3]:+2.2f}")
         entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-        self.setSatListItem.emit(row, 5, entry)
+        self.signals.setSatListItem.emit(row, 5, entry)
 
         if isUp:
             t = self.app.timeMgr.convertTime(isUp[0], "%H:%M") if len(isUp) else ""
             entry = QTableWidgetItem(t)
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            self.setSatListItem.emit(row, 6, entry)
+            self.signals.setSatListItem.emit(row, 6, entry)
 
         if isSunlit:
             value = f"{appMag:1.1f}" if isSunlit else ""
             entry = QCustomTableWidgetItem(value)
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            self.setSatListItem.emit(row, 7, entry)
+            self.signals.setSatListItem.emit(row, 7, entry)
 
         if twilight is not None:
             entry = QTableWidgetItem(f"{twilight:1.0f}")
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            self.setSatListItem.emit(row, 8, entry)
+            self.signals.setSatListItem.emit(row, 8, entry)
 
     def calcSatListDynamic(self) -> None:
         # to optimize performance, we do not update if the tab is not visible
@@ -208,7 +223,6 @@ class SatSearch(QObject, SatData):
                 continue
             if satTab.isRowHidden(row):
                 continue
-
             name = satTab.model().index(row, 1).data()
             sat = self.satellites.objects[name]
             satParam = findRangeRate(sat, loc, timeNow)

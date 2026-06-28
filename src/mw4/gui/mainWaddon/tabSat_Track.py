@@ -20,6 +20,7 @@ from mw4.gui.utilities.qtHelpers import changeStyleDynamic, positionCursorInTabl
 from mw4.logic.satellites.satellite_calculations import calcSatPasses
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.tleParams import TLEParams
+from pytestqt.qtbot import QWidget
 from sgp4.exporter import export_tle
 from skyfield.api import Angle, EarthSatellite
 from typing import Any
@@ -38,7 +39,7 @@ class SatTrack(SatData):
         self.lastMeridianLimit = None
         self.workerPasses: Worker | None = None
 
-        self.passUI = {
+        self.passUI: dict[int, dict[str, QWidget]] = {
             0: {
                 "rise": self.ui.satRise_1,
                 "culminate": self.ui.satCulminate_1,
@@ -121,7 +122,7 @@ class SatTrack(SatData):
         self.ui.trackingReplay.setEnabled(progAvailable)
         self.ui.progTrajectory.setEnabled(progAvailable)
 
-    def signalSatelliteData(self, alt: list, az: list) -> None:
+    def signalSatelliteData(self, alt: np.ndarray, az: np.ndarray) -> None:
         if not self.satellite:
             return
 
@@ -137,10 +138,10 @@ class SatTrack(SatData):
         self.ui.startSatelliteTracking.setText("Start satellite tracking")
         changeStyleDynamic(self.ui.startSatelliteTracking, "run", False)
 
-    def calcTrajectoryData(self, start: int, end: int) -> tuple[list, list]:
+    def calcTrajectoryData(self, start: int, end: int) -> tuple[np.ndarray, np.ndarray]:
         duration = min(end - start, 900 / 86400)
         if duration < 1 / 86400:
-            return [], []
+            return np.array([]), np.array([])
 
         m = self.app.dReg["mount"].instance
         temp = m.setting.refractionTemp
@@ -164,7 +165,7 @@ class SatTrack(SatData):
             self.signalSatelliteData(alt=alt, az=az)
         else:
             self.app.dReg["mount"].instance.calcTLE(start)
-            self.signalSatelliteData(alt=[], az=[])
+            self.signalSatelliteData(alt=np.array([]), az=np.array([]))
 
     def workerShowSatPasses(self) -> None:
         title = "Satellite passes " + self.app.timeMgr.timeZoneString()
@@ -311,7 +312,9 @@ class SatTrack(SatData):
 
         return start, end
 
-    def filterHorizonForward(self, alt: list, az: list) -> tuple[list, list, int]:
+    def filterHorizonForward(
+        self, alt: np.ndarray, az: np.ndarray
+    ) -> tuple[np.ndarray, np.ndarray, int]:
         timeDelayStart = 0
         for altitude, azimuth in zip(alt, az):
             if self.app.buildPoint.isAboveHorizon([altitude, azimuth]):
@@ -321,7 +324,9 @@ class SatTrack(SatData):
             az = np.delete(az, 0)
         return alt, az, timeDelayStart
 
-    def filterHorizonReverse(self, alt: list, az: list) -> tuple[list, list, int]:
+    def filterHorizonReverse(
+        self, alt: np.ndarray, az: np.ndarray
+    ) -> tuple[np.ndarray, np.ndarray, int]:
         timeDelayEnd = 0
         for altitude, azimuth in reversed(list(zip(alt, az))):
             if self.app.buildPoint.isAboveHorizon([altitude, azimuth]):
@@ -332,8 +337,8 @@ class SatTrack(SatData):
         return alt, az, timeDelayEnd
 
     def filterHorizon(
-        self, start: float, end: float, alt: list, az: list
-    ) -> tuple[float, float, list, list]:
+        self, start: float, end: float, alt: np.ndarray, az: np.ndarray
+    ) -> tuple[float, float, np.ndarray, np.ndarray]:
         if not self.ui.avoidHorizon.isChecked():
             return start, end, alt, az
 

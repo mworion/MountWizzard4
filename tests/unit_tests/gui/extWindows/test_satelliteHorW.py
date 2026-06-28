@@ -68,15 +68,15 @@ def test_colorChange(function):
 
 
 def test_setPointerVisibility_1(function):
-     function.pointerAltAz = pg.PlotDataItem()
-     function.setPointerVisibility(True)
+    function.pointerAltAz = pg.PlotDataItem()
+    function.setPointerVisibility(True)
 
 
 def test_setPointerVisibility_2(function):
-     function.pointerAltAz = pg.PlotDataItem()
-     function.pointerAltAz.setVisible(True)
-     function.setPointerVisibility(False)
-     assert not function.pointerAltAz.isVisible()
+    function.pointerAltAz = pg.PlotDataItem()
+    function.pointerAltAz.setVisible(True)
+    function.setPointerVisibility(False)
+    assert not function.pointerAltAz.isVisible()
 
 
 def test_updatePointerAltAz_4(function):

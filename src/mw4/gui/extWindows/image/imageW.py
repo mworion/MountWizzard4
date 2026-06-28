@@ -19,10 +19,10 @@ from mw4.gui.extWindows.image.imageSignals import ImageWindowSignals
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from mw4.gui.mainWaddon.tabModel import Model
-from mw4.gui.utilities.qtFileDialog import MWFileDialog
+from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, getTabIndex
 from mw4.gui.utilities.qtMain import MWidget
-from mw4.gui.utilities.qtMessageDialog import MWMessageDialog
+from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.widgets import image_ui
 from mw4.logic.file.fileHandler import FileHandler
 from mw4.logic.fits.fitsFunction import getCoordinatesFromHeader, getImageHeader
@@ -85,7 +85,7 @@ class ImageWindow(MWidget):
         configMain = self.app.config
         configMain["WindowImage"] = {}
         config = configMain["WindowImage"]
-        config = self.getPositionWindow(config)
+        self.getPositionWindow(config)
         config["color"] = self.ui.color.currentIndex()
         config["snTarget"] = self.ui.snTarget.currentIndex()
         config["tabImage"] = self.ui.tabImage.currentIndex()

@@ -15,7 +15,7 @@
 ###########################################################
 import numpy as np
 import pyqtgraph as pg
-from mw4.gui.utilities.gPlotBase import PlotBase
+from mw4.gui.utilities.pyqtgraph.gPlotBase import PlotBase
 from PySide6.QtGui import QColor
 
 
@@ -52,7 +52,8 @@ class NormalScatter(PlotBase):
             )
             self.p[0].setYRange(yMin, yMax)
 
-    def computeZColorMap(self, z: np.ndarray) -> tuple[np.ndarray, float, float]:
+    @staticmethod
+    def computeZColorMap(z: np.ndarray) -> tuple[np.ndarray, float, float]:
         err = np.abs(z)
         minE = float(np.min(err))
         maxE = float(np.max(err))

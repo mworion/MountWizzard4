@@ -99,7 +99,7 @@ class SettMount:
         self.parentW.wIcon(self.ui.mountOn, "power-on")
         self.parentW.wIcon(self.ui.mountOff, "power-off")
 
-    def setMountCapabilities(self, fw) -> None:
+    def setMountCapabilities(self, _) -> None:
         self.ui.GroupWOL.setEnabled(self.app.dReg["mount"].firmware.isHW2012())
 
     def mountBoot(self) -> None:

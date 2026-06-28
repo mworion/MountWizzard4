@@ -16,7 +16,7 @@
 
 import pytest
 from mw4.gui.mainWaddon.tabPower import Power
-from mw4.gui.utilities.qtInputDialog import MWInputDialog
+from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

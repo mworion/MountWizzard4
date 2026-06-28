@@ -18,7 +18,7 @@ import numpy as np
 import pyqtgraph as pg
 import pytest
 import unittest.mock as mock
-from mw4.gui.utilities.gPlotBase import PlotBase
+from mw4.gui.utilities.pyqtgraph.gPlotBase import PlotBase
 from PySide6.QtWidgets import QApplication
 
 
@@ -81,24 +81,21 @@ def test_PlotBase_drawHorizon_0():
     p = PlotBase()
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
-    suc = p.drawHorizon([], plotItem=p.p[0])
-    assert not suc
+    p.drawHorizon([], plotItem=p.p[0])
 
 
 def test_PlotBase_drawHorizon_1():
     p = PlotBase()
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
-    suc = p.drawHorizon([])
-    assert not suc
+    p.drawHorizon([])
 
 
 def test_PlotBase_drawHorizon_2():
     p = PlotBase()
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
-    suc = p.drawHorizon([(0, 0)])
-    assert not suc
+    p.drawHorizon([(0, 0)])
 
 
 def test_PlotBase_drawHorizon_3():
@@ -106,8 +103,7 @@ def test_PlotBase_drawHorizon_3():
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
     p.p[0].addItem(pg.PlotDataItem())
-    suc = p.drawHorizon([(0, 0), (1, 1)])
-    assert suc
+    p.drawHorizon([(0, 0), (1, 1)])
 
 
 def test_PlotBase_drawHorizon_4():
@@ -115,8 +111,7 @@ def test_PlotBase_drawHorizon_4():
     p.horizon = pg.PlotDataItem()
     p.p.append(p.horizon)
     p.p[0].addItem(pg.PlotDataItem())
-    suc = p.drawHorizon([(0, 0), (1, 1)], polar=True)
-    assert suc
+    p.drawHorizon([(0, 0), (1, 1)], polar=True)
 
 
 def test_PlotBase_drawHorizon_5():
@@ -125,8 +120,7 @@ def test_PlotBase_drawHorizon_5():
     p2 = PlotBase()
     target = p2.p[0]
     target.addItem(pg.PlotDataItem())  # target has items; p.p[0] has none
-    suc = p.drawHorizon([(0, 0), (1, 1)], plotItem=target)
-    assert suc  # must succeed because target has items, not p.p[0]
+    p.drawHorizon([(0, 0), (1, 1)], plotItem=target)
 
 
 def test_addIsoBasic_1():

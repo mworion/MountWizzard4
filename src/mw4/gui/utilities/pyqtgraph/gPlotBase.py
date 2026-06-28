@@ -16,7 +16,7 @@
 import numpy as np
 import pyqtgraph as pg
 from mw4.gui.styles.styles import Styles
-from mw4.gui.utilities.gCustomViewBox import CustomViewBox
+from mw4.gui.utilities.pyqtgraph.gCustomViewBox import CustomViewBox
 from PySide6.QtGui import QFont, QPainterPath
 from PySide6.QtWidgets import QApplication
 from scipy.interpolate import griddata
@@ -40,7 +40,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.defRange: dict = {}
         self.scatterItem: pg.ScatterPlotItem | None = None
         self.imageItem: pg.ImageItem | None = None
-        self.barItem: pg.BarGraphItem | None = None
+        self.barItem: pg.ColorBarItem | None = None
         self.horizon = None
         self.p: list = []
         self.p.append(self.addPlot(viewBox=CustomViewBox()))
@@ -78,7 +78,9 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
                 plotItem.getAxis(side).setTextPen(self.pen)
                 plotItem.getAxis(side).setGrid(32)
 
-    def addBarItem(self, interactive: bool = False, plotItem: pg.PlotItem = None) -> None:
+    def addBarItem(
+        self, interactive: bool = False, plotItem: pg.PlotItem | None = None
+    ) -> None:
         if plotItem is None:
             plotItem = self.p[0]
         self.barItem = pg.ColorBarItem(width=15, interactive=interactive, rounding=0.025)
@@ -90,7 +92,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         plotItem.layout.setColumnFixedWidth(4, 5)
 
     @staticmethod
-    def toPolar(az: [], alt: []) -> tuple:
+    def toPolar(az: list, alt: list) -> tuple:
         az = np.array(az)
         alt = np.array(alt)
         theta = np.radians(90 - az)
@@ -99,27 +101,25 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         return x, y
 
     @staticmethod
-    def findItemByName(plotItem: pg.PlotItem, name: str) -> pg.GraphicsObject:
+    def findItemByName(plotItem: pg.PlotItem, name: str) -> pg.GraphicsObject | None:
         for item in plotItem.items:
             if hasattr(item, "nameStr") and item.nameStr == name:
                 return item
         return None
 
     def drawHorizon(
-        self, horizonP: [], plotItem: pg.PlotItem = None, polar: bool = False
-    ) -> bool:
+        self, horizonP: list, plotItem: pg.PlotItem | None = None, polar: bool = False
+    ) -> None:
         if plotItem is None:
             plotItem = self.p[0]
 
         plotItem.removeItem(self.findItemByName(plotItem, "horizon"))
         if len(horizonP) == 0:
-            return False
+            return
         if not plotItem.items:
-            return False
+            return
 
         alt, az = zip(*horizonP)
-        alt = np.array(alt)
-        az = np.array(az)
         path = QPainterPath()
         if not polar:
             altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
@@ -136,9 +136,8 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         horItem.setZValue(-5)
         horItem.nameStr = "horizon"
         plotItem.addItem(horItem)
-        return True
 
-    def addIsoBasic(self, plotItem: pg.PlotItem, zm: float, levels: int = 10) -> None:
+    def addIsoBasic(self, plotItem: pg.PlotItem, zm: np.ndarray, levels: int = 10) -> None:
         minE = np.min(zm)
         maxE = np.max(zm)
 
@@ -157,12 +156,12 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
 
     def addIsoItem(
         self,
-        x: int,
-        y: int,
-        z: int,
-        plotItem: pg.PlotItem = None,
-        rangeX: [] = None,
-        rangeY: [] = None,
+        x: np.ndarray,
+        y: np.ndarray,
+        z: np.ndarray,
+        plotItem: pg.PlotItem | None = None,
+        rangeX: np.ndarray | None = None,
+        rangeY: np.ndarray | None = None,
         levels: int = 20,
     ) -> None:
         if plotItem is None:
@@ -178,7 +177,12 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.addIsoBasic(plotItem, zm, levels)
 
     def addIsoItemHorizon(
-        self, x: int, y: int, z: int, plotItem: pg.PlotItem = None, levels: int = 20
+        self,
+        x: np.ndarray,
+        y: np.ndarray,
+        z: np.ndarray,
+        plotItem: pg.PlotItem | None = None,
+        levels: int = 20,
     ) -> None:
         z = np.abs(z)
         az = np.concatenate([x - 360, x, x + 360])
@@ -186,7 +190,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         err = np.concatenate([z, z, z])
         self.addIsoItem(az, alt, err, plotItem=plotItem, levels=levels)
 
-    def setGrid(self, y: int = 0, plotItem: pg.PlotItem = None, **kwargs) -> None:
+    def setGrid(self, y: int = 0, plotItem: pg.PlotItem | None = None, **kwargs) -> None:
         if plotItem is None:
             plotItem = self.p[0]
         textAngle = np.radians(150)
@@ -209,13 +213,13 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             self.window().font().family(), int(self.window().font().pointSize() * 1.1)
         )
         for r in gridLines:
-            circle = pg.QtWidgets.QGraphicsEllipseItem(-r, -r, r * 2, r * 2)
+            circle = pg.QtWidgets.QGraphicsEllipseItem(-r, -r, int(r * 2), int(r * 2))
             circle.setPen(self.penGrid)
             plotItem.addItem(circle)
-            text = f"{90 - r}" if kwargs.get("reverse", False) else f"{r}"
+            text = f"{int(90 - r)}" if kwargs.get("reverse", False) else f"{int(r)}"
             textItem = pg.TextItem(text=text, color=self.M_PRIM, anchor=(0.5, 0.5))
             textItem.setFont(font)
-            textItem.setPos(r * np.cos(textAngle), r * np.sin(textAngle))
+            textItem.setPos(float(r * np.cos(textAngle)), float(r * np.sin(textAngle)))
             plotItem.addItem(textItem)
 
         maxL = maxR * 1.1
@@ -230,7 +234,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             textItem.setPos(x, y)
             plotItem.addItem(textItem)
 
-    def plotLoc(self, lat: float, plotItem: pg.PlotItem = None) -> None:
+    def plotLoc(self, lat: float, plotItem: pg.PlotItem | None = None) -> None:
         if plotItem is None:
             plotItem = self.p[0]
         circle = pg.QtWidgets.QGraphicsEllipseItem(-2, -2, 4, 4)

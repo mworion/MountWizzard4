@@ -38,7 +38,7 @@ class VideoWindow(VideoWindowBase):
         configMain[self.title] = {}
         config = configMain[self.title]
 
-        config = self.getPositionWindow(config)
+        self.getPositionWindow(config)
         config["videoURL"] = self.ui.videoURL.text()
         config["videoSource"] = self.ui.videoSource.currentIndex()
         config["frameRate"] = self.ui.frameRate.currentIndex()

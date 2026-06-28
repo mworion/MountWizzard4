@@ -13,15 +13,14 @@
 # License APL2.0
 #
 ###########################################################
-
-import pytest
-from mw4.gui.utilities.gHemisphere import Hemisphere
-
-
-@pytest.fixture(autouse=True, scope="module")
-def module(qapp):
-    yield
+from mw4.gui.utilities.pyqtgraph.gCustomViewBox import CustomViewBox
+from mw4.gui.utilities.pyqtgraph.gPlotBase import PlotBase
 
 
-def test_Hemisphere():
-    Hemisphere()
+class Hemisphere(PlotBase):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.p.append(self.addPlot(viewBox=CustomViewBox()))
+        self.setupItems()
+        self.p[1].getViewBox().setAspectLocked(True)
+        self.p[1].setVisible(False)

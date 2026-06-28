@@ -36,7 +36,7 @@ class CustomViewBox(pg.ViewBox):
     def setOpts(self, *args, **kwargs):
         self.enableLimitX = kwargs.get("enableLimitX", False)
 
-    def updateData(self, x: int, y: int) -> None:
+    def updateData(self, x: np.ndarray, y: np.ndarray) -> None:
         self.plotDataItem.setData(x=x, y=y)
 
     @staticmethod
@@ -112,8 +112,8 @@ class CustomViewBox(pg.ViewBox):
         return float(np.clip(px, x[index - 1], x[index + 1]))
 
     def checkLimits(
-        self, data: tuple[float, float], index: int, pos: pg.Point
-    ) -> tuple[int, int]:
+        self, data: tuple[np.ndarray, np.ndarray], index: int, pos: pg.Point
+    ) -> tuple[np.ndarray, np.ndarray]:
         xRange = self.state["limits"]["xLimits"]
         yRange = self.state["limits"]["yLimits"]
         px = self.clampToRange(pos.x(), xRange)
@@ -145,7 +145,7 @@ class CustomViewBox(pg.ViewBox):
         else:
             self.setYRange(yRange[0], yRange[1], update=True)
 
-    def mouseDragEvent(self, event: QEvent(QEvent.Type.DragEnter), axis=None) -> None:
+    def mouseDragEvent(self, event: QEvent, axis=None) -> None:
         if self.plotDataItem is None:
             super().mouseDragEvent(event)
             return

@@ -79,7 +79,7 @@ class SimulatorWindow(MWidget):
         configMain["WindowSimulator"] = {}
         config = configMain["WindowSimulator"]
 
-        config = self.getPositionWindow(config)
+        self.getPositionWindow(config)
         pos = self.camera.position()
         config["cameraPositionX"] = pos.x()
         config["cameraPositionY"] = pos.y()

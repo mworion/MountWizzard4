@@ -17,7 +17,7 @@ import datetime
 from mw4.base import transform
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
-from mw4.gui.utilities.qtInputDialog import MWInputDialog
+from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.mountcontrol.convert import (
     convertLatToAngle,
     convertLonToAngle,
@@ -192,7 +192,7 @@ class MountSett(TabAddon):
     def setMeridianLimitTrack(self) -> bool:
         sett = self.app.dReg["mount"].setting
         actValue = 0 if not sett.meridianLimitTrack else int(sett.meridianLimitTrack)
-        from mw4.gui.utilities.qtInputDialog import MWInputDialog
+        from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 
         value, ok = MWInputDialog.getInt(
             self.mainW, "Set Meridian Limit Track", "Value (1-30):", actValue, 1, 30, 1

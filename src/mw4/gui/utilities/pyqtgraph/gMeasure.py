@@ -14,9 +14,9 @@
 #
 ###########################################################
 
-from mw4.gui.utilities.gCustomViewBox import CustomViewBox
-from mw4.gui.utilities.gPlotBase import PlotBase
-from mw4.gui.utilities.gTimeMeasure import TimeMeasure
+from mw4.gui.utilities.pyqtgraph.gCustomViewBox import CustomViewBox
+from mw4.gui.utilities.pyqtgraph.gPlotBase import PlotBase
+from mw4.gui.utilities.pyqtgraph.gTimeMeasure import TimeMeasure
 
 
 class Measure(PlotBase):

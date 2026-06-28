@@ -15,7 +15,7 @@
 ###########################################################
 import numpy as np
 import pyqtgraph as pg
-from mw4.gui.utilities.gPlotBase import PlotBase
+from mw4.gui.utilities.pyqtgraph.gPlotBase import PlotBase
 from PySide6.QtGui import QTransform
 
 

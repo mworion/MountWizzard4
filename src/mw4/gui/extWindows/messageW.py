@@ -51,7 +51,7 @@ class MessageWindow(MWidget):
         configMain = self.app.config
         configMain["WindowMessage"] = {}
         config = configMain["WindowMessage"]
-        config = self.getPositionWindow(config)
+        self.getPositionWindow(config)
 
     def closeEvent(self, closeEvent) -> None:
         self.storeConfig()

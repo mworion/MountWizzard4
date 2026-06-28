@@ -22,7 +22,7 @@ from mw4.gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-class Test:
+class MockAddon:
     def initConfig(self):
         pass
 
@@ -46,7 +46,7 @@ def window(qapp):
     # during construction; it is covered in the Almanac tests.
     with mock.patch.object(Almanac, "showTwilightDataPlot"):
         window = MainWindowAddons(mainW)
-    window.addons = {"test": Test()}
+    window.addons = {"test": MockAddon()}
     yield window
     mainW.app.threadPool.waitForDone(10000)
     qapp.processEvents()

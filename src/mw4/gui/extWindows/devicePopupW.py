@@ -17,7 +17,7 @@ from functools import partial
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.ascomClass import AscomClass
 from mw4.base.indiClass import IndiClass
-from mw4.gui.utilities.qtFileDialog import MWFileDialog
+from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, getTabIndex, svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup

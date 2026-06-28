@@ -17,7 +17,7 @@ import json
 import numpy as np
 from collections.abc import Iterable
 from mw4.base.threadUtils import mainThreadSleep
-from mw4.gui.utilities.qtFileDialog import MWFileDialog
+from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import analyse_ui
 from pathlib import Path
@@ -80,7 +80,7 @@ class AnalyseWindow(MWidget):
         configMain["WindowAnalyse"] = {}
         config = configMain["WindowAnalyse"]
 
-        config = self.getPositionWindow(config)
+        self.getPositionWindow(config)
         config["showHorizon"] = self.ui.showHorizon.isChecked()
         config["linkViews"] = self.ui.linkViews.isChecked()
 

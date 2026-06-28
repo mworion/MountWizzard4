@@ -17,7 +17,7 @@ import time
 from datetime import datetime
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.gui.mainWaddon.tabAddon import TabAddon
-from mw4.gui.utilities.qtFileDialog import MWFileDialog
+from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.logic.modelBuild.modelRun import ModelData
 from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile

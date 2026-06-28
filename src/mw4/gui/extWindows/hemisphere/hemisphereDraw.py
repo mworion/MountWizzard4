@@ -17,9 +17,9 @@ import numpy as np
 import pyqtgraph as pg
 from mw4.base.transform import diffModulusAbs
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
-from mw4.gui.utilities.generateSprites import makePointer
+from mw4.gui.utilities.qtGenerateSprites import makePointer
 from mw4.gui.utilities.qtMain import MWidget
-from mw4.gui.utilities.qtMessageDialog import MWMessageDialog
+from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from pyqtgraph.GraphicsScene.mouseEvents import MouseClickEvent
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QFont
@@ -405,7 +405,7 @@ class HemisphereDraw(MWidget):
         self.msg.emit(1, "Hemisphere", "Align", t)
         self.slewInterface.slewTargetRaDec(ra, dec, slewType=alignType, epoch="JNow")
 
-    def mouseDoubleClick(self, ev: MouseClickEvent, posView: QPointF) -> None:
+    def mouseDoubleClick(self, _: MouseClickEvent, posView: QPointF) -> None:
         if self.ui.alignmentModeHem.isChecked():
             self.slewStar(posView)
         elif self.ui.normalModeHem.isChecked():

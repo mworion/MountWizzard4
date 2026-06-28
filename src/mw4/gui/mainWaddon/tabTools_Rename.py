@@ -16,7 +16,7 @@
 from astropy.io import fits
 from collections.abc import Callable
 from mw4.gui.mainWaddon.tabAddon import TabAddon
-from mw4.gui.utilities.qtFileDialog import MWFileDialog
+from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from pathlib import Path
 from PySide6.QtWidgets import QApplication, QListView
 from typing import Any

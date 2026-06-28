@@ -8,19 +8,14 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDoubleSpinBox,
-    QFrame, QGridLayout, QGroupBox, QHBoxLayout,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
-    QSpacerItem, QTabWidget, QVBoxLayout, QWidget)
+from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize, Qt)
+from PySide6.QtGui import (QFont)
+from PySide6.QtWidgets import (QCheckBox, QComboBox, QDoubleSpinBox,
+                               QFrame, QGridLayout, QGroupBox, QHBoxLayout,
+                               QLabel, QLineEdit, QPushButton, QSizePolicy,
+                               QSpacerItem, QTabWidget, QVBoxLayout, QWidget)
 
-from mw4.gui.utilities.gImageBar import ImageBar
+from mw4.gui.utilities.pyqtgraph.gImageBar import ImageBar
 
 class Ui_ImageDialog(object):
     def setupUi(self, ImageDialog):

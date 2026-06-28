@@ -18,7 +18,7 @@ import pyqtgraph as pg
 from functools import partial
 from mw4.gui.extWindows.measure.measureAddons import dataPlots
 from mw4.gui.utilities.qtMain import MWidget
-from mw4.gui.utilities.qtMessageDialog import MWMessageDialog
+from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.widgets import measure_ui
 from PySide6.QtCore import QMutex
 from PySide6.QtGui import QCloseEvent
@@ -62,7 +62,7 @@ class MeasureWindow(MWidget):
         configMain["WindowMeasure"] = {}
         config = configMain["WindowMeasure"]
 
-        config = self.getPositionWindow(config)
+        self.getPositionWindow(config)
         for setName in self.mSetUI:
             config[setName] = self.mSetUI[setName].currentIndex()
 

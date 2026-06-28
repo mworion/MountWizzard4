@@ -165,97 +165,115 @@ def test_collectDataDevices_noneClass(function):
         function.app.dReg.d.update(savedDrivers)
 
 
-class TestMeasureDataRaw:
-    @pytest.fixture(autouse=True, scope="function")
-    def setUp(self):
-        self.app = App()
-        self.parent = MeasureData(app=self.app)
-        self.data = {}
-        self.raw = MeasureDataRaw(app=self.app, parent=self.parent, data=self.data)
-        yield
-
-    def test_init(self):
-        assert self.raw.app == self.app
-        assert self.raw.parent == self.parent
-        assert self.raw.data == self.data
-        assert self.raw.config.deviceName == "RAW display"
-        assert hasattr(self.raw, "config")
-
-    def test_startCommunication(self):
-        with mock.patch.object(self.raw.timerTask, "start") as mock_start:
-            self.raw.startCommunication()
-            mock_start.assert_called_once_with(self.parent.CYCLE_UPDATE_TASK)
-
-    def test_stopCommunication(self):
-        with mock.patch.object(self.raw.timerTask, "stop") as mock_stop:
-            self.raw.stopCommunication()
-            mock_stop.assert_called_once()
-
-    def test_measureTask(self):
-        with mock.patch.object(self.parent, "measureTask") as mock_measure:
-            self.raw.measureTask()
-            mock_measure.assert_called_once()
+@pytest.fixture(scope="function")
+def measureDataRaw():
+    app = App()
+    parent = MeasureData(app=app)
+    data = {}
+    raw = MeasureDataRaw(app=app, parent=parent, data=data)
+    yield raw, app, parent, data
 
 
-class TestMeasureDataCSV:
-    @pytest.fixture(autouse=True, scope="function")
-    def setUp(self):
-        self.app = App()
-        self.parent = MeasureData(app=self.app)
-        self.data = {}
-        self.csv = MeasureDataCSV(app=self.app, parent=self.parent, data=self.data)
-        yield
+def test_measureDataRawInit(measureDataRaw):
+    raw, app, parent, data = measureDataRaw
+    assert raw.app == app
+    assert raw.parent == parent
+    assert raw.data == data
+    assert raw.config.deviceName == "RAW display"
+    assert hasattr(raw, "config")
 
-    def test_init(self):
-        assert self.csv.app == self.app
-        assert self.csv.parent == self.parent
-        assert self.csv.data == self.data
-        assert self.csv.config.deviceName == "CSV to file"
-        assert hasattr(self.csv, "config")
 
-    def test_writeHeaderCSV(self, tmp_path):
-        csv_file = tmp_path / "test_header.csv"
-        self.csv.csvFilename = csv_file
-        self.csv.writeHeaderCSV()
-        assert csv_file.exists()
-        content = csv_file.read_text()
-        assert "time" in content
-        assert "mount-timeDiff" in content
+def test_measureDataRawStartCommunication(measureDataRaw):
+    raw, app, parent, data = measureDataRaw
+    with mock.patch.object(raw.timerTask, "start") as mock_start:
+        raw.startCommunication()
+        mock_start.assert_called_once_with(parent.CYCLE_UPDATE_TASK)
 
-    def test_writeCSV(self, tmp_path):
-        csv_file = tmp_path / "test_write.csv"
-        self.csv.csvFilename = csv_file
-        self.csv.data = {
-            "time": np.array([1]),
-            "mount-timeDiff": np.array([10]),
-            "filterNumber": np.array([0]),
-        }
-        self.csv.writeCSV()
-        assert csv_file.exists()
-        content = csv_file.read_text()
-        assert "1" in content
-        assert "10" in content
 
-    def test_startCommunication(self, tmp_path):
-        with (
-            mock.patch.object(self.csv.timerTask, "start") as mock_start,
-            mock.patch.object(self.app.mount.obsSite.timeJD, "utc_strftime") as mock_time,
-            mock.patch.object(self.app, "mwGlob", {"measureDir": tmp_path}),
-        ):
-            mock_time.return_value = "2024-01-01-12-00-00"
-            self.csv.startCommunication()
-            mock_start.assert_called_once_with(self.parent.CYCLE_UPDATE_TASK)
-            assert "measure-2024-01-01-12-00-00.csv" in str(self.csv.csvFilename)
+def test_measureDataRawStopCommunication(measureDataRaw):
+    raw, app, parent, data = measureDataRaw
+    with mock.patch.object(raw.timerTask, "stop") as mock_stop:
+        raw.stopCommunication()
+        mock_stop.assert_called_once()
 
-    def test_stopCommunication(self):
-        with mock.patch.object(self.csv.timerTask, "stop") as mock_stop:
-            self.csv.stopCommunication()
-            mock_stop.assert_called_once()
 
-    def test_measureTask(self):
-        with (
-            mock.patch.object(self.parent, "measureTask"),
-            mock.patch.object(self.csv, "writeCSV") as mock_write,
-        ):
-            self.csv.measureTask()
-            mock_write.assert_called_once()
+def test_measureDataRawMeasureTask(measureDataRaw):
+    raw, app, parent, data = measureDataRaw
+    with mock.patch.object(parent, "measureTask") as mock_measure:
+        raw.measureTask()
+        mock_measure.assert_called_once()
+
+
+@pytest.fixture(scope="function")
+def measureDataCSV():
+    app = App()
+    parent = MeasureData(app=app)
+    data = {}
+    csv = MeasureDataCSV(app=app, parent=parent, data=data)
+    yield csv, app, parent, data
+
+
+def test_measureDataCSVInit(measureDataCSV):
+    csv, app, parent, data = measureDataCSV
+    assert csv.app == app
+    assert csv.parent == parent
+    assert csv.data == data
+    assert csv.config.deviceName == "CSV to file"
+    assert hasattr(csv, "config")
+
+
+def test_measureDataCSVWriteHeaderCSV(measureDataCSV, tmp_path):
+    csv, app, parent, data = measureDataCSV
+    csv_file = tmp_path / "test_header.csv"
+    csv.csvFilename = csv_file
+    csv.writeHeaderCSV()
+    assert csv_file.exists()
+    content = csv_file.read_text()
+    assert "time" in content
+    assert "mount-timeDiff" in content
+
+
+def test_measureDataCSVWriteCSV(measureDataCSV, tmp_path):
+    csv, app, parent, data = measureDataCSV
+    csv_file = tmp_path / "test_write.csv"
+    csv.csvFilename = csv_file
+    csv.data = {
+        "time": np.array([1]),
+        "mount-timeDiff": np.array([10]),
+        "filterNumber": np.array([0]),
+    }
+    csv.writeCSV()
+    assert csv_file.exists()
+    content = csv_file.read_text()
+    assert "1" in content
+    assert "10" in content
+
+
+def test_measureDataCSVStartCommunication(measureDataCSV, tmp_path):
+    csv, app, parent, data = measureDataCSV
+    with (
+        mock.patch.object(csv.timerTask, "start") as mock_start,
+        mock.patch.object(app.mount.obsSite.timeJD, "utc_strftime") as mock_time,
+        mock.patch.object(app, "mwGlob", {"measureDir": tmp_path}),
+    ):
+        mock_time.return_value = "2024-01-01-12-00-00"
+        csv.startCommunication()
+        mock_start.assert_called_once_with(parent.CYCLE_UPDATE_TASK)
+        assert "measure-2024-01-01-12-00-00.csv" in str(csv.csvFilename)
+
+
+def test_measureDataCSVStopCommunication(measureDataCSV):
+    csv, app, parent, data = measureDataCSV
+    with mock.patch.object(csv.timerTask, "stop") as mock_stop:
+        csv.stopCommunication()
+        mock_stop.assert_called_once()
+
+
+def test_measureDataCSVMeasureTask(measureDataCSV):
+    csv, app, parent, data = measureDataCSV
+    with (
+        mock.patch.object(parent, "measureTask"),
+        mock.patch.object(csv, "writeCSV") as mock_write,
+    ):
+        csv.measureTask()
+        mock_write.assert_called_once()

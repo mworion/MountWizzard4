@@ -20,7 +20,7 @@ import unittest.mock as mock
 from mw4.base.deviceRegistry import DeviceEntry
 from mw4.gui.mainWaddon.tabAlmanac import Almanac
 from mw4.gui.mainWindow.mainWindow import MainWindow
-from mw4.gui.utilities.qtFileDialog import MWFileDialog
+from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QWidget

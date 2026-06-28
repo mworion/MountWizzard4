@@ -51,7 +51,7 @@ class KeypadWindow(MWidget):
         self.keypad = KeyPad(self.signals)
         self.inputActive: bool = False
         self.websocketMutex = QMutex()
-        self.worker: Worker = Worker(self)
+        self.worker: Worker | None = None
 
         self.graphics = np.zeros([64, 128, 3], dtype=np.uint8)
         self.buttons = {
@@ -92,7 +92,7 @@ class KeypadWindow(MWidget):
         configMain = self.app.config
         configMain["WindowKeypad"] = {}
         config = configMain["WindowKeypad"]
-        config = self.getPositionWindow(config)
+        self.getPositionWindow(config)
 
     def closeEvent(self, closeEvent) -> None:
         self.storeConfig()

@@ -18,8 +18,8 @@ import builtins
 import pyqtgraph as pg
 import pytest
 import unittest.mock as mock
-from mw4.gui.utilities.gCustomViewBox import CustomViewBox
-from mw4.gui.utilities.gNormalScatter import NormalScatter
+from mw4.gui.utilities.pyqtgraph.gCustomViewBox import CustomViewBox
+from mw4.gui.utilities.pyqtgraph.gNormalScatter import NormalScatter
 from PySide6.QtCore import QEvent, QPointF, Qt
 
 

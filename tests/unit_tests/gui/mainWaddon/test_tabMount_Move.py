@@ -17,7 +17,7 @@ import mw4.gui.mainWaddon.tabMount_Move
 import pytest
 import unittest.mock as mock
 from mw4.gui.mainWaddon.tabMount_Move import MountMove
-from mw4.gui.utilities.qtInputDialog import MWInputDialog
+from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QWidget
 from skyfield.api import Angle

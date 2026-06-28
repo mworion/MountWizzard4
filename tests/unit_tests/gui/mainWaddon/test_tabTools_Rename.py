@@ -20,7 +20,7 @@ import shutil
 import unittest.mock as mock
 from astropy.io import fits
 from mw4.gui.mainWaddon.tabTools_Rename import Rename
-from mw4.gui.utilities.qtFileDialog import MWFileDialog
+from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path

@@ -28,18 +28,18 @@ from typing import Any
 class HemisphereWindow(MWidget):
     """
     the hemisphere window class handles all interaction with model points
-    show / edit etc. the z orders is aligned as follows:
+    show / edit etc. the z orders are aligned as follows:
 
     on the static plane we have (and set to the z order)
-        - terrain image         -10
-        - horizon               0
-        - horizon limits        0
-        - celestial path        0
-        - meridian limit track  10
-        - meridian limit slew   20
-        - alignment stars       30
-        - build points          40
-        - checked build points  50
+        - terrain image -10
+        - horizon 0
+        - horizon limits 0
+        - celestial path 0
+        - meridian limit track 10
+        - meridian limit slew 20
+        - alignment stars 30
+        - build points 40
+        - checked build points 50
     """
 
     def __init__(self, app: Any, title: str) -> None:
@@ -76,7 +76,7 @@ class HemisphereWindow(MWidget):
         configMain["WindowHemisphere"] = {}
         config = configMain["WindowHemisphere"]
 
-        config = self.getPositionWindow(config)
+        self.getPositionWindow(config)
         config["showSlewPath"] = self.ui.showSlewPath.isChecked()
         config["showMountLimits"] = self.ui.showMountLimits.isChecked()
         config["showCelestial"] = self.ui.showCelestial.isChecked()

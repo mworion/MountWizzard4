@@ -15,7 +15,7 @@
 ###########################################################
 import pytest
 from mw4.gui.mainWaddon.tabImage_Manage import ImageManage
-from mw4.gui.utilities.qtInputDialog import MWInputDialog
+from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

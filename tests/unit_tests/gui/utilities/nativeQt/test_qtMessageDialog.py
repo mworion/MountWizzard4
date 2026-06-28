@@ -15,7 +15,7 @@
 ###########################################################
 import pytest
 import unittest.mock as mock
-from mw4.gui.utilities.qtMessageDialog import MWMessageDialog
+from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from PySide6.QtWidgets import QWidget
 
 

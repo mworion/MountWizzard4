@@ -15,7 +15,7 @@
 ###########################################################
 
 
-from mw4.gui.utilities.qCustomTableWidgetItem import QCustomTableWidgetItem
+from mw4.gui.utilities.nativeQt.qtCustomTableWidgetItem import QCustomTableWidgetItem
 
 
 def test_QCustomTableWidgetItem_1():

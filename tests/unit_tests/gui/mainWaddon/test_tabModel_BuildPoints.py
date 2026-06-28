@@ -17,7 +17,7 @@
 import pytest
 from astroquery.simbad import Simbad
 from mw4.gui.mainWaddon.tabModel_BuildPoints import BuildPoints
-from mw4.gui.utilities.qtFileDialog import MWFileDialog
+from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path

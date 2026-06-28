@@ -21,7 +21,7 @@ import pytest
 import time
 import unittest.mock as mock
 from mw4.gui.mainWaddon.tabModel import Model
-from mw4.gui.utilities.qtFileDialog import MWFileDialog
+from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.logic.modelBuild.modelRun import ModelData

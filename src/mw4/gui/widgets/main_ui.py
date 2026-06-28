@@ -8,24 +8,19 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QAbstractSpinBox, QApplication,
-    QCheckBox, QComboBox, QDoubleSpinBox, QFrame,
-    QGridLayout, QGroupBox, QHBoxLayout, QHeaderView,
-    QLabel, QLayout, QLineEdit, QListWidget,
-    QListWidgetItem, QProgressBar, QPushButton, QRadioButton,
-    QSizePolicy, QSpacerItem, QTabWidget, QTableWidget,
-    QTableWidgetItem, QTextBrowser, QVBoxLayout, QWidget)
+from PySide6.QtCore import (QCoreApplication, QMetaObject, QRect,
+                            QSize, Qt)
+from PySide6.QtGui import (QCursor,
+                           QFont)
+from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QAbstractSpinBox, QCheckBox, QComboBox, QDoubleSpinBox, QFrame,
+                               QGridLayout, QGroupBox, QHBoxLayout, QLabel, QLayout, QLineEdit, QListWidget,
+                               QProgressBar, QPushButton, QRadioButton,
+                               QSizePolicy, QSpacerItem, QTabWidget, QTableWidget,
+                               QTextBrowser, QVBoxLayout, QWidget)
 
-from mw4.gui.utilities.gNormalScatter import NormalScatter
-from mw4.gui.utilities.gPlotBase import PlotBase
-from mw4.gui.utilities.gPolarScatter import PolarScatter
+from mw4.gui.utilities.pyqtgraph.gNormalScatter import NormalScatter
+from mw4.gui.utilities.pyqtgraph.gPlotBase import PlotBase
+from mw4.gui.utilities.pyqtgraph.gPolarScatter import PolarScatter
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -5157,7 +5152,7 @@ class Ui_MainWindow(object):
         self.satSettle_1.setReadOnly(True)
         self.label_334 = QLabel(self.satPassesGroup)
         self.label_334.setObjectName(u"label_334")
-        self.label_334.setGeometry(QRect(95, 20, 61, 21))
+        self.label_334.setGeometry(QRect(95, 20, 61, 20))
         self.label_334.setFont(font1)
         self.satRise_1 = QLineEdit(self.satPassesGroup)
         self.satRise_1.setObjectName(u"satRise_1")
@@ -5171,19 +5166,19 @@ class Ui_MainWindow(object):
         self.satRise_1.setReadOnly(True)
         self.label_335 = QLabel(self.satPassesGroup)
         self.label_335.setObjectName(u"label_335")
-        self.label_335.setGeometry(QRect(225, 20, 61, 21))
+        self.label_335.setGeometry(QRect(225, 20, 61, 20))
         self.label_335.setFont(font1)
         self.label_336 = QLabel(self.satPassesGroup)
         self.label_336.setObjectName(u"label_336")
-        self.label_336.setGeometry(QRect(290, 20, 61, 21))
+        self.label_336.setGeometry(QRect(290, 20, 61, 20))
         self.label_336.setFont(font1)
         self.label_337 = QLabel(self.satPassesGroup)
         self.label_337.setObjectName(u"label_337")
-        self.label_337.setGeometry(QRect(160, 20, 61, 21))
+        self.label_337.setGeometry(QRect(160, 20, 61, 20))
         self.label_337.setFont(font1)
         self.label_338 = QLabel(self.satPassesGroup)
         self.label_338.setObjectName(u"label_338")
-        self.label_338.setGeometry(QRect(40, 20, 51, 21))
+        self.label_338.setGeometry(QRect(40, 20, 51, 20))
         self.label_338.setFont(font1)
         self.satCulminate_1 = QLineEdit(self.satPassesGroup)
         self.satCulminate_1.setObjectName(u"satCulminate_1")
@@ -6670,7 +6665,7 @@ class Ui_MainWindow(object):
         self.modelingTabWidget.setCurrentIndex(0)
         self.manageTabWidget.setCurrentIndex(0)
         self.imagingTabWidget.setCurrentIndex(2)
-        self.satTabWidget.setCurrentIndex(0)
+        self.satTabWidget.setCurrentIndex(1)
         self.mpcTabWidget.setCurrentIndex(0)
         self.toolsTabWidget.setCurrentIndex(0)
 

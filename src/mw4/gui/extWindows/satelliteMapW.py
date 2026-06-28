@@ -18,7 +18,7 @@ import pyqtgraph as pg
 from collections.abc import Iterator
 from importlib.resources import as_file, files
 from io import BytesIO
-from mw4.gui.utilities.generateSprites import makeSat
+from mw4.gui.utilities.qtGenerateSprites import makeSat
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import satelliteMap_ui
 from PySide6.QtCore import Qt
@@ -59,7 +59,7 @@ class SatelliteMapWindow(MWidget):
         configMain = self.app.config
         configMain["WindowSatelliteMap"] = {}
         config = configMain["WindowSatelliteMap"]
-        config = self.getPositionWindow(config)
+        self.getPositionWindow(config)
 
     def closeEvent(self, closeEvent) -> None:
         self.storeConfig()

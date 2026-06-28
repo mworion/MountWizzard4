@@ -16,7 +16,7 @@
 import numpy as np
 import pyqtgraph as pg
 from collections.abc import Iterator
-from mw4.gui.utilities.generateSprites import makePointer, makeSat
+from mw4.gui.utilities.qtGenerateSprites import makePointer, makeSat
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import satelliteHor_ui
 from PySide6.QtCore import Qt
@@ -58,7 +58,7 @@ class SatelliteHorizonWindow(MWidget):
         configMain = self.app.config
         configMain["WindowSatelliteHor"] = {}
         config = configMain["WindowSatelliteHor"]
-        config = self.getPositionWindow(config)
+        self.getPositionWindow(config)
 
     def closeEvent(self, closeEvent) -> None:
         self.storeConfig()

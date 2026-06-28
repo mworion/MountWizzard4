@@ -20,7 +20,7 @@ import pyqtgraph as pg
 import pytest
 import unittest.mock as mock
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
-from mw4.gui.utilities.qtFileDialog import MWFileDialog
+from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
 from PySide6.QtCore import QPointF

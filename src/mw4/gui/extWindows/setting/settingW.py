@@ -64,7 +64,7 @@ class SettingWindow(MWidget):
         configMain = self.app.config
         configMain["WindowSetting"] = {}
         config = configMain["WindowSetting"]
-        config = self.getPositionWindow(config)
+        self.getPositionWindow(config)
         getTabAndIndex(self.ui.tabWidget, config, "TabOrder")
         self.tabSettMount.storeConfig()
         self.tabSettDome.storeConfig()

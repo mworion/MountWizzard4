@@ -20,7 +20,7 @@ from mw4.base import packageConfig
 from mw4.gui.mainWindow.externalWindows import ExternalWindows
 from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
 from mw4.gui.styles.styles import Styles
-from mw4.gui.utilities.qtFileDialog import MWFileDialog
+from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtHelpers import (
     changeStyleDynamic,
     getTabAndIndex,

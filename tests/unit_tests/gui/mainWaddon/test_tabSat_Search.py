@@ -88,23 +88,80 @@ def test_processSatelliteSource(function):
 
 
 def test_filterListSats_1(function):
-    function.ui.satFilterGroup.setEnabled(True)
-    function.ui.satIsSunlit.setChecked(True)
-    function.ui.satRemoveSO.setChecked(True)
-    function.ui.listSats.clear()
-    function.ui.listSats.setRowCount(0)
-    function.ui.listSats.setColumnCount(9)
-    function.ui.listSats.insertRow(0)
-    entry = QTableWidgetItem("1234")
-    function.ui.listSats.setItem(0, 0, entry)
-    entry = QTableWidgetItem("NOAA 8")
-    function.ui.listSats.setItem(0, 1, entry)
-    entry = QTableWidgetItem("1")
-    function.ui.listSats.setItem(0, 8, entry)
-    entry = QTableWidgetItem("1234")
-    function.ui.listSats.setItem(0, 7, entry)
-    with mock.patch.object(function.ui.satTwilight, "currentIndex", return_value=1):
-        function.filterListSats()
+     function.ui.satFilterGroup.setEnabled(True)
+     function.ui.satIsSunlit.setChecked(True)
+     function.ui.satRemoveSO.setChecked(True)
+     function.ui.listSats.clear()
+     function.ui.listSats.setRowCount(0)
+     function.ui.listSats.setColumnCount(9)
+     function.ui.listSats.insertRow(0)
+     entry = QTableWidgetItem("1234")
+     function.ui.listSats.setItem(0, 0, entry)
+     entry = QTableWidgetItem("NOAA 8")
+     function.ui.listSats.setItem(0, 1, entry)
+     entry = QTableWidgetItem("1")
+     function.ui.listSats.setItem(0, 8, entry)
+     entry = QTableWidgetItem("1234")
+     function.ui.listSats.setItem(0, 7, entry)
+     with mock.patch.object(function.ui.satTwilight, "currentIndex", return_value=1):
+         function.filterListSats()
+
+
+def test_filterListSats_2(function):
+     function.ui.satFilterGroup.setEnabled(True)
+     function.ui.satRemoveK.setChecked(True)
+     function.ui.listSats.clear()
+     function.ui.listSats.setRowCount(0)
+     function.ui.listSats.setColumnCount(9)
+     function.ui.listSats.insertRow(0)
+     entry = QTableWidgetItem("1234")
+     function.ui.listSats.setItem(0, 0, entry)
+     entry = QTableWidgetItem("KUIPER-123")
+     function.ui.listSats.setItem(0, 1, entry)
+     entry = QTableWidgetItem("1")
+     function.ui.listSats.setItem(0, 8, entry)
+     entry = QTableWidgetItem("1234")
+     function.ui.listSats.setItem(0, 7, entry)
+     with mock.patch.object(function.ui.satTwilight, "currentIndex", return_value=6):
+         function.filterListSats()
+
+
+def test_filterListSats_3(function):
+     function.ui.satFilterGroup.setEnabled(True)
+     function.ui.satRemoveDQ.setChecked(True)
+     function.ui.listSats.clear()
+     function.ui.listSats.setRowCount(0)
+     function.ui.listSats.setColumnCount(9)
+     function.ui.listSats.insertRow(0)
+     entry = QTableWidgetItem("1234")
+     function.ui.listSats.setItem(0, 0, entry)
+     entry = QTableWidgetItem("QUIANFAN-1")
+     function.ui.listSats.setItem(0, 1, entry)
+     entry = QTableWidgetItem("1")
+     function.ui.listSats.setItem(0, 8, entry)
+     entry = QTableWidgetItem("1234")
+     function.ui.listSats.setItem(0, 7, entry)
+     with mock.patch.object(function.ui.satTwilight, "currentIndex", return_value=6):
+         function.filterListSats()
+
+
+def test_filterListSats_4(function):
+     function.ui.satFilterGroup.setEnabled(True)
+     function.ui.satRemoveDQ.setChecked(True)
+     function.ui.listSats.clear()
+     function.ui.listSats.setRowCount(0)
+     function.ui.listSats.setColumnCount(9)
+     function.ui.listSats.insertRow(0)
+     entry = QTableWidgetItem("1234")
+     function.ui.listSats.setItem(0, 0, entry)
+     entry = QTableWidgetItem("DIGUI-2")
+     function.ui.listSats.setItem(0, 1, entry)
+     entry = QTableWidgetItem("1")
+     function.ui.listSats.setItem(0, 8, entry)
+     entry = QTableWidgetItem("1234")
+     function.ui.listSats.setItem(0, 7, entry)
+     with mock.patch.object(function.ui.satTwilight, "currentIndex", return_value=6):
+         function.filterListSats()
 
 
 def test_setListSatsEntry(function):

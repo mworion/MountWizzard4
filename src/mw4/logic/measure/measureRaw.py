@@ -21,7 +21,7 @@ from typing import Any
 
 @dataclass
 class DeviceConfigMeasureRaw:
-    deviceName: str = field(default="")
+    deviceName: str = field(default="RAW display")
 
 
 class MeasureDataRaw(PySide6.QtCore.QObject):
@@ -34,7 +34,6 @@ class MeasureDataRaw(PySide6.QtCore.QObject):
         self.parent = parent
         self.data = parent.data
         self.config = DeviceConfigMeasureRaw()
-        self.config.deviceName = "RAW display"
         self.timerTask = PySide6.QtCore.QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.measureTask)

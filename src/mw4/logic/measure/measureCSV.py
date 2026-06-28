@@ -23,7 +23,7 @@ from typing import Any
 
 @dataclass
 class DeviceConfigMeasureCSV:
-    deviceName: str = field(default="")
+    deviceName: str = field(default="csv")
     filePath: str = field(default="")
 
 

@@ -64,11 +64,11 @@ class MeasureData:
         self.collectDataDevices()
         self.clearData()
         self.run[self.framework].startCommunication()
-        self.signals.deviceConnected.emit(self.run[self.framework].deviceName)
+        self.signals.deviceConnected.emit(self.run[self.framework].config.deviceName)
 
     def stopCommunication(self) -> None:
         self.run[self.framework].stopCommunication()
-        self.signals.deviceDisconnected.emit(self.run[self.framework].deviceName)
+        self.signals.deviceDisconnected.emit(self.run[self.framework].config.deviceName)
 
     def checkStart(self) -> None:
         if self.shorteningStart and len(self.data["time"]) > 2:

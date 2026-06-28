@@ -49,7 +49,7 @@ class PlateSolve:
         self.solveLoopRunning: bool = False
         self.worker: Worker = Worker(self.workerSolveLoop)
         self.process: subprocess.Popen | None = None
-        self.data: dict = {}
+        self.data: dict[str, Any] = {}
         self.framework: str = ""
         self.run: dict = {
             "astrometry": Astrometry(self),
@@ -90,7 +90,7 @@ class PlateSolve:
     def prepareResult(
         self, suc: bool, msg: str, imagePath: Path, wcsPath: Path, update: bool
     ) -> dict[str, Any]:
-        result = {"success": False, "message": msg, "imagePath": imagePath}
+        result: dict[str, Any] = {"success": False, "message": msg, "imagePath": imagePath}
         if not suc:
             self.log.warning(f"Error: [{imagePath.stem}], message: {msg}")
             return result
@@ -159,7 +159,6 @@ class PlateSolve:
         sucIndex = self.checkAvailabilityIndex(self.framework)
         if not sucProgram or not sucIndex:
             return
-
         self.signals.deviceConnected.emit(self.run[self.framework].config.deviceName)
 
     def stopCommunication(self) -> None:

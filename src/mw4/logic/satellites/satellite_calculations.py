@@ -24,13 +24,17 @@ from skyfield.units import Angle
 from typing import Any
 
 
-def findSunlit(sat: EarthSatellite, ephemeris: Any, tEvent: tuple) -> bool:
+def findSunlit(sat: EarthSatellite, ephemeris: Any, tEvent: tuple | Time) -> bool:
     sunlit = sat.at(tEvent).is_sunlit(ephemeris)
     return sunlit
 
 
 def findSatUp(
-    sat: EarthSatellite, loc: GeographicPosition, tStart: float, tEnd: float, alt: float
+    sat: EarthSatellite,
+    loc: GeographicPosition,
+    tStart: float | Time,
+    tEnd: float | Time,
+    alt: float,
 ) -> list[Time]:
     t, events = sat.find_events(loc, tStart, tEnd, altitude_degrees=alt)
     return t[np.equal(events, 1)][:1]
@@ -47,7 +51,7 @@ def checkTwilight(ephemeris: Any, loc: GeographicPosition, data: list[Time]) -> 
 
 
 def findRangeRate(
-    sat: EarthSatellite, loc: GeographicPosition, tEv: float
+    sat: EarthSatellite, loc: GeographicPosition, tEv: float | Time
 ) -> tuple[float, float, float, float]:
     pos = (sat - loc).at(tEv)
     _, _, satRange, latRate, lonRate, radRate = pos.frame_latlon_and_rates(loc)
@@ -60,7 +64,7 @@ def findRangeRate(
 
 
 def calcSatSunPhase(
-    sat: EarthSatellite, loc: GeographicPosition, ephemeris: Any, tEv: float
+    sat: EarthSatellite, loc: GeographicPosition, ephemeris: Any, tEv: float | Time
 ) -> Angle:
     """
     https://stackoverflow.com/questions/19759501
@@ -78,7 +82,11 @@ def calcSatSunPhase(
 
 
 def calcAppMag(
-    sat: EarthSatellite, loc: GeographicPosition, ephemeris: Any, satRange: float, tEv: float
+    sat: EarthSatellite,
+    loc: GeographicPosition,
+    ephemeris: Any,
+    satRange: float,
+    tEv: float | Time,
 ) -> float:
     """
     solution base on the work from:

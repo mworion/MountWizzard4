@@ -165,7 +165,7 @@ class SatSearch(SatData):
         self,
         row: int,
         satParam: tuple[float, float, float, float],
-        isUp: list = [],
+        isUp: list | None = None,
         isSunlit: bool = False,
         appMag: float | None = None,
         twilight: int | None = None,

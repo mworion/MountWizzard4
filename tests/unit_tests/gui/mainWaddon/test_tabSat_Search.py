@@ -16,7 +16,7 @@
 import mw4.gui
 import numpy as np
 import pytest
-from mw4.gui.mainWaddon.tabSat_Search import SatSearch
+from mw4.gui.mainWaddon.tabSat_Search import SatSearch, SatSearchSignals
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path
@@ -55,6 +55,11 @@ def resetSatellites(function):
     sats.dest = Path("tests/work/temp/satellites.tle")
     function.satellites = sats
     yield
+
+
+def test_satSearchSignals_1(qapp):
+    signals = SatSearchSignals()
+    assert signals.setSatListItem is not None
 
 
 def test_initConfig_1(function):
@@ -113,7 +118,32 @@ def test_updateListSats_1(function):
     param = [1, 2, 3, 4]
     ts = function.app.mount.obsSite.ts.now()
     isUp = [ts]
-    function.updateListSats(0, param, isUp, True, 5, 4)
+    with mock.patch.object(function.signals, "setSatListItem") as mock_signal:
+        function.updateListSats(0, param, isUp, True, 5, 4)
+        assert mock_signal.emit.called
+
+
+def test_updateListSats_2(function):
+    param = [1, 2, 3, 4]
+    with mock.patch.object(function.signals, "setSatListItem") as mock_signal:
+        function.updateListSats(0, param, None, False, None, None)
+        # Should emit at least for the satParam values
+        assert mock_signal.emit.called
+
+
+def test_updateListSats_3(function):
+    param = [1, 2, 3, 4]
+    with mock.patch.object(function.signals, "setSatListItem") as mock_signal:
+        function.updateListSats(0, param, [], False, 5.5, 2)
+        assert mock_signal.emit.called
+
+
+def test_updateListSats_4(function):
+    param = [1, 2, 3, 4]
+    ts = function.app.mount.obsSite.ts.now()
+    with mock.patch.object(function.signals, "setSatListItem") as mock_signal:
+        function.updateListSats(0, param, [ts], True, 3.2, 1)
+        assert mock_signal.emit.called
 
 
 def test_calcSatListDynamic_1(function):

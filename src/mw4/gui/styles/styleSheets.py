@@ -357,6 +357,11 @@ BASIC_STYLE = """
         border-radius: %ROUND%;
         min - width: 10em;
     }
+    QPushButton:default {
+        border-color: $M_PRIM$;
+        border-width: 2px;
+        border-style: outset;
+    }
     QPushButton[keypad] {
         border-color: $M_PRIM$;
         border-radius: 8px;

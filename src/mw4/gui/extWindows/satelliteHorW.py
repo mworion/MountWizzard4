@@ -82,12 +82,14 @@ class SatelliteHorizonWindow(MWidget):
         self.app.sendSatelliteData.emit([], [])
 
     def setPointerVisibility(self, status) -> None:
-        self.pointerAltAz.setVisible(status)
+        if not status:
+            self.pointerAltAz.setVisible(status)
 
     def updatePointerAltAz(self) -> None:
         alt = self.obsSite.Alt.degrees
         az = self.obsSite.Az.degrees
         self.pointerAltAz.setData(x=[az], y=[alt])
+        self.pointerAltAz.setVisible(True)
 
     def updatePositions(self, now: Timescale, location: GeographicPosition) -> None:
         difference = self.satellite - location

@@ -64,8 +64,20 @@ def test_showWindow(function):
 
 
 def test_colorChange(function):
-    with mock.patch.object(function, "drawSatellite"):
-        function.colorChange()
+     with mock.patch.object(function, "drawSatellite"):
+         function.colorChange()
+
+
+def test_setPointerVisibility_1(function):
+     function.pointerAltAz = pg.PlotDataItem()
+     function.setPointerVisibility(True)
+
+
+def test_setPointerVisibility_2(function):
+     function.pointerAltAz = pg.PlotDataItem()
+     function.pointerAltAz.setVisible(True)
+     function.setPointerVisibility(False)
+     assert not function.pointerAltAz.isVisible()
 
 
 def test_loadMap_1(function):

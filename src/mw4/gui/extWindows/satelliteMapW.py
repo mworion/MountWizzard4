@@ -50,6 +50,7 @@ class SatelliteMapWindow(MWidget):
         self.brushLocation = pg.mkBrush(color=self.M_YELLOW)
         self.app.showSatellite.connect(self.drawSatellite)
         self.app.updateSatellite.connect(self.updatePositions)
+        self.app.dReg["mount"].signals.mountIsUp.connect(self.setPointerVisibility)
 
     def initConfig(self) -> None:
         self.world: dict = self.loadMap()
@@ -65,6 +66,7 @@ class SatelliteMapWindow(MWidget):
         self.storeConfig()
         self.app.showSatellite.disconnect(self.drawSatellite)
         self.app.updateSatellite.disconnect(self.updatePositions)
+        self.app.dReg["mount"].signals.mountIsUp.disconnect(self.setPointerVisibility)
         super().closeEvent(closeEvent)
 
     def showWindow(self) -> None:
@@ -79,16 +81,6 @@ class SatelliteMapWindow(MWidget):
 
     @staticmethod
     def loadMap() -> dict:
-        """Load the world shoreline map from the bundled compressed numpy asset.
-
-        The .npz file stores three arrays written by generateMap.py:
-          x        – all longitude values concatenated across all segments
-          y        – all latitude values concatenated across all segments
-          lengths  – number of points in each segment (int32)
-
-        Returns a dict keyed by segment index with {"xDeg": ndarray, "yDeg": ndarray}.
-        Safe to deserialise: numpy .npz contains no executable code.  (SEC-3)
-        """
         with as_file(files("mw4").joinpath("assets/data/worldmap.npz")) as mapFile:
             raw = mapFile.read_bytes()
         data = np.load(BytesIO(raw))
@@ -105,6 +97,10 @@ class SatelliteMapWindow(MWidget):
             }
             offset += n
         return world
+
+    def setPointerVisibility(self, status) -> None:
+        if not status:
+            self.pointerAltAz.setVisible(status)
 
     def updatePositions(self, now: Timescale, location: GeographicPosition) -> None:
         observe = self.satellite.at(now)

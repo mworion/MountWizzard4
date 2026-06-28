@@ -17,8 +17,8 @@ import numpy as np
 import pyqtgraph as pg
 from functools import partial
 from mw4.gui.extWindows.measure.measureAddons import dataPlots
-from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
+from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import measure_ui
 from PySide6.QtCore import QMutex
 from PySide6.QtGui import QCloseEvent

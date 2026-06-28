@@ -14,8 +14,8 @@
 #
 ###########################################################
 from mw4.gui.mainWaddon.tabAddon import TabAddon
-from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
 from typing import Any
 
 

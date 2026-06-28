@@ -1582,7 +1582,7 @@
   <customwidget>
    <class>ImageBar</class>
    <extends>QWidget</extends>
-   <header>mw4.gui.utilities.gImageBar</header>
+   <header>mw4.gui.utilities.pyqtgraph.gImageBar</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

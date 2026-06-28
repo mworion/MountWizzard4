@@ -135,9 +135,7 @@ def test_drawTerrainImage_1(function):
 def test_drawTerrainImage_2(function):
     function.horizonDraw.imageTerrain = np.ones((1440, 360))
     with (
-        mock.patch.object(
-            MWFileDialog, "getOpenFileName", return_value=Path("terrain.jpg")
-        ),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("terrain.jpg")),
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(cv2, "imread", return_value=np.array([[0, 0], [0, 0]])),
         mock.patch.object(cv2, "resize", return_value=np.ones((1440, 360))),

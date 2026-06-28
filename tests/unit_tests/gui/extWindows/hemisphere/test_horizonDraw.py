@@ -23,8 +23,8 @@ import shutil
 import unittest.mock as mock
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from mw4.gui.extWindows.hemisphere.horizonDraw import HorizonDraw
-from mw4.gui.utilities.pyqtgraph.gCustomViewBox import CustomViewBox
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
+from mw4.gui.utilities.pyqtgraph.gCustomViewBox import CustomViewBox
 from pathlib import Path
 from PySide6.QtCore import QPointF
 from PySide6.QtWidgets import QApplication

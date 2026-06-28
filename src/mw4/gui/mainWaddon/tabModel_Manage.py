@@ -16,9 +16,9 @@
 import json
 import numpy as np
 from mw4.gui.mainWaddon.tabAddon import TabAddon
-from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.logic.modelBuild.modelRunSupport import (
     convertAngleToFloat,
     convertFloatToAngle,

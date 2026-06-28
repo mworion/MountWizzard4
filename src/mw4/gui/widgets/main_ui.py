@@ -8,15 +8,20 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QRect,
-                            QSize, Qt)
-from PySide6.QtGui import (QCursor,
-                           QFont)
-from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QAbstractSpinBox, QCheckBox, QComboBox, QDoubleSpinBox, QFrame,
-                               QGridLayout, QGroupBox, QHBoxLayout, QLabel, QLayout, QLineEdit, QListWidget,
-                               QProgressBar, QPushButton, QRadioButton,
-                               QSizePolicy, QSpacerItem, QTabWidget, QTableWidget,
-                               QTextBrowser, QVBoxLayout, QWidget)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QAbstractSpinBox, QApplication,
+    QCheckBox, QComboBox, QDoubleSpinBox, QFrame,
+    QGridLayout, QGroupBox, QHBoxLayout, QHeaderView,
+    QLabel, QLayout, QLineEdit, QListWidget,
+    QListWidgetItem, QProgressBar, QPushButton, QRadioButton,
+    QSizePolicy, QSpacerItem, QTabWidget, QTableWidget,
+    QTableWidgetItem, QTextBrowser, QVBoxLayout, QWidget)
 
 from mw4.gui.utilities.pyqtgraph.gNormalScatter import NormalScatter
 from mw4.gui.utilities.pyqtgraph.gPlotBase import PlotBase
@@ -66,23 +71,54 @@ class Ui_MainWindow(object):
         self.gridLayout_14.setSpacing(4)
         self.gridLayout_14.setObjectName(u"gridLayout_14")
         self.gridLayout_14.setContentsMargins(4, 6, 4, 0)
-        self.saveConfigQuit = QPushButton(self.profileGroup)
-        self.saveConfigQuit.setObjectName(u"saveConfigQuit")
+        self.saveConfig = QPushButton(self.profileGroup)
+        self.saveConfig.setObjectName(u"saveConfig")
         sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.saveConfigQuit.sizePolicy().hasHeightForWidth())
-        self.saveConfigQuit.setSizePolicy(sizePolicy2)
-        self.saveConfigQuit.setMinimumSize(QSize(90, 25))
-        self.saveConfigQuit.setMaximumSize(QSize(16777215, 25))
+        sizePolicy2.setHeightForWidth(self.saveConfig.sizePolicy().hasHeightForWidth())
+        self.saveConfig.setSizePolicy(sizePolicy2)
+        self.saveConfig.setMinimumSize(QSize(0, 25))
+        self.saveConfig.setMaximumSize(QSize(16777215, 25))
         font1 = QFont()
         font1.setFamilies([u"Arial"])
         font1.setPointSize(10)
         font1.setBold(False)
+        self.saveConfig.setFont(font1)
+        self.saveConfig.setStyleSheet(u"")
+
+        self.gridLayout_14.addWidget(self.saveConfig, 2, 2, 1, 1)
+
+        self.saveConfigQuit = QPushButton(self.profileGroup)
+        self.saveConfigQuit.setObjectName(u"saveConfigQuit")
+        sizePolicy2.setHeightForWidth(self.saveConfigQuit.sizePolicy().hasHeightForWidth())
+        self.saveConfigQuit.setSizePolicy(sizePolicy2)
+        self.saveConfigQuit.setMinimumSize(QSize(90, 25))
+        self.saveConfigQuit.setMaximumSize(QSize(16777215, 25))
         self.saveConfigQuit.setFont(font1)
         self.saveConfigQuit.setStyleSheet(u"")
 
-        self.gridLayout_14.addWidget(self.saveConfigQuit, 1, 1, 1, 1)
+        self.gridLayout_14.addWidget(self.saveConfigQuit, 1, 2, 1, 1)
+
+        self.setting = QPushButton(self.profileGroup)
+        self.setting.setObjectName(u"setting")
+        sizePolicy2.setHeightForWidth(self.setting.sizePolicy().hasHeightForWidth())
+        self.setting.setSizePolicy(sizePolicy2)
+        self.setting.setMinimumSize(QSize(0, 25))
+        self.setting.setFont(font1)
+
+        self.gridLayout_14.addWidget(self.setting, 4, 0, 1, 1)
+
+        self.saveConfigAs = QPushButton(self.profileGroup)
+        self.saveConfigAs.setObjectName(u"saveConfigAs")
+        sizePolicy2.setHeightForWidth(self.saveConfigAs.sizePolicy().hasHeightForWidth())
+        self.saveConfigAs.setSizePolicy(sizePolicy2)
+        self.saveConfigAs.setMinimumSize(QSize(0, 25))
+        self.saveConfigAs.setMaximumSize(QSize(16777215, 25))
+        self.saveConfigAs.setFont(font1)
+        self.saveConfigAs.setStyleSheet(u"")
+
+        self.gridLayout_14.addWidget(self.saveConfigAs, 2, 0, 1, 1)
 
         self.loadFrom = QPushButton(self.profileGroup)
         self.loadFrom.setObjectName(u"loadFrom")
@@ -109,38 +145,7 @@ class Ui_MainWindow(object):
         self.profileName.setFrame(False)
         self.profileName.setReadOnly(True)
 
-        self.gridLayout_14.addWidget(self.profileName, 4, 0, 1, 1)
-
-        self.saveConfig = QPushButton(self.profileGroup)
-        self.saveConfig.setObjectName(u"saveConfig")
-        sizePolicy2.setHeightForWidth(self.saveConfig.sizePolicy().hasHeightForWidth())
-        self.saveConfig.setSizePolicy(sizePolicy2)
-        self.saveConfig.setMinimumSize(QSize(0, 25))
-        self.saveConfig.setMaximumSize(QSize(16777215, 25))
-        self.saveConfig.setFont(font1)
-        self.saveConfig.setStyleSheet(u"")
-
-        self.gridLayout_14.addWidget(self.saveConfig, 2, 1, 1, 1)
-
-        self.saveConfigAs = QPushButton(self.profileGroup)
-        self.saveConfigAs.setObjectName(u"saveConfigAs")
-        sizePolicy2.setHeightForWidth(self.saveConfigAs.sizePolicy().hasHeightForWidth())
-        self.saveConfigAs.setSizePolicy(sizePolicy2)
-        self.saveConfigAs.setMinimumSize(QSize(0, 25))
-        self.saveConfigAs.setMaximumSize(QSize(16777215, 25))
-        self.saveConfigAs.setFont(font1)
-        self.saveConfigAs.setStyleSheet(u"")
-
-        self.gridLayout_14.addWidget(self.saveConfigAs, 2, 0, 1, 1)
-
-        self.setting = QPushButton(self.profileGroup)
-        self.setting.setObjectName(u"setting")
-        sizePolicy2.setHeightForWidth(self.setting.sizePolicy().hasHeightForWidth())
-        self.setting.setSizePolicy(sizePolicy2)
-        self.setting.setMinimumSize(QSize(0, 25))
-        self.setting.setFont(font1)
-
-        self.gridLayout_14.addWidget(self.setting, 4, 1, 1, 1)
+        self.gridLayout_14.addWidget(self.profileName, 4, 2, 1, 1)
 
 
         self.gridLayout.addWidget(self.profileGroup, 0, 2, 1, 1)
@@ -6660,7 +6665,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainTabWidget.setCurrentIndex(5)
+        self.mainTabWidget.setCurrentIndex(0)
         self.mountTabWidget.setCurrentIndex(0)
         self.modelingTabWidget.setCurrentIndex(0)
         self.manageTabWidget.setCurrentIndex(0)
@@ -6677,9 +6682,18 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MountWizzard4 (C) MW 2026", None))
         self.profileGroup.setTitle(QCoreApplication.translate("MainWindow", u"Profile", None))
 #if QT_CONFIG(tooltip)
+        self.saveConfig.setToolTip(QCoreApplication.translate("MainWindow", u"Saves the actual profile to disk under the same name without closing the application.", None))
+#endif // QT_CONFIG(tooltip)
+        self.saveConfig.setText(QCoreApplication.translate("MainWindow", u"Save", None))
+#if QT_CONFIG(tooltip)
         self.saveConfigQuit.setToolTip(QCoreApplication.translate("MainWindow", u"Saves the actual profile and closes the application", None))
 #endif // QT_CONFIG(tooltip)
         self.saveConfigQuit.setText(QCoreApplication.translate("MainWindow", u"Quit/Save", None))
+        self.setting.setText(QCoreApplication.translate("MainWindow", u"Setting", None))
+#if QT_CONFIG(tooltip)
+        self.saveConfigAs.setToolTip(QCoreApplication.translate("MainWindow", u"Saves the actual profile under a selectable new name on the disk without closing the appliation.", None))
+#endif // QT_CONFIG(tooltip)
+        self.saveConfigAs.setText(QCoreApplication.translate("MainWindow", u"Save as", None))
 #if QT_CONFIG(tooltip)
         self.loadFrom.setToolTip(QCoreApplication.translate("MainWindow", u"Loads a profile from disk", None))
 #endif // QT_CONFIG(tooltip)
@@ -6688,15 +6702,6 @@ class Ui_MainWindow(object):
         self.profileName.setToolTip(QCoreApplication.translate("MainWindow", u"Shows the actual selected profile name.", None))
 #endif // QT_CONFIG(tooltip)
         self.profileName.setText("")
-#if QT_CONFIG(tooltip)
-        self.saveConfig.setToolTip(QCoreApplication.translate("MainWindow", u"Saves the actual profile to disk under the same name without closing the application.", None))
-#endif // QT_CONFIG(tooltip)
-        self.saveConfig.setText(QCoreApplication.translate("MainWindow", u"Save", None))
-#if QT_CONFIG(tooltip)
-        self.saveConfigAs.setToolTip(QCoreApplication.translate("MainWindow", u"Saves the actual profile under a selectable new name on the disk without closing the appliation.", None))
-#endif // QT_CONFIG(tooltip)
-        self.saveConfigAs.setText(QCoreApplication.translate("MainWindow", u"Save as", None))
-        self.setting.setText(QCoreApplication.translate("MainWindow", u"Setting", None))
         self.statusTimeGroup.setTitle(QCoreApplication.translate("MainWindow", u"Time", None))
 #if QT_CONFIG(tooltip)
         self.openV4.setToolTip(QCoreApplication.translate("MainWindow", u"Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.\n"

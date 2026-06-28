@@ -304,7 +304,9 @@ def test_selectAppPath_2(function):
 
     function.app.plateSolve.run["astap"] = Avail()
     with (
-        mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=Path("/test.app")),
+        mock.patch.object(
+            MWFileDialog, "getExistingDirectory", return_value=Path("/test.app")
+        ),
         mock.patch.object(Path, "is_dir", return_value=True),
     ):
         function.selectAppPath("astap")
@@ -318,7 +320,9 @@ def test_selectAppPath_3(function):
 
     function.app.plateSolve.run["astap"] = Avail()
     with (
-        mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=Path("/Astrometry.app")),
+        mock.patch.object(
+            MWFileDialog, "getExistingDirectory", return_value=Path("/Astrometry.app")
+        ),
         mock.patch.object(Path, "is_dir", return_value=True),
     ):
         function.selectAppPath("astap")
@@ -367,7 +371,9 @@ def test_selectAscomDriver_1(function):
 def test_selectBoltwoodPath_1(function):
     function.ui.boltwoodPath.setText("")
     with (
-        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("/test/file.txt")),
+        mock.patch.object(
+            MWFileDialog, "getOpenFileName", return_value=Path("/test/file.txt")
+        ),
         mock.patch.object(Path, "is_file", return_value=True),
     ):
         function.selectBoltwoodPath()
@@ -377,7 +383,9 @@ def test_selectBoltwoodPath_1(function):
 def test_selectBoltwoodPath_2(function):
     function.ui.boltwoodPath.setText("")
     with (
-        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("/test/file.txt")),
+        mock.patch.object(
+            MWFileDialog, "getOpenFileName", return_value=Path("/test/file.txt")
+        ),
         mock.patch.object(Path, "is_file", return_value=False),
     ):
         function.selectBoltwoodPath()

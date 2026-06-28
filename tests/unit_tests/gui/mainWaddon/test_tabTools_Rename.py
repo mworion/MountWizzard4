@@ -249,5 +249,7 @@ def test_chooseDir_1(function):
 
 
 def test_chooseDir_2(function):
-    with mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=("test", "", "")):
+    with mock.patch.object(
+        MWFileDialog, "getExistingDirectory", return_value=("test", "", "")
+    ):
         function.chooseDir()

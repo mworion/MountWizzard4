@@ -372,9 +372,9 @@ class SatTrack(SatData):
         az = Angle(degrees=np.array_split(az, factor)[0])
 
         changeStyleDynamic(self.ui.progTrajectory, "run", True)
-        self.ui.satTrackGroup.setEnabled(False)
         changeStyleDynamic(self.ui.satTrackGroup, "run", True)
-        self.ui.progTrajectory.setText("Calculating")
+        self.ui.satTrackGroup.setTitle("Calculating")
+        self.ui.progTrajectory.setEnabled(False)
         self.app.dReg["mount"].instance.progTrajectory(start, alt, az, replay=isReplay)
 
     def changeUnitTimeUTC(self) -> None:
@@ -403,9 +403,10 @@ class SatTrack(SatData):
             self.ui.satTrajectoryFlip.setText("NO")
 
     def updateInternalTrackGui(self, tleParams: TLEParams) -> None:
-        self.ui.satTrackGroup.setEnabled(True)
+        self.ui.progTrajectory.setEnabled(True)
+        title = "Satellite tracking " + self.app.timeMgr.timeZoneString()
+        self.ui.satTrackGroup.setTitle(title)
         changeStyleDynamic(self.ui.satTrackGroup, "run", False)
-        self.ui.progTrajectory.setText("Program trajectory")
         self.updateSatelliteTrackGui(tleParams)
         self.msg.emit(1, "TLE", "Program", "Satellite track data ready!")
 

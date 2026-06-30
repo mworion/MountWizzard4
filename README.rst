@@ -17,9 +17,9 @@ https://mworion.github.io/MountWizzard4/index.html
 
 Welcome to MountWizzard4 is a utility for 10micron users for improving the
 workflow for astronomy work and imaging runs on Windows (10 and 11), OSx (Big Sur
-- Sonoma), Linux (Ubuntu 18.04 - 22.04) and some Linux ARM64 distributions
+- 26), Linux (Ubuntu 18.04 - 24.04) and some Linux ARM64 distributions
 (Astroberry and StellarMate - both 64 bit). As a python application, it should
-run in all environments supporting python 3.10-3.12 and PySide6 6 as a GUI
+run in all environments supporting python 3.11-3.13 and PySide6 as a GUI
 framework.
 
 For being fully operational, MountWizzard4 needs either:
@@ -33,18 +33,15 @@ For being fully operational, MountWizzard4 needs either:
     abstracting your ASCOM devices or devices which speak native ASCOM Alpaca if
     you want to connect over IP with your environment.
 
--   Running versions of Sequence Generator Pro or NINA as frontend for camera
-    device.
-
 -   For the core devices there is native ASCOM support (Windows platform only).
     Please be reminded, that ASCOM has 32bit and 64bit driver implementations
-    and MW4 v3.x should **not** be installed in 32bit as it causes in some
+    and MW4 v4.x should **not** be installed in 32bit as it causes in some
     environments troubles. Please stay with a 64 bit python environment.
 
 -   In addition an internet connection is used for some services which might be
     very helpful.
 
-It is recommended to use mount firmware 3.0 or later as some
+It is recommended to use mount firmware 3.4 or later as some
 of the functions don't work with older firmware versions. It should not be a
 problem using older versions. A HW pre2012 might also have some issues.
 

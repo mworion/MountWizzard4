@@ -23,10 +23,10 @@ from PySide6.QtGui import QIcon
 
 class Styles:
     colorSet: int = 0
-    cachedColorSet: int | None = None
+    cachedColorSet: int = 0
     transparency: float = 1
     cachedTransparency: float = 1
-    cachedStyle: str | None = None
+    cachedStyle: str = ""
 
     STYLE = (
         MAC_STYLE + BASIC_STYLE
@@ -152,7 +152,11 @@ class Styles:
 
     @property
     def mw4Style(self) -> str:
-        if self.cachedStyle is None or self.cachedColorSet != self.colorSet or self.cachedTransparency != self.transparency:
+        if (
+            self.cachedStyle is None
+            or self.cachedColorSet != self.colorSet
+            or self.cachedTransparency != self.transparency
+        ):
             self.cachedStyle = self.renderStyle(self.STYLE)
             self.cachedColorSet = self.colorSet
             self.cachedTransparency = self.transparency
@@ -171,13 +175,13 @@ class Styles:
         b = int(val[4:6], 16)
         return [r, g, b]
 
-    def calcHexColor(self, val: list[int], f: float) -> str:
+    def calcHexColor(self, val: str, f: float) -> str:
         rgb = self.hex2rgb(val)
         rgb = [int(x * f) for x in rgb]
         return f"#{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}"
 
     @staticmethod
-    def findKeysInLine(line: str, keyChar: chr) -> list:
+    def findKeysInLine(line: str, keyChar: str) -> list:
         keys = []
         start = 0
         end = 0
@@ -210,7 +214,7 @@ class Styles:
             color = colors[key][self.colorSet]
             if key in ["M_BACK", "M_BACK1"]:
                 r, g, b = self.hex2rgb(color)
-                color= f"rgba({r},{g},{b},{self.transparency})"
+                color = f"rgba({r},{g},{b},{self.transparency})"
             line = line.replace(f"${key}$", color)
         return line
 

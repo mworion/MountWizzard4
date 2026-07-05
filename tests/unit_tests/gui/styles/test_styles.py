@@ -124,7 +124,6 @@ def test_replaceColor_1(function):
     assert val == "12345 #2090C0;"
 
 
-
 def test_replaceImage_1(function):
     inStyle = "12345 $checkmark$;"
     function.colorSet = 0
@@ -211,4 +210,3 @@ def test_mw4Style_cache_invalidation(function):
     assert style0_first == style0_second
     # But different from colorSet 1
     assert style0_first != style1
-

@@ -16,6 +16,7 @@
 import os
 import pytest
 from mw4.gui.utilities.qtHelpers import (
+    addAlpha,
     changeStyleDynamic,
     clickable,
     findIndexValue,
@@ -29,7 +30,7 @@ from mw4.gui.utilities.qtHelpers import (
     svg2pixmap,
 )
 from PySide6.QtCore import QPoint, Qt
-from PySide6.QtGui import QIcon, QPixmap
+from PySide6.QtGui import QColor, QIcon, QPixmap
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import (
     QComboBox,
@@ -270,3 +271,37 @@ def test_positionCursorInTable_2(function):
     positionCursorInTable(widget, "asdf")
     assert widget.currentRow() == -1
     assert widget.currentColumn() == -1
+
+
+def test_addAlpha_1():
+    color = addAlpha("red")
+    assert isinstance(color, QColor)
+    assert color.alphaF() == pytest.approx(0.5, abs=1e-5)
+
+
+def test_addAlpha_2():
+    color = addAlpha("#FF0000")
+    assert isinstance(color, QColor)
+    assert color.alphaF() == pytest.approx(0.5, abs=1e-5)
+
+
+def test_addAlpha_3():
+    color = addAlpha("blue")
+    assert isinstance(color, QColor)
+    assert color.alphaF() == pytest.approx(0.5, abs=1e-5)
+
+
+def test_addAlpha_4():
+    original = QColor("green")
+    original.setAlphaF(1.0)
+    color = addAlpha("green")
+    assert isinstance(color, QColor)
+    assert color.alphaF() == pytest.approx(0.5, abs=1e-5)
+
+
+def test_addAlpha_5():
+    original = QColor("rgba(255, 255, 0, 1.0)")
+    original_alpha = original.alphaF()
+    color = addAlpha("rgba(255, 255, 0, 1.0)")
+    assert isinstance(color, QColor)
+    assert color.alphaF() == pytest.approx(original_alpha * 0.5, abs=1e-5)

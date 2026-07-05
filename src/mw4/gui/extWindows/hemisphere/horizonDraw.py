@@ -220,9 +220,9 @@ class HorizonDraw(MWidget):
         plotItem = self.ui.horizon.p[0]
         if self.ui.editModeHor.isChecked():
             self.horizonPlot = pg.PlotDataItem(
-                symbolBrush=pg.mkBrush(color=self.M_PINK + "40"),
+                symbolBrush=pg.mkBrush(color=self.M_PINK),
                 symbolPen=pg.mkPen(color=self.M_PINK1, width=2),
-                brush=pg.mkBrush(color=self.M_PINK + "40"),
+                brush=pg.mkBrush(color=self.M_PINK),
                 pen=pg.mkPen(color=self.M_PINK1, width=2),
                 symbolSize=10,
                 symbol="o",
@@ -235,9 +235,9 @@ class HorizonDraw(MWidget):
             vb.setOpts(enableLimitX=True)
         else:
             self.horizonPlot = pg.PlotDataItem(
-                symbolBrush=pg.mkBrush(color=self.M_PRIM + "40"),
+                symbolBrush=pg.mkBrush(color=self.M_PRIM),
                 symbolPen=pg.mkPen(color=self.M_PRIM1, width=2),
-                brush=pg.mkBrush(color=self.M_PRIM + "40"),
+                brush=pg.mkBrush(color=self.M_PRIM),
                 pen=pg.mkPen(color=self.M_PRIM1, width=2),
                 symbolSize=5,
                 symbol="o",

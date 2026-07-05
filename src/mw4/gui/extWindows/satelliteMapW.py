@@ -172,7 +172,7 @@ class SatelliteMapWindow(MWidget):
             symbol=makeSat(),
             symbolSize=40,
             symbolPen=pg.mkPen(color=self.M_TER, width=1),
-            symbolBrush=pg.mkBrush(color=self.M_TER2 + "80"),
+            symbolBrush=pg.mkBrush(color=self.M_TER2),
         )
         return pd
 
@@ -223,7 +223,7 @@ class SatelliteMapWindow(MWidget):
         lon = subPoints.longitude.degrees
         for slc in self.unlinkWrap(lon):
             pd = pg.PlotDataItem(
-                x=lon[slc], y=lat[slc], pen=pg.mkPen(width=1, color=self.M_TER1 + "80")
+                x=lon[slc], y=lat[slc], pen=pg.mkPen(width=1, color=self.M_TER1)
             )
             pd.setZValue(-10)
             plotItem.addItem(pd)

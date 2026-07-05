@@ -119,7 +119,7 @@ class SatelliteHorizonWindow(MWidget):
             symbol=makeSat(),
             symbolSize=40,
             symbolPen=pg.mkPen(color=self.M_TER, width=1),
-            symbolBrush=pg.mkBrush(color=self.M_TER2 + "80"),
+            symbolBrush=pg.mkBrush(color=self.M_TER2),
         )
         return pd
 

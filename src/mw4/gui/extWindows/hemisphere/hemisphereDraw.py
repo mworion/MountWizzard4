@@ -19,6 +19,7 @@ from mw4.base.transform import diffModulusAbs
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.utilities.qtGenerateSprites import makePointer
+from mw4.gui.utilities.qtHelpers import addAlpha
 from mw4.gui.utilities.qtMain import MWidget
 from pyqtgraph.GraphicsScene.mouseEvents import MouseClickEvent
 from PySide6.QtCore import QPointF, Qt
@@ -273,7 +274,7 @@ class HemisphereDraw(MWidget):
 
             if self.ui.editModeHem.isChecked():
                 pd = pg.PlotDataItem(
-                    symbolBrush=pg.mkBrush(color=self.M_PINK + "40"),
+                    symbolBrush=pg.mkBrush(color=self.M_PINK),
                     symbolPen=pg.mkPen(color=self.M_PINK1, width=2),
                     symbolSize=10,
                     symbol="o",
@@ -287,7 +288,7 @@ class HemisphereDraw(MWidget):
                     vb.updateData = self.updateDataModel
             else:
                 pd = pg.PlotDataItem(
-                    symbolBrush=pg.mkBrush(color=self.M_TER + "40"),
+                    symbolBrush=pg.mkBrush(color=self.M_TER),
                     symbolPen=pg.mkPen(color=self.M_TER1, width=2),
                     symbolSize=8,
                     symbol="o",
@@ -335,7 +336,7 @@ class HemisphereDraw(MWidget):
         plotItem = self.ui.hemisphere.p[0]
         self.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
         self.pointerDome.setPen(pg.mkPen(color=self.M_SEC))
-        self.pointerDome.setBrush(pg.mkBrush(color=self.M_SEC + "80"))
+        self.pointerDome.setBrush(pg.mkBrush(color=addAlpha(self.M_SEC)))
         self.pointerDome.setVisible(False)
         plotItem.addItem(self.pointerDome)
 

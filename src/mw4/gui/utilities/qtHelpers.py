@@ -172,3 +172,10 @@ def positionCursorInTable(table: QTableWidget, searchName: str) -> None:
     index = table.row(item)
     table.selectRow(index)
     table.scrollToItem(item, QAbstractItemView.ScrollHint.EnsureVisible)
+
+
+def addAlpha(color: str) -> QColor:
+    col = QColor(color)
+    colAlphaF = col.alphaF()
+    col.setAlphaF(colAlphaF * 0.5)
+    return col

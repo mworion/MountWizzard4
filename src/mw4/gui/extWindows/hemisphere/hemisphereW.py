@@ -18,6 +18,7 @@ import numpy as np
 import pyqtgraph as pg
 from mw4.gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
 from mw4.gui.extWindows.hemisphere.horizonDraw import HorizonDraw
+from mw4.gui.utilities.qtHelpers import addAlpha
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import hemisphere_ui
 from PySide6.QtCore import QPointF, Qt
@@ -209,13 +210,13 @@ class HemisphereWindow(MWidget):
         slew = self.app.dReg["mount"].setting.meridianLimitSlew
         track = self.app.dReg["mount"].setting.meridianLimitTrack
         mSlew = pg.QtWidgets.QGraphicsRectItem(180 - slew, 0, 2 * slew, 90)
-        mSlew.setPen(pg.mkPen(color=self.M_YELLOW1 + "40"))
-        mSlew.setBrush(pg.mkBrush(color=self.M_YELLOW + "40"))
+        mSlew.setPen(pg.mkPen(color=addAlpha(self.M_YELLOW1)))
+        mSlew.setBrush(pg.mkBrush(color=addAlpha(self.M_YELLOW)))
         mSlew.setZValue(10)
         plotItem.addItem(mSlew)
         mTrack = pg.QtWidgets.QGraphicsRectItem(180 - track, 0, 2 * track, 90)
-        mTrack.setPen(pg.mkPen(color=self.M_YELLOW1 + "40"))
-        mTrack.setBrush(pg.mkBrush(color=self.M_YELLOW + "40"))
+        mTrack.setPen(pg.mkPen(color=addAlpha(self.M_YELLOW1)))
+        mTrack.setBrush(pg.mkBrush(color=addAlpha(self.M_YELLOW)))
         mTrack.setZValue(20)
         plotItem.addItem(mTrack)
 
@@ -223,13 +224,13 @@ class HemisphereWindow(MWidget):
         high = self.app.dReg["mount"].setting.horizonLimitHigh
         low = self.app.dReg["mount"].setting.horizonLimitLow
         hLow = pg.QtWidgets.QGraphicsRectItem(0, high, 360, 90 - high)
-        hLow.setPen(pg.mkPen(color=self.M_RED1 + "40"))
-        hLow.setBrush(pg.mkBrush(color=self.M_RED + "40"))
+        hLow.setPen(pg.mkPen(color=addAlpha(self.M_RED1)))
+        hLow.setBrush(pg.mkBrush(color=addAlpha(self.M_RED)))
         hLow.setZValue(0)
         plotItem.addItem(hLow)
         hHigh = pg.QtWidgets.QGraphicsRectItem(0, 0, 360, low)
-        hHigh.setPen(pg.mkPen(color=self.M_RED1 + "40"))
-        hHigh.setBrush(pg.mkBrush(color=self.M_RED + "40"))
+        hHigh.setPen(pg.mkPen(color=addAlpha(self.M_RED1)))
+        hHigh.setBrush(pg.mkBrush(color=addAlpha(self.M_RED)))
         hHigh.setZValue(0)
         plotItem.addItem(hHigh)
 

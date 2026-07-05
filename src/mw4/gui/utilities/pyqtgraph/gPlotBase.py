@@ -17,7 +17,8 @@ import numpy as np
 import pyqtgraph as pg
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.pyqtgraph.gCustomViewBox import CustomViewBox
-from PySide6.QtGui import QFont, QPainterPath
+from mw4.gui.utilities.qtHelpers import addAlpha
+from PySide6.QtGui import QBrush, QFont, QPainterPath, QPen
 from PySide6.QtWidgets import QApplication
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
@@ -28,15 +29,16 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         super().__init__(*args, **kwargs, show=False)
         pg.setConfigOptions(antialias=True, imageAxisOrder="row-major")
 
-        self.pen = pg.mkPen(color=self.M_PRIM, width=1)
-        self.penPink = pg.mkPen(color=self.M_PINK, width=1)
-        self.brush = pg.mkBrush(color=self.M_PRIM + "80")
-        self.penGrid = pg.mkPen(color=self.M_SEC)
-        self.brushGrid = pg.mkBrush(color=self.M_SEC + "80")
-        self.penHorizon = pg.mkPen(color=self.M_PRIM + "80", width=1)
-        self.brushHorizon = pg.mkBrush(color=self.M_PRIM2 + "40")
-        self.setBackground(self.M_BACK)
-        self.cMapGYR = pg.ColorMap([0, 0.6, 1.0], [self.M_GREEN, self.M_YELLOW, self.M_RED])
+        self.pen: QPen = pg.mkPen(color=self.M_PRIM, width=1)
+        self.penPink: QPen = pg.mkPen(color=self.M_PINK, width=1)
+        self.brush: QBrush = pg.mkPen(color=self.M_SEC)
+        self.penGrid: QPen = pg.mkPen(color=self.M_SEC)
+        self.brushGrid: QBrush = pg.mkBrush(color=addAlpha(self.M_PRIM))
+        self.penHorizon: QPen = pg.mkPen(color=addAlpha(self.M_PRIM), width=1)
+        self.brushHorizon: QBrush = pg.mkBrush(color=addAlpha(self.M_PRIM2))
+        self.cMapGYR: pg.ColorMap = pg.ColorMap(
+            [0, 0.6, 1.0], [self.M_GREEN, self.M_YELLOW, self.M_RED]
+        )
         self.defRange: dict = {}
         self.scatterItem: pg.ScatterPlotItem | None = None
         self.imageItem: pg.ImageItem | None = None
@@ -49,11 +51,13 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
 
     def colorChange(self) -> None:
         self.pen = pg.mkPen(color=self.M_PRIM, width=1)
-        self.brush = pg.mkBrush(color=self.M_PRIM + "80")
+        self.penPink = pg.mkPen(color=self.M_PINK, width=1)
         self.penGrid = pg.mkPen(color=self.M_SEC)
-        self.brushGrid = pg.mkBrush(color=self.M_SEC + "80")
-        self.penHorizon = pg.mkPen(color=self.M_PRIM + "80", width=1)
-        self.brushHorizon = pg.mkBrush(color=self.M_PRIM2 + "80")
+        self.brush = pg.mkBrush(color=addAlpha(self.M_PRIM))
+        self.brushGrid = pg.mkBrush(color=addAlpha(self.M_SEC))
+        self.penHorizon = pg.mkPen(color=addAlpha(self.M_PRIM), width=1)
+        self.brushHorizon = pg.mkBrush(color=addAlpha(self.M_PRIM2))
+        self.cMapGYR = pg.ColorMap([0, 0.6, 1.0], [self.M_GREEN, self.M_YELLOW, self.M_RED])
         self.setBackground(self.M_BACK)
         for side in ("left", "top", "right", "bottom"):
             for plotItem in self.p:

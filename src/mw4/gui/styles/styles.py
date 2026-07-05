@@ -24,7 +24,7 @@ from PySide6.QtGui import QIcon
 class Styles:
     colorSet: int = 0
     cachedColorSet: int = 0
-    transparency: float = 1
+    transparency: float = 0.3
     cachedTransparency: float = 1
     cachedStyle: str = ""
 
@@ -153,7 +153,7 @@ class Styles:
     @property
     def mw4Style(self) -> str:
         if (
-            self.cachedStyle is None
+            not self.cachedStyle
             or self.cachedColorSet != self.colorSet
             or self.cachedTransparency != self.transparency
         ):
@@ -212,9 +212,12 @@ class Styles:
             if key not in colors:
                 continue
             color = colors[key][self.colorSet]
-            if key in ["M_BACK", "M_BACK1"]:
+            if key in ["M_BACK"]:
                 r, g, b = self.hex2rgb(color)
                 color = f"rgba({r},{g},{b},{self.transparency})"
+            if key in ["M_BACK1"]:
+                r, g, b = self.hex2rgb(color)
+                color = f"rgba({r},{g},{b},{min(3 * self.transparency, 1)})"
             line = line.replace(f"${key}$", color)
         return line
 

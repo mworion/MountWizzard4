@@ -59,6 +59,8 @@ class ImageWindow(MWidget):
             "solve": False,
         }
         self.tabs = ImageTabs(self)
+        for i in range(self.ui.tabImage.count()):
+            self.ui.tabImage.widget(i).setStyleSheet("background-color: transparent;")
 
     def initConfig(self) -> None:
         config = self.app.config.get("WindowImage", {})

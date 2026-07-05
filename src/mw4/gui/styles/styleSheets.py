@@ -45,9 +45,6 @@ MAC_STYLE = """
         font-weight: bold;
         font-size: 26pt;
     }
-    QTabWidget:tab-bar {
-        alignment: center;
-    }
     """
 
 NON_MAC_STYLE = """
@@ -90,6 +87,7 @@ BASIC_STYLE = """
     }
     QWidget #ContainerContent {
         border-radius: 3px;
+        background-color: transparent;
     }
     QWidget #ContainerCentral {
         border-radius: 3px;
@@ -108,6 +106,7 @@ BASIC_STYLE = """
     }
     QLabel{
         color: $M_TER$;
+        background-color: transparent;
     }
     QLabel[keypad] {
         color: $M_PRIM$;
@@ -138,6 +137,7 @@ BASIC_STYLE = """
     /* QLine Edit*/
     QLineEdit {
         color: $M_PRIM$;
+        background-color: transparent;
         text-align: right;
     }
     QLineEdit[readOnly='false'] {
@@ -175,7 +175,6 @@ BASIC_STYLE = """
         border-radius: 2px;
         border-color: $M_PRIM3$;
         margin-top: 6px;
-        background-color: transparent;
     }
     QGroupBox::title {
         left: 5px;
@@ -424,6 +423,17 @@ BASIC_STYLE = """
         border-color: $M_PRIM$;
     }
     /* ListView */
+    QListWidget {
+        background-color: transparent;
+    }
+    QListWidget:item {
+        color: $M_PRIM$;
+        background-color: transparent;
+    }
+    QListWidget:item:selected {
+        color: $M_TER$;
+        background-color: $M_PRIM2$;
+    }
     QListView {
         border-color: $M_SEC$;
         border-width: 0px;
@@ -500,10 +510,8 @@ BASIC_STYLE = """
         border-style: outset;
         border-width: 1px;
         border-radius: 2px;
+        color: green;
     }
-    QComboBox[active=true]::drop-down {
-            border-color: $M_GREEN$;
-        }
     QComboBox::down-arrow {
         image: url($arrow-down$);
         width: 16px;
@@ -520,6 +528,7 @@ BASIC_STYLE = """
     QComboBox QListView::item {
         border-color: $M_SEC$;
         min-height: 28px;
+        background-color: $M_BACK1$;
     }
     QComboBox QListView::item:selected {
         background-color: $M_PRIM$;
@@ -537,18 +546,10 @@ BASIC_STYLE = """
         border-radius: 3px;
     }
     /* tab widget */
-    QTabWidget{
-        background-color: transparent;
-    }
     QTabWidget:pane {
         top: -6px;
         padding-top: 6px;
         border-width: 0px;
-        background-color: transparent;
-    }
-    QTabWidget:tab-bar {
-        alignment: center;
-        background-color: transparent;
     }
     QTabBar::tab {
         border-radius: 2px;
@@ -666,7 +667,7 @@ BASIC_STYLE = """
         border-style: plain;
         border-radius: 2px;
         color: $M_PRIM$;
-        background-color: $M_BACK1$;
+        background-color: $M_BACK$;
     }
 
     """

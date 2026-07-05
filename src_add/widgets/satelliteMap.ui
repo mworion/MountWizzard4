@@ -49,6 +49,9 @@
   <property name="windowTitle">
    <string>Satellite Map</string>
   </property>
+  <property name="windowOpacity">
+   <double>1.000000000000000</double>
+  </property>
   <layout class="QGridLayout" name="gridLayout" rowstretch="0" columnstretch="0">
    <property name="leftMargin">
     <number>0</number>

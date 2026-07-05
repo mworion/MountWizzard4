@@ -25,11 +25,13 @@ class SettGui:
         self.msg = parentW.app.msg
         self.ui = parentW.ui
         self.ui.colorSet.currentIndexChanged.connect(self.updateColorSet)
+        self.ui.transparency.valueChanged.connect(self.updateColorSet)
 
     def initConfig(self) -> None:
         config = self.app.config.get("SettingGui", {})
         colSet = config.get("colorSet", 0)
         self.ui.colorSet.setCurrentIndex(colSet)
+        self.ui.transparency.setValue(config.get("transparency", 1))
         cfg = self.app.dReg["hidController"].instance.config
         self.ui.hidDome.setChecked(cfg.dome)
         self.ui.hidAltAz.setChecked(cfg.moveAltAz)
@@ -41,12 +43,12 @@ class SettGui:
         self.ui.hidAltAz.clicked.connect(self.storeConfig)
         self.ui.hidRaDec.clicked.connect(self.storeConfig)
         self.ui.hidTracking.clicked.connect(self.storeConfig)
-        self.ui.transparency.valueChanged.connect(self.updateColorSet)
 
     def storeConfig(self) -> None:
         self.app.config["SettingGui"] = {}
         config = self.app.config["SettingGui"]
         config["colorSet"] = self.ui.colorSet.currentIndex()
+        config["transparency"] = self.ui.transparency.value()
         cfg = self.app.dReg["hidController"].instance.config
         cfg.dome = self.ui.hidDome.isChecked()
         cfg.moveAltAz = self.ui.hidAltAz.isChecked()

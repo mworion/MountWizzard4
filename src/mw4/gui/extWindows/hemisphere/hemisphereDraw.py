@@ -311,7 +311,6 @@ class HemisphereDraw(MWidget):
             pd = pg.ScatterPlotItem(symbol=symbol, size=40)
             pd.setData(x=[0], y=[0])
             pd.setPen(pg.mkPen(color=self.M_PINK))
-            pd.setBrush(pg.mkBrush(color=self.M_PINK))
             pd.setZValue(60)
             pd.nameStr = "pointer"
             plotItem.addItem(pd)

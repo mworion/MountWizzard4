@@ -6249,15 +6249,21 @@
        <widget class="QDoubleSpinBox" name="transparency">
         <property name="geometry">
          <rect>
-          <x>200</x>
+          <x>190</x>
           <y>50</y>
-          <width>56</width>
+          <width>161</width>
           <height>22</height>
          </rect>
         </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>56</width>
+          <width>16777215</width>
           <height>16777215</height>
          </size>
         </property>
@@ -6271,10 +6277,10 @@
          <double>1.000000000000000</double>
         </property>
         <property name="singleStep">
-         <double>0.200000000000000</double>
+         <double>0.050000000000000</double>
         </property>
         <property name="value">
-         <double>1.000000000000000</double>
+         <double>0.300000000000000</double>
         </property>
        </widget>
       </widget>

@@ -1437,7 +1437,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -10023,7 +10023,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </rect>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <property name="elideMode">
         <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -13367,9 +13367,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <property name="geometry">
             <rect>
              <x>10</x>
-             <y>15</y>
+             <y>10</y>
              <width>451</width>
-             <height>346</height>
+             <height>351</height>
             </rect>
            </property>
            <property name="autoFillBackground">

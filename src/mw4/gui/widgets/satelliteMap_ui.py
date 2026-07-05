@@ -39,6 +39,7 @@ class Ui_SatelliteMapDialog(object):
         font.setFamilies([u"Arial"])
         font.setPointSize(10)
         SatelliteMapDialog.setFont(font)
+        SatelliteMapDialog.setWindowOpacity(1.000000000000000)
         self.gridLayout = QGridLayout(SatelliteMapDialog)
         self.gridLayout.setSpacing(4)
         self.gridLayout.setObjectName(u"gridLayout")

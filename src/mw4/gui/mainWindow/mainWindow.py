@@ -84,11 +84,18 @@ class MainWindow(MWidget):
         self.app.colorChange.connect(self.updateColorSet)
         self.twilightText: str = ""
         self.diskFreePct: int = 0
+        self.tabs = [self.ui.mainTabWidget, self.ui.mountTabWidget, self.ui.modelingTabWidget,
+                self.ui.imagingTabWidget,self.ui.manageTabWidget,self.ui.toolsTabWidget,self.ui.satTabWidget]
+        for tab in self.tabs:
+            for i in range(tab.count()):
+                tab.widget(i).setStyleSheet("background-color: transparent;")
 
     def initConfig(self) -> None:
-        config = self.app.config.get("SettingMisc", {})
+        config = self.app.config.get("SettingGui", {})
         colSet = config.get("colorSet", 0)
         Styles.colorSet = colSet
+        transparency = config.get("transparency", 1)
+        Styles.transparency = transparency
 
         config = self.app.config
         if "WindowMain" not in config:

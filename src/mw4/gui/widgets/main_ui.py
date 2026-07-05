@@ -3452,7 +3452,7 @@ class Ui_MainWindow(object):
         self.errorAscending = NormalScatter(self.ErrorAscending)
         self.errorAscending.setObjectName(u"errorAscending")
         self.errorAscending.setEnabled(True)
-        self.errorAscending.setGeometry(QRect(10, 15, 451, 346))
+        self.errorAscending.setGeometry(QRect(10, 10, 451, 351))
         self.errorAscending.setAutoFillBackground(True)
         self.manageTabWidget.addTab(self.ErrorAscending, "")
         self.modelGroup = QGroupBox(self.ManageModels)
@@ -6665,9 +6665,9 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainTabWidget.setCurrentIndex(0)
+        self.mainTabWidget.setCurrentIndex(3)
         self.mountTabWidget.setCurrentIndex(0)
-        self.modelingTabWidget.setCurrentIndex(0)
+        self.modelingTabWidget.setCurrentIndex(2)
         self.manageTabWidget.setCurrentIndex(0)
         self.imagingTabWidget.setCurrentIndex(2)
         self.satTabWidget.setCurrentIndex(1)

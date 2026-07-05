@@ -18,7 +18,7 @@ import pyqtgraph as pg
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.pyqtgraph.gCustomViewBox import CustomViewBox
 from mw4.gui.utilities.qtHelpers import addAlpha
-from PySide6.QtGui import QBrush, QFont, QPainterPath, QPen
+from PySide6.QtGui import QBrush, QFont, QPainterPath, QPen, QColor
 from PySide6.QtWidgets import QApplication
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
@@ -58,7 +58,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.penHorizon = pg.mkPen(color=addAlpha(self.M_PRIM), width=1)
         self.brushHorizon = pg.mkBrush(color=addAlpha(self.M_PRIM2))
         self.cMapGYR = pg.ColorMap([0, 0.6, 1.0], [self.M_GREEN, self.M_YELLOW, self.M_RED])
-        self.setBackground(self.M_BACK)
+        self.setBackground("#00000000")
         for side in ("left", "top", "right", "bottom"):
             for plotItem in self.p:
                 plotItem.getAxis(side).setPen(self.pen)

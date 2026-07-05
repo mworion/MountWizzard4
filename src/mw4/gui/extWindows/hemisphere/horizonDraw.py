@@ -205,7 +205,7 @@ class HorizonDraw(MWidget):
         self.pointerHor = pg.ScatterPlotItem(symbol=symbol, size=40)
         self.pointerHor.setData(x=[0], y=[45])
         self.pointerHor.setPen(pg.mkPen(color=self.M_PINK))
-        self.pointerHor.setBrush(pg.mkBrush(color=self.M_PINK + "20"))
+        self.pointerHor.setBrush(pg.mkBrush(color=self.M_PINK))
         self.pointerHor.setZValue(10)
         plotItem.addItem(self.pointerHor)
 

@@ -218,7 +218,6 @@ BASIC_STYLE = """
     QCheckBox {
         color: $M_TER$;
         spacing: 5px;
-        background-color: $M_TRANS$;
     }
     QCheckBox::indicator {
         border-width: 1px;

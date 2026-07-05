@@ -82,10 +82,8 @@ class MainWindow(MWidget):
         self.app.timeMgr.update1s.connect(self.updateDeviceStats)
         self.app.timeMgr.update30s.connect(self.updateTwilightAndDisk)
         self.app.colorChange.connect(self.updateColorSet)
-        # Cached values for status title; refreshed on the slower cadence so we
-        # don't hit disk and recompute twilight every second on the GUI thread.
-        self._twilightText: str = ""
-        self._diskFreePct: int = 0
+        self.twilightText: str = ""
+        self.diskFreePct: int = 0
 
     def initConfig(self) -> None:
         config = self.app.config.get("SettingMisc", {})
@@ -265,24 +263,19 @@ class MainWindow(MWidget):
     def updateThreadAndOnlineStatus(self) -> None:
         mode = "Online" if self.app.isOnline else "Offline"
         moon = self.ui.moonPhaseIllumination.text()
-        if not self._twilightText:
+        if not self.twilightText:
             self.updateTwilightAndDisk()
         activeCount = self.threadPool.activeThreadCount()
         maxCount = self.app.MAX_THREAD_COUNT
-        t = f"{mode} - {self._twilightText} - Moon: {moon}%"
-        t += f" - Threads:{activeCount:2d} / {maxCount} - Disk free: {self._diskFreePct}%"
+        t = f"{mode} - {self.twilightText} - Moon: {moon}%"
+        t += f" - Threads:{activeCount:2d} / {maxCount} - Disk free: {self.diskFreePct}%"
         self.ui.statusOnlineGroup.setTitle(t)
 
     def updateTwilightAndDisk(self) -> None:
-        """Refresh slowly-changing values used by the status title.
-
-        Twilight only changes every few minutes and ``shutil.disk_usage``
-        does I/O, so both are evaluated on the slower cadence and cached.
-        """
         f = dark_twilight_day(self.app.ephemeris, self.app.dReg["mount"].location)
-        self._twilightText = TWILIGHTS[int(f(self.app.dReg["mount"].obsSite.ts.now()))]
+        self.twilightText = TWILIGHTS[int(f(self.app.dReg["mount"].obsSite.ts.now()))]
         diskUsage = shutil.disk_usage(self.app.mwGlob["workDir"])
-        self._diskFreePct = int(diskUsage[2] / diskUsage[0] * 100)
+        self.diskFreePct = int(diskUsage[2] / diskUsage[0] * 100)
 
     def updateTime(self) -> None:
         self.ui.timeComputer.setText(datetime.now().strftime("%H:%M:%S"))
@@ -293,7 +286,6 @@ class MainWindow(MWidget):
     def updateStatusGUI(self, obs: ObsSite) -> None:
         self.ui.mountText.setText(obs.statusText())
         obsSite = self.app.dReg["mount"].obsSite
-        # Map UI element to the predicate that determines its "run" highlight.
         statusFlags = (
             (self.ui.tracking, obsSite.isTracking),
             (self.ui.park, obsSite.isParked),

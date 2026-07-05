@@ -284,8 +284,8 @@ def test_updateThreadAndOnlineStatus_when_offline(mainWindow):
 def test_updateThreadAndOnlineStatus_cached(mainWindow):
     """Test updateThreadAndOnlineStatus uses cached values."""
     mainWindow.app.mwGlob["workDir"] = Path("tests/work")
-    mainWindow._twilightText = "Night"
-    mainWindow._diskFreePct = 42
+    mainWindow.twilightText = "Night"
+    mainWindow.diskFreePct = 42
     with mock.patch.object(shutil, "disk_usage") as mDisk:
         mainWindow.updateThreadAndOnlineStatus()
         mDisk.assert_not_called()
@@ -297,8 +297,8 @@ def test_updateTwilightAndDisk_calculates_values(mainWindow):
     mainWindow.app.mwGlob["workDir"] = Path("tests/work")
     with mock.patch.object(shutil, "disk_usage", return_value=(100, 100, 50)):
         mainWindow.updateTwilightAndDisk()
-    assert mainWindow._diskFreePct == 50
-    assert mainWindow._twilightText != ""
+    assert mainWindow.diskFreePct == 50
+    assert mainWindow.twilightText != ""
 
 
 def test_updateTime_displays_time(mainWindow):

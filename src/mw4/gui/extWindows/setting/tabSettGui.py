@@ -41,6 +41,7 @@ class SettGui:
         self.ui.hidAltAz.clicked.connect(self.storeConfig)
         self.ui.hidRaDec.clicked.connect(self.storeConfig)
         self.ui.hidTracking.clicked.connect(self.storeConfig)
+        self.ui.transparency.valueChanged.connect(self.updateColorSet)
 
     def storeConfig(self) -> None:
         self.app.config["SettingGui"] = {}
@@ -60,6 +61,7 @@ class SettGui:
 
     def updateColorSet(self) -> None:
         Styles.colorSet = self.ui.colorSet.currentIndex()
+        Styles.transparency = self.ui.transparency.value()
         self.parentW.setStyleSheet(self.parentW.mw4Style)
         self.setupIcons()
         self.app.colorChange.emit()

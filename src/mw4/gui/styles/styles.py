@@ -22,19 +22,17 @@ from PySide6.QtGui import QIcon
 
 
 class Styles:
-    colorSet = 0
-    cachedStyle = None
-    cachedColorSet = None
+    colorSet: int = 0
+    cachedColorSet: int | None = None
+    transparency: float = 1
+    cachedTransparency: float = 1
+    cachedStyle: str | None = None
 
     STYLE = (
         MAC_STYLE + BASIC_STYLE
         if platform.system() == "Darwin"
         else NON_MAC_STYLE + BASIC_STYLE
     )
-
-    @property
-    def M_TRANS(self) -> str:
-        return colors["M_TRANS"][self.colorSet]
 
     @property
     def M_PRIM(self) -> str:
@@ -154,9 +152,10 @@ class Styles:
 
     @property
     def mw4Style(self) -> str:
-        if self.cachedStyle is None or self.cachedColorSet != self.colorSet:
+        if self.cachedStyle is None or self.cachedColorSet != self.colorSet or self.cachedTransparency != self.transparency:
             self.cachedStyle = self.renderStyle(self.STYLE)
             self.cachedColorSet = self.colorSet
+            self.cachedTransparency = self.transparency
         return self.cachedStyle
 
     def __init__(self):
@@ -208,7 +207,11 @@ class Styles:
         for key in self.findKeysInLine(line, "$"):
             if key not in colors:
                 continue
-            line = line.replace(f"${key}$", colors[key][self.colorSet])
+            color = colors[key][self.colorSet]
+            if key in ["M_BACK", "M_BACK1"]:
+                r, g, b = self.hex2rgb(color)
+                color= f"rgba({r},{g},{b},{self.transparency})"
+            line = line.replace(f"${key}$", color)
         return line
 
     def renderStyle(self, styleRaw: str) -> str:

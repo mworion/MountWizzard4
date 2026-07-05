@@ -158,7 +158,7 @@ class SatelliteHorizonWindow(MWidget):
             symbol=makePointer(),
             symbolSize=40,
             symbolPen=pg.mkPen(color=self.M_PINK),
-            symbolBrush=pg.mkBrush(color=self.M_PINK + "20"),
+            symbolBrush=pg.mkBrush(color=self.M_PINK),
         )
         pd.setVisible(False)
         pd.setZValue(10)

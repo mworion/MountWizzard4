@@ -213,7 +213,7 @@ class HemisphereDraw(MWidget):
 
             spot = item.scatter.points()[i]
             spot.setPen(pg.mkPen(color=color, width=1.5))
-            spot.setBrush(pg.mkBrush(color=f"{color}80"))
+            spot.setBrush(pg.mkBrush(color=color))
             spot.setSymbol(symbol)
 
     def drawModelPoints(self) -> None:
@@ -311,7 +311,7 @@ class HemisphereDraw(MWidget):
             pd = pg.ScatterPlotItem(symbol=symbol, size=40)
             pd.setData(x=[0], y=[0])
             pd.setPen(pg.mkPen(color=self.M_PINK))
-            pd.setBrush(pg.mkBrush(color=self.M_PINK + "20"))
+            pd.setBrush(pg.mkBrush(color=self.M_PINK))
             pd.setZValue(60)
             pd.nameStr = "pointer"
             plotItem.addItem(pd)

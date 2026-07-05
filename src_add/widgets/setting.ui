@@ -6183,7 +6183,7 @@
          <x>10</x>
          <y>10</y>
          <width>366</width>
-         <height>66</height>
+         <height>86</height>
         </rect>
        </property>
        <property name="title">
@@ -6233,6 +6233,50 @@
          </property>
         </item>
        </widget>
+       <widget class="QLabel" name="label_86">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>55</y>
+          <width>166</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Transparency</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="transparency">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>50</y>
+          <width>56</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.200000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="gameControllerGroup">
        <property name="enabled">
@@ -6241,7 +6285,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>115</y>
+         <y>130</y>
          <width>366</width>
          <height>151</height>
         </rect>

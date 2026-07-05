@@ -101,7 +101,7 @@ BASIC_STYLE = """
         border-width: 1px;
         border-style: outset;
         border-color: $M_SEC$;
-        background-color: $M_BACK1$;
+        background-color: $M_BACK$;
         color: $M_PRIM$;
         padding: 5px;
         max-width: 500px;

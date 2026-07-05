@@ -1502,7 +1502,6 @@ class Ui_SettingDialog(object):
         self.colorSet.addItem("")
         self.colorSet.addItem("")
         self.colorSet.addItem("")
-        self.colorSet.addItem("")
         self.colorSet.setObjectName(u"colorSet")
         self.colorSet.setGeometry(QRect(190, 25, 166, 21))
         self.gameControllerGroup = QGroupBox(self.Gui)
@@ -1683,7 +1682,7 @@ class Ui_SettingDialog(object):
 
         self.retranslateUi(SettingDialog)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(4)
         self.tabDomeExplain.setCurrentIndex(2)
 
 
@@ -2126,9 +2125,8 @@ class Ui_SettingDialog(object):
         self.GroupGuiAddOns.setTitle(QCoreApplication.translate("SettingDialog", u"GUI add-ons", None))
         self.label_85.setText(QCoreApplication.translate("SettingDialog", u"Window Color Set", None))
         self.colorSet.setItemText(0, QCoreApplication.translate("SettingDialog", u"Main Theme", None))
-        self.colorSet.setItemText(1, QCoreApplication.translate("SettingDialog", u"Main Theme 2025", None))
-        self.colorSet.setItemText(2, QCoreApplication.translate("SettingDialog", u"Red Night Theme", None))
-        self.colorSet.setItemText(3, QCoreApplication.translate("SettingDialog", u"Light Day Theme", None))
+        self.colorSet.setItemText(1, QCoreApplication.translate("SettingDialog", u"Red Night Theme", None))
+        self.colorSet.setItemText(2, QCoreApplication.translate("SettingDialog", u"Light Day Theme", None))
 
 #if QT_CONFIG(tooltip)
         self.colorSet.setToolTip(QCoreApplication.translate("SettingDialog", u"<html><head/><body><p>Selects the color theme to be used in all windows.</p></body></html>", None))

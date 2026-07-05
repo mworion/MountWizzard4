@@ -99,7 +99,7 @@
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -6220,11 +6220,6 @@
         <item>
          <property name="text">
           <string>Main Theme</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Main Theme 2025</string>
          </property>
         </item>
         <item>

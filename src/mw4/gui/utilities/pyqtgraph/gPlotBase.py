@@ -18,7 +18,7 @@ import pyqtgraph as pg
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.pyqtgraph.gCustomViewBox import CustomViewBox
 from mw4.gui.utilities.qtHelpers import addAlpha
-from PySide6.QtGui import QBrush, QFont, QPainterPath, QPen
+from PySide6.QtGui import QBrush, QFont, QPainterPath, QPen, QColor
 from PySide6.QtWidgets import QApplication
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter

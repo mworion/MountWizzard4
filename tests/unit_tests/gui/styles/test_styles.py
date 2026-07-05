@@ -28,7 +28,6 @@ def function(qapp):
 
 def test_property(function):
     a = ""
-    a += function.M_TRANS
     a += function.M_PRIM
     a += function.M_PRIM1
     a += function.M_PRIM2

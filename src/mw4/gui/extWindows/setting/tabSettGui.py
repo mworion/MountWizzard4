@@ -24,8 +24,6 @@ class SettGui:
         self.app = parentW.app
         self.msg = parentW.app.msg
         self.ui = parentW.ui
-        self.ui.colorSet.currentIndexChanged.connect(self.updateColorSet)
-        self.ui.transparency.valueChanged.connect(self.updateColorSet)
 
     def initConfig(self) -> None:
         config = self.app.config.get("SettingGui", {})
@@ -43,6 +41,8 @@ class SettGui:
         self.ui.hidAltAz.clicked.connect(self.storeConfig)
         self.ui.hidRaDec.clicked.connect(self.storeConfig)
         self.ui.hidTracking.clicked.connect(self.storeConfig)
+        self.ui.colorSet.currentIndexChanged.connect(self.updateColorSet)
+        self.ui.transparency.valueChanged.connect(self.updateColorSet)
 
     def storeConfig(self) -> None:
         self.app.config["SettingGui"] = {}

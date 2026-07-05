@@ -43,6 +43,11 @@ def settGui(qapp):
     parentW.ui.hidRaDec = QCheckBox()
     parentW.ui.hidTracking = QCheckBox()
     parentW.ui.hidParkStop = QCheckBox()
+    parentW.ui.transparency = mock.MagicMock()
+    parentW.ui.transparency.value = mock.MagicMock(return_value=1)
+    parentW.ui.transparency.setValue = mock.MagicMock()
+    parentW.ui.transparency.valueChanged = mock.MagicMock()
+    parentW.ui.transparency.valueChanged.connect = mock.MagicMock()
 
     window = SettGui(parentW)
     yield window

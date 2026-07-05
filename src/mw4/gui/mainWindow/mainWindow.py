@@ -103,6 +103,7 @@ class MainWindow(MWidget):
         Styles.colorSet = colSet
         transparency = config.get("transparency", 1)
         Styles.transparency = transparency
+        self.setStyleSheet(self.mw4Style)
 
         config = self.app.config
         if "WindowMain" not in config:

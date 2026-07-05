@@ -20,6 +20,7 @@ Version 4.x
 - add: support for comet and asteroid data in extended downloads
 - add: age parameter for MPC SAT databases before auto download
 - add: new way of defining build point along celestial paths
+- add: GUI settings support transparency of windows if needed in all color modes
 - add: support for boltwood file reading
 - add: support for new 2024 HW - disabling WOL if not supported
 - add: support for new 2024 HW - enabling auto power on setting if supported

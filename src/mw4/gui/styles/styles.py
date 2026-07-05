@@ -157,7 +157,7 @@ class Styles:
         if self.cachedStyle is None or self.cachedColorSet != self.colorSet:
             self.cachedStyle = self.renderStyle(self.STYLE)
             self.cachedColorSet = self.colorSet
-        return self.renderStyle(self.STYLE) # self.cachedStyle
+        return self.cachedStyle
 
     def __init__(self):
         super().__init__()

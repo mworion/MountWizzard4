@@ -84,8 +84,15 @@ class MainWindow(MWidget):
         self.app.colorChange.connect(self.updateColorSet)
         self.twilightText: str = ""
         self.diskFreePct: int = 0
-        self.tabs = [self.ui.mainTabWidget, self.ui.mountTabWidget, self.ui.modelingTabWidget,
-                self.ui.imagingTabWidget,self.ui.manageTabWidget,self.ui.toolsTabWidget,self.ui.satTabWidget]
+        self.tabs = [
+            self.ui.mainTabWidget,
+            self.ui.mountTabWidget,
+            self.ui.modelingTabWidget,
+            self.ui.imagingTabWidget,
+            self.ui.manageTabWidget,
+            self.ui.toolsTabWidget,
+            self.ui.satTabWidget,
+        ]
         for tab in self.tabs:
             for i in range(tab.count()):
                 tab.widget(i).setStyleSheet("background-color: transparent;")

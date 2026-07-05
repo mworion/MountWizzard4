@@ -85,6 +85,9 @@ BASIC_STYLE = """
     QWidget {
         background-color: $M_BACK$;
     }
+    QWidget QGraphicsView{
+        background-color: transparent;
+    }
     QWidget #ContainerContent {
         border-radius: 3px;
         background-color: transparent;

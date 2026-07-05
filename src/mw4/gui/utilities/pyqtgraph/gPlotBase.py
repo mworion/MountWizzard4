@@ -28,7 +28,6 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs, show=False)
         pg.setConfigOptions(antialias=True, imageAxisOrder="row-major")
-
         self.pen: QPen = pg.mkPen(color=self.M_PRIM, width=1)
         self.penPink: QPen = pg.mkPen(color=self.M_PINK, width=1)
         self.brush: QBrush = pg.mkPen(color=self.M_SEC)

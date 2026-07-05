@@ -35,7 +35,7 @@ class HorizonDraw(MWidget):
         self.pointerHor: pg.ScatterPlotItem = pg.ScatterPlotItem()
 
     def initConfig(self) -> None:
-        config = self.app.config.get("hemisphereW", {})
+        config = self.app.config.get("WindowHemisphere", {})
         fileName = config.get("horizonMaskFileName", "")
         self.ui.horizonMaskFileName.setText(fileName)
         horizonFile = self.app.mwGlob["configDir"] / (

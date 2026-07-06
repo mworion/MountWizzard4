@@ -84,7 +84,7 @@ jobs:
 
       - name: Run MountWizzard4
         run: |
-          xvfb-run uv run mw4 -t 
+          uv run mw4 -t 
           ls -la
  
           

@@ -176,18 +176,14 @@ def test_setupAudio_populates_dropdowns(settAudio):
 def test_setupAudioSignals_connects_device_signals(settAudio):
     """Test setupAudioSignals connects device signals."""
     # Mock device signals
-    with mock.patch.object(
-        settAudio.app.dReg["mount"].signals, "slewed"
-    ) as mock_slewed:
-        with mock.patch.object(
-            settAudio.app.dReg["mount"].signals, "alert"
-        ) as mock_alert:
-            with mock.patch.object(
-                settAudio.app.dReg["dome"].signals, "slewed"
-            ) as mock_dome_slewed:
-                settAudio.setupAudioSignals()
-                # Verify signal connect was called (at least for the device signals)
-                assert mock_slewed.connect.called or mock_alert.connect.called
+    with (
+        mock.patch.object(settAudio.app.dReg["mount"].signals, "slewed") as mock_slewed,
+        mock.patch.object(settAudio.app.dReg["mount"].signals, "alert") as mock_alert,
+        mock.patch.object(settAudio.app.dReg["dome"].signals, "slewed"),
+    ):
+        settAudio.setupAudioSignals()
+        # Verify signal connect was called (at least for the device signals)
+        assert mock_slewed.connect.called or mock_alert.connect.called
 
 
 def test_initConfig_loads_audio_settings(settAudio):

@@ -47,9 +47,9 @@ jobs:
           python-version: ${{ matrix.python-version }}
      
       - name: MountWizzard4 Install
-        continue-on-error: true
         shell: cmd
         run: |
+          uv venv -p ${{ matrix.python-version }}
           uv pip install mountwizzard4==${{ env.version }}
        
       - name: Run MountWizzard4
@@ -78,13 +78,11 @@ jobs:
           python-version: ${{ matrix.python-version }}
           
       - name: MountWizzard4 Install
-        continue-on-error: true
         run: |
           uv venv -p ${{ matrix.python-version }}
           uv pip install mountwizzard4==${{ env.version }}
 
       - name: Run MountWizzard4
-        continue-on-error: true
         run: |
           xvfb-run uv run mw4 -t 
           ls -la
@@ -105,12 +103,11 @@ jobs:
           python-version: ${{ matrix.python-version }}
           
       - name: MountWizzard4 Install
-        continue-on-error: true
         run: |
+          uv venv -p ${{ matrix.python-version }}
           uv pip install mountwizzard4==${{ env.version }}
           
       - name: MountWizzard4 Run
-        continue-on-error: true
         run: |
           uv run mw4 -t
           ls -la

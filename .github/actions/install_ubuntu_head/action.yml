@@ -21,12 +21,6 @@ description: installs headless setup for ubuntu
 runs:
   using: 'composite'
   steps:
-    - name: install #0
-      run: |
-        sudo apt-get update
-        # sudo apt-get install libpulse-dev ffmpeg libsm6 libxext6
-      shell: bash
-      
     - uses: pyvista/setup-headless-display-action@v4
       with:
         qt: true

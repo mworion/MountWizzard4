@@ -56,10 +56,10 @@ classifiers = [
 ]
 
 dependencies = [
-    "numpy==2.5.0",
-    "opencv-python-headless==4.13.0.92",
+    "numpy==2.5.1",
+    "opencv-python-headless==5.0.0.93",
     "scipy==1.18.0",
-    "astropy==8.0.0",
+    "astropy==8.0.1",
     "pyerfa==2.0.1.5",
     "astroquery==0.4.11",
     "indipyclient==0.9.1",
@@ -67,11 +67,11 @@ dependencies = [
     "pyqtgraph==0.14.0",
     "qimage2ndarray==1.10.0",
     "skyfield==1.54",
-    "sgp4==2.25",
+    "sgp4==2.27",
     "alpyca==3.1.2",
     "requests==2.34.2",
     "python-dateutil==2.9.0.post0",
-    "wakeonlan==3.3.0",
+    "wakeonlan==4.0.0",
     "pybase64==1.4.3",
     "websocket-client==1.9.0",
     "hidapi==0.15.0",
@@ -81,7 +81,7 @@ dependencies = [
     "xisf==0.9.7",
     "pyside6==6.11.1",
     "pyyaml==6.0.3",
-    "pywin32==311; platform_system == 'Windows'",
+    "pywin32==312; platform_system == 'Windows'",
     "opencv-python>=4.13.0.92",
 ]
 
@@ -106,8 +106,8 @@ dev = [
     "pytest-cov==7.1.0",
     "pytest-xdist==3.8.0",
     "invoke==3.0.3",
-    "ruff==0.15.18",
-    "coverage==7.14.2",
+    "ruff==0.15.20",
+    "coverage==7.15.0",
     "scipy-stubs==1.18.0.0",
 ]
 

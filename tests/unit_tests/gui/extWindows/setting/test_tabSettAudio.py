@@ -88,7 +88,6 @@ def test_playSound_valid_sound_name(settAudio):
 
 def test_playSound_with_custom_audio(settAudio):
     """Test playSound with custom audio selection."""
-    settAudio.audioSignalsSet["Pan1"] = "test"
     settAudio.guiAudioList["MountSlew"] = settAudio.ui.soundMountSlewFinished
     settAudio.guiAudioList["MountSlew"].clear()
     settAudio.guiAudioList["MountSlew"].addItem("Pan1")
@@ -98,7 +97,6 @@ def test_playSound_with_custom_audio(settAudio):
 
 def test_playSound_skips_unknown_audio(settAudio):
     """Test playSound skips unknown audio."""
-    settAudio.audioSignalsSet["Pan1"] = "test"
     settAudio.guiAudioList["MountSlew"] = settAudio.ui.soundMountSlewFinished
     settAudio.guiAudioList["MountSlew"].clear()
     settAudio.guiAudioList["MountSlew"].addItem("Pan5")
@@ -107,16 +105,39 @@ def test_playSound_skips_unknown_audio(settAudio):
         settAudio.playSound("MountSlew")
 
 
-def test_setupAudioSignals(settAudio):
-    """Test setupAudioSignals initializes audio dict."""
-    settAudio.setupAudioSignals()
-    assert "Beep" in settAudio.audioSignalsSet
-    assert "Pan1" in settAudio.audioSignalsSet
+def test_audio_sounds_constant(settAudio):
+    """Test AUDIO_SOUNDS constant contains all sounds."""
+    assert "Beep" in settAudio.AUDIO_SOUNDS
+    assert "Pan1" in settAudio.AUDIO_SOUNDS
+    assert "Horn" in settAudio.AUDIO_SOUNDS
+    assert "None" in settAudio.AUDIO_SOUNDS
+    assert settAudio.AUDIO_SOUNDS["None"] is None
+    assert settAudio.AUDIO_SOUNDS["Beep"] == ":/sound/beep.wav"
+
+
+def test_audioConfig_complete(settAudio):
+    """Test audioConfig contains all 8 audio events."""
+    assert "MountSlew" in settAudio.audioConfig
+    assert "DomeSlew" in settAudio.audioConfig
+    assert "MountAlert" in settAudio.audioConfig
+    assert "RunFinished" in settAudio.audioConfig
+    assert "ImageSaved" in settAudio.audioConfig
+    assert "ImageSolved" in settAudio.audioConfig
+    assert "ConnectionLost" in settAudio.audioConfig
+    assert "SatStartTracking" in settAudio.audioConfig
+
+
+def test_audioConfig_has_required_keys(settAudio):
+    """Test audioConfig entries have required keys."""
+    for soundKey, soundData in settAudio.audioConfig.items():
+        assert "configKey" in soundData
+        assert "uiWidget" in soundData
+        assert "device" in soundData
+        assert "signal" in soundData
 
 
 def test_storeConfig_saves_audio_settings(settAudio):
     """Test storeConfig saves all audio UI state."""
-    settAudio.setupAudioGui()
     settAudio.ui.soundMountSlewFinished.setCurrentIndex(1)
     settAudio.ui.soundDomeSlewFinished.setCurrentIndex(2)
     settAudio.ui.soundMountAlert.setCurrentIndex(1)
@@ -132,20 +153,69 @@ def test_storeConfig_saves_audio_settings(settAudio):
     assert config["soundMountSlewFinished"] == 1
     assert config["soundDomeSlewFinished"] == 2
     assert config["soundMountAlert"] == 1
+    assert config["soundConnectionLost"] == 1
 
 
-def test_setupAudioGui_populates_dropdowns(settAudio):
-    """Test setupAudioGui initializes all audio dropdowns."""
-    # Create fresh combo boxes to test setupAudioGui
+def test_setupAudio_populates_dropdowns(settAudio):
+    """Test setupAudio initializes all audio dropdowns."""
+    # Create fresh combo box to test setupAudio
     fresh_combo = QComboBox()
     original_soundMountSlewFinished = settAudio.ui.soundMountSlewFinished
     settAudio.ui.soundMountSlewFinished = fresh_combo
     settAudio.ui.soundMountSlewFinished.clear()
 
-    settAudio.setupAudioGui()
+    settAudio.setupAudio()
 
     assert settAudio.ui.soundMountSlewFinished.count() > 0
     assert settAudio.ui.soundMountSlewFinished.itemText(0) == "None"
 
     # Restore original
     settAudio.ui.soundMountSlewFinished = original_soundMountSlewFinished
+
+
+def test_setupAudioSignals_connects_device_signals(settAudio):
+    """Test setupAudioSignals connects device signals."""
+    # Mock device signals
+    with mock.patch.object(
+        settAudio.app.dReg["mount"].signals, "slewed"
+    ) as mock_slewed:
+        with mock.patch.object(
+            settAudio.app.dReg["mount"].signals, "alert"
+        ) as mock_alert:
+            with mock.patch.object(
+                settAudio.app.dReg["dome"].signals, "slewed"
+            ) as mock_dome_slewed:
+                settAudio.setupAudioSignals()
+                # Verify signal connect was called (at least for the device signals)
+                assert mock_slewed.connect.called or mock_alert.connect.called
+
+
+def test_initConfig_loads_audio_settings(settAudio):
+    """Test initConfig loads saved audio settings."""
+    settAudio.app.config["SettingAudio"] = {
+        "soundMountSlewFinished": 1,
+        "soundDomeSlewFinished": 2,
+        "soundMountAlert": 3,
+        "soundRunFinished": 1,
+        "soundImageSaved": 2,
+        "soundImageSolved": 1,
+        "soundConnectionLost": 2,
+        "soundSatStartTracking": 1,
+    }
+
+    settAudio.initConfig()
+
+    assert settAudio.ui.soundMountSlewFinished.currentIndex() == 1
+    assert settAudio.ui.soundDomeSlewFinished.currentIndex() == 2
+    assert settAudio.ui.soundMountAlert.currentIndex() == 3
+    assert settAudio.ui.soundConnectionLost.currentIndex() == 2
+
+
+def test_guiAudioList_populated(settAudio):
+    """Test guiAudioList is populated correctly."""
+    assert "MountSlew" in settAudio.guiAudioList
+    assert "DomeSlew" in settAudio.guiAudioList
+    assert "MountAlert" in settAudio.guiAudioList
+    assert "ImageSaved" in settAudio.guiAudioList
+    assert "ImageSolved" in settAudio.guiAudioList
+    assert "ConnectionLost" in settAudio.guiAudioList

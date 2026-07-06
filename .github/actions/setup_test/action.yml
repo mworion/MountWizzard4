@@ -25,11 +25,11 @@ runs:
       uses: astral-sh/setup-uv@v8.2.0
       with:
         enable-cache: true
-        python-version: '3.13'
+        python-version: '3.14'
 
     - name: install #1
       run: |
-        uv venv -p 3.13
+        uv venv -p 3.14
         uv pip install -e .
         uv pip install pip --upgrade
         uv pip install cython wheel

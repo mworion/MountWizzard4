@@ -214,7 +214,7 @@ jobs:
     - name: combining_data
       run: |
         dir
-        uv venv -p 3.13
+        uv venv -p 3.14
         uv pip install coverage
         uv run coverage combine c0.dat c1.dat c2.dat c3.dat c4.dat
         uv run coverage xml

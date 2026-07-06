@@ -47,7 +47,7 @@ jobs:
 
     - name: build_widgets_resource
       run: |
-        uv venv -p 3.13
+        uv venv -p 3.14
         uv pip install PySide6
         ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.widDest}}devicePopup_ui.py
         ${{env.uic}} ${{env.wid}}downloadPopup.ui -o ${{env.widDest}}downloadPopup_ui.py
@@ -81,8 +81,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2022, windows-2025]
-        python-version: [ '3.11', '3.13' ]
+        os: [windows-2025]
+        python-version: [ '3.11', '3.14' ]
 
     steps:
       - name: install uv
@@ -113,8 +113,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04 ]
-        python-version: [ '3.11', '3.13' ]
+        os: [ubuntu-24.04 , ubuntu-26.04]
+        python-version: [ '3.11', '3.14' ]
 
     steps:
       - uses: actions/download-artifact@v7
@@ -155,8 +155,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-15, macos-15-intel, macos-26]
-        python-version: [ '3.11', '3.13' ]
+        os: [macos-15, macos-15-intel, macos-26, macos-26-intel]
+        python-version: [ '3.11', '3.14' ]
 
     steps:
       - uses: actions/download-artifact@v7

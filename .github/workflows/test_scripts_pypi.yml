@@ -64,8 +64,10 @@ jobs:
       matrix:
         os: [ ubuntu-22.04, ubuntu-24.04, ubuntu-26.04]
         python-version: [ '3.12', '3.14' ]
-    
+
     steps:
+      - uses: actions/checkout@v6
+
       - name: install head
         uses: ./.github/actions/install_ubuntu_head
           

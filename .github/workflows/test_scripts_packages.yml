@@ -122,6 +122,8 @@ jobs:
           name: dist
           path: dist
 
+      - uses: actions/checkout@v6
+
       - name: install head
         uses: ./.github/actions/install_ubuntu_head
           

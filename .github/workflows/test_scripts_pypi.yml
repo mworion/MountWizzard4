@@ -55,7 +55,7 @@ jobs:
       - name: Run MountWizzard4
         shell: cmd
         run: |
-          uv run mw4 -t
+          uv run mw4 -t 1
           dir
   
   install_ubuntu:
@@ -84,7 +84,7 @@ jobs:
 
       - name: Run MountWizzard4
         run: |
-          uv run mw4 -t 
+          uv run mw4 -t 1
           ls -la
  
           
@@ -109,6 +109,6 @@ jobs:
           
       - name: MountWizzard4 Run
         run: |
-          uv run mw4 -t
+          uv run mw4 -t 1
           ls -la
           

@@ -105,7 +105,7 @@ jobs:
       - name: Run MountWizzard4
         continue-on-error: true
         run: |
-          uv run mw4 -t
+          uv run mw4 -t 1
 
 
   install_package_ubuntu:
@@ -142,7 +142,7 @@ jobs:
       - name: Run MountWizzard4
         continue-on-error: true
         run: |
-          uv run mw4 -t
+          uv run mw4 -t 1
 
 
   install_package_macOS:
@@ -174,5 +174,5 @@ jobs:
       - name: MountWizzard4 Run
         continue-on-error: true
         run: |
-          uv run mw4 -t
+          uv run mw4 -t 1
  

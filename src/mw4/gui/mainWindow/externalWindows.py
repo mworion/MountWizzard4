@@ -27,7 +27,7 @@ from mw4.gui.extWindows.setting.settingW import SettingWindow
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 from mw4.gui.extWindows.video.videoW import VideoWindow
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
-from pytestqt.qtbot import QWidget
+from typing import Any
 
 
 class ExternalWindows:
@@ -35,7 +35,7 @@ class ExternalWindows:
         self.mainW = mainW
         self.app = mainW.app
 
-        self.uiWindows: dict[str, dict[str, QWidget]] = {
+        self.uiWindows: dict[str, dict[str, Any]] = {
             "showMessageW": {
                 "button": self.mainW.ui.openMessageW,
                 "classObj": None,

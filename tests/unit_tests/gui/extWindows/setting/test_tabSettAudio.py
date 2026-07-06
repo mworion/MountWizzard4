@@ -13,14 +13,19 @@
 # License APL2.0
 #
 ###########################################################
+import sys
+from unittest import mock
+
 import pytest
+from PySide6.QtMultimedia import QSoundEffect
+from PySide6.QtWidgets import QComboBox, QWidget
+
+mock.patch("pytestqt.qtbot.QWidget", QWidget).start()
+
 from mw4.gui.extWindows.setting.tabSettAudio import SettAudio
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from PySide6.QtMultimedia import QSoundEffect
-from PySide6.QtWidgets import QComboBox
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
-from unittest import mock
 
 
 def createMockComboBox() -> QComboBox:
@@ -48,7 +53,7 @@ def createMockCheckBox(defaultValue: bool = False):
     return m
 
 
-@pytest.fixture(autouse=True, scope="module")
+@pytest.fixture(autouse=True, scope="function")
 def settAudio(qapp):
     """Setup SettAudio fixture for testing."""
     parentW = MWidget()

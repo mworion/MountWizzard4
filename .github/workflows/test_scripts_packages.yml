@@ -142,7 +142,7 @@ jobs:
       - name: Run MountWizzard4
         continue-on-error: true
         run: |
-          xvfb-run uv run mw4 -t
+          uv run mw4 -t
 
 
   install_package_macOS:

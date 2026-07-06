@@ -122,15 +122,8 @@ jobs:
           name: dist
           path: dist
 
-      - name: Install Head
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb libxkbcommon-x11-0 x11-utils libxcb-icccm4
-          sudo apt-get install -y libxcb-image0 libxcb-keysyms1 libxcb-randr0
-          sudo apt-get install -y libxcb-render-util0 libpulse-mainloop-glib0
-          sudo apt-get install -y libx11-xcb1 libxcb-xinerama0 libxcb-xkb1
-          sudo apt-get install -y libxcb-keysyms1 ffmpeg libsm6 libxext6
-          sudo apt-get install -y libxcb-cursor0 libegl1-mesa
+      - name: install head
+        uses: ./.github/actions/install_ubuntu_head
           
       - name: install uv
         uses: astral-sh/setup-uv@v8.2.0

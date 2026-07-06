@@ -13,6 +13,8 @@
 # License APL2.0
 #
 ###########################################################
+from pickletools import uint8
+
 import cv2
 import logging
 import numpy as np
@@ -88,7 +90,7 @@ class FileHandler:
             self.image = np.flipud(self.image)
         if self.flipH:
             self.image = np.fliplr(self.image)
-        self.image = (self.image / np.max(self.image) * 65536.0).astype("float32")
+        self.image = (self.image / np.max(self.image) * 256).astype("uint8")
 
     def checkValidImageFormat(self) -> bool:
         if self.image is None or len(self.image) == 0:
@@ -162,6 +164,8 @@ class FileHandler:
         self.wcs = wcs.WCS(self.header)
         self.hasCelestial = self.wcs.has_celestial
         self.sizeY, self.sizeX = self.wcs.array_shape
+        #alphaChannel = np.ones(self.image.shape, dtype="uint8") * 128
+        #self.image = np.dstack((self.image, alphaChannel))
         self.signals.imageLoaded.emit()
 
     def loadImage(

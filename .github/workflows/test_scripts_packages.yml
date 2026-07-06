@@ -136,7 +136,7 @@ jobs:
       - name: MountWizzard4 Install
         continue-on-error: true
         run: |
-          uv venv
+          uv venv -p ${{ matrix.python-version }}
           uv pip install dist/mountwizzard4.tar.gz
           
       - name: Run MountWizzard4

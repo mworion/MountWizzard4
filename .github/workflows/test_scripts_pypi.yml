@@ -80,6 +80,7 @@ jobs:
       - name: MountWizzard4 Install
         continue-on-error: true
         run: |
+          uv venv -p ${{ matrix.python-version }}
           uv pip install mountwizzard4==${{ env.version }}
 
       - name: Run MountWizzard4

@@ -28,3 +28,5 @@ runs:
       shell: bash
       
     - uses: pyvista/setup-headless-display-action@v4
+      with:
+        qt: true

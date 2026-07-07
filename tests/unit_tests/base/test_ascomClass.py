@@ -41,7 +41,7 @@ class Parent:
         self.app.mwGlob = {"tempDir": Path("/tmp")}
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     func = AscomClass(parent=Parent())
     func.signals = Signals()

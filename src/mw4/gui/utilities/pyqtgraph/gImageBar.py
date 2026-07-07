@@ -42,9 +42,8 @@ class ImageBar(PlotBase):
         self.lx.setVisible(False)
         self.ly.setVisible(False)
 
-    def setColorMap(self, colorMap: str) -> None:
-        cMap = pg.colormap.get(colorMap)
-        self.barItem.setColorMap(cMap)
+    def setImageColorMap(self, colorMapIndex: int) -> None:
+        self.barItem.setColorMap(self.colorMapStyle[colorMapIndex])
 
     def setImage(self, imageDisp: np.ndarray, updateGeometry: bool = True) -> bool:
         self.constructPlot()

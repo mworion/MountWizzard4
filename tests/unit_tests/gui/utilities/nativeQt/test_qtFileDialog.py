@@ -21,8 +21,9 @@ from PySide6.QtCore import QModelIndex
 from PySide6.QtWidgets import QFileDialog, QWidget
 
 
-@pytest.fixture(scope="function")
-def dlg(qapp, tmp_path):
+@pytest.fixture(scope="module")
+def dlg(qapp, tmp_path_factory):
+    tmp_path = tmp_path_factory.mktemp("qtFileDialog")
     (tmp_path / "a.txt").write_text("a")
     (tmp_path / "b.txt").write_text("b")
     (tmp_path / "sub").mkdir()
@@ -34,6 +35,7 @@ def dlg(qapp, tmp_path):
         folder=tmp_path,
         filterSet="Text (*.txt);;All (*)",
     )
+    d._tmp_path = tmp_path
     yield d
     d.close()
 
@@ -115,7 +117,8 @@ def test_resolveSelectionDirectoryDefault(qapp, tmp_path):
     d.close()
 
 
-def test_onSelectionChangedFiles(dlg, tmp_path):
+def test_onSelectionChangedFiles(dlg):
+    tmp_path = dlg._tmp_path
     idx = dlg.model.index(str(tmp_path / "a.txt"))
     dlg.tree.selectionModel().select(idx, dlg.tree.selectionModel().SelectionFlag.Select)
     dlg.onSelectionChanged()
@@ -154,13 +157,15 @@ def test_onSelectionChangedDirectoryMode(qapp, tmp_path):
     d.close()
 
 
-def test_onDoubleClickedDir(dlg, tmp_path):
+def test_onDoubleClickedDir(dlg):
+    tmp_path = dlg._tmp_path
     idx = dlg.model.index(str(tmp_path / "sub"))
     dlg.onDoubleClicked(idx)
     assert dlg.currentDir == tmp_path / "sub"
 
 
-def test_onDoubleClickedFileAccepts(dlg, tmp_path):
+def test_onDoubleClickedFileAccepts(dlg):
+    tmp_path = dlg._tmp_path
     idx = dlg.model.index(str(tmp_path / "a.txt"))
     with mock.patch.object(dlg, "onAccept") as m:
         dlg.onDoubleClicked(idx)
@@ -178,7 +183,10 @@ def test_onDoubleClickedIgnoredInDirMode(qapp, tmp_path):
     d.close()
 
 
-def test_onAcceptExistingFile(dlg, tmp_path):
+def test_onAcceptExistingFile(dlg):
+    tmp_path = dlg._tmp_path
+    dlg.resultCode = MWFileDialog.Rejected
+    dlg.currentDir = tmp_path
     dlg.fileNameEdit.setText("a.txt")
     with mock.patch.object(dlg, "close"):
         dlg.onAccept()
@@ -187,12 +195,14 @@ def test_onAcceptExistingFile(dlg, tmp_path):
 
 
 def test_onAcceptRejectsNonExisting(dlg):
+    dlg.resultCode = MWFileDialog.Rejected
     dlg.fileNameEdit.setText("missing.txt")
     dlg.onAccept()
     assert dlg.resultCode == MWFileDialog.Rejected
 
 
 def test_onAcceptEmptyIsNoop(dlg):
+    dlg.resultCode = MWFileDialog.Rejected
     dlg.fileNameEdit.setText("")
     dlg.onAccept()
     assert dlg.resultCode == MWFileDialog.Rejected

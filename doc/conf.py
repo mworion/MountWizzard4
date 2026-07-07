@@ -35,7 +35,7 @@
 # -- Project information -----------------------------------------------------
 
 project = "MountWizzard4"
-copyright = "2025, mworion"
+copy_year = "2025, mworion"
 author = "Michael Würtenberger"
 
 # The full version, including alpha/beta/rc tags

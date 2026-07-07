@@ -202,8 +202,7 @@ class HemisphereWindow(MWidget):
         img = self.horizonDraw.imageTerrain[x1:x2, y1:y2]
         img = cv2.resize(img, (360, 90))
         imgItem = pg.ImageItem(img)
-        cMap = pg.colormap.get("CET-L2")
-        imgItem.setColorMap(cMap)
+        imgItem.setImageColorMap(0)
         imgItem.setOpts(opacity=alpha)
         imgItem.setZValue(-10)
         plotItem.addItem(imgItem)

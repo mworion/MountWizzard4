@@ -90,7 +90,7 @@ def runMW(c, param):
 
 
 def printMW(param):
-    print(param)
+    pass
 
 
 @task
@@ -388,3 +388,4 @@ def test_mac26(c):
     scp = client["mac26"]["scp"]
     test_mac(c, user, work, scp)
     printMW("test mac26 install finished\n")
+

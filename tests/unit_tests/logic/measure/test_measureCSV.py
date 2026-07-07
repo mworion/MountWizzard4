@@ -21,7 +21,7 @@ from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     class Test1:
         CYCLE_UPDATE_TASK = 1000

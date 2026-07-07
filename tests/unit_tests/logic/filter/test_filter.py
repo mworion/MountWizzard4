@@ -14,6 +14,7 @@
 #
 ###########################################################
 
+import platform
 import pytest
 import unittest.mock as mock
 from mw4.logic.filter.filter import Filter
@@ -64,3 +65,20 @@ def test_sendFilterNumber_1(function):
 def test_sendFilterNumber_2(function):
     function.framework = "indi"
     function.sendFilterNumber()
+
+
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+def test_filterAscom_import():
+    import importlib
+    spec = importlib.util.find_spec("mw4.logic.filter.filterAscom")
+    assert spec is not None
+
+
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+def test_filter_ascom_in_run():
+    from mw4.logic.filter.filter import Filter
+    from tests.unit_tests.unitTestAddOns.baseTestApp import App
+    function = Filter(app=App())
+    if platform.system() == "Windows":
+        assert "ascom" in function.run
+        assert function.run["ascom"] is not None

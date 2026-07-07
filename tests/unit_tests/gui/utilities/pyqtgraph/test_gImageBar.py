@@ -31,7 +31,7 @@ def test_ImageBar_constructPlot():
 
 def test_ImageBar_setColorMap():
     function = ImageBar()
-    function.setColorMap("plasma")
+    function.setImageColorMap(0)
 
 
 def test_ImageBar_setImage_1():

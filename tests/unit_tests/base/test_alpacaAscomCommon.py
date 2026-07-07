@@ -56,7 +56,7 @@ class ConcreteDevice(AlpacaAscomCommon):
         return getattr(self.device, valueProp)(**kwargs)
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     parent = Parent()
     func = ConcreteDevice(parent=parent)
@@ -178,6 +178,9 @@ def test_connectDevice_allFail(function):
 
 
 def test_getInitialConfig(function):
+    # restore class methods if replaced by a previous test
+    if "getDeviceProp" in function.__dict__:
+        del function.getDeviceProp
     # arrange
     function.device.Name = "MySensor"
     function.device.DriverVersion = "1.0"
@@ -217,7 +220,9 @@ def test_processCommandQueue_callWithKwargs(function):
 
 
 def test_processCommandQueue_set(function):
-    # arrange
+    # arrange — restore original setDeviceProp in case a previous test replaced it
+    if "setDeviceProp" in function.__dict__:
+        del function.setDeviceProp
     function.setDevicePropQueued("Gain", 50)
     # act
     function.processCommandQueue()
@@ -253,7 +258,10 @@ def test_handleDeviceConnect_fail(function):
 
 
 def test_handleDeviceConnect_success(function):
-    # arrange
+    # arrange — reset signal mock, restore original getDeviceProp
+    function.signals.reset_mock()
+    if "getDeviceProp" in function.__dict__:
+        del function.getDeviceProp
     function.device.Connected = True
     function.handleDeviceConnect()
     # assert
@@ -281,6 +289,7 @@ def test_runnerCommunicationLoop_stopImmediate(function):
 
 def test_runnerCommunicationLoop_connectBranch(function):
     # arrange
+    function.stopEvent.clear()
     function.deviceConnected = False
     connect_count = 0
 
@@ -299,6 +308,7 @@ def test_runnerCommunicationLoop_connectBranch(function):
 
 def test_runnerCommunicationLoop_disconnectBranch(function):
     # arrange
+    function.stopEvent.clear()
     function.deviceConnected = True
     disconnect_count = 0
 
@@ -317,6 +327,7 @@ def test_runnerCommunicationLoop_disconnectBranch(function):
 
 def test_runnerCommunicationLoop_pollCycle(function):
     # arrange
+    function.stopEvent.clear()
     function.deviceConnected = True
     poll_count = 0
 
@@ -334,7 +345,8 @@ def test_runnerCommunicationLoop_pollCycle(function):
 
 
 def test_stopCommunication(function):
-    # arrange
+    # arrange — reset signal mock to clear accumulated call history
+    function.signals.reset_mock()
     function.deviceConnected = True
     function.stopCommunication()
     # assert

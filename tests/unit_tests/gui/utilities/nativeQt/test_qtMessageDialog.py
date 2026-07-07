@@ -19,7 +19,7 @@ from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from PySide6.QtWidgets import QWidget
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="module")
 def dlg(qapp):
     parent = QWidget()
     parent.resize(400, 400)

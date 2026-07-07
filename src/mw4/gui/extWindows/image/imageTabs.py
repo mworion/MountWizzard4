@@ -86,17 +86,16 @@ class ImageTabs:
         self.imageSourceRange = vb.viewRect()
 
     def setBarColor(self) -> None:
-        cMap = ["CET-L2", "plasma", "cividis", "magma", "CET-D1A"]
-        colorMap = cMap[self.ui.color.currentIndex()]
-        self.ui.image.setColorMap(colorMap)
-        self.ui.imageSource.setColorMap(colorMap)
-        self.ui.background.setColorMap(colorMap)
-        self.ui.backgroundRMS.setColorMap(colorMap)
-        self.ui.hfr.setColorMap(colorMap)
-        self.ui.tiltSquare.setColorMap(colorMap)
-        self.ui.tiltTriangle.setColorMap(colorMap)
-        self.ui.roundness.setColorMap(colorMap)
-        self.ui.aberration.setColorMap(colorMap)
+        colorMapIndex = self.ui.color.currentIndex() + 1
+        self.ui.image.setImageColorMap(colorMapIndex)
+        self.ui.imageSource.setImageColorMap(colorMapIndex)
+        self.ui.background.setImageColorMap(colorMapIndex)
+        self.ui.backgroundRMS.setImageColorMap(colorMapIndex)
+        self.ui.hfr.setImageColorMap(colorMapIndex)
+        self.ui.tiltSquare.setImageColorMap(colorMapIndex)
+        self.ui.tiltTriangle.setImageColorMap(colorMapIndex)
+        self.ui.roundness.setImageColorMap(colorMapIndex)
+        self.ui.aberration.setImageColorMap(colorMapIndex)
 
     def setCrosshair(self) -> None:
         self.ui.image.showCrosshair(self.ui.showCrosshair.isChecked())

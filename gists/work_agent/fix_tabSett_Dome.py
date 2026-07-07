@@ -51,7 +51,7 @@ def migrate_tabSett_Dome():
 
         mount = self.app.dReg["mount"].instance
         dome = self.app.dReg["dome"].instance
-        
+
         mount.geometry.domeRadius = self.ui.domeRadius.value()
         dome.radius = self.ui.domeRadius.value()
         mount.geometry.offGEM = self.ui.offGEM.value()
@@ -124,7 +124,6 @@ def migrate_tabSett_Dome():
     content = content.replace(old_settlingTime, new_settlingTime)
 
     filepath.write_text(content)
-    print("✓ tabSett_Dome.py successfully migrated and line length fixed")
 
 
 if __name__ == "__main__":

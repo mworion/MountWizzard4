@@ -30,7 +30,7 @@ class Parent:
         app = mock.MagicMock()
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     func = Photometry(Parent(), np.zeros((1, 1)))
     yield func

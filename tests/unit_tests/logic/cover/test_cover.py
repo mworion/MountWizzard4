@@ -14,6 +14,7 @@
 #
 ###########################################################
 
+import platform
 import pytest
 import unittest.mock as mock
 from mw4.logic.cover.cover import Cover
@@ -90,3 +91,20 @@ def test_haltCover_3(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "haltCover", return_value=True):
         function.haltCover()
+
+
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+def test_coverAscom_import():
+    import importlib
+    spec = importlib.util.find_spec("mw4.logic.cover.coverAscom")
+    assert spec is not None
+
+
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+def test_cover_ascom_in_run():
+    from mw4.logic.cover.cover import Cover
+    from tests.unit_tests.unitTestAddOns.baseTestApp import App
+    function = Cover(app=App())
+    if platform.system() == "Windows":
+        assert "ascom" in function.run
+        assert function.run["ascom"] is not None

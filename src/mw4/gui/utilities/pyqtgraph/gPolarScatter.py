@@ -44,7 +44,7 @@ class PolarScatter(NormalScatter):
         for i in range(len(x)):
             arrow = pg.ArrowItem()
             if "z" in kwargs:
-                colorVal = self.cMapGYR.mapToQColor(self.colorInx[i])
+                colorVal = self.colorMapStyle[0].mapToQColor(self.colorInx[i])
             else:
                 colorVal = self.col[i]
             arrow.setStyle(

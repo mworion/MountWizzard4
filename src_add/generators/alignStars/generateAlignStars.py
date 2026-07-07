@@ -222,7 +222,6 @@ def make_file():
             lineA = f"star['{name}'] = [{ra2}, {dec2},\n"
             lineB = f"               {pr2}, {pd2},\n"
             lineC = f"               {px2}, {rv2}]\n"
-            print(name)
             f.write("    " + lineA)
             spacer = " " * (len(name) - 3)
             f.write("    " + spacer + lineB)

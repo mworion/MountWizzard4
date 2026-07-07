@@ -14,6 +14,7 @@
 #
 ###########################################################
 import mw4.logic
+import platform
 import pytest
 import unittest.mock as mock
 from astropy.io import fits
@@ -240,3 +241,20 @@ def test_updateImageFitsHeaderPointing_1(function):
         mock.patch.object(mw4.logic.camera.camera, "writeHeaderPointing"),
     ):
         function.updateImageFitsHeaderPointing()
+
+
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+def test_cameraAscom_import():
+    import importlib
+    spec = importlib.util.find_spec("mw4.logic.camera.cameraAscom")
+    assert spec is not None
+
+
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+def test_camera_ascom_in_run():
+    from mw4.logic.camera.camera import Camera
+    from tests.unit_tests.unitTestAddOns.baseTestApp import App
+    function = Camera(app=App())
+    if platform.system() == "Windows":
+        assert "ascom" in function.run
+        assert function.run["ascom"] is not None

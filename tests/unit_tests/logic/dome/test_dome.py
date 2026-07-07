@@ -15,6 +15,7 @@
 ###########################################################
 
 import numpy as np
+import platform
 import pytest
 import unittest.mock as mock
 from mw4.logic.dome.dome import Dome
@@ -22,7 +23,7 @@ from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function():
     try:
         func = Dome(app=App())
@@ -421,6 +422,9 @@ def test_calcOvershoot_8(function):
 def test_slewDome_2(function):
     function.data = {"AZ": 1}
     function.framework = "indi"
+    function.overshoot = None
+    function.avoidFirstSlewOvershoot = True
+    function.lastFinalAz = None
     val = (10, 10, None, None)
     with (
         mock.patch.object(function, "calcSlewTarget", return_value=val),
@@ -557,3 +561,20 @@ def test_abortSlew_3(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "abortSlew", return_value=True):
         function.abortSlew()
+
+
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+def test_domeAscom_import():
+    import importlib
+    spec = importlib.util.find_spec("mw4.logic.dome.domeAscom")
+    assert spec is not None
+
+
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+def test_dome_ascom_in_run():
+    from mw4.logic.dome.dome import Dome
+    from tests.unit_tests.unitTestAddOns.baseTestApp import App
+    function = Dome(app=App())
+    if platform.system() == "Windows":
+        assert "ascom" in function.run
+        assert function.run["ascom"] is not None

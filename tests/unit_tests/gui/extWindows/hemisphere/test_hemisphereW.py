@@ -140,6 +140,7 @@ def test_drawTerrainImage_2(function):
         mock.patch.object(cv2, "imread", return_value=np.array([[0, 0], [0, 0]])),
         mock.patch.object(cv2, "resize", return_value=np.ones((1440, 360))),
         mock.patch.object(cv2, "flip", return_value=np.ones((360, 1440))),
+        mock.patch("pyqtgraph.ImageItem.setImageColorMap", create=True),
     ):
         function.drawTerrainImage(pg.PlotItem())
 

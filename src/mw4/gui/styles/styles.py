@@ -13,26 +13,30 @@
 # License APL2.0
 #
 ###########################################################
+import numpy as np
 import platform
+import pyqtgraph as pg
 from importlib.resources import as_file, files
 from mw4.gui.styles.colors import colors
 from mw4.gui.styles.images import images
 from mw4.gui.styles.styleSheets import BASIC_STYLE, MAC_STYLE, NON_MAC_STYLE
 from PySide6.QtGui import QIcon
+from typing import Any
 
 
 class Styles:
-    colorSet: int = 0
-    cachedColorSet: int = 0
-    transparency: float = 0.3
-    cachedTransparency: float = 1
-    cachedStyle: str = ""
-
+    COLOR_MAPS_STRINGS = ["CET-L2", "plasma", "cividis", "magma", "CET-D1A"]
     STYLE = (
         MAC_STYLE + BASIC_STYLE
         if platform.system() == "Darwin"
         else NON_MAC_STYLE + BASIC_STYLE
     )
+
+    colorSet: int = 0
+    cachedColorSet: int = 0
+    transparency: float = 0.3
+    cachedTransparency: float = 1
+    cachedStyle: str = ""
 
     @property
     def M_PRIM(self) -> str:
@@ -162,8 +166,11 @@ class Styles:
             self.cachedTransparency = self.transparency
         return self.cachedStyle
 
+    @property
+    def colorMapStyle(self) -> list[Any]:
+        return self.generateCMaps()
+
     def __init__(self):
-        super().__init__()
         with as_file(files("mw4").joinpath("assets/icon/mw4.ico")) as icon:
             self.mwIcon = QIcon(str(icon))
 
@@ -173,7 +180,10 @@ class Styles:
         r = int(val[0:2], 16)
         g = int(val[2:4], 16)
         b = int(val[4:6], 16)
-        return [r, g, b]
+        if len(val) > 6:
+            return [r, g, b, int(val[6:8], 16)]
+        else:
+            return [r, g, b]
 
     def calcHexColor(self, val: str, f: float) -> str:
         rgb = self.hex2rgb(val)
@@ -228,3 +238,30 @@ class Styles:
             line = self.replaceColor(line)
             lines.append(line)
         return "\n".join(lines) + "\n"
+
+    def generateCmapGYR(self) -> pg.ColorMap:
+        colors = np.array(
+            [
+                self.hex2rgb(f"{self.M_GREEN}40"),
+                self.hex2rgb(f"{self.M_YELLOW}40"),
+                self.hex2rgb(f"{self.M_RED}40"),
+            ],
+            dtype=np.uint8,
+        )
+        positions = [0, 0.6, 1.0]
+        return pg.ColorMap(positions, colors)
+
+    def convertColorMap2Alpha(self, colorMap: str) -> pg.ColorMap:
+        cmap = pg.colormap.get(colorMap)
+        colors = cmap.color
+        positions = cmap.pos
+        rgba_colors = colors.copy()
+        rgba_colors[:, 3] = self.transparency
+        rgba_colors = rgba_colors * 255
+        return pg.ColorMap(positions, rgba_colors.astype(np.uint8))
+
+    def generateCMaps(self):
+        colorMaps = [self.generateCmapGYR()]
+        for cMapString in self.COLOR_MAPS_STRINGS:
+            colorMaps.append(self.convertColorMap2Alpha(cMapString))
+        return colorMaps

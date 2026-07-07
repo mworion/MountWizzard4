@@ -51,7 +51,7 @@ def test_getImageSourceRange(function):
 
 def test_setBarColor_1(function):
     function.ui.color.setCurrentIndex(0)
-    with mock.patch.object(function.ui.image, "setColorMap"):
+    with mock.patch.object(function.ui.image, "setImageColorMap"):
         function.setBarColor()
 
 

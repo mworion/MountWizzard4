@@ -14,6 +14,7 @@
 #
 ###########################################################
 
+import platform
 import pytest
 from mw4.logic.powerswitch.pegasusUPB import PegasusUPB
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -180,3 +181,20 @@ def test_reboot_returns_true(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "reboot", return_value=True):
         function.reboot()
+
+
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+def test_pegasusUPBAscom_import():
+    import importlib
+    spec = importlib.util.find_spec("mw4.logic.pegasusUPB.pegasusUPBAscom")
+    assert spec is not None
+
+
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+def test_pegasusUPB_ascom_in_run():
+    from mw4.logic.pegasusUPB.pegasusUPB import PegasusUPB
+    from tests.unit_tests.unitTestAddOns.baseTestApp import App
+    function = PegasusUPB(app=App())
+    if platform.system() == "Windows":
+        assert "ascom" in function.run
+        assert function.run["ascom"] is not None

@@ -165,7 +165,7 @@ def test_collectDataDevices_noneClass(function):
         function.app.dReg.d.update(savedDrivers)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="module")
 def measureDataRaw():
     app = App()
     parent = MeasureData(app=app)
@@ -204,7 +204,7 @@ def test_measureDataRawMeasureTask(measureDataRaw):
         mock_measure.assert_called_once()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="module")
 def measureDataCSV():
     app = App()
     parent = MeasureData(app=app)

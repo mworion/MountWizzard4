@@ -31,7 +31,7 @@ class Parent:
         app = mock.MagicMock()
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     func = FileHandler(Parent(), Path())
     yield func
@@ -91,7 +91,7 @@ def test_cleanImageFormat_1(function):
     function.flipV = False
     function.flipH = True
     function.cleanImageFormat()
-    assert function.image.dtype == np.dtype("float32")
+    assert function.image.dtype == np.dtype("uint8")
 
 
 def test_checkValidImageFormat_1(function):

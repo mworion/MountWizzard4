@@ -14,6 +14,7 @@
 #
 ###########################################################
 
+import platform
 import pytest
 from mw4.logic.focuser.focuser import Focuser
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -66,3 +67,20 @@ def test_halt_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "halt", return_value=True):
         function.halt()
+
+
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+def test_focuserAscom_import():
+    import importlib
+    spec = importlib.util.find_spec("mw4.logic.focuser.focuserAscom")
+    assert spec is not None
+
+
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+def test_focuser_ascom_in_run():
+    from mw4.logic.focuser.focuser import Focuser
+    from tests.unit_tests.unitTestAddOns.baseTestApp import App
+    function = Focuser(app=App())
+    if platform.system() == "Windows":
+        assert "ascom" in function.run
+        assert function.run["ascom"] is not None

@@ -92,6 +92,7 @@ def test_extract_data_files_skip_uptodate():
     with (
         mock.patch("mw4.base.bootstrap.os.stat", return_value=stat_result),
         mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(Path, "is_dir", return_value=True),
         mock.patch("mw4.base.bootstrap.shutil.copy2") as mock_copy,
     ):
         extractDataFiles(mwGlob=mwGlob)

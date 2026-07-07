@@ -35,9 +35,6 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.brushGrid: QBrush = pg.mkBrush(color=addAlpha(self.M_PRIM))
         self.penHorizon: QPen = pg.mkPen(color=addAlpha(self.M_PRIM), width=1)
         self.brushHorizon: QBrush = pg.mkBrush(color=addAlpha(self.M_PRIM2))
-        self.cMapGYR: pg.ColorMap = pg.ColorMap(
-            [0, 0.6, 1.0], [self.M_GREEN, self.M_YELLOW, self.M_RED]
-        )
         self.defRange: dict = {}
         self.scatterItem: pg.ScatterPlotItem | None = None
         self.imageItem: pg.ImageItem | None = None
@@ -56,7 +53,6 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.brushGrid = pg.mkBrush(color=addAlpha(self.M_SEC))
         self.penHorizon = pg.mkPen(color=addAlpha(self.M_PRIM), width=1)
         self.brushHorizon = pg.mkBrush(color=addAlpha(self.M_PRIM2))
-        self.cMapGYR = pg.ColorMap([0, 0.6, 1.0], [self.M_GREEN, self.M_YELLOW, self.M_RED])
         self.setBackground("#00000000")
         for side in ("left", "top", "right", "bottom"):
             for plotItem in self.p:
@@ -146,7 +142,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
 
         for level in np.linspace(minE, maxE, levels):
             colorInx = (level - minE) / (maxE - minE)
-            colorVal = self.cMapGYR.mapToQColor(colorInx)
+            colorVal = self.colorMapStyle[0].mapToQColor(colorInx)
             colorVal.setAlpha(128)
 
             pd = pg.IsocurveItem()

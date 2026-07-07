@@ -75,14 +75,14 @@ class NormalScatter(PlotBase):
             return
         self.barItem.setVisible(True)
         self.barItem.setLevels(values=(minE, maxE))
-        self.barItem.setColorMap(self.cMapGYR)
+        self.barItem.setColorMap(self.colorMapStyle[0])
 
     def buildSpots(self, x: np.ndarray, y: np.ndarray, kwargs: dict) -> list:
         dataVal = kwargs.get("data", y)
         spots = []
         for i in range(len(x)):
             if "z" in kwargs:
-                colorVal = self.cMapGYR.mapToQColor(self.colorInx[i])
+                colorVal = self.colorMapStyle[0].mapToQColor(self.colorInx[i])
             else:
                 colorVal = self.col[i]
             spots.append(

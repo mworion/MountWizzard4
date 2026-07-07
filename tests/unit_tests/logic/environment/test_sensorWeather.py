@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+import platform
 import pytest
 import unittest.mock as mock
 from mw4.logic.environment.sensorWeather import SensorWeather
@@ -53,3 +54,20 @@ def test_stopCommunication_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "stopCommunication", return_value=True):
         function.stopCommunication()
+
+
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+def test_sensorWeatherAscom_import():
+    import importlib
+    spec = importlib.util.find_spec("mw4.logic.sensorWeather.sensorWeatherAscom")
+    assert spec is not None
+
+
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+def test_sensorWeather_ascom_in_run():
+    from mw4.logic.sensorWeather.sensorWeather import SensorWeather
+    from tests.unit_tests.unitTestAddOns.baseTestApp import App
+    function = SensorWeather(app=App())
+    if platform.system() == "Windows":
+        assert "ascom" in function.run
+        assert function.run["ascom"] is not None

@@ -54,4 +54,3 @@ np.savez_compressed(
     lengths=np.array(lengths, dtype=np.int32),
 )
 
-print(f"Saved worldmap.npz — {len(lengths)} segments, {sum(lengths)} total points")

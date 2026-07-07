@@ -19,7 +19,7 @@ from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from PySide6.QtWidgets import QWidget
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="module")
 def dlg(qapp):
     parent = QWidget()
     parent.resize(400, 400)
@@ -161,6 +161,8 @@ def test_onAcceptValidText(dlg):
 
 
 def test_onAcceptEmptyText(dlg):
+    dlg.resultCode = MWInputDialog.Rejected
+    dlg.inputValue = ""
     dlg.inputEdit.setText("")
     dlg.onAccept()
     assert dlg.resultCode == MWInputDialog.Rejected

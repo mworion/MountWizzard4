@@ -52,7 +52,7 @@ def function(qapp):
     QApplication.processEvents()
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def prepareFunctionState(function):
     value = np.datetime64("2014-12-12 20:20:20")
     function.app.measure.framework = ""
@@ -357,6 +357,8 @@ def test_setTitle_csvFramework(function):
 
 
 def test_plotting_withExistingPlotItem(function):
+    value = np.datetime64("2014-12-12 20:20:20")
+    function.app.measure.data["time"] = np.array([value, value, value, value, value])
     plotItem = pg.PlotItem()
     values = function.dataPlots["Pressure"]
     measureClass = function.app.dReg.d["measure"].instance
@@ -369,6 +371,8 @@ def test_plotting_withExistingPlotItem(function):
 
 
 def test_plotting_newPlotItemWithLegend(function):
+    value = np.datetime64("2014-12-12 20:20:20")
+    function.app.measure.data["time"] = np.array([value, value, value, value, value])
     plotItem = pg.PlotItem()
     values = function.dataPlots["Pressure"]
     measureClass = function.app.dReg.d["measure"].instance

@@ -35,11 +35,9 @@ def migrate_file(filepath):
     )
 
     filepath.write_text(content)
-    print(f"✓ Migrated {filepath.name}")
 
 
 # Migrate both files
 migrate_file(Path("../../src/mw4/gui/extWindows/simulator/pointer.py"))
 migrate_file(Path("../../src/mw4/gui/mainWaddon/tabModel.py"))
 
-print("\n✓ All files successfully migrated with proper syntax!")

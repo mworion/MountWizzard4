@@ -35,7 +35,7 @@ def generateAlignStars():
 
     """
 
-    star = dict()
+    star = {}
     star["Achernar"] = [
         0.42635506995907607,
         -0.9989698721359219,

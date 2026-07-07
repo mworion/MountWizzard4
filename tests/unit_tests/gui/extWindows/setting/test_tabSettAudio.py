@@ -13,19 +13,16 @@
 # License APL2.0
 #
 ###########################################################
-import sys
-from unittest import mock
-
 import pytest
-from PySide6.QtMultimedia import QSoundEffect
-from PySide6.QtWidgets import QComboBox, QWidget
-
-mock.patch("pytestqt.qtbot.QWidget", QWidget).start()
-
 from mw4.gui.extWindows.setting.tabSettAudio import SettAudio
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
+from PySide6.QtMultimedia import QSoundEffect
+from PySide6.QtWidgets import QComboBox, QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
+
+mock.patch("pytestqt.qtbot.QWidget", QWidget).start()
 
 
 def createMockComboBox() -> QComboBox:
@@ -53,7 +50,7 @@ def createMockCheckBox(defaultValue: bool = False):
     return m
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def settAudio(qapp):
     """Setup SettAudio fixture for testing."""
     parentW = MWidget()
@@ -143,6 +140,14 @@ def test_audioConfig_has_required_keys(settAudio):
 
 def test_storeConfig_saves_audio_settings(settAudio):
     """Test storeConfig saves all audio UI state."""
+    settAudio.ui.soundMountSlewFinished = createMockComboBox()
+    settAudio.ui.soundDomeSlewFinished = createMockComboBox()
+    settAudio.ui.soundMountAlert = createMockComboBox()
+    settAudio.ui.soundRunFinished = createMockComboBox()
+    settAudio.ui.soundImageSaved = createMockComboBox()
+    settAudio.ui.soundImageSolved = createMockComboBox()
+    settAudio.ui.soundConnectionLost = createMockComboBox()
+    settAudio.ui.soundSatStartTracking = createMockComboBox()
     settAudio.ui.soundMountSlewFinished.setCurrentIndex(1)
     settAudio.ui.soundDomeSlewFinished.setCurrentIndex(2)
     settAudio.ui.soundMountAlert.setCurrentIndex(1)
@@ -193,6 +198,14 @@ def test_setupAudioSignals_connects_device_signals(settAudio):
 
 def test_initConfig_loads_audio_settings(settAudio):
     """Test initConfig loads saved audio settings."""
+    settAudio.ui.soundMountSlewFinished = createMockComboBox()
+    settAudio.ui.soundDomeSlewFinished = createMockComboBox()
+    settAudio.ui.soundMountAlert = createMockComboBox()
+    settAudio.ui.soundRunFinished = createMockComboBox()
+    settAudio.ui.soundImageSaved = createMockComboBox()
+    settAudio.ui.soundImageSolved = createMockComboBox()
+    settAudio.ui.soundConnectionLost = createMockComboBox()
+    settAudio.ui.soundSatStartTracking = createMockComboBox()
     settAudio.app.config["SettingAudio"] = {
         "soundMountSlewFinished": 1,
         "soundDomeSlewFinished": 2,

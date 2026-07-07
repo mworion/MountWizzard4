@@ -32,5 +32,5 @@ runs:
       run: |        
         uv venv -p 3.14
         uv pip install -e .
-        uv pip install cython wheel comtypes==1.4.16 pytest pytest-qt pytest-cov pytest-xvfb
+        uv pip install comtypes==1.4.16 pytest pytest-qt pytest-cov pytest-xvfb
       shell: bash

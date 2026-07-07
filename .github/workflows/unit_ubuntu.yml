@@ -54,7 +54,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libgl1-mesa-glx libegl1-mesa libxkbcommon-x11-0 libpulse0
       - name: install package
-        uses: ./.github/actions/setup_test_cov
+        uses: ./.github/actions/setup_test
       - name: running_unit_tests
         run: |
           uv run pytest tests/unit_tests/base

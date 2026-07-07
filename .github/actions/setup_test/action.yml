@@ -26,8 +26,7 @@ runs:
         enable-cache: true
         python-version: '3.14'
 
-    - name: install #1
+    - name: install package
       run: |
         uv sync --locked --dev
-        uv pip install pytest pytest-qt pytest-xvfb
       shell: bash

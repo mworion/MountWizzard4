@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  cov: '--cov --cov-append --cov-config=pyproject.toml xml:coverage.xml'
+  cov: '--cov --cov-append --cov-config=pyproject.toml --cov-report xml:coverage.xml'
 
 on:
   push:

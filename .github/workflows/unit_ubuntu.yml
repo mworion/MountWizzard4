@@ -58,11 +58,11 @@ jobs:
 
       - name: running_unit_tests
         run: |
-          xvfb-run --auto-servernum uv run pytest tests/unit_tests/base
-          xvfb-run --auto-servernum uv run pytest tests/unit_tests/logic/*
-          xvfb-run --auto-servernum uv run pytest tests/unit_tests/mountcontrol
-          xvfb-run --auto-servernum uv run pytest tests/unit_tests/gui/utilities
-          xvfb-run --auto-servernum uv run pytest tests/unit_tests/gui/styles
+          uv run pytest tests/unit_tests/base
+          uv run pytest tests/unit_tests/logic/*
+          uv run pytest tests/unit_tests/mountcontrol
+          uv run pytest tests/unit_tests/gui/utilities
+          uv run pytest tests/unit_tests/gui/styles
         
   run_tests_ubuntu_2:
     #

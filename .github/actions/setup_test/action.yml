@@ -33,5 +33,5 @@ runs:
         uv pip install -e .
         uv pip install pip --upgrade
         uv pip install cython wheel
-        uv pip install pytest pytest-qt pytest-cov pytest-xvfb pytest-forked
+        uv pip install pytest pytest-qt pytest-cov pytest-xvfb
       shell: bash

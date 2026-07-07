@@ -656,7 +656,7 @@ dev = [
     { name = "pytest-cov", specifier = "==7.1.0" },
     { name = "pytest-qt", specifier = "==4.5.0" },
     { name = "pytest-xdist", specifier = "==3.8.0" },
-    { name = "pytest-xvfb", specifier = "==2.0.0" },
+    { name = "pytest-xvfb", specifier = "==3.1.1" },
     { name = "ruff", specifier = "==0.15.20" },
     { name = "scipy-stubs", specifier = "==1.18.0.0" },
 ]
@@ -1071,15 +1071,15 @@ wheels = [
 
 [[package]]
 name = "pytest-xvfb"
-version = "2.0.0"
+version = "3.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pytest" },
     { name = "pyvirtualdisplay" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/07/a5/78bbf89d95bdcf9c391c9ccab136fada0ad9bb8d5b8f467bbab7c4b5217e/pytest-xvfb-2.0.0.tar.gz", hash = "sha256:c4ba642de05499940db7f65ee111621939be513e3e75c3da9156b7235e2ed8cf", size = 6575, upload-time = "2020-06-09T17:16:24.28Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b6/ce/b3444c98eab123b7348d55d4705c2f1095a6bdf8dae85bc6a34ab5222845/pytest_xvfb-3.1.1.tar.gz", hash = "sha256:90593634427d974b272e845793e4533f5b827c9d84c051879013624504175e44", size = 9022, upload-time = "2025-03-12T12:35:07.533Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cd/7d/ee4c502197eed1bb549f7f805190df6b37f3fb7a3e918acb734adde3c643/pytest_xvfb-2.0.0-py3-none-any.whl", hash = "sha256:6d21b46f099c06d6b8b200e73341da3adb73d67e9139c55d617930881779360b", size = 5073, upload-time = "2020-06-09T17:16:23.472Z" },
+    { url = "https://files.pythonhosted.org/packages/26/6e/859b1e496671fb236153c2caed519301c53f7cf3dfcaac809caae695b5a4/pytest_xvfb-3.1.1-py3-none-any.whl", hash = "sha256:3270f91417cfa0652b7c5a90e93a676e3a80bec12ccbd20cae3b42511e4aba98", size = 5861, upload-time = "2025-03-12T12:35:06.028Z" },
 ]
 
 [[package]]

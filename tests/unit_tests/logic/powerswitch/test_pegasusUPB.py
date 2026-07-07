@@ -192,7 +192,7 @@ def test_pegasusUPBAscom_import():
 
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
 def test_pegasusUPB_ascom_in_run():
-    from mw4.logic.pegasusUPB.pegasusUPB import PegasusUPB
+    from mw4.logic.powerswitch.pegasusUPB import PegasusUPB
     from tests.unit_tests.unitTestAddOns.baseTestApp import App
     function = PegasusUPB(app=App())
     if platform.system() == "Windows":

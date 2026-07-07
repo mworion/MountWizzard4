@@ -65,7 +65,7 @@ def test_sensorWeatherAscom_import():
 
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
 def test_sensorWeather_ascom_in_run():
-    from mw4.logic.sensorWeather.sensorWeather import SensorWeather
+    from mw4.logic.environment.sensorWeather import SensorWeather
     from tests.unit_tests.unitTestAddOns.baseTestApp import App
     function = SensorWeather(app=App())
     if platform.system() == "Windows":

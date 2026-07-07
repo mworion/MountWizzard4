@@ -211,17 +211,11 @@ jobs:
       with:
         name: c4
 
-    - name: combining_data
-      run: |
-        dir
-        uvx coverage combine c0.dat c1.dat c2.dat c3.dat c4.dat
-        uvx coverage xml
-
     - name: upload
       uses: codecov/codecov-action@v7
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        file: coverage.xml
+        files: c0.dat, c1.dat, c2.dat, c3.dat, c4.dat
         flags: unittests
         name: codecov-umbrella
         env_vars: OS,PYTHON

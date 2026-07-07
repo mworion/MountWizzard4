@@ -19,7 +19,7 @@ from dateutil.tz import tzlocal
 from importlib.resources import as_file, files
 from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.tabAddon import TabAddon
-from mw4.gui.utilities.qtHelpers import changeStyleDynamic
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic, setPixmapAlpha
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QColor, QPainter, QPen, QPixmap
 from range_key_dict import RangeKeyDict
@@ -317,7 +317,6 @@ class Almanac(TabAddon):
         moonTimes, moonEvents = calcMoon[4:6]
         text = ""
         self.ui.riseSetEventsMoon.clear()
-        self.ui.riseSetEventsMoon.setTextColor(QColor(self.mainW.M_PRIM))
         moon = ["set", "rise"]
         for moonTime, moonEvent in zip(moonTimes, moonEvents):
             textTime = self.app.timeMgr.convertTime(moonTime, "%d.%m. %H:%M")
@@ -326,13 +325,11 @@ class Almanac(TabAddon):
             text = "\n"
         title = "Moon " + self.app.timeMgr.timeZoneString()
         self.ui.moonAlmanacGroup.setTitle(title)
-
         self.ui.moonPhaseText.setText(self.phasesText[mpPercent])
 
         nodeTimes, nodeEvents = calcMoon[6:8]
         text = ""
         self.ui.nodeEvents.clear()
-        self.ui.nodeEvents.setTextColor(QColor(self.mainW.M_PRIM))
         node = ["ascending", "descending"]
         for nodeTime, nodeEvent in zip(nodeTimes, nodeEvents):
             textTime = self.app.timeMgr.convertTime(nodeTime, "%d.%m. %H:%M")
@@ -351,4 +348,7 @@ class Almanac(TabAddon):
 
         width = self.ui.moonPic.width()
         height = self.ui.moonPic.height()
-        self.ui.moonPic.setPixmap(moon.scaled(width, height))
+
+        pm = moon.scaled(width, height)
+        pm = setPixmapAlpha(pm, self.mainW.transparency)
+        self.ui.moonPic.setPixmap(pm)

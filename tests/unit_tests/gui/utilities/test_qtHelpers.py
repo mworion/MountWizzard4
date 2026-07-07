@@ -25,6 +25,7 @@ from mw4.gui.utilities.qtHelpers import (
     guiSetText,
     img2pixmap,
     positionCursorInTable,
+    setPixmapAlpha,
     setTabAndIndex,
     svg2icon,
     svg2pixmap,
@@ -305,3 +306,48 @@ def test_addAlpha_5():
     color = addAlpha("rgba(255, 255, 0, 1.0)")
     assert isinstance(color, QColor)
     assert color.alphaF() == pytest.approx(original_alpha * 0.5, abs=1e-5)
+
+
+def test_setPixmapAlpha_1():
+    pixmap = QPixmap(100, 100)
+    pixmap.fill(QColor("red"))
+    result = setPixmapAlpha(pixmap, 0.5)
+    assert isinstance(result, QPixmap)
+    assert result.width() == 100
+    assert result.height() == 100
+
+
+def test_setPixmapAlpha_2():
+    pixmap = QPixmap(50, 75)
+    pixmap.fill(QColor("blue"))
+    result = setPixmapAlpha(pixmap, 0.75)
+    assert isinstance(result, QPixmap)
+    assert result.width() == 50
+    assert result.height() == 75
+
+
+def test_setPixmapAlpha_3():
+    pixmap = QPixmap(100, 100)
+    pixmap.fill(QColor("green"))
+    result = setPixmapAlpha(pixmap, 0.0)
+    assert isinstance(result, QPixmap)
+    assert result.width() == 100
+    assert result.height() == 100
+
+
+def test_setPixmapAlpha_4():
+    pixmap = QPixmap(100, 100)
+    pixmap.fill(QColor("yellow"))
+    result = setPixmapAlpha(pixmap, 1.0)
+    assert isinstance(result, QPixmap)
+    assert result.width() == 100
+    assert result.height() == 100
+
+
+def test_setPixmapAlpha_5():
+    pixmap = QPixmap(200, 150)
+    pixmap.fill(QColor("black"))
+    result = setPixmapAlpha(pixmap, 0.5)
+    assert isinstance(result, QPixmap)
+    assert result.size() == pixmap.size()
+

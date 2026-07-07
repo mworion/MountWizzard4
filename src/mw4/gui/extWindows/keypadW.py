@@ -53,7 +53,7 @@ class KeypadWindow(MWidget):
         self.websocketMutex = QMutex()
         self.worker: Worker | None = None
 
-        self.graphics = np.zeros([64, 128, 3], dtype=np.uint8)
+        self.graphics = np.zeros([64, 128, 4], dtype=np.uint8)
         self.buttons = {
             "key_0": self.ui.b0,
             "key_1": self.ui.b1,
@@ -133,8 +133,6 @@ class KeypadWindow(MWidget):
 
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
-        for row in self.rows:
-            row.setStyleSheet(f"background-color: {self.M_BACK};")
         self.clearGraphics()
 
     def setupButtons(self) -> None:
@@ -168,16 +166,13 @@ class KeypadWindow(MWidget):
     def writeTextRow(self, row: int, text: str) -> None:
         if not -1 < row < 5:
             return
-
-        col = self.M_SEC if text.startswith(">") else self.M_BACK
-        self.rows[row].setStyleSheet(f"background-color: {col};")
         self.rows[row].setText(text)
 
         if row == 4 and not text.startswith("\x00"):
             self.clearGraphics()
 
     def clearGraphics(self) -> None:
-        self.graphics = np.zeros([64, 128, 3], dtype=np.uint8)
+        self.graphics = np.zeros([64, 128, 4], dtype=np.uint8)
         self.drawGraphics()
 
     def clearDisplay(self) -> None:
@@ -196,17 +191,14 @@ class KeypadWindow(MWidget):
         x = self.rows[row].x()
         y = self.rows[row].y()
         height = self.rows[row].height()
-
-        self.ui.cursor.setStyleSheet(f"background-color: {self.M_BACK};")
-        self.ui.cursor.setStyleSheet(f"color: {self.M_PRIM};")
         self.ui.cursor.setVisible(True)
         self.ui.cursor.move(x + 16 * col, y + height)
 
     def drawGraphics(self) -> None:
-        color = self.hex2rgb(self.M_PRIM)
-        back = self.hex2rgb(self.M_BACK)
-        pColor = [255, 255, 255]
-        bColor = [0, 0, 0]
+        color = self.hex2rgb(self.M_PRIM + "FF")
+        back = [0, 0, 0, 0]
+        pColor = [255, 255, 255, 255]
+        bColor = [0, 0, 0, 0]
 
         img = np.copy(self.graphics)
         img[np.where((self.graphics == pColor).all(axis=2))] = color

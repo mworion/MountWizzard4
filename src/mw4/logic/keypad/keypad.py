@@ -203,25 +203,25 @@ class KeyPad:
         self.signals.textRow.emit(value[2] - 1, text)
 
     def drawPixel(self, value: list[int]) -> None:
-        imaArr = np.zeros([8, 8, 3], dtype=np.uint8)
+        imaArr = np.zeros([8, 8, 4], dtype=np.uint8)
         for i in range(8):
             for j in range(8):
                 flag = (value[3 + j] & 128 >> i) != 0
                 if flag:
-                    imaArr[i, j] = [255, 255, 255]
+                    imaArr[i, j] = [255, 255, 255, 255]
                 else:
-                    imaArr[i, j] = [0, 0, 0]
+                    imaArr[i, j] = [0, 0, 0, 0]
         self.signals.imgChunk.emit(imaArr, 8 * (value[2] - 1), 8 * (value[1] - 1))
 
     def deletePixel(self, value: list[int]) -> None:
-        imaArr = np.zeros([8, 12, 3], dtype=np.uint8)
+        imaArr = np.zeros([8, 12, 4], dtype=np.uint8)
         for i in range(12):
             for j in range(8):
                 flag = (value[3 + i] & 1 << j) != 0
                 if flag:
-                    imaArr[j, i] = [255, 255, 255]
+                    imaArr[j, i] = [255, 255, 255, 255]
                 else:
-                    imaArr[j, i] = [0, 0, 0]
+                    imaArr[j, i] = [0, 0, 0, 0]
         self.signals.imgChunk.emit(imaArr, 8 * (value[2] - 1), 12 * (value[1] - 1))
 
     def dispatch(self, value: list[int]) -> None:

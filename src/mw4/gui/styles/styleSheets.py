@@ -40,7 +40,7 @@ MAC_STYLE = """
     QToolTip {
         font-size: 13pt;
     }
-    QLineEdit[keypad=true]{
+    QLineEdit[keypad]{
         font-family: Courier New;
         font-weight: bold;
         font-size: 26pt;
@@ -74,7 +74,7 @@ NON_MAC_STYLE = """
     QToolTip {
         font-size: 10pt;
     }
-    QLineEdit[keypad=true]{
+    QLineEdit[keypad]{
         font-family: Courier New;
         font-weight: bold;
         font-size: 19pt;
@@ -110,10 +110,6 @@ BASIC_STYLE = """
     QLabel{
         color: $M_TER$;
         background-color: transparent;
-    }
-    QLabel[keypad] {
-        color: $M_PRIM$;
-        border-radius: 8px;
     }
     QLabel:disabled {
         color: $M_SEC$;
@@ -152,10 +148,6 @@ BASIC_STYLE = """
         color: $M_PRIM2$;
          border-color: $M_SEC$;
     }
-    QLineEdit[keypad] {
-        color: $M_PRIM$;
-        border-width: 0px;
-    }
     QLineEdit[color='green'] {
         border-width: 1px;
         border-style: outset;
@@ -170,6 +162,10 @@ BASIC_STYLE = """
         border-width: 1px;
         border-style: outset;
         border-color: $M_RED$;
+    }
+    Line #cursor {
+        color: red;
+        background-color: transparent;
     }
     /* Group Box */
     QGroupBox {
@@ -484,9 +480,6 @@ BASIC_STYLE = """
         margin: 0px;
         border: 0px;
         color: $M_PRIM$;
-        font-family: Arial;
-        font-weight: normal;
-        font-size: 15pt;
     }
     /* Combo Boxes */
     QComboBox {

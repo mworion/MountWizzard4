@@ -742,6 +742,9 @@ IC</string>
    <property name="text">
     <string/>
    </property>
+   <property name="keypad" stdset="0">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QPushButton" name="bplus">
    <property name="geometry">
@@ -1005,6 +1008,9 @@ PLANET</string>
    </property>
    <property name="orientation">
     <enum>Qt::Orientation::Vertical</enum>
+   </property>
+   <property name="keypad" stdset="0">
+    <bool>true</bool>
    </property>
   </widget>
   <zorder>label</zorder>

@@ -34,28 +34,21 @@ on:
 
 jobs:
   build_package:
-    #
     runs-on: ubuntu-22.04
+
     steps:
       - uses: actions/checkout@v6
-      
       - name: build package
         uses: ./.github/actions/build_package_uv
         
-  run_tests_ubuntu_1:
-    #
+  run_tests_ubuntu_0:
     needs: build_package
     runs-on: ubuntu-22.04
     
     steps:
       - uses: actions/checkout@v6
-     
-      - name: install head
-        uses: ./.github/actions/install_ubuntu_head
-    
       - name: install package
         uses: ./.github/actions/setup_test_cov
-
       - name: running_unit_tests
         run: |
           uv run pytest tests/unit_tests/base
@@ -64,61 +57,43 @@ jobs:
           uv run pytest tests/unit_tests/gui/utilities
           uv run pytest tests/unit_tests/gui/styles
         
-  run_tests_ubuntu_2:
-    #
+  run_tests_ubuntu_1:
     needs: build_package
     runs-on: ubuntu-22.04
     
     steps:
       - uses: actions/checkout@v6
-    
       - name: install package
         uses: ./.github/actions/setup_test
-    
-      - name: install head
-        uses: ./.github/actions/install_ubuntu_head
-  
       - name: running_unit_tests
         run: |
-          xvfb-run --auto-servernum uv run pytest tests/unit_tests/gui/extWindows/video
-          xvfb-run --auto-servernum uv run pytest tests/unit_tests/gui/extWindows/image
-          xvfb-run --auto-servernum uv run pytest tests/unit_tests/gui/extWindows/hemisphere
-          xvfb-run --auto-servernum uv run pytest tests/unit_tests/gui/extWindows/simulator
+          uv run pytest tests/unit_tests/gui/extWindows/video
+          uv run pytest tests/unit_tests/gui/extWindows/image
+          uv run pytest tests/unit_tests/gui/extWindows/hemisphere
+          uv run pytest tests/unit_tests/gui/extWindows/simulator
+
+  run_tests_ubuntu_2:
+    needs: build_package
+    runs-on: ubuntu-22.04
+    
+    steps:
+      - uses: actions/checkout@v6
+      - name: install package
+        uses: ./.github/actions/setup_test
+      - name: running_unit_tests
+        run: |
+          uv run pytest tests/unit_tests/gui/mainWaddon
+          uv run pytest tests/unit_tests/gui/extWindows
+          uv run pytest tests/unit_tests/gui/mainWindow
 
   run_tests_ubuntu_3:
-    #
     needs: build_package
     runs-on: ubuntu-22.04
     
     steps:
       - uses: actions/checkout@v6
-      
       - name: install package
         uses: ./.github/actions/setup_test
-      
-      - name: install head
-        uses: ./.github/actions/install_ubuntu_head
-      
       - name: running_unit_tests
         run: |
-          xvfb-run --auto-servernum uv run pytest tests/unit_tests/gui/mainWaddon
-          xvfb-run --auto-servernum uv run pytest tests/unit_tests/gui/extWindows
-          xvfb-run --auto-servernum uv run pytest tests/unit_tests/gui/mainWindow
-
-  run_tests_ubuntu_4:
-    #
-    needs: build_package
-    runs-on: ubuntu-22.04
-    
-    steps:
-      - uses: actions/checkout@v6
-    
-      - name: install package
-        uses: ./.github/actions/setup_test
-    
-      - name: install head
-        uses: ./.github/actions/install_ubuntu_head
-  
-      - name: running_unit_tests
-        run: |
-          xvfb-run --auto-servernum uv run pytest tests/unit_tests/mainApp
+          uv run pytest tests/unit_tests/mainApp

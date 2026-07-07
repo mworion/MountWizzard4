@@ -14,7 +14,6 @@
 # Licence APL2.0
 #
 ###########################################################
-
 name: unit_win
 
 concurrency:
@@ -38,29 +37,24 @@ on:
 
 jobs:
   build_package:
-    #
     runs-on: 'ubuntu-latest'
+
     steps:
       - uses: actions/checkout@v6
-      
       - name: build package
         uses: ./.github/actions/build_package_uv
 
   run_tests_windows_0:
-    #
     needs: build_package
     runs-on: windows-latest
     
     steps:
       - uses: actions/checkout@v6
-      
       - name: install package
         uses: ./.github/actions/setup_test_cov
-  
       - name: running_unit_tests
         run: |
           uv run pytest tests/unit_tests/mainApp ${{env.cov}}
-
       - name: upload
         uses: codecov/codecov-action@v7
         with:
@@ -72,20 +66,16 @@ jobs:
           override_branch: ${{env.branch}}
   
   run_tests_windows_1:
-    #
     needs: build_package
     runs-on: windows-latest
     
     steps:
       - uses: actions/checkout@v6
-      
       - name: install package
         uses: ./.github/actions/setup_test_cov
-  
       - name: running_unit_tests
         run: |
           uv run pytest tests/unit_tests/gui/mainWindow ${{env.cov}}
-
       - name: upload
         uses: codecov/codecov-action@v7
         with:
@@ -97,25 +87,18 @@ jobs:
           override_branch: ${{env.branch}}
 
   run_tests_windows_2:
-    #
     needs: build_package
     runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v6
-
       - name: install package
         uses: ./.github/actions/setup_test_cov
-
       - name: running_unit_tests
         run: |
           uv run pytest tests/unit_tests/base ${{env.cov}}
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           uv run pytest tests/unit_tests/logic ${{env.cov}}
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           uv run pytest tests/unit_tests/mountcontrol ${{env.cov}}
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
       - name: upload
         uses: codecov/codecov-action@v7
         with:
@@ -127,20 +110,16 @@ jobs:
           override_branch: ${{env.branch}}
 
   run_tests_windows_3:
-    #
     needs: build_package
     runs-on: windows-latest
     
     steps:
       - uses: actions/checkout@v6
-  
       - name: install package
         uses: ./.github/actions/setup_test_cov
-  
       - name: running_unit_tests
         run: |
           uv run pytest tests/unit_tests/gui/extWindows ${{env.cov}}
-
       - name: upload
         uses: codecov/codecov-action@v7
         with:
@@ -152,25 +131,18 @@ jobs:
           override_branch: ${{env.branch}}
 
   run_tests_windows_4:
-    #
     needs: build_package
     runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v6
-
       - name: install package
         uses: ./.github/actions/setup_test_cov
-
       - name: running_unit_tests
         run: |
           uv run pytest tests/unit_tests/gui/utilities ${{env.cov}}
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           uv run pytest tests/unit_tests/gui/styles ${{env.cov}}
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           uv run pytest tests/unit_tests/gui/mainWaddon ${{env.cov}}
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
       - name: upload
         uses: codecov/codecov-action@v7
         with:

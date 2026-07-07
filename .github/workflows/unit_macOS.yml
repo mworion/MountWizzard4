@@ -33,25 +33,21 @@ on:
 
 jobs:
   build_package:
-    #
     runs-on: 'ubuntu-latest'
+
     steps:
       - uses: actions/checkout@v6
-      
       - name: build package
         uses: ./.github/actions/build_package_uv
 
-  run_tests_macos_1:
-    #
+  run_tests_macos_0:
     needs: build_package
     runs-on: macos-15
     
     steps:
       - uses: actions/checkout@v6
-  
       - name: install package
         uses: ./.github/actions/setup_test
-
       - name: running_unit_tests
         run: |
           uv run pytest tests/unit_tests/base
@@ -60,48 +56,39 @@ jobs:
           uv run pytest tests/unit_tests/gui/utilities
           uv run pytest tests/unit_tests/gui/styles
 
-  run_tests_macos_2:
-    #
+  run_tests_macos_1:
     needs: build_package
     runs-on: macos-15
     
     steps:
       - uses: actions/checkout@v6
-  
       - name: install package
         uses: ./.github/actions/setup_test
-  
       - name: running_unit_tests
         run: |
           uv run pytest tests/unit_tests/gui/extWindows
 
-  run_tests_macos_3:
-    #
+  run_tests_macos_2:
     needs: build_package
     runs-on: macos-15
     
     steps:
       - uses: actions/checkout@v6
-  
       - name: install package
         uses: ./.github/actions/setup_test
-  
       - name: running_unit_tests
         run: |
           uv run pytest tests/unit_tests/gui/mainWaddon
           uv run pytest tests/unit_tests/gui/mainWindow
 
-  run_tests_macos_4:
-    #
+  run_tests_macos_3:
     needs: build_package
     runs-on: macos-15
     
     steps:
       - uses: actions/checkout@v6
-  
       - name: install package
         uses: ./.github/actions/setup_test
-  
       - name: running_unit_tests
         run: |
           uv run pytest tests/unit_tests/mainApp

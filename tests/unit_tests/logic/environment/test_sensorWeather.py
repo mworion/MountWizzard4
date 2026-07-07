@@ -59,7 +59,7 @@ def test_stopCommunication_2(function):
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
 def test_sensorWeatherAscom_import():
     import importlib
-    spec = importlib.util.find_spec("mw4.logic.sensorWeather.sensorWeatherAscom")
+    spec = importlib.util.find_spec("mw4.logic.environment.sensorWeatherAscom")
     assert spec is not None
 
 

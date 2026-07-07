@@ -45,6 +45,9 @@ MAC_STYLE = """
         font-weight: bold;
         font-size: 26pt;
     }
+    QTabWidget:tab-bar {
+        alignment: center;
+    }
     """
 
 NON_MAC_STYLE = """

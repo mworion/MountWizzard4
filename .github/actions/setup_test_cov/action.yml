@@ -30,5 +30,4 @@ runs:
     - name: install #1
       run: |        
         uv sync --locked --dev
-        uv pip install comtypes==1.4.16 pytest pytest-qt pytest-cov pytest-xvfb
       shell: bash

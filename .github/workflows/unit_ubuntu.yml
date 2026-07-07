@@ -44,6 +44,8 @@ jobs:
   run_tests_ubuntu_0:
     needs: build_package
     runs-on: ubuntu-22.04
+    env:
+      QT_QPA_PLATFORM: offscreen
     
     steps:
       - uses: actions/checkout@v6
@@ -60,6 +62,8 @@ jobs:
   run_tests_ubuntu_1:
     needs: build_package
     runs-on: ubuntu-22.04
+    env:
+      QT_QPA_PLATFORM: offscreen
     
     steps:
       - uses: actions/checkout@v6
@@ -75,6 +79,8 @@ jobs:
   run_tests_ubuntu_2:
     needs: build_package
     runs-on: ubuntu-22.04
+    env:
+      QT_QPA_PLATFORM: offscreen
     
     steps:
       - uses: actions/checkout@v6
@@ -89,6 +95,8 @@ jobs:
   run_tests_ubuntu_3:
     needs: build_package
     runs-on: ubuntu-22.04
+    env:
+      QT_QPA_PLATFORM: offscreen
     
     steps:
       - uses: actions/checkout@v6

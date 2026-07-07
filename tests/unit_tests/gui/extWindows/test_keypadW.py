@@ -246,8 +246,8 @@ def test_startKeypad_creates_worker(keypad_window):
 def test_buttonPressed_calls_button_signal(keypad_window):
     """Test buttonPressed emits mousePressed signal."""
     keypad_window.setupButtons()
-    # Should execute without errors
-    keypad_window.buttonPressed("key_0")
+    with mock.patch.object(keypad_window.keypad, "send"):
+        keypad_window.buttonPressed("key_0")
 
 
 # Tests for buttonReleased method
@@ -255,8 +255,8 @@ def test_buttonPressed_calls_button_signal(keypad_window):
 def test_buttonReleased_calls_button_signal(keypad_window):
     """Test buttonReleased emits mouseReleased signal."""
     keypad_window.setupButtons()
-    # Should execute without errors
-    keypad_window.buttonReleased("key_0")
+    with mock.patch.object(keypad_window.keypad, "send"):
+        keypad_window.buttonReleased("key_0")
 
 
 # Tests for writeTextRow method

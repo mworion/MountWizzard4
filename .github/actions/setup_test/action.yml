@@ -29,6 +29,6 @@ runs:
 
     - name: install #1
       run: |
-        run: uv sync --locked --dev
+        uv sync --locked --dev
         uv pip install pytest pytest-qt pytest-xvfb
       shell: bash

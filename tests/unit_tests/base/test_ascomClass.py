@@ -41,11 +41,14 @@ class Parent:
         self.app.mwGlob = {"tempDir": Path("/tmp")}
 
 
-@pytest.fixture(autouse=True, scope="module")
+@pytest.fixture(autouse=True)
 def function():
     func = AscomClass(parent=Parent())
     func.signals = Signals()
     func.device = mock.MagicMock()
+    func.stopEvent.clear()
+    func.propertyExceptions.clear()
+    func.deviceConnected = False
     yield func
 
 
@@ -383,10 +386,10 @@ def test_runnerCommunicationLoop_pollException(function):
 
     function.deviceConnected = True
     with (
+        pytest.raises(RuntimeError),
         mock.patch.object(function, "getDeviceProp", return_value=True),
         mock.patch.object(function, "pollData", side_effect=fake_poll),
         mock.patch.object(function, "processCommandQueue"),
-        pytest.raises(RuntimeError),
     ):
         function.runnerCommunicationLoop()
     assert call_count == 1

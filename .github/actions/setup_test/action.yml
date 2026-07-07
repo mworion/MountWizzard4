@@ -29,7 +29,6 @@ runs:
 
     - name: install #1
       run: |
-        uv venv -p 3.14
-        uv pip install -e .
+        run: uv sync --locked --dev
         uv pip install pytest pytest-qt pytest-xvfb
       shell: bash

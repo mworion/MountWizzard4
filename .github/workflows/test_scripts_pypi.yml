@@ -63,6 +63,11 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-glx libegl1-mesa libxkbcommon-x11-0 libpulse0
+
       - name: install uv
         uses: astral-sh/setup-uv@v8.2.0
         with:

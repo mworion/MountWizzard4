@@ -44,10 +44,10 @@ jobs:
       uses: astral-sh/setup-uv@v8.2.0
       with:
         enable-cache: true
+        python-version: '3.14'
 
     - name: build_widgets_resource
       run: |
-        uv venv -p 3.14
         uv pip install PySide6
         ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.widDest}}devicePopup_ui.py
         ${{env.uic}} ${{env.wid}}downloadPopup.ui -o ${{env.widDest}}downloadPopup_ui.py
@@ -96,15 +96,10 @@ jobs:
           name: dist
           path: dist
           
-      - name: MountWizzard4 Install
+      - name: MountWizzard4
         continue-on-error: true
         run: |                  
-          uv venv
           uv pip install dist/mountwizzard4.tar.gz
-          
-      - name: Run MountWizzard4
-        continue-on-error: true
-        run: |
           uv run mw4 -t 1
 
 
@@ -135,15 +130,10 @@ jobs:
           enable-cache: true
           python-version: ${{ matrix.python-version }}
   
-      - name: MountWizzard4 Install
+      - name: MountWizzard4
         continue-on-error: true
         run: |
-          uv venv -p ${{ matrix.python-version }}
           uv pip install dist/mountwizzard4.tar.gz
-          
-      - name: Run MountWizzard4
-        continue-on-error: true
-        run: |
           uv run mw4 -t 1
 
 
@@ -167,14 +157,9 @@ jobs:
           enable-cache: true
           python-version: ${{ matrix.python-version }}
           
-      - name: MountWizzard4 Install
+      - name: MountWizzard4
         continue-on-error: true
         run: |
-          uv venv
           uv pip install dist/mountwizzard4.tar.gz
-          
-      - name: MountWizzard4 Run
-        continue-on-error: true
-        run: |
           uv run mw4 -t 1
  

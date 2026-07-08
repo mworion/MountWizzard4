@@ -82,7 +82,6 @@ dependencies = [
     "pyside6==6.11.1",
     "pyyaml==6.0.3",
     "pywin32==312; platform_system == 'Windows'",
-    "opencv-python>=4.13.0.92",
 ]
 
 [project.scripts]

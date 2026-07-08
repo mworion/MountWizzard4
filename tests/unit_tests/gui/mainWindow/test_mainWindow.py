@@ -99,12 +99,29 @@ def test_showWindow_sets_properties(mainWindow):
 
 
 def test_closeEvent_closes_windows(mainWindow):
-    """Test closeEvent closes extended windows."""
+    """Test closeEvent closes extended windows and stops timer."""
+    mainWindow.app.isQuitting = False
     with (
+        mock.patch.object(mainWindow.app.timeMgr, "stop"),
         mock.patch.object(mainWindow.externalWindows, "closeExtendedWindows"),
         mock.patch.object(mainWindow.threadPool, "waitForDone"),
     ):
         mainWindow.closeEvent(QCloseEvent())
+        assert mainWindow.app.isQuitting is True
+
+
+def test_closeEvent_no_double_cleanup(mainWindow):
+    """Test closeEvent doesn't cleanup twice if already quitting."""
+    mainWindow.app.isQuitting = True
+    with (
+        mock.patch.object(mainWindow.app.timeMgr, "stop") as mock_stop,
+        mock.patch.object(mainWindow.externalWindows, "closeExtendedWindows") as mock_close_ext,
+        mock.patch.object(mainWindow.threadPool, "waitForDone") as mock_wait,
+    ):
+        mainWindow.closeEvent(QCloseEvent())
+        mock_stop.assert_not_called()
+        mock_close_ext.assert_not_called()
+        mock_wait.assert_not_called()
 
 
 def test_quitSave_saves_and_closes(mainWindow):

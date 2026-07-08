@@ -87,8 +87,22 @@ def test_aboutToQuit(app):
 
 
 def test_quit(app):
+    """Test quit() method sets isQuitting flag and calls aboutToQuit."""
+    app.isQuitting = False
     with mock.patch.object(app, "aboutToQuit"), mock.patch.object(app.application, "quit"):
         app.quit()
+    assert app.isQuitting is True
+
+
+def test_quit_prevents_double_call(app):
+    """Test quit() returns early if already quitting."""
+    app.isQuitting = True
+    with mock.patch.object(app, "aboutToQuit") as mock_about_to_quit, \
+         mock.patch.object(app.application, "quit") as mock_app_quit:
+        app.quit()
+    mock_about_to_quit.assert_not_called()
+    mock_app_quit.assert_not_called()
+    app.isQuitting = False
 
 
 def test_getActiveDrivers(app):

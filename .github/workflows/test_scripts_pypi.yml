@@ -56,6 +56,9 @@ jobs:
   
   install_ubuntu:
     runs-on: ${{ matrix.os }}
+    env:
+      QT_QPA_PLATFORM: offscreen
+
     strategy:
       matrix:
         os: [ubuntu-24.04, ubuntu-26.04]

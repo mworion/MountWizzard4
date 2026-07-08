@@ -50,6 +50,7 @@ def ts():
 
 def test_init(mgr):
     assert mgr.counter == 0
+    assert mgr.isStopped is False
     assert mgr.timer is not None
     assert not mgr.timer.isActive()
 
@@ -59,6 +60,7 @@ def test_start_stop(mgr):
     assert mgr.timer.isActive()
     mgr.stop()
     assert not mgr.timer.isActive()
+    assert mgr.isStopped is True
 
 
 def test_counter_read_write(mgr):
@@ -77,6 +79,15 @@ def test_on_tick_increments_counter(mgr):
     assert mgr.counter == 1
     mgr.onTick()
     assert mgr.counter == 2
+
+
+def test_on_tick_does_not_emit_after_stop(mgr):
+    """Test that onTick returns early if isStopped is True."""
+    mgr.stop()
+    assert mgr.isStopped is True
+    initial_counter = mgr.counter
+    mgr.onTick()
+    assert mgr.counter == initial_counter
 
 
 def _collect_emitted(mock_app, mgr, method_name, counter_value):

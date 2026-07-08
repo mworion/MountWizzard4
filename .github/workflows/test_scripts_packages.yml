@@ -81,7 +81,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2025]
+        os: [windows-2022, windows-2025]
         python-version: [ '3.12', '3.14' ]
 
     steps:
@@ -123,6 +123,11 @@ jobs:
           path: dist
 
       - uses: actions/checkout@v6
+
+      - name: install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-glx libegl1-mesa libxkbcommon-x11-0 libpulse0
 
       - name: install uv
         uses: astral-sh/setup-uv@v8.2.0

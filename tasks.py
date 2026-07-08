@@ -388,4 +388,3 @@ def test_mac26(c):
     scp = client["mac26"]["scp"]
     test_mac(c, user, work, scp)
     printMW("test mac26 install finished\n")
-

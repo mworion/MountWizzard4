@@ -53,4 +53,3 @@ np.savez_compressed(
     y=np.concatenate(all_y),
     lengths=np.array(lengths, dtype=np.int32),
 )
-

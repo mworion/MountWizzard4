@@ -40,4 +40,3 @@ def migrate_file(filepath):
 # Migrate both files
 migrate_file(Path("../../src/mw4/gui/extWindows/simulator/pointer.py"))
 migrate_file(Path("../../src/mw4/gui/mainWaddon/tabModel.py"))
-

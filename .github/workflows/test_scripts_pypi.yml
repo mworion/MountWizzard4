@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: True
 
 env:
-  version: '4.0.0b11'
+  version: '4.0.0b12'
 
 on:
   push:
@@ -89,7 +89,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-15, macos-15-intel , macos-26, macos-26-intel]
-        python-version: [ '3.12', '3.14' ]
+        python-version: ['3.12', '3.14']
     
     steps:
       - name: install uv

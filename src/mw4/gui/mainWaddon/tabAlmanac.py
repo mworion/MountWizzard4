@@ -19,7 +19,7 @@ from dateutil.tz import tzlocal
 from importlib.resources import as_file, files
 from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.tabAddon import TabAddon
-from mw4.gui.utilities.qtHelpers import changeStyleDynamic, setPixmapAlpha
+from mw4.gui.utilities.qtHelpers import addAlpha, changeStyleDynamic, setPixmapAlpha
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QColor, QPainter, QPen, QPixmap
 from range_key_dict import RangeKeyDict
@@ -58,26 +58,26 @@ class Almanac(TabAddon):
         self.twilightEvents = None
         self.colors = None
         self.worker: Worker | None = None
-        self.setColors()
         self.app.timeMgr.update30m.connect(self.showMoonPhase)
         self.app.colorChange.connect(self.updateColorSet)
         self.app.timebaseChanged.connect(self.showTwilightDataList)
         self.app.timebaseChanged.connect(self.showTwilightDataPlot)
         self.app.timebaseChanged.connect(self.showMoonPhase)
-        self.plotAll()
+
+    def initConfig(self) -> None:
+        self.updateColorSet()
 
     def setColors(self) -> None:
+        self.colors = [
+            addAlpha(self.mainW.M_PRIM4, value=self.mainW.transparency),
+            addAlpha(self.mainW.M_PRIM3, value=self.mainW.transparency),
+            addAlpha(self.mainW.M_PRIM2, value=self.mainW.transparency),
+            addAlpha(self.mainW.M_PRIM1, value=self.mainW.transparency),
+        ]
         self.ui.almanacCivil.setStyleSheet(f"background-color: {self.mainW.M_PRIM1};")
         self.ui.almanacNautical.setStyleSheet(f"background-color: {self.mainW.M_PRIM2};")
         self.ui.almanacAstronomical.setStyleSheet(f"background-color: {self.mainW.M_PRIM3};")
         self.ui.almanacDark.setStyleSheet(f"background-color: {self.mainW.M_PRIM4};")
-        self.colors = [
-            self.mainW.M_PRIM4,
-            self.mainW.M_PRIM3,
-            self.mainW.M_PRIM2,
-            self.mainW.M_PRIM1,
-            self.mainW.M_BACK,
-        ]
 
     def plotAll(self) -> None:
         self.showTwilightDataList()
@@ -100,7 +100,10 @@ class Almanac(TabAddon):
         xLabels[0] = ""
         xTicks = [(x, y) for x, y in zip(xTicks, xLabels)]
         yTicks = [(x, y) for x, y in zip(self.Y_TICKS, self.Y_LABELS)]
-        penLine = pg.mkPen(color=self.mainW.M_PINK, width=2)
+        pen = pg.mkPen(color="transparent")
+        penLine = pg.mkPen(
+            color=addAlpha(self.mainW.M_PINK, value=self.mainW.transparency), width=2
+        )
         plotItem = self.ui.twilight.p[0]
         plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
         plotItem.setXRange(0, 360)
@@ -114,13 +117,9 @@ class Almanac(TabAddon):
         plotItem.setYRange(0, 24)
         plotItem.setXRange(xMin, xMax)
 
-        pens = []
         brushes = []
-        for i in range(5):
-            pens.append(pg.mkPen(color=self.colors[i]))
-            brushes.append(pg.mkBrush(color=self.colors[i]))
-        penBar = [pens[x] for x in e]
-        brushBar = [brushes[x] for x in e]
+        for i in range(4):
+            brushes.append(pg.mkBrush(color=self.colors[i], style=Qt.SolidPattern))
 
         tLoc = t.astimezone(tzlocal())
         refDay = [x.replace(hour=0, minute=0, second=0, microsecond=0) for x in tLoc]
@@ -129,16 +128,20 @@ class Almanac(TabAddon):
         xD = np.array([int(x) for x in t.tt])
 
         plotItem.clear()
-        for i in range(len(t)):
-            if yH[i] > 12:
-                rect = pg.QtWidgets.QGraphicsRectItem(xD[i], yH[i] - 12, 1, 24 - (yH[i] - 12))
-            else:
-                rect = pg.QtWidgets.QGraphicsRectItem(xD[i], 12 + yH[i], 1, 24 - (12 + yH[i]))
-            rect.setPen(penBar[i])
-            rect.setBrush(brushBar[i])
+        for i in range(len(t) - 1):
+            x = xD[i]
+            if x != xD[i + 1]:
+                continue
+            ti = yH[i] - 12 if yH[i] > 12 else yH[i] + 12
+            ti1 = yH[i + 1] - 12 if yH[i + 1] > 12 else yH[i + 1] + 12
+            width = 1
+            y = ti
+            height = ti1 - ti
+            rect = pg.QtWidgets.QGraphicsRectItem(x, y, width, height)
+            rect.setPen(pen)
+            rect.setBrush(brushes[e[i]])
             plotItem.addItem(rect)
         plotItem.addLine(x=xNow, pen=penLine)
-
         changeStyleDynamic(self.ui.almanacGroup, "run", False)
 
     def listTwilightData(self, timeEvents, events):

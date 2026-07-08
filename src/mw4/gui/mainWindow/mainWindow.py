@@ -104,7 +104,6 @@ class MainWindow(MWidget):
         transparency = config.get("transparency", 1)
         Styles.transparency = transparency
         self.setStyleSheet(self.mw4Style)
-
         config = self.app.config
         if "WindowMain" not in config:
             config["WindowMain"] = {}
@@ -131,9 +130,7 @@ class MainWindow(MWidget):
         else:
             config["WindowMain"].clear()
         config = config["WindowMain"]
-        config["winPosX"] = self.pos().x()
-        config["winPosY"] = self.pos().y()
-        config["height"] = self.height()
+        self.getPositionWindow(config)
         getTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
         getTabAndIndex(self.ui.mountTabWidget, config, "orderMount")
         getTabAndIndex(self.ui.imagingTabWidget, config, "orderImaging")

@@ -46,15 +46,10 @@ jobs:
           enable-cache: true
           python-version: ${{ matrix.python-version }}
      
-      - name: MountWizzard4 Install
+      - name: MountWizzard4
         shell: cmd
         run: |
-          uv venv -p ${{ matrix.python-version }}
           uv pip install mountwizzard4==${{ env.version }}
-       
-      - name: Run MountWizzard4
-        shell: cmd
-        run: |
           uv run mw4 -t 1
           dir
   
@@ -74,13 +69,9 @@ jobs:
           enable-cache: true
           python-version: ${{ matrix.python-version }}
           
-      - name: MountWizzard4 Install
+      - name: MountWizzard4
         run: |
-          uv venv -p ${{ matrix.python-version }}
           uv pip install mountwizzard4==${{ env.version }}
-
-      - name: Run MountWizzard4
-        run: |
           uv run mw4 -t 1
           ls -la
  
@@ -99,13 +90,9 @@ jobs:
           enable-cache: true
           python-version: ${{ matrix.python-version }}
           
-      - name: MountWizzard4 Install
+      - name: MountWizzard4
         run: |
-          uv venv -p ${{ matrix.python-version }}
           uv pip install mountwizzard4==${{ env.version }}
-          
-      - name: MountWizzard4 Run
-        run: |
           uv run mw4 -t 1
           ls -la
           

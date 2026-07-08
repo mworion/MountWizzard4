@@ -46,28 +46,23 @@ class CustomTitleBar(QWidget):
                 "widget": self.minButton,
                 "icon": "min.svg",
                 "func": self.window().showMinimized,
-                "col": "#D0D000",
             },
             "max": {
                 "widget": self.maxButton,
                 "icon": "max.svg",
                 "func": self.window().showMaximized,
-                "col": "#00C000",
             },
             "norm": {
                 "widget": self.normButton,
                 "icon": "norm.svg",
                 "func": self.window().showNormal,
-                "col": "#00C000",
             },
             "close": {
                 "widget": self.closeButton,
                 "icon": "close.svg",
                 "func": self.window().close,
-                "col": "#D03030",
             },
         }
-
         for button in buttons:
             buttons[button]["widget"].setIcon(
                 svg2icon(f"assets/icon/{buttons[button]['icon']}", "black")
@@ -75,11 +70,7 @@ class CustomTitleBar(QWidget):
             buttons[button]["widget"].setFixedSize(QSize(16, 16))
             buttons[button]["widget"].setFocusPolicy(Qt.FocusPolicy.NoFocus)
             buttons[button]["widget"].clicked.connect(buttons[button]["func"])
-            color = buttons[button]["col"]
-            style = (
-                f"border: none; border-radius: 2px; padding: 2px; background-color: {color};"
-            )
-            buttons[button]["widget"].setStyleSheet(style)
+            buttons[button]["widget"].setProperty(button, True)
             frameLayout.addWidget(buttons[button]["widget"])
 
         titleBarLayout.addWidget(titleFrame)

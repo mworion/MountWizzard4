@@ -98,6 +98,28 @@ BASIC_STYLE = """
         border-color: $M_PRIM1$;
         border-width: 2px;
     }
+    QFrame[title] {
+        color: $M_TER$;
+        background: $M_PRIM2$;
+        border-radius: 3px;
+    }
+    QToolButton {
+        border: none;
+        border-radius: 2px;
+        padding: 2px;
+    }
+    QToolButton[min] {
+        background-color: $M_YELLOW$;
+    }
+    QToolButton[max] {
+        background-color: $M_GREEN$;
+    }
+    QToolButton[norm] {
+        background-color: $M_GREEN$;
+    }
+    QToolButton[close] {
+        background-color: $M_RED$;
+    }
     QToolTip {
         border-width: 1px;
         border-style: outset;
@@ -535,11 +557,6 @@ BASIC_STYLE = """
     }
     QFrame[frameShape="5"] {
         color: $M_PRIM1$;
-    }
-    QFrame[title='true'] {
-        color: $M_TER$;
-        background: $M_PRIM2$;
-        border-radius: 3px;
     }
     /* tab widget */
     QTabWidget:pane {

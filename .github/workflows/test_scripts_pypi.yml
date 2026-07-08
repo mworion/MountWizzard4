@@ -49,6 +49,7 @@ jobs:
       - name: MountWizzard4
         shell: cmd
         run: |
+          uv venv -p ${{ matrix.python-version }}
           uv pip install mountwizzard4==${{ env.version }}
           uv run mw4 -t 1
           dir
@@ -62,7 +63,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
-
       - name: install system dependencies
         run: |
           sudo apt-get update
@@ -76,6 +76,7 @@ jobs:
           
       - name: MountWizzard4
         run: |
+          uv venv -p ${{ matrix.python-version }}
           uv pip install mountwizzard4==${{ env.version }}
           uv run mw4 -t 1
           ls -la
@@ -97,6 +98,7 @@ jobs:
           
       - name: MountWizzard4
         run: |
+          uv venv -p ${{ matrix.python-version }}
           uv pip install mountwizzard4==${{ env.version }}
           uv run mw4 -t 1
           ls -la

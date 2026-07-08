@@ -48,6 +48,7 @@ jobs:
 
     - name: build_widgets_resource
       run: |
+        uv venv -p ${{ matrix.python-version }}
         uv pip install PySide6
         ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.widDest}}devicePopup_ui.py
         ${{env.uic}} ${{env.wid}}downloadPopup.ui -o ${{env.widDest}}downloadPopup_ui.py
@@ -99,6 +100,7 @@ jobs:
       - name: MountWizzard4
         continue-on-error: true
         run: |                  
+          uv venv -p ${{ matrix.python-version }}
           uv pip install dist/mountwizzard4.tar.gz
           uv run mw4 -t 1
 
@@ -133,6 +135,7 @@ jobs:
       - name: MountWizzard4
         continue-on-error: true
         run: |
+          uv venv -p ${{ matrix.python-version }}
           uv pip install dist/mountwizzard4.tar.gz
           uv run mw4 -t 1
 
@@ -160,6 +163,7 @@ jobs:
       - name: MountWizzard4
         continue-on-error: true
         run: |
+          uv venv -p ${{ matrix.python-version }}
           uv pip install dist/mountwizzard4.tar.gz
           uv run mw4 -t 1
  

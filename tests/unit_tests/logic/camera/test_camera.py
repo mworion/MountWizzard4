@@ -246,6 +246,7 @@ def test_updateImageFitsHeaderPointing_1(function):
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
 def test_cameraAscom_import():
     import importlib
+
     spec = importlib.util.find_spec("mw4.logic.camera.cameraAscom")
     assert spec is not None
 
@@ -254,6 +255,7 @@ def test_cameraAscom_import():
 def test_camera_ascom_in_run():
     from mw4.logic.camera.camera import Camera
     from tests.unit_tests.unitTestAddOns.baseTestApp import App
+
     function = Camera(app=App())
     if platform.system() == "Windows":
         assert "ascom" in function.run

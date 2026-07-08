@@ -186,6 +186,7 @@ def test_reboot_returns_true(function):
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
 def test_pegasusUPBAscom_import():
     import importlib
+
     spec = importlib.util.find_spec("mw4.logic.powerswitch.pegasusUPBAscom")
     assert spec is not None
 
@@ -194,6 +195,7 @@ def test_pegasusUPBAscom_import():
 def test_pegasusUPB_ascom_in_run():
     from mw4.logic.powerswitch.pegasusUPB import PegasusUPB
     from tests.unit_tests.unitTestAddOns.baseTestApp import App
+
     function = PegasusUPB(app=App())
     if platform.system() == "Windows":
         assert "ascom" in function.run

@@ -566,6 +566,7 @@ def test_abortSlew_3(function):
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
 def test_domeAscom_import():
     import importlib
+
     spec = importlib.util.find_spec("mw4.logic.dome.domeAscom")
     assert spec is not None
 
@@ -574,6 +575,7 @@ def test_domeAscom_import():
 def test_dome_ascom_in_run():
     from mw4.logic.dome.dome import Dome
     from tests.unit_tests.unitTestAddOns.baseTestApp import App
+
     function = Dome(app=App())
     if platform.system() == "Windows":
         assert "ascom" in function.run

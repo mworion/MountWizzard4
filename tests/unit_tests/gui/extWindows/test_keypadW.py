@@ -34,6 +34,7 @@ def keypad_window(qapp):
 
 # Tests for initConfig method
 
+
 def test_initConfig_loads_window_config(keypad_window):
     """Test initConfig loads WindowKeypad configuration."""
     keypad_window.initConfig()
@@ -41,6 +42,7 @@ def test_initConfig_loads_window_config(keypad_window):
 
 
 # Tests for storeConfig method
+
 
 def test_storeConfig_creates_config_entry(keypad_window):
     """Test storeConfig creates WindowKeypad entry."""
@@ -60,6 +62,7 @@ def test_storeConfig_preserves_existing_config(keypad_window):
 
 # Tests for closeEvent method
 
+
 def test_closeEvent_calls_cleanup_on_close(keypad_window):
     """Test closeEvent calls storeConfig and closeWebsocket."""
     with (
@@ -75,6 +78,7 @@ def test_closeEvent_calls_cleanup_on_close(keypad_window):
 
 
 # Tests for keyPressEvent method
+
 
 def test_keyPressEvent_input_active_emits_key_pressed(keypad_window):
     """Test keyPressEvent emits keyPressed when input is active."""
@@ -174,6 +178,7 @@ def test_keyPressEvent_shift_key_mapping(keypad_window):
 
 # Tests for showWindow method
 
+
 def test_showWindow_initializes_ui_and_starts_keypad(keypad_window):
     """Test showWindow initializes UI and starts keypad."""
     keypad_window.app.mount.setting.webInterfaceStat = False
@@ -191,6 +196,7 @@ def test_showWindow_initializes_ui_and_starts_keypad(keypad_window):
 
 # Tests for colorChange method
 
+
 def test_colorChange_clears_graphics(keypad_window):
     """Test colorChange clears graphics when theme changes."""
     with mock.patch.object(keypad_window, "clearGraphics") as mock_clear:
@@ -200,6 +206,7 @@ def test_colorChange_clears_graphics(keypad_window):
 
 # Tests for setupButtons method
 
+
 def test_setupButtons_connects_button_signals(keypad_window):
     """Test setupButtons connects all button signals."""
     keypad_window.setupButtons()
@@ -207,6 +214,7 @@ def test_setupButtons_connects_button_signals(keypad_window):
 
 
 # Tests for websocketClear method
+
 
 def test_websocketClear_unlocks_mutex(keypad_window):
     """Test websocketClear unlocks the websocket mutex."""
@@ -218,6 +226,7 @@ def test_websocketClear_unlocks_mutex(keypad_window):
 
 
 # Tests for startKeypad method
+
 
 def test_startKeypad_blocked_when_already_running(keypad_window):
     """Test startKeypad returns early when mutex already locked."""
@@ -243,6 +252,7 @@ def test_startKeypad_creates_worker(keypad_window):
 
 # Tests for buttonPressed method
 
+
 def test_buttonPressed_calls_button_signal(keypad_window):
     """Test buttonPressed emits mousePressed signal."""
     keypad_window.setupButtons()
@@ -252,6 +262,7 @@ def test_buttonPressed_calls_button_signal(keypad_window):
 
 # Tests for buttonReleased method
 
+
 def test_buttonReleased_calls_button_signal(keypad_window):
     """Test buttonReleased emits mouseReleased signal."""
     keypad_window.setupButtons()
@@ -260,6 +271,7 @@ def test_buttonReleased_calls_button_signal(keypad_window):
 
 
 # Tests for writeTextRow method
+
 
 def test_writeTextRow_invalid_row_below_zero(keypad_window):
     """Test writeTextRow ignores invalid row below -1."""
@@ -288,6 +300,7 @@ def test_writeTextRow_last_row_with_text_clears_graphics(keypad_window):
 
 # Tests for clearGraphics method
 
+
 def test_clearGraphics_resets_graphics_and_redraws(keypad_window):
     """Test clearGraphics resets graphics array and redraws display."""
     with mock.patch.object(keypad_window, "drawGraphics") as mock_draw:
@@ -297,6 +310,7 @@ def test_clearGraphics_resets_graphics_and_redraws(keypad_window):
 
 
 # Tests for clearDisplay method
+
 
 def test_clearDisplay_clears_all_rows_and_graphics(keypad_window):
     """Test clearDisplay clears all text rows and graphics."""
@@ -309,6 +323,7 @@ def test_clearDisplay_clears_all_rows_and_graphics(keypad_window):
 
 # Tests for clearCursor method
 
+
 def test_clearCursor_hides_cursor_and_disables_input(keypad_window):
     """Test clearCursor hides cursor and sets inputActive to False."""
     keypad_window.inputActive = True
@@ -319,6 +334,7 @@ def test_clearCursor_hides_cursor_and_disables_input(keypad_window):
 
 # Tests for setCursorPos method
 
+
 def test_setCursorPos_enables_input_and_positions_cursor(keypad_window):
     """Test setCursorPos positions cursor and enables input."""
     keypad_window.setCursorPos(1, 1)
@@ -328,6 +344,7 @@ def test_setCursorPos_enables_input_and_positions_cursor(keypad_window):
 
 # Tests for drawGraphics method
 
+
 def test_drawGraphics_renders_graphics_to_pixmap(keypad_window):
     """Test drawGraphics renders graphics buffer to pixmap."""
     keypad_window.drawGraphics()
@@ -336,6 +353,7 @@ def test_drawGraphics_renders_graphics_to_pixmap(keypad_window):
 
 
 # Tests for buildGraphics method
+
 
 def test_buildGraphics_updates_graphics_buffer(keypad_window):
     """Test buildGraphics updates graphics buffer with image data."""

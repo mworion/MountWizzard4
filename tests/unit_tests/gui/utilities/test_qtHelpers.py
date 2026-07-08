@@ -350,4 +350,3 @@ def test_setPixmapAlpha_5():
     result = setPixmapAlpha(pixmap, 0.5)
     assert isinstance(result, QPixmap)
     assert result.size() == pixmap.size()
-

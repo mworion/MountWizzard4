@@ -180,6 +180,7 @@ def addAlpha(color: str, value: float = 0.5) -> QColor:
     col.setAlphaF(colAlphaF * value)
     return col
 
+
 def setPixmapAlpha(pixmap: QPixmap, opacity: float) -> QPixmap:
     """Returns a new QPixmap with the specified opacity (0.0 to 1.0)."""
     # Create a blank pixmap of the same size supporting transparency

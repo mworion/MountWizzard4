@@ -95,6 +95,7 @@ def test_lightIntensity_3(function):
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
 def test_lightPanelAscom_import():
     import importlib
+
     spec = importlib.util.find_spec("mw4.logic.lightPanel.lightPanelAscom")
     assert spec is not None
 
@@ -103,6 +104,7 @@ def test_lightPanelAscom_import():
 def test_lightPanel_ascom_in_run():
     from mw4.logic.lightPanel.lightPanel import LightPanel
     from tests.unit_tests.unitTestAddOns.baseTestApp import App
+
     function = LightPanel(app=App())
     if platform.system() == "Windows":
         assert "ascom" in function.run

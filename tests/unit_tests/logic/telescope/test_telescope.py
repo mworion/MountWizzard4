@@ -60,6 +60,7 @@ def test_stopCommunication_2(function):
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
 def test_telescopeAscom_import():
     import importlib
+
     spec = importlib.util.find_spec("mw4.logic.telescope.telescopeAscom")
     assert spec is not None
 
@@ -68,6 +69,7 @@ def test_telescopeAscom_import():
 def test_telescope_ascom_in_run():
     from mw4.logic.telescope.telescope import Telescope
     from tests.unit_tests.unitTestAddOns.baseTestApp import App
+
     function = Telescope(app=App())
     if platform.system() == "Windows":
         assert "ascom" in function.run

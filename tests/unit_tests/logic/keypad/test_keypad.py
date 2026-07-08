@@ -23,6 +23,7 @@ from websocket import WebSocketApp
 @pytest.fixture(autouse=True, scope="module")
 def keypad_signals():
     """Create mock signals for KeyPad instance."""
+
     class Signals(QObject):
         textRow = Signal(object, object)
         imgChunk = Signal(object, object, object)
@@ -45,6 +46,7 @@ def keypad(keypad_signals):
 
 # Tests for expand7to8 method
 
+
 def test_expand7to8_empty_list(keypad):
     """Test expand7to8 with empty input list."""
     result = keypad.expand7to8([], False)
@@ -65,6 +67,7 @@ def test_expand7to8_with_fill(keypad):
 
 # Tests for convertChar method
 
+
 def test_convertChar_unmapped_character(keypad):
     """Test convertChar with character not in translation map."""
     result = keypad.convertChar(150)
@@ -79,6 +82,7 @@ def test_convertChar_mapped_character(keypad):
 
 # Tests for dispText method
 
+
 def test_dispText_processes_value(keypad):
     """Test dispText correctly processes and emits text row."""
     # dispText should execute without errors
@@ -86,6 +90,7 @@ def test_dispText_processes_value(keypad):
 
 
 # Tests for drawPixel method
+
 
 def test_drawPixel_processes_pixel_data(keypad):
     """Test drawPixel correctly processes pixel data."""
@@ -95,6 +100,7 @@ def test_drawPixel_processes_pixel_data(keypad):
 
 # Tests for deletePixel method
 
+
 def test_deletePixel_processes_pixel_data(keypad):
     """Test deletePixel correctly processes pixel deletion."""
     # deletePixel should execute without errors
@@ -102,6 +108,7 @@ def test_deletePixel_processes_pixel_data(keypad):
 
 
 # Tests for dispatch method
+
 
 def test_dispatch_empty_expanded_message(keypad):
     """Test dispatch with empty message after expansion."""
@@ -177,6 +184,7 @@ def test_dispatch_type_12_no_operation(keypad):
 
 # Tests for checkDispatch method
 
+
 def test_checkDispatch_with_valid_message_type_0(keypad):
     """Test checkDispatch with message type 0 calls dispatch."""
     with mock.patch.object(keypad, "dispatch") as mock_disp:
@@ -185,6 +193,7 @@ def test_checkDispatch_with_valid_message_type_0(keypad):
 
 
 # Tests for calcChecksum method
+
 
 def test_calcChecksum_complex_message(keypad):
     """Test calcChecksum with complex message data."""
@@ -227,6 +236,7 @@ def test_calcChecksum_simple_message(keypad):
 
 # Tests for send method
 
+
 def test_send_with_none_websocket(keypad):
     """Test send when WebSocket is not initialized."""
     keypad.ws = None
@@ -249,6 +259,7 @@ def test_send_with_active_websocket(keypad):
 
 # Tests for mousePressed method
 
+
 def test_mousePressed_valid_button(keypad):
     """Test mousePressed with valid button key."""
     with mock.patch.object(keypad, "send") as mock_send:
@@ -264,6 +275,7 @@ def test_mousePressed_invalid_button(keypad):
 
 
 # Tests for mouseReleased method
+
 
 def test_mouseReleased_valid_button(keypad):
     """Test mouseReleased with valid button key."""
@@ -281,6 +293,7 @@ def test_mouseReleased_invalid_button(keypad):
 
 # Tests for keyDown method
 
+
 def test_keyDown_valid_key_code(keypad):
     """Test keyDown with valid key code."""
     with mock.patch.object(keypad, "send") as mock_send:
@@ -297,6 +310,7 @@ def test_keyDown_invalid_key_code(keypad):
 
 # Tests for keyUp method
 
+
 def test_keyUp_valid_key_code(keypad):
     """Test keyUp with valid key code."""
     with mock.patch.object(keypad, "send") as mock_send:
@@ -312,6 +326,7 @@ def test_keyUp_invalid_key_code(keypad):
 
 
 # Tests for keyPressed method
+
 
 def test_keyPressed_key_above_255_ignored(keypad):
     """Test keyPressed ignores keys above 255."""
@@ -335,6 +350,7 @@ def test_keyPressed_mapped_character(keypad):
 
 
 # Tests for on_data method
+
 
 def test_on_data_with_valid_message_frame(keypad):
     """Test on_data with valid message frame containing checksum."""
@@ -374,6 +390,7 @@ def test_on_data_with_valid_message_frame(keypad):
 
 # Tests for on_close method
 
+
 def test_on_close_clears_websocket(keypad):
     """Test on_close sets ws to None when connection closes."""
     keypad.ws = mock.Mock()  # type: ignore
@@ -382,6 +399,7 @@ def test_on_close_clears_websocket(keypad):
 
 
 # Tests for workerWebsocket method
+
 
 def test_workerWebsocket_already_connected_skips(keypad):
     """Test workerWebsocket skips if already connected."""
@@ -400,6 +418,7 @@ def test_workerWebsocket_creates_new_connection(keypad):
 
 
 # Tests for closeWebsocket method
+
 
 def test_closeWebsocket_with_active_connection(keypad):
     """Test closeWebsocket closes active connection."""

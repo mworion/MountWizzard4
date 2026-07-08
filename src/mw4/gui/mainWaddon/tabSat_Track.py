@@ -20,7 +20,7 @@ from mw4.gui.utilities.qtHelpers import changeStyleDynamic, positionCursorInTabl
 from mw4.logic.satellites.satellite_calculations import calcSatPasses
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.tleParams import TLEParams
-from pytestqt.qtbot import QWidget
+from PySide6.QtWidgets import QWidget
 from sgp4.exporter import export_tle
 from skyfield.api import Angle, EarthSatellite
 from typing import Any

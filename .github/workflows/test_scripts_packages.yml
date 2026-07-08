@@ -48,7 +48,7 @@ jobs:
 
     - name: build_widgets_resource
       run: |
-        uv venv -p ${{ matrix.python-version }}
+        uv venv -p 3.14
         uv pip install PySide6
         ${{env.uic}} ${{env.wid}}devicePopup.ui -o ${{env.widDest}}devicePopup_ui.py
         ${{env.uic}} ${{env.wid}}downloadPopup.ui -o ${{env.widDest}}downloadPopup_ui.py

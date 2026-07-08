@@ -34,7 +34,7 @@ on:
 
 jobs:
   build_package:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v6
@@ -43,7 +43,7 @@ jobs:
         
   run_tests_ubuntu_0:
     needs: build_package
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       QT_QPA_PLATFORM: offscreen
     
@@ -52,7 +52,7 @@ jobs:
       - name: install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgl1-mesa-glx libegl1-mesa libxkbcommon-x11-0 libpulse0
+          sudo apt-get install -y libegl1 libxkbcommon-x11-0 libpulse0
       - name: install package
         uses: ./.github/actions/setup_test
       - name: running_unit_tests
@@ -65,7 +65,7 @@ jobs:
         
   run_tests_ubuntu_1:
     needs: build_package
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       QT_QPA_PLATFORM: offscreen
     
@@ -74,7 +74,7 @@ jobs:
       - name: install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libegl1-mesa libxkbcommon-x11-0 libpulse0
+          sudo apt-get install -y libegl1 libxkbcommon-x11-0 libpulse0
       - name: install package
         uses: ./.github/actions/setup_test
       - name: running_unit_tests
@@ -86,7 +86,7 @@ jobs:
 
   run_tests_ubuntu_2:
     needs: build_package
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       QT_QPA_PLATFORM: offscreen
     
@@ -95,7 +95,7 @@ jobs:
       - name: install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgl1-mesa-glx libegl1-mesa libxkbcommon-x11-0 libpulse0
+          sudo apt-get install -y libegl1 libxkbcommon-x11-0 libpulse0
       - name: install package
         uses: ./.github/actions/setup_test
       - name: running_unit_tests
@@ -106,7 +106,7 @@ jobs:
 
   run_tests_ubuntu_3:
     needs: build_package
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       QT_QPA_PLATFORM: offscreen
     
@@ -115,7 +115,7 @@ jobs:
       - name: install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgl1-mesa-glx libegl1-mesa libxkbcommon-x11-0 libpulse0
+          sudo apt-get install -y libegl1 libxkbcommon-x11-0 libpulse0
       - name: install package
         uses: ./.github/actions/setup_test
       - name: running_unit_tests

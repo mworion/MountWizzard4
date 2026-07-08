@@ -79,7 +79,6 @@ class MountWizzard4(QObject):
         self.expireData: bool = False
         self.isOnline: bool = False
         self.statusOperationRunning: int = 0
-        self.isQuitting: bool = False
         self.messageQueue: Queue = Queue()
         self.config = loadProfileStart(self.mwGlob["configDir"])
         # Push initial lifecycle messages into the message queue.
@@ -107,7 +106,7 @@ class MountWizzard4(QObject):
         self.operationRunning.connect(self.storeStatusOperationRunning)
 
         if test:
-            self.timeMgr.update10s.connect(self.quit)
+            self.timeMgr.update10s.connect(self.mainW.close)
         if len(sys.argv) > 1:
             self.messageQueue.put((1, "System", "Arguments", sys.argv[1]))
 
@@ -140,9 +139,6 @@ class MountWizzard4(QObject):
         self.dReg["mount"].instance.stopAllMountTimers()
 
     def quit(self) -> None:
-        if self.isQuitting:
-            return
-        self.isQuitting = True
         self.dReg.setStat("mount", False)
         self.aboutToQuit()
         self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 manual stopped"))

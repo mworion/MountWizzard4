@@ -48,6 +48,7 @@ class TimeManager(QObject):
         super().__init__()
         self.app: QObject = app
         self.counter: int = 0
+        self.isStopped: bool = False
         self.timer: QTimer = QTimer(self)
         self.timer.setSingleShot(False)
         self.timer.timeout.connect(self.onTick)
@@ -56,9 +57,12 @@ class TimeManager(QObject):
         self.timer.start(TICK_INTERVAL_MS)
 
     def stop(self) -> None:
+        self.isStopped = True
         self.timer.stop()
 
     def onTick(self) -> None:
+        if self.isStopped:
+            return
         self.counter += 1
         self.emitCyclic()
         self.emitStart()

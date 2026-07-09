@@ -31,9 +31,9 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.penPink: QPen = pg.mkPen(color=self.M_PINK, width=1)
         self.brush: QBrush = pg.mkPen(color=self.M_SEC)
         self.penGrid: QPen = pg.mkPen(color=self.M_SEC)
-        self.brushGrid: QBrush = pg.mkBrush(color=self.addAlpha2ColorString(self.M_PRIM))
-        self.penHorizon: QPen = pg.mkPen(color=self.addAlpha2ColorString(self.M_PRIM), width=1)
-        self.brushHorizon: QBrush = pg.mkBrush(color=self.addAlpha2ColorString(self.M_PRIM2))
+        self.brushGrid: QBrush = pg.mkBrush(color=self.M_PRIMa)
+        self.penHorizon: QPen = pg.mkPen(color=self.M_PRIMa, width=1)
+        self.brushHorizon: QBrush = pg.mkBrush(color=self.M_PRIM2a)
         self.defRange: dict = {}
         self.scatterItem: pg.ScatterPlotItem | None = None
         self.imageItem: pg.ImageItem | None = None
@@ -48,10 +48,10 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.pen = pg.mkPen(color=self.M_PRIM, width=1)
         self.penPink = pg.mkPen(color=self.M_PINK, width=1)
         self.penGrid = pg.mkPen(color=self.M_SEC)
-        self.brush = pg.mkBrush(color=self.addAlpha2ColorString(self.M_PRIM))
-        self.brushGrid = pg.mkBrush(color=self.addAlpha2ColorString(self.M_SEC))
-        self.penHorizon = pg.mkPen(color=self.addAlpha2ColorString(self.M_PRIM), width=1)
-        self.brushHorizon = pg.mkBrush(color=self.addAlpha2ColorString(self.M_PRIM2))
+        self.brush = pg.mkBrush(color=self.M_PRIMa)
+        self.brushGrid = pg.mkBrush(color=self.M_SECa)
+        self.penHorizon = pg.mkPen(color=self.M_PRIMa, width=1)
+        self.brushHorizon = pg.mkBrush(color=self.M_PRIM2a)
         self.setBackground("#00000000")
         for side in ("left", "top", "right", "bottom"):
             for plotItem in self.p:

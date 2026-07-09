@@ -16,6 +16,7 @@
 import numpy as np
 import pyqtgraph as pg
 from mw4.gui.utilities.pyqtgraph.gNormalScatter import NormalScatter
+from PySide6.QtGui import QColor
 
 
 class PolarScatter(NormalScatter):
@@ -46,7 +47,7 @@ class PolarScatter(NormalScatter):
             if "z" in kwargs:
                 colorVal = self.colorMapStyle[0].mapToQColor(self.colorInx[i])
             else:
-                colorVal = self.col[i]
+                colorVal = QColor(*self.col[i])
             arrow.setStyle(
                 angle=ang[i] - 90,
                 tipAngle=0,

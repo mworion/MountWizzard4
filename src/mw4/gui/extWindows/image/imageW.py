@@ -389,7 +389,7 @@ class ImageWindow(MWidget):
             return
         question = "<b>Slewing to target</b>"
         question += "<br><br>Selected coordinates are:<br>"
-        question += f"<font color={self.M_PRIM}> RA: {ra.hours:3.2f}h"
+        question += f"<font color={self.M_PRIMa}> RA: {ra.hours:3.2f}h"
         question += f"   DEC: {dec.degrees:3.2f}°</font>"
         question += "<br><br>Would you like to start slewing?<br>"
 

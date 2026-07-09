@@ -72,10 +72,10 @@ class MessageWindow(MWidget):
 
     def setupMessage(self) -> None:
         self.messColor = [
-            QBrush(QColor(self.M_PRIM)),
-            QBrush(QColor(self.M_TER)),
-            QBrush(QColor(self.M_YELLOW)),
-            QBrush(QColor(self.M_RED)),
+            QBrush(QColor(*self.M_PRIM)),
+            QBrush(QColor(*self.M_TER)),
+            QBrush(QColor(*self.M_YELLOW)),
+            QBrush(QColor(*self.M_RED)),
         ]
 
     def updateListColors(self) -> None:

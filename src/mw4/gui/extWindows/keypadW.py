@@ -195,7 +195,7 @@ class KeypadWindow(MWidget):
         self.ui.cursor.move(x + 16 * col, y + height)
 
     def drawGraphics(self) -> None:
-        color = self.hex2rgb(self.M_PRIM + "FF")
+        color = self.M_PRIMa
         back = [0, 0, 0, 0]
         pColor = [255, 255, 255, 255]
         bColor = [0, 0, 0, 0]

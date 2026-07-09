@@ -63,7 +63,7 @@ class NormalScatter(PlotBase):
 
     def setupColorData(self, x: np.ndarray, kwargs: dict) -> tuple[float, float]:
         self.col = kwargs.get("color", self.M_PRIM)
-        if isinstance(self.col, str | QColor):
+        if isinstance(self.col[0], int):
             self.col = [self.col] * len(x)
         minE, maxE = 0.0, 0.0
         if "z" in kwargs:
@@ -84,7 +84,7 @@ class NormalScatter(PlotBase):
             if "z" in kwargs:
                 colorVal = self.colorMapStyle[0].mapToQColor(self.colorInx[i])
             else:
-                colorVal = self.col[i]
+                colorVal = QColor(*self.col[i])
             spots.append(
                 {
                     "pos": (x[i], y[i]),

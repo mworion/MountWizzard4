@@ -75,7 +75,7 @@ class EnvironSeeing(TabAddon):
         self.app.timeMgr.update30m.connect(self.updateSeeingEntries)
 
     def setupIcons(self) -> None:
-        pixmap = svg2pixmap("assets/icon/meteoblue.svg", "#124673")
+        pixmap = svg2pixmap("assets/icon/meteoblue.svg", [18, 70, 125, 0])
         pixmap = pixmap.transformed(QTransform().rotate(-90))
         pixmap = pixmap.scaled(37, 128, Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.seeingIcon.setPixmap(pixmap)
@@ -97,9 +97,6 @@ class EnvironSeeing(TabAddon):
         field: str,
         data: dict,
         i: int,
-        colorPrim: str,
-        colorQuar: str,
-        colorTer: str,
     ) -> str:
         t = f"{data[field][i]}"
         if j == 0:
@@ -107,17 +104,17 @@ class EnvironSeeing(TabAddon):
         elif j == 1:
             t = self.app.timeMgr.convertTime(data[field][i], "%H:00")
         elif j in [2, 3, 4]:
-            color = self.mainW.calcHexColor(colorPrim, data[field][i] / 100)
+            color = self.mainW.calcHexColor("#2090C0", data[field][i] / 100)
             item.setBackground(QColor(color))
-            item.setForeground(QColor(colorTer))
+            item.setForeground(QColor(*self.mainW.M_TER))
         elif j in [6]:
             color = self.mainW.calcHexColor(data["seeing1_color"][i], 0.8)
             item.setBackground(QColor(color))
-            item.setForeground(QColor(colorQuar))
+            item.setForeground(QColor(*self.mainW.M_BACK))
         elif j in [7]:
             color = self.mainW.calcHexColor(data["seeing2_color"][i], 0.8)
             item.setBackground(QColor(color))
-            item.setForeground(QColor(colorQuar))
+            item.setForeground(QColor(*self.mainW.M_BACK))
         elif j in [10, 11]:
             val = float("0" + data[field][i]) / 1000
             t = f"{val:1.1f}"
@@ -129,19 +126,16 @@ class EnvironSeeing(TabAddon):
         field: str,
         data: dict,
         i: int,
-        colorPrim: str,
-        colorQuar: str,
-        colorTer: str,
     ) -> QTableWidgetItem:
         item = QTableWidgetItem()
         item.setTextAlignment(Qt.AlignmentFlag.AlignHCenter)
-        item.setForeground(QColor(self.mainW.M_PRIM))
-        t = self.applyColumnStyle(item, j, field, data, i, colorPrim, colorQuar, colorTer)
+        item.setForeground(QColor(*self.mainW.M_PRIM))
+        t = self.applyColumnStyle(item, j, field, data, i)
         item.setText(t)
         return item
 
     def markActualColumn(self, item: QTableWidgetItem, data: dict, i: int) -> int:
-        item.setForeground(QColor(self.mainW.M_PINK))
+        item.setForeground(QColor(*self.mainW.M_PINK))
         val = data["seeing_arcsec"][i]
         self.ui.limitForecast.setText(f"{val}")
         val = self.app.dReg["seeingWeather"].data["meta"]["last_model_update"]
@@ -153,9 +147,6 @@ class EnvironSeeing(TabAddon):
             return
         self.ui.seeingGroup.setTitle("Seeing data " + self.app.timeMgr.timeZoneString())
         ts = self.app.dReg["mount"].obsSite.ts
-        colorPrim = colors["M_PRIM"][0]
-        colorQuar = colors["M_BACK"][0]
-        colorTer = colors["M_TER"][0]
         seeTab = self.ui.seeing
         data = self.app.dReg["seeingWeather"].data["hourly"]
         self.addSkyfieldTimeObject(data)
@@ -163,7 +154,7 @@ class EnvironSeeing(TabAddon):
         for i in range(0, 96):
             isActual = abs(data["time"][i] - ts.now()) < 1 / 48
             for j, field in enumerate(self.DataFields):
-                item = self.buildSeeingItem(j, field, data, i, colorPrim, colorQuar, colorTer)
+                item = self.buildSeeingItem(j, field, data, i)
                 if isActual:
                     columnCenter = self.markActualColumn(item, data, i)
                 seeTab.setItem(j, i, item)

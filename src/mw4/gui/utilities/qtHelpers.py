@@ -137,17 +137,17 @@ def img2pixmap(imageFilePath: str) -> QPixmap:
     return pixmap
 
 
-def svg2pixmap(svgFileName: str, color: str = "black") -> QPixmap:
+def svg2pixmap(svgFileName: str, color: list[int] = [0, 0, 0, 0]) -> QPixmap:
     with as_file(files("mw4").joinpath(svgFileName)) as image:
         img = QPixmap(image)
     qp = QPainter(img)
     qp.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceIn)
-    qp.fillRect(img.rect(), QColor(color))
+    qp.fillRect(img.rect(), QColor(*color))
     qp.end()
     return img
 
 
-def svg2icon(svgFileName: str, color: str = "black") -> QIcon:
+def svg2icon(svgFileName: str, color: list[int] = [0, 0, 0, 0]) -> QIcon:
     img = svg2pixmap(svgFileName, color)
     return QIcon(img)
 

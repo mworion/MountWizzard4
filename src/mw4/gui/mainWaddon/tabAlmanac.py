@@ -69,16 +69,11 @@ class Almanac(TabAddon):
         self.updateColorSet()
 
     def setColors(self) -> None:
-        self.colors = [
-            self.mainW.addAlpha2ColorString(self.mainW.M_PRIM4),
-            self.mainW.addAlpha2ColorString(self.mainW.M_PRIM3),
-            self.mainW.addAlpha2ColorString(self.mainW.M_PRIM2),
-            self.mainW.addAlpha2ColorString(self.mainW.M_PRIM1),
-        ]
-        self.ui.almanacCivil.setStyleSheet(f"background-color: {self.mainW.M_PRIM1};")
-        self.ui.almanacNautical.setStyleSheet(f"background-color: {self.mainW.M_PRIM2};")
-        self.ui.almanacAstronomical.setStyleSheet(f"background-color: {self.mainW.M_PRIM3};")
-        self.ui.almanacDark.setStyleSheet(f"background-color: {self.mainW.M_PRIM4};")
+        self.colors = [self.mainW.M_PRIM4a, self.mainW.M_PRIM3a, self.mainW.M_PRIM2a, self.mainW.M_PRIM1a]
+        self.ui.almanacCivil.setStyleSheet(f"background-color: {self.mainW.M_PRIM1as};")
+        self.ui.almanacNautical.setStyleSheet(f"background-color: {self.mainW.M_PRIM2as};")
+        self.ui.almanacAstronomical.setStyleSheet(f"background-color: {self.mainW.M_PRIM3as};")
+        self.ui.almanacDark.setStyleSheet(f"background-color: {self.mainW.M_PRIM4as};")
 
     def plotAll(self) -> None:
         self.showTwilightDataList()
@@ -102,9 +97,7 @@ class Almanac(TabAddon):
         xTicks = [(x, y) for x, y in zip(xTicks, xLabels)]
         yTicks = [(x, y) for x, y in zip(self.Y_TICKS, self.Y_LABELS)]
         pen = pg.mkPen(color="transparent")
-        penLine = pg.mkPen(
-            color=self.mainW.addAlpha2ColorString(self.mainW.M_PINK), width=2
-        )
+        penLine = pg.mkPen(color=self.mainW.M_PINKa, width=2)
         plotItem = self.ui.twilight.p[0]
         plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
         plotItem.setXRange(0, 360)
@@ -148,7 +141,7 @@ class Almanac(TabAddon):
     def listTwilightData(self, timeEvents, events):
         text = ""
         self.ui.twilightEvents.clear()
-        self.ui.twilightEvents.setTextColor(QColor(self.mainW.M_PRIM))
+        self.ui.twilightEvents.setTextColor(QColor(*self.mainW.M_PRIM))
 
         for timeEvent, event in zip(timeEvents, events):
             text += f"{self.app.timeMgr.convertTime(timeEvent, '%H:%M:%S')} "
@@ -248,9 +241,9 @@ class Almanac(TabAddon):
         return retVal
 
     def generateMoonMask(self, pixmap: QPixmap, mpDegree: float) -> QPixmap:
-        colCover = QColor(self.mainW.M_BACK)
+        colCover = QColor(*self.mainW.M_BACK)
         colFree = QColor("transparent")
-        colFrame = QColor(self.mainW.M_SEC1)
+        colFrame = QColor(*self.mainW.M_SEC1)
 
         penCov = QPen(colCover, 0)
         penFree = QPen(colFree, 0)

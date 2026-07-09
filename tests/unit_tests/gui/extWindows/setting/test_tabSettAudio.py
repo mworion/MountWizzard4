@@ -22,8 +22,6 @@ from PySide6.QtWidgets import QComboBox, QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
-mock.patch("pytestqt.qtbot.QWidget", QWidget).start()
-
 
 def createMockComboBox() -> QComboBox:
     """Create a mock combo box for sound selection."""

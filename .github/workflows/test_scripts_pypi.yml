@@ -24,7 +24,6 @@ env:
 
 on:
   push:
-    # Run this action on the trigger event when specific files are touched
     paths:
       - '.github/workflows/test_scripts_pypi.yml'
       - 'pyproject.toml'

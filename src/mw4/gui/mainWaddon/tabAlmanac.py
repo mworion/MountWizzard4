@@ -63,6 +63,7 @@ class Almanac(TabAddon):
         self.app.timebaseChanged.connect(self.showTwilightDataList)
         self.app.timebaseChanged.connect(self.showTwilightDataPlot)
         self.app.timebaseChanged.connect(self.showMoonPhase)
+        self.app.dReg["mount"].signals.locationDone.connect(self.plotAll)
 
     def initConfig(self) -> None:
         self.updateColorSet()

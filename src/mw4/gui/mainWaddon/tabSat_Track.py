@@ -20,7 +20,7 @@ from mw4.gui.utilities.qtHelpers import changeStyleDynamic, positionCursorInTabl
 from mw4.logic.satellites.satellite_calculations import calcSatPasses
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.tleParams import TLEParams
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QLineEdit
 from sgp4.exporter import export_tle
 from skyfield.api import Angle, EarthSatellite
 from typing import Any
@@ -39,7 +39,7 @@ class SatTrack(SatData):
         self.lastMeridianLimit = None
         self.workerPasses: Worker | None = None
 
-        self.passUI: dict[int, dict[str, QWidget]] = {
+        self.passUI: dict[int, dict[str, QLineEdit]] = {
             0: {
                 "rise": self.ui.satRise_1,
                 "culminate": self.ui.satCulminate_1,

@@ -20,7 +20,7 @@ from importlib.resources import as_file, files
 from mw4.gui.styles.colors import colors
 from mw4.gui.styles.images import images
 from mw4.gui.styles.styleSheets import BASIC_STYLE, MAC_STYLE, NON_MAC_STYLE
-from PySide6.QtGui import QColor, QIcon
+from PySide6.QtGui import QIcon
 from typing import Any
 
 
@@ -37,6 +37,18 @@ class Styles:
     transparency: float = 1.0
     cachedTransparency: float = 1
     cachedStyle: str = ""
+
+    # ------------------------------------------------------------------
+    # Mapping protocol — keeps ``"x" in dReg`` and ``dReg["x"]`` working
+    # ------------------------------------------------------------------
+    def __iter__(self) -> Iterator[str]:
+        return iter(colors)
+
+    def __getitem__(self, name: str) -> list:
+        return colors["M_PRIM"][self.colorSet]
+
+    def __contains__(self, name: object) -> bool:
+        return name in colors
 
     @property
     def M_PRIM(self) -> str:
@@ -247,7 +259,7 @@ class Styles:
         return "\n".join(lines) + "\n"
 
     def generateCmapGYR(self) -> pg.ColorMap:
-        colors = np.array(
+        col = np.array(
             [
                 self.hex2rgb(f"{self.M_GREEN}40"),
                 self.hex2rgb(f"{self.M_YELLOW}40"),
@@ -256,16 +268,16 @@ class Styles:
             dtype=np.uint8,
         )
         positions = [0, 0.6, 1.0]
-        return pg.ColorMap(positions, colors)
+        return pg.ColorMap(positions, col)
 
     def convertColorMap2Alpha(self, colorMap: str) -> pg.ColorMap:
         cmap = pg.colormap.get(colorMap)
-        colors = cmap.color
-        positions = cmap.pos
-        rgba_colors = colors.copy()
+        col = cmap.color
+        pos = cmap.pos
+        rgba_colors = col.copy()
         rgba_colors[:, 3] = self.transparency
         rgba_colors = rgba_colors * 255
-        return pg.ColorMap(positions, rgba_colors.astype(np.uint8))
+        return pg.ColorMap(pos, rgba_colors.astype(np.uint8))
 
     def generateCMaps(self):
         colorMaps = [self.generateCmapGYR()]

@@ -225,12 +225,12 @@ class HemisphereWindow(MWidget):
         low = self.app.dReg["mount"].setting.horizonLimitLow
         hLow = pg.QtWidgets.QGraphicsRectItem(0, high, 360, 90 - high)
         hLow.setPen(pg.mkPen(color=self.addAlpha2ColorString(self.M_RED1)))
-        hLow.setBrush(pg.mkBrush(color=addAlpha2ColorString(self.M_RED)))
+        hLow.setBrush(pg.mkBrush(color=self.addAlpha2ColorString(self.M_RED)))
         hLow.setZValue(0)
         plotItem.addItem(hLow)
         hHigh = pg.QtWidgets.QGraphicsRectItem(0, 0, 360, low)
-        hHigh.setPen(pg.mkPen(color=addAlpha2ColorString(self.M_RED1)))
-        hHigh.setBrush(pg.mkBrush(color=addAlpha2ColorString(self.M_RED)))
+        hHigh.setPen(pg.mkPen(color=self.addAlpha2ColorString(self.M_RED1)))
+        hHigh.setBrush(pg.mkBrush(color=self.addAlpha2ColorString(self.M_RED)))
         hHigh.setZValue(0)
         plotItem.addItem(hHigh)
 

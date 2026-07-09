@@ -63,9 +63,11 @@ def test_main_1():
         mock.patch.object(mw4.loader, "QIcon"),
         mock.patch.object(mw4.loader, "QApplication", return_value=App()),
         mock.patch.object(mw4.loader, "SplashScreen", return_value=Splash()),
-        mock.patch.object(mw4.loader, "MountWizzard4"),
+        mock.patch.object(mw4.loader, "MountWizzard4") as mockMw4,
         mock.patch.object(mw4.loader, "setupWorkDirs", return_value=mwGlob),
-        mock.patch.object(sys, "exit"),
+        mock.patch.object(sys, "exit") as mockExit,
         mock.patch.object(sys, "excepthook"),
     ):
         mw4.loader.main()
+        mockMw4.assert_called_once()
+        mockExit.assert_called_once_with(0)

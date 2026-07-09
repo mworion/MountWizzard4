@@ -48,7 +48,7 @@ class ImageTabs:
         self.threadPool = parent.threadPool
         self.imagingDeviceStat = parent.imagingDeviceStat
         self.pen = pg.mkPen(color=self.parent.M_PRIM, width=2)
-        self.penPink = pg.mkPen(color=addAlpha2ColorString(self.parent.M_PINK), width=5)
+        self.penPink = pg.mkPen(color=self.parent.addAlpha2ColorString(self.parent.M_PINK), width=5)
         self.fontText = QFont(self.parent.window().font().family(), 16)
         self.fontAnno = QFont(self.parent.window().font().family(), 10, italic=True)
         self.fontText.setBold(True)

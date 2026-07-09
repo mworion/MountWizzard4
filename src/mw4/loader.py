@@ -62,12 +62,15 @@ def main(test: int = 0) -> None:
     sys.excepthook = exceptHook
     setAppIcon(app)
 
-    MountWizzard4(mwGlob, app, test)
+    mw4App = MountWizzard4(mwGlob, app, test)
 
     splash.showMessage("Finishing loading")
     splash.setValue(100)
     splash.close()
-    sys.exit(app.exec())
+    ret = app.exec()
+    del mw4App
+    del app
+    sys.exit(ret)
 
 
 if __name__ == "__main__":

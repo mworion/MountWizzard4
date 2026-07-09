@@ -26,7 +26,6 @@ env:
 
 on:
   push:
-    # Run this action on the trigger event when specific files are touched
     paths:
       - 'pyproject.toml'
       - 'support/**'

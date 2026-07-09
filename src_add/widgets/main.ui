@@ -1437,7 +1437,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -3002,32 +3002,6 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </property>
          <property name="text">
           <string>Site Lon</string>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_mountMAC_4">
-         <property name="geometry">
-          <rect>
-           <x>305</x>
-           <y>160</y>
-           <width>800</width>
-           <height>560</height>
-          </rect>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>800</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>WebInterace</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="siteLatitude">

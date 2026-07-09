@@ -61,6 +61,7 @@ class MountSett(TabAddon):
         clickable(self.ui.statusRefraction).connect(self.setRefraction)
         clickable(self.ui.settleTimeMount).connect(self.setSettleTimeMount)
         self.app.dReg["mount"].signals.firmwareDone.connect(self.setWOLorAPO)
+        self.updateLocGUI(self.app.dReg["mount"].obsSite)
 
     def setWOLorAPO(self, fw: Firmware) -> None:
         self.ui.statusWOL.setEnabled(fw.isHW2012())

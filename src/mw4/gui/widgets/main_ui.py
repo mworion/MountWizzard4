@@ -862,11 +862,6 @@ class Ui_MainWindow(object):
         self.label_5.setObjectName(u"label_5")
         self.label_5.setGeometry(QRect(550, 160, 61, 21))
         self.label_5.setFont(font1)
-        self.label_mountMAC_4 = QLabel(self.SettingsMount)
-        self.label_mountMAC_4.setObjectName(u"label_mountMAC_4")
-        self.label_mountMAC_4.setGeometry(QRect(305, 160, 800, 560))
-        self.label_mountMAC_4.setMinimumSize(QSize(800, 0))
-        self.label_mountMAC_4.setFont(font1)
         self.siteLatitude = QLineEdit(self.SettingsMount)
         self.siteLatitude.setObjectName(u"siteLatitude")
         self.siteLatitude.setEnabled(True)
@@ -6665,7 +6660,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainTabWidget.setCurrentIndex(3)
+        self.mainTabWidget.setCurrentIndex(0)
         self.mountTabWidget.setCurrentIndex(0)
         self.modelingTabWidget.setCurrentIndex(2)
         self.manageTabWidget.setCurrentIndex(0)
@@ -6914,7 +6909,6 @@ class Ui_MainWindow(object):
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Site Elev", None))
         self.label_34.setText(QCoreApplication.translate("MainWindow", u"Flip Track Tolerance", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Site Lon", None))
-        self.label_mountMAC_4.setText(QCoreApplication.translate("MainWindow", u"WebInterace", None))
 #if QT_CONFIG(tooltip)
         self.siteLatitude.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>Shows the latitude of the site.</p><p>When clicking the field, you could change the value.</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)

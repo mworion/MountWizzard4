@@ -20,7 +20,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  gh: 'https://raw.githubusercontent.com/mworion/InstallerMW4/main/support/'
   wid: 'src_add/widgets/'
   widDest: 'src/mw4/gui/widgets/'
   uic: 'uv run pyside6-uic'

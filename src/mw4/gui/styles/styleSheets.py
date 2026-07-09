@@ -569,7 +569,7 @@ BASIC_STYLE = """
         alignment: center;
     }
     QTabBar::tab {
-        border-radius: 2px;
+        border-radius: 3px;
         border-width: 1px;
         border-style: outset;
         color: $M_TER2$;
@@ -581,6 +581,7 @@ BASIC_STYLE = """
     }
     QTabBar::tab:selected {
         color: $M_TER$;
+        border-width: 2px;
         border-color: $M_TAB$;
     }
     QTabBar::tab:only-one {

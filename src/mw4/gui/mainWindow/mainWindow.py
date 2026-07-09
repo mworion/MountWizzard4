@@ -80,6 +80,7 @@ class MainWindow(MWidget):
         self.app.timeMgr.update1s.connect(self.smartTabGui)
         self.app.timeMgr.update1s.connect(self.setEnvironDeviceStats)
         self.app.timeMgr.update1s.connect(self.updateDeviceStats)
+        self.app.timeMgr.update1s.connect(self.updateTime)
         self.app.timeMgr.update30s.connect(self.updateTwilightAndDisk)
         self.app.colorChange.connect(self.updateColorSet)
         self.twilightText: str = ""

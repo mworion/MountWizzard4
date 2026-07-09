@@ -19,7 +19,7 @@ from dateutil.tz import tzlocal
 from importlib.resources import as_file, files
 from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.tabAddon import TabAddon
-from mw4.gui.utilities.qtHelpers import addAlpha, changeStyleDynamic, setPixmapAlpha
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic, setPixmapAlpha
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QColor, QPainter, QPen, QPixmap
 from range_key_dict import RangeKeyDict
@@ -70,10 +70,10 @@ class Almanac(TabAddon):
 
     def setColors(self) -> None:
         self.colors = [
-            addAlpha(self.mainW.M_PRIM4, value=self.mainW.transparency),
-            addAlpha(self.mainW.M_PRIM3, value=self.mainW.transparency),
-            addAlpha(self.mainW.M_PRIM2, value=self.mainW.transparency),
-            addAlpha(self.mainW.M_PRIM1, value=self.mainW.transparency),
+            self.mainW.addAlpha2ColorString(self.mainW.M_PRIM4),
+            self.mainW.addAlpha2ColorString(self.mainW.M_PRIM3),
+            self.mainW.addAlpha2ColorString(self.mainW.M_PRIM2),
+            self.mainW.addAlpha2ColorString(self.mainW.M_PRIM1),
         ]
         self.ui.almanacCivil.setStyleSheet(f"background-color: {self.mainW.M_PRIM1};")
         self.ui.almanacNautical.setStyleSheet(f"background-color: {self.mainW.M_PRIM2};")
@@ -103,7 +103,7 @@ class Almanac(TabAddon):
         yTicks = [(x, y) for x, y in zip(self.Y_TICKS, self.Y_LABELS)]
         pen = pg.mkPen(color="transparent")
         penLine = pg.mkPen(
-            color=addAlpha(self.mainW.M_PINK, value=self.mainW.transparency), width=2
+            color=self.mainW.addAlpha2ColorString(self.mainW.M_PINK), width=2
         )
         plotItem = self.ui.twilight.p[0]
         plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)

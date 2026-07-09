@@ -20,7 +20,7 @@ from importlib.resources import as_file, files
 from mw4.gui.styles.colors import colors
 from mw4.gui.styles.images import images
 from mw4.gui.styles.styleSheets import BASIC_STYLE, MAC_STYLE, NON_MAC_STYLE
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QColor, QIcon
 from typing import Any
 
 
@@ -34,7 +34,7 @@ class Styles:
 
     colorSet: int = 0
     cachedColorSet: int = 0
-    transparency: float = 0.3
+    transparency: float = 1.0
     cachedTransparency: float = 1
     cachedStyle: str = ""
 
@@ -185,6 +185,13 @@ class Styles:
         else:
             return [r, g, b]
 
+    @staticmethod
+    def rgb2hex(val: list[float]) -> str:
+        colHex = f"#{val[0]:02x}{val[1]:02x}{val[2]:02x}"
+        if len(val) == 4:
+            colHex = f"{colHex}{val[3]:02x}"
+        return colHex
+
     def calcHexColor(self, val: str, f: float) -> str:
         rgb = self.hex2rgb(val)
         rgb = [int(x * f) for x in rgb]
@@ -265,3 +272,8 @@ class Styles:
         for cMapString in self.COLOR_MAPS_STRINGS:
             colorMaps.append(self.convertColorMap2Alpha(cMapString))
         return colorMaps
+
+    def addAlpha2ColorString(self, color: str) -> str:
+        val = self.hex2rgb(color)
+        val.append(int(self.transparency * 255))
+        return self.rgb2hex(val)

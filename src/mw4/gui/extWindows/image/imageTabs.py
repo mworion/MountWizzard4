@@ -16,7 +16,7 @@
 import numpy as np
 import pyqtgraph as pg
 from astropy.io import fits
-from mw4.gui.utilities.qtHelpers import addAlpha, changeStyleDynamic, getTabIndex, guiSetText
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic, getTabIndex, guiSetText
 from mw4.logic.fits.fitsFunction import (
     getCoordinatesFromHeader,
     getExposureFromHeader,
@@ -48,7 +48,7 @@ class ImageTabs:
         self.threadPool = parent.threadPool
         self.imagingDeviceStat = parent.imagingDeviceStat
         self.pen = pg.mkPen(color=self.parent.M_PRIM, width=2)
-        self.penPink = pg.mkPen(color=addAlpha(self.parent.M_PINK), width=5)
+        self.penPink = pg.mkPen(color=addAlpha2ColorString(self.parent.M_PINK), width=5)
         self.fontText = QFont(self.parent.window().font().family(), 16)
         self.fontAnno = QFont(self.parent.window().font().family(), 10, italic=True)
         self.fontText.setBold(True)

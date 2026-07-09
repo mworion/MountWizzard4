@@ -19,7 +19,6 @@ from mw4.base.transform import diffModulusAbs
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.utilities.qtGenerateSprites import makePointer
-from mw4.gui.utilities.qtHelpers import addAlpha
 from mw4.gui.utilities.qtMain import MWidget
 from pyqtgraph.GraphicsScene.mouseEvents import MouseClickEvent
 from PySide6.QtCore import QPointF, Qt
@@ -335,7 +334,7 @@ class HemisphereDraw(MWidget):
         plotItem = self.ui.hemisphere.p[0]
         self.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
         self.pointerDome.setPen(pg.mkPen(color=self.M_SEC))
-        self.pointerDome.setBrush(pg.mkBrush(color=addAlpha(self.M_SEC)))
+        self.pointerDome.setBrush(pg.mkBrush(color=self.addAlpha2ColorString(self.M_SEC)))
         self.pointerDome.setVisible(False)
         plotItem.addItem(self.pointerDome)
 

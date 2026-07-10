@@ -65,7 +65,7 @@ class CustomTitleBar(QWidget):
         }
         for button in buttons:
             buttons[button]["widget"].setIcon(
-                svg2icon(f"assets/icon/{buttons[button]['icon']}", [0,0,0,255])
+                svg2icon(f"assets/icon/{buttons[button]['icon']}", [0, 0, 0, 255])
             )
             buttons[button]["widget"].setFixedSize(QSize(16, 16))
             buttons[button]["widget"].setFocusPolicy(Qt.FocusPolicy.NoFocus)

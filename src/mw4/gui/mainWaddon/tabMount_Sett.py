@@ -301,9 +301,7 @@ class MountSett(TabAddon):
         else:
             obs.location = topo
             self.updateLocGUI(self.app.dReg["mount"].obsSite)
-            self.app.dReg["mount"].signals.locationDone.emit(
-                self.app.dReg["mount"].obsSite
-            )
+            self.app.dReg["mount"].signals.locationDone.emit(self.app.dReg["mount"].obsSite)
 
         t = f"Location set to:     [{lat.degrees:3.2f} deg, "
         t += f"{lon.degrees:3.2f} deg, {elev:4.1f} m]"

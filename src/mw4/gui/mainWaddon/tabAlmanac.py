@@ -69,7 +69,12 @@ class Almanac(TabAddon):
         self.updateColorSet()
 
     def setColors(self) -> None:
-        self.colors = [self.mainW.M_PRIM4a, self.mainW.M_PRIM3a, self.mainW.M_PRIM2a, self.mainW.M_PRIM1a]
+        self.colors = [
+            self.mainW.M_PRIM4a,
+            self.mainW.M_PRIM3a,
+            self.mainW.M_PRIM2a,
+            self.mainW.M_PRIM1a,
+        ]
         self.ui.almanacCivil.setStyleSheet(f"background-color: {self.mainW.M_PRIM1as};")
         self.ui.almanacNautical.setStyleSheet(f"background-color: {self.mainW.M_PRIM2as};")
         self.ui.almanacAstronomical.setStyleSheet(f"background-color: {self.mainW.M_PRIM3as};")

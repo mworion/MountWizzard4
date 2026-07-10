@@ -40,17 +40,19 @@ class Styles:
 
     def __getattr__(self, name: str) -> list | str:
         if not name.startswith("M_"):
-            raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{name}'")
+            raise AttributeError(
+                f"'{self.__class__.__name__}' object has no attribute '{name}'"
+            )
 
-        if name.endswith('as'):
+        if name.endswith("as"):
             val = colors[name[:-2]][self.colorSet]
             val[3] = int(self.transparency * 255)
             return f"rgba{tuple(val)}"
-        elif name.endswith('a'):
+        elif name.endswith("a"):
             val = colors[name[:-1]][self.colorSet]
             val[3] = int(self.transparency * 255)
             return val
-        elif name.endswith('s'):
+        elif name.endswith("s"):
             val = colors[name[:-1]][self.colorSet]
             return f"rgba{tuple(val)}"
         else:
@@ -87,6 +89,21 @@ class Styles:
             return [r, g, b, int(val[6:8], 16)]
         else:
             return [r, g, b]
+
+    @staticmethod
+    def rgb2hex(val: list[int]) -> str:
+        colHex = f"#{val[0]:02x}{val[1]:02x}{val[2]:02x}"
+        if len(val) == 4:
+            colHex = f"{colHex}{val[3]:02x}"
+        return colHex
+
+    def addAlpha2ColorString(self, color: str | list) -> str:
+        if isinstance(color, str):
+            val = self.hex2rgb(color)
+        else:
+            val = list(color)
+        val.append(int(self.transparency * 255))
+        return self.rgb2hex(val)
 
     def calcHexColor(self, val: str, f: float) -> str:
         rgb = self.hex2rgb(val)
@@ -145,7 +162,7 @@ class Styles:
 
     def generateCmapGYR(self) -> pg.ColorMap:
         col = np.array(
-            [ self.M_GREENa, self.M_YELLOWa, self.M_REDa ],
+            [self.M_GREENa, self.M_YELLOWa, self.M_REDa],
             dtype=np.uint8,
         )
         positions = [0, 0.6, 1.0]

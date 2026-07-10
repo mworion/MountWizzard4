@@ -118,7 +118,7 @@ class MeasureWindow(MWidget):
             pen=self.ui.measure.pen,
             offset=(65, 5),
             verSpacing=-5,
-            labelTextColor=self.M_PRIMs,
+            labelTextColor=self.M_PRIM,
             labelTextSize="10pt",
             brush=pg.mkBrush(color=self.M_BACK),
         )

@@ -18,7 +18,7 @@ from mw4.gui.extWindows.setting.tabSettAudio import SettAudio
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtMultimedia import QSoundEffect
-from PySide6.QtWidgets import QComboBox, QWidget
+from PySide6.QtWidgets import QComboBox
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 

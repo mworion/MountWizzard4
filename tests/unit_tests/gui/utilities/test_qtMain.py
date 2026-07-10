@@ -118,7 +118,7 @@ def test_renderStyle_1(function):
     inp = "12345$M_PRIM$12345"
     function.colorSet = 0
     val = function.renderStyle(inp).strip(" ")
-    assert val == "12345#2090C012345\n"
+    assert val == "12345rgba(32, 144, 192, 255)12345\n"
 
 
 def test_renderStyle_2(function):

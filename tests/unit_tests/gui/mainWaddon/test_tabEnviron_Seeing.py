@@ -78,7 +78,7 @@ def test_applyColumnStyle_j0(function):
     data = dict(HOURLY)
     function.addSkyfieldTimeObject(data)
     item = QTableWidgetItem()
-    t = function.applyColumnStyle(item, 0, "time", data, 0, "#111", "#222", "#333")
+    t = function.applyColumnStyle(item, 0, "time", data, 0)
     assert len(t) > 0
 
 
@@ -86,58 +86,56 @@ def test_applyColumnStyle_j1(function):
     data = dict(HOURLY)
     function.addSkyfieldTimeObject(data)
     item = QTableWidgetItem()
-    t = function.applyColumnStyle(item, 1, "time", data, 0, "#111", "#222", "#333")
+    t = function.applyColumnStyle(item, 1, "time", data, 0)
     assert ":" in t
 
 
 def test_applyColumnStyle_j2(function):
     data = dict(HOURLY)
     item = QTableWidgetItem()
-    t = function.applyColumnStyle(item, 2, "high_clouds", data, 0, "#404040", "#222", "#333")
+    t = function.applyColumnStyle(item, 2, "high_clouds", data, 0)
     assert t == "50"
 
 
 def test_applyColumnStyle_j6(function):
     data = dict(HOURLY)
     item = QTableWidgetItem()
-    t = function.applyColumnStyle(item, 6, "seeing1", data, 0, "#111", "#404040", "#333")
+    t = function.applyColumnStyle(item, 6, "seeing1", data, 0)
     assert t == "1"
 
 
 def test_applyColumnStyle_j7(function):
     data = dict(HOURLY)
     item = QTableWidgetItem()
-    t = function.applyColumnStyle(item, 7, "seeing2", data, 0, "#111", "#404040", "#333")
+    t = function.applyColumnStyle(item, 7, "seeing2", data, 0)
     assert t == "1"
 
 
 def test_applyColumnStyle_j10(function):
     data = dict(HOURLY)
     item = QTableWidgetItem()
-    t = function.applyColumnStyle(item, 10, "badlayer_top", data, 0, "#111", "#222", "#333")
+    t = function.applyColumnStyle(item, 10, "badlayer_top", data, 0)
     assert t == "1.5"
 
 
 def test_applyColumnStyle_j11(function):
     data = dict(HOURLY)
     item = QTableWidgetItem()
-    t = function.applyColumnStyle(item, 11, "badlayer_bottom", data, 0, "#111", "#222", "#333")
+    t = function.applyColumnStyle(item, 11, "badlayer_bottom", data, 0)
     assert t == "0.5"
 
 
 def test_applyColumnStyle_default(function):
     data = dict(HOURLY)
     item = QTableWidgetItem()
-    t = function.applyColumnStyle(item, 5, "seeing_arcsec", data, 0, "#111", "#222", "#333")
+    t = function.applyColumnStyle(item, 5, "seeing_arcsec", data, 0)
     assert t == "1.5"
 
 
 def test_buildSeeingItem(function):
     data = dict(HOURLY)
     function.addSkyfieldTimeObject(data)
-    item = function.buildSeeingItem(
-        5, "seeing_arcsec", data, 0, "#404040", "#404040", "#404040"
-    )
+    item = function.buildSeeingItem(5, "seeing_arcsec", data, 0)
     assert item.text() == "1.5"
 
 

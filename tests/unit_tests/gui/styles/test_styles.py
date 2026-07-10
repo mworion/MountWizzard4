@@ -27,37 +27,35 @@ def function(qapp):
 
 
 def test_property(function):
-    a = ""
-    a += function.M_PRIM
-    a += function.M_PRIM1
-    a += function.M_PRIM2
-    a += function.M_PRIM3
-    a += function.M_PRIM4
-    a += function.M_SEC
-    a += function.M_SEC1
-    a += function.M_TER
-    a += function.M_TER1
-    a += function.M_TER2
-    a += function.M_BACK
-    a += function.M_BACK1
-    a += function.M_GRAY
-    a += function.M_RED
-    a += function.M_RED1
-    a += function.M_RED2
-    a += function.M_YELLOW
-    a += function.M_YELLOW1
-    a += function.M_YELLOW2
-    a += function.M_GREEN
-    a += function.M_GREEN1
-    a += function.M_GREEN2
-    a += function.M_PINK
-    a += function.M_PINK1
-    a += function.M_CYAN
-    a += function.M_CYAN1
-    a += function.M_TAB
-    a += function.M_TAB1
-    a += function.M_TAB2
-    assert a != 0
+    assert isinstance(function.M_PRIM, list)
+    assert isinstance(function.M_PRIM1, list)
+    assert isinstance(function.M_PRIM2, list)
+    assert isinstance(function.M_PRIM3, list)
+    assert isinstance(function.M_PRIM4, list)
+    assert isinstance(function.M_SEC, list)
+    assert isinstance(function.M_SEC1, list)
+    assert isinstance(function.M_TER, list)
+    assert isinstance(function.M_TER1, list)
+    assert isinstance(function.M_TER2, list)
+    assert isinstance(function.M_BACK, list)
+    assert isinstance(function.M_BACK1, list)
+    assert isinstance(function.M_GRAY, list)
+    assert isinstance(function.M_RED, list)
+    assert isinstance(function.M_RED1, list)
+    assert isinstance(function.M_RED2, list)
+    assert isinstance(function.M_YELLOW, list)
+    assert isinstance(function.M_YELLOW1, list)
+    assert isinstance(function.M_YELLOW2, list)
+    assert isinstance(function.M_GREEN, list)
+    assert isinstance(function.M_GREEN1, list)
+    assert isinstance(function.M_GREEN2, list)
+    assert isinstance(function.M_PINK, list)
+    assert isinstance(function.M_PINK1, list)
+    assert isinstance(function.M_CYAN, list)
+    assert isinstance(function.M_CYAN1, list)
+    assert isinstance(function.M_TAB, list)
+    assert isinstance(function.M_TAB1, list)
+    assert isinstance(function.M_TAB2, list)
 
 
 def test_mw4Style_1(function):
@@ -120,7 +118,7 @@ def test_replaceColor_1(function):
     inStyle = "12345 $M_PRIM$;"
     function.colorSet = 0
     val = function.replaceColor(inStyle)
-    assert val == "12345 #2090C0;"
+    assert val == "12345 rgba(32, 144, 192, 255);"
 
 
 def test_replaceImage_1(function):
@@ -135,7 +133,7 @@ def test_renderStyle_1(function):
     inStyle = "12345$M_PRIM$12345"
     function.colorSet = 0
     val = function.renderStyle(inStyle).strip(" ")
-    assert val == "12345#2090C012345\n"
+    assert val == "12345rgba(32, 144, 192, 255)12345\n"
 
 
 def test_renderStyle_2(function):

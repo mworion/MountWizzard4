@@ -55,7 +55,7 @@ class SimulatorWindow(MWidget):
         self.entityModel = {"root": {"entity": Qt3DCore.QEntity()}}
         self.window3D.setRootEntity(self.entityModel["root"]["entity"])
         self.entityModel["root"]["entity"].setObjectName("root")
-        self.window3D.defaultFrameGraph().setClearColor(self.M_BACK)
+        self.window3D.defaultFrameGraph().setClearColor(self.M_BACKs)
         self.container = QWidget.createWindowContainer(self.window3D)
         self.ui.simulator.addWidget(self.container)
         self.camera = None
@@ -128,7 +128,7 @@ class SimulatorWindow(MWidget):
 
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
-        self.window3D.defaultFrameGraph().setClearColor(self.M_BACK)
+        self.window3D.defaultFrameGraph().setClearColor(self.M_BACKs)
 
     def limitPositionZ(self) -> None:
         """

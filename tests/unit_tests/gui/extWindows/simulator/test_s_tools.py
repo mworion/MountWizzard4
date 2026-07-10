@@ -15,6 +15,7 @@
 ###########################################################
 
 import pytest
+from unittest import mock
 from mw4.gui.extWindows.simulator.materials import Materials
 from mw4.gui.extWindows.simulator.tools import (
     getLight,
@@ -169,40 +170,49 @@ def test_linkTransform_4(qtbot):
 
 
 def test_linkMaterial_1(qtbot):
-    model = {
-        "parent": None,
-        "mat": Materials().domeSphere,
-    }
+    with mock.patch.object(Materials, "__init__", return_value=None):
+        mat_obj = Materials()
+        mat_obj.domeSphere = Qt3DExtras.QPhongAlphaMaterial()
+        model = {
+            "parent": None,
+            "mat": mat_obj.domeSphere,
+        }
 
-    mat = linkMaterial(model)
-    assert isinstance(mat, Qt3DExtras.QPhongAlphaMaterial)
+        mat = linkMaterial(model)
+        assert isinstance(mat, Qt3DExtras.QPhongAlphaMaterial)
 
 
 def test_linkModel_1(qtbot):
     entityModel = {"root_qt3d": {"entity": Qt3DCore.QEntity()}}
 
-    model = {
-        "pointer": {
-            "parent": None,
-            "source": ["sphere", 50, 30, 30],
-            "scale": [1, 1, 1],
-            "mat": Materials().pointer,
+    with mock.patch.object(Materials, "__init__", return_value=None):
+        mat_obj = Materials()
+        mat_obj.pointer = Qt3DExtras.QPhongAlphaMaterial()
+        model = {
+            "pointer": {
+                "parent": None,
+                "source": ["sphere", 50, 30, 30],
+                "scale": [1, 1, 1],
+                "mat": mat_obj.pointer,
+            }
         }
-    }
-    linkModel(model, entityModel)
+        linkModel(model, entityModel)
 
 
 def test_linkModel_2(qtbot):
     entityModel = {"root_qt3d": {"entity": Qt3DCore.QEntity()}}
-    model = {
-        "pointer": {
-            "parent": "root_qt3d",
-            "source": ["sphere", 50, 30, 30],
-            "scale": [1, 1, 1],
-            "mat": Materials().pointer,
+    with mock.patch.object(Materials, "__init__", return_value=None):
+        mat_obj = Materials()
+        mat_obj.pointer = Qt3DExtras.QPhongAlphaMaterial()
+        model = {
+            "pointer": {
+                "parent": "root_qt3d",
+                "source": ["sphere", 50, 30, 30],
+                "scale": [1, 1, 1],
+                "mat": mat_obj.pointer,
+            }
         }
-    }
-    linkModel(model, entityModel)
+        linkModel(model, entityModel)
 
 
 def test_linkModel_3(qtbot):

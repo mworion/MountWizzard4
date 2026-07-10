@@ -335,7 +335,7 @@ class HemisphereDraw(MWidget):
         self.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
         self.pointerDome.setPen(pg.mkPen(color=self.M_SEC))
         self.pointerDome.setBrush(
-            pg.mkBrush(color=self.parent.addAlpha2ColorString(self.M_SEC))
+            pg.mkBrush(color=(self.M_SEC))
         )
         self.pointerDome.setVisible(False)
         plotItem.addItem(self.pointerDome)

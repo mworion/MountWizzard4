@@ -97,14 +97,6 @@ class Styles:
             colHex = f"{colHex}{val[3]:02x}"
         return colHex
 
-    def addAlpha2ColorString(self, color: str | list) -> str:
-        if isinstance(color, str):
-            val = self.hex2rgb(color)
-        else:
-            val = list(color)
-        val.append(int(self.transparency * 255))
-        return self.rgb2hex(val)
-
     def calcHexColor(self, val: str, f: float) -> str:
         rgb = self.hex2rgb(val)
         rgb = [int(x * f) for x in rgb]

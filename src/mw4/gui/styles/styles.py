@@ -38,23 +38,15 @@ class Styles:
     cachedTransparency: float = 1
     cachedStyle: str = ""
 
-    def __getattr__(self, name: str) -> list | str:
+    def __getattr__(self, name: str) -> list:
         if not name.startswith("M_"):
             raise AttributeError(
                 f"'{self.__class__.__name__}' object has no attribute '{name}'"
             )
-
-        if name.endswith("as"):
-            val = colors[name[:-2]][self.colorSet]
-            val[3] = int(self.transparency * 255)
-            return f"rgba{tuple(val)}"
-        elif name.endswith("a"):
+        if name.endswith("a"):
             val = colors[name[:-1]][self.colorSet]
             val[3] = int(self.transparency * 255)
             return val
-        elif name.endswith("s"):
-            val = colors[name[:-1]][self.colorSet]
-            return f"rgba{tuple(val)}"
         else:
             val = colors[name][self.colorSet]
             return val

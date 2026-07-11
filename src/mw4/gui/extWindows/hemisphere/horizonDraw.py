@@ -204,7 +204,7 @@ class HorizonDraw(MWidget):
         symbol = makePointer()
         self.pointerHor = pg.ScatterPlotItem(symbol=symbol, size=40)
         self.pointerHor.setData(x=[0], y=[45])
-        self.pointerHor.setPen(pg.mkPen(color=self.M_PINKa))
+        self.pointerHor.setPen(pg.mkPen(color=self.rgb2hex(self.M_PINK)))
         self.pointerHor.setZValue(10)
         plotItem.addItem(self.pointerHor)
 
@@ -219,10 +219,10 @@ class HorizonDraw(MWidget):
         plotItem = self.ui.horizon.p[0]
         if self.ui.editModeHor.isChecked():
             self.horizonPlot = pg.PlotDataItem(
-                symbolBrush=pg.mkBrush(color=self.M_PINKa),
-                symbolPen=pg.mkPen(color=self.M_PINK1a, width=2),
-                brush=pg.mkBrush(color=self.M_PINKa),
-                pen=pg.mkPen(color=self.M_PINK1a, width=2),
+                symbolBrush=pg.mkBrush(color=self.rgb2hex(self.M_PINK)),
+                symbolPen=pg.mkPen(color=self.rgb2hex(self.M_PINK1), width=2),
+                brush=pg.mkBrush(color=self.rgb2hex(self.M_PINK)),
+                pen=pg.mkPen(color=self.rgb2hex(self.M_PINK1), width=2),
                 symbolSize=10,
                 symbol="o",
                 connect="all",

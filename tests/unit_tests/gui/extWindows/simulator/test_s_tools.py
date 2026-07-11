@@ -15,7 +15,6 @@
 ###########################################################
 
 import pytest
-from unittest import mock
 from mw4.gui.extWindows.simulator.materials import Materials
 from mw4.gui.extWindows.simulator.tools import (
     getLight,
@@ -29,6 +28,7 @@ from mw4.gui.extWindows.simulator.tools import (
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.Qt3DRender import Qt3DRender
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

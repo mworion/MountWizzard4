@@ -63,22 +63,25 @@ class Almanac(TabAddon):
         self.app.timebaseChanged.connect(self.showTwilightDataList)
         self.app.timebaseChanged.connect(self.showTwilightDataPlot)
         self.app.timebaseChanged.connect(self.showMoonPhase)
-        self.app.dReg["mount"].signals.locationDone.connect(self.plotAll)
 
     def initConfig(self) -> None:
         self.updateColorSet()
 
     def setColors(self) -> None:
         self.colors = [
-            self.mainW.M_PRIM4a,
-            self.mainW.M_PRIM3a,
-            self.mainW.M_PRIM2a,
-            self.mainW.M_PRIM1a,
+            self.mainW.M_PRIM4,
+            self.mainW.M_PRIM3,
+            self.mainW.M_PRIM2,
+            self.mainW.M_PRIM1,
         ]
-        self.ui.almanacCivil.setStyleSheet(f"background-color: {self.mainW.M_PRIM1as};")
-        self.ui.almanacNautical.setStyleSheet(f"background-color: {self.mainW.M_PRIM2as};")
-        self.ui.almanacAstronomical.setStyleSheet(f"background-color: {self.mainW.M_PRIM3as};")
-        self.ui.almanacDark.setStyleSheet(f"background-color: {self.mainW.M_PRIM4as};")
+        color = self.mainW.rgb2hex(self.mainW.M_PRIM1)
+        self.ui.almanacCivil.setStyleSheet(f"background-color: {color};")
+        color = self.mainW.rgb2hex(self.mainW.M_PRIM2)
+        self.ui.almanacNautical.setStyleSheet(f"background-color: {color};")
+        color = self.mainW.rgb2hex(self.mainW.M_PRIM3)
+        self.ui.almanacAstronomical.setStyleSheet(f"background-color: {color};")
+        color = self.mainW.rgb2hex(self.mainW.M_PRIM4)
+        self.ui.almanacDark.setStyleSheet(f"background-color: {color};")
 
     def plotAll(self) -> None:
         self.showTwilightDataList()
@@ -102,7 +105,7 @@ class Almanac(TabAddon):
         xTicks = [(x, y) for x, y in zip(xTicks, xLabels)]
         yTicks = [(x, y) for x, y in zip(self.Y_TICKS, self.Y_LABELS)]
         pen = pg.mkPen(color="transparent")
-        penLine = pg.mkPen(color=self.mainW.M_PINKa, width=2)
+        penLine = pg.mkPen(color=self.mainW.rgb2hex(self.mainW.M_PINK), width=2)
         plotItem = self.ui.twilight.p[0]
         plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
         plotItem.setXRange(0, 360)
@@ -118,7 +121,8 @@ class Almanac(TabAddon):
 
         brushes = []
         for i in range(4):
-            brushes.append(pg.mkBrush(color=self.colors[i], style=Qt.SolidPattern))
+            colorHex = self.mainW.rgb2hex(self.colors[i])
+            brushes.append(pg.mkBrush(color=colorHex, style=Qt.SolidPattern))
 
         tLoc = t.astimezone(tzlocal())
         refDay = [x.replace(hour=0, minute=0, second=0, microsecond=0) for x in tLoc]

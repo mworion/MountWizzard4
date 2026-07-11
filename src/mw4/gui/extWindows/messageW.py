@@ -18,7 +18,7 @@ import time
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import message_ui
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QBrush, QColor, QFont
+from PySide6.QtGui import QBrush, QFont
 from PySide6.QtWidgets import QTableWidgetItem
 from typing import Any
 
@@ -72,10 +72,10 @@ class MessageWindow(MWidget):
 
     def setupMessage(self) -> None:
         self.messColor = [
-            QBrush(QColor(*self.M_PRIM)),
-            QBrush(QColor(*self.M_TER)),
-            QBrush(QColor(*self.M_YELLOW)),
-            QBrush(QColor(*self.M_RED)),
+            QBrush(self.rgb2hex(self.M_PRIM)),
+            QBrush(self.rgb2hex(self.M_TER)),
+            QBrush(self.rgb2hex(self.M_YELLOW)),
+            QBrush(self.rgb2hex(self.M_RED)),
         ]
 
     def updateListColors(self) -> None:

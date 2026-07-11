@@ -267,7 +267,7 @@ class HemisphereDraw(MWidget):
     def setupModel(self) -> None:
         for i, plotItem in enumerate(self.ui.hemisphere.p):
             if self.ui.showSlewPath.isChecked():
-                pen = pg.mkPen(color=self.M_TER, style=Qt.PenStyle.DashLine)
+                pen = pg.mkPen(color=self.rgb2hex(self.M_TER), style=Qt.PenStyle.DashLine)
             else:
                 pen = None
 
@@ -334,9 +334,7 @@ class HemisphereDraw(MWidget):
         plotItem = self.ui.hemisphere.p[0]
         self.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
         self.pointerDome.setPen(pg.mkPen(color=self.M_SEC))
-        self.pointerDome.setBrush(
-            pg.mkBrush(color=(self.M_SEC))
-        )
+        self.pointerDome.setBrush(pg.mkBrush(color=(self.M_SEC)))
         self.pointerDome.setVisible(False)
         plotItem.addItem(self.pointerDome)
 

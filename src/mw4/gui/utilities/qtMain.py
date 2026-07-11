@@ -79,6 +79,8 @@ class MWidget(QMainWindow, Styles):
         on_right = pos.x() >= self.width() - self.RESIZE_MARGIN
         on_bottom = pos.y() >= self.height() - self.RESIZE_MARGIN
 
+        print(on_right, on_bottom)
+
         if on_right and on_bottom:
             self.setCursor(Qt.CursorShape.SizeFDiagCursor)
         elif on_right:

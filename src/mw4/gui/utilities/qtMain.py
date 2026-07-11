@@ -51,6 +51,7 @@ class MWidget(QMainWindow, Styles):
         self.setAttribute(Qt.WidgetAttribute.WA_Hover)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        self.setMouseTracking(True)
         self.titleBar = CustomTitleBar(self)
         self.is_resizing = False
 

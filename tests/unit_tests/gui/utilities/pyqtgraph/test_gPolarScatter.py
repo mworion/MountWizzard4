@@ -69,6 +69,21 @@ def test_PolarScatter_plot3():
         assert suc
 
 
+def test_PolarScatter_plot_without_z():
+    p = PolarScatter()
+    with (
+        mock.patch.object(p, "setGrid"),
+        mock.patch.object(p, "col", [[0, 0, 0], [0, 0, 0], [0, 0, 0]]),
+    ):
+        suc = p.plot(
+            np.array([0, 1, 2]),
+            np.array([2, 3, 4]),
+            ang=np.array([2, 3, 4]),
+            reverse=True,
+        )
+        assert suc
+
+
 def test_PolarScatter_plotLoc():
     p = PolarScatter()
     p.plotLoc(47)

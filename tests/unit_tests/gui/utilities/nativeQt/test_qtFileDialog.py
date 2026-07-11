@@ -201,6 +201,18 @@ def test_onAcceptRejectsNonExisting(dlg):
     assert dlg.resultCode == MWFileDialog.Rejected
 
 
+def test_onAcceptRejectsNonExistingFileInExistingFileMode(qapp, tmp_path):
+    d = MWFileDialog(
+        folder=tmp_path,
+        fileMode=QFileDialog.FileMode.ExistingFile,
+    )
+    d.resultCode = MWFileDialog.Rejected
+    d.fileNameEdit.setText("nonexistent.txt")
+    d.onAccept()
+    assert d.resultCode == MWFileDialog.Rejected
+    d.close()
+
+
 def test_onAcceptEmptyIsNoop(dlg):
     dlg.resultCode = MWFileDialog.Rejected
     dlg.fileNameEdit.setText("")

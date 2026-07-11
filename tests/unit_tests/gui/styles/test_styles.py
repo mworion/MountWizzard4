@@ -128,6 +128,26 @@ def test_renderStyle_2(function):
     assert val == "12345$M_TEST$12345\n"
 
 
+def test_hex2rgb_without_alpha(function):
+    result = function.hex2rgb("#2090C0")
+    assert result == [32, 144, 192]
+
+
+def test_hex2rgb_with_alpha(function):
+    result = function.hex2rgb("#2090C0FF")
+    assert result == [32, 144, 192, 255]
+
+
+def test_rgb2hex_without_alpha(function):
+    result = function.rgb2hex([32, 144, 192])
+    assert result == "#2090c0"
+
+
+def test_rgb2hex_with_alpha(function):
+    result = function.rgb2hex([32, 144, 192, 255])
+    assert result == "#2090c0ff"
+
+
 def test_mw4Style_caching_same_colorSet(function):
     """Test that mw4Style returns cached value when colorSet doesn't change"""
     function.colorSet = 0

@@ -50,7 +50,6 @@ class SatelliteMapWindow(MWidget):
         self.brushLocation = pg.mkBrush(color=self.M_YELLOW)
         self.app.showSatellite.connect(self.drawSatellite)
         self.app.updateSatellite.connect(self.updatePositions)
-        self.app.dReg["mount"].signals.mountIsUp.connect(self.setPointerVisibility)
 
     def initConfig(self) -> None:
         self.world: dict = self.loadMap()
@@ -66,7 +65,6 @@ class SatelliteMapWindow(MWidget):
         self.storeConfig()
         self.app.showSatellite.disconnect(self.drawSatellite)
         self.app.updateSatellite.disconnect(self.updatePositions)
-        self.app.dReg["mount"].signals.mountIsUp.disconnect(self.setPointerVisibility)
         super().closeEvent(closeEvent)
 
     def showWindow(self) -> None:
@@ -97,10 +95,6 @@ class SatelliteMapWindow(MWidget):
             }
             offset += n
         return world
-
-    def setPointerVisibility(self, status) -> None:
-        if not status:
-            self.pointerAltAz.setVisible(status)
 
     def updatePositions(self, now: Timescale, location: GeographicPosition) -> None:
         observe = self.satellite.at(now)

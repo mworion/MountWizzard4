@@ -119,7 +119,7 @@ class Almanac(TabAddon):
         plotItem.setYRange(0, 24)
         plotItem.setXRange(xMin, xMax)
 
-        brushes = []
+        brushes: list[QBrush] = []
         for i in range(4):
             colorHex = self.mainW.rgb2hex(self.colors[i])
             brushes.append(pg.mkBrush(color=colorHex, style=Qt.SolidPattern))
@@ -162,7 +162,7 @@ class Almanac(TabAddon):
 
     def calcTwilightData(
         self, ts, location: GeographicPosition, tWinL: int, tWinH: int
-    ) -> (list, list):
+    ) -> tuple[list, list]:
         timeJD = self.app.dReg["mount"].obsSite.timeJD
         t0 = ts.tt_jd(int(timeJD.tt) - tWinL)
         t1 = ts.tt_jd(int(timeJD.tt) + tWinH + 1)
@@ -173,7 +173,7 @@ class Almanac(TabAddon):
 
     def workerCalcTwilightDataPlot(
         self, ts, location: GeographicPosition, timeWindow
-    ) -> (list, list, list):
+    ) -> tuple[list, list, list]:
         t, e = self.calcTwilightData(ts, location, timeWindow, timeWindow)
         return ts, t, e
 
@@ -275,7 +275,7 @@ class Almanac(TabAddon):
             maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
 
-            r = np.cos(np.radians(mpDegree)) * w2
+            r = float(np.cos(np.radians(mpDegree)) * w2)
             maskPainter.setBrush(colCover)
             maskPainter.setPen(penCov)
             maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
@@ -285,7 +285,7 @@ class Almanac(TabAddon):
             maskPainter.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
 
             maskPainter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Clear)
-            r = np.cos(np.radians(mpDegree)) * w2
+            r = float(np.cos(np.radians(mpDegree)) * w2)
             maskPainter.setBrush(colFree)
             maskPainter.setPen(colFree)
             maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
@@ -295,7 +295,7 @@ class Almanac(TabAddon):
             maskPainter.drawPie(0, 0, width, height, -90 * 16, 180 * 16)
 
             maskPainter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Clear)
-            r = np.cos(np.radians(mpDegree)) * w2
+            r = float(np.cos(np.radians(mpDegree)) * w2)
             maskPainter.setBrush(colFree)
             maskPainter.setPen(penFree)
             maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
@@ -304,7 +304,7 @@ class Almanac(TabAddon):
             maskPainter.setBrush(colCover)
             maskPainter.drawPie(0, 0, width, height, -90 * 16, 180 * 16)
 
-            r = np.cos(np.radians(mpDegree)) * w2
+            r = float(np.cos(np.radians(mpDegree)) * w2)
             maskPainter.setPen(penCov)
             maskPainter.setBrush(colCover)
             maskPainter.drawEllipse(QPointF(w2, h2), r, h2)

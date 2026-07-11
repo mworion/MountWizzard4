@@ -445,11 +445,14 @@ BASIC_STYLE = """
     }
     /* ListView */
     QListWidget {
+        border-width: 0px;
+        border-style: plain;
+        border-color: transparent;
         background-color: transparent;
     }
     QListWidget:item {
         color: $M_PRIM$;
-        background-color: transparent;
+        max-height: 16px;
     }
     QListWidget:item:selected {
         color: $M_TER$;
@@ -475,8 +478,6 @@ BASIC_STYLE = """
         padding: 0px;
         margin: 0px;
         border: 0px;
-        selection-background-color: $M_PRIM2$;
-        selection-color: $M_TER$;
     }
     QTableWidget QHeaderView:section{
         border-width: 1px;
@@ -491,8 +492,16 @@ BASIC_STYLE = """
         width: 15px;
         height: 6px;
     }
-    QTableView::item {
+    QTableView {
         color: $M_PRIM$;
+    }
+    QTableView:item {
+        color: $M_PRIM$;
+        max-height: 16px;
+    }
+    QTableView:item:selected {
+        color: $M_TER$;
+        background-color: $M_PRIM2$;
     }
     QTextBrowser {
         border-width: 0px;

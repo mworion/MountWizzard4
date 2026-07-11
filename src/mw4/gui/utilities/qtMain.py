@@ -50,8 +50,7 @@ class MWidget(QMainWindow, Styles):
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setMouseTracking(True)
         self.titleBar = CustomTitleBar(self)
-        self.is_resizing = False
-        self.installEventFilter(self)
+        self.isResizing = False
         self.ws = QWidget()
         self.ws.setObjectName("ContainerContent")
         workSpaceLayout = QVBoxLayout()
@@ -67,19 +66,6 @@ class MWidget(QMainWindow, Styles):
         centralWidget.setLayout(centralWidgetLayout)
         self.setCentralWidget(centralWidget)
 
-    def eventFilter(self, watched, event):
-        if event.type() in [event.Type.MouseMove, event.Type.HoverMove]:
-            pos = event.position()
-            onRight = pos.x() >= self.width() - self.RESIZE_MARGIN
-            onBottom = pos.y() >= self.height() - self.RESIZE_MARGIN
-            if onRight and onBottom:
-                self.setCursor(Qt.CursorShape.SizeFDiagCursor)
-            elif onRight:
-                self.setCursor(Qt.CursorShape.SizeHorCursor)
-            elif onBottom:
-                self.setCursor(Qt.CursorShape.SizeVerCursor)
-        return super().eventFilter(watched, event)
-
     def changeEvent(self, event: QEvent) -> None:
         if event.type() == QEvent.Type.WindowStateChange:
             self.titleBar.windowStateChanged(self.windowState())
@@ -88,7 +74,7 @@ class MWidget(QMainWindow, Styles):
 
     def mouseMoveEvent(self, event):
         pos = event.position()
-        if self.is_resizing:
+        if self.isResizing:
             new_width = max(100, int(pos.x()))
             new_height = max(100, int(pos.y()))
             self.resize(new_width, new_height)
@@ -100,10 +86,10 @@ class MWidget(QMainWindow, Styles):
                 pos.x() >= self.width() - self.RESIZE_MARGIN
                 or pos.y() >= self.height() - self.RESIZE_MARGIN
             ):
-                self.is_resizing = True
+                self.isResizing = True
 
     def mouseReleaseEvent(self, event):
-        self.is_resizing = False
+        self.isResizing = False
 
     def setWindowTitle(self, title: str) -> None:
         if hasattr(self, "titleBar"):

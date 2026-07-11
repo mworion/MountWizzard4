@@ -120,15 +120,6 @@ BASIC_STYLE = """
     QToolButton[close] {
         background-color: $M_RED$;
     }
-    QToolTip {
-        border-width: 1px;
-        border-style: outset;
-        border-color: $M_SEC$;
-        background-color: $M_BACK$;
-        color: $M_PRIM$;
-        padding: 5px;
-        max-width: 500px;
-    }
     QLabel{
         color: $M_TER$;
         background-color: transparent;
@@ -376,11 +367,6 @@ BASIC_STYLE = """
         border-radius: 2px;
         min - width: 10em;
     }
-    QPushButton:default {
-        border-color: $M_PRIM$;
-        border-width: 2px;
-        border-style: outset;
-    }
     QPushButton[keypad] {
         border-color: $M_PRIM$;
         border-radius: 8px;
@@ -389,7 +375,7 @@ BASIC_STYLE = """
         font-weight: bold;
         font-size: 12px;
     }
-    QPushButton[alignLeft=true] {
+    QPushButton[alignLeft='true'] {
         text-align: left;
         padding-left: 3px;
         padding-right: 3px;
@@ -416,17 +402,17 @@ BASIC_STYLE = """
         border-color: $M_RED$;
         color: $M_TER$;
     }
-    QPushButton[run=true] {
+    QPushButton[run='true'] {
         background-color: $M_GREEN2$;
         border-color: $M_GREEN$;
         color: $M_TER$;
     }
-    QPushButton[stop=true] {
+    QPushButton[stop='true'] {
         background-color: $M_RED2$;
         border-color: $M_RED$;
         color: $M_TER$;
     }
-    QPushButton[pause=true] {
+    QPushButton[pause='true'] {
         background-color: $M_YELLOW2$;
         border-color: $M_YELLOW$;
         color: $M_TER$;

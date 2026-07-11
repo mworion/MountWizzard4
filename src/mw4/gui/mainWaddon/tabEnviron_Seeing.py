@@ -88,7 +88,7 @@ class EnvironSeeing(TabAddon):
 
     @staticmethod
     def calcColor(val: list[int], factor: float) -> list[int]:
-        return [int(v * factor) for v in val]
+        return [max(0, min(255, int(v * factor))) for v in val]
 
     def applyColumnStyle(
         self,

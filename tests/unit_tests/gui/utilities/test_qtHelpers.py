@@ -199,7 +199,7 @@ def test_img2pixmap_2(function):
 
 
 def test_svg2pixmap(function):
-    img = svg2pixmap(os.getcwd() + "/tests/testData/choose.svg")
+    img = svg2pixmap(os.getcwd() + "/tests/testData/choose.svg", [255, 255, 255])
     assert isinstance(img, QPixmap)
 
 

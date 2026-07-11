@@ -150,6 +150,7 @@ class SatelliteMapWindow(MWidget):
             poly = pg.QtWidgets.QGraphicsPathItem(path)
             poly.setPen(self.ui.satEarth.penHorizon)
             poly.setBrush(self.ui.satEarth.brushHorizon)
+            poly.setZValue(-10)
             plotItem.addItem(poly)
 
     def drawPosition(self, plotItem: pg.PlotItem) -> None:

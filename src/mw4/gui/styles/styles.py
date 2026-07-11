@@ -124,7 +124,7 @@ class Styles:
             if key in ["M_BACK"]:
                 rgba[3] = int(self.transparency * 255)
             elif key in ["M_BACK1"]:
-                rgba[3] = int(max(self.transparency * 3, 1) * 255)
+                rgba[3] = int(min(self.transparency * 3, 1) * 255)
             else:
                 rgba[3] = int(self.transparency * 255)
             color = f"rgba{tuple(rgba)}"

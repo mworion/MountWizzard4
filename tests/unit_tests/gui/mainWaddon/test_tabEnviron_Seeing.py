@@ -94,6 +94,16 @@ def test_calcColor_high_factor(function):
     assert result == [200, 100, 50]
 
 
+def test_calcColor_clamped_high(function):
+    result = function.calcColor([200, 100, 50], 2.0)
+    assert result == [255, 200, 100]
+
+
+def test_calcColor_clamped_negative(function):
+    result = function.calcColor([100, 200, 50], -1.0)
+    assert result == [0, 0, 0]
+
+
 def test_applyColumnStyle_j0(function):
     data = dict(HOURLY)
     function.addSkyfieldTimeObject(data)

@@ -106,6 +106,24 @@ def test_replaceColor_1(function):
     assert val == "12345 rgba(32, 144, 192, 255);"
 
 
+def test_replaceColor_M_BACK(function):
+    inStyle = "$M_BACK$"
+    function.colorSet = 0
+    function.transparency = 0.3
+    val = function.replaceColor(inStyle)
+    expected_alpha = int(0.3 * 255)
+    assert val == f"rgba(24, 24, 24, {expected_alpha})"
+
+
+def test_replaceColor_M_BACK1_no_overflow(function):
+    inStyle = "$M_BACK1$"
+    function.colorSet = 0
+    function.transparency = 1.0
+    val = function.replaceColor(inStyle)
+    expected_alpha = 255
+    assert val == f"rgba(48, 48, 48, {expected_alpha})"
+
+
 def test_replaceImage_1(function):
     inStyle = "12345 $checkmark$;"
     function.colorSet = 0

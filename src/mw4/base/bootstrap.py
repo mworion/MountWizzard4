@@ -25,6 +25,7 @@ import traceback
 import types
 import warnings
 from astropy.utils import data, iers
+from astropy.utils.exceptions import AstropyDeprecationWarning
 from astropy.wcs import FITSFixedWarning
 from importlib.metadata import version
 from importlib.resources import as_file, files
@@ -47,11 +48,20 @@ class MwGlob(TypedDict):
 
 log: logging.Logger = logging.getLogger("MW4")
 
+# Suppress the astropy.samp deprecation warning at import time, before
+# astroquery (which imports astropy.samp) is loaded transitively.
+warnings.filterwarnings(
+    "ignore", message="astropy.samp", category=AstropyDeprecationWarning
+)
+
 
 def configureEnvironment() -> None:
     faulthandler.enable()
     warnings.filterwarnings("ignore", category=RuntimeWarning)
     warnings.filterwarnings("ignore", category=FITSFixedWarning)
+    warnings.filterwarnings(
+        "ignore", message="astropy.samp", category=AstropyDeprecationWarning
+    )
     iers.conf.auto_download = False
     data.conf.allow_internet = False
     setupLogging()

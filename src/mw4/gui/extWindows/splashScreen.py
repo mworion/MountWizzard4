@@ -79,7 +79,7 @@ class SplashScreen:
         w = viewPort.right()
         h = viewPort.bottom()
 
-        painter.setPen(QColor(43, 192, 255))
+        painter.setPen(QColor(43, 192, 255, 255))
         painter.setBrush(QColor(0, 0, 0, 128))
         painter.drawRect(10, h - 64, w - 20, 19)
 
@@ -90,10 +90,10 @@ class SplashScreen:
         painter.setPen(Qt.GlobalColor.white)
         rect = QRectF(10, h - 61, w - 20, 15)
         painter.drawText(rect, Qt.AlignmentFlag.AlignCenter, str(self.msg))
-        painter.setPen(QColor(43, 192, 255))
+        painter.setPen(QColor(43, 192, 255, 255))
         painter.drawLine(0, 0, w, 0)
         painter.drawLine(0, h, 0, 0)
-        painter.setPen(QColor(32, 144, 192))
+        painter.setPen(QColor(32, 144, 192, 255))
         painter.drawLine(w, 0, w, h)
         painter.drawLine(w, h, 0, h)
 

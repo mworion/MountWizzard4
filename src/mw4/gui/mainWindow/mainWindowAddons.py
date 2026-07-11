@@ -53,7 +53,7 @@ class MainWindowAddons:
             "EnvironSeeing": EnvironSeeing(mainW),
             "ImageManage": ImageManage(mainW),
             "ImageStats": ImageStats(mainW),
-            "ManageModel": ModelManage(mainW),
+            "ModelManage": ModelManage(mainW),
             "Model": Model(mainW),
             "ModelStatus": ModelStatus(mainW),
             "Mount": Mount(mainW),

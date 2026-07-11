@@ -528,7 +528,7 @@ BASIC_STYLE = """
         border-style: outset;
         border-width: 1px;
         border-radius: 2px;
-        color: green;
+        color: $M_GREEN$;
     }
     QComboBox::down-arrow {
         image: url($arrow-down$);

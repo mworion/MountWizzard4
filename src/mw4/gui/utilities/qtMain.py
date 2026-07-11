@@ -38,6 +38,7 @@ class MWidget(QMainWindow, Styles):
     HALF_WIDTH = 400
     HALF_HEIGHT = 310
     POPUP_HEIGHT = 150
+    RESIZE_MARGIN = 20
 
     def __init__(self) -> None:
         super().__init__()
@@ -50,7 +51,6 @@ class MWidget(QMainWindow, Styles):
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.titleBar = CustomTitleBar(self)
-        self.resize_margin = 8  # Clickable border zone width
         self.is_resizing = False
 
         self.ws = QWidget()
@@ -74,14 +74,11 @@ class MWidget(QMainWindow, Styles):
         super().changeEvent(event)
         event.accept()
 
-
     def mouseMoveEvent(self, event):
         pos = event.position()
-    
-        # Set cursors depending on mouse proximity to edge
-        on_right = pos.x() >= self.width() - self.resize_margin
-        on_bottom = pos.y() >= self.height() - self.resize_margin
-    
+        on_right = pos.x() >= self.width() - self.RESIZE_MARGIN
+        on_bottom = pos.y() >= self.height() - self.RESIZE_MARGIN
+
         if on_right and on_bottom:
             self.setCursor(Qt.CursorShape.SizeFDiagCursor)
         elif on_right:
@@ -91,25 +88,22 @@ class MWidget(QMainWindow, Styles):
         else:
             if not self.is_resizing:
                 self.setCursor(Qt.CursorShape.ArrowCursor)
-    
+
         # Actively resize if mouse button is held down
         if self.is_resizing:
             new_width = max(100, int(pos.x()))
             new_height = max(100, int(pos.y()))
             self.resize(new_width, new_height)
-    
-    
+
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
             pos = event.position()
-            # Start tracking resize if user clicked within the active border zone
             if (
-                pos.x() >= self.width() - self.resize_margin
-                or pos.y() >= self.height() - self.resize_margin
+                pos.x() >= self.width() - self.RESIZE_MARGIN
+                or pos.y() >= self.height() - self.RESIZE_MARGIN
             ):
                 self.is_resizing = True
-    
-    
+
     def mouseReleaseEvent(self, event):
         self.is_resizing = False
 

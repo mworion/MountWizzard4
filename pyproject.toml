@@ -24,7 +24,7 @@ package-data = ["data/**/*.*"]
 
 [project]
 name = "mountwizzard4"
-version = "4.0.0b12"
+version = "4.0.0b13"
 license = "Apache-2.0"
 description = "Tool for managing 10_micron mounts"
 readme = "README.rst"
@@ -106,7 +106,7 @@ dev = [
     "pytest-xdist==3.8.0",
     "pytest-xvfb==3.1.1",
     "invoke==3.0.3",
-    "ruff==0.15.20",
+    "ruff==0.15.21",
     "coverage==7.15.0",
     "scipy-stubs==1.18.0.0",
 ]

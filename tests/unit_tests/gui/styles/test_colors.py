@@ -24,4 +24,4 @@ def module(qapp):
 
 
 def test_colors_1():
-    assert len(colors) == 28
+    assert len(colors) == 29

@@ -482,7 +482,7 @@ BASIC_STYLE = """
         border-width: 1px;
         border-style: plain;
         border-radius: 2px;
-        background-color: $M_BACK$;
+        background-color: $M_BACK1$;
         color: $M_TER$;
     }
     QTableWidget QHeaderView::down-arrow{
@@ -546,7 +546,7 @@ BASIC_STYLE = """
     QComboBox QListView::item {
         border-color: $M_SEC$;
         min-height: 28px;
-        background-color: $M_BACK$;
+        background-color: $M_BACK1$;
     }
     QComboBox QListView::item:selected {
         background-color: $M_PRIM$;

@@ -38,6 +38,7 @@ def test_property(function):
     assert isinstance(function.M_TER1, list)
     assert isinstance(function.M_TER2, list)
     assert isinstance(function.M_BACK, list)
+    assert isinstance(function.M_BACK1, list)
     assert isinstance(function.M_GRAY, list)
     assert isinstance(function.M_RED, list)
     assert isinstance(function.M_RED1, list)

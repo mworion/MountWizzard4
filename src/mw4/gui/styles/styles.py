@@ -121,7 +121,7 @@ class Styles:
             if key not in colors:
                 continue
             rgba = colors[key][self.colorSet].copy()
-            if key in ["M_BACK"]:
+            if key in ["M_BACK", "M_BACK1"]:
                 rgba[3] = int(self.transparency * 255)
             color = f"rgba{tuple(rgba)}"
             line = line.replace(f"${key}$", color)

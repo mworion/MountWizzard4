@@ -325,4 +325,3 @@ def test_eventFilter_normal_area(function):
     )
     function.eventFilter(function, event)
     # Cursor should be set to arrow cursor
-

@@ -21,7 +21,6 @@ from mw4.gui.extWindows.hemisphere.horizonDraw import HorizonDraw
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import hemisphere_ui
 from PySide6.QtCore import QPointF, Qt
-from PySide6.QtGui import QCursor, QGuiApplication
 from typing import Any
 
 
@@ -125,11 +124,9 @@ class HemisphereWindow(MWidget):
             self.ui.azimuth.setText(f"{mousePoint.x():3.1f}")
             self.ui.altitude.setText(f"{mousePoint.y():3.1f}")
             self.setCursor(Qt.CursorShape.CrossCursor)
-            # QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.CrossCursor))
         else:
             self.ui.azimuth.setText("")
             self.ui.altitude.setText("")
-            # QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.ArrowCursor))
             self.unsetCursor()
 
     def colorChange(self) -> None:

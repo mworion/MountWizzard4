@@ -50,9 +50,7 @@ log: logging.Logger = logging.getLogger("MW4")
 
 # Suppress the astropy.samp deprecation warning at import time, before
 # astroquery (which imports astropy.samp) is loaded transitively.
-warnings.filterwarnings(
-    "ignore", message="astropy.samp", category=AstropyDeprecationWarning
-)
+warnings.filterwarnings("ignore", message="astropy.samp", category=AstropyDeprecationWarning)
 
 
 def configureEnvironment() -> None:

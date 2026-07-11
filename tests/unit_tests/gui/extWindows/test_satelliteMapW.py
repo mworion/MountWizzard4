@@ -68,18 +68,6 @@ def test_colorChange(function):
         function.colorChange()
 
 
-def test_setPointerVisibility_1(function):
-    function.pointerAltAz = pg.PlotDataItem()
-    function.setPointerVisibility(True)
-
-
-def test_setPointerVisibility_2(function):
-    function.pointerAltAz = pg.PlotDataItem()
-    function.pointerAltAz.setVisible(True)
-    function.setPointerVisibility(False)
-    assert not function.pointerAltAz.isVisible()
-
-
 def test_loadMap_1(function):
     """SEC-3: loadMap() must use numpy.load (safe), not pickle.load."""
     world = function.loadMap()

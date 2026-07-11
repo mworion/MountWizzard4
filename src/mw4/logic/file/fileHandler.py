@@ -13,7 +13,6 @@
 # License APL2.0
 #
 ###########################################################
-
 import cv2
 import logging
 import numpy as np

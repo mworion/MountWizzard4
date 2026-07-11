@@ -54,6 +54,7 @@ class MWidget(QMainWindow, Styles):
         self.setMouseTracking(True)
         self.titleBar = CustomTitleBar(self)
         self.is_resizing = False
+        self.installEventFilter(self)
 
         self.ws = QWidget()
         self.ws.setObjectName("ContainerContent")
@@ -70,6 +71,22 @@ class MWidget(QMainWindow, Styles):
         centralWidget.setLayout(centralWidgetLayout)
         self.setCentralWidget(centralWidget)
 
+    def eventFilter(self, watched, event):
+        if event.type() == event.Type.MouseMove:
+            pos = event.position()
+            on_right = pos.x() >= self.width() - self.RESIZE_MARGIN
+            on_bottom = pos.y() >= self.height() - self.RESIZE_MARGIN
+            if on_right and on_bottom:
+                self.setCursor(Qt.CursorShape.SizeFDiagCursor)
+            elif on_right:
+                self.setCursor(Qt.CursorShape.SizeHorCursor)
+            elif on_bottom:
+                self.setCursor(Qt.CursorShape.SizeVerCursor)
+            else:
+                self.setCursor(Qt.CursorShape.ArrowCursor)
+
+        return super().eventFilter(watched, event)
+
     def changeEvent(self, event: QEvent) -> None:
         if event.type() == QEvent.Type.WindowStateChange:
             self.titleBar.windowStateChanged(self.windowState())
@@ -78,22 +95,6 @@ class MWidget(QMainWindow, Styles):
 
     def mouseMoveEvent(self, event):
         pos = event.position()
-        on_right = pos.x() >= self.width() - self.RESIZE_MARGIN
-        on_bottom = pos.y() >= self.height() - self.RESIZE_MARGIN
-
-        print(on_right, on_bottom)
-
-        if on_right and on_bottom:
-            self.setCursor(Qt.CursorShape.SizeFDiagCursor)
-        elif on_right:
-            self.setCursor(Qt.CursorShape.SizeHorCursor)
-        elif on_bottom:
-            self.setCursor(Qt.CursorShape.SizeVerCursor)
-        else:
-            if not self.is_resizing:
-                self.setCursor(Qt.CursorShape.ArrowCursor)
-
-        # Actively resize if mouse button is held down
         if self.is_resizing:
             new_width = max(100, int(pos.x()))
             new_height = max(100, int(pos.y()))

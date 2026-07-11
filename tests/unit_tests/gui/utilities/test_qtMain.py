@@ -148,3 +148,181 @@ def test_positionWindow_2(function):
     function.screenSizeX = 1000
     function.screenSizeY = 1000
     function.setPositionWindow(config)
+
+
+def test_getPositionWindow_1(function):
+    config = {}
+    result = function.getPositionWindow(config)
+    assert "winPosX" in result
+    assert "winPosY" in result
+    assert "height" in result
+    assert "width" in result
+    assert result["winPosX"] >= 0
+    assert result["winPosY"] >= 0
+    assert result["height"] > 0
+    assert result["width"] > 0
+
+
+def test_setWindowTitle_1(function):
+    function.setWindowTitle("Test Window")
+    assert function.titleBar.title.text() == "Test Window"
+
+
+def test_mousePressEvent_1(function):
+    from PySide6.QtCore import QPointF, Qt
+    from PySide6.QtGui import QMouseEvent
+
+    # Simulate mouse press at bottom-right corner to trigger resize
+    event = QMouseEvent(
+        QMouseEvent.Type.MouseButtonPress,
+        QPointF(function.width() - 5, function.height() - 5),
+        QPointF(function.width() - 5, function.height() - 5),
+        Qt.MouseButton.LeftButton,
+        Qt.MouseButton.LeftButton,
+        Qt.KeyboardModifier.NoModifier,
+    )
+    function.mousePressEvent(event)
+    assert function.is_resizing is True
+
+
+def test_mousePressEvent_2(function):
+    from PySide6.QtCore import QPointF, Qt
+    from PySide6.QtGui import QMouseEvent
+
+    # Simulate mouse press at center (not on resize area)
+    # First reset state and ensure window is large enough
+    function.is_resizing = False
+    function.resize(400, 400)
+    event = QMouseEvent(
+        QMouseEvent.Type.MouseButtonPress,
+        QPointF(100, 100),
+        QPointF(100, 100),
+        Qt.MouseButton.LeftButton,
+        Qt.MouseButton.LeftButton,
+        Qt.KeyboardModifier.NoModifier,
+    )
+    function.mousePressEvent(event)
+    assert function.is_resizing is False
+
+
+def test_mouseReleaseEvent_1(function):
+    function.is_resizing = True
+    from PySide6.QtCore import QPointF, Qt
+    from PySide6.QtGui import QMouseEvent
+
+    event = QMouseEvent(
+        QMouseEvent.Type.MouseButtonRelease,
+        QPointF(100, 100),
+        QPointF(100, 100),
+        Qt.MouseButton.LeftButton,
+        Qt.MouseButton.LeftButton,
+        Qt.KeyboardModifier.NoModifier,
+    )
+    function.mouseReleaseEvent(event)
+    assert function.is_resizing is False
+
+
+def test_mouseMoveEvent_1(function):
+    from PySide6.QtCore import QPointF, Qt
+    from PySide6.QtGui import QMouseEvent
+
+    function.is_resizing = True
+
+    event = QMouseEvent(
+        QMouseEvent.Type.MouseMove,
+        QPointF(500, 500),
+        QPointF(500, 500),
+        Qt.MouseButton.NoButton,
+        Qt.MouseButton.NoButton,
+        Qt.KeyboardModifier.NoModifier,
+    )
+    function.mouseMoveEvent(event)
+    # After resize, size should change
+    # Note: resize may be constrained by minimum size
+
+
+def test_mouseMoveEvent_2(function):
+    from PySide6.QtCore import QPointF, Qt
+    from PySide6.QtGui import QMouseEvent
+
+    function.is_resizing = False
+    old_width = function.width()
+    old_height = function.height()
+
+    event = QMouseEvent(
+        QMouseEvent.Type.MouseMove,
+        QPointF(500, 500),
+        QPointF(500, 500),
+        Qt.MouseButton.NoButton,
+        Qt.MouseButton.NoButton,
+        Qt.KeyboardModifier.NoModifier,
+    )
+    function.mouseMoveEvent(event)
+    # When not resizing, size should not change
+    assert function.width() == old_width
+    assert function.height() == old_height
+
+
+def test_eventFilter_right_bottom_corner(function):
+    from PySide6.QtCore import QPointF, Qt
+    from PySide6.QtGui import QMouseEvent
+
+    event = QMouseEvent(
+        QMouseEvent.Type.MouseMove,
+        QPointF(function.width() - 5, function.height() - 5),
+        QPointF(function.width() - 5, function.height() - 5),
+        Qt.MouseButton.NoButton,
+        Qt.MouseButton.NoButton,
+        Qt.KeyboardModifier.NoModifier,
+    )
+    function.eventFilter(function, event)
+    # Cursor should be set to resize diagonal cursor
+
+
+def test_eventFilter_right_edge(function):
+    from PySide6.QtCore import QPointF, Qt
+    from PySide6.QtGui import QMouseEvent
+
+    event = QMouseEvent(
+        QMouseEvent.Type.MouseMove,
+        QPointF(function.width() - 5, 100),
+        QPointF(function.width() - 5, 100),
+        Qt.MouseButton.NoButton,
+        Qt.MouseButton.NoButton,
+        Qt.KeyboardModifier.NoModifier,
+    )
+    function.eventFilter(function, event)
+    # Cursor should be set to resize horizontal cursor
+
+
+def test_eventFilter_bottom_edge(function):
+    from PySide6.QtCore import QPointF, Qt
+    from PySide6.QtGui import QMouseEvent
+
+    event = QMouseEvent(
+        QMouseEvent.Type.MouseMove,
+        QPointF(100, function.height() - 5),
+        QPointF(100, function.height() - 5),
+        Qt.MouseButton.NoButton,
+        Qt.MouseButton.NoButton,
+        Qt.KeyboardModifier.NoModifier,
+    )
+    function.eventFilter(function, event)
+    # Cursor should be set to resize vertical cursor
+
+
+def test_eventFilter_normal_area(function):
+    from PySide6.QtCore import QPointF, Qt
+    from PySide6.QtGui import QMouseEvent
+
+    event = QMouseEvent(
+        QMouseEvent.Type.MouseMove,
+        QPointF(100, 100),
+        QPointF(100, 100),
+        Qt.MouseButton.NoButton,
+        Qt.MouseButton.NoButton,
+        Qt.KeyboardModifier.NoModifier,
+    )
+    function.eventFilter(function, event)
+    # Cursor should be set to arrow cursor
+

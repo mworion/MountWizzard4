@@ -62,7 +62,7 @@ def test_startCommunication_(function):
 
 def test_stopCommunication_1(function):
     function.running = True
-    function.app.timeMgr.update3m.connect(function.pollSeeingData)
+    function.app.timeMgr.update3s.connect(function.pollSeeingData)
     function.stopCommunication()
     assert not function.running
 

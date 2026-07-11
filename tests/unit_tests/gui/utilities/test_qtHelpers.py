@@ -204,7 +204,7 @@ def test_svg2pixmap(function):
 
 
 def test_svg2icon_1(function):
-    val = svg2icon(os.getcwd() + "/tests/testData/choose.svg")
+    val = svg2icon(os.getcwd() + "/tests/testData/choose.svg", [255, 255, 255])
     assert isinstance(val, QIcon)
 
 

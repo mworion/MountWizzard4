@@ -44,7 +44,7 @@ class Styles:
                 f"'{self.__class__.__name__}' object has no attribute '{name}'"
             )
         if name.endswith("a"):
-            val = colors[name[:-1]][self.colorSet]
+            val = colors[name[:-1]][self.colorSet].copy()
             val[3] = int(self.transparency * 255)
             return val
         else:
@@ -120,12 +120,8 @@ class Styles:
         for key in self.findKeysInLine(line, "$"):
             if key not in colors:
                 continue
-            rgba = colors[key][self.colorSet]
+            rgba = colors[key][self.colorSet].copy()
             if key in ["M_BACK"]:
-                rgba[3] = int(self.transparency * 255)
-            elif key in ["M_BACK1"]:
-                rgba[3] = int(min(self.transparency * 3, 1) * 255)
-            else:
                 rgba[3] = int(self.transparency * 255)
             color = f"rgba{tuple(rgba)}"
             line = line.replace(f"${key}$", color)

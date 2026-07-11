@@ -38,7 +38,6 @@ def test_property(function):
     assert isinstance(function.M_TER1, list)
     assert isinstance(function.M_TER2, list)
     assert isinstance(function.M_BACK, list)
-    assert isinstance(function.M_BACK1, list)
     assert isinstance(function.M_GRAY, list)
     assert isinstance(function.M_RED, list)
     assert isinstance(function.M_RED1, list)
@@ -104,24 +103,6 @@ def test_replaceColor_1(function):
     function.colorSet = 0
     val = function.replaceColor(inStyle)
     assert val == "12345 rgba(32, 144, 192, 255);"
-
-
-def test_replaceColor_M_BACK(function):
-    inStyle = "$M_BACK$"
-    function.colorSet = 0
-    function.transparency = 0.3
-    val = function.replaceColor(inStyle)
-    expected_alpha = int(0.3 * 255)
-    assert val == f"rgba(24, 24, 24, {expected_alpha})"
-
-
-def test_replaceColor_M_BACK1_no_overflow(function):
-    inStyle = "$M_BACK1$"
-    function.colorSet = 0
-    function.transparency = 1.0
-    val = function.replaceColor(inStyle)
-    expected_alpha = 255
-    assert val == f"rgba(48, 48, 48, {expected_alpha})"
 
 
 def test_replaceImage_1(function):

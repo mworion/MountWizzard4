@@ -17,6 +17,7 @@ import json
 import logging
 import requests
 from dataclasses import dataclass, field
+from importlib.resources import as_file, files
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker
 from pathlib import Path
@@ -52,16 +53,18 @@ class SeeingWeather:
         self.config = DeviceConfigSeeingWeather()
         self.worker: Worker | None = None
         self.running: bool = False
+        with as_file(files("mw4").joinpath("assets/icon/s.svg")) as iconFile:
+            self.b = iconFile.read_text(encoding="utf-8")
 
     def startCommunication(self) -> None:
         self.pollSeeingData()
         self.app.timeMgr.update3s.connect(self.pollSeeingData)
 
     def stopCommunication(self) -> None:
+        self.app.timeMgr.update3s.disconnect(self.pollSeeingData)
         self.running = False
         self.data.clear()
         self.signals.deviceDisconnected.emit(self.config.deviceName)
-        self.app.timeMgr.update3m.disconnect(self.pollSeeingData)
 
     def processSeeingData(self) -> None:
         dataFile = self.app.mwGlob["dataDir"] / "meteoblue.data"
@@ -110,7 +113,6 @@ class SeeingWeather:
 
     def getSeeingData(self, url: Path) -> None:
         if not self.loadingFileNeeded("meteoblue.data", 0.5):
-            self.processSeeingData()
             self.sendStatus(True)
             return
         self.worker = Worker(self.workerGetSeeingData, url)

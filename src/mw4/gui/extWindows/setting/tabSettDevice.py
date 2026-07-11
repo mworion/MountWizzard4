@@ -202,8 +202,7 @@ class SettDevice(QObject):
         dropDownEntry = self.deviceUi[device]["uiDropDown"].currentText()
         isDisabled = position == 0
         framework = "" if isDisabled else dropDownEntry.split("-")[0].rstrip()
-        if self.app.dReg[device].instance.framework != framework:
-            self.app.dReg.stopDevice(device)
+        self.app.dReg.stopDevice(device)
         self.app.dReg[device].instance.framework = framework
         changeStyleDynamic(self.deviceUi[device]["uiDropDown"], "active", False)
         if not framework:

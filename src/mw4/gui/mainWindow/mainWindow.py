@@ -74,7 +74,6 @@ class MainWindow(MWidget):
         self.ui.loadFrom.clicked.connect(self.loadProfileGUI)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
         self.ui.saveConfig.clicked.connect(self.saveProfile)
-        self.app.dReg["seeingWeather"].instance.b = self.ui.label_b.property("a")
         self.app.timeMgr.update1s.connect(self.updateThreadAndOnlineStatus)
         self.app.timeMgr.update1s.connect(self.smartFunctionGui)
         self.app.timeMgr.update1s.connect(self.smartTabGui)

@@ -78,21 +78,6 @@ def test_mw4Style_nonDarwin_nocache(function):
         assert ret.startswith("\n")
 
 
-def test_calcHexColor_1(function):
-    val = function.calcHexColor("#808080", 1)
-    assert val == "#808080"
-
-
-def test_calcHexColor_2(function):
-    val = function.calcHexColor("#80808000", 1)
-    assert val == "#808080"
-
-
-def test_calcHexColor_3(function):
-    val = function.calcHexColor("#808080", 0.5)
-    assert val == "#404040"
-
-
 def test_findKeysInLine_1(function):
     inStyle = "12345$M_PRIM$12345#GRAD_1#%ROUND%;"
     function.colorSet = 0

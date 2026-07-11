@@ -65,13 +65,10 @@ class EnvironSeeing(TabAddon):
 
         signals = self.app.dReg["seeingWeather"].signals
         signals.deviceDisconnected.connect(self.clearSeeingEntries)
-        signals.deviceConnected.connect(self.prepareSeeingTable)
-
         self.app.timebaseChanged.connect(self.updateSeeingEntries)
         self.app.dReg["seeingWeather"].signals.update.connect(self.prepareSeeingTable)
         clickable(self.ui.seeingIcon).connect(self.openWeb)
         self.app.colorChange.connect(self.updateSeeingEntries)
-        self.app.timeMgr.update30m.connect(self.updateSeeingEntries)
 
     def setupIcons(self) -> None:
         pixmap = svg2pixmap("assets/icon/meteoblue.svg", [18, 70, 125, 0])
@@ -89,6 +86,10 @@ class EnvironSeeing(TabAddon):
             y, m, d = date.split("-")
             data["time"].append(ts.utc(int(y), int(m), int(d), hour, 0, 0))
 
+    @staticmethod
+    def calcColor(val: list[int], factor: float) -> list[int]:
+        return [int(v * factor) for v in val]
+
     def applyColumnStyle(
         self,
         item: QTableWidgetItem,
@@ -103,16 +104,16 @@ class EnvironSeeing(TabAddon):
         elif j == 1:
             t = self.app.timeMgr.convertTime(data[field][i], "%H:00")
         elif j in [2, 3, 4]:
-            color = self.mainW.calcHexColor("#2090C0", data[field][i] / 100)
-            item.setBackground(QColor(color))
+            color = self.calcColor(self.mainW.M_PRIM, data[field][i] / 100)
+            item.setBackground(QColor(*color))
             item.setForeground(QColor(*self.mainW.M_TER))
         elif j in [6]:
-            color = self.mainW.calcHexColor(data["seeing1_color"][i], 0.8)
-            item.setBackground(QColor(color))
+            color = self.calcColor(self.mainW.hex2rgb(data["seeing1_color"][i]), 0.8)
+            item.setBackground(QColor(*color))
             item.setForeground(QColor(*self.mainW.M_BACK))
         elif j in [7]:
-            color = self.mainW.calcHexColor(data["seeing2_color"][i], 0.8)
-            item.setBackground(QColor(color))
+            color = self.calcColor(self.mainW.hex2rgb(data["seeing2_color"][i]), 0.8)
+            item.setBackground(QColor(*color))
             item.setForeground(QColor(*self.mainW.M_BACK))
         elif j in [10, 11]:
             val = float("0" + data[field][i]) / 1000
@@ -160,10 +161,10 @@ class EnvironSeeing(TabAddon):
         seeTab.selectColumn(columnCenter + 10)
 
     def clearSeeingEntries(self) -> None:
+        self.seeingEnabled = False
         self.ui.seeing.clear()
         self.ui.seeingIcon.setVisible(False)
         self.ui.seeing.setVisible(False)
-        self.seeingEnabled = False
 
     def enableSeeingEntries(self) -> None:
         self.ui.seeingIcon.setVisible(self.seeingEnabled)

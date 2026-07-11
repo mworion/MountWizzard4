@@ -74,6 +74,26 @@ def test_addSkyfieldTimeObject(function):
     assert "time" in data
 
 
+def test_calcColor_basic(function):
+    result = function.calcColor([100, 200, 50], 0.5)
+    assert result == [50, 100, 25]
+
+
+def test_calcColor_zero_factor(function):
+    result = function.calcColor([100, 200, 50], 0)
+    assert result == [0, 0, 0]
+
+
+def test_calcColor_full_factor(function):
+    result = function.calcColor([100, 200, 50], 1.0)
+    assert result == [100, 200, 50]
+
+
+def test_calcColor_high_factor(function):
+    result = function.calcColor([100, 50, 25], 2.0)
+    assert result == [200, 100, 50]
+
+
 def test_applyColumnStyle_j0(function):
     data = dict(HOURLY)
     function.addSkyfieldTimeObject(data)

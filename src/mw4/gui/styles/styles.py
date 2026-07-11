@@ -89,11 +89,6 @@ class Styles:
             colHex = f"{colHex}{val[3]:02x}"
         return colHex
 
-    def calcHexColor(self, val: str, f: float) -> str:
-        rgb = self.hex2rgb(val)
-        rgb = [int(x * f) for x in rgb]
-        return f"#{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}"
-
     @staticmethod
     def findKeysInLine(line: str, keyChar: str) -> list:
         keys = []

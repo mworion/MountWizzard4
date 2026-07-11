@@ -124,11 +124,13 @@ class HemisphereWindow(MWidget):
         if viewBox.posInViewRange(pos):
             self.ui.azimuth.setText(f"{mousePoint.x():3.1f}")
             self.ui.altitude.setText(f"{mousePoint.y():3.1f}")
-            QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.CrossCursor))
+            self.setCursor(Qt.CursorShape.CrossCursor)
+            # QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.CrossCursor))
         else:
             self.ui.azimuth.setText("")
             self.ui.altitude.setText("")
-            QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.ArrowCursor))
+            # QGuiApplication.setOverrideCursor(QCursor(Qt.CursorShape.ArrowCursor))
+            self.unsetCursor()
 
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)

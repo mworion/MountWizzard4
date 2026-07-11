@@ -20,7 +20,6 @@ from mw4.gui.utilities.qtCustomWindow import CustomTitleBar
 from mw4.gui.utilities.qtHelpers import svg2icon
 from PySide6.QtCore import QEvent, QSize, Qt
 from PySide6.QtGui import (
-    QGuiApplication,
     QKeyEvent,
 )
 from PySide6.QtWidgets import (
@@ -38,16 +37,14 @@ class MWidget(QMainWindow, Styles):
     HALF_WIDTH = 400
     HALF_HEIGHT = 310
     POPUP_HEIGHT = 150
-    RESIZE_MARGIN = 20
+    RESIZE_MARGIN = 12
 
     def __init__(self) -> None:
         super().__init__()
         self.initUI()
-        self.screenSizeX = QGuiApplication.primaryScreen().geometry().width()
-        self.screenSizeY = QGuiApplication.primaryScreen().geometry().height()
         self.setWindowIcon(self.mwIcon)
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose )
         self.setAttribute(Qt.WidgetAttribute.WA_Hover)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
@@ -55,7 +52,6 @@ class MWidget(QMainWindow, Styles):
         self.titleBar = CustomTitleBar(self)
         self.is_resizing = False
         self.installEventFilter(self)
-
         self.ws = QWidget()
         self.ws.setObjectName("ContainerContent")
         workSpaceLayout = QVBoxLayout()
@@ -72,19 +68,16 @@ class MWidget(QMainWindow, Styles):
         self.setCentralWidget(centralWidget)
 
     def eventFilter(self, watched, event):
-        if event.type() == event.Type.MouseMove:
+        if event.type() in [event.Type.MouseMove, event.Type.HoverMove]:
             pos = event.position()
-            on_right = pos.x() >= self.width() - self.RESIZE_MARGIN
-            on_bottom = pos.y() >= self.height() - self.RESIZE_MARGIN
-            if on_right and on_bottom:
+            onRight = pos.x() >= self.width() - self.RESIZE_MARGIN
+            onBottom = pos.y() >= self.height() - self.RESIZE_MARGIN
+            if onRight and onBottom:
                 self.setCursor(Qt.CursorShape.SizeFDiagCursor)
-            elif on_right:
+            elif onRight:
                 self.setCursor(Qt.CursorShape.SizeHorCursor)
-            elif on_bottom:
+            elif onBottom:
                 self.setCursor(Qt.CursorShape.SizeVerCursor)
-            else:
-                self.setCursor(Qt.CursorShape.ArrowCursor)
-
         return super().eventFilter(watched, event)
 
     def changeEvent(self, event: QEvent) -> None:

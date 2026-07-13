@@ -257,6 +257,58 @@ def test_showMoonPhase_handles_data(almanac):
         almanac.showMoonPhase()
 
 
+def test_renderEventList_with_data(almanac):
+    """Test renderEventList renders event list correctly."""
+    ts = almanac.app.mount.obsSite.ts
+    tsNow = ts.now()
+    times = [tsNow, tsNow]
+    events = [0, 1]
+    labels = ["rise", "set"]
+    almanac.renderEventList(almanac.ui.riseSetEventsMoon, times, events, labels, "%H:%M:%S")
+
+
+def test_renderEventList_single_event(almanac):
+    """Test renderEventList with single event."""
+    ts = almanac.app.mount.obsSite.ts
+    tsNow = ts.now()
+    times = [tsNow]
+    events = [0]
+    labels = ["event"]
+    almanac.renderEventList(almanac.ui.twilightEvents, times, events, labels, "%H:%M:%S")
+
+
+def test_showMoonNumbers_updates_labels(almanac):
+    """Test showMoonNumbers updates moon phase labels."""
+    ts = almanac.app.mount.obsSite.ts
+    tsNow = ts.now()
+    t = ts.tt_jd([tsNow.tt])
+    data = MoonPhaseData(0.75, 135, 37.5, 0, t, [0], t, [0])
+    almanac.showMoonNumbers(data)
+
+
+def test_showMoonRiseSet_renders_events(almanac):
+    """Test showMoonRiseSet renders rise/set events."""
+    ts = almanac.app.mount.obsSite.ts
+    tsNow = ts.now()
+    t = ts.tt_jd([tsNow.tt, tsNow.tt])
+    data = MoonPhaseData(0.5, 90, 25, 0, t, [0, 1], t, [0, 1])
+    almanac.showMoonRiseSet(data)
+
+
+def test_showMoonNodes_renders_events(almanac):
+    """Test showMoonNodes renders lunar node events."""
+    ts = almanac.app.mount.obsSite.ts
+    tsNow = ts.now()
+    t = ts.tt_jd([tsNow.tt, tsNow.tt])
+    data = MoonPhaseData(0.25, 45, 12.5, 0, t, [0], t, [0, 1])
+    almanac.showMoonNodes(data)
+
+
+def test_renderMoonImage_creates_pixmap(almanac):
+    """Test renderMoonImage creates and sets moon pixmap."""
+    almanac.renderMoonImage(45)
+
+
 def test_plotTwilightData_with_low_hour_values(almanac):
     """Test plotTwilightData with diverse data to exercise all branches."""
     from datetime import datetime

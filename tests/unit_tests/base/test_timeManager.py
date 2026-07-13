@@ -186,22 +186,22 @@ def test_schedules_are_not_empty():
 
 
 def test_time_zone_string_utc_true(mgr):
-    """Test timeZoneString returns UTC message when config unitTimeUTC is True."""
-    mgr.app.config["unitTimeUTC"] = True
+    """Test timeZoneString returns UTC message when unitTimeUTC is True."""
+    mgr.unitTimeUTC = True
     result = mgr.timeZoneString()
     assert result == "(time is UTC)"
 
 
 def test_time_zone_string_utc_false(mgr):
-    """Test timeZoneString returns local message when config unitTimeUTC is False."""
-    mgr.app.config["unitTimeUTC"] = False
+    """Test timeZoneString returns local message when unitTimeUTC is False."""
+    mgr.unitTimeUTC = False
     result = mgr.timeZoneString()
     assert result == "(time is local)"
 
 
 def test_convert_time_utc_true(mgr, ts):
-    """Test convertTime uses UTC format when config unitTimeUTC is True."""
-    mgr.app.config["unitTimeUTC"] = True
+    """Test convertTime uses UTC format when unitTimeUTC is True."""
+    mgr.unitTimeUTC = True
     test_time = ts.utc(2024, 6, 13, 12, 0, 0)
     format_string = "%Y-%m-%d %H:%M:%S"
     result = mgr.convertTime(test_time, format_string)
@@ -211,8 +211,8 @@ def test_convert_time_utc_true(mgr, ts):
 
 
 def test_convert_time_utc_false(mgr, ts):
-    """Test convertTime uses local timezone when config unitTimeUTC is False."""
-    mgr.app.config["unitTimeUTC"] = False
+    """Test convertTime uses local timezone when unitTimeUTC is False."""
+    mgr.unitTimeUTC = False
     test_time = ts.utc(2024, 6, 13, 12, 0, 0)
     format_string = "%Y-%m-%d %H:%M:%S"
     result = mgr.convertTime(test_time, format_string)

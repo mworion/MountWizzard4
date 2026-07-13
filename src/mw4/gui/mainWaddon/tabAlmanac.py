@@ -124,7 +124,7 @@ class Almanac(TabAddon):
             colorHex = self.mainW.rgb2hex(self.colors[i])
             brushes.append(pg.mkBrush(color=colorHex, style=Qt.SolidPattern))
 
-        tLoc = t.astimezone(tzlocal())
+        tLoc = t.utc_datetime() if self.app.timeMgr.unitTimeUTC else t.astimezone(tzlocal())
         refDay = [x.replace(hour=0, minute=0, second=0, microsecond=0) for x in tLoc]
         dayLoc = tLoc - refDay
         yH = [x.total_seconds() / 3600 for x in dayLoc]

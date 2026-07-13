@@ -197,21 +197,21 @@ def test_setLoggingLevel_priority_info_over_trace(settUpdate):
 
 
 def test_setTimeBaseUTC_sets_config(settUpdate):
-    """Test setTimeBaseUTC sets config and emits signal."""
+    """Test setTimeBaseUTC sets timeMgr config and emits signal."""
     settUpdate.setTimeBaseUTC()
 
-    assert settUpdate.app.config["unitTimeUTC"] is True
+    assert settUpdate.app.timeMgr.unitTimeUTC is True
 
 
 def test_setTimeBaseLocal_sets_config(settUpdate):
-    """Test setTimeBaseLocal sets config and emits signal."""
+    """Test setTimeBaseLocal sets timeMgr config and emits signal."""
     settUpdate.setTimeBaseLocal()
 
-    assert settUpdate.app.config["unitTimeUTC"] is False
+    assert settUpdate.app.timeMgr.unitTimeUTC is False
 
 
 def test_storeConfig_with_timebase(settUpdate):
-    """Test storeConfig saves timebase settings."""
+    """Test storeConfig saves SettingUpdate config."""
     settUpdate.ui.loglevelInfo.setChecked(False)
     settUpdate.ui.loglevelDebug.setChecked(True)
     settUpdate.ui.loglevelTrace.setChecked(False)
@@ -223,8 +223,11 @@ def test_storeConfig_with_timebase(settUpdate):
     settUpdate.storeConfig()
 
     config = settUpdate.app.config["SettingUpdate"]
-    assert config["unitTimeUTC"] is True
-    assert config["unitTimeLocal"] is False
+    assert config["isOnline"] is False
+    assert config["loglevelInfo"] is False
+    assert config["loglevelDebug"] is True
+    assert config["loglevelTrace"] is False
+    assert config["ageDatabases"] == 3
 
 
 def test_setOnlineMode_emits_activated_message(settUpdate):

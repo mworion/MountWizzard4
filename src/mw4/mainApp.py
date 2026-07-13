@@ -120,6 +120,7 @@ class MountWizzard4(QObject):
         elev = self.config.get("topoElev", 46)
         topo = wgs84.latlon(longitude_degrees=lon, latitude_degrees=lat, elevation_m=elev)
         self.dReg["mount"].obsSite.location = topo
+        self.timeMgr.unitTimeUTC = self.config.get("unitTimeUTC", True)
         return topo
 
     def storeConfig(self) -> None:
@@ -130,6 +131,7 @@ class MountWizzard4(QObject):
             self.config["topoLat"] = float(location.latitude.degrees)
             self.config["topoLon"] = float(location.longitude.degrees)
             self.config["topoElev"] = float(location.elevation.m)
+        self.config["unitTimeUTC"] = self.timeMgr.unitTimeUTC
 
     def storeStatusOperationRunning(self, status: int) -> None:
         self.statusOperationRunning = status

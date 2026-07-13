@@ -18,6 +18,9 @@ import pyqtgraph as pg
 from dataclasses import dataclass
 from dateutil.tz import tzlocal
 from importlib.resources import as_file, files
+
+from pytestqt.qtbot import QWidget
+
 from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, setPixmapAlpha
@@ -77,7 +80,7 @@ class Almanac(TabAddon):
         self.astronomical = None
         self.twilightTime = None
         self.twilightEvents = None
-        self.colors: dict[int, Any] = None
+        self.colors: dict[QWidget, list[int]] = {}
         self.workerCalcTwilightDataPlot: Worker | None = None
         self.app.timeMgr.update30m.connect(self.showMoonPhase)
         self.app.colorChange.connect(self.updateColorSet)
@@ -90,13 +93,15 @@ class Almanac(TabAddon):
 
     def setColors(self) -> None:
         self.colors = {
-            self.ui.almanacDark: self.mainW.M_PRIM4,
-            self.ui.almanacAstronomical: self.mainW.M_PRIM3,
-            self.ui.almanacNautical: self.mainW.M_PRIM2,
-            self.ui.almanacCivil: self.mainW.M_PRIM1,
+            self.ui.almanacDark: self.mainW.M_PRIM4a,
+            self.ui.almanacAstronomical: self.mainW.M_PRIM3a,
+            self.ui.almanacNautical: self.mainW.M_PRIM2a,
+            self.ui.almanacCivil: self.mainW.M_PRIM1a,
         }
-        for widget, color in self.colors.items():
-            widget.setStyleSheet(f"background-color: {self.mainW.rgb2hex(color)};")
+        for widget, c in self.colors.items():
+            val = f"background-color: rgba({c[0]}, {c[1]}, {c[2]}, {c[3]});"
+            val += f"border-color: rgba({c[0]}, {c[1]}, {c[2]}, {c[3]});"
+            widget.setStyleSheet(val)
 
     def plotAll(self) -> None:
         self.showTwilightDataList()

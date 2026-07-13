@@ -18,14 +18,12 @@ import pyqtgraph as pg
 from dataclasses import dataclass
 from dateutil.tz import tzlocal
 from importlib.resources import as_file, files
-
-from pytestqt.qtbot import QWidget
-
 from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, setPixmapAlpha
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QBrush, QColor, QPainter, QPen, QPixmap
+from pytestqt.qtbot import QWidget
 from range_key_dict import RangeKeyDict
 from skyfield import almanac
 from skyfield.timelib import Timescale
@@ -33,7 +31,7 @@ from skyfield.toposlib import GeographicPosition
 from skyfield.trigonometry import position_angle_of
 from typing import Any
 
-TWILIGHT_PLOT_DAYS: int = 182
+TWILIGHT_PLOT_DAYS: int = 91
 MAX_TWILIGHT_ROWS: int = 8
 MOON_RISE_DAYS: int = 2
 MOON_RISE_MAX: int = 3
@@ -141,7 +139,7 @@ class Almanac(TabAddon):
         brushes: list[QBrush] = []
         for widget, color in self.colors.items():
             colorHex = self.mainW.rgb2hex(color)
-            brushes.append(pg.mkBrush(color=colorHex, style=Qt.SolidPattern))
+            brushes.append(pg.mkBrush(color=colorHex, style=Qt.BrushStyle.SolidPattern))
 
         tLoc = t.utc_datetime() if self.app.timeMgr.unitTimeUTC else t.astimezone(tzlocal())
         refDay = [x.replace(hour=0, minute=0, second=0, microsecond=0) for x in tLoc]
@@ -173,11 +171,8 @@ class Almanac(TabAddon):
         events: list,
         labels: Any,
         timeFormat: str,
-        textColor: QColor | None = None,
     ) -> None:
         widget.clear()
-        if textColor is not None:
-            widget.setTextColor(textColor)
         text = ""
         for eventTime, event in zip(times, events):
             text += f"{self.app.timeMgr.convertTime(eventTime, timeFormat)} "
@@ -192,7 +187,6 @@ class Almanac(TabAddon):
             events,
             almanac.TWILIGHTS,
             "%H:%M:%S",
-            QColor(*self.mainW.M_PRIM),
         )
         title = "Sun " + self.app.timeMgr.timeZoneString()
         self.ui.sunAlmanacGroup.setTitle(title)

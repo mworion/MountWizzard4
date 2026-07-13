@@ -77,7 +77,7 @@ class Almanac(TabAddon):
         self.astronomical = None
         self.twilightTime = None
         self.twilightEvents = None
-        self.colors = None
+        self.colors: dict[int, Any] = None
         self.workerCalcTwilightDataPlot: Worker | None = None
         self.app.timeMgr.update30m.connect(self.showMoonPhase)
         self.app.colorChange.connect(self.updateColorSet)
@@ -89,19 +89,13 @@ class Almanac(TabAddon):
         self.updateColorSet()
 
     def setColors(self) -> None:
-        self.colors = [
-            self.mainW.M_PRIM4,
-            self.mainW.M_PRIM3,
-            self.mainW.M_PRIM2,
-            self.mainW.M_PRIM1,
-        ]
-        widgetColors = [
-            (self.ui.almanacCivil, self.mainW.M_PRIM1),
-            (self.ui.almanacNautical, self.mainW.M_PRIM2),
-            (self.ui.almanacAstronomical, self.mainW.M_PRIM3),
-            (self.ui.almanacDark, self.mainW.M_PRIM4),
-        ]
-        for widget, color in widgetColors:
+        self.colors = {
+            self.ui.almanacDark: self.mainW.M_PRIM4,
+            self.ui.almanacAstronomical: self.mainW.M_PRIM3,
+            self.ui.almanacNautical: self.mainW.M_PRIM2,
+            self.ui.almanacCivil: self.mainW.M_PRIM1,
+        }
+        for widget, color in self.colors.items():
             widget.setStyleSheet(f"background-color: {self.mainW.rgb2hex(color)};")
 
     def plotAll(self) -> None:
@@ -139,10 +133,9 @@ class Almanac(TabAddon):
         plotItem.setLimits(xMin=xMin, xMax=xMax, yMin=0, yMax=24)
         plotItem.setYRange(0, 24)
         plotItem.setXRange(xMin, xMax)
-
         brushes: list[QBrush] = []
-        for i in range(4):
-            colorHex = self.mainW.rgb2hex(self.colors[i])
+        for widget, color in self.colors.items():
+            colorHex = self.mainW.rgb2hex(color)
             brushes.append(pg.mkBrush(color=colorHex, style=Qt.SolidPattern))
 
         tLoc = t.utc_datetime() if self.app.timeMgr.unitTimeUTC else t.astimezone(tzlocal())

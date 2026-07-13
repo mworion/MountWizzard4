@@ -175,27 +175,66 @@ def test_calcMoonPhase_returns_moon_phase_data(almanac):
 
 
 def test_generateMoonMask_45_degrees(almanac):
-    """Test generateMoonMask with 45 degree angle."""
+    """Test generateMoonMask with 45 degree angle (waxing, add terminator)."""
     q = QPixmap(64, 64)
-    almanac.generateMoonMask(q, 45)
+    result = almanac.generateMoonMask(q, 45)
+    assert not result.isNull()
+    assert result.width() == 64
+    assert result.height() == 64
+
+
+def test_generateMoonMask_90_degrees(almanac):
+    """Test generateMoonMask with 90 degree angle (first quarter, r=0)."""
+    q = QPixmap(64, 64)
+    result = almanac.generateMoonMask(q, 90)
+    assert not result.isNull()
+    assert result.width() == 64
+    assert result.height() == 64
 
 
 def test_generateMoonMask_135_degrees(almanac):
-    """Test generateMoonMask with 135 degree angle."""
+    """Test generateMoonMask with 135 degree angle (waxing gibbous, clear)."""
     q = QPixmap(64, 64)
-    almanac.generateMoonMask(q, 135)
+    result = almanac.generateMoonMask(q, 135)
+    assert not result.isNull()
+    assert result.width() == 64
+    assert result.height() == 64
+
+
+def test_generateMoonMask_180_degrees(almanac):
+    """Test generateMoonMask with 180 degree angle (full moon, r=-1)."""
+    q = QPixmap(64, 64)
+    result = almanac.generateMoonMask(q, 180)
+    assert not result.isNull()
+    assert result.width() == 64
+    assert result.height() == 64
 
 
 def test_generateMoonMask_225_degrees(almanac):
-    """Test generateMoonMask with 225 degree angle."""
+    """Test generateMoonMask with 225 degree angle (waning gibbous, clear)."""
     q = QPixmap(64, 64)
-    almanac.generateMoonMask(q, 225)
+    result = almanac.generateMoonMask(q, 225)
+    assert not result.isNull()
+    assert result.width() == 64
+    assert result.height() == 64
+
+
+def test_generateMoonMask_270_degrees(almanac):
+    """Test generateMoonMask with 270 degree angle (third quarter, r=0)."""
+    q = QPixmap(64, 64)
+    result = almanac.generateMoonMask(q, 270)
+    assert not result.isNull()
+    assert result.width() == 64
+    assert result.height() == 64
 
 
 def test_generateMoonMask_315_degrees(almanac):
-    """Test generateMoonMask with 315 degree angle."""
+    """Test generateMoonMask with 315 degree angle (waning, add terminator)."""
     q = QPixmap(64, 64)
-    almanac.generateMoonMask(q, 315)
+    result = almanac.generateMoonMask(q, 315)
+    assert not result.isNull()
+    assert result.width() == 64
+    assert result.height() == 64
 
 
 def test_showMoonPhase_displays_phase(almanac):

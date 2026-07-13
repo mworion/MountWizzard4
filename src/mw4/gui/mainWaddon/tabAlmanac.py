@@ -15,6 +15,7 @@
 ###########################################################
 import numpy as np
 import pyqtgraph as pg
+from dataclasses import dataclass
 from dateutil.tz import tzlocal
 from importlib.resources import as_file, files
 from mw4.base.tpool import Worker
@@ -24,9 +25,29 @@ from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QBrush, QColor, QPainter, QPen, QPixmap
 from range_key_dict import RangeKeyDict
 from skyfield import almanac
+from skyfield.timelib import Timescale
 from skyfield.toposlib import GeographicPosition
 from skyfield.trigonometry import position_angle_of
 from typing import Any
+
+TWILIGHT_PLOT_DAYS: int = 182
+MAX_TWILIGHT_ROWS: int = 8
+MOON_RISE_DAYS: int = 2
+MOON_RISE_MAX: int = 3
+MOON_NODE_DAYS: int = 29
+MOON_NODE_MAX: int = 2
+
+
+@dataclass
+class MoonPhaseData:
+    illumination: float
+    degree: float
+    percent: float
+    angle: Any
+    moonTimes: Any
+    moonEvents: Any
+    nodeTimes: Any
+    nodeEvents: Any
 
 
 class Almanac(TabAddon):
@@ -57,7 +78,7 @@ class Almanac(TabAddon):
         self.twilightTime = None
         self.twilightEvents = None
         self.colors = None
-        self.worker: Worker | None = None
+        self.workerCalcTwilightDataPlot: Worker | None = None
         self.app.timeMgr.update30m.connect(self.showMoonPhase)
         self.app.colorChange.connect(self.updateColorSet)
         self.app.timebaseChanged.connect(self.showTwilightDataList)
@@ -74,14 +95,14 @@ class Almanac(TabAddon):
             self.mainW.M_PRIM2,
             self.mainW.M_PRIM1,
         ]
-        color = self.mainW.rgb2hex(self.mainW.M_PRIM1)
-        self.ui.almanacCivil.setStyleSheet(f"background-color: {color};")
-        color = self.mainW.rgb2hex(self.mainW.M_PRIM2)
-        self.ui.almanacNautical.setStyleSheet(f"background-color: {color};")
-        color = self.mainW.rgb2hex(self.mainW.M_PRIM3)
-        self.ui.almanacAstronomical.setStyleSheet(f"background-color: {color};")
-        color = self.mainW.rgb2hex(self.mainW.M_PRIM4)
-        self.ui.almanacDark.setStyleSheet(f"background-color: {color};")
+        widgetColors = [
+            (self.ui.almanacCivil, self.mainW.M_PRIM1),
+            (self.ui.almanacNautical, self.mainW.M_PRIM2),
+            (self.ui.almanacAstronomical, self.mainW.M_PRIM3),
+            (self.ui.almanacDark, self.mainW.M_PRIM4),
+        ]
+        for widget, color in widgetColors:
+            widget.setStyleSheet(f"background-color: {self.mainW.rgb2hex(color)};")
 
     def plotAll(self) -> None:
         self.showTwilightDataList()
@@ -93,7 +114,7 @@ class Almanac(TabAddon):
         self.ui.twilight.colorChange()
         self.plotAll()
 
-    def plotTwilightData(self, result) -> None:
+    def plotTwilightData(self, result: tuple) -> None:
         ts, t, e = result
         xMin = int(t[0].tt) + 1
         xMax = int(t[-1].tt) - 1
@@ -147,21 +168,39 @@ class Almanac(TabAddon):
         plotItem.addLine(x=xNow, pen=penLine)
         changeStyleDynamic(self.ui.almanacGroup, "run", False)
 
-    def listTwilightData(self, timeEvents, events):
+    def renderEventList(
+        self,
+        widget: Any,
+        times: list,
+        events: list,
+        labels: Any,
+        timeFormat: str,
+        textColor: QColor | None = None,
+    ) -> None:
+        widget.clear()
+        if textColor is not None:
+            widget.setTextColor(textColor)
         text = ""
-        self.ui.twilightEvents.clear()
-        self.ui.twilightEvents.setTextColor(QColor(*self.mainW.M_PRIM))
-
-        for timeEvent, event in zip(timeEvents, events):
-            text += f"{self.app.timeMgr.convertTime(timeEvent, '%H:%M:%S')} "
-            text += f"{almanac.TWILIGHTS[event]}"
-            self.ui.twilightEvents.insertPlainText(text)
+        for eventTime, event in zip(times, events):
+            text += f"{self.app.timeMgr.convertTime(eventTime, timeFormat)} "
+            text += f"{labels[event]}"
+            widget.insertPlainText(text)
             text = "\n"
+
+    def listTwilightData(self, timeEvents: list, events: list) -> None:
+        self.renderEventList(
+            self.ui.twilightEvents,
+            timeEvents,
+            events,
+            almanac.TWILIGHTS,
+            "%H:%M:%S",
+            QColor(*self.mainW.M_PRIM),
+        )
         title = "Sun " + self.app.timeMgr.timeZoneString()
         self.ui.sunAlmanacGroup.setTitle(title)
 
     def calcTwilightData(
-        self, ts, location: GeographicPosition, tWinL: int, tWinH: int
+        self, ts: Timescale, location: GeographicPosition, tWinL: int, tWinH: int
     ) -> tuple[list, list]:
         timeJD = self.app.dReg["mount"].obsSite.timeJD
         t0 = ts.tt_jd(int(timeJD.tt) - tWinL)
@@ -171,9 +210,9 @@ class Almanac(TabAddon):
         twilightTime, twilightEvents = almanac.find_discrete(t0, t1, f)
         return twilightTime, twilightEvents
 
-    def workerCalcTwilightDataPlot(
-        self, ts, location: GeographicPosition, timeWindow
-    ) -> tuple[list, list, list]:
+    def runnerCalcTwilightDataPlot(
+        self, ts: Timescale, location: GeographicPosition, timeWindow: int
+    ) -> tuple[Timescale, list, list]:
         t, e = self.calcTwilightData(ts, location, timeWindow, timeWindow)
         return ts, t, e
 
@@ -181,14 +220,16 @@ class Almanac(TabAddon):
         location = self.app.dReg["mount"].obsSite.location
         if location is None:
             return
-        timeWindow = 182
+        timeWindow = TWILIGHT_PLOT_DAYS
         t = f"Twilight passes for: 1 year {self.app.timeMgr.timeZoneString()}"
         self.ui.almanacGroup.setTitle(t)
         ts = self.app.dReg["mount"].obsSite.ts
         changeStyleDynamic(self.ui.almanacGroup, "run", True)
-        self.worker = Worker(self.workerCalcTwilightDataPlot, ts, location, timeWindow)
-        self.worker.signals.result.connect(self.plotTwilightData)
-        self.app.threadPool.start(self.worker)
+        self.workerCalcTwilightDataPlot = Worker(
+            self.runnerCalcTwilightDataPlot, ts, location, timeWindow
+        )
+        self.workerCalcTwilightDataPlot.signals.result.connect(self.plotTwilightData)
+        self.app.threadPool.start(self.workerCalcTwilightDataPlot)
 
     def showTwilightDataList(self) -> None:
         location = self.app.dReg["mount"].obsSite.location
@@ -198,9 +239,12 @@ class Almanac(TabAddon):
         ts = self.app.dReg["mount"].obsSite.ts
         result = self.calcTwilightData(ts, location, 0, 1)
         self.twilightTime, self.twilightEvents = result
-        self.listTwilightData(self.twilightTime[:8], self.twilightEvents[:8])
+        self.listTwilightData(
+            self.twilightTime[:MAX_TWILIGHT_ROWS],
+            self.twilightEvents[:MAX_TWILIGHT_ROWS],
+        )
 
-    def calcMoonPhase(self) -> list:
+    def calcMoonPhase(self) -> MoonPhaseData:
         ephemeris = self.app.ephemeris
         sun = ephemeris["sun"]
         moon = ephemeris["moon"]
@@ -218,36 +262,39 @@ class Almanac(TabAddon):
         mpIllumination = almanac.fraction_illuminated(ephemeris, "moon", now)
         mpDegree = (moonLon.degrees - sunLon.degrees) % 360.0
         mpPercent = mpDegree / 360 * 100
-        retVal = [mpIllumination, mpDegree, mpPercent]
 
         locObserver = (loc + earth).at(timeJD)
         moonApparent = locObserver.observe(moon).apparent()
         sunApparent = locObserver.observe(sun).apparent()
         moonAngle = position_angle_of(moonApparent.altaz(), sunApparent.altaz())
-        retVal.append(moonAngle)
 
         # calc rise and set times
         t0 = ts.tt_jd(int(timeJD.tt))
-        t1 = ts.tt_jd(int(timeJD.tt) + 2)
+        t1 = ts.tt_jd(int(timeJD.tt) + MOON_RISE_DAYS)
 
         f = almanac.risings_and_settings(ephemeris, ephemeris["moon"], loc)
         moonTimes, moonEvents = almanac.find_discrete(t0, t1, f)
-        moonTimes = moonTimes[0:3]
-        moonEvents = moonEvents[0:3]
-        retVal.append(moonTimes)
-        retVal.append(moonEvents)
+        moonTimes = moonTimes[0:MOON_RISE_MAX]
+        moonEvents = moonEvents[0:MOON_RISE_MAX]
 
         # calc nodes
         t0 = ts.tt_jd(int(timeJD.tt))
-        t1 = ts.tt_jd(int(timeJD.tt) + 29)
+        t1 = ts.tt_jd(int(timeJD.tt) + MOON_NODE_DAYS)
         f = almanac.moon_nodes(ephemeris)
         nodeTimes, nodeEvents = almanac.find_discrete(t0, t1, f)
-        nodeTimes = nodeTimes[0:2]
-        nodeEvents = nodeEvents[0:2]
-        retVal.append(nodeTimes)
-        retVal.append(nodeEvents)
+        nodeTimes = nodeTimes[0:MOON_NODE_MAX]
+        nodeEvents = nodeEvents[0:MOON_NODE_MAX]
 
-        return retVal
+        return MoonPhaseData(
+            illumination=mpIllumination,
+            degree=mpDegree,
+            percent=mpPercent,
+            angle=moonAngle,
+            moonTimes=moonTimes,
+            moonEvents=moonEvents,
+            nodeTimes=nodeTimes,
+            nodeEvents=nodeEvents,
+        )
 
     def generateMoonMask(self, pixmap: QPixmap, mpDegree: float) -> QPixmap:
         colCover = QColor(*self.mainW.M_BACK)
@@ -267,82 +314,54 @@ class Almanac(TabAddon):
         moonMask.fill(QColor("transparent"))
 
         maskPainter = QPainter(moonMask)
-        maskPainter.setBrush(Qt.BrushStyle.SolidPattern)
-        maskPainter.setBrush(colFree)
+        maskPainter.setBrush(colCover)
         maskPainter.setPen(penFrame)
 
-        if 0 <= mpDegree <= 90:
-            maskPainter.setBrush(colCover)
-            maskPainter.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
+        # Cover the shaded half-disc: left half up to full moon, right half after.
+        pieStart = 90 * 16 if mpDegree <= 180 else -90 * 16
+        maskPainter.drawPie(0, 0, width, height, pieStart, 180 * 16)
 
-            r = float(np.cos(np.radians(mpDegree)) * w2)
+        # Terminator ellipse: add cover while cos >= 0, clear it otherwise.
+        r = float(np.cos(np.radians(mpDegree)) * w2)
+        if r >= 0:
             maskPainter.setBrush(colCover)
             maskPainter.setPen(penCov)
-            maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
-
-        elif 90 < mpDegree <= 180:
-            maskPainter.setBrush(colCover)
-            maskPainter.drawPie(0, 0, width, height, 90 * 16, 180 * 16)
-
+        else:
             maskPainter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Clear)
-            r = float(np.cos(np.radians(mpDegree)) * w2)
-            maskPainter.setBrush(colFree)
-            maskPainter.setPen(colFree)
-            maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
-
-        elif 180 < mpDegree <= 270:
-            maskPainter.setBrush(colCover)
-            maskPainter.drawPie(0, 0, width, height, -90 * 16, 180 * 16)
-
-            maskPainter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Clear)
-            r = float(np.cos(np.radians(mpDegree)) * w2)
             maskPainter.setBrush(colFree)
             maskPainter.setPen(penFree)
-            maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
-
-        else:
-            maskPainter.setBrush(colCover)
-            maskPainter.drawPie(0, 0, width, height, -90 * 16, 180 * 16)
-
-            r = float(np.cos(np.radians(mpDegree)) * w2)
-            maskPainter.setPen(penCov)
-            maskPainter.setBrush(colCover)
-            maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
+        maskPainter.drawEllipse(QPointF(w2, h2), r, h2)
 
         maskPainter.end()
         return moonMask
 
-    def showMoonPhase(self) -> None:
-        calcMoon = self.calcMoonPhase()
+    def showMoonNumbers(self, data: MoonPhaseData) -> None:
+        self.ui.moonPhaseIllumination.setText(f"{data.illumination * 100:3.1f}")
+        self.ui.moonPhasePercent.setText(f"{data.percent:3.0f}")
+        self.ui.moonPhaseDegree.setText(f"{data.degree:3.0f}")
+        self.ui.moonPhaseText.setText(self.phasesText[data.percent])
 
-        mpIllumination, mpDegree, mpPercent, moonAngle = calcMoon[0:4]
-        self.ui.moonPhaseIllumination.setText(f"{mpIllumination * 100:3.1f}")
-        self.ui.moonPhasePercent.setText(f"{mpPercent:3.0f}")
-        self.ui.moonPhaseDegree.setText(f"{mpDegree:3.0f}")
-
-        moonTimes, moonEvents = calcMoon[4:6]
-        text = ""
-        self.ui.riseSetEventsMoon.clear()
-        moon = ["set", "rise"]
-        for moonTime, moonEvent in zip(moonTimes, moonEvents):
-            textTime = self.app.timeMgr.convertTime(moonTime, "%d.%m. %H:%M")
-            text += f"{textTime} {moon[moonEvent]}"
-            self.ui.riseSetEventsMoon.insertPlainText(text)
-            text = "\n"
+    def showMoonRiseSet(self, data: MoonPhaseData) -> None:
+        self.renderEventList(
+            self.ui.riseSetEventsMoon,
+            data.moonTimes,
+            data.moonEvents,
+            ["set", "rise"],
+            "%d.%m. %H:%M",
+        )
         title = "Moon " + self.app.timeMgr.timeZoneString()
         self.ui.moonAlmanacGroup.setTitle(title)
-        self.ui.moonPhaseText.setText(self.phasesText[mpPercent])
 
-        nodeTimes, nodeEvents = calcMoon[6:8]
-        text = ""
-        self.ui.nodeEvents.clear()
-        node = ["ascending", "descending"]
-        for nodeTime, nodeEvent in zip(nodeTimes, nodeEvents):
-            textTime = self.app.timeMgr.convertTime(nodeTime, "%d.%m. %H:%M")
-            text += f"{textTime} {node[nodeEvent]}"
-            self.ui.nodeEvents.insertPlainText(text)
-            text = "\n"
+    def showMoonNodes(self, data: MoonPhaseData) -> None:
+        self.renderEventList(
+            self.ui.nodeEvents,
+            data.nodeTimes,
+            data.nodeEvents,
+            ["ascending", "descending"],
+            "%d.%m. %H:%M",
+        )
 
+    def renderMoonImage(self, mpDegree: float) -> None:
         with as_file(files("mw4").joinpath("assets/pics/moon.png")) as imageFile:
             moon = QPixmap(str(imageFile))
         moonMask = self.generateMoonMask(moon, mpDegree)
@@ -358,3 +377,10 @@ class Almanac(TabAddon):
         pm = moon.scaled(width, height)
         pm = setPixmapAlpha(pm, self.mainW.transparency)
         self.ui.moonPic.setPixmap(pm)
+
+    def showMoonPhase(self) -> None:
+        data = self.calcMoonPhase()
+        self.showMoonNumbers(data)
+        self.showMoonRiseSet(data)
+        self.showMoonNodes(data)
+        self.renderMoonImage(data.degree)

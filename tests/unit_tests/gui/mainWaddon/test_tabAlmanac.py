@@ -17,7 +17,7 @@
 import numpy as np
 import pytest
 import threading
-from mw4.gui.mainWaddon.tabAlmanac import Almanac
+from mw4.gui.mainWaddon.tabAlmanac import Almanac, MoonPhaseData
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtGui import QPixmap
@@ -116,15 +116,15 @@ def test_calcTwilightData_calculates_values(almanac):
     assert val
 
 
-def test_workerCalcTwilightDataPlot_processes_data(almanac):
-    """Test workerCalcTwilightDataPlot processes twilight plot data."""
+def test_runnerCalcTwilightDataPlot_processes_data(almanac):
+    """Test runnerCalcTwilightDataPlot processes twilight plot data."""
     location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
     ts = almanac.app.mount.obsSite.ts
     tsNow = ts.now()
     t = ts.tt_jd([tsNow.tt, tsNow.tt])
     e = np.array([1, 1])
     with mock.patch.object(almanac, "calcTwilightData", return_value=(t, e)):
-        suc = almanac.workerCalcTwilightDataPlot(ts, location, timeWindow=0)
+        suc = almanac.runnerCalcTwilightDataPlot(ts, location, timeWindow=0)
         assert suc
 
 
@@ -160,10 +160,18 @@ def test_showTwilightDataList_with_location(almanac):
         almanac.showTwilightDataList()
 
 
-def test_calcMoonPhase_returns_8_values(almanac):
-    """Test calcMoonPhase returns 8 values."""
+def test_calcMoonPhase_returns_moon_phase_data(almanac):
+    """Test calcMoonPhase returns MoonPhaseData with all fields."""
     val = almanac.calcMoonPhase()
-    assert len(val) == 8
+    assert isinstance(val, MoonPhaseData)
+    assert val.illumination is not None
+    assert val.degree is not None
+    assert val.percent is not None
+    assert val.angle is not None
+    assert val.moonTimes is not None
+    assert val.moonEvents is not None
+    assert val.nodeTimes is not None
+    assert val.nodeEvents is not None
 
 
 def test_generateMoonMask_45_degrees(almanac):
@@ -195,7 +203,7 @@ def test_showMoonPhase_displays_phase(almanac):
     ts = almanac.app.mount.obsSite.ts
     tsNow = ts.now()
     t = ts.tt_jd([tsNow.tt, tsNow.tt])
-    val = (20, 45, 0.20, 0, t, [0, 1], t, [0, 1])
+    val = MoonPhaseData(20, 45, 0.20, 0, t, [0, 1], t, [0, 1])
     with mock.patch.object(almanac, "calcMoonPhase", return_value=val):
         almanac.showMoonPhase()
 
@@ -205,7 +213,7 @@ def test_showMoonPhase_handles_data(almanac):
     ts = almanac.app.mount.obsSite.ts
     tsNow = ts.now()
     t = ts.tt_jd([tsNow.tt, tsNow.tt])
-    val = (20, 45, 0.20, 0, t, [0, 1], t, [0, 1])
+    val = MoonPhaseData(20, 45, 0.20, 0, t, [0, 1], t, [0, 1])
     with mock.patch.object(almanac, "calcMoonPhase", return_value=val):
         almanac.showMoonPhase()
 

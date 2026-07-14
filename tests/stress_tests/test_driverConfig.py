@@ -23,6 +23,7 @@ from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from PySide6.QtCore import Qt, QThreadPool
 from PySide6.QtTest import QTest
+import shutil
 
 mwglob = {
     "dataDir": Path("tests/work/assets"),
@@ -49,7 +50,8 @@ def module_setup_teardown():
         for f in files:
             if "empty" in f:
                 continue
-            os.remove(f)
+            if os.path.isfile(f):
+                os.remove(f)
 
     extractDataFiles(mwGlob=mwglob)
 
@@ -62,30 +64,25 @@ def module_setup_teardown():
         for f in files:
             if "empty" in f:
                 continue
-            os.remove(f)
+            if os.path.isfile(f):
+                os.remove(f)
 
 
 def test_configAlpaca(qtbot, qapp):
-    def run():
-        qapp.exec_()
-
     app = MountWizzard4(mwGlob=mwglob, application=qapp, test=1)
 
-    worker = Worker(run)
-    tp.start(worker)
     qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.cameraSetup, Qt.MouseButton.LeftButton)
     popup = app.mainW.popupUi
     qtbot.waitExposed(popup, timeout=1000)
     popup.ui.tab.setCurrentIndex(0)
-    QTest.qWait(1000)
 
     popup.ui.alpacaHostAddress.setText("192.168.2.211")
     popup.ui.alpacaPort.setText("11111")
     popup.ui.alpacaCopyConfig.setChecked(True)
     qtbot.mouseClick(popup.ui.alpacaDiscover, Qt.MouseButton.LeftButton)
-    QTest.qWait(1000)
     qtbot.mouseClick(popup.ui.ok, Qt.MouseButton.LeftButton)
 
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.MouseButton.LeftButton)
+    with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
+        pass

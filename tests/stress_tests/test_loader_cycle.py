@@ -193,7 +193,7 @@ def test_loader_startup_cycles(qtbot, qapp):
     2. ``qtbot.waitExposed(app.mainW)``
        Confirms the main window is visible on screen.
 
-    3. ``qtbot.waitSignal(app.update10s)``
+    3. ``qtbot.waitSignal(app.timeMgr.update10s)``
        Processes Qt events until update10s fires (≈ 8 s, timerCounter == 80).
        Because quit() is connected *before* the waitSignal slot,
        quit() → qapp.quit() runs first, exiting the local QEventLoop;
@@ -231,7 +231,7 @@ def test_loader_startup_cycles(qtbot, qapp):
         # ── run until auto-quit ───────────────────────────
         if status == "ok":
             try:
-                with qtbot.waitSignal(app.update10s, timeout=QUIT_TIMEOUT_MS, raising=True):
+                with qtbot.waitSignal(app.timeMgr.update10s, timeout=QUIT_TIMEOUT_MS, raising=True):
                     pass  # event loop runs here; update10s fires → quit()
             except Exception as exc:
                 status = f"quit-timeout ({exc.__class__.__name__})"

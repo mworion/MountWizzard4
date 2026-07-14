@@ -19,11 +19,10 @@ import os
 import pytest
 import shutil
 from mw4.base.bootstrap import extractDataFiles
-from mw4.base.tpool import Worker
+from mw4.gui.utilities.qtHelpers import sleepAndEvents
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from PySide6.QtCore import Qt, QThreadPool
-from PySide6.QtTest import QTest
 from random import randint
 
 mwglob = {
@@ -50,7 +49,8 @@ def module_setup_teardown():
         for f in files:
             if "empty" in f:
                 continue
-            os.remove(f)
+            if os.path.isfile(f):
+                os.remove(f)
     extractDataFiles(mwGlob=mwglob)
     shutil.copy("tests/testData/star1.fits", "tests/work/image/star1.fits")
 
@@ -62,18 +62,14 @@ def module_setup_teardown():
         for f in files:
             if "empty" in f:
                 continue
-            os.remove(f)
+            if os.path.isfile(f):
+                os.remove(f)
     tp.waitForDone(1000)
 
 
 def test_showImagesPhotometry(qtbot, qapp):
     # open all windows and close them
-    def run():
-        qapp.exec_()
-
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-    worker = Worker(run)
-    tp.start(worker)
+    app = MountWizzard4(mwGlob=mwglob, application=qapp, test=1)
     app.mainW.move(100, 100)
     qtbot.waitExposed(app.mainW, timeout=1000)
 
@@ -92,7 +88,7 @@ def test_showImagesPhotometry(qtbot, qapp):
             qtbot.mouseClick(imageW.ui.isoLayer, Qt.LeftButton)
         index = TAB[randint(0, 1)]
         imageW.ui.tabImage.setCurrentIndex(index)
-        QTest.qWait(randint(50, 500))
+        sleepAndEvents(randint(50, 500))
 
-    QTest.qWait(5000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
+    with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
+        pass

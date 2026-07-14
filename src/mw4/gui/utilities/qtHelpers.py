@@ -16,9 +16,11 @@
 from importlib.resources import as_file, files
 from mw4.mountcontrol.convert import formatDstrToText, formatHstrToText
 from PySide6.QtCore import (
+    QCoreApplication,
     QEvent,
     QObject,
     Qt,
+    QTimer,
     Signal,
     SignalInstance,
 )
@@ -186,3 +188,17 @@ def positionCursorInTable(table: QTableWidget, searchName: str) -> None:
     index = table.row(item)
     table.selectRow(index)
     table.scrollToItem(item, QAbstractItemView.ScrollHint.EnsureVisible)
+
+
+def sleepAndEvents(milliseconds: int) -> None:
+    """Sleep while processing Qt events.
+    
+    Args:
+        milliseconds: Duration to sleep in milliseconds
+    """
+    endTime = QTimer()
+    endTime.setSingleShot(True)
+    endTime.timeout.connect(lambda: None)
+    endTime.start(milliseconds)
+    while endTime.isActive():
+        QCoreApplication.processEvents()

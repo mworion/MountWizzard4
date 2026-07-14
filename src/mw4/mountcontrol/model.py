@@ -9,7 +9,7 @@
 # Python-based Tool for interaction with the 10_micron mounts
 # GUI with PySide
 #
-# Michael Würtenberger
+# Michael Wuertenberger
 #
 # written in python3, (c) 2019-2026 by mworion
 # License APL2.0

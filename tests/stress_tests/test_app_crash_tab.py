@@ -19,11 +19,11 @@ import os
 import pytest
 import random
 from mw4.base.bootstrap import extractDataFiles
-from mw4.base.tpool import Worker
+from mw4.gui.utilities.qtHelpers import sleepAndEvents
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from PySide6.QtCore import Qt, QThreadPool
-from PySide6.QtTest import QTest
+import shutil
 
 mwglob = {
     "dataDir": Path("tests/work/assets"),
@@ -49,7 +49,8 @@ def module_setup_teardown():
         for f in files:
             if "empty" in f:
                 continue
-            os.remove(f)
+            if os.path.isfile(f):
+                os.remove(f)
     extractDataFiles(mwGlob=mwglob)
     yield
     for d in mwglob:
@@ -59,18 +60,14 @@ def module_setup_teardown():
         for f in files:
             if "empty" in f:
                 continue
-            os.remove(f)
+            if os.path.isfile(f):
+                os.remove(f)
     tp.waitForDone(1000)
 
 
 def test_1(qtbot, qapp):
     # open all windows and close them
-    def run():
-        qapp.exec_()
-
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-    worker = Worker(run)
-    tp.start(worker)
+    app = MountWizzard4(mwGlob=mwglob, application=qapp, test=1)
     qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.mainTabWidget, Qt.LeftButton)
@@ -79,14 +76,14 @@ def test_1(qtbot, qapp):
         app.mainW.ui.mainTabWidget.setCurrentIndex(index)
         index = int(random.random() * app.mainW.ui.settingsTabWidget.count())
         app.mainW.ui.settingsTabWidget.setCurrentIndex(index)
-        QTest.qWait(100)
+        sleepAndEvents(100)
     qtbot.mouseClick(app.mainW.ui.isOnline, Qt.LeftButton)
     for index in range(50):
         index = int(random.random() * app.mainW.ui.mainTabWidget.count())
         app.mainW.ui.mainTabWidget.setCurrentIndex(index)
         index = int(random.random() * app.mainW.ui.settingsTabWidget.count())
         app.mainW.ui.settingsTabWidget.setCurrentIndex(index)
-        QTest.qWait(100)
+        sleepAndEvents(100)
     qtbot.mouseClick(app.mainW.ui.mountHost, Qt.LeftButton)
     app.mainW.ui.mountHost.setText("192.168.2.15")
     qtbot.keyPress(app.mainW.ui.mountHost, "\r")
@@ -95,7 +92,7 @@ def test_1(qtbot, qapp):
         app.mainW.ui.mainTabWidget.setCurrentIndex(index)
         index = int(random.random() * app.mainW.ui.settingsTabWidget.count())
         app.mainW.ui.settingsTabWidget.setCurrentIndex(index)
-        QTest.qWait(100)
+        sleepAndEvents(100)
 
-    QTest.qWait(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
+    with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
+        pass

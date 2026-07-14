@@ -17,8 +17,8 @@
 import glob
 import os
 import pytest
+import shutil
 from mw4.base.bootstrap import extractDataFiles
-from mw4.base.tpool import Worker
 from mw4.gui.utilities.qtHelpers import sleepAndEvents
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
@@ -43,13 +43,16 @@ def module_setup_teardown():
     tp = QThreadPool()
 
     for d in mwglob:
+        path = Path(mwglob[d])
+        path.mkdir(parents=True, exist_ok=True)
         files = glob.glob(f"{mwglob[d]}/*")
         if "modelData" in d:
             continue
         for f in files:
             if "empty" in f:
                 continue
-            os.remove(f)
+            if os.path.isfile(f):
+                os.remove(f)
 
     extractDataFiles(mwGlob=mwglob)
 
@@ -62,19 +65,15 @@ def module_setup_teardown():
         for f in files:
             if "empty" in f:
                 continue
-            os.remove(f)
+            if os.path.isfile(f):
+                os.remove(f)
 
     tp.waitForDone(3000)
 
 
 def test_1(qtbot, qapp):
-    def run():
-        qapp.exec_()
+    app = MountWizzard4(mwGlob=mwglob, application=qapp, test=1)
 
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-
-    worker = Worker(run)
-    tp.start(worker)
     qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openAnalyseW, Qt.LeftButton)
@@ -112,18 +111,13 @@ def test_1(qtbot, qapp):
         app.mainW.externalWindows.uiWindows["showSatelliteW"]["classObj"], timeout=1000
     )
 
-    sleepAndEvents(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
+    with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
+        pass
 
 
 def test_2(qtbot, qapp):
-    def run():
-        qapp.exec_()
+    app = MountWizzard4(mwGlob=mwglob, application=qapp, test=1)
 
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-
-    worker = Worker(run)
-    tp.start(worker)
     qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openAnalyseW, Qt.LeftButton)
@@ -132,17 +126,13 @@ def test_2(qtbot, qapp):
     )
 
     sleepAndEvents(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
+    with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
+        pass
 
 
 def test_3(qtbot, qapp):
-    def run():
-        qapp.exec_()
+    app = MountWizzard4(mwGlob=mwglob, application=qapp, test=1)
 
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-
-    worker = Worker(run)
-    tp.start(worker)
     qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openHemisphereW, Qt.LeftButton)
@@ -151,17 +141,13 @@ def test_3(qtbot, qapp):
     )
 
     sleepAndEvents(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
+    with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
+        pass
 
 
 def test_4(qtbot, qapp):
-    def run():
-        qapp.exec_()
+    app = MountWizzard4(mwGlob=mwglob, application=qapp, test=1)
 
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-
-    worker = Worker(run)
-    tp.start(worker)
     qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openImageW, Qt.LeftButton)
@@ -170,17 +156,13 @@ def test_4(qtbot, qapp):
     )
 
     sleepAndEvents(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
+    with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
+        pass
 
 
 def test_5(qtbot, qapp):
-    def run():
-        qapp.exec_()
+    app = MountWizzard4(mwGlob=mwglob, application=qapp, test=1)
 
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-
-    worker = Worker(run)
-    tp.start(worker)
     qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openKeypadW, Qt.LeftButton)
@@ -189,17 +171,13 @@ def test_5(qtbot, qapp):
     )
 
     sleepAndEvents(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
+    with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
+        pass
 
 
 def test_6(qtbot, qapp):
-    def run():
-        qapp.exec_()
+    app = MountWizzard4(mwGlob=mwglob, application=qapp, test=1)
 
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-
-    worker = Worker(run)
-    tp.start(worker)
     qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
@@ -208,17 +186,13 @@ def test_6(qtbot, qapp):
     )
 
     sleepAndEvents(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
+    with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
+        pass
 
 
 def test_7(qtbot, qapp):
-    def run():
-        qapp.exec_()
+    app = MountWizzard4(mwGlob=mwglob, application=qapp, test=1)
 
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-
-    worker = Worker(run)
-    tp.start(worker)
     qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openMessageW, Qt.LeftButton)
@@ -227,24 +201,21 @@ def test_7(qtbot, qapp):
     )
 
     sleepAndEvents(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
+    with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
+        pass
 
 
 def test_8(qtbot, qapp):
-    def run():
-        qapp.exec_()
+    app = MountWizzard4(mwGlob=mwglob, application=qapp, test=1)
 
-    app = MountWizzard4(mwGlob=mwglob, application=qapp)
-
-    worker = Worker(run)
-    tp.start(worker)
     qtbot.waitExposed(app.mainW, timeout=1000)
 
     qtbot.mouseClick(app.mainW.ui.openSatelliteW, Qt.LeftButton)
     qtbot.waitExposed(
-        app.uiWinmainW.externalWindows.uiWindowsdows["showSatelliteW"]["classObj"],
+        app.mainW.externalWindows.uiWindows["showSatelliteW"]["classObj"],
         timeout=1000,
     )
 
     sleepAndEvents(1000)
-    qtbot.mouseClick(app.mainW.ui.saveConfigQuit, Qt.LeftButton)
+    with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
+        pass

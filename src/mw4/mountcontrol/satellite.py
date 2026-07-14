@@ -78,7 +78,7 @@ class Satellite:
         https://www.celestrak.com/NORAD/documentation/tle-fmt.asp
         For example, loading the NOAA 14 element set of that page can be
         accomplished with:
-        TLEL0NOAA·14·················
+        TLE L0NOAA·14·················
         1·23455U·94089A···97320.90946019··.00000140··00000-0··10191-3·0··2621
         2·23455··99.0090·272.6745·0008546·223.1686·136.8816·14.11711747148495
         """
@@ -90,7 +90,7 @@ class Satellite:
         suc, _, _ = conn.communicate(commandString, responseCheck="V")
         return suc
 
-    def parseCalcTLE(self, response: list, numberOfChunks: int) -> bool:
+    def parseCalcTLE(self, response: list) -> bool:
         if len(response) != 3:
             self.log.warning("wrong number of chunks")
             return False
@@ -139,7 +139,7 @@ class Satellite:
         suc, response, numberOfChunks = conn.communicate(command)
         if not suc:
             return False
-        return self.parseCalcTLE(response, numberOfChunks)
+        return self.parseCalcTLE(response)
 
     def slewTLE(self) -> tuple:
         conn = Connection(self.parent)
@@ -150,7 +150,7 @@ class Satellite:
         message = self.TLES.get(response[0], "Error")
         return suc, message
 
-    def parseStatTLE(self, response: list, numberOfChunks: int) -> bool:
+    def parseStatTLE(self, response: list) -> bool:
         if len(response) != 1:
             self.log.warning("wrong number of chunks")
             return False
@@ -165,7 +165,7 @@ class Satellite:
         suc, response, numberOfChunks = conn.communicate(":TLESCK#")
         if not suc:
             return False
-        return self.parseStatTLE(response, numberOfChunks)
+        return self.parseStatTLE(response)
 
     def startProgTrajectory(self, julD: float) -> bool:
         """

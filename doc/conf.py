@@ -36,7 +36,7 @@
 
 project = "MountWizzard4"
 copy_year = "2025, mworion"
-author = "Michael Würtenberger"
+author = "Michael Wuertenberger"
 
 # The full version, including alpha/beta/rc tags
 version = "4.0.0a38"

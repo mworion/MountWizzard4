@@ -15,7 +15,6 @@
 ###########################################################
 import logging
 import numpy as np
-import platform
 from .connection import Connection
 from .convert import (
     sexagesimalizeToInt,
@@ -124,8 +123,6 @@ class ObsSite:
         )
         self.ts: Timescale = load.timescale(builtin=True)
         self._timeJD: Time = self.ts.now()
-        self.timePC: Time = self.ts.now()
-        self._timeDiff = np.full(25, 0.0)
         self.ut1_utc: float = 0
         self._timeSidereal: Angle | None = Angle(hours=0)
         self._raJNow: Angle = Angle(hours=0)
@@ -202,16 +199,6 @@ class ObsSite:
     def timeJD(self, value: Any) -> None:
         value = valueToFloat(value)
         self._timeJD = self.ts.tt_jd(value + self.UTC2TT)
-
-    @property
-    def timeDiff(self) -> float:
-        return float(np.mean(self._timeDiff))
-
-    @timeDiff.setter
-    def timeDiff(self, value: Any) -> None:
-        # Read-only: direct assignment is intentionally prevented;
-        # internal updates use self._timeDiff directly.
-        return
 
     @property
     def ut1_utc(self) -> float:
@@ -542,35 +529,6 @@ class ObsSite:
         if not suc:
             return False
         return self.parsePointing(response, numberOfChunks)
-
-    def pollSyncClock(self) -> bool:
-        if platform.system() in ("Windows", "Linux"):
-            corrTerm = -0.001
-        elif platform.system() == "Darwin":
-            corrTerm = -0.011
-        else:
-            corrTerm = 0
-        conn = Connection(self.parent)
-        commandString = ":GJD1#"
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-
-        self.timePC = self.ts.now()
-        timeMount = valueToFloat(response[0])
-        timeMount = self.ts.tt_jd(timeMount + self.UTC2TT)
-        self._timeDiff = np.roll(self._timeDiff, 1)
-        delta = (self.timePC - timeMount) * 86400 + corrTerm
-        self._timeDiff[0] = delta
-        return True
-
-    def adjustClock(self, delta: int) -> bool:
-        conn = Connection(self.parent)
-        sign = "+" if delta >= 0 else "-"
-        delta = abs(delta)
-        commandString = f":NUtim{sign}{delta:03.0f}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="1")
-        return suc
 
     def startSlewing(self, slewType: str = "normal") -> bool:
         slewTypes = {

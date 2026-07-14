@@ -493,7 +493,7 @@ class MountSett(TabAddon):
             return False
 
     def showOffset(self) -> None:
-        delta = self.app.dReg["mount"].obsSite.timeDiff * 1000
+        delta = self.app.dReg["mount"].instance.mountTime.timeDiff * 1000
         guiSetText(self.ui.timeDeltaPC2Mount, "4.0f", delta)
         guiSetText(
             self.ui.timeUTC, "s", self.app.dReg["mount"].timeJD.utc_strftime("%H:%M:%S")

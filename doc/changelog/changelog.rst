@@ -6,13 +6,14 @@ Beta versions
 
 Version 4.x
 ^^^^^^^^^^^
-4.0.0b0
+4.0.0b14
 
 - this is a major release !
   please try out in a separate work folder for test!
   for 2024 Hardware, please use the 3.2.5 or later firmware!
+  MW4 will normally support only the latest 3 python versions.
 
-- add: support for python 3.12 and 3.14, remove 3.7 - 3.10
+- add: support for python 3.12 and 3.14, remove 3.7 - 3.11
 - add: native support for Macs with Apple silicon
 - add: comets / asteroids uploads now without 10micron installer
 - add: support uploading mechanism for databases for macos and linux

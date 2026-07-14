@@ -14,7 +14,6 @@
 #
 ###########################################################
 import logging
-import socket
 import wakeonlan
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -23,6 +22,7 @@ from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.geometry import Geometry
 from mw4.mountcontrol.model import Model
 from mw4.mountcontrol.mountSignals import MountSignals
+from mw4.mountcontrol.mountTime import MountTime
 from mw4.mountcontrol.obsSite import MountStatus, ObsSite
 from mw4.mountcontrol.satellite import Satellite
 from mw4.mountcontrol.setting import Setting
@@ -50,7 +50,6 @@ class DeviceConfigMount:
 class MountDevice(QObject):
     CYCLE_POINTING: Final[int] = 500
     CYCLE_DOME: Final[int] = 950
-    CYCLE_MOUNT_UP: Final[int] = 1000
     CYCLE_SETTING: Final[int] = 3100
     SOCKET_TIMEOUT: Final[float] = 1.0
     ALERT_STATUS_CODES: Final[frozenset[MountStatus]] = frozenset(
@@ -74,16 +73,16 @@ class MountDevice(QObject):
         self.pathToData: Path = app.mwGlob["dataDir"]
         self.verbose: bool = verbose
         self.loggingTrace: bool = False
+        self.mountIsUp: bool = False
         self.signals = MountSignals()
-        self.firmware = Firmware(parent=self)
-        self.setting = Setting(parent=self)
-        self.obsSite = ObsSite(parent=self, verbose=self.verbose)
-        self.satellite = Satellite(parent=self)
-        self.geometry = Geometry(parent=self)
-        self.model = Model(parent=self)
+        self.firmware = Firmware(self)
+        self.setting = Setting(self)
+        self.obsSite = ObsSite(self, verbose=self.verbose)
+        self.satellite = Satellite(self)
+        self.geometry = Geometry(self)
+        self.model = Model(self)
+        self.mountTime = MountTime(self)
 
-        self.workerMountIsUp: Worker | None = None
-        self.workerCycleClock: Worker | None = None
         self.workerCycleSetting: Worker | None = None
         self.workerCyclePointing: Worker | None = None
         self.workerGetLocation: Worker | None = None
@@ -94,14 +93,11 @@ class MountDevice(QObject):
         self.workerGetModel: Worker | None = None
         self.workerGetNames: Worker | None = None
         self.workerTrajectory: Worker | None = None
-        self.mutexCycleMountIsUp = QMutex()
-        self.mutexCycleClock = QMutex()
         self.mutexCycleSetting = QMutex()
         self.mutexCyclePointing = QMutex()
         self.mutexGetTLE = QMutex()
         self.mutexCalcTLE = QMutex()
         self.mountIsUp: bool = False
-        self.mountIsUpLastStatus: bool = False
         self.statusAlert: bool = False
         self.statusSlew: bool = False
 
@@ -111,15 +107,11 @@ class MountDevice(QObject):
         self.timerSetting = QTimer()
         self.timerSetting.setSingleShot(False)
         self.timerSetting.timeout.connect(self.cycleSetting)
-        self.timerMountIsUp = QTimer()
-        self.timerMountIsUp.setSingleShot(False)
-        self.timerMountIsUp.timeout.connect(self.cycleCheckMountIsUp)
         self.settlingWait = QTimer()
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitAfterSettlingAndEmit)
+        self.signals.mountIsUp.connect(self.startupMountData)
         self.app.timeMgr.update1s.connect(self.collectData)
-        self.app.timeMgr.update1s.connect(self.cycleClock)
-        self.app.timeMgr.update30s.connect(self.syncClock)
         self.app.timeMgr.start3s.connect(self.resetAfterStart)
         self.data: dict = {}
         self.raRef: float = 0.0
@@ -151,7 +143,7 @@ class MountDevice(QObject):
         self.data["errorAngularPosRA"] = self.obsSite.errorAngularPosRA.degrees * 3600
         self.data["errorAngularPosDEC"] = self.obsSite.errorAngularPosDEC.degrees * 3600
         self.data["status"] = self.obsSite.status
-        self.data["timeDiff"] = self.obsSite.timeDiff * 1000
+        self.data["timeDiff"] = self.mountTime.timeDiff * 1000
 
     def waitAfterSettlingAndEmit(self) -> None:
         self.signals.slewed.emit()
@@ -178,58 +170,27 @@ class MountDevice(QObject):
         self.threadPool.start(worker)
 
     def startMountCoreTimers(self) -> None:
-        self.timerMountIsUp.start(self.CYCLE_MOUNT_UP)
+        if not self.mountIsUp:
+            return
         self.timerPointing.start(self.CYCLE_POINTING)
         self.timerSetting.start(self.CYCLE_SETTING)
 
     def stopAllMountTimers(self) -> None:
-        self.timerMountIsUp.stop()
+        if not self.mountIsUp:
+            return
         self.timerPointing.stop()
         self.timerSetting.stop()
 
-    def startupMountData(self) -> None:
-        if self.mountIsUp and not self.mountIsUpLastStatus:
-            self.mountIsUpLastStatus = True
-            self.obsSite.setHighPrecision()
-            self.getFW()
-            self.getLocation()
-            self.app.refreshModel.emit()
-            self.app.refreshName.emit()
-            self.getTLE()
-            self.signals.deviceConnected.emit("mount")
-        elif not self.mountIsUp and self.mountIsUpLastStatus:
-            self.signals.deviceDisconnected.emit("mount")
-            self.mountIsUpLastStatus = False
-
-    def checkMountIsUp(self) -> None:
-        self.mountIsUp = False
-        try:
-            with socket.socket() as client:
-                client.settimeout(self.SOCKET_TIMEOUT)
-                client.connect((self.config.hostAddress, self.config.port))
-                client.shutdown(socket.SHUT_RDWR)
-                self.mountIsUp = True
-        except TimeoutError:
-            self.log.info("Mount connection timed out")
-        except Exception as e:
-            self.log.error(f"Mount {e}")
-
-    def clearCycleCheckMountIsUp(self) -> None:
-        self.startupMountData()
-        self.signals.mountIsUp.emit(self.mountIsUp)
-        self.mutexCycleMountIsUp.unlock()
-
-    def cycleCheckMountIsUp(self) -> None:
-        if not self.config.hostAddress or not self.config.port:
-            self.signals.mountIsUp.emit(False)
+    def startupMountData(self, status) -> None:
+        self.mountIsUp = status
+        if not status:
             return
-        self.runWorker(
-            self.checkMountIsUp,
-            self.clearCycleCheckMountIsUp,
-            "workerMountIsUp",
-            mutex=self.mutexCycleMountIsUp,
-            requireMountUp=False,
-        )
+        self.obsSite.setHighPrecision()
+        self.getFW()
+        self.getLocation()
+        self.app.refreshModel.emit()
+        self.app.refreshName.emit()
+        self.getTLE()
 
     def clearCyclePointing(self, result: bool) -> None:
         if self.obsSite.status in self.ALERT_STATUS_CODES:
@@ -352,36 +313,6 @@ class MountDevice(QObject):
         if suc:
             self.mountIsUp = False
         return suc
-
-    def syncClock(self) -> None:
-        if self.config.syncTimeNone or not self.mountIsUp:
-            return
-        mountTracks = self.app.dReg["mount"].obsSite.status in [
-            MountStatus.TRACKING,
-            MountStatus.FOLLOWING_SATELLITE,
-        ]
-        if mountTracks and self.config.syncTimeNotTrack:
-            return
-
-        delta = self.obsSite.timeDiff * 1000
-        if abs(delta) < 10:
-            return
-        delta = int(max(min(delta, 999), -999))
-        if not self.obsSite.adjustClock(delta):
-            self.log.warning(f"Clock sync failed with delta {delta} ms")
-
-    def clearCycleClock(self) -> None:
-        self.mutexCycleClock.unlock()
-
-    def cycleClock(self) -> None:
-        if not self.config.clockSync:
-            return
-        self.runWorker(
-            self.obsSite.pollSyncClock,
-            self.clearCycleClock,
-            "workerCycleClock",
-            mutex=self.mutexCycleClock,
-        )
 
     def clearProgTrajectory(self) -> None:
         self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)

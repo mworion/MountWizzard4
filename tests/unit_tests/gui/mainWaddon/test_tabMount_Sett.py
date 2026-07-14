@@ -35,6 +35,15 @@ def function(qapp):
     mainW.ui.clockSync.isChecked.return_value = False
     mainW.ui.clockSync.setChecked = mock.MagicMock()
     mainW.app.dReg["mount"].instance.workerCycleClock = None
+
+    mount_time_mock = mock.MagicMock()
+
+    def get_timeDiff():
+        return mainW.app.dReg["mount"].instance.obsSite.timeDiff
+
+    type(mount_time_mock).timeDiff = mock.PropertyMock(side_effect=get_timeDiff)
+    mainW.app.dReg["mount"].instance.mountTime = mount_time_mock
+
     window = MountSett(mainW)
     yield window
     mainW.app.threadPool.waitForDone(10000)

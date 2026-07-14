@@ -553,6 +553,7 @@ dependencies = [
     { name = "numpy" },
     { name = "opencv-python-headless" },
     { name = "packaging" },
+    { name = "ping3" },
     { name = "pybase64" },
     { name = "pyerfa" },
     { name = "pyqtgraph" },
@@ -596,6 +597,7 @@ requires-dist = [
     { name = "numpy", specifier = "==2.5.1" },
     { name = "opencv-python-headless", specifier = "==5.0.0.93" },
     { name = "packaging", specifier = "==26.2" },
+    { name = "ping3", specifier = "==5.1.5" },
     { name = "pybase64", specifier = "==1.4.3" },
     { name = "pyerfa", specifier = "==2.0.1.5" },
     { name = "pyqtgraph", specifier = "==0.14.0" },
@@ -735,6 +737,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d7/f1/e7a6dd94a8d4a5626c03e4e99c87f241ba9e350cd9e6d75123f992427270/packaging-26.2.tar.gz", hash = "sha256:ff452ff5a3e828ce110190feff1178bb1f2ea2281fa2075aadb987c2fb221661", size = 228134, upload-time = "2026-04-24T20:15:23.917Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/df/b2/87e62e8c3e2f4b32e5fe99e0b86d576da1312593b39f47d8ceef365e95ed/packaging-26.2-py3-none-any.whl", hash = "sha256:5fc45236b9446107ff2415ce77c807cee2862cb6fac22b8a73826d0693b0980e", size = 100195, upload-time = "2026-04-24T20:15:22.081Z" },
+]
+
+[[package]]
+name = "ping3"
+version = "5.1.5"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/0d/e5/702dfb79e74990585d502734065f8a1610d18473bbd4bd18e4058abe9dbc/ping3-5.1.5.tar.gz", hash = "sha256:6c99bc844e0b7dbc5c9765e8b530140daf1ccd2112c99db01ab79831bd8081cd", size = 19995, upload-time = "2025-08-10T16:07:30.582Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/34/03/2580e349f6cab60865456db4b8984a50c91c98e88fc5055a3cd7c30485a5/ping3-5.1.5-py3-none-any.whl", hash = "sha256:9503164d054b87b01a6bd0df83a49c29e7c8427eb06940f874ebd4ed2d8ba8f6", size = 15945, upload-time = "2025-08-10T16:07:28.777Z" },
 ]
 
 [[package]]

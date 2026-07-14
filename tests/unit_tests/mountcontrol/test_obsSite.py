@@ -15,9 +15,7 @@
 ###########################################################
 
 import math
-import mw4.mountcontrol
 import os
-import platform
 import unittest.mock as mock
 from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path
@@ -168,13 +166,6 @@ def test_Site_timeJD_3():
 
     obsSite.timeJD = obsSite.ts.now().tt - 69.184 / 86400
     assert math.isclose(obsSite.ts.now().tt, obsSite.timeJD.tt, abs_tol=1e-4)
-
-
-def test_timeDiff():
-    obsSite = ObsSite(parent=Parent())
-    obsSite._timeDiff = [10, 10, 10, 10, 10]
-    obsSite.timeDiff = 20
-    assert obsSite.timeDiff == 10
 
 
 def test_Site_ut1_utc():
@@ -770,79 +761,6 @@ def test_ObsSite_pollPointing_not_ok2():
     with mock.patch("mw4.mountcontrol.obsSite.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, response, 5
         suc = obsSite.pollPointing()
-        assert not suc
-
-
-def test_pollSyncClock_1():
-    obsSite = ObsSite(parent=Parent())
-    with (
-        mock.patch.object(platform, "system", return_value="Windows"),
-        mock.patch.object(
-            mw4.mountcontrol.obsSite.Connection, "communicate", return_value=(False, [], 0)
-        ),
-    ):
-        suc = obsSite.pollSyncClock()
-        assert not suc
-
-
-def test_pollSyncClock_2():
-    obsSite = ObsSite(parent=Parent())
-    with (
-        mock.patch.object(platform, "system", return_value="Linux"),
-        mock.patch.object(
-            mw4.mountcontrol.obsSite.Connection, "communicate", return_value=(False, [], 0)
-        ),
-    ):
-        suc = obsSite.pollSyncClock()
-        assert not suc
-
-
-def test_pollSyncClock_3():
-    obsSite = ObsSite(parent=Parent())
-    with (
-        mock.patch.object(platform, "system", return_value="aarch64"),
-        mock.patch.object(
-            mw4.mountcontrol.obsSite.Connection, "communicate", return_value=(False, [], 0)
-        ),
-    ):
-        suc = obsSite.pollSyncClock()
-        assert not suc
-
-
-def test_pollSyncClock_4():
-    obsSite = ObsSite(parent=Parent())
-    with (
-        mock.patch.object(platform, "system", return_value="Darwin"),
-        mock.patch.object(
-            mw4.mountcontrol.obsSite.Connection, "communicate", return_value=(True, ["eee"], 1)
-        ),
-    ):
-        suc = obsSite.pollSyncClock()
-        assert suc
-
-
-def test_pollSyncClock_5():
-    obsSite = ObsSite(parent=Parent())
-    with (
-        mock.patch.object(platform, "system", return_value="Darwin"),
-        mock.patch.object(
-            mw4.mountcontrol.obsSite.Connection,
-            "communicate",
-            return_value=(True, ["12345678.1"], 1),
-        ),
-    ):
-        suc = obsSite.pollSyncClock()
-        assert suc
-
-
-def test_adjustClock_1():
-    obsSite = ObsSite(parent=Parent())
-    with mock.patch.object(
-        mw4.mountcontrol.obsSite.Connection,
-        "communicate",
-        return_value=(False, ["0"], 1),
-    ):
-        suc = obsSite.adjustClock(0)
         assert not suc
 
 

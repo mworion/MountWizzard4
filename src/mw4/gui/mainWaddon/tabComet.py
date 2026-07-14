@@ -51,6 +51,7 @@ class Comet(TabAddon):
         self.ui.cometFilterText.setText(config.get("cometFilterText"))
         self.ui.mpcTabWidget.setCurrentIndex(config.get("mpcTab", 0))
         self.ui.cometSourceList.setCurrentIndex(config.get("cometSource", 0))
+        self.ui.cometSourceList.currentIndexChanged.connect(self.comets.loadSourceUrl)
 
     def storeConfig(self) -> None:
         config = self.app.config["WindowMain"]

@@ -50,6 +50,7 @@ class Asteroid(TabAddon):
         config = self.app.config["WindowMain"]
         self.ui.asteroidFilterText.setText(config.get("asteroidFilterText"))
         self.ui.asteroidSourceList.setCurrentIndex(config.get("asteroidSource", 0))
+        self.ui.asteroidSourceList.currentIndexChanged.connect(self.asteroids.loadSourceUrl)
 
     def storeConfig(self) -> None:
         config = self.app.config["WindowMain"]

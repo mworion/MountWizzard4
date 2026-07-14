@@ -61,12 +61,12 @@ class AstroObjects:
         self.loader = self.app.dReg["mount"].obsSite.loader
         self.dbProc = DataWriter(self.app)
         self.buildSourceListDropdown()
-        self.uiSourceList.currentIndexChanged.connect(self.loadSourceUrl)
         self.dbProcFuncs = {
             "satellite": self.dbProc.writeSatelliteTLE,
             "asteroid": self.dbProc.writeAsteroidMPC,
             "comet": self.dbProc.writeCometMPC,
         }
+        self.app.timeMgr.start3s.connect(self.loadSourceUrl)
 
     def buildSourceListDropdown(self) -> None:
         self.uiSourceList.clear()

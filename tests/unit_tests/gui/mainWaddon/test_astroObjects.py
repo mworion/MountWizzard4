@@ -92,7 +92,6 @@ def function(qapp):
     )
     function.window.app = App()
     function.window.threadPool = QThreadPool()
-    function.uiSourceList.currentIndexChanged.disconnect(function.loadSourceUrl)
     yield function
 
     patcher_dl.stop()

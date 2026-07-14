@@ -120,5 +120,5 @@ class MountTime:
         timeMount = valueToFloat(response[0])
         timeMount = self.ts.tt_jd(timeMount + self.parent.obsSite.UTC2TT)
         self._timeDiff = np.roll(self._timeDiff, 1)
-        delta = (self.timePC - timeMount) * 86400 - 2 * self.rtt
+        delta = (self.timePC - timeMount) * 86400 - self.rtt
         self._timeDiff[0] = delta

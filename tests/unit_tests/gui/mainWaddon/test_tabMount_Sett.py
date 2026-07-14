@@ -38,7 +38,11 @@ def function(qapp):
     def get_timeDiff():
         return mainW.app.dReg["mount"].instance.obsSite.timeDiff
 
+    def get_rtt():
+        return 0.01
+
     type(mount_time_mock).timeDiff = mock.PropertyMock(side_effect=get_timeDiff)
+    type(mount_time_mock).rtt = mock.PropertyMock(side_effect=get_rtt)
     mainW.app.dReg["mount"].instance.mountTime = mount_time_mock
 
     window = MountSett(mainW)
@@ -882,7 +886,6 @@ def test_showOffset_2(function):
 
 def test_showOffset_3(function):
     function.app.mount.obsSite.timeDiff = 0.3
-    function.ui.clockSync.setChecked(True)
     function.showTimeDiff()
 
 
@@ -1084,7 +1087,6 @@ def test_showOffset_8(function):
     function.app.mount.obsSite.timeDiff = 0.003
     timeJD = mock.MagicMock()
     timeJD.utc_strftime.return_value = "12:34:56"
-    function.ui.clockSync.setChecked(True)
     with mock.patch.object(function.app.mount.obsSite, "timeJD", timeJD):
         function.showTimeDiff()
     assert function.ui.timeUTC.text() == "12:34:56"
@@ -1093,7 +1095,6 @@ def test_showOffset_8(function):
 def test_showOffset_colorGreen(function):
     """Test showOffset with delta < 100ms when clockSync is enabled."""
     function.app.mount.obsSite.timeDiff = 0.05
-    function.app.dReg["mount"].instance.config.clockSync = True
     function.showTimeDiff()
     # Color should be cleared for green (< 100ms)
 
@@ -1101,7 +1102,6 @@ def test_showOffset_colorGreen(function):
 def test_showOffset_colorYellow(function):
     """Test showOffset with 100ms <= delta < 500ms when clockSync is enabled."""
     function.app.mount.obsSite.timeDiff = 0.2
-    function.app.dReg["mount"].instance.config.clockSync = True
     function.showTimeDiff()
     # Color should be yellow (100-500ms)
 
@@ -1109,7 +1109,6 @@ def test_showOffset_colorYellow(function):
 def test_showOffset_colorRed(function):
     """Test showOffset with delta >= 500ms when clockSync is enabled."""
     function.app.mount.obsSite.timeDiff = 0.6
-    function.app.dReg["mount"].instance.config.clockSync = True
     function.showTimeDiff()
     # Color should be red (>= 500ms)
 

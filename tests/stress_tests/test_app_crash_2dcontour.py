@@ -14,12 +14,13 @@
 #
 ###########################################################
 
+import gc
 import glob
 import os
 import pytest
 import shutil
 from mw4.base.bootstrap import extractDataFiles
-from mw4.gui.utilities.qtHelpers import sleepAndEvents
+from mw4.base.threadUtils import mainThreadSleep
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from PySide6.QtCore import Qt, QThreadPool
@@ -80,15 +81,20 @@ def test_showImagesPhotometry(qtbot, qapp):
     qtbot.waitExposed(imageW, timeout=1000)
     imageW.ui.photometryGroup.setChecked(True)
     imageW.ui.timeTagImage.setChecked(False)
-    app.showImage.emit("tests/work/image/star1.fits")
-    TAB = [1, 4]
 
+    app.showImage.emit(Path("tests/work/image/star1.fits"))
+    qtbot.wait(3000)
+
+    TAB = [1, 4]
+    gc.disable()
     for i in range(20):
         if randint(0, 1):
-            qtbot.mouseClick(imageW.ui.isoLayer, Qt.LeftButton)
+            imageW.ui.isoLayer.click()
+            qtbot.wait(50)
         index = TAB[randint(0, 1)]
         imageW.ui.tabImage.setCurrentIndex(index)
-        sleepAndEvents(randint(50, 500))
+        qtbot.wait(randint(50, 200))
+    gc.enable()
 
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
         pass

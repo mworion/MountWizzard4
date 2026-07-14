@@ -19,7 +19,7 @@ import os
 import pytest
 import shutil
 from mw4.base.bootstrap import extractDataFiles
-from mw4.gui.utilities.qtHelpers import sleepAndEvents
+from mw4.base.threadUtils import mainThreadSleep
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from PySide6.QtCore import Qt, QThreadPool
@@ -81,7 +81,7 @@ def test_showImages(qtbot, qapp):
 
     for i in range(50):
         app.showImage.emit(f"tests/work/image/star{i % 3 + 1}.fits")
-        sleepAndEvents(500)
+        mainThreadSleep(500)
 
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
         pass
@@ -102,7 +102,7 @@ def test_showImagesPhotometry(qtbot, qapp):
 
     for i in range(50):
         app.showImage.emit(f"tests/work/image/star{i % 3 + 1}.fits")
-        sleepAndEvents(1000)
+        mainThreadSleep(1000)
 
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
         pass
@@ -122,7 +122,7 @@ def test_showImagesPhotometryN(qtbot, qapp):
     imageW.ui.photometryGroup.setChecked(True)
 
     qtbot.mouseClick(imageW.ui.exposeN, Qt.LeftButton)
-    sleepAndEvents(3000)
+    mainThreadSleep(3000)
     qtbot.mouseClick(imageW.ui.abortExpose, Qt.LeftButton)
 
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):

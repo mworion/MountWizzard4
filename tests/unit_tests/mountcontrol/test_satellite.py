@@ -54,7 +54,7 @@ def test_parseGetTLE_3():
     sat = Satellite(App().mount)
     response = ["76129888407$0A", ["hj"]]
 
-    suc = sat.parseGetTLE(response, 1)
+    suc = sat.parseGetTLE(response, 2)
 
     assert not suc
     assert sat.tleParams.name == ""
@@ -184,7 +184,7 @@ def test_parseCalcTLE_1():
     sat = Satellite(App().mount)
     response = ""
 
-    suc = sat.parseCalcTLE(response, 1)
+    suc = sat.parseCalcTLE(response)
     assert not suc
 
 
@@ -192,7 +192,7 @@ def test_parseCalcTLE_2():
     sat = Satellite(App().mount)
     response = ""
 
-    suc = sat.parseCalcTLE(response, 3)
+    suc = sat.parseCalcTLE(response)
     assert not suc
 
 
@@ -200,7 +200,7 @@ def test_parseCalcTLE_3():
     sat = Satellite(App().mount)
     response = []
 
-    suc = sat.parseCalcTLE(response, 3)
+    suc = sat.parseCalcTLE(response)
     assert not suc
 
 
@@ -208,7 +208,7 @@ def test_parseCalcTLE_4():
     sat = Satellite(App().mount)
     response = ["E", "E", "E"]
 
-    suc = sat.parseCalcTLE(response, 3)
+    suc = sat.parseCalcTLE(response)
     assert not suc
 
 
@@ -219,7 +219,7 @@ def test_parseCalcTLE_5():
     s2 = ""
     response = [s0, s1, s2]
 
-    suc = sat.parseCalcTLE(response, 3)
+    suc = sat.parseCalcTLE(response)
     assert not suc
 
 
@@ -230,7 +230,7 @@ def test_parseCalcTLE_6():
     s2 = "F"
     response = [s0, s1, s2]
 
-    suc = sat.parseCalcTLE(response, 3)
+    suc = sat.parseCalcTLE(response)
     assert suc
 
 
@@ -241,7 +241,7 @@ def test_parseCalcTLE_7():
     s2 = "12345678.1, 12345678.2, F"
     response = [s0, s1, s2]
 
-    suc = sat.parseCalcTLE(response, 3)
+    suc = sat.parseCalcTLE(response)
     assert suc
 
 
@@ -252,7 +252,7 @@ def test_parseCalcTLE_8():
     s2 = ""
     response = [s0, s1, s2]
 
-    suc = sat.parseCalcTLE(response, 3)
+    suc = sat.parseCalcTLE(response)
     assert not suc
 
 
@@ -263,7 +263,7 @@ def test_parseCalcTLE_9():
     s2 = ""
     response = [s0, s1, s2]
 
-    suc = sat.parseCalcTLE(response, 3)
+    suc = sat.parseCalcTLE(response)
     assert not suc
 
 
@@ -274,7 +274,7 @@ def test_parseCalcTLE_10():
     s2 = "E"
     response = [s0, s1, s2]
 
-    suc = sat.parseCalcTLE(response, 3)
+    suc = sat.parseCalcTLE(response)
     assert not suc
 
 
@@ -285,7 +285,7 @@ def test_parseCalcTLE_11():
     s2 = ""
     response = [s0, s1, s2, s2]
 
-    suc = sat.parseCalcTLE(response, 4)
+    suc = sat.parseCalcTLE(response)
     assert not suc
 
 
@@ -296,7 +296,7 @@ def test_parseCalcTLE_12():
     s2 = "N"
     response = [s0, s1, s2]
 
-    suc = sat.parseCalcTLE(response, 3)
+    suc = sat.parseCalcTLE(response)
     assert not suc
 
 
@@ -307,7 +307,7 @@ def test_parseCalcTLE_13():
     s2 = "F,s"
     response = [s0, s1, s2]
 
-    suc = sat.parseCalcTLE(response, 3)
+    suc = sat.parseCalcTLE(response)
     assert not suc
 
 
@@ -438,7 +438,7 @@ def test_parseStatTLE_1():
     sat = Satellite(App().mount)
     response = ""
 
-    suc = sat.parseStatTLE(response, 3)
+    suc = sat.parseStatTLE(response)
     assert not suc
 
 
@@ -446,7 +446,7 @@ def test_parseStatTLE_2():
     sat = Satellite(App().mount)
     response = ""
 
-    suc = sat.parseStatTLE(response, 1)
+    suc = sat.parseStatTLE(response)
     assert not suc
 
 
@@ -454,7 +454,7 @@ def test_parseStatTLE_3():
     sat = Satellite(App().mount)
     response = [""]
 
-    suc = sat.parseStatTLE(response, 1)
+    suc = sat.parseStatTLE(response)
     assert not suc
     assert sat.tleParams.message == ""
 
@@ -463,7 +463,7 @@ def test_parseStatTLE_4():
     sat = Satellite(App().mount)
     response = ["X"]
 
-    suc = sat.parseStatTLE(response, 1)
+    suc = sat.parseStatTLE(response)
     assert suc
     assert sat.tleParams.message == "Error"
 
@@ -472,7 +472,7 @@ def test_parseStatTLE_5():
     sat = Satellite(App().mount)
     response = ["V"]
 
-    suc = sat.parseStatTLE(response, 1)
+    suc = sat.parseStatTLE(response)
     assert suc
     assert sat.tleParams.message == "Slewing to the start of the transit"
 
@@ -481,7 +481,7 @@ def test_parseStatTLE_6():
     sat = Satellite(App().mount)
     response = ["V", "E"]
 
-    suc = sat.parseStatTLE(response, 2)
+    suc = sat.parseStatTLE(response)
     assert not suc
 
 

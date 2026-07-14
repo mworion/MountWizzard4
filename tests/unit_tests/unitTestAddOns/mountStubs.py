@@ -26,7 +26,6 @@ class DeviceConfigMount:
     hostAddress: str = field(default="127.0.0.1")
     port: int = field(default=3492)
     MAC: str = field(default="00:00:00:00:00:00")
-    clockSync: bool = field(default=False)
     syncTimeNone: bool = field(default=True)
     syncTimeCont: bool = field(default=False)
     syncTimeNotTrack: bool = field(default=False)

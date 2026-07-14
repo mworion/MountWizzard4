@@ -99,7 +99,7 @@
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -2371,7 +2371,7 @@
         <string>Clock sync from computer to mount</string>
        </property>
        <property name="checkable">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="checked">
         <bool>false</bool>
@@ -2381,11 +2381,11 @@
        </property>
        <widget class="QRadioButton" name="syncTimeCont">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>10</x>
           <y>40</y>
           <width>171</width>
           <height>21</height>
@@ -2413,11 +2413,11 @@
        </widget>
        <widget class="QRadioButton" name="syncTimeNotTrack">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>10</x>
           <y>60</y>
           <width>176</width>
           <height>21</height>
@@ -2445,11 +2445,11 @@
        </widget>
        <widget class="QRadioButton" name="syncTimeNone">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="geometry">
          <rect>
-          <x>60</x>
+          <x>10</x>
           <y>20</y>
           <width>171</width>
           <height>21</height>

@@ -43,7 +43,7 @@ class MountSett(TabAddon):
         ms.locationDone.connect(self.updateLocGUI)
         ms.pointDone.connect(self.updatePointGUI)
         ms.settingDone.connect(self.updateSettingGUI)
-        self.app.timeMgr.update1s.connect(self.showOffset)
+        self.app.timeMgr.update1s.connect(self.showTimeDiff)
         clickable(self.ui.refractionTemp).connect(self.setRefractionTemp)
         clickable(self.ui.refractionPress).connect(self.setRefractionPress)
         clickable(self.ui.meridianLimitTrack).connect(self.setMeridianLimitTrack)
@@ -55,6 +55,7 @@ class MountSett(TabAddon):
         clickable(self.ui.siteLongitude).connect(self.setLongitude)
         clickable(self.ui.siteElevation).connect(self.setElevation)
         clickable(self.ui.statusUnattendedFlip).connect(self.setUnattendedFlip)
+        clickable(self.ui.statusWebInterface).connect(self.setWebinterface)
         clickable(self.ui.statusDualAxisTracking).connect(self.setDualAxisTracking)
         clickable(self.ui.statusWOL).connect(self.setWOL)
         clickable(self.ui.statusAPO).connect(self.setAPO)
@@ -129,7 +130,8 @@ class MountSett(TabAddon):
         guiSetText(ui, "s", sett.autoPowerOn)
 
         ui = self.ui.statusWebInterface
-        guiSetText(ui, "s", sett.webInterfaceStat)
+        val = "ON" if sett.webInterfaceStat else "OFF"
+        guiSetText(ui, "s", val)
 
         if sett.typeConnection is not None:
             text = self.typeConnectionTexts[sett.typeConnection]
@@ -365,6 +367,24 @@ class MountSett(TabAddon):
             self.msg.emit(2, "Mount", "Setting", "Unattended flip cannot be set")
         return suc
 
+    def setWebinterface(self) -> bool:
+        sett = self.app.dReg["mount"].setting
+        value, ok = MWInputDialog.getItem(
+            self.mainW,
+            "Set Web Interface",
+            "Value: On / Off",
+            ["ON", "OFF"],
+            0,
+        )
+        if not ok:
+            return False
+        suc = sett.setWebInterface(value == "ON")
+        if suc:
+            self.msg.emit(0, "Mount", "Setting", f"Web Interface: [{value}]")
+        else:
+            self.msg.emit(2, "Mount", "Setting", "Web Interface cannot be set")
+        return suc
+
     def setDualAxisTracking(self) -> bool:
         sett = self.app.dReg["mount"].setting
         value, ok = MWInputDialog.getItem(
@@ -492,19 +512,17 @@ class MountSett(TabAddon):
             self.msg.emit(2, "Mount", "Setting", "Settle Time cannot be set")
             return False
 
-    def showOffset(self) -> None:
+    def showTimeDiff(self) -> None:
         delta = self.app.dReg["mount"].instance.mountTime.timeDiff * 1000
-        guiSetText(self.ui.timeDeltaPC2Mount, "4.0f", delta)
-        guiSetText(
-            self.ui.timeUTC, "s", self.app.dReg["mount"].timeJD.utc_strftime("%H:%M:%S")
-        )
-
-        if not self.app.dReg["mount"].instance.config.clockSync:
-            changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "")
-            return
+        rtt = self.app.dReg["mount"].instance.mountTime.rtt * 1000
+        val = f"{rtt:03.1f} | {delta: 04.1f}"
+        guiSetText(self.ui.timeDeltaPC2Mount, "s", val)
         if abs(delta) < 100:
             changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "")
         elif abs(delta) < 500:
             changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "yellow")
         else:
             changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "red")
+        guiSetText(
+            self.ui.timeUTC, "s", self.app.dReg["mount"].timeJD.utc_strftime("%H:%M:%S")
+        )

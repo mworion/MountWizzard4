@@ -44,7 +44,7 @@ def test_mountTime_init(function):
     assert function.threadPool is not None
     assert function.timePC is not None
     assert function.rtt == 0
-    assert len(function.rtt_MA) == 50
+    assert len(function.rtt_MA) == 25
     assert len(function._timeDiff) == 25
     assert function.workerCycleMountUp is None
     assert function.mutexCycleMountUp is not None
@@ -73,7 +73,7 @@ def test_runnerMountUp_ping_none(function):
     ):
         function.runnerMountUp()
         assert function.parent.mountIsUp is False
-        mock_signal.emit.assert_called_once_with(False)
+        mock_signal.emit.assert_not_called()
 
 
 def test_runnerMountUp_ping_false(function):
@@ -84,12 +84,12 @@ def test_runnerMountUp_ping_false(function):
     ):
         function.runnerMountUp()
         assert function.parent.mountIsUp is False
-        mock_signal.emit.assert_called_once_with(False)
+        mock_signal.emit.assert_not_called()
 
 
 def test_runnerMountUp_socket_exception(function):
     function.parent.mountIsUp = False
-    function.rtt_MA = np.zeros(50)
+    function.rtt_MA = np.zeros(25)
     with (
         mock.patch("mw4.mountcontrol.mountTime.ping", return_value=0.05),
         mock.patch("socket.socket") as mock_socket,
@@ -103,7 +103,7 @@ def test_runnerMountUp_socket_exception(function):
 
 def test_runnerMountUp_socket_success(function):
     function.parent.mountIsUp = False
-    function.rtt_MA = np.zeros(50)
+    function.rtt_MA = np.zeros(25)
     with (
         mock.patch("mw4.mountcontrol.mountTime.ping", return_value=0.05),
         mock.patch("socket.socket"),
@@ -115,7 +115,7 @@ def test_runnerMountUp_socket_success(function):
 
 
 def test_runnerMountUp_rtt_moving_average(function):
-    function.rtt_MA = np.zeros(50)
+    function.rtt_MA = np.zeros(25)
     function.rtt = 0
     with (
         mock.patch("mw4.mountcontrol.mountTime.ping", return_value=0.1),

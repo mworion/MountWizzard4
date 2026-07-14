@@ -31,9 +31,6 @@ def function(qapp):
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
-    mainW.ui.clockSync = mock.MagicMock()
-    mainW.ui.clockSync.isChecked.return_value = False
-    mainW.ui.clockSync.setChecked = mock.MagicMock()
     mainW.app.dReg["mount"].instance.workerCycleClock = None
 
     mount_time_mock = mock.MagicMock()
@@ -875,26 +872,23 @@ def test_setSettleTimeMount_4(function):
 
 
 def test_showOffset_1(function):
-    function.ui.clockSync.setChecked(False)
-    function.showOffset()
+    function.showTimeDiff()
 
 
 def test_showOffset_2(function):
     function.app.mount.obsSite.timeDiff = 0.003
-    function.ui.clockSync.setChecked(True)
-    function.showOffset()
+    function.showTimeDiff()
 
 
 def test_showOffset_3(function):
     function.app.mount.obsSite.timeDiff = 0.3
     function.ui.clockSync.setChecked(True)
-    function.showOffset()
+    function.showTimeDiff()
 
 
 def test_showOffset_4(function):
     function.app.mount.obsSite.timeDiff = 0.6
-    function.ui.clockSync.setChecked(True)
-    function.showOffset()
+    function.showTimeDiff()
 
 
 def test_init(function):
@@ -902,9 +896,6 @@ def test_init(function):
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
-    mainW.ui.clockSync = mock.MagicMock()
-    mainW.ui.clockSync.isChecked.return_value = False
-    mainW.ui.clockSync.setChecked = mock.MagicMock()
     mainW.app.dReg["mount"].instance.workerCycleClock = None
     window = MountSett(mainW)
     assert window.mainW is mainW
@@ -916,19 +907,19 @@ def test_init(function):
 def test_showOffset_5(function):
     function.app.mount.obsSite.timeDiff = 0.2
     function.app.dReg["mount"].instance.workerCycleClock = True
-    function.showOffset()
+    function.showTimeDiff()
 
 
 def test_showOffset_6(function):
     function.app.mount.obsSite.timeDiff = 0.3
     function.app.dReg["mount"].instance.workerCycleClock = True
-    function.showOffset()
+    function.showTimeDiff()
 
 
 def test_showOffset_7(function):
     function.app.mount.obsSite.timeDiff = 0.6
     function.app.dReg["mount"].instance.workerCycleClock = True
-    function.showOffset()
+    function.showTimeDiff()
 
 
 def test_setMeridianLimitTrack_1(function):
@@ -1095,7 +1086,7 @@ def test_showOffset_8(function):
     timeJD.utc_strftime.return_value = "12:34:56"
     function.ui.clockSync.setChecked(True)
     with mock.patch.object(function.app.mount.obsSite, "timeJD", timeJD):
-        function.showOffset()
+        function.showTimeDiff()
     assert function.ui.timeUTC.text() == "12:34:56"
 
 
@@ -1103,7 +1094,7 @@ def test_showOffset_colorGreen(function):
     """Test showOffset with delta < 100ms when clockSync is enabled."""
     function.app.mount.obsSite.timeDiff = 0.05
     function.app.dReg["mount"].instance.config.clockSync = True
-    function.showOffset()
+    function.showTimeDiff()
     # Color should be cleared for green (< 100ms)
 
 
@@ -1111,7 +1102,7 @@ def test_showOffset_colorYellow(function):
     """Test showOffset with 100ms <= delta < 500ms when clockSync is enabled."""
     function.app.mount.obsSite.timeDiff = 0.2
     function.app.dReg["mount"].instance.config.clockSync = True
-    function.showOffset()
+    function.showTimeDiff()
     # Color should be yellow (100-500ms)
 
 
@@ -1119,5 +1110,42 @@ def test_showOffset_colorRed(function):
     """Test showOffset with delta >= 500ms when clockSync is enabled."""
     function.app.mount.obsSite.timeDiff = 0.6
     function.app.dReg["mount"].instance.config.clockSync = True
-    function.showOffset()
+    function.showTimeDiff()
     # Color should be red (>= 500ms)
+
+
+def test_setWebinterface_1(function):
+    function.app.mount.setting.webInterfaceStat = True
+    with (
+        mock.patch.object(MWInputDialog, "getItem", return_value=("ON", True)),
+        mock.patch.object(function.app.mount.setting, "setWebInterface", return_value=True),
+    ):
+        suc = function.setWebinterface()
+        assert suc
+
+
+def test_setWebinterface_2(function):
+    function.app.mount.setting.webInterfaceStat = True
+    with mock.patch.object(MWInputDialog, "getItem", return_value=("ON", False)):
+        suc = function.setWebinterface()
+        assert not suc
+
+
+def test_setWebinterface_3(function):
+    function.app.mount.setting.webInterfaceStat = True
+    with (
+        mock.patch.object(MWInputDialog, "getItem", return_value=("ON", True)),
+        mock.patch.object(function.app.mount.setting, "setWebInterface", return_value=False),
+    ):
+        suc = function.setWebinterface()
+        assert not suc
+
+
+def test_setWebinterface_4(function):
+    function.app.mount.setting.webInterfaceStat = False
+    with (
+        mock.patch.object(MWInputDialog, "getItem", return_value=("OFF", True)),
+        mock.patch.object(function.app.mount.setting, "setWebInterface", return_value=True),
+    ):
+        suc = function.setWebinterface()
+        assert suc

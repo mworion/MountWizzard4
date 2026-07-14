@@ -38,7 +38,6 @@ class DeviceConfigMount:
     hostAddress: str = field(default="127.0.0.1")
     port: int = field(default=3492)
     MAC: str = field(default="00:00:00:00:00:00")
-    clockSync: bool = field(default=False)
     syncTimeNone: bool = field(default=True)
     syncTimeCont: bool = field(default=False)
     syncTimeNotTrack: bool = field(default=False)
@@ -170,27 +169,26 @@ class MountDevice(QObject):
         self.threadPool.start(worker)
 
     def startMountCoreTimers(self) -> None:
-        if not self.mountIsUp:
-            return
         self.timerPointing.start(self.CYCLE_POINTING)
         self.timerSetting.start(self.CYCLE_SETTING)
 
     def stopAllMountTimers(self) -> None:
-        if not self.mountIsUp:
-            return
         self.timerPointing.stop()
         self.timerSetting.stop()
 
     def startupMountData(self, status) -> None:
-        self.mountIsUp = status
-        if not status:
-            return
-        self.obsSite.setHighPrecision()
-        self.getFW()
-        self.getLocation()
-        self.app.refreshModel.emit()
-        self.app.refreshName.emit()
-        self.getTLE()
+        if status and not self.mountIsUp:
+            self.mountIsUp = True
+            self.obsSite.setHighPrecision()
+            self.getFW()
+            self.getLocation()
+            self.app.refreshModel.emit()
+            self.app.refreshName.emit()
+            self.getTLE()
+            self.signals.deviceConnected.emit("mount")
+        elif not status and self.mountIsUp:
+            self.signals.deviceDisconnected.emit("mount")
+            self.mountIsUp = False
 
     def clearCyclePointing(self, result: bool) -> None:
         if self.obsSite.status in self.ALERT_STATUS_CODES:
@@ -215,6 +213,7 @@ class MountDevice(QObject):
             self.clearCyclePointing,
             "workerCyclePointing",
             mutex=self.mutexCyclePointing,
+            requireMountUp=True,
             useResult=True,
         )
 
@@ -229,6 +228,7 @@ class MountDevice(QObject):
             self.clearCycleSetting,
             "workerCycleSetting",
             mutex=self.mutexCycleSetting,
+            requireMountUp=True,
             useResult=True,
         )
 

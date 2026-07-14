@@ -81,7 +81,6 @@ def test_storeConfig(settMount: SettMount) -> None:
     settMount.ui.wolPort.setText("9000")
     settMount.ui.wolAutomatic.setChecked(True)
     settMount.ui.port3492.setChecked(True)
-    settMount.ui.GroupClockSync.setChecked(True)
 
     settMount.storeConfig()
 

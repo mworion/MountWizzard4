@@ -16,11 +16,9 @@
 from importlib.resources import as_file, files
 from mw4.mountcontrol.convert import formatDstrToText, formatHstrToText
 from PySide6.QtCore import (
-    QCoreApplication,
     QEvent,
     QObject,
     Qt,
-    QTimer,
     Signal,
     SignalInstance,
 )

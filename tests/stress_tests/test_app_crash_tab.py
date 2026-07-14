@@ -23,7 +23,6 @@ from mw4.base.threadUtils import mainThreadSleep
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from PySide6.QtCore import Qt, QThreadPool
-import shutil
 
 mwglob = {
     "dataDir": Path("tests/work/assets"),

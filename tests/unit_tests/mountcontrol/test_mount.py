@@ -23,7 +23,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
-@pytest.fixture(autouse=True, scope="module")
+@pytest.fixture(autouse=True, scope="function")
 def function():
     m = MountDevice(
         app=App(),

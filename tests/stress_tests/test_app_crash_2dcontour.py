@@ -20,7 +20,6 @@ import os
 import pytest
 import shutil
 from mw4.base.bootstrap import extractDataFiles
-from mw4.base.threadUtils import mainThreadSleep
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from PySide6.QtCore import Qt, QThreadPool

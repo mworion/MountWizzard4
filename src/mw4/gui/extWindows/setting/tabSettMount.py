@@ -48,7 +48,6 @@ class SettMount:
         self.ui.wolAddress.setText(self.app.dReg["mount"].instance.config.wolAddress)
         self.ui.wolPort.setText(str(self.app.dReg["mount"].instance.config.wolPort))
         self.ui.wolAutomatic.setChecked(self.app.dReg["mount"].instance.config.wolAutomatic)
-        self.ui.GroupClockSync.setChecked(self.app.dReg["mount"].instance.config.clockSync)
         self.ui.syncTimeNone.setChecked(self.app.dReg["mount"].instance.config.syncTimeNone)
         self.ui.syncTimeCont.setChecked(self.app.dReg["mount"].instance.config.syncTimeCont)
         self.ui.syncTimeNotTrack.setChecked(
@@ -61,7 +60,6 @@ class SettMount:
         self.ui.wolAutomatic.clicked.connect(self.storeConfig)
         self.ui.port3492.clicked.connect(self.storeConfig)
         self.ui.port3490.clicked.connect(self.storeConfig)
-        self.ui.GroupClockSync.toggled.connect(self.storeConfig)
         self.ui.syncTimeNone.clicked.connect(self.storeConfig)
         self.ui.syncTimeCont.clicked.connect(self.storeConfig)
         self.ui.syncTimeNotTrack.clicked.connect(self.storeConfig)
@@ -87,7 +85,6 @@ class SettMount:
         self.app.dReg[
             "mount"
         ].instance.config.syncTimeNotTrack = self.ui.syncTimeNotTrack.isChecked()
-        self.app.dReg["mount"].instance.config.clockSync = self.ui.GroupClockSync.isChecked()
 
     def closeEvent(self) -> None:
         self.app.dReg["mount"].signals.settingDone.disconnect(self.setMountMAC)

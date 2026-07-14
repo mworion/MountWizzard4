@@ -231,7 +231,9 @@ def test_loader_startup_cycles(qtbot, qapp):
         # ── run until auto-quit ───────────────────────────
         if status == "ok":
             try:
-                with qtbot.waitSignal(app.timeMgr.update10s, timeout=QUIT_TIMEOUT_MS, raising=True):
+                with qtbot.waitSignal(
+                    app.timeMgr.update10s, timeout=QUIT_TIMEOUT_MS, raising=True
+                ):
                     pass  # event loop runs here; update10s fires → quit()
             except Exception as exc:
                 status = f"quit-timeout ({exc.__class__.__name__})"

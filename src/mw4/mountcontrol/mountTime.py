@@ -19,6 +19,7 @@ import socket
 from .convert import valueToFloat
 from mw4.base.tpool import Worker
 from mw4.mountcontrol.connection import Connection
+from mw4.mountcontrol.obsSite import MountStatus
 from ping3 import ping
 from PySide6.QtCore import QMutex
 from skyfield.timelib import Time
@@ -37,11 +38,11 @@ class MountTime:
         self.timePC: Time = self.ts.now()
         self._timeDiff = np.full(25, 0.0)
         self.rtt: float = 0
-        self.rtt_MA: np.ndarray = np.zeros(50)
+        self.rtt_MA: np.ndarray = np.zeros(25)
         self.workerCycleMountUp: Worker | None = None
         self.mutexCycleMountUp = QMutex()
         self.app.timeMgr.update1s.connect(self.checkMountUp)
-        self.app.timeMgr.update1s.connect(self.syncClock)
+        self.app.timeMgr.update30s.connect(self.syncClock)
         self.app.timeMgr.update1s.connect(self.pollSyncClock)
 
     @property
@@ -52,12 +53,10 @@ class MountTime:
         rttLocal = ping(self.parent.config.hostAddress)
         if rttLocal is None:
             self.parent.mountIsUp = False
-            self.parent.signals.mountIsUp.emit(False)
             self.log.info(f"Host: [{self.parent.config.hostAddress}] not resolved")
             return
         if rttLocal is False:
             self.parent.mountIsUp = False
-            self.parent.signals.mountIsUp.emit(False)
             self.log.info(f"Timeout: [{self.parent.config.hostAddress}[ no response")
             return
         self.rtt_MA = np.roll(self.rtt_MA, 1)
@@ -95,14 +94,14 @@ class MountTime:
         if self.parent.config.syncTimeNone or not self.parent.mountIsUp:
             return
         mountTracks = self.app.dReg["mount"].obsSite.status in [
-            self.parent.MountStatus.TRACKING,
-            self.parent.MountStatus.FOLLOWING_SATELLITE,
+            MountStatus.TRACKING,
+            MountStatus.FOLLOWING_SATELLITE,
         ]
         if mountTracks and self.parent.config.syncTimeNotTrack:
             return
 
         delta = self.timeDiff * 1000
-        if abs(delta) < 10:
+        if abs(delta) < 1:
             return
         delta = int(max(min(delta, 999), -999))
         if not self.adjustClock(delta):
@@ -121,5 +120,5 @@ class MountTime:
         timeMount = valueToFloat(response[0])
         timeMount = self.ts.tt_jd(timeMount + self.parent.obsSite.UTC2TT)
         self._timeDiff = np.roll(self._timeDiff, 1)
-        delta = (self.timePC - timeMount) * 86400 + self.rtt
+        delta = (self.timePC - timeMount) * 86400 - 2 * self.rtt
         self._timeDiff[0] = delta

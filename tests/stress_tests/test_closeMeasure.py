@@ -19,13 +19,11 @@ import numpy as np
 import os
 import pytest
 from mw4.base.bootstrap import extractDataFiles
-from mw4.base.tpool import Worker
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from PySide6.QtCore import Qt, QThreadPool
 from random import randint
-import shutil
 
 mwglob = {
     "dataDir": Path("tests/work/assets"),

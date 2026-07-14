@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author>Michael Wuertenberger</author>
+ <author>Michael Würtenberger</author>
  <class>MainWindow</class>
  <widget class="QWidget" name="MainWindow">
   <property name="windowModality">
@@ -1968,7 +1968,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           </font>
          </property>
          <property name="text">
-          <string>Clock sync offset</string>
+          <string>RTT | Clock sync</string>
          </property>
         </widget>
         <widget class="QLabel" name="label_65">
@@ -2354,7 +2354,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
          </property>
          <property name="readOnly">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
         </widget>
         <widget class="QLineEdit" name="meridianLimitTrack">
@@ -3077,9 +3077,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </property>
          <property name="geometry">
           <rect>
-           <x>170</x>
+           <x>145</x>
            <y>60</y>
-           <width>51</width>
+           <width>76</width>
            <height>21</height>
           </rect>
          </property>
@@ -3540,6 +3540,26 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </property>
          <property name="readOnly">
           <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_mountMAC_3">
+         <property name="geometry">
+          <rect>
+           <x>305</x>
+           <y>160</y>
+           <width>91</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Web IF Stat</string>
          </property>
         </widget>
        </widget>
@@ -19599,7 +19619,7 @@ When clicking the button, you could change the value.</string>
         </rect>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="elideMode">
         <enum>Qt::TextElideMode::ElideLeft</enum>

@@ -36,31 +36,26 @@ mwglob = {
 }
 
 
+def cleanupTestFiles() -> None:
+    """Clean up test files from work directories."""
+    for d in mwglob:
+        if "modelData" in d:
+            continue
+        files = glob.glob(f"{mwglob[d]}/*.*")
+        for f in files:
+            if "empty" not in f and os.path.isfile(f):
+                os.remove(f)
+
+
 @pytest.fixture(autouse=True, scope="function")
 def module_setup_teardown():
     global tp
 
     tp = QThreadPool()
-    for d in mwglob:
-        files = glob.glob(f"{mwglob[d]}/*.*")
-        if "modelData" in d:
-            continue
-        for f in files:
-            if "empty" in f:
-                continue
-            if os.path.isfile(f):
-                os.remove(f)
+    cleanupTestFiles()
     extractDataFiles(mwGlob=mwglob)
     yield
-    for d in mwglob:
-        files = glob.glob(f"{mwglob[d]}/*.*")
-        if "modelData" in d:
-            continue
-        for f in files:
-            if "empty" in f:
-                continue
-            if os.path.isfile(f):
-                os.remove(f)
+    cleanupTestFiles()
     tp.waitForDone(1000)
 
 

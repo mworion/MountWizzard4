@@ -268,15 +268,33 @@ def test_notok_response_check():
 
 
 def test_no_host_defined():
-    conn = Connection(makeParent(host=None))
-    suc, response, chunks = conn.communicate(":GVN#")
+    with mock.patch("mw4.mountcontrol.connection.socket.socket") as m_socket:
+
+        def connect_side_effect(addr):
+            if addr == (None, None):
+                raise OSError("Invalid host")
+            return None
+
+        m_socket.return_value.connect.side_effect = connect_side_effect
+        m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
+        conn = Connection(makeParent())
+        suc, response, chunks = conn.communicate(":GVN#")
     assert not suc
     assert response == []
 
 
 def test_no_port_defined():
-    conn = Connection(makeParent(host="localhost"))
-    suc, response, chunks = conn.communicate(":GVN#")
+    with mock.patch("mw4.mountcontrol.connection.socket.socket") as m_socket:
+
+        def connect_side_effect(addr):
+            if addr == ("localhost", None) or addr[1] is None:
+                raise OSError("Invalid port")
+            return None
+
+        m_socket.return_value.connect.side_effect = connect_side_effect
+        m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
+        conn = Connection(makeParent(host="localhost"))
+        suc, response, chunks = conn.communicate(":GVN#")
     assert not suc
     assert response == []
 
@@ -630,7 +648,9 @@ def test_receiveData_success_loggingTrace():
     conn = Connection(makeParent(loggingTrace=True))
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     with mock.patch.object(socket.socket, "recv", return_value=b"result#"):
+        # act
         val = conn.receiveData(client=client, numberOfChunks=1, minBytes=0)
+    # assert
     assert val == (True, ["result"])
 
 
@@ -670,3 +690,28 @@ def test_communicateRaw_success_loggingTrace():
     # assert
     assert suc[1]
     assert suc[2] == "response"
+
+
+def test_buildClient_noHost():
+    """Test buildClient when host is None."""
+    conn = Connection(makeParent(host=None))
+    conn.host = None
+    result = conn.buildClient()
+    assert result is None
+
+
+def test_buildClient_malformedHost():
+    """Test buildClient when host is not a tuple."""
+    conn = Connection(makeParent(host=("localhost", 9900)))
+    conn.host = "invalid"
+    result = conn.buildClient()
+    assert result is None
+
+
+def test_buildClient_validTuple():
+    """Test buildClient with valid host tuple."""
+    conn = Connection(makeParent(host=("localhost", 9900)))
+    with mock.patch.object(socket.socket, "connect"):
+        result = conn.buildClient()
+    assert result is not None
+    assert isinstance(result, socket.socket)

@@ -16,9 +16,9 @@
 import logging
 import numpy as np
 import socket
-from .convert import valueToFloat
 from mw4.base.tpool import Worker
 from mw4.mountcontrol.connection import Connection
+from mw4.mountcontrol.convert import valueToFloat
 from mw4.mountcontrol.obsSite import MountStatus
 from ping3 import ping
 from PySide6.QtCore import QMutex

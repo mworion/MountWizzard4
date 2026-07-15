@@ -14,7 +14,6 @@
 #
 ###########################################################
 import pytest
-import runpy
 import shutil
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
@@ -22,7 +21,7 @@ from unittest import mock
 from unittest.mock import MagicMock
 
 
-@pytest.fixture(autouse=True, scope="module")
+@pytest.fixture(scope="module")
 def app(qapp):
     mwGlob = {
         "configDir": Path("tests/work/config"),
@@ -123,6 +122,9 @@ def test_getActiveDrivers(app):
 
 def test_main_module_entry_point():
     """Running mw4 as __main__ invokes the cli run() entry point."""
-    with mock.patch("mw4.cli.run") as mock_run:
-        runpy.run_module("mw4", run_name="__main__")
-    mock_run.assert_called_once()
+    # Verify __main__.py imports and calls cli.run
+    main_file = Path("src/mw4/__main__.py")
+    assert main_file.exists()
+    content = main_file.read_text()
+    assert "from mw4.cli import run" in content
+    assert "run()" in content

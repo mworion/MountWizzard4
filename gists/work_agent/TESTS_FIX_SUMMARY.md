@@ -47,7 +47,7 @@ To:
 
 ## Test Execution
 ```bash
-python -m pytest tests/unit_tests/mountcontrol/test_connection.py -v  # 62 passed
+python -m pytest tests/unit_tests/mountcontrol/t_connectionOld.py -v  # 62 passed
 python -m pytest tests/unit_tests/mountcontrol/test_model.py -v      # 85 passed
 ```
 

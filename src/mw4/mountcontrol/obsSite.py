@@ -15,8 +15,10 @@
 ###########################################################
 import logging
 import numpy as np
-from .connection import Connection
-from .convert import (
+from enum import IntEnum
+from mw4.base.transform import diffModulusSign
+from mw4.mountcontrol.connection import Connection
+from mw4.mountcontrol.convert import (
     sexagesimalizeToInt,
     stringToAngle,
     stringToDegree,
@@ -24,8 +26,6 @@ from .convert import (
     valueToFloat,
     valueToInt,
 )
-from enum import IntEnum
-from mw4.base.transform import diffModulusSign
 from skyfield.api import Angle, Loader, load, wgs84
 from skyfield.timelib import Time, Timescale
 from skyfield.toposlib import GeographicPosition

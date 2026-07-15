@@ -63,10 +63,22 @@ class Worker(QRunnable):
             parts.append(f" - excType: [{type(e)}], excValue: [{e}]")
             eStr = "".join(parts)
             self.log.critical(eStr)
-            self.signals.error.emit(eStr)
+            try:
+                if self.signals is not None:
+                    self.signals.error.emit(eStr)
+            except RuntimeError:
+                pass
 
         else:
-            self.signals.result.emit(result)
+            try:
+                if self.signals is not None:
+                    self.signals.result.emit(result)
+            except RuntimeError:
+                pass
 
         finally:
-            self.signals.finished.emit()
+            try:
+                if self.signals is not None:
+                    self.signals.finished.emit()
+            except RuntimeError:
+                pass

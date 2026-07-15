@@ -71,11 +71,11 @@ class SettUpdate:
 
     def setOnlineMode(self) -> None:
         isOnline = self.ui.isOnline.isChecked()
-        self.app.isOnline = isOnline
-        if isOnline:
+        if not self.app.isOnline and isOnline:
             self.msg.emit(0, "System", "Online", "Online mode activated")
-        else:
+        elif self.app.isOnline and not isOnline:
             self.msg.emit(0, "System", "Online", "Online mode deactivated")
+        self.app.isOnline = isOnline
         self.app.onlineModeChanged.emit()
 
     def setLoggingLevel(self) -> None:

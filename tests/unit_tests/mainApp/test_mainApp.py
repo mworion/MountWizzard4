@@ -44,7 +44,6 @@ def app(qapp):
         app_instance = MountWizzard4(mwGlob, qapp, 1)
     app_instance.update1s = MagicMock(emit=mock_emit)
     yield app_instance
-    app_instance.threadPool.waitForDone(15000)
 
 
 def test_init_config(app):

@@ -235,7 +235,7 @@ class Connection:
     )
 
     # Command list for commands which don't reply to anything, but give a parameter
-    COMMAND_P: tuple[str, ...] = (":RC", ":Rc", ":RG", ":Suaf")
+    COMMAND_P: frozenset[str] = frozenset({":RC", ":Rc", ":RG", ":Suaf"})
 
     # Command list for commands which have a response but have no end mark;
     # mostly these commands respond with a value of '0' or '1'
@@ -382,7 +382,6 @@ class Connection:
         commands which give a response without a delimiter. this is bad, but status.
         """
         responseBytes = bytearray()
-        responseStr = ""
         receiving = True
         chunkRaw = b""
         try:
@@ -391,12 +390,11 @@ class Connection:
                 if not chunkRaw:
                     break
                 responseBytes.extend(chunkRaw)
-                responseStr = responseBytes.decode("ASCII")
                 if (
                     numberOfChunks == 0
-                    and len(responseStr) == minBytes
+                    and len(responseBytes) == minBytes
                     or numberOfChunks != 0
-                    and numberOfChunks == responseStr.count("#")
+                    and numberOfChunks == responseBytes.count(b"#")
                 ):
                     break
 
@@ -408,7 +406,7 @@ class Connection:
             self.log.warning(f"Error    [{self.id}]: error: [{e}], received: [{chunkRaw}]")
             return False, []
         else:
-            response = responseStr.rstrip("#").split("#")
+            response = responseBytes.decode("ASCII").rstrip("#").split("#")
             if self.loggingTrace:
                 self.log.debug(f"[Trace] Response [{self.id}]: [{response}]")
             return True, response

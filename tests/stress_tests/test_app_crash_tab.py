@@ -47,7 +47,7 @@ def cleanupTestFiles() -> None:
                 os.remove(f)
 
 
-@pytest.fixture(autouse=True, scope="function")
+@pytest.fixture(autouse=True, scope="module")
 def module_setup_teardown():
     global tp
 

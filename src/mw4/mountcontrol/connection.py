@@ -280,6 +280,7 @@ class Connection:
     )
 
     def __init__(self, parent: Any) -> None:
+        self.parent = parent
         self.host = (parent.config.hostAddress, parent.config.port)
         self.loggingTrace = parent.loggingTrace
         self.id = str(uuid.uuid4())[:8]
@@ -337,6 +338,8 @@ class Connection:
             return None
         if not isinstance(self.host, tuple):
             self.log.info(f"Host     [{self.id}]: host entry malformed [{self.host}]")
+            return None
+        if not self.parent.mountIsUp:
             return None
 
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

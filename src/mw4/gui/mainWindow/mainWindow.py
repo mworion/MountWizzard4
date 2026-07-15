@@ -45,6 +45,7 @@ class MainWindow(MWidget):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self.ws)
         self.setWindowTitle(f"MountWizzard4 - v{self.app.__version__}")
+        self.setFixedSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.externalWindows = ExternalWindows(self)
         self.mainWindowAddons = MainWindowAddons(self)
         self.satStatus: bool = False
@@ -176,8 +177,6 @@ class MainWindow(MWidget):
 
     def showWindow(self) -> None:
         self.show()
-        self.setMinimumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
-        self.setMaximumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.titleBar.normButton.setVisible(False)
         self.titleBar.maxButton.setVisible(False)
         self.titleBar.windowFixed = True

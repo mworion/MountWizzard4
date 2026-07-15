@@ -27,6 +27,7 @@ def makeParent(host=None, loggingTrace: bool = False) -> object:
 
     p = Parent()
     p.loggingTrace = loggingTrace
+    p.mountIsUp = True
 
     config = Config()
     if isinstance(host, tuple) and len(host) == 2:
@@ -223,6 +224,39 @@ class TestCloseClientHard:
             mock.patch.object(socket.socket, "close"),
         ):
             conn.closeClientHard(client)
+
+
+class TestBuildClient:
+    """Tests for the buildClient method."""
+
+    def test_buildClient_noHost(self):
+        conn = Connection(makeParent(host=None))
+        client = conn.buildClient()
+        assert client is None
+
+    def test_buildClient_hostNotTuple(self):
+        conn = Connection(makeParent(host="localhost"))
+        client = conn.buildClient()
+        assert client is None
+
+    def test_buildClient_mountNotUp(self):
+        parent = makeParent(host=("localhost", 3492))
+        parent.mountIsUp = False
+        conn = Connection(parent)
+        client = conn.buildClient()
+        assert client is None
+
+    def test_buildClient_emptyHost(self):
+        conn = Connection(makeParent(host=None))
+        conn.host = None
+        client = conn.buildClient()
+        assert client is None
+
+    def test_buildClient_hostNotTuple_direct(self):
+        conn = Connection(makeParent(host=None))
+        conn.host = "not_a_tuple"
+        client = conn.buildClient()
+        assert client is None
 
 
 class TestCommunicate:

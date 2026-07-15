@@ -476,6 +476,7 @@ class Mount(QObject):
         self.instance = self
         self.framework = "mountcontrol"
         self.config = DeviceConfigMount()
+        self.mountIsUp = False
 
         class FrameworkConfig:
             config = DeviceConfigMount()
@@ -516,6 +517,10 @@ class Mount(QObject):
 
     @staticmethod
     def stopMountClockTimer():
+        return
+
+    @staticmethod
+    def stopAllMountTimers():
         return
 
     @staticmethod

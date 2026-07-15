@@ -3077,9 +3077,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </property>
          <property name="geometry">
           <rect>
-           <x>145</x>
+           <x>185</x>
            <y>60</y>
-           <width>76</width>
+           <width>36</width>
            <height>21</height>
           </rect>
          </property>
@@ -3560,6 +3560,79 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </property>
          <property name="text">
           <string>Web IF Stat</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="rtt">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="geometry">
+          <rect>
+           <x>145</x>
+           <y>60</y>
+           <width>36</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="mouseTracking">
+          <bool>false</bool>
+         </property>
+         <property name="acceptDrops">
+          <bool>false</bool>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clock difference between PC clock and Mount Computer, filtered over 10 seconds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LayoutDirection::LeftToRight</enum>
+         </property>
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="maxLength">
+          <number>20</number>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLabel" name="clockOffsetMS_2">
+         <property name="geometry">
+          <rect>
+           <x>175</x>
+           <y>60</y>
+           <width>16</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>|</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
          </property>
         </widget>
        </widget>

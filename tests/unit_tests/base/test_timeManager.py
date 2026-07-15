@@ -108,6 +108,15 @@ def test_emit_cyclic_always_fires_update0_1s(mock_app, mgr):
         assert "update0_1s" in emitted, f"update0_1s should fire at counter={counter}"
 
 
+def test_emit_cyclic_update0_5s(mock_app, mgr):
+    """update1s fires when counter % 10 == 0, i.e. counter = 10,20,30..."""
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 10)
+    assert "update0_5s" in emitted
+
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 11)
+    assert "update0_5s" not in emitted
+
+
 def test_emit_cyclic_update1s(mock_app, mgr):
     """update1s fires when counter % 10 == 0, i.e. counter = 10,20,30..."""
     emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 10)

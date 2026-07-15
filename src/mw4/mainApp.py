@@ -98,8 +98,6 @@ class MountWizzard4(QObject):
         self.mainW = MainWindow(self)
         self.mainW.initConfig()
         self.mainW.showWindow()
-        # Set up the cyclic timer manager and start the mount timers.
-        self.dReg["mount"].instance.startMountCoreTimers()
         self.timeMgr.start()
         # Wire up application-level signal connections.
         self.application.aboutToQuit.connect(self.aboutToQuit)
@@ -138,7 +136,7 @@ class MountWizzard4(QObject):
 
     def aboutToQuit(self) -> None:
         self.timeMgr.stop()
-        self.dReg["mount"].instance.stopAllMountTimers()
+        self.mount.stopAllMountTimers()
 
     def quit(self) -> None:
         self.dReg.setStat("mount", False)

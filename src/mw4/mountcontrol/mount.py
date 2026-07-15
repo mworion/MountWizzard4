@@ -100,16 +100,12 @@ class MountDevice(QObject):
         self.statusAlert: bool = False
         self.statusSlew: bool = False
 
-        self.timerPointing = QTimer()
-        self.timerPointing.setSingleShot(False)
-        self.timerPointing.timeout.connect(self.cyclePointing)
-        self.timerSetting = QTimer()
-        self.timerSetting.setSingleShot(False)
-        self.timerSetting.timeout.connect(self.cycleSetting)
         self.settlingWait = QTimer()
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitAfterSettlingAndEmit)
         self.signals.mountIsUp.connect(self.startupMountData)
+        self.app.timeMgr.update0_5s.connect(self.cyclePointing)
+        self.app.timeMgr.update1s.connect(self.cycleSetting)
         self.app.timeMgr.update1s.connect(self.collectData)
         self.app.timeMgr.start3s.connect(self.resetAfterStart)
         self.data: dict = {}
@@ -147,6 +143,9 @@ class MountDevice(QObject):
     def waitAfterSettlingAndEmit(self) -> None:
         self.signals.slewed.emit()
 
+    def stopAllMountTimers(self) -> None:
+        self.settlingWait.stop()
+
     def runWorker(
         self,
         target: Callable[..., Any],
@@ -167,14 +166,6 @@ class MountDevice(QObject):
         sig.connect(clearMethod)
         setattr(self, workerAttr, worker)
         self.threadPool.start(worker)
-
-    def startMountCoreTimers(self) -> None:
-        self.timerPointing.start(self.CYCLE_POINTING)
-        self.timerSetting.start(self.CYCLE_SETTING)
-
-    def stopAllMountTimers(self) -> None:
-        self.timerPointing.stop()
-        self.timerSetting.stop()
 
     def startupMountData(self, status) -> None:
         if status and not self.mountIsUp:

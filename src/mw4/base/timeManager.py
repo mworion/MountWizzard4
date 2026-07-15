@@ -21,12 +21,13 @@ from typing import Any
 TICK_INTERVAL_MS: int = 100
 CYCLIC_SCHEDULE: list[tuple[int, str]] = [
     (1, "update0_1s"),
-    (1 * 10, "update1s"),
-    (3 * 10, "update3s"),
-    (10 * 10, "update10s"),
-    (30 * 10, "update30s"),
-    (3 * 60 * 10, "update3m"),
-    (30 * 60 * 10, "update30m"),
+    (5, "update0_5s"),
+    (10, "update1s"),
+    (30, "update3s"),
+    (100, "update10s"),
+    (300, "update30s"),
+    (1800, "update3m"),
+    (18000, "update30m"),
 ]
 START_SCHEDULE: list[tuple[int, str]] = [
     (30, "start3s"),
@@ -36,6 +37,7 @@ START_SCHEDULE: list[tuple[int, str]] = [
 class TimeManager(QObject):
     # --- Cyclic update signals (emitted every 100ms tick) ---
     update0_1s = Signal()
+    update0_5s = Signal()
     update1s = Signal()
     update3s = Signal()
     update10s = Signal()

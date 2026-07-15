@@ -65,14 +65,10 @@ def test_waitAfterSettlingAndEmit(function):
     function.waitAfterSettlingAndEmit()
 
 
-def test_startMountCoreTimers(function):
-    with mock.patch.object(QTimer, "start"):
-        function.startMountCoreTimers()
-
-
 def test_stopAllMountTimers(function):
-    with mock.patch.object(QTimer, "stop"):
+    with mock.patch.object(function.settlingWait, "stop") as mockStop:
         function.stopAllMountTimers()
+        mockStop.assert_called_once()
 
 
 def test_startupMountData_1(function):

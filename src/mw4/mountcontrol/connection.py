@@ -14,8 +14,8 @@
 #
 ###########################################################
 import logging
-import socket
 import uuid
+from PySide6.QtNetwork import QAbstractSocket, QTcpSocket
 from typing import Any
 
 
@@ -323,16 +323,16 @@ class Connection:
             self.log.debug(t)
         return chunksToReceive, getData, minBytes
 
-    def closeClientHard(self, client: socket.socket | None) -> None:
+    def closeClientHard(self, client: QTcpSocket | None) -> None:
         if not client:
             return
         try:
-            client.shutdown(socket.SHUT_RDWR)
+            client.abort()
             client.close()
         except Exception as e:
             self.log.warning(f"Error    [{self.id} {e}]: closing socket client")
 
-    def buildClient(self) -> socket.socket | None:
+    def buildClient(self) -> QTcpSocket | None:
         if not self.host:
             self.log.info(f"No host  [{self.id}]")
             return None
@@ -342,15 +342,14 @@ class Connection:
         if not self.parent.mountIsUp:
             return None
 
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client.settimeout(self.SOCKET_TIMEOUT)
-        client.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, True)
+        client = QTcpSocket()
+        client.setSocketOption(QAbstractSocket.SocketOption.LowDelayOption, 1)
         try:
-            client.connect(self.host)
-        except TimeoutError:
-            self.closeClientHard(client)
-            self.log.debug(f"Timeout  [{self.id}]: socket timeout in build client")
-            return None
+            client.connectToHost(self.host[0], int(self.host[1]))
+            if not client.waitForConnected(self.SOCKET_TIMEOUT * 1000):
+                self.closeClientHard(client)
+                self.log.debug(f"Timeout  [{self.id}]: socket timeout in build client")
+                return None
         except Exception as e:
             self.closeClientHard(client)
             self.log.warning(f"Error    [{self.id}]: socket general: [{e}] in build client")
@@ -358,16 +357,18 @@ class Connection:
         else:
             return client
 
-    def sendData(self, client: socket.socket, commandString: str) -> bool:
+    def sendData(self, client: QTcpSocket, commandString: str) -> bool:
         try:
             if self.loggingTrace:
                 self.log.debug(f"[Trace] Sending  [{self.id}]: [{commandString}]")
-            client.sendall(commandString.encode())
-        except TimeoutError:
-            self.closeClientHard(client)
-            if self.loggingTrace:
-                self.log.debug(f"[Trace] Timeout  [{self.id}]: socket timeout in send data")
-            return False
+            client.write(commandString.encode())
+            if not client.waitForBytesWritten(self.SOCKET_TIMEOUT * 1000):
+                self.closeClientHard(client)
+                if self.loggingTrace:
+                    self.log.debug(
+                        f"[Trace] Timeout  [{self.id}]: socket timeout in send data"
+                    )
+                return False
         except Exception as e:
             self.closeClientHard(client)
             self.log.warning(f"[Trace] Error    [{self.id}]: socket error: [{e}] in send data")
@@ -376,7 +377,7 @@ class Connection:
             return True
 
     def receiveData(
-        self, client: socket.socket, numberOfChunks: int, minBytes: int
+        self, client: QTcpSocket, numberOfChunks: int, minBytes: int
     ) -> tuple[bool, list[str]]:
         """
         receive Data waits on the give socket client for a number of chunks to
@@ -389,7 +390,13 @@ class Connection:
         chunkRaw = b""
         try:
             while receiving:
-                chunkRaw = client.recv(2048)
+                if not client.waitForReadyRead(self.SOCKET_TIMEOUT * 1000):
+                    if self.loggingTrace:
+                        self.log.debug(
+                            f"[Trace] Timeout  [{self.id}]: socket timeout in receive data"
+                        )
+                    return False, []
+                chunkRaw = client.readAll().data()
                 if not chunkRaw:
                     break
                 responseBytes.extend(chunkRaw)
@@ -401,10 +408,6 @@ class Connection:
                 ):
                     break
 
-        except TimeoutError:
-            if self.loggingTrace:
-                self.log.debug(f"[Trace] Timeout  [{self.id}]: socket timeout in receive data")
-            return False, []
         except Exception as e:
             self.log.warning(f"Error    [{self.id}]: error: [{e}], received: [{chunkRaw}]")
             return False, []
@@ -445,15 +448,14 @@ class Connection:
 
         sucSend = self.sendData(client, commandString)
         try:
-            chunkRaw = client.recv(2048)
-            val = chunkRaw.decode("ASCII")
-        except TimeoutError:
-            if self.loggingTrace:
-                self.log.debug(
-                    f"[Trace] Timeout  [{self.id}]: socket timeout in communicate raw"
-                )
-            val = "Timeout"
-            sucRec = False
+            if not client.waitForReadyRead(self.SOCKET_TIMEOUT * 1000):
+                if self.loggingTrace:
+                    self.log.debug(
+                        f"[Trace] Timeout  [{self.id}]: socket timeout in communicate raw"
+                    )
+                self.closeClientHard(client)
+                return sucSend, False, "Timeout"
+            val = client.readAll().data().decode("ASCII")
         except Exception as e:
             self.log.warning(
                 f"[Trace] Error    [{self.id}]: socket error: [{e}] in communicate raw"
@@ -465,4 +467,5 @@ class Connection:
                 self.log.debug(f"[Trace] Response [{self.id}]:  [{val}] in communicate raw")
             sucRec = True
 
+        self.closeClientHard(client)
         return sucSend, sucRec, val

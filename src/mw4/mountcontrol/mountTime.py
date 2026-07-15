@@ -16,7 +16,7 @@
 import logging
 import numpy as np
 import socket
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat
 from mw4.mountcontrol.obsSite import MountStatus
@@ -40,7 +40,9 @@ class MountTime:
         self.rtt: float = 0
         self.rtt_MA: np.ndarray = np.zeros(25)
         self.workerCycleMountUp: Worker | None = None
+        self.workerPollSyncClock: Worker | None = None
         self.mutexCycleMountUp = QMutex()
+        self.mutexPollSyncClock = QMutex()
         self.app.timeMgr.update1s.connect(self.checkMountUp)
         self.app.timeMgr.update30s.connect(self.syncClock)
         self.app.timeMgr.update1s.connect(self.pollSyncClock)
@@ -76,11 +78,14 @@ class MountTime:
         self.mutexCycleMountUp.unlock()
 
     def checkMountUp(self) -> None:
-        if not self.mutexCycleMountUp.tryLock():
-            return
-        self.workerCycleMountUp = Worker(self.runnerMountUp)
-        self.workerCycleMountUp.signals.finished.connect(self.clearMountUp)
-        self.threadPool.start(self.workerCycleMountUp)
+        worker = startWorker(
+            self.threadPool,
+            self.runnerMountUp,
+            self.clearMountUp,
+            mutex=self.mutexCycleMountUp,
+        )
+        if worker is not None:
+            self.workerCycleMountUp = worker
 
     def adjustClock(self, delta: int) -> bool:
         conn = Connection(self.parent)
@@ -107,9 +112,10 @@ class MountTime:
         if not self.adjustClock(delta):
             self.log.warning(f"Clock sync failed with delta {delta} ms")
 
-    def pollSyncClock(self) -> None:
-        if not self.parent.mountIsUp:
-            return
+    def clearPollSyncClock(self) -> None:
+        self.mutexPollSyncClock.unlock()
+
+    def runnerPollSyncClock(self) -> None:
         conn = Connection(self.parent)
         commandString = ":GJD1#"
         suc, response, _ = conn.communicate(commandString)
@@ -122,3 +128,14 @@ class MountTime:
         self._timeDiff = np.roll(self._timeDiff, 1)
         delta = (self.timePC - timeMount) * 86400 - self.rtt
         self._timeDiff[0] = delta
+
+    def pollSyncClock(self) -> None:
+        worker = startWorker(
+            self.threadPool,
+            self.runnerPollSyncClock,
+            self.clearPollSyncClock,
+            mutex=self.mutexPollSyncClock,
+            guard=lambda: self.parent.mountIsUp,
+        )
+        if worker is not None:
+            self.workerPollSyncClock = worker

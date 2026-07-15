@@ -18,6 +18,7 @@ import numpy as np
 import pytest
 from mw4.mountcontrol.mountTime import MountTime
 from mw4.mountcontrol.obsSite import MountStatus
+from PySide6.QtCore import QThreadPool
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
@@ -48,6 +49,8 @@ def test_mountTime_init(function):
     assert len(function._timeDiff) == 25
     assert function.workerCycleMountUp is None
     assert function.mutexCycleMountUp is not None
+    assert function.workerPollSyncClock is None
+    assert function.mutexPollSyncClock is not None
 
 
 def test_timeDiff_property_initial(function):
@@ -135,19 +138,19 @@ def test_clearMountUp(function):
 
 def test_checkMountUp_locked(function):
     function.mutexCycleMountUp.lock()
-    with mock.patch("mw4.base.tpool.Worker"):
+    with mock.patch.object(QThreadPool, "start") as start:
         function.checkMountUp()
+        assert not start.called
     function.mutexCycleMountUp.unlock()
 
 
 def test_checkMountUp_unlocked(function):
     function.mutexCycleMountUp.unlock()
-    with mock.patch("mw4.mountcontrol.mountTime.Worker") as mock_worker_class:
-        mock_worker_instance = mock.Mock()
-        mock_worker_class.return_value = mock_worker_instance
+    with mock.patch.object(QThreadPool, "start") as start:
         function.checkMountUp()
-        assert mock_worker_class.called
-        mock_worker_instance.signals.finished.connect.assert_called_once()
+        assert start.called
+        assert function.workerCycleMountUp is not None
+    function.clearMountUp()
 
 
 def test_adjustClock_positive_delta(function):
@@ -306,8 +309,33 @@ def test_syncClock_adjustClock_failure(function):
 
 def test_pollSyncClock_mount_not_up(function):
     function.parent.mountIsUp = False
-    with mock.patch("mw4.mountcontrol.mountTime.Connection"):
+    with mock.patch.object(QThreadPool, "start") as start:
         function.pollSyncClock()
+        assert not start.called
+
+
+def test_pollSyncClock_locked(function):
+    function.parent.mountIsUp = True
+    function.mutexPollSyncClock.lock()
+    with mock.patch.object(QThreadPool, "start") as start:
+        function.pollSyncClock()
+        assert not start.called
+    function.mutexPollSyncClock.unlock()
+
+
+def test_pollSyncClock_unlocked(function):
+    function.parent.mountIsUp = True
+    function.mutexPollSyncClock.unlock()
+    with mock.patch.object(QThreadPool, "start") as start:
+        function.pollSyncClock()
+        assert start.called
+        assert function.workerPollSyncClock is not None
+    function.clearPollSyncClock()
+
+
+def test_clearPollSyncClock(function):
+    function.mutexPollSyncClock.lock()
+    function.clearPollSyncClock()
 
 
 def test_pollSyncClock_communicate_failure(function):
@@ -318,7 +346,7 @@ def test_pollSyncClock_communicate_failure(function):
         mock_conn_instance.communicate.return_value = (False, "", "")
 
         initial_timeDiff = function._timeDiff.copy()
-        function.pollSyncClock()
+        function.runnerPollSyncClock()
         np.testing.assert_array_equal(function._timeDiff, initial_timeDiff)
 
 
@@ -330,7 +358,7 @@ def test_pollSyncClock_success(function):
         mock_connection.return_value = mock_conn_instance
         mock_conn_instance.communicate.return_value = (True, ["2460000.5"], "")
 
-        function.pollSyncClock()
+        function.runnerPollSyncClock()
 
         assert mock_connection.called
         call_args = mock_conn_instance.communicate.call_args
@@ -348,6 +376,6 @@ def test_pollSyncClock_updates_timeDiff_array(function):
         mock_conn_instance.communicate.return_value = (True, ["2460000.5"], "")
 
         initial_last_element = function._timeDiff[-1]
-        function.pollSyncClock()
+        function.runnerPollSyncClock()
         assert function._timeDiff[-1] == pytest.approx(initial_last_element)
         assert function._timeDiff[0] != initial_last_element

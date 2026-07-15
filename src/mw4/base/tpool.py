@@ -17,7 +17,7 @@ import logging
 import os
 import sys
 from collections.abc import Callable
-from PySide6.QtCore import QObject, QRunnable, Signal, Slot
+from PySide6.QtCore import QMutex, QObject, QRunnable, QThreadPool, Signal, Slot
 from types import TracebackType
 from typing import Any
 
@@ -82,3 +82,32 @@ class Worker(QRunnable):
                     self.signals.finished.emit()
             except RuntimeError:
                 pass
+
+
+def startWorker(
+    threadPool: QThreadPool,
+    target: Callable[..., Any],
+    clearMethod: Callable[..., Any] | None = None,
+    *args: Any,
+    mutex: QMutex | None = None,
+    useResult: bool = False,
+    guard: Callable[[], bool] | None = None,
+    **kwargs: Any,
+) -> Worker | None:
+    """
+    Build and start a Worker on the given threadPool. An optional guard
+    callable can veto execution (returning False), and an optional mutex is
+    tryLock-ed to prevent overlapping runs. The created Worker is returned so
+    the caller can keep an explicit reference alive; None is returned when the
+    guard or mutex prevents starting.
+    """
+    if guard is not None and not guard():
+        return None
+    if mutex is not None and not mutex.tryLock():
+        return None
+    worker = Worker(target, *args, **kwargs)
+    sig = worker.signals.result if useResult else worker.signals.finished
+    if clearMethod is not None:
+        sig.connect(clearMethod)
+    threadPool.start(worker)
+    return worker

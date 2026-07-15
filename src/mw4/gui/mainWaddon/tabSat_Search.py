@@ -81,8 +81,8 @@ class SatSearch(SatData):
         self.ui.satRemoveK.setChecked(config.get("satRemoveK", False))
         self.ui.satRemoveDQ.setChecked(config.get("satRemoveDQ", False))
         self.ui.satAltitudeMin.setValue(config.get("satAltitudeMin", 30))
-        self.ui.satSourceList.setCurrentIndex(config.get("satSource", 0))
         self.ui.satSourceList.currentIndexChanged.connect(self.satellites.loadSourceUrl)
+        self.ui.satSourceList.setCurrentIndex(config.get("satSource", 0))
 
     def storeConfig(self) -> None:
         config = self.app.config["WindowMain"]

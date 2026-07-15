@@ -515,8 +515,8 @@ class MountSett(TabAddon):
     def showTimeDiff(self) -> None:
         delta = self.app.dReg["mount"].instance.mountTime.timeDiff * 1000
         rtt = self.app.dReg["mount"].instance.mountTime.rtt * 1000
-        guiSetText(self.ui.timeDeltaPC2Mount, "04.1f", delta)
-        guiSetText(self.ui.rtt, "04.1f", rtt)
+        guiSetText(self.ui.timeDeltaPC2Mount, "4.0f", delta)
+        guiSetText(self.ui.rtt, "4.1f", rtt)
         if abs(delta) < 100:
             changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "")
         elif abs(delta) < 500:

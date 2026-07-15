@@ -17,7 +17,7 @@ import pytest
 import wakeonlan
 from mw4.mountcontrol.mount import MountDevice
 from mw4.mountcontrol.mountSignals import MountSignals
-from PySide6.QtCore import QThreadPool, QTimer
+from PySide6.QtCore import QThreadPool
 from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
@@ -72,7 +72,7 @@ def test_stopAllMountTimers(function):
 
 
 def test_startupMountData_1(function):
-    function.mountIsUp = True
+    function.mountIsUp = False
     with (
         mock.patch.object(function, "cycleSetting"),
         mock.patch.object(function, "getFW"),
@@ -85,7 +85,7 @@ def test_startupMountData_1(function):
 
 
 def test_startupMountData_2(function):
-    function.mountIsUp = False
+    function.mountIsUp = True
     function.startupMountData(False)
     assert not function.mountIsUp
 
@@ -515,48 +515,3 @@ def test_clearProgTrajectory_signal(function):
 def test_waitTimeFlip_setter_rejects_negative(function):
     with pytest.raises(ValueError):
         function.waitTimeFlip = -1
-
-
-def test_runWorker_skips_when_mount_down(function):
-    function.mountIsUp = False
-    with mock.patch.object(QThreadPool, "start") as start:
-        function.runWorker(lambda: None, lambda: None, "workerGetFW")
-        assert not start.called
-
-
-def test_runWorker_skips_when_mutex_locked(function):
-    function.mountIsUp = True
-    function.mutexCalcTLE.lock()
-    with mock.patch.object(QThreadPool, "start") as start:
-        function.runWorker(
-            lambda: None,
-            lambda: None,
-            "workerCalcTLE",
-            mutex=function.mutexCalcTLE,
-        )
-        assert not start.called
-    function.mutexCalcTLE.unlock()
-
-
-def test_runWorker_uses_result_signal(function):
-    function.mountIsUp = True
-    with mock.patch.object(QThreadPool, "start"):
-        function.runWorker(
-            lambda: None,
-            lambda _r: None,
-            "workerCyclePointing",
-            useResult=True,
-        )
-        assert function.workerCyclePointing is not None
-
-
-def test_runWorker_requireMountUp_false(function):
-    function.mountIsUp = False
-    with mock.patch.object(QThreadPool, "start") as start:
-        function.runWorker(
-            lambda: None,
-            lambda: None,
-            "workerMountIsUp",
-            requireMountUp=False,
-        )
-        assert start.called

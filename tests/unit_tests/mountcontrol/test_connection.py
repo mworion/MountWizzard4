@@ -13,9 +13,24 @@
 # License APL2.0
 #
 ###########################################################
-import socket
 import unittest.mock as mock
 from mw4.mountcontrol.connection import Connection
+from PySide6.QtCore import QByteArray
+
+
+def makeClient(
+    connected: bool = True,
+    written: bool = True,
+    readyRead: bool = True,
+    data: bytes = b"",
+) -> mock.MagicMock:
+    """Create a mocked QTcpSocket with configurable blocking-call results."""
+    client = mock.MagicMock()
+    client.waitForConnected.return_value = connected
+    client.waitForBytesWritten.return_value = written
+    client.waitForReadyRead.return_value = readyRead
+    client.readAll.return_value = QByteArray(data)
+    return client
 
 
 def makeParent(host=None, loggingTrace: bool = False) -> object:
@@ -212,18 +227,16 @@ class TestCloseClientHard:
 
     def test_closeClientHard_2(self):
         conn = Connection(makeParent(host="test"))
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        with mock.patch.object(socket.socket, "shutdown", side_effect=Exception):
-            conn.closeClientHard(client)
+        client = makeClient()
+        client.abort.side_effect = Exception
+        conn.closeClientHard(client)
 
     def test_closeClientHard_3(self):
         conn = Connection(makeParent(host="test"))
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        with (
-            mock.patch.object(socket.socket, "shutdown"),
-            mock.patch.object(socket.socket, "close"),
-        ):
-            conn.closeClientHard(client)
+        client = makeClient()
+        conn.closeClientHard(client)
+        client.abort.assert_called_once()
+        client.close.assert_called_once()
 
 
 class TestBuildClient:
@@ -263,22 +276,22 @@ class TestCommunicate:
     """Tests for the communicate method."""
 
     def test_ok(self):
-        with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
+        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
+            m_socket.return_value = makeClient(data=b"10micron GM1000HPS#")
             conn = Connection(makeParent(host=("localhost", 3492)))
             suc, response, chunks = conn.communicate(":GVN#")
-            m_socket.return_value.connect.assert_called_with(("localhost", 3492))
-            m_socket.return_value.sendall.assert_called_with(b":GVN#")
+            m_socket.return_value.connectToHost.assert_called_with("localhost", 3492)
+            m_socket.return_value.write.assert_called_with(b":GVN#")
         assert suc
         assert response[0] == "10micron GM1000HPS"
 
     def test_notok_response_check(self):
-        with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
+        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
+            m_socket.return_value = makeClient(data=b"10micron GM1000HPS#")
             conn = Connection(makeParent(host=("localhost", 3492)))
             suc, response, chunks = conn.communicate(":GVN#", "0")
-            m_socket.return_value.connect.assert_called_with(("localhost", 3492))
-            m_socket.return_value.sendall.assert_called_with(b":GVN#")
+            m_socket.return_value.connectToHost.assert_called_with("localhost", 3492)
+            m_socket.return_value.write.assert_called_with(b":GVN#")
         assert not suc
         assert response[0] == "10micron GM1000HPS"
 
@@ -295,89 +308,74 @@ class TestCommunicate:
         assert response == []
 
     def test_no_response(self):
-        with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
+        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
+            m_socket.return_value = makeClient(data=b"10micron GM1000HPS#")
             conn = Connection(makeParent(host=("localhost", 3492)))
             suc, response, chunks = conn.communicate("")
         assert suc
         assert response == []
 
     def test_no_chunk(self):
-        with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = "".encode
+        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
+            m_socket.return_value = makeClient(data=b"")
             conn = Connection(makeParent(host=("localhost", 3492)))
             suc, response, chunks = conn.communicate("")
         assert suc
         assert response == []
 
     def test_connect_timeout(self):
-        with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
-            m_socket.return_value.connect.side_effect = TimeoutError
+        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
+            m_socket.return_value = makeClient(connected=False)
             conn = Connection(makeParent(host=("localhost", 3492)))
             suc, response, chunks = conn.communicate(":GVN#")
         assert not suc
 
     def test_sendall_timeout(self):
-        with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
-            m_socket.return_value.sendall.side_effect = TimeoutError
+        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
+            m_socket.return_value = makeClient(written=False)
             conn = Connection(makeParent(host=("localhost", 3492)))
             suc, response, chunks = conn.communicate(":GVN#")
         assert not suc
 
     def test_recv_timeout(self):
-        with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
-            m_socket.return_value.recv.side_effect = TimeoutError
+        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
+            m_socket.return_value = makeClient(readyRead=False)
             conn = Connection(makeParent(host=("localhost", 3492)))
             suc, response, chunks = conn.communicate(":GVN#")
         assert not suc
 
     def test_connect_socket_error(self):
-        with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
-            m_socket.return_value.connect.side_effect = socket.error
-            conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, chunks = conn.communicate(":GVN#")
-        assert not suc
-
-    def test_sendall_socket_error(self):
-        with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
-            m_socket.return_value.sendall.side_effect = socket.error
-            conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, chunks = conn.communicate(":GVN#")
-        assert not suc
-
-    def test_recv_socket_error(self):
-        with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
-            m_socket.return_value.recv.side_effect = socket.error
-            conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, chunks = conn.communicate(":GVN#")
-        assert not suc
-
-    def test_connect_exception(self):
-        with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
-            m_socket.return_value.connect.side_effect = Exception("Test")
+        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
+            client = makeClient()
+            client.connectToHost.side_effect = Exception
+            m_socket.return_value = client
             conn = Connection(makeParent(host=("localhost", 3492)))
             suc, response, chunks = conn.communicate(":GVN#")
         assert not suc
 
     def test_sendall_exception(self):
-        with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
-            m_socket.return_value.sendall.side_effect = Exception("Test")
+        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
+            client = makeClient()
+            client.write.side_effect = Exception("Test")
+            m_socket.return_value = client
             conn = Connection(makeParent(host=("localhost", 3492)))
             suc, response, chunks = conn.communicate(":GVN#")
         assert not suc
 
     def test_recv_exception(self):
-        with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.recv.return_value = b"10micron GM1000HPS#"
-            m_socket.return_value.recv.side_effect = Exception("Test")
+        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
+            client = makeClient(data=b"10micron GM1000HPS#")
+            client.readAll.side_effect = Exception("Test")
+            m_socket.return_value = client
+            conn = Connection(makeParent(host=("localhost", 3492)))
+            suc, response, chunks = conn.communicate(":GVN#")
+        assert not suc
+
+    def test_connect_exception(self):
+        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
+            client = makeClient()
+            client.connectToHost.side_effect = Exception("Test")
+            m_socket.return_value = client
             conn = Connection(makeParent(host=("localhost", 3492)))
             suc, response, chunks = conn.communicate(":GVN#")
         assert not suc
@@ -446,53 +444,40 @@ class TestReceiveData:
     """Tests for the receiveData method."""
 
     def test_receiveData_1(self):
-        class Test:
-            @staticmethod
-            def decode(a):
-                return
-
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client = makeClient()
+        client.readAll.side_effect = Exception
         conn = Connection(makeParent())
-        with (
-            mock.patch.object(socket.socket, "recv", return_value=Test()),
-            mock.patch.object(Test, "decode", side_effect=Exception),
-        ):
-            val = conn.receiveData(client=client, numberOfChunks=0, minBytes=0)
-            assert val == (False, [])
+        val = conn.receiveData(client=client, numberOfChunks=0, minBytes=0)
+        assert val == (False, [])
 
     def test_receiveData_2(self):
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client = makeClient(data=b"")
         conn = Connection(makeParent())
-        with mock.patch.object(socket.socket, "recv", return_value=b""):
-            val = conn.receiveData(client=client, numberOfChunks=0, minBytes=0)
-            assert val == (True, [""])
+        val = conn.receiveData(client=client, numberOfChunks=0, minBytes=0)
+        assert val == (True, [""])
 
     def test_receiveData_3(self):
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client = makeClient(data=b"12345")
         conn = Connection(makeParent())
-        with mock.patch.object(socket.socket, "recv", return_value=b"12345"):
-            val = conn.receiveData(client=client, numberOfChunks=0, minBytes=5)
-            assert val == (True, ["12345"])
+        val = conn.receiveData(client=client, numberOfChunks=0, minBytes=5)
+        assert val == (True, ["12345"])
 
     def test_receiveData_multipleChunks(self):
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client = makeClient(data=b"a#b#")
         conn = Connection(makeParent())
-        with mock.patch.object(socket.socket, "recv", return_value=b"a#b#"):
-            val = conn.receiveData(client=client, numberOfChunks=2, minBytes=0)
-            assert val == (True, ["a", "b"])
+        val = conn.receiveData(client=client, numberOfChunks=2, minBytes=0)
+        assert val == (True, ["a", "b"])
 
     def test_receiveData_timeout_loggingTrace(self):
         conn = Connection(makeParent(loggingTrace=True))
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        with mock.patch.object(socket.socket, "recv", side_effect=TimeoutError):
-            val = conn.receiveData(client=client, numberOfChunks=1, minBytes=0)
+        client = makeClient(readyRead=False)
+        val = conn.receiveData(client=client, numberOfChunks=1, minBytes=0)
         assert val == (False, [])
 
     def test_receiveData_success_loggingTrace(self):
         conn = Connection(makeParent(loggingTrace=True))
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        with mock.patch.object(socket.socket, "recv", return_value=b"result#"):
-            val = conn.receiveData(client=client, numberOfChunks=1, minBytes=0)
+        client = makeClient(data=b"result#")
+        val = conn.receiveData(client=client, numberOfChunks=1, minBytes=0)
         assert val == (True, ["result"])
 
 
@@ -500,24 +485,10 @@ class TestCommunicateRaw:
     """Tests for the communicateRaw method."""
 
     def test_communicateRaw_0(self):
-        class Test:
-            @staticmethod
-            def decode(a):
-                return
-
-            @staticmethod
-            def settimeout(a):
-                return
-
-            @staticmethod
-            def recv(a):
-                return "test".encode("ASCII")
-
         conn = Connection(makeParent())
         with (
             mock.patch.object(conn, "buildClient", return_value=None),
             mock.patch.object(conn, "sendData", return_value=False),
-            mock.patch.object(Test, "recv", side_effect=TimeoutError),
         ):
             suc = conn.communicateRaw("test")
             assert not suc[0]
@@ -525,49 +496,26 @@ class TestCommunicateRaw:
             assert suc[2] == "Socket error"
 
     def test_communicateRaw_1(self):
-        class Test:
-            @staticmethod
-            def decode(a):
-                return
-
-            @staticmethod
-            def settimeout(a):
-                return
-
-            @staticmethod
-            def recv(a):
-                return "test".encode("ASCII")
-
+        client = makeClient(readyRead=False)
         conn = Connection(makeParent())
         with (
-            mock.patch.object(conn, "buildClient", return_value=Test()),
+            mock.patch.object(conn, "buildClient", return_value=client),
             mock.patch.object(conn, "sendData", return_value=False),
-            mock.patch.object(Test, "recv", side_effect=TimeoutError),
         ):
             suc = conn.communicateRaw("test")
             assert not suc[0]
             assert not suc[1]
             assert suc[2] == "Timeout"
+        client.abort.assert_called_once()
+        client.close.assert_called_once()
 
     def test_communicateRaw_2(self):
-        class Test:
-            @staticmethod
-            def decode(a):
-                return
-
-            @staticmethod
-            def settimeout(a):
-                return
-
-            @staticmethod
-            def recv(a):
-                return "test".encode("ASCII")
-
+        client = makeClient()
+        client.readAll.side_effect = Exception
         conn = Connection(makeParent())
         with (
-            mock.patch.object(conn, "buildClient", return_value=Test()),
+            mock.patch.object(conn, "buildClient", return_value=client),
             mock.patch.object(conn, "sendData", return_value=True),
-            mock.patch.object(Test, "recv", side_effect=Exception),
         ):
             suc = conn.communicateRaw("test")
             assert suc[0]
@@ -575,38 +523,24 @@ class TestCommunicateRaw:
             assert suc[2] == "Exception"
 
     def test_communicateRaw_3(self):
-        class Test:
-            @staticmethod
-            def decode(a):
-                return
-
-            @staticmethod
-            def settimeout(a):
-                return
-
-            @staticmethod
-            def recv(a):
-                return "test".encode("ASCII")
-
+        client = makeClient(data=b"test")
         conn = Connection(makeParent())
         with (
-            mock.patch.object(conn, "buildClient", return_value=Test()),
+            mock.patch.object(conn, "buildClient", return_value=client),
             mock.patch.object(conn, "sendData", return_value=True),
         ):
             suc = conn.communicateRaw("test")
             assert suc[0]
             assert suc[1]
             assert suc[2] == "test"
+        client.abort.assert_called_once()
+        client.close.assert_called_once()
 
     def test_communicateRaw_timeout_loggingTrace(self):
-        class _Client:
-            @staticmethod
-            def recv(n):
-                raise TimeoutError
-
+        client = makeClient(readyRead=False)
         conn = Connection(makeParent(loggingTrace=True))
         with (
-            mock.patch.object(conn, "buildClient", return_value=_Client()),
+            mock.patch.object(conn, "buildClient", return_value=client),
             mock.patch.object(conn, "sendData", return_value=True),
         ):
             suc = conn.communicateRaw("test")
@@ -614,14 +548,10 @@ class TestCommunicateRaw:
         assert suc[2] == "Timeout"
 
     def test_communicateRaw_success_loggingTrace(self):
-        class _Client:
-            @staticmethod
-            def recv(n):
-                return "response".encode("ASCII")
-
+        client = makeClient(data=b"response")
         conn = Connection(makeParent(loggingTrace=True))
         with (
-            mock.patch.object(conn, "buildClient", return_value=_Client()),
+            mock.patch.object(conn, "buildClient", return_value=client),
             mock.patch.object(conn, "sendData", return_value=True),
         ):
             suc = conn.communicateRaw("test")
@@ -634,17 +564,21 @@ class TestSendData:
 
     def test_sendData_loggingTrace(self):
         conn = Connection(makeParent(host=("localhost", 3492), loggingTrace=True))
-        with mock.patch("socket.socket") as m_socket:
-            client = m_socket.return_value
-            suc = conn.sendData(client, ":AP#")
+        client = makeClient()
+        suc = conn.sendData(client, ":AP#")
         assert suc
 
     def test_sendData_timeout_loggingTrace(self):
         conn = Connection(makeParent(host=("localhost", 3492), loggingTrace=True))
-        with mock.patch("socket.socket") as m_socket:
-            m_socket.return_value.sendall.side_effect = TimeoutError
-            client = m_socket.return_value
-            suc = conn.sendData(client, ":AP#")
+        client = makeClient(written=False)
+        suc = conn.sendData(client, ":AP#")
+        assert not suc
+
+    def test_sendData_exception(self):
+        conn = Connection(makeParent(host=("localhost", 3492)))
+        client = makeClient()
+        client.write.side_effect = Exception("Test")
+        suc = conn.sendData(client, ":AP#")
         assert not suc
 
 

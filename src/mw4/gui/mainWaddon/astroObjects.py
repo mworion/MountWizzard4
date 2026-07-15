@@ -66,7 +66,6 @@ class AstroObjects:
             "asteroid": self.dbProc.writeAsteroidMPC,
             "comet": self.dbProc.writeCometMPC,
         }
-        self.app.timeMgr.start3s.connect(self.loadSourceUrl)
 
     def buildSourceListDropdown(self) -> None:
         self.uiSourceList.clear()

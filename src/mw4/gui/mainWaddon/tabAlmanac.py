@@ -23,7 +23,7 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, setPixmapAlpha
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QBrush, QColor, QPainter, QPen, QPixmap
-from pytestqt.qtbot import QWidget
+from PySide6.QtWidgets import QWidget
 from range_key_dict import RangeKeyDict
 from skyfield import almanac
 from skyfield.timelib import Timescale

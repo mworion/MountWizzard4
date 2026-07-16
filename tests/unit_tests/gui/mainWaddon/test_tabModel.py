@@ -121,7 +121,7 @@ def test_setupModelRunContextAndGuiStatus_1(function):
 def test_pauseBuild_1(function):
     function.ui.pauseModel.setProperty("pause", True)
     function.pauseBuild()
-    assert not function.ui.pauseModel.property("pause")
+    assert function.ui.pauseModel.property("pause") == "false"
 
 
 def test_pauseBuild_2(function):

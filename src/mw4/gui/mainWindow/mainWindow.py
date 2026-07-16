@@ -94,9 +94,6 @@ class MainWindow(MWidget):
             self.ui.toolsTabWidget,
             self.ui.satTabWidget,
         ]
-        for tab in self.tabs:
-            for i in range(tab.count()):
-                tab.widget(i).setStyleSheet("background-color: transparent;")
 
     def initConfig(self) -> None:
         config = self.app.config.get("SettingGui", {})

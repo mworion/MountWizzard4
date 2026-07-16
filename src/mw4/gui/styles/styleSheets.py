@@ -187,6 +187,7 @@ BASIC_STYLE = """
         border-radius: 2px;
         border-color: $M_PRIM3$;
         margin-top: 6px;
+        background-color: transparent;
     }
     QGroupBox::title {
         left: 5px;
@@ -364,6 +365,7 @@ BASIC_STYLE = """
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
+        background-color: transparent;
     }
     QPushButton[keypad] {
         border-color: $M_PRIM$;
@@ -419,8 +421,6 @@ BASIC_STYLE = """
     }
     QPushButton:pressed {
         background-color: $M_PRIM$;
-        color: red;
-        border-color: red;
     }
 
     /* Message Boxes */
@@ -560,6 +560,9 @@ BASIC_STYLE = """
         color: $M_PRIM1$;
     }
     /* tab widget */
+    QTabWidget QWidget {
+        background-color: transparent;
+    }
     QTabWidget:pane {
         top: -6px;
         padding-top: 6px;

@@ -256,7 +256,7 @@ def test_updateRelayGui_changeStyleDynamic_called_correctly(function):
         function.updateRelayGui()
         first_call = mock_style.call_args_list[0]
         assert first_call[0][1] == "run"
-        assert first_call[0][2] is True
+        assert first_call[0][2] == "true"
 
 
 def test_relay_buttons_connected_to_statusReady(function):
@@ -382,7 +382,7 @@ def test_updateRelayGui_changeStyleDynamic_with_status_on(function):
     with mock.patch("mw4.gui.mainWaddon.tabRelay.changeStyleDynamic") as mock_style:
         function.updateRelayGui()
         calls = [c[0] for c in mock_style.call_args_list]
-        assert all(c[2] is True for c in calls)
+        assert all(c[2] == "true" for c in calls)
 
 
 def test_updateRelayGui_changeStyleDynamic_with_status_off(function):
@@ -390,4 +390,4 @@ def test_updateRelayGui_changeStyleDynamic_with_status_off(function):
     with mock.patch("mw4.gui.mainWaddon.tabRelay.changeStyleDynamic") as mock_style:
         function.updateRelayGui()
         calls = [c[0] for c in mock_style.call_args_list]
-        assert all(c[2] is False for c in calls)
+        assert all(c[2] == "false" for c in calls)

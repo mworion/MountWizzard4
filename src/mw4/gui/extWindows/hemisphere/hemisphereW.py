@@ -51,8 +51,6 @@ class HemisphereWindow(MWidget):
         self.setWindowTitle("Hemisphere")
         self.horizonDraw = HorizonDraw(self)
         self.hemisphereDraw = HemisphereDraw(self)
-        for i in range(self.ui.tabWidget.count()):
-            self.ui.tabWidget.widget(i).setStyleSheet("background-color: transparent;")
 
     def initConfig(self) -> None:
         config = self.app.config.get("WindowHemisphere", {})

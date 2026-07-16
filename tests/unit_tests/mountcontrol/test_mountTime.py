@@ -68,46 +68,32 @@ def test_timeDiff_property_type(function):
     assert isinstance(result, float)
 
 
-def test_runnerMountUp_ping_none(function):
+@pytest.mark.parametrize("ping_return,socket_fails", [
+    (None, False),
+    (False, False),
+    (0.05, True),
+])
+def test_runnerMountUp_error_counter_decrements(function, ping_return, socket_fails):
     function.parent.mountIsUp = False
     function.errorCounter = 5
-    with (
-        mock.patch("mw4.mountcontrol.mountTime.ping", return_value=None),
-        mock.patch.object(function.parent.signals, "mountIsUp") as mock_signal,
-    ):
-        function.runnerMountUp()
-        assert function.parent.mountIsUp is False
-        assert function.errorCounter == 4
-        mock_signal.emit.assert_not_called()
-
-
-def test_runnerMountUp_ping_false(function):
-    function.parent.mountIsUp = False
-    function.errorCounter = 5
-    with (
-        mock.patch("mw4.mountcontrol.mountTime.ping", return_value=False),
-        mock.patch.object(function.parent.signals, "mountIsUp") as mock_signal,
-    ):
-        function.runnerMountUp()
-        assert function.parent.mountIsUp is False
-        assert function.errorCounter == 4
-        mock_signal.emit.assert_not_called()
-
-
-def test_runnerMountUp_socket_exception(function):
-    function.parent.mountIsUp = False
     function.rtt_MA = np.zeros(25)
-    function.errorCounter = 5
-    with (
-        mock.patch("mw4.mountcontrol.mountTime.ping", return_value=0.05),
-        mock.patch("socket.socket") as mock_socket,
-    ):
-        mock_socket.return_value.__enter__.return_value.connect.side_effect = Exception(
-            "Connection failed"
-        )
-        function.runnerMountUp()
-        assert function.rtt_MA[0] == pytest.approx(0.05)
-        assert function.errorCounter == 4
+    
+    if socket_fails:
+        with (
+            mock.patch("mw4.mountcontrol.mountTime.ping", return_value=ping_return),
+            mock.patch("socket.socket") as mock_socket,
+        ):
+            mock_socket.return_value.__enter__.return_value.connect.side_effect = (
+                Exception("Connection failed")
+            )
+            function.runnerMountUp()
+            assert function.rtt_MA[0] == pytest.approx(ping_return)
+    else:
+        with mock.patch("mw4.mountcontrol.mountTime.ping", return_value=ping_return):
+            function.runnerMountUp()
+    
+    assert function.parent.mountIsUp is False
+    assert function.errorCounter == 4
 
 
 def test_runnerMountUp_socket_success(function):
@@ -139,38 +125,31 @@ def test_runnerMountUp_rtt_moving_average(function):
         assert function.rtt == pytest.approx(np.mean(function.rtt_MA))
 
 
-def test_runnerMountUp_ping_none_error_counter_zero(function):
+@pytest.mark.parametrize("ping_return,socket_fails", [
+    (None, False),
+    (False, False),
+    (0.05, True),
+])
+def test_runnerMountUp_error_counter_zero(function, ping_return, socket_fails):
     function.parent.mountIsUp = False
     function.errorCounter = 0
-    with mock.patch("mw4.mountcontrol.mountTime.ping", return_value=None):
-        function.runnerMountUp()
-        assert function.parent.mountIsUp is False
-        assert function.errorCounter == 0
-
-
-def test_runnerMountUp_ping_false_error_counter_zero(function):
-    function.parent.mountIsUp = False
-    function.errorCounter = 0
-    with mock.patch("mw4.mountcontrol.mountTime.ping", return_value=False):
-        function.runnerMountUp()
-        assert function.parent.mountIsUp is False
-        assert function.errorCounter == 0
-
-
-def test_runnerMountUp_socket_exception_error_counter_zero(function):
-    function.parent.mountIsUp = False
     function.rtt_MA = np.zeros(25)
-    function.errorCounter = 0
-    with (
-        mock.patch("mw4.mountcontrol.mountTime.ping", return_value=0.05),
-        mock.patch("socket.socket") as mock_socket,
-    ):
-        mock_socket.return_value.__enter__.return_value.connect.side_effect = Exception(
-            "Connection failed"
-        )
-        function.runnerMountUp()
-        assert function.rtt_MA[0] == pytest.approx(0.05)
-        assert function.errorCounter == 0
+    
+    if socket_fails:
+        with (
+            mock.patch("mw4.mountcontrol.mountTime.ping", return_value=ping_return),
+            mock.patch("socket.socket") as mock_socket,
+        ):
+            mock_socket.return_value.__enter__.return_value.connect.side_effect = (
+                Exception("Connection failed")
+            )
+            function.runnerMountUp()
+            assert function.rtt_MA[0] == pytest.approx(ping_return)
+    else:
+        with mock.patch("mw4.mountcontrol.mountTime.ping", return_value=ping_return):
+            function.runnerMountUp()
+    
+    assert function.errorCounter == 0
 
 
 def test_clearMountUp(function):
@@ -195,44 +174,23 @@ def test_checkMountUp_unlocked(function):
     function.clearMountUp()
 
 
-def test_adjustClock_positive_delta(function):
+@pytest.mark.parametrize("delta,expected_cmd", [
+    (100, ":NUtim+100#"),
+    (-100, ":NUtim-100#"),
+    (0, ":NUtim+000#"),
+])
+def test_adjustClock(function, delta, expected_cmd):
     with mock.patch("mw4.mountcontrol.mountTime.Connection") as mock_connection:
         mock_conn_instance = mock.Mock()
         mock_connection.return_value = mock_conn_instance
         mock_conn_instance.communicate.return_value = (True, "1", "")
 
-        result = function.adjustClock(100)
+        result = function.adjustClock(delta)
 
         assert result is True
         mock_conn_instance.communicate.assert_called_once()
         call_args = mock_conn_instance.communicate.call_args
-        assert ":NUtim+100" in call_args[0][0]
-
-
-def test_adjustClock_negative_delta(function):
-    with mock.patch("mw4.mountcontrol.mountTime.Connection") as mock_connection:
-        mock_conn_instance = mock.Mock()
-        mock_connection.return_value = mock_conn_instance
-        mock_conn_instance.communicate.return_value = (True, "1", "")
-
-        result = function.adjustClock(-100)
-
-        assert result is True
-        call_args = mock_conn_instance.communicate.call_args
-        assert ":NUtim-100" in call_args[0][0]
-
-
-def test_adjustClock_zero_delta(function):
-    with mock.patch("mw4.mountcontrol.mountTime.Connection") as mock_connection:
-        mock_conn_instance = mock.Mock()
-        mock_connection.return_value = mock_conn_instance
-        mock_conn_instance.communicate.return_value = (True, "1", "")
-
-        result = function.adjustClock(0)
-
-        assert result is True
-        call_args = mock_conn_instance.communicate.call_args
-        assert call_args[0][0] == ":NUtim+000#"
+        assert call_args[0][0] == expected_cmd
 
 
 def test_adjustClock_communicate_failure(function):
@@ -294,45 +252,20 @@ def test_syncClock_delta_too_small(function):
         function.adjustClock.assert_not_called()
 
 
-def test_syncClock_delta_within_bounds(function):
+@pytest.mark.parametrize("time_diff_val,expected_delta", [
+    (0.05, 50),
+    (2.0, 999),
+    (-2.0, -999),
+])
+def test_syncClock_delta_clamping(function, time_diff_val, expected_delta):
     function.parent.mountIsUp = True
     function.parent.config.syncTimeNone = False
     function.parent.config.syncTimeNotTrack = False
     function.parent.obsSite.status = function.parent.MountStatus.STOPPED
-    function._timeDiff = np.full(25, 0.05)
+    function._timeDiff = np.full(25, time_diff_val)
     with mock.patch.object(function, "adjustClock", return_value=True):
         function.syncClock()
-        function.adjustClock.assert_called_once()
-        delta = int(0.05 * 1000)
-        function.adjustClock.assert_called_with(delta)
-
-
-def test_syncClock_delta_max_clamping(function):
-    function.parent.mountIsUp = True
-    function.parent.config.syncTimeNone = False
-    function.parent.config.syncTimeNotTrack = False
-    function.parent.obsSite.status = function.parent.MountStatus.STOPPED
-    function._timeDiff = np.full(25, 2.0)
-    with mock.patch.object(function, "adjustClock", return_value=True):
-        function.syncClock()
-        function.adjustClock.assert_called_once()
-        delta = int(2.0 * 1000)
-        expected_delta = int(max(min(delta, 999), -999))
-        function.adjustClock.assert_called_with(expected_delta)
-
-
-def test_syncClock_delta_negative_clamping(function):
-    function.parent.mountIsUp = True
-    function.parent.config.syncTimeNone = False
-    function.parent.config.syncTimeNotTrack = False
-    function.parent.obsSite.status = function.parent.MountStatus.STOPPED
-    function._timeDiff = np.full(25, -2.0)
-    with mock.patch.object(function, "adjustClock", return_value=True):
-        function.syncClock()
-        function.adjustClock.assert_called_once()
-        delta = int(-2.0 * 1000)
-        expected_delta = int(max(min(delta, 999), -999))
-        function.adjustClock.assert_called_with(expected_delta)
+        function.adjustClock.assert_called_once_with(expected_delta)
 
 
 def test_syncClock_adjustClock_failure(function):

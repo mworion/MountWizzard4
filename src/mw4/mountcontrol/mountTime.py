@@ -53,6 +53,9 @@ class MountTime:
         return float(np.mean(self._timeDiff))
 
     def runnerMountUp(self) -> None:
+        if not self.parent.config.hostAddress:
+            self.parent.signals.mountIsUp.emit(False)
+            return
         rttLocal = ping(self.parent.config.hostAddress)
         if rttLocal is None:
             self.parent.mountIsUp = False

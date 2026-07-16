@@ -167,23 +167,18 @@ class SettDome:
     def updateDomeGeometryToGui(self) -> None:
         value = float(self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_OTA_OFFSET", 0))
         self.ui.offGEM.setValue(value)
-
         value = float(self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_DOME_RADIUS", 0))
         self.ui.domeRadius.setValue(value)
-
         value = float(self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_SHUTTER_WIDTH", 0))
         self.ui.domeClearOpening.setValue(value)
-
         value = float(
             self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT", 0)
         )
         self.ui.domeNorthOffset.setValue(value)
-
         value = float(
             self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_EAST_DISPLACEMENT", 0)
         )
         self.ui.domeEastOffset.setValue(value)
-
         value = float(
             self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_UP_DISPLACEMENT", 0)
         )

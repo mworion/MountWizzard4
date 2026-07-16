@@ -47,8 +47,6 @@ class SettingWindow(MWidget):
         self.tabSettPark = SettPark(self)
         self.app.colorChange.connect(self.colorChange)
         self.setupIcons()
-        for i in range(self.ui.tabWidget.count()):
-            self.ui.tabWidget.widget(i).setStyleSheet("background-color: transparent;")
 
     def initConfig(self) -> None:
         config = self.app.config.get("WindowSetting", {})

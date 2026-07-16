@@ -175,6 +175,7 @@ def build_test(c):
 @task(pre=[build])
 def publish(c):
     printMW("publishing mountwizzard4")
+    runMW(c, "rm -f dist/*.tar.gz")
     runMW(c, "uvx uv-publish")
     printMW("publishing mountwizzard4 finished\n")
 

@@ -127,7 +127,7 @@ class Ui_MeasureDialog(object):
         self.measure.setMaximumSize(QSize(16777215, 16777215))
         self.measure.setSizeIncrement(QSize(10, 10))
         self.measure.setBaseSize(QSize(10, 10))
-        self.measure.setAutoFillBackground(False)
+        self.measure.setAutoFillBackground(True)
         self.measure.setStyleSheet(u"")
 
         self.verticalLayout.addWidget(self.measure)

@@ -42,13 +42,14 @@ from qimage2ndarray import array2qimage, rgb_view
 from skyfield.api import Angle
 
 
-def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str | bool) -> None:
+def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str) -> None:
     if widget.property(widgetProperty) == value:
         return
 
-    widget.style().unpolish(widget)
     widget.setProperty(widgetProperty, value)
+    widget.style().unpolish(widget)
     widget.style().polish(widget)
+    pass
 
 
 def findIndexValue(ui: QComboBox, searchString: str, relaxed: bool = False) -> int:

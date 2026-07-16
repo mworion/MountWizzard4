@@ -124,7 +124,7 @@ class ImageTabs:
         imageWidget.barItem.setVisible(False)
 
     def showImage(self) -> None:
-        changeStyleDynamic(self.ui.headerGroup, "run", False)
+        changeStyleDynamic(self.ui.headerGroup, "run", "false")
         tab = self.ui.tabImage
         tabIndex = getTabIndex(tab, "Image")
         tab.setTabEnabled(tabIndex, True)

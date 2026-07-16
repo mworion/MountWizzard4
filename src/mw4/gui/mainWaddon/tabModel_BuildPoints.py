@@ -209,7 +209,7 @@ class BuildPoints(TabAddon):
 
         self.ui.numberDSOPoints.setEnabled(False)
         self.ui.genBuildDSO.setEnabled(False)
-        changeStyleDynamic(self.ui.genBuildDSO, "run", True)
+        changeStyleDynamic(self.ui.genBuildDSO, "run", "true")
         numberTarget = int(self.ui.numberDSOPoints.value())
         keep = self.ui.keepGeneratedPoints.isChecked()
         numberPoints = 0
@@ -231,12 +231,12 @@ class BuildPoints(TabAddon):
         self.processPoints()
         self.ui.genBuildDSO.setEnabled(True)
         self.ui.numberDSOPoints.setEnabled(True)
-        changeStyleDynamic(self.ui.genBuildDSO, "run", False)
+        changeStyleDynamic(self.ui.genBuildDSO, "run", "false")
 
     def genBuildGoldenSpiral(self) -> None:
         self.lastGenerator = "spiral"
         numberTarget = int(self.ui.numberSpiral.value())
-        changeStyleDynamic(self.ui.genBuildSpiral, "run", True)
+        changeStyleDynamic(self.ui.genBuildSpiral, "run", "true")
         numberPoints = 0
         numberFilter = 0
         iteration = 20
@@ -249,7 +249,7 @@ class BuildPoints(TabAddon):
             self.autoDeletePoints()
             numberFilter = len(self.app.buildPoint.buildP)
         self.processPoints()
-        changeStyleDynamic(self.ui.genBuildSpiral, "run", False)
+        changeStyleDynamic(self.ui.genBuildSpiral, "run", "false")
 
     def genModel(self) -> None:
         self.lastGenerator = "model"

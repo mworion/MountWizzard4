@@ -48,7 +48,6 @@ class MWidget(QMainWindow, Styles):
         self.setAttribute(Qt.WidgetAttribute.WA_Hover)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
-        self.setMouseTracking(True)
         self.titleBar = CustomTitleBar(self)
         self.isResizing = False
         self.ws = QWidget()
@@ -78,6 +77,7 @@ class MWidget(QMainWindow, Styles):
             new_width = max(100, int(pos.x()))
             new_height = max(100, int(pos.y()))
             self.resize(new_width, new_height)
+        super().mouseMoveEvent(event)
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
@@ -87,9 +87,11 @@ class MWidget(QMainWindow, Styles):
                 or pos.y() >= self.height() - self.RESIZE_MARGIN
             ):
                 self.isResizing = True
+        super().mousePressEvent(event)
 
     def mouseReleaseEvent(self, event):
         self.isResizing = False
+        super().mouseReleaseEvent(event)
 
     def setWindowTitle(self, title: str) -> None:
         if hasattr(self, "titleBar"):

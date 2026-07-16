@@ -113,9 +113,9 @@ class Model(TabAddon):
             self.ui.endModel.setEnabled(True)
             self.ui.pauseModel.setEnabled(True)
             self.ui.runModel.setEnabled(False)
-            changeStyleDynamic(self.ui.runModel, "run", True)
-            changeStyleDynamic(self.ui.cancelModel, "stop", True)
-            changeStyleDynamic(self.ui.endModel, "stop", True)
+            changeStyleDynamic(self.ui.runModel, "run", "true")
+            changeStyleDynamic(self.ui.cancelModel, "stop", "true")
+            changeStyleDynamic(self.ui.endModel, "stop", "true")
         elif status == self.STATUS_MODEL_FILE:
             self.ui.runModelGroup.setEnabled(False)
         elif status == self.STATUS_MODEL_SYNC:
@@ -128,13 +128,13 @@ class Model(TabAddon):
             self.ui.runModelGroup.setEnabled(True)
             self.ui.dataModel.setEnabled(True)
             self.ui.runModel.setEnabled(True)
-            changeStyleDynamic(self.ui.runModel, "run", False)
-            changeStyleDynamic(self.ui.cancelModel, "stop", False)
-            changeStyleDynamic(self.ui.endModel, "stop", False)
-            changeStyleDynamic(self.ui.pauseModel, "pause", False)
+            changeStyleDynamic(self.ui.runModel, "run", "false")
+            changeStyleDynamic(self.ui.cancelModel, "stop", "false")
+            changeStyleDynamic(self.ui.endModel, "stop", "false")
+            changeStyleDynamic(self.ui.pauseModel, "pause", "false")
 
     def setupModelRunContextAndGuiStatus(self) -> None:
-        changeStyleDynamic(self.ui.runModel, "run", True)
+        changeStyleDynamic(self.ui.runModel, "run", "true")
         self.ui.cancelModel.setEnabled(True)
         self.ui.endModel.setEnabled(True)
         self.ui.pauseModel.setEnabled(True)
@@ -142,10 +142,10 @@ class Model(TabAddon):
     def pauseBuild(self) -> None:
         if not self.ui.pauseModel.property("pause"):
             changeStyleDynamic(self.ui.pauseModel, "color", "yellow")
-            changeStyleDynamic(self.ui.pauseModel, "pause", True)
+            changeStyleDynamic(self.ui.pauseModel, "pause", "true")
         else:
             changeStyleDynamic(self.ui.pauseModel, "color", "")
-            changeStyleDynamic(self.ui.pauseModel, "pause", False)
+            changeStyleDynamic(self.ui.pauseModel, "pause", "false")
 
     def programModelToMountFinish(self) -> None:
         self.app.dReg["mount"].signals.getModelDone.disconnect(self.programModelToMountFinish)

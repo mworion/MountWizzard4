@@ -62,6 +62,6 @@ class Relay(TabAddon):
     def updateRelayGui(self) -> None:
         for status, button in zip(self.app.relay.status, self.relayButtons):
             if status:
-                changeStyleDynamic(button, "run", True)
+                changeStyleDynamic(button, "run", "true")
             else:
-                changeStyleDynamic(button, "run", False)
+                changeStyleDynamic(button, "run", "false")

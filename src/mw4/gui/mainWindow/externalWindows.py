@@ -133,9 +133,9 @@ class ExternalWindows:
             winObj = self.uiWindows[win]
 
             if winObj["classObj"]:
-                changeStyleDynamic(winObj["button"], "run", True)
+                changeStyleDynamic(winObj["button"], "run", "true")
             else:
-                changeStyleDynamic(winObj["button"], "run", False)
+                changeStyleDynamic(winObj["button"], "run", "false")
 
     def storeConfigExtendedWindows(self):
         for window in self.uiWindows:

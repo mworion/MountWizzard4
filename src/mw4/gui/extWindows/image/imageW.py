@@ -191,17 +191,17 @@ class ImageWindow(MWidget):
             self.ui.exposeN.setEnabled(False)
 
         if self.imagingDeviceStat.get("expose", False):
-            changeStyleDynamic(self.ui.expose, "run", True)
+            changeStyleDynamic(self.ui.expose, "run", "true")
         elif self.imagingDeviceStat.get("exposeN", False):
-            changeStyleDynamic(self.ui.exposeN, "run", True)
+            changeStyleDynamic(self.ui.exposeN, "run", "true")
         else:
-            changeStyleDynamic(self.ui.expose, "run", False)
-            changeStyleDynamic(self.ui.exposeN, "run", False)
+            changeStyleDynamic(self.ui.expose, "run", "false")
+            changeStyleDynamic(self.ui.exposeN, "run", "false")
 
         if self.imagingDeviceStat.get("solve", False):
-            changeStyleDynamic(self.ui.solve, "run", True)
+            changeStyleDynamic(self.ui.solve, "run", "true")
         else:
-            changeStyleDynamic(self.ui.solve, "run", False)
+            changeStyleDynamic(self.ui.solve, "run", "false")
 
     def selectImage(self) -> None:
         self.imageFileName = MWFileDialog.getOpenFileName(
@@ -239,7 +239,7 @@ class ImageWindow(MWidget):
         self.ui.roundness.p[0].setAspectLocked(isLocked)
 
     def resultPhotometry(self) -> None:
-        changeStyleDynamic(self.ui.photometryGroup, "run", False)
+        changeStyleDynamic(self.ui.photometryGroup, "run", "false")
         if self.photometry.objs is None:
             self.msg.emit(2, "Image", "Photometry error", "Too low pixel stack")
         else:
@@ -251,7 +251,7 @@ class ImageWindow(MWidget):
         if self.fileHandler.image is None or not isPhotometry:
             return
 
-        changeStyleDynamic(self.ui.photometryGroup, "run", True)
+        changeStyleDynamic(self.ui.photometryGroup, "run", "true")
         self.ui.showValues.setEnabled(isPhotometry)
         self.ui.isoLayer.setEnabled(isPhotometry)
         snTarget = self.ui.snTarget.currentIndex()
@@ -260,7 +260,7 @@ class ImageWindow(MWidget):
     def showImage(self, imagePath: Path) -> None:
         if not imagePath.is_file():
             return
-        changeStyleDynamic(self.ui.headerGroup, "run", True)
+        changeStyleDynamic(self.ui.headerGroup, "run", "true")
         self.setWindowTitle(f"Imaging:   {imagePath.name}")
         flipH = self.ui.flipH.isChecked()
         flipV = self.ui.flipV.isChecked()

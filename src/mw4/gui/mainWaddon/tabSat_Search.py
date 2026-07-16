@@ -277,7 +277,7 @@ class SatSearch(SatData):
         eph = self.app.ephemeris
         numSats = satTab.rowCount()
 
-        changeStyleDynamic(self.ui.satFilterGroup, "run", True)
+        changeStyleDynamic(self.ui.satFilterGroup, "run", "true")
         for row in range(numSats):
             finished = (row + 1) / numSats * 100
             t = f"Filter - processed: {finished:3.0f}%"
@@ -290,7 +290,7 @@ class SatSearch(SatData):
 
         t = "Filter - processed - 100%"
         self.ui.satFilterGroup.setTitle(t)
-        changeStyleDynamic(self.ui.satFilterGroup, "run", False)
+        changeStyleDynamic(self.ui.satFilterGroup, "run", "false")
 
     def calcSatList(self) -> None:
         title = "Setup " + self.app.timeMgr.timeZoneString()

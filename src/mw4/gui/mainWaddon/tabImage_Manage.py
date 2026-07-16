@@ -143,11 +143,11 @@ class ImageManage(TabAddon):
         guiSetText(self.ui.coolerTemp, "3.1f", coolerTemp)
         guiSetText(self.ui.coolerPower, "3.1f", coolerPower)
         if coolerOn:
-            changeStyleDynamic(self.ui.coolerOn, "run", True)
-            changeStyleDynamic(self.ui.coolerOff, "run", False)
+            changeStyleDynamic(self.ui.coolerOn, "run", "true")
+            changeStyleDynamic(self.ui.coolerOff, "run", "false")
         else:
-            changeStyleDynamic(self.ui.coolerOn, "run", False)
-            changeStyleDynamic(self.ui.coolerOff, "run", True)
+            changeStyleDynamic(self.ui.coolerOn, "run", "false")
+            changeStyleDynamic(self.ui.coolerOff, "run", "true")
 
     def updateFilter(self) -> None:
         filterNumber = self.app.dReg["filter"].data.get("FILTER_SLOT.FILTER_SLOT_VALUE", 1)
@@ -336,14 +336,14 @@ class ImageManage(TabAddon):
     def updateCoverStatGui(self) -> None:
         value = self.app.dReg["cover"].data.get("CAP_PARK.PARK", None)
         if value:
-            changeStyleDynamic(self.ui.coverPark, "run", True)
-            changeStyleDynamic(self.ui.coverUnpark, "run", False)
+            changeStyleDynamic(self.ui.coverPark, "run", "true")
+            changeStyleDynamic(self.ui.coverUnpark, "run", "false")
         elif value is None:
-            changeStyleDynamic(self.ui.coverPark, "run", False)
-            changeStyleDynamic(self.ui.coverUnpark, "run", False)
+            changeStyleDynamic(self.ui.coverPark, "run", "false")
+            changeStyleDynamic(self.ui.coverUnpark, "run", "false")
         else:
-            changeStyleDynamic(self.ui.coverPark, "run", False)
-            changeStyleDynamic(self.ui.coverUnpark, "run", True)
+            changeStyleDynamic(self.ui.coverPark, "run", "false")
+            changeStyleDynamic(self.ui.coverUnpark, "run", "true")
 
         value = self.app.dReg["cover"].data.get("Status.Cover", "-")
         self.ui.coverStatusText.setText(value)
@@ -351,14 +351,14 @@ class ImageManage(TabAddon):
     def updateLightPanelGui(self) -> None:
         value = self.app.dReg["lightPanel"].data.get("FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON", None)
         if value:
-            changeStyleDynamic(self.ui.lightPanelOn, "run", True)
-            changeStyleDynamic(self.ui.lightPanelOff, "run", False)
+            changeStyleDynamic(self.ui.lightPanelOn, "run", "true")
+            changeStyleDynamic(self.ui.lightPanelOff, "run", "false")
         elif value is None:
-            changeStyleDynamic(self.ui.lightPanelOn, "run", False)
-            changeStyleDynamic(self.ui.lightPanelOff, "run", False)
+            changeStyleDynamic(self.ui.lightPanelOn, "run", "false")
+            changeStyleDynamic(self.ui.lightPanelOff, "run", "false")
         else:
-            changeStyleDynamic(self.ui.lightPanelOn, "run", False)
-            changeStyleDynamic(self.ui.lightPanelOff, "run", True)
+            changeStyleDynamic(self.ui.lightPanelOn, "run", "false")
+            changeStyleDynamic(self.ui.lightPanelOff, "run", "true")
 
         value = self.app.dReg["lightPanel"].data.get(
             "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"
@@ -423,15 +423,15 @@ class ImageManage(TabAddon):
     def updateDomeGui(self) -> None:
         value = self.app.dReg["dome"].data.get("DOME_MOTION.DOME_CW", None)
         if value:
-            changeStyleDynamic(self.ui.domeSlewCW, "run", True)
+            changeStyleDynamic(self.ui.domeSlewCW, "run", "true")
         else:
-            changeStyleDynamic(self.ui.domeSlewCW, "run", False)
+            changeStyleDynamic(self.ui.domeSlewCW, "run", "false")
 
         value = self.app.dReg["dome"].data.get("DOME_MOTION.DOME_CCW", None)
         if value:
-            changeStyleDynamic(self.ui.domeSlewCCW, "run", True)
+            changeStyleDynamic(self.ui.domeSlewCCW, "run", "true")
         else:
-            changeStyleDynamic(self.ui.domeSlewCCW, "run", False)
+            changeStyleDynamic(self.ui.domeSlewCCW, "run", "false")
 
         value = self.app.dReg["dome"].data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION")
         guiSetText(self.ui.domeAzimuth, "3.0f", value)
@@ -439,14 +439,14 @@ class ImageManage(TabAddon):
     def updateShutterStatGui(self) -> None:
         value = self.app.dReg["dome"].instance.data.get("DOME_SHUTTER.SHUTTER_OPEN", None)
         if value is True:
-            changeStyleDynamic(self.ui.domeOpenShutter, "run", True)
-            changeStyleDynamic(self.ui.domeCloseShutter, "run", False)
+            changeStyleDynamic(self.ui.domeOpenShutter, "run", "true")
+            changeStyleDynamic(self.ui.domeCloseShutter, "run", "false")
         elif value is False:
-            changeStyleDynamic(self.ui.domeOpenShutter, "run", False)
-            changeStyleDynamic(self.ui.domeCloseShutter, "run", True)
+            changeStyleDynamic(self.ui.domeOpenShutter, "run", "false")
+            changeStyleDynamic(self.ui.domeCloseShutter, "run", "true")
         else:
-            changeStyleDynamic(self.ui.domeOpenShutter, "run", False)
-            changeStyleDynamic(self.ui.domeCloseShutter, "run", False)
+            changeStyleDynamic(self.ui.domeOpenShutter, "run", "false")
+            changeStyleDynamic(self.ui.domeCloseShutter, "run", "false")
 
         value = self.app.dReg["dome"].instance.data.get("Status.Shutter", None)
         if value:

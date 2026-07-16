@@ -19,7 +19,7 @@ MAC_STYLE = """
         font-weight: normal;
         font-size: 13pt;
     }
-    QLabel[title=true] {
+    QLabel[title='true'] {
         font-weight: bold;
         font-size: 18pt;
     }
@@ -53,7 +53,7 @@ NON_MAC_STYLE = """
         font-weight: normal;
         font-size: 10pt;
     }
-    QLabel[title=true] {
+    QLabel[title='true'] {
         font-size: 15pt;
         font-weight: bold;
     }
@@ -128,7 +128,7 @@ BASIC_STYLE = """
         color: $M_SEC$;
     }
     QLabel[iconpicture='true'] {
-        border-style: plain;
+        border-style: none;
         border-radius: 0px;
     }
     QLabel[color='green'] {
@@ -176,7 +176,7 @@ BASIC_STYLE = """
         border-style: outset;
         border-color: $M_RED$;
     }
-    Line #cursor {
+    #cursor {
         color: red;
         background-color: transparent;
     }
@@ -194,22 +194,21 @@ BASIC_STYLE = """
         subcontrol-position: top left;
         color: $M_PRIM$;
     }
-    QGroupBox[refraction=true] {
+    QGroupBox[refraction='true'] {
         border-color: $M_PRIM$;
     }
     QGroupBox::title:disabled{
         color: $M_PRIM3$;
     }
-    QGroupBox[frameless=true] {
+    QGroupBox[frameless='true'] {
         border-width: 0px;
     }
-    QGroupBox[frameless=true]:disabled {
+    QGroupBox[frameless='true']:disabled {
         border-color: $M_RED$;
     }
     QGroupBox::indicator {
         border-color: $M_SEC$;
         border-width: 1px;
-        border-color: $M_SEC$;
         border-style: outset;
         border-radius: 2px;
         width: 13px;
@@ -221,7 +220,7 @@ BASIC_STYLE = """
         background-color: $M_PRIM2$;
         image: url($checkmark$);
     }
-    QGroupBox[run=true] {
+    QGroupBox[run='true'] {
         color: $M_TER$;
         border-color: $M_YELLOW$;
     }
@@ -365,7 +364,6 @@ BASIC_STYLE = """
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
-        min - width: 10em;
     }
     QPushButton[keypad] {
         border-color: $M_PRIM$;
@@ -379,9 +377,6 @@ BASIC_STYLE = """
         text-align: left;
         padding-left: 3px;
         padding-right: 3px;
-    }
-    QPushButton:pressed {
-        background-color: $M_PRIM$;
     }
     QPushButton[color='gray'] {
         background-color: $M_GRAY$;
@@ -402,9 +397,10 @@ BASIC_STYLE = """
         border-color: $M_RED$;
         color: $M_TER$;
     }
-    QPushButton[run=true] {
+    QPushButton[run='true'] {
         background-color: $M_GREEN2$;
         border-color: $M_GREEN$;
+        border-width: 1px;
         color: $M_TER$;
     }
     QPushButton[stop='true'] {
@@ -421,6 +417,12 @@ BASIC_STYLE = """
         color: $M_PRIM2$;
         border-color: $M_SEC1$;
     }
+    QPushButton:pressed {
+        background-color: $M_PRIM$;
+        color: red;
+        border-color: red;
+    }
+
     /* Message Boxes */
     QMessageBox QPushButton {
         min-width: 90px;
@@ -432,7 +434,7 @@ BASIC_STYLE = """
     /* ListView */
     QListWidget {
         border-width: 0px;
-        border-style: plain;
+        border-style: none;
         border-color: transparent;
         background-color: transparent;
     }
@@ -447,7 +449,7 @@ BASIC_STYLE = """
     QListView {
         border-color: $M_SEC$;
         border-width: 0px;
-        border-style: plain;
+        border-style: none;
         border-radius: 0px;
         color: $M_TER$;
         padding: 0px;
@@ -459,7 +461,7 @@ BASIC_STYLE = """
     /* Table Widget */
     QTableWidget {
         border-width: 0px;
-        border-style: plain;
+        border-style: none;
         border-radius: 0px;
         padding: 0px;
         margin: 0px;
@@ -467,7 +469,7 @@ BASIC_STYLE = """
     }
     QTableWidget QHeaderView:section{
         border-width: 1px;
-        border-style: plain;
+        border-style: none;
         border-radius: 2px;
         background-color: $M_BACK1$;
         color: $M_TER$;
@@ -491,7 +493,7 @@ BASIC_STYLE = """
     }
     QTextBrowser {
         border-width: 0px;
-        border-style: plain;
+        border-style: none;
         border-radius: 0px;
         padding: 0px;
         margin: 0px;
@@ -508,15 +510,19 @@ BASIC_STYLE = """
         border-radius: 2px;
         padding-left: 5px;
     }
+    QComboBox:on {
+        border-bottom-left-radius: 1px;
+        border-bottom-right-radius: 1px;
+    }
     QComboBox:disabled {
         color: $M_PRIM2$;
     }
-    QComboBox[active=true] {
+    QComboBox[active='true'] {
         border-color: $M_GREEN$;
         background-color: $M_GREEN2$;
     }
     QComboBox::drop-down {
-        subcontrol-origin: border;
+        subcontrol-origin: padding;
         subcontrol-position: right;
         width: 24px;
         border-color: $M_SEC$;
@@ -530,7 +536,7 @@ BASIC_STYLE = """
         width: 16px;
         height: 16px;
     }
-    QComboBox QListView {
+    QComboBox QAbstractItemView {
         border-width: 1px;
         border-style: outset;
         border-color: $M_SEC$;
@@ -538,12 +544,12 @@ BASIC_STYLE = """
         color: $M_TER$;
         min-height: 60px;
     }
-    QComboBox QListView::item {
+    QComboBox QAbstractItemView::item {
         border-color: $M_SEC$;
         min-height: 28px;
         background-color: $M_BACK1$;
     }
-    QComboBox QListView::item:selected {
+    QComboBox QAbstractItemView::item:selected {
         background-color: $M_PRIM$;
     }
     /* lines */
@@ -650,7 +656,7 @@ BASIC_STYLE = """
     }
     QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
         border-width: 0px;
-        border-style: plain;
+        border-style: none;
         border-radius: 0px;
     }
     /* progress bar */
@@ -677,7 +683,7 @@ BASIC_STYLE = """
     }
     QTreeView QHeaderView:section{
         border-width: 1px;
-        border-style: plain;
+        border-style: none;
         border-radius: 2px;
         color: $M_PRIM$;
         background-color: $M_BACK$;

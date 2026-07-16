@@ -142,31 +142,31 @@ class SimulatorWindow(MWidget):
         self.camera.setPosition(posNew)
 
     def topView(self) -> None:
-        changeStyleDynamic(self.ui.telescopeView, "run", False)
+        changeStyleDynamic(self.ui.telescopeView, "run", "false")
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(0.001, 5.0, 0.001))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def topEastView(self) -> None:
-        changeStyleDynamic(self.ui.telescopeView, "run", False)
+        changeStyleDynamic(self.ui.telescopeView, "run", "false")
         self.camera.setViewCenter(QVector3D(0.1, 1.5, 0.1))
         self.camera.setPosition(QVector3D(5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def topWestView(self) -> None:
-        changeStyleDynamic(self.ui.telescopeView, "run", False)
+        changeStyleDynamic(self.ui.telescopeView, "run", "false")
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def eastView(self) -> None:
-        changeStyleDynamic(self.ui.telescopeView, "run", False)
+        changeStyleDynamic(self.ui.telescopeView, "run", "false")
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
     def westView(self) -> None:
-        changeStyleDynamic(self.ui.telescopeView, "run", False)
+        changeStyleDynamic(self.ui.telescopeView, "run", "false")
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))

@@ -141,7 +141,7 @@ class MountMove(TabAddon):
         self.app.dReg["mount"].obsSite.stopMoveAll()
         mainThreadSleep(250)
         for uiR in self.setRaDec:
-            changeStyleDynamic(self.setRaDec[uiR]["button"], "run", False)
+            changeStyleDynamic(self.setRaDec[uiR]["button"], "run", "false")
 
     def countDuration(self, duration: int) -> None:
         for t in range(duration * 10, -1, -1):
@@ -171,8 +171,8 @@ class MountMove(TabAddon):
     def moveRaDec(self, direction: str) -> None:
         uiList = self.setRaDec
         for key in uiList:
-            changeStyleDynamic(uiList[key]["button"], "run", False)
-        changeStyleDynamic(uiList[direction]["button"], "run", True)
+            changeStyleDynamic(uiList[key]["button"], "run", "false")
+        changeStyleDynamic(uiList[direction]["button"], "run", "true")
         coord = uiList[direction]["coord"]
         if coord == [0, 0]:
             self.stopMoveAll()
@@ -215,10 +215,10 @@ class MountMove(TabAddon):
 
     def moveAltAzDefault(self) -> None:
         for key in self.setAltAz:
-            changeStyleDynamic(self.setAltAz[key]["button"], "run", False)
+            changeStyleDynamic(self.setAltAz[key]["button"], "run", "false")
 
     def moveAltAz(self, direction: str) -> None:
-        changeStyleDynamic(self.setAltAz[direction]["button"], "run", True)
+        changeStyleDynamic(self.setAltAz[direction]["button"], "run", "true")
         step = self.setupStepsizes[self.ui.moveStepSizeAltAz.currentText()]
         coord = self.setAltAz[direction]["coord"]
         obs = self.app.dReg["mount"].obsSite

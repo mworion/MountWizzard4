@@ -136,7 +136,7 @@ class SatTrack(SatData):
         self.ui.stopSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setEnabled(False)
         self.ui.startSatelliteTracking.setText("Start satellite tracking")
-        changeStyleDynamic(self.ui.startSatelliteTracking, "run", False)
+        changeStyleDynamic(self.ui.startSatelliteTracking, "run", "false")
 
     def calcTrajectoryData(self, start: int, end: int) -> tuple[np.ndarray, np.ndarray]:
         duration = min(end - start, 900 / 86400)
@@ -279,7 +279,7 @@ class SatTrack(SatData):
         if self.satellite is None:
             self.ui.startSatelliteTracking.setEnabled(False)
             self.ui.stopSatelliteTracking.setEnabled(False)
-            changeStyleDynamic(self.ui.startSatelliteTracking, "run", False)
+            changeStyleDynamic(self.ui.startSatelliteTracking, "run", "false")
             return
 
         now = self.app.dReg["mount"].obsSite.ts.now()
@@ -371,8 +371,8 @@ class SatTrack(SatData):
         alt = Angle(degrees=np.array_split(alt, factor)[0])
         az = Angle(degrees=np.array_split(az, factor)[0])
 
-        changeStyleDynamic(self.ui.progTrajectory, "run", True)
-        changeStyleDynamic(self.ui.satTrackGroup, "run", True)
+        changeStyleDynamic(self.ui.progTrajectory, "run", "true")
+        changeStyleDynamic(self.ui.satTrackGroup, "run", "true")
         self.ui.satTrackGroup.setTitle("Calculating")
         self.ui.progTrajectory.setEnabled(False)
         self.app.dReg["mount"].instance.progTrajectory(start, alt, az, replay=isReplay)
@@ -406,7 +406,7 @@ class SatTrack(SatData):
         self.ui.progTrajectory.setEnabled(True)
         title = "Satellite tracking " + self.app.timeMgr.timeZoneString()
         self.ui.satTrackGroup.setTitle(title)
-        changeStyleDynamic(self.ui.satTrackGroup, "run", False)
+        changeStyleDynamic(self.ui.satTrackGroup, "run", "false")
         self.updateSatelliteTrackGui(tleParams)
         self.msg.emit(1, "TLE", "Program", "Satellite track data ready!")
 
@@ -428,7 +428,7 @@ class SatTrack(SatData):
             self.msg.emit(2, "TLE", "Command error", f"{message}")
             return
 
-        changeStyleDynamic(self.ui.startSatelliteTracking, "run", True)
+        changeStyleDynamic(self.ui.startSatelliteTracking, "run", "true")
         self.msg.emit(0, "TLE", "Command ", f"{message}")
         self.app.dReg["mount"].satellite.setTrackingOffsets()
 
@@ -443,7 +443,7 @@ class SatTrack(SatData):
             return
 
         self.ui.startSatelliteTracking.setText("Start satellite tracking")
-        changeStyleDynamic(self.ui.startSatelliteTracking, "run", False)
+        changeStyleDynamic(self.ui.startSatelliteTracking, "run", "false")
         self.msg.emit(0, "TLE", "Command", "Stopped tracking")
 
     def toggleTrackingOffset(self, obs: ObsSite) -> None:

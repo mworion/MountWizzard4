@@ -162,7 +162,7 @@ class Almanac(TabAddon):
             rect.setBrush(brushes[e[i]])
             plotItem.addItem(rect)
         plotItem.addLine(x=xNow, pen=penLine)
-        changeStyleDynamic(self.ui.almanacGroup, "run", False)
+        changeStyleDynamic(self.ui.almanacGroup, "run", "false")
 
     def renderEventList(
         self,
@@ -216,7 +216,7 @@ class Almanac(TabAddon):
         t = f"Twilight passes for: 1 year {self.app.timeMgr.timeZoneString()}"
         self.ui.almanacGroup.setTitle(t)
         ts = self.app.dReg["mount"].obsSite.ts
-        changeStyleDynamic(self.ui.almanacGroup, "run", True)
+        changeStyleDynamic(self.ui.almanacGroup, "run", "true")
         self.workerCalcTwilightDataPlot = Worker(
             self.runnerCalcTwilightDataPlot, ts, location, timeWindow
         )

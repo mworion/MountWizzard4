@@ -265,7 +265,7 @@ class DevicePopup(MWidget):
             self.discovers[framework]["deviceList"].addItem(deviceName)
 
     def discoverDevices(self, framework: str, widget: object = None) -> None:
-        changeStyleDynamic(self.discovers[framework]["button"], "run", True)
+        changeStyleDynamic(self.discovers[framework]["button"], "run", "true")
         deviceType = self.app.dReg[self.device].instance.DEVICE_TYPE
         deviceInstance = self.app.dReg[self.device].run[framework]
         if framework in ["alpaca", "indi"]:
@@ -274,7 +274,7 @@ class DevicePopup(MWidget):
             deviceNames = deviceInstance.discoverDevices(deviceType, hostaddress, port)
         else:
             deviceNames = deviceInstance.discoverDevices(deviceType)
-        changeStyleDynamic(self.discovers[framework]["button"], "run", False)
+        changeStyleDynamic(self.discovers[framework]["button"], "run", "false")
         if not deviceNames:
             self.msg.emit(2, framework, "Device", "No devices found")
             return

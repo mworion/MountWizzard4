@@ -52,7 +52,7 @@ class Ui_SettingDialog(object):
         font1.setPointSize(10)
         font1.setBold(False)
         self.tabWidget.setFont(font1)
-        self.tabWidget.setAutoFillBackground(True)
+        self.tabWidget.setAutoFillBackground(False)
         self.tabWidget.setStyleSheet(u"")
         self.tabWidget.setTabPosition(QTabWidget.TabPosition.North)
         self.tabWidget.setTabShape(QTabWidget.TabShape.Rounded)

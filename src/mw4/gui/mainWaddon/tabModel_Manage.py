@@ -163,8 +163,8 @@ class ModelManage(TabAddon):
         )
 
     def clearRefreshName(self) -> None:
-        changeStyleDynamic(self.ui.refreshName, "run", False)
-        changeStyleDynamic(self.ui.modelNameGroup, "run", False)
+        changeStyleDynamic(self.ui.refreshName, "run", "false")
+        changeStyleDynamic(self.ui.modelNameGroup, "run", "false")
         self.ui.deleteName.setEnabled(True)
         self.ui.saveName.setEnabled(True)
         self.ui.loadName.setEnabled(True)
@@ -176,8 +176,8 @@ class ModelManage(TabAddon):
         self.ui.deleteName.setEnabled(False)
         self.ui.saveName.setEnabled(False)
         self.ui.loadName.setEnabled(False)
-        changeStyleDynamic(self.ui.refreshName, "run", True)
-        changeStyleDynamic(self.ui.modelNameGroup, "run", True)
+        changeStyleDynamic(self.ui.refreshName, "run", "true")
+        changeStyleDynamic(self.ui.modelNameGroup, "run", "true")
         self.app.dReg["mount"].instance.getNames()
 
     def loadName(self):
@@ -248,8 +248,8 @@ class ModelManage(TabAddon):
         self.fittedModelPath = newPath
 
     def clearRefreshModel(self) -> None:
-        changeStyleDynamic(self.ui.refreshModel, "run", False)
-        changeStyleDynamic(self.ui.modelGroup, "run", False)
+        changeStyleDynamic(self.ui.refreshModel, "run", "false")
+        changeStyleDynamic(self.ui.modelGroup, "run", "false")
         self.ui.deleteWorstPoint.setEnabled(True)
         self.ui.runOptimize.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
@@ -270,8 +270,8 @@ class ModelManage(TabAddon):
         self.sendAnalyseFileName()
 
     def refreshModel(self) -> None:
-        changeStyleDynamic(self.ui.refreshModel, "run", True)
-        changeStyleDynamic(self.ui.modelGroup, "run", True)
+        changeStyleDynamic(self.ui.refreshModel, "run", "true")
+        changeStyleDynamic(self.ui.modelGroup, "run", "true")
         self.app.dReg["mount"].instance.signals.getModelDone.connect(self.clearRefreshModel)
         self.ui.deleteWorstPoint.setEnabled(False)
         self.ui.runOptimize.setEnabled(False)
@@ -311,7 +311,7 @@ class ModelManage(TabAddon):
         else:
             self.app.dReg["mount"].instance.signals.getModelDone.disconnect(self.runSingleRMS)
 
-        changeStyleDynamic(self.ui.runOptimize, "run", False)
+        changeStyleDynamic(self.ui.runOptimize, "run", "false")
         self.ui.deleteWorstPoint.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
         self.ui.refreshModel.setEnabled(True)
@@ -376,7 +376,7 @@ class ModelManage(TabAddon):
         self.ui.clearModel.setEnabled(False)
         self.ui.refreshModel.setEnabled(False)
         self.ui.cancelOptimize.setEnabled(True)
-        changeStyleDynamic(self.ui.runOptimize, "run", True)
+        changeStyleDynamic(self.ui.runOptimize, "run", "true")
 
         if self.ui.optimizeOverall.isChecked():
             self.app.dReg["mount"].instance.signals.getModelDone.connect(self.runTargetRMS)

@@ -97,8 +97,8 @@ class Analysis:
         return data, waitTime
 
     def restoreAnalysisDefaultContextAndGuiStatus(self) -> None:
-        changeStyleDynamic(self.ui.runFlexure, "run", False)
-        changeStyleDynamic(self.ui.runHysteresis, "run", False)
+        changeStyleDynamic(self.ui.runFlexure, "run", "false")
+        changeStyleDynamic(self.ui.runHysteresis, "run", "false")
         self.ui.cancelAnalysis.setEnabled(False)
         self.ui.analysisPoints.setText("-")
         self.ui.analysisProgress.setValue(0)

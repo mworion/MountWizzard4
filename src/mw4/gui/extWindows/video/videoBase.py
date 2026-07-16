@@ -62,7 +62,7 @@ class VideoWindowBase(MWidget):
         self.ui.authPopup.clicked.connect(self.authPopup)
         self.app.colorChange.connect(self.colorChange)
         self.app.timeMgr.update0_1s.connect(self.count)
-        changeStyleDynamic(self.ui.videoStop, "run", True)
+        changeStyleDynamic(self.ui.videoStop, "run", "true")
         self.checkAuth()
         self.show()
 
@@ -121,8 +121,8 @@ class VideoWindowBase(MWidget):
 
         source = sources[sourceIndex]
         self.log.info(f"Video started: source [{source}]")
-        changeStyleDynamic(self.ui.videoStart, "run", True)
-        changeStyleDynamic(self.ui.videoStop, "run", False)
+        changeStyleDynamic(self.ui.videoStart, "run", "true")
+        changeStyleDynamic(self.ui.videoStop, "run", "false")
         self.running = True
         self.capture = cv2.VideoCapture()
         self.capture.setExceptionMode(True)
@@ -130,8 +130,8 @@ class VideoWindowBase(MWidget):
         self.threadPool.start(self.worker)
 
     def stopVideo(self) -> None:
-        changeStyleDynamic(self.ui.videoStart, "run", False)
-        changeStyleDynamic(self.ui.videoStop, "run", True)
+        changeStyleDynamic(self.ui.videoStart, "run", "false")
+        changeStyleDynamic(self.ui.videoStop, "run", "true")
         self.pixmapReady.emit(None)
         self.running = False
 

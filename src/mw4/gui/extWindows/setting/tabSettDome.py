@@ -13,7 +13,8 @@
 # License APL2.0
 #
 ###########################################################
-from mw4.gui.utilities.qtHelpers import img2pixmap
+from mw4.gui.styles.styles import Styles
+from mw4.gui.utilities.qtHelpers import img2pixmap, setPixmapAlpha
 from typing import Any
 
 
@@ -118,33 +119,45 @@ class SettDome:
 
     def setupIcons(self) -> None:
         pixmap = img2pixmap("assets/dome/radius.png")
+        pixmap = setPixmapAlpha(pixmap, Styles.transparency)
         self.ui.picDome1.setPixmap(pixmap)
 
         is10Micron = self.ui.use10micronDef.isChecked()
         if is10Micron:
             pixmap = img2pixmap("assets/dome/north.png")
+            pixmap = setPixmapAlpha(pixmap, Styles.transparency)
             self.ui.picDome2.setPixmap(pixmap)
             pixmap = img2pixmap("assets/dome/east.png")
+            pixmap = setPixmapAlpha(pixmap, Styles.transparency)
             self.ui.picDome3.setPixmap(pixmap)
             pixmap = img2pixmap("assets/dome/vert.png")
+            pixmap = setPixmapAlpha(pixmap, Styles.transparency)
             self.ui.picDome4.setPixmap(pixmap)
         else:
             pixmap = img2pixmap("assets/dome/northGEM.png")
+            pixmap = setPixmapAlpha(pixmap, Styles.transparency)
             self.ui.picDome2.setPixmap(pixmap)
             pixmap = img2pixmap("assets/dome/eastGEM.png")
+            pixmap = setPixmapAlpha(pixmap, Styles.transparency)
             self.ui.picDome3.setPixmap(pixmap)
             pixmap = img2pixmap("assets/dome/vertGEM.png")
+            pixmap = setPixmapAlpha(pixmap, Styles.transparency)
             self.ui.picDome4.setPixmap(pixmap)
 
         pixmap = img2pixmap("assets/dome/gem.png")
+        pixmap = setPixmapAlpha(pixmap, Styles.transparency)
         self.ui.picDome5.setPixmap(pixmap)
         pixmap = img2pixmap("assets/dome/lat.png")
+        pixmap = setPixmapAlpha(pixmap, Styles.transparency)
         self.ui.picDome6.setPixmap(pixmap)
         pixmap = img2pixmap("assets/dome/shutter.png")
+        pixmap = setPixmapAlpha(pixmap, Styles.transparency)
         self.ui.picDome7.setPixmap(pixmap)
         pixmap = img2pixmap("assets/dome/hysteresis.png")
+        pixmap = setPixmapAlpha(pixmap, Styles.transparency)
         self.ui.picDome8.setPixmap(pixmap)
         pixmap = img2pixmap("assets/dome/zenith.png")
+        pixmap = setPixmapAlpha(pixmap, Styles.transparency)
         self.ui.picDome9.setPixmap(pixmap)
         self.parentW.wIcon(self.ui.copyFromDomeDriver, "copy")
 

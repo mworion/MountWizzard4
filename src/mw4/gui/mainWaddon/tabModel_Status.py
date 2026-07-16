@@ -14,7 +14,8 @@
 #
 ###########################################################
 from mw4.gui.mainWaddon.tabAddon import TabAddon
-from mw4.gui.utilities.qtHelpers import guiSetText, img2pixmap
+from mw4.gui.styles.styles import Styles
+from mw4.gui.utilities.qtHelpers import guiSetText, img2pixmap, setPixmapAlpha
 from typing import Any
 
 
@@ -31,8 +32,10 @@ class ModelStatus(TabAddon):
 
     def setupIcons(self) -> None:
         pixmap = img2pixmap("assets/pics/azimuth.png").scaled(140, 140)
+        pixmap = setPixmapAlpha(pixmap, Styles.transparency)
         self.ui.picAZ.setPixmap(pixmap)
         pixmap = img2pixmap("assets/pics/altitude.png").scaled(140, 140)
+        pixmap = setPixmapAlpha(pixmap, Styles.transparency)
         self.ui.picALT.setPixmap(pixmap)
 
     def updateAlignGUI(self, model):

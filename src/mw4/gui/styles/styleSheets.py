@@ -382,7 +382,6 @@ BASIC_STYLE = """
     }
     QPushButton:pressed {
         background-color: $M_PRIM$;
-        color: $M_TER$;
     }
     QPushButton[color='gray'] {
         background-color: $M_GRAY$;
@@ -683,5 +682,4 @@ BASIC_STYLE = """
         color: $M_PRIM$;
         background-color: $M_BACK$;
     }
-
     """

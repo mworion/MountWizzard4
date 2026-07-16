@@ -70,29 +70,34 @@ def test_timeDiff_property_type(function):
 
 def test_runnerMountUp_ping_none(function):
     function.parent.mountIsUp = False
+    function.errorCounter = 5
     with (
         mock.patch("mw4.mountcontrol.mountTime.ping", return_value=None),
         mock.patch.object(function.parent.signals, "mountIsUp") as mock_signal,
     ):
         function.runnerMountUp()
         assert function.parent.mountIsUp is False
+        assert function.errorCounter == 4
         mock_signal.emit.assert_not_called()
 
 
 def test_runnerMountUp_ping_false(function):
     function.parent.mountIsUp = False
+    function.errorCounter = 5
     with (
         mock.patch("mw4.mountcontrol.mountTime.ping", return_value=False),
         mock.patch.object(function.parent.signals, "mountIsUp") as mock_signal,
     ):
         function.runnerMountUp()
         assert function.parent.mountIsUp is False
+        assert function.errorCounter == 4
         mock_signal.emit.assert_not_called()
 
 
 def test_runnerMountUp_socket_exception(function):
     function.parent.mountIsUp = False
     function.rtt_MA = np.zeros(25)
+    function.errorCounter = 5
     with (
         mock.patch("mw4.mountcontrol.mountTime.ping", return_value=0.05),
         mock.patch("socket.socket") as mock_socket,
@@ -102,11 +107,13 @@ def test_runnerMountUp_socket_exception(function):
         )
         function.runnerMountUp()
         assert function.rtt_MA[0] == pytest.approx(0.05)
+        assert function.errorCounter == 4
 
 
 def test_runnerMountUp_socket_success(function):
     function.parent.mountIsUp = False
     function.rtt_MA = np.zeros(25)
+    function.errorCounter = 2
     with (
         mock.patch("mw4.mountcontrol.mountTime.ping", return_value=0.05),
         mock.patch("socket.socket"),
@@ -114,6 +121,7 @@ def test_runnerMountUp_socket_success(function):
     ):
         function.runnerMountUp()
         assert function.rtt_MA[0] == pytest.approx(0.05)
+        assert function.errorCounter == 5
         function.parent.signals.mountIsUp.emit.assert_called_with(True)
 
 
@@ -129,6 +137,40 @@ def test_runnerMountUp_rtt_moving_average(function):
         assert function.rtt_MA[0] == pytest.approx(0.1)
         function.runnerMountUp()
         assert function.rtt == pytest.approx(np.mean(function.rtt_MA))
+
+
+def test_runnerMountUp_ping_none_error_counter_zero(function):
+    function.parent.mountIsUp = False
+    function.errorCounter = 0
+    with mock.patch("mw4.mountcontrol.mountTime.ping", return_value=None):
+        function.runnerMountUp()
+        assert function.parent.mountIsUp is False
+        assert function.errorCounter == 0
+
+
+def test_runnerMountUp_ping_false_error_counter_zero(function):
+    function.parent.mountIsUp = False
+    function.errorCounter = 0
+    with mock.patch("mw4.mountcontrol.mountTime.ping", return_value=False):
+        function.runnerMountUp()
+        assert function.parent.mountIsUp is False
+        assert function.errorCounter == 0
+
+
+def test_runnerMountUp_socket_exception_error_counter_zero(function):
+    function.parent.mountIsUp = False
+    function.rtt_MA = np.zeros(25)
+    function.errorCounter = 0
+    with (
+        mock.patch("mw4.mountcontrol.mountTime.ping", return_value=0.05),
+        mock.patch("socket.socket") as mock_socket,
+    ):
+        mock_socket.return_value.__enter__.return_value.connect.side_effect = Exception(
+            "Connection failed"
+        )
+        function.runnerMountUp()
+        assert function.rtt_MA[0] == pytest.approx(0.05)
+        assert function.errorCounter == 0
 
 
 def test_clearMountUp(function):

@@ -39,6 +39,7 @@ class MountTime:
         self._timeDiff = np.full(25, 0.0)
         self.rtt: float = 0
         self.rtt_MA: np.ndarray = np.zeros(25)
+        self.errorCounter: int = 5
         self.workerCycleMountUp: Worker | None = None
         self.workerPollSyncClock: Worker | None = None
         self.mutexCycleMountUp = QMutex()
@@ -55,11 +56,15 @@ class MountTime:
         rttLocal = ping(self.parent.config.hostAddress)
         if rttLocal is None:
             self.parent.mountIsUp = False
-            self.log.info(f"Host: [{self.parent.config.hostAddress}] not resolved")
+            if self.errorCounter > 0:
+                self.errorCounter -= 1
+                self.log.info(f"Host: [{self.parent.config.hostAddress}] not resolved")
             return
         if rttLocal is False:
             self.parent.mountIsUp = False
-            self.log.info(f"Timeout: [{self.parent.config.hostAddress}[ no response")
+            if self.errorCounter > 0:
+                self.errorCounter -= 1
+                self.log.info(f"Timeout: [{self.parent.config.hostAddress}[ no response")
             return
         self.rtt_MA = np.roll(self.rtt_MA, 1)
         self.rtt_MA[0] = rttLocal
@@ -70,8 +75,11 @@ class MountTime:
                 client.connect((self.parent.config.hostAddress, self.parent.config.port))
                 client.shutdown(socket.SHUT_RDWR)
         except Exception as e:
-            self.log.error(f"No mount at [{self.parent.config.hostAddress}], error [{e}]")
+            if self.errorCounter > 0:
+                self.errorCounter -= 1
+                self.log.error(f"No mount at [{self.parent.config.hostAddress}], error [{e}]")
         else:
+            self.errorCounter = 5
             self.parent.signals.mountIsUp.emit(True)
 
     def clearMountUp(self) -> None:

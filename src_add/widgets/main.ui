@@ -1437,7 +1437,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -13854,9 +13854,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </property>
          </widget>
          <widget class="QPushButton" name="openAnalyseW">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
           <property name="geometry">
            <rect>
             <x>5</x>
@@ -13865,8 +13862,37 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <height>21</height>
            </rect>
           </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>10</pointsize>
+            <bold>false</bold>
+           </font>
+          </property>
           <property name="toolTip">
-           <string>Opens an analyse window showing multiple informations about the model context.</string>
+           <string>Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
+The keypad is a webbrowser showing the content from 10microns webservices directy.</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>Open analyse window and show data</string>
@@ -25444,7 +25470,6 @@ Next point in time when satellite settles.</string>
   <tabstop>optimizeOverall</tabstop>
   <tabstop>optimizeSingle</tabstop>
   <tabstop>targetRMS</tabstop>
-  <tabstop>openAnalyseW</tabstop>
   <tabstop>nameList</tabstop>
   <tabstop>loadName</tabstop>
   <tabstop>saveName</tabstop>

@@ -45,13 +45,9 @@ from skyfield.api import Angle
 def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str) -> None:
     if widget.property(widgetProperty) == value:
         return
-    if widgetProperty == "background":
-        print(widget, widget.objectName())
-
     widget.setProperty(widgetProperty, value)
     widget.style().unpolish(widget)
     widget.style().polish(widget)
-    pass
 
 
 def findIndexValue(ui: QComboBox, searchString: str, relaxed: bool = False) -> int:

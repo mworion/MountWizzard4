@@ -68,6 +68,16 @@ def test_timeDiff_property_type(function):
     assert isinstance(result, float)
 
 
+def test_runnerMountUp_no_host_address(function):
+    original_address = function.parent.config.hostAddress
+    function.parent.mountIsUp = True
+    function.parent.config.hostAddress = ""
+    with mock.patch.object(function.parent.signals, "mountIsUp") as mock_signal:
+        function.runnerMountUp()
+        mock_signal.emit.assert_called_once_with(False)
+    function.parent.config.hostAddress = original_address
+
+
 @pytest.mark.parametrize("ping_return,socket_fails", [
     (None, False),
     (False, False),

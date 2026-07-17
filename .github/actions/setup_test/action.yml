@@ -28,5 +28,5 @@ runs:
 
     - name: install package
       run: |
-        uv sync --locked --dev
+        uv sync --dev
       shell: bash

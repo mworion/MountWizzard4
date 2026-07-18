@@ -90,7 +90,6 @@ class MountWizzard4(QObject):
         self.timeMgr = TimeManager(app=self)
         self.dReg: DeviceRegistry = DeviceRegistry(self)
         self.dReg.addDevices(self)
-        self.initConfig()
         self.buildPoint = BuildPoint(self)
         self.hipparcos = Hipparcos(self)
         self.ephemeris = self.dReg["mount"].obsSite.loader("de440_mw4.bsp")
@@ -98,6 +97,7 @@ class MountWizzard4(QObject):
         self.mainW = MainWindow(self)
         self.mainW.initConfig()
         self.mainW.showWindow()
+        self.initConfig()
         self.timeMgr.start()
         # Wire up application-level signal connections.
         self.application.aboutToQuit.connect(self.aboutToQuit)

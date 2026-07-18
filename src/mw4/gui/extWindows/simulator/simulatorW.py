@@ -28,6 +28,7 @@ from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import simulator_ui
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
+from PySide6.Qt3DRender import Qt3DRender
 from PySide6.QtGui import QVector3D
 from PySide6.QtWidgets import QWidget
 from typing import Any
@@ -62,6 +63,7 @@ class SimulatorWindow(MWidget):
         self.cameraController = None
         self.setupCamera(self.entityModel["root"]["entity"])
         self.createScene()
+        self.setupRenderSortPolicy()
 
     def initConfig(self) -> None:
         config = self.app.config.get("WindowSimulator", {})
@@ -125,6 +127,27 @@ class SimulatorWindow(MWidget):
         self.cameraController.setCamera(self.camera)
         self.cameraController.setLinearSpeed(5.0)
         self.cameraController.setLookSpeed(90)
+
+    def findFrameGraphNode(
+        self, node: Qt3DRender.QFrameGraphNode, nodeType: type
+    ) -> Qt3DRender.QFrameGraphNode | None:
+        if isinstance(node, nodeType):
+            return node  # type: ignore[return-value]
+        for child in node.childNodes():
+            result = self.findFrameGraphNode(
+                child, nodeType  # type: ignore[arg-type]
+            )
+            if result is not None:
+                return result
+        return None
+
+    def setupRenderSortPolicy(self) -> None:
+        fg = self.window3D.activeFrameGraph()
+        frustumCulling = self.findFrameGraphNode(fg, Qt3DRender.QFrustumCulling)
+        if frustumCulling is None:
+            return
+        sortPolicy = Qt3DRender.QSortPolicy(frustumCulling)
+        sortPolicy.setSortTypes([Qt3DRender.QSortPolicy.SortType.BackToFront])
 
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)

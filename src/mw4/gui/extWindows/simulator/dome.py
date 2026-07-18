@@ -85,7 +85,7 @@ class SimulatorDome:
 
         cfg = self.app.config.get("SettingDeviceDome", {})
         radius = cfg.get("domeRadius", 1.5) * 1000
-        width= cfg.get("domeClearOpening", 0.4)) * 1000
+        width= cfg.get("domeClearOpening", 0.4) * 1000
         scale = 1 + (radius - 1250) / 1250
         scaleSlit = (1 + (width - 600) / 600 / 2) * 0.9
         isOpen = self.app.dReg["dome"].data["DOME_SHUTTER.SHUTTER_OPEN"]

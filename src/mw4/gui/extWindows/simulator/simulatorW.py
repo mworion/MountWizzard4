@@ -135,19 +135,29 @@ class SimulatorWindow(MWidget):
             return node  # type: ignore[return-value]
         for child in node.childNodes():
             result = self.findFrameGraphNode(
-                child, nodeType  # type: ignore[arg-type]
+                child,
+                nodeType,  # type: ignore[arg-type]
             )
             if result is not None:
                 return result
         return None
 
     def setupRenderSortPolicy(self) -> None:
+        """
+        Inserts a QSortPolicy (BackToFront) into the frame graph between
+        QFrustumCulling and QDebugOverlay so that transparent objects are
+        rendered in the correct back-to-front order without creating an
+        additional render pass.
+        """
         fg = self.window3D.activeFrameGraph()
         frustumCulling = self.findFrameGraphNode(fg, Qt3DRender.QFrustumCulling)
         if frustumCulling is None:
             return
+        debugOverlay = self.findFrameGraphNode(frustumCulling, Qt3DRender.QDebugOverlay)
         sortPolicy = Qt3DRender.QSortPolicy(frustumCulling)
         sortPolicy.setSortTypes([Qt3DRender.QSortPolicy.SortType.BackToFront])
+        if debugOverlay is not None:
+            debugOverlay.setParent(sortPolicy)
 
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)

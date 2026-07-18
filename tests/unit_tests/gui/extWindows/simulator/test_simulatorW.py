@@ -70,6 +70,53 @@ def test_setupCamera_1(function):
     function.setupCamera(Qt3DCore.QEntity())
 
 
+def test_findFrameGraphNode_1(function):
+    from PySide6.Qt3DExtras import Qt3DExtras
+
+    fg = function.window3D.activeFrameGraph()
+    result = function.findFrameGraphNode(fg, Qt3DExtras.QForwardRenderer)
+    assert result is not None
+
+
+def test_findFrameGraphNode_2(function):
+    from PySide6.Qt3DRender import Qt3DRender
+
+    fg = function.window3D.activeFrameGraph()
+    result = function.findFrameGraphNode(fg, Qt3DRender.QRenderSurfaceSelector)
+    assert result is not None
+
+
+def test_findFrameGraphNode_3(function):
+    from PySide6.Qt3DRender import Qt3DRender
+
+    fg = function.window3D.activeFrameGraph()
+    result = function.findFrameGraphNode(fg, Qt3DRender.QDebugOverlay)
+    assert result is not None
+
+
+def test_findFrameGraphNode_4(function):
+    from unittest.mock import MagicMock
+
+    node = MagicMock()
+    node.childNodes.return_value = []
+    result = function.findFrameGraphNode(node, type(None))
+    assert result is None
+
+
+def test_setupRenderSortPolicy_1(function):
+    from PySide6.Qt3DRender import Qt3DRender
+
+    function.setupRenderSortPolicy()
+    fg = function.window3D.activeFrameGraph()
+    sortPolicy = function.findFrameGraphNode(fg, Qt3DRender.QSortPolicy)
+    assert sortPolicy is not None
+
+
+def test_setupRenderSortPolicy_2(function):
+    with mock.patch.object(function, "findFrameGraphNode", return_value=None):
+        function.setupRenderSortPolicy()
+
+
 def test_colorChange(function):
     function.colorChange()
 

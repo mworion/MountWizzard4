@@ -21,6 +21,7 @@ from mw4.gui.utilities.qtCustomWindow import CustomTitleBar
 from mw4.gui.utilities.qtHelpers import svg2icon
 from PySide6.QtCore import QEvent, QSize, Qt
 from PySide6.QtGui import (
+    QGuiApplication,
     QKeyEvent,
 )
 from PySide6.QtWidgets import (
@@ -146,8 +147,9 @@ class MWidget(QMainWindow, Styles):
             else:
                 self.setWindowState(Qt.WindowState.WindowNoState)
         self.resize(width, height)
-        x = config.get("winPosX", 0)
-        y = config.get("winPosY", 0)
+        geo = QGuiApplication.primaryScreen().availableGeometry()
+        x = config.get("winPosX", geo.width() // 2 - width // 2)
+        y = config.get("winPosY", geo.height() // 2 - height // 2)
         self.move(x, y)
 
     def getPositionWindow(self, config: dict[str, int]) -> dict[str, int]:

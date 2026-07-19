@@ -22,6 +22,7 @@ import sys
 import traceback
 import unittest.mock as mock
 from mw4.base.bootstrap import (
+    configureEnvironment,
     exceptHook,
     extractDataFiles,
     minimizeStartTerminal,
@@ -40,6 +41,27 @@ def module_setup_teardown():
     for f in files:
         os.remove(f)
     yield
+
+
+def test_configure_environment():
+    with (
+        mock.patch("mw4.base.bootstrap.faulthandler.enable"),
+        mock.patch("mw4.base.bootstrap.warnings.filterwarnings"),
+        mock.patch("mw4.base.bootstrap.setupLogging"),
+    ):
+        configureEnvironment()
+
+
+@pytest.mark.skipif(platform.system() != "Linux", reason="Linux needed")
+def test_configure_environment_linux_qt_platform():
+    with (
+        mock.patch.dict(os.environ, {}, clear=False),
+        mock.patch("mw4.base.bootstrap.faulthandler.enable"),
+        mock.patch("mw4.base.bootstrap.warnings.filterwarnings"),
+        mock.patch("mw4.base.bootstrap.setupLogging"),
+    ):
+        configureEnvironment()
+        assert os.environ.get("QT_QPA_PLATFORM") == "xcb"
 
 
 def test_except_hook():

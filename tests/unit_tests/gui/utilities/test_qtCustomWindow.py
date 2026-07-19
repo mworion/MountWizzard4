@@ -450,3 +450,30 @@ def test_title_bar_margins_1(function):
     layout = function.layout()
     # Note: Layout margins are set to (10, 0, 10, 0) for HBoxLayout container
     assert layout is not None
+
+
+def test_mouse_move_event_with_initial_pos():
+    """Test mouse move event with initialPos set (manual window movement)."""
+    parent = QWidget()
+    parent.setGeometry(100, 100, 400, 300)
+    parent.show()
+    titleBar = CustomTitleBar(parent)
+
+    initial_x = parent.x()
+    initial_y = parent.y()
+
+    titleBar.initialPos = QPoint(50, 50)
+
+    moveEvent = QMouseEvent(
+        QMouseEvent.Type.MouseMove,
+        QPoint(60, 60),
+        Qt.MouseButton.NoButton,
+        Qt.MouseButtons(),
+        Qt.KeyboardModifiers(),
+    )
+    titleBar.mouseMoveEvent(moveEvent)
+
+    delta = QPoint(60, 60) - titleBar.initialPos
+    assert parent.x() == initial_x + delta.x()
+    assert parent.y() == initial_y + delta.y()
+    parent.close()

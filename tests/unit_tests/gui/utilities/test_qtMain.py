@@ -150,6 +150,16 @@ def test_positionWindow_2(function):
     function.setPositionWindow(config)
 
 
+@mock.patch("mw4.gui.utilities.qtMain.platform.system", return_value="Linux")
+def test_positionWindow_linux_maximized(mock_platform, function):
+    """Test setPositionWindow on Linux with maximized window dimensions."""
+    max_height = function.maximumHeight()
+    max_width = function.maximumWidth()
+    config = {"height": max_height, "width": max_width}
+    function.setPositionWindow(config)
+    mock_platform.assert_called()
+
+
 def test_getPositionWindow_1(function):
     config = {}
     result = function.getPositionWindow(config)

@@ -206,7 +206,7 @@ def test_ubuntu(c, user, work, scp):
 
     runMW(c, f'ssh {user} "cd {work} && ~/.local/bin/uv venv -p 3.13"')
     runMW(c, f'ssh {user} "cd {work} && ~/.local/bin/uv pip install mountwizzard4.tar.gz"')
-    runMW(c, f'ssh {user} "cd {work} &&  DISPLAY=:0 ~/.local/bin/uv run mw4 -t 1"')
+    runMW(c, f'ssh {user} "cd {work} && XAUTHORITY=/home/{user}/.Xauthority DISPLAY=:0 ~/.local/bin/uv run mw4 -t 1"')
 
 def test_mac(c, user, work, scp):
     printMW("...delete test dir")

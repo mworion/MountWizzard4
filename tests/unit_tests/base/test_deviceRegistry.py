@@ -681,15 +681,16 @@ def test_collectConfigFromAllDevices(registry: DeviceRegistry) -> None:
 
 
 def test_initConfig(registry: DeviceRegistry) -> None:
-    """Test initConfig chains writeConfigToAllDevices and startDevices."""
+    """Test initConfig calls writeConfigToAllDevices and writeConfigToSingleDevice."""
     with (
-        patch.object(registry, "writeConfigToAllDevices") as mock_write,
-        patch.object(registry, "startDevices") as mock_start,
+        patch.object(registry, "writeConfigToAllDevices") as mock_write_all,
+        patch.object(registry, "writeConfigToSingleDevice") as mock_write_single,
     ):
         registry.app.config["SettingDevice"] = {}
+        registry.app.config["SettingDeviceMount"] = {}
         registry.initConfig()
-        mock_write.assert_called_once_with({})
-        mock_start.assert_called_once()
+        mock_write_all.assert_called_once_with({})
+        mock_write_single.assert_called_once_with("mount", {})
 
 
 def test_storeConfig(registry: DeviceRegistry) -> None:

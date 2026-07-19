@@ -46,6 +46,9 @@ class MainWindow(MWidget):
         self.ui.setupUi(self.ws)
         self.setWindowTitle(f"MountWizzard4 - v{self.app.__version__}")
         self.setFixedSize(self.FULL_WIDTH, self.FULL_HEIGHT)
+        self.titleBar.normButton.setVisible(False)
+        self.titleBar.maxButton.setVisible(False)
+        self.titleBar.windowFixed = True
         self.externalWindows = ExternalWindows(self)
         self.mainWindowAddons = MainWindowAddons(self)
         self.satStatus: bool = False
@@ -174,9 +177,6 @@ class MainWindow(MWidget):
 
     def showWindow(self) -> None:
         self.show()
-        self.titleBar.normButton.setVisible(False)
-        self.titleBar.maxButton.setVisible(False)
-        self.titleBar.windowFixed = True
 
     def smartFunctionGui(self) -> None:
         isMountReady = bool(self.app.dReg["mount"].stat)

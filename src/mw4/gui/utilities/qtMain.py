@@ -15,6 +15,7 @@
 ###########################################################
 import datetime
 import logging
+import platform
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtCustomWindow import CustomTitleBar
 from mw4.gui.utilities.qtHelpers import svg2icon
@@ -139,9 +140,12 @@ class MWidget(QMainWindow, Styles):
     def setPositionWindow(self, config: dict) -> None:
         height = config.get("height", self.minimumHeight())
         width = config.get("width", self.minimumWidth())
-        self.resize(width, height)
         if height == self.maximumHeight() and width == self.maximumWidth():
-            self.setWindowState(Qt.WindowState.WindowMaximized)
+            if platform.system() != "Linux":
+                self.setWindowState(Qt.WindowState.WindowMaximized)
+            else:
+                self.setWindowState(Qt.WindowState.WindowNoState)
+        self.resize(width, height)
         x = config.get("winPosX", 0)
         y = config.get("winPosY", 0)
         self.move(x, y)

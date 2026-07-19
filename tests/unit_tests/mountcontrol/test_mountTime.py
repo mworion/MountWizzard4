@@ -78,30 +78,33 @@ def test_runnerMountUp_no_host_address(function):
     function.parent.config.hostAddress = original_address
 
 
-@pytest.mark.parametrize("ping_return,socket_fails", [
-    (None, False),
-    (False, False),
-    (0.05, True),
-])
+@pytest.mark.parametrize(
+    "ping_return,socket_fails",
+    [
+        (None, False),
+        (False, False),
+        (0.05, True),
+    ],
+)
 def test_runnerMountUp_error_counter_decrements(function, ping_return, socket_fails):
     function.parent.mountIsUp = False
     function.errorCounter = 5
     function.rtt_MA = np.zeros(25)
-    
+
     if socket_fails:
         with (
             mock.patch("mw4.mountcontrol.mountTime.ping", return_value=ping_return),
             mock.patch("socket.socket") as mock_socket,
         ):
-            mock_socket.return_value.__enter__.return_value.connect.side_effect = (
-                Exception("Connection failed")
+            mock_socket.return_value.__enter__.return_value.connect.side_effect = Exception(
+                "Connection failed"
             )
             function.runnerMountUp()
             assert function.rtt_MA[0] == pytest.approx(ping_return)
     else:
         with mock.patch("mw4.mountcontrol.mountTime.ping", return_value=ping_return):
             function.runnerMountUp()
-    
+
     assert function.parent.mountIsUp is False
     assert function.errorCounter == 4
 
@@ -135,30 +138,33 @@ def test_runnerMountUp_rtt_moving_average(function):
         assert function.rtt == pytest.approx(np.mean(function.rtt_MA))
 
 
-@pytest.mark.parametrize("ping_return,socket_fails", [
-    (None, False),
-    (False, False),
-    (0.05, True),
-])
+@pytest.mark.parametrize(
+    "ping_return,socket_fails",
+    [
+        (None, False),
+        (False, False),
+        (0.05, True),
+    ],
+)
 def test_runnerMountUp_error_counter_zero(function, ping_return, socket_fails):
     function.parent.mountIsUp = False
     function.errorCounter = 0
     function.rtt_MA = np.zeros(25)
-    
+
     if socket_fails:
         with (
             mock.patch("mw4.mountcontrol.mountTime.ping", return_value=ping_return),
             mock.patch("socket.socket") as mock_socket,
         ):
-            mock_socket.return_value.__enter__.return_value.connect.side_effect = (
-                Exception("Connection failed")
+            mock_socket.return_value.__enter__.return_value.connect.side_effect = Exception(
+                "Connection failed"
             )
             function.runnerMountUp()
             assert function.rtt_MA[0] == pytest.approx(ping_return)
     else:
         with mock.patch("mw4.mountcontrol.mountTime.ping", return_value=ping_return):
             function.runnerMountUp()
-    
+
     assert function.errorCounter == 0
 
 
@@ -184,11 +190,14 @@ def test_checkMountUp_unlocked(function):
     function.clearMountUp()
 
 
-@pytest.mark.parametrize("delta,expected_cmd", [
-    (100, ":NUtim+100#"),
-    (-100, ":NUtim-100#"),
-    (0, ":NUtim+000#"),
-])
+@pytest.mark.parametrize(
+    "delta,expected_cmd",
+    [
+        (100, ":NUtim+100#"),
+        (-100, ":NUtim-100#"),
+        (0, ":NUtim+000#"),
+    ],
+)
 def test_adjustClock(function, delta, expected_cmd):
     with mock.patch("mw4.mountcontrol.mountTime.Connection") as mock_connection:
         mock_conn_instance = mock.Mock()
@@ -262,11 +271,14 @@ def test_syncClock_delta_too_small(function):
         function.adjustClock.assert_not_called()
 
 
-@pytest.mark.parametrize("time_diff_val,expected_delta", [
-    (0.05, 50),
-    (2.0, 999),
-    (-2.0, -999),
-])
+@pytest.mark.parametrize(
+    "time_diff_val,expected_delta",
+    [
+        (0.05, 50),
+        (2.0, 999),
+        (-2.0, -999),
+    ],
+)
 def test_syncClock_delta_clamping(function, time_diff_val, expected_delta):
     function.parent.mountIsUp = True
     function.parent.config.syncTimeNone = False

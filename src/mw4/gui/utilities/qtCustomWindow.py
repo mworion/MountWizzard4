@@ -14,7 +14,7 @@
 #
 ###########################################################
 from mw4.gui.utilities.qtHelpers import svg2icon
-from PySide6.QtCore import QPoint, QSize, Qt
+from PySide6.QtCore import QPoint, QSize, Qt, QTimer
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QToolButton, QWidget
 
 
@@ -77,6 +77,10 @@ class CustomTitleBar(QWidget):
         titleBarLayout.setContentsMargins(4, 4, 4, 5)
 
     def windowStateChanged(self, state) -> None:
+        if self.windowFixed:
+            self.maxButton.setVisible(False)
+            self.normButton.setVisible(False)
+            return
         if state == Qt.WindowState.WindowMaximized:
             self.normButton.setVisible(True)
             self.maxButton.setVisible(False)
@@ -86,9 +90,11 @@ class CustomTitleBar(QWidget):
 
     def mousePressEvent(self, event) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
-            self.initialPos = event.position().toPoint()
-        super().mousePressEvent(event)
-        event.accept()
+            window = self.window()
+            if window and window.windowHandle():
+                event.accept()
+                QTimer.singleShot(0, window.windowHandle().startSystemMove)
+                return
 
     def mouseMoveEvent(self, event) -> None:
         if self.initialPos is not None:

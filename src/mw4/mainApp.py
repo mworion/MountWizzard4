@@ -28,7 +28,6 @@ from PySide6.QtCore import QObject, QThreadPool, Signal
 from PySide6.QtWidgets import QApplication
 from queue import Queue
 from skyfield.api import wgs84
-from skyfield.toposlib import GeographicPosition
 
 
 class MountWizzard4(QObject):
@@ -90,14 +89,15 @@ class MountWizzard4(QObject):
         self.timeMgr = TimeManager(app=self)
         self.dReg: DeviceRegistry = DeviceRegistry(self)
         self.dReg.addDevices(self)
+        self.dReg.initConfig()
+        self.initConfig()
         self.buildPoint = BuildPoint(self)
         self.hipparcos = Hipparcos(self)
         self.ephemeris = self.dReg["mount"].obsSite.loader("de440_mw4.bsp")
-        # Create, configure, and show the main window.
         self.mainW = MainWindow(self)
         self.mainW.initConfig()
         self.mainW.showWindow()
-        self.initConfig()
+        self.dReg.startDevices()
         self.timeMgr.start()
         # Wire up application-level signal connections.
         self.application.aboutToQuit.connect(self.aboutToQuit)
@@ -108,18 +108,16 @@ class MountWizzard4(QObject):
         if len(sys.argv) > 1:
             self.messageQueue.put((1, "System", "Arguments", sys.argv[1]))
 
-    def initConfig(self) -> GeographicPosition | None:
+    def initConfig(self) -> None:
         cfgSetting = self.config.get("SettingUpdate", {})
         setCustomLoggingLevel(self, cfgSetting.get("loglevel", "DEBUG"))
         self.isOnline = cfgSetting.get("isOnline", False)
-        self.dReg.initConfig()
         lat = self.config.get("topoLat", 51.47)
         lon = self.config.get("topoLon", 0)
         elev = self.config.get("topoElev", 46)
         topo = wgs84.latlon(longitude_degrees=lon, latitude_degrees=lat, elevation_m=elev)
         self.dReg["mount"].obsSite.location = topo
         self.timeMgr.unitTimeUTC = self.config.get("unitTimeUTC", True)
-        return topo
 
     def storeConfig(self) -> None:
         self.config["loglevel"] = logging.getLevelName(self.log.level)

@@ -187,9 +187,10 @@ def test_initial_pos_attribute_1(function):
 
 
 def test_initial_pos_attribute_2(function):
-    """Test initial_pos is set on mouse press."""
+    """Test initial_pos remains None on mouse press (uses native startSystemMove)."""
     parent = QWidget()
     parent.setGeometry(100, 100, 400, 300)
+    parent.show()
     titleBar = CustomTitleBar(parent)
 
     mouseEvent = QMouseEvent(
@@ -199,14 +200,18 @@ def test_initial_pos_attribute_2(function):
         Qt.MouseButtons(Qt.MouseButton.LeftButton),
         Qt.KeyboardModifiers(),
     )
-    titleBar.mousePressEvent(mouseEvent)
-    assert titleBar.initialPos is not None
+    with mock.patch.object(parent.windowHandle(), "startSystemMove"):
+        titleBar.mousePressEvent(mouseEvent)
+    # initialPos should remain None since we use native system move
+    assert titleBar.initialPos is None
+    parent.close()
 
 
 def test_initial_pos_cleared_1(function):
-    """Test initial_pos is cleared on mouse release."""
+    """Test initial_pos stays None throughout left button press/release."""
     parent = QWidget()
     parent.setGeometry(100, 100, 400, 300)
+    parent.show()
     titleBar = CustomTitleBar(parent)
 
     mouseEvent = QMouseEvent(
@@ -216,8 +221,10 @@ def test_initial_pos_cleared_1(function):
         Qt.MouseButtons(Qt.MouseButton.LeftButton),
         Qt.KeyboardModifiers(),
     )
-    titleBar.mousePressEvent(mouseEvent)
-    assert titleBar.initialPos is not None
+    with mock.patch.object(parent.windowHandle(), "startSystemMove"):
+        titleBar.mousePressEvent(mouseEvent)
+    # initialPos should be None since we use native system move
+    assert titleBar.initialPos is None
 
     releaseEvent = QMouseEvent(
         QMouseEvent.Type.MouseButtonRelease,
@@ -228,10 +235,11 @@ def test_initial_pos_cleared_1(function):
     )
     titleBar.mouseReleaseEvent(releaseEvent)
     assert titleBar.initialPos is None
+    parent.close()
 
 
 def test_mouse_press_event_1(function):
-    """Test mouse press event with left button."""
+    """Test mouse press event with left button uses native system move."""
     parent = QWidget()
     parent.setGeometry(100, 100, 400, 300)
     titleBar = CustomTitleBar(parent)
@@ -243,8 +251,10 @@ def test_mouse_press_event_1(function):
         Qt.MouseButtons(Qt.MouseButton.LeftButton),
         Qt.KeyboardModifiers(),
     )
+    # For right button, initialPos should stay None
     titleBar.mousePressEvent(mouseEvent)
-    assert titleBar.initialPos == QPoint(20, 15)
+    # Method should not raise exception; initialPos remains None (native system move used)
+    assert titleBar.initialPos is None
 
 
 def test_mouse_press_event_2(function):
@@ -287,9 +297,10 @@ def test_mouse_move_event_1(function):
 
 
 def test_mouse_move_event_2(function):
-    """Test mouse move event moves window when initial position is set."""
+    """Test mouse move event with left button press (uses native system move, not manual)."""
     parent = QWidget()
     parent.setGeometry(100, 100, 400, 300)
+    parent.show()
     titleBar = CustomTitleBar(parent)
 
     initial_x = parent.x()
@@ -302,7 +313,9 @@ def test_mouse_move_event_2(function):
         Qt.MouseButtons(Qt.MouseButton.LeftButton),
         Qt.KeyboardModifiers(),
     )
-    titleBar.mousePressEvent(pressEvent)
+    # Use native system move, so manual move won't occur
+    with mock.patch.object(parent.windowHandle(), "startSystemMove"):
+        titleBar.mousePressEvent(pressEvent)
 
     moveEvent = QMouseEvent(
         QMouseEvent.Type.MouseMove,
@@ -313,17 +326,18 @@ def test_mouse_move_event_2(function):
     )
     titleBar.mouseMoveEvent(moveEvent)
 
-    expected_x = initial_x + (30 - 10)
-    expected_y = initial_y + (30 - 10)
-
-    assert parent.x() == expected_x
-    assert parent.y() == expected_y
+    # Since we use native system move (not manual tracking), position should not change
+    # The OS handles the window movement
+    assert parent.x() == initial_x
+    assert parent.y() == initial_y
+    parent.close()
 
 
 def test_mouse_move_event_3(function):
-    """Test multiple mouse moves accumulate deltas."""
+    """Test multiple mouse moves (uses native system move, not manual accumulation)."""
     parent = QWidget()
     parent.setGeometry(100, 100, 400, 300)
+    parent.show()
     titleBar = CustomTitleBar(parent)
 
     initial_x = parent.x()
@@ -336,7 +350,9 @@ def test_mouse_move_event_3(function):
         Qt.MouseButtons(Qt.MouseButton.LeftButton),
         Qt.KeyboardModifiers(),
     )
-    titleBar.mousePressEvent(pressEvent)
+    # Use native system move, so manual delta accumulation won't occur
+    with mock.patch.object(parent.windowHandle(), "startSystemMove"):
+        titleBar.mousePressEvent(pressEvent)
 
     moveEvent1 = QMouseEvent(
         QMouseEvent.Type.MouseMove,
@@ -347,17 +363,21 @@ def test_mouse_move_event_3(function):
     )
     titleBar.mouseMoveEvent(moveEvent1)
 
+    # Since native system move is used, manual position tracking won't change position
     first_x = parent.x()
     first_y = parent.y()
 
-    assert first_x == initial_x + 10
-    assert first_y == initial_y + 10
+    # Position should remain unchanged since we use native system move
+    assert first_x == initial_x
+    assert first_y == initial_y
+    parent.close()
 
 
 def test_mouse_release_event_1(function):
-    """Test mouse release event clears initial position."""
+    """Test mouse release event clears initial position (stays None with native move)."""
     parent = QWidget()
     parent.setGeometry(100, 100, 400, 300)
+    parent.show()
     titleBar = CustomTitleBar(parent)
 
     pressEvent = QMouseEvent(
@@ -367,8 +387,10 @@ def test_mouse_release_event_1(function):
         Qt.MouseButtons(Qt.MouseButton.LeftButton),
         Qt.KeyboardModifiers(),
     )
-    titleBar.mousePressEvent(pressEvent)
-    assert titleBar.initialPos is not None
+    # Use native system move, so initialPos stays None
+    with mock.patch.object(parent.windowHandle(), "startSystemMove"):
+        titleBar.mousePressEvent(pressEvent)
+    assert titleBar.initialPos is None
 
     releaseEvent = QMouseEvent(
         QMouseEvent.Type.MouseButtonRelease,
@@ -379,6 +401,7 @@ def test_mouse_release_event_1(function):
     )
     titleBar.mouseReleaseEvent(releaseEvent)
     assert titleBar.initialPos is None
+    parent.close()
 
 
 def test_title_text_1(function):

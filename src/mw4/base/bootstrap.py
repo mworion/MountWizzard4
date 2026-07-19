@@ -47,10 +47,9 @@ class MwGlob(TypedDict):
 
 
 log: logging.Logger = logging.getLogger("MW4")
-
-# Suppress the astropy.samp deprecation warning at import time, before
-# astroquery (which imports astropy.samp) is loaded transitively.
 warnings.filterwarnings("ignore", message="astropy.samp", category=AstropyDeprecationWarning)
+if platform.system() == "Linux":
+    os.environ["QT_QPA_PLATFORM"] = "xcb"
 
 
 def configureEnvironment() -> None:

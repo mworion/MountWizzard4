@@ -22,65 +22,20 @@ rn = ""
 #
 
 client = {
-    "ubuntu20": {
-        "user": "mw@astro-ubuntu-20.uranus",
+    "ubuntu26": {
+        "user": "mw@astro-ubuntu26.uranus",
         "work": "/home/mw/test",
-        "scp": "mw@astro-ubuntu-20.uranus:/home/mw/test",
+        "scp": "mw@astro-ubuntu26.uranus:/home/mw/test",
     },
-    "ubuntu22": {
-        "user": "mw@astro-ubuntu-22.uranus",
-        "work": "/home/mw/test",
-        "scp": "mw@astro-ubuntu-22.uranus:/home/mw/test",
-    },
-    "ubuntu24": {
-        "user": "mw@astro-ubuntu-24.uranus",
-        "work": "/home/mw/test",
-        "scp": "mw@astro-ubuntu-24.uranus:/home/mw/test",
-    },
-    "ubuntuRig": {
+    "astrocomp": {
         "user": "mw@astro-comp.uranus",
         "work": "/home/mw/test",
         "scp": "mw@astro-comp.uranus:/home/mw/test",
     },
-    "win10": {
-        "user": "mw@astro-win-10.uranus",
-        "work": "test",
-        "scp": "mw@astro-win-10.uranus:/Users/mw/test",
-    },
     "win11": {
-        "user": "mw@astro-win-11.uranus",
+        "user": "mw@astro-win11.uranus",
         "work": "test",
-        "scp": "mw@astro-win-11.uranus:/Users/mw/test",
-    },
-    "mac11": {
-        "user": "mw@astro-mac-10.uranus",
-        "work": "test",
-        "scp": "mw@astro-mac-12.uranus:/Users/mw/test",
-    },
-    "mac12": {
-        "user": "mw@astro-mac-12.uranus",
-        "work": "test",
-        "scp": "mw@astro-mac-m12.uranus:/Users/mw/test",
-    },
-    "mac13": {
-        "user": "mw@astro-mac-13.uranus",
-        "work": "test",
-        "scp": "mw@astro-mac-13.uranus:/Users/mw/test",
-    },
-    "mac14": {
-        "user": "mw@astro-mac-14.uranus",
-        "work": "test",
-        "scp": "mw@astro-mac-14.uranus:/Users/mw/test",
-    },
-    "mac15": {
-        "user": "mw@astro-mac-15.uranus",
-        "work": "test",
-        "scp": "mw@astro-mac-15.uranus:/Users/mw/test",
-    },
-    "mac26": {
-        "user": "mw@astro-mac-26.uranus",
-        "work": "test",
-        "scp": "mw@astro-mac-26.uranus:/Users/mw/test",
+        "scp": "mw@astro-win11.uranus:/Users/mw/test",
     },
 }
 
@@ -251,8 +206,7 @@ def test_ubuntu(c, user, work, scp):
 
     runMW(c, f'ssh {user} "cd {work} && ~/.local/bin/uv venv -p 3.13"')
     runMW(c, f'ssh {user} "cd {work} && ~/.local/bin/uv pip install mountwizzard4.tar.gz"')
-    runMW(c, f'ssh {user} "cd {work} && export DISPLAY=:0 && ~/.local/bin/uv run mw4 -t 1"')
-
+    runMW(c, f'ssh {user} "cd {work} &&  DISPLAY=:0 ~/.local/bin/uv run mw4 -t 1"')
 
 def test_mac(c, user, work, scp):
     printMW("...delete test dir")
@@ -272,16 +226,6 @@ def test_mac(c, user, work, scp):
 
 
 @task(pre=[])
-def test_win10(c):
-    printMW("test win10 install")
-    user = client["win10"]["user"]
-    work = client["win10"]["work"]
-    scp = client["win10"]["scp"]
-    test_windows(c, user, work, scp)
-    printMW("test win10 install finished\n")
-
-
-@task(pre=[])
 def test_win11(c):
     printMW("test win11 install")
     user = client["win11"]["user"]
@@ -292,93 +236,23 @@ def test_win11(c):
 
 
 @task(pre=[])
-def test_ubuntu20(c):
-    printMW("test ubuntu20 install")
-    user = client["ubuntu20"]["user"]
-    work = client["ubuntu20"]["work"]
-    scp = client["ubuntu20"]["scp"]
+def test_ubuntu26(c):
+    printMW("test ubuntu26 install")
+    user = client["ubuntu26"]["user"]
+    work = client["ubuntu26"]["work"]
+    scp = client["ubuntu26"]["scp"]
     test_ubuntu(c, user, work, scp)
-    printMW("test ubuntu20 install finished\n")
+    printMW("test ubuntu26 install finished\n")
 
 
 @task(pre=[])
-def test_ubuntu22(c):
-    printMW("test ubuntu22 install")
-    user = client["ubuntu22"]["user"]
-    work = client["ubuntu22"]["work"]
-    scp = client["ubuntu22"]["scp"]
+def test_astrocomp(c):
+    printMW("test astrocomp install")
+    user = client["astrocomp"]["user"]
+    work = client["astrocomp"]["work"]
+    scp = client["astrocomp"]["scp"]
     test_ubuntu(c, user, work, scp)
-    printMW("test ubuntu22 install finished\n")
-
-
-@task(pre=[])
-def test_ubuntu24(c):
-    printMW("test ubuntu24 install")
-    user = client["ubuntu24"]["user"]
-    work = client["ubuntu24"]["work"]
-    scp = client["ubuntu24"]["scp"]
-    test_ubuntu(c, user, work, scp)
-    printMW("test ubuntu24 install finished\n")
-
-
-@task(pre=[])
-def test_astro_comp(c):
-    printMW("test ubuntu rig install")
-    user = client["ubuntuRig"]["user"]
-    work = client["ubuntuRig"]["work"]
-    scp = client["ubuntuRig"]["scp"]
-    test_ubuntu(c, user, work, scp)
-    printMW("test ubuntu rig install finished\n")
-
-
-@task(pre=[])
-def test_mac11(c):
-    printMW("test mac11 install")
-    user = client["mac11"]["user"]
-    work = client["mac11"]["work"]
-    scp = client["mac11"]["scp"]
-    test_mac(c, user, work, scp)
-    printMW("test mac11 install finished\n")
-
-
-@task(pre=[])
-def test_mac12(c):
-    printMW("test mac12 install")
-    user = client["mac12"]["user"]
-    work = client["mac12"]["work"]
-    scp = client["mac12"]["scp"]
-    test_mac(c, user, work, scp)
-    printMW("test mac12 install finished\n")
-
-
-@task(pre=[])
-def test_mac13(c):
-    printMW("test mac13 install")
-    user = client["mac13"]["user"]
-    work = client["mac13"]["work"]
-    scp = client["mac13"]["scp"]
-    test_mac(c, user, work, scp)
-    printMW("test mac13 install finished\n")
-
-
-@task(pre=[])
-def test_mac14(c):
-    printMW("test mac14 install")
-    user = client["mac14"]["user"]
-    work = client["mac14"]["work"]
-    scp = client["mac14"]["scp"]
-    test_mac(c, user, work, scp)
-    printMW("test mac14 install finished\n")
-
-
-@task(pre=[])
-def test_mac15(c):
-    printMW("test mac15 install")
-    user = client["mac15"]["user"]
-    work = client["mac15"]["work"]
-    scp = client["mac15"]["scp"]
-    test_mac(c, user, work, scp)
-    printMW("test mac15 install finished\n")
+    printMW("test astrocomp install finished\n")
 
 
 @task(pre=[])

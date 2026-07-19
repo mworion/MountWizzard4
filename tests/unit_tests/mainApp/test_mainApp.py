@@ -47,8 +47,9 @@ def app(qapp):
 
 
 def test_init_config(app):
-    topo = app.initConfig()
-    assert topo is not None
+    """initConfig() sets up the location from config and custom logging level."""
+    app.initConfig()
+    assert app.dReg["mount"].obsSite.location is not None
 
 
 def test_store_config(app):

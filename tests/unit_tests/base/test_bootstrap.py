@@ -53,15 +53,39 @@ def test_configure_environment():
 
 
 @pytest.mark.skipif(platform.system() != "Linux", reason="Linux needed")
-def test_configure_environment_linux_qt_platform():
-    with (
-        mock.patch.dict(os.environ, {}, clear=False),
-        mock.patch("mw4.base.bootstrap.faulthandler.enable"),
-        mock.patch("mw4.base.bootstrap.warnings.filterwarnings"),
-        mock.patch("mw4.base.bootstrap.setupLogging"),
-    ):
-        configureEnvironment()
+def test_linux_qt_platform_defaults_to_xcb_when_unset():
+    import importlib
+    import mw4.base.bootstrap as bootstrapModule
+
+    saved = os.environ.get("QT_QPA_PLATFORM")
+    try:
+        os.environ.pop("QT_QPA_PLATFORM", None)
+        importlib.reload(bootstrapModule)
         assert os.environ.get("QT_QPA_PLATFORM") == "xcb"
+    finally:
+        if saved is None:
+            os.environ.pop("QT_QPA_PLATFORM", None)
+        else:
+            os.environ["QT_QPA_PLATFORM"] = saved
+        importlib.reload(bootstrapModule)
+
+
+@pytest.mark.skipif(platform.system() != "Linux", reason="Linux needed")
+def test_linux_qt_platform_preserved_when_already_set():
+    import importlib
+    import mw4.base.bootstrap as bootstrapModule
+
+    saved = os.environ.get("QT_QPA_PLATFORM")
+    try:
+        os.environ["QT_QPA_PLATFORM"] = "offscreen"
+        importlib.reload(bootstrapModule)
+        assert os.environ.get("QT_QPA_PLATFORM") == "offscreen"
+    finally:
+        if saved is None:
+            os.environ.pop("QT_QPA_PLATFORM", None)
+        else:
+            os.environ["QT_QPA_PLATFORM"] = saved
+        importlib.reload(bootstrapModule)
 
 
 def test_except_hook():

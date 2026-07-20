@@ -88,9 +88,9 @@ jobs:
   install_macOS:
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 8
+      max-parallel: 6
       matrix:
-        os: [macos-15, macos-15-intel , macos-26, macos-26-intel]
+        os: [macos-15, macos-15-intel , macos-26]
         python-version: ['3.12', '3.14']
     
     steps:

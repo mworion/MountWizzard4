@@ -14,13 +14,7 @@
 #
 ###########################################################
 
-import pytest
 from mw4.base.ethernet import checkFormatMAC
-
-
-@pytest.fixture(autouse=True, scope="module")
-def module_setup_teardown(qapp):
-    pass
 
 
 def test_checkFormatMAC_1():

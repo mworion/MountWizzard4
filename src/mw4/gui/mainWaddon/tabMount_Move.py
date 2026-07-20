@@ -79,7 +79,7 @@ class MountMove(TabAddon):
             "SE": {"button": self.ui.moveSouthEastAltAz, "coord": [-1, 1]},
             "S": {"button": self.ui.moveSouthAltAz, "coord": [-1, 0]},
             "SW": {"button": self.ui.moveSouthWestAltAz, "coord": [-1, -1]},
-            "W": {"button": self.ui.moveWestAltAz, "coord": [-1, 0]},
+            "W": {"button": self.ui.moveWestAltAz, "coord": [0, -1]},
             "NW": {"button": self.ui.moveNorthWestAltAz, "coord": [1, -1]},
         }
 
@@ -292,3 +292,4 @@ class MountMove(TabAddon):
 
     def moveRaDecAbsolute(self) -> None:
         self.slewInterface.slewTargetRaDec(self.targetRa, self.targetDec)
+

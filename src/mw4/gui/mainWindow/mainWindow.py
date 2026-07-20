@@ -243,7 +243,7 @@ class MainWindow(MWidget):
         for device, ui in self.deviceStatGui.items():
             entry = self.app.dReg[device]
             if entry is None or entry.stat is None:
-                ui.setEnabled(False)
+                ui.setEnabled(True)
             elif entry.stat:
                 changeStyleDynamic(ui, "color", "green")
                 ui.setEnabled(True)

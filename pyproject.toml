@@ -106,6 +106,7 @@ dev = [
     "pytest-cov==7.1.0",
     "pytest-xdist==3.8.0",
     "pytest-xvfb==3.1.1",
+    "pytest-env==1.6.0",
     "invoke==3.0.3",
     "ruff==0.15.22",
     "coverage==7.15.2",
@@ -125,6 +126,9 @@ markers = [
     "logic: marks tests for business-logic modules only",
     "base: marks tests for base framework utilities",
     "integration: marks tests requiring external resources or real file I/O",
+]
+env = [
+    "QT_QPA_PLATFORM=offscreen",
 ]
 
 [tool.coverage.run]

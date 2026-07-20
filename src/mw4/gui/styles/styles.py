@@ -45,10 +45,10 @@ class Styles:
             )
         if name.endswith("a"):
             val = colors[name[:-1]][self.colorSet].copy()
-            val[3] = int(self.transparency * 255)
+            val[3] = int(val[3] * self.transparency)
             return val
         else:
-            val = colors[name][self.colorSet]
+            val = colors[name][self.colorSet][0:3]
             return val
 
     @property

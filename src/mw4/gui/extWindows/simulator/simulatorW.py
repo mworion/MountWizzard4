@@ -56,7 +56,7 @@ class SimulatorWindow(MWidget):
         self.entityModel = {"root": {"entity": Qt3DCore.QEntity()}}
         self.window3D.setRootEntity(self.entityModel["root"]["entity"])
         self.entityModel["root"]["entity"].setObjectName("root")
-        self.window3D.defaultFrameGraph().setClearColor(self.rgb2hex(self.M_BACK))
+        self.window3D.defaultFrameGraph().setClearColor("#00000000")
         self.container = QWidget.createWindowContainer(self.window3D)
         self.ui.simulator.addWidget(self.container)
         self.camera = None
@@ -161,7 +161,7 @@ class SimulatorWindow(MWidget):
 
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
-        self.window3D.defaultFrameGraph().setClearColor(self.rgb2hex(self.M_BACK))
+        self.window3D.defaultFrameGraph().setClearColor("#00000000")
 
     def limitPositionZ(self) -> None:
         """
@@ -235,11 +235,11 @@ class SimulatorWindow(MWidget):
 
     def createScene(self) -> None:
         self.createReference()
+        self.world.create()
         self.horizon.create()
-        self.dome.create()
         self.telescope.create()
+        self.dome.create()
         self.laser.create()
         self.pointer.create()
         self.buildPoints.create()
         self.light.create()
-        self.world.create()

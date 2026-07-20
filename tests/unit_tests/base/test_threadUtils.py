@@ -1,17 +1,18 @@
 import pytest
 import time
 from PySide6.QtCore import QCoreApplication
+from PySide6.QtWidgets import QApplication
 
 
 def ensure_qt_app() -> None:
     """Ensure a Qt application instance exists for QEventLoop/QTimer calls.
 
-    Creating a QCoreApplication is cheap and safe for unit tests; some CI
+    Creating a QApplication is required for unit tests; some CI
     environments may already have an application instance from other
     test fixtures.
     """
     if QCoreApplication.instance() is None:
-        QCoreApplication([])
+        QApplication([])
 
 
 @pytest.mark.slow

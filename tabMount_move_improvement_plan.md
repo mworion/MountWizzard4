@@ -3,7 +3,7 @@
 ## Overview
 
 This document outlines a Pythonic refactoring plan for
-`src/mw4/gui/mainWaddon/tabMount_Move.py`. The class `MountMove` handles
+`src/mw4/gui/mainWaddon/tabMount_move_new.py`. The class `MountMove` handles
 telescope mount positioning (RA/Dec and Alt/Az), slew speed selection, step
 size configuration, and absolute coordinate input.
 

@@ -33,6 +33,7 @@ jobs:
   install_windows:
     runs-on: ${{ matrix.os }}
     strategy:
+      max-parallel: 4
       matrix:
         os: [windows-2022, windows-2025]
         python-version: [ '3.12', '3.14' ]
@@ -58,6 +59,7 @@ jobs:
       QT_QPA_PLATFORM: offscreen
 
     strategy:
+      max-parallel: 4
       matrix:
         os: [ubuntu-24.04, ubuntu-26.04]
         python-version: [ '3.12', '3.14' ]
@@ -86,6 +88,7 @@ jobs:
   install_macOS:
     runs-on: ${{ matrix.os }}
     strategy:
+      max-parallel: 8
       matrix:
         os: [macos-15, macos-15-intel , macos-26, macos-26-intel]
         python-version: ['3.12', '3.14']

@@ -21,7 +21,7 @@ from unittest import mock
 from unittest.mock import MagicMock
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def app(qapp):
     mwGlob = {
         "configDir": Path("tests/work/config"),
@@ -45,7 +45,8 @@ def app(qapp):
     app_instance.update1s = MagicMock(emit=mock_emit)
     yield app_instance
     try:
-        app_instance.aboutToQuit()
+        app_instance.timeMgr.stop()
+        app_instance.mount.stopAllMountTimers()
     except Exception:
         pass
 

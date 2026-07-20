@@ -21,8 +21,8 @@ from unittest import mock
 from unittest.mock import MagicMock
 
 
-@pytest.fixture(scope="function")
-def app(qapp):
+@pytest.fixture(scope="module")
+def app(qapp_module):
     mwGlob = {
         "configDir": Path("tests/work/config"),
         "dataDir": Path("tests/work/data"),
@@ -41,7 +41,7 @@ def app(qapp):
     mock_emit = MagicMock()
     with mock.patch("mw4.mainApp.MainWindow") as mock_main_window:
         mock_main_window.return_value = MagicMock()
-        app_instance = MountWizzard4(mwGlob, qapp, 1)
+        app_instance = MountWizzard4(mwGlob, qapp_module, 1)
     app_instance.update1s = MagicMock(emit=mock_emit)
     yield app_instance
     try:

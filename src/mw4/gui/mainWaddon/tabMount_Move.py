@@ -16,7 +16,6 @@
 from collections.abc import Callable
 from enum import Enum
 from functools import partial
-from mw4.base.threadUtils import mainThreadSleep
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
@@ -127,11 +126,6 @@ class MountMove(TabAddon):
                 "buttonAltAz": self.ui.moveNorthWestAltAz,
                 "coord": [1, -1],
             },
-            "STOP": {
-                "buttonRaDec": self.ui.stopMoveAll,
-                "buttonAltAz": self.ui.stopMoveAll,
-                "coord": [0, 0],
-            },
         }
 
         # Build reverse-lookup dictionary for direction vectors
@@ -144,7 +138,7 @@ class MountMove(TabAddon):
         self.targetAz: Angle = Angle(degrees=0)
         self.targetRa: Angle = Angle(hours=0)
         self.targetDec: Angle = Angle(degrees=0)
-        self.ui.stopMoveAll.clicked.connect(self.stopMoveAll)
+        self.ui.stopMoveAll.clicked.connect(self.stopPressed)
         self.ui.moveAltAzAbsolute.clicked.connect(self.moveAltAzAbsolute)
         self.ui.moveRaDecAbsolute.clicked.connect(self.moveRaDecAbsolute)
         clickable(self.ui.moveCoordinateRa).connect(self.setRA)
@@ -186,23 +180,11 @@ class MountMove(TabAddon):
 
     def stopMoveAll(self) -> None:
         self.app.dReg["mount"].obsSite.stopMoveAll()
-        mainThreadSleep(250)
         for key in self.setButtons:
             changeStyleDynamic(self.setButtons[key]["buttonRaDec"], "run", "false")
             changeStyleDynamic(self.setButtons[key]["buttonAltAz"], "run", "false")
 
-    def startDurationTimer(self) -> None:
-        """Start a timer for the move duration countdown."""
-        if self.durationTimer is not None:
-            self.durationTimer.stop()
-        self.durationTimer = QTimer()
-        self.durationTimer.setInterval(100)
-        self.durationTimer.timeout.connect(self.onDurationTick)
-        self.countdownRemaining = 10 * self.ui.moveDuration.currentIndex()
-        self.durationTimer.start()
-
     def onDurationTick(self) -> None:
-        """Handle duration timer tick."""
         if self.countdownRemaining > 0:
             self.ui.stopMoveAll.setText(f"{self.countdownRemaining / 10:.1f}s")
             self.countdownRemaining -= 1
@@ -211,6 +193,20 @@ class MountMove(TabAddon):
                 self.durationTimer.stop()
             self.ui.stopMoveAll.setText("STOP")
             self.stopMoveAll()
+
+    def stopPressed(self) -> None:
+        self.countdownRemaining = 0
+        self.onDurationTick()
+
+    def startDurationTimer(self) -> None:
+        if self.durationTimer is not None:
+            self.durationTimer.stop()
+        self.durationTimer = QTimer()
+        self.durationTimer.setInterval(100)
+        self.durationTimer.timeout.connect(self.onDurationTick)
+        value = int(self.ui.moveDuration.currentText().lstrip("Duration").rstrip("s"))
+        self.countdownRemaining = 10 * value
+        self.durationTimer.start()
 
     def moveDuration(self) -> None:
         if self.ui.moveDuration.currentIndex() == 0:

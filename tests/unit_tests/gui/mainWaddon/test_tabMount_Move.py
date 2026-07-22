@@ -163,7 +163,7 @@ def test_moveRaDec_2(function):
 
 def test_moveRaDec_3(function):
     with mock.patch.object(function, "moveDuration"):
-        function.moveRaDec("STOP")
+        function.moveRaDec("N")
 
 
 def test_convertDirection_1(function):
@@ -249,7 +249,14 @@ def test_direction_by_vector_reverse_lookup(function):
     assert function.directionByVector[(1, -1)] == "NW"
     assert function.directionByVector[(-1, 1)] == "SE"
     assert function.directionByVector[(-1, -1)] == "SW"
-    assert function.directionByVector[(0, 0)] == "STOP"
+    # Note: (0, 0) is not in the dictionary; convertDirection returns "STOP" as default
+
+
+def test_convertDirection_stops_unknown_vector(function):
+    """Test convertDirection returns STOP for unknown/unmapped vectors."""
+    assert function.convertDirection([0, 0]) == "STOP"
+    assert function.convertDirection([2, 2]) == "STOP"
+    assert function.convertDirection([99, 99]) == "STOP"
 
 
 def test_setRA_1(function):

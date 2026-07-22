@@ -127,9 +127,6 @@ markers = [
     "base: marks tests for base framework utilities",
     "integration: marks tests requiring external resources or real file I/O",
 ]
-env = [
-    "QT_QPA_PLATFORM=offscreen",
-]
 
 [tool.coverage.run]
 source = ["src/mw4/"]

@@ -14,6 +14,7 @@
 #
 ###########################################################
 from collections.abc import Callable
+from enum import Enum
 from functools import partial
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
@@ -27,9 +28,32 @@ from mw4.mountcontrol.convert import (
     formatHstrToText,
     valueToAngle,
 )
+from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QWidget
 from skyfield.api import Angle
 from typing import Any
+
+
+class StepSize(Enum):
+    """Enum for Alt/Az movement step sizes."""
+
+    Step025 = (0.25, "Stepsize 0.25°")
+    Step05 = (0.5, "Stepsize 0.5°")
+    Step10 = (1.0, "Stepsize 1.0°")
+    Step20 = (2.0, "Stepsize 2.0°")
+    Step50 = (5.0, "Stepsize 5.0°")
+    Step100 = (10.0, "Stepsize 10°")
+    Step200 = (20.0, "Stepsize 20°")
+
+    @property
+    def valueDegrees(self) -> float:
+        """Get the step size value in degrees."""
+        return self.value[0]
+
+    @property
+    def displayText(self) -> str:
+        """Get the display text for the step size."""
+        return self.value[1]
 
 
 class MountMove(TabAddon):
@@ -40,6 +64,8 @@ class MountMove(TabAddon):
         self.ui = mainW.ui
         self.slewInterface = SlewInterface(self)
         self.oldDirection: str = "STOP"
+        self.durationTimer: QTimer | None = None
+        self.countdownRemaining: int = 0
 
         self.slewSpeeds: dict[str, dict[str, QWidget | Callable]] = {
             "max": {
@@ -61,44 +87,59 @@ class MountMove(TabAddon):
         }
 
         self.setButtons: dict[str, dict[str, Any]] = {
-            "N": {"buttonRaDec": self.ui.moveNorth,
-                  "buttonAltAz": self.ui.moveNorthAltAz,
-                  "coord": [1, 0]},
-            "NE": {"buttonRaDec": self.ui.moveNorthEast,
-                   "buttonAltAz": self.ui.moveNorthEastAltAz,
-                   "coord": [1, 1]},
-            "E": {"buttonRaDec": self.ui.moveEast,
-                  "buttonAltAz": self.ui.moveEastAltAz,
-                  "coord": [0, 1]},
-            "SE": {"buttonRaDec": self.ui.moveSouthEast,
-                   "buttonAltAz": self.ui.moveSouthEastAltAz,
-                   "coord": [-1, 1]},
-            "S": {"buttonRaDec": self.ui.moveSouth,
-                  "buttonAltAz": self.ui.moveSouthAltAz,
-                  "coord": [-1, 0]},
-            "SW": {"buttonRaDec": self.ui.moveSouthWest,
-                   "buttonAltAz": self.ui.moveSouthWestAltAz,
-                   "coord": [-1, -1]},
-            "W": {"buttonRaDec": self.ui.moveWest,
-                  "buttonAltAz": self.ui.moveWestAltAz,
-                  "coord": [0, -1]},
-            "NW": {"buttonRaDec": self.ui.moveNorthWest,
-                   "buttonAltAz": self.ui.moveNorthWestAltAz,
-                   "coord": [1, -1]},
-            "STOP": {"buttonRaDec": self.ui.stopMoveAll,
-                     "buttonAltAz": self.ui.stopMoveAll,
-                     "coord": [0, 0]},
+            "N": {
+                "buttonRaDec": self.ui.moveNorth,
+                "buttonAltAz": self.ui.moveNorthAltAz,
+                "coord": [1, 0],
+            },
+            "NE": {
+                "buttonRaDec": self.ui.moveNorthEast,
+                "buttonAltAz": self.ui.moveNorthEastAltAz,
+                "coord": [1, 1],
+            },
+            "E": {
+                "buttonRaDec": self.ui.moveEast,
+                "buttonAltAz": self.ui.moveEastAltAz,
+                "coord": [0, 1],
+            },
+            "SE": {
+                "buttonRaDec": self.ui.moveSouthEast,
+                "buttonAltAz": self.ui.moveSouthEastAltAz,
+                "coord": [-1, 1],
+            },
+            "S": {
+                "buttonRaDec": self.ui.moveSouth,
+                "buttonAltAz": self.ui.moveSouthAltAz,
+                "coord": [-1, 0],
+            },
+            "SW": {
+                "buttonRaDec": self.ui.moveSouthWest,
+                "buttonAltAz": self.ui.moveSouthWestAltAz,
+                "coord": [-1, -1],
+            },
+            "W": {
+                "buttonRaDec": self.ui.moveWest,
+                "buttonAltAz": self.ui.moveWestAltAz,
+                "coord": [0, -1],
+            },
+            "NW": {
+                "buttonRaDec": self.ui.moveNorthWest,
+                "buttonAltAz": self.ui.moveNorthWestAltAz,
+                "coord": [1, -1],
+            },
+            "STOP": {
+                "buttonRaDec": self.ui.stopMoveAll,
+                "buttonAltAz": self.ui.stopMoveAll,
+                "coord": [0, 0],
+            },
         }
 
-        self.setupStepsizes: dict[str, float] = {
-            "Stepsize 0.25°": 0.25,
-            "Stepsize 0.5°": 0.5,
-            "Stepsize 1.0°": 1.0,
-            "Stepsize 2.0°": 2.0,
-            "Stepsize 5.0°": 5.0,
-            "Stepsize 10°": 10.0,
-            "Stepsize 20°": 20.0,
-        }
+        # Build reverse-lookup dictionary for direction vectors
+        self.directionByVector: dict[tuple[int, int], str] = {}
+        for k, v in self.setButtons.items():
+            coord_tuple = (v["coord"][0], v["coord"][1])
+            self.directionByVector[coord_tuple] = k
+
         self.targetAlt: Angle = Angle(degrees=0)
         self.targetAz: Angle = Angle(degrees=0)
         self.targetRa: Angle = Angle(hours=0)
@@ -140,8 +181,8 @@ class MountMove(TabAddon):
         for s in self.slewSpeeds:
             self.slewSpeeds[s]["button"].clicked.connect(partial(self.setSlewSpeed, s))
         self.ui.moveStepSizeAltAz.clear()
-        for text in self.setupStepsizes:
-            self.ui.moveStepSizeAltAz.addItem(text)
+        for step_size in StepSize:
+            self.ui.moveStepSizeAltAz.addItem(step_size.displayText)
 
     def stopMoveAll(self) -> None:
         self.app.dReg["mount"].obsSite.stopMoveAll()
@@ -150,30 +191,35 @@ class MountMove(TabAddon):
             changeStyleDynamic(self.setButtons[key]["buttonRaDec"], "run", "false")
             changeStyleDynamic(self.setButtons[key]["buttonAltAz"], "run", "false")
 
-    def countDuration(self, duration: int) -> None:
-        for t in range(duration * 10, -1, -1):
-            self.ui.stopMoveAll.setText(f"{t / 10:.1f}s")
-            mainThreadSleep(100)
-        self.ui.stopMoveAll.setText("STOP")
+    def startDurationTimer(self) -> None:
+        """Start a timer for the move duration countdown."""
+        if self.durationTimer is not None:
+            self.durationTimer.stop()
+        self.durationTimer = QTimer()
+        self.durationTimer.setInterval(100)
+        self.durationTimer.timeout.connect(self.onDurationTick)
+        self.countdownRemaining = 10 * self.ui.moveDuration.currentIndex()
+        self.durationTimer.start()
+
+    def onDurationTick(self) -> None:
+        """Handle duration timer tick."""
+        if self.countdownRemaining > 0:
+            self.ui.stopMoveAll.setText(f"{self.countdownRemaining / 10:.1f}s")
+            self.countdownRemaining -= 1
+        else:
+            if self.durationTimer is not None:
+                self.durationTimer.stop()
+            self.ui.stopMoveAll.setText("STOP")
+            self.stopMoveAll()
 
     def moveDuration(self) -> None:
-        if self.ui.moveDuration.currentIndex() == 1:
-            self.countDuration(10)
-        elif self.ui.moveDuration.currentIndex() == 2:
-            self.countDuration(5)
-        elif self.ui.moveDuration.currentIndex() == 3:
-            self.countDuration(2)
-        elif self.ui.moveDuration.currentIndex() == 4:
-            self.countDuration(1)
-        else:
+        if self.ui.moveDuration.currentIndex() == 0:
             return
-        self.stopMoveAll()
+        self.startDurationTimer()
 
     def convertDirection(self, directionVector: list[int]) -> str:
-        for direction in self.setButtons:
-            if self.setButtons[direction]["coord"] == directionVector:
-                return direction
-        return "STOP"
+        """Convert a direction vector to a direction string."""
+        return self.directionByVector.get(tuple(directionVector), "STOP")  # type: ignore
 
     def moveRaDec(self, direction: str) -> None:
         uiList = self.setButtons
@@ -217,7 +263,7 @@ class MountMove(TabAddon):
             self.moveRaDec(direction)
             self.oldDirection = direction
 
-    def setSlewSpeed(self, speed):
+    def setSlewSpeed(self, speed: str) -> None:
         self.slewSpeeds[speed]["func"]()
 
     def moveAltAzDefault(self) -> None:
@@ -226,7 +272,8 @@ class MountMove(TabAddon):
 
     def moveAltAz(self, direction: str) -> None:
         changeStyleDynamic(self.setButtons[direction]["buttonAltAz"], "run", "true")
-        step = self.setupStepsizes[self.ui.moveStepSizeAltAz.currentText()]
+        stepSizeText = self.ui.moveStepSizeAltAz.currentText()
+        step = next(s.valueDegrees for s in StepSize if s.displayText == stepSizeText)
         coord = self.setButtons[direction]["coord"]
         obs = self.app.dReg["mount"].obsSite
         targetAlt = Angle(degrees=obs.Alt.degrees + coord[0] * step)

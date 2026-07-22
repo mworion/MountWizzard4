@@ -13,10 +13,9 @@
 # License APL2.0
 #
 ###########################################################
-import mw4.gui.mainWaddon.tabMount_Move
 import pytest
 import unittest.mock as mock
-from mw4.gui.mainWaddon.tabMount_Move import MountMove
+from mw4.gui.mainWaddon.tabMount_Move import MountMove, StepSize
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QWidget
@@ -60,50 +59,81 @@ def test_stopMoveAll(function):
 
 
 def test_countDuration_1(function):
-    with mock.patch.object(mw4.gui.mainWaddon.tabMount_Move, "mainThreadSleep"):
-        function.countDuration(10)
+    """Test startDurationTimer initialization."""
+    function.ui.moveDuration.setCurrentIndex(1)
+    with mock.patch.object(function, "onDurationTick"):
+        function.startDurationTimer()
+        assert function.durationTimer is not None
+
+
+def test_countDuration_2(function):
+    """Test startDurationTimer stops existing timer."""
+    function.ui.moveDuration.setCurrentIndex(1)
+    with mock.patch.object(function, "onDurationTick"):
+        function.startDurationTimer()
+        existing_timer = function.durationTimer
+        assert existing_timer is not None
+        function.startDurationTimer()
+        # A new timer should be created
+        assert function.durationTimer is not existing_timer
+
+
+def test_onDurationTick_1(function):
+    """Test onDurationTick with remaining countdown."""
+    function.countdownRemaining = 5
+    function.ui.stopMoveAll.setText("STOP")
+    with mock.patch.object(function.ui.stopMoveAll, "setText"):
+        function.onDurationTick()
+        assert function.countdownRemaining == 4
+
+
+def test_onDurationTick_2(function):
+    """Test onDurationTick when countdown reaches zero."""
+    function.countdownRemaining = 0
+    with (
+        mock.patch.object(function, "stopMoveAll"),
+        mock.patch.object(function.ui.stopMoveAll, "setText"),
+    ):
+        function.durationTimer = mock.MagicMock()
+        function.onDurationTick()
+        assert function.ui.stopMoveAll.text() == "STOP"
 
 
 def test_moveDuration_1(function):
+    """Test moveDuration with index 1."""
     function.ui.moveDuration.setCurrentIndex(1)
-    with (
-        mock.patch.object(function, "countDuration"),
-        mock.patch.object(function, "stopMoveAll"),
-    ):
+    with mock.patch.object(function, "startDurationTimer"):
         function.moveDuration()
+        function.startDurationTimer.assert_called_once()
 
 
 def test_moveDuration_2(function):
+    """Test moveDuration with index 2."""
     function.ui.moveDuration.setCurrentIndex(2)
-    with (
-        mock.patch.object(function, "countDuration"),
-        mock.patch.object(function, "stopMoveAll"),
-    ):
+    with mock.patch.object(function, "startDurationTimer"):
         function.moveDuration()
 
 
 def test_moveDuration_3(function):
+    """Test moveDuration with index 3."""
     function.ui.moveDuration.setCurrentIndex(3)
-    with (
-        mock.patch.object(function, "countDuration"),
-        mock.patch.object(function, "stopMoveAll"),
-    ):
+    with mock.patch.object(function, "startDurationTimer"):
         function.moveDuration()
 
 
 def test_moveDuration_4(function):
+    """Test moveDuration with index 4."""
     function.ui.moveDuration.setCurrentIndex(4)
-    with (
-        mock.patch.object(function, "countDuration"),
-        mock.patch.object(function, "stopMoveAll"),
-    ):
+    with mock.patch.object(function, "startDurationTimer"):
         function.moveDuration()
 
 
 def test_moveDuration_5(function):
+    """Test moveDuration with index 0 (no-op)."""
     function.ui.moveDuration.setCurrentIndex(0)
-    with mock.patch.object(function, "countDuration"):
+    with mock.patch.object(function, "startDurationTimer") as mock_timer:
         function.moveDuration()
+        mock_timer.assert_not_called()
 
 
 def test_moveRaDecHid_1(function):
@@ -185,6 +215,41 @@ def test_moveAltAz_3(function):
 
     with mock.patch.object(function.slewInterface, "slewTargetAltAz", return_value=True):
         function.moveAltAz("NE")
+
+
+def test_stepsize_enum_value_degrees(function):
+    """Test StepSize enum valueDegrees property."""
+    assert StepSize.Step025.valueDegrees == 0.25
+    assert StepSize.Step05.valueDegrees == 0.5
+    assert StepSize.Step10.valueDegrees == 1.0
+    assert StepSize.Step20.valueDegrees == 2.0
+    assert StepSize.Step50.valueDegrees == 5.0
+    assert StepSize.Step100.valueDegrees == 10.0
+    assert StepSize.Step200.valueDegrees == 20.0
+
+
+def test_stepsize_enum_display_text(function):
+    """Test StepSize enum displayText property."""
+    assert StepSize.Step025.displayText == "Stepsize 0.25°"
+    assert StepSize.Step05.displayText == "Stepsize 0.5°"
+    assert StepSize.Step10.displayText == "Stepsize 1.0°"
+    assert StepSize.Step20.displayText == "Stepsize 2.0°"
+    assert StepSize.Step50.displayText == "Stepsize 5.0°"
+    assert StepSize.Step100.displayText == "Stepsize 10°"
+    assert StepSize.Step200.displayText == "Stepsize 20°"
+
+
+def test_direction_by_vector_reverse_lookup(function):
+    """Test directionByVector reverse lookup dictionary."""
+    assert function.directionByVector[(1, 0)] == "N"
+    assert function.directionByVector[(0, 1)] == "E"
+    assert function.directionByVector[(-1, 0)] == "S"
+    assert function.directionByVector[(0, -1)] == "W"
+    assert function.directionByVector[(1, 1)] == "NE"
+    assert function.directionByVector[(1, -1)] == "NW"
+    assert function.directionByVector[(-1, 1)] == "SE"
+    assert function.directionByVector[(-1, -1)] == "SW"
+    assert function.directionByVector[(0, 0)] == "STOP"
 
 
 def test_setRA_1(function):

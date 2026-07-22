@@ -60,27 +60,34 @@ class MountMove(TabAddon):
             },
         }
 
-        self.setRaDec: dict[str, dict[str, Any]] = {
-            "N": {"button": self.ui.moveNorth, "coord": [1, 0]},
-            "NE": {"button": self.ui.moveNorthEast, "coord": [1, 1]},
-            "E": {"button": self.ui.moveEast, "coord": [0, 1]},
-            "SE": {"button": self.ui.moveSouthEast, "coord": [-1, 1]},
-            "S": {"button": self.ui.moveSouth, "coord": [-1, 0]},
-            "SW": {"button": self.ui.moveSouthWest, "coord": [-1, -1]},
-            "W": {"button": self.ui.moveWest, "coord": [0, -1]},
-            "NW": {"button": self.ui.moveNorthWest, "coord": [1, -1]},
-            "STOP": {"button": self.ui.stopMoveAll, "coord": [0, 0]},
-        }
-
-        self.setAltAz: dict[str, dict[str, Any]] = {
-            "N": {"button": self.ui.moveNorthAltAz, "coord": [1, 0]},
-            "NE": {"button": self.ui.moveNorthEastAltAz, "coord": [1, 1]},
-            "E": {"button": self.ui.moveEastAltAz, "coord": [0, 1]},
-            "SE": {"button": self.ui.moveSouthEastAltAz, "coord": [-1, 1]},
-            "S": {"button": self.ui.moveSouthAltAz, "coord": [-1, 0]},
-            "SW": {"button": self.ui.moveSouthWestAltAz, "coord": [-1, -1]},
-            "W": {"button": self.ui.moveWestAltAz, "coord": [0, -1]},
-            "NW": {"button": self.ui.moveNorthWestAltAz, "coord": [1, -1]},
+        self.setButtons: dict[str, dict[str, Any]] = {
+            "N": {"buttonRaDec": self.ui.moveNorth,
+                  "buttonAltAz": self.ui.moveNorthAltAz,
+                  "coord": [1, 0]},
+            "NE": {"buttonRaDec": self.ui.moveNorthEast,
+                   "buttonAltAz": self.ui.moveNorthEastAltAz,
+                   "coord": [1, 1]},
+            "E": {"buttonRaDec": self.ui.moveEast,
+                  "buttonAltAz": self.ui.moveEastAltAz,
+                  "coord": [0, 1]},
+            "SE": {"buttonRaDec": self.ui.moveSouthEast,
+                   "buttonAltAz": self.ui.moveSouthEastAltAz,
+                   "coord": [-1, 1]},
+            "S": {"buttonRaDec": self.ui.moveSouth,
+                  "buttonAltAz": self.ui.moveSouthAltAz,
+                  "coord": [-1, 0]},
+            "SW": {"buttonRaDec": self.ui.moveSouthWest,
+                   "buttonAltAz": self.ui.moveSouthWestAltAz,
+                   "coord": [-1, -1]},
+            "W": {"buttonRaDec": self.ui.moveWest,
+                  "buttonAltAz": self.ui.moveWestAltAz,
+                  "coord": [0, -1]},
+            "NW": {"buttonRaDec": self.ui.moveNorthWest,
+                   "buttonAltAz": self.ui.moveNorthWestAltAz,
+                   "coord": [1, -1]},
+            "STOP": {"buttonRaDec": self.ui.stopMoveAll,
+                     "buttonAltAz": self.ui.stopMoveAll,
+                     "coord": [0, 0]},
         }
 
         self.setupStepsizes: dict[str, float] = {
@@ -127,10 +134,9 @@ class MountMove(TabAddon):
         config["moveStepSizeAltAz"] = self.ui.moveStepSizeAltAz.currentIndex()
 
     def setupGuiMount(self) -> None:
-        for d in self.setRaDec:
-            self.setRaDec[d]["button"].clicked.connect(partial(self.moveRaDec, d))
-        for d in self.setAltAz:
-            self.setAltAz[d]["button"].clicked.connect(partial(self.moveAltAz, d))
+        for d in self.setButtons:
+            self.setButtons[d]["buttonRaDec"].clicked.connect(partial(self.moveRaDec, d))
+            self.setButtons[d]["buttonAltAz"].clicked.connect(partial(self.moveAltAz, d))
         for s in self.slewSpeeds:
             self.slewSpeeds[s]["button"].clicked.connect(partial(self.setSlewSpeed, s))
         self.ui.moveStepSizeAltAz.clear()
@@ -140,8 +146,9 @@ class MountMove(TabAddon):
     def stopMoveAll(self) -> None:
         self.app.dReg["mount"].obsSite.stopMoveAll()
         mainThreadSleep(250)
-        for uiR in self.setRaDec:
-            changeStyleDynamic(self.setRaDec[uiR]["button"], "run", "false")
+        for key in self.setButtons:
+            changeStyleDynamic(self.setButtons[key]["buttonRaDec"], "run", "false")
+            changeStyleDynamic(self.setButtons[key]["buttonAltAz"], "run", "false")
 
     def countDuration(self, duration: int) -> None:
         for t in range(duration * 10, -1, -1):
@@ -163,16 +170,16 @@ class MountMove(TabAddon):
         self.stopMoveAll()
 
     def convertDirection(self, directionVector: list[int]) -> str:
-        for direction in self.setRaDec:
-            if self.setRaDec[direction]["coord"] == directionVector:
+        for direction in self.setButtons:
+            if self.setButtons[direction]["coord"] == directionVector:
                 return direction
         return "STOP"
 
     def moveRaDec(self, direction: str) -> None:
-        uiList = self.setRaDec
+        uiList = self.setButtons
         for key in uiList:
-            changeStyleDynamic(uiList[key]["button"], "run", "false")
-        changeStyleDynamic(uiList[direction]["button"], "run", "true")
+            changeStyleDynamic(uiList[key]["buttonRaDec"], "run", "false")
+            changeStyleDynamic(uiList[direction]["buttonRaDec"], "run", "true")
         coord = uiList[direction]["coord"]
         if coord == [0, 0]:
             self.stopMoveAll()
@@ -214,13 +221,13 @@ class MountMove(TabAddon):
         self.slewSpeeds[speed]["func"]()
 
     def moveAltAzDefault(self) -> None:
-        for key in self.setAltAz:
-            changeStyleDynamic(self.setAltAz[key]["button"], "run", "false")
+        for key in self.setButtons:
+            changeStyleDynamic(self.setButtons[key]["buttonAltAz"], "run", "false")
 
     def moveAltAz(self, direction: str) -> None:
-        changeStyleDynamic(self.setAltAz[direction]["button"], "run", "true")
+        changeStyleDynamic(self.setButtons[direction]["buttonAltAz"], "run", "true")
         step = self.setupStepsizes[self.ui.moveStepSizeAltAz.currentText()]
-        coord = self.setAltAz[direction]["coord"]
+        coord = self.setButtons[direction]["coord"]
         obs = self.app.dReg["mount"].obsSite
         targetAlt = Angle(degrees=obs.Alt.degrees + coord[0] * step)
         targetAz = Angle(degrees=(obs.Az.degrees + coord[1] * step) % 360)

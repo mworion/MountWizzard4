@@ -74,25 +74,23 @@ class SettGui:
         self.app.colorChange.emit()
 
     def writeLinuxDesktopData(self) -> None:
-        localPathApplications = Path("~/.local/share/applications/")
+        localPathApplications = Path.home() / ".local/share/applications/MountWizzard4.desktop"
         workdirString = str(self.app.mwGlob["workDir"])
         iconPathString = str(files("mw4").joinpath("assets/icon/mw4.png"))
 
-        with open(localPathApplications / "MountWizzard4.desktop", "w") as f:
+        with open(localPathApplications, "w") as f:
             f.write("[Desktop Entry]\n")
-            f.write("Version=4.0\n")
             f.write("Type=Application\n")
-            f.write("Terminal=False\n")
-            f.write(f"Exec={workdirString}/uv run mw4\n")
+            f.write("Terminal=false\n")
+            f.write(f"Exec=uv --directory {workdirString} run mw4\n")
             f.write("Name=MountWizzard4\n")
-            f.write("Comment=MountWizzard4\n")
+            f.write("Comment=MountWizzard4 Tooling\n")
             f.write(f"Icon={iconPathString}\n")
-            f.write("Name[de_DE]=MountWizzard4.desktop\n")
 
     @staticmethod
     def setPermissionLinuxDesktopData() -> None:
-        localPathApplications = Path("~/.local/share/applications/")
-        (localPathApplications / "MountWizzard4.desktop").chmod(0o755)
+        localPathApplications = Path.home() / ".local/share/applications/MountWizzard4.desktop"
+        localPathApplications.chmod(0o755)
 
     def runLinuxConfig(self) -> None:
         self.writeLinuxDesktopData()

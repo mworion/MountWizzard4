@@ -13,8 +13,11 @@
 # License APL2.0
 #
 ###########################################################
+import platform
+from importlib.resources import files
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtHelpers import svg2pixmap
+from pathlib import Path
 from typing import Any
 
 
@@ -43,6 +46,8 @@ class SettGui:
         self.ui.hidTracking.clicked.connect(self.storeConfig)
         self.ui.colorSet.currentIndexChanged.connect(self.updateColorSet)
         self.ui.transparency.valueChanged.connect(self.updateColorSet)
+        self.ui.writeLinuxConfig.clicked.connect(self.runLinuxConfig)
+        self.ui.writeLinuxConfig.setEnabled(platform.system() == "Linux")
 
     def storeConfig(self) -> None:
         self.app.config["SettingGui"] = {}
@@ -67,3 +72,28 @@ class SettGui:
         self.parentW.setStyleSheet(self.parentW.mw4Style)
         self.setupIcons()
         self.app.colorChange.emit()
+
+    def writeLinuxDesktopData(self) -> None:
+        localPathApplications = Path("~/.local/share/applications/")
+        workdirString = str(self.app.mwGlob["workDir"])
+        iconPathString = str(files("mw4").joinpath("assets/icon/mw4.png"))
+
+        with open(localPathApplications / "MountWizzard4.desktop", "w") as f:
+            f.write("[Desktop Entry]\n")
+            f.write("Version=4.0\n")
+            f.write("Type=Application\n")
+            f.write("Terminal=False\n")
+            f.write(f"Exec={workdirString}/uv run mw4\n")
+            f.write("Name=MountWizzard4\n")
+            f.write("Comment=MountWizzard4\n")
+            f.write(f"Icon={iconPathString}\n")
+            f.write("Name[de_DE]=MountWizzard4.desktop\n")
+
+    @staticmethod
+    def setPermissionLinuxDesktopData() -> None:
+        localPathApplications = Path("~/.local/share/applications/")
+        (localPathApplications / "MountWizzard4.desktop").chmod(0o755)
+
+    def runLinuxConfig(self) -> None:
+        self.writeLinuxDesktopData()
+        self.setPermissionLinuxDesktopData()

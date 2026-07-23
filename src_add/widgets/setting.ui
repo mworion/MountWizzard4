@@ -99,7 +99,7 @@
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -6291,7 +6291,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>130</y>
+         <y>135</y>
          <width>366</width>
          <height>151</height>
         </rect>
@@ -6696,6 +6696,47 @@
          <string>Sets the audio signal to be played when image is plate solved</string>
         </property>
        </widget>
+      </widget>
+      <widget class="QPushButton" name="writeLinuxConfig">
+       <property name="geometry">
+        <rect>
+         <x>420</x>
+         <y>255</y>
+         <width>346</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. </string>
+       </property>
+       <property name="text">
+        <string>Write .desktop file for Ubuntu Linux</string>
+       </property>
       </widget>
      </widget>
      <widget class="QWidget" name="onlineLog">

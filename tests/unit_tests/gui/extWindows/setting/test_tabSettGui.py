@@ -17,7 +17,7 @@ import pytest
 from mw4.gui.extWindows.setting.tabSettGui import SettGui
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from PySide6.QtWidgets import QCheckBox, QComboBox
+from PySide6.QtWidgets import QCheckBox, QComboBox, QPushButton
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
@@ -43,11 +43,13 @@ def settGui(qapp):
     parentW.ui.hidRaDec = QCheckBox()
     parentW.ui.hidTracking = QCheckBox()
     parentW.ui.hidParkStop = QCheckBox()
+    parentW.ui.writeLinuxConfig = QPushButton()
     parentW.ui.transparency = mock.MagicMock()
     parentW.ui.transparency.value = mock.MagicMock(return_value=1)
     parentW.ui.transparency.setValue = mock.MagicMock()
     parentW.ui.transparency.valueChanged = mock.MagicMock()
     parentW.ui.transparency.valueChanged.connect = mock.MagicMock()
+    parentW.setStyleSheet = mock.MagicMock()
 
     window = SettGui(parentW)
     yield window
@@ -99,3 +101,103 @@ def test_updateColorSet_updates_app(settGui):
     from mw4.gui.styles.styles import Styles
 
     assert Styles.colorSet == 1
+
+
+def test_writeLinuxDesktopData(settGui, tmp_path):
+    """Test writeLinuxDesktopData creates desktop file."""
+    with mock.patch("pathlib.Path") as mock_path:
+        mock_file = mock.mock_open()
+        mock_path.return_value = tmp_path / "test.desktop"
+        with mock.patch("builtins.open", mock_file):
+            settGui.writeLinuxDesktopData()
+            mock_file.assert_called()
+
+
+def test_setPermissionLinuxDesktopData(settGui):
+    """Test setPermissionLinuxDesktopData sets permissions."""
+    with mock.patch("mw4.gui.extWindows.setting.tabSettGui.Path") as mock_path_class:
+        mock_path_instance = mock.MagicMock()
+        mock_desktop_file = mock.MagicMock()
+        mock_path_class.return_value = mock_path_instance
+        mock_path_instance.__truediv__ = mock.MagicMock(return_value=mock_desktop_file)
+
+        SettGui.setPermissionLinuxDesktopData()
+        mock_desktop_file.chmod.assert_called_once_with(0o755)
+
+
+def test_runLinuxConfig(settGui):
+    """Test runLinuxConfig calls both methods."""
+    with mock.patch.object(
+        settGui, "writeLinuxDesktopData"
+    ) as mock_write, mock.patch.object(
+        SettGui, "setPermissionLinuxDesktopData"
+    ) as mock_perm:
+        settGui.runLinuxConfig()
+        mock_write.assert_called_once()
+        mock_perm.assert_called_once()
+
+
+def test_initConfig_connects_writeLinuxConfig(settGui):
+    """Test initConfig connects writeLinuxConfig button."""
+    settGui.app.config["SettingGui"] = {}
+    settGui.initConfig()
+    assert settGui.ui.writeLinuxConfig is not None
+
+
+def test_initConfig_writeLinuxConfig_enabled_on_linux(settGui):
+    """Test writeLinuxConfig button enabled on Linux."""
+    settGui.app.config["SettingGui"] = {}
+    with mock.patch("platform.system") as mock_platform:
+        mock_platform.return_value = "Linux"
+        settGui.initConfig()
+        assert settGui.ui.writeLinuxConfig.isEnabled() is True
+
+
+def test_initConfig_writeLinuxConfig_disabled_on_non_linux(settGui):
+    """Test writeLinuxConfig button disabled on non-Linux."""
+    settGui.app.config["SettingGui"] = {}
+    with mock.patch("platform.system") as mock_platform:
+        mock_platform.return_value = "Darwin"
+        settGui.initConfig()
+        assert settGui.ui.writeLinuxConfig.isEnabled() is False
+
+
+def test_storeConfig_saves_transparency(settGui):
+    """Test storeConfig saves transparency."""
+    settGui.ui.transparency.value.return_value = 0.8
+    settGui.storeConfig()
+    config = settGui.app.config["SettingGui"]
+    assert config["transparency"] == 0.8
+
+
+def test_storeConfig_saves_all_hid_settings(settGui):
+    """Test storeConfig saves all HID settings."""
+    settGui.ui.colorSet.setCurrentIndex(2)
+    settGui.ui.hidDome.setChecked(True)
+    settGui.ui.hidAltAz.setChecked(False)
+    settGui.ui.hidRaDec.setChecked(True)
+    settGui.ui.hidTracking.setChecked(False)
+    settGui.storeConfig()
+
+    cfg = settGui.app.dReg["hidController"].instance.config
+    assert cfg.dome is True
+    assert cfg.moveAltAz is False
+    assert cfg.moveRaDec is True
+    assert cfg.tracking is False
+
+
+def test_initConfig_loads_all_settings(settGui):
+    """Test initConfig loads all saved settings."""
+    settGui.app.config["SettingGui"] = {"colorSet": 2, "transparency": 0.5}
+    settGui.app.dReg["hidController"].instance.config.dome = True
+    settGui.app.dReg["hidController"].instance.config.moveAltAz = False
+    settGui.app.dReg["hidController"].instance.config.moveRaDec = True
+    settGui.app.dReg["hidController"].instance.config.tracking = False
+    settGui.initConfig()
+
+    assert settGui.ui.colorSet.currentIndex() == 2
+    assert settGui.ui.transparency.setValue.called
+    assert settGui.ui.hidDome.isChecked() is True
+    assert settGui.ui.hidAltAz.isChecked() is False
+    assert settGui.ui.hidRaDec.isChecked() is True
+    assert settGui.ui.hidTracking.isChecked() is False

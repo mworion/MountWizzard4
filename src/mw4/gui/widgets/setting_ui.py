@@ -1524,7 +1524,7 @@ class Ui_SettingDialog(object):
         self.gameControllerGroup = QGroupBox(self.Gui)
         self.gameControllerGroup.setObjectName(u"gameControllerGroup")
         self.gameControllerGroup.setEnabled(True)
-        self.gameControllerGroup.setGeometry(QRect(10, 130, 366, 151))
+        self.gameControllerGroup.setGeometry(QRect(10, 135, 366, 151))
         self.gameControllerGroup.setCheckable(False)
         self.gameControllerGroup.setProperty(u"large", True)
         self.controllerOverview = QLabel(self.gameControllerGroup)
@@ -1610,6 +1610,14 @@ class Ui_SettingDialog(object):
         self.soundConnectionLost = QComboBox(self.AudioGroup)
         self.soundConnectionLost.setObjectName(u"soundConnectionLost")
         self.soundConnectionLost.setGeometry(QRect(175, 170, 181, 21))
+        self.writeLinuxConfig = QPushButton(self.Gui)
+        self.writeLinuxConfig.setObjectName(u"writeLinuxConfig")
+        self.writeLinuxConfig.setGeometry(QRect(420, 255, 346, 31))
+        sizePolicy.setHeightForWidth(self.writeLinuxConfig.sizePolicy().hasHeightForWidth())
+        self.writeLinuxConfig.setSizePolicy(sizePolicy)
+        self.writeLinuxConfig.setMinimumSize(QSize(50, 25))
+        self.writeLinuxConfig.setMaximumSize(QSize(16777215, 16777215))
+        self.writeLinuxConfig.setFont(font1)
         self.tabWidget.addTab(self.Gui, "")
         self.onlineLog = QWidget()
         self.onlineLog.setObjectName(u"onlineLog")
@@ -1699,7 +1707,7 @@ class Ui_SettingDialog(object):
 
         self.retranslateUi(SettingDialog)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         self.tabDomeExplain.setCurrentIndex(2)
 
 
@@ -2207,6 +2215,10 @@ class Ui_SettingDialog(object):
 #if QT_CONFIG(tooltip)
         self.soundConnectionLost.setToolTip(QCoreApplication.translate("SettingDialog", u"Sets the audio signal to be played when image is plate solved", None))
 #endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(tooltip)
+        self.writeLinuxConfig.setToolTip(QCoreApplication.translate("SettingDialog", u"Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. ", None))
+#endif // QT_CONFIG(tooltip)
+        self.writeLinuxConfig.setText(QCoreApplication.translate("SettingDialog", u"Write .desktop file for Ubuntu Linux", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.Gui), QCoreApplication.translate("SettingDialog", u"User Interface", None))
         self.LoglevelGroup.setTitle(QCoreApplication.translate("SettingDialog", u"Logging", None))
 #if QT_CONFIG(tooltip)

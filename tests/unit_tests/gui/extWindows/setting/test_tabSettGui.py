@@ -116,10 +116,10 @@ def test_writeLinuxDesktopData(settGui, tmp_path):
 def test_setPermissionLinuxDesktopData(settGui):
     """Test setPermissionLinuxDesktopData sets permissions."""
     with mock.patch("mw4.gui.extWindows.setting.tabSettGui.Path") as mock_path_class:
-        mock_path_instance = mock.MagicMock()
+        mock_home_path = mock.MagicMock()
         mock_desktop_file = mock.MagicMock()
-        mock_path_class.return_value = mock_path_instance
-        mock_path_instance.__truediv__ = mock.MagicMock(return_value=mock_desktop_file)
+        mock_path_class.home.return_value = mock_home_path
+        mock_home_path.__truediv__ = mock.MagicMock(return_value=mock_desktop_file)
 
         SettGui.setPermissionLinuxDesktopData()
         mock_desktop_file.chmod.assert_called_once_with(0o755)

@@ -32,7 +32,8 @@ Version 4.x
 - add: support for NINA alpaca devices, please install Alpaca plugin for NINA and enable in settings.
 - add: all settings are now available in separate windows -> easier to find and better overview
 - add: new transparent mode for windows -> alpha value could be set 0..1
-- add: limux automatic generation of .desktop file for MW4
+- add: linux automatic generation of .desktop file for MW4 including dpi / scale parameters
+- add: windows automatic generation of Desktop link file for MW4 including dpi / scale parameters
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
 - change: moving PyQt5 to major PySide6

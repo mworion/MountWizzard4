@@ -15,7 +15,8 @@
 ###########################################################
 import platform
 import pylnk3
-from importlib.resources import files
+import stat
+from importlib.resources import as_file, files
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtHelpers import svg2pixmap
 from pathlib import Path
@@ -53,6 +54,8 @@ class SettGui:
         self.ui.writeLinuxConfig.setEnabled(platform.system() == "Linux")
         self.ui.writeWindowsConfig.clicked.connect(self.runWindowsConfig)
         self.ui.writeWindowsConfig.setEnabled(platform.system() == "Windows")
+        self.ui.writeMacOsConfig.clicked.connect(self.runMacOsConfig)
+        self.ui.writeMacOsConfig.setEnabled(platform.system() == "Darwin")
 
     def storeConfig(self) -> None:
         self.app.config["SettingGui"] = {}
@@ -80,7 +83,7 @@ class SettGui:
         self.setupIcons()
         self.app.colorChange.emit()
 
-    def writeLinuxDesktopData(self) -> None:
+    def runLinuxConfig(self) -> None:
         localPathApplications = Path.home() / ".local/share/applications/MountWizzard4.desktop"
         workdir = self.app.mwGlob["workDir"]
         iconPath = files("mw4").joinpath("assets/icon/mw4.png")
@@ -91,19 +94,13 @@ class SettGui:
             f.write("[Desktop Entry]\n")
             f.write("Type=Application\n")
             f.write("Terminal=false\n")
-            f.write(f"Exec=uv --directory {str(workdir)} run mw4  -d {dpi} -s {scale}\n")
+            f.write(f"Exec=uv --directory {str(workdir)} run mw4 -d {dpi} -s {scale}\n")
             f.write("Name=MountWizzard4\n")
             f.write("Comment=MountWizzard4 Tooling\n")
             f.write(f"Icon={str(iconPath)}\n")
 
-    @staticmethod
-    def setPermissionLinuxDesktopData() -> None:
         localPathApplications = Path.home() / ".local/share/applications/MountWizzard4.desktop"
         localPathApplications.chmod(0o755)
-
-    def runLinuxConfig(self) -> None:
-        self.writeLinuxDesktopData()
-        self.setPermissionLinuxDesktopData()
 
     def runWindowsConfig(self) -> None:
         localPathApplications = Path.home() / ".local\\bin\\uv.exe"
@@ -122,3 +119,32 @@ class SettGui:
             work_dir=str(workdir),
             icon_file=str(iconPath),
         )
+
+    def runMacOsConfig(self) -> None:
+        workdir = self.app.mwGlob["workDir"]
+        appdir = workdir / "MountWizzard4.app"
+        macosdir = appdir / "Contents" / "MacOS"
+        macosdir.mkdir(parents=True, exist_ok=True)
+        resourcesdir = appdir / "Contents" / "Resources"
+        resourcesdir.mkdir(parents=True, exist_ok=True)
+        dpi = self.ui.dpi.value()
+        scale = self.ui.scale.value()
+
+        with as_file(files("mw4").joinpath("assets/icon/mw4.icns")) as icon_path:
+            app_icon_destination = resourcesdir / "AppIcon.icns"
+            with open(icon_path, "rb") as src, open(app_icon_destination, "wb") as dst:
+                dst.write(src.read())
+
+        with as_file(files("mw4").joinpath("assets/macos/Info.plist")) as info_plist_path:
+            infoPlistPath = appdir / "Contents/Info.plist"
+            with open(info_plist_path, "r") as src, open(infoPlistPath, "w") as dst:
+                dst.write(src.read())
+
+        executablePath = macosdir / "mountwizzard4.sh"
+        with open(executablePath, "w") as f:
+            f.write("#!/bin/bash\n")
+            f.write('cd "$(dirname "$0")" || exit 1\n')
+            f.write("export PATH='/usr/local/bin:$PATH'\n")
+            f.write(f"uv --directory {str(workdir)} run mw4 -s {scale} -d {dpi}\n")
+        executablePath.chmod(0o755)
+        appdir.chmod(0o755)

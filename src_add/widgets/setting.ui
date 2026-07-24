@@ -99,7 +99,7 @@
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>6</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -7056,7 +7056,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
          <x>10</x>
          <y>175</y>
          <width>366</width>
-         <height>146</height>
+         <height>181</height>
         </rect>
        </property>
        <property name="toolTip">
@@ -7116,7 +7116,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>15</x>
-          <y>115</y>
+          <y>140</y>
           <width>46</width>
           <height>21</height>
          </rect>
@@ -7136,7 +7136,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>60</x>
-          <y>115</y>
+          <y>140</y>
           <width>56</width>
           <height>21</height>
          </rect>
@@ -7208,7 +7208,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>210</x>
-          <y>115</y>
+          <y>140</y>
           <width>56</width>
           <height>21</height>
          </rect>
@@ -7239,7 +7239,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <property name="geometry">
          <rect>
           <x>155</x>
-          <y>115</y>
+          <y>140</y>
           <width>56</width>
           <height>21</height>
          </rect>
@@ -7253,6 +7253,47 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
         <property name="text">
          <string>DPI</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="writeMacOsConfig">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>95</y>
+          <width>356</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. </string>
+        </property>
+        <property name="text">
+         <string>Write App for MacOs</string>
         </property>
        </widget>
       </widget>

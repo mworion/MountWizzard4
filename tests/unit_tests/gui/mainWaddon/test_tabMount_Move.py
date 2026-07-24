@@ -166,6 +166,59 @@ def test_moveRaDec_3(function):
         function.moveRaDec("N")
 
 
+def test_moveRaDec_4(function):
+    """Test moveRaDec with E (East) direction to cover stopMove elif branches."""
+    with mock.patch.object(function, "moveDuration"):
+        function.moveRaDec("E")
+
+
+def test_moveRaDec_5(function):
+    """Test moveRaDec with W (West) direction to cover stopMove elif branches."""
+    with mock.patch.object(function, "moveDuration"):
+        function.moveRaDec("W")
+
+
+def test_moveRaDec_6(function):
+    """Test moveRaDec with S (South) direction."""
+    with mock.patch.object(function, "moveDuration"):
+        function.moveRaDec("S")
+
+
+def test_stopPressed_1(function):
+    """Test stopPressed method."""
+    function.countdownRemaining = 10
+    with (
+        mock.patch.object(function, "onDurationTick"),
+        mock.patch.object(function.ui.stopMoveAll, "setText"),
+    ):
+        function.stopPressed()
+        assert function.countdownRemaining == 0
+
+
+def test_moveRaDec_zero_coord(function):
+    """Test moveRaDec with [0, 0] coordinate to cover the if coord == [0, 0] path."""
+    original_setButtons = function.setButtons
+    try:
+        # Temporarily add a direction with [0, 0] coordinate
+        function.setButtons = {
+            **function.setButtons,
+            "STOP": {
+                "buttonRaDec": mock.MagicMock(),
+                "buttonAltAz": mock.MagicMock(),
+                "coord": [0, 0],
+            },
+        }
+        with (
+            mock.patch.object(function, "stopMoveAll"),
+            mock.patch.object(function, "moveDuration"),
+            mock.patch("mw4.gui.mainWaddon.tabMount_Move.changeStyleDynamic"),
+        ):
+            function.moveRaDec("STOP")
+            function.stopMoveAll.assert_called_once()
+    finally:
+        function.setButtons = original_setButtons
+
+
 def test_convertDirection_1(function):
     assert function.convertDirection([1, 0]) == "N"
 

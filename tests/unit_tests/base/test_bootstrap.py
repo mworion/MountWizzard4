@@ -145,6 +145,43 @@ def test_extract_data_files_skip_uptodate():
     mock_copy.assert_not_called()
 
 
+def test_extract_data_files_copy():
+    """Test extractDataFiles calls shutil.copy2 when files differ."""
+    mwGlob = {"dataDir": Path("tests/work/data")}
+    src_stat = mock.MagicMock()
+    src_stat.st_mtime = 2000.0
+    dest_stat = mock.MagicMock()
+    dest_stat.st_mtime = 1000.0
+    stat_side_effect = [src_stat, dest_stat]
+    with (
+        mock.patch("mw4.base.bootstrap.os.stat", side_effect=stat_side_effect),
+        mock.patch.object(Path, "is_file", return_value=False),
+        mock.patch.object(Path, "is_dir", return_value=True),
+        mock.patch("mw4.base.bootstrap.shutil.copy2") as mock_copy,
+    ):
+        extractDataFiles(mwGlob=mwGlob)
+    mock_copy.assert_called()
+
+
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
 def test_minimize_start_terminal():
     minimizeStartTerminal()
+
+
+@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+def test_minimize_start_terminal_with_mock():
+    """Test minimizeStartTerminal with mocked ctypes."""
+    with mock.patch("ctypes.windll.user32.ShowWindow") as mock_show_window:
+        minimizeStartTerminal()
+        mock_show_window.assert_called_once()
+
+
+@mock.patch("mw4.base.bootstrap.platform.system", return_value="Windows")
+def test_minimize_start_terminal_non_windows(mock_platform):
+    """Test minimizeStartTerminal when platform reports Windows."""
+    mock_ctypes = mock.MagicMock()
+    mock_ctypes.windll.user32.ShowWindow = mock.MagicMock()
+    mock_ctypes.windll.kernel32.GetConsoleWindow = mock.MagicMock(return_value=12345)
+    with mock.patch.dict("sys.modules", {"ctypes": mock_ctypes}):
+        minimizeStartTerminal()
+        mock_ctypes.windll.user32.ShowWindow.assert_called_once()

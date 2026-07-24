@@ -6697,47 +6697,6 @@
         </property>
        </widget>
       </widget>
-      <widget class="QPushButton" name="writeLinuxConfig">
-       <property name="geometry">
-        <rect>
-         <x>420</x>
-         <y>255</y>
-         <width>346</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>50</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. </string>
-       </property>
-       <property name="text">
-        <string>Write .desktop file for Ubuntu Linux</string>
-       </property>
-      </widget>
      </widget>
      <widget class="QWidget" name="onlineLog">
       <attribute name="title">
@@ -7085,6 +7044,215 @@ li.unchecked::marker { content: &quot;\2610&quot;; }
 li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Courier New'; font-size:14pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:10pt;&quot;&gt;astropy, deepdiff, hdiapi, importlib_metadata, pyside6, pywin32, pyqtgraph, numpy,  qimage2ndarray, requests, scipy, sep, skyfield, wakeonlan, hdiapi, tange-dict-key, xisf, packaging, deepdiff, sgp4&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="gameControllerGroup_2">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>175</y>
+         <width>366</width>
+         <height>146</height>
+        </rect>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If a compatible game controller is selected, you could use it for several function. Please take care !&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="title">
+        <string>Support setups</string>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <property name="large" stdset="0">
+        <bool>true</bool>
+       </property>
+       <widget class="QPushButton" name="writeWindowsConfig">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>60</y>
+          <width>356</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. </string>
+        </property>
+        <property name="text">
+         <string>Write .lnk file for Windows</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_mountMAC_7">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>115</y>
+          <width>46</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Scale</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="scale">
+        <property name="geometry">
+         <rect>
+          <x>60</x>
+          <y>115</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>0.500000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>4.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="writeLinuxConfig">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>25</y>
+          <width>356</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. </string>
+        </property>
+        <property name="text">
+         <string>Write .desktop file for Ubuntu Linux</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="dpi">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>115</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>56</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>24.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>192.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>96.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_mountMAC_10">
+        <property name="geometry">
+         <rect>
+          <x>155</x>
+          <y>115</y>
+          <width>56</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>DPI</string>
         </property>
        </widget>
       </widget>

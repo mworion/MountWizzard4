@@ -142,7 +142,7 @@ class MWidget(QMainWindow, Styles):
         height = config.get("height", self.minimumHeight())
         width = config.get("width", self.minimumWidth())
         if height == self.maximumHeight() and width == self.maximumWidth():
-            if platform.system() != "Linux":
+            if platform.system() not in ["Linux", "Windows"]:
                 self.setWindowState(Qt.WindowState.WindowMaximized)
             else:
                 self.setWindowState(Qt.WindowState.WindowNoState)

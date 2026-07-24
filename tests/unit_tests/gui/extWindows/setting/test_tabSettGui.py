@@ -44,11 +44,18 @@ def settGui(qapp):
     parentW.ui.hidTracking = QCheckBox()
     parentW.ui.hidParkStop = QCheckBox()
     parentW.ui.writeLinuxConfig = QPushButton()
+    parentW.ui.writeWindowsConfig = QPushButton()
     parentW.ui.transparency = mock.MagicMock()
     parentW.ui.transparency.value = mock.MagicMock(return_value=1)
     parentW.ui.transparency.setValue = mock.MagicMock()
     parentW.ui.transparency.valueChanged = mock.MagicMock()
     parentW.ui.transparency.valueChanged.connect = mock.MagicMock()
+    parentW.ui.scale = mock.MagicMock()
+    parentW.ui.scale.value = mock.MagicMock(return_value=1)
+    parentW.ui.scale.setValue = mock.MagicMock()
+    parentW.ui.dpi = mock.MagicMock()
+    parentW.ui.dpi.value = mock.MagicMock(return_value=96)
+    parentW.ui.dpi.setValue = mock.MagicMock()
     parentW.setStyleSheet = mock.MagicMock()
 
     window = SettGui(parentW)
@@ -105,12 +112,15 @@ def test_updateColorSet_updates_app(settGui):
 
 def test_writeLinuxDesktopData(settGui, tmp_path):
     """Test writeLinuxDesktopData creates desktop file."""
-    with mock.patch("pathlib.Path") as mock_path:
+    with mock.patch("mw4.gui.extWindows.setting.tabSettGui.Path") as mock_path_class:
+        mock_home_path = mock.MagicMock()
+        mock_desktop_file = mock.MagicMock()
+        mock_path_class.home.return_value = mock_home_path
+        mock_home_path.__truediv__ = mock.MagicMock(return_value=mock_desktop_file)
         mock_file = mock.mock_open()
-        mock_path.return_value = tmp_path / "test.desktop"
         with mock.patch("builtins.open", mock_file):
             settGui.writeLinuxDesktopData()
-            mock_file.assert_called()
+            mock_file.assert_called_once()
 
 
 def test_setPermissionLinuxDesktopData(settGui):
@@ -201,3 +211,53 @@ def test_initConfig_loads_all_settings(settGui):
     assert settGui.ui.hidAltAz.isChecked() is False
     assert settGui.ui.hidRaDec.isChecked() is True
     assert settGui.ui.hidTracking.isChecked() is False
+
+
+def test_initConfig_loads_scale_and_dpi(settGui):
+    """Test initConfig loads scale and dpi values."""
+    settGui.app.config["SettingGui"] = {"scale": 1.5, "dpi": 120}
+    settGui.initConfig()
+
+    assert settGui.ui.scale.setValue.called
+    assert settGui.ui.dpi.setValue.called
+
+
+def test_storeConfig_saves_scale(settGui):
+    """Test storeConfig saves scale."""
+    settGui.ui.scale.value.return_value = 1.25
+    settGui.storeConfig()
+    config = settGui.app.config["SettingGui"]
+    assert config["scale"] == 1.25
+
+
+def test_storeConfig_saves_dpi(settGui):
+    """Test storeConfig saves dpi."""
+    settGui.ui.dpi.value.return_value = 120
+    settGui.storeConfig()
+    config = settGui.app.config["SettingGui"]
+    assert config["dpi"] == 120
+
+
+def test_initConfig_writeWindowsConfig_enabled_on_windows(settGui):
+    """Test writeWindowsConfig button enabled on Windows."""
+    settGui.app.config["SettingGui"] = {}
+    with mock.patch("platform.system") as mock_platform:
+        mock_platform.return_value = "Windows"
+        settGui.initConfig()
+        assert settGui.ui.writeWindowsConfig.isEnabled() is True
+
+
+def test_initConfig_writeWindowsConfig_disabled_on_non_windows(settGui):
+    """Test writeWindowsConfig button disabled on non-Windows."""
+    settGui.app.config["SettingGui"] = {}
+    with mock.patch("platform.system") as mock_platform:
+        mock_platform.return_value = "Darwin"
+        settGui.initConfig()
+        assert settGui.ui.writeWindowsConfig.isEnabled() is False
+
+
+def test_runWindowsConfig(settGui):
+    """Test runWindowsConfig calls pylnk3."""
+    with mock.patch("mw4.gui.extWindows.setting.tabSettGui.pylnk3") as mock_pylnk3:
+        settGui.runWindowsConfig()
+        mock_pylnk3.for_file.assert_called_once()

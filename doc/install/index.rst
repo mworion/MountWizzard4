@@ -145,7 +145,7 @@ you just can add the following parameter:
 .. code-block:: bash
 
     uv pip install mountwizzard4 --pre
-.
+
 
 Command line options
 --------------------

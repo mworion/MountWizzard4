@@ -60,7 +60,7 @@ for N.I.N.A. and enable it, but you could also use other devices than cameras,
 e.g. filter wheel, focuser, dome, etc. as well.
 
 Preparation for using NINA 3.x as ALPACA device
-------------------------------------------
+-----------------------------------------------
 N.I.N.A. 3.x realizes this feature in a separate plugin. The plugin is called
 Alpaca:
 

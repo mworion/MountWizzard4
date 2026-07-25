@@ -26,7 +26,7 @@ Many of the features are handled on the mount computer itself and MountWizzard4
 does the GUI frontend for the user by using the command protocol provided by 
 10micron.
 
-.. drawio-image:: image/overview.drawio.svg
+.. image:: image/overview.drawio.svg
     :align: center
     :export-scale: 71
 

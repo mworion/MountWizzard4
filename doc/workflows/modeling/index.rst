@@ -27,7 +27,7 @@ round stars.
 As Overview: MountWizzard4 has a straight forward approach for building models.
 The following chart shows each basic step.
 
-.. drawio-image:: image/workflow.drawio
+.. image:: image/workflow.drawio.svg
     :align: center
     :scale: 71%
 

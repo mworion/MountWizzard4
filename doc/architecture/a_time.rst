@@ -11,7 +11,7 @@ used. In this case MountWizzard4 just stores the value and feed it back when
 the model is programmed. That's the reason why you should not change time 
 during model run.
 
-.. drawio-image:: image/time.drawio
+.. drawio-image:: image/time.drawio.svg
     :align: center
     :export-scale: 71
 

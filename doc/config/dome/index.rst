@@ -87,7 +87,7 @@ your telescope still could view your target and no dome movement is necessary.
 
 Top view of your dome setup:
 
-.. image:: image/dome_math_1.drawio
+.. image:: image/dome_math_1.drawio.svg
     :align: center
 
 .. image:: image/dome_opening_hysteresis.png

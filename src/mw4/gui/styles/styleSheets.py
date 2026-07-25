@@ -94,13 +94,13 @@ BASIC_STYLE = """
     }
     QWidget #ContainerCentral {
         border-radius: 3px;
-        border-style: solid;
-        border-color: $M_PRIM1$;
+        border-style: outset;
+        border-color: $M_PRIM$;
         border-width: 2px;
     }
     QFrame[title] {
         color: $M_TER$;
-        background: $M_PRIM2$;
+        background: $M_PRIM1$;
         border-radius: 3px;
     }
     QToolButton {

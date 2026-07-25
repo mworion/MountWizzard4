@@ -39,8 +39,9 @@ jobs:
       - name: install drawio package
         run: |
           sudo apt update
+          sudo apt upgrade -y
           sudo apt install snapd
-          sudo snap install drawio --channel=26/stable
+          sudo snap install drawio
       
       - name: Install python dependencies
         run: |

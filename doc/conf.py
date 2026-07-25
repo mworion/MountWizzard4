@@ -43,6 +43,8 @@ version = "4.0.0a38"
 release = "4.0.0a38"
 master_doc = "index"
 
+drawio_default_page = 1
+
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be

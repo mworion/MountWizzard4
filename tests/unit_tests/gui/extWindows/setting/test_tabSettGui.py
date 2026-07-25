@@ -256,8 +256,84 @@ def test_initConfig_writeWindowsConfig_disabled_on_non_windows(settGui):
         assert settGui.ui.writeWindowsConfig.isEnabled() is False
 
 
+def test_initConfig_writeMacOsConfig_enabled_on_darwin(settGui):
+    """Test writeMacOsConfig button enabled on Darwin."""
+    settGui.app.config["SettingGui"] = {}
+    with mock.patch("platform.system") as mock_platform:
+        mock_platform.return_value = "Darwin"
+        settGui.initConfig()
+        assert settGui.ui.writeMacOsConfig.isEnabled() is True
+
+
+def test_initConfig_writeMacOsConfig_disabled_on_non_darwin(settGui):
+    """Test writeMacOsConfig button disabled on non-Darwin."""
+    settGui.app.config["SettingGui"] = {}
+    with mock.patch("platform.system") as mock_platform:
+        mock_platform.return_value = "Linux"
+        settGui.initConfig()
+        assert settGui.ui.writeMacOsConfig.isEnabled() is False
+
+
 def test_runWindowsConfig(settGui):
     """Test runWindowsConfig calls pylnk3."""
     with mock.patch("mw4.gui.extWindows.setting.tabSettGui.pylnk3") as mock_pylnk3:
         settGui.runWindowsConfig()
         mock_pylnk3.for_file.assert_called_once()
+
+
+def setupMacOsMocks():
+    """Setup mocks for macOS config testing."""
+    mock_work_dir = mock.MagicMock()
+    mock_app_dir = mock.MagicMock()
+    mock_contents_dir = mock.MagicMock()
+    mock_macos_dir = mock.MagicMock()
+    mock_resources_dir = mock.MagicMock()
+    mock_executable_path = mock.MagicMock()
+
+    mock_work_dir.__truediv__ = mock.MagicMock(return_value=mock_app_dir)
+    mock_app_dir.__truediv__ = mock.MagicMock(return_value=mock_contents_dir)
+    mock_contents_dir.__truediv__ = mock.MagicMock(
+        side_effect=lambda x: (
+            mock_macos_dir if "MacOS" in str(x) else mock_resources_dir
+        )
+    )
+    mock_macos_dir.__truediv__ = mock.MagicMock(return_value=mock_executable_path)
+
+    return (
+        mock_work_dir,
+        mock_app_dir,
+        mock_macos_dir,
+        mock_resources_dir,
+        mock_executable_path,
+    )
+
+
+def test_runMacOsConfig(settGui):
+    """Test runMacOsConfig creates macOS app bundle."""
+    (
+        mock_work_dir,
+        mock_app_dir,
+        mock_macos_dir,
+        mock_resources_dir,
+        mock_executable_path,
+    ) = setupMacOsMocks()
+
+    with (
+        mock.patch("mw4.gui.extWindows.setting.tabSettGui.as_file") as mock_as_file,
+        mock.patch("mw4.gui.extWindows.setting.tabSettGui.files") as mock_files,
+        mock.patch("builtins.open", mock.mock_open()) as mock_file,
+    ):
+        settGui.app.mwGlob = {"workDir": mock_work_dir}
+        mock_as_file.return_value.__enter__ = mock.MagicMock(return_value=mock.MagicMock())
+        mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
+        mock_files.return_value.joinpath = mock.MagicMock(return_value=mock.MagicMock())
+
+        settGui.runMacOsConfig()
+
+        mock_macos_dir.mkdir.assert_called()
+        mock_resources_dir.mkdir.assert_called()
+        mock_file.assert_called()
+        mock_executable_path.chmod.assert_called_with(0o755)
+        mock_app_dir.chmod.assert_called_with(0o755)
+
+

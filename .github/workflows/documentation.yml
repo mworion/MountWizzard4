@@ -44,8 +44,8 @@ jobs:
       
       - name: Install python dependencies
         run: |
-          pip install sphinx sphinx_rtd_theme alabaster sphinx-copybutton
-          pip install setuptools sphinxcontrib-drawio sphinx-simplepdf
+          pip install --upgrade sphinx sphinx_rtd_theme alabaster sphinx-copybutton
+          pip install --upgrade setuptools sphinxcontrib-drawio sphinx-simplepdf
       
       - name: Sphinx build
         run: |

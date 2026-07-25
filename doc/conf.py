@@ -43,8 +43,6 @@ version = "4.0.0a38"
 release = "4.0.0a38"
 master_doc = "index"
 
-drawio_default_page = 1
-
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -60,6 +58,8 @@ extensions = [
 ]
 
 autosectionlabel_prefix_document = True
+
+drawio_default_page = "Page-1"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]

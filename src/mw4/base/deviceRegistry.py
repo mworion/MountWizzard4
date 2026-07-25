@@ -139,32 +139,29 @@ class DeviceRegistry(QObject):
             cfgSetting[entry.name] = self.collectConfigFromSingleDevice(entry.name)
         return cfgSetting
 
-    def writeConfigToSingleDevice(
-        self, device: str, cfgDevice: dict[str, dict[str, Any]]
-    ) -> None:
-        self.d[device].instance.framework = cfgDevice.get("framework", "")
+    def writeConfigToSingleDevice(self, device: str, cfg: dict[str, dict[str, Any]]) -> None:
+        self.d[device].instance.framework = cfg.get("framework", "")
         for framework in self.d[device].run:
             if not hasattr(self.d[device].run[framework], "config"):
                 continue
-            if framework not in cfgDevice:
+            if framework not in cfg:
                 continue
             for field in fields(self.d[device].run[framework].config):
-                if field.name not in cfgDevice[framework]:
+                if field.name not in cfg[framework]:
                     continue
-                value = cfgDevice[framework][field.name]
+                value = cfg[framework][field.name]
                 setattr(self.d[device].run[framework].config, field.name, value)
 
-    def writeConfigToAllDevices(
-        self, cfgSetting: dict[str, dict[str, dict[str, Any]]]
-    ) -> None:
+    def writeConfigToAllDevices(self, cfg: dict[str, dict[str, dict[str, Any]]]) -> None:
         for entry in self.configurable():
-            if entry.name not in cfgSetting:
+            if entry.name not in cfg:
                 continue
-            self.writeConfigToSingleDevice(entry.name, cfgSetting[entry.name])
+            self.writeConfigToSingleDevice(entry.name, cfg[entry.name])
 
     def initConfig(self) -> None:
         self.writeConfigToAllDevices(self.app.config.get("SettingDevice", {}))
         self.writeConfigToSingleDevice("mount", self.app.config.get("SettingDeviceMount", {}))
+        self.d["mount"].instance.framework = "10micron"
 
     def storeConfig(self) -> None:
         self.app.config["SettingDevice"] = self.collectConfigFromAllDevices()

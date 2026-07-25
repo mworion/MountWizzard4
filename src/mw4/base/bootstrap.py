@@ -51,6 +51,7 @@ warnings.filterwarnings("ignore", message="astropy.samp", category=AstropyDeprec
 if platform.system() == "Linux":
     os.environ.setdefault("QT_QPA_PLATFORM", "xcb")
 
+
 def configureEnvironment() -> None:
     faulthandler.enable()
     warnings.filterwarnings("ignore", category=RuntimeWarning)

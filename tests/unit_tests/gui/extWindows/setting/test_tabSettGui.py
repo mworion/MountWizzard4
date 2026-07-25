@@ -45,6 +45,7 @@ def settGui(qapp):
     parentW.ui.hidParkStop = QCheckBox()
     parentW.ui.writeLinuxConfig = QPushButton()
     parentW.ui.writeWindowsConfig = QPushButton()
+    parentW.ui.writeMacOsConfig = QPushButton()
     parentW.ui.transparency = mock.MagicMock()
     parentW.ui.transparency.value = mock.MagicMock(return_value=1)
     parentW.ui.transparency.setValue = mock.MagicMock()
@@ -137,11 +138,10 @@ def test_setPermissionLinuxDesktopData(settGui):
 
 def test_runLinuxConfig(settGui):
     """Test runLinuxConfig calls both methods."""
-    with mock.patch.object(
-        settGui, "writeLinuxDesktopData"
-    ) as mock_write, mock.patch.object(
-        SettGui, "setPermissionLinuxDesktopData"
-    ) as mock_perm:
+    with (
+        mock.patch.object(settGui, "writeLinuxDesktopData") as mock_write,
+        mock.patch.object(SettGui, "setPermissionLinuxDesktopData") as mock_perm,
+    ):
         settGui.runLinuxConfig()
         mock_write.assert_called_once()
         mock_perm.assert_called_once()

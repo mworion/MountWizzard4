@@ -15,7 +15,6 @@
 ###########################################################
 import platform
 import pylnk3
-import stat
 from importlib.resources import as_file, files
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtHelpers import svg2pixmap
@@ -83,7 +82,7 @@ class SettGui:
         self.setupIcons()
         self.app.colorChange.emit()
 
-    def runLinuxConfig(self) -> None:
+    def writeLinuxDesktopData(self) -> None:
         localPathApplications = Path.home() / ".local/share/applications/MountWizzard4.desktop"
         workdir = self.app.mwGlob["workDir"]
         iconPath = files("mw4").joinpath("assets/icon/mw4.png")
@@ -99,8 +98,14 @@ class SettGui:
             f.write("Comment=MountWizzard4 Tooling\n")
             f.write(f"Icon={str(iconPath)}\n")
 
+    @staticmethod
+    def setPermissionLinuxDesktopData() -> None:
         localPathApplications = Path.home() / ".local/share/applications/MountWizzard4.desktop"
         localPathApplications.chmod(0o755)
+
+    def runLinuxConfig(self) -> None:
+        self.writeLinuxDesktopData()
+        self.setPermissionLinuxDesktopData()
 
     def runWindowsConfig(self) -> None:
         localPathApplications = Path.home() / ".local\\bin\\uv.exe"
@@ -137,7 +142,7 @@ class SettGui:
 
         with as_file(files("mw4").joinpath("assets/macos/Info.plist")) as info_plist_path:
             infoPlistPath = appdir / "Contents/Info.plist"
-            with open(info_plist_path, "r") as src, open(infoPlistPath, "w") as dst:
+            with open(info_plist_path) as src, open(infoPlistPath, "w") as dst:
                 dst.write(src.read())
 
         executablePath = macosdir / "mountwizzard4.sh"

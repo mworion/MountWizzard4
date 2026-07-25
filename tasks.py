@@ -33,9 +33,9 @@ client = {
         "scp": "mw@astro-comp.uranus:/home/mw/test",
     },
     "win11": {
-        "user": "mw@astro-win11.uranus",
+        "user": "mw@192.168.40.221",
         "work": "test",
-        "scp": "mw@astro-win11.uranus:/Users/mw/test",
+        "scp": "mw@192.168.40.221:/Users/mw/test",
     },
 }
 
@@ -189,7 +189,7 @@ def test_windows(c, user, work, scp):
 
     runMW(c, f'ssh {user} "cd {work} && uv venv -p 3.13"')
     runMW(c, f'ssh {user} "cd {work} && uv pip install mountwizzard4.tar.gz"')
-    runMW(c, f'ssh {user} "cd {work} && uv run mw4 -t 1"')
+    runMW(c, f'ssh {user} "schtasks /run /tn \"LaunchUV\""')
 
 
 def test_ubuntu(c, user, work, scp):

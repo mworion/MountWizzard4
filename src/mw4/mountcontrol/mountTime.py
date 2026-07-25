@@ -16,6 +16,7 @@
 import logging
 import numpy as np
 import socket
+from datetime import UTC, datetime
 from mw4.base.tpool import Worker, startWorker
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat
@@ -98,11 +99,18 @@ class MountTime:
         if worker is not None:
             self.workerCycleMountUp = worker
 
-    def adjustClock(self, delta: int) -> bool:
+    def deltaAdjustClock(self, delta: int) -> bool:
         conn = Connection(self.parent)
         sign = "+" if delta >= 0 else "-"
         delta = abs(delta)
         commandString = f":NUtim{sign}{delta:03.0f}#"
+        suc, _, _ = conn.communicate(commandString, responseCheck="1")
+        return suc
+
+    def absolutAdjustClock(self) -> bool:
+        utc = datetime.now(UTC)
+        commandString = f":SUDT{utc.strftime('%Y-%m-%d,%H:%M:%S')}#"
+        conn = Connection(self.parent)
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
@@ -116,12 +124,16 @@ class MountTime:
         if mountTracks and self.parent.config.syncTimeNotTrack:
             return
 
-        delta = self.timeDiff * 1000
+        delta = int(self.timeDiff * 1000)
         if abs(delta) < 1:
             return
-        delta = int(max(min(delta, 999), -999))
-        if not self.adjustClock(delta):
-            self.log.warning(f"Clock sync failed with delta {delta} ms")
+        if abs(delta) > 2 * 999:
+            if not self.absolutAdjustClock():
+                self.log.warning(f"Clock absolute sync failed with {delta} ms")
+        else:
+            delta = max(min(delta, 999), -999)
+            if not self.deltaAdjustClock(delta):
+                self.log.warning(f"Clock delta sync failed with {delta} ms")
 
     def clearPollSyncClock(self) -> None:
         self.mutexPollSyncClock.unlock()

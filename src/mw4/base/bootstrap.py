@@ -48,8 +48,7 @@ class MwGlob(TypedDict):
 
 log: logging.Logger = logging.getLogger("MW4")
 warnings.filterwarnings("ignore", message="astropy.samp", category=AstropyDeprecationWarning)
-if platform.system() == "Linux":
-    os.environ.setdefault("QT_QPA_PLATFORM", "xcb")
+os.environ.setdefault("QT_QPA_PLATFORM", "xcb") if platform.system() == "Linux" else None
 
 
 def configureEnvironment() -> None:

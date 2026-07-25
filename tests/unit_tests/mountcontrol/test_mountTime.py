@@ -198,13 +198,13 @@ def test_checkMountUp_unlocked(function):
         (0, ":NUtim+000#"),
     ],
 )
-def test_adjustClock(function, delta, expected_cmd):
+def test_deltaAdjustClock(function, delta, expected_cmd):
     with mock.patch("mw4.mountcontrol.mountTime.Connection") as mock_connection:
         mock_conn_instance = mock.Mock()
         mock_connection.return_value = mock_conn_instance
         mock_conn_instance.communicate.return_value = (True, "1", "")
 
-        result = function.adjustClock(delta)
+        result = function.deltaAdjustClock(delta)
 
         assert result is True
         mock_conn_instance.communicate.assert_called_once()
@@ -212,13 +212,39 @@ def test_adjustClock(function, delta, expected_cmd):
         assert call_args[0][0] == expected_cmd
 
 
-def test_adjustClock_communicate_failure(function):
+def test_deltaAdjustClock_communicate_failure(function):
     with mock.patch("mw4.mountcontrol.mountTime.Connection") as mock_connection:
         mock_conn_instance = mock.Mock()
         mock_connection.return_value = mock_conn_instance
         mock_conn_instance.communicate.return_value = (False, "", "")
 
-        result = function.adjustClock(50)
+        result = function.deltaAdjustClock(50)
+
+        assert result is False
+
+
+def test_absolutAdjustClock_success(function):
+    with mock.patch("mw4.mountcontrol.mountTime.Connection") as mock_connection:
+        mock_conn_instance = mock.Mock()
+        mock_connection.return_value = mock_conn_instance
+        mock_conn_instance.communicate.return_value = (True, "1", "")
+
+        result = function.absolutAdjustClock()
+
+        assert result is True
+        mock_conn_instance.communicate.assert_called_once()
+        call_args = mock_conn_instance.communicate.call_args
+        assert ":SUDT" in call_args[0][0]
+        assert call_args[0][0].endswith("#")
+
+
+def test_absolutAdjustClock_communicate_failure(function):
+    with mock.patch("mw4.mountcontrol.mountTime.Connection") as mock_connection:
+        mock_conn_instance = mock.Mock()
+        mock_connection.return_value = mock_conn_instance
+        mock_conn_instance.communicate.return_value = (False, "", "")
+
+        result = function.absolutAdjustClock()
 
         assert result is False
 
@@ -226,17 +252,17 @@ def test_adjustClock_communicate_failure(function):
 def test_syncClock_sync_disabled(function):
     function.parent.config.syncTimeNone = True
     function.parent.mountIsUp = True
-    with mock.patch.object(function, "adjustClock"):
+    with mock.patch.object(function, "deltaAdjustClock"):
         function.syncClock()
-        function.adjustClock.assert_not_called()
+        function.deltaAdjustClock.assert_not_called()
     function.parent.config.syncTimeNone = False
 
 
 def test_syncClock_mount_not_up(function):
     function.parent.mountIsUp = False
-    with mock.patch.object(function, "adjustClock"):
+    with mock.patch.object(function, "deltaAdjustClock"):
         function.syncClock()
-        function.adjustClock.assert_not_called()
+        function.deltaAdjustClock.assert_not_called()
     function.parent.mountIsUp = True
 
 
@@ -244,9 +270,9 @@ def test_syncClock_tracking_mode_disabled_when_tracking(function):
     function.parent.mountIsUp = True
     function.parent.config.syncTimeNotTrack = True
     function.parent.obsSite.status = function.parent.MountStatus.TRACKING
-    with mock.patch.object(function, "adjustClock"):
+    with mock.patch.object(function, "deltaAdjustClock"):
         function.syncClock()
-        function.adjustClock.assert_not_called()
+        function.deltaAdjustClock.assert_not_called()
     function.parent.config.syncTimeNotTrack = False
 
 
@@ -254,9 +280,9 @@ def test_syncClock_satellite_following_mode_disabled(function):
     function.parent.mountIsUp = True
     function.parent.config.syncTimeNotTrack = True
     function.parent.obsSite.status = function.parent.MountStatus.FOLLOWING_SATELLITE
-    with mock.patch.object(function, "adjustClock"):
+    with mock.patch.object(function, "deltaAdjustClock"):
         function.syncClock()
-        function.adjustClock.assert_not_called()
+        function.deltaAdjustClock.assert_not_called()
     function.parent.config.syncTimeNotTrack = False
 
 
@@ -266,17 +292,17 @@ def test_syncClock_delta_too_small(function):
     function.parent.config.syncTimeNotTrack = False
     function.parent.obsSite.status = function.parent.MountStatus.STOPPED
     function._timeDiff = np.array([0.005] + [0.0] * 24)
-    with mock.patch.object(function, "adjustClock"):
+    with mock.patch.object(function, "deltaAdjustClock"):
         function.syncClock()
-        function.adjustClock.assert_not_called()
+        function.deltaAdjustClock.assert_not_called()
 
 
 @pytest.mark.parametrize(
     "time_diff_val,expected_delta",
     [
         (0.05, 50),
-        (2.0, 999),
-        (-2.0, -999),
+        (0.5, 500),
+        (-0.5, -500),
     ],
 )
 def test_syncClock_delta_clamping(function, time_diff_val, expected_delta):
@@ -285,9 +311,24 @@ def test_syncClock_delta_clamping(function, time_diff_val, expected_delta):
     function.parent.config.syncTimeNotTrack = False
     function.parent.obsSite.status = function.parent.MountStatus.STOPPED
     function._timeDiff = np.full(25, time_diff_val)
-    with mock.patch.object(function, "adjustClock", return_value=True):
+    with mock.patch.object(function, "deltaAdjustClock", return_value=True):
         function.syncClock()
-        function.adjustClock.assert_called_once_with(expected_delta)
+        function.deltaAdjustClock.assert_called_once_with(expected_delta)
+
+
+def test_syncClock_absolutAdjustClock_called_for_large_delta(function):
+    function.parent.mountIsUp = True
+    function.parent.config.syncTimeNone = False
+    function.parent.config.syncTimeNotTrack = False
+    function.parent.obsSite.status = function.parent.MountStatus.STOPPED
+    function._timeDiff = np.full(25, 2.0)
+    with (
+        mock.patch.object(function, "deltaAdjustClock") as mock_delta,
+        mock.patch.object(function, "absolutAdjustClock", return_value=True) as mock_abs,
+    ):
+        function.syncClock()
+        mock_abs.assert_called_once()
+        mock_delta.assert_not_called()
 
 
 def test_syncClock_adjustClock_failure(function):
@@ -297,7 +338,7 @@ def test_syncClock_adjustClock_failure(function):
     function.parent.obsSite.status = function.parent.MountStatus.STOPPED
     function._timeDiff = np.full(25, 0.05)
     with (
-        mock.patch.object(function, "adjustClock", return_value=False),
+        mock.patch.object(function, "deltaAdjustClock", return_value=False),
         mock.patch.object(function.log, "warning"),
     ):
         function.syncClock()

@@ -1437,7 +1437,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -1968,7 +1968,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           </font>
          </property>
          <property name="text">
-          <string>RTT | Clock sync</string>
+          <string>RTT |  Clock delta</string>
          </property>
         </widget>
         <widget class="QLabel" name="label_65">
@@ -3077,9 +3077,9 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </property>
          <property name="geometry">
           <rect>
-           <x>185</x>
+           <x>175</x>
            <y>60</y>
-           <width>36</width>
+           <width>46</width>
            <height>21</height>
           </rect>
          </property>
@@ -3568,7 +3568,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </property>
          <property name="geometry">
           <rect>
-           <x>145</x>
+           <x>135</x>
            <y>60</y>
            <width>36</width>
            <height>21</height>
@@ -3615,7 +3615,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
         <widget class="QLabel" name="clockOffsetMS_2">
          <property name="geometry">
           <rect>
-           <x>175</x>
+           <x>165</x>
            <y>60</y>
            <width>16</width>
            <height>21</height>

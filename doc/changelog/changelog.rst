@@ -6,7 +6,7 @@ Beta versions
 
 Version 4.x
 ^^^^^^^^^^^
-4.0.0b14
+4.0.0b18
 
 - this is a major release !
   please try out in a separate work folder for test!
@@ -34,6 +34,7 @@ Version 4.x
 - add: new transparent mode for windows -> alpha value could be set 0..1
 - add: linux automatic generation of .desktop file for MW4 including dpi / scale parameters
 - add: windows automatic generation of Desktop link file for MW4 including dpi / scale parameters
+- add: macOS automatic generation of .app bundle for MW4 including dpi / scale parameters
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
 - change: moving PyQt5 to major PySide6

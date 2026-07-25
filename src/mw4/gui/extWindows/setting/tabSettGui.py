@@ -84,7 +84,7 @@ class SettGui:
 
     def writeLinuxDesktopData(self) -> None:
         localPathApplications = Path.home() / ".local/share/applications/MountWizzard4.desktop"
-        workdir = self.app.mwGlob["workDir"]
+        workDir = self.app.mwGlob["workDir"]
         iconPath = files("mw4").joinpath("assets/icon/mw4.png")
         dpi = self.ui.dpi.value()
         scale = self.ui.scale.value()
@@ -93,7 +93,7 @@ class SettGui:
             f.write("[Desktop Entry]\n")
             f.write("Type=Application\n")
             f.write("Terminal=false\n")
-            f.write(f"Exec=uv --directory {str(workdir)} run mw4 -d {dpi} -s {scale}\n")
+            f.write(f"Exec=uv --directory {str(workDir)} run mw4 -d {dpi} -s {scale}\n")
             f.write("Name=MountWizzard4\n")
             f.write("Comment=MountWizzard4 Tooling\n")
             f.write(f"Icon={str(iconPath)}\n")
@@ -110,8 +110,8 @@ class SettGui:
     def runWindowsConfig(self) -> None:
         localPathApplications = Path.home() / ".local\\bin\\uv.exe"
         iconPath = files("mw4").joinpath("assets/icon/mw4.ico")
-        workdir = self.app.mwGlob["workDir"]
-        linkFile = workdir / "MountWizzard.lnk"
+        workDir = self.app.mwGlob["workDir"]
+        linkFile = workDir / "MountWizzard.lnk"
         linkFile.unlink(missing_ok=True)
         dpi = self.ui.dpi.value()
         scale = self.ui.scale.value()
@@ -121,35 +121,35 @@ class SettGui:
             arguments=f"run mw4 -d {dpi} -s {scale}",
             lnk_name="MountWizzard4.lnk",
             description="MountWizzard4 Shortcut",
-            work_dir=str(workdir),
+            work_dir=str(workDir),
             icon_file=str(iconPath),
         )
 
     def runMacOsConfig(self) -> None:
-        workdir = self.app.mwGlob["workDir"]
-        appdir = workdir / "MountWizzard4.app"
-        macosdir = appdir / "Contents" / "MacOS"
-        macosdir.mkdir(parents=True, exist_ok=True)
-        resourcesdir = appdir / "Contents" / "Resources"
-        resourcesdir.mkdir(parents=True, exist_ok=True)
+        workDir = self.app.mwGlob["workDir"]
+        appDir = workDir / "MountWizzard4.app"
+        macosDir = appDir / "Contents" / "MacOS"
+        macosDir.mkdir(parents=True, exist_ok=True)
+        resourcesDir = appDir / "Contents" / "Resources"
+        resourcesDir.mkdir(parents=True, exist_ok=True)
         dpi = self.ui.dpi.value()
         scale = self.ui.scale.value()
 
         with as_file(files("mw4").joinpath("assets/icon/mw4.icns")) as icon_path:
-            app_icon_destination = resourcesdir / "AppIcon.icns"
+            app_icon_destination = resourcesDir / "AppIcon.icns"
             with open(icon_path, "rb") as src, open(app_icon_destination, "wb") as dst:
                 dst.write(src.read())
 
         with as_file(files("mw4").joinpath("assets/macos/Info.plist")) as info_plist_path:
-            infoPlistPath = appdir / "Contents/Info.plist"
+            infoPlistPath = appDir / "Contents/Info.plist"
             with open(info_plist_path) as src, open(infoPlistPath, "w") as dst:
                 dst.write(src.read())
 
-        executablePath = macosdir / "mountwizzard4.sh"
+        executablePath = macosDir / "mountwizzard4.sh"
         with open(executablePath, "w") as f:
             f.write("#!/bin/bash\n")
             f.write('cd "$(dirname "$0")" || exit 1\n')
             f.write("export PATH='/usr/local/bin:$PATH'\n")
-            f.write(f"uv --directory {str(workdir)} run mw4 -s {scale} -d {dpi}\n")
+            f.write(f"uv --directory {str(workDir)} run mw4 -s {scale} -d {dpi}\n")
         executablePath.chmod(0o755)
-        appdir.chmod(0o755)
+        appDir.chmod(0o755)

@@ -55,6 +55,16 @@ class Dome:
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
 
+        self.overshoot: bool | None = None
+        self.openingHysteresis: float | None = None
+        self.clearanceZenith: float | None = None
+        self.radius: float | None = None
+        self.clearOpening: float | None = None
+        self.useGeometry: bool | None = None
+        self.useDynamicFollowing: bool | None = None
+        self.loadConfig: bool | None = None
+        self.settlingTime: float | None = None
+
     def startCommunication(self) -> None:
         self.run[self.framework].startCommunication()
         self.app.timeMgr.update1s.connect(self.checkSlewingDome)
@@ -92,22 +102,23 @@ class Dome:
                 self.counterStartSlewing -= 1
 
     def checkTargetConditions(self) -> bool:
-        if self.cfg["openingHysteresis"] is None:
+        if self.openingHysteresis is None:
             self.log.debug("No opening hysteresis")
             return False
-        if self.cfg["clearanceZenith"] is None:
+        if self.clearanceZenith is None:
             self.log.debug("No clearance zenith")
             return False
-        if self.cfg["overshoot"] is None:
+        if self.overshoot is None:
             self.log.debug("No overshoot")
             return False
-        if self.cfg["radius"] is None:
+        if self.radius is None:
             self.log.debug("No radius")
             return False
-        if self.cfg["clearOpening"] is None:
+        if self.clearOpening is None:
             self.log.debug("No clear opening")
             return False
-        BC = self.cfg["clearOpening"] - 2 * self.cfg["openingHysteresis"]
+
+        BC = self.clearOpening - 2 * self.openingHysteresis
         if BC < 0:
             self.log.warning("Resulting opening to small")
             return False
@@ -121,16 +132,12 @@ class Dome:
 
         A = np.array(
             [
-                -self.cfg["clearanceZenith"] + self.cfg["openingHysteresis"],
-                self.cfg["clearOpening"] / 2 - self.cfg["openingHysteresis"],
+                -self.clearanceZenith + self.openingHysteresis,
+                self.clearOpening / 2 - self.openingHysteresis,
             ]
         )
-        B = np.array(
-            [self.cfg["radius"], self.cfg["clearOpening"] / 2 - self.cfg["openingHysteresis"]]
-        )
-        C = np.array(
-            [self.cfg["radius"], -self.cfg["clearOpening"] / 2 + self.cfg["openingHysteresis"]]
-        )
+        B = np.array([self.radius, self.clearOpening / 2 - self.openingHysteresis])
+        C = np.array([self.radius, -self.clearOpening / 2 + self.openingHysteresis])
 
         A = np.dot(rot, A)
         B = np.dot(rot, B)
@@ -173,7 +180,7 @@ class Dome:
         return slewNeeded
 
     def calcSlewTarget(self, altitude: float, azimuth: float, func: Callable) -> tuple:
-        if self.cfg["useGeometry"]:
+        if self.useGeometry:
             alt, az, intersect, _, _ = func()
 
             if alt is None or az is None:
@@ -193,7 +200,7 @@ class Dome:
         return alt, az, x, y
 
     def calcOvershoot(self, az: float) -> float:
-        if not self.cfg["useOvershoot"]:
+        if not self.overshoot:
             self.lastFinalAz = None
             return az
 
@@ -208,8 +215,8 @@ class Dome:
             self.log.info(f"Overshoot discarded no direction: [{az}]")
             return az
 
-        y = max(self.cfg["clearOpening"] / 2 - self.cfg["openingHysteresis"], 0)
-        x = self.cfg["radius"]
+        y = max(self.clearOpening / 2 - self.openingHysteresis, 0)
+        x = self.radius
         maxOvershootAzimuth = abs(np.degrees(np.arctan2(y, x)))
 
         deltaAz = maxOvershootAzimuth * direction
@@ -239,7 +246,7 @@ class Dome:
 
         alt, az, x, y = self.calcSlewTarget(altitude, azimuth, func)
 
-        if self.cfg["useDynamicFollowing"] and x is not None and y is not None:
+        if self.useDynamicFollowing and x is not None and y is not None:
             doSlew = self.checkSlewNeeded(x, y)
         else:
             doSlew = True

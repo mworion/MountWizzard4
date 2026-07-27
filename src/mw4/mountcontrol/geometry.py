@@ -84,7 +84,6 @@ class Geometry:
         self._offGEM: float = 0
         self._offPlateOTA: float = 0
         self._offLAT: float = 0
-        self._domeRadius: float = 0
         self.transMatrix = None
         self.transVector = None
         self.parent.app.updateDomeSettings.connect(self.initializeGeometry)
@@ -186,15 +185,6 @@ class Geometry:
         self._offLAT = valueToFloat(value)
         self.cfg["offLAT"] = self._offLAT
 
-    @property
-    def domeRadius(self) -> float:
-        return self._domeRadius
-
-    @domeRadius.setter
-    def domeRadius(self, value: Any) -> None:
-        self._domeRadius = valueToFloat(value)
-        self.cfg["radius"] = self._domeRadius
-
     def initializeGeometry(self, mountType: str) -> bool:
         if mountType not in self.geometryData:
             self.log.warning(f"[{mountType}] not in database")
@@ -212,7 +202,7 @@ class Geometry:
             self.offVertGEM = self.cfg["verticalOffset"]
         self.offGEM = self.cfg["offGEM"]
         self.offLAT = self.cfg["offLAT"]
-        self.domeRadius = self.cfg["radius"]
+
         return True
 
     @staticmethod
@@ -404,7 +394,7 @@ class Geometry:
         PB = P9[:-1]
 
         p = 2 * np.dot(PD, PB)
-        q = np.dot(PB, PB) - self.cfg["radius"] ** 2
+        q = np.dot(PB, PB) - self.cfg["radius"]**2
 
         if self.loggingTrace:
             self.log.debug(f"[Trace] Geometry calc p:[{p}], q:[{q}]")

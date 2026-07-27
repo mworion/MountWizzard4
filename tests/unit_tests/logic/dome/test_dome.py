@@ -33,14 +33,13 @@ def function():
 
 
 def test_properties_1(function):
-    function.settlingTime = 1
-    assert function.settlingTime == 1
+    function.framework = "indi"
+    assert function.framework == "indi"
 
 
 def test_properties_2(function):
-    function.loadConfig = True
-    function.framework = "indi"
-    assert function.loadConfig
+    function.framework = "alpaca"
+    assert function.framework == "alpaca"
 
 
 def test_startCommunication_2(function):
@@ -109,9 +108,9 @@ def test_checkSlewingDome_4(function):
 
 
 def test_checkTargetConditions_1(function):
-    function.overshoot = None
     function.openingHysteresis = None
     function.clearanceZenith = None
+    function.overshoot = None
     function.radius = None
     function.clearOpening = None
     suc = function.checkTargetConditions()
@@ -295,7 +294,7 @@ def test_calcSlewTarget_1(function):
     azimuth = 20
     altitude = 20
     function.useGeometry = False
-    alt, az, x, y = function.calcSlewTarget(azimuth, altitude, func)
+    alt, az, x, y = function.calcSlewTarget(altitude, azimuth, func)
     assert alt == 20
     assert az == 20
     assert x is None
@@ -310,7 +309,7 @@ def test_calcSlewTarget_2(function):
     altitude = 20
     function.useGeometry = True
 
-    alt, az, x, y = function.calcSlewTarget(azimuth, altitude, func)
+    alt, az, x, y = function.calcSlewTarget(altitude, azimuth, func)
     assert alt == 20
     assert az == 20
     assert x == 5
@@ -325,7 +324,7 @@ def test_calcSlewTarget_3(function):
     altitude = 20
     function.useGeometry = True
 
-    alt, az, x, y = function.calcSlewTarget(azimuth, altitude, func)
+    alt, az, x, y = function.calcSlewTarget(altitude, azimuth, func)
     assert alt == 10
     assert az == 10
     assert x == 5
@@ -354,7 +353,7 @@ def test_calcOvershoot_3(function):
     function.radius = 1.5
     function.avoidFirstSlewOvershoot = False
     function.overshoot = True
-    function.app.mount.obsSite.AzDirection = None
+    function.app.dReg["mount"].obsSite.AzDirection = None
     val = function.calcOvershoot(100)
     assert val == 100
 
@@ -366,7 +365,7 @@ def test_calcOvershoot_4(function):
     function.avoidFirstSlewOvershoot = False
     function.overshoot = True
     function.lastFinalAz = None
-    function.app.mount.obsSite.AzDirection = 1
+    function.app.dReg["mount"].obsSite.AzDirection = 1
     val = function.calcOvershoot(100)
     assert round(val, 3) == 107.595
 
@@ -378,7 +377,7 @@ def test_calcOvershoot_5(function):
     function.avoidFirstSlewOvershoot = False
     function.overshoot = True
     function.lastFinalAz = 10
-    function.app.mount.obsSite.AzDirection = 1
+    function.app.dReg["mount"].obsSite.AzDirection = 1
     val = function.calcOvershoot(100)
     assert round(val, 3) == 107.595
 
@@ -388,7 +387,7 @@ def test_calcOvershoot_6(function):
     function.openingHysteresis = 0.2
     function.radius = 1.5
     function.avoidFirstSlewOvershoot = False
-    function.app.mount.obsSite.AzDirection = 1
+    function.app.dReg["mount"].obsSite.AzDirection = 1
     function.overshoot = True
     function.lastFinalAz = 10
     val = function.calcOvershoot(30)
@@ -400,7 +399,7 @@ def test_calcOvershoot_7(function):
     function.openingHysteresis = 0.2
     function.radius = 1.5
     function.avoidFirstSlewOvershoot = False
-    function.app.mount.obsSite.AzDirection = -1
+    function.app.dReg["mount"].obsSite.AzDirection = -1
     function.overshoot = True
     function.lastFinalAz = 10
     val = function.calcOvershoot(30)
@@ -412,7 +411,7 @@ def test_calcOvershoot_8(function):
     function.openingHysteresis = 0.2
     function.radius = 1.5
     function.avoidFirstSlewOvershoot = False
-    function.app.mount.obsSite.AzDirection = -1
+    function.app.dReg["mount"].obsSite.AzDirection = -1
     function.overshoot = True
     function.lastFinalAz = 10
     val = function.calcOvershoot(15)

@@ -13,10 +13,12 @@
 # License APL2.0
 #
 ###########################################################
+import numpy as np
 import pytest
 from mw4.mountcontrol.mount import MountDevice
 from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -819,3 +821,29 @@ def test_initializeGeometry_with_ASCOM_definition(function):
         function.geometry.offNorthGEM
         == function.geometry.parent.app.config["SettingDome"]["northOffset"]
     )
+
+
+def test_calcTransformationMatrices_negative_discriminant(function):
+    suc = function.geometry.initializeGeometry("10micron GM1000HPS")
+    assert suc
+    function.geometry.offNorth = 100
+    function.geometry.offEast = 100
+    function.geometry.offVert = 100
+    function.geometry.offLAT = 100
+    function.geometry.domeRadius = 0.01
+
+    with mock.patch.object(
+        function.geometry.log, "error", wraps=function.geometry.log.error
+    ) as mock_error:
+        alt, az, inter, pb, pd = function.geometry.calcTransformationMatrices(
+            dec=Angle(degrees=89),
+            ha=Angle(hours=0),
+            lat=Angle(degrees=89),
+            pierside="E",
+        )
+        assert alt is None
+        assert az is None
+        assert inter is None
+        assert pb is None
+        assert pd is None
+        assert mock_error.called

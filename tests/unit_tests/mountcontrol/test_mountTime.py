@@ -345,6 +345,20 @@ def test_syncClock_adjustClock_failure(function):
         function.log.warning.assert_called_once()
 
 
+def test_syncClock_absolutAdjustClock_failure(function):
+    function.parent.mountIsUp = True
+    function.parent.config.syncTimeNone = False
+    function.parent.config.syncTimeNotTrack = False
+    function.parent.obsSite.status = function.parent.MountStatus.STOPPED
+    function._timeDiff = np.full(25, 2.0)
+    with (
+        mock.patch.object(function, "absolutAdjustClock", return_value=False),
+        mock.patch.object(function.log, "warning"),
+    ):
+        function.syncClock()
+        function.log.warning.assert_called_once()
+
+
 def test_pollSyncClock_mount_not_up(function):
     function.parent.mountIsUp = False
     with mock.patch.object(QThreadPool, "start") as start:

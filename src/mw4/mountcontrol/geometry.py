@@ -83,7 +83,6 @@ class Geometry:
         self._offVertGEM: float = 0
         self._offGEM: float = 0
         self._offPlateOTA: float = 0
-        self._offLAT: float = 0
         self.transMatrix = None
         self.transVector = None
         self.parent.app.updateDomeSettings.connect(self.initializeGeometry)
@@ -175,15 +174,6 @@ class Geometry:
     def offPlateOTA(self, value: Any) -> None:
         self._offPlateOTA = valueToFloat(value)
         self._offGEM = self._offPlateOTA + self.offGemPlate
-
-    @property
-    def offLAT(self) -> float:
-        return self._offLAT
-
-    @offLAT.setter
-    def offLAT(self, value: Any) -> None:
-        self._offLAT = valueToFloat(value)
-        self.cfg["offLAT"] = self._offLAT
 
     def initializeGeometry(self, mountType: str) -> bool:
         if mountType not in self.geometryData:

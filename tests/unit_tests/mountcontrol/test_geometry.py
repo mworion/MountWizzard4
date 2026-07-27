@@ -106,8 +106,8 @@ def test_geometry_1(function):
     function.geometry.offEast = 0.2
     function.geometry.offVert = 0.3
     function.geometry.offGEM = 0.1
-    function.geometry.offLAT = 0.2
-    function.geometry.domeRadius = 1.5
+    function.geometry.cfg["offLAT"] = 0.2
+    function.geometry.cfg["radius"] = 1.5
 
     assert suc
 
@@ -266,8 +266,8 @@ def test_geometry_2(function):
     function.geometry.offEast = 0.2
     function.geometry.offVert = 0.3
     function.geometry.offGEM = 0.1
-    function.geometry.offLAT = 0.2
-    function.geometry.domeRadius = 1.5
+    function.geometry.cfg["offLAT"] = 0.2
+    function.geometry.cfg["radius"] = 1.5
 
     assert suc
 
@@ -426,8 +426,8 @@ def test_geometry_3(function):
     function.geometry.offEast = 0.2
     function.geometry.offVert = 0.3
     function.geometry.offGEM = 0.1
-    function.geometry.offLAT = 0.2
-    function.geometry.domeRadius = 1.5
+    function.geometry.cfg["offLAT"] = 0.2
+    function.geometry.cfg["radius"] = 1.5
 
     assert suc
 
@@ -586,8 +586,8 @@ def test_geometry_4(function):
     function.geometry.offEast = 0.2
     function.geometry.offVert = 0.3
     function.geometry.offGEM = 0.1
-    function.geometry.offLAT = 0.2
-    function.geometry.domeRadius = 1.5
+    function.geometry.cfg["offLAT"] = 0.2
+    function.geometry.cfg["radius"] = 1.5
 
     assert suc
 

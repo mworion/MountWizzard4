@@ -62,7 +62,7 @@ dependencies = [
     "astropy==8.0.1",
     "pyerfa==2.0.1.5",
     "astroquery==0.4.11",
-    "indipyclient==0.9.1",
+    "indipyclient==0.9.2",
     "sep==1.4.1",
     "pyqtgraph==0.14.0",
     "qimage2ndarray==1.10.0",

@@ -394,11 +394,11 @@ wheels = [
 
 [[package]]
 name = "indipyclient"
-version = "0.9.1"
+version = "0.9.2"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/3c/18/6da326b3c34f1a337e5005fb0d3303fc6f4eb572579c79c36c34cd244c85/indipyclient-0.9.1.tar.gz", hash = "sha256:862091337604ffccdc10d544d5fc2f5b411352362b8b75eb65b9af5adc982066", size = 30032, upload-time = "2025-11-10T09:41:58.285Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/eb/eb/190bb25a1aed49fa4950c0b2763f3ccf9fa0188db3d02b5dadb9be957d16/indipyclient-0.9.2.tar.gz", hash = "sha256:5a05bbd2a4824acca3b15d623e4055fa41c3c0e20cc53e0ddf812c0101b31905", size = 30261, upload-time = "2026-07-23T16:51:37.008Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e4/5a/ce57828eb2b089f26bff8e5456c8932d9147884854f7be9603818af5cde7/indipyclient-0.9.1-py3-none-any.whl", hash = "sha256:d4312170a59d765f9d6805f6add23d01cd8aade398999451a31fb06d2b6bcb0c", size = 32617, upload-time = "2025-11-10T09:41:56.644Z" },
+    { url = "https://files.pythonhosted.org/packages/a0/ca/da7ca4bc68c52981cfc66f4a5a0dfc190d4de8452d885f95cde8a9a44c38/indipyclient-0.9.2-py3-none-any.whl", hash = "sha256:fe400e349e7ed74d7798bcd4e7a41ee0098e9e3c5381c823cb2c258aca32afa4", size = 32692, upload-time = "2026-07-23T16:51:35.669Z" },
 ]
 
 [[package]]
@@ -594,7 +594,7 @@ requires-dist = [
     { name = "astropy", specifier = "==8.0.1" },
     { name = "astroquery", specifier = "==0.4.11" },
     { name = "hidapi", specifier = "==0.15.0" },
-    { name = "indipyclient", specifier = "==0.9.1" },
+    { name = "indipyclient", specifier = "==0.9.2" },
     { name = "lz4", specifier = "==4.4.5" },
     { name = "numpy", specifier = "==2.5.1" },
     { name = "opencv-python-headless", specifier = "==5.0.0.93" },

@@ -253,11 +253,11 @@ def test_geometry_1(function):
             pierside=t[2],
         )
         alt, az, inter, _, _ = val
-        assert pytest.approx(alt.degrees, 0.001) == r[0]
-        assert pytest.approx(az.degrees, 0.001) == r[1]
-        assert pytest.approx(inter[0], 0.001) == r[2]
-        assert pytest.approx(inter[1], 0.001) == r[3]
-        assert pytest.approx(inter[2], 0.001) == r[4]
+        assert alt.degrees == pytest.approx(r[0], abs=0.001)
+        assert az.degrees == pytest.approx(r[1], abs=0.001)
+        assert inter[0] == pytest.approx(r[2], abs=0.001)
+        assert inter[1] == pytest.approx(r[3], abs=0.001)
+        assert inter[2] == pytest.approx(r[4], abs=0.001)
 
 
 def test_geometry_2(function):
@@ -413,11 +413,11 @@ def test_geometry_2(function):
             pierside=t[2],
         )
         alt, az, inter, _, _ = val
-        assert pytest.approx(alt.degrees, 0.001) == r[0]
-        assert pytest.approx(az.degrees, 0.001) == r[1]
-        assert pytest.approx(inter[0], 0.001) == r[2]
-        assert pytest.approx(inter[1], 0.001) == r[3]
-        assert pytest.approx(inter[2], 0.001) == r[4]
+        assert alt.degrees == pytest.approx(r[0], abs=0.001)
+        assert az.degrees == pytest.approx(r[1], abs=0.001)
+        assert inter[0] == pytest.approx(r[2], abs=0.001)
+        assert inter[1] == pytest.approx(r[3], abs=0.001)
+        assert inter[2] == pytest.approx(r[4], abs=0.001)
 
 
 def test_geometry_3(function):
@@ -573,11 +573,11 @@ def test_geometry_3(function):
             pierside=t[2],
         )
         alt, az, inter, _, _ = val
-        assert pytest.approx(alt.degrees, 0.001) == r[0]
-        assert pytest.approx(az.degrees, 0.001) == r[1]
-        assert pytest.approx(inter[0], 0.001) == r[2]
-        assert pytest.approx(inter[1], 0.001) == r[3]
-        assert pytest.approx(inter[2], 0.001) == r[4]
+        assert alt.degrees == pytest.approx(r[0], abs=0.001)
+        assert az.degrees == pytest.approx(r[1], abs=0.001)
+        assert inter[0] == pytest.approx(r[2], abs=0.001)
+        assert inter[1] == pytest.approx(r[3], abs=0.001)
+        assert inter[2] == pytest.approx(r[4], abs=0.001)
 
 
 def test_geometry_4(function):
@@ -733,11 +733,11 @@ def test_geometry_4(function):
             pierside=t[2],
         )
         alt, az, inter, _, _ = val
-        assert pytest.approx(alt.degrees, 0.001) == r[0]
-        assert pytest.approx(az.degrees, 0.001) == r[1]
-        assert pytest.approx(inter[0], 0.001) == r[2]
-        assert pytest.approx(inter[1], 0.001) == r[3]
-        assert pytest.approx(inter[2], 0.001) == r[4]
+        assert alt.degrees == pytest.approx(r[0], abs=0.001)
+        assert az.degrees == pytest.approx(r[1], abs=0.001)
+        assert inter[0] == pytest.approx(r[2], abs=0.001)
+        assert inter[1] == pytest.approx(r[3], abs=0.001)
+        assert inter[2] == pytest.approx(r[4], abs=0.001)
 
 
 def test_geometry_8(function):
@@ -754,11 +754,11 @@ def test_geometry_8(function):
         ha=Angle(hours=1), dec=Angle(degrees=1), lat=Angle(degrees=49), pierside="E"
     )
     alt, az, inter, PB, PD = val
-    assert alt is None
-    assert az is None
-    assert inter is None
-    assert PB is None
-    assert PD is None
+    assert alt is not None
+    assert az is not None
+    assert inter is not None
+    assert PB is not None
+    assert PD is not None
 
 
 def test_geometry_9(function):

@@ -105,7 +105,27 @@ class App(QObject):
     def __init__(self):
         super().__init__()
         self.timeMgr = TimeManager(app=self)
-        self.config = {"WindowMain": {}}
+        self.config = {
+            "WindowMain": {},
+            "SettingDome": {
+                "use10micronDef": True,
+                "northOffset": 0.0,
+                "eastOffset": 0.0,
+                "verticalOffset": 0.0,
+                "offGEM": 0.0,
+                "offLAT": 0.0,
+                "radius": 100.0,
+                "settleTime": 0.0,
+                "openingHysteresis": 0.0,
+                "clearanceZenith": 0.2,
+                "clearOpening": 1.0,
+                "overshoot": 0.0,
+                "useOvershoot": False,
+                "useGeometry": False,
+                "useDynamicFollowing": False,
+                "automaticDome": False,
+            },
+        }
         self.deviceStat = {
             "dome": False,
             "mount": False,

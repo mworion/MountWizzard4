@@ -797,3 +797,25 @@ def test_calcTransformationMatrices_loggingTrace(function):
     alt, az, inter, _, _ = val
     assert alt is not None
     assert az is not None
+
+
+def test_offLAT_getter(function):
+    function.geometry.initializeGeometry("10micron GM1000HPS")
+    function.geometry.offLAT = 0.5
+    assert function.geometry.offLAT == 0.5
+
+
+def test_domeRadius_getter(function):
+    function.geometry.initializeGeometry("10micron GM1000HPS")
+    function.geometry.domeRadius = 2.0
+    assert function.geometry.domeRadius == 2.0
+
+
+def test_initializeGeometry_with_ASCOM_definition(function):
+    function.geometry.parent.app.config["SettingDome"]["use10micronDef"] = False
+    suc = function.geometry.initializeGeometry("10micron GM1000HPS")
+    assert suc
+    assert function.geometry.offNorthGEM == function.geometry.parent.app.config[
+        "SettingDome"
+    ]["northOffset"]
+

@@ -116,13 +116,11 @@ def test_tab9(function):
 
 def test_initConfig_1(function):
     function.app.config["WindowMain"] = {}
-    with mock.patch.object(function, "setUseGeometry"):
-        function.initConfig()
+    function.initConfig()
 
 
 def test_initConfig_2(function):
-    with mock.patch.object(function, "setUseGeometry"):
-        function.initConfig()
+    function.initConfig()
 
 
 def test_storeConfig_1(function):
@@ -139,35 +137,8 @@ def test_setupIcons_2(function):
     function.setupIcons()
 
 
-def test_switchGeometryDefinition_1(function):
-    function.ui.use10micronDef.setChecked(True)
-    function.switchGeometryDefinition()
-
-
-def test_switchGeometryDefinition_2(function):
-    function.ui.use10micronDef.setChecked(False)
-    function.switchGeometryDefinition()
-
-
-def test_setUseGeometry_1(function):
-    function.ui.use10micronDef.setChecked(False)
-    function.ui.automaticDome.setChecked(False)
-    function.setUseGeometry()
-
-
-def test_setUseGeometry_2(function):
-    function.ui.use10micronDef.setChecked(True)
-    function.ui.automaticDome.setChecked(True)
-    with mock.patch.object(function, "updateDomeGeometryToGui"):
-        function.setUseGeometry()
-
-
-def test_updateDomeGeometry_1(function):
+def test_updateGeometryFromDriver_1(function):
     function.updateDomeGeometryToGui()
-
-
-def test_setDomeSettlingTime_1(function):
-    function.setDomeSettlingTime()
 
 
 def test_closeEvent_1(function):

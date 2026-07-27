@@ -39,9 +39,34 @@ def app(qapp):
         shutil.copy2("tests/testData/test.run", Path("tests/work/test.run"))
 
     mock_emit = MagicMock()
-    with mock.patch("mw4.mainApp.MainWindow") as mock_main_window:
-        mock_main_window.return_value = MagicMock()
-        app_instance = MountWizzard4(mwGlob, qapp, 1)
+    default_config = {
+        "SettingDome": {
+            "use10micronDef": True,
+            "northOffset": 0.0,
+            "eastOffset": 0.0,
+            "verticalOffset": 0.0,
+            "offGEM": 0.0,
+            "offLAT": 0.0,
+            "radius": 100.0,
+            "settleTime": 0.0,
+            "openingHysteresis": 0.0,
+            "clearanceZenith": 0.2,
+            "clearOpening": 1.0,
+            "overshoot": 0.0,
+            "useOvershoot": False,
+            "useGeometry": False,
+            "useDynamicFollowing": False,
+            "automaticDome": False,
+        },
+    }
+
+    def loadProfileStart_mock(config_dir):
+        return default_config
+
+    with mock.patch("mw4.mainApp.loadProfileStart", side_effect=loadProfileStart_mock):
+        with mock.patch("mw4.mainApp.MainWindow") as mock_main_window:
+            mock_main_window.return_value = MagicMock()
+            app_instance = MountWizzard4(mwGlob, qapp, 1)
     app_instance.update1s = MagicMock(emit=mock_emit)
     yield app_instance
     try:

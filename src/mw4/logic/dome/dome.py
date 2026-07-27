@@ -37,6 +37,7 @@ class Dome:
         self.threadPool = app.threadPool
         self.signals = Signals()
         self.data: dict[str, Any] = {"Slewing": False}
+        self.cfg = app.config["SettingDome"]
         self.framework: str = ""
         self.run: dict[str, Any] = {
             "indi": DomeIndi(self),
@@ -45,19 +46,11 @@ class Dome:
         if platform.system() == "Windows":
             self.run["ascom"] = DomeAscom(self)
 
-        self.useGeometry: bool = False
-        self.useDynamicFollowing: bool = False
         self.isSlewing: bool = False
-        self.overshoot: float | None = None
         self.domeStarted: bool = False
         self.lastFinalAz: float | None = None
         self.avoidFirstSlewOvershoot: bool = True
-        self.openingHysteresis: float | None = None
-        self.clearanceZenith: float | None = None
-        self.radius: float | None = None
-        self.clearOpening: float | None = None
         self.counterStartSlewing: int = -1
-        self.settlingTime: float = 0
         self.settlingWait = PySide6.QtCore.QTimer()
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
@@ -85,7 +78,7 @@ class Dome:
             if not self.data.get("Slewing"):
                 self.isSlewing = False
                 self.signals.message.emit("wait settle")
-                self.settlingWait.start(int(self.settlingTime * 1000))
+                self.settlingWait.start(int(self.cfg["settleTime"] * 1000))
 
         else:
             if self.data.get("Slewing"):
@@ -99,22 +92,22 @@ class Dome:
                 self.counterStartSlewing -= 1
 
     def checkTargetConditions(self) -> bool:
-        if self.openingHysteresis is None:
+        if self.cfg["openingHysteresis"] is None:
             self.log.debug("No opening hysteresis")
             return False
-        if self.clearanceZenith is None:
+        if self.cfg["clearanceZenith"] is None:
             self.log.debug("No clearance zenith")
             return False
-        if self.overshoot is None:
+        if self.cfg["overshoot"] is None:
             self.log.debug("No overshoot")
             return False
-        if self.radius is None:
+        if self.cfg["radius"] is None:
             self.log.debug("No radius")
             return False
-        if self.clearOpening is None:
+        if self.cfg["clearOpening"] is None:
             self.log.debug("No clear opening")
             return False
-        BC = self.clearOpening - 2 * self.openingHysteresis
+        BC = self.cfg["clearOpening"] - 2 * self.cfg["openingHysteresis"]
         if BC < 0:
             self.log.warning("Resulting opening to small")
             return False
@@ -128,12 +121,12 @@ class Dome:
 
         A = np.array(
             [
-                -self.clearanceZenith + self.openingHysteresis,
-                self.clearOpening / 2 - self.openingHysteresis,
+                -self.cfg["clearanceZenith"] + self.cfg["openingHysteresis"],
+                self.cfg["clearOpening"] / 2 - self.cfg["openingHysteresis"],
             ]
         )
-        B = np.array([self.radius, self.clearOpening / 2 - self.openingHysteresis])
-        C = np.array([self.radius, -self.clearOpening / 2 + self.openingHysteresis])
+        B = np.array([self.cfg["radius"], self.cfg["clearOpening"] / 2 - self.cfg["openingHysteresis"]])
+        C = np.array([self.cfg["radius"], -self.cfg["clearOpening"] / 2 + self.cfg["openingHysteresis"]])
 
         A = np.dot(rot, A)
         B = np.dot(rot, B)
@@ -176,7 +169,7 @@ class Dome:
         return slewNeeded
 
     def calcSlewTarget(self, altitude: float, azimuth: float, func: Callable) -> tuple:
-        if self.useGeometry:
+        if self.cfg["useGeometry"]:
             alt, az, intersect, _, _ = func()
 
             if alt is None or az is None:
@@ -196,7 +189,7 @@ class Dome:
         return alt, az, x, y
 
     def calcOvershoot(self, az: float) -> float:
-        if not self.overshoot:
+        if not self.cfg["useOvershoot"]:
             self.lastFinalAz = None
             return az
 
@@ -211,8 +204,8 @@ class Dome:
             self.log.info(f"Overshoot discarded no direction: [{az}]")
             return az
 
-        y = max(self.clearOpening / 2 - self.openingHysteresis, 0)
-        x = self.radius
+        y = max(self.cfg["clearOpening"] / 2 - self.cfg["openingHysteresis"], 0)
+        x = self.cfg["radius"]
         maxOvershootAzimuth = abs(np.degrees(np.arctan2(y, x)))
 
         deltaAz = maxOvershootAzimuth * direction
@@ -242,7 +235,7 @@ class Dome:
 
         alt, az, x, y = self.calcSlewTarget(altitude, azimuth, func)
 
-        if self.useDynamicFollowing and x is not None and y is not None:
+        if self.cfg["useDynamicFollowing"] and x is not None and y is not None:
             doSlew = self.checkSlewNeeded(x, y)
         else:
             doSlew = True

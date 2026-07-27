@@ -66,7 +66,8 @@ class Geometry:
 
     def __init__(self, parent: Any) -> None:
         self.parent = parent
-        self.loggingTrace = parent.loggingTrace
+        self.cfg = parent.app.config["SettingDome"]
+        self.loggingTrace: bool = parent.loggingTrace
         self.offBaseAltAxisX: float = 0
         self.offBaseAltAxisZ: float = 0
         self.offAltAxisGemX: float = 0
@@ -80,20 +81,13 @@ class Geometry:
         self._offEastGEM: float = 0
         self._offVert: float = 0
         self._offVertGEM: float = 0
-        self._domeRadius: float = 1
         self._offGEM: float = 0
-        self._offLAT: float = 0
         self._offPlateOTA: float = 0
+        self._offLAT: float = 0
+        self._domeRadius: float = 0
         self.transMatrix = None
         self.transVector = None
-
-    @property
-    def domeRadius(self) -> float:
-        return self._domeRadius
-
-    @domeRadius.setter
-    def domeRadius(self, value: Any) -> None:
-        self._domeRadius = valueToFloat(value)
+        self.parent.app.updateDomeSettings.connect(self.initializeGeometry)
 
     @property
     def offNorth(self) -> float:
@@ -175,14 +169,6 @@ class Geometry:
         self._offPlateOTA = self._offGEM - self.offGemPlate
 
     @property
-    def offLAT(self) -> float:
-        return self._offLAT
-
-    @offLAT.setter
-    def offLAT(self, value: Any) -> None:
-        self._offLAT = valueToFloat(value)
-
-    @property
     def offPlateOTA(self) -> float:
         return self._offPlateOTA
 
@@ -191,6 +177,24 @@ class Geometry:
         self._offPlateOTA = valueToFloat(value)
         self._offGEM = self._offPlateOTA + self.offGemPlate
 
+    @property
+    def offLAT(self) -> float:
+        return self._offLAT
+
+    @offLAT.setter
+    def offLAT(self, value: Any) -> None:
+        self._offLAT = valueToFloat(value)
+        self.cfg["offLAT"] = self._offLAT
+
+    @property
+    def domeRadius(self) -> float:
+        return self._domeRadius
+
+    @domeRadius.setter
+    def domeRadius(self, value: Any) -> None:
+        self._domeRadius = valueToFloat(value)
+        self.cfg["radius"] = self._domeRadius
+
     def initializeGeometry(self, mountType: str) -> bool:
         if mountType not in self.geometryData:
             self.log.warning(f"[{mountType}] not in database")
@@ -198,6 +202,17 @@ class Geometry:
 
         self.log.info(f"Using [{mountType}] geometry")
         vars(self).update(self.geometryData[mountType])
+        if self.cfg["use10micronDef"]:
+            self.offNorth = self.cfg["northOffset"]
+            self.offEast = self.cfg["eastOffset"]
+            self.offVert = self.cfg["verticalOffset"]
+        else:
+            self.offNorthGEM = self.cfg["northOffset"]
+            self.offEastGEM = self.cfg["eastOffset"]
+            self.offVertGEM = self.cfg["verticalOffset"]
+        self.offGEM = self.cfg["offGEM"]
+        self.offLAT = self.cfg["offLAT"]
+        self.domeRadius = self.cfg["radius"]
         return True
 
     @staticmethod
@@ -257,8 +272,8 @@ class Geometry:
             text += f"pierside:{pierside} ,"
             text += f"offGEM:{self.offGEM}, offPlateOTA:{self.offPlateOTA}, "
             text += f"offNorth:{self.offNorth}, offEast:{self.offEast}, "
-            text += f"offVert:{self.offVert}, offLAT:{self.offLAT}, "
-            text += f"domeRadius:{self.domeRadius}"
+            text += f"offVert:{self.offVert}, offLAT:{self.cfg["offLAT"]}, "
+            text += f"domeRadius:{self.cfg["radius"]}"
             self.log.debug(text)
 
         ha = ha.degrees
@@ -365,7 +380,7 @@ class Geometry:
         # installed but not centered should be a translation in y. if the scope is
         # de-centered looking in the direction of the scope (out of the hemisphere)
         # to the right it's a negative y otherwise a positive one
-        vec7 = [0, -self.offLAT, 0]
+        vec7 = [0, -self.cfg["offLAT"], 0]
         T8 = np.dot(T7, self.transformTranslate(vec7))
         P9 = np.dot(T8, P0)
 
@@ -389,7 +404,7 @@ class Geometry:
         PB = P9[:-1]
 
         p = 2 * np.dot(PD, PB)
-        q = np.dot(PB, PB) - self.domeRadius**2
+        q = np.dot(PB, PB) - self.cfg["radius"]**2
 
         if self.loggingTrace:
             self.log.debug(f"[Trace] Geometry calc p:[{p}], q:[{q}]")

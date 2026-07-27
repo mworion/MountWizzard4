@@ -138,7 +138,7 @@ def test_setupIcons_2(function):
 
 
 def test_updateGeometryFromDriver_1(function):
-    function.updateDomeGeometryToGui()
+    function.updateGeometryFromDriver()
 
 
 def test_closeEvent_1(function):

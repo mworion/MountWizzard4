@@ -815,7 +815,7 @@ def test_initializeGeometry_with_ASCOM_definition(function):
     function.geometry.parent.app.config["SettingDome"]["use10micronDef"] = False
     suc = function.geometry.initializeGeometry("10micron GM1000HPS")
     assert suc
-    assert function.geometry.offNorthGEM == function.geometry.parent.app.config[
-        "SettingDome"
-    ]["northOffset"]
-
+    assert (
+        function.geometry.offNorthGEM
+        == function.geometry.parent.app.config["SettingDome"]["northOffset"]
+    )

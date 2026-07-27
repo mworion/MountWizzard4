@@ -125,8 +125,12 @@ class Dome:
                 self.cfg["clearOpening"] / 2 - self.cfg["openingHysteresis"],
             ]
         )
-        B = np.array([self.cfg["radius"], self.cfg["clearOpening"] / 2 - self.cfg["openingHysteresis"]])
-        C = np.array([self.cfg["radius"], -self.cfg["clearOpening"] / 2 + self.cfg["openingHysteresis"]])
+        B = np.array(
+            [self.cfg["radius"], self.cfg["clearOpening"] / 2 - self.cfg["openingHysteresis"]]
+        )
+        C = np.array(
+            [self.cfg["radius"], -self.cfg["clearOpening"] / 2 + self.cfg["openingHysteresis"]]
+        )
 
         A = np.dot(rot, A)
         B = np.dot(rot, B)

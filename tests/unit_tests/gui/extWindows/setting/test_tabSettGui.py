@@ -293,9 +293,7 @@ def setupMacOsMocks():
     mock_work_dir.__truediv__ = mock.MagicMock(return_value=mock_app_dir)
     mock_app_dir.__truediv__ = mock.MagicMock(return_value=mock_contents_dir)
     mock_contents_dir.__truediv__ = mock.MagicMock(
-        side_effect=lambda x: (
-            mock_macos_dir if "MacOS" in str(x) else mock_resources_dir
-        )
+        side_effect=lambda x: mock_macos_dir if "MacOS" in str(x) else mock_resources_dir
     )
     mock_macos_dir.__truediv__ = mock.MagicMock(return_value=mock_executable_path)
 
@@ -335,5 +333,3 @@ def test_runMacOsConfig(settGui):
         mock_file.assert_called()
         mock_executable_path.chmod.assert_called_with(0o755)
         mock_app_dir.chmod.assert_called_with(0o755)
-
-

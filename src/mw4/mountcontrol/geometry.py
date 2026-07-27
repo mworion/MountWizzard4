@@ -272,8 +272,8 @@ class Geometry:
             text += f"pierside:{pierside} ,"
             text += f"offGEM:{self.offGEM}, offPlateOTA:{self.offPlateOTA}, "
             text += f"offNorth:{self.offNorth}, offEast:{self.offEast}, "
-            text += f"offVert:{self.offVert}, offLAT:{self.cfg["offLAT"]}, "
-            text += f"domeRadius:{self.cfg["radius"]}"
+            text += f"offVert:{self.offVert}, offLAT:{self.cfg['offLAT']}, "
+            text += f"domeRadius:{self.cfg['radius']}"
             self.log.debug(text)
 
         ha = ha.degrees
@@ -404,7 +404,7 @@ class Geometry:
         PB = P9[:-1]
 
         p = 2 * np.dot(PD, PB)
-        q = np.dot(PB, PB) - self.cfg["radius"]**2
+        q = np.dot(PB, PB) - self.cfg["radius"] ** 2
 
         if self.loggingTrace:
             self.log.debug(f"[Trace] Geometry calc p:[{p}], q:[{q}]")

@@ -66,6 +66,8 @@ class Geometry:
 
     def __init__(self, parent: Any) -> None:
         self.parent = parent
+        if not "SettingDome" in parent.app.config:
+            parent.app.config["SettingDome"] = {}
         self.cfg = parent.app.config["SettingDome"]
         self.loggingTrace: bool = parent.loggingTrace
         self.offBaseAltAxisX: float = 0

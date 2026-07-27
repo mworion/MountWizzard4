@@ -19,7 +19,7 @@ from pathlib import Path
 from typing import Any
 
 log: logging.Logger = logging.getLogger("MW4")
-profileVersion = "4.3"
+profileVersion = "5.0"
 
 
 def defaultConfig() -> dict[str, Any]:

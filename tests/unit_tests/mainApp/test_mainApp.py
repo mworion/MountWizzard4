@@ -107,14 +107,10 @@ def test_send_cyclic(app):
 
 
 def test_aboutToQuit(app):
-    """aboutToQuit must stop the timer manager and all mount timers."""
-    with (
-        mock.patch.object(app.timeMgr, "stop") as mockStop,
-        mock.patch.object(app.mount, "stopAllMountTimers") as mockStopMount,
-    ):
+    """aboutToQuit must stop the timer manager."""
+    with mock.patch.object(app.timeMgr, "stop") as mockStop:
         app.aboutToQuit()
     mockStop.assert_called_once()
-    mockStopMount.assert_called_once()
 
 
 def test_quit(app):

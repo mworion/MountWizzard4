@@ -51,7 +51,7 @@ class SimulatorTelescope:
             node["trans"].setRotationY(-abs(latitude))
 
         offPlateOTA = self.app.dReg["mount"].geometry.offPlateOTA * 1000
-        cfg = self.app.config.get("SettingDeviceDome", {})
+        cfg = self.app.config["SettingDome"]
         lat = -cfg.get("offLAT", 0) * 1000
 
         node = self.parent.entityModel.get("gem")

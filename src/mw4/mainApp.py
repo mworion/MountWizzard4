@@ -134,7 +134,6 @@ class MountWizzard4(QObject):
 
     def aboutToQuit(self) -> None:
         self.timeMgr.stop()
-        self.mount.stopAllMountTimers()
 
     def quit(self) -> None:
         self.dReg.setStat("mount", False)

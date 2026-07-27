@@ -80,7 +80,7 @@ class SettDome:
         self.ui.tabDomeExplain.setCurrentIndex(8)
 
     def initConfig(self) -> None:
-        config = self.app.config.get("SettingDeviceDome", {})
+        config = self.app.config.get("SettingDome", {})
         self.ui.domeClearOpening.setValue(config.get("clearOpening", 0.4))
         self.ui.domeOpeningHysteresis.setValue(config.get("openingHysteresis", 0.0))
         self.ui.domeClearanceZenith.setValue(config.get("clearanceZenith", 0.2))
@@ -98,8 +98,7 @@ class SettDome:
         self.ui.settleTimeDome.setValue(config.get("settleTime", 0))
 
     def storeConfig(self) -> None:
-        self.app.config["SettingDeviceDome"] = {}
-        config = self.app.config["SettingDeviceDome"]
+        config = self.app.config["SettingDome"]
         config["radius"] = self.ui.domeRadius.value()
         config["clearOpening"] = self.ui.domeClearOpening.value()
         config["openingHysteresis"] = self.ui.domeOpeningHysteresis.value()

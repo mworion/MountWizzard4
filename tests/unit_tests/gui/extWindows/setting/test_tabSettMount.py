@@ -58,7 +58,7 @@ def test_initConfigLoadsDefaults(settMount: SettMount) -> None:
 
 def test_initConfigLoadsFromConfig(settMount: SettMount) -> None:
     """Test initConfig loads configuration from app.config."""
-    settMount.app.config["SettingMount"] = {
+    settMount.app.config["SettingRack"] = {
         "rackCompMAC": "AA:BB:CC:DD:EE:FF",
         "rackCompWolAddress": "192.168.1.255",
         "rackCompWolPort": "7",
@@ -72,6 +72,7 @@ def test_initConfigLoadsFromConfig(settMount: SettMount) -> None:
 
 def test_storeConfig(settMount: SettMount) -> None:
     """Test storeConfig saves configuration to app.config."""
+    settMount.app.config["SettingRack"] = {}
     settMount.ui.rackCompMAC.setText("AA:BB:CC:DD:EE:FF")
     settMount.ui.rackCompWolAddress.setText("192.168.1.255")
     settMount.ui.rackCompWolPort.setText("7")
@@ -84,7 +85,7 @@ def test_storeConfig(settMount: SettMount) -> None:
 
     settMount.storeConfig()
 
-    config = settMount.app.config["SettingMount"]
+    config = settMount.app.config["SettingRack"]
     assert config["rackCompMAC"] == "AA:BB:CC:DD:EE:FF"
     assert config["rackCompWolAddress"] == "192.168.1.255"
     assert config["rackCompWolPort"] == "7"
@@ -98,6 +99,7 @@ def test_storeConfig(settMount: SettMount) -> None:
 
 def test_storeConfigPort3490(settMount: SettMount) -> None:
     """Test storeConfig with port 3490 selected."""
+    settMount.app.config["SettingRack"] = {}
     settMount.ui.port3490.setChecked(True)
     settMount.ui.port3492.setChecked(False)
     settMount.storeConfig()

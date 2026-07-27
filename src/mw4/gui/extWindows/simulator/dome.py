@@ -61,7 +61,7 @@ class SimulatorDome:
         likewise some transformations have to be reverted as they are propagated
         through entity linking.
         """
-        cfg = self.app.config.get("SettingDeviceDome", {})
+        cfg = self.app.config["SettingDome"]
         radius = cfg.get("domeRadius", 1.5) * 1000
         scale = 1 + (radius - 1250) / 1250
         corrZ = -(scale - 1) * 800
@@ -83,7 +83,7 @@ class SimulatorDome:
         if "DOME_SHUTTER.SHUTTER_OPEN" not in self.app.dReg["dome"].data:
             return
 
-        cfg = self.app.config.get("SettingDeviceDome", {})
+        cfg = self.app.config["SettingDome"]
         radius = cfg.get("domeRadius", 1.5) * 1000
         width = cfg.get("domeClearOpening", 0.4) * 1000
         scale = 1 + (radius - 1250) / 1250

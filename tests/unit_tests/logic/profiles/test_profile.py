@@ -55,7 +55,7 @@ def test_loadProfile_yamlError():
 def test_defaultConfig():
     val = defaultConfig()
     assert val["profileName"] == "config"
-    assert val["version"] == "4.3"
+    assert val["version"] == "5.0"
 
 
 def test_loadProfile_1():
@@ -120,7 +120,7 @@ def test_loadProfileStart_2():
         yaml.dump(config, outfile)
 
     val = loadProfileStart(Path("tests/work/config"))
-    assert val == {"profileName": "config", "version": "4.3"}
+    assert val == {"profileName": "config", "version": "5.0"}
 
 
 def test_loadProfileStart_3():

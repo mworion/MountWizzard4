@@ -38,10 +38,11 @@ class SettMount:
 
     def initConfig(self) -> None:
         self.app.dReg["mount"].instance.getFW()
-        config = self.app.config.get("SettingMount", {})
+        config = self.app.config.get("SettingRack", {})
         self.ui.rackCompMAC.setText(config.get("rackCompMAC", "00:00:00:00:00"))
         self.ui.rackCompWolAddress.setText(config.get("rackCompWolAddress", "255.255.255.255"))
         self.ui.rackCompWolPort.setText(config.get("rackCompWolPort", "9"))
+
         self.ui.hostAddress.setText(self.app.dReg["mount"].instance.config.hostAddress)
         self.ui.port3492.setChecked(self.app.dReg["mount"].instance.config.port == 3492)
         self.ui.MAC.setText(self.app.dReg["mount"].instance.config.MAC)
@@ -65,8 +66,8 @@ class SettMount:
         self.ui.syncTimeNotTrack.clicked.connect(self.storeConfig)
 
     def storeConfig(self) -> None:
-        self.app.config["SettingMount"] = {}
-        config = self.app.config["SettingMount"]
+        self.app.config["SettingRack"] = {}
+        config = self.app.config["SettingRack"]
         config["rackCompMAC"] = self.ui.rackCompMAC.text()
         config["rackCompWolAddress"] = self.ui.rackCompWolAddress.text()
         config["rackCompWolPort"] = self.ui.rackCompWolPort.text()

@@ -91,7 +91,7 @@ class FileHandler:
         self.image = (self.image / np.max(self.image) * 255).astype("uint8")
 
     def checkValidImageFormat(self) -> bool:
-        if self.image is None or len(self.image) == 0:
+        if self.image is None or self.image.size == 0:
             self.log.debug("No image data in FITS")
             self.image = np.zeros((0, 0))
             self.header = fits.Header()

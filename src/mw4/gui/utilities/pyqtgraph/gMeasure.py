@@ -17,10 +17,11 @@
 from mw4.gui.utilities.pyqtgraph.gCustomViewBox import CustomViewBox
 from mw4.gui.utilities.pyqtgraph.gPlotBase import PlotBase
 from mw4.gui.utilities.pyqtgraph.gTimeMeasure import TimeMeasure
+from typing import Any
 
 
 class Measure(PlotBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.nextRow()
         self.p.append(self.addPlot(viewBox=CustomViewBox()))

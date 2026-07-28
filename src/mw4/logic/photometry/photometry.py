@@ -99,8 +99,8 @@ class Photometry:
         maskInner = np.sqrt(self.h * self.h / 4 + self.w * self.w / 4) * 0.25 > radius
         outerHFR = self.hfr[maskOuter]
         innerHFR = self.hfr[maskInner]
-        self.hfrOuter = float(np.median(outerHFR)) if len(outerHFR) > 0 else np.nan
-        self.hfrInner = float(np.median(innerHFR)) if len(innerHFR) > 0 else np.nan
+        self.hfrOuter = float(np.median(outerHFR)) if outerHFR.size > 0 else np.nan
+        self.hfrInner = float(np.median(innerHFR)) if innerHFR.size > 0 else np.nan
         self.hfrPercentile = np.percentile(self.hfr, 90)
         self.hfrMedian = np.median(self.hfr)
 
@@ -152,7 +152,7 @@ class Photometry:
                 yMin = yRange[iy]
                 yMax = yRange[iy + 1]
                 hfr = self.hfr[(x > xMin) & (x < xMax) & (y > yMin) & (y < yMax)]
-                if len(hfr) > 0:
+                if hfr.size > 0:
                     segHFR[ix][iy] = np.median(hfr)
         self.hfrSegSquare = segHFR
         self.signals.hfrSquare.emit()
@@ -170,7 +170,7 @@ class Photometry:
             mask3 = rangeA[i] < angles
             mask4 = rangeA[i + 1] > angles
             hfrVal = self.hfr[mask1 & mask2 & mask3 & mask4]
-            if len(hfrVal) > 0:
+            if hfrVal.size > 0:
                 segHFR[i] = np.median(hfrVal)
         self.hfrSegTriangle = np.concatenate([segHFR, segHFR])
         self.signals.hfrTriangle.emit()

@@ -17,10 +17,11 @@ import numpy as np
 import pyqtgraph as pg
 from mw4.gui.utilities.pyqtgraph.gPlotBase import PlotBase
 from PySide6.QtGui import QColor
+from typing import Any
 
 
 class NormalScatter(PlotBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.setupItems()
         self.colorInx = None
@@ -103,7 +104,7 @@ class NormalScatter(PlotBase):
         else:
             self.scatterItem.addPoints(spots, tip=tip)
 
-    def plot(self, x: np.ndarray, y: np.ndarray, **kwargs) -> None:
+    def plot(self, x: np.ndarray, y: np.ndarray, **kwargs: Any) -> None:
         self.p[0].clear()
         self.p[0].showAxes(True, showValues=True)
         self.scatterItem = pg.ScatterPlotItem(hoverable=True, hoverSize=10, hoverPen=self.pen)

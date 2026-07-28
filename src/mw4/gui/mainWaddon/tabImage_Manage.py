@@ -45,13 +45,17 @@ class ImageManage(TabAddon):
         self.ui.lightPanelOff.clicked.connect(self.switchLightPanelOff)
         clickable(self.ui.lightPanelIntensity).connect(self.setLightPanelIntensity)
 
-        self.ui.aperture.valueChanged.connect(self.updateImagingParam)
-        self.ui.focalLength.valueChanged.connect(self.updateImagingParam)
-        self.ui.exposureTime1.valueChanged.connect(self.updateImagingParam)
-        self.ui.binning1.valueChanged.connect(self.updateImagingParam)
-        self.ui.exposureTimeN.valueChanged.connect(self.updateImagingParam)
-        self.ui.binningN.valueChanged.connect(self.updateImagingParam)
-        self.ui.subFrame.valueChanged.connect(self.updateImagingParam)
+        imagingParamWidgets = [
+            self.ui.aperture,
+            self.ui.focalLength,
+            self.ui.exposureTime1,
+            self.ui.binning1,
+            self.ui.exposureTimeN,
+            self.ui.binningN,
+            self.ui.subFrame,
+        ]
+        for widget in imagingParamWidgets:
+            widget.valueChanged.connect(self.updateImagingParam)
         self.app.timeMgr.update1s.connect(self.updateImagingParam)
 
         self.ui.haltFocuser.clicked.connect(self.haltFocuser)

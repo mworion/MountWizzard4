@@ -15,10 +15,11 @@
 ###########################################################
 from mw4.gui.utilities.pyqtgraph.gCustomViewBox import CustomViewBox
 from mw4.gui.utilities.pyqtgraph.gPlotBase import PlotBase
+from typing import Any
 
 
 class Hemisphere(PlotBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.p.append(self.addPlot(viewBox=CustomViewBox()))
         self.setupItems()

@@ -16,10 +16,11 @@
 import numpy as np
 import pyqtgraph as pg
 from PySide6.QtCore import QEvent, Qt
+from typing import Any
 
 
 class CustomViewBox(pg.ViewBox):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         self._previousGeometry = None
         super().__init__(*args, **kwargs)
         self.plotDataItem = None
@@ -33,7 +34,7 @@ class CustomViewBox(pg.ViewBox):
     def setPlotDataItem(self, plotDataItem: pg.PlotDataItem) -> None:
         self.plotDataItem = plotDataItem
 
-    def setOpts(self, *args, **kwargs):
+    def setOpts(self, *args: Any, **kwargs: Any) -> None:
         self.enableLimitX = kwargs.get("enableLimitX", False)
 
     def updateData(self, x: np.ndarray, y: np.ndarray) -> None:

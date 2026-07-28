@@ -16,6 +16,7 @@
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtHelpers import guiSetText, img2pixmap, setPixmapAlpha
+from mw4.mountcontrol.model import Model
 from typing import Any
 
 
@@ -38,7 +39,7 @@ class ModelStatus(TabAddon):
         pixmap = setPixmapAlpha(pixmap, Styles.transparency)
         self.ui.picALT.setPixmap(pixmap)
 
-    def updateAlignGUI(self, model):
+    def updateAlignGUI(self, model: Model) -> None:
         guiSetText(self.ui.numberStars, "2.0f", model.numberStars)
         guiSetText(self.ui.numberStars1, "2.0f", model.numberStars)
         guiSetText(self.ui.errorRMS, "5.1f", model.errorRMS)
@@ -55,7 +56,7 @@ class ModelStatus(TabAddon):
         val = None if model.altitudeError is None else model.altitudeError.degrees
         guiSetText(self.ui.altitudeError, "5.1f", val)
 
-    def updateTurnKnobsGUI(self, model):
+    def updateTurnKnobsGUI(self, model: Model) -> None:
         if model.azimuthTurns is not None:
             if model.azimuthTurns > 0:
                 text = f"{abs(model.azimuthTurns):3.1f} revs left"

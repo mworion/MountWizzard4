@@ -179,9 +179,9 @@ class KeyPad:
         result = []
         n = 0
         o = 0
-        for r in range(0, len(value)):
+        for v in value:
             n += 7
-            o = (value[r] & 127) | (o << 7)
+            o = (v & 127) | (o << 7)
             if n >= 8:
                 u = (o >> (n - 8)) & 255
                 n -= 8
@@ -250,8 +250,8 @@ class KeyPad:
     @staticmethod
     def calcChecksum(value: list[int]) -> int:
         checksum = 0
-        for i in range(len(value)):
-            checksum = checksum ^ value[i]
+        for v in value:
+            checksum = checksum ^ v
         if checksum < 10:
             checksum = checksum + 10
         return checksum

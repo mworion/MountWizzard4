@@ -62,7 +62,7 @@ class HidController:
 
     @staticmethod
     def isNewerData(act: list, old: list) -> bool:
-        if len(act) == 0:
+        if not act:
             return False
         for i, dataVal in enumerate(act):
             if dataVal != old[i]:
@@ -73,7 +73,7 @@ class HidController:
 
     def convertData(self, name: str, iR: list) -> list:
         oR = [0, 0, 0, 0, 0, 0, 0]
-        if len(iR) == 0:
+        if not iR:
             return oR
         if name == "Pro Controller":
             oR = [iR[1], iR[2], iR[3], iR[5], iR[7], iR[9], iR[11]]
@@ -115,7 +115,7 @@ class HidController:
         connect, reportNew = self.readHidController()
         if not connect:
             return False, report
-        if len(reportNew) == 0:
+        if not reportNew:
             return True, report
         if not self.isNewerData(reportNew, report):
             return True, reportNew

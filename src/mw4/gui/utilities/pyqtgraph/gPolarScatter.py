@@ -17,15 +17,16 @@ import numpy as np
 import pyqtgraph as pg
 from mw4.gui.utilities.pyqtgraph.gNormalScatter import NormalScatter
 from PySide6.QtGui import QColor
+from typing import Any
 
 
 class PolarScatter(NormalScatter):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.p[0].setAspectLocked(True)
         self.addBarItem()
 
-    def plot(self, x: int, y: int, **kwargs) -> bool:
+    def plot(self, x: int, y: int, **kwargs: Any) -> bool:
         x = np.radians(90 - x)
         if kwargs.get("reverse", False):
             posX = (90 - y) * np.cos(x)

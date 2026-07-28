@@ -15,10 +15,11 @@
 ###########################################################
 import pyqtgraph as pg
 from datetime import datetime as dt
+from typing import Any
 
 
 class TimeMeasure(pg.AxisItem):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
 
     def tickStrings(self, values: list, scale: float, spacing: list) -> list:

@@ -14,10 +14,11 @@
 #
 ###########################################################
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
+from typing import Any
 
 
 class Analysis:
-    def __init__(self, mainW):
+    def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg
@@ -56,7 +57,7 @@ class Analysis:
         self.mainW.wIcon(self.ui.runHysteresis, "start")
         self.mainW.wIcon(self.ui.cancelAnalysis, "cross-circle")
 
-    def setAnalysisOperationMode(self, status) -> None:
+    def setAnalysisOperationMode(self, status: int) -> None:
         if status == 4:
             self.ui.cancelAnalysis.setEnabled(True)
             self.ui.runHysteresis.setEnabled(False)
@@ -112,7 +113,7 @@ class Analysis:
     def processAnalysisData(self) -> None:
         self.restoreAnalysisDefaultContextAndGuiStatus()
 
-    def updateAnalysisProgress(self, mPoint) -> bool:
+    def updateAnalysisProgress(self, mPoint: dict[str, Any]) -> bool:
         number = mPoint.get("lenSequence", 0)
         count = mPoint.get("countSequence", 0)
         if not 0 < count <= number:

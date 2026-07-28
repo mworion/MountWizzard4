@@ -41,10 +41,14 @@ class ModelManage(TabAddon):
         self.fittedModelPath = Path()
         self.plane = None
 
+        modelShowSlots = [
+            self.showModelPosition,
+            self.showErrorAscending,
+            self.showErrorDistribution,
+        ]
         ms = self.app.dReg["mount"].instance.signals
-        ms.getModelDone.connect(self.showModelPosition)
-        ms.getModelDone.connect(self.showErrorAscending)
-        ms.getModelDone.connect(self.showErrorDistribution)
+        for slot in modelShowSlots:
+            ms.getModelDone.connect(slot)
         ms.namesDone.connect(self.setNameList)
 
         self.ui.refreshName.clicked.connect(self.refreshName)
@@ -58,9 +62,8 @@ class ModelManage(TabAddon):
         self.ui.deleteWorstPoint.clicked.connect(self.deleteWorstPoint)
         self.ui.openAnalyseW.clicked.connect(self.sendAnalyseFileName)
 
-        self.ui.targetRMS.valueChanged.connect(self.showModelPosition)
-        self.ui.targetRMS.valueChanged.connect(self.showErrorAscending)
-        self.ui.targetRMS.valueChanged.connect(self.showErrorDistribution)
+        for slot in modelShowSlots:
+            self.ui.targetRMS.valueChanged.connect(slot)
         self.app.colorChange.connect(self.updateColorSet)
         self.app.refreshModel.connect(self.refreshModel)
         self.app.refreshName.connect(self.refreshName)
@@ -111,7 +114,7 @@ class ModelManage(TabAddon):
 
     def showModelPosition(self) -> None:
         model = self.app.dReg["mount"].model
-        if model.numberStars == 0 or len(model.starList) == 0:
+        if not model.numberStars or not model.starList:
             self.ui.modelPositions.p[0].clear()
             return
         altitude = np.array([x.alt.degrees for x in model.starList])

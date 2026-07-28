@@ -21,10 +21,11 @@ from PySide6.QtGui import QBrush, QFont, QPainterPath, QPen
 from PySide6.QtWidgets import QApplication
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
+from typing import Any
 
 
 class PlotBase(pg.GraphicsLayoutWidget, Styles):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs, show=False)
         pg.setConfigOptions(antialias=True, imageAxisOrder="row-major")
         self.pen: QPen = pg.mkPen(color=self.M_PRIM, width=1)
@@ -188,7 +189,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         err = np.concatenate([z, z, z])
         self.addIsoItem(az, alt, err, plotItem=plotItem, levels=levels)
 
-    def setGrid(self, y: int = 0, plotItem: pg.PlotItem | None = None, **kwargs) -> None:
+    def setGrid(self, y: int = 0, plotItem: pg.PlotItem | None = None, **kwargs: Any) -> None:
         if plotItem is None:
             plotItem = self.p[0]
         textAngle = np.radians(150)

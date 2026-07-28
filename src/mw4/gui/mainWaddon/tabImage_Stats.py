@@ -71,8 +71,9 @@ class ImageStats(TabAddon):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-        self.ui.aperture.valueChanged.connect(self.updateImageStats)
-        self.ui.focalLength.valueChanged.connect(self.updateImageStats)
+        imageStatsWidgets = [self.ui.aperture, self.ui.focalLength]
+        for widget in imageStatsWidgets:
+            widget.valueChanged.connect(self.updateImageStats)
         self.ui.openWatneyCatalog.clicked.connect(self.openWatneyCatalog)
         self.ui.openASTAPCatalog.clicked.connect(self.openASTAPCatalog)
         self.ui.openAstrometryCatalog.clicked.connect(self.openAstrometryCatalog)

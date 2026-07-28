@@ -133,13 +133,14 @@ class ModelData(QObject):
             self.startSlew.emit()
             t = f"{'Slew limits ':15s}: [{self.modelRunKey}]"
             self.log.debug(t)
-        else:
-            if self.app.dReg["dome"].stat:
-                self.app.dReg["dome"].instance.slewDome(azimuth)
-            self.app.dReg["mount"].obsSite.startSlewing()
-            t = f"{'Start slew':15s}: [{self.modelRunKey}], "
-            t += f" Alt: [{altitude.degrees:03.0f}], Az: [{azimuth.degrees:03.0f}]"
-            self.log.debug(t)
+            return
+
+        if self.app.dReg["dome"].stat:
+            self.app.dReg["dome"].instance.slewDome(azimuth)
+        self.app.dReg["mount"].obsSite.startSlewing()
+        t = f"{'Start slew':15s}: [{self.modelRunKey}], "
+        t += f" Alt: [{altitude.degrees:03.0f}], Az: [{azimuth.degrees:03.0f}]"
+        self.log.debug(t)
 
     def addMountModelToBuildModel(self) -> None:
         mount_entry = self.app.dReg["mount"]

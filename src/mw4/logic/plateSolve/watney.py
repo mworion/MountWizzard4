@@ -102,4 +102,4 @@ class Watney:
     def checkAvailabilityIndex(self, indexPath: str) -> bool:
         self.config.indexPath = indexPath
         self.saveConfigFile()
-        return len(list(self.config.indexPath.glob("*.*"))) > 0
+        return any(self.config.indexPath.glob("*.*"))

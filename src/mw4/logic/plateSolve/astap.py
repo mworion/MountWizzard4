@@ -119,4 +119,4 @@ class ASTAP:
 
     def checkAvailabilityIndex(self, indexPath: str) -> bool:
         self.config.indexPath = indexPath
-        return any(len(list(self.config.indexPath.glob(i))) > 0 for i in self.indexes)
+        return any(self.config.indexPath.glob(i) for i in self.indexes)

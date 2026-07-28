@@ -18,10 +18,10 @@ from PySide6.QtWidgets import QTableWidgetItem
 
 
 class QCustomTableWidgetItem(QTableWidgetItem):
-    def __init__(self, value):
+    def __init__(self, value: str) -> None:
         super().__init__(value)
 
-    def __lt__(self, other):
+    def __lt__(self, other: QTableWidgetItem) -> bool:
         selfData = self.data(Qt.ItemDataRole.EditRole)
         selfDataValue = 99 if selfData == "" else float(selfData)
         otherData = other.data(Qt.ItemDataRole.EditRole)

@@ -80,9 +80,9 @@ class SatTrack(SatData):
         self.ui.useInternalSatCalc.clicked.connect(self.enableGuiFunctions)
         self.ui.progTrajectory.clicked.connect(self.startProg)
         self.ui.listSats.itemDoubleClicked.connect(self.chooseSatellite)
-        self.ui.satOffTime.valueChanged.connect(self.setTrackingOffsets)
-        self.ui.satOffRa.valueChanged.connect(self.setTrackingOffsets)
-        self.ui.satOffDec.valueChanged.connect(self.setTrackingOffsets)
+        trackingOffsetWidgets = [self.ui.satOffTime, self.ui.satOffRa, self.ui.satOffDec]
+        for widget in trackingOffsetWidgets:
+            widget.valueChanged.connect(self.setTrackingOffsets)
         self.app.timeMgr.update1s.connect(self.updateOrbit)
 
     def initConfig(self) -> None:

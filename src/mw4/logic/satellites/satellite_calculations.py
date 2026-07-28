@@ -180,6 +180,12 @@ def extractCorrectOrbits(times: list[Time], events: list[int], satOrbits: list[d
     return satOrbits
 
 
+def classifyFlipTiming(rise: Time, settle: Time, event: Time) -> str:
+    if abs(rise.tt - event.tt) > abs(settle.tt - event.tt):
+        return "flipLate"
+    return "flipEarly"
+
+
 def sortFlipEvents(
     satOrbit: list[dict], t0: list[Time], t1: list[Time], t2: list[Time]
 ) -> dict:
@@ -194,16 +200,11 @@ def sortFlipEvents(
         else:
             satOrbit["flipEarly"] = t1[0]
             satOrbit["flipLate"] = t2[0]
-    if t1 and not t2:
-        if abs(rise.tt - t1[0].tt) > abs(settle.tt - t1[0].tt):
-            satOrbit["flipLate"] = t1[0]
-        else:
-            satOrbit["flipEarly"] = t1[0]
-    if not t1 and t2:
-        if abs(rise.tt - t2[0].tt) > abs(settle.tt - t2[0].tt):
-            satOrbit["flipLate"] = t2[0]
-        else:
-            satOrbit["flipEarly"] = t2[0]
+        return satOrbit
+    if t1:
+        satOrbit[classifyFlipTiming(rise, settle, t1[0])] = t1[0]
+    elif t2:
+        satOrbit[classifyFlipTiming(rise, settle, t2[0])] = t2[0]
     return satOrbit
 
 

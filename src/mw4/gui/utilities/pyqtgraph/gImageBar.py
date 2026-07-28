@@ -17,10 +17,11 @@ import numpy as np
 import pyqtgraph as pg
 from mw4.gui.utilities.pyqtgraph.gPlotBase import PlotBase
 from PySide6.QtGui import QTransform
+from typing import Any
 
 
 class ImageBar(PlotBase):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.lx = None
         self.ly = None

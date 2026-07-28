@@ -47,7 +47,7 @@ class PlateSolve:
         self.signals = Signals()
         self.solveQueue: queue.Queue = queue.Queue()
         self.solveLoopRunning: bool = False
-        self.worker: Worker = Worker(self.workerSolveLoop)
+        self.workerSolveLoop: Worker = Worker(self.runnerSolveLoop)
         self.process: subprocess.Popen | None = None
         self.data: dict[str, Any] = {}
         self.framework: str = ""
@@ -131,12 +131,12 @@ class PlateSolve:
         self.signals.message.emit("")
         self.signals.result.emit(result)
 
-    def workerSolveLoop(self) -> None:
+    def runnerSolveLoop(self) -> None:
         while self.solveLoopRunning:
-            if self.solveQueue.empty():
-                time.sleep(0.1)
+            try:
+                imagePath, updateHeader = self.solveQueue.get(timeout=0.5)
+            except queue.Empty:
                 continue
-            imagePath, updateHeader = self.solveQueue.get()
             self.processSolveQueue(imagePath, updateHeader)
             self.solveQueue.task_done()
 
@@ -144,7 +144,7 @@ class PlateSolve:
         if self.solveLoopRunning:
             return
         self.solveLoopRunning = True
-        self.threadPool.start(self.worker)
+        self.threadPool.start(self.workerSolveLoop)
 
     def checkAvailabilityProgram(self, framework: str) -> bool:
         appPath = Path(self.run[framework].config.appPath)

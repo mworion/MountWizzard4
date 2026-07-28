@@ -19,6 +19,7 @@ import requests
 import time
 from dataclasses import dataclass, field
 from mw4.base.signalsDevices import Signals
+from mw4.base.tpool import Worker, startWorker
 from PySide6.QtCore import QMutex, QTimer, Signal
 from typing import Any
 
@@ -58,6 +59,8 @@ class KMRelay:
         self.timerTask = QTimer()
         self.timerTask.setSingleShot(False)
         self.timerTask.timeout.connect(self.cyclePolling)
+        self.threadPool = app.threadPool
+        self.workerPulse: Worker | None = None
 
     def startCommunication(self) -> None:
         if not self.config.hostAddress:
@@ -150,7 +153,7 @@ class KMRelay:
         else:
             return byteOff
 
-    def pulse(self, relayNumber: int) -> None:
+    def runnerPulse(self, relayNumber: int) -> None:
         self.log.debug(f"Pulse relay:{relayNumber}")
         byteOn = self.getByte(relayNumber=relayNumber, state=True)
         byteOff = self.getByte(relayNumber=relayNumber, state=False)
@@ -161,6 +164,17 @@ class KMRelay:
         if value1 is None or value2 is None or value1.reason != "OK" or value2.reason != "OK":
             self.log.warning(f"Relay:{relayNumber}")
             return
+
+    def clearPulse(self) -> None:
+        self.workerPulse = None
+
+    def pulse(self, relayNumber: int) -> None:
+        self.workerPulse = startWorker(
+            self.threadPool,
+            self.runnerPulse,
+            self.clearPulse,
+            relayNumber,
+        )
 
     def switch(self, relayNumber: int) -> None:
         self.log.debug(f"Switch relay:{relayNumber}")

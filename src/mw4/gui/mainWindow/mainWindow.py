@@ -168,7 +168,7 @@ class MainWindow(MWidget):
         self.app.timeMgr.stop()
         changeStyleDynamic(self.ui.pauseModel, "pause", False)
         self.externalWindows.closeExtendedWindows()
-        self.threadPool.waitForDone(5000)
+        self.threadPool.waitForDone(1000)
         super().closeEvent(closeEvent)
 
     def quitSave(self) -> None:

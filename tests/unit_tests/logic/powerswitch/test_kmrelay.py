@@ -17,7 +17,6 @@
 import PySide6
 import pytest
 import requests
-import time
 from mw4.logic.powerswitch.kmRelay import KMRelay
 from unittest import mock
 
@@ -278,7 +277,7 @@ def test_statusAfterPulse(kmRelay: KMRelay) -> None:
 
     with (
         mock.patch.object(kmRelay, "getRelay", return_value=MockResult()),
-        mock.patch.object(time, "sleep"),
+        mock.patch.object(kmRelay.threadPool, "start"),
     ):
         for i in range(0, 8):
             kmRelay.pulse(i)
@@ -307,9 +306,10 @@ def test_getByteMixed(kmRelay: KMRelay) -> None:
 def test_pulseWithNoneResponse(kmRelay: KMRelay) -> None:
     with (
         mock.patch.object(kmRelay, "getRelay", return_value=None),
-        mock.patch.object(time, "sleep"),
+        mock.patch.object(kmRelay.threadPool, "start"),
     ):
         kmRelay.pulse(7)
+        assert kmRelay.workerPulse is not None
 
 
 def test_pulseWithBadResponse(kmRelay: KMRelay) -> None:
@@ -319,9 +319,10 @@ def test_pulseWithBadResponse(kmRelay: KMRelay) -> None:
 
     with (
         mock.patch.object(kmRelay, "getRelay", return_value=MockResult()),
-        mock.patch.object(time, "sleep"),
+        mock.patch.object(kmRelay.threadPool, "start"),
     ):
         kmRelay.pulse(7)
+        assert kmRelay.workerPulse is not None
 
 
 def test_pulseWithGoodResponse(kmRelay: KMRelay) -> None:
@@ -331,9 +332,10 @@ def test_pulseWithGoodResponse(kmRelay: KMRelay) -> None:
 
     with (
         mock.patch.object(kmRelay, "getRelay", return_value=MockResult()),
-        mock.patch.object(time, "sleep"),
+        mock.patch.object(kmRelay.threadPool, "start"),
     ):
         kmRelay.pulse(7)
+        assert kmRelay.workerPulse is not None
 
 
 def test_switchWithNoneResponse(kmRelay: KMRelay) -> None:

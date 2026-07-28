@@ -92,6 +92,7 @@ def test_init(function):
     # assert
     assert isinstance(function.commandQueue, queue.Queue)
     assert isinstance(function.stopEvent, threading.Event)
+    assert isinstance(function.connectEvent, threading.Event)
     assert isinstance(function.propertyExceptions, list)
     assert len(function.propertyExceptions) == 0
     assert function.deviceConnected is False
@@ -162,7 +163,7 @@ def test_connectDevice_successAfterRetry(function):
 
     function.getDeviceProp = fake_get
     function.setDeviceProp = mock.MagicMock()
-    with mock.patch("time.sleep"):
+    with mock.patch.object(function.connectEvent, "wait"):
         suc = function.connectDevice()
     assert suc is True
 
@@ -171,7 +172,7 @@ def test_connectDevice_allFail(function):
     # arrange
     function.getDeviceProp = mock.MagicMock(return_value=False)
     function.setDeviceProp = mock.MagicMock()
-    with mock.patch("time.sleep"):
+    with mock.patch.object(function.connectEvent, "wait"):
         suc = function.connectDevice()
     # assert
     assert suc is False
@@ -250,7 +251,7 @@ def test_handleDeviceConnect_fail(function):
     # arrange
     function.getDeviceProp = mock.MagicMock(return_value=False)
     function.setDeviceProp = mock.MagicMock()
-    with mock.patch("time.sleep"):
+    with mock.patch.object(function.connectEvent, "wait"):
         function.handleDeviceConnect()
     # assert — signals must NOT have been emitted
     function.signals.deviceConnected.emit.assert_not_called()

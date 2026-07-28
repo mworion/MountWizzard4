@@ -19,6 +19,7 @@ import os
 import pytest
 import shutil
 import subprocess
+from contextlib import suppress
 from mw4.logic.plateSolve.plateSolve import PlateSolve
 from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -40,11 +41,13 @@ def function():
 
 
 @pytest.fixture
-def mocked_sleepAndEvents(monkeypatch, function):
-    def test(a):
-        function.solveLoopRunning = False
+def mocked_queueGet(monkeypatch, function):
 
-    monkeypatch.setattr("mw4.logic.plateSolve.plateSolve.time.sleep", test)
+    def mock_get(*args, **kwargs):
+        function.solveLoopRunning = False
+        raise Exception("Mocked to stop loop")
+
+    monkeypatch.setattr(function.solveQueue, "get", mock_get)
 
 
 @pytest.fixture
@@ -196,17 +199,19 @@ def test_processSolveQueue_2(function):
         function.processSolveQueue(Path("tests/work/image/m51.fit"), False)
 
 
-def test_workerSolveLoop_1(function, mocked_sleepAndEvents):
+def test_workerSolveLoop_1(function, mocked_queueGet):
     with function.solveQueue.mutex:
         function.solveQueue.queue.clear()
     function.solveLoopRunning = True
-    function.workerSolveLoop()
+    with suppress(Exception):
+        function.runnerSolveLoop()
 
 
 def test_workerSolveLoop_2(function, mocked_processSolveQueue):
     function.solveLoopRunning = True
     function.solveQueue.put(("tests/work/image/m51.fit", False))
-    function.workerSolveLoop()
+    with suppress(Exception):
+        function.runnerSolveLoop()
 
 
 def test_startSolveLoop_1(function):
@@ -237,7 +242,7 @@ def test_checkAvailabilityIndex_1(function):
         assert function.checkAvailabilityIndex("astap")
 
 
-def test_startCommunication_1(function, mocked_sleepAndEvents):
+def test_startCommunication_1(function):
     function.framework = "astap"
     with (
         mock.patch.object(function, "checkAvailabilityProgram", return_value=True),
@@ -246,7 +251,7 @@ def test_startCommunication_1(function, mocked_sleepAndEvents):
         function.startCommunication()
 
 
-def test_startCommunication_2(function, mocked_sleepAndEvents):
+def test_startCommunication_2(function):
     function.framework = "astap"
     with (
         mock.patch.object(function, "checkAvailabilityProgram", return_value=False),

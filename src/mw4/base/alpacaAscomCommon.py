@@ -15,7 +15,6 @@
 ###########################################################
 import queue
 import threading
-import time
 from dataclasses import dataclass, field
 from mw4.base.driverDataClass import DriverData
 from PySide6.QtCore import QThreadPool
@@ -45,6 +44,7 @@ class AlpacaAscomCommon(DriverData):
         self.deviceConnected: bool = False
         self.commandQueue: queue.Queue = queue.Queue()
         self.stopEvent: threading.Event = threading.Event()
+        self.connectEvent: threading.Event = threading.Event()
         self.loggingTrace: bool = False
 
     def getDeviceProp(self, valueProp: str) -> Any:
@@ -109,7 +109,7 @@ class AlpacaAscomCommon(DriverData):
             if suc:
                 self.log.debug(f"[{self.config.deviceName}] connected, [{retry}] retries")
                 break
-            time.sleep(0.2)
+            self.connectEvent.wait(timeout=0.2)
         else:
             self.log.debug(f"[{self.config.deviceName}] not connected, [{retry}] retries")
             suc = False

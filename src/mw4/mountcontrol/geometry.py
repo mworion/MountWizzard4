@@ -66,7 +66,7 @@ class Geometry:
 
     def __init__(self, parent: Any) -> None:
         self.parent = parent
-        if not "SettingDome" in parent.app.config:
+        if "SettingDome" not in parent.app.config:
             parent.app.config["SettingDome"] = {}
         self.cfg = parent.app.config["SettingDome"]
         self.loggingTrace: bool = parent.loggingTrace
@@ -387,7 +387,7 @@ class Geometry:
         PB = P9[:-1]
 
         p = 2 * np.dot(PD, PB)
-        q = np.dot(PB, PB) - self.cfg["radius"]**2
+        q = np.dot(PB, PB) - self.cfg["radius"] ** 2
 
         if self.loggingTrace:
             self.log.debug(f"[Trace] Geometry calc p:[{p}], q:[{q}]")

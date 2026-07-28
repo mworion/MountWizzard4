@@ -110,7 +110,7 @@ def test_closeEvent_closes_windows(mainWindow):
         mainWindow.closeEvent(QCloseEvent())
         mock_stop.assert_called_once()
         mock_close_ext.assert_called_once()
-        mock_wait.assert_called_once()
+        mock_wait.assert_called_once_with(1000)
 
 
 def test_closeEvent_no_double_cleanup(mainWindow):
@@ -125,7 +125,7 @@ def test_closeEvent_no_double_cleanup(mainWindow):
         mainWindow.closeEvent(QCloseEvent())
         mock_stop.assert_called_once()
         mock_close_ext.assert_called_once()
-        mock_wait.assert_called_once()
+        mock_wait.assert_called_once_with(1000)
 
 
 def test_quitSave_saves_and_closes(mainWindow):

@@ -45,8 +45,11 @@ It is recommended to use mount firmware 3.4 or later as some
 of the functions don't work with older firmware versions. It should not be a
 problem using older versions. A HW pre2012 might also have some issues.
 
-Versions, downloads:
---------------------
+Versions, downloads
+-------------------
+
+(actually not relevant as no first release was issued)
+
 |PYPI_VERSION| |PY_VERSIONS| |DownLoadsAbs| |DownLoadsMonth|
 
 Code quality / tests:

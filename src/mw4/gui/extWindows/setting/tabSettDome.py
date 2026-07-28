@@ -25,59 +25,52 @@ class SettDome:
         self.msg = parentW.app.msg
         self.ui = parentW.ui
 
-        self.ui.domeRadius.valueChanged.connect(self.storeConfig)
-        self.ui.offGEM.valueChanged.connect(self.storeConfig)
-        self.ui.offLAT.valueChanged.connect(self.storeConfig)
-        self.ui.domeEastOffset.valueChanged.connect(self.storeConfig)
-        self.ui.domeNorthOffset.valueChanged.connect(self.storeConfig)
-        self.ui.domeVerticalOffset.valueChanged.connect(self.storeConfig)
-        self.ui.domeClearOpening.valueChanged.connect(self.storeConfig)
-        self.ui.domeOpeningHysteresis.valueChanged.connect(self.storeConfig)
-        self.ui.domeClearanceZenith.valueChanged.connect(self.storeConfig)
-        self.ui.useOvershoot.clicked.connect(self.storeConfig)
-        self.ui.settleTimeDome.valueChanged.connect(self.storeConfig)
-        self.ui.useDomeGeometry.clicked.connect(self.storeConfig)
-        self.ui.useDynamicFollowing.clicked.connect(self.storeConfig)
-        self.ui.use10micronDef.clicked.connect(self.storeConfig)
+        self.valueConfigWidgets = [
+            self.ui.domeRadius,
+            self.ui.offGEM,
+            self.ui.offLAT,
+            self.ui.domeEastOffset,
+            self.ui.domeNorthOffset,
+            self.ui.domeVerticalOffset,
+            self.ui.domeClearOpening,
+            self.ui.domeOpeningHysteresis,
+            self.ui.domeClearanceZenith,
+            self.ui.settleTimeDome,
+        ]
+        for widget in self.valueConfigWidgets:
+            widget.valueChanged.connect(self.storeConfig)
+
+        self.clickConfigWidgets = [
+            self.ui.useOvershoot,
+            self.ui.useDomeGeometry,
+            self.ui.useDynamicFollowing,
+            self.ui.use10micronDef,
+        ]
+        for widget in self.clickConfigWidgets:
+            widget.clicked.connect(self.storeConfig)
+
         self.ui.use10micronDef.clicked.connect(self.setupIcons)
         self.ui.copyFromDomeDriver.clicked.connect(self.updateGeometryFromDriver)
         self.app.dReg["mount"].signals.firmwareDone.connect(self.storeConfig)
-        self.ui.domeRadius.valueChanged.connect(self.tab1)
-        self.ui.domeNorthOffset.valueChanged.connect(self.tab2)
-        self.ui.domeEastOffset.valueChanged.connect(self.tab3)
-        self.ui.domeVerticalOffset.valueChanged.connect(self.tab4)
-        self.ui.offGEM.valueChanged.connect(self.tab5)
-        self.ui.offLAT.valueChanged.connect(self.tab6)
-        self.ui.domeClearOpening.valueChanged.connect(self.tab7)
-        self.ui.domeOpeningHysteresis.valueChanged.connect(self.tab8)
-        self.ui.domeClearanceZenith.valueChanged.connect(self.tab9)
 
-    def tab1(self) -> None:
-        self.ui.tabDomeExplain.setCurrentIndex(0)
+        self.domeExplainTabs = [
+            (self.ui.domeRadius, 0),
+            (self.ui.domeNorthOffset, 1),
+            (self.ui.domeEastOffset, 2),
+            (self.ui.domeVerticalOffset, 3),
+            (self.ui.offGEM, 4),
+            (self.ui.offLAT, 5),
+            (self.ui.domeClearOpening, 6),
+            (self.ui.domeOpeningHysteresis, 7),
+            (self.ui.domeClearanceZenith, 8),
+        ]
+        for widget, index in self.domeExplainTabs:
+            widget.valueChanged.connect(
+                lambda checked, idx=index: self.showDomeExplainTab(idx)
+            )
 
-    def tab2(self) -> None:
-        self.ui.tabDomeExplain.setCurrentIndex(1)
-
-    def tab3(self) -> None:
-        self.ui.tabDomeExplain.setCurrentIndex(2)
-
-    def tab4(self) -> None:
-        self.ui.tabDomeExplain.setCurrentIndex(3)
-
-    def tab5(self) -> None:
-        self.ui.tabDomeExplain.setCurrentIndex(4)
-
-    def tab6(self) -> None:
-        self.ui.tabDomeExplain.setCurrentIndex(5)
-
-    def tab7(self) -> None:
-        self.ui.tabDomeExplain.setCurrentIndex(6)
-
-    def tab8(self) -> None:
-        self.ui.tabDomeExplain.setCurrentIndex(7)
-
-    def tab9(self) -> None:
-        self.ui.tabDomeExplain.setCurrentIndex(8)
+    def showDomeExplainTab(self, index: int) -> None:
+        self.ui.tabDomeExplain.setCurrentIndex(index)
 
     def initConfig(self) -> None:
         config = self.app.config.get("SettingDome", {})

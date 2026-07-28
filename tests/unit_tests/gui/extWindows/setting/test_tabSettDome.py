@@ -78,40 +78,16 @@ def function(qapp):
     parentW.app.threadPool.waitForDone(1000)
 
 
-def test_tab1(function):
-    function.tab1()
+def test_showDomeExplainTab(function):
+    function.showDomeExplainTab(0)
+    function.ui.tabDomeExplain.setCurrentIndex.assert_called_with(0)
 
 
-def test_tab2(function):
-    function.tab2()
-
-
-def test_tab3(function):
-    function.tab3()
-
-
-def test_tab4(function):
-    function.tab4()
-
-
-def test_tab5(function):
-    function.tab5()
-
-
-def test_tab6(function):
-    function.tab6()
-
-
-def test_tab7(function):
-    function.tab7()
-
-
-def test_tab8(function):
-    function.tab8()
-
-
-def test_tab9(function):
-    function.tab9()
+def test_domeExplainTabsConnections(function):
+    for widget, index in function.domeExplainTabs:
+        callback = widget.valueChanged.connect.call_args[0][0]
+        callback(None)
+        function.ui.tabDomeExplain.setCurrentIndex.assert_called_with(index)
 
 
 def test_initConfig_1(function):

@@ -87,7 +87,7 @@ class Geometry:
         self._offPlateOTA: float = 0
         self.transMatrix = None
         self.transVector = None
-        self.parent.app.updateDomeSettings.connect(self.initializeGeometry)
+        self.parent.app.updateDomeSettings.connect(self.loadParametersFromConfig)
 
     @property
     def offNorth(self) -> float:
@@ -177,13 +177,16 @@ class Geometry:
         self._offPlateOTA = valueToFloat(value)
         self._offGEM = self._offPlateOTA + self.offGemPlate
 
-    def initializeGeometry(self, mountType: str) -> bool:
+    def initializeGeometry(self, mountType: str) -> None:
         if mountType not in self.geometryData:
             self.log.warning(f"[{mountType}] not in database")
-            return False
+            return
 
         self.log.info(f"Using [{mountType}] geometry")
         vars(self).update(self.geometryData[mountType])
+        self.loadParametersFromConfig()
+
+    def loadParametersFromConfig(self) -> None:
         if self.cfg["use10micronDef"]:
             self.offNorth = self.cfg["northOffset"]
             self.offEast = self.cfg["eastOffset"]
@@ -194,8 +197,6 @@ class Geometry:
             self.offVertGEM = self.cfg["verticalOffset"]
         self.offGEM = self.cfg["offGEM"]
         self.offLAT = self.cfg["offLAT"]
-
-        return True
 
     @staticmethod
     def transformRot(axis: str, angle: float) -> np.ndarray:

@@ -164,6 +164,27 @@ def test_filterListSats_4(function):
         function.filterListSats()
 
 
+def test_filterListSats_5(function):
+    function.ui.satFilterGroup.setEnabled(True)
+    function.ui.listSats.clear()
+    function.ui.listSats.setRowCount(0)
+    function.ui.listSats.setColumnCount(9)
+    function.ui.listSats.insertRow(0)
+    entry = QTableWidgetItem("1234")
+    function.ui.listSats.setItem(0, 0, entry)
+    entry = QTableWidgetItem("NOAA 8")
+    function.ui.listSats.setItem(0, 1, entry)
+    with (
+        mock.patch.object(function.ui.satFilterGroup, "setTitle") as mockSetTitle,
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabSat_Search, "changeStyleDynamic"
+        ) as mockChangeStyle,
+    ):
+        function.filterListSats()
+        mockSetTitle.assert_called_once_with("Filter - processed - 100%")
+        mockChangeStyle.assert_called_once_with(function.ui.satFilterGroup, "run", "false")
+
+
 def test_setListSatsEntry(function):
     function.ui.listSats.setRowCount(0)
     function.ui.listSats.insertRow(0)

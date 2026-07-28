@@ -127,6 +127,9 @@ class SatSearch(SatData):
             self.satellites.objects[sat.name] = sat
 
     def filterListSats(self) -> None:
+        t = "Filter - processed - 100%"
+        self.ui.satFilterGroup.setTitle(t)
+        changeStyleDynamic(self.ui.satFilterGroup, "run", "false")
         filterStr = self.ui.satFilterText.text().lower()
         checkIsSunlit = self.ui.satIsSunlit.isChecked()
         checkRemoveSO = self.ui.satRemoveSO.isChecked()
@@ -287,10 +290,6 @@ class SatSearch(SatData):
             if not self.checkSatOk(sat, timeNext):
                 continue
             self.calcSat(sat, row, loc, timeNow, timeNext, altMin, eph)
-
-        t = "Filter - processed - 100%"
-        self.ui.satFilterGroup.setTitle(t)
-        changeStyleDynamic(self.ui.satFilterGroup, "run", "false")
 
     def calcSatList(self) -> None:
         title = "Setup " + self.app.timeMgr.timeZoneString()

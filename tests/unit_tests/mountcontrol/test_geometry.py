@@ -13,8 +13,8 @@
 # License APL2.0
 #
 ###########################################################
-import numpy as np
 import pytest
+from mw4.mountcontrol.geometry import Geometry
 from mw4.mountcontrol.mount import MountDevice
 from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -77,13 +77,13 @@ def test_properties_5(function):
 
 
 def test_initializeGeometry_1(function):
-    suc = function.geometry.initializeGeometry("")
-    assert not suc
+    with mock.patch.object(function.geometry.log, "warning") as mockWarning:
+        function.geometry.initializeGeometry("")
+        mockWarning.assert_called_once()
 
 
 def test_initializeGeometry_2(function):
-    suc = function.geometry.initializeGeometry("10micron GM1000HPS")
-    assert suc
+    function.geometry.initializeGeometry("10micron GM1000HPS")
 
 
 def test_transformRotX_1(function):
@@ -103,15 +103,13 @@ def test_transformTranslate(function):
 
 
 def test_geometry_1(function):
-    suc = function.geometry.initializeGeometry("10micron GM1000HPS")
+    function.geometry.initializeGeometry("10micron GM1000HPS")
     function.geometry.offNorth = 0.1
     function.geometry.offEast = 0.2
     function.geometry.offVert = 0.3
     function.geometry.offGEM = 0.1
     function.geometry.cfg["offLAT"] = 0.2
     function.geometry.cfg["radius"] = 1.5
-
-    assert suc
 
     testValues = [
         [0, 0, "E"],
@@ -263,15 +261,13 @@ def test_geometry_1(function):
 
 
 def test_geometry_2(function):
-    suc = function.geometry.initializeGeometry("10micron GM2000HPS")
+    function.geometry.initializeGeometry("10micron GM2000HPS")
     function.geometry.offNorth = 0.1
     function.geometry.offEast = 0.2
     function.geometry.offVert = 0.3
     function.geometry.offGEM = 0.1
     function.geometry.cfg["offLAT"] = 0.2
     function.geometry.cfg["radius"] = 1.5
-
-    assert suc
 
     testValues = [
         [0, 0, "E"],
@@ -423,15 +419,13 @@ def test_geometry_2(function):
 
 
 def test_geometry_3(function):
-    suc = function.geometry.initializeGeometry("10micron GM3000HPS")
+    function.geometry.initializeGeometry("10micron GM3000HPS")
     function.geometry.offNorth = 0.1
     function.geometry.offEast = 0.2
     function.geometry.offVert = 0.3
     function.geometry.offGEM = 0.1
     function.geometry.cfg["offLAT"] = 0.2
     function.geometry.cfg["radius"] = 1.5
-
-    assert suc
 
     testValues = [
         [0, 0, "E"],
@@ -583,15 +577,13 @@ def test_geometry_3(function):
 
 
 def test_geometry_4(function):
-    suc = function.geometry.initializeGeometry("10micron GM4000HPS")
+    function.geometry.initializeGeometry("10micron GM4000HPS")
     function.geometry.offNorth = 0.1
     function.geometry.offEast = 0.2
     function.geometry.offVert = 0.3
     function.geometry.offGEM = 0.1
     function.geometry.cfg["offLAT"] = 0.2
     function.geometry.cfg["radius"] = 1.5
-
-    assert suc
 
     testValues = [
         [0, 0, "E"],
@@ -743,8 +735,7 @@ def test_geometry_4(function):
 
 
 def test_geometry_8(function):
-    suc = function.geometry.initializeGeometry("10micron GM1000HPS")
-    assert suc
+    function.geometry.initializeGeometry("10micron GM1000HPS")
     function.geometry.offNorth = 0
     function.geometry.offEast = 0
     function.geometry.offVert = 0
@@ -764,8 +755,7 @@ def test_geometry_8(function):
 
 
 def test_geometry_9(function):
-    suc = function.geometry.initializeGeometry("10micron GM1000HPS")
-    assert suc
+    function.geometry.initializeGeometry("10micron GM1000HPS")
     function.geometry.offNorth = 0.1
     function.geometry.offEast = 0.2
     function.geometry.offVert = 0.3
@@ -781,8 +771,7 @@ def test_geometry_9(function):
 
 def test_calcTransformationMatrices_loggingTrace(function):
     # arrange
-    suc = function.geometry.initializeGeometry("10micron GM1000HPS")
-    assert suc
+    function.geometry.initializeGeometry("10micron GM1000HPS")
     function.geometry.offNorth = 0.1
     function.geometry.offEast = 0.2
     function.geometry.offVert = 0.3
@@ -815,8 +804,7 @@ def test_domeRadius_getter(function):
 
 def test_initializeGeometry_with_ASCOM_definition(function):
     function.geometry.parent.app.config["SettingDome"]["use10micronDef"] = False
-    suc = function.geometry.initializeGeometry("10micron GM1000HPS")
-    assert suc
+    function.geometry.initializeGeometry("10micron GM1000HPS")
     assert (
         function.geometry.offNorthGEM
         == function.geometry.parent.app.config["SettingDome"]["northOffset"]
@@ -824,8 +812,7 @@ def test_initializeGeometry_with_ASCOM_definition(function):
 
 
 def test_calcTransformationMatrices_negative_discriminant(function):
-    suc = function.geometry.initializeGeometry("10micron GM1000HPS")
-    assert suc
+    function.geometry.initializeGeometry("10micron GM1000HPS")
     function.geometry.offNorth = 100
     function.geometry.offEast = 100
     function.geometry.offVert = 100
@@ -847,3 +834,34 @@ def test_calcTransformationMatrices_negative_discriminant(function):
         assert pb is None
         assert pd is None
         assert mock_error.called
+
+
+def test_init_creates_settingDome_config(function):
+    original = function.app.config.pop("SettingDome")
+    geometry = Geometry(function)
+    assert "SettingDome" in function.app.config
+    assert geometry.cfg is function.app.config["SettingDome"]
+    function.app.config["SettingDome"] = original
+
+
+def test_loadParametersFromConfig_1(function):
+    function.geometry.parent.app.config["SettingDome"]["use10micronDef"] = True
+    function.geometry.loadParametersFromConfig()
+    assert function.geometry.offNorth == function.geometry.cfg["northOffset"]
+    assert function.geometry.offEast == function.geometry.cfg["eastOffset"]
+    assert function.geometry.offVert == function.geometry.cfg["verticalOffset"]
+
+
+def test_loadParametersFromConfig_2(function):
+    function.geometry.parent.app.config["SettingDome"]["use10micronDef"] = False
+    function.geometry.loadParametersFromConfig()
+    assert function.geometry.offNorthGEM == function.geometry.cfg["northOffset"]
+    assert function.geometry.offEastGEM == function.geometry.cfg["eastOffset"]
+    assert function.geometry.offVertGEM == function.geometry.cfg["verticalOffset"]
+
+
+def test_updateDomeSettings_signal_connected(function):
+    function.geometry.cfg["offGEM"] = 999.0
+    function.geometry.offGEM = 0.0
+    function.geometry.parent.app.updateDomeSettings.emit()
+    assert function.geometry.offGEM == 999.0

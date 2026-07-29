@@ -17,6 +17,7 @@
 import PySide6
 import pytest
 import requests
+import time
 from mw4.logic.powerswitch.kmRelay import KMRelay
 from unittest import mock
 
@@ -336,6 +337,80 @@ def test_pulseWithGoodResponse(kmRelay: KMRelay) -> None:
     ):
         kmRelay.pulse(7)
         assert kmRelay.workerPulse is not None
+
+
+def test_runnerPulseWithGoodResponse(kmRelay: KMRelay) -> None:
+    class MockResult:
+        reason = "OK"
+        status_code = 200
+
+    with (
+        mock.patch.object(kmRelay, "getRelay", return_value=MockResult()),
+        mock.patch.object(time, "sleep"),
+    ):
+        kmRelay.runnerPulse(3)
+
+
+def test_runnerPulseWithValue1None(kmRelay: KMRelay) -> None:
+    class MockResult:
+        reason = "OK"
+        status_code = 200
+
+    with (
+        mock.patch.object(kmRelay, "getRelay", side_effect=[None, MockResult()]),
+        mock.patch.object(time, "sleep"),
+    ):
+        kmRelay.runnerPulse(3)
+
+
+def test_runnerPulseWithValue2None(kmRelay: KMRelay) -> None:
+    class MockResult:
+        reason = "OK"
+        status_code = 200
+
+    with (
+        mock.patch.object(kmRelay, "getRelay", side_effect=[MockResult(), None]),
+        mock.patch.object(time, "sleep"),
+    ):
+        kmRelay.runnerPulse(3)
+
+
+def test_runnerPulseWithValue1Bad(kmRelay: KMRelay) -> None:
+    class MockResultOK:
+        reason = "OK"
+        status_code = 200
+
+    class MockResultBad:
+        reason = "Failed"
+        status_code = 500
+
+    with (
+        mock.patch.object(kmRelay, "getRelay", side_effect=[MockResultBad(), MockResultOK()]),
+        mock.patch.object(time, "sleep"),
+    ):
+        kmRelay.runnerPulse(3)
+
+
+def test_runnerPulseWithValue2Bad(kmRelay: KMRelay) -> None:
+    class MockResultOK:
+        reason = "OK"
+        status_code = 200
+
+    class MockResultBad:
+        reason = "Failed"
+        status_code = 500
+
+    with (
+        mock.patch.object(kmRelay, "getRelay", side_effect=[MockResultOK(), MockResultBad()]),
+        mock.patch.object(time, "sleep"),
+    ):
+        kmRelay.runnerPulse(3)
+
+
+def test_clearPulse(kmRelay: KMRelay) -> None:
+    kmRelay.workerPulse = mock.MagicMock()
+    kmRelay.clearPulse()
+    assert kmRelay.workerPulse is None
 
 
 def test_switchWithNoneResponse(kmRelay: KMRelay) -> None:

@@ -76,17 +76,15 @@ def test_setIcons(function):
 
 
 def test_mouseMoved_1(function):
-    with mock.patch.object(
-        function.ui.hemisphere.p[0].getViewBox(), "posInViewRange", return_value=False
-    ):
-        function.mouseMoved(pos=QPointF(1, 1))
+    viewBox = function.ui.hemisphere.p[0].getViewBox()
+    with mock.patch.object(viewBox, "posInViewRange", return_value=False):
+        function.mouseMoved(viewBox, pos=QPointF(1, 1))
 
 
 def test_mouseMoved_2(function):
-    with mock.patch.object(
-        function.ui.hemisphere.p[0].getViewBox(), "posInViewRange", return_value=True
-    ):
-        function.mouseMoved(pos=QPointF(0.5, 0.5))
+    viewBox = function.ui.hemisphere.p[0].getViewBox()
+    with mock.patch.object(viewBox, "posInViewRange", return_value=True):
+        function.mouseMoved(viewBox, pos=QPointF(0.5, 0.5))
 
 
 def test_colorChange(function):
@@ -140,7 +138,7 @@ def test_drawTerrainImage_2(function):
         mock.patch.object(cv2, "imread", return_value=np.array([[0, 0], [0, 0]])),
         mock.patch.object(cv2, "resize", return_value=np.ones((1440, 360))),
         mock.patch.object(cv2, "flip", return_value=np.ones((360, 1440))),
-        mock.patch("pyqtgraph.ImageItem.setImageColorMap", create=True),
+        mock.patch.object(pg.ImageItem, "setColorMap"),
     ):
         function.drawTerrainImage(pg.PlotItem())
 

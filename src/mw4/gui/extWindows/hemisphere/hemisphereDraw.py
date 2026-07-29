@@ -85,7 +85,8 @@ class HemisphereDraw(MWidget):
                 item.setVisible(visible)
 
     def mouseMovedHemisphere(self, pos: QPointF) -> None:
-        self.parent.mouseMoved(pos)
+        viewBox = self.ui.hemisphere.p[0].getViewBox()
+        self.parent.mouseMoved(viewBox, pos)
 
     def enableOperationModeChange(self, status: int) -> None:
         isRunning = status != 0

@@ -74,7 +74,8 @@ class HorizonDraw(MWidget):
         self.pointerHor.setVisible(status)
 
     def mouseMovedHorizon(self, pos: QPointF) -> None:
-        self.parent.mouseMoved(pos)
+        viewBox = self.ui.horizon.p[0].getViewBox()
+        self.parent.mouseMoved(viewBox, pos)
 
     def loadTerrainImage(self, terrainFile: Path) -> None:
         if not terrainFile.is_file():

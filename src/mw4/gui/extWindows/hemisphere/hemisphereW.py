@@ -114,8 +114,7 @@ class HemisphereWindow(MWidget):
         self.wIcon(self.ui.saveHorizonMaskAs, "save")
         self.wIcon(self.ui.clearHorizonMask, "trash")
 
-    def mouseMoved(self, pos: QPointF) -> None:
-        viewBox = self.ui.hemisphere.p[0].getViewBox()
+    def mouseMoved(self, viewBox, pos: QPointF) -> None:
         mousePoint = viewBox.mapSceneToView(pos)
 
         if viewBox.posInViewRange(pos):
@@ -198,7 +197,7 @@ class HemisphereWindow(MWidget):
         img = self.horizonDraw.imageTerrain[x1:x2, y1:y2]
         img = cv2.resize(img, (360, 90))
         imgItem = pg.ImageItem(img)
-        imgItem.setImageColorMap(0)
+        imgItem.setColorMap(0)
         imgItem.setOpts(opacity=alpha)
         imgItem.setZValue(-10)
         plotItem.addItem(imgItem)

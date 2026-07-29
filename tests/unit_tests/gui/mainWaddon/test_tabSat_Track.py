@@ -174,15 +174,10 @@ def test_workerShowSatPasses_1(function):
         {"rise": ts.tt_jd(2459216.5), "settle": ts.tt_jd(2459216.7)},
     ]
     with (
-        mock.patch.object(
-            function.app.timeMgr, "timeZoneString", return_value="", create=True
-        ),
-        mock.patch.object(function.app.timeMgr, "convertTime", return_value="", create=True),
         mock.patch.object(function, "clearTrackingParameters"),
         mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
         ),
-        mock.patch.object(function, "calcTrajectoryAndShow"),
     ):
         function.workerShowSatPasses()
 
@@ -205,15 +200,10 @@ def test_workerShowSatPasses_2(function):
         {"rise": ts.tt_jd(2459216.5), "settle": ts.tt_jd(2459216.7)},
     ]
     with (
-        mock.patch.object(
-            function.app.timeMgr, "timeZoneString", return_value="", create=True
-        ),
-        mock.patch.object(function.app.timeMgr, "convertTime", return_value="", create=True),
         mock.patch.object(function, "clearTrackingParameters"),
         mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
         ),
-        mock.patch.object(function, "calcTrajectoryAndShow"),
     ):
         function.workerShowSatPasses()
 
@@ -234,22 +224,51 @@ def test_workerShowSatPasses_3(function):
         {"rise": ts.tt_jd(2459216.5), "settle": ts.tt_jd(2459216.7)},
     ]
     with (
-        mock.patch.object(
-            function.app.timeMgr, "timeZoneString", return_value="", create=True
-        ),
-        mock.patch.object(function.app.timeMgr, "convertTime", return_value="", create=True),
         mock.patch.object(function, "clearTrackingParameters"),
         mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
         ),
-        mock.patch.object(function, "calcTrajectoryAndShow"),
     ):
         function.workerShowSatPasses()
 
 
+def test_updateSatPassesGui_1(function):
+    ts = function.app.mount.obsSite.ts
+    function.satOrbits = [
+        {
+            "rise": ts.tt_jd(2459215.5),
+            "culminate": ts.tt_jd(2459215.6),
+            "settle": ts.tt_jd(2459215.7),
+            "flip": ts.tt_jd(2459215.6),
+        },
+    ]
+    with mock.patch.object(
+        function.app.timeMgr, "convertTime", return_value="12:00:00", create=True
+    ):
+        function.updateSatPassesGui()
+
+
+def test_updateSatPassesGui_2(function):
+    function.satOrbits = [
+        {
+            "rise": None,
+            "culminate": None,
+            "settle": None,
+            "flip": None,
+        },
+    ]
+    function.updateSatPassesGui()
+
+
 def test_showSatPasses_1(function):
-    with mock.patch.object(function.app.threadPool, "start"):
+    with (
+        mock.patch.object(function.app.threadPool, "start") as mockStart,
+        mock.patch.object(
+            function.app.timeMgr, "timeZoneString", return_value="(UTC)", create=True
+        ),
+    ):
         function.showSatPasses()
+        mockStart.assert_called_once()
 
 
 def test_extractSatelliteData_0(function):

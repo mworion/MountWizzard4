@@ -167,18 +167,7 @@ class SatTrack(SatData):
             self.app.dReg["mount"].instance.calcTLE(start)
             self.signalSatelliteData(alt=np.array([]), az=np.array([]))
 
-    def workerShowSatPasses(self) -> None:
-        title = "Satellite passes " + self.app.timeMgr.timeZoneString()
-        self.ui.satPassesGroup.setTitle(title)
-
-        if not self.satellite:
-            return
-
-        self.clearTrackingParameters()
-        obsSite = self.app.dReg["mount"].obsSite
-        setting = self.app.dReg["mount"].setting
-        self.satOrbits = calcSatPasses(self.satellite, obsSite, setting)
-
+    def updateSatPassesGui(self) -> None:
         for i in range(0, 3):
             self.passUI[i]["rise"].setText("-")
             self.passUI[i]["culminate"].setText("-")
@@ -218,9 +207,21 @@ class SatTrack(SatData):
             self.passUI[i]["flip"].setText(flipStr)
             self.passUI[i]["date"].setText(dateStr)
 
+    def workerShowSatPasses(self) -> None:
+        if not self.satellite:
+            return
+        self.clearTrackingParameters()
+        obsSite = self.app.dReg["mount"].obsSite
+        setting = self.app.dReg["mount"].setting
+        self.satOrbits = calcSatPasses(self.satellite, obsSite, setting)
+
+
     def showSatPasses(self) -> None:
         self.workerPasses = Worker(self.workerShowSatPasses)
+        self.workerPasses.signals.result.connect(self.updateSatPassesGui)
         self.workerPasses.signals.finished.connect(self.calcTrajectoryAndShow)
+        title = "Satellite passes " + self.app.timeMgr.timeZoneString()
+        self.ui.satPassesGroup.setTitle(title)
         self.app.threadPool.start(self.workerPasses)
 
     def extractSatelliteData(self, satName: str) -> None:

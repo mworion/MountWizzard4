@@ -400,8 +400,8 @@ BASIC_STYLE = """
         color: $M_TER$;
     }
     QPushButton[run='true'] {
-        background-color: $M_GREEN2$;
-        border-color: $M_GREEN$;
+        background-color: $M_PRIM2$;
+        border-color: $M_PRIM$;
         border-width: 1px;
         color: $M_TER$;
     }

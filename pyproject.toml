@@ -89,6 +89,8 @@ dependencies = [
 [project.scripts]
 mw4 = "mw4.cli:run"
 MW4 = "mw4.cli:run"
+mw = "mw4.cli:run"
+MW = "mw4.cli:run"
 mountwizzard4 = "mw4.cli:run"
 MountWizzard4 = "mw4.cli:run"
 

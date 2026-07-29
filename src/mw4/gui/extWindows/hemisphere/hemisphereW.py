@@ -116,7 +116,6 @@ class HemisphereWindow(MWidget):
 
     def mouseMoved(self, viewBox, pos: QPointF) -> None:
         mousePoint = viewBox.mapSceneToView(pos)
-
         if viewBox.posInViewRange(pos):
             self.ui.azimuth.setText(f"{mousePoint.x():3.1f}")
             self.ui.altitude.setText(f"{mousePoint.y():3.1f}")

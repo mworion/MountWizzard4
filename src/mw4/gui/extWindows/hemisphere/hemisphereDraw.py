@@ -258,7 +258,7 @@ class HemisphereDraw(MWidget):
             self.modelPointsText.append(textItem)
             plotItem.addItem(textItem)
 
-    def updateDataModel(self, x: list[float], y: list[float]) -> None:
+    def updateDataBuildPoints(self, x: list[float], y: list[float]) -> None:
         bp = [[y, x, self.app.buildPoint.UNPROCESSED] for y, x in zip(y, x)]
         self.app.buildPoint.buildP = bp
         self.drawModelPoints()
@@ -285,7 +285,7 @@ class HemisphereDraw(MWidget):
                 vb = plotItem.getViewBox()
                 vb.setPlotDataItem(pd)
                 if i == 0:
-                    vb.updateData = self.updateDataModel
+                    vb.updateData = self.updateDataBuildPoints
             else:
                 pd = pg.PlotDataItem(
                     symbolBrush=pg.mkBrush(color=self.M_TER),
@@ -335,7 +335,7 @@ class HemisphereDraw(MWidget):
         plotItem = self.ui.hemisphere.p[0]
         self.pointerDome = pg.QtWidgets.QGraphicsRectItem(165, 1, 30, 88)
         self.pointerDome.setPen(pg.mkPen(color=self.M_SEC))
-        self.pointerDome.setBrush(pg.mkBrush(color=(self.M_SEC)))
+        self.pointerDome.setBrush(pg.mkBrush(color=self.M_SEC))
         self.pointerDome.setVisible(False)
         plotItem.addItem(self.pointerDome)
 

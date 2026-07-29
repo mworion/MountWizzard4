@@ -59,6 +59,7 @@ class HorizonDraw(MWidget):
         self.ui.terrainAlpha.valueChanged.connect(self.drawTab)
         self.ui.normalModeHor.clicked.connect(self.setOperationMode)
         self.ui.editModeHor.clicked.connect(self.setOperationMode)
+        self.app.redrawHorizon.connect(self.drawTab)
         self.app.dReg["mount"].signals.pointDone.connect(self.drawPointer)
         self.app.dReg["mount"].signals.settingDone.connect(self.drawTab)
         self.ui.showMountLimits.clicked.connect(self.drawTab)
@@ -164,7 +165,7 @@ class HorizonDraw(MWidget):
         self.ui.addPositionToHorizon.setEnabled(self.ui.editModeHor.isChecked())
         self.app.redrawHorizon.emit()
 
-    def updateDataHorizon(self, x: list, y: list) -> None:
+    def updateDataHorizonPoints(self, x: list, y: list) -> None:
         hp = [[y, x] for y, x in zip(y, x)]
         hp.sort(key=lambda s: x[1]) if len(x) > 1 else x
         y, x = zip(*hp)
@@ -231,7 +232,7 @@ class HorizonDraw(MWidget):
             plotItem.addItem(self.horizonPlot)
             vb = plotItem.getViewBox()
             vb.setPlotDataItem(self.horizonPlot)
-            vb.updateData = self.updateDataHorizon
+            vb.updateData = self.updateDataHorizonPoints
             vb.setOpts(enableLimitX=True)
         else:
             self.horizonPlot = pg.PlotDataItem(

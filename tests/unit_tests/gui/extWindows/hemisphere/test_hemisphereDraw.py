@@ -210,12 +210,12 @@ def test_drawModelText_3(function):
     function.drawModelText()
 
 
-def test_updateDataModel(function):
+def test_updateDataBuildPoints(function):
     with (
         mock.patch.object(function, "drawModelPoints"),
         mock.patch.object(function, "drawModelText"),
     ):
-        function.updateDataModel([1, 2], [1, 2])
+        function.updateDataBuildPoints([1, 2], [1, 2])
 
 
 def test_setupModel_1(function):

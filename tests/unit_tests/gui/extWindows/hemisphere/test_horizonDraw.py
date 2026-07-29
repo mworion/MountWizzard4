@@ -215,10 +215,10 @@ def test_setOperationMode_1(function):
         function.setOperationMode()
 
 
-def test_updateDataHorizon(function):
+def test_updateDataHorizonPoints(function):
     function.horizonPlot = pg.PlotDataItem()
     with mock.patch.object(function, "drawTab"):
-        function.updateDataHorizon([1, 2], [1, 2])
+        function.updateDataHorizonPoints([1, 2], [1, 2])
 
 
 def test_clearHorizonMask(function):

@@ -310,8 +310,8 @@ class DevicePopup(MWidget):
         self.platesolvers[framework]["indexPath"].setText(str(indexFolderPath))
 
     def selectAscomDriver(self) -> None:
-        ascom = AscomClass(parent=self.parent)
-        deviceName = ascom.selectAscomDriver(self.ui.ascomDevice.text(), self.deviceType)
+        deviceType = self.app.dReg[self.device].instance.DEVICE_TYPE
+        deviceName = AscomClass.selectAscomDriver(self.ui.ascomDevice.text(), deviceType)
         self.ui.ascomDevice.setText(deviceName)
 
     def selectBoltwoodPath(self) -> None:

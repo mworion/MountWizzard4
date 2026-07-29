@@ -69,7 +69,10 @@ class AscomClass(AlpacaAscomCommon):
         self.workerRunnerCoreLoop = Worker(self.runnerCoreLoop)
         self.threadPool.start(self.workerRunnerCoreLoop)
 
-    def selectAscomDriver(self, deviceName: str, deviceType: str) -> str:
+    @classmethod
+    def selectAscomDriver(cls, deviceName: str, deviceType: str) -> str:
+        # Runs the ASCOM chooser via a logger only, so it can be called without
+        # constructing an AscomClass instance (see DevicePopup.selectAscomDriver).
         # Arguments are passed as a JSON payload to avoid code injection via
         # f-string interpolation into the subprocess script. (SEC-1)
         script = (
@@ -88,7 +91,7 @@ class AscomClass(AlpacaAscomCommon):
                 creationflags=0x08000000,  # CREATE_NO_WINDOW
             ).strip()
         except subprocess.CalledProcessError as e:
-            self.log.critical(f"ASCOM Chooser subprocess error: {e}")
+            cls.log.critical(f"ASCOM Chooser subprocess error: {e}")
             return deviceName
-        self.log.debug(f"ASCOM Chooser result: [{result}]")
+        cls.log.debug(f"ASCOM Chooser result: [{result}]")
         return result if result else deviceName

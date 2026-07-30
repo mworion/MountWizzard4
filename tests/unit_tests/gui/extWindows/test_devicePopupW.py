@@ -357,15 +357,25 @@ def test_selectIndexPath_2(function):
 
 
 def test_selectAscomDriver_1(function):
-    # Create a mock parent with data attribute
-    mockParent = mock.Mock()
-    mockParent.data = {}
-    function.parent = mockParent
-    function.deviceType = "telescope"
-
-    with mock.patch.object(AscomClass, "selectAscomDriver", return_value="test"):
+    function.ui.ascomDevice.setText("initial")
+    with mock.patch.object(
+        AscomClass, "selectAscomDriver", return_value="selectedDriver"
+    ) as mockSelect:
         function.selectAscomDriver()
-        assert function.ui.ascomDevice.text() == "test"
+        mockSelect.assert_called_once_with("initial", "telescope")
+        assert function.ui.ascomDevice.text() == "selectedDriver"
+
+
+def test_selectAscomDriver_2(function):
+    function.device = "camera"
+    function.ui.ascomDevice.setText("cameraInitial")
+    with mock.patch.object(
+        AscomClass, "selectAscomDriver", return_value="cameraDriver"
+    ) as mockSelect:
+        function.selectAscomDriver()
+        mockSelect.assert_called_once_with("cameraInitial", "camera")
+        assert function.ui.ascomDevice.text() == "cameraDriver"
+    function.device = "telescope"
 
 
 def test_selectBoltwoodPath_1(function):

@@ -29,7 +29,7 @@ if platform.system() == "Windows":
 
 @dataclass
 class DeviceConfigAscom:
-    deviceName: str = field(default=None)
+    deviceName: str = field(default="")
 
 
 class AscomClass(AlpacaAscomCommon):

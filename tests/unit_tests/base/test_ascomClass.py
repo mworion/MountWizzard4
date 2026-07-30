@@ -418,34 +418,34 @@ def test_stopCommunication(function):
     assert not function.deviceConnected
 
 
-def test_selectAscomDriver_success(function):
+def test_selectAscomDriver_success():
     with mock.patch("subprocess.check_output", return_value="ASCOM.Test.Telescope"):
-        result = function.selectAscomDriver("old", "Telescope")
+        result = AscomClass.selectAscomDriver("old", "Telescope")
     assert result == "ASCOM.Test.Telescope"
 
 
-def test_selectAscomDriver_error(function):
+def test_selectAscomDriver_error():
     with mock.patch(
         "subprocess.check_output",
         side_effect=subprocess.CalledProcessError(1, "cmd"),
     ):
-        result = function.selectAscomDriver("original", "Telescope")
+        result = AscomClass.selectAscomDriver("original", "Telescope")
     assert result == "original"
 
 
-def test_selectAscomDriver_empty(function):
+def test_selectAscomDriver_empty():
     with mock.patch("subprocess.check_output", return_value="  "):
-        result = function.selectAscomDriver("fallback", "Telescope")
+        result = AscomClass.selectAscomDriver("fallback", "Telescope")
     assert result == "fallback"
 
 
-def test_selectAscomDriver_uses_json_payload(function):
+def test_selectAscomDriver_uses_json_payload():
     """SEC-1: deviceName and deviceType must be passed as a JSON payload, not
     interpolated into the script string."""
     import json as _json
 
     with mock.patch("subprocess.check_output", return_value="result") as m:
-        function.selectAscomDriver("MyDevice", "Camera")
+        AscomClass.selectAscomDriver("MyDevice", "Camera")
 
     args, _ = m.call_args
     cmd_list = args[0]
@@ -463,14 +463,14 @@ def test_selectAscomDriver_uses_json_payload(function):
     assert payload["deviceType"] == "Camera"
 
 
-def test_selectAscomDriver_injection_safe(function):
+def test_selectAscomDriver_injection_safe():
     """SEC-1: A malicious deviceName with Python-injection characters must be
     transmitted safely through the JSON payload, not break the script."""
     import json as _json
 
     malicious = "'; import os; os.system('rm -rf /')#"
     with mock.patch("subprocess.check_output", return_value="") as m:
-        function.selectAscomDriver(malicious, "Telescope")
+        AscomClass.selectAscomDriver(malicious, "Telescope")
 
     args, _ = m.call_args
     cmd_list = args[0]

@@ -60,12 +60,14 @@ class MountTime:
         rttLocal = ping(self.parent.config.hostAddress)
         if rttLocal is None:
             self.parent.mountIsUp = False
+            self.parent.signals.mountIsUp.emit(False)
             if self.errorCounter > 0:
                 self.errorCounter -= 1
                 self.log.info(f"Host: [{self.parent.config.hostAddress}] not resolved")
             return
         if rttLocal is False:
             self.parent.mountIsUp = False
+            self.parent.signals.mountIsUp.emit(False)
             if self.errorCounter > 0:
                 self.errorCounter -= 1
                 self.log.info(f"Timeout: [{self.parent.config.hostAddress}[ no response")
@@ -79,6 +81,7 @@ class MountTime:
                 client.connect((self.parent.config.hostAddress, self.parent.config.port))
                 client.shutdown(socket.SHUT_RDWR)
         except Exception as e:
+            self.parent.signals.mountIsUp.emit(False)
             if self.errorCounter > 0:
                 self.errorCounter -= 1
                 self.log.error(f"No mount at [{self.parent.config.hostAddress}], error [{e}]")

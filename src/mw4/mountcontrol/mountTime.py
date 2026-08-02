@@ -59,10 +59,10 @@ class MountTime:
         if self.errorCounter > 0:
             self.errorCounter -= 1
             self.log.info(logText)
-        
+
     def runnerMountUp(self) -> None:
         if not self.parent.config.hostAddress:
-            self.setStatus(f"No host address")
+            self.setStatus("No host address")
             return
         rttLocal = ping(self.parent.config.hostAddress)
         if rttLocal is None:

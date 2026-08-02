@@ -431,3 +431,109 @@ def test_pollSyncClock_updates_timeDiff_array(function):
         function.runnerPollSyncClock()
         assert function._timeDiff[-1] == pytest.approx(initial_last_element)
         assert function._timeDiff[0] != initial_last_element
+
+
+def test_setStatus_sets_mount_not_up(function):
+    function.parent.mountIsUp = True
+    with mock.patch.object(function.parent.signals, "mountIsUp"):
+        function.setStatus("Test status")
+        assert function.parent.mountIsUp is False
+
+
+def test_setStatus_emits_signal(function):
+    with mock.patch.object(function.parent.signals, "mountIsUp") as mock_signal:
+        function.setStatus("Test message")
+        mock_signal.emit.assert_called_once_with(False)
+
+
+def test_setStatus_decrements_error_counter(function):
+    function.errorCounter = 5
+    with mock.patch.object(function.parent.signals, "mountIsUp"):
+        function.setStatus("Test status")
+        assert function.errorCounter == 4
+
+
+def test_setStatus_logs_when_counter_positive(function):
+    function.errorCounter = 5
+    test_message = "Test error message"
+    with (
+        mock.patch.object(function.parent.signals, "mountIsUp"),
+        mock.patch.object(function.log, "info") as mock_log,
+    ):
+        function.setStatus(test_message)
+        mock_log.assert_called_once_with(test_message)
+
+
+def test_setStatus_no_log_when_counter_zero(function):
+    function.errorCounter = 0
+    with (
+        mock.patch.object(function.parent.signals, "mountIsUp"),
+        mock.patch.object(function.log, "info") as mock_log,
+    ):
+        function.setStatus("Test message")
+        mock_log.assert_not_called()
+
+
+def test_setStatus_no_decrement_when_counter_zero(function):
+    function.errorCounter = 0
+    with mock.patch.object(function.parent.signals, "mountIsUp"):
+        function.setStatus("Test status")
+        assert function.errorCounter == 0
+
+
+@pytest.mark.parametrize(
+    "initial_counter,expected_counter",
+    [
+        (1, 0),
+        (5, 4),
+        (10, 9),
+    ],
+)
+def test_setStatus_decrement_various_counters(function, initial_counter, expected_counter):
+    function.errorCounter = initial_counter
+    with mock.patch.object(function.parent.signals, "mountIsUp"):
+        function.setStatus("Test status")
+        assert function.errorCounter == expected_counter
+
+
+@pytest.mark.parametrize(
+    "log_message",
+    [
+        "No host address",
+        "Host: [192.168.1.1] not resolved",
+        "Timeout: [192.168.1.1] no response",
+        "No mount at [192.168.1.1], error [Connection refused]",
+    ],
+)
+def test_setStatus_logs_different_messages(function, log_message):
+    function.errorCounter = 1
+    with (
+        mock.patch.object(function.parent.signals, "mountIsUp"),
+        mock.patch.object(function.log, "info") as mock_log,
+    ):
+        function.setStatus(log_message)
+        mock_log.assert_called_once_with(log_message)
+
+
+def test_setStatus_multiple_calls_decrements_progressively(function):
+    function.errorCounter = 3
+    with mock.patch.object(function.parent.signals, "mountIsUp"):
+        function.setStatus("Message 1")
+        assert function.errorCounter == 2
+        function.setStatus("Message 2")
+        assert function.errorCounter == 1
+        function.setStatus("Message 3")
+        assert function.errorCounter == 0
+        function.setStatus("Message 4")
+        assert function.errorCounter == 0
+
+
+def test_setStatus_called_with_empty_string(function):
+    function.errorCounter = 5
+    with (
+        mock.patch.object(function.parent.signals, "mountIsUp"),
+        mock.patch.object(function.log, "info") as mock_log,
+    ):
+        function.setStatus("")
+        mock_log.assert_called_once_with("")
+        assert function.errorCounter == 4

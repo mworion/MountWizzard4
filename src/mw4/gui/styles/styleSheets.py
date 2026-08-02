@@ -576,8 +576,8 @@ BASIC_STYLE = """
         border-radius: 3px;
         border-width: 1px;
         border-style: outset;
-        color: $M_TER2$;
-        border-color: $M_TAB2$;
+        color: $M_TER1$;
+        border-color: $M_PRIM2$;
         padding-top: 6px;
         padding-bottom: 4px;
         padding-left: 4px;
@@ -585,8 +585,8 @@ BASIC_STYLE = """
     }
     QTabBar::tab:selected {
         color: $M_TER$;
-        border-width: 2px;
-        border-color: $M_TAB$;
+        border-color: $M_PRIM$;
+        background-color: $M_PRIM2$;
     }
     QTabBar::tab:only-one {
         margin: 1;

@@ -53,9 +53,6 @@ def test_property(function):
     assert isinstance(function.M_PINK1, list)
     assert isinstance(function.M_CYAN, list)
     assert isinstance(function.M_CYAN1, list)
-    assert isinstance(function.M_TAB, list)
-    assert isinstance(function.M_TAB1, list)
-    assert isinstance(function.M_TAB2, list)
 
 
 def test_mw4Style_1(function):

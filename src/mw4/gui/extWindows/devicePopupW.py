@@ -17,6 +17,7 @@ from functools import partial
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.ascomClass import AscomClass
 from mw4.base.indiClass import IndiClass
+from mw4.base.sgproClass import SGProClass
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, getTabIndex, svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
@@ -62,6 +63,11 @@ class DevicePopup(MWidget):
                 "hostaddress": self.ui.alpacaHostAddress,
                 "port": self.ui.alpacaPort,
                 "deviceName": self.ui.alpacaDeviceList,
+            },
+            "sgpro": {
+                "hostaddress": self.ui.sgproHostAddress,
+                "port": self.ui.sgproPort,
+                "deviceName": self.ui.sgproDeviceList,
             },
             "ascom": {
                 "deviceName": self.ui.ascomDevice,
@@ -143,6 +149,13 @@ class DevicePopup(MWidget):
                 "button": self.ui.alpacaDiscover,
                 "port": self.ui.alpacaPort,
                 "class": AlpacaClass,
+            },
+            "sgpro": {
+                "deviceList": self.ui.sgproDeviceList,
+                "hostaddress": self.ui.sgproHostAddress,
+                "button": self.ui.sgproDiscover,
+                "port": self.ui.sgproPort,
+                "class": SGProClass,
             },
             "hid": {
                 "deviceList": self.ui.hidDeviceList,

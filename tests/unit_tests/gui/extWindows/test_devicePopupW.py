@@ -19,6 +19,7 @@ import pytest
 import unittest.mock as mock
 from mw4.base.ascomClass import AscomClass
 from mw4.base.indiClass import IndiClass
+from mw4.base.sgproClass import SGProClass
 from mw4.base.signalsDevices import Signals
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
@@ -555,3 +556,58 @@ def test_configure_2(function):
     with mock.patch.object(DevicePopup, "exec", return_value=False):
         rv = DevicePopup.configure(parent, "telescope", {"framework": "indi"})
         assert rv["close"] == "cancel"
+
+
+def test_populateTabs_sgpro(function):
+    function.data = {
+        "sgpro": {
+            "deviceName": "test",
+            "deviceList": ["test", "test1"],
+            "hostaddress": "test",
+            "port": 10,
+        },
+    }
+    function.populateTabs()
+
+
+def test_readTabs_sgpro(function):
+    function.framework = "sgpro"
+    function.data = {
+        "sgpro": {
+            "deviceName": "test",
+            "deviceList": ["test", "test1"],
+            "hostaddress": "test",
+            "port": 10,
+        },
+    }
+    function.readTabs()
+
+
+def test_selectTabs_sgpro(function):
+    function.data = {
+        "framework": "sgpro",
+        "sgpro": {
+            "test": 1,
+        },
+    }
+    function.selectTabs()
+
+
+def test_discoverDevices_sgpro_empty(function):
+    sgproInstance = mock.MagicMock()
+    sgproInstance.discoverDevices = mock.MagicMock(return_value=())
+    function.app.dReg["telescope"].run["sgpro"] = sgproInstance
+    with mock.patch.object(SGProClass, "discoverDevices", return_value=()):
+        function.discoverDevices("sgpro", QWidget())
+
+
+def test_discoverDevices_sgpro_devices_found(function):
+    sgproInstance = mock.MagicMock()
+    sgproInstance.discoverDevices = mock.MagicMock(return_value=("Test1", "Test2"))
+    function.app.dReg["telescope"].run["sgpro"] = sgproInstance
+    with mock.patch.object(
+        SGProClass, "discoverDevices", return_value=("Test1", "Test2")
+    ):
+        function.discoverDevices("sgpro", QWidget())
+
+    assert function.framework == "sgpro"

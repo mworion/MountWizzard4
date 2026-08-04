@@ -17,6 +17,7 @@ import glob
 import mw4.logic.plateSolve.plateSolve
 import os
 import pytest
+import queue
 import shutil
 import subprocess
 from contextlib import suppress
@@ -212,6 +213,17 @@ def test_workerSolveLoop_2(function, mocked_processSolveQueue):
     function.solveQueue.put(("tests/work/image/m51.fit", False))
     with suppress(Exception):
         function.runnerSolveLoop()
+
+
+def test_workerSolveLoop_empty_queue(function, monkeypatch):
+    function.solveLoopRunning = True
+
+    def mock_get(*args, **kwargs):
+        function.solveLoopRunning = False
+        raise queue.Empty()
+
+    monkeypatch.setattr(function.solveQueue, "get", mock_get)
+    function.runnerSolveLoop()
 
 
 def test_startSolveLoop_1(function):

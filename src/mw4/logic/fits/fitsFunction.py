@@ -25,6 +25,7 @@ from mw4.mountcontrol.convert import (
     valueToAngle,
     valueToFloat,
 )
+from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path
 from skyfield.units import Angle
 from typing import Any
@@ -119,24 +120,22 @@ def calcAngleScaleFromWCSHeader(header: fits.Header) -> tuple[Angle, float, bool
     return angle, scale, mirrored
 
 
-def writeHeaderCamera(header: fits.Header, camera: Any) -> fits.Header:
+def writeHeaderCamera(header: fits.Header, camera: Any, obsSite: ObsSite) -> fits.Header:
     data = camera.data
     header.append(("OBJECT", "SKY_OBJECT", "default name from MW4"))
     header.append(("AUTHOR", "MountWizzard4", "default name from MW4"))
     header.append(("FRAME", "Light", "Modeling works with light frames"))
     header.append(("EQUINOX", 2000, "All data is stored in J2000"))
     header.append(("OBSERVER", "MW4"))
-    t = camera.obsSite.timeJD
-    header.append(("DATE-OBS", t.tt_strftime("%Y-%m-%dT%H:%M:%S"), "UTC mount"))
-    header.append(("MJD-OBS", t.tt - 2400000.5, "UTC mount"))
-    header.append(("SITELAT", formatLatToText(camera.obsSite.location.latitude)))
-    header.append(("SITELON", formatLonToText(camera.obsSite.location.longitude)))
-    header.append(("SITEELEV", camera.obsSite.location.elevation.m))
-
-    header.append(("PIXSIZE1", data["CCD_INFO.CCD_PIXEL_SIZE_X"] * camera.binning))
-    header.append(("PIXSIZE2", data["CCD_INFO.CCD_PIXEL_SIZE_Y"] * camera.binning))
-    header.append(("XPIXSZ", data["CCD_INFO.CCD_PIXEL_SIZE_X"] * camera.binning))
-    header.append(("YPIXSZ", data["CCD_INFO.CCD_PIXEL_SIZE_Y"] * camera.binning))
+    header.append(("DATE-OBS", obsSite.timeJD.tt_strftime("%Y-%m-%dT%H:%M:%S"), "UTC mount"))
+    header.append(("MJD-OBS", obsSite.timeJD.tt - 2400000.5, "UTC mount"))
+    header.append(("SITELAT", formatLatToText(obsSite.location.latitude)))
+    header.append(("SITELON", formatLonToText(obsSite.location.longitude)))
+    header.append(("SITEELEV", obsSite.location.elevation.m))
+    header.append(("PIXSIZE1", data.get("CCD_INFO.CCD_PIXEL_SIZE_X", 1) * camera.binning))
+    header.append(("PIXSIZE2", data.get("CCD_INFO.CCD_PIXEL_SIZE_Y", 1) * camera.binning))
+    header.append(("XPIXSZ", data.get("CCD_INFO.CCD_PIXEL_SIZE_X", 1) * camera.binning))
+    header.append(("YPIXSZ", data.get("CCD_INFO.CCD_PIXEL_SIZE_Y", 1) * camera.binning))
     header.append(("XBINNING", camera.binning, "MW4 same binning x/y"))
     header.append(("YBINNING", camera.binning, "MW4 same binning x/y"))
     if camera.focalLength:
@@ -144,14 +143,14 @@ def writeHeaderCamera(header: fits.Header, camera: Any) -> fits.Header:
     else:
         log.warning("camera.focalLength not set")
     header.append(("FOCALLEN", camera.focalLength, "Data from driver / manual input"))
-    header.append(("SCALE", data["CCD_INFO.CCD_PIXEL_SIZE_X"] * scale))
+    header.append(("SCALE", data.get("CCD_INFO.CCD_PIXEL_SIZE_X", 1) * scale))
     header.append(("EXPTIME", camera.exposureTime))
     header.append(("CCD-TEMP", data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", 0)))
     return header
 
 
-def writeHeaderPointing(header: fits.Header, camera: Any) -> fits.Header:
-    ra, dec = JNowToJ2000(camera.obsSite.raJNow, camera.obsSite.decJNow, camera.obsSite.timeJD)
+def writeHeaderPointing(header: fits.Header, obsSite: ObsSite) -> fits.Header:
+    ra, dec = JNowToJ2000(obsSite.raJNow, obsSite.decJNow, obsSite.timeJD)
     header.append(("RA", ra.degrees, "Float value in degree"))
     header.append(("DEC", dec.degrees, "Float value in degree"))
     return header

@@ -61,9 +61,9 @@ class Camera:
         self.run = {
             "indi": CameraIndi(self),
             "alpaca": CameraAlpaca(self),
-            "sgpro": CameraSGPro(self),
         }
         if platform.system() == "Windows":
+            self.run["sgpro"] = CameraSGPro(self)
             self.run["ascom"] = CameraAscom(self)
 
     @property
@@ -157,11 +157,6 @@ class Camera:
 
     def writeImageFitsHeader(self) -> None:
         with fits.open(self.imagePath, mode="update", output_verify="silentfix") as HDU:
-            header = writeHeaderCamera(HDU[0].header, self)
-            header = writeHeaderPointing(header, self)
-            HDU[0].header = header
-
-    def updateImageFitsHeaderPointing(self) -> None:
-        with fits.open(self.imagePath, mode="update", output_verify="silentfix") as HDU:
-            header = writeHeaderPointing(HDU[0].header, self)
+            header = writeHeaderCamera(HDU[0].header, self, self.app.dReg["mount"].obsSite)
+            header = writeHeaderPointing(header, self.app.dReg["mount"].obsSite)
             HDU[0].header = header

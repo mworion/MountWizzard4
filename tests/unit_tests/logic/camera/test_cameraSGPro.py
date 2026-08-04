@@ -14,15 +14,16 @@
 #
 ###########################################################
 import pytest
-import unittest.mock as mock
 from mw4.base.sgproClass import SGProClass
 from mw4.logic.camera.camera import Camera
 from mw4.logic.camera.cameraSGPro import CameraSGPro
+from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function() -> None:
     try:
         app = App()
         camera = Camera(app)
@@ -34,48 +35,48 @@ def function():
         camera.widthASCOM = 100
         camera.heightASCOM = 100
         camera.fastReadout = False
-        camera.imagePath = "/tmp/test.fits"
+        camera.imagePath = Path("/tmp/test.fits")
         func = CameraSGPro(camera)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         pytest.skip(f"Fixture initialization failed: {e}")
     yield func
 
 
-def test_cameraSGPro_inheritsFromSGProClass(function):
+def test_cameraSGPro_inheritsFromSGProClass(function) -> None:
     assert isinstance(function, SGProClass)
 
 
-def test_cameraSGPro_instantiation(function):
+def test_cameraSGPro_instantiation(function) -> None:
     assert function is not None
 
 
-def test_getInitialConfig(function):
+def test_getInitialConfig(function) -> None:
     function.data.clear()
     function.getInitialConfig()
     assert function.data.get("CCD_BINNING.HOR_BIN") == 1
 
 
-def test_sendDownloadMode(function):
+def test_sendDownloadMode(function) -> None:
     function.sendDownloadMode()
 
 
-def test_sendCoolerSwitch(function):
+def test_sendCoolerSwitch(function) -> None:
     function.sendCoolerSwitch(coolerOn=True)
 
 
-def test_sendCoolerTemp(function):
+def test_sendCoolerTemp(function) -> None:
     function.sendCoolerTemp(temperature=-10)
 
 
-def test_sendOffset(function):
+def test_sendOffset(function) -> None:
     function.sendOffset(offset=10)
 
 
-def test_sendGain(function):
+def test_sendGain(function) -> None:
     function.sendGain(gain=100)
 
 
-def test_captureImage(function):
+def test_captureImage(function) -> None:
     with mock.patch.object(function, "requestProperty") as mock_request:
         mock_request.return_value = {"Success": True, "Receipt": "1234"}
         suc, response = function.captureImage(params={})
@@ -84,7 +85,7 @@ def test_captureImage(function):
         mock_request.assert_called_once_with("image", params={})
 
 
-def test_abortImage(function):
+def test_abortImage(function) -> None:
     with mock.patch.object(function, "requestProperty") as mock_request:
         mock_request.return_value = {"Success": True}
         result = function.abortImage()
@@ -92,116 +93,261 @@ def test_abortImage(function):
         mock_request.assert_called_once_with("abortimage")
 
 
-def test_getImagePath(function):
+def test_getImagePath(function) -> None:
     with mock.patch.object(function, "requestProperty") as mock_request:
-        mock_request.return_value = {"Success": True}
-        result = function.getImagePath(receipt="1234")
-        assert result is True
+        mock_request.return_value = {"Success": True, "Message": "/tmp/image.fits"}
+        suc, imagePath = function.getImagePath(receipt="1234")
+        assert suc is True
+        assert imagePath == "/tmp/image.fits"
         mock_request.assert_called_once_with("imagepath/1234")
 
 
-def test_getCameraProps(function):
+def test_getCameraProps(function) -> None:
     with mock.patch.object(function, "requestProperty") as mock_request:
         mock_request.return_value = {"Success": True, "Props": {}}
-        suc, response = function.getCameraProps()
+        suc, _response = function.getCameraProps()
         assert suc is True
         mock_request.assert_called_once_with("cameraprops")
 
 
-def test_abort(function):
+def test_abort(function) -> None:
     with mock.patch.object(function, "abortImage", return_value=True) as mock_abort:
         result = function.abort()
         assert result is True
         mock_abort.assert_called_once()
 
 
-def test_expose(function):
+def test_expose(function) -> None:
     with mock.patch.object(function.threadPool, "start") as mock_start:
         function.expose()
         mock_start.assert_called_once()
+        assert function.workerExpose is not None
 
 
-def test_workerExpose_captureImage_fails(function):
+def test_startExpose_captureImage_fails(function) -> None:
     function.parent.exposing = True
     with mock.patch.object(function, "captureImage", return_value=(False, {})):
-        function.workerExpose()
-    assert function.parent.exposing is False
+        receipt = function.startExpose()
+    assert receipt == ""
 
 
-def test_workerExpose_no_receipt(function):
+def test_startExpose_no_receipt(function) -> None:
     function.parent.exposing = True
     with mock.patch.object(function, "captureImage", return_value=(True, {})):
-        function.workerExpose()
+        receipt = function.startExpose()
+    assert receipt == ""
+
+
+def test_startExpose_success(function) -> None:
+    function.parent.exposing = True
+    function.data["Device.Message"] = "integrating"
+    with (
+        mock.patch.object(function, "captureImage", return_value=(True, {"Receipt": "1234"})),
+        mock.patch.object(function.signals, "message") as mock_message,
+        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep"),
+    ):
+        receipt = function.startExpose()
+    assert receipt == "1234"
+    mock_message.emit.assert_called_once_with("expose   1 s")
+
+
+def test_startExpose_waits_for_integrating(function) -> None:
+    function.parent.exposing = True
+    function.data["Device.Message"] = "waiting"
+    callCount = 0
+
+    def sleepSideEffect(*args, **kwargs):
+        nonlocal callCount
+        callCount += 1
+        if callCount == 1:
+            function.data["Device.Message"] = "integrating"
+
+    with (
+        mock.patch.object(function, "captureImage", return_value=(True, {"Receipt": "1234"})),
+        mock.patch.object(function.signals, "message") as mock_message,
+        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
+    ):
+        receipt = function.startExpose()
+    assert receipt == "1234"
+    assert mock_message.emit.call_count == 1
+
+
+def test_runExpose(function) -> None:
+    function.parent.exposing = True
+    function.data["Device.Message"] = "integrating"
+    callCount = 0
+
+    def sleepSideEffect(*args, **kwargs):
+        nonlocal callCount
+        callCount += 1
+        if callCount == 1:
+            function.data["Device.Message"] = "idle"
+
+    with (
+        mock.patch.object(function.signals, "message") as mock_message,
+        mock.patch.object(function.signals, "exposed") as mock_exposed,
+        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
+    ):
+        function.runExpose()
+    mock_exposed.emit.assert_called_once_with(function.parent.imagePath)
+    assert mock_message.emit.call_count == 1
+
+
+def test_runDownload(function) -> None:
+    function.parent.exposing = True
+    function.data["Device.Message"] = "downloading"
+    callCount = 0
+
+    def sleepSideEffect(*args, **kwargs):
+        nonlocal callCount
+        callCount += 1
+        if callCount == 1:
+            function.data["Device.Message"] = "idle"
+
+    with (
+        mock.patch.object(function.signals, "message") as mock_message,
+        mock.patch.object(function.signals, "downloaded") as mock_downloaded,
+        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
+    ):
+        function.runDownload()
+    mock_downloaded.emit.assert_called_once_with(function.parent.imagePath)
+    assert mock_message.emit.call_count == 1
+
+
+def test_runSave_success(function) -> None:
+    function.parent.exposing = True
+    function.data["Device.Message"] = "saving"
+    callCount = 0
+
+    def sleepSideEffect(*args, **kwargs):
+        nonlocal callCount
+        callCount += 1
+        if callCount == 1:
+            function.data["Device.Message"] = "idle"
+
+    with (
+        mock.patch.object(function, "getImagePath", return_value=(True, "/tmp/new.fits")),
+        mock.patch.object(function.signals, "message") as mock_message,
+        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
+    ):
+        suc = function.runSave(receipt="1234")
+    assert suc is True
+    assert function.parent.imagePath == Path("/tmp/new.fits")
+    mock_message.emit.assert_called_once_with("save")
+
+
+def test_runSave_fails(function) -> None:
+    function.parent.imagePath = Path("/tmp/test.fits")
+    function.parent.exposing = True
+    function.data["Device.Message"] = "saving"
+    callCount = 0
+
+    def sleepSideEffect(*args, **kwargs):
+        nonlocal callCount
+        callCount += 1
+        if callCount == 1:
+            function.data["Device.Message"] = "idle"
+
+    with (
+        mock.patch.object(function, "getImagePath", return_value=(False, "")),
+        mock.patch.object(function.signals, "message") as mock_message,
+        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
+    ):
+        suc = function.runSave(receipt="1234")
+    assert suc is False
+    mock_message.emit.assert_called_once_with("save")
+
+
+def test_runnerExpose_captureImage_fails(function) -> None:
+    function.parent.exposing = True
+    with mock.patch.object(function, "captureImage", return_value=(False, {})):
+        function.runnerExpose()
     assert function.parent.exposing is False
 
 
-def test_workerExpose_aborted_during_wait(function):
+def test_runnerExpose_no_receipt(function) -> None:
     function.parent.exposing = True
+    with mock.patch.object(function, "captureImage", return_value=(True, {})):
+        function.runnerExpose()
+    assert function.parent.exposing is False
+
+
+def test_runnerExpose_aborted_before_integrating(function) -> None:
+    function.parent.exposing = False
     with (
         mock.patch.object(function, "captureImage", return_value=(True, {"Receipt": "1234"})),
-        mock.patch.object(function, "waitFunc", return_value=True),
-        mock.patch.object(function, "getImagePath") as mock_get_path,
+        mock.patch.object(function, "getImagePath", return_value=(True, "/tmp/new.fits")),
+        mock.patch.object(function.parent, "writeImageFitsHeader") as mock_write,
         mock.patch("mw4.logic.camera.cameraSGPro.time.sleep"),
     ):
-
-        def abortAfterFirst(*args, **kwargs):
-            function.parent.exposing = False
-            return True
-
-        function.waitFunc.side_effect = abortAfterFirst
-        function.workerExpose()
-    mock_get_path.assert_not_called()
+        function.runnerExpose()
+    mock_write.assert_called_once()
 
 
-def test_waitFunc(function):
-    function.data["Device.Message"] = "camera integrating"
-    assert function.waitFunc() is True
-    function.data["Device.Message"] = "idle"
-    assert function.waitFunc() is False
+def _cycleMessage(function) -> None:
+    """Helper to advance Device.Message through the SGPro exposure states."""
+    callCount = 0
+
+    def sleepSideEffect(*args, **kwargs):
+        nonlocal callCount
+        callCount += 1
+        if callCount == 1:
+            function.data["Device.Message"] = "integrating"
+        elif callCount == 2:
+            function.data["Device.Message"] = "downloading"
+        elif callCount == 3:
+            function.data["Device.Message"] = "saving"
+        elif callCount == 4:
+            function.data["Device.Message"] = "idle"
+
+    return sleepSideEffect
 
 
-def test_workerExpose_success(function):
+def test_runnerExpose_success(function) -> None:
     function.parent.exposing = True
+    function.data["Device.Message"] = "waiting"
+    sleepSideEffect = _cycleMessage(function)
     with (
         mock.patch.object(function, "captureImage", return_value=(True, {"Receipt": "1234"})),
-        mock.patch.object(function, "waitFunc", side_effect=[True, False]),
-        mock.patch.object(function, "getImagePath", return_value=True),
+        mock.patch.object(function, "getImagePath", return_value=(True, "/tmp/new.fits")),
         mock.patch.object(function.signals, "exposed") as mock_exposed,
         mock.patch.object(function.signals, "downloaded") as mock_downloaded,
-        mock.patch.object(function.parent, "updateImageFitsHeaderPointing") as mock_update,
-        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep"),
+        mock.patch.object(function.parent, "writeImageFitsHeader") as mock_write,
+        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
     ):
-        function.workerExpose()
+        function.runnerExpose()
+    assert function.parent.imagePath == Path("/tmp/new.fits")
     mock_exposed.emit.assert_called_once_with(function.parent.imagePath)
     mock_downloaded.emit.assert_called_once_with(function.parent.imagePath)
-    mock_update.assert_called_once()
+    mock_write.assert_called_once()
 
 
-def test_workerExpose_getImagePath_timeout(function):
+def test_runnerExpose_runSave_fails(function) -> None:
     function.parent.exposing = True
+    function.data["Device.Message"] = "waiting"
+    sleepSideEffect = _cycleMessage(function)
     with (
         mock.patch.object(function, "captureImage", return_value=(True, {"Receipt": "1234"})),
-        mock.patch.object(function, "waitFunc", return_value=False),
-        mock.patch.object(function, "getImagePath", return_value=False),
-        mock.patch.object(function.parent, "updateImageFitsHeaderPointing") as mock_update,
-        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep"),
+        mock.patch.object(function, "getImagePath", return_value=(False, "")),
+        mock.patch.object(function.parent, "writeImageFitsHeader") as mock_write,
+        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
     ):
-        function.workerExpose()
-    mock_update.assert_called_once()
+        function.runnerExpose()
+    mock_write.assert_not_called()
 
 
-def test_workerExpose_aborted_after_download_wait(function):
+def test_runnerExpose_aborted_during_integration(function) -> None:
     function.parent.exposing = True
+    function.data["Device.Message"] = "integrating"
+
+    def abortOnFirstSleep(*args, **kwargs):
+        function.parent.exposing = False
+
     with (
         mock.patch.object(function, "captureImage", return_value=(True, {"Receipt": "1234"})),
-        mock.patch.object(function, "waitFunc", return_value=False),
-        mock.patch.object(function, "getImagePath") as mock_get_path,
-        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep"),
+        mock.patch.object(function, "getImagePath", return_value=(True, "/tmp/new.fits")),
+        mock.patch.object(function.parent, "writeImageFitsHeader") as mock_write,
+        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=abortOnFirstSleep),
     ):
-
-        def abortDuringDownload(*args, **kwargs):
-            function.parent.exposing = False
-            return False
-
-        mock_get_path.side_effect = abortDuringDownload
-        function.workerExpose()
+        function.runnerExpose()
+    mock_write.assert_called_once()

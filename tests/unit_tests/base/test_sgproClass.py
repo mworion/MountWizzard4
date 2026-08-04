@@ -64,8 +64,8 @@ def test_init_config():
     assert function.config.deviceName == ""
     assert function.config.hostAddress == "127.0.0.1"
     assert function.config.port == 59590
-    assert function.config.UPDATE_RATE == 0.25
-    assert function.config.PROTOCOL_NAME == "SGPro"
+    assert function.UPDATE_RATE == 0.25
+    assert function.PROTOCOL_NAME == "SGPro"
 
 
 def test_config_deviceConfigSGPro():
@@ -74,8 +74,6 @@ def test_config_deviceConfigSGPro():
     assert config.deviceName == ""
     assert config.hostAddress == "127.0.0.1"
     assert config.port == 59590
-    assert config.UPDATE_RATE == 0.25
-    assert config.PROTOCOL_NAME == "SGPro"
 
 
 def test_config_deviceConfigSGPro_custom():
@@ -354,7 +352,7 @@ def test_connectDevice_failure_all_retries(function):
         mock_connect.return_value = False
         result = function.connectDevice()
         assert result is False
-        assert mock_connect.call_count == 25
+        assert mock_connect.call_count == 5
 
 
 def test_connectDevice_emits_error_on_failure(function):
@@ -628,7 +626,7 @@ def test_connect_retry_timing(function):
     ):
         mock_connect.return_value = False
         function.connectDevice()
-        assert mock_sleep.call_count == 25
+        assert mock_sleep.call_count == 5
 
 
 def test_device_state_persistence(function):

@@ -69,10 +69,7 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
         if state != 2 and not self.exposing:
             return
         if state == 2 and self.exposing:
-            timeLeft = max(
-                self.parent.exposureTime - time.time() + self.startTimeExposure,
-                0,
-            )
+            timeLeft = max(self.parent.exposureTime - time.time() + self.startTimeExposure, 0)
             text = f"expose {timeLeft:3.0f} s"
             self.signals.message.emit(text)
         if state != 2 and self.exposing:

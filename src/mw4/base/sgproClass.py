@@ -37,8 +37,6 @@ class DeviceConfigSGPro:
     deviceName: str = field(default="")
     hostAddress: str = field(default="127.0.0.1")
     port: int = field(default=59590)
-    UPDATE_RATE: float = 0.25
-    PROTOCOL_NAME: str = "SGPro"
 
 
 class SGProClass(DriverData):
@@ -85,8 +83,8 @@ class SGProClass(DriverData):
             t = f"Response invalid: [{response.status_code}]"
             self.log.warning(t)
             return {}
-
-        self.log.debug(f"[Trace] Response: [{response.json()}]")
+        if self.loggingTrace:
+            self.log.debug(f"[Trace] Response: [{response.json()}]")
         return response.json()
 
     def createDevice(self) -> bool:
@@ -136,7 +134,7 @@ class SGProClass(DriverData):
         self.commandQueue.put(CommandItem(cmdType="call", valueProp=valueProp, kwargs=kwargs))
 
     def connectDevice(self) -> bool:
-        for retry in range(25):
+        for retry in range(5):
             suc = self.createDevice()
             if suc:
                 self.log.debug(f"[{self.config.deviceName}] connected, [{retry}] retries")

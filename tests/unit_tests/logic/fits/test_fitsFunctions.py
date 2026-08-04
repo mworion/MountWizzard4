@@ -32,17 +32,18 @@ from mw4.logic.fits.fitsFunction import (
     updateImageFileHeaderWithSolution,
     writeHeaderCamera,
     writeHeaderPointing,
+    writeSolutionToHeader,
 )
 from skyfield.units import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App, Camera
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function() -> None:
     pass
 
 
-def test_getImageHeader_1():
+def test_getImageHeader_1() -> None:
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     with mock.patch.object(fits, "open", return_value=hdu):
@@ -50,14 +51,14 @@ def test_getImageHeader_1():
         assert header == hdu[0].header
 
 
-def test_getCoordinatesFromHeader_0():
+def test_getCoordinatesFromHeader_0() -> None:
     header = {}
     ra, dec = getCoordinatesFromHeader(header=header)
     assert ra.hours == Angle(hours=0).hours
     assert dec.degrees == Angle(degrees=0).degrees
 
 
-def test_getCoordinatesFromHeader_1():
+def test_getCoordinatesFromHeader_1() -> None:
     header = {
         "RA": 180,
         "DEC": 45,
@@ -67,7 +68,7 @@ def test_getCoordinatesFromHeader_1():
     assert dec.degrees == 45.0
 
 
-def test_getCoordinatesFromHeader_2():
+def test_getCoordinatesFromHeader_2() -> None:
     header = {
         "OBJCTRA": "12 00 00",
         "OBJCTDEC": "+45 00 00",
@@ -77,7 +78,7 @@ def test_getCoordinatesFromHeader_2():
     assert dec.degrees == 45.0
 
 
-def test_getCoordinatesFromHeader_3():
+def test_getCoordinatesFromHeader_3() -> None:
     header = {
         "RA": 180,
         "DEC": 45,
@@ -89,7 +90,7 @@ def test_getCoordinatesFromHeader_3():
     assert dec.degrees == 45.0
 
 
-def test_getSQMFromHeader_0():
+def test_getSQMFromHeader_0() -> None:
     header = {
         "test": "17.0",
     }
@@ -97,7 +98,7 @@ def test_getSQMFromHeader_0():
     assert sqm == 0
 
 
-def test_getSQMFromHeader_1():
+def test_getSQMFromHeader_1() -> None:
     header = {
         "SQM": "17.0",
     }
@@ -105,7 +106,7 @@ def test_getSQMFromHeader_1():
     assert sqm == 17.0
 
 
-def test_getSQMFromHeader_2():
+def test_getSQMFromHeader_2() -> None:
     header = {
         "SKY-QLTY": "17.0",
     }
@@ -113,7 +114,7 @@ def test_getSQMFromHeader_2():
     assert sqm == 17.0
 
 
-def test_getSQMFromHeader_3():
+def test_getSQMFromHeader_3() -> None:
     header = {
         "MPSAS": "17.0",
     }
@@ -121,7 +122,7 @@ def test_getSQMFromHeader_3():
     assert sqm == 17.0
 
 
-def test_getSQMFromHeader_4():
+def test_getSQMFromHeader_4() -> None:
     header = {
         "MPSAS": "15.0",
         "SKY-QLTY": "16.0",
@@ -131,7 +132,7 @@ def test_getSQMFromHeader_4():
     assert sqm == 17.0
 
 
-def test_getExposureFromHeader_0():
+def test_getExposureFromHeader_0() -> None:
     header = {
         "test": "17.0",
     }
@@ -139,7 +140,7 @@ def test_getExposureFromHeader_0():
     assert exposure == 0
 
 
-def test_getExposureFromHeader_1():
+def test_getExposureFromHeader_1() -> None:
     header = {
         "EXPOSURE": "17.0",
     }
@@ -147,7 +148,7 @@ def test_getExposureFromHeader_1():
     assert exposure == 17.0
 
 
-def test_getExposureFromHeader_2():
+def test_getExposureFromHeader_2() -> None:
     header = {
         "EXPTIME": "17.0",
     }
@@ -155,7 +156,7 @@ def test_getExposureFromHeader_2():
     assert exposure == 17.0
 
 
-def test_getExposureFromHeader_3():
+def test_getExposureFromHeader_3() -> None:
     header = {
         "EXPTIME": "15.0",
         "EXPOSURE": "16.0",
@@ -164,7 +165,7 @@ def test_getExposureFromHeader_3():
     assert exposure == 16.0
 
 
-def test_getScaleFromHeader_1():
+def test_getScaleFromHeader_1() -> None:
     header = {
         "SCALE": "1.333",
     }
@@ -172,7 +173,7 @@ def test_getScaleFromHeader_1():
     assert scale == 1.333
 
 
-def test_getScaleFromHeader_2():
+def test_getScaleFromHeader_2() -> None:
     header = {
         "FOCALLEN": "570",
     }
@@ -180,7 +181,7 @@ def test_getScaleFromHeader_2():
     assert scale == 0
 
 
-def test_getScaleFromHeader_3():
+def test_getScaleFromHeader_3() -> None:
     header = {
         "FOCALLEN": "570",
         "XBINNING": "1",
@@ -189,7 +190,7 @@ def test_getScaleFromHeader_3():
     assert scale == 0
 
 
-def test_getScaleFromHeader_4():
+def test_getScaleFromHeader_4() -> None:
     header = {
         "FOCALLEN": "570",
         "XBINNING": "1",
@@ -199,7 +200,7 @@ def test_getScaleFromHeader_4():
     assert round(scale, 3) == 1.335
 
 
-def test_getScaleFromHeader_5():
+def test_getScaleFromHeader_5() -> None:
     header = {
         "FOCALLEN": "570",
         "XBINNING": "1",
@@ -209,13 +210,13 @@ def test_getScaleFromHeader_5():
     assert round(scale, 3) == 1.335
 
 
-def test_getScaleFromHeader_6():
+def test_getScaleFromHeader_6() -> None:
     header = {}
     scale = getScaleFromHeader(header=header)
     assert scale == 0
 
 
-def test_getScaleFromHeader_7():
+def test_getScaleFromHeader_7() -> None:
     header = {
         "FOCALLEN": "570",
         "XBINNING": "1",
@@ -226,7 +227,7 @@ def test_getScaleFromHeader_7():
     assert round(scale, 3) == 1.447
 
 
-def test_getHintFromImageFile_1():
+def test_getHintFromImageFile_1() -> None:
     with (
         mock.patch.object(mw4.logic.fits.fitsFunction, "getImageHeader"),
         mock.patch.object(
@@ -242,7 +243,7 @@ def test_getHintFromImageFile_1():
         assert scale == 1
 
 
-def test_getCoordinatesFromWCSHeader_1():
+def test_getCoordinatesFromWCSHeader_1() -> None:
     header = {
         "CRVAL1": 180,
         "CRVAL2": 45,
@@ -252,7 +253,7 @@ def test_getCoordinatesFromWCSHeader_1():
     assert dec.degrees == 45.0
 
 
-def test_calcAngleScaleFromWCSHeader_1():
+def test_calcAngleScaleFromWCSHeader_1() -> None:
     header = {
         "CD1_1": 0.0002777777777777778,
         "CD1_2": 0,
@@ -265,7 +266,7 @@ def test_calcAngleScaleFromWCSHeader_1():
     assert mirrored
 
 
-def test_calcAngleScaleFromWCSHeader_2():
+def test_calcAngleScaleFromWCSHeader_2() -> None:
     header = {
         "CD1_1": 0.0002777777777777778,
         "CD1_2": 0,
@@ -278,49 +279,86 @@ def test_calcAngleScaleFromWCSHeader_2():
     assert not mirrored
 
 
-def test_writeHeaderCamera():
+def test_writeHeaderCamera() -> None:
     hdu = fits.PrimaryHDU(data=np.array([]))
     header = hdu.header
     camera = Camera()
     camera.data["CCD_INFO.CCD_PIXEL_SIZE_X"] = 3
     camera.data["CCD_INFO.CCD_PIXEL_SIZE_Y"] = 3
-    camera.app = App()
-    camera.obsSite = camera.app.mount.obsSite
-    writeHeaderCamera(header, camera)
+    app = App()
+    obsSite = app.mount.obsSite
+    result = writeHeaderCamera(header, camera, obsSite)
+    assert result["OBJECT"] == "SKY_OBJECT"
+    assert result["AUTHOR"] == "MountWizzard4"
+    assert result["FRAME"] == "Light"
+    assert result["EQUINOX"] == 2000
+    assert result["OBSERVER"] == "MW4"
+    assert result["SITELAT"] == "20N 00 00"
+    assert result["SITELON"] == "010E 00 00"
+    assert result["SITEELEV"] == 500
+    assert result["PIXSIZE1"] == 3
+    assert result["PIXSIZE2"] == 3
+    assert result["XPIXSZ"] == 3
+    assert result["YPIXSZ"] == 3
+    assert result["XBINNING"] == 1
+    assert result["YBINNING"] == 1
+    assert result["FOCALLEN"] == 100
+    assert result["SCALE"] == pytest.approx(3 * 1 / 100 * 206.265)
+    assert result["EXPTIME"] == 0
+    assert result["CCD-TEMP"] == 0
 
 
-def test_writeHeaderCamera_withoutFocalLength():
+def test_writeHeaderCamera_withoutFocalLength() -> None:
     hdu = fits.PrimaryHDU(data=np.array([]))
     header = hdu.header
     camera = Camera()
     camera.data["CCD_INFO.CCD_PIXEL_SIZE_X"] = 3
     camera.data["CCD_INFO.CCD_PIXEL_SIZE_Y"] = 3
     camera.focalLength = 0
-    camera.app = App()
-    camera.obsSite = camera.app.mount.obsSite
+    app = App()
+    obsSite = app.mount.obsSite
 
     with (
         mock.patch.object(mw4.logic.fits.fitsFunction.log, "warning") as warningMock,
         pytest.raises(UnboundLocalError),
     ):
-        writeHeaderCamera(header, camera)
+        writeHeaderCamera(header, camera, obsSite)
 
     warningMock.assert_called_once_with("camera.focalLength not set")
 
 
-def test_writeHeaderPointing():
+def test_writeHeaderPointing() -> None:
     hdu = fits.PrimaryHDU(data=np.array([]))
     header = hdu.header
-    camera = Camera()
-    camera.app = App()
-    camera.obsSite = camera.app.mount.obsSite
-    writeHeaderPointing(header, camera)
+    app = App()
+    obsSite = app.mount.obsSite
+    result = writeHeaderPointing(header, obsSite)
+    assert result["RA"] == pytest.approx(359.72275429697004)
+    assert result["DEC"] == pytest.approx(-0.12045998771078002)
 
 
-def test_updateImageFileHeaderWithSolution_1():
+def test_writeSolutionToHeader_1() -> None:
+    hdu = fits.PrimaryHDU(data=np.array([]))
+    header = hdu.header
+    solution = {
+        "raJ2000S": Angle(hours=12),
+        "decJ2000S": Angle(degrees=45),
+        "angleS": Angle(degrees=0),
+        "scaleS": 1.5,
+        "mirroredS": False,
+    }
+    result = writeSolutionToHeader(header, solution)
+    assert result["RA"] == 180
+    assert result["DEC"] == 45
+    assert result["SCALE"] == 1.5
+    assert result["PIXSCALE"] == 1.5
+    assert result["ANGLE"] == 0
+    assert result["MIRRORED"] is False
+
+
+def test_updateImageFileHeaderWithSolution_1() -> None:
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
-    hdu[0].header
     solution = {
         "raJ2000S": Angle(hours=12),
         "decJ2000S": Angle(degrees=45),
@@ -330,9 +368,15 @@ def test_updateImageFileHeaderWithSolution_1():
     }
     with mock.patch.object(fits, "open", return_value=hdu):
         updateImageFileHeaderWithSolution("test", solution)
+    assert hdu[0].header["RA"] == 180
+    assert hdu[0].header["DEC"] == 45
+    assert hdu[0].header["ANGLE"] == 0
+    assert hdu[0].header["SCALE"] == 0
+    assert hdu[0].header["PIXSCALE"] == 0
+    assert hdu[0].header["MIRRORED"] is False
 
 
-def test_getSolutionFromWCSHeader_1():
+def test_getSolutionFromWCSHeader_1() -> None:
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header
@@ -347,9 +391,10 @@ def test_getSolutionFromWCSHeader_1():
     assert solution["angleS"].degrees == 0
     assert solution["scaleS"] == 0
     assert not solution["mirroredS"]
+    assert solution["errorRMS_S"] == 0
 
 
-def test_getSolutionFromWCSHeader_2():
+def test_getSolutionFromWCSHeader_2() -> None:
     hdu = fits.HDUList()
     hdu.append(fits.PrimaryHDU())
     header = hdu[0].header

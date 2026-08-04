@@ -63,10 +63,12 @@ def app(qapp):
     def loadProfileStart_mock(config_dir):
         return default_config
 
-    with mock.patch("mw4.mainApp.loadProfileStart", side_effect=loadProfileStart_mock):
-        with mock.patch("mw4.mainApp.MainWindow") as mock_main_window:
-            mock_main_window.return_value = MagicMock()
-            app_instance = MountWizzard4(mwGlob, qapp, 1)
+    with (
+        mock.patch("mw4.mainApp.loadProfileStart", side_effect=loadProfileStart_mock),
+        mock.patch("mw4.mainApp.MainWindow") as mock_main_window,
+    ):
+        mock_main_window.return_value = MagicMock()
+        app_instance = MountWizzard4(mwGlob, qapp, 1)
     app_instance.update1s = MagicMock(emit=mock_emit)
     yield app_instance
     try:

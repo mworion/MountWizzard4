@@ -53,7 +53,7 @@ class MountTime:
     def timeDiff(self) -> float:
         return float(np.mean(self._timeDiff))
 
-    def setStatus(self, logText:str) -> None:
+    def setStatus(self, logText: str) -> None:
         self.parent.mountIsUp = False
         self.parent.signals.mountIsUp.emit(False)
         if self.errorCounter > 0:

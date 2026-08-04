@@ -215,7 +215,6 @@ class SatTrack(SatData):
         setting = self.app.dReg["mount"].setting
         self.satOrbits = calcSatPasses(self.satellite, obsSite, setting)
 
-
     def showSatPasses(self) -> None:
         self.workerPasses = Worker(self.workerShowSatPasses)
         self.workerPasses.signals.result.connect(self.updateSatPassesGui)

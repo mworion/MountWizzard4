@@ -251,6 +251,11 @@ def test_cameraAscom_import():
     assert spec is not None
 
 
+def test_camera_sgpro_in_run(function):
+    assert "sgpro" in function.run
+    assert function.run["sgpro"] is not None
+
+
 @pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
 def test_camera_ascom_in_run():
     from mw4.logic.camera.camera import Camera

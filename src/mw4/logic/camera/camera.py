@@ -19,6 +19,7 @@ from astropy.io import fits
 from mw4.base.signalsDevices import Signals
 from mw4.logic.camera.cameraAlpaca import CameraAlpaca
 from mw4.logic.camera.cameraIndi import CameraIndi
+from mw4.logic.camera.cameraSGPro import CameraSGPro
 from mw4.logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
 from pathlib import Path
 from typing import Any
@@ -60,6 +61,7 @@ class Camera:
         self.run = {
             "indi": CameraIndi(self),
             "alpaca": CameraAlpaca(self),
+            "sgpro": CameraSGPro(self),
         }
         if platform.system() == "Windows":
             self.run["ascom"] = CameraAscom(self)

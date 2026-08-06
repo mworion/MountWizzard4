@@ -78,7 +78,7 @@ dependencies = [
     "websocket-client==1.9.0",
     "hidapi==0.15.0",
     "range-key-dict==1.1.0",
-    "packaging==26.2",
+    "packaging==26.3",
     "lz4==4.4.5",
     "xisf==0.9.7",
     "pyside6==6.11.1",

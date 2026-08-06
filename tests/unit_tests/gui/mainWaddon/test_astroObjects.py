@@ -104,6 +104,58 @@ def test_buildSourceListDropdown_1(function):
         assert function.uiSourceList.count() == 3
 
 
+def test_setupSourceUpdate_1(function):
+    mock_list = mock.MagicMock()
+    original_list = function.uiSourceList
+    function.uiSourceList = mock_list
+    try:
+        with mock.patch.object(function, "loadSourceUrl") as mock_load:
+            function.setupSourceUpdate()
+            mock_load.assert_called_once()
+            mock_list.activated.connect.assert_called_once_with(mock_load)
+    finally:
+        function.uiSourceList = original_list
+
+
+def test_init_connects_start3s(qapp):
+    class TestUI:
+        isOnline = QCheckBox()
+        ageDatabases = QSpinBox()
+
+    class Test:
+        app = App()
+        ui = TestUI()
+
+    def test():
+        pass
+
+    satSourceURLs = {
+        "100 brightest": {
+            "url": "http://www.celestrak.org/NORAD/elements/gp.php?GROUP=visual&FORMAT=tle",
+            "file": "visual.txt",
+            "unzip": False,
+        },
+    }
+
+    parent = Test()
+    with (
+        mock.patch("mw4.gui.mainWaddon.astroObjects.DownloadPopup"),
+        mock.patch("mw4.gui.mainWaddon.astroObjects.UploadPopup"),
+        mock.patch.object(AstroObjects, "setupSourceUpdate") as mock_setup,
+    ):
+        AstroObjects(
+            window=parent,
+            objectText="test",
+            sourceUrls=satSourceURLs,
+            uiObjectList=QTableWidget(),
+            uiSourceList=QComboBox(),
+            uiSourceGroup=QGroupBox(),
+            processSource=test,
+        )
+        parent.app.timeMgr.start3s.emit()
+        mock_setup.assert_called_once()
+
+
 def test_setAge_1(function):
     function.setAge(0)
     assert function.uiSourceGroup.title() == "test data - age: 0.0d"

@@ -562,6 +562,7 @@ def test_startDeviceActuallyStarting(registry: DeviceRegistry) -> None:
     mock_config = MagicMock()
     mock_config.deviceName = "test_camera"
     registry.d["camera"].run["indi"].config = mock_config
+    registry.d["camera"].run["camera"] = registry.d["camera"].run["indi"]
 
     # Mock instance methods
     registry.d["camera"].instance.startCommunication = MagicMock()

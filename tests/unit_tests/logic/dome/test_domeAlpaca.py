@@ -14,10 +14,10 @@
 #
 ###########################################################
 import pytest
-import unittest.mock as mock
 from mw4.base.signalsDevices import Signals
 from mw4.logic.dome.domeAlpaca import DomeAlpaca
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 class Parent:
@@ -154,14 +154,22 @@ def test_abortSlew_1(function):
 
 
 def test_startCommunication_1(function):
-    """Test that startCommunication (from AlpacaClass) works."""
-    with mock.patch.object(function.threadPool, "start") as m_start:
+    """Test that startCommunication returns early when device creation fails."""
+    function.deviceType = "dome"
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=False),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
         function.startCommunication()
-        m_start.assert_called_once()
+        m_start.assert_not_called()
 
 
 def test_startCommunication_2(function):
-    """Test that startCommunication (from AlpacaClass) starts the worker thread."""
-    with mock.patch.object(function.threadPool, "start") as m_start:
+    """Test that startCommunication starts the worker thread when device creation succeeds."""
+    function.deviceType = "dome"
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=True),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
         function.startCommunication()
         m_start.assert_called_once()

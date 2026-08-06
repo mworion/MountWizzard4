@@ -57,14 +57,6 @@ class AlpacaClass(AlpacaAscomCommon):
         self.config = DeviceConfigAlpaca()
         self.workerCommunicationLoop: Worker | None = None
 
-    def startCommunication(self) -> None:
-        self.deviceConnected = False
-        self.data.clear()
-        self.propertyExceptions.clear()
-        self.stopEvent.clear()
-        self.workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
-        self.threadPool.start(self.workerCommunicationLoop)
-
     def createAlpacaDevice(self, deviceType: str) -> bool:
         deviceClass = self.DEVICE_TYPE_MAP.get(deviceType)
         if deviceClass is None:
@@ -80,6 +72,16 @@ class AlpacaClass(AlpacaAscomCommon):
 
         self.log.debug(f"Created device at [{address}]")
         return True
+
+    def startCommunication(self) -> None:
+        self.deviceConnected = False
+        self.data.clear()
+        self.propertyExceptions.clear()
+        self.stopEvent.clear()
+        if not self.createAlpacaDevice(self.deviceType):
+            return
+        self.workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
+        self.threadPool.start(self.workerCommunicationLoop)
 
     def discoverAPIVersion(self) -> int:
         address = f"{self.config.hostAddress}:{self.config.port}"

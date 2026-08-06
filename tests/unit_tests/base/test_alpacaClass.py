@@ -266,14 +266,22 @@ def test_discoverDevices_2(function):
 
 
 def test_startCommunication_1(function):
-    with mock.patch.object(function.threadPool, "start") as m_start:
+    function.deviceType = "camera"
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=True),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
         function.startCommunication()
         assert function.workerCommunicationLoop is not None
         m_start.assert_called_once()
 
 
 def test_startCommunication_2(function):
-    with mock.patch.object(function.threadPool, "start") as m_start:
+    function.deviceType = "camera"
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=True),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
         function.startCommunication()
         assert not function.deviceConnected
         assert not function.stopEvent.is_set()

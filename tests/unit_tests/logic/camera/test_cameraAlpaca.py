@@ -14,12 +14,11 @@
 #
 ###########################################################
 import pytest
-import unittest.mock as mock
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.logic.camera.camera import Camera
 from mw4.logic.camera.cameraAlpaca import CameraAlpaca
-from mw4.logic.camera.cameraAlpacaAscomBase import CameraAlpacaAscomBase
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -44,10 +43,6 @@ def function():
 
 
 def test_cameraAlpaca_inheritsFromBase(function):
-    assert isinstance(function, CameraAlpacaAscomBase)
-
-
-def test_cameraAlpaca_inheritsFromAlpacaClass(function):
     assert isinstance(function, AlpacaClass)
 
 
@@ -56,19 +51,22 @@ def test_cameraAlpaca_instantiation(function):
 
 
 def test_startCommunication_1(function):
-    """Test that startCommunication (from AlpacaClass) works when device creation fails."""
+    """Test that startCommunication returns early when device creation fails."""
+    function.deviceType = "camera"
     with (
         mock.patch.object(function, "createAlpacaDevice", return_value=False),
         mock.patch.object(function.threadPool, "start") as m_start,
     ):
-        # AlpacaClass.startCommunication() doesn't check createAlpacaDevice result
-        # it just starts the worker thread
         function.startCommunication()
-        m_start.assert_called_once()
+        m_start.assert_not_called()
 
 
 def test_startCommunication_2(function):
-    """Test that startCommunication (from AlpacaClass) starts the worker thread."""
-    with mock.patch.object(function.threadPool, "start") as m_start:
+    """Test that startCommunication starts the worker thread when device creation succeeds."""
+    function.deviceType = "camera"
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=True),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
         function.startCommunication()
         m_start.assert_called_once()

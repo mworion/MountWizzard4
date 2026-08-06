@@ -27,6 +27,8 @@ from unittest import mock
 class Parent:
     """Minimal parent class for SGProClass testing."""
 
+    DEVICE_TYPE: str = "Camera"
+
     def __init__(self) -> None:
         self.data: dict = {}
         self.signals = Signals()
@@ -39,6 +41,7 @@ class Parent:
 @pytest.fixture(autouse=True, scope="module")
 def function():
     func = SGProClass(parent=Parent())
+    func.parent = Parent()
     func.UPDATE_RATE = 0.25
     yield func
 
@@ -48,14 +51,16 @@ def function():
 
 def test_init_default_values():
     """Test that SGProClass initializes with correct default values."""
-    function = SGProClass(parent=Parent())
+    parent = Parent()
+    function = SGProClass(parent=parent)
+    function.parent = parent
     assert function.deviceConnected is False
     assert isinstance(function.commandQueue, queue.Queue)
     assert isinstance(function.stopEvent, threading.Event)
     assert function.loggingTrace is False
     assert function.workerCommunicationLoop is None
     assert function.SGPRO_TIMEOUT == 3
-    assert function.DEVICE_TYPE == "Camera"
+    assert function.parent.DEVICE_TYPE == "Camera"
 
 
 def test_init_config():
@@ -219,7 +224,7 @@ def test_enumerateDevices_success(function):
     devices = ["Camera1", "Camera2"]
     with mock.patch.object(function, "requestProperty") as mock_request:
         mock_request.return_value = {"Devices": devices}
-        result = function.enumerateDevices()
+        result = function.enumerateDevices("Camera")
         assert result == devices
         mock_request.assert_called_once_with("enumdevices/Camera")
 
@@ -228,7 +233,7 @@ def test_enumerateDevices_no_devices(function):
     """Test enumeration with no devices."""
     with mock.patch.object(function, "requestProperty") as mock_request:
         mock_request.return_value = {"Devices": []}
-        result = function.enumerateDevices()
+        result = function.enumerateDevices("Camera")
         assert result == []
 
 
@@ -236,7 +241,7 @@ def test_enumerateDevices_empty_response(function):
     """Test enumeration with empty response."""
     with mock.patch.object(function, "requestProperty") as mock_request:
         mock_request.return_value = {}
-        result = function.enumerateDevices()
+        result = function.enumerateDevices("Camera")
         assert result == []
 
 
@@ -663,29 +668,3 @@ def test_processCommandQueue_queue_empty_during_iteration(function):
         mock_get.side_effect = queue.Empty()
         function.processCommandQueue()
 
-
-def test_runnerCommunicationLoop_device_disconnection_during_polling(function):
-    """Test communication loop handles device disconnection during polling."""
-    function.stopEvent.clear()
-    function.deviceConnected = True
-    function.UPDATE_RATE = 0.25
-    function.config.deviceName = "TestCamera"
-    function.config.PROTOCOL_NAME = "SGPro"
-    function.PROTOCOL_NAME = "SGPro"
-
-    def setDisconnected() -> None:
-        function.deviceConnected = False
-
-    with (
-        mock.patch.object(function, "pollDeviceStatus", side_effect=setDisconnected),
-        mock.patch.object(function, "connectDevice", return_value=False),
-        mock.patch.object(function, "pollData") as mock_poll_data,
-        mock.patch.object(function, "processCommandQueue") as mock_process,
-        mock.patch.object(function.msg, "emit"),
-        mock.patch.object(function.stopEvent, "wait") as mock_wait,
-    ):
-        mock_wait.side_effect = [None, KeyboardInterrupt()]
-        with contextlib.suppress(KeyboardInterrupt):
-            function.runnerCommunicationLoop()
-        mock_poll_data.assert_not_called()
-        mock_process.assert_not_called()

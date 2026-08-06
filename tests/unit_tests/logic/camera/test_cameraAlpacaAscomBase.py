@@ -14,12 +14,11 @@
 #
 ###########################################################
 import pytest
-import unittest.mock as mock
 from astropy.io import fits
 from mw4.logic.camera.camera import Camera
-from mw4.logic.camera.cameraAlpaca import CameraAlpaca
 from mw4.logic.camera.cameraAlpacaAscomBase import CameraAlpacaAscomBase
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -35,7 +34,7 @@ def function():
         camera.heightASCOM = 100
         camera.fastReadout = False
         camera.imagePath = "/tmp/test.fits"
-        func = CameraAlpaca(camera)
+        func = CameraAlpacaAscomBase(camera)
         func.device = mock.MagicMock()
     except Exception as e:
         pytest.skip(f"Fixture initialization failed: {e}")
@@ -54,7 +53,7 @@ def test_cameraAlpacaAscomBase_cameraStates(function):
 
 
 def test_cameraAlpacaAscomBase_initAttributes(function):
-    fresh = CameraAlpaca(function.parent)
+    fresh = CameraAlpacaAscomBase(function.parent)
     assert hasattr(fresh, "parent")
     assert hasattr(fresh, "startTimeExposure")
     assert hasattr(fresh, "exposing")

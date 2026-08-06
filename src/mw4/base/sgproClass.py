@@ -92,13 +92,13 @@ class SGProClass(DriverData):
         response = self.requestProperty(prop)
         return response.get("Success", False)
 
-    def enumerateDevices(self) -> list:
-        prop = f"enumdevices/{self.parent.DEVICE_TYPE}"
+    def enumerateDevices(self, deviceType: str) -> list:
+        prop = f"enumdevices/{deviceType}"
         response = self.requestProperty(prop)
         return response.get("Devices", [])
 
     def discoverDevices(self, deviceType: str) -> list:
-        discoverList = self.enumerateDevices()
+        discoverList = self.enumerateDevices(deviceType)
         self.log.debug(f"[Type: {deviceType}: {discoverList}]")
         return discoverList
 

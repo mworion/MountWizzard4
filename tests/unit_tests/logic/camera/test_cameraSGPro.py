@@ -37,6 +37,7 @@ def function() -> None:
         camera.fastReadout = False
         camera.imagePath = Path("/tmp/test.fits")
         func = CameraSGPro(camera)
+        func.parent = camera
     except Exception as e:  # noqa: BLE001
         pytest.skip(f"Fixture initialization failed: {e}")
     yield func

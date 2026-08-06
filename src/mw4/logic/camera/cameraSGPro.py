@@ -22,13 +22,9 @@ from typing import Any
 
 class CameraSGPro(SGProClass):
     def __init__(self, parent: Any) -> None:
-        self.parent = parent
-        self.app = parent.app
-        self.data = parent.data
-        self.startTimeExposure: float = 0
+        self.deviceType: str = "camera"
         super().__init__(parent=parent)
-        self.threadPool = parent.threadPool
-        self.signals = parent.signals
+        self.startTimeExposure: float = 0
         self.workerExpose: Worker | None = None
 
     def captureImage(self, params: dict) -> tuple[bool, dict]:

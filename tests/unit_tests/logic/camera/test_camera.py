@@ -153,7 +153,8 @@ def test_exposeFinished(function) -> None:
 
 def test_startCommunication_1(function) -> None:
     function.framework = "indi"
-    function.startCommunication()
+    with mock.patch.object(function.run["indi"], "startCommunication", return_value=True):
+        function.startCommunication()
 
 
 def test_stopCommunication_1(function) -> None:

@@ -42,7 +42,6 @@ class DeviceConfigSGPro:
 class SGProClass(DriverData):
     PROTOCOL_NAME: str = "SGPro"
     SGPRO_TIMEOUT: int = 3
-    DEVICE_TYPE: str = "Camera"
     UPDATE_RATE: float = 0.25
 
     def __init__(self, parent: Any) -> None:
@@ -89,12 +88,12 @@ class SGProClass(DriverData):
 
     def createDevice(self) -> bool:
         devName = self.config.deviceName.replace(" ", "%20")
-        prop = f"connectdevice/{self.DEVICE_TYPE}/{devName}"
+        prop = f"connectdevice/{self.parent.DEVICE_TYPE}/{devName}"
         response = self.requestProperty(prop)
         return response.get("Success", False)
 
     def enumerateDevices(self) -> list:
-        prop = f"enumdevices/{self.DEVICE_TYPE}"
+        prop = f"enumdevices/{self.parent.DEVICE_TYPE}"
         response = self.requestProperty(prop)
         return response.get("Devices", [])
 
@@ -104,7 +103,7 @@ class SGProClass(DriverData):
         return discoverList
 
     def pollDeviceStatus(self) -> None:
-        prop = f"devicestatus/{self.DEVICE_TYPE}"
+        prop = f"devicestatus/{self.parent.DEVICE_TYPE}"
         response = self.requestProperty(prop)
 
         if not response:

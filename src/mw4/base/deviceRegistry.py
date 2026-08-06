@@ -181,7 +181,7 @@ class DeviceRegistry(QObject):
             self.stopDevice(entry.name)
 
     def startDevice(self, device: str) -> None:
-        if not self.d[device].framework:
+        if not self.d[device].framework or device not in self.d[device].run:
             return
         if not self.d[device].run[self.d[device].framework].config.deviceName:
             return

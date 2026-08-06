@@ -39,9 +39,6 @@ class AscomClass(AlpacaAscomCommon):
         super().__init__(parent)
         self.config = DeviceConfigAscom()
         self.workerRunnerCoreLoop: Worker | None = None
-        self.defaultConfig: dict[str, Any] = {
-            "deviceName": "",
-        }
 
     def runnerCoreLoop(self) -> None:
         CoInitialize()

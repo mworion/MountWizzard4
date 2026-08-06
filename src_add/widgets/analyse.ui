@@ -170,7 +170,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of Model Points file, where the data is stored. </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -231,7 +231,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of Model Points file, where the data is stored. </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -262,7 +262,7 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Loads the model points from file</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loads the model points from file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
@@ -495,7 +495,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of Model Points file, where the data is stored. </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -539,7 +539,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of Model Points file, where the data is stored. </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -583,7 +583,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of Model Points file, where the data is stored. </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -674,7 +674,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of Model Points file, where the data is stored. </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -748,7 +748,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of Model Points file, where the data is stored. </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -792,7 +792,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of Model Points file, where the data is stored. </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -846,7 +846,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of Model Points file, where the data is stored. </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -920,7 +920,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of Model Points file, where the data is stored. </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -1031,7 +1031,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of Model Points file, where the data is stored. </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -1112,7 +1112,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of Model Points file, where the data is stored. </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -1176,7 +1176,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of Model Points file, where the data is stored. </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -1388,7 +1388,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of Model Points file, where the data is stored. </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -1432,7 +1432,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of Model Points file, where the data is stored. </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>

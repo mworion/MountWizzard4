@@ -136,7 +136,7 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Switching the hemisphere window to normal working mode.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switching the hemisphere window to normal working mode.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Normal</string>
@@ -167,7 +167,7 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Enabling the edit mode for model build points.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enabling the edit mode for model build points.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Edit Model</string>
@@ -211,7 +211,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox_3">
        <property name="toolTip">
-        <string>Showing different elements on the hemisphere diagram.</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Showing different elements on the hemisphere diagram.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="title">
         <string>Show Elements</string>

@@ -152,7 +152,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>Saves the actual profile to disk under the same name without closing the application.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the actual profile to disk under the same name without closing the application.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -190,7 +190,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>Saves the actual profile and closes the application</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the actual profile and closes the application&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -254,7 +254,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>Saves the actual profile under a selectable new name on the disk without closing the appliation.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the actual profile under a selectable new name on the disk without closing the appliation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -292,7 +292,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>Loads a profile from disk</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loads a profile from disk&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -342,7 +342,7 @@
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Shows the actual selected profile name.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual selected profile name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string/>
@@ -425,8 +425,8 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
-The keypad is a webbrowser showing the content from 10microns webservices directy.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
+The keypad is a webbrowser showing the content from 10microns webservices directy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -526,8 +526,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
          </font>
         </property>
         <property name="toolTip">
-         <string>Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
-The keypad is a webbrowser showing the content from 10microns webservices directy.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
+The keypad is a webbrowser showing the content from 10microns webservices directy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -565,8 +565,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
          </font>
         </property>
         <property name="toolTip">
-         <string>Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
-The keypad is a webbrowser showing the content from 10microns webservices directy.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
+The keypad is a webbrowser showing the content from 10microns webservices directy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -671,8 +671,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
          </font>
         </property>
         <property name="toolTip">
-         <string>Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
-The keypad is a webbrowser showing the content from 10microns webservices directy.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
+The keypad is a webbrowser showing the content from 10microns webservices directy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -793,7 +793,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Status feedback from mount </string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status feedback from mount &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string/>
@@ -1039,7 +1039,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
            </font>
           </property>
           <property name="toolTip">
-           <string>Opens and closes the message window. If blue, the windows should be visible. Position and size will be stored in case of closing.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the message window. If blue, the windows should be visible. Position and size will be stored in case of closing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
@@ -1077,7 +1077,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
            </font>
           </property>
           <property name="toolTip">
-           <string>Opens and closes the measure window. If blue, the windows should be visible. Position and size will be stored in case of closing.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the measure window. If blue, the windows should be visible. Position and size will be stored in case of closing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
@@ -1115,7 +1115,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
            </font>
           </property>
           <property name="toolTip">
-           <string>Opens and closes the hemishpere window. If blue, the windows should be visible. Position and size will be stored in case of closing.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the hemishpere window. If blue, the windows should be visible. Position and size will be stored in case of closing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
@@ -1153,7 +1153,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
            </font>
           </property>
           <property name="toolTip">
-           <string>Opens and closes the image window. If blue, the windows should be visible. Position and size will be stored in case of closing.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the image window. If blue, the windows should be visible. Position and size will be stored in case of closing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
@@ -1191,7 +1191,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
            </font>
           </property>
           <property name="toolTip">
-           <string>Opens and closes the satellite window. If blue, the windows should be visible. Position and size will be stored in case of closing.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the satellite window. If blue, the windows should be visible. Position and size will be stored in case of closing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
@@ -1229,7 +1229,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
            </font>
           </property>
           <property name="toolTip">
-           <string>Opens and closes the satellite window. If blue, the windows should be visible. Position and size will be stored in case of closing.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the satellite window. If blue, the windows should be visible. Position and size will be stored in case of closing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
@@ -1267,8 +1267,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
            </font>
           </property>
           <property name="toolTip">
-           <string>Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
-The keypad is a webbrowser showing the content from 10microns webservices directy.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
+The keypad is a webbrowser showing the content from 10microns webservices directy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
@@ -1512,7 +1512,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>Shows the expiration date of UTC timetable in the mount computer. If it's happening within 1 month, the frame turns to yellow. If expired, the frame will turn to red. </string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the expiration date of UTC timetable in the mount computer. If it's happening within 1 month, the frame turns to yellow. If expired, the frame will turn to red. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -1768,7 +1768,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>Shows the refraction pressure used in mount</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the refraction pressure used in mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -2020,7 +2020,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>Shows the local sidereal time from the mount computer</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the local sidereal time from the mount computer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -2134,7 +2134,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>Status of unattended Flip.When clicking the field, you could change the value</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of unattended Flip.When clicking the field, you could change the value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -2459,8 +2459,8 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>Status of dual tracking. When clicking the field, you could change the value.
-If there is a yellow frame, the status is changed by MW4 due to functional reasons.</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of dual tracking. When clicking the field, you could change the value.
+If there is a yellow frame, the status is changed by MW4 due to functional reasons.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -2570,7 +2570,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>Shows the time until tracking ends because of flip / horizon limit</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the time until tracking ends because of flip / horizon limit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -2617,7 +2617,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>Shows the pierside reported from the mout. Eeast or West. Definitions are given in the manual of the mount computer.</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the pierside reported from the mout. Eeast or West. Definitions are given in the manual of the mount computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -2667,7 +2667,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>Type of the connection to the mount.</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of the connection to the mount.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -2720,7 +2720,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>Shows the refraction temperature used in mount</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the refraction temperature used in mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -2790,7 +2790,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>Shows the time until meridian is reached</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the time until meridian is reached&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -3650,7 +3650,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           </rect>
          </property>
          <property name="toolTip">
-          <string>Slews and parks the mount to a preprogrammed position.</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slews and parks the mount to a preprogrammed position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="title">
           <string>Custom positions</string>
@@ -3981,7 +3981,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           </rect>
          </property>
          <property name="toolTip">
-          <string>Slews and parks the mount to a preprogrammed position.</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slews and parks the mount to a preprogrammed position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="title">
           <string>Move Absolute</string>
@@ -4443,7 +4443,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           </rect>
          </property>
          <property name="toolTip">
-          <string>Slews and parks the mount to a preprogrammed position.</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slews and parks the mount to a preprogrammed position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="title">
           <string>Move classic</string>
@@ -4881,7 +4881,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           </rect>
          </property>
          <property name="toolTip">
-          <string>Slews and parks the mount to a preprogrammed position.</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slews and parks the mount to a preprogrammed position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="title">
           <string>Move Alt/Az</string>
@@ -5509,7 +5509,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </font>
         </property>
         <property name="toolTip">
-         <string>Stops all mount movements immediatly</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stops all mount movements immediatly&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Mount Stop</string>
@@ -5532,7 +5532,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </font>
         </property>
         <property name="toolTip">
-         <string>Switches the parking state on and off. Blue button means mount parked. It is the position, which is in the mount computer defined as park position. If the mount is not parked, it slews to the park position. If parked, the button press just unparks and starts tracking.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the parking state on and off. Blue button means mount parked. It is the position, which is in the mount computer defined as park position. If the mount is not parked, it slews to the park position. If parked, the button press just unparks and starts tracking.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Mount Park</string>
@@ -5656,7 +5656,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </font>
         </property>
         <property name="toolTip">
-         <string>Flips the mount if possible</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Flips the mount if possible&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Flip</string>
@@ -5679,7 +5679,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
          </font>
         </property>
         <property name="toolTip">
-         <string>Switching tracking on and off. Blue button show tracking is on.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switching tracking on and off. Blue button show tracking is on.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Tracking</string>
@@ -5775,7 +5775,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           </font>
          </property>
          <property name="toolTip">
-          <string>Sets the epoch for showing the pointing coordinates to JNow</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the epoch for showing the pointing coordinates to JNow&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -5810,7 +5810,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           </font>
          </property>
          <property name="toolTip">
-          <string>Sets the epoch for showing the pointing coordinates to J2000</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the epoch for showing the pointing coordinates to J2000&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -6457,7 +6457,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </size>
           </property>
           <property name="toolTip">
-           <string>Select sensor device as source for refraction updates.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select sensor device as source for refraction updates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="title">
            <string>Sens3</string>
@@ -7356,7 +7356,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </size>
           </property>
           <property name="toolTip">
-           <string>Select internal sensor device which is directly linked to mount (e.g. MBox) as source for refraction updates.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select internal sensor device which is directly linked to mount (e.g. MBox) as source for refraction updates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="title">
            <string>Direct</string>
@@ -7791,7 +7791,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </size>
           </property>
           <property name="toolTip">
-           <string>Actual used refraction parameters from the mount, if refraction is enabled.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual used refraction parameters from the mount, if refraction is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="title">
            <string>Mount</string>
@@ -7849,7 +7849,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
               <bool>false</bool>
              </property>
              <property name="toolTip">
-              <string>shows the refraction temperature used in mount</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;shows the refraction temperature used in mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="layoutDirection">
               <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -7902,7 +7902,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
               <bool>false</bool>
              </property>
              <property name="toolTip">
-              <string>shows the refraction pressure used in mount</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;shows the refraction pressure used in mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="layoutDirection">
               <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -7955,7 +7955,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </size>
           </property>
           <property name="toolTip">
-           <string>iIf UPB power is present, show its values</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;iIf UPB power is present, show its values&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="title">
            <string>Sens2</string>
@@ -8390,7 +8390,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </size>
           </property>
           <property name="toolTip">
-           <string>iIf skymeter is present, show its values</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;iIf skymeter is present, show its values&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="title">
            <string>Sens1</string>
@@ -8825,7 +8825,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            </size>
           </property>
           <property name="toolTip">
-           <string>Setting refraction update types from MountWizzard to the mount</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Setting refraction update types from MountWizzard to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="title">
            <string>Update to mount</string>
@@ -8859,7 +8859,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
               </font>
              </property>
              <property name="toolTip">
-              <string>Update the refraction parameters to the mount continiously with moving average filter over 1 minute</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Update the refraction parameters to the mount continiously with moving average filter over 1 minute&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="layoutDirection">
               <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -8883,7 +8883,7 @@ continously</string>
               </font>
              </property>
              <property name="toolTip">
-              <string>No refraction update to the mount</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;No refraction update to the mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="layoutDirection">
               <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -8919,7 +8919,7 @@ continously</string>
               </font>
              </property>
              <property name="toolTip">
-              <string>Update the refraction parameters to the mount when the mount is not tracking</string>
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Update the refraction parameters to the mount when the mount is not tracking&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="layoutDirection">
               <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -8954,7 +8954,7 @@ no tracking</string>
            <enum>Qt::ContextMenuPolicy::NoContextMenu</enum>
           </property>
           <property name="toolTip">
-           <string>Select weather device as source for refraction updates.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select weather device as source for refraction updates.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="title">
            <string>Sens4</string>
@@ -9515,10 +9515,10 @@ no tracking</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>Annual twilight show the different phases for your location and your local time.
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Annual twilight show the different phases for your location and your local time.
 As the calulation is time consuming, it will be done only once per start of the app.
 y-axis is local day time and x-axis is date.
-MW4 will show the actual day always in the middel of the chart.</string>
+MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="title">
         <string>Annual twilight phases</string>
@@ -9632,7 +9632,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          </rect>
         </property>
         <property name="toolTip">
-         <string>Displaying the upcoming twilight events which really happen at your site. Unseen events are not in the list</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Displaying the upcoming twilight events which really happen at your site. Unseen events are not in the list&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_181">
@@ -9675,7 +9675,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
         </size>
        </property>
        <property name="toolTip">
-        <string>Show the moon phase as picture</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the moon phase as picture&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="title">
         <string>Moon</string>
@@ -9712,7 +9712,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Showing the actual illumination (light part) of the overall moon surface</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Showing the actual illumination (light part) of the overall moon surface&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -9759,7 +9759,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Moon phase description</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moon phase description&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -9915,7 +9915,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Showing the moon phase in percent</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Showing the moon phase in percent&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -10261,7 +10261,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Model point stop at maximum altitude.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Model point stop at maximum altitude.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="buttonSymbols">
            <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
@@ -10332,7 +10332,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Generates a regular pattern with the given parameters.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a regular pattern with the given parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Generate</string>
@@ -10361,7 +10361,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Model point start at minimum altitude.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Model point start at minimum altitude.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="buttonSymbols">
            <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
@@ -10459,7 +10459,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of Model Points file, where the data is stored. </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of Model Points file, where the data is stored. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -10494,7 +10494,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Saves the model points in a new file</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the model points in a new file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
@@ -10523,7 +10523,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Saves the model points in file.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the model points in file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
@@ -10549,7 +10549,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Show the model points from given file</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the model points from given file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
@@ -10575,7 +10575,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Loads the model points from file</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loads the model points from file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
@@ -10629,7 +10629,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Delete all model points on coordinate window and for usage.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete all model points on coordinate window and for usage.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Clear build points</string>
@@ -10743,7 +10743,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
           </rect>
          </property>
          <property name="toolTip">
-          <string>Different types of sorting model points</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Different types of sorting model points&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="title">
           <string>Sorting points</string>
@@ -10768,7 +10768,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Sorts the model points low to high altitude.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sorts the model points low to high altitude.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Sort ALT</string>
@@ -10791,7 +10791,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Sorts the model points EAST / WEST side of pier.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sorts the model points EAST / WEST side of pier.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Sort AZ</string>
@@ -10814,7 +10814,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>No sorting of the model points </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;No sorting of the model points &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>No sort</string>
@@ -10863,7 +10863,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>If checked, all model points are deleted, which are within the meridian limits.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, all model points are deleted, which are within the meridian limits.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Auto delete points within meridian limits</string>
@@ -10886,7 +10886,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>If checked, all model points are deleted, which are below the horizon mask.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, all model points are deleted, which are below the horizon mask.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Auto delete points below horizon</string>
@@ -10912,7 +10912,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>If checked, all model points are deleted, which are below the horizon mask.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, all model points are deleted, which are below the horizon mask.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Add safety distance to horizon line with</string>
@@ -10941,7 +10941,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Number of points.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of points.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="decimals">
            <number>0</number>
@@ -10999,7 +10999,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Sorts the model points EAST / WEST side of pier.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sorts the model points EAST / WEST side of pier.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Sort Dome AZ</string>
@@ -11064,7 +11064,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Number of points.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of points.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="decimals">
            <number>0</number>
@@ -11086,7 +11086,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Generates model points along DSO track for a give time and other parameters.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates model points along DSO track for a give time and other parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Generate</string>
@@ -11344,7 +11344,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Generates a regular pattern with the given parameters.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates a regular pattern with the given parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Generate</string>
@@ -11373,7 +11373,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Model point start at minimum altitude.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Model point start at minimum altitude.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="buttonSymbols">
            <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
@@ -11536,7 +11536,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Generates model points as golden spiral, means the points are in equal distances from each other on a sphere.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates model points as golden spiral, means the points are in equal distances from each other on a sphere.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Generate</string>
@@ -11585,7 +11585,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Number of points.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of points.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="decimals">
            <number>0</number>
@@ -11629,7 +11629,7 @@ MW4 will show the actual day always in the middel of the chart.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Generates three stars.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Generates three stars.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Generate</string>
@@ -11890,7 +11890,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </rect>
           </property>
           <property name="toolTip">
-           <string>Cancels a model build.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancels a model build.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
@@ -11929,7 +11929,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </rect>
           </property>
           <property name="toolTip">
-           <string>Run a model build.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Run a model build.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Run</string>
@@ -12254,7 +12254,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Number of alignment stars in actual used pointing model</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of alignment stars in actual used pointing model&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -12565,7 +12565,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Actual position angle of the Error vector in deg.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual position angle of the Error vector in deg.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -12679,7 +12679,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Number of alignment stars in actual used pointing model</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of alignment stars in actual used pointing model&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -12769,7 +12769,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Actual position angle of the Error vector in azimuth deg.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual position angle of the Error vector in azimuth deg.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -12804,7 +12804,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </font>
           </property>
           <property name="toolTip">
-           <string>Number of stars</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of stars&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Stars</string>
@@ -12899,7 +12899,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Actual position angle of the Error vector in altitude deg.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual position angle of the Error vector in altitude deg.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -13181,7 +13181,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </font>
           </property>
           <property name="toolTip">
-           <string>If checked, MW4 will retry the points in reverse order to the last round to avoid unnecessary slews.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, MW4 will retry the points in reverse order to the last round to avoid unnecessary slews.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Run retries each time in reverse order</string>
@@ -13288,7 +13288,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </rect>
          </property>
          <property name="toolTip">
-          <string>Select on or more existing model data files and program them into the mount as a new mount model. Only existing models are used. It is ideal for combining multiple model runs, like adding a DSO path to an overall model.</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select on or more existing model data files and program them into the mount as a new mount model. Only existing models are used. It is ideal for combining multiple model runs, like adding a DSO path to an overall model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
           <string>Choose model(s) from file and program to mount</string>
@@ -13366,7 +13366,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <bool>false</bool>
            </property>
            <property name="toolTip">
-            <string>Number of alignment stars in actual used pointing model</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of alignment stars in actual used pointing model&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="layoutDirection">
             <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -13470,7 +13470,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </rect>
           </property>
           <property name="toolTip">
-           <string>Clear the alignment model in mount. Can't be revised.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear the alignment model in mount. Can't be revised.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Clear</string>
@@ -13509,7 +13509,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </rect>
           </property>
           <property name="toolTip">
-           <string>Cancels the optimise run.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancels the optimise run.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Cancel</string>
@@ -13528,7 +13528,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </rect>
           </property>
           <property name="toolTip">
-           <string>Run the model optimization. Please take care about the chosen method.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Run the model optimization. Please take care about the chosen method.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Run</string>
@@ -13544,7 +13544,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </rect>
           </property>
           <property name="toolTip">
-           <string>Reloads the model from mount. Needed if you change things manually with handcontroller or other software.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reloads the model from mount. Needed if you change things manually with handcontroller or other software.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Refresh</string>
@@ -13659,7 +13659,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </rect>
           </property>
           <property name="toolTip">
-           <string>Deletes worst point of actual alignment model in the mount. It could happen, that the overall RMS rises.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deletes worst point of actual alignment model in the mount. It could happen, that the overall RMS rises.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Delete</string>
@@ -13675,7 +13675,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </rect>
           </property>
           <property name="toolTip">
-           <string>Delete as many point until an overall target RMS of the model is reached.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete as many point until an overall target RMS of the model is reached.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Target is overall</string>
@@ -13694,7 +13694,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </rect>
           </property>
           <property name="toolTip">
-           <string>Delete model points where the value of the single point is above a certain value.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete model points where the value of the single point is above a certain value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Target is per point</string>
@@ -13726,7 +13726,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </rect>
           </property>
           <property name="toolTip">
-           <string>Loads the actual selected alignment model.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loads the actual selected alignment model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Load</string>
@@ -13752,7 +13752,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </rect>
           </property>
           <property name="toolTip">
-           <string>Refreshes the list of in the mount stored models </string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Refreshes the list of in the mount stored models &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Refresh</string>
@@ -13768,7 +13768,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </rect>
           </property>
           <property name="toolTip">
-           <string>Deletes the actual selected alignment model.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deletes the actual selected alignment model.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Delete</string>
@@ -13784,7 +13784,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </rect>
           </property>
           <property name="toolTip">
-           <string>Saves actual alignment model under selected name or edited name.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves actual alignment model under selected name or edited name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Save</string>
@@ -13888,8 +13888,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </font>
           </property>
           <property name="toolTip">
-           <string>Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
-The keypad is a webbrowser showing the content from 10microns webservices directy.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
+The keypad is a webbrowser showing the content from 10microns webservices directy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="autoFillBackground">
            <bool>false</bool>
@@ -14031,7 +14031,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the actual focuser position.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual focuser position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -14775,7 +14775,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
             </rect>
            </property>
            <property name="toolTip">
-            <string>Switches the camera cooler on.</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the camera cooler on.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>Cooler On</string>
@@ -14791,7 +14791,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
             </rect>
            </property>
            <property name="toolTip">
-            <string>Switches the camera cooler off.</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the camera cooler off.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>Cooler Off</string>
@@ -14846,7 +14846,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
             <bool>false</bool>
            </property>
            <property name="toolTip">
-            <string>Shows the actual cooler temp for the camera. When clicking you could change the value.</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual cooler temp for the camera. When clicking you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="layoutDirection">
             <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -14936,7 +14936,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
             <bool>false</bool>
            </property>
            <property name="toolTip">
-            <string>Shows the actual coller power.</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual coller power.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="layoutDirection">
             <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -15118,7 +15118,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the status of the cover.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the status of the cover.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -15239,7 +15239,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the status of the cover.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the status of the cover.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -15351,7 +15351,7 @@ Slew</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the status of the cover.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the status of the cover.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -15484,8 +15484,8 @@ Slew</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the actual filter number.
-When clicking the button, you could change the value.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual filter number.
+When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -15555,8 +15555,8 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the actual filter name text.
-When clicking the button, you could change the value.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual filter name text.
+When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -15865,7 +15865,7 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the status of the cover.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the status of the cover.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -16072,7 +16072,7 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the actual Rayleigh limit for your current imaging setup and parameters</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual Rayleigh limit for your current imaging setup and parameters&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -16156,7 +16156,7 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the actual magnitude limit for your current imaging setup and parameters.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual magnitude limit for your current imaging setup and parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -16200,7 +16200,7 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the actual Dawes' limit for your current imaging setup and parameters</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual Dawes' limit for your current imaging setup and parameters&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -16324,7 +16324,7 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the actual Rayleigh limit for your current imaging setup and parameters</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual Rayleigh limit for your current imaging setup and parameters&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -16368,7 +16368,7 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the actual Rayleigh limit for your current imaging setup and parameters</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual Rayleigh limit for your current imaging setup and parameters&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -16468,7 +16468,7 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the pixel size set in the camera driver.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the pixel size set in the camera driver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -16552,7 +16552,7 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the pixel size set in the camera driver.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the pixel size set in the camera driver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -16912,7 +16912,7 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the pixel number set in the camera driver.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the pixel number set in the camera driver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -16956,7 +16956,7 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the pixel number set in the camera driver.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the pixel number set in the camera driver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -17020,7 +17020,7 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the rotation of the camera image set in driver.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the rotation of the camera image set in driver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -17104,7 +17104,7 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the speed of your imaging setup.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the speed of your imaging setup.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -17228,7 +17228,7 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the pixel size set in the camera driver.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the pixel size set in the camera driver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -17272,7 +17272,7 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Shows the pixel size set in the camera driver.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the pixel size set in the camera driver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -17790,7 +17790,7 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>For CCD cameras, if we take a 2x sampling ratio</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For CCD cameras, if we take a 2x sampling ratio&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -19750,7 +19750,7 @@ When clicking the button, you could change the value.</string>
           </font>
          </property>
          <property name="toolTip">
-          <string>List of satellites.</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of satellites.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::Shape::NoFrame</enum>
@@ -20009,7 +20009,7 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Filter for selecting satellite names. The filter is not case sensitive.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter for selecting satellite names. The filter is not case sensitive.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -21170,8 +21170,8 @@ When clicking the button, you could change the value.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>This is calculated by the mount computer !
-Next point in time when satellite rises over horizon.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is calculated by the mount computer !
+Next point in time when satellite rises over horizon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -21232,8 +21232,8 @@ Next point in time when satellite rises over horizon.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>This is calculated by the mount computer !
-Next point in time when satellite settles.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is calculated by the mount computer !
+Next point in time when satellite settles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -21274,8 +21274,8 @@ Next point in time when satellite settles.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>This is calculated by the mount computer !
-Next point in time when satellite settles.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is calculated by the mount computer !
+Next point in time when satellite settles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -21576,7 +21576,7 @@ Next point in time when satellite settles.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Epoch of ephermeris</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Epoch of ephermeris&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -21657,7 +21657,7 @@ Next point in time when satellite settles.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Age of the TLE data</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Age of the TLE data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -21698,7 +21698,7 @@ Next point in time when satellite settles.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Number of the satellite.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of the satellite.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -21739,7 +21739,7 @@ Next point in time when satellite settles.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Name of the satellite.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name of the satellite.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -21768,7 +21768,7 @@ Next point in time when satellite settles.</string>
           </rect>
          </property>
          <property name="toolTip">
-          <string>Starts the satellite tracking mode.</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts the satellite tracking mode.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="styleSheet">
           <string notr="true"/>
@@ -21790,7 +21790,7 @@ Next point in time when satellite settles.</string>
           </rect>
          </property>
          <property name="toolTip">
-          <string>Stops the satellite tracking mode. In some cases this does not work. Please start / stop tracking under mount.</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stops the satellite tracking mode. In some cases this does not work. Please start / stop tracking under mount.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="styleSheet">
           <string notr="true"/>
@@ -22136,7 +22136,7 @@ Next point in time when satellite settles.</string>
           </font>
          </property>
          <property name="toolTip">
-          <string>List of satellites.</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of satellites.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::Shape::NoFrame</enum>
@@ -22418,7 +22418,7 @@ Next point in time when satellite settles.</string>
           </font>
          </property>
          <property name="toolTip">
-          <string>List of satellites.</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of satellites.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::Shape::NoFrame</enum>
@@ -22657,7 +22657,7 @@ Next point in time when satellite settles.</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Chooses the FITS header Entry for renaming.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chooses the FITS header Entry for renaming.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
          <widget class="QComboBox" name="rename2">
@@ -22676,7 +22676,7 @@ Next point in time when satellite settles.</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Chooses the FITS header Entry for renaming.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chooses the FITS header Entry for renaming.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
          <widget class="QLineEdit" name="renameDir">
@@ -22739,7 +22739,7 @@ Next point in time when satellite settles.</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Select the directory for file manipulations.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the directory for file manipulations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Select</string>
@@ -22800,7 +22800,7 @@ Next point in time when satellite settles.</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>If checked, the renaming process will run through all subdirectories.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the renaming process will run through all subdirectories.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Include subdirectories</string>
@@ -22822,7 +22822,7 @@ Next point in time when satellite settles.</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Chooses the FITS header Entry for renaming.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chooses the FITS header Entry for renaming.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
          <widget class="QComboBox" name="rename4">
@@ -22841,7 +22841,7 @@ Next point in time when satellite settles.</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Chooses the FITS header Entry for renaming.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chooses the FITS header Entry for renaming.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
          <widget class="QLabel" name="label_57">
@@ -22918,7 +22918,7 @@ Next point in time when satellite settles.</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Starts the renaming process. There will be no backup files made. Please take care about your raw files !</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts the renaming process. There will be no backup files made. Please take care about your raw files !&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Start</string>
@@ -22953,7 +22953,7 @@ Next point in time when satellite settles.</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Chooses the FITS header Entry for renaming.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chooses the FITS header Entry for renaming.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
          <widget class="QLabel" name="label_308">
@@ -23013,7 +23013,7 @@ Next point in time when satellite settles.</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Chooses the FITS header Entry for renaming.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Chooses the FITS header Entry for renaming.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
          <widget class="QLabel" name="label_62">
@@ -23330,7 +23330,7 @@ Next point in time when satellite settles.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Toggles the auto dew setting.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Toggles the auto dew setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Reboot</string>
@@ -23349,7 +23349,7 @@ Next point in time when satellite settles.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Toggles the auto dew setting.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Toggles the auto dew setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Auto Dew</string>
@@ -23471,7 +23471,7 @@ Next point in time when satellite settles.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Sets the dew heater power from 0 to 100 %</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the dew heater power from 0 to 100 %&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -23611,7 +23611,7 @@ Next point in time when satellite settles.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Sets the dew heater power from 0 to 100 %</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the dew heater power from 0 to 100 %&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -23751,7 +23751,7 @@ Next point in time when satellite settles.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Sets the dew heater power from 0 to 100 %</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the dew heater power from 0 to 100 %&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -23878,7 +23878,7 @@ Next point in time when satellite settles.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Switches the power output on and off.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the power output on and off.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Power</string>
@@ -23987,7 +23987,7 @@ Next point in time when satellite settles.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Switches the power output on and off.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the power output on and off.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Power</string>
@@ -24096,7 +24096,7 @@ Next point in time when satellite settles.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Switches the power output on and off.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the power output on and off.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Power</string>
@@ -24205,7 +24205,7 @@ Next point in time when satellite settles.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Switches the power output on and off.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the power output on and off.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Power</string>
@@ -24237,7 +24237,7 @@ Next point in time when satellite settles.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Switches the USB Hub on and off</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the USB Hub on and off&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Power</string>
@@ -24269,7 +24269,7 @@ Next point in time when satellite settles.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Switches the USB Hub on and off</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the USB Hub on and off&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>USB 1</string>
@@ -24285,7 +24285,7 @@ Next point in time when satellite settles.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Switches the USB Hub on and off</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the USB Hub on and off&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>USB 2</string>
@@ -24301,7 +24301,7 @@ Next point in time when satellite settles.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Switches the USB Hub on and off</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the USB Hub on and off&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>USB 3</string>
@@ -24317,7 +24317,7 @@ Next point in time when satellite settles.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Switches the USB Hub on and off</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the USB Hub on and off&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>USB 4</string>
@@ -24333,7 +24333,7 @@ Next point in time when satellite settles.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Switches the USB Hub on and off</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the USB Hub on and off&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>USB 5</string>
@@ -24349,7 +24349,7 @@ Next point in time when satellite settles.</string>
            </rect>
           </property>
           <property name="toolTip">
-           <string>Switches the USB Hub on and off</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the USB Hub on and off&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>USB 6</string>
@@ -24400,7 +24400,7 @@ Next point in time when satellite settles.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Sets the dew heater power from 0 to 100 %</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the dew heater power from 0 to 100 %&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -24516,7 +24516,7 @@ Next point in time when satellite settles.</string>
                </size>
               </property>
               <property name="toolTip">
-               <string>Starts for Relay the defined function (Switch or Pulse)</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts for Relay the defined function (Switch or Pulse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="text">
                <string>Relay1</string>
@@ -24532,7 +24532,7 @@ Next point in time when satellite settles.</string>
                </size>
               </property>
               <property name="toolTip">
-               <string>Starts for Relay the defined function (Switch or Pulse)</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts for Relay the defined function (Switch or Pulse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="text">
                <string>Relay2</string>
@@ -24548,7 +24548,7 @@ Next point in time when satellite settles.</string>
                </size>
               </property>
               <property name="toolTip">
-               <string>Starts for Relay the defined function (Switch or Pulse)</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts for Relay the defined function (Switch or Pulse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="text">
                <string>Relay3</string>
@@ -24564,7 +24564,7 @@ Next point in time when satellite settles.</string>
                </size>
               </property>
               <property name="toolTip">
-               <string>Starts for Relay the defined function (Switch or Pulse)</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts for Relay the defined function (Switch or Pulse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="text">
                <string>Relay4</string>
@@ -24580,7 +24580,7 @@ Next point in time when satellite settles.</string>
                </size>
               </property>
               <property name="toolTip">
-               <string>Starts for Relay the defined function (Switch or Pulse)</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts for Relay the defined function (Switch or Pulse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="text">
                <string>Relay5</string>
@@ -24596,7 +24596,7 @@ Next point in time when satellite settles.</string>
                </size>
               </property>
               <property name="toolTip">
-               <string>Starts for Relay the defined function (Switch or Pulse)</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts for Relay the defined function (Switch or Pulse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="text">
                <string>Relay6</string>
@@ -24612,7 +24612,7 @@ Next point in time when satellite settles.</string>
                </size>
               </property>
               <property name="toolTip">
-               <string>Starts for Relay the defined function (Switch or Pulse)</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts for Relay the defined function (Switch or Pulse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="text">
                <string>Relay7</string>
@@ -24628,7 +24628,7 @@ Next point in time when satellite settles.</string>
                </size>
               </property>
               <property name="toolTip">
-               <string>Starts for Relay the defined function (Switch or Pulse)</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starts for Relay the defined function (Switch or Pulse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="text">
                <string>Relay8</string>
@@ -25270,7 +25270,7 @@ Next point in time when satellite settles.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Number of alignment stars in actual used pointing model</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of alignment stars in actual used pointing model&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>

@@ -98,6 +98,13 @@ BASIC_STYLE = """
         border-color: $M_PRIM$;
         border-width: 2px;
     }
+    QToolTip {
+        background-color: $M_PRIM2$;
+        color: $M_TER$;
+        border: 1px solid $M_PRIM$;
+        max-width: 250px;
+        margin: 4px;
+    }
     QFrame[title] {
         color: $M_TER$;
         background: $M_PRIM1$;

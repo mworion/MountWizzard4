@@ -121,7 +121,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Port of ALPACA server</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Port of ALPACA server&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="inputMask">
       <string>00000</string>
@@ -317,7 +317,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Starting the ASCOM device chooser.</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Starting the ASCOM device chooser.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>ASCOM device setup</string>
@@ -371,7 +371,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>Drvice name of ASCOM driver.</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Drvice name of ASCOM driver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -447,7 +447,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Port of ALPACA server</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Port of ALPACA server&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="inputMask">
       <string>00000</string>
@@ -641,7 +641,7 @@
       <bool>false</bool>
      </property>
      <property name="toolTip">
-      <string>IP address of INDI server, ip address and host names!</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IP address of INDI server, ip address and host names!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -751,7 +751,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>When checked, the indi messages received will be shown inthe central message window</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked, the indi messages received will be shown inthe central message window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -791,7 +791,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Port of INDI server</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Port of INDI server&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="inputMask">
       <string>00000</string>
@@ -895,7 +895,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Select the directory of the astrometry.net index files</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the directory of the astrometry.net index files&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Select</string>
@@ -1131,7 +1131,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Select the directory of the astrometry.net index files</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the directory of the astrometry.net index files&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Select</string>
@@ -1147,7 +1147,7 @@
       </rect>
      </property>
      <property name="toolTip">
-      <string>Select the device.</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the device.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_mountIP_6">
@@ -1206,7 +1206,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Set the search radius for the plate solver. </string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the search radius for the plate solver. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -1244,7 +1244,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Set the timeout for the plate solver.</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the timeout for the plate solver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -1466,7 +1466,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Set the timeout for the plate solver.</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the timeout for the plate solver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -1504,7 +1504,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Set the search radius for the plate solver. </string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the search radius for the plate solver. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -1771,7 +1771,7 @@
       </rect>
      </property>
      <property name="toolTip">
-      <string>Select the device.</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the device.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_mountIP_18">
@@ -1856,7 +1856,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Select the directory of the astrometry.net index files</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the directory of the astrometry.net index files&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Select</string>
@@ -1879,7 +1879,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Set the timeout for the plate solver.</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the timeout for the plate solver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -2049,7 +2049,7 @@
       </font>
      </property>
      <property name="toolTip">
-      <string>Set the search radius for the plate solver. </string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the search radius for the plate solver. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -2133,7 +2133,7 @@
       </rect>
      </property>
      <property name="toolTip">
-      <string>Select the device.</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the device.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_mountIP_25">

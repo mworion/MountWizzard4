@@ -157,7 +157,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Actual azimuth of the satelite from observers position.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual azimuth of the satelite from observers position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -269,7 +269,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Actual altitude of the satelite from observers position.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual altitude of the satelite from observers position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -335,7 +335,7 @@
           </sizepolicy>
          </property>
          <property name="toolTip">
-          <string>Shows the visible track of the satellite when being observed from the position of the mount. </string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the visible track of the satellite when being observed from the position of the mount. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="title">
           <string>Satellite path over horizon from observer location</string>

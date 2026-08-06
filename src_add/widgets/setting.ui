@@ -349,7 +349,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Configure the pegasus UPB device. A popup will open and ask for the parameters.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the pegasus UPB device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -365,7 +365,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Configure the cover device. A popup will open and ask for the parameters.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the cover device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -503,7 +503,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Configure the cover device. A popup will open and ask for the parameters.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the cover device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -806,7 +806,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Configure the dome device. A popup will open and ask for the parameters.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the dome device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -822,7 +822,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Configure the focuser device. A popup will open and ask for the parameters.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the focuser device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -838,7 +838,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Configure the filter device. A popup will open and ask for the parameters.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the filter device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -854,7 +854,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Configure the camera device. A popup will open and ask for the parameters.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the camera device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -1028,7 +1028,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Configure the external sensor device. A popup will open and ask for the parameters.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the external sensor device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -1130,7 +1130,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Configure the skymeter device. A popup will open and ask for the parameters.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the skymeter device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Set</string>
@@ -1691,7 +1691,7 @@
           </font>
          </property>
          <property name="toolTip">
-          <string>Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. </string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
           <string>On</string>
@@ -1782,7 +1782,7 @@
           </font>
          </property>
          <property name="toolTip">
-          <string>Shuts the mount down.</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shuts the mount down.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
           <string>Off</string>
@@ -2633,7 +2633,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>If enabled, MW4 will calculate the dome shutter displacement based on the real geometry and azimuth of dome will be different to azimuth of mount.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, MW4 will calculate the dome shutter displacement based on the real geometry and azimuth of dome will be different to azimuth of mount.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -2889,7 +2889,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>If enabled, MW4 will calculate the dome shutter displacement based on the real geometry and azimuth of dome will be different to azimuth of mount.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled, MW4 will calculate the dome shutter displacement based on the real geometry and azimuth of dome will be different to azimuth of mount.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -3296,7 +3296,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>Sets the time to wait after mount stop before imaging</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the time to wait after mount stop before imaging&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="decimals">
          <number>0</number>
@@ -3779,7 +3779,7 @@
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 4</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Button text park menu 4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -3843,7 +3843,7 @@
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 2</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Button text park menu 2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -3907,7 +3907,7 @@
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 0</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Button text park menu 0&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -3994,7 +3994,7 @@
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 3</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Button text park menu 3&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -4055,7 +4055,7 @@
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 5</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Button text park menu 5&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -4280,7 +4280,7 @@
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 7</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Button text park menu 7&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -4387,7 +4387,7 @@
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 1</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Button text park menu 1&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -4563,7 +4563,7 @@
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 6</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Button text park menu 6&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -4614,7 +4614,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fill in the actual values for altitude and azimuth in the value fields.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Fill</string>
@@ -4630,7 +4630,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fill in the actual values for altitude and azimuth in the value fields.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Fill</string>
@@ -4646,7 +4646,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fill in the actual values for altitude and azimuth in the value fields.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Fill</string>
@@ -4662,7 +4662,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fill in the actual values for altitude and azimuth in the value fields.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Fill</string>
@@ -4678,7 +4678,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fill in the actual values for altitude and azimuth in the value fields.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Fill</string>
@@ -4694,7 +4694,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fill in the actual values for altitude and azimuth in the value fields.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Fill</string>
@@ -4710,7 +4710,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fill in the actual values for altitude and azimuth in the value fields.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Fill</string>
@@ -4726,7 +4726,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fill in the actual values for altitude and azimuth in the value fields.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Fill</string>
@@ -4801,7 +4801,7 @@
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 8</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Button text park menu 8&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -4842,7 +4842,7 @@
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>Button text park menu 9</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Button text park menu 9&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -4916,7 +4916,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fill in the actual values for altitude and azimuth in the value fields.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Fill</string>
@@ -4978,7 +4978,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Fill in the actual values for altitude and azimuth in the value fields.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fill in the actual values for altitude and azimuth in the value fields.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Fill</string>
@@ -6528,7 +6528,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Sets the audio signal to be played when model build is finished</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the audio signal to be played when model build is finished&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_215">
@@ -6594,7 +6594,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Sets the audio signal to be played when image is saved</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the audio signal to be played when image is saved&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_223">
@@ -6627,7 +6627,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Sets the audio signal to be played when image is plate solved</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the audio signal to be played when image is plate solved&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_225">
@@ -6680,7 +6680,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Sets the audio signal to be played when image is plate solved</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the audio signal to be played when image is plate solved&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
        <widget class="QComboBox" name="soundConnectionLost">
@@ -6693,7 +6693,7 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Sets the audio signal to be played when image is plate solved</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the audio signal to be played when image is plate solved&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>
@@ -6756,7 +6756,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. </string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Write .lnk file for Windows</string>
@@ -6848,7 +6848,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. </string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Write .desktop file for Ubuntu Linux</string>
@@ -6940,7 +6940,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. </string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Boots the mount if Wake on Lan is anabled, a MAC address is set in the configuration and the mount computer is connected to the same subnet as your computer. A wired connection is needed. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Write App for MacOs</string>
@@ -6984,7 +6984,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>Debug logging will be stored in log file.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Debug logging will be stored in log file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Debug</string>
@@ -7010,7 +7010,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>Minimum logging will be stored in log file.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum logging will be stored in log file.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Info</string>
@@ -7091,7 +7091,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>When selected data fiels for weather, satellites and programm updates will be loaded over internet.</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When selected data fiels for weather, satellites and programm updates will be loaded over internet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Enable download data and program files</string>

@@ -160,7 +160,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Actual latitude where the satellite could be seen in zenith.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual latitude where the satellite could be seen in zenith.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -272,7 +272,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Actual longitude where the satellite could be seen in zenith.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual longitude where the satellite could be seen in zenith.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::RightToLeft</enum>

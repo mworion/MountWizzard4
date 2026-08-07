@@ -491,7 +491,6 @@ BASIC_STYLE = """
         color: $M_PRIM$;
     }
     QTableView:item {
-        color: $M_PRIM$;
         max-height: 16px;
     }
     QTableView:item:selected {

@@ -153,9 +153,12 @@ def test_abortSlew_1(function):
     assert not function.commandQueue.empty()
 
 
+def test_domeAlpaca_deviceType(function):
+    assert function.deviceType == "dome"
+
+
 def test_startCommunication_1(function):
     """Test that startCommunication returns early when device creation fails."""
-    function.deviceType = "dome"
     with (
         mock.patch.object(function, "createAlpacaDevice", return_value=False),
         mock.patch.object(function.threadPool, "start") as m_start,
@@ -166,7 +169,6 @@ def test_startCommunication_1(function):
 
 def test_startCommunication_2(function):
     """Test that startCommunication starts the worker thread when device creation succeeds."""
-    function.deviceType = "dome"
     with (
         mock.patch.object(function, "createAlpacaDevice", return_value=True),
         mock.patch.object(function.threadPool, "start") as m_start,

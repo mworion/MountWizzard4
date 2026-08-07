@@ -18,4 +18,6 @@ from mw4.logic.focuser.focuserAlpacaAscomBase import FocuserAlpacaAscomBase
 
 
 class FocuserAlpaca(FocuserAlpacaAscomBase, AlpacaClass):
-    pass
+    def __init__(self, parent: object) -> None:
+        self.deviceType: str = "focuser"
+        super().__init__(parent)

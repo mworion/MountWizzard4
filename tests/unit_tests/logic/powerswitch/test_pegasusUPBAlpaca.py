@@ -131,9 +131,12 @@ def test_reboot_1(function):
     function.reboot()
 
 
+def test_pegasusUPBAlpaca_deviceType(function):
+    assert function.deviceType == "switch"
+
+
 def test_startCommunication_1(function):
     """Test that startCommunication returns early when device creation fails."""
-    function.deviceType = "switch"
     with (
         mock.patch.object(function, "createAlpacaDevice", return_value=False),
         mock.patch.object(function.threadPool, "start") as m_start,
@@ -144,7 +147,6 @@ def test_startCommunication_1(function):
 
 def test_startCommunication_2(function):
     """Test that startCommunication starts the worker thread when device creation succeeds."""
-    function.deviceType = "switch"
     with (
         mock.patch.object(function, "createAlpacaDevice", return_value=True),
         mock.patch.object(function.threadPool, "start") as m_start,

@@ -18,4 +18,6 @@ from mw4.logic.cover.coverAlpacaAscomBase import CoverAlpacaAscomBase
 
 
 class CoverAlpaca(CoverAlpacaAscomBase, AlpacaClass):
-    pass
+    def __init__(self, parent: object) -> None:
+        self.deviceType: str = "covercalibrator"
+        super().__init__(parent)

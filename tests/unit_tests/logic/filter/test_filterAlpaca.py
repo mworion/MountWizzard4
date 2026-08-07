@@ -87,9 +87,12 @@ def test_sendFilterNumber_1(function):
     assert item.value == 2
 
 
+def test_filterAlpaca_deviceType(function):
+    assert function.deviceType == "filterwheel"
+
+
 def test_startCommunication_1(function):
     """Test that startCommunication returns early when device creation fails."""
-    function.deviceType = "filterwheel"
     with (
         mock.patch.object(function, "createAlpacaDevice", return_value=False),
         mock.patch.object(function.threadPool, "start") as m_start,
@@ -100,7 +103,6 @@ def test_startCommunication_1(function):
 
 def test_startCommunication_2(function):
     """Test that startCommunication starts the worker thread when device creation succeeds."""
-    function.deviceType = "filterwheel"
     with (
         mock.patch.object(function, "createAlpacaDevice", return_value=True),
         mock.patch.object(function.threadPool, "start") as m_start,

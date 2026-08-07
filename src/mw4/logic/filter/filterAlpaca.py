@@ -18,4 +18,6 @@ from mw4.logic.filter.filterAlpacaAscomBase import FilterAlpacaAscomBase
 
 
 class FilterAlpaca(FilterAlpacaAscomBase, AlpacaClass):
-    pass
+    def __init__(self, parent: object) -> None:
+        self.deviceType: str = "filterwheel"
+        super().__init__(parent)

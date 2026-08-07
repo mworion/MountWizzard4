@@ -18,4 +18,6 @@ from mw4.logic.environment.sensorWeatherAlpacaAscomBase import SensorWeatherAlpa
 
 
 class SensorWeatherAlpaca(SensorWeatherAlpacaAscomBase, AlpacaClass):
-    pass
+    def __init__(self, parent: object) -> None:
+        self.deviceType: str = "observingconditions"
+        super().__init__(parent)

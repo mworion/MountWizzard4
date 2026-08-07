@@ -18,4 +18,6 @@ from mw4.logic.dome.domeAlpacaAscomBase import DomeAlpacaAscomBase
 
 
 class DomeAlpaca(DomeAlpacaAscomBase, AlpacaClass):
-    pass
+    def __init__(self, parent: object) -> None:
+        self.deviceType: str = "dome"
+        super().__init__(parent)

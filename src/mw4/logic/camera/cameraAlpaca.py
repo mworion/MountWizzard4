@@ -17,9 +17,6 @@ from mw4.base.alpacaClass import AlpacaClass
 
 
 class CameraAlpaca(AlpacaClass):
-    pass
-    """
     def __init__(self, parent: object) -> None:
         self.deviceType: str = "camera"
         super().__init__(parent)
-    """

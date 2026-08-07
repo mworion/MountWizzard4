@@ -56,9 +56,12 @@ def test_pollData_1(function):
         assert "SkyQuality" in attrs
 
 
+def test_sensorWeatherAlpaca_deviceType(function):
+    assert function.deviceType == "observingconditions"
+
+
 def test_startCommunication_1(function):
     """Test that startCommunication returns early when device creation fails."""
-    function.deviceType = "observingconditions"
     with (
         mock.patch.object(function, "createAlpacaDevice", return_value=False),
         mock.patch.object(function.threadPool, "start") as m_start,
@@ -69,7 +72,6 @@ def test_startCommunication_1(function):
 
 def test_startCommunication_2(function):
     """Test that startCommunication starts the worker thread when device creation succeeds."""
-    function.deviceType = "observingconditions"
     with (
         mock.patch.object(function, "createAlpacaDevice", return_value=True),
         mock.patch.object(function.threadPool, "start") as m_start,

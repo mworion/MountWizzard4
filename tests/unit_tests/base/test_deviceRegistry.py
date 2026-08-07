@@ -495,6 +495,7 @@ def test_startDeviceWithoutDeviceName(registry: DeviceRegistry) -> None:
     from unittest.mock import MagicMock
 
     registry.d["camera"].instance.framework = "indi"
+    registry.d["camera"].run["camera"] = registry.d["camera"].run["indi"]
     mock_config = MagicMock()
     mock_config.deviceName = ""
     registry.d["camera"].run["indi"].config = mock_config

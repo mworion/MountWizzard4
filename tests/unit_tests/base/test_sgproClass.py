@@ -175,6 +175,21 @@ def test_requestProperty_invalid_status_code(function):
         assert result == {}
 
 
+def test_requestProperty_logging_trace(function):
+    """Test trace logging branch on successful response."""
+    function.config.hostAddress = "localhost"
+    function.config.port = 59590
+    function.loggingTrace = True
+    response_data = {"Success": True}
+    with mock.patch("mw4.base.sgproClass.requests.get") as mock_get:
+        mock_response = mock.MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = response_data
+        mock_get.return_value = mock_response
+        result = function.requestProperty("testProp")
+        assert result == response_data
+
+
 # ─── Device Connection ──────────────────────────────────────────────────────
 
 

@@ -53,6 +53,7 @@ def test_init(mgr):
     assert mgr.isStopped is False
     assert mgr.timer is not None
     assert not mgr.timer.isActive()
+    assert mgr.unitTimeUTC is True
 
 
 def test_start_stop(mgr):
@@ -109,11 +110,11 @@ def test_emit_cyclic_always_fires_update0_1s(mock_app, mgr):
 
 
 def test_emit_cyclic_update0_5s(mock_app, mgr):
-    """update1s fires when counter % 10 == 0, i.e. counter = 10,20,30..."""
-    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 10)
+    """update0_5s fires when counter % 5 == 0, i.e. counter = 5,10,15..."""
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 5)
     assert "update0_5s" in emitted
 
-    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 11)
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 6)
     assert "update0_5s" not in emitted
 
 
@@ -157,9 +158,12 @@ def test_emit_cyclic_update3m(mock_app, mgr):
 
 
 def test_emit_cyclic_update30m(mock_app, mgr):
-    """update30m fires when counter % 36000 == 0, i.e. counter = 36000..."""
-    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 36000)
+    """update30m fires when counter % 18000 == 0, i.e. counter = 18000,36000..."""
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 18000)
     assert "update30m" in emitted
+
+    emitted = _collect_emitted(mock_app, mgr, "emitCyclic", 18001)
+    assert "update30m" not in emitted
 
 
 def test_emit_cyclic_no_crash_various_counters(mock_app, mgr):

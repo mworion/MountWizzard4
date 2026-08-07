@@ -30,6 +30,8 @@ CYCLIC_SCHEDULE: list[tuple[int, str]] = [
     (18000, "update30m"),
 ]
 START_SCHEDULE: list[tuple[int, str]] = [
+    (10, "start1s"),
+    (20, "start2s"),
     (30, "start3s"),
 ]
 
@@ -44,7 +46,9 @@ class TimeManager(QObject):
     update30s = Signal()
     update3m = Signal()
     update30m = Signal()
-    # --- Startup signals (emitted once after 3s) ---
+    # --- Startup signals (emitted once after 1s) ---
+    start1s = Signal()
+    start2s = Signal()
     start3s = Signal()
 
     def __init__(self, app: Any) -> None:

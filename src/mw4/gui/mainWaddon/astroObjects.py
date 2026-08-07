@@ -66,7 +66,7 @@ class AstroObjects:
             "asteroid": self.dbProc.writeAsteroidMPC,
             "comet": self.dbProc.writeCometMPC,
         }
-        self.app.timeMgr.start3s.connect(self.setupSourceUpdate)
+        self.app.timeMgr.start1s.connect(self.setupSourceUpdate)
 
     def setupSourceUpdate(self) -> None:
         self.loadSourceUrl()

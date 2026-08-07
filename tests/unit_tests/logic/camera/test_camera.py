@@ -178,6 +178,13 @@ def test_expose_3(function) -> None:
         assert suc
 
 
+def test_expose_4(function) -> None:
+    function.exposing = False
+    function.framework = ""
+    suc = function.expose(imagePath="tests", exposureTime=1, binning=0)
+    assert not suc
+
+
 def test_abort_1(function) -> None:
     function.framework = "indi"
     function.exposing = True
@@ -192,6 +199,12 @@ def test_abort_2(function) -> None:
     with mock.patch.object(function.run["indi"], "abort", return_value=True):
         function.abort()
         assert not function.exposing
+
+
+def test_abort_3(function) -> None:
+    function.framework = ""
+    result = function.abort()
+    assert not result
 
 
 def test_sendDownloadMode_2(function) -> None:

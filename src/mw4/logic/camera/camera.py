@@ -121,7 +121,7 @@ class Camera:
         self.app.showImage.emit(self.imagePath)
 
     def expose(self, imagePath: Path, exposureTime: float = 1, binning: int = 1) -> bool:
-        if self.exposing:
+        if self.exposing or not self.framework:
             return False
 
         self.exposing = True
@@ -133,6 +133,8 @@ class Camera:
         return True
 
     def abort(self) -> bool:
+        if not self.framework:
+            return False
         if self.run[self.framework].abort():
             self.signals.message.emit("")
             self.exposing = False

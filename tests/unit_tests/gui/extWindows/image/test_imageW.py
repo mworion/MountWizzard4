@@ -282,11 +282,24 @@ def test_exposeImageDone_2(function):
 
 
 def test_exposeImage_1(function):
+    function.app.dReg.d["camera"].stat = True
     function.app.dReg.d["camera"].instance.data = {}
     with mock.patch.object(
         function.app.dReg.d["camera"].instance, "expose", return_value=True
     ):
         function.exposeImage()
+
+
+def test_exposeImage_noCameraConnected(function):
+    function.app.dReg.d["camera"].stat = False
+    mock_msg = mock.MagicMock()
+    original_msg = function.msg
+    function.msg = mock_msg
+    try:
+        function.exposeImage()
+        mock_msg.emit.assert_called_once_with(2, "Image", "Error", "No camera connected")
+    finally:
+        function.msg = original_msg
 
 
 def test_exposeImageNDone_1(function):
@@ -316,6 +329,7 @@ def test_exposeImageNDone_2(function):
 def test_exposeImageN_1(function):
     # exposeN not running → start continuous exposure
     function.imagingDeviceStat["exposeN"] = False
+    function.app.dReg.d["camera"].stat = True
     function.app.dReg.d["camera"].instance.data = {}
     with (
         mock.patch.object(
@@ -326,9 +340,22 @@ def test_exposeImageN_1(function):
         function.exposeImageN()
 
 
+def test_exposeImageN_noCameraConnected(function):
+    function.app.dReg.d["camera"].stat = False
+    mock_msg = mock.MagicMock()
+    original_msg = function.msg
+    function.msg = mock_msg
+    try:
+        function.exposeImageN()
+        mock_msg.emit.assert_called_once_with(2, "Image", "Error", "No camera connected")
+    finally:
+        function.msg = original_msg
+
+
 def test_exposeImageN_2(function):
     # exposeN already running → stop continuous exposure
     function.imagingDeviceStat["exposeN"] = True
+    function.app.dReg.d["camera"].stat = True
     function.app.dReg.d["camera"].instance.signals.saved.connect(function.exposeImageNDone)
     function.exposeImageN()
     assert not function.imagingDeviceStat["exposeN"]

@@ -292,6 +292,9 @@ class ImageWindow(MWidget):
         self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def exposeImage(self) -> None:
+        if not self.app.dReg["camera"].stat:
+            self.msg.emit(2, "Image", "Error", "No camera connected")
+            return
         self.app.operationRunning.emit(Model.STATUS_EXPOSE_1)
         self.imagingDeviceStat["expose"] = True
         self.app.dReg["camera"].signals.saved.connect(self.exposeImageDone)
@@ -309,6 +312,9 @@ class ImageWindow(MWidget):
         )
 
     def exposeImageN(self) -> None:
+        if not self.app.dReg["camera"].stat:
+            self.msg.emit(2, "Image", "Error", "No camera connected")
+            return
         if not self.imagingDeviceStat["exposeN"]:
             self.app.operationRunning.emit(Model.STATUS_EXPOSE_N)
             self.msg.emit(1, "Image", "Expose", "Continuous start")

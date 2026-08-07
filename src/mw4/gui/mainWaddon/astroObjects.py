@@ -119,7 +119,6 @@ class AstroObjects:
             self.procSourceData()
             self.log.info(f"Using local source data for {self.objectText}")
             return
-
         if not self.app.isOnline:
             self.msg.emit(2, self.objectText.capitalize(), "Download", "Offline mode active")
             return

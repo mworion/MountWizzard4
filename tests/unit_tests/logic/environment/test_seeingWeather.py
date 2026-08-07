@@ -17,10 +17,10 @@ import json
 import pytest
 import requests
 import shutil
-import unittest.mock as mock
 from mw4.logic.environment.seeingWeather import SeeingWeather
 from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

@@ -205,7 +205,8 @@ class SettDevice(QObject):
         self.app.dReg.stopDevice(device)
         self.app.dReg[device].instance.framework = framework
         changeStyleDynamic(self.deviceUi[device]["uiDropDown"], "active", False)
-        if not framework:
+        if isDisabled:
+            self.app.dReg.setStat(device, None)
             return
         deviceName = self.app.dReg[device].run[framework].config.deviceName
         if not deviceName:

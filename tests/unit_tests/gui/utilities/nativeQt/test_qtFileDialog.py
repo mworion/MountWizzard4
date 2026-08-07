@@ -14,11 +14,11 @@
 #
 ###########################################################
 import pytest
-import unittest.mock as mock
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from pathlib import Path
 from PySide6.QtCore import QModelIndex
 from PySide6.QtWidgets import QFileDialog, QWidget
+from unittest import mock
 
 
 @pytest.fixture(scope="module")

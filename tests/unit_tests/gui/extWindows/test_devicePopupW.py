@@ -16,7 +16,6 @@
 import gc
 import logging
 import pytest
-import unittest.mock as mock
 from mw4.base.ascomClass import AscomClass
 from mw4.base.indiClass import IndiClass
 from mw4.base.sgproClass import SGProClass
@@ -29,6 +28,7 @@ from PySide6.QtCore import QEventLoop
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication, QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 class Parent:
@@ -605,9 +605,7 @@ def test_discoverDevices_sgpro_devices_found(function):
     sgproInstance = mock.MagicMock()
     sgproInstance.discoverDevices = mock.MagicMock(return_value=("Test1", "Test2"))
     function.app.dReg["telescope"].run["sgpro"] = sgproInstance
-    with mock.patch.object(
-        SGProClass, "discoverDevices", return_value=("Test1", "Test2")
-    ):
+    with mock.patch.object(SGProClass, "discoverDevices", return_value=("Test1", "Test2")):
         function.discoverDevices("sgpro", QWidget())
 
     assert function.framework == "sgpro"

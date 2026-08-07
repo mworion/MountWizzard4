@@ -45,7 +45,7 @@ class SimulatorLaser:
 
         PB *= 1000
         PB[2] += 1000
-        radius, alt, az = functions.to_spherical(-PD)
+        _radius, alt, az = functions.to_spherical(-PD)
         az = np.degrees(az)
         alt = np.degrees(alt)
 

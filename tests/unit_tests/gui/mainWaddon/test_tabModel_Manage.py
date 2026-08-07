@@ -21,7 +21,6 @@ import mw4.gui.mainWaddon.tabModel_Manage
 import os
 import pytest
 import shutil
-import unittest.mock as mock
 from mw4.gui.mainWaddon.tabModel_Manage import ModelManage
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtMain import MWidget
@@ -31,6 +30,7 @@ from pathlib import Path
 from PySide6.QtCore import Qt
 from skyfield.api import Angle, Star
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

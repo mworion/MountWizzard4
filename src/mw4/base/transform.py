@@ -77,7 +77,7 @@ def J2000ToAltAz(
             0.0,
             0.0,
         )
-        aob, zob, hob, dob, rob, eo = v
+        aob, zob, _hob, _dob, _rob, _eo = v
         decConv = np.pi / 2 - zob
 
         azimuth = Angle(radians=aob, preference="degrees")

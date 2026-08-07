@@ -18,7 +18,6 @@ import gc
 import numpy as np
 import pyqtgraph as pg
 import pytest
-import unittest.mock as mock
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
@@ -27,6 +26,7 @@ from PySide6.QtCore import QPointF
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

@@ -14,8 +14,8 @@
 #
 ###########################################################
 import pytest
-import unittest.mock as mock
 from mw4.logic.measure.measureRaw import MeasureDataRaw
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

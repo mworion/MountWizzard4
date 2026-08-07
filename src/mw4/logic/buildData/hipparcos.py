@@ -62,7 +62,7 @@ class Hipparcos:
         star = list(self.alignStars.values())
         self.name = list(self.alignStars.keys())
 
-        aob, zob, hob, dob, rob, eo = erfa.atco13(
+        aob, zob, _hob, _dob, _rob, _eo = erfa.atco13(
             [x[0] for x in star],
             [x[1] for x in star],
             [x[2] for x in star],

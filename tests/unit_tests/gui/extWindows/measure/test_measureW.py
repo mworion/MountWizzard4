@@ -18,7 +18,6 @@ import gc
 import numpy as np
 import pyqtgraph as pg
 import pytest
-import unittest.mock as mock
 import warnings
 from mw4.gui.extWindows.measure.measureW import MeasureWindow
 from mw4.gui.utilities.qtMain import MWidget
@@ -26,6 +25,7 @@ from pathlib import Path
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -365,7 +365,7 @@ def test_plotting_withExistingPlotItem(function):
     measureClass.data = function.app.measure.data
     x = function.app.measure.data["time"].astype("datetime64[s]").astype("int")
     values["template"]["legendRef"] = pg.LegendItem()
-    firstKey = list(values["lineItems"].keys())[0]
+    firstKey = next(iter(values["lineItems"].keys()))
     values["lineItems"][firstKey]["plotItemRef"] = plotItem.plot()
     function.plotting(plotItem, values, x)
 

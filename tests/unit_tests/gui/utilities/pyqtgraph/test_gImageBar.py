@@ -15,8 +15,8 @@
 ###########################################################
 import numpy as np
 import pytest
-import unittest.mock as mock
 from mw4.gui.utilities.pyqtgraph.gImageBar import ImageBar
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

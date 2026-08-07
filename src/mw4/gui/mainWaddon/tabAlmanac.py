@@ -137,7 +137,7 @@ class Almanac(TabAddon):
         plotItem.setYRange(0, 24)
         plotItem.setXRange(xMin, xMax)
         brushes: list[QBrush] = []
-        for widget, color in self.colors.items():
+        for color in self.colors.values():
             colorHex = self.mainW.rgb2hex(color)
             brushes.append(pg.mkBrush(color=colorHex, style=Qt.BrushStyle.SolidPattern))
 

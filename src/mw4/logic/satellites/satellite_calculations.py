@@ -115,7 +115,7 @@ def calcSatelliteMeridianTransit(
     difference = sat - loc
 
     def westOfMeridianAt(t: Time) -> bool:
-        alt, az, _ = difference.at(t).altaz()
+        _alt, az, _ = difference.at(t).altaz()
         delta = (az.degrees + tolerance + 360) % 360 - 180
         return delta < 0
 
@@ -128,8 +128,7 @@ def calcPassEvents(
 ) -> tuple[list, list]:
     if minAlt is None:
         minAlt = 5
-    if minAlt < 5:
-        minAlt = 5
+    minAlt = max(minAlt, 5)
 
     loc = obsSite.location
     orbitCycleTime = np.pi / sat.model.no_kozai / 12 / 60
@@ -220,9 +219,9 @@ def addMeridianTransit(
     f1 = calcSatelliteMeridianTransit(sat, loc, limit)
     f2 = calcSatelliteMeridianTransit(sat, loc, -limit)
     for i, satOrbit in enumerate(satOrbits):
-        t0, y0 = almanac.find_discrete(satOrbit["rise"], satOrbit["settle"], f0)
-        t1, y1 = almanac.find_discrete(satOrbit["rise"], satOrbit["settle"], f1)
-        t2, y2 = almanac.find_discrete(satOrbit["rise"], satOrbit["settle"], f2)
+        t0, _y0 = almanac.find_discrete(satOrbit["rise"], satOrbit["settle"], f0)
+        t1, _y1 = almanac.find_discrete(satOrbit["rise"], satOrbit["settle"], f1)
+        t2, _y2 = almanac.find_discrete(satOrbit["rise"], satOrbit["settle"], f2)
 
         satOrbits[i] = sortFlipEvents(satOrbit, t0, t1, t2)
     return satOrbits

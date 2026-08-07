@@ -16,8 +16,8 @@
 
 import platform
 import pytest
-import unittest.mock as mock
 from mw4.gui.styles.styles import Styles
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

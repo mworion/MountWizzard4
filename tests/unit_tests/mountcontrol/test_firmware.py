@@ -13,9 +13,9 @@
 # License APL2.0
 #
 ###########################################################
-import unittest.mock as mock
 from mw4.mountcontrol.firmware import Firmware
 from packaging.version import Version
+from unittest import mock
 
 #
 #

@@ -18,8 +18,8 @@ import mw4.loader
 import os
 import PySide6
 import sys
-import unittest.mock as mock
 from pathlib import Path
+from unittest import mock
 
 
 def test_main_1():

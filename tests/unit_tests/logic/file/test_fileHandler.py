@@ -16,11 +16,11 @@
 import numpy as np
 import pytest
 import shutil
-import unittest.mock as mock
 from astropy.io import fits
 from mw4.logic.file.fileHandler import FileHandler, FileHandlerSignals
 from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 from xisf import XISF
 
 

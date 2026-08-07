@@ -285,7 +285,7 @@ def test_indi_types_all_values_are_ints():
 
 
 def test_indi_types_values_positive():
-    for key, value in INDI_TYPES.items():
+    for value in INDI_TYPES.values():
         assert value > 0
 
 

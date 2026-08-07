@@ -14,10 +14,10 @@
 #
 ###########################################################
 import pytest
-import unittest.mock as mock
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

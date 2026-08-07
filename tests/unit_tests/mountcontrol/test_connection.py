@@ -13,9 +13,9 @@
 # License APL2.0
 #
 ###########################################################
-import unittest.mock as mock
 from mw4.mountcontrol.connection import Connection
 from PySide6.QtCore import QByteArray
+from unittest import mock
 
 
 def makeClient(
@@ -279,7 +279,7 @@ class TestCommunicate:
         with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
             m_socket.return_value = makeClient(data=b"10micron GM1000HPS#")
             conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, chunks = conn.communicate(":GVN#")
+            suc, response, _chunks = conn.communicate(":GVN#")
             m_socket.return_value.connectToHost.assert_called_with("localhost", 3492)
             m_socket.return_value.write.assert_called_with(b":GVN#")
         assert suc
@@ -289,7 +289,7 @@ class TestCommunicate:
         with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
             m_socket.return_value = makeClient(data=b"10micron GM1000HPS#")
             conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, chunks = conn.communicate(":GVN#", "0")
+            suc, response, _chunks = conn.communicate(":GVN#", "0")
             m_socket.return_value.connectToHost.assert_called_with("localhost", 3492)
             m_socket.return_value.write.assert_called_with(b":GVN#")
         assert not suc
@@ -297,13 +297,13 @@ class TestCommunicate:
 
     def test_no_host_defined(self):
         conn = Connection(makeParent(host=None))
-        suc, response, chunks = conn.communicate(":GVN#")
+        suc, response, _chunks = conn.communicate(":GVN#")
         assert not suc
         assert response == []
 
     def test_no_port_defined(self):
         conn = Connection(makeParent(host="localhost"))
-        suc, response, chunks = conn.communicate(":GVN#")
+        suc, response, _chunks = conn.communicate(":GVN#")
         assert not suc
         assert response == []
 
@@ -311,7 +311,7 @@ class TestCommunicate:
         with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
             m_socket.return_value = makeClient(data=b"10micron GM1000HPS#")
             conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, chunks = conn.communicate("")
+            suc, response, _chunks = conn.communicate("")
         assert suc
         assert response == []
 
@@ -319,7 +319,7 @@ class TestCommunicate:
         with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
             m_socket.return_value = makeClient(data=b"")
             conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, chunks = conn.communicate("")
+            suc, response, _chunks = conn.communicate("")
         assert suc
         assert response == []
 
@@ -327,21 +327,21 @@ class TestCommunicate:
         with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
             m_socket.return_value = makeClient(connected=False)
             conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, chunks = conn.communicate(":GVN#")
+            suc, _response, _chunks = conn.communicate(":GVN#")
         assert not suc
 
     def test_sendall_timeout(self):
         with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
             m_socket.return_value = makeClient(written=False)
             conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, chunks = conn.communicate(":GVN#")
+            suc, _response, _chunks = conn.communicate(":GVN#")
         assert not suc
 
     def test_recv_timeout(self):
         with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
             m_socket.return_value = makeClient(readyRead=False)
             conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, chunks = conn.communicate(":GVN#")
+            suc, _response, _chunks = conn.communicate(":GVN#")
         assert not suc
 
     def test_connect_socket_error(self):
@@ -350,7 +350,7 @@ class TestCommunicate:
             client.connectToHost.side_effect = Exception
             m_socket.return_value = client
             conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, chunks = conn.communicate(":GVN#")
+            suc, _response, _chunks = conn.communicate(":GVN#")
         assert not suc
 
     def test_sendall_exception(self):
@@ -359,7 +359,7 @@ class TestCommunicate:
             client.write.side_effect = Exception("Test")
             m_socket.return_value = client
             conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, chunks = conn.communicate(":GVN#")
+            suc, _response, _chunks = conn.communicate(":GVN#")
         assert not suc
 
     def test_recv_exception(self):
@@ -368,7 +368,7 @@ class TestCommunicate:
             client.readAll.side_effect = Exception("Test")
             m_socket.return_value = client
             conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, chunks = conn.communicate(":GVN#")
+            suc, _response, _chunks = conn.communicate(":GVN#")
         assert not suc
 
     def test_connect_exception(self):
@@ -377,7 +377,7 @@ class TestCommunicate:
             client.connectToHost.side_effect = Exception("Test")
             m_socket.return_value = client
             conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, chunks = conn.communicate(":GVN#")
+            suc, _response, _chunks = conn.communicate(":GVN#")
         assert not suc
 
 
@@ -431,12 +431,12 @@ class TestCommandValidation:
 
     def test_communicate_invalid_command_1(self):
         conn = Connection(makeParent())
-        suc, msg, num = conn.communicate(":test#")
+        suc, _msg, _num = conn.communicate(":test#")
         assert not suc
 
     def test_communicate_invalid_command_2(self):
         conn = Connection(makeParent())
-        suc, msg, num = conn.communicate(":AP#:test#")
+        suc, _msg, _num = conn.communicate(":AP#:test#")
         assert not suc
 
 

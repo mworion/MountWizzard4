@@ -17,7 +17,6 @@ import numpy as np
 import os
 import pytest
 import shutil
-import unittest.mock as mock
 from astropy.io import fits
 from mw4.gui.mainWaddon.tabTools_Rename import Rename
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
@@ -25,6 +24,7 @@ from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -60,7 +60,7 @@ def test_setupIcons_1(function):
 
 def test_setupGuiTools(function):
     function.setupGuiTools()
-    for _, ui in function.selectorsDropDowns.items():
+    for ui in function.selectorsDropDowns.values():
         assert ui.count() == 7
 
 

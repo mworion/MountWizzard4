@@ -16,8 +16,8 @@
 
 import numpy as np
 import pytest
-import unittest.mock as mock
 from mw4.gui.utilities.pyqtgraph.gPolarScatter import PolarScatter
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

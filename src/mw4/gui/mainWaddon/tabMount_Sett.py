@@ -284,7 +284,7 @@ class MountSett(TabAddon):
             return False
 
     def setLocationValues(
-        self, lat: Angle | None = None, lon: Angle | None = None, elev: float = None
+        self, lat: Angle | None = None, lon: Angle | None = None, elev: float | None = None
     ) -> None:
         obs = self.app.dReg["mount"].obsSite
         loc = obs.location

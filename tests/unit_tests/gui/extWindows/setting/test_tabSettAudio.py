@@ -129,7 +129,7 @@ def test_audioConfig_complete(settAudio):
 
 def test_audioConfig_has_required_keys(settAudio):
     """Test audioConfig entries have required keys."""
-    for soundKey, soundData in settAudio.audioConfig.items():
+    for soundData in settAudio.audioConfig.values():
         assert "configKey" in soundData
         assert "uiWidget" in soundData
         assert "device" in soundData

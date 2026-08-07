@@ -21,11 +21,11 @@ import os
 import pytest
 import skyfield.almanac
 import skyfield.api
-import unittest.mock as mock
 from mw4.logic.buildData.buildpoints import BuildPoint, HaDecToAltAz
 from pathlib import Path
 from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

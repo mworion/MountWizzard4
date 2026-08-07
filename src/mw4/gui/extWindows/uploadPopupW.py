@@ -147,7 +147,7 @@ class UploadPopup(MWidget):
             self.sendProgressValue(text[-1])
 
     def generateURLStatus(self) -> str:
-        return f"http://{str(self.url)}/bin/uploadst"
+        return f"http://{self.url!s}/bin/uploadst"
 
     def getStatus(self) -> list[str]:
         returnValues = requests.get(self.generateURLStatus(), timeout=self.TIMEOUT_UPLOAD)
@@ -179,7 +179,7 @@ class UploadPopup(MWidget):
         return files
 
     def generateURL(self) -> str:
-        return f"http://{str(self.url)}/bin/upload"
+        return f"http://{self.url!s}/bin/upload"
 
     def deleteHostData(self) -> bool:
         returnValues = requests.delete(self.generateURL(), timeout=10)  # SEC-4

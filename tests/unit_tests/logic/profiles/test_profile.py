@@ -17,7 +17,6 @@ import glob
 import mw4.logic.profiles
 import os
 import pytest
-import unittest.mock as mock
 import yaml
 from mw4.logic.profiles.profile import (
     defaultConfig,
@@ -26,6 +25,7 @@ from mw4.logic.profiles.profile import (
     saveConfig,
 )
 from pathlib import Path
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

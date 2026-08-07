@@ -15,9 +15,9 @@
 ###########################################################
 """Tests for mw4.base.bootstrap utility functions."""
 
-import mw4.base.bootstrap as bootstrap
 import sys
-import unittest.mock as mock
+from mw4.base import bootstrap
+from unittest import mock
 
 
 def test_namesImportable():

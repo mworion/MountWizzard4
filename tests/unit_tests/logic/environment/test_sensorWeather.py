@@ -15,9 +15,9 @@
 ###########################################################
 import platform
 import pytest
-import unittest.mock as mock
 from mw4.logic.environment.sensorWeather import SensorWeather
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

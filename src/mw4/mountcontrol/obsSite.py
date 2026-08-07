@@ -636,7 +636,7 @@ class ObsSite:
         suc, _, _ = conn.communicate(commandString, responseCheck="1")
         return suc
 
-    def setElevation(self, elev: int | float) -> bool:
+    def setElevation(self, elev: float) -> bool:
         conn = Connection(self.parent)
         sign = "+" if elev > 0 else "-"
         commandString = f":Sev{sign}{abs(elev):06.1f}#"

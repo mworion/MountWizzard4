@@ -14,13 +14,13 @@
 #
 ###########################################################
 import pytest
-import unittest.mock as mock
 from mw4.base.indiClass import IndiClass
 from mw4.logic.camera.camera import Camera
 from mw4.logic.camera.cameraIndi import CameraIndi
 from pathlib import Path
 from queue import Queue
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

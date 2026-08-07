@@ -381,7 +381,7 @@ def test_processHidController_withNewData(hc):
             return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
     hc.hidControllerDevice = MockGamepad()
-    connect, reportNew = hc.processHidController(reportOld)
+    connect, _reportNew = hc.processHidController(reportOld)
     assert connect is True
 
 

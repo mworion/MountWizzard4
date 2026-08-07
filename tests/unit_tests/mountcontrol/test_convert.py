@@ -16,7 +16,6 @@
 
 import math
 import mw4.mountcontrol
-import unittest.mock as mock
 from mw4.mountcontrol.convert import (
     convertDecToAngle,
     convertLatToAngle,
@@ -38,6 +37,7 @@ from mw4.mountcontrol.convert import (
     valueToInt,
 )
 from skyfield.api import Angle
+from unittest import mock
 
 #
 #

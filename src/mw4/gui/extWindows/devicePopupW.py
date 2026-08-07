@@ -206,7 +206,7 @@ class DevicePopup(MWidget):
     def selectTabs(self) -> None:
         tabIndex = getTabIndex(self.ui.tab, self.framework)
         self.ui.tab.setCurrentIndex(tabIndex)
-        for index in range(0, self.ui.tab.count()):
+        for index in range(self.ui.tab.count()):
             isVisible = self.ui.tab.widget(index).objectName() in self.data
             self.ui.tab.setTabVisible(index, isVisible)
 

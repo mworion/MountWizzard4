@@ -766,7 +766,7 @@ def test_geometry_9(function):
     val = function.geometry.calcTransformationMatrices(
         dec=Angle(degrees=10), ha=Angle(hours=5), lat=Angle(degrees=-50), pierside="E"
     )
-    alt, az, inter, _, _ = val
+    _alt, _az, _inter, _, _ = val
 
 
 def test_calcTransformationMatrices_loggingTrace(function):
@@ -785,7 +785,7 @@ def test_calcTransformationMatrices_loggingTrace(function):
     )
     function.geometry.loggingTrace = False
     # assert
-    alt, az, inter, _, _ = val
+    alt, az, _inter, _, _ = val
     assert alt is not None
     assert az is not None
 

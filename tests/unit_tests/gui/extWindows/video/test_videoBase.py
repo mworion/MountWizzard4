@@ -17,13 +17,13 @@ import cv2
 import mw4.gui.extWindows.video.videoBase
 import numpy as np
 import pytest
-import unittest.mock as mock
 from mw4.gui.extWindows.video.videoBase import VideoWindowBase
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtMain import MWidget
 from PySide6.QtGui import QCloseEvent, QPixmap
 from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

@@ -13,7 +13,7 @@
 # License APL2.0
 #
 ###########################################################
-import unittest.mock as mock
+from unittest import mock
 
 
 def test_main_imports_run():

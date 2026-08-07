@@ -133,7 +133,7 @@ class BuildPoint:
 
     def isAboveHorizon(self, point: tuple[int, int]) -> bool:
         point[1] = min(max(point[1], 0), 360)
-        x = range(0, 361)
+        x = range(361)
         if self.horizonP:
             xRef = [i[1] for i in self.horizonP]
             yRef = [i[0] for i in self.horizonP]
@@ -386,7 +386,7 @@ class BuildPoint:
         numberBase = int(numberBase)
 
         self.clearBuildP()
-        for i in range(0, numberBase):
+        for i in range(numberBase):
             az = azBase + i * stepAz
             self.addBuildP([altBase, az % 360, self.UNPROCESSED])
 

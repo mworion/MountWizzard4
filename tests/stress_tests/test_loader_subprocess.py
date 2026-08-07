@@ -200,7 +200,7 @@ def _tail_mw4_log(n_bytes: int = LOG_TAIL_BYTES) -> str:
         matches = glob.glob(str(log_dir / "mw4-*.log"))  # fallback: any date
     if not matches:
         return ""
-    log_path = sorted(matches)[-1]
+    log_path = max(matches)
     try:
         size = os.path.getsize(log_path)
         with open(log_path, "rb") as fh:

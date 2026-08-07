@@ -130,7 +130,7 @@ def test_runSolverBin_2(function):
             subprocess.Popen, "communicate", return_value=("", ""), side_effect=Exception()
         ),
     ):
-        suc, ret = function.runSolverBin(["test", "test", "test", "test"])
+        suc, _ret = function.runSolverBin(["test", "test", "test", "test"])
         assert not suc
 
 

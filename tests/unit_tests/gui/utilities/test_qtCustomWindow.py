@@ -15,12 +15,12 @@
 ###########################################################
 import gc
 import pytest
-import unittest.mock as mock
 from mw4.gui.utilities.qtCustomWindow import CustomTitleBar
 from PySide6.QtCore import QPoint, Qt
 from PySide6.QtGui import QMouseEvent
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication, QToolButton, QWidget
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

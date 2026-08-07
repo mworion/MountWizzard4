@@ -17,11 +17,11 @@ import math
 import mw4.mountcontrol
 import numpy
 import skyfield.api
-import unittest.mock as mock
 from mw4.mountcontrol import obsSite
 from mw4.mountcontrol.model import Model, ModelStar, ProgStar
 from skyfield.api import Angle, Star, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 
@@ -200,7 +200,7 @@ def test_StarList_iteration():
     p4 = Angle(degrees=90)
     s = Star(ra_hours=12.7580583333, dec_degrees=56.5001388889)
 
-    for i in range(0, 10):
+    for i in range(10):
         model.addStar(ModelStar(s, i * i, p4, i))
 
     assert len(model.starList) == 10

@@ -136,7 +136,7 @@ class Satellite:
         julD -= self.obsSite.UTC2TT
         conn = Connection(self.parent)
         command = f":TLEGAZ{julD}#:TLEGEQ{julD}#:TLEP{julD},{duration}#"
-        suc, response, numberOfChunks = conn.communicate(command)
+        suc, response, _numberOfChunks = conn.communicate(command)
         if not suc:
             return False
         return self.parseCalcTLE(response)
@@ -162,7 +162,7 @@ class Satellite:
 
     def statTLE(self) -> bool:
         conn = Connection(self.parent)
-        suc, response, numberOfChunks = conn.communicate(":TLESCK#")
+        suc, response, _numberOfChunks = conn.communicate(":TLESCK#")
         if not suc:
             return False
         return self.parseStatTLE(response)

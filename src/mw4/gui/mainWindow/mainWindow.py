@@ -200,7 +200,7 @@ class MainWindow(MWidget):
 
     def smartTabGui(self) -> None:
         tabChanged = False
-        for key, tab in self.smartTabs.items():
+        for key in self.smartTabs:
             tabIndex = getTabIndex(self.smartTabs[key]["tab"], key)
             tabStatus = self.smartTabs[key]["tab"].isTabVisible(tabIndex)
 
@@ -243,6 +243,7 @@ class MainWindow(MWidget):
         for device, ui in self.deviceStatGui.items():
             entry = self.app.dReg[device]
             if entry is None or entry.stat is None:
+                changeStyleDynamic(ui, "color", "grey")
                 ui.setEnabled(False)
             elif entry.stat:
                 changeStyleDynamic(ui, "color", "green")

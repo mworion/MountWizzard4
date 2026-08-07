@@ -55,7 +55,7 @@ class CustomViewBox(pg.ViewBox):
     def getCurveIndex(self, pos: pg.Point) -> int | None:
         data = self.plotDataItem.curve.getData()
         curve = [(x, y) for x, y in zip(data[0], data[1])]
-        for index in range(0, len(curve) - 1):
+        for index in range(len(curve) - 1):
             d = self.isBetween(curve[index], curve[index + 1], (int(pos.x()), int(pos.y())))
             if d < self.epsilonCurve:
                 break

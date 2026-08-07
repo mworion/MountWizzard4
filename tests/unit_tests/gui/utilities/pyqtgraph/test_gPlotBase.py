@@ -17,9 +17,9 @@
 import numpy as np
 import pyqtgraph as pg
 import pytest
-import unittest.mock as mock
 from mw4.gui.utilities.pyqtgraph.gPlotBase import PlotBase
 from PySide6.QtWidgets import QApplication
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

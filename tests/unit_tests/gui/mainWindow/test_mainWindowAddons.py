@@ -14,12 +14,12 @@
 #
 ###########################################################
 import pytest
-import unittest.mock as mock
 from mw4.gui.mainWaddon.tabAlmanac import Almanac
 from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 class MockAddon:

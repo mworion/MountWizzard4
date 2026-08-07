@@ -205,7 +205,7 @@ def test_statusAllZero(kmRelay: KMRelay) -> None:
         status_code = 200
 
     with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
-        for i in range(0, 8):
+        for i in range(8):
             kmRelay.set(i, False)
         kmRelay.cyclePolling()
         assert kmRelay.status == [0, 0, 0, 0, 0, 0, 0, 0]
@@ -229,7 +229,7 @@ def test_statusAllOne(kmRelay: KMRelay) -> None:
         status_code = 200
 
     with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
-        for i in range(0, 8):
+        for i in range(8):
             kmRelay.set(i, True)
         kmRelay.cyclePolling()
         assert kmRelay.status == [1, 1, 1, 1, 1, 1, 1, 1]
@@ -253,7 +253,7 @@ def test_statusAfterSwitch(kmRelay: KMRelay) -> None:
         status_code = 200
 
     with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
-        for i in range(0, 8):
+        for i in range(8):
             kmRelay.switch(i)
         kmRelay.cyclePolling()
         assert kmRelay.status == [1, 1, 1, 1, 1, 1, 1, 1]
@@ -280,7 +280,7 @@ def test_statusAfterPulse(kmRelay: KMRelay) -> None:
         mock.patch.object(kmRelay, "getRelay", return_value=MockResult()),
         mock.patch.object(kmRelay.threadPool, "start"),
     ):
-        for i in range(0, 8):
+        for i in range(8):
             kmRelay.pulse(i)
         kmRelay.cyclePolling()
         assert kmRelay.status == [0, 0, 0, 0, 0, 0, 0, 0]

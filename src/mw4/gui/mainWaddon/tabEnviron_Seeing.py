@@ -151,7 +151,7 @@ class EnvironSeeing(TabAddon):
         data = self.app.dReg["seeingWeather"].data["hourly"]
         self.addSkyfieldTimeObject(data)
         columnCenter = 1
-        for i in range(0, 96):
+        for i in range(96):
             isActual = abs(data["time"][i] - ts.now()) < 1 / 48
             for j, field in enumerate(self.DataFields):
                 item = self.buildSeeingItem(j, field, data, i)

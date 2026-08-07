@@ -682,4 +682,3 @@ def test_processCommandQueue_queue_empty_during_iteration(function):
     ):
         mock_get.side_effect = queue.Empty()
         function.processCommandQueue()
-

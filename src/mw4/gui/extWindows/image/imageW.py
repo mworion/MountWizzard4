@@ -151,7 +151,7 @@ class ImageWindow(MWidget):
         self.ui.aspectRatioPercentile.setText("")
         tab = self.ui.tabImage
         tabIndex = getTabIndex(tab, "Image")
-        for i in range(0, self.ui.tabImage.count()):
+        for i in range(self.ui.tabImage.count()):
             if i == tabIndex:
                 continue
             self.ui.tabImage.setTabEnabled(i, False)

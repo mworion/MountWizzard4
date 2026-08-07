@@ -269,19 +269,25 @@ def test_dispatchDriverDropdown_1(function):
     dropDown.addItem("indi - test")
     dropDown.setCurrentIndex(0)
     with (
-        mock.patch.object(function.app.dReg, "stopDevice"),
-        mock.patch.object(function.app.dReg, "startDevice"),
+        mock.patch.object(function.app.dReg, "stopDevice") as mock_stop,
+        mock.patch.object(function.app.dReg, "startDevice") as mock_start,
     ):
         function.dispatchDriverDropdown("telescope", 1)
+    mock_stop.assert_called_once_with("telescope")
+    mock_start.assert_not_called()
 
 
 def test_dispatchDriverDropdown_2(function):
     function.deviceUi["dome"]["uiDropDown"].addItem("device disabled")
     with (
-        mock.patch.object(function.app.dReg, "stopDevice"),
-        mock.patch.object(function.app.dReg, "startDevice"),
+        mock.patch.object(function.app.dReg, "stopDevice") as mock_stop,
+        mock.patch.object(function.app.dReg, "startDevice") as mock_start,
+        mock.patch.object(function.app.dReg, "setStat") as mock_set_stat,
     ):
         function.dispatchDriverDropdown("dome", 0)
+    mock_stop.assert_called_once_with("dome")
+    mock_set_stat.assert_called_once_with("dome", None)
+    mock_start.assert_not_called()
 
 
 def test_dispatchDriverDropdownEmitsStartDeviceWhenAllConditionsMet(function) -> None:

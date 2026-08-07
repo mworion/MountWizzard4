@@ -14,10 +14,10 @@
 #
 ###########################################################
 import pytest
-import unittest.mock as mock
 from mw4.mountcontrol.setting import Setting
 from packaging.version import Version
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

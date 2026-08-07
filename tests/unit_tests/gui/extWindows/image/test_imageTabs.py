@@ -17,7 +17,6 @@ import gc
 import numpy as np
 import pyqtgraph as pg
 import pytest
-import unittest.mock as mock
 from astropy import wcs
 from astropy.io import fits
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
@@ -28,6 +27,7 @@ from mw4.logic.photometry.photometry import Photometry
 from PySide6.QtCore import QRectF
 from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

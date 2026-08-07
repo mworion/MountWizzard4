@@ -170,7 +170,7 @@ class SimulatorWindow(MWidget):
         sky.
         """
         pos = self.camera.position()
-        y = 0 if pos.y() < 0 else pos.y()
+        y = max(pos.y(), 0)
         posNew = QVector3D(pos.x(), y, pos.z())
         self.camera.setPosition(posNew)
 

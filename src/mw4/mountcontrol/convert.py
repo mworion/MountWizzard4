@@ -127,7 +127,7 @@ def convertToDMS(dec: Angle) -> str:
     return value
 
 
-def convertToHMS(ra: Angle | float | int) -> str:
+def convertToHMS(ra: Angle | float) -> str:
     t = Angle.signed_hms(ra)
     value = f"{t[1]:02.0f}:{t[2]:02.0f}:{t[3]:02.0f}"
     return value

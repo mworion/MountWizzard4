@@ -17,13 +17,13 @@ import gc
 import pyqtgraph as pg
 import pytest
 import shutil
-import unittest.mock as mock
 from mw4.gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from PySide6.QtCore import QPointF
 from PySide6.QtWidgets import QApplication
 from skyfield.api import Angle, wgs84
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -139,13 +139,13 @@ def test_calculateRelevance_5(function):
 
 def test_selectFontParam_1(function):
     function.colorSet = 0
-    col, size = function.selectFontParam(0)
+    _col, size = function.selectFontParam(0)
     assert size == 8
 
 
 def test_selectFontParam_2(function):
     function.colorSet = 0
-    col, size = function.selectFontParam(1)
+    _col, size = function.selectFontParam(1)
     assert size == 13
 
 

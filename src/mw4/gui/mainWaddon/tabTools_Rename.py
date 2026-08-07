@@ -86,7 +86,7 @@ class Rename(TabAddon):
         self.mainW.wIcon(self.ui.renameInputSelect, "folder")
 
     def setupGuiTools(self) -> None:
-        for name, selectorUI in self.selectorsDropDowns.items():
+        for selectorUI in self.selectorsDropDowns.values():
             selectorUI.clear()
             selectorUI.setView(QListView())
             for headerEntry in self.fitsHeaderKeywords:
@@ -117,7 +117,7 @@ class Rename(TabAddon):
             newObjectName = self.ui.newObjectName.text().upper()
             newFileName = newObjectName or fitsHeader.get("OBJECT", "UNKNOWN").upper()
 
-            for _, selector in self.selectorsDropDowns.items():
+            for selector in self.selectorsDropDowns.values():
                 selection = selector.currentText()
                 chunk = self.processSelectors(fitsHeader, selection)
                 if chunk:

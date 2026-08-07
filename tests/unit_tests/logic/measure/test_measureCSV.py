@@ -15,10 +15,10 @@
 ###########################################################
 import PySide6
 import pytest
-import unittest.mock as mock
 from mw4.logic.measure.measureCSV import MeasureDataCSV
 from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

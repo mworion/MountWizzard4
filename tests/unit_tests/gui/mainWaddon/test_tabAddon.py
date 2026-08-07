@@ -282,15 +282,15 @@ def test_tabaddon_deep_inheritance():
 def test_tabaddon_method_return_none_type():
     addon = TabAddon()
     result = addon.initConfig()
-    assert type(result) is type(None)
+    assert result is None
 
 
 def test_tabaddon_all_methods_return_none_type():
     addon = TabAddon()
-    assert type(addon.initConfig()) is type(None)
-    assert type(addon.storeConfig()) is type(None)
-    assert type(addon.setupIcons()) is type(None)
-    assert type(addon.updateColorSet()) is type(None)
+    assert addon.initConfig() is None
+    assert addon.storeConfig() is None
+    assert addon.setupIcons() is None
+    assert addon.updateColorSet() is None
 
 
 def test_tabaddon_can_call_methods_in_sequence():

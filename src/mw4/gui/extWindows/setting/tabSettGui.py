@@ -93,10 +93,10 @@ class SettGui:
             f.write("[Desktop Entry]\n")
             f.write("Type=Application\n")
             f.write("Terminal=false\n")
-            f.write(f"Exec=uv --directory {str(workDir)} run mw4 -d {dpi} -s {scale}\n")
+            f.write(f"Exec=uv --directory {workDir!s} run mw4 -d {dpi} -s {scale}\n")
             f.write("Name=MountWizzard4\n")
             f.write("Comment=MountWizzard4 Tooling\n")
-            f.write(f"Icon={str(iconPath)}\n")
+            f.write(f"Icon={iconPath!s}\n")
 
     @staticmethod
     def setPermissionLinuxDesktopData() -> None:
@@ -150,6 +150,6 @@ class SettGui:
             f.write("#!/bin/bash\n")
             f.write('cd "$(dirname "$0")" || exit 1\n')
             f.write("export PATH='/usr/local/bin:$PATH'\n")
-            f.write(f"uv --directory {str(workDir)} run mw4 -s {scale} -d {dpi}\n")
+            f.write(f"uv --directory {workDir!s} run mw4 -s {scale} -d {dpi}\n")
         executablePath.chmod(0o755)
         appDir.chmod(0o755)

@@ -93,7 +93,7 @@ class SettAudio:
 
     def initConfig(self) -> None:
         config = self.app.config.get("SettingAudio", {})
-        for soundKey, soundData in self.audioConfig.items():
+        for soundData in self.audioConfig.values():
             widget = getattr(self.ui, soundData["uiWidget"])
             configKey = soundData["configKey"]
             widget.setCurrentIndex(config.get(configKey, 0))
@@ -101,7 +101,7 @@ class SettAudio:
     def storeConfig(self) -> None:
         self.app.config["SettingAudio"] = {}
         config = self.app.config["SettingAudio"]
-        for soundKey, soundData in self.audioConfig.items():
+        for soundData in self.audioConfig.values():
             widget = getattr(self.ui, soundData["uiWidget"])
             configKey = soundData["configKey"]
             config[configKey] = widget.currentIndex()
@@ -127,5 +127,5 @@ class SettAudio:
         if value not in self.guiAudioList:
             return
         sound = self.guiAudioList[value].currentText()
-        if sound in self.AUDIO_SOUNDS and self.AUDIO_SOUNDS[sound]:
+        if self.AUDIO_SOUNDS.get(sound):
             QSoundEffect.play(self.AUDIO_SOUNDS[sound])

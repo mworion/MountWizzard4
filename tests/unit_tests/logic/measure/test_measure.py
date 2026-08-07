@@ -15,12 +15,12 @@
 ###########################################################
 import numpy as np
 import pytest
-import unittest.mock as mock
 from mw4.base.deviceRegistry import DeviceEntry
 from mw4.logic.measure.measure import MeasureData
 from mw4.logic.measure.measureCSV import MeasureDataCSV
 from mw4.logic.measure.measureRaw import MeasureDataRaw
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 class Data:
@@ -184,21 +184,21 @@ def test_measureDataRawInit(measureDataRaw):
 
 
 def test_measureDataRawStartCommunication(measureDataRaw):
-    raw, app, parent, data = measureDataRaw
+    raw, _app, parent, _data = measureDataRaw
     with mock.patch.object(raw.timerTask, "start") as mock_start:
         raw.startCommunication()
         mock_start.assert_called_once_with(parent.CYCLE_UPDATE_TASK)
 
 
 def test_measureDataRawStopCommunication(measureDataRaw):
-    raw, app, parent, data = measureDataRaw
+    raw, _app, _parent, _data = measureDataRaw
     with mock.patch.object(raw.timerTask, "stop") as mock_stop:
         raw.stopCommunication()
         mock_stop.assert_called_once()
 
 
 def test_measureDataRawMeasureTask(measureDataRaw):
-    raw, app, parent, data = measureDataRaw
+    raw, _app, parent, _data = measureDataRaw
     with mock.patch.object(parent, "measureTask") as mock_measure:
         raw.measureTask()
         mock_measure.assert_called_once()
@@ -223,7 +223,7 @@ def test_measureDataCSVInit(measureDataCSV):
 
 
 def test_measureDataCSVWriteHeaderCSV(measureDataCSV, tmp_path):
-    csv, app, parent, data = measureDataCSV
+    csv, _app, _parent, _data = measureDataCSV
     csv_file = tmp_path / "test_header.csv"
     csv.csvFilename = csv_file
     csv.writeHeaderCSV()
@@ -234,7 +234,7 @@ def test_measureDataCSVWriteHeaderCSV(measureDataCSV, tmp_path):
 
 
 def test_measureDataCSVWriteCSV(measureDataCSV, tmp_path):
-    csv, app, parent, data = measureDataCSV
+    csv, _app, _parent, _data = measureDataCSV
     csv_file = tmp_path / "test_write.csv"
     csv.csvFilename = csv_file
     csv.data = {
@@ -250,7 +250,7 @@ def test_measureDataCSVWriteCSV(measureDataCSV, tmp_path):
 
 
 def test_measureDataCSVStartCommunication(measureDataCSV, tmp_path):
-    csv, app, parent, data = measureDataCSV
+    csv, app, parent, _data = measureDataCSV
     with (
         mock.patch.object(csv.timerTask, "start") as mock_start,
         mock.patch.object(app.mount.obsSite.timeJD, "utc_strftime") as mock_time,
@@ -263,14 +263,14 @@ def test_measureDataCSVStartCommunication(measureDataCSV, tmp_path):
 
 
 def test_measureDataCSVStopCommunication(measureDataCSV):
-    csv, app, parent, data = measureDataCSV
+    csv, _app, _parent, _data = measureDataCSV
     with mock.patch.object(csv.timerTask, "stop") as mock_stop:
         csv.stopCommunication()
         mock_stop.assert_called_once()
 
 
 def test_measureDataCSVMeasureTask(measureDataCSV):
-    csv, app, parent, data = measureDataCSV
+    csv, _app, parent, _data = measureDataCSV
     with (
         mock.patch.object(parent, "measureTask"),
         mock.patch.object(csv, "writeCSV") as mock_write,

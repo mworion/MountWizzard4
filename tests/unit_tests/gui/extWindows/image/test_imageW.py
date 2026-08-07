@@ -17,7 +17,6 @@ import mw4.gui.extWindows.image.imageW
 import pyqtgraph as pg
 import pytest
 import shutil
-import unittest.mock as mock
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
 from mw4.gui.extWindows.image.imageW import ImageWindow
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
@@ -27,6 +26,7 @@ from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication
 from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

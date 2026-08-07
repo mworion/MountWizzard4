@@ -17,10 +17,10 @@
 import builtins
 import pyqtgraph as pg
 import pytest
-import unittest.mock as mock
 from mw4.gui.utilities.pyqtgraph.gCustomViewBox import CustomViewBox
 from mw4.gui.utilities.pyqtgraph.gNormalScatter import NormalScatter
 from PySide6.QtCore import QEvent, QPointF, Qt
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -324,7 +324,7 @@ def test_CustomViewBox_checkLimits_3():
     pdi = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
     data = pdi.getData()
     vb.plotDataItem = pdi
-    x, y = vb.checkLimits(data, 1, Pos())
+    x, _y = vb.checkLimits(data, 1, Pos())
     assert x[1] == 0
 
 
@@ -345,7 +345,7 @@ def test_CustomViewBox_checkLimits_4():
     pdi = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
     data = pdi.getData()
     vb.plotDataItem = pdi
-    x, y = vb.checkLimits(data, 1, Pos())
+    x, _y = vb.checkLimits(data, 1, Pos())
     assert x[1] == 2
 
 
@@ -366,7 +366,7 @@ def test_CustomViewBox_checkLimits_5():
     pdi = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
     data = pdi.getData()
     vb.plotDataItem = pdi
-    x, y = vb.checkLimits(data, 0, Pos())
+    x, _y = vb.checkLimits(data, 0, Pos())
     assert x[0] == -2
 
 
@@ -387,7 +387,7 @@ def test_CustomViewBox_checkLimits_6():
     pdi = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2])
     data = pdi.getData()
     vb.plotDataItem = pdi
-    x, y = vb.checkLimits(data, 2, Pos())
+    x, _y = vb.checkLimits(data, 2, Pos())
     assert x[2] == 3
 
 

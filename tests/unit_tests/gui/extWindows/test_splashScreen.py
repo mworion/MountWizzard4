@@ -14,11 +14,11 @@
 #
 ###########################################################
 import pytest
-import unittest.mock as mock
 from importlib.resources import as_file, files
 from mw4.gui.extWindows.splashScreen import SplashScreen
 from PySide6.QtGui import QPainter, QPixmap
 from PySide6.QtWidgets import QWidget
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

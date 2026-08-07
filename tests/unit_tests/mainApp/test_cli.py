@@ -14,9 +14,9 @@
 #
 ###########################################################
 import argparse
-import mw4.cli as cli
 import os
 import sys
+from mw4 import cli
 from unittest.mock import patch
 
 

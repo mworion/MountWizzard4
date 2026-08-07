@@ -18,9 +18,9 @@ import mw4.logic.photometry.photometry
 import numpy as np
 import pytest
 import sep
-import unittest.mock as mock
 from mw4.logic.photometry.photometry import Photometry, PhotometrySignals
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 class Parent:

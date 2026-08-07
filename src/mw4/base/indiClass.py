@@ -79,7 +79,7 @@ class IndiClass:
         self.deviceConnected = status
 
     def writeVectorsToData(self, item: EventItem, vectors: dict) -> None:
-        for vector, vectorItem in vectors.items():
+        for vectorItem in vectors.values():
             vectorName = vectorItem["name"]
             for member, memberItem in vectorItem["members"].items():
                 value = memberItem.get("floatvalue", memberItem["value"])

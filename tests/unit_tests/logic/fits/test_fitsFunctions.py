@@ -17,7 +17,6 @@
 import mw4.logic
 import numpy as np
 import pytest
-import unittest.mock as mock
 from astropy.io import fits
 from mw4.logic.fits.fitsFunction import (
     calcAngleScaleFromWCSHeader,
@@ -36,6 +35,7 @@ from mw4.logic.fits.fitsFunction import (
 )
 from skyfield.units import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App, Camera
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

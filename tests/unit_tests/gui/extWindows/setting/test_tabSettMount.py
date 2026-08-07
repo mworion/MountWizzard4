@@ -15,13 +15,13 @@
 ###########################################################
 import mw4.gui.extWindows.setting.tabSettMount
 import pytest
-import unittest.mock as mock
 import wakeonlan
 from mw4.gui.extWindows.setting.tabSettMount import SettMount
 from mw4.gui.widgets.setting_ui import Ui_SettingDialog
 from PySide6.QtWidgets import QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from typing import Any
+from unittest import mock
 
 
 @pytest.fixture()

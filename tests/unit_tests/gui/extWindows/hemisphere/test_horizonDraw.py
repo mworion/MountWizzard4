@@ -20,7 +20,6 @@ import os
 import pyqtgraph as pg
 import pytest
 import shutil
-import unittest.mock as mock
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from mw4.gui.extWindows.hemisphere.horizonDraw import HorizonDraw
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
@@ -30,6 +29,7 @@ from PySide6.QtCore import QPointF
 from PySide6.QtWidgets import QApplication
 from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

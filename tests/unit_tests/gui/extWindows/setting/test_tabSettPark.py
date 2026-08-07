@@ -53,7 +53,7 @@ def settPark(qapp):
     parentW.ui.setupUi(parentW)
 
     # Create mock UI elements for park positions
-    for i in range(0, 10):
+    for i in range(10):
         setattr(parentW.ui, f"parkButton{i}", createMockButton())
         setattr(parentW.ui, f"parkSave{i}", createMockButton())
         setattr(parentW.ui, f"parkText{i}", createMockLineEdit())
@@ -88,7 +88,7 @@ def test_initConfig_with_custom_values(settPark):
         settPark.app.config["SettingPark"] = {}
         config = settPark.app.config["SettingPark"]
 
-    for i in range(0, 10):
+    for i in range(10):
         config[f"ParkText{i:1d}"] = str(i)
         config[f"ParkAlt{i:1d}"] = i
         config[f"ParkAz{i:1d}"] = i
@@ -125,7 +125,7 @@ def test_setup_creates_park_position_widgets(settPark):
     assert len(settPark.parkAlt) == 10
     assert len(settPark.parkAz) == 10
     assert len(settPark.parkSaveButtons) == 10
-    for i in range(0, 10):
+    for i in range(10):
         assert settPark.parkTexts[i] is not None
         assert settPark.parkAlt[i] is not None
         assert settPark.parkAz[i] is not None

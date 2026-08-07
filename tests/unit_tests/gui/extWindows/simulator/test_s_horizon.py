@@ -14,11 +14,11 @@
 #
 ###########################################################
 import pytest
-import unittest.mock as mock
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

@@ -20,7 +20,6 @@ import pytest
 import socket
 import sys
 import traceback
-import unittest.mock as mock
 from mw4.base.bootstrap import (
     configureEnvironment,
     exceptHook,
@@ -30,6 +29,7 @@ from mw4.base.bootstrap import (
     writeSystemInfo,
 )
 from pathlib import Path
+from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")

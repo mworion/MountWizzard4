@@ -168,7 +168,7 @@ class SatTrack(SatData):
             self.signalSatelliteData(alt=np.array([]), az=np.array([]))
 
     def updateSatPassesGui(self) -> None:
-        for i in range(0, 3):
+        for i in range(3):
             self.passUI[i]["rise"].setText("-")
             self.passUI[i]["culminate"].setText("-")
             self.passUI[i]["settle"].setText("-")
@@ -367,7 +367,7 @@ class SatTrack(SatData):
             return
 
         factor = int(len(alt) / 900)
-        factor = 1 if factor < 1 else factor
+        factor = max(factor, 1)
         alt = Angle(degrees=np.array_split(alt, factor)[0])
         az = Angle(degrees=np.array_split(az, factor)[0])
 

@@ -13,11 +13,11 @@
 # License APL2.0
 #
 ###########################################################
-import unittest.mock as mock
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.satellite import Satellite
 from skyfield.api import Angle, load
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
 
 
 def test_parseGetTLE_1():
@@ -401,7 +401,7 @@ def test_slewTLE_1():
     with mock.patch("mw4.mountcontrol.satellite.Connection") as mConn:
         mConn.return_value.communicate.return_value = False, "E", 1
 
-        suc, mes = sat.slewTLE()
+        suc, _mes = sat.slewTLE()
         assert not suc
 
 
@@ -430,7 +430,7 @@ def test_slewTLE_4():
     with mock.patch("mw4.mountcontrol.satellite.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, "V", 2
 
-        suc, mes = sat.slewTLE()
+        suc, _mes = sat.slewTLE()
         assert not suc
 
 

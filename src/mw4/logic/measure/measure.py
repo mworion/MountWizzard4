@@ -74,7 +74,7 @@ class MeasureData:
         if self.shorteningStart and len(self.data["time"]) > 2:
             self.shorteningStart = False
             for measure in self.data:
-                self.data[measure] = np.delete(self.data[measure], range(0, 2))
+                self.data[measure] = np.delete(self.data[measure], range(2))
 
     def checkSize(self) -> None:
         if len(self.data["time"]) < self.MAXSIZE:

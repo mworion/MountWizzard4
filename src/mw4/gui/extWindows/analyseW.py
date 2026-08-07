@@ -163,7 +163,7 @@ class AnalyseWindow(MWidget):
         model = {}
         for key in modelJSON[0]:
             model[key] = []
-            for index in range(0, len(modelJSON)):
+            for index in range(len(modelJSON)):
                 model[key].append(modelJSON[index][key])
 
         self.latitude = modelJSON[0].get("latitude")

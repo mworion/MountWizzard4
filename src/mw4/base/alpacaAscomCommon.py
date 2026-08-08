@@ -52,7 +52,7 @@ class AlpacaAscomCommon(DriverData):
             return None
         try:
             returnVal = getattr(self.device, valueProp)
-            if self.loggingTrace:
+            if self.loggingTrace and "ImageArray" not in valueProp:
                 self.log.debug(
                     f"[Trace] [{self.config.deviceName}] [{valueProp}] [{returnVal}]"
                 )

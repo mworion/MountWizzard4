@@ -69,7 +69,6 @@ class CameraSGPro(SGProClass):
             "Device.Message", ""
         ):
             time.sleep(0.1)
-        self.signals.message.emit(f"expose {self.parent.exposureTime:3.0f} s")
         return receipt
 
     def runExpose(self) -> None:
@@ -112,7 +111,6 @@ class CameraSGPro(SGProClass):
     def expose(self) -> None:
         self.startTimeExposure = time.time()
         self.workerExpose = Worker(self.runnerExpose)
-        self.workerExpose.signals.finished.connect(self.parent.exposeFinished)
         self.threadPool.start(self.workerExpose)
 
     def abort(self) -> bool:

@@ -482,3 +482,132 @@ def test_selectAscomDriver_injection_safe():
     # But it must survive round-tripping through JSON
     payload = _json.loads(payload_str)
     assert payload["deviceName"] == malicious
+
+
+def test_runnerCoreLoop_dispatchAttributeError(function):
+    """Test AttributeError handling in runnerCoreLoop"""
+    with (
+        mock.patch("mw4.base.ascomClass.CoInitialize") as ci,
+        mock.patch("mw4.base.ascomClass.CoUninitialize") as cu,
+        mock.patch(
+            "mw4.base.ascomClass.client.dynamic.Dispatch",
+            side_effect=AttributeError("dispatch failed"),
+        ),
+    ):
+        function.runnerCoreLoop()
+    ci.assert_called_once()
+    cu.assert_called_once()
+    assert function.device is None
+
+
+def test_runnerCoreLoop_dispatchOSError(function):
+    """Test OSError handling in runnerCoreLoop"""
+    with (
+        mock.patch("mw4.base.ascomClass.CoInitialize") as ci,
+        mock.patch("mw4.base.ascomClass.CoUninitialize") as cu,
+        mock.patch(
+            "mw4.base.ascomClass.client.dynamic.Dispatch",
+            side_effect=OSError("dispatch system error"),
+        ),
+    ):
+        function.runnerCoreLoop()
+    ci.assert_called_once()
+    cu.assert_called_once()
+    assert function.device is None
+
+
+def test_runnerCoreLoop_device_cleanup_when_none(function):
+    """Test that cleanup happens correctly when device becomes None"""
+    function.device = None
+    with (
+        mock.patch("mw4.base.ascomClass.CoInitialize"),
+        mock.patch("mw4.base.ascomClass.CoUninitialize") as cu,
+        mock.patch("mw4.base.ascomClass.client.dynamic.Dispatch"),
+        mock.patch.object(function, "runnerCommunicationLoop"),
+    ):
+        function.runnerCoreLoop()
+    cu.assert_called_once()
+
+
+def test_startCommunication_clears_state(function):
+    """Test that startCommunication properly clears state"""
+    function.deviceConnected = True
+    function.data["test"] = "value"
+    function.propertyExceptions.append("test")
+    function.config.deviceName = "test.driver"
+
+    with mock.patch.object(function.threadPool, "start"):
+        function.startCommunication()
+
+    assert function.deviceConnected is False
+    assert len(function.data) == 0
+    assert len(function.propertyExceptions) == 0
+    assert not function.stopEvent.is_set()
+
+
+def test_selectAscomDriver_with_whitespace():
+    """Test selectAscomDriver with whitespace in output"""
+    with mock.patch("subprocess.check_output", return_value="  \n\t  "):
+        result = AscomClass.selectAscomDriver("fallback", "Telescope")
+    assert result == "fallback"
+
+
+def test_selectAscomDriver_returns_trimmed_output():
+    """Test selectAscomDriver trims output correctly"""
+    with mock.patch("subprocess.check_output", return_value="\n  ASCOM.Test.Telescope  \n"):
+        result = AscomClass.selectAscomDriver("old", "Telescope")
+    assert result == "ASCOM.Test.Telescope"
+
+
+def test_runnerCoreLoop_exception_in_finally(function):
+    """Test that finally block executes even with exception"""
+    function.device = mock.MagicMock()
+    with (
+        mock.patch("mw4.base.ascomClass.CoInitialize"),
+        mock.patch("mw4.base.ascomClass.CoUninitialize") as cu,
+        mock.patch("mw4.base.ascomClass.client.dynamic.Dispatch"),
+        mock.patch.object(
+            function, "runnerCommunicationLoop", side_effect=RuntimeError("loop error")
+        ),
+    ):
+        try:
+            function.runnerCoreLoop()
+        except RuntimeError:
+            pass
+    cu.assert_called_once()
+    assert function.device is None
+
+
+def test_startCommunication_multiple_calls(function):
+    """Test multiple startCommunication calls"""
+    function.config.deviceName = "test.driver"
+    with mock.patch.object(function.threadPool, "start") as m:
+        function.startCommunication()
+        function.startCommunication()
+    assert m.call_count == 2
+
+
+def test_selectAscomDriver_subprocess_failure_with_return_empty_string():
+    """Test subprocess returning empty string with CalledProcessError"""
+    with mock.patch(
+        "subprocess.check_output",
+        side_effect=subprocess.CalledProcessError(1, "cmd"),
+    ):
+        result = AscomClass.selectAscomDriver("original", "Telescope")
+    assert result == "original"
+
+
+def test_selectAscomDriver_json_payload_format():
+    """Test that JSON payload has correct structure"""
+    import json as _json
+    with mock.patch("subprocess.check_output", return_value="ASCOM.Test") as m:
+        AscomClass.selectAscomDriver("TestDevice", "Focuser")
+
+    args, _ = m.call_args
+    cmd_list = args[0]
+    payload_str = cmd_list[3]
+    payload = _json.loads(payload_str)
+
+    assert isinstance(payload, dict)
+    assert "deviceName" in payload
+    assert "deviceType" in payload

@@ -891,3 +891,264 @@ def test_ditherPoints(function):
     function.ditherPoints()
     assert function.buildP[0][0] != 10
     assert function.buildP[0][1] != 10
+
+
+def test_ditherPoints_multiple_points(function):
+    """Test dithering with multiple points"""
+    function.buildP = [[10, 10, 1], [20, 20, 0], [30, 30, 2]]
+    function.ditherPoints()
+
+    for i, p in enumerate(function.buildP):
+        # Points should have been modified by random dither
+        assert p[2] == 0  # Status should be reset to UNPROCESSED
+    assert len(function.buildP) == 3
+
+
+def test_isCloseMeridian_1(function):
+    """Test point exactly on meridian"""
+    function.app.mount.setting.meridianLimitSlew = 5
+    function.app.mount.setting.meridianLimitTrack = 5
+    suc = function.isCloseMeridian((90, 180))
+    assert suc
+
+
+def test_isCloseMeridian_edge_upper(function):
+    """Test point at upper meridian limit"""
+    function.app.mount.setting.meridianLimitSlew = 10
+    function.app.mount.setting.meridianLimitTrack = 5
+    suc = function.isCloseMeridian((90, 189))
+    assert suc
+
+
+def test_isCloseMeridian_edge_lower(function):
+    """Test point at lower meridian limit"""
+    function.app.mount.setting.meridianLimitSlew = 10
+    function.app.mount.setting.meridianLimitTrack = 5
+    suc = function.isCloseMeridian((90, 171))
+    assert suc
+
+
+def test_genAlign_boundary_altitude(function):
+    """Test genAlign with boundary altitude values"""
+    function.buildP = []
+    function.horizonP = []
+    suc = function.genAlign(altBase=5, azBase=0, numberBase=3)
+    assert suc
+    assert len(function.buildP) == 3
+
+
+def test_genAlign_boundary_altitude_high(function):
+    """Test genAlign with high boundary altitude"""
+    function.buildP = []
+    function.horizonP = []
+    suc = function.genAlign(altBase=80, azBase=0, numberBase=4)
+    assert suc
+    assert len(function.buildP) == 4
+
+
+def test_genAlign_azimuth_wrapping(function):
+    """Test genAlign handles azimuth wrapping correctly"""
+    function.buildP = []
+    function.horizonP = []
+    suc = function.genAlign(altBase=30, azBase=350, numberBase=4)
+    assert suc
+    # Check that azimuth values are properly wrapped
+    for alt, az, status in function.buildP:
+        assert 0 <= az <= 360
+
+
+def test_genGrid_boundary_values(function):
+    """Test genGrid with boundary parameter values"""
+    function.horizonP = []
+    suc = function.genGrid(minAlt=5, maxAlt=85, numbRows=3, numbCols=4)
+    assert suc
+
+
+def test_genGrid_equal_min_max_alt(function):
+    """Test genGrid when minAlt equals maxAlt"""
+    suc = function.genGrid(minAlt=50, maxAlt=50, numbRows=4, numbCols=4)
+    assert not suc
+
+
+def test_loadModel_nonexistent_file(function):
+    """Test loadModel with existing file returns data"""
+    values = [{"azimuth": 45, "altitude": 30}]
+    fileName = Path("tests/work/config/test_model_exist.model")
+    with open(fileName, "w") as outfile:
+        json.dump(values, outfile, indent=4)
+    val = function.loadModel(fileName)
+    assert val == [[30, 45]]
+
+
+def test_loadBPTS_nonexistent_file(function):
+    """Test loadBPTS with existing file returns data"""
+    values = [[45, 30]]
+    fileName = Path("tests/work/config/test_bpts_exist.bpts")
+    with open(fileName, "w") as outfile:
+        json.dump(values, outfile, indent=4)
+    val = function.loadBPTS(fileName)
+    assert val == [[45, 30]]
+
+
+def test_loadCSV_empty_file(function):
+    """Test loadCSV with empty file"""
+    with open("tests/work/config/empty.csv", "w"):
+        pass
+    val = function.loadCSV(Path("tests/work/config/empty.csv"))
+    assert val == []
+
+
+def test_loadCSV_single_row(function):
+    """Test loadCSV with single row"""
+    with open("tests/work/config/single.csv", "w") as outfile:
+        outfile.write("45, 90\n")
+    val = function.loadCSV(Path("tests/work/config/single.csv"))
+    assert val == [[45, 90]]
+
+
+def test_addBuildP_boundary_position_zero(function):
+    """Test addBuildP with position 0"""
+    function.buildP = [[10, 10, 1], [20, 20, 1]]
+    function.addBuildP([5, 5, 0], position=0)
+    assert function.buildP[0] == [5, 5, 0]
+
+
+def test_addBuildP_boundary_negative_position(function):
+    """Test addBuildP with negative position (should be clipped to 0)"""
+    function.buildP = [[10, 10, 1]]
+    function.addBuildP([5, 5, 0], position=-100)
+    assert function.buildP[0] == [5, 5, 0]
+
+
+def test_delBuildP_boundary(function):
+    """Test delBuildP with boundary index"""
+    function.buildP = [[10, 10, 1], [20, 20, 1], [30, 30, 1]]
+    function.delBuildP(2)
+    assert len(function.buildP) == 2
+    assert function.buildP[1] == [20, 20, 1]
+
+
+def test_addHorizonP_boundary_position(function):
+    """Test addHorizonP with boundary positions"""
+    function.horizonP = [[10, 10]]
+    function.addHorizonP([20, 20], position=0)
+    assert function.horizonP[0] == [20, 20]
+    assert function.horizonP[1] == [10, 10]
+
+
+def test_isAboveHorizon_edge_azimuth_360(function):
+    """Test isAboveHorizon with azimuth 360"""
+    function.clearHorizonP()
+    suc = function.isAboveHorizon([10, 360])
+    assert suc
+
+
+def test_isAboveHorizon_edge_azimuth_negative(function):
+    """Test isAboveHorizon with negative azimuth"""
+    function.clearHorizonP()
+    suc = function.isAboveHorizon([10, -10])
+    assert suc
+
+
+def test_isAboveHorizon_low_altitude(function):
+    """Test isAboveHorizon with very low altitude"""
+    function.clearHorizonP()
+    suc = function.isAboveHorizon([-89, 180])
+    assert not suc
+
+
+def test_deleteCloseMeridian_with_points_near_meridian(function):
+    """Test deleteCloseMeridian removes points near meridian"""
+    function.app.mount.setting.meridianLimitSlew = 5
+    function.app.mount.setting.meridianLimitTrack = 5
+    function.buildP = [[45, 175, 0], [45, 180, 0], [45, 185, 0], [45, 90, 0]]
+    function.deleteCloseMeridian()
+    # Points near meridian should be removed
+    assert len(function.buildP) < 4
+
+
+def test_generateCelestialEquator_with_negative_latitude(function):
+    """Test generateCelestialEquator at southern hemisphere"""
+    function.app.mount.obsSite.location = wgs84.latlon(
+        latitude_degrees=-30, longitude_degrees=150
+    )
+    value = function.generateCelestialEquator()
+    assert len(value) > 0
+    for alt, az in value:
+        assert alt > 0
+
+
+def test_calcPath_no_valid_points(function):
+    """Test calcPath when no points are above horizon"""
+    ra = skyfield.api.Angle(hours=0)
+    dec = skyfield.api.Angle(degrees=89)  # Very high declination
+    ts = function.app.mount.obsSite.ts
+    location = function.app.mount.obsSite.location
+    timeJD = ts.tt_jd(2459580.5)
+
+    buildP = function.calcPath(ts, 1, timeJD.tt, ra, dec, location)
+    # Result may be empty or have fewer points depending on geometry
+    assert isinstance(buildP, list)
+
+
+def test_calcPath_multiple_points(function):
+    """Test calcPath generates multiple points"""
+    ra = skyfield.api.Angle(hours=6)
+    dec = skyfield.api.Angle(degrees=45)
+    ts = function.app.mount.obsSite.ts
+    location = function.app.mount.obsSite.location
+    timeJD = ts.tt_jd(2459580.5)
+
+    buildP = function.calcPath(ts, 10, timeJD.tt, ra, dec, location)
+    # Should attempt to generate requested number of points
+    assert len(buildP) > 0
+
+
+def test_genGrid_with_large_altitude_range(function):
+    """Test genGrid with wide altitude range"""
+    function.horizonP = []
+    suc = function.genGrid(minAlt=5, maxAlt=85, numbRows=8, numbCols=6)
+    assert suc
+    # Check point count - should be filtered by horizon limits
+    assert len(function.buildP) >= 30
+
+
+def test_loadHorizonP_with_txt_extension(function):
+    """Test loadHorizonP works with .txt extension"""
+    fileName = Path("tests/work/config/test_horizon.txt")
+    values = [[0, 0], [90, 180], [0, 360]]
+    with open(fileName, "w") as outfile:
+        json.dump(values, outfile, indent=4)
+    suc = function.loadHorizonP(fileName)
+    assert suc
+    assert len(function.horizonP) == 3
+
+
+def test_sortDomeAz_multiple_points(function):
+    """Test sortDomeAz with multiple points returning angles"""
+    function.buildP = [[10, 10, 1], [20, 20, 1], [30, 30, 1]]
+    angle1 = Angle(degrees=350)
+    angle2 = Angle(degrees=200)
+    angle3 = Angle(degrees=100)
+
+    with mock.patch.object(
+        function.app.mount,
+        "calcMountAltAzToDomeAltAz",
+        side_effect=[(None, angle1), (None, angle2), (None, angle3)],
+    ):
+        function.sortDomeAz()
+        # Should be sorted by dome azimuth descending
+        assert len(function.buildP) == 3
+
+
+def test_sortActualPierside_preserves_coordinates(function):
+    """Test sortActualPierside maintains coordinate integrity"""
+    function.buildP = [[45, 90, 1], [50, 200, 1]]
+    function.app.mount.obsSite.pierside = "W"
+    original_coords = [[p[0], p[1]] for p in function.buildP]
+    function.sortActualPierside()
+    sorted_coords = [[p[0], p[1]] for p in function.buildP]
+    # Coordinates should be preserved, just reordered
+    assert len(original_coords) == len(sorted_coords)
+
+

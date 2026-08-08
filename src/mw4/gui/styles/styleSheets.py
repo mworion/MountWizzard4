@@ -59,8 +59,8 @@ NON_MAC_STYLE = """
     }
     QWidget[large] {
         font-family: Arial;
-        font-weight: bold;
-        font-size: 20pt;
+        font-weight: demibold;
+        font-size: 22pt;
     }
     QGroupBox {
         font-family: Arial;

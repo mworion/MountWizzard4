@@ -54,6 +54,7 @@ class AlpacaClass(AlpacaAscomCommon):
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent)
+        self.parent = parent
         self.config = DeviceConfigAlpaca()
         self.workerCommunicationLoop: Worker | None = None
 
@@ -78,7 +79,7 @@ class AlpacaClass(AlpacaAscomCommon):
         self.data.clear()
         self.propertyExceptions.clear()
         self.stopEvent.clear()
-        if not self.createAlpacaDevice(self.deviceType):
+        if not self.createAlpacaDevice(self.parent.DEVICE_TYPE):
             return
         self.workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
         self.threadPool.start(self.workerCommunicationLoop)

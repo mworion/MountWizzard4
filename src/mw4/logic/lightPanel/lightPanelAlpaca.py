@@ -18,6 +18,4 @@ from mw4.logic.lightPanel.lightPanelAlpacaAscomBase import LightPanelAlpacaAscom
 
 
 class LightPanelAlpaca(LightPanelAlpacaAscomBase, AlpacaClass):
-    def __init__(self, parent: object) -> None:
-        self.deviceType: str = "covercalibrator"
-        super().__init__(parent)
+    pass

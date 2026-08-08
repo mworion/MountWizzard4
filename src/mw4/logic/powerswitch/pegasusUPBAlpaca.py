@@ -18,6 +18,4 @@ from mw4.logic.powerswitch.pegasusUPBAlpacaAscomBase import PegasusUPBAlpacaAsco
 
 
 class PegasusUPBAlpaca(PegasusUPBAlpacaAscomBase, AlpacaClass):
-    def __init__(self, parent: object) -> None:
-        self.deviceType: str = "switch"
-        super().__init__(parent)
+    pass

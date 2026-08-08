@@ -18,6 +18,4 @@ from mw4.logic.telescope.telescopeAlpacaAscomBase import TelescopeAlpacaAscomBas
 
 
 class TelescopeAlpaca(TelescopeAlpacaAscomBase, AlpacaClass):
-    def __init__(self, parent: object) -> None:
-        self.deviceType: str = "telescope"
-        super().__init__(parent)
+    pass

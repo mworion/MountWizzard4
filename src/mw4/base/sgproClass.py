@@ -46,6 +46,7 @@ class SGProClass(DriverData):
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
+        self.parent = parent
         self.app: Any = parent.app
         self.data: dict = parent.data
         self.msg: Any = parent.app.msg

@@ -81,7 +81,7 @@ class CameraSGPro(SGProClass):
         self.signals.exposed.emit(self.parent.imagePath)
 
     def runDownload(self) -> None:
-        while self.parent.exposing and "downloading" in self.data.get("Device.Message", ""):
+        while self.parent.exposing and "ready" not in self.data.get("Device.Message", ""):
             self.signals.message.emit("download")
             time.sleep(0.1)
         self.signals.downloaded.emit(self.parent.imagePath)
@@ -93,7 +93,8 @@ class CameraSGPro(SGProClass):
 
         suc, imagePath = self.getImagePath(receipt)
         if suc:
-            self.parent.imagePath = Path(imagePath)
+            imagePath = Path(imagePath)
+            imagePath.rename(self.parent.imagePath)
         return suc
 
     def runnerExpose(self) -> None:
@@ -105,6 +106,7 @@ class CameraSGPro(SGProClass):
         self.runDownload()
         if self.runSave(receipt):
             self.parent.writeImageFitsHeader()
+            time.sleep(1)
         self.parent.exposeFinished()
 
     def expose(self) -> None:

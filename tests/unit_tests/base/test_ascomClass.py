@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+import contextlib
 import platform
 import pytest
 import queue
@@ -569,11 +570,9 @@ def test_runnerCoreLoop_exception_in_finally(function):
         mock.patch.object(
             function, "runnerCommunicationLoop", side_effect=RuntimeError("loop error")
         ),
+        contextlib.suppress(RuntimeError),
     ):
-        try:
-            function.runnerCoreLoop()
-        except RuntimeError:
-            pass
+        function.runnerCoreLoop()
     cu.assert_called_once()
     assert function.device is None
 
@@ -600,6 +599,7 @@ def test_selectAscomDriver_subprocess_failure_with_return_empty_string():
 def test_selectAscomDriver_json_payload_format():
     """Test that JSON payload has correct structure"""
     import json as _json
+
     with mock.patch("subprocess.check_output", return_value="ASCOM.Test") as m:
         AscomClass.selectAscomDriver("TestDevice", "Focuser")
 

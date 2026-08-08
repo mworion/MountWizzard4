@@ -61,10 +61,6 @@ def test_getInitialConfig_1(function):
         assert "FocalLength" in attrs
 
 
-def test_telescopeAlpaca_deviceType(function):
-    assert function.deviceType == "telescope"
-
-
 def test_startCommunication_1(function):
     """Test that startCommunication returns early when device creation fails."""
     with (

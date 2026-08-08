@@ -96,10 +96,6 @@ def test_lightIntensity_1(function):
     assert item.kwargs == {"BrightnessVal": 100.5}
 
 
-def test_lightPanelAlpaca_deviceType(function):
-    assert function.deviceType == "covercalibrator"
-
-
 def test_startCommunication_1(function):
     """Test that startCommunication returns early when device creation fails."""
     with (

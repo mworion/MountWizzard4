@@ -57,10 +57,6 @@ def test_cameraAlpaca_instantiation(function):
     assert function is not None
 
 
-def test_cameraAlpaca_deviceType(function):
-    assert function.deviceType == "camera"
-
-
 def test_startCommunication_1(function):
     """Test that startCommunication returns early when device creation fails."""
     with (

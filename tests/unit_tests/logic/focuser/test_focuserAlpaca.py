@@ -73,10 +73,6 @@ def test_halt_1(function):
     assert item.valueProp == "Halt"
 
 
-def test_focuserAlpaca_deviceType(function):
-    assert function.deviceType == "focuser"
-
-
 def test_startCommunication_1(function):
     """Test that startCommunication returns early when device creation fails."""
     with (

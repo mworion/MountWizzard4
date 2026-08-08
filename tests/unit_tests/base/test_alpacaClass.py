@@ -29,6 +29,7 @@ class Parent:
     def __init__(self) -> None:
         self.data: dict = {}
         self.deviceType = ""
+        self.DEVICE_TYPE = ""
         self.signals = Signals()
         self.app = mock.MagicMock()
         self.app.msg = mock.MagicMock()
@@ -58,6 +59,7 @@ def resetState(function):
     function.port = 11111
     function.deviceName = ""
     function.deviceType = ""
+    function.parent.DEVICE_TYPE = ""
     function.number = 0
     function.apiVersion = 1
     function.protocol = "http"
@@ -267,6 +269,7 @@ def test_discoverDevices_2(function):
 
 def test_startCommunication_1(function):
     function.deviceType = "camera"
+    function.parent.DEVICE_TYPE = "camera"
     with (
         mock.patch.object(function, "createAlpacaDevice", return_value=True),
         mock.patch.object(function.threadPool, "start") as m_start,
@@ -278,6 +281,7 @@ def test_startCommunication_1(function):
 
 def test_startCommunication_2(function):
     function.deviceType = "camera"
+    function.parent.DEVICE_TYPE = "camera"
     with (
         mock.patch.object(function, "createAlpacaDevice", return_value=True),
         mock.patch.object(function.threadPool, "start") as m_start,

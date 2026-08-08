@@ -1150,5 +1150,3 @@ def test_sortActualPierside_preserves_coordinates(function):
     sorted_coords = [[p[0], p[1]] for p in function.buildP]
     # Coordinates should be preserved, just reordered
     assert len(original_coords) == len(sorted_coords)
-
-

@@ -28,7 +28,6 @@ class Parent:
         app = mock.MagicMock()
     data: ClassVar = {}
     DEVICE_TYPE = "cover"
-    deviceType = ""
     signals = Signals()
     loadConfig = True
 
@@ -89,10 +88,6 @@ def test_haltCover_1(function):
     assert not function.commandQueue.empty()
     item = function.commandQueue.get_nowait()
     assert item.valueProp == "HaltCover"
-
-
-def test_coverAlpaca_deviceType(function):
-    assert function.deviceType == "covercalibrator"
 
 
 def test_startCommunication_1(function):

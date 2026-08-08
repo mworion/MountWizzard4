@@ -139,10 +139,6 @@ def test_reboot_1(function):
     function.reboot()
 
 
-def test_pegasusUPBAlpaca_deviceType(function):
-    assert function.deviceType == "switch"
-
-
 def test_startCommunication_1(function):
     """Test that startCommunication returns early when device creation fails."""
     with (

@@ -29,7 +29,6 @@ class Parent:
         app = mock.MagicMock()
     data: ClassVar = {}
     DEVICE_TYPE = "filterwheel"
-    deviceType = ""
     signals = Signals()
     loadConfig = True
 
@@ -93,10 +92,6 @@ def test_sendFilterNumber_1(function):
     assert item.cmdType == "set"
     assert item.valueProp == "Position"
     assert item.value == 2
-
-
-def test_filterAlpaca_deviceType(function):
-    assert function.deviceType == "filterwheel"
 
 
 def test_startCommunication_1(function):

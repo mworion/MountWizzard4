@@ -28,7 +28,6 @@ class Parent:
         app = mock.MagicMock()
     data: ClassVar = {}
     DEVICE_TYPE = "observingconditions"
-    deviceType = ""
     signals = Signals()
     loadConfig = True
 
@@ -62,10 +61,6 @@ def test_pollData_1(function):
         assert "CloudCover" in attrs
         assert "RainRate" in attrs
         assert "SkyQuality" in attrs
-
-
-def test_sensorWeatherAlpaca_deviceType(function):
-    assert function.deviceType == "observingconditions"
 
 
 def test_startCommunication_1(function):

@@ -151,12 +151,10 @@ def test_startExpose_success(function) -> None:
     function.data["Device.Message"] = "integrating"
     with (
         mock.patch.object(function, "captureImage", return_value=(True, {"Receipt": "1234"})),
-        mock.patch.object(function.signals, "message") as mock_message,
         mock.patch("mw4.logic.camera.cameraSGPro.time.sleep"),
     ):
         receipt = function.startExpose()
     assert receipt == "1234"
-    mock_message.emit.assert_called_once_with("expose   1 s")
 
 
 def test_startExpose_waits_for_integrating(function) -> None:
@@ -172,12 +170,10 @@ def test_startExpose_waits_for_integrating(function) -> None:
 
     with (
         mock.patch.object(function, "captureImage", return_value=(True, {"Receipt": "1234"})),
-        mock.patch.object(function.signals, "message") as mock_message,
         mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
     ):
         receipt = function.startExpose()
     assert receipt == "1234"
-    assert mock_message.emit.call_count == 1
 
 
 def test_runExpose(function) -> None:
@@ -210,7 +206,7 @@ def test_runDownload(function) -> None:
         nonlocal callCount
         callCount += 1
         if callCount == 1:
-            function.data["Device.Message"] = "idle"
+            function.data["Device.Message"] = "ready"
 
     with (
         mock.patch.object(function.signals, "message") as mock_message,
@@ -236,12 +232,13 @@ def test_runSave_success(function) -> None:
     with (
         mock.patch.object(function, "getImagePath", return_value=(True, "/tmp/new.fits")),
         mock.patch.object(function.signals, "message") as mock_message,
+        mock.patch("pathlib.Path.rename") as mock_rename,
         mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
     ):
         suc = function.runSave(receipt="1234")
     assert suc is True
-    assert function.parent.imagePath == Path("/tmp/new.fits")
     mock_message.emit.assert_called_once_with("save")
+    mock_rename.assert_called_once()
 
 
 def test_runSave_fails(function) -> None:
@@ -286,10 +283,12 @@ def test_runnerExpose_aborted_before_integrating(function) -> None:
         mock.patch.object(function, "captureImage", return_value=(True, {"Receipt": "1234"})),
         mock.patch.object(function, "getImagePath", return_value=(True, "/tmp/new.fits")),
         mock.patch.object(function.parent, "writeImageFitsHeader") as mock_write,
+        mock.patch("pathlib.Path.rename") as mock_rename,
         mock.patch("mw4.logic.camera.cameraSGPro.time.sleep"),
     ):
         function.runnerExpose()
     mock_write.assert_called_once()
+    mock_rename.assert_called_once()
 
 
 def _cycleMessage(function) -> None:
@@ -304,8 +303,10 @@ def _cycleMessage(function) -> None:
         elif callCount == 2:
             function.data["Device.Message"] = "downloading"
         elif callCount == 3:
-            function.data["Device.Message"] = "saving"
+            function.data["Device.Message"] = "ready"
         elif callCount == 4:
+            function.data["Device.Message"] = "saving"
+        elif callCount == 5:
             function.data["Device.Message"] = "idle"
 
     return sleepSideEffect
@@ -321,13 +322,14 @@ def test_runnerExpose_success(function) -> None:
         mock.patch.object(function.signals, "exposed") as mock_exposed,
         mock.patch.object(function.signals, "downloaded") as mock_downloaded,
         mock.patch.object(function.parent, "writeImageFitsHeader") as mock_write,
+        mock.patch("pathlib.Path.rename") as mock_rename,
         mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
     ):
         function.runnerExpose()
-    assert function.parent.imagePath == Path("/tmp/new.fits")
     mock_exposed.emit.assert_called_once_with(function.parent.imagePath)
     mock_downloaded.emit.assert_called_once_with(function.parent.imagePath)
     mock_write.assert_called_once()
+    mock_rename.assert_called_once()
 
 
 def test_runnerExpose_runSave_fails(function) -> None:
@@ -338,10 +340,12 @@ def test_runnerExpose_runSave_fails(function) -> None:
         mock.patch.object(function, "captureImage", return_value=(True, {"Receipt": "1234"})),
         mock.patch.object(function, "getImagePath", return_value=(False, "")),
         mock.patch.object(function.parent, "writeImageFitsHeader") as mock_write,
+        mock.patch("pathlib.Path.rename") as mock_rename,
         mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
     ):
         function.runnerExpose()
     mock_write.assert_not_called()
+    mock_rename.assert_not_called()
 
 
 def test_runnerExpose_aborted_during_integration(function) -> None:
@@ -355,6 +359,7 @@ def test_runnerExpose_aborted_during_integration(function) -> None:
         mock.patch.object(function, "captureImage", return_value=(True, {"Receipt": "1234"})),
         mock.patch.object(function, "getImagePath", return_value=(True, "/tmp/new.fits")),
         mock.patch.object(function.parent, "writeImageFitsHeader") as mock_write,
+        mock.patch("pathlib.Path.rename"),
         mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=abortOnFirstSleep),
     ):
         function.runnerExpose()

@@ -14,9 +14,10 @@
 #
 ###########################################################
 from mw4.base.alpacaClass import AlpacaClass
+from mw4.logic.camera.cameraAlpacaAscomBase import CameraAlpacaAscomBase
 
 
-class CameraAlpaca(AlpacaClass):
+class CameraAlpaca(CameraAlpacaAscomBase, AlpacaClass):
     def __init__(self, parent: object) -> None:
         self.deviceType: str = "camera"
         super().__init__(parent)

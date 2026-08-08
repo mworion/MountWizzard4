@@ -196,29 +196,21 @@ class BuildPoint:
             self._buildP = [p[0:3] for p in west + east]
 
     def loadModel(self, fullFileName: Path) -> list[tuple[int, int]]:
-        try:
-            with open(fullFileName) as handle:
-                try:
-                    value = [[p["altitude"], p["azimuth"]] for p in json.load(handle)]
-                except json.JSONDecodeError as e:
-                    self.log.info(f"Cannot Model load: {fullFileName}, error: {e}")
-                    value = []
-        except UnicodeDecodeError as e:
-            self.log.info(f"Cannot Model load: {fullFileName}, error: {e}")
-            value = []
+        with open(fullFileName) as handle:
+            try:
+                value = [[p["altitude"], p["azimuth"]] for p in json.load(handle)]
+            except json.JSONDecodeError as e:
+                self.log.info(f"Cannot Model load: {fullFileName}, error: {e}")
+                value = []
         return value
 
     def loadBPTS(self, fullFileName: Path) -> list[tuple[int, int]]:
-        try:
-            with open(fullFileName) as f:
-                try:
-                    value = json.load(f)
-                except json.JSONDecodeError as e:
-                    self.log.info(f"Cannot BPTS load: {fullFileName}, error: {e}")
-                    value = []
-        except UnicodeDecodeError as e:
-            self.log.info(f"Cannot BPTS load: {fullFileName}, error: {e}")
-            value = []
+        with open(fullFileName) as f:
+            try:
+                value = json.load(f)
+            except json.JSONDecodeError as e:
+                self.log.info(f"Cannot BPTS load: {fullFileName}, error: {e}")
+                value = []
         return value
 
     def loadCSV(self, fullFileName: Path) -> list[tuple[int, int]]:

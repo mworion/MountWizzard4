@@ -14,7 +14,6 @@
 #
 ###########################################################
 
-import binascii
 import json
 import numpy as np
 import os
@@ -491,13 +490,6 @@ def test_loadModel_2(function):
     assert val == []
 
 
-def test_loadModel_3(function):
-    with open("tests/work/config/test.model", "wb") as outfile:
-        outfile.write(binascii.unhexlify("9f"))
-
-    val = function.loadModel(Path("tests/work/config/test.model"))
-    assert val == []
-
 
 def test_loadModel_4(function):
     values = [{"azimuth": 1, "altitude": 1}, {"azimuth": 2, "altitude": 2}]
@@ -515,13 +507,6 @@ def test_loadBPTS_2(function):
     val = function.loadBPTS(Path("tests/work/config/test.bpts"))
     assert val == []
 
-
-def test_loadBPTS_3(function):
-    with open("tests/work/config/test.bpts", "wb") as outfile:
-        outfile.write(binascii.unhexlify("9f"))
-
-    val = function.loadBPTS(Path("tests/work/config/test.bpts"))
-    assert val == []
 
 
 def test_loadBPTS_4(function):

@@ -73,7 +73,7 @@ class PlateSolve:
             self.log.critical(e)
             return False, "Timeout expired"
 
-        except Exception as e:
+        except (OSError, RuntimeError) as e:
             self.log.critical(f"Error: {e} happened")
             return False, f"Exception {e} during process run"
 

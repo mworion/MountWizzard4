@@ -57,11 +57,16 @@ class AlpacaAscomCommon(DriverData):
                     f"[Trace] [{self.config.deviceName}] [{valueProp}] [{returnVal}]"
                 )
             return returnVal
-        except Exception as e:
+        except (AttributeError, OSError, ValueError) as e:
             self.log.debug(
                 f"[{self.config.deviceName}] property [{valueProp}] not implemented: {e}"
             )
             self.propertyExceptions.append(valueProp)
+            return None
+        except Exception as e:
+            self.log.debug(f"[{self.config.deviceName}] property [{valueProp}] error: {e}")
+            self.propertyExceptions.append(valueProp)
+            return None
 
     def setDeviceProp(self, valueProp: str, value: Any) -> None:
         if valueProp in self.propertyExceptions:
@@ -70,10 +75,13 @@ class AlpacaAscomCommon(DriverData):
             setattr(self.device, valueProp, value)
             if self.loggingTrace:
                 self.log.debug(f"[Trace] [{self.config.deviceName}] [{valueProp}] [{value}]")
-        except Exception as e:
+        except (AttributeError, OSError, ValueError) as e:
             self.log.debug(
                 f"[{self.config.deviceName}] property [{valueProp}] not implemented: {e}"
             )
+            self.propertyExceptions.append(valueProp)
+        except Exception as e:
+            self.log.debug(f"[{self.config.deviceName}] property [{valueProp}] error: {e}")
             self.propertyExceptions.append(valueProp)
 
     def callDeviceMethod(self, valueProp: str, **kwargs: Any) -> Any:
@@ -86,11 +94,16 @@ class AlpacaAscomCommon(DriverData):
                 t += f"[{valueProp}] [{kwargs}] [{returnVal}]"
                 self.log.debug(t)
             return returnVal
-        except Exception as e:
+        except (AttributeError, OSError, ValueError) as e:
             self.log.debug(
                 f"[{self.config.deviceName}] method [{valueProp}] not implemented: {e}"
             )
             self.propertyExceptions.append(valueProp)
+            return None
+        except Exception as e:
+            self.log.debug(f"[{self.config.deviceName}] method [{valueProp}] error: {e}")
+            self.propertyExceptions.append(valueProp)
+            return None
 
     def setDevicePropQueued(self, valueProp: str, value: Any) -> None:
         self.commandQueue.put(CommandItem(cmdType="set", valueProp=valueProp, value=value))

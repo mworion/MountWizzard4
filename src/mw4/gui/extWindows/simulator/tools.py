@@ -127,8 +127,8 @@ def linkMaterial(node: dict) -> Any:
 
 
 def linkModel(model: dict, entityModel: dict) -> None:
-    for node in model:
-        parent = model[node].get("parent")
+    for node, nodeData in model.items():
+        parent = nodeData.get("parent")
         if parent is None:
             continue
 
@@ -136,22 +136,22 @@ def linkModel(model: dict, entityModel: dict) -> None:
         newEntity.setObjectName(node)
         entityModel[node] = {"entity": newEntity}
 
-        mesh = linkSource(model[node])
+        mesh = linkSource(nodeData)
         if mesh:
             newEntity.addComponent(mesh)
             entityModel[node]["mesh"] = mesh
 
-        transform = linkTransform(model[node])
+        transform = linkTransform(nodeData)
         if transform:
             newEntity.addComponent(transform)
             entityModel[node]["trans"] = transform
 
-        material = linkMaterial(model[node])
+        material = linkMaterial(nodeData)
         if material:
             newEntity.addComponent(material)
             entityModel[node]["material"] = material
 
-        light = linkLight(model[node])
+        light = linkLight(nodeData)
         if light:
             newEntity.addComponent(light)
             entityModel[node]["light"] = light

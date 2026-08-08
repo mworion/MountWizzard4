@@ -27,7 +27,7 @@ from xisf import XISF
 class Parent:
     try:
         app = App()
-    except Exception:
+    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
         app = mock.MagicMock()
 
 
@@ -127,12 +127,10 @@ def test_loadFITS_1(function):
         header = None
 
     class HDUList:
-        @staticmethod
-        def __enter__():
+        def __enter__(self):
             return [Data(), Data()]
 
-        @staticmethod
-        def __exit__(a, b, c):
+        def __exit__(self, exc_type, exc_val, exc_tb):
             return
 
     with mock.patch.object(fits, "open", return_value=HDUList()):
@@ -145,12 +143,10 @@ def test_loadFITS_2(function):
         header = None
 
     class HDUList:
-        @staticmethod
-        def __enter__():
+        def __enter__(self):
             return [Data(), Data()]
 
-        @staticmethod
-        def __exit__(a, b, c):
+        def __exit__(self, exc_type, exc_val, exc_tb):
             return
 
     with mock.patch.object(fits, "open", return_value=HDUList()):

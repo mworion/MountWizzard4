@@ -29,7 +29,7 @@ from skyfield import almanac
 from skyfield.timelib import Timescale
 from skyfield.toposlib import GeographicPosition
 from skyfield.trigonometry import position_angle_of
-from typing import Any
+from typing import Any, ClassVar
 
 TWILIGHT_PLOT_DAYS: int = 91
 MAX_TWILIGHT_ROWS: int = 8
@@ -65,8 +65,23 @@ class Almanac(TabAddon):
             (99, 100): "New moon ",
         }
     )
-    Y_TICKS = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]
-    Y_LABELS = ["", "14", "16", "18", "20", "22", "24", "02", "04", "06", "08", "10", ""]
+    Y_TICKS: ClassVar = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]
+
+    Y_LABELS: ClassVar = [
+        "",
+        "14",
+        "16",
+        "18",
+        "20",
+        "22",
+        "24",
+        "02",
+        "04",
+        "06",
+        "08",
+        "10",
+        "",
+    ]
 
     def __init__(self, mainW: Any) -> None:
         self.mainW = mainW

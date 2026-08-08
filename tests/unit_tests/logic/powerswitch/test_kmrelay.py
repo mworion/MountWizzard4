@@ -111,7 +111,9 @@ def test_getRelayWithConnectionError(kmRelay: KMRelay) -> None:
 
 def test_getRelayWithGenericException(kmRelay: KMRelay) -> None:
     kmRelay.config.hostAddress = "localhost"
-    with mock.patch.object(requests, "get", side_effect=Exception("Test error")):
+    with mock.patch.object(
+        requests, "get", side_effect=requests.RequestException("Test error")
+    ):
         result = kmRelay.getRelay("/status.xml", False)
         assert result == ""
 

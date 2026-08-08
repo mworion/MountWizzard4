@@ -17,7 +17,7 @@ import logging
 import platform
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 
 @dataclass
@@ -33,7 +33,7 @@ class ASTAP:
     log = logging.getLogger("MW4")
     GUI = "astap"
     CLI = "astap_cli"
-    indexes = [
+    indexes: ClassVar = [
         "g17*.290",
         "g18*.290",
         "h17*.1476",
@@ -43,7 +43,7 @@ class ASTAP:
         "d20*.1476",
         "d05*.1476",
     ]
-    apps = {
+    apps: ClassVar = {
         "Darwin": {
             "appPath": "/Applications/ASTAP.app/Contents/MacOS",
             "indexPath": "/usr/local/opt/astap",
@@ -57,7 +57,7 @@ class ASTAP:
             "indexPath": "C:\\Program Files\\astap",
         },
     }
-    returnCodes = {
+    returnCodes: ClassVar = {
         0: "No errors",
         1: "No solution",
         2: "Not enough stars detected",

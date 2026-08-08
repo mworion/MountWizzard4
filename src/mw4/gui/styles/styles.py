@@ -21,11 +21,11 @@ from mw4.gui.styles.colors import colors
 from mw4.gui.styles.images import images
 from mw4.gui.styles.styleSheets import BASIC_STYLE, MAC_STYLE, NON_MAC_STYLE
 from PySide6.QtGui import QIcon
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Styles:
-    COLOR_MAPS_STRINGS = ["CET-L2", "plasma", "cividis", "magma", "CET-D1A"]
+    COLOR_MAPS_STRINGS: ClassVar = ["CET-L2", "plasma", "cividis", "magma", "CET-D1A"]
     STYLE = (
         MAC_STYLE + BASIC_STYLE
         if platform.system() == "Darwin"

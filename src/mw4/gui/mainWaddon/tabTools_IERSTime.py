@@ -19,11 +19,11 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.logic.databaseProcessing.dataWriter import DataWriter
 from pathlib import Path
 from PySide6.QtWidgets import QListView
-from typing import Any
+from typing import Any, ClassVar
 
 
 class IERSTime(TabAddon):
-    iersSourceURLs: dict[str, str] = {
+    iersSourceURLs: ClassVar[dict[str, str]] = {
         "Datacenter from IERS": "https://datacenter.iers.org/products/eop/rapid/standard/",
         "Maia from usno.navy.mil": "https://maia.usno.navy.mil/ser7/",
     }

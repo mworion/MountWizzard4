@@ -27,7 +27,14 @@ def function():
         filt = Filter(App())
         func = FilterIndi(parent=filt)
         func.config.deviceName = "test_filter"
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"Fixture initialization failed: {e}")
     yield func
     func.app.threadPool.waitForDone(5000)

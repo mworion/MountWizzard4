@@ -122,7 +122,7 @@ class DownloadPopup(MWidget):
         except TimeoutError:
             self.msg.emit(2, "Download", "Timeout", f"{url}")
             return False
-        except Exception as e:
+        except (requests.RequestException, OSError) as e:
             self.msg.emit(2, "Download", "Error", f"{url}")
             self.log.warning(f"General error [{url}], {e}")
             return False
@@ -132,7 +132,7 @@ class DownloadPopup(MWidget):
 
         try:
             self.unzipFile(downloadDest, dest)
-        except Exception as e:
+        except (OSError, gzip.BadGzipFile) as e:
             self.msg.emit(2, "Download", "Unzip", f"{url}")
             self.log.warning(f"Error in unzip [{url}], {e}")
             return False

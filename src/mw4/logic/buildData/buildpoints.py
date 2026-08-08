@@ -196,21 +196,29 @@ class BuildPoint:
             self._buildP = [p[0:3] for p in west + east]
 
     def loadModel(self, fullFileName: Path) -> list[tuple[int, int]]:
-        with open(fullFileName) as handle:
-            try:
-                value = [[p["altitude"], p["azimuth"]] for p in json.load(handle)]
-            except Exception as e:
-                self.log.info(f"Cannot Model load: {fullFileName}, error: {e}")
-                value = []
+        try:
+            with open(fullFileName) as handle:
+                try:
+                    value = [[p["altitude"], p["azimuth"]] for p in json.load(handle)]
+                except json.JSONDecodeError as e:
+                    self.log.info(f"Cannot Model load: {fullFileName}, error: {e}")
+                    value = []
+        except UnicodeDecodeError as e:
+            self.log.info(f"Cannot Model load: {fullFileName}, error: {e}")
+            value = []
         return value
 
     def loadBPTS(self, fullFileName: Path) -> list[tuple[int, int]]:
-        with open(fullFileName) as f:
-            try:
-                value = json.load(f)
-            except Exception as e:
-                self.log.info(f"Cannot BPTS load: {fullFileName}, error: {e}")
-                value = []
+        try:
+            with open(fullFileName) as f:
+                try:
+                    value = json.load(f)
+                except json.JSONDecodeError as e:
+                    self.log.info(f"Cannot BPTS load: {fullFileName}, error: {e}")
+                    value = []
+        except UnicodeDecodeError as e:
+            self.log.info(f"Cannot BPTS load: {fullFileName}, error: {e}")
+            value = []
         return value
 
     def loadCSV(self, fullFileName: Path) -> list[tuple[int, int]]:
@@ -220,7 +228,7 @@ class BuildPoint:
                 csvFile.seek(0)
                 reader = csv.reader(csvFile, delimiter=dialect.delimiter)
                 value = [[int(row[0]), int(row[1])] for row in reader]
-            except Exception as e:
+            except (csv.Error, ValueError) as e:
                 self.log.info(f"Cannot CSV load: {fullFileName}, error: {e}")
                 value = []
         return value

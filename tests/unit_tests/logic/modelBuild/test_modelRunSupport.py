@@ -33,6 +33,7 @@ from mw4.mountcontrol import obsSite
 from mw4.mountcontrol.model import Model, ModelStar
 from pathlib import Path
 from skyfield.api import Angle, Star, load, wgs84
+from typing import ClassVar
 from unittest import mock
 
 obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
@@ -263,7 +264,7 @@ def test_generateMountModelData_1():
         coord = Star(ra_hours=10, dec_degrees=20)
 
     class Model:
-        starList = [ModelStar(), ModelStar()]
+        starList: ClassVar = [ModelStar(), ModelStar()]
 
     model = Model()
     val = generateMountModelData(model)
@@ -271,7 +272,7 @@ def test_generateMountModelData_1():
 
 
 def test_compareFile_1():
-    with mock.patch.object(json, "load", side_effect=Exception):
+    with mock.patch.object(json, "load", side_effect=json.JSONDecodeError("test", "test", 0)):
         val1, val2 = compareFile(Path("tests/testData/test.model"), {})
         assert val1 == []
         assert val2 == []

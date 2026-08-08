@@ -14,18 +14,18 @@
 #
 ###########################################################
 import numpy as np
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from skyfield.api import Angle, Star
 
 
 @dataclass
 class ModelStar:
-    coord: Star = Star(ra_hours=0, dec_degrees=0)
+    coord: Star = field(default_factory=lambda: Star(ra_hours=0, dec_degrees=0))
     errorRMS: float = 0
-    errorAngle: Angle = Angle(degrees=0)
+    errorAngle: Angle = field(default_factory=lambda: Angle(degrees=0))
     number: int = 0
-    alt: Angle = Angle(degrees=0)
-    az: Angle = Angle(degrees=0)
+    alt: Angle = field(default_factory=lambda: Angle(degrees=0))
+    az: Angle = field(default_factory=lambda: Angle(degrees=0))
 
     def errorRA(self) -> Angle:
         return Angle(degrees=self.errorRMS * np.sin(self.errorAngle.radians))

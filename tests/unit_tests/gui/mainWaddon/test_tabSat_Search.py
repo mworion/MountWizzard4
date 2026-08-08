@@ -24,13 +24,14 @@ from PySide6.QtCore import QRect
 from PySide6.QtWidgets import QTableWidgetItem
 from skyfield.api import EarthSatellite
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from typing import ClassVar
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     class Test:
-        objects = {}
+        objects: ClassVar = {}
 
     mainW = MWidget()
     mainW.app = App()
@@ -477,7 +478,7 @@ def test_workerCalcSatList_2(function):
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
 
     class Test:
-        objects = {"sat1": sat}
+        objects: ClassVar = {"sat1": sat}
 
     function.satellites = Test()
     function.ui.listSats.setRowCount(0)
@@ -499,7 +500,7 @@ def test_workerCalcSatList_3(function):
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
 
     class Test:
-        objects = {"sat1": sat}
+        objects: ClassVar = {"sat1": sat}
 
     function.satellites = Test()
     function.ui.listSats.setRowCount(0)

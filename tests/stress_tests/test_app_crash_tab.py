@@ -38,10 +38,10 @@ mwglob = {
 
 def cleanupTestFiles() -> None:
     """Clean up test files from work directories."""
-    for d in mwglob:
+    for d, path in mwglob.items():
         if "modelData" in d:
             continue
-        files = glob.glob(f"{mwglob[d]}/*.*")
+        files = glob.glob(f"{path}/*.*")
         for f in files:
             if "empty" not in f and os.path.isfile(f):
                 os.remove(f)

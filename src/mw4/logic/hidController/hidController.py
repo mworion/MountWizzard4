@@ -106,7 +106,7 @@ class HidController:
     def readHidController(self) -> tuple[bool, list]:
         try:
             data = self.hidControllerDevice.read(64)
-        except Exception as e:
+        except OSError as e:
             self.log.warning(f"HidController error {e}")
             return False, []
         return True, data
@@ -137,7 +137,7 @@ class HidController:
             self.hidControllerDevice = hid.device()
             self.hidControllerDevice.open(vendorId, productId)
             self.hidControllerDevice.set_nonblocking(True)
-        except Exception as e:
+        except OSError as e:
             self.hidControllerDevice = None
             self.log.warning(f"Failed to open HID device: {e}")
             return False

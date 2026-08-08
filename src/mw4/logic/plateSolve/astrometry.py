@@ -20,7 +20,7 @@ from dataclasses import dataclass, field
 from mw4.logic.fits.fitsFunction import getHintFromImageFile
 from mw4.mountcontrol.convert import convertToDMS, convertToHMS
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 
 @dataclass
@@ -35,9 +35,9 @@ class DeviceConfigASTROMETRY:
 
 class Astrometry:
     log = logging.getLogger("MW4")
-    returnCodes: dict = {0: "No errors", 1: "solve-field error"}
+    returnCodes: ClassVar[dict] = {0: "No errors", 1: "solve-field error"}
     home = os.environ.get("HOME", "")
-    apps = {
+    apps: ClassVar = {
         "Darwin": {
             "appPath": "/Applications/KStars.app/Contents/MacOS/astrometry/bin",
             "indexPath": f"{home}/Library/Application Support/Astrometry",

@@ -15,14 +15,15 @@
 ###########################################################
 import pytest
 from mw4.logic.measure.measureRaw import MeasureDataRaw
+from typing import ClassVar
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
     class Test1:
-        CYCLE_UPDATE_TASK = 1000
-        data = {}
+        CYCLE_UPDATE_TASK: ClassVar = 1000
+        data: ClassVar = {}
 
         @staticmethod
         def measureTask():

@@ -25,11 +25,11 @@ from mw4.logic.fits.fitsFunction import (
 )
 from PySide6.QtCore import QRectF
 from PySide6.QtGui import QFont
-from typing import Any
+from typing import Any, ClassVar
 
 
 class ImageTabs:
-    TILT = {
+    TILT: ClassVar = {
         "none": 5,
         "almost none": 10,
         "mild": 15,

@@ -118,9 +118,9 @@ def test_write_system_info_socket_error():
     mwGlob = {"workDir": Path()}
     with (
         mock.patch.object(
-            socket, "gethostname", side_effect=Exception("hostname lookup failed")
+            socket, "gethostname", side_effect=OSError("hostname lookup failed")
         ),
-        pytest.raises(Exception),
+        pytest.raises(OSError),
     ):
         writeSystemInfo(mwGlob=mwGlob)
 

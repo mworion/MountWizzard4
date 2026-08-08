@@ -15,6 +15,6 @@
 ###########################################################
 from typing import Final
 
-# Feature flags – set once at import time; never mutated at runtime.
+# Feature flags - set once at import time; never mutated at runtime.
 isAnalyse: Final[bool] = False
 isReference: Final[bool] = False

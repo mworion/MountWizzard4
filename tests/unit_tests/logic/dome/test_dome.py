@@ -28,7 +28,14 @@ def function():
     try:
         func = Dome(app=App())
         yield func
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"Dome initialization failed: {e}")
 
 

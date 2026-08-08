@@ -112,9 +112,9 @@ class MWidget(QMainWindow, Styles):
     def saveAllWindowsAsPNG(self, window: QWidget) -> None:
         windows = window.app.mainW.externalWindows.uiWindows
         self.saveWindowAsPNG(window)
-        for window in windows:
-            if windows[window]["classObj"]:
-                self.saveWindowAsPNG(windows[window]["classObj"])
+        for windowKey in windows:
+            if windows[windowKey]["classObj"]:
+                self.saveWindowAsPNG(windows[windowKey]["classObj"])
 
     def keyPressEvent(self, keyEvent: QKeyEvent) -> None:
         if keyEvent.key() == Qt.Key.Key_F5:

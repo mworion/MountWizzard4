@@ -33,7 +33,14 @@ def function():
         func.config.deviceName = "test_cam"
         yield func
         func.app.threadPool.waitForDone(5000)
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"Camera/CameraIndi initialization failed: {e}")
 
 

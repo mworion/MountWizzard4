@@ -99,7 +99,9 @@ def test_processModel_1(function):
 
 
 def test_processModel_2(function):
-    with mock.patch.object(json, "load", return_value={}, side_effect=Exception):
+    with mock.patch.object(
+        json, "load", return_value={}, side_effect=json.JSONDecodeError("test", "test", 0)
+    ):
         function.processModel(Path("tests/testData/test.model"))
 
 

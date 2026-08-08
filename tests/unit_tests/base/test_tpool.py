@@ -37,7 +37,7 @@ def test_workerSignals_canConnect(qtbot):
 
 def test_clearPrintErrorStack():
     def testFunc():
-        raise Exception
+        raise RuntimeError
 
     a = tpool.Worker(testFunc)
     a.run()
@@ -80,7 +80,7 @@ def test_worker_run_doesNotEmitErrorOnSuccess(qtbot):
 
 def test_worker_run_emitsErrorOnException(qtbot):
     def testFunc():
-        raise Exception("Test")
+        raise RuntimeError("Test")
 
     a = tpool.Worker(testFunc)
     with qtbot.waitSignal(a.signals.error):
@@ -100,7 +100,7 @@ def test_worker_run_swallowsRuntimeErrorOnResult():
 
 def test_worker_run_swallowsRuntimeErrorOnError():
     def testFunc():
-        raise Exception("boom")
+        raise RuntimeError("boom")
 
     a = tpool.Worker(testFunc)
     a.signals = mock.Mock()

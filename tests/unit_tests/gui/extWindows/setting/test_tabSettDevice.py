@@ -19,6 +19,7 @@ from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QComboBox, QPushButton
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from typing import ClassVar
 from unittest import mock
 
 
@@ -126,10 +127,10 @@ def test_setupDeviceGui_2(function):
             self.name = "telescope"
             self.framework = "indi"
             self.stat = False
-            self.run = {"indi": MockFramework()}
+            self.run: ClassVar = {"indi": MockFramework()}
 
     class MockRegistryEntry:
-        run = {"indi": MockFramework()}
+        run: ClassVar = {"indi": MockFramework()}
 
     class MockD:
         def __getitem__(self, key):
@@ -304,7 +305,7 @@ def test_dispatchDriverDropdownEmitsStartDeviceWhenAllConditionsMet(function) ->
     mock_entry = MagicMock()
     mock_entry.framework = "alpaca"
     mock_entry.instance = mock_instance
-    mock_entry.run = {"alpaca": mock_fw}
+    mock_entry.run: ClassVar = {"alpaca": mock_fw}
 
     function.deviceUi["telescope"]["uiDropDown"].clear()
     function.deviceUi["telescope"]["uiDropDown"].addItem("alpaca - test_device")
@@ -368,10 +369,10 @@ def test_setupDeviceGuiCallsDeviceConnectedWhenStatTrue(function) -> None:
             self.name = "telescope"
             self.framework = "indi"
             self.stat = True  # Connected state
-            self.run = {"indi": MockFramework()}
+            self.run: ClassVar = {"indi": MockFramework()}
 
     class MockRegistryEntry:
-        run = {"indi": MockFramework()}
+        run: ClassVar = {"indi": MockFramework()}
 
     class MockD:
         def __getitem__(self, key):
@@ -401,10 +402,10 @@ def test_setupDeviceGuiCallsDeviceDisconnectedWhenStatFalse(function) -> None:
             self.name = "dome"
             self.framework = "alpaca"
             self.stat = False  # Disconnected state
-            self.run = {"alpaca": MockFramework()}
+            self.run: ClassVar = {"alpaca": MockFramework()}
 
     class MockRegistryEntry:
-        run = {"alpaca": MockFramework()}
+        run: ClassVar = {"alpaca": MockFramework()}
 
     class MockD:
         def __getitem__(self, key):

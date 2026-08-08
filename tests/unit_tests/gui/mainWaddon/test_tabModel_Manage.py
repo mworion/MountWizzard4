@@ -305,7 +305,7 @@ def test_writeBuildModelOptimized_1(function):
         json,
         "load",
         return_value=[{"errorIndex": 1}, {"errorIndex": 3}],
-        side_effect=Exception,
+        side_effect=json.JSONDecodeError("test", "test", 0),
     ):
         function.writeBuildModelOptimized([1])
 

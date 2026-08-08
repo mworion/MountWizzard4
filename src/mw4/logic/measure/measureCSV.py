@@ -18,7 +18,7 @@ import logging
 import PySide6
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 
 @dataclass
@@ -28,7 +28,7 @@ class DeviceConfigMeasureCSV:
 
 
 class MeasureDataCSV(PySide6.QtCore.QObject):
-    FieldNames = [
+    FieldNames: ClassVar = [
         "time",
         "mount-timeDiff",
         "mount-deltaRaJNow",

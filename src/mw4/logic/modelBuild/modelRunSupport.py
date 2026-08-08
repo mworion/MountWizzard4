@@ -102,7 +102,7 @@ def loadModelsFromFile(modelFilesPath: list[Path]) -> tuple[list[dict[str, Any]]
             with open(path) as infile:
                 model_part = json.load(infile)
                 model += model_part
-        except Exception:
+        except json.JSONDecodeError:
             errText = f"Cannot load model json file: {path.name}"
             log.warning(errText)
             return model, errText
@@ -173,7 +173,7 @@ def compareFile(
         try:
             fileModel = json.load(inFile)
             fileModelData = generateFileModelData(fileModel)
-        except Exception as e:
+        except json.JSONDecodeError as e:
             log.warning(f"Cannot load model file: {[inFile]}, error: {e}")
         else:
             pointsIn, pointsOut = findKeysSourceInDest(fileModelData, mountModelData)

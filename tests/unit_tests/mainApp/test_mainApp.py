@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+import logging
 import pytest
 import shutil
 from mw4.mainApp import MountWizzard4
@@ -76,8 +77,8 @@ def app(qapp):
             app_instance.timeMgr.stop()
         if hasattr(app_instance, "mount"):
             app_instance.mount.stopAllMountTimers()
-    except Exception:
-        pass
+    except (AttributeError, RuntimeError) as e:
+        logging.getLogger("MW4").debug(f"Fixture cleanup error: {e}")
 
 
 def test_init_config(app):

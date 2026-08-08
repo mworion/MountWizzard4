@@ -22,7 +22,14 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 def function():
     try:
         func = DirectWeather(app=App())
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"Fixture initialization failed: {e}")
     yield func
 

@@ -19,13 +19,13 @@ from mw4.mountcontrol.convert import valueToAngle, valueToFloat
 from mw4.mountcontrol.tleParams import TLEParams
 from mw4.mountcontrol.trajectoryParams import TrajectoryParams
 from skyfield.api import Angle
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Satellite:
     log = logging.getLogger("MW4")
 
-    TLES = {
+    TLES: ClassVar = {
         "E": "No transit pre calculated",
         "F": "Slew failed",
         "V": "Slewing to start and track",
@@ -33,7 +33,7 @@ class Satellite:
         "Q": "Transit ended, no tracking",
     }
 
-    TLESCK = {
+    TLESCK: ClassVar = {
         "V": "Slewing to the start of the transit",
         "P": "Waiting for the satellite",
         "S": "Slewing to catch satellite",

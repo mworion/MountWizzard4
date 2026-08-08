@@ -37,7 +37,14 @@ def function():
         camera.imagePath = "/tmp/test.fits"
         func = CameraAlpaca(camera)
         func.device = mock.MagicMock()
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"Fixture initialization failed: {e}")
     yield func
 

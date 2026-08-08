@@ -79,7 +79,7 @@ class MountTime:
                 client.settimeout(self.SOCKET_TIMEOUT)
                 client.connect((self.parent.config.hostAddress, self.parent.config.port))
                 client.shutdown(socket.SHUT_RDWR)
-        except Exception as e:
+        except OSError as e:
             self.setStatus(f"No mount at [{self.parent.config.hostAddress}], error [{e}]")
         else:
             self.errorCounter = 5

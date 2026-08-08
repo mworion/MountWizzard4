@@ -44,7 +44,7 @@ def stringToDegree(value: str) -> float:
 
     try:
         value = [float(x) for x in value]
-    except Exception:
+    except ValueError:
         return 0.0
 
     sign = 1 if value[0] >= 0 else -1
@@ -73,11 +73,11 @@ def stringToAngle(value: str, preference: str = "degrees") -> Angle:
 
 
 def valueToFloat(value: Any) -> float:
-    if value == "E":
+    if value == "E" or value is None:
         return 0
     try:
         value = float(value)
-    except Exception:
+    except (ValueError, TypeError):
         value = 0
     return value
 
@@ -87,9 +87,11 @@ def valueToAngle(value: Any, preference: str = "degrees") -> Angle:
 
 
 def valueToInt(value: Any) -> int:
+    if value is None:
+        return 0
     try:
         value = int(value)
-    except Exception:
+    except (ValueError, TypeError):
         value = 0
     return value
 

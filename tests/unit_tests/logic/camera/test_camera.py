@@ -29,7 +29,14 @@ def function() -> None:
     try:
         func = Camera(app=App())
         yield func
-    except Exception as e:  # noqa: BLE001
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"Camera initialization failed: {e}")
 
 

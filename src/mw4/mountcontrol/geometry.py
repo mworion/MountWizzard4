@@ -17,7 +17,7 @@ import logging
 import numpy as np
 from mw4.mountcontrol.convert import valueToFloat
 from skyfield.api import Angle
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Geometry:
@@ -33,7 +33,7 @@ class Geometry:
     """
 
     log = logging.getLogger("MW4")
-    geometryData = {
+    geometryData: ClassVar = {
         "10micron GM1000HPS": {
             "offBaseAltAxisX": -0.005,
             "offBaseAltAxisZ": 0.095,

@@ -346,7 +346,7 @@ def test_bootMount_5(function):
     function.config.MAC = "00:00:00:00:00:00"
     function.config.wolAddress = "255.255.255.255"
     function.config.wolPort = 9
-    with mock.patch.object(wakeonlan, "send_magic_packet", side_effect=Exception):
+    with mock.patch.object(wakeonlan, "send_magic_packet", side_effect=OSError):
         suc = function.bootMount()
         assert not suc
 

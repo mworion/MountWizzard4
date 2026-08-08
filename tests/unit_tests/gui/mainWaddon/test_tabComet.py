@@ -84,7 +84,9 @@ def test_generateName_5(function):
 def test_processCometSource_1(function):
     function.comets.dest = "tests/testData/mpc_comet_test.json"
     with (
-        mock.patch.object(json, "load", return_value="", side_effect=Exception),
+        mock.patch.object(
+            json, "load", return_value="", side_effect=json.JSONDecodeError("test", "test", 0)
+        ),
         mock.patch.object(os, "remove"),
     ):
         function.processCometSource()

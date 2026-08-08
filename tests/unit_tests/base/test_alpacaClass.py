@@ -116,7 +116,7 @@ def test_createAlpacaDevice_3(function):
 
     class RaisingClass:
         def __init__(self, *args, **kwargs):
-            raise Exception("error")
+            raise RuntimeError("error")
 
     with mock.patch.dict(AlpacaClass.DEVICE_TYPE_MAP, {"dome": RaisingClass}):
         suc = function.createAlpacaDevice("dome")
@@ -181,7 +181,7 @@ def test_setDeviceProp_3(function):
 
         @TestProp.setter
         def TestProp(self, value):
-            raise Exception("error")
+            raise RuntimeError("error")
 
     function.device = DeviceWithErrorProp()
     function.setDeviceProp("TestProp", True)

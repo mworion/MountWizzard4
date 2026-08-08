@@ -84,7 +84,9 @@ def test_generateName_5(function):
 def test_processAsteroidSource_1(function):
     function.asteroids.dest = "tests/testData/mpc_asteroid_test.json"
     with (
-        mock.patch.object(json, "load", return_value="", side_effect=Exception),
+        mock.patch.object(
+            json, "load", return_value="", side_effect=json.JSONDecodeError("test", "test", 0)
+        ),
         mock.patch.object(os, "remove"),
     ):
         function.processAsteroidSource()

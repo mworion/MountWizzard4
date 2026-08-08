@@ -76,7 +76,9 @@ def test_processSeeingData_2(function):
     function.app.mwGlob["dataDir"] = Path("tests/work/data")
     with (
         mock.patch.object(Path, "is_file", return_value=True),
-        mock.patch.object(json, "load", return_value={}, side_effect=Exception),
+        mock.patch.object(
+            json, "load", return_value={}, side_effect=json.JSONDecodeError("test", "test", 0)
+        ),
     ):
         function.processSeeingData()
 
@@ -113,7 +115,7 @@ def test_workerGetSeeingData_3(function):
         status_code = 300
 
     function.app.isOnline = True
-    with mock.patch.object(requests, "get", side_effect=Exception(), return_value=Test()):
+    with mock.patch.object(requests, "get", side_effect=OSError(), return_value=Test()):
         function.workerGetSeeingData("http://localhost")
 
 

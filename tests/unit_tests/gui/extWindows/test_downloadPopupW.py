@@ -25,6 +25,7 @@ from pathlib import Path
 from PySide6.QtCore import QEventLoop
 from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from typing import ClassVar
 from unittest import mock
 
 
@@ -74,7 +75,7 @@ def test_setStatusTextToValue(function):
 
 def test_getFileFromUrl_1(function):
     class Response:
-        headers = {}
+        headers: ClassVar = {}
         text = "test"
         status_code = 200
 
@@ -93,7 +94,7 @@ def test_getFileFromUrl_1(function):
 
 def test_getFileFromUrl_2(function):
     class Response:
-        headers = {}
+        headers: ClassVar = {}
         text = "test"
         status_code = 200
 
@@ -111,7 +112,7 @@ def test_getFileFromUrl_2(function):
 
 def test_getFileFromUrl_3(function):
     class Response:
-        headers = {}
+        headers: ClassVar = {}
         text = "test"
         status_code = 500
 
@@ -149,9 +150,7 @@ def test_downloadFileWorker_3(function):
 
 
 def test_downloadFileWorker_4(function):
-    with mock.patch.object(
-        function, "getFileFromUrl", return_value=True, side_effect=Exception
-    ):
+    with mock.patch.object(function, "getFileFromUrl", return_value=True, side_effect=OSError):
         suc = function.downloadFileWorker(url=Path(), dest=Path("tests/work/temp/test.txt"))
         assert not suc
 
@@ -179,7 +178,7 @@ def test_downloadFileWorker_6(function):
 def test_downloadFileWorker_7(function):
     with (
         mock.patch.object(function, "getFileFromUrl", return_value=True),
-        mock.patch.object(function, "unzipFile", side_effect=Exception),
+        mock.patch.object(function, "unzipFile", side_effect=OSError),
     ):
         suc = function.downloadFileWorker(
             url=Path(), dest=Path("tests/work/temp/test.txt"), unzip=True

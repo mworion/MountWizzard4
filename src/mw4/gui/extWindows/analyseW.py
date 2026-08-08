@@ -138,7 +138,7 @@ class AnalyseWindow(MWidget):
         self.ui.goodPoints.setText(f"{de.get('errorIndex', 0)}")
         app = de.get("astrometryApp", "").split("-")[0].strip()
         self.ui.solver.setText(f"{app}")
-        version = d.get("version", "").lstrip("MountWizzard4 - v")
+        version = d.get("version", "").removeprefix("MountWizzard4 - v")
         self.ui.version.setText(f"{version}")
 
     @staticmethod
@@ -151,7 +151,7 @@ class AnalyseWindow(MWidget):
                 return float(fill)
             try:
                 f = float(v)
-            except Exception:
+            except ValueError:
                 return float(fill)
             if np.isnan(f):
                 return float(fill)
@@ -186,7 +186,7 @@ class AnalyseWindow(MWidget):
         try:
             with open(loadFilePath) as infile:
                 modelJSON = json.load(infile)
-        except Exception as e:
+        except json.JSONDecodeError as e:
             self.log.warning(f"Cannot load model file: {[loadFilePath]}, error: {e}")
             return
 

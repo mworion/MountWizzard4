@@ -15,6 +15,7 @@
 ###########################################################
 from dataclasses import dataclass, field
 from PySide6.QtCore import QObject, QTimer, Signal
+from typing import ClassVar
 
 
 @dataclass
@@ -411,12 +412,12 @@ class Telescope:
             self.config = Telescope.TestConfig()
 
     signals = TelescopeSignals()
-    data = {}
+    data: ClassVar = {}
     framework = None
-    run = {"indi": None}  # Will be set after class definition
+    run: ClassVar = {"indi": None}  # Will be set after class definition
     focalLength = 100
     aperture = 100
-    defaultConfig = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
+    defaultConfig: ClassVar = {"framework": "", "frameworks": {"indi": {"dummy": {}}}}
 
     @staticmethod
     def stopCommunication():
@@ -431,9 +432,9 @@ Telescope.run["indi"] = Telescope.TestFramework()
 
 
 class Hipparcos:
-    name = ["test"]
-    az = [10]
-    alt = [10]
+    name: ClassVar = ["test"]
+    az: ClassVar = [10]
+    alt: ClassVar = [10]
 
     @staticmethod
     def calculateAlignStarPositionsAltAz():

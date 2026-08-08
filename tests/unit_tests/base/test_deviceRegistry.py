@@ -29,7 +29,14 @@ def registry() -> DeviceRegistry:
         dReg = DeviceRegistry(app)
         dReg.addDevices(app)
         return dReg
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"Registry initialization failed: {e}")
 
 
@@ -235,7 +242,14 @@ def test_initPhase1OnlyMountExists() -> None:
         assert "camera" not in dReg.d
         assert "dome" not in dReg.d
         assert len(dReg.d) == 1
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"App initialization failed: {e}")
 
 
@@ -250,7 +264,14 @@ def test_initPhase2AllDevicesExist() -> None:
         assert "dome" in dReg.d
         assert "refraction" in dReg.d
         assert len(dReg.d) > 1
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"App initialization failed: {e}")
 
 
@@ -262,7 +283,14 @@ def test_initPhase2MountAccessibleDuringAddDevices() -> None:
         assert app.mount is not None
         dReg.addDevices(app)
         assert dReg["mount"].instance is app.mount
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"App initialization failed: {e}")
 
 
@@ -285,7 +313,14 @@ def test_initProductionCreatesNewMount() -> None:
         # Assert mount entry is in registry
         assert "mount" in dReg.d
         assert dReg["mount"].instance is app.mount
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"App initialization failed: {e}")
 
 
@@ -304,7 +339,14 @@ def test_initTestModeMountsInjected() -> None:
         # Assert the injected mount is used
         assert dReg["mount"].instance is mock_mount
         assert app.mount is mock_mount
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"App initialization failed: {e}")
 
 
@@ -319,7 +361,14 @@ def test_initConnectsStopDevicesSignal(registry: DeviceRegistry) -> None:
         dReg = DeviceRegistry(app)
         # If no exception, signals are properly connected
         assert dReg.app is app
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"Signal connection test failed: {e}")
 
 

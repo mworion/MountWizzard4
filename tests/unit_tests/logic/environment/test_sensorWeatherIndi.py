@@ -25,7 +25,14 @@ def function():
     try:
         weather = SensorWeather(App())
         func = SensorWeatherIndi(parent=weather)
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"Fixture initialization failed: {e}")
     yield func
     func.app.threadPool.waitForDone(5000)

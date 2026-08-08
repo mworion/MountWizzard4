@@ -14,7 +14,7 @@
 #
 ###########################################################
 import time
-from datetime import datetime
+from datetime import UTC, datetime
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
@@ -204,9 +204,15 @@ class Model(TabAddon):
         timeElapsed = time.gmtime(progressData["secondsElapsed"])
         timeEstimated = time.gmtime(progressData["secondsEstimated"])
         timeFinished = time.localtime(time.time() + progressData["secondsEstimated"])
-        self.ui.timeElapsed.setText(datetime(*timeElapsed[:6]).strftime("%H:%M:%S"))
-        self.ui.timeEstimated.setText(datetime(*timeEstimated[:6]).strftime("%H:%M:%S"))
-        self.ui.timeFinished.setText(datetime(*timeFinished[:6]).strftime("%H:%M:%S"))
+        self.ui.timeElapsed.setText(
+            datetime(*timeElapsed[:6], tzinfo=UTC).strftime("%H:%M:%S")
+        )
+        self.ui.timeEstimated.setText(
+            datetime(*timeEstimated[:6], tzinfo=UTC).strftime("%H:%M:%S")
+        )
+        self.ui.timeFinished.setText(
+            datetime(*timeFinished[:6], tzinfo=UTC).strftime("%H:%M:%S")
+        )
         self.ui.modelProgress.setValue(progressData["modelPercent"])
         self.ui.numberPoints.setText(f"{progressData['count']} / {progressData['number']}")
 

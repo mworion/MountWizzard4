@@ -38,7 +38,14 @@ def function() -> None:
         camera.imagePath = Path("/tmp/test.fits")
         func = CameraSGPro(camera)
         func.parent = camera
-    except Exception as e:  # noqa: BLE001
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"Fixture initialization failed: {e}")
     yield func
 

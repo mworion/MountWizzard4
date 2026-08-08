@@ -100,8 +100,10 @@ class MountSett(TabAddon):
         ui = self.ui.UTCExpire
         guiSetText(ui, "s", sett.UTCExpire)
         if sett.UTCExpire is not None:
-            now = datetime.datetime.now()
-            expire = datetime.datetime.strptime(sett.UTCExpire, "%Y-%m-%d")
+            now = datetime.datetime.now(datetime.UTC)
+            expire = datetime.datetime.strptime(sett.UTCExpire, "%Y-%m-%d").replace(
+                tzinfo=datetime.UTC
+            )
             deltaYellow = datetime.timedelta(days=30)
             if now > expire:
                 changeStyleDynamic(ui, "color", "red")

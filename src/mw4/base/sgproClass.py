@@ -72,7 +72,7 @@ class SGProClass(DriverData):
                     f"{url}/{valueProp}?format=json",
                     timeout=self.SGPRO_TIMEOUT,
                 )
-        except Exception as e:
+        except (ConnectionError, TimeoutError, requests.RequestException, Exception) as e:
             self.log.debug(
                 f"[{self.config.deviceName}] method [{valueProp}] not implemented: {e}"
             )

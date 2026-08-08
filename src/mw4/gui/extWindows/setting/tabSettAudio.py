@@ -14,11 +14,11 @@
 #
 ###########################################################
 from PySide6.QtMultimedia import QSoundEffect
-from typing import Any
+from typing import Any, ClassVar
 
 
 class SettAudio:
-    AUDIO_SOUNDS: dict[str, QSoundEffect] = {
+    AUDIO_SOUNDS: ClassVar[dict[str, QSoundEffect]] = {
         "None": None,
         "Beep": ":/sound/beep.wav",
         "Beep1": ":/sound/beep1.wav",

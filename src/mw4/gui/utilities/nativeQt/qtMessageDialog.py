@@ -34,7 +34,7 @@ class MWMessageDialog(MWidget):
     warning) and either default Yes/No buttons or a list of custom button
     labels.
 
-    Like :class:`MWFileDialog`, the dialog is not a :class:`QDialog` –
+    Like :class:`MWFileDialog`, the dialog is not a :class:`QDialog` -
     :meth:`exec` runs a local :class:`QEventLoop` so the call site can stay
     synchronous, mirroring Qt's own ``QDialog.exec()`` semantics.
     """

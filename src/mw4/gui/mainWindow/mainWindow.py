@@ -15,7 +15,7 @@
 ###########################################################
 import shutil
 import time
-from datetime import datetime
+from datetime import UTC, datetime
 from mw4.base import packageConfig
 from mw4.gui.mainWindow.externalWindows import ExternalWindows
 from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
@@ -286,7 +286,7 @@ class MainWindow(MWidget):
         self.diskFreePct = int(diskUsage[2] / diskUsage[0] * 100)
 
     def updateTime(self) -> None:
-        self.ui.timeComputer.setText(datetime.now().strftime("%H:%M:%S"))
+        self.ui.timeComputer.setText(datetime.now(UTC).strftime("%H:%M:%S"))
         tzT = time.tzname[1] if time.daylight else time.tzname[0]
         t = f"TZ: {tzT}"
         self.ui.statusTimeGroup.setTitle(t)

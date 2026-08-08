@@ -51,7 +51,7 @@ class Worker(QRunnable):
         try:
             result = self.fn(*self.args, **self.kwargs)
 
-        except Exception as e:
+        except (OSError, ValueError, RuntimeError, TypeError, AttributeError, KeyError) as e:
             # as we want to send a clear message to the log file
             _, _, tb = sys.exc_info()
 

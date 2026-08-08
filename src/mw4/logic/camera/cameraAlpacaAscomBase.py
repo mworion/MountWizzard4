@@ -17,11 +17,11 @@ import numpy as np
 import time
 from astropy.io import fits
 from mw4.base.alpacaAscomCommon import AlpacaAscomCommon
-from typing import Any
+from typing import Any, ClassVar
 
 
 class CameraAlpacaAscomBase(AlpacaAscomCommon):
-    CAMERA_STATES: list[str] = [
+    CAMERA_STATES: ClassVar[list[str]] = [
         "CameraIdle",
         "CameraWaiting",
         "CameraExposing",

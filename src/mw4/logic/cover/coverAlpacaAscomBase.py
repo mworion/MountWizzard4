@@ -14,11 +14,11 @@
 #
 ###########################################################
 from mw4.base.alpacaAscomCommon import AlpacaAscomCommon
-from typing import Any
+from typing import Any, ClassVar
 
 
 class CoverAlpacaAscomBase(AlpacaAscomCommon):
-    COVERSTATES: list[str] = [
+    COVERSTATES: ClassVar[list[str]] = [
         "NotPresent",
         "Closed",
         "Moving",

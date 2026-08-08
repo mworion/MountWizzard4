@@ -14,7 +14,7 @@
 #
 ############################################################
 """
-Cyclic startup stress test – subprocess edition.
+Cyclic startup stress test - subprocess edition.
 
 Each cycle spawns  ``python -m mw4.cli -t 1``  as a fresh OS process
 with ``cwd=WORK_DIR``.  ``bootstrap.setupWorkDirs(Path.cwd())`` therefore
@@ -33,7 +33,7 @@ The subprocess runs the full application boot path:
 Because every cycle is a *separate* OS process there is zero shared
 Qt / Shiboken / C++ state between cycles.  Any use-after-free, leaked
 ``QObject`` or dangling C++ pointer that survived the previous cycle
-cannot bleed into the next one – the fresh process either boots cleanly
+cannot bleed into the next one - the fresh process either boots cleanly
 or crashes independently, making the test much more sensitive to
 memory-safety problems than the in-process variant.
 
@@ -44,7 +44,7 @@ any ``SIGSEGV`` / ``SIGBUS`` produces a Python traceback on *stderr*
 before the OS crash report.  When a cycle fails the test prints:
 
   * the tail of the ``mw4-DATE.log`` written by the subprocess to
-    ``WORK_DIR/log/`` – this gives the last few hundred lines of debug
+    ``WORK_DIR/log/`` - this gives the last few hundred lines of debug
     output for post-mortem analysis.
   * captured *stderr* (includes faulthandler traceback on crash).
   * captured *stdout* (usually empty but may contain Qt warnings).
@@ -100,9 +100,9 @@ WORK_DIR = PROJECT_ROOT / "tests" / "work"  # separate from in-process test
 
 # ── parameters (overridable via environment variables) ─────────────────────────
 N_CYCLES = int(os.environ.get("N_CYCLES", "100"))
-CYCLE_TIMEOUT = float(os.environ.get("CYCLE_TIMEOUT", "60"))  # s – hard kill limit
-MAX_CYCLE_S = float(os.environ.get("MAX_CYCLE_S", "30.0"))  # s – upper assertion
-MIN_CYCLE_S = float(os.environ.get("MIN_CYCLE_S", "6.0"))  # s – premature-exit guard
+CYCLE_TIMEOUT = float(os.environ.get("CYCLE_TIMEOUT", "60"))  # s - hard kill limit
+MAX_CYCLE_S = float(os.environ.get("MAX_CYCLE_S", "30.0"))  # s - upper assertion
+MIN_CYCLE_S = float(os.environ.get("MIN_CYCLE_S", "6.0"))  # s - premature-exit guard
 
 # ── optional real-mount host ────────────────────────────────────────────────────
 MOUNT_HOST = os.environ.get("MW4_TEST_MOUNT", "mount.uranus")
@@ -150,7 +150,8 @@ def _inject_mount_host() -> None:
         try:
             profiles = json.loads(profile_file.read_text())
             profile_name = profiles.get("profileName", "config")
-        except Exception:
+        except json.JSONDecodeError:
+            # Failed to parse profiles.json, use default profile name
             pass
 
     cfg_path = config_dir / f"{profile_name}.cfg"
@@ -193,7 +194,7 @@ def _build_env() -> dict:
 
 def _tail_mw4_log(n_bytes: int = LOG_TAIL_BYTES) -> str:
     """Return the last *n_bytes* of today's mw4 log (empty string if absent)."""
-    today = datetime.date.today().strftime("%Y-%m-%d")
+    today = datetime.datetime.now(datetime.UTC).date().strftime("%Y-%m-%d")
     log_dir = WORK_DIR / "log"
     matches = glob.glob(str(log_dir / f"mw4-{today}.log"))
     if not matches:

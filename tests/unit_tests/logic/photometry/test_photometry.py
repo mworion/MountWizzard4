@@ -26,7 +26,7 @@ from unittest import mock
 class Parent:
     try:
         app = App()
-    except Exception:
+    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
         app = mock.MagicMock()
 
 
@@ -183,7 +183,7 @@ def test_workerCalcPhotometry_2(function):
     function.image[50][51] = 50
     function.image[50][49] = 50
     function.image[49][50] = 50
-    with mock.patch.object(sep, "extract", side_effect=Exception):
+    with mock.patch.object(sep, "extract", side_effect=ValueError):
         function.workerCalcPhotometry()
         assert not function.hfr.size > 0
         assert not function.objs.size > 0

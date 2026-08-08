@@ -107,7 +107,7 @@ def diffModulusSign(x: float, y: float, m: int) -> float:
 # The correct result is SOFA Atci13 (at least, it is consistent with the 10micron
 # coordinate transformation, with a < 1 arcsecond difference). It seems that
 # libNOVA/NOVAS are correct, but they don't account for nutation and light
-# aberration (the difference between these two is negligible) – i.e. these are
+# aberration (the difference between these two is negligible) - i.e. these are
 # coordinates of the "mean equinox of date".
 #
 # The "Jnow" coordinates accepted by the mount shouldn't account for refraction

@@ -14,6 +14,7 @@
 #
 ###########################################################
 import pyqtgraph as pg
+from datetime import UTC
 from datetime import datetime as dt
 from typing import Any
 
@@ -27,6 +28,6 @@ class TimeMeasure(pg.AxisItem):
         for x in values:
             if x < 0:
                 continue
-            lStr = dt.fromtimestamp(x).strftime("%H:%M:%S")
+            lStr = dt.fromtimestamp(x, tz=UTC).strftime("%H:%M:%S")
             ticks.append(lStr)
         return ticks

@@ -259,7 +259,7 @@ def test_deviceEntryConfigPropertyWhenFrameworkIsNone() -> None:
     entry = DeviceEntry(
         name="camera", instance=MockInstance(), deviceType="camera", isConfigurable=True
     )
-    with pytest.raises(AttributeError, match="Device 'camera' instance.framework is None"):
+    with pytest.raises(AttributeError, match=r"Device 'camera' instance\.framework is None"):
         _ = entry.config
 
 
@@ -273,7 +273,7 @@ def test_deviceEntryConfigPropertyWhenFrameworkIsEmptyString() -> None:
     entry = DeviceEntry(
         name="camera", instance=MockInstance(), deviceType="camera", isConfigurable=True
     )
-    with pytest.raises(AttributeError, match="Device 'camera' instance.framework is None"):
+    with pytest.raises(AttributeError, match=r"Device 'camera' instance\.framework is None"):
         _ = entry.config
 
 

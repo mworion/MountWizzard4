@@ -96,7 +96,7 @@ def test_runnerMountUp_error_counter_decrements(function, ping_return, socket_fa
             mock.patch("mw4.mountcontrol.mountTime.ping", return_value=ping_return),
             mock.patch("socket.socket") as mock_socket,
         ):
-            mock_socket.return_value.__enter__.return_value.connect.side_effect = Exception(
+            mock_socket.return_value.__enter__.return_value.connect.side_effect = OSError(
                 "Connection failed"
             )
             function.runnerMountUp()
@@ -156,7 +156,7 @@ def test_runnerMountUp_error_counter_zero(function, ping_return, socket_fails):
             mock.patch("mw4.mountcontrol.mountTime.ping", return_value=ping_return),
             mock.patch("socket.socket") as mock_socket,
         ):
-            mock_socket.return_value.__enter__.return_value.connect.side_effect = Exception(
+            mock_socket.return_value.__enter__.return_value.connect.side_effect = OSError(
                 "Connection failed"
             )
             function.runnerMountUp()

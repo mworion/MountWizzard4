@@ -17,7 +17,7 @@ import logging
 import platform
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 
 @dataclass
@@ -31,7 +31,7 @@ class DeviceConfigWatney:
 
 class Watney:
     log = logging.getLogger("MW4")
-    returnCodes: dict = {0: "No errors", 1: "No solution"}
+    returnCodes: ClassVar[dict] = {0: "No errors", 1: "No solution"}
 
     def __init__(self, parent: Any) -> None:
         self.parent = parent

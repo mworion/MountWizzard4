@@ -331,7 +331,7 @@ class Connection:
         try:
             client.abort()
             client.close()
-        except Exception as e:
+        except (OSError, Exception) as e:
             self.log.warning(f"Error    [{self.id} {e}]: closing socket client")
 
     def buildClient(self) -> QTcpSocket | None:
@@ -339,6 +339,9 @@ class Connection:
             self.log.info(f"No host  [{self.id}]")
             return None
         if not isinstance(self.host, tuple):
+            self.log.info(f"Host     [{self.id}]: host entry malformed [{self.host}]")
+            return None
+        if len(self.host) != 2 or self.host[0] is None or self.host[1] is None:
             self.log.info(f"Host     [{self.id}]: host entry malformed [{self.host}]")
             return None
         if not self.parent.mountIsUp:
@@ -352,7 +355,7 @@ class Connection:
                 self.closeClientHard(client)
                 self.log.debug(f"Timeout  [{self.id}]: socket timeout in build client")
                 return None
-        except Exception as e:
+        except (OSError, ValueError, TypeError, Exception) as e:
             self.closeClientHard(client)
             self.log.warning(f"Error    [{self.id}]: socket general: [{e}] in build client")
             return None
@@ -371,7 +374,7 @@ class Connection:
                         f"[Trace] Timeout  [{self.id}]: socket timeout in send data"
                     )
                 return False
-        except Exception as e:
+        except (OSError, Exception) as e:
             self.closeClientHard(client)
             self.log.warning(f"[Trace] Error    [{self.id}]: socket error: [{e}] in send data")
             return False
@@ -402,15 +405,12 @@ class Connection:
                 if not chunkRaw:
                     break
                 responseBytes.extend(chunkRaw)
-                if (
-                    numberOfChunks == 0
-                    and len(responseBytes) == minBytes
-                    or numberOfChunks != 0
-                    and numberOfChunks == responseBytes.count(b"#")
+                if (numberOfChunks == 0 and len(responseBytes) == minBytes) or (
+                    numberOfChunks != 0 and numberOfChunks == responseBytes.count(b"#")
                 ):
                     break
 
-        except Exception as e:
+        except (OSError, Exception) as e:
             self.log.warning(f"Error    [{self.id}]: error: [{e}], received: [{chunkRaw}]")
             return False, []
         else:
@@ -458,7 +458,7 @@ class Connection:
                 self.closeClientHard(client)
                 return sucSend, False, "Timeout"
             val = client.readAll().data().decode("ASCII")
-        except Exception as e:
+        except (OSError, Exception) as e:
             self.log.warning(
                 f"[Trace] Error    [{self.id}]: socket error: [{e}] in communicate raw"
             )

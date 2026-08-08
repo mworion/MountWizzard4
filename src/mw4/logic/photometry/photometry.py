@@ -20,7 +20,7 @@ from mw4.base.tpool import Worker
 from PySide6.QtCore import QMutex, QObject, Signal
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
-from typing import Any
+from typing import Any, ClassVar
 
 
 class PhotometrySignals(QObject):
@@ -38,8 +38,8 @@ class Photometry:
     log = logging.getLogger("MW4")
     ABERRATION_SIZE = 250
     FILTER_SCALE = 10
-    SN = [30, 20, 15, 10, 10]
-    SEP = [3.0, 3.0, 2.5, 2.5, 2.0]
+    SN: ClassVar = [30, 20, 15, 10, 10]
+    SEP: ClassVar = [3.0, 3.0, 2.5, 2.5, 2.0]
 
     def __init__(self, parent: Any, image: np.ndarray, snSelector: int = 0) -> None:
         self.threadPool = parent.app.threadPool
@@ -232,7 +232,7 @@ class Photometry:
                 filter_kernel=None,
                 minarea=7,
             )
-        except Exception as e:
+        except (ValueError, RuntimeError, IndexError) as e:
             self.log.error(e)
             self.objs = np.array([])
             self.objsAll = np.array([])

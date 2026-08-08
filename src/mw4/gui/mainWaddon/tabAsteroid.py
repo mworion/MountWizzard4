@@ -105,7 +105,7 @@ class Asteroid(TabAddon):
         with open(self.asteroids.dest) as inFile:
             try:
                 asteroids = json.load(inFile)
-            except Exception as e:
+            except json.JSONDecodeError as e:
                 self.mainW.log.error(f"Error {e} loading from {self.asteroids.dest}")
                 os.remove(self.asteroids.dest)
                 asteroids = []

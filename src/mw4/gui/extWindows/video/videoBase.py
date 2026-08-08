@@ -93,7 +93,7 @@ class VideoWindowBase(MWidget):
             self.msg.emit(2, "Video", "Camera error", f"MSG: {e.err}")
             self.running = False
             return
-        except Exception as e:
+        except (OSError, AttributeError, RuntimeError) as e:
             self.msg.emit(2, "Video", "Camera error", f"MSG: {e}")
             self.running = False
             return

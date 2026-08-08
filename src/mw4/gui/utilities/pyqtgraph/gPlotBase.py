@@ -222,7 +222,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             plotItem.addItem(textItem)
 
         maxL = maxR * 1.1
-        for text, x, y in zip(
+        for text, x, yval in zip(
             ["N", "E", "S", "W", "NE", "SE", "SW", "NW"],
             [0, maxL, 0, -maxL, maxL * 0.75, maxL * 0.75, -maxL * 0.75, -maxL * 0.75],
             [maxL, 0, -maxL, 0, maxL * 0.75, -maxL * 0.75, -maxL * 0.75, maxL * 0.75],
@@ -230,7 +230,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             textItem = pg.TextItem(color=self.M_PRIM, anchor=(0.5, 0.5))
             textItem.setHtml(f"<b>{text}</b>")
             textItem.setFont(font)
-            textItem.setPos(x, y)
+            textItem.setPos(x, yval)
             plotItem.addItem(textItem)
 
     def plotLoc(self, lat: float, plotItem: pg.PlotItem | None = None) -> None:

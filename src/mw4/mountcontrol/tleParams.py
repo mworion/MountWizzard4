@@ -13,7 +13,7 @@
 # License APL2.0
 #
 ###########################################################
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from mw4.mountcontrol.jdParamMixin import JdParamsMixin
 from mw4.mountcontrol.obsSite import ObsSite
 from skyfield.units import Angle
@@ -22,10 +22,10 @@ from skyfield.units import Angle
 @dataclass
 class TLEParams(JdParamsMixin):
     obsSite: ObsSite
-    azimuth: Angle = Angle(degrees=0)
-    altitude: Angle = Angle(degrees=0)
-    ra: Angle = Angle(hours=0)
-    dec: Angle = Angle(degrees=0)
+    azimuth: Angle = field(default_factory=lambda: Angle(degrees=0))
+    altitude: Angle = field(default_factory=lambda: Angle(degrees=0))
+    ra: Angle = field(default_factory=lambda: Angle(hours=0))
+    dec: Angle = field(default_factory=lambda: Angle(degrees=0))
     flip: bool = False
     message: str = ""
     l0: str = ""

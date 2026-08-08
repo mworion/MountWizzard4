@@ -22,6 +22,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from typing import ClassVar
 from unittest import mock
 
 
@@ -49,7 +50,7 @@ def test_saveWindowAsPNG(function):
 
 def test_saveAllWindowsAsPNG_1(function):
     class ExternalWindows:
-        uiWindows = {"test1": {"classObj": None}, "test2": {"classObj": 1}}
+        uiWindows: ClassVar = {"test1": {"classObj": None}, "test2": {"classObj": 1}}
 
     window = QWidget()
     window.app = App()

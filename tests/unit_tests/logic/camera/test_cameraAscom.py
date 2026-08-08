@@ -43,7 +43,14 @@ def function():
         func = CameraAscom(camera)
         func.device = mock.MagicMock()
         yield func
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"Camera/CameraAscom initialization failed: {e}")
 
 

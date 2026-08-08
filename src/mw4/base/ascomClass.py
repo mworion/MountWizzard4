@@ -45,7 +45,7 @@ class AscomClass(AlpacaAscomCommon):
         try:
             self.device = client.dynamic.Dispatch(self.config.deviceName)
             self.log.debug(f"[{self.config.deviceName}] Dispatching")
-        except Exception as e:
+        except (AttributeError, OSError) as e:
             self.log.error(f"[{self.config.deviceName}] Dispatch error: [{e}]")
             return
         else:

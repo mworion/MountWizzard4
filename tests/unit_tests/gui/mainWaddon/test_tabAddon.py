@@ -224,7 +224,7 @@ def test_tabaddon_method_exception_not_thrown():
         addon.storeConfig()
         addon.setupIcons()
         addon.updateColorSet()
-    except Exception:
+    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
         assert False, "Methods should not throw exceptions"
 
 

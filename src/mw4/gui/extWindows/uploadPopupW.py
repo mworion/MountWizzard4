@@ -22,14 +22,15 @@ from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.uploadPopup_ui import Ui_UploadPopup
 from pathlib import Path
 from PySide6.QtCore import QEventLoop, Qt, Signal
+from typing import ClassVar
 
 
 class UploadPopup(MWidget):
     signalProgress = Signal(object)
     signalStatus = Signal(object)
     signalProgressBarColor = Signal(object)
-    TIMEOUT_UPLOAD = 5
-    dataNames = {
+    TIMEOUT_UPLOAD: ClassVar = 5
+    dataNames: ClassVar = {
         "comet": {
             "file": "comets.mpc",
             "attr": "comet",

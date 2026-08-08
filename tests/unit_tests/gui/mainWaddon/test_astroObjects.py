@@ -152,7 +152,7 @@ def test_init_connects_start3s(qapp):
             uiSourceGroup=QGroupBox(),
             processSource=test,
         )
-        parent.app.timeMgr.start3s.emit()
+        parent.app.timeMgr.start1s.emit()
         mock_setup.assert_called_once()
 
 

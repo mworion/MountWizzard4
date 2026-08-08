@@ -25,7 +25,7 @@ This gives a clean, reproducible start/stop cycle that exercises:
 
   * full application boot (all logic objects, main window, timers)
   * the Qt event loop running normally for ~8 seconds, including at least
-    3–4 mount-up checks (CYCLE_MOUNT_UP = 2 000 ms) so the mount can connect
+    3-4 mount-up checks (CYCLE_MOUNT_UP = 2 000 ms) so the mount can connect
   * clean shutdown (threadPool drain, timer stop, signal disconnect)
 
 Mount connectivity
@@ -69,10 +69,10 @@ BOOT_TIMEOUT_MS = 15_000  # max ms to wait for the main window to appear
 QUIT_TIMEOUT_MS = 30_000  # max ms to wait for update10s → quit()  (fires at ≈8 s)
 MAX_BOOT_S = 10.0  # per-cycle assertion: boot faster than this
 MAX_CYCLE_S = 25.0  # per-cycle assertion: full cycle faster than this
-#   (boot ≈ 5–8 s  +  update10s at 8 s  +  margin)
+#   (boot ≈ 5-8 s  +  update10s at 8 s  +  margin)
 
 # ── optional mount host (set to "" to skip real TCP mount checks) ─────────────
-MOUNT_HOST = "mount.uranus"  # e.g. "192.168.2.15"  – injected into profile config
+MOUNT_HOST = "mount.uranus"  # e.g. "192.168.2.15"  - injected into profile config
 MOUNT_PORT_3492 = True  # True → port 3492, False → port 3490
 
 # ── work directory layout (mirrors bootstrap.setupWorkDirs) ──────────────────
@@ -132,7 +132,8 @@ def _inject_mount_host():
         try:
             profiles = json.loads(profile_file.read_text())
             profile_name = profiles.get("profileName", "config")
-        except Exception:
+        except json.JSONDecodeError:
+            # Failed to parse profiles.json, use default profile name
             pass
 
     cfg_path = config_dir / f"{profile_name}.cfg"
@@ -199,7 +200,7 @@ def test_loader_startup_cycles(qtbot, qapp):
        quit() → qapp.quit() runs first, exiting the local QEventLoop;
        pytest-qt still marks the signal as received.
        During these 8 s the mount-up timer (CYCLE_MOUNT_UP = 2 000 ms) fires
-       3–4 times, so a real mount (MOUNT_HOST != "") can fully connect.
+       3-4 times, so a real mount (MOUNT_HOST != "") can fully connect.
 
     4. ``app.threadPool.waitForDone(10_000)``
        Ensures no worker threads outlive the app object.
@@ -223,7 +224,7 @@ def test_loader_startup_cycles(qtbot, qapp):
 
         try:
             qtbot.waitExposed(app.mainW, timeout=BOOT_TIMEOUT_MS)
-        except Exception as exc:
+        except (RuntimeError, TimeoutError) as exc:
             status = f"boot-timeout ({exc.__class__.__name__})"
 
         t_boot = time.monotonic() - t0
@@ -235,7 +236,7 @@ def test_loader_startup_cycles(qtbot, qapp):
                     app.timeMgr.update10s, timeout=QUIT_TIMEOUT_MS, raising=True
                 ):
                     pass  # event loop runs here; update10s fires → quit()
-            except Exception as exc:
+            except (RuntimeError, TimeoutError) as exc:
                 status = f"quit-timeout ({exc.__class__.__name__})"
 
         t_total = time.monotonic() - t0

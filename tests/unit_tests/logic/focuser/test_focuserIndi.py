@@ -27,7 +27,14 @@ def function():
         focuser = Focuser(App())
         func = FocuserIndi(parent=focuser)
         func.config.deviceName = "test_focuser"
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"Fixture initialization failed: {e}")
     yield func
     func.app.threadPool.waitForDone(5000)

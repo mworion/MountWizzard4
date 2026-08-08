@@ -29,7 +29,7 @@ from mw4.mountcontrol.convert import (
 from skyfield.api import Angle, Loader, load, wgs84
 from skyfield.timelib import Time, Timescale
 from skyfield.toposlib import GeographicPosition
-from typing import Any
+from typing import Any, ClassVar
 
 
 class MountStatus(IntEnum):
@@ -97,11 +97,13 @@ class ObsSite:
 
     log = logging.getLogger("MW4")
 
-    # Derived from MountStatus / _STATUS_LABELS — do not duplicate.
+    # Derived from MountStatus / _STATUS_LABELS - do not duplicate.
     _STATUS_VALID: frozenset[int] = frozenset(int(s) for s in MountStatus)
-    STAT: dict[str, str] = {str(int(s)): label for s, label in _STATUS_LABELS.items()}
+    STAT: ClassVar[dict[str, str]] = {
+        str(int(s)): label for s, label in _STATUS_LABELS.items()
+    }
 
-    STAT_SAT = {
+    STAT_SAT: ClassVar = {
         "V": "slewing to transit",
         "P": "stopped, waiting sat",
         "S": "slewing to catch sat",
@@ -217,7 +219,7 @@ class ObsSite:
     def timeSidereal(self, value: Any) -> None:
         if isinstance(value, str):
             self._timeSidereal = stringToAngle(value, preference="hours")
-        elif isinstance(value, float):
+        elif isinstance(value, (int, float)):
             self._timeSidereal = valueToAngle(value, preference="hours")
         elif isinstance(value, Angle):
             self._timeSidereal = value
@@ -481,7 +483,7 @@ class ObsSite:
             self.log.warning("Wrong number of chunks")
             return False
         elev = response[0]
-        # LX200 protocol encodes east as negative – swap sign to east-positive convention
+        # LX200 protocol encodes east as negative - swap sign to east-positive convention
         lon = (
             response[1].replace("-", "+")
             if "-" in response[1]

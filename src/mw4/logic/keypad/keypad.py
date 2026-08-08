@@ -16,13 +16,13 @@
 import logging
 import numpy as np
 import websocket
-from typing import Any
+from typing import Any, ClassVar
 
 
 class KeyPad:
     log = logging.getLogger("MW4")
 
-    keyCodesA: dict[int, int] = {
+    keyCodesA: ClassVar[dict[int, int]] = {
         48: 82,
         49: 92,
         50: 94,
@@ -46,7 +46,7 @@ class KeyPad:
         8: 118,
     }
 
-    keyCodesB: dict[str, int] = {
+    keyCodesB: ClassVar[dict[str, int]] = {
         "a": 13,
         "b": 15,
         "c": 16,
@@ -138,7 +138,7 @@ class KeyPad:
         "-": 46,
     }
 
-    buttonCodes: dict[str, int] = {
+    buttonCodes: ClassVar[dict[str, int]] = {
         "key_0": 82,
         "key_1": 92,
         "key_2": 94,
@@ -161,7 +161,7 @@ class KeyPad:
         "key_right": 18,
     }
 
-    charTrans: dict[int, int] = {
+    charTrans: ClassVar[dict[int, int]] = {
         223: 176,
     }
 
@@ -267,8 +267,8 @@ class KeyPad:
             return
 
         message = [2, 6, keyUsed]
-        message = message + [self.calcChecksum(message)]
-        message = message + [3]
+        message = [*message, self.calcChecksum(message)]
+        message = [*message, 3]
         self.send(message)
 
     def mouseReleased(self, key: str) -> None:
@@ -277,8 +277,8 @@ class KeyPad:
             return
 
         message = [2, 5, keyUsed]
-        message = message + [self.calcChecksum(message)]
-        message = message + [3]
+        message = [*message, self.calcChecksum(message)]
+        message = [*message, 3]
         self.send(message)
 
     def keyDown(self, key: int) -> None:
@@ -287,8 +287,8 @@ class KeyPad:
             return
 
         message = [2, 6, keyUsed]
-        message = message + [self.calcChecksum(message)]
-        message = message + [3]
+        message = [*message, self.calcChecksum(message)]
+        message = [*message, 3]
         self.send(message)
 
     def keyUp(self, key: int) -> None:
@@ -297,8 +297,8 @@ class KeyPad:
             return
 
         message = [2, 5, keyUsed]
-        message = message + [self.calcChecksum(message)]
-        message = message + [3]
+        message = [*message, self.calcChecksum(message)]
+        message = [*message, 3]
         self.send(message)
 
     def keyPressed(self, key: int) -> None:
@@ -310,12 +310,12 @@ class KeyPad:
             return
 
         message = [2, 6, keyUsed]
-        message = message + [self.calcChecksum(message)]
-        message = message + [3]
+        message = [*message, self.calcChecksum(message)]
+        message = [*message, 3]
         self.send(message)
         message = [2, 5, keyUsed]
-        message = message + [self.calcChecksum(message)]
-        message = message + [3]
+        message = [*message, self.calcChecksum(message)]
+        message = [*message, 3]
         self.send(message)
 
     def on_data(
@@ -330,7 +330,7 @@ class KeyPad:
             else:
                 if data[i] == 3:
                     started = False
-                    if len(result) > 1 and self.calcChecksum([2] + result[:-1]) == result[-1]:
+                    if len(result) > 1 and self.calcChecksum([2, *result[:-1]]) == result[-1]:
                         self.checkDispatch(result)
                 else:
                     if started:

@@ -17,15 +17,16 @@ import pytest
 from mw4.base.signalsDevices import Signals
 from mw4.logic.lightPanel.lightPanelAlpaca import LightPanelAlpaca
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from typing import ClassVar
 from unittest import mock
 
 
 class Parent:
     try:
         app = App()
-    except Exception:
+    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
         app = mock.MagicMock()
-    data = {}
+    data: ClassVar = {}
     DEVICE_TYPE = "covercalibrator"
     deviceType = ""
     signals = Signals()
@@ -38,7 +39,14 @@ def function():
         func = LightPanelAlpaca(parent=Parent())
         func.device = mock.MagicMock()
         func.deviceName = "test_light"
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"Fixture initialization failed: {e}")
     yield func
 

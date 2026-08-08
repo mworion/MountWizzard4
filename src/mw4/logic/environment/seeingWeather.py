@@ -74,7 +74,7 @@ class SeeingWeather:
         with open(dataFile) as f:
             try:
                 self.data = json.load(f)
-            except Exception as e:
+            except json.JSONDecodeError as e:
                 self.log.warning(f"Cannot load data file, error: {e}")
                 return
         self.signals.update.emit()
@@ -83,7 +83,7 @@ class SeeingWeather:
         try:
             data = requests.get(str(url), timeout=30)
             self.log.debug(f"Seeing url: [{url}] response code: [{data.status_code}]")
-        except Exception as e:
+        except (requests.RequestException, OSError) as e:
             self.log.critical(f"[{url}] general exception: [{e}]")
             return False
         if data.status_code != 200:

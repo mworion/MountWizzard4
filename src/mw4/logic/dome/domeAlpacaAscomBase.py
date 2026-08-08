@@ -14,11 +14,11 @@
 #
 ###########################################################
 from mw4.base.alpacaAscomCommon import AlpacaAscomCommon
-from typing import Any
+from typing import Any, ClassVar
 
 
 class DomeAlpacaAscomBase(AlpacaAscomCommon):
-    SHUTTER_STATES: list[str] = ["Open", "Closed", "Opening", "Closing", "Error"]
+    SHUTTER_STATES: ClassVar[list[str]] = ["Open", "Closed", "Opening", "Closing", "Error"]
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent=parent)

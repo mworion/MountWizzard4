@@ -19,11 +19,11 @@ from mw4.gui.utilities.qtHelpers import clickable, svg2pixmap
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QTransform
 from PySide6.QtWidgets import QLabel, QTableWidgetItem
-from typing import Any
+from typing import Any, ClassVar
 
 
 class EnvironSeeing(TabAddon):
-    VerticalListEntries = [
+    VerticalListEntries: ClassVar = [
         "Date [dd mon]",
         "Hour [hh:mm]",
         "High clouds  [%]",
@@ -39,7 +39,7 @@ class EnvironSeeing(TabAddon):
         "Bad Layers [K/100m]",
         "Jet stream [m/s]",
     ]
-    DataFields = [
+    DataFields: ClassVar = [
         "time",
         "time",
         "high_clouds",

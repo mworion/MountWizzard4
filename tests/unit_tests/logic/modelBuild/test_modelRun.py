@@ -29,7 +29,14 @@ from unittest import mock
 def function():
     try:
         function = ModelData(App())
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"Fixture initialization failed: {e}")
     yield function
 

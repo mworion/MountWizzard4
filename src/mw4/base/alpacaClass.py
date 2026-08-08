@@ -25,7 +25,7 @@ from alpaca.telescope import Telescope as AlpycaTelescope
 from dataclasses import dataclass, field
 from mw4.base.alpacaAscomCommon import AlpacaAscomCommon
 from mw4.base.tpool import Worker
-from typing import Any
+from typing import Any, ClassVar
 
 
 @dataclass
@@ -41,7 +41,7 @@ class DeviceConfigAlpaca:
 
 class AlpacaClass(AlpacaAscomCommon):
     PROTOCOL_NAME: str = "ALPACA"
-    DEVICE_TYPE_MAP: dict[str, type] = {
+    DEVICE_TYPE_MAP: ClassVar[dict[str, type]] = {
         "camera": AlpycaCamera,
         "dome": AlpycaDome,
         "focuser": AlpycaFocuser,
@@ -66,7 +66,7 @@ class AlpacaClass(AlpacaAscomCommon):
         address = f"{self.config.hostAddress}:{self.config.port}"
         try:
             self.device = deviceClass(address, self.config.number, self.config.protocol)
-        except Exception as e:
+        except (ConnectionError, TimeoutError, OSError, RuntimeError, Exception) as e:
             self.log.error(f"Create device exception: [{e}]")
             return False
 
@@ -90,7 +90,7 @@ class AlpacaClass(AlpacaAscomCommon):
             if not versions:
                 return 0
             return max(versions)
-        except Exception as e:
+        except (ConnectionError, TimeoutError, OSError, Exception) as e:
             self.log.error(f"Discover API exception: [{e}]")
             return 0
 
@@ -98,7 +98,7 @@ class AlpacaClass(AlpacaAscomCommon):
         address = f"{hostaddress}:{port}"
         try:
             return alpacaMgmt.configureddevices(address)
-        except Exception as e:
+        except (ConnectionError, TimeoutError, OSError, Exception) as e:
             self.log.error(f"Search devices exception: [{e}]")
             return []
 

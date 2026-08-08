@@ -44,7 +44,7 @@ class MWFileDialog(MWidget):
     directory, type a file name, switch between named filters and accept or
     cancel the selection.
 
-    The dialog is not a :class:`QDialog` – :meth:`exec` runs a local
+    The dialog is not a :class:`QDialog` - :meth:`exec` runs a local
     :class:`QEventLoop` so the call site can stay synchronous, mirroring
     Qt's own ``QDialog.exec()`` semantics.
     """

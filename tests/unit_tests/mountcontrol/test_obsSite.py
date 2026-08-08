@@ -295,7 +295,7 @@ def test_Site_haJNow_1():
 
     obsSite.timeSidereal = 12
     obsSite.raJNow = Angle(hours=12)
-    obsSite.haJNow.hours == 0
+    assert obsSite.haJNow.hours == 0
 
 
 def test_Site_haJNow_2():
@@ -303,7 +303,7 @@ def test_Site_haJNow_2():
 
     obsSite.timeSidereal = Angle(hours=12)
     obsSite.raJNow = Angle(hours=12)
-    obsSite.haJNow.hours == Angle(hours=0)
+    assert obsSite.haJNow.hours == 0
 
 
 def test_Site_haJNowTarget_1():
@@ -311,7 +311,7 @@ def test_Site_haJNowTarget_1():
 
     obsSite.timeSidereal = 12
     obsSite.raJNowTarget = Angle(hours=12)
-    obsSite.haJNowTarget is None
+    assert obsSite.haJNowTarget.hours == 0
 
 
 def test_Site_haJNowTarget_2():
@@ -319,7 +319,7 @@ def test_Site_haJNowTarget_2():
 
     obsSite.timeSidereal = Angle(hours=12)
     obsSite.raJNowTarget = Angle(hours=12)
-    obsSite.haJNowTarget.hours == 0
+    assert obsSite.haJNowTarget.hours == 0
 
 
 def test_Site_decTarget():

@@ -19,11 +19,11 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from pathlib import Path
 from PySide6.QtWidgets import QApplication, QListView
-from typing import Any
+from typing import Any, ClassVar
 
 
 class Rename(TabAddon):
-    HEADER_FORMATTERS: dict[str, Callable[[str | float], str]] = {
+    HEADER_FORMATTERS: ClassVar[dict[str, Callable[[str | float], str]]] = {
         "DATE-OBS": lambda e: str(e).replace(":", "-").replace("T", "_").split(".")[0],
         "XBINNING": lambda e: f"Bin{e:1.0f}",
         "CCD-TEMP": lambda e: f"Temp{e:03.0f}",

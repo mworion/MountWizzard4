@@ -36,7 +36,14 @@ def function():
         shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
         shutil.copy("tests/testData/astrometry.cfg", "tests/work/temp/astrometry.cfg")
         func = PlateSolve(app=App())
-    except Exception as e:
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
         pytest.skip(f"Fixture initialization failed: {e}")
     yield func
 
@@ -46,7 +53,7 @@ def mocked_queueGet(monkeypatch, function):
 
     def mock_get(*args, **kwargs):
         function.solveLoopRunning = False
-        raise Exception("Mocked to stop loop")
+        raise RuntimeError("Mocked to stop loop")
 
     monkeypatch.setattr(function.solveQueue, "get", mock_get)
 
@@ -124,12 +131,11 @@ def test_runSolverBin_1(function):
 
 
 def test_runSolverBin_2(function):
-    with (
-        mock.patch.object(subprocess, "Popen", return_value=None),
-        mock.patch.object(
-            subprocess.Popen, "communicate", return_value=("", ""), side_effect=Exception()
-        ),
-    ):
+    function.framework = "astap"
+    function.run["astap"].timeout = function.run["astap"].config.timeout
+    mock_proc = mock.MagicMock()
+    mock_proc.communicate.side_effect = OSError("Test error")
+    with mock.patch.object(subprocess, "Popen", return_value=mock_proc):
         suc, _ret = function.runSolverBin(["test", "test", "test", "test"])
         assert not suc
 

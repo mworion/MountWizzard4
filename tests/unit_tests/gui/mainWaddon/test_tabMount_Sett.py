@@ -159,7 +159,7 @@ def test_updateSettingGUI_UTCExpire_1(function):
 
 
 def test_updateSettingGUI_UTCExpire_2(function):
-    tomorrow = datetime.date.today() + datetime.timedelta(days=15)
+    tomorrow = datetime.datetime.now(datetime.UTC).date() + datetime.timedelta(days=15)
     value = tomorrow.strftime("%Y-%m-%d")
     sett = function.app.mount.setting
     sett.UTCExpire = value
@@ -168,7 +168,7 @@ def test_updateSettingGUI_UTCExpire_2(function):
 
 
 def test_updateSettingGUI_UTCExpire_3(function):
-    tomorrow = datetime.date.today() + datetime.timedelta(days=40)
+    tomorrow = datetime.datetime.now(datetime.UTC).date() + datetime.timedelta(days=40)
     value = tomorrow.strftime("%Y-%m-%d")
     sett = function.app.mount.setting
     sett.UTCExpire = value

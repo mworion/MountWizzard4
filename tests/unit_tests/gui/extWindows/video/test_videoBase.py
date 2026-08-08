@@ -89,7 +89,7 @@ def test_workerVideoStream_0(function):
 def test_workerVideoStream_1(function):
     capture = mock.MagicMock()
     capture.isOpened.return_value = True
-    capture.open.side_effect = Exception
+    capture.open.side_effect = OSError
     function.capture = capture
     function.running = True
     function.workerVideo("test", 1)

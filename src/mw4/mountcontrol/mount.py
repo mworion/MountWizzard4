@@ -317,7 +317,7 @@ class MountDevice(QObject):
             kwargs["port"] = self.config.wolPort
         try:
             wakeonlan.send_magic_packet(self.config.MAC, **kwargs)
-        except Exception as e:
+        except (OSError, ValueError) as e:
             self.log.warning(f"Boot mount failed: {e}")
             return False
         return True

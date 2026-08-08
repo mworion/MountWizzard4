@@ -21,15 +21,16 @@ from mw4.base.signalsDevices import Signals
 from mw4.logic.environment.sensorWeatherOnline import SensorWeatherOnline
 from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from typing import ClassVar
 from unittest import mock
 
 
 class Parent:
     try:
         app = App()
-    except Exception:
+    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
         app = mock.MagicMock()
-    data = {}
+    data: ClassVar = {}
     deviceType = ""
     signals = Signals()
     loadConfig = True
@@ -94,7 +95,9 @@ def test_processOpenWeatherMapData_1(function):
 
 def test_processOpenWeatherMapData_2(function):
     shutil.copy("tests/testData/openweathermap.data", "tests/work/data/openweathermap.data")
-    with mock.patch.object(json, "load", return_value={}, side_effect=Exception):
+    with mock.patch.object(
+        json, "load", return_value={}, side_effect=json.JSONDecodeError("test", "test", 0)
+    ):
         function.processOpenWeatherMapData()
 
 
@@ -158,7 +161,7 @@ def test_workerGetOpenWeatherMapData_3(function):
         status_code = 300
 
     function.app.isOnline = True
-    with mock.patch.object(requests, "get", side_effect=Exception(), return_value=Test()):
+    with mock.patch.object(requests, "get", side_effect=OSError(), return_value=Test()):
         function.workerGetOpenWeatherMapData("http://localhost")
 
 

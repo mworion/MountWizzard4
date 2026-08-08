@@ -37,17 +37,17 @@ mwglob = {
 
 def setupTestDirectories() -> None:
     """Create and setup test directories."""
-    for d in mwglob:
-        path = Path(mwglob[d])
+    for path_str in mwglob.values():
+        path = Path(path_str)
         path.mkdir(parents=True, exist_ok=True)
 
 
 def cleanupTestFiles() -> None:
     """Clean up test files from work directories."""
-    for d in mwglob:
+    for d, path_str in mwglob.items():
         if "modelData" in d:
             continue
-        files = glob.glob(f"{mwglob[d]}/*")
+        files = glob.glob(f"{path_str}/*")
         for f in files:
             if "empty" not in f and os.path.isfile(f):
                 os.remove(f)

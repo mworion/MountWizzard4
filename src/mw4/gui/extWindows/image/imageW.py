@@ -331,8 +331,7 @@ class ImageWindow(MWidget):
             self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def abortExpose(self) -> None:
-        if not self.app.dReg["camera"].instance.abort():
-            return
+        self.app.dReg["camera"].instance.abort()
         if self.imagingDeviceStat["expose"]:
             self.app.dReg["camera"].signals.saved.disconnect(self.exposeImageDone)
         if self.imagingDeviceStat["exposeN"]:

@@ -1835,7 +1835,7 @@ class Ui_SettingDialog(object):
         self.GroupEnvironmentConditions.setTitle(QCoreApplication.translate("SettingDialog", u"Environment conditions", None))
         self.sky.setText(QCoreApplication.translate("SettingDialog", u"Sensor 2", None))
         self.env.setText(QCoreApplication.translate("SettingDialog", u"Sensor 1", None))
-        self.env_3.setText(QCoreApplication.translate("SettingDialog", u"Direct", None))
+        self.env_3.setText(QCoreApplication.translate("SettingDialog", u"Direct Plug", None))
 #if QT_CONFIG(tooltip)
         self.sensor1WeatherSetup.setToolTip(QCoreApplication.translate("SettingDialog", u"<html><head/><body><p>Configure the external sensor device. A popup will open and ask for the parameters.</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)

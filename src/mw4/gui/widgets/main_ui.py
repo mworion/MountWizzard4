@@ -7387,7 +7387,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(tooltip)
         self.directGroup.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>if direct attached sensor (RS-232 on mount) is present, show its values</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
-        self.directGroup.setTitle(QCoreApplication.translate("MainWindow", u"Direct UART", None))
+        self.directGroup.setTitle(QCoreApplication.translate("MainWindow", u"Direct Plug", None))
 #if QT_CONFIG(tooltip)
         self.dewPointDirect.setToolTip("")
 #endif // QT_CONFIG(tooltip)

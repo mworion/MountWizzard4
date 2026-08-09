@@ -999,7 +999,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Direct</string>
+         <string>Direct Plug</string>
         </property>
        </widget>
        <widget class="QComboBox" name="directWeatherDevice">

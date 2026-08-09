@@ -7481,7 +7481,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;if direct attached sensor (RS-232 on mount) is present, show its values&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="title">
-           <string>Direct UART</string>
+           <string>Direct Plug</string>
           </property>
           <property name="checkable">
            <bool>true</bool>

@@ -490,7 +490,6 @@ def test_loadModel_2(function):
     assert val == []
 
 
-
 def test_loadModel_4(function):
     values = [{"azimuth": 1, "altitude": 1}, {"azimuth": 2, "altitude": 2}]
     with open("tests/work/config/test.model", "w") as outfile:
@@ -506,7 +505,6 @@ def test_loadBPTS_2(function):
 
     val = function.loadBPTS(Path("tests/work/config/test.bpts"))
     assert val == []
-
 
 
 def test_loadBPTS_4(function):

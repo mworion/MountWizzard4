@@ -58,7 +58,7 @@ def test_startCommunication_(function):
 
 def test_stopCommunication_1(function):
     function.running = True
-    function.app.timeMgr.update3m.connect(function.pollOpenWeatherMapData)
+    function.app.timeMgr.update3s.connect(function.pollOpenWeatherMapData)
     function.stopCommunication()
     assert not function.running
 

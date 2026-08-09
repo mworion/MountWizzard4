@@ -146,17 +146,8 @@ class EnvironWeather(TabAddon):
 
     def smartEnvironGui(self) -> None:
         for source in self.refractionSources:
-            stat = self.app.dReg[source].stat
-            group = self.refractionSources[source].group
-            if stat is None:
-                group.setFixedWidth(0)
-                group.setEnabled(False)
-            elif stat:
-                group.setMinimumSize(75, 0)
-                group.setEnabled(True)
-            else:
-                group.setMinimumSize(75, 0)
-                group.setEnabled(False)
+            stat = bool(self.app.dReg[source].stat)
+            self.refractionSources[source].group.setEnabled(stat)
 
     def updateRefractionUpdateType(self) -> None:
         if self.refractionSource != "directWeather":

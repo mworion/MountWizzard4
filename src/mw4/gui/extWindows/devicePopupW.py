@@ -60,12 +60,12 @@ class DevicePopup(MWidget):
                 "loadConfig": self.ui.indiLoadConfig,
             },
             "alpaca": {
-                "hostaddress": self.ui.alpacaHostAddress,
+                "hostAddress": self.ui.alpacaHostAddress,
                 "port": self.ui.alpacaPort,
                 "deviceName": self.ui.alpacaDeviceList,
             },
             "sgpro": {
-                "hostaddress": self.ui.sgproHostAddress,
+                "hostAddress": self.ui.sgproHostAddress,
                 "port": self.ui.sgproPort,
                 "deviceName": self.ui.sgproDeviceList,
             },
@@ -98,14 +98,14 @@ class DevicePopup(MWidget):
             },
             "online": {
                 "apiKey": self.ui.onlineWeatherApiKey,
-                "hostaddress": self.ui.onlineWeatherHostAddress,
+                "hostAddress": self.ui.onlineWeatherHostAddress,
             },
             "seeing": {
                 "apiKey": self.ui.seeingWeatherApiKey,
-                "hostaddress": self.ui.seeingWeatherHostAddress,
+                "hostAddress": self.ui.seeingWeatherHostAddress,
             },
             "relay": {
-                "hostaddress": self.ui.relayHostAddress,
+                "hostAddress": self.ui.relayHostAddress,
                 "user": self.ui.relayUser,
                 "password": self.ui.relayPassword,
             },

@@ -26,7 +26,7 @@ from typing import Any
 @dataclass
 class DeviceConfigOnlineWeather:
     deviceName: str = field(default="OnlineWeather")
-    hostAddress: str | None = field(default="")
+    hostAddress: str = field(default="")
     apiKey: str = field(default="")
 
 
@@ -52,10 +52,10 @@ class SensorWeatherOnline:
         self.app.timeMgr.update3s.connect(self.pollOpenWeatherMapData)
 
     def stopCommunication(self) -> None:
+        self.app.timeMgr.update3s.disconnect(self.pollOpenWeatherMapData)
         self.running = False
         self.data.clear()
         self.signals.deviceDisconnected.emit(self.config.deviceName)
-        self.app.timeMgr.update3m.disconnect(self.pollOpenWeatherMapData)
 
     @staticmethod
     def getDewPoint(tempAir: float, relativeHumidity: float) -> float:
@@ -108,9 +108,9 @@ class SensorWeatherOnline:
         else:
             self.data["WEATHER_PARAMETERS.RainVol"] = 0
 
-    def workerGetOpenWeatherMapData(self, url: Path) -> bool:
+    def workerGetOpenWeatherMapData(self, url: str) -> bool:
         try:
-            data = requests.get(str(url), timeout=30)
+            data = requests.get(url, timeout=30)
             self.log.debug(f"Weather url: [{url}] response code: [{data.status_code}]")
         except (requests.RequestException, OSError) as e:
             self.log.critical(f"[{url}] general exception: [{e}]")
@@ -140,7 +140,7 @@ class SensorWeatherOnline:
         ageData = self.app.dReg["mount"].obsSite.loader.days_old(fileName)
         return ageData > hours / 24
 
-    def getOpenWeatherMapData(self, url: Path) -> None:
+    def getOpenWeatherMapData(self, url: str) -> None:
         if not self.loadingFileNeeded("openweathermap.data", 1):
             self.processOpenWeatherMapData()
             self.sendStatus(True)
@@ -158,5 +158,5 @@ class SensorWeatherOnline:
         lon = self.location.longitude.degrees
 
         webSite = f"http://{self.config.hostAddress}/data/2.5/weather"
-        url = Path(f"{webSite}?lat={lat:1.2f}&lon={lon:1.2f}")
-        self.getOpenWeatherMapData(url=url + f"&APPID={self.config.apiKey}")
+        url = f"{webSite}?lat={lat:1.2f}&lon={lon:1.2f}"
+        self.getOpenWeatherMapData(url + f"&APPID={self.config.apiKey}")

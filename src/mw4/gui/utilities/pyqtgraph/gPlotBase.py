@@ -34,7 +34,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.penGrid: QPen = pg.mkPen(color=self.M_SEC)
         self.brushGrid: QBrush = pg.mkBrush(color=self.rgb2hex(self.M_PRIM))
         self.penHorizon: QPen = pg.mkPen(color=self.rgb2hex(self.M_PRIM), width=1)
-        self.brushHorizon: QBrush = pg.mkBrush(color=self.rgb2hex(self.M_PRIM2))
+        self.brushHorizon: QBrush = pg.mkBrush(color=self.rgb2hex(self.M_PRIM2) + "80")
         self.defRange: dict = {}
         self.scatterItem: pg.ScatterPlotItem | None = None
         self.imageItem: pg.ImageItem | None = None
@@ -52,7 +52,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.brush = pg.mkBrush(color=self.rgb2hex(self.M_PRIM))
         self.brushGrid = pg.mkBrush(color=self.rgb2hex(self.M_SEC))
         self.penHorizon = pg.mkPen(color=self.rgb2hex(self.M_PRIM), width=1)
-        self.brushHorizon = pg.mkBrush(color=self.rgb2hex(self.M_PRIM2))
+        self.brushHorizon = pg.mkBrush(color=self.rgb2hex(self.M_PRIM2) + "80")
         self.setBackground("#00000000")
         for side in ("left", "top", "right", "bottom"):
             for plotItem in self.p:

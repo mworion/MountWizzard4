@@ -323,7 +323,8 @@ class HemisphereDraw(MWidget):
             if item:
                 items.append(item)
                 item.setVisible(True)
-
+        if not items:
+            return
         obsSite = self.app.dReg["mount"].obsSite
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees

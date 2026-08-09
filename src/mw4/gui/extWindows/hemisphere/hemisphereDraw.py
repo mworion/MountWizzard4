@@ -364,7 +364,8 @@ class HemisphereDraw(MWidget):
 
         question = "<b>Manual slewing to coordinate</b>"
         question += "<br><br>Selected coordinates are:<br>"
-        question += f"<font color={self.M_PRIM}> Altitude: {altitude.degrees:3.1f}°"
+        col = self.rgb2hex(self.M_PRIM)
+        question += f"<font color={col}> Altitude: {altitude.degrees:3.1f}°"
         question += f"   Azimuth: {azimuth.degrees:3.1f}°</font>"
         question += "<br><br>Would you like to start slewing?<br>"
 
@@ -384,11 +385,12 @@ class HemisphereDraw(MWidget):
 
         question = "<b>Polar / Ortho Alignment procedure</b>"
         question += "<br>Selected alignment star: "
-        question += f"<font color={self.M_PRIM}>{name}.</font>"
+        col = self.rgb2hex(self.M_PRIM)
+        question += f"<font color={col}>{name}.</font>"
         question += "<br>Would you like to start alignment?<br>"
-
         isDAT = self.app.dReg["mount"].setting.statusDualAxisTracking
-        warning = f"<br><i><font color={self.M_YELLOW}>"
+        col = self.rgb2hex(self.M_YELLOW)
+        warning = f"<br><i><font color={col}>"
         warning += "Dual Axis Tracking is actually enabled!<br>"
         warning += "It should be off during alignment process.</font></i>"
 

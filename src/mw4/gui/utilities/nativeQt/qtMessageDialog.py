@@ -100,6 +100,7 @@ class MWMessageDialog(MWidget):
             for index, label in enumerate(buttons or []):
                 btn = QPushButton(label)
                 btn.clicked.connect(lambda _checked=False, idx=index: self.onClick(idx))
+                btn.setMinimumSize(80, 25)
                 buttonRow.addWidget(btn)
                 self.buttonWidgets.append(btn)
 

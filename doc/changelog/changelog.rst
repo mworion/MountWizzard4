@@ -6,7 +6,7 @@ Beta versions
 
 Version 4.x
 ^^^^^^^^^^^
-4.0.0b18
+4.0.0b21
 
 - this is a major release !
   please try out in a separate work folder for test!
@@ -73,4 +73,3 @@ Version 4.x
 - remove: blending profiles as it did not work so far.
 - remove: native support for NINA (replaced by ALPACA)
 - fix: typos
-

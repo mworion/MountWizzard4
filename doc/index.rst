@@ -2,7 +2,7 @@ Welcome to MountWizzard4!
 -------------------------
 MountWizzard4 is a general utility for 10micron users for improving the workflow 
 for astronomy work. It runs on Windows11, Windows10, Mac OSX (beginning from
-10.12 to 26.x) and Linux (Ubuntu from 16.04 to 24.04). If you have some knowledge
+10.12 to 26.x) and Linux (Ubuntu from 16.04 to 26.04). If you have some knowledge
 around Raspberry Pi's and other SOC, you might be able to install MountWizzard4 on
 a RPi4 or RPi5.
 
@@ -47,7 +47,7 @@ ASCOM, Alpaca and in addition Sequence Generator Pro and N.I.N.A. as camera devi
 
 Known limitations
 =================
-MountWizzard4 v4 does support python 3.11 - 3.13 right now. The reason for that
+MountWizzard4 v4 does support python 3.11 - 3.14 right now. The reason for that
 is the lack of precompiled packages. Some features are limited to windows as 
 they need the original 10micron updater program for execution. As python moves
 with its releases forward, also MountWizzard4 will follow.

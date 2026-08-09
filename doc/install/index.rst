@@ -59,12 +59,12 @@ and change directory to this work folder. the command
 
 does download the right python package (3.10) and installs a virtual environment
 in you work folder. The virtual environment is stored in a directory there called
-".venv". If you go for testing the new v4 version, please install python 3.13 with
+".venv". If you go for testing the new v4 version, please install python 3.14 with
 the command:
 
 .. code-block:: bash
 
-    uv venv -p 3.13
+    uv venv -p 3.14
 
 The resulting virtual environment is only for this work folder and does not
 interfere with any other python installation on your system. You can have as many

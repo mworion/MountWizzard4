@@ -24,7 +24,7 @@ package-data = ["data/**/*.*"]
 
 [project]
 name = "mountwizzard4"
-version = "4.0.0b22"
+version = "4.0.0b23"
 license = "Apache-2.0"
 description = "Tool for managing 10_micron mounts"
 readme = "README.rst"
@@ -114,6 +114,7 @@ dev = [
     "ruff==0.16.1",
     "coverage==7.15.3",
     "scipy-stubs==1.18.0.1",
+    "fabric==3.2.3",
 ]
 
 [tool.pytest.ini_options]
@@ -151,10 +152,10 @@ extend-select = [
 ]
 ignore = ["N999", "BLE001"]
 
+[tool.ruff.lint.per-file-ignores]
+
 [tool.ruff.lint.isort]
 no-sections = true
 
 [tool.ruff.lint.mccabe]
 max-complexity = 10
-
-[tool.ruff.lint.per-file-ignores]

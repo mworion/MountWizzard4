@@ -14,6 +14,7 @@
 #
 ###########################################################
 import time
+from fabric import Connection
 from invoke import task
 
 rn = ""
@@ -33,9 +34,9 @@ client = {
         "scp": "mw@astro-comp.uranus:/home/mw/test",
     },
     "win11": {
-        "user": "mw@192.168.40.221",
-        "work": "test",
-        "scp": "mw@192.168.40.221:/Users/mw/test",
+        "user": "mw@astro-win11.uranus",
+        "work": "c:\\Users\\mw\\test",
+        "scp": "mw@astro-win11.uranus:/Users/mw/test",
     },
 }
 
@@ -45,7 +46,7 @@ def runMW(c, param):
 
 
 def printMW(param):
-    pass
+    print(param)
 
 
 @task
@@ -107,6 +108,7 @@ def build_widgets(c):
 def build(c):
     printMW("building dist mountwizzard4")
     runMW(c, "rm -f dist/*.tar.gz")
+    runMW(c, "rm -f dist/*.whl")
     runMW(c, "uv build")
     runMW(
         c,
@@ -176,20 +178,29 @@ def pypiCleanup(c):
 
 
 def test_windows(c, user, work, scp):
-    printMW("...delete test dir")
-    runMW(c, f'ssh {user} "if exist {work} rd /s /q {work}"')
-    time.sleep(1)
-    printMW("...make test dir")
-    runMW(c, f'ssh {user} "if not exist {work} mkdir {work}"')
-    time.sleep(1)
+    conn = Connection(host=client["win11"]["user"])
+    ps_script = """
+        Remove-Item -Path C:\\Users\\mw\\test -Recurse -Force -ErrorAction SilentlyContinue
+        New-Item -ItemType Directory -Path C:\\Users\\mw\\test
+    """
+    result = conn.run(f'powershell -Command "{ps_script}"', hide=False)
+    printMW(result)
 
     with c.cd("dist"):
         printMW("...copy *.tar.gz to test dir")
         runMW(c, f"scp -r mountwizzard4.tar.gz {scp}")
 
-    runMW(c, f'ssh {user} "cd {work} && uv venv -p 3.13"')
-    runMW(c, f'ssh {user} "cd {work} && uv pip install mountwizzard4.tar.gz"')
-    runMW(c, f'ssh {user} "schtasks /run /tn \"LaunchUV\""')
+    conn = Connection(host=client["win11"]["user"])
+    ps_script = """
+        Set-Item -Path env:UV_PYTHON_INSTALL_DIR -Value 'C:\\uv-python'
+        Set-Location C:\\Users\\mw\\test
+        uv venv -p 3.13
+        uv pip install mountwizzard4.tar.gz
+        Start-ScheduledTask -TaskName 'MW4'
+    """
+    result = conn.run(f'powershell -Command "{ps_script}"', hide=False)
+    printMW(result)
+    runMW(c, f'ssh {user} "schtasks /run /tn \"MW4\""')
 
 
 def test_ubuntu(c, user, work, scp):

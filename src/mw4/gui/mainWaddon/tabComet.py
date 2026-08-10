@@ -13,14 +13,13 @@
 # License APL2.0
 #
 ###########################################################
-
 import json
 import os
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.logic.databaseProcessing.sourceURL import cometSourceURLs
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
+from PySide6.QtWidgets import QAbstractItemView, QApplication, QTableWidgetItem
 from typing import Any
 
 
@@ -171,6 +170,7 @@ class Comet(TabAddon):
                     Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
                 )
                 self.ui.listComets.setItem(row, 5, entry)
+            QApplication.processEvents()
 
         self.comets.dataValid = True
         self.filterListComets()

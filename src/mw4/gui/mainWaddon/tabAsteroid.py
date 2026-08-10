@@ -19,7 +19,7 @@ from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.logic.databaseProcessing.sourceURL import asteroidSourceURLs
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
+from PySide6.QtWidgets import QAbstractItemView, QApplication, QTableWidgetItem
 from typing import Any
 
 
@@ -169,6 +169,7 @@ class Asteroid(TabAddon):
                     Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
                 )
                 self.ui.listAsteroids.setItem(row, 5, entry)
+            QApplication.processEvents()
 
         self.asteroids.dataValid = True
         self.filterListAsteroids()

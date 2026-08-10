@@ -466,7 +466,7 @@ def test_calcSat_3(function):
 
 def test_workerCalcSatList_1(function):
     function.ui.listSats.setRowCount(0)
-    function.workerCalcSatList()
+    function.runnerCalcSatList()
 
 
 def test_workerCalcSatList_2(function):
@@ -488,7 +488,7 @@ def test_workerCalcSatList_2(function):
     function.ui.listSats.setItem(0, 1, entry)
 
     with mock.patch.object(function, "checkSatOk", return_value=False):
-        function.workerCalcSatList()
+        function.runnerCalcSatList()
 
 
 def test_workerCalcSatList_3(function):
@@ -513,7 +513,7 @@ def test_workerCalcSatList_3(function):
         mock.patch.object(function, "checkSatOk", return_value=True),
         mock.patch.object(function, "calcSat"),
     ):
-        function.workerCalcSatList()
+        function.runnerCalcSatList()
 
 
 def test_calcSatList_1(function):

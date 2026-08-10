@@ -24,6 +24,7 @@ from mw4.base.bootstrap import (
     setupWorkDirs,
     writeSystemInfo,
 )
+from mw4.eventWatchdog import EventLoopWatchdog
 from mw4.gui.extWindows.splashScreen import SplashScreen
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
@@ -41,31 +42,16 @@ def main(test: int = 0) -> None:
     locale.setlocale(locale.LC_ALL, "")
 
     app = QApplication(sys.argv)
+    watchdog = EventLoopWatchdog(threshold_seconds=0.3, check_interval=0.01)
     minimizeStartTerminal()
 
     splash = SplashScreen(application=app)
-    splash.showMessage("Start initialising")
-    splash.setValue(0)
-
     mwGlob = setupWorkDirs(Path.cwd())
-
-    splash.showMessage("Write system info to log")
-    splash.setValue(40)
     writeSystemInfo(mwGlob=mwGlob)
-
-    splash.showMessage("Extracting ephemeris and time data")
-    splash.setValue(60)
     extractDataFiles(mwGlob=mwGlob)
-
-    splash.showMessage("Initialize Application")
-    splash.setValue(80)
     sys.excepthook = exceptHook
     setAppIcon(app)
-
     mw4App = MountWizzard4(mwGlob, app, test)
-
-    splash.showMessage("Finishing loading")
-    splash.setValue(100)
     splash.close()
     ret = app.exec()
     del mw4App

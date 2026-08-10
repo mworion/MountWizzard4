@@ -34,14 +34,6 @@ def test_main_1():
 
     class Splash:
         @staticmethod
-        def showMessage(a):
-            return
-
-        @staticmethod
-        def setValue(a):
-            return
-
-        @staticmethod
         def close():
             return
 

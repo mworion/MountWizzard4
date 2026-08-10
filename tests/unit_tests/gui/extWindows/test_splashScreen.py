@@ -13,57 +13,75 @@
 # License APL2.0
 #
 ###########################################################
-import pytest
-from importlib.resources import as_file, files
 from mw4.gui.extWindows.splashScreen import SplashScreen
-from PySide6.QtGui import QPainter, QPixmap
-from PySide6.QtWidgets import QWidget
+from pathlib import Path
+from PySide6.QtWidgets import QApplication, QWidget
 from unittest import mock
 
 
-@pytest.fixture(autouse=True, scope="module")
-def module_setup_teardown():
-    with mock.patch.object(QWidget, "show"):
-        yield
+def test_init_1():
+    mock_qapp = mock.MagicMock(spec=QApplication)
+    mock_pixmap = mock.MagicMock()
+    mock_splash = mock.MagicMock()
+
+    with (
+        mock.patch("mw4.gui.extWindows.splashScreen.QApplication.processEvents"),
+        mock.patch("mw4.gui.extWindows.splashScreen.as_file") as mock_as_file,
+        mock.patch("mw4.gui.extWindows.splashScreen.QPixmap", return_value=mock_pixmap),
+        mock.patch("mw4.gui.extWindows.splashScreen.QSplashScreen", return_value=mock_splash),
+    ):
+        mock_as_file.return_value.__enter__.return_value = Path("test.png")
+        splash = SplashScreen(mock_qapp)
+        assert splash._qapp == mock_qapp
+        assert splash._pxm == mock_pixmap
+        assert splash.qss == mock_splash
 
 
-def test_icon_1():
-    with as_file(files("mw4").joinpath("icon/mw4.ico")) as imageFile:
-        value = QPixmap(str(imageFile))
-    assert isinstance(value, QPixmap)
+def test_init_2():
+    mock_pixmap = mock.MagicMock()
+    mock_splash = mock.MagicMock()
+
+    with (
+        mock.patch("mw4.gui.extWindows.splashScreen.QApplication.processEvents"),
+        mock.patch("mw4.gui.extWindows.splashScreen.as_file") as mock_as_file,
+        mock.patch("mw4.gui.extWindows.splashScreen.QPixmap", return_value=mock_pixmap),
+        mock.patch("mw4.gui.extWindows.splashScreen.QSplashScreen", return_value=mock_splash),
+    ):
+        mock_as_file.return_value.__enter__.return_value = Path("test.png")
+        splash = SplashScreen(None)
+        assert splash._qapp is None
+        assert splash._pxm == mock_pixmap
+        assert splash.qss == mock_splash
 
 
-def test_icon_2():
-    with as_file(files("mw4").joinpath("icon/mw4.ico")) as imageFile:
-        value = QPixmap(str(imageFile))
-    assert isinstance(value, QPixmap)
+def test_close_1():
+    mock_pixmap = mock.MagicMock()
+    mock_splash = mock.MagicMock()
+
+    with (
+        mock.patch("mw4.gui.extWindows.splashScreen.QApplication.processEvents"),
+        mock.patch("mw4.gui.extWindows.splashScreen.as_file") as mock_as_file,
+        mock.patch("mw4.gui.extWindows.splashScreen.QPixmap", return_value=mock_pixmap),
+        mock.patch("mw4.gui.extWindows.splashScreen.QSplashScreen", return_value=mock_splash),
+    ):
+        mock_as_file.return_value.__enter__.return_value = Path("test.png")
+        splash = SplashScreen(None)
+        splash.close()
+        mock_splash.close.assert_called_once()
 
 
-def test_upcoming():
-    app = SplashScreen(QWidget())
-    app.showMessage("test")
-    app.setValue(10)
-    app.setValue(50)
-    app.setValue(90)
-    app.setValue(100)
+def test_finish_1():
+    mock_pixmap = mock.MagicMock()
+    mock_splash = mock.MagicMock()
+    qwid = mock.MagicMock(spec=QWidget)
 
-
-def test_drawContents():
-    app = SplashScreen(QWidget())
-    app.drawContents(QPainter())
-
-
-def test_finish():
-    app = SplashScreen(QWidget())
-    with mock.patch.object(app, "update"), mock.patch.object(app.qss, "finish"):
-        app.finish(QWidget())
-
-
-def test_init():
-    SplashScreen(QWidget())
-
-
-def test_close():
-    app = SplashScreen(QWidget())
-    with mock.patch.object(app, "update"), mock.patch.object(app.qss, "close"):
-        app.close()
+    with (
+        mock.patch("mw4.gui.extWindows.splashScreen.QApplication.processEvents"),
+        mock.patch("mw4.gui.extWindows.splashScreen.as_file") as mock_as_file,
+        mock.patch("mw4.gui.extWindows.splashScreen.QPixmap", return_value=mock_pixmap),
+        mock.patch("mw4.gui.extWindows.splashScreen.QSplashScreen", return_value=mock_splash),
+    ):
+        mock_as_file.return_value.__enter__.return_value = Path("test.png")
+        splash = SplashScreen(None)
+        splash.finish(qwid)
+        mock_splash.finish.assert_called_once_with(qwid)

@@ -278,8 +278,6 @@ class SatSearch(SatData):
         altMin = self.ui.satAltitudeMin.value()
         eph = self.app.ephemeris
         numSats = satTab.rowCount()
-
-        changeStyleDynamic(self.ui.satFilterGroup, "run", "true")
         for row in range(numSats):
             finished = (row + 1) / numSats * 100
             t = f"Filter - processed: {finished:3.0f}%"

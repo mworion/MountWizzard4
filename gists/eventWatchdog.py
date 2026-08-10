@@ -27,8 +27,11 @@ class EventLoopWatchdog(QObject):
 
     def log(self, message: str):
         """Bypass stdout buffering to force terminal print instantly."""
-        sys.__stdout__.write(message + "\n")
-        sys.__stdout__.flush()
+        try:
+            sys.__stdout__.write(message + "\n")
+            sys.__stdout__.flush()
+        except (OSError, ValueError):
+            pass
 
     def _heartbeat(self):
         self.last_heartbeat = time.perf_counter()

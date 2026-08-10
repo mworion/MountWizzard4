@@ -24,7 +24,6 @@ from mw4.base.bootstrap import (
     setupWorkDirs,
     writeSystemInfo,
 )
-from mw4.eventWatchdog import EventLoopWatchdog
 from mw4.gui.extWindows.splashScreen import SplashScreen
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
@@ -40,11 +39,8 @@ def setAppIcon(app: QApplication) -> None:
 def main(test: int = 0) -> None:
     configureEnvironment()
     locale.setlocale(locale.LC_ALL, "")
-
     app = QApplication(sys.argv)
-    watchdog = EventLoopWatchdog(threshold_seconds=0.3, check_interval=0.01)
     minimizeStartTerminal()
-
     splash = SplashScreen(application=app)
     mwGlob = setupWorkDirs(Path.cwd())
     writeSystemInfo(mwGlob=mwGlob)

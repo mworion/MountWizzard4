@@ -82,7 +82,7 @@ def test_workerVideoStream_0(function):
     capture.open.side_effect = cv2.error
     function.capture = capture
     function.running = True
-    function.workerVideo("test", 1)
+    function.runnerVideo("test", 1)
     assert not function.running
 
 
@@ -92,7 +92,7 @@ def test_workerVideoStream_1(function):
     capture.open.side_effect = OSError
     function.capture = capture
     function.running = True
-    function.workerVideo("test", 1)
+    function.runnerVideo("test", 1)
     assert not function.running
 
 
@@ -101,7 +101,7 @@ def test_workerVideoStream_2(function):
     capture.isOpened.return_value = False
     function.capture = capture
     function.running = True
-    function.workerVideo("test", 1)
+    function.runnerVideo("test", 1)
     assert not function.running
 
 
@@ -112,7 +112,7 @@ def test_workerVideoStream_3(function):
     function.running = True
     function.capture = capture
     with mock.patch.object(function, "sendImage"):
-        function.workerVideo("test", 1)
+        function.runnerVideo("test", 1)
 
 
 def test_workerVideoStream_4(function):
@@ -126,7 +126,7 @@ def test_workerVideoStream_4(function):
     function.running = True
     function.capture = capture
     with mock.patch.object(function, "sendImage"):
-        function.workerVideo("test", 1)
+        function.runnerVideo("test", 1)
 
 
 def test_startVideoStream_1(function):

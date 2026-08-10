@@ -89,7 +89,7 @@ class IndiClass:
                 entry = INDIGO_CONV.get(entry, entry) if self.isINDIGO else entry
                 self.data[entry] = value
 
-    def processRxQueue(self) -> None:
+    def runnerProcessRxQueue(self) -> None:
         while self.commandRunning:
             try:
                 item = self.rxQ.get(timeout=0.01)
@@ -111,7 +111,7 @@ class IndiClass:
         self.queueClient = None
         self.clientMutex.unlock()
 
-    def runQueueClient(self) -> None:
+    def runnerQueueClient(self) -> None:
         self.queueClient = QueClient(
             self.txQ,
             self.rxQ,
@@ -129,10 +129,10 @@ class IndiClass:
         self.rxQ.queue.clear()
         self.data.clear()
         self.commandRunning = True
-        self.workerIndiQueueClient = Worker(self.runQueueClient)
+        self.workerIndiQueueClient = Worker(self.runnerQueueClient)
         self.workerIndiQueueClient.signals.finished.connect(self.cleanupStop)
         self.threadPool.start(self.workerIndiQueueClient)
-        self.workerProcessRxQueue = Worker(self.processRxQueue)
+        self.workerProcessRxQueue = Worker(self.runnerProcessRxQueue)
         self.threadPool.start(self.workerProcessRxQueue)
 
     def stopCommunication(self) -> None:

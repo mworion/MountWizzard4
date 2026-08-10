@@ -46,7 +46,7 @@ class SatSearch(SatData):
         self.msg = mainW.app.msg
         self.ui = mainW.ui
         self.signals = SatSearchSignals()
-        self.worker: Worker | None = None
+        self.workerCalcSatList: Worker | None = None
         SatData.satellites = AstroObjects(
             self.mainW,
             "satellite",
@@ -269,7 +269,7 @@ class SatSearch(SatData):
             appMag = 99
         self.updateListSats(row, satParam, isUp, isSunlit, appMag, fitTwilight)
 
-    def workerCalcSatList(self) -> None:
+    def runnerCalcSatList(self) -> None:
         satTab = self.ui.listSats
         loc = self.app.dReg["mount"].location
         ts = self.app.dReg["mount"].obsSite.ts
@@ -293,10 +293,10 @@ class SatSearch(SatData):
     def calcSatList(self) -> None:
         title = "Setup " + self.app.timeMgr.timeZoneString()
         self.ui.satSetupGroup.setTitle(title)
-        self.worker = Worker(self.workerCalcSatList)
-        self.worker.signals.finished.connect(self.filterListSats)
         changeStyleDynamic(self.ui.satFilterGroup, "running", True)
-        self.app.threadPool.start(self.worker)
+        self.workerCalcSatList = Worker(self.runnerCalcSatList)
+        self.workerCalcSatList.signals.finished.connect(self.filterListSats)
+        self.app.threadPool.start(self.workerCalcSatList)
 
     def fillSatListName(self) -> None:
         self.ui.listSats.setRowCount(0)

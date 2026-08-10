@@ -84,13 +84,13 @@ class AstroObjects:
         t = f"{self.objectText} data - age: {age:2.1f}d"
         self.uiSourceGroup.setTitle(t)
 
-    def workerProcessSource(self) -> None:
+    def runnerProcessSource(self) -> None:
         self.processSource()
         self.signals.dataLoaded.emit()
 
     def procSourceData(self) -> None:
         self.dataValid = False
-        self.workerSource = Worker(self.workerProcessSource)
+        self.workerSource = Worker(self.runnerProcessSource)
         self.threadPool.start(self.workerSource)
 
     def runDownloadPopup(self, url: str, unzip: bool) -> None:

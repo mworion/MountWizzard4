@@ -137,7 +137,7 @@ def test_unzipFile(function):
 def test_downloadFileWorker_2(function):
     shutil.copy("tests/testData/visual.txt", "tests/work/temp/test.txt")
     with mock.patch.object(function, "getFileFromUrl", return_value=False):
-        suc = function.downloadFileWorker(url=Path(), dest=Path("tests/work/temp/test.txt"))
+        suc = function.runnerDownloadFile(url=Path(), dest=Path("tests/work/temp/test.txt"))
         assert not suc
 
 
@@ -145,19 +145,19 @@ def test_downloadFileWorker_3(function):
     with mock.patch.object(
         function, "getFileFromUrl", return_value=True, side_effect=TimeoutError
     ):
-        suc = function.downloadFileWorker(url=Path(), dest=Path("tests/work/temp/test.txt"))
+        suc = function.runnerDownloadFile(url=Path(), dest=Path("tests/work/temp/test.txt"))
         assert not suc
 
 
 def test_downloadFileWorker_4(function):
     with mock.patch.object(function, "getFileFromUrl", return_value=True, side_effect=OSError):
-        suc = function.downloadFileWorker(url=Path(), dest=Path("tests/work/temp/test.txt"))
+        suc = function.runnerDownloadFile(url=Path(), dest=Path("tests/work/temp/test.txt"))
         assert not suc
 
 
 def test_downloadFileWorker_5(function):
     with mock.patch.object(function, "getFileFromUrl", return_value=True):
-        suc = function.downloadFileWorker(
+        suc = function.runnerDownloadFile(
             url=Path(), dest=Path("tests/work/temp/test.txt"), unzip=True
         )
         assert not suc
@@ -169,7 +169,7 @@ def test_downloadFileWorker_6(function):
         "getFileFromUrl",
         return_value=True,
     ):
-        suc = function.downloadFileWorker(
+        suc = function.runnerDownloadFile(
             url=Path(), dest=Path("tests/work/temp/test.txt"), unzip=False
         )
         assert suc
@@ -180,7 +180,7 @@ def test_downloadFileWorker_7(function):
         mock.patch.object(function, "getFileFromUrl", return_value=True),
         mock.patch.object(function, "unzipFile", side_effect=OSError),
     ):
-        suc = function.downloadFileWorker(
+        suc = function.runnerDownloadFile(
             url=Path(), dest=Path("tests/work/temp/test.txt"), unzip=True
         )
         assert not suc
@@ -191,7 +191,7 @@ def test_downloadFileWorker_8(function):
         mock.patch.object(function, "getFileFromUrl", return_value=True),
         mock.patch.object(function, "unzipFile"),
     ):
-        suc = function.downloadFileWorker(
+        suc = function.runnerDownloadFile(
             url=Path(), dest=Path("tests/work/temp/test.txt"), unzip=True
         )
         assert suc
@@ -202,7 +202,7 @@ def test_downloadFileWorker_9(function):
         mock.patch.object(function, "getFileFromUrl", return_value=False),
         mock.patch.object(function, "unzipFile"),
     ):
-        suc = function.downloadFileWorker(url=Path(), dest=Path("tests/work/temp/test.txt"))
+        suc = function.runnerDownloadFile(url=Path(), dest=Path("tests/work/temp/test.txt"))
         assert not suc
 
 

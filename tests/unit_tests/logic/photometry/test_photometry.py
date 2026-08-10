@@ -47,7 +47,7 @@ def test_workerGetHFR(function):
     function.ym = np.linspace(0, 100, 100)
     function.objs = {"x": np.linspace(0, 100, 20), "y": np.linspace(0, 100, 20)}
     function.hfr = np.ones((20, 30))
-    function.workerGetHFR()
+    function.runnerGetHFR()
     assert function.hfrGrid.shape[0] == 100
 
 
@@ -65,7 +65,7 @@ def test_workerGetRoundness(function):
     with mock.patch.object(
         mw4.logic.photometry.photometry, "griddata", return_value=np.ones((20, 100))
     ):
-        function.workerGetRoundness()
+        function.runnerGetRoundness()
         assert len(function.roundnessGrid) == 20
 
 
@@ -75,7 +75,7 @@ def test_workerCalcTiltValuesSquare(function):
     function.objs = {"x": np.linspace(0, 1000, 20), "y": np.linspace(0, 1000, 20)}
     function.image = np.array(np.random.rand(1000, 1000) + 1)
     function.hfr = np.linspace(20, 30, 20)
-    function.workerCalcTiltValuesSquare()
+    function.runnerCalcTiltValuesSquare()
 
 
 def test_workerCalcTiltValuesTriangle(function):
@@ -84,7 +84,7 @@ def test_workerCalcTiltValuesTriangle(function):
     function.objs = {"x": np.linspace(0, 100, 20), "y": np.linspace(0, 100, 20)}
     function.image = np.array(np.random.rand(1000, 1000) + 1)
     function.hfr = np.linspace(20, 30, 20)
-    function.workerCalcTiltValuesTriangle()
+    function.runnerCalcTiltValuesTriangle()
 
 
 def test_calcAberrationInspectView_1(function):
@@ -136,10 +136,10 @@ def test_runCalcs_1(function):
     function.hfr = np.array([1, 2, 3])
     with (
         mock.patch.object(function, "baseCalcs"),
-        mock.patch.object(function, "workerGetHFR"),
-        mock.patch.object(function, "workerCalcTiltValuesSquare"),
-        mock.patch.object(function, "workerCalcTiltValuesTriangle"),
-        mock.patch.object(function, "workerGetRoundness"),
+        mock.patch.object(function, "runnerGetHFR"),
+        mock.patch.object(function, "runnerCalcTiltValuesSquare"),
+        mock.patch.object(function, "runnerCalcTiltValuesTriangle"),
+        mock.patch.object(function, "runnerGetRoundness"),
         mock.patch.object(function, "calcAberrationInspectView"),
         mock.patch.object(function, "calcBackground"),
         mock.patch.object(function, "calcBackgroundRMS"),
@@ -151,10 +151,10 @@ def test_runCalcs_2(function):
     function.hfr = np.array([1] * 20)
     with (
         mock.patch.object(function, "baseCalcs"),
-        mock.patch.object(function, "workerGetHFR"),
-        mock.patch.object(function, "workerCalcTiltValuesSquare"),
-        mock.patch.object(function, "workerCalcTiltValuesTriangle"),
-        mock.patch.object(function, "workerGetRoundness"),
+        mock.patch.object(function, "runnerGetHFR"),
+        mock.patch.object(function, "runnerCalcTiltValuesSquare"),
+        mock.patch.object(function, "runnerCalcTiltValuesTriangle"),
+        mock.patch.object(function, "runnerGetRoundness"),
         mock.patch.object(function, "calcAberrationInspectView"),
         mock.patch.object(function, "calcBackground"),
         mock.patch.object(function, "calcBackgroundRMS"),
@@ -170,7 +170,7 @@ def test_workerCalcPhotometry_1(function):
     function.image[50][49] = 50
     function.image[49][50] = 50
     with mock.patch.object(function, "runCalcs"):
-        function.workerCalcPhotometry()
+        function.runnerCalcPhotometry()
         assert function.bkg is not None
         assert function.hfr is not None
         assert function.objs is not None
@@ -184,7 +184,7 @@ def test_workerCalcPhotometry_2(function):
     function.image[50][49] = 50
     function.image[49][50] = 50
     with mock.patch.object(sep, "extract", side_effect=ValueError):
-        function.workerCalcPhotometry()
+        function.runnerCalcPhotometry()
         assert not function.hfr.size > 0
         assert not function.objs.size > 0
 
@@ -193,7 +193,7 @@ def test_workerCalcPhotometry_3(function):
     function.image = np.array(np.random.rand(100, 100) + 1)
     function.image[40:60, 40:60] = 100
     with mock.patch.object(function, "runCalcs"):
-        function.workerCalcPhotometry()
+        function.runnerCalcPhotometry()
 
 
 def test_unlockPhotometry(function):

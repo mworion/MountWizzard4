@@ -42,7 +42,7 @@ class SensorWeatherOnline:
         self.signals = parent.signals
         self.location: Any = None
         self.threadPool = parent.app.threadPool
-        self.worker: Worker | None = None
+        self.workerGetOpenWeatherMapData: Worker | None = None
         self.running: bool = False
         self.status: bool = False
 
@@ -108,7 +108,7 @@ class SensorWeatherOnline:
         else:
             self.data["WEATHER_PARAMETERS.RainVol"] = 0
 
-    def workerGetOpenWeatherMapData(self, url: str) -> bool:
+    def runnerGetOpenWeatherMapData(self, url: str) -> bool:
         try:
             data = requests.get(url, timeout=30)
             self.log.debug(f"Weather url: [{url}] response code: [{data.status_code}]")
@@ -145,9 +145,9 @@ class SensorWeatherOnline:
             self.processOpenWeatherMapData()
             self.sendStatus(True)
             return
-        self.worker = Worker(self.workerGetOpenWeatherMapData, url)
-        self.worker.signals.result.connect(self.sendStatus)
-        self.threadPool.start(self.worker)
+        self.workerGetOpenWeatherMapData = Worker(self.runnerGetOpenWeatherMapData, url)
+        self.workerGetOpenWeatherMapData.signals.result.connect(self.sendStatus)
+        self.threadPool.start(self.workerGetOpenWeatherMapData)
 
     def pollOpenWeatherMapData(self) -> None:
         if not self.config.apiKey or not self.app.isOnline:

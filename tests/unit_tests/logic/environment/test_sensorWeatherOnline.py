@@ -144,7 +144,7 @@ def test_workerGetOpenWeatherMapData_1(function):
 
     function.app.isOnline = False
     with mock.patch.object(requests, "get", return_value=Test()):
-        function.workerGetOpenWeatherMapData("http://localhost")
+        function.runnerGetOpenWeatherMapData("http://localhost")
 
 
 def test_workerGetOpenWeatherMapData_2(function):
@@ -153,7 +153,7 @@ def test_workerGetOpenWeatherMapData_2(function):
 
     function.app.isOnline = True
     with mock.patch.object(requests, "get", return_value=Test()):
-        function.workerGetOpenWeatherMapData("http://localhost")
+        function.runnerGetOpenWeatherMapData("http://localhost")
 
 
 def test_workerGetOpenWeatherMapData_3(function):
@@ -162,7 +162,7 @@ def test_workerGetOpenWeatherMapData_3(function):
 
     function.app.isOnline = True
     with mock.patch.object(requests, "get", side_effect=OSError(), return_value=Test()):
-        function.workerGetOpenWeatherMapData("http://localhost")
+        function.runnerGetOpenWeatherMapData("http://localhost")
 
 
 def test_workerGetOpenWeatherMapData_4(function):
@@ -171,7 +171,7 @@ def test_workerGetOpenWeatherMapData_4(function):
 
     function.app.isOnline = True
     with mock.patch.object(requests, "get", side_effect=TimeoutError(), return_value=Test()):
-        function.workerGetOpenWeatherMapData("http://localhost")
+        function.runnerGetOpenWeatherMapData("http://localhost")
 
 
 def test_workerGetOpenWeatherMapData_5(function):
@@ -184,7 +184,7 @@ def test_workerGetOpenWeatherMapData_5(function):
 
     function.app.isOnline = True
     with mock.patch.object(requests, "get", return_value=Test()):
-        function.workerGetOpenWeatherMapData("http://localhost")
+        function.runnerGetOpenWeatherMapData("http://localhost")
 
 
 def test_sendStatus_1(function):

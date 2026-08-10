@@ -38,7 +38,7 @@ class FileHandler:
     ) -> None:
         self.threadPool = parent.app.threadPool
         self.signals = FileHandlerSignals()
-        self.worker: Worker | None = None
+        self.workerLoadImage: Worker | None = None
         self.imagePath: Path = imagePath
         self.flipH: bool = flipH
         self.flipV: bool = flipV
@@ -139,7 +139,7 @@ class FileHandler:
         self.image = XISF.read(str(self.imagePath), image_metadata=headerXISF)[:, :, -1]
         self.header = self.convHeaderXISF2FITS(headerXISF)
 
-    def workerLoadImage(self, imagePath: Path) -> None:
+    def runnerLoadImage(self, imagePath: Path) -> None:
         self.imagePath = imagePath
         ext = self.imagePath.suffix
 
@@ -178,5 +178,5 @@ class FileHandler:
         self.flipH = flipH
         self.flipV = flipV
 
-        self.worker = Worker(self.workerLoadImage, imagePath)
-        self.threadPool.start(self.worker)
+        self.workerLoadImage = Worker(self.runnerLoadImage, imagePath)
+        self.threadPool.start(self.workerLoadImage)

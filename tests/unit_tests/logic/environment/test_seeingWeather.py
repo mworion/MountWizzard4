@@ -98,7 +98,7 @@ def test_workerGetSeeingData_0(function):
 
     function.app.isOnline = False
     with mock.patch.object(requests, "get", return_value=Test()):
-        function.workerGetSeeingData("http://localhost")
+        function.runnerGetSeeingData("http://localhost")
 
 
 def test_workerGetSeeingData_1(function):
@@ -107,7 +107,7 @@ def test_workerGetSeeingData_1(function):
 
     function.app.isOnline = True
     with mock.patch.object(requests, "get", return_value=Test()):
-        function.workerGetSeeingData("http://localhost")
+        function.runnerGetSeeingData("http://localhost")
 
 
 def test_workerGetSeeingData_3(function):
@@ -116,7 +116,7 @@ def test_workerGetSeeingData_3(function):
 
     function.app.isOnline = True
     with mock.patch.object(requests, "get", side_effect=OSError(), return_value=Test()):
-        function.workerGetSeeingData("http://localhost")
+        function.runnerGetSeeingData("http://localhost")
 
 
 def test_workerGetSeeingData_4(function):
@@ -125,7 +125,7 @@ def test_workerGetSeeingData_4(function):
 
     function.app.isOnline = True
     with mock.patch.object(requests, "get", side_effect=TimeoutError(), return_value=Test()):
-        function.workerGetSeeingData("http://localhost")
+        function.runnerGetSeeingData("http://localhost")
 
 
 def test_workerGetSeeingData_5(function):
@@ -139,7 +139,7 @@ def test_workerGetSeeingData_5(function):
     function.app.mwGlob["dataDir"] = Path("tests/work/data")
     function.app.isOnline = True
     with mock.patch.object(requests, "get", return_value=Test()):
-        function.workerGetSeeingData("http://localhost")
+        function.runnerGetSeeingData("http://localhost")
 
 
 def test_sendStatus_1(function):

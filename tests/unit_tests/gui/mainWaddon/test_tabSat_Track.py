@@ -154,7 +154,7 @@ def test_workerShowSatPasses_0(function):
     with mock.patch.object(
         function.app.timeMgr, "timeZoneString", return_value="", create=True
     ):
-        function.workerShowSatPasses()
+        function.runnerShowSatPasses()
 
 
 def test_workerShowSatPasses_1(function):
@@ -179,7 +179,7 @@ def test_workerShowSatPasses_1(function):
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
         ),
     ):
-        function.workerShowSatPasses()
+        function.runnerShowSatPasses()
 
 
 def test_workerShowSatPasses_2(function):
@@ -205,7 +205,7 @@ def test_workerShowSatPasses_2(function):
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
         ),
     ):
-        function.workerShowSatPasses()
+        function.runnerShowSatPasses()
 
 
 def test_workerShowSatPasses_3(function):
@@ -229,7 +229,7 @@ def test_workerShowSatPasses_3(function):
             mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
         ),
     ):
-        function.workerShowSatPasses()
+        function.runnerShowSatPasses()
 
 
 def test_updateSatPassesGui_1(function):

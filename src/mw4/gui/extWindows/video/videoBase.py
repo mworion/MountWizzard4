@@ -44,7 +44,7 @@ class VideoWindowBase(MWidget):
         self.user: str = ""
         self.password: str = ""  # nosec B105 — empty-string default, not a hardcoded credential
         self.runningCounter: int = 0
-        self.worker: Worker | None = None
+        self.workerVideo: Worker | None = None
 
     def closeEvent(self, closeEvent) -> None:
         self.stopVideo()
@@ -82,7 +82,7 @@ class VideoWindowBase(MWidget):
     def count(self) -> None:
         self.runningCounter += 1
 
-    def workerVideo(self, source: str, frameRate: int) -> None:
+    def runnerVideo(self, source: str, frameRate: int) -> None:
         try:
             self.capture.open(source)
             if not self.capture.isOpened():
@@ -126,8 +126,8 @@ class VideoWindowBase(MWidget):
         self.running = True
         self.capture = cv2.VideoCapture()
         self.capture.setExceptionMode(True)
-        self.worker = Worker(self.workerVideo, source, frameRate)
-        self.threadPool.start(self.worker)
+        self.workerVideo = Worker(self.runnerVideo, source, frameRate)
+        self.threadPool.start(self.workerVideo)
 
     def stopVideo(self) -> None:
         changeStyleDynamic(self.ui.videoStart, "run", "false")

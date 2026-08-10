@@ -36,7 +36,7 @@ class DownloadPopup(MWidget):
         self.parentWidget = parentWidget
         self.msg = parentWidget.app.msg
         self.threadPool = parentWidget.app.threadPool
-        self.worker: Worker | None = None
+        self.workerDownloadFile: Worker | None = None
         self.loop: QEventLoop | None = None
         self.url = url
         self.dest = dest
@@ -68,10 +68,10 @@ class DownloadPopup(MWidget):
     def exec(self) -> bool:
         self.showWindow()
         self.loop = QEventLoop()
-        self.worker = Worker(self.downloadFileWorker, self.url, self.dest, self.unzip)
-        self.worker.signals.result.connect(self.closePopup)
-        self.worker.signals.finished.connect(self.loop.quit)
-        self.threadPool.start(self.worker)
+        self.workerDownloadFile = Worker(self.runnerDownloadFile, self.url, self.dest, self.unzip)
+        self.workerDownloadFile.signals.result.connect(self.closePopup)
+        self.workerDownloadFile.signals.finished.connect(self.loop.quit)
+        self.threadPool.start(self.workerDownloadFile)
         self.loop.exec()
         return self.returnValues["success"]
 
@@ -111,7 +111,7 @@ class DownloadPopup(MWidget):
             shutil.copyfileobj(f_in, f_out)
         downloadDest.unlink()
 
-    def downloadFileWorker(self, url: str, dest: Path, unzip: bool = False) -> bool:
+    def runnerDownloadFile(self, url: str, dest: Path, unzip: bool = False) -> bool:
         downloadDest = dest.parent / f"{dest.stem}.zip" if unzip else dest
 
         try:

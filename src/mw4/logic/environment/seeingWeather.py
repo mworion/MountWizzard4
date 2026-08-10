@@ -51,7 +51,7 @@ class SeeingWeather:
         self.run: dict[str, Any] = {"seeing": self}
         self.data: dict[str, Any] = {}
         self.config = DeviceConfigSeeingWeather()
-        self.worker: Worker | None = None
+        self.workerGetSeeingData: Worker | None = None
         self.running: bool = False
         with as_file(files("mw4").joinpath("assets/icon/s.svg")) as iconFile:
             self.b = iconFile.read_text(encoding="utf-8")
@@ -79,7 +79,7 @@ class SeeingWeather:
                 return
         self.signals.update.emit()
 
-    def workerGetSeeingData(self, url: Path) -> bool:
+    def runnerGetSeeingData(self, url: Path) -> bool:
         try:
             data = requests.get(str(url), timeout=30)
             self.log.debug(f"Seeing url: [{url}] response code: [{data.status_code}]")
@@ -115,9 +115,9 @@ class SeeingWeather:
         if not self.loadingFileNeeded("meteoblue.data", 0.5):
             self.sendStatus(True)
             return
-        self.worker = Worker(self.workerGetSeeingData, url)
-        self.worker.signals.result.connect(self.sendStatus)
-        self.threadPool.start(self.worker)
+        self.workerGetSeeingData = Worker(self.runnerGetSeeingData, url)
+        self.workerGetSeeingData.signals.result.connect(self.sendStatus)
+        self.threadPool.start(self.workerGetSeeingData)
 
     def pollSeeingData(self) -> None:
         if not self.config.apiKey or not self.b or not self.app.isOnline:

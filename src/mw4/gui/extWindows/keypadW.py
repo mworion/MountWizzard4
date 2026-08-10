@@ -153,7 +153,7 @@ class KeypadWindow(MWidget):
             self.app.dReg["mount"].instance.config.hostAddress,
             self.app.dReg["mount"].instance.config.port,
         )
-        self.worker = Worker(self.keypad.workerWebsocket, host)
+        self.worker = Worker(self.keypad.runnerWebsocket, host)
         self.worker.signals.finished.connect(self.websocketClear)
         self.threadPool.start(self.worker)
 

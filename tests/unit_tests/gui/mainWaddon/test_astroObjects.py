@@ -163,7 +163,7 @@ def test_setAge_1(function):
 
 def test_workerProcessSource_1(function):
     with mock.patch.object(function, "processSource"):
-        function.workerProcessSource()
+        function.runnerProcessSource()
 
 
 def test_procSourceData_1(function):

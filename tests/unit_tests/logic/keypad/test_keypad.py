@@ -398,22 +398,22 @@ def test_on_close_clears_websocket(keypad):
     assert keypad.ws is None
 
 
-# Tests for workerWebsocket method
+# Tests for runnerWebsocket method
 
 
 def test_workerWebsocket_already_connected_skips(keypad):
-    """Test workerWebsocket skips if already connected."""
+    """Test runnerWebsocket skips if already connected."""
     keypad.ws = mock.Mock()
     with mock.patch.object(WebSocketApp, "__init__", return_value=None):
-        keypad.workerWebsocket(host=("localhost", 8000))
+        keypad.runnerWebsocket(host=("localhost", 8000))
         # Should skip creating new connection
 
 
 def test_workerWebsocket_creates_new_connection(keypad):
-    """Test workerWebsocket creates new WebSocket connection."""
+    """Test runnerWebsocket creates new WebSocket connection."""
     keypad.ws = None
     with mock.patch.object(WebSocketApp, "run_forever"):
-        keypad.workerWebsocket(host=("localhost", 8000))
+        keypad.runnerWebsocket(host=("localhost", 8000))
         assert keypad.ws is not None
 
 

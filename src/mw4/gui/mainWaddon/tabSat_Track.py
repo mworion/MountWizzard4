@@ -207,7 +207,7 @@ class SatTrack(SatData):
             self.passUI[i]["flip"].setText(flipStr)
             self.passUI[i]["date"].setText(dateStr)
 
-    def workerShowSatPasses(self) -> None:
+    def runnerShowSatPasses(self) -> None:
         if not self.satellite:
             return
         self.clearTrackingParameters()
@@ -216,7 +216,7 @@ class SatTrack(SatData):
         self.satOrbits = calcSatPasses(self.satellite, obsSite, setting)
 
     def showSatPasses(self) -> None:
-        self.workerPasses = Worker(self.workerShowSatPasses)
+        self.workerPasses = Worker(self.runnerShowSatPasses)
         self.workerPasses.signals.result.connect(self.updateSatPassesGui)
         self.workerPasses.signals.finished.connect(self.calcTrajectoryAndShow)
         title = "Satellite passes " + self.app.timeMgr.timeZoneString()

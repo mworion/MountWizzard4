@@ -184,7 +184,7 @@ def test_workerLoadImage_1(function):
         mock.patch.object(function, "loadFITS"),
         mock.patch.object(function, "checkValidImageFormat", return_value=False),
     ):
-        function.workerLoadImage(imageFileName)
+        function.runnerLoadImage(imageFileName)
 
 
 def test_workerLoadImage_2(function):
@@ -193,7 +193,7 @@ def test_workerLoadImage_2(function):
         mock.patch.object(function, "loadXISF"),
         mock.patch.object(function, "checkValidImageFormat", return_value=False),
     ):
-        function.workerLoadImage(imageFileName)
+        function.runnerLoadImage(imageFileName)
 
 
 def test_workerLoadImage_3(function):
@@ -213,7 +213,7 @@ def test_workerLoadImage_3(function):
         mock.patch.object(function, "cleanImageFormat"),
         mock.patch.object(function, "debayerImage"),
     ):
-        function.workerLoadImage(imageFileName)
+        function.runnerLoadImage(imageFileName)
 
 
 def test_loadImage_1(function):

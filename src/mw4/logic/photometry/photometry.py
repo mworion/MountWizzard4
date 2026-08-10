@@ -50,7 +50,7 @@ class Photometry:
         self.snTarget = self.SN[snSelector]
         self.sepThreshold = self.SEP[snSelector]
         self.lock = QMutex()
-        self.worker: Worker | None = None
+        self.workerCalcPhotometry: Worker | None = None
 
         self.objs: Any = None
         self.objsAll: Any = None
@@ -104,7 +104,7 @@ class Photometry:
         self.hfrPercentile = np.percentile(self.hfr, 90)
         self.hfrMedian = np.median(self.hfr)
 
-    def workerGetHFR(self) -> None:
+    def runnerGetHFR(self) -> None:
         img = griddata(
             (self.objs["x"], self.objs["y"]),
             self.hfr,
@@ -118,7 +118,7 @@ class Photometry:
         self.hfrMax = maxB
         self.signals.hfr.emit()
 
-    def workerGetRoundness(self) -> None:
+    def runnerGetRoundness(self) -> None:
         a = self.objs["a"]
         b = self.objs["b"]
         aspectRatio = np.maximum(a / b, b / a)
@@ -136,7 +136,7 @@ class Photometry:
         self.roundnessMax = maxB
         self.signals.roundness.emit()
 
-    def workerCalcTiltValuesSquare(self) -> None:
+    def runnerCalcTiltValuesSquare(self) -> None:
         stepY = int(self.h / 3)
         stepX = int(self.w / 3)
 
@@ -157,7 +157,7 @@ class Photometry:
         self.hfrSegSquare = segHFR
         self.signals.hfrSquare.emit()
 
-    def workerCalcTiltValuesTriangle(self) -> None:
+    def runnerCalcTiltValuesTriangle(self) -> None:
         x = self.objs["x"] - self.w / 2
         y = self.objs["y"] - self.h / 2
         radius = min(self.h / 2, self.w / 2)
@@ -210,15 +210,15 @@ class Photometry:
         if len(self.hfr) < 10:
             return
         self.baseCalcs()
-        self.workerGetHFR()
-        self.workerCalcTiltValuesSquare()
-        self.workerCalcTiltValuesTriangle()
-        self.workerGetRoundness()
+        self.runnerGetHFR()
+        self.runnerCalcTiltValuesSquare()
+        self.runnerCalcTiltValuesTriangle()
+        self.runnerGetRoundness()
         self.calcAberrationInspectView()
         self.calcBackground()
         self.calcBackgroundRMS()
 
-    def workerCalcPhotometry(self) -> None:
+    def runnerCalcPhotometry(self) -> None:
         self.bkg = sep.Background(self.image, bw=32, bh=32)
         image_sub = self.image - self.bkg
         self.backRMS = self.bkg.rms()
@@ -333,7 +333,7 @@ class Photometry:
         if not self.lock.tryLock():
             return
 
-        self.worker = Worker(self.workerCalcPhotometry)
-        self.worker.signals.result.connect(lambda: self.signals.sepFinished.emit())
-        self.worker.signals.finished.connect(self.unlockPhotometry)
-        self.threadPool.start(self.worker)
+        self.workerCalcPhotometry = Worker(self.runnerCalcPhotometry)
+        self.workerCalcPhotometry.signals.result.connect(lambda: self.signals.sepFinished.emit())
+        self.workerCalcPhotometry.signals.finished.connect(self.unlockPhotometry)
+        self.threadPool.start(self.workerCalcPhotometry)

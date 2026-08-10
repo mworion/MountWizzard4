@@ -268,7 +268,7 @@ def test_writeVectorsToData_indigoNoConversion(function):
     assert function.data["UNKNOWN_VECTOR.MEMBER"] == 42
 
 
-# ─── processRxQueue ──────────────────────────────────────────────────────────
+# ─── runnerProcessRxQueue ──────────────────────────────────────────────────────────
 
 
 def _make_snap_val(connection=None, vectors=None):
@@ -282,7 +282,7 @@ def _make_snap_val(connection=None, vectors=None):
 
 
 def runLoopOnce(function):
-    """Drive processRxQueue's while-loop for exactly one iteration.
+    """Drive runnerProcessRxQueue's while-loop for exactly one iteration.
 
     A commandRunning mock evaluates truthy once and then resets the
     attribute back to a real ``False`` so no state leaks into the shared
@@ -305,12 +305,12 @@ def runLoopOnce(function):
 
 def test_processRxQueue_commandNotRunning(function):
     function.commandRunning = False
-    function.processRxQueue()
+    function.runnerProcessRxQueue()
 
 
 def test_processRxQueue_emptyQueueThenStop(function):
     runLoopOnce(function)
-    function.processRxQueue()
+    function.runnerProcessRxQueue()
 
 
 def test_processRxQueue_deviceNotInSnapshot(function):
@@ -321,7 +321,7 @@ def test_processRxQueue_deviceNotInSnapshot(function):
     item.snapshot = {}  # deviceName not present → .get() returns None → continue
     function.rxQ.put(item)
 
-    function.processRxQueue()
+    function.runnerProcessRxQueue()
 
 
 def test_processRxQueue_connectionOn(function):
@@ -338,7 +338,7 @@ def test_processRxQueue_connectionOn(function):
     item.devicename = "MyDevice"
     function.rxQ.put(item)
 
-    function.processRxQueue()
+    function.runnerProcessRxQueue()
     assert function.deviceConnected is True
 
 
@@ -356,7 +356,7 @@ def test_processRxQueue_connectionOff(function):
     item.devicename = "MyDevice"
     function.rxQ.put(item)
 
-    function.processRxQueue()
+    function.runnerProcessRxQueue()
     assert function.deviceConnected is False
 
 
@@ -371,7 +371,7 @@ def test_processRxQueue_devicenameMismatch(function):
     item.devicename = "OtherDevice"
     function.rxQ.put(item)
 
-    function.processRxQueue()
+    function.runnerProcessRxQueue()
 
 
 def test_processRxQueue_withVectors(function):
@@ -392,7 +392,7 @@ def test_processRxQueue_withVectors(function):
     item.devicename = "MyDevice"
     function.rxQ.put(item)
 
-    function.processRxQueue()
+    function.runnerProcessRxQueue()
     assert function.data["TEST_VECTOR.M1"] == 99
 
 
@@ -409,7 +409,7 @@ def test_processRxQueue_noVectors(function):
     item.devicename = "MyDevice"
     function.rxQ.put(item)
 
-    function.processRxQueue()
+    function.runnerProcessRxQueue()
     assert function.data == {}
 
 
@@ -433,7 +433,7 @@ def test_processRxQueue_messageEvent(function):
     original_msg, function.msg = function.msg, mock_msg
 
     try:
-        function.processRxQueue()
+        function.runnerProcessRxQueue()
     finally:
         function.msg = original_msg
     mock_msg.emit.assert_called_once_with(
@@ -452,11 +452,11 @@ def test_cleanupStop(function):
     function.clientMutex.unlock()
 
 
-# ─── runQueueClient ──────────────────────────────────────────────────────────
+# ─── runnerQueueClient ──────────────────────────────────────────────────────────
 
 
 def test_runQueueClient_loggingTraceOff(function):
-    """runQueueClient creates QueClient, calls debug_verbosity(0) and runs asyncrun."""
+    """runnerQueueClient creates QueClient, calls debug_verbosity(0) and runs asyncrun."""
     function.config.hostAddress = "localhost"
     function.config.port = 7624
     function.loggingTrace = False
@@ -465,7 +465,7 @@ def test_runQueueClient_loggingTraceOff(function):
         mock.patch("mw4.base.indiClass.QueClient", return_value=mock_client) as mock_qc,
         mock.patch("mw4.base.indiClass.asyncio.run") as mock_asyncio_run,
     ):
-        function.runQueueClient()
+        function.runnerQueueClient()
     mock_qc.assert_called_once_with(
         function.txQ,
         function.rxQ,
@@ -479,14 +479,14 @@ def test_runQueueClient_loggingTraceOff(function):
 
 
 def test_runQueueClient_loggingTraceOn(function):
-    """runQueueClient calls debug_verbosity(3) when loggingTrace is True."""
+    """runnerQueueClient calls debug_verbosity(3) when loggingTrace is True."""
     function.loggingTrace = True
     mock_client = mock.MagicMock()
     with (
         mock.patch("mw4.base.indiClass.QueClient", return_value=mock_client),
         mock.patch("mw4.base.indiClass.asyncio.run"),
     ):
-        function.runQueueClient()
+        function.runnerQueueClient()
     mock_client.debug_verbosity.assert_called_once_with(3)
     function.queueClient = None
     function.loggingTrace = False

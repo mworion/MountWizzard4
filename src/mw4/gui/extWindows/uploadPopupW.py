@@ -66,8 +66,8 @@ class UploadPopup(MWidget):
         self.parentWidget = parentWidget
         self.msg = parentWidget.app.msg
         self.threadPool = parentWidget.app.threadPool
-        self.worker: Worker | None = None
-        self.workerStatus: Worker | None = None
+        self.workerUploadFile: Worker | None = None
+        self.workerPollStatus: Worker | None = None
         self.loop: QEventLoop | None = None
         self.url: str = url
         self.dataTypes: list[str] = dataTypes
@@ -97,11 +97,11 @@ class UploadPopup(MWidget):
     def exec(self) -> bool:
         self.showWindow()
         self.loop = QEventLoop()
-        self.workerStatus = Worker(self.pollStatus)
-        self.worker = Worker(self.uploadFileWorker)
-        self.worker.signals.result.connect(self.closePopup)
-        self.worker.signals.finished.connect(self.loop.quit)
-        self.threadPool.start(self.worker)
+        self.workerPollStatus = Worker(self.runnerPollStatus)
+        self.workerUploadFile = Worker(self.runnerUploadFile)
+        self.workerUploadFile.signals.result.connect(self.closePopup)
+        self.workerUploadFile.signals.finished.connect(self.loop.quit)
+        self.threadPool.start(self.workerUploadFile)
         self.loop.exec()
         return self.returnValues["success"]
 
@@ -159,7 +159,7 @@ class UploadPopup(MWidget):
             self.returnValues["successMount"] = False
         return returnValues.text.strip("\n").split("\n")
 
-    def pollStatus(self) -> None:
+    def runnerPollStatus(self) -> None:
         self.signalStatus.emit("Uploading data to mount...")
         while self.pollStatusRunState:
             text = self.getStatus()
@@ -196,12 +196,12 @@ class UploadPopup(MWidget):
             return False
         return True
 
-    def uploadFileWorker(self) -> bool:
+    def runnerUploadFile(self) -> bool:
         if not self.deleteHostData():
             return False
         files = self.prepareFiles()
         self.pollStatusRunState = True
-        self.threadPool.start(self.workerStatus)
+        self.threadPool.start(self.workerPollStatus)
         return self.postHostData(files)
 
     def closePopup(self, result: bool) -> None:

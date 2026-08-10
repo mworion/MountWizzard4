@@ -177,7 +177,7 @@ def test_pollStatus_1(function):
     function.getStatus = getStatus
 
     with mock.patch.object(function, "sendProgressStatus"):
-        function.pollStatus()
+        function.runnerPollStatus()
 
     function.getStatus = temp
 
@@ -253,7 +253,7 @@ def test_uploadFileWorker_1(function):
         mock.patch.object(function.threadPool, "start"),
         mock.patch.object(function, "postHostData"),
     ):
-        assert not function.uploadFileWorker()
+        assert not function.runnerUploadFile()
 
 
 def test_uploadFileWorker_2(function):
@@ -263,7 +263,7 @@ def test_uploadFileWorker_2(function):
         mock.patch.object(function.threadPool, "start"),
         mock.patch.object(function, "postHostData", return_value=False),
     ):
-        assert not function.uploadFileWorker()
+        assert not function.runnerUploadFile()
 
 
 def test_uploadFileWorker_3(function):
@@ -273,7 +273,7 @@ def test_uploadFileWorker_3(function):
         mock.patch.object(function.threadPool, "start"),
         mock.patch.object(function, "postHostData", return_value=True),
     ):
-        assert function.uploadFileWorker()
+        assert function.runnerUploadFile()
 
 
 def test_closePopup_1(function, mocked_sleepAndEvents):

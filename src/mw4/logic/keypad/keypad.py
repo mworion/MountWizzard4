@@ -341,7 +341,7 @@ class KeyPad:
     ) -> None:
         self.ws = None
 
-    def workerWebsocket(self, host: tuple) -> None:
+    def runnerWebsocket(self, host: tuple) -> None:
         if self.ws is not None:
             return
         ipaddress = host[0]

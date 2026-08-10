@@ -249,6 +249,13 @@ def test_drawPointer(function):
     function.drawPointer()
 
 
+def test_drawPointer_no_items(function):
+    with mock.patch.object(
+        function.ui.hemisphere, "findItemByName", return_value=None
+    ):
+        function.drawPointer()
+
+
 def test_setupDome(function):
     function.setupDome()
 

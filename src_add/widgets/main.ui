@@ -1440,7 +1440,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -1695,7 +1695,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual set slew rate for the mount.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual set slew rate for the mount. When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -1771,7 +1771,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the refraction pressure used in mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the refraction pressure used in mount.When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -1887,7 +1887,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the amount of degrees when the mount will flip after the meridian is passed when slewing. Positive values show after meridian, negative values before meridian.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;p&gt;Please refer to the mount manual for details&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the amount of degrees when the mount will flip after the meridian is passed when slewing. Positive values show after meridian, negative values before meridian. When clicking the field, you could change the value. Please refer to the mount manual for details&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -2090,7 +2090,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the elevation of the site.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the elevation of the site. When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -2389,7 +2389,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the amount of degrees when the mount will flip after the meridian is passed when tracking. Positive values show after meridian, negative values before meridian.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;p&gt;Please refer to the mount manual for details&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the amount of degrees when the mount will flip after the meridian is passed when tracking. Positive values show after meridian, negative values before meridian. When clicking the field, you could change the value. Please refer to the mount manual for details&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -2462,8 +2462,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of dual tracking. When clicking the field, you could change the value.
-If there is a yellow frame, the status is changed by MW4 due to functional reasons.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of dual tracking. When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -2723,7 +2722,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the refraction temperature used in mount&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the refraction temperature used in mount.When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -2903,7 +2902,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual horizon limit for slewing for high values (upper boundary).&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual horizon limit for slewing for high values (upper boundary).When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -3036,7 +3035,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the latitude of the site.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the latitude of the site. When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -3153,7 +3152,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the longitude of the site.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the longitude of the site. When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -3276,7 +3275,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual horizon limit for slewing for low limit (lower boundary).&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actual horizon limit for slewing for low limit (lower boundary). When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -3332,7 +3331,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual set settling time for the mount.&lt;/p&gt;&lt;p&gt;When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual set settling time for the mount. When clicking the field, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -3591,7 +3590,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
           <bool>false</bool>
          </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clock difference between PC clock and Mount Computer, filtered over 10 seconds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Round trip time from PC to Mount Computer and back.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="layoutDirection">
           <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -4027,7 +4026,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for azimuth direct slew setting. There is a range and consitence check in place.&lt;/p&gt;&lt;p&gt;Format is: &amp;lt;[+-]d.d&amp;gt; in degrees&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for azimuth direct slew setting. There is a range and consitence check in place. Format is: &amp;lt;[+-]d.d&amp;gt; in degrees &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="layoutDirection">
             <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -4097,7 +4096,7 @@ If there is a yellow frame, the status is changed by MW4 due to functional reaso
             <bool>false</bool>
            </property>
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for alitude direct slew setting. There is a range and consitence check in place.&lt;/p&gt;&lt;p&gt;Format is: &amp;lt;[+-]d.d&amp;gt; in degrees&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Input value for alitude direct slew setting. There is a range and consitence check in place. Format is: &amp;lt;[+-]d.d&amp;gt; in degrees&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="layoutDirection">
             <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -9413,6 +9412,9 @@ no tracking</string>
           <height>181</height>
          </rect>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show seeing data from meteoblue&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="verticalScrollBarPolicy">
          <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
         </property>
@@ -9607,7 +9609,7 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
          <x>485</x>
          <y>10</y>
          <width>301</width>
-         <height>186</height>
+         <height>181</height>
         </rect>
        </property>
        <property name="minimumSize">
@@ -9631,7 +9633,7 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
           <x>10</x>
           <y>45</y>
           <width>281</width>
-          <height>136</height>
+          <height>131</height>
          </rect>
         </property>
         <property name="toolTip">
@@ -9666,9 +9668,9 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
        <property name="geometry">
         <rect>
          <x>485</x>
-         <y>215</y>
+         <y>205</y>
          <width>301</width>
-         <height>216</height>
+         <height>226</height>
         </rect>
        </property>
        <property name="minimumSize">
@@ -9693,7 +9695,7 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
         <property name="geometry">
          <rect>
           <x>100</x>
-          <y>145</y>
+          <y>100</y>
           <width>36</width>
           <height>21</height>
          </rect>
@@ -9729,6 +9731,9 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
         <property name="frame">
          <bool>false</bool>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -9739,9 +9744,9 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
         </property>
         <property name="geometry">
          <rect>
-          <x>50</x>
-          <y>120</y>
-          <width>106</width>
+          <x>45</x>
+          <y>150</y>
+          <width>101</width>
           <height>21</height>
          </rect>
         </property>
@@ -9776,6 +9781,9 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
         <property name="frame">
          <bool>false</bool>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -9784,7 +9792,7 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>145</y>
+          <y>100</y>
           <width>71</width>
           <height>21</height>
          </rect>
@@ -9825,9 +9833,9 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
         </property>
         <property name="geometry">
          <rect>
-          <x>50</x>
-          <y>100</y>
-          <width>36</width>
+          <x>65</x>
+          <y>130</y>
+          <width>31</width>
           <height>21</height>
          </rect>
         </property>
@@ -9862,6 +9870,9 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
         <property name="frame">
          <bool>false</bool>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -9869,8 +9880,8 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
        <widget class="QLabel" name="label_155">
         <property name="geometry">
          <rect>
-          <x>90</x>
-          <y>100</y>
+          <x>95</x>
+          <y>130</y>
           <width>16</width>
           <height>21</height>
          </rect>
@@ -9895,9 +9906,9 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
         </property>
         <property name="geometry">
          <rect>
-          <x>105</x>
-          <y>100</y>
-          <width>31</width>
+          <x>110</x>
+          <y>130</y>
+          <width>26</width>
           <height>21</height>
          </rect>
         </property>
@@ -9932,6 +9943,9 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
         <property name="frame">
          <bool>false</bool>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -9939,8 +9953,8 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
        <widget class="QLabel" name="label_161">
         <property name="geometry">
          <rect>
-          <x>140</x>
-          <y>100</y>
+          <x>135</x>
+          <y>130</y>
           <width>16</width>
           <height>21</height>
          </rect>
@@ -9959,34 +9973,11 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLabel" name="label_164">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>175</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Node</string>
-        </property>
-        <property name="wordWrap">
-         <bool>false</bool>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_189">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>100</y>
+          <y>130</y>
           <width>46</width>
           <height>21</height>
          </rect>
@@ -10008,8 +9999,8 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
        <widget class="QLabel" name="label_194">
         <property name="geometry">
          <rect>
-          <x>140</x>
-          <y>145</y>
+          <x>135</x>
+          <y>100</y>
           <width>16</width>
           <height>21</height>
          </rect>
@@ -10044,9 +10035,9 @@ MW4 will show the actual day always in the middel of the chart.&lt;/p&gt;&lt;/bo
        <widget class="QTextBrowser" name="nodeEvents">
         <property name="geometry">
          <rect>
-          <x>50</x>
-          <y>170</y>
-          <width>236</width>
+          <x>10</x>
+          <y>180</y>
+          <width>281</width>
           <height>41</height>
          </rect>
         </property>

@@ -228,7 +228,7 @@ class Almanac(TabAddon):
         if location is None:
             return
         timeWindow = TWILIGHT_PLOT_DAYS
-        t = f"Twilight passes for: 1 year {self.app.timeMgr.timeZoneString()}"
+        t = f"Twilight passes for: 6 months {self.app.timeMgr.timeZoneString()}"
         self.ui.almanacGroup.setTitle(t)
         ts = self.app.dReg["mount"].obsSite.ts
         changeStyleDynamic(self.ui.almanacGroup, "run", "true")
@@ -364,7 +364,7 @@ class Almanac(TabAddon):
             self.ui.nodeEvents,
             data.nodeTimes,
             data.nodeEvents,
-            ["ascending", "descending"],
+            ["ascending node", "descending node"],
             "%d.%m. %H:%M",
         )
 

@@ -6685,7 +6685,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.mainTabWidget.setCurrentIndex(1)
+        self.mainTabWidget.setCurrentIndex(0)
         self.mountTabWidget.setCurrentIndex(0)
         self.modelingTabWidget.setCurrentIndex(2)
         self.manageTabWidget.setCurrentIndex(0)
@@ -6709,6 +6709,9 @@ class Ui_MainWindow(object):
         self.saveConfigQuit.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>Saves the actual profile and closes the application</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
         self.saveConfigQuit.setText(QCoreApplication.translate("MainWindow", u"Quit/Save", None))
+#if QT_CONFIG(tooltip)
+        self.setting.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>Opens the setting widow. Position and size will be stored in case of closing.</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
         self.setting.setText(QCoreApplication.translate("MainWindow", u"Setting", None))
 #if QT_CONFIG(tooltip)
         self.saveConfigAs.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>Saves the actual profile under a selectable new name on the disk without closing the appliation.</p></body></html>", None))

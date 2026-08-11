@@ -192,21 +192,24 @@ BASIC_STYLE = """
         border-width: 1px;
         border-style: outset;
         border-radius: 2px;
-        border-color: $M_PRIM3$;
+        border-color: $M_PRIM2$;
         margin-top: 6px;
         background-color: transparent;
     }
     QGroupBox::title {
-        left: 5px;
         subcontrol-origin: margin;
         subcontrol-position: top left;
+        left: 5px;
         color: $M_PRIM$;
     }
     QGroupBox[refraction='true'] {
         border-color: $M_PRIM$;
     }
+    QGroupBox::title[refraction='true']{
+        color: $M_TER$;
+    }
     QGroupBox::title:disabled{
-        color: $M_PRIM3$;
+        color: $M_PRIM1$;
     }
     QGroupBox[frameless='true'] {
         border-width: 0px;

@@ -182,7 +182,6 @@ class Setting:
         self.configHemisphere = self.CONFIG.get(config[2], "Unknown")
         self.configHoming = self.CONFIG.get(config[3], "Unknown")
         self.gpsSynced = valueToInt(response[26])
-
         return True
 
     def pollSetting(self) -> bool:

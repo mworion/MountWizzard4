@@ -22,6 +22,7 @@ measure: dict[str, list[str]] = {
         "errorAngularPosDEC",
         "status",
         "timeDiff",
+        "rtt",
     ],
     "sensor1Weather": [
         "WEATHER_PARAMETERS.WEATHER_TEMPERATURE",

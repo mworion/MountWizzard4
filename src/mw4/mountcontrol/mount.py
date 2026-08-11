@@ -138,6 +138,7 @@ class MountDevice(QObject):
         self.data["errorAngularPosDEC"] = self.obsSite.errorAngularPosDEC.degrees * 3600
         self.data["status"] = self.obsSite.status
         self.data["timeDiff"] = self.mountTime.timeDiff * 1000
+        self.data["rtt"] = self.mountTime.rtt * 1000
 
     def waitAfterSettlingAndEmit(self) -> None:
         self.signals.slewed.emit()

@@ -288,6 +288,16 @@ def dataPlots():
                 },
             },
         },
+        "RTT Comp-Mount": {
+            "template": {"legendRef": None, "label": "Round Trip Time [ms]"},
+            "lineItems": {
+                "mount-rtt": {
+                    "plotItemRef": None,
+                    "name": "MountControl",
+                    "pen": Styles().M_YELLOW,
+                },
+            },
+        },
         "Focus Position": {
             "template": {"legendRef": None, "label": "Focus Position [units]"},
             "lineItems": {

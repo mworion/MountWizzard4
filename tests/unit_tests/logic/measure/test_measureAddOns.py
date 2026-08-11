@@ -30,7 +30,7 @@ EXPECTED_TOP_LEVEL_KEYS = {
 }
 
 EXPECTED_LENGTHS = {
-    "mount": 6,
+    "mount": 7,
     "sensor1Weather": 7,
     "sensor2Weather": 7,
     "sensor3Weather": 7,
@@ -49,6 +49,7 @@ EXPECTED_MOUNT_FIELDS = [
     "errorAngularPosDEC",
     "status",
     "timeDiff",
+    "rtt",
 ]
 
 WEATHER_SENSOR_FIELDS = [

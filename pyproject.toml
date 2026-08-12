@@ -56,7 +56,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "numpy==2.5.1",
+    "numpy==2.5.2",
     "opencv-python-headless==5.0.0.93",
     "scipy==1.18.0",
     "astropy==8.0.1",
@@ -66,7 +66,7 @@ dependencies = [
     "sep==1.4.1",
     "pyqtgraph==0.14.0",
     "qimage2ndarray==1.10.0",
-    "skyfield==1.54",
+    "skyfield==1.55",
     "sgp4==2.27",
     "alpyca==3.1.2",
     "requests==2.34.2",
@@ -74,7 +74,7 @@ dependencies = [
     "pylnk3==0.4.3",
     "ping3==5.1.5",
     "wakeonlan==4.0.0",
-    "pybase64==1.4.3",
+    "pybase64==1.5.0",
     "websocket-client==1.9.0",
     "hidapi==0.15.0",
     "range-key-dict==1.1.0",
@@ -100,7 +100,7 @@ Source = "https://github.com/mworion/mountwizzard4"
 BugTracker = "https://github.com/mworion/mountwizzard4/issues"
 Discussions = "https://github.com/mworion/MountWizzard4/discussions"
 Channel = "https://www.youtube.com/user/orion49m/featured"
-Forum = "https://www.10micron.eu/forum/"
+Forum = "https://forum.10micron.cloud/"
 
 [dependency-groups]
 dev = [

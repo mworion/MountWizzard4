@@ -428,8 +428,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
-The keypad is a webbrowser showing the content from 10microns webservices directy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the video v4 window. Position and size will be stored in case of closing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -529,8 +528,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
-The keypad is a webbrowser showing the content from 10microns webservices directy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the video v2 window. Position and size will be stored in case of closing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -568,8 +566,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
-The keypad is a webbrowser showing the content from 10microns webservices directy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the video v1 window. Position and size will be stored in case of closing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -619,7 +616,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual utc of site&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the actual utc of site from mount controller&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string/>
@@ -674,8 +671,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
          </font>
         </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
-The keypad is a webbrowser showing the content from 10microns webservices directy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the video v3 window. Position and size will be stored in case of closing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="styleSheet">
          <string notr="true"/>
@@ -1440,7 +1436,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -13913,7 +13909,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
         </rect>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
        <property name="elideMode">
         <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -13971,6 +13967,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
             <width>76</width>
             <height>21</height>
            </rect>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move focuser with step in&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>In</string>
@@ -14099,6 +14098,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
             <height>21</height>
            </rect>
           </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move focuser with step out&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Out</string>
           </property>
@@ -14114,6 +14116,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
             <width>61</width>
             <height>46</height>
            </rect>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stope focuser movement&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Stop</string>
@@ -15136,6 +15141,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
             <height>21</height>
            </rect>
           </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Closes the cover&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Close</string>
           </property>
@@ -15149,6 +15157,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
             <height>21</height>
            </rect>
           </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the cover&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Open</string>
           </property>
@@ -15161,6 +15172,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
             <width>76</width>
             <height>21</height>
            </rect>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stops cover coverage movment&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Stop</string>
@@ -15195,7 +15209,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
            </rect>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opening the dome shutter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Closes dome shutter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Close</string>
@@ -15258,7 +15272,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
            </rect>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Closing the dome shutter&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens dome shutter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Open</string>
@@ -15274,7 +15288,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
            </rect>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Closing the dome shutter&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moving dome clock wise (CW)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Slew CW</string>
@@ -15290,7 +15304,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
            </rect>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Closing the dome shutter&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moving dome counter clock wise (CCW)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Slew CCW</string>
@@ -15306,7 +15320,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
            </rect>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opening the dome shutter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stops moving the dome movement&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Stop
@@ -15656,6 +15670,9 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
             <height>21</height>
            </rect>
           </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reads the telescope informations from driver.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
           <property name="text">
            <string>Data from Driver</string>
           </property>
@@ -15859,7 +15876,7 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the status of the cover.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shows the light intensity. when clicked it could be adjusted&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::LayoutDirection::LeftToRight</enum>
@@ -15882,6 +15899,9 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
             <width>76</width>
             <height>21</height>
            </rect>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the light on. Setting it to 50%&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Light On</string>

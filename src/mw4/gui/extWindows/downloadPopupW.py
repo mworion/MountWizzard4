@@ -43,6 +43,7 @@ class DownloadPopup(MWidget):
         self.unzip = unzip
         self.ui = Ui_DownloadPopup()
         self.ui.setupUi(self.ws)
+        self.setNoFocus(self)
         self.setWindowTitle("Downloading from Web")
         self.setFixedSize(self.HALF_WIDTH, self.POPUP_HEIGHT)
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)

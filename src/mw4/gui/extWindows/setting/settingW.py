@@ -36,6 +36,7 @@ class SettingWindow(MWidget):
         self.app = app
         self.ui = setting_ui.Ui_SettingDialog()
         self.ui.setupUi(self.ws)
+        self.setNoFocus(self)
         self.setWindowTitle("Setting")
         self.tabSettDevice = SettDevice(self)
         self.tabSettMount = SettMount(self)

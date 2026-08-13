@@ -40,6 +40,7 @@ class DevicePopup(MWidget):
 
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self.ws)
+        self.setNoFocus(self)
         self.setWindowTitle("Device Management")
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.setFixedSize(500, 350)

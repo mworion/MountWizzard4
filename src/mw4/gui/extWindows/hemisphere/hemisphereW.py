@@ -47,6 +47,7 @@ class HemisphereWindow(MWidget):
         self.msg = app.msg
         self.ui = hemisphere_ui.Ui_HemisphereDialog()
         self.ui.setupUi(self.ws)
+        self.setNoFocus(self)
         self.setMinimumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.setWindowTitle("Hemisphere")
         self.horizonDraw = HorizonDraw(self)

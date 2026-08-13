@@ -35,6 +35,7 @@ class MeasureWindow(MWidget):
         self.app = app
         self.ui = measure_ui.Ui_MeasureDialog()
         self.ui.setupUi(self.ws)
+        self.setNoFocus(self)
         self.setMinimumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.setWindowTitle("Measure")
         self.drawLock = QMutex()

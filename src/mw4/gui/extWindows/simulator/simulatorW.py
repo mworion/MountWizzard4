@@ -42,6 +42,7 @@ class SimulatorWindow(MWidget):
         self.app = app
         self.ui = simulator_ui.Ui_SimulatorDialog()
         self.ui.setupUi(self.ws)
+        self.setNoFocus(self)
         self.setMinimumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.setWindowTitle("Simulation")
         self.world = SimulatorWorld(self, self.app)

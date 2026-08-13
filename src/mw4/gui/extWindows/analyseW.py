@@ -30,6 +30,7 @@ class AnalyseWindow(MWidget):
         self.app = app
         self.ui = analyse_ui.Ui_AnalyseDialog()
         self.ui.setupUi(self.ws)
+        self.setNoFocus(self)
         self.setWindowTitle("Analyse")
         self.setMinimumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.latitude: float = 0

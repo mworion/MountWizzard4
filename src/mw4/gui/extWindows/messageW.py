@@ -35,6 +35,7 @@ class MessageWindow(MWidget):
         self.app = app
         self.ui = message_ui.Ui_MessageDialog()
         self.ui.setupUi(self.ws)
+        self.setNoFocus(self)
         self.setWindowTitle("Message")
         self.setMinimumSize(self.FULL_WIDTH, self.HALF_HEIGHT)
         self.setMaximumSize(self.FULL_WIDTH, self.FULL_HEIGHT)

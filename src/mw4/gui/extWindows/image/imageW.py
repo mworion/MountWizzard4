@@ -41,6 +41,7 @@ class ImageWindow(MWidget):
         self.threadPool = app.threadPool
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self.ws)
+        self.setNoFocus(self)
         self.setMinimumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.setWindowTitle("Image")
         self.signals = ImageWindowSignals()

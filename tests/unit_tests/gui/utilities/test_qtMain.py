@@ -16,6 +16,7 @@ import logging
 import pytest
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QMainWindow,
     QPushButton,
@@ -127,14 +128,6 @@ def test_renderStyle_2(function):
     function.colorSet = 0
     val = function.renderStyle(inp).strip(" ")
     assert val == "12345$M_TEST$12345\n"
-
-
-def test_initUI_1(function):
-    with (
-        mock.patch.object(function, "setMouseTracking"),
-        mock.patch.object(function, "setWindowIcon"),
-    ):
-        function.initUI()
 
 
 def test_positionWindow_1(function):
@@ -282,3 +275,31 @@ def test_mouseMoveEvent_2(function):
     # When not resizing, size should not change
     assert function.width() == old_width
     assert function.height() == old_height
+
+
+def test_setNoFocus_1(function):
+    """Test setNoFocus sets NoFocus policy on all children."""
+    parent_widget = QWidget()
+    child1 = QPushButton(parent_widget)
+    child2 = QPushButton(parent_widget)
+    child1.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+    child2.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+
+    MWidget.setNoFocus(parent_widget)
+
+    assert child1.focusPolicy() == Qt.FocusPolicy.NoFocus
+    assert child2.focusPolicy() == Qt.FocusPolicy.NoFocus
+
+
+def test_setNoFocus_2(function):
+    """Test setNoFocus with nested children."""
+    parent_widget = QWidget()
+    child1 = QWidget(parent_widget)
+    grandchild = QPushButton(child1)
+    grandchild.setFocusPolicy(Qt.FocusPolicy.TabFocus)
+
+    MWidget.setNoFocus(parent_widget)
+
+    assert grandchild.focusPolicy() == Qt.FocusPolicy.NoFocus
+    assert child1.focusPolicy() == Qt.FocusPolicy.NoFocus
+

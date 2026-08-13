@@ -43,8 +43,9 @@ class MWidget(QMainWindow, Styles):
 
     def __init__(self) -> None:
         super().__init__()
-        self.initUI()
         self.setWindowIcon(self.mwIcon)
+        self.setStyleSheet(self.mw4Style)
+        self.setMouseTracking(True)
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.setAttribute(Qt.WidgetAttribute.WA_Hover)
@@ -100,6 +101,11 @@ class MWidget(QMainWindow, Styles):
             self.titleBar.title.setText(title)
 
     @staticmethod
+    def setNoFocus(ui) -> None:
+        for widget in ui.findChildren(QWidget):
+            widget.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+
+    @staticmethod
     def saveWindowAsPNG(window: QWidget) -> None:
         name = window.windowTitle().replace(" ", "_")
         timeTrigger = datetime.datetime.now(datetime.UTC)
@@ -132,11 +138,6 @@ class MWidget(QMainWindow, Styles):
         gui.setProperty("alignLeft", True)
         gui.style().unpolish(gui)
         gui.style().polish(gui)
-
-    def initUI(self) -> None:
-        self.setStyleSheet(self.mw4Style)
-        self.setMouseTracking(True)
-        self.setWindowIcon(self.mwIcon)
 
     def setPositionWindow(self, config: dict) -> None:
         height = config.get("height", self.minimumHeight())

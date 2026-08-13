@@ -44,28 +44,7 @@ profile. You can add or change any config later on at any time.
 
 Using N.I.N.A. as device
 ------------------------
-In addition to the standard frameworks to interface to devices, MountWizzard4
-could use Nighttime Imaging (N.I.N.A.) as a driver for devices attached to them.
+please install the ALPACA plugin for N.I.N.A. and enable it. This will allow
+you to use N.I.N.A. as a device in MountWizzard4. Beside the camera you could
+also use other devices than cameras, e.g. filter wheel, focuser, dome as well.
 
-.. note:: MountWizzard4 uses all necessary data from the FITS of the images
-          taken by the external apps. Please make sure, that the FITS header
-          contains this information, especially the focal length, the pixel
-          size. Otherwise plate solving will fail. As both applications do not
-          transfer their images to MountWizzard4, you have to ensure that the
-          FITS files are stored on your local disk and MountWizzard4 has access.
-
-Basically MountWizzard4 interface N.I.N.A. through it's alpaca plugin and let
-them control the devices. This means, that you have to install the Alpaca plugin
-for N.I.N.A. and enable it, but you could also use other devices than cameras,
-e.g. filter wheel, focuser, dome, etc. as well.
-
-Preparation for using NINA 3.x as ALPACA device
------------------------------------------------
-N.I.N.A. 3.x realizes this feature in a separate plugin. The plugin is called
-Alpaca:
-
-.. image:: image/sgpro-control.png
-    :align: center
-    :scale: 71%
-
-Please install this plugin first and enable it.

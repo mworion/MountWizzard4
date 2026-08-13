@@ -12,7 +12,7 @@ afterwards in the process. You could check the parameters in the following page:
 In addition MountWizzard4 allows you to control some devices related to imaging
 once they were configured in the device manager:
 
-.. image:: image/devices.png
+.. image:: image/image_train.png
     :align: center
     :scale: 71%
 

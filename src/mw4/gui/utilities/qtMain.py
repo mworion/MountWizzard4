@@ -25,6 +25,7 @@ from PySide6.QtGui import (
     QKeyEvent,
 )
 from PySide6.QtWidgets import (
+    QLineEdit,
     QMainWindow,
     QPushButton,
     QVBoxLayout,
@@ -103,7 +104,8 @@ class MWidget(QMainWindow, Styles):
     @staticmethod
     def setNoFocus(ui) -> None:
         for widget in ui.findChildren(QWidget):
-            widget.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+            if not isinstance(widget, QLineEdit):
+                widget.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
     @staticmethod
     def saveWindowAsPNG(window: QWidget) -> None:

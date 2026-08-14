@@ -436,20 +436,20 @@ def test_pollSyncClock_updates_timeDiff_array(function):
 def test_setStatus_sets_mount_not_up(function):
     function.parent.mountIsUp = True
     with mock.patch.object(function.parent.signals, "mountIsUp"):
-        function.setStatus("Test status")
+        function.setMountStatusOff("Test status")
         assert function.parent.mountIsUp is False
 
 
 def test_setStatus_emits_signal(function):
     with mock.patch.object(function.parent.signals, "mountIsUp") as mock_signal:
-        function.setStatus("Test message")
+        function.setMountStatusOff("Test message")
         mock_signal.emit.assert_called_once_with(False)
 
 
 def test_setStatus_decrements_error_counter(function):
     function.errorCounter = 5
     with mock.patch.object(function.parent.signals, "mountIsUp"):
-        function.setStatus("Test status")
+        function.setMountStatusOff("Test status")
         assert function.errorCounter == 4
 
 
@@ -460,7 +460,7 @@ def test_setStatus_logs_when_counter_positive(function):
         mock.patch.object(function.parent.signals, "mountIsUp"),
         mock.patch.object(function.log, "info") as mock_log,
     ):
-        function.setStatus(test_message)
+        function.setMountStatusOff(test_message)
         mock_log.assert_called_once_with(test_message)
 
 
@@ -470,14 +470,14 @@ def test_setStatus_no_log_when_counter_zero(function):
         mock.patch.object(function.parent.signals, "mountIsUp"),
         mock.patch.object(function.log, "info") as mock_log,
     ):
-        function.setStatus("Test message")
+        function.setMountStatusOff("Test message")
         mock_log.assert_not_called()
 
 
 def test_setStatus_no_decrement_when_counter_zero(function):
     function.errorCounter = 0
     with mock.patch.object(function.parent.signals, "mountIsUp"):
-        function.setStatus("Test status")
+        function.setMountStatusOff("Test status")
         assert function.errorCounter == 0
 
 
@@ -492,7 +492,7 @@ def test_setStatus_no_decrement_when_counter_zero(function):
 def test_setStatus_decrement_various_counters(function, initial_counter, expected_counter):
     function.errorCounter = initial_counter
     with mock.patch.object(function.parent.signals, "mountIsUp"):
-        function.setStatus("Test status")
+        function.setMountStatusOff("Test status")
         assert function.errorCounter == expected_counter
 
 
@@ -511,20 +511,20 @@ def test_setStatus_logs_different_messages(function, log_message):
         mock.patch.object(function.parent.signals, "mountIsUp"),
         mock.patch.object(function.log, "info") as mock_log,
     ):
-        function.setStatus(log_message)
+        function.setMountStatusOff(log_message)
         mock_log.assert_called_once_with(log_message)
 
 
 def test_setStatus_multiple_calls_decrements_progressively(function):
     function.errorCounter = 3
     with mock.patch.object(function.parent.signals, "mountIsUp"):
-        function.setStatus("Message 1")
+        function.setMountStatusOff("Message 1")
         assert function.errorCounter == 2
-        function.setStatus("Message 2")
+        function.setMountStatusOff("Message 2")
         assert function.errorCounter == 1
-        function.setStatus("Message 3")
+        function.setMountStatusOff("Message 3")
         assert function.errorCounter == 0
-        function.setStatus("Message 4")
+        function.setMountStatusOff("Message 4")
         assert function.errorCounter == 0
 
 
@@ -534,6 +534,6 @@ def test_setStatus_called_with_empty_string(function):
         mock.patch.object(function.parent.signals, "mountIsUp"),
         mock.patch.object(function.log, "info") as mock_log,
     ):
-        function.setStatus("")
+        function.setMountStatusOff("")
         mock_log.assert_called_once_with("")
         assert function.errorCounter == 4

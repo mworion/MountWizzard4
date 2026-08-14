@@ -53,7 +53,7 @@ class MountTime:
     def timeDiff(self) -> float:
         return float(np.mean(self._timeDiff))
 
-    def setStatus(self, logText: str) -> None:
+    def setMountStatusOff(self, logText: str) -> None:
         self.parent.mountIsUp = False
         self.parent.signals.mountIsUp.emit(False)
         if self.errorCounter > 0:
@@ -62,14 +62,14 @@ class MountTime:
 
     def runnerMountUp(self) -> None:
         if not self.parent.config.hostAddress:
-            self.setStatus("No host address")
+            self.app.dReg.setState("mount", None)
             return
         rttLocal = ping(self.parent.config.hostAddress)
         if rttLocal is None:
-            self.setStatus(f"Host: [{self.parent.config.hostAddress}] not resolved")
+            self.setMountStatusOff(f"Host: [{self.parent.config.hostAddress}] not resolved")
             return
         if rttLocal is False:
-            self.setStatus(f"Timeout: [{self.parent.config.hostAddress}[ no response")
+            self.setMountStatusOff(f"Timeout: [{self.parent.config.hostAddress}[ no response")
             return
         self.rtt_MA = np.roll(self.rtt_MA, 1)
         self.rtt_MA[0] = rttLocal
@@ -80,7 +80,7 @@ class MountTime:
                 client.connect((self.parent.config.hostAddress, self.parent.config.port))
                 client.shutdown(socket.SHUT_RDWR)
         except OSError as e:
-            self.setStatus(f"No mount at [{self.parent.config.hostAddress}], error [{e}]")
+            self.setMountStatusOff(f"No mount at [{self.parent.config.hostAddress}], error [{e}]")
         else:
             self.errorCounter = 5
             self.parent.signals.mountIsUp.emit(True)

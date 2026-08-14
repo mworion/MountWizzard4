@@ -48,3 +48,32 @@ please install the ALPACA plugin for N.I.N.A. and enable it. This will allow
 you to use N.I.N.A. as a device in MountWizzard4. Beside the camera you could
 also use other devices than cameras, e.g. filter wheel, focuser, dome as well.
 
+.. image:: image/nina_camera.png
+    :align: center
+    :scale: 71%
+
+Alpaca plugin for N.I.N.A. is available.
+
+.. image:: image/nina_alpaca_plugin.png
+    :align: center
+    :scale: 71%
+
+Please enable the plugin and configure the port for the Alpaca server. The
+default port is 11111. but you could choose it freely. Please note that the port
+must be the same as in MountWizzard4 an need to be entered in the camera setup
+as well. The IP address of the computer running N.I.N.A.
+
+.. image:: image/select_nina.png
+    :align: center
+    :scale: 71%
+
+After closing the setup window, the N.I.N.A. device in the camera setup should be
+available:
+
+.. image:: image/nina_camera_connected.png
+    :align: center
+    :scale: 71%
+
+
+
+

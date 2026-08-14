@@ -302,4 +302,3 @@ def test_setNoFocus_2(function):
 
     assert grandchild.focusPolicy() == Qt.FocusPolicy.NoFocus
     assert child1.focusPolicy() == Qt.FocusPolicy.NoFocus
-

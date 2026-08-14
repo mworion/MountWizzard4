@@ -250,9 +250,7 @@ def test_drawPointer(function):
 
 
 def test_drawPointer_no_items(function):
-    with mock.patch.object(
-        function.ui.hemisphere, "findItemByName", return_value=None
-    ):
+    with mock.patch.object(function.ui.hemisphere, "findItemByName", return_value=None):
         function.drawPointer()
 
 

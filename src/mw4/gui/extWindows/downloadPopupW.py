@@ -69,7 +69,9 @@ class DownloadPopup(MWidget):
     def exec(self) -> bool:
         self.showWindow()
         self.loop = QEventLoop()
-        self.workerDownloadFile = Worker(self.runnerDownloadFile, self.url, self.dest, self.unzip)
+        self.workerDownloadFile = Worker(
+            self.runnerDownloadFile, self.url, self.dest, self.unzip
+        )
         self.workerDownloadFile.signals.result.connect(self.closePopup)
         self.workerDownloadFile.signals.finished.connect(self.loop.quit)
         self.threadPool.start(self.workerDownloadFile)

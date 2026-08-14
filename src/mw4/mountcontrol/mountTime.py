@@ -62,7 +62,6 @@ class MountTime:
 
     def runnerMountUp(self) -> None:
         if not self.parent.config.hostAddress:
-            self.app.dReg.setState("mount", None)
             return
         rttLocal = ping(self.parent.config.hostAddress)
         if rttLocal is None:

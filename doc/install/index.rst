@@ -73,7 +73,7 @@ each other. This is the main advantage of using uv and virtual environments in g
 In you work folder it should now be a new folder called ".venv" with the virtual
 environment:
 
-.. image:: image/installed_venv.png
+.. image:: image/install_venv.png
     :align: center
     :scale: 71%
 
@@ -91,11 +91,11 @@ the virtual environment. If you are using RASPI hardware, please check the RASPI
 information below as well!
 
 If you want to have a dedicated version of MountWizzard4, just add the version
-number in the command line (e.g. 3.2.8) like
+number in the command line (e.g. 4.0.0) like
 
 .. code-block:: bash
 
-    uv pip install mountwizzard4==3.2.8
+    uv pip install mountwizzard4==4.0.0
 
 Changing versions upgrade and downgrade work the same way just with the appropriate
 version numbers.
@@ -118,6 +118,45 @@ new folders:
     :scale: 71%
 
 Basically that's it.
+
+Comfort setup for MW4 users
+---------------------------
+The first start has to be done manually with the command above. After that,
+you can use MountWizzard4 for optimizing the user experience. Please check
+the following tab underr setting:
+
+.. image:: image/support_setups.png
+    :align: center
+    :scale: 71%
+
+MountWizzard4 offers a number setups for the user on windows, ubuntu and macOS.
+For each operating system dedicated setup files could be generated to be able
+to integrate MoutWizzard4 into the gui of the system.
+
+.. image:: image/support_setups_windows.png
+    :align: center
+    :scale: 71%
+
+For e.g. windows it generate a link with an icon to start MountWizzard4 with a
+double click and stores it in the work folder. From there you can move it to
+your desktop or any other location you like. This includes also the startup
+paremeters for the appearance of MountWizzard4: DPI and scale factor.
+For linux it generates a desktop file to integrate it, and for macOS it
+generates a .app bundle to integrate it into the system. I will look like this:
+
+.. image:: image/windows_final.png
+    :align: center
+    :scale: 71%
+
+All these setups are generated in the work folder and could be moved to any other.
+The files generated coudl be manually edited.
+
+.. warning:: When generating the setup files, please make sure that you have the
+             right permissions to write into the work folder. If not, please
+             change the permissions or move the work folder to a location where
+             you have the right permissions. Existing files will be overwritten
+             without any warning.
+
 
 Update MountWizzard4
 --------------------

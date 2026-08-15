@@ -219,8 +219,8 @@ class Photometry:
         self.calcBackgroundRMS()
 
     def runnerCalcPhotometry(self) -> None:
-        self.bkg = sep.Background(self.image, bw=32, bh=32)
-        image_sub = self.image - self.bkg
+        self.bkg = sep.Background(self.image.astype(np.float32), bw=32, bh=32)
+        image_sub = self.image.astype(np.float32) - self.bkg
         self.backRMS = self.bkg.rms()
         self.backSignal = self.bkg.back()
 

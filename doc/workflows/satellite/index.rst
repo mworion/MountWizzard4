@@ -43,9 +43,13 @@ when crossing the meridian.
     :align: center
     :scale: 71%
 
-The selected satellite will also be shown in the **Satellite** window:
+The selected satellite will also be shown in the **Satellite** windows:
 
-.. image:: image/sat_selected.png
+.. image:: image/sat_selected1.png
+    :align: center
+    :scale: 71%
+
+.. image:: image/sat_selected2.png
     :align: center
     :scale: 71%
 

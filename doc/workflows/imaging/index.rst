@@ -48,41 +48,12 @@ in each view with the values of the image.
 
 Area 5: View options
 ^^^^^^^^^^^^^^^^^^^^
-For the image you have different options to alter the main view of the image:
-
-.. list-table:: Image views
-    :widths: 30, 70
-    :header-rows: 1
-
-    *   - Drop down entry
-        - Explanation
-    *   - Image Raw
-        - Standard visualization of the image in greyscale. MountWizzard4 does not support
-          colors
-    *   - Image with Sources
-        - An overlay of the image with the extracted sources (stars) as circles
-    *   - Photometry: HFD Value
-        - SEP: 50 top Sources with HFD values
-    *   - Photometry: Background level
-        - SEP: Image of the background level
-    *   - Photometry: Background noise
-        - SEP: Image of the background oise level
-    *   - Photometry: Flux
-        - SEP: Value for flux of the detected sources
-
-If distortion parameters are included, you could check "UseWCS" and
-MountWizzard4 will show the RA / DEC coordinates for the first threed image
-view options.
+For the image you have different tabs to analyse the image. The first tab is
+the standard view of the image.
 
 
 Some examples for the windows
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-View Image with WCS distortion:
-
-.. image:: image/image_distortion2.png
-    :align: center
-    :scale: 71%
 
 View Image with sources:
 
@@ -90,9 +61,9 @@ View Image with sources:
     :align: center
     :scale: 71%
 
-View image with HFD values
+View image with HFR values
 
-.. image:: image/show_hfd.png
+.. image:: image/show_hfr.png
     :align: center
     :scale: 71%
 
@@ -110,19 +81,15 @@ View image with background noise
 
 View image with photometry flux
 
-.. image:: image/show_flux.png
-    :align: center
-    :scale: 71%
-
 View image with different zoom
 
 .. image:: image/zoom_2.png
     :align: center
     :scale: 71%
 
-View image with different color scheme
+View image tilt
 
-.. image:: image/color_1.png
+.. image:: image/tilt.png
     :align: center
     :scale: 71%
 

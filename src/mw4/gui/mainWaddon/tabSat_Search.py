@@ -291,7 +291,7 @@ class SatSearch(SatData):
     def calcSatList(self) -> None:
         title = "Setup " + self.app.timeMgr.timeZoneString()
         self.ui.satSetupGroup.setTitle(title)
-        changeStyleDynamic(self.ui.satFilterGroup, "running", True)
+        changeStyleDynamic(self.ui.satFilterGroup, "run", True)
         self.workerCalcSatList = Worker(self.runnerCalcSatList)
         self.workerCalcSatList.signals.finished.connect(self.filterListSats)
         self.app.threadPool.start(self.workerCalcSatList)

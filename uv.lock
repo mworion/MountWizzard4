@@ -3,9 +3,9 @@ revision = 3
 requires-python = ">=3.12, <3.15"
 
 [[package]]
-name = "alpyca"
+name = "alpyca-mw4"
 version = "3.1.2"
-source = { url = "https://github.com/mworion/MountWizzard4/raw/refs/heads/main/help/alpyca-3.1.2-py3-none-any.whl" }
+source = { url = "https://github.com/mworion/MountWizzard4/raw/refs/heads/main/help/alpyca_mw4-3.1.2-py3-none-any.whl" }
 dependencies = [
     { name = "enum-tools" },
     { name = "ifaddr" },
@@ -14,7 +14,7 @@ dependencies = [
     { name = "typing-extensions" },
 ]
 wheels = [
-    { url = "https://github.com/mworion/MountWizzard4/raw/refs/heads/main/help/alpyca-3.1.2-py3-none-any.whl", hash = "sha256:4cbcaba15f08c491ac03423ee89fed3a53c2982ea8daaa72c8a6367af11db1ac" },
+    { url = "https://github.com/mworion/MountWizzard4/raw/refs/heads/main/help/alpyca_mw4-3.1.2-py3-none-any.whl", hash = "sha256:bed80dc70cb79c3af05702562b54a6612857b344b725b4ecacd9e49502b87c81" },
 ]
 
 [package.metadata]
@@ -677,10 +677,10 @@ wheels = [
 
 [[package]]
 name = "mountwizzard4"
-version = "4.0.0b24"
+version = "4.0.0b25"
 source = { editable = "." }
 dependencies = [
-    { name = "alpyca" },
+    { name = "alpyca-mw4" },
     { name = "astropy" },
     { name = "astroquery" },
     { name = "hidapi" },
@@ -727,7 +727,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "alpyca", url = "https://github.com/mworion/MountWizzard4/raw/refs/heads/main/help/alpyca-3.1.2-py3-none-any.whl" },
+    { name = "alpyca-mw4", url = "https://github.com/mworion/MountWizzard4/raw/refs/heads/main/help/alpyca_mw4-3.1.2-py3-none-any.whl" },
     { name = "astropy", specifier = "==8.0.1" },
     { name = "astroquery", specifier = "==0.4.11" },
     { name = "hidapi", specifier = "==0.15.0" },

@@ -7327,9 +7327,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
   </layout>
  </widget>
  <tabstops>
-  <tabstop>loglevelDebug</tabstop>
-  <tabstop>loglevelTrace</tabstop>
-  <tabstop>textBrowserCopyright</tabstop>
+  <tabstop>cameraDevice</tabstop>
+  <tabstop>cameraSetup</tabstop>
+  <tabstop>filterDevice</tabstop>
   <tabstop>filterSetup</tabstop>
   <tabstop>focuserDevice</tabstop>
   <tabstop>focuserSetup</tabstop>
@@ -7371,10 +7371,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <tabstop>wolAutomatic</tabstop>
   <tabstop>mountOn</tabstop>
   <tabstop>mountOff</tabstop>
-  <tabstop>tabWidget</tabstop>
-  <tabstop>cameraSetup</tabstop>
-  <tabstop>cameraDevice</tabstop>
-  <tabstop>filterDevice</tabstop>
   <tabstop>syncTimeNone</tabstop>
   <tabstop>syncTimeCont</tabstop>
   <tabstop>syncTimeNotTrack</tabstop>
@@ -7383,19 +7379,19 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <tabstop>rackCompWolPort</tabstop>
   <tabstop>bootRackComp</tabstop>
   <tabstop>domeNorthOffset</tabstop>
-  <tabstop>use10micronDef</tabstop>
-  <tabstop>offGEM</tabstop>
   <tabstop>domeRadius</tabstop>
   <tabstop>domeEastOffset</tabstop>
   <tabstop>domeVerticalOffset</tabstop>
+  <tabstop>use10micronDef</tabstop>
+  <tabstop>offGEM</tabstop>
   <tabstop>offLAT</tabstop>
   <tabstop>domeClearOpening</tabstop>
   <tabstop>domeOpeningHysteresis</tabstop>
   <tabstop>domeClearanceZenith</tabstop>
   <tabstop>useDomeGeometry</tabstop>
-  <tabstop>useDynamicFollowing</tabstop>
   <tabstop>useOvershoot</tabstop>
   <tabstop>automaticDome</tabstop>
+  <tabstop>useDynamicFollowing</tabstop>
   <tabstop>copyFromDomeDriver</tabstop>
   <tabstop>settleTimeDome</tabstop>
   <tabstop>tabDomeExplain</tabstop>
@@ -7480,6 +7476,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <tabstop>unitTimeUTC</tabstop>
   <tabstop>unitTimeLocal</tabstop>
   <tabstop>loglevelInfo</tabstop>
+  <tabstop>loglevelDebug</tabstop>
+  <tabstop>loglevelTrace</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>textBrowserCopyright</tabstop>
  </tabstops>
  <resources/>
  <connections/>

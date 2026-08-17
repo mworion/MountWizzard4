@@ -151,6 +151,9 @@
           <bold>false</bold>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
+        </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the actual profile to disk under the same name without closing the application.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -189,6 +192,9 @@
           <bold>false</bold>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
+        </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the actual profile and closes the application&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -220,6 +226,9 @@
           <pointsize>10</pointsize>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens the setting widow. Position and size will be stored in case of closing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -255,6 +264,9 @@
           <pointsize>10</pointsize>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saves the actual profile under a selectable new name on the disk without closing the appliation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -293,6 +305,9 @@
           <pointsize>10</pointsize>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loads a profile from disk&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -426,6 +441,9 @@
           <pointsize>10</pointsize>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the video v4 window. Position and size will be stored in case of closing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -941,6 +959,9 @@
           <bold>false</bold>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
+        </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of dome: &lt;/p&gt;&lt;p&gt;Red: Error&lt;/p&gt;&lt;p&gt;Gray: No Configured&lt;/p&gt;&lt;p&gt;Green: Connected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -1265,6 +1286,9 @@
             <bold>false</bold>
            </font>
           </property>
+          <property name="focusPolicy">
+           <enum>Qt::FocusPolicy::NoFocus</enum>
+          </property>
           <property name="toolTip">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens and closes the keypad window. If blue, the windows should be visible. Position and size will be stored in case of closing.
 The keypad is a webbrowser showing the content from 10microns webservices directy.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -1347,6 +1371,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bold>false</bold>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
+        </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of environment: &lt;/p&gt;&lt;p&gt;Red: Not effective refraction working&lt;/p&gt;&lt;p&gt;Gray: No Configured&lt;/p&gt;&lt;p&gt;Green: Connected, source define and updates are on&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -1385,6 +1412,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bold>false</bold>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
+        </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Status of mount&lt;/p&gt;&lt;p&gt;Red: Error&lt;/p&gt;&lt;p&gt;Yellow: Connecting&lt;/p&gt;&lt;p&gt;Green: Connected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -1422,6 +1452,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
        <pointsize>10</pointsize>
        <bold>false</bold>
       </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::FocusPolicy::NoFocus</enum>
      </property>
      <property name="toolTip">
       <string/>
@@ -1466,11 +1499,14 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
          <height>241</height>
         </rect>
        </property>
+       <property name="focusPolicy">
+        <enum>Qt::FocusPolicy::NoFocus</enum>
+       </property>
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The mount Computer Settings are peseisted thrugh the mount itself. MW4 only reads them and sets them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <property name="elideMode">
         <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -3736,6 +3772,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
             <bold>false</bold>
            </font>
           </property>
+          <property name="focusPolicy">
+           <enum>Qt::FocusPolicy::NoFocus</enum>
+          </property>
           <property name="toolTip">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slew the mount to the defined position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
@@ -3960,6 +3999,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
             <width>0</width>
             <height>25</height>
            </size>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::FocusPolicy::NoFocus</enum>
           </property>
           <property name="toolTip">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the mount will be parked after slew and settling time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -5506,6 +5548,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bold>false</bold>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
+        </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stops all mount movements immediatly&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -5528,6 +5573,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <pointsize>10</pointsize>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switches the parking state on and off. Blue button means mount parked. It is the position, which is in the mount computer defined as park position. If the mount is not parked, it slews to the park position. If parked, the button press just unparks and starts tracking.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -5584,6 +5632,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bold>false</bold>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
+        </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set tracking speed to solar. Shows the status in blue if solar tracking is on.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -5606,6 +5657,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <pointsize>10</pointsize>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set tracking speed to sideral. Shows the status in blue if sidereal tracking is on.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -5630,6 +5684,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bold>false</bold>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
+        </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set tracking speed to lunar. Shows the status in blue if lunar tracking is on.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -5652,6 +5709,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <pointsize>10</pointsize>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Flips the mount if possible&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -5676,6 +5736,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <bold>false</bold>
          </font>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
+        </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Switching tracking on and off. Blue button show tracking is on.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -5698,6 +5761,9 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
           <pointsize>10</pointsize>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show the status of satellite tracking. Blue if sat tracking is running.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -25366,18 +25432,18 @@ Next point in time when satellite settles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>openV1</tabstop>
-  <tabstop>openV2</tabstop>
-  <tabstop>openV3</tabstop>
-  <tabstop>openV4</tabstop>
-  <tabstop>coordsJ2000</tabstop>
-  <tabstop>coordsJNow</tabstop>
-  <tabstop>tracking</tabstop>
-  <tabstop>setLunarTracking</tabstop>
-  <tabstop>followSat</tabstop>
-  <tabstop>setSolarTracking</tabstop>
-  <tabstop>flipMount</tabstop>
-  <tabstop>setSiderealTracking</tabstop>
+  <tabstop>mountConnected</tabstop>
+  <tabstop>refractionConnected</tabstop>
+  <tabstop>domeConnected</tabstop>
+  <tabstop>cameraConnected</tabstop>
+  <tabstop>plateSolveConnected</tabstop>
+  <tabstop>openMessageW</tabstop>
+  <tabstop>openMeasureW</tabstop>
+  <tabstop>openHemisphereW</tabstop>
+  <tabstop>openImageW</tabstop>
+  <tabstop>openSatelliteMapW</tabstop>
+  <tabstop>openSatelliteHorizonW</tabstop>
+  <tabstop>openKeypadW</tabstop>
   <tabstop>park</tabstop>
   <tabstop>stop</tabstop>
   <tabstop>mountTabWidget</tabstop>
@@ -25618,6 +25684,142 @@ Next point in time when satellite settles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</
   <tabstop>cancelAnalysis</tabstop>
   <tabstop>imagingTabWidget</tabstop>
   <tabstop>satTabWidget</tabstop>
+  <tabstop>mainTabWidget</tabstop>
+  <tabstop>saveConfig</tabstop>
+  <tabstop>saveConfigQuit</tabstop>
+  <tabstop>setting</tabstop>
+  <tabstop>saveConfigAs</tabstop>
+  <tabstop>loadFrom</tabstop>
+  <tabstop>coordsJ2000</tabstop>
+  <tabstop>openV3</tabstop>
+  <tabstop>openV4</tabstop>
+  <tabstop>openV2</tabstop>
+  <tabstop>openV1</tabstop>
+  <tabstop>coordsJNow</tabstop>
+  <tabstop>tracking</tabstop>
+  <tabstop>setLunarTracking</tabstop>
+  <tabstop>followSat</tabstop>
+  <tabstop>setSolarTracking</tabstop>
+  <tabstop>flipMount</tabstop>
+  <tabstop>setSiderealTracking</tabstop>
+  <tabstop>rtt</tabstop>
+  <tabstop>mountUpdateTimeDelta</tabstop>
+  <tabstop>mountUpdateFirmware</tabstop>
+  <tabstop>mountDocumentation</tabstop>
+  <tabstop>sensor4Group</tabstop>
+  <tabstop>sensor1Group</tabstop>
+  <tabstop>sensor2Group</tabstop>
+  <tabstop>numberGridPointsCol</tabstop>
+  <tabstop>sortDomeAZ</tabstop>
+  <tabstop>genBuildCelestial</tabstop>
+  <tabstop>meridianDistanceFlip</tabstop>
+  <tabstop>numberCelestialStepHA</tabstop>
+  <tabstop>numberSpiral</tabstop>
+  <tabstop>waitTimeExposure</tabstop>
+  <tabstop>waitTimeMountFlip</tabstop>
+  <tabstop>numberBuildRetries</tabstop>
+  <tabstop>retriesReverse</tabstop>
+  <tabstop>normalTiming</tabstop>
+  <tabstop>conservativeTiming</tabstop>
+  <tabstop>progressiveTiming</tabstop>
+  <tabstop>dataModel</tabstop>
+  <tabstop>openAnalyseW</tabstop>
+  <tabstop>coolerOn</tabstop>
+  <tabstop>coolerOff</tabstop>
+  <tabstop>copyFromTelescopeDriver</tabstop>
+  <tabstop>focalLength</tabstop>
+  <tabstop>aperture</tabstop>
+  <tabstop>automaticTelescope</tabstop>
+  <tabstop>lightPanelOn</tabstop>
+  <tabstop>lightPanelOff</tabstop>
+  <tabstop>posAz0_2</tabstop>
+  <tabstop>posAlt0_5</tabstop>
+  <tabstop>posAz0_5</tabstop>
+  <tabstop>posAlt0_6</tabstop>
+  <tabstop>posAz0_6</tabstop>
+  <tabstop>posAlt0_7</tabstop>
+  <tabstop>posAz0_7</tabstop>
+  <tabstop>relayFun0_8</tabstop>
+  <tabstop>posAlt0_8</tabstop>
+  <tabstop>posAz0_14</tabstop>
+  <tabstop>relayFun0_9</tabstop>
+  <tabstop>posAlt0_9</tabstop>
+  <tabstop>posAz0_15</tabstop>
+  <tabstop>posAlt0_10</tabstop>
+  <tabstop>posAz0_16</tabstop>
+  <tabstop>relayFun0_10</tabstop>
+  <tabstop>posAz0_20</tabstop>
+  <tabstop>posAz0_21</tabstop>
+  <tabstop>posAz0_22</tabstop>
+  <tabstop>posAz0_29</tabstop>
+  <tabstop>posAz0_32</tabstop>
+  <tabstop>posAlt0_11</tabstop>
+  <tabstop>relayFun0_15</tabstop>
+  <tabstop>relayFun0_16</tabstop>
+  <tabstop>posAz0_36</tabstop>
+  <tabstop>posAz0_37</tabstop>
+  <tabstop>posAz0_38</tabstop>
+  <tabstop>relayFun0_18</tabstop>
+  <tabstop>posAz0_40</tabstop>
+  <tabstop>posAlt0_12</tabstop>
+  <tabstop>posAlt0_13</tabstop>
+  <tabstop>posAz0_43</tabstop>
+  <tabstop>posAlt0_14</tabstop>
+  <tabstop>posAz0_46</tabstop>
+  <tabstop>relayFun0_20</tabstop>
+  <tabstop>posAz0_49</tabstop>
+  <tabstop>posAlt0_15</tabstop>
+  <tabstop>posAz0_53</tabstop>
+  <tabstop>relayFun0_23</tabstop>
+  <tabstop>posAz0_39</tabstop>
+  <tabstop>posAlt0_19</tabstop>
+  <tabstop>posAlt0_20</tabstop>
+  <tabstop>posAz0_47</tabstop>
+  <tabstop>relayFun0_19</tabstop>
+  <tabstop>posAz0_50</tabstop>
+  <tabstop>posAz0_41</tabstop>
+  <tabstop>posAlt0_21</tabstop>
+  <tabstop>posAlt0_22</tabstop>
+  <tabstop>relayFun0_24</tabstop>
+  <tabstop>posAz0_42</tabstop>
+  <tabstop>relayFun0_21</tabstop>
+  <tabstop>relayFun0_17</tabstop>
+  <tabstop>posAz0_54</tabstop>
+  <tabstop>posAz0_44</tabstop>
+  <tabstop>posAz0_45</tabstop>
+  <tabstop>relayFun0_22</tabstop>
+  <tabstop>posAz0_48</tabstop>
+  <tabstop>posAlt0_23</tabstop>
+  <tabstop>posAz0_52</tabstop>
+  <tabstop>posAz0_19</tabstop>
+  <tabstop>posAz0_25</tabstop>
+  <tabstop>posAz0_26</tabstop>
+  <tabstop>relayFun0_12</tabstop>
+  <tabstop>relayFun0_11</tabstop>
+  <tabstop>genModel_2</tabstop>
+  <tabstop>genModel_3</tabstop>
+  <tabstop>genModel_4</tabstop>
+  <tabstop>genModel_5</tabstop>
+  <tabstop>genModel_6</tabstop>
+  <tabstop>progSatSelected</tabstop>
+  <tabstop>satRemoveK</tabstop>
+  <tabstop>satRemoveDQ</tabstop>
+  <tabstop>mpcTabWidget</tabstop>
+  <tabstop>cometFilterText</tabstop>
+  <tabstop>cometSourceList</tabstop>
+  <tabstop>progCometFull</tabstop>
+  <tabstop>progCometFiltered</tabstop>
+  <tabstop>progCometSelected</tabstop>
+  <tabstop>listComets</tabstop>
+  <tabstop>progAsteroidFull</tabstop>
+  <tabstop>progAsteroidFiltered</tabstop>
+  <tabstop>progAsteroidSelected</tabstop>
+  <tabstop>asteroidFilterText</tabstop>
+  <tabstop>asteroidSourceList</tabstop>
+  <tabstop>listAsteroids</tabstop>
+  <tabstop>downloadIERS</tabstop>
+  <tabstop>progEarthRotationData</tabstop>
+  <tabstop>iersSource</tabstop>
  </tabstops>
  <resources/>
  <connections/>

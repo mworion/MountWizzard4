@@ -45,7 +45,6 @@ class MainWindow(MWidget):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self.ws)
         self.setNoFocus(self)
-        self.setNoFocus(self)
         self.setWindowTitle(f"MountWizzard4 - v{self.app.__version__}")
         self.setFixedSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.titleBar.normButton.setVisible(False)

@@ -42,7 +42,7 @@ from qimage2ndarray import array2qimage, rgb_view
 from skyfield.api import Angle
 
 
-def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str) -> None:
+def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str | bool) -> None:
     if widget.property(widgetProperty) == value:
         return
     widget.setProperty(widgetProperty, value)

@@ -5,7 +5,7 @@ requires-python = ">=3.12, <3.15"
 [[package]]
 name = "alpyca"
 version = "3.1.2"
-source = { registry = "https://pypi.org/simple" }
+source = { url = "https://github.com/mworion/MountWizzard4/raw/refs/heads/main/help/alpyca-3.1.2-py3-none-any.whl" }
 dependencies = [
     { name = "enum-tools" },
     { name = "ifaddr" },
@@ -13,9 +13,17 @@ dependencies = [
     { name = "requests" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b4/e3/717db07baffe71c5fa63453144e5101e2448fb1244ffdff48df932cfbda6/alpyca-3.1.2.tar.gz", hash = "sha256:8553be60789b39430dfc82dfe698d96cc0150bd4c011ba19412cd36980631ee1", size = 65225, upload-time = "2026-01-28T20:24:44.764Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/50/51/ccc7edc4cc878bb5e4533c813ce193aa8971d824f53d824ec00bef9b18a5/alpyca-3.1.2-py3-none-any.whl", hash = "sha256:84fd9de78e3ae7c6d880e00910d8c956b9f2ab6b428bf973de95f9d2856bc198", size = 84089, upload-time = "2026-01-28T20:24:42.885Z" },
+    { url = "https://github.com/mworion/MountWizzard4/raw/refs/heads/main/help/alpyca-3.1.2-py3-none-any.whl", hash = "sha256:4cbcaba15f08c491ac03423ee89fed3a53c2982ea8daaa72c8a6367af11db1ac" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "enum-tools", specifier = ">=0.12.0,<0.13.0" },
+    { name = "ifaddr", specifier = ">=0.2.0,<0.3.0" },
+    { name = "python-dateutil", specifier = ">=2.8.2,<3.0.0" },
+    { name = "requests", specifier = ">=2.32.5,<3.0.0" },
+    { name = "typing-extensions", specifier = ">=4.15.0,<5.0.0" },
 ]
 
 [[package]]
@@ -669,7 +677,7 @@ wheels = [
 
 [[package]]
 name = "mountwizzard4"
-version = "4.0.0b23"
+version = "4.0.0b24"
 source = { editable = "." }
 dependencies = [
     { name = "alpyca" },
@@ -719,7 +727,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "alpyca", specifier = "==3.1.2" },
+    { name = "alpyca", url = "https://github.com/mworion/MountWizzard4/raw/refs/heads/main/help/alpyca-3.1.2-py3-none-any.whl" },
     { name = "astropy", specifier = "==8.0.1" },
     { name = "astroquery", specifier = "==0.4.11" },
     { name = "hidapi", specifier = "==0.15.0" },

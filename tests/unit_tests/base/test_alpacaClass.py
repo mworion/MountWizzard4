@@ -13,11 +13,11 @@
 # License APL2.0
 #
 ###########################################################
-import alpaca_mw4.management as alpacaMgmt
+import alpaca.management as alpacaMgmt
 import pytest
 import queue
 import threading
-from alpaca_mw4.exceptions import NotImplementedException as AlpycaNotImplError
+from alpaca.exceptions import NotImplementedException as AlpycaNotImplError
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.signalsDevices import Signals
 from pathlib import Path

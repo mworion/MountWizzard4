@@ -22,12 +22,9 @@ module-name = "mw4"
 module-root = "src"
 package-data = ["data/**/*.*"]
 
-[tool.uv.sources]
-alpycamw4 = { url = "https://github.com/mworion/MountWizzard4/raw/refs/heads/main/help/alpycamw4-3.1.2-py3-none-any.whl" }
-
 [project]
 name = "mountwizzard4"
-version = "4.0.0b26"
+version = "4.0.0b27"
 license = "Apache-2.0"
 description = "Tool for managing 10_micron mounts"
 readme = "README.rst"
@@ -71,8 +68,7 @@ dependencies = [
     "qimage2ndarray==1.10.0",
     "skyfield==1.55",
     "sgp4==2.27",
-    # "alpyca==3.1.2",
-    "alpycamw4",
+    "alpyca==3.1.2",
     "requests==2.34.2",
     "python-dateutil==2.9.0.post0",
     "pylnk3==0.4.3",

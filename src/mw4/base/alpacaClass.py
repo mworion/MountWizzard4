@@ -13,15 +13,15 @@
 # License APL2.0
 #
 ###########################################################
-import alpaca_mw4.management as alpacaMgmt
-from alpaca_mw4.camera import Camera as AlpycaCamera
-from alpaca_mw4.covercalibrator import CoverCalibrator as AlpycaCoverCalibrator
-from alpaca_mw4.dome import Dome as AlpycaDome
-from alpaca_mw4.filterwheel import FilterWheel as AlpycaFilterWheel
-from alpaca_mw4.focuser import Focuser as AlpycaFocuser
-from alpaca_mw4.observingconditions import ObservingConditions as AlpycaObsConditions
-from alpaca_mw4.switch import Switch as AlpycaSwitch
-from alpaca_mw4.telescope import Telescope as AlpycaTelescope
+import alpaca.management as alpacaMgmt
+from alpaca.camera import Camera as AlpycaCamera
+from alpaca.covercalibrator import CoverCalibrator as AlpycaCoverCalibrator
+from alpaca.dome import Dome as AlpycaDome
+from alpaca.filterwheel import FilterWheel as AlpycaFilterWheel
+from alpaca.focuser import Focuser as AlpycaFocuser
+from alpaca.observingconditions import ObservingConditions as AlpycaObsConditions
+from alpaca.switch import Switch as AlpycaSwitch
+from alpaca.telescope import Telescope as AlpycaTelescope
 from dataclasses import dataclass, field
 from mw4.base.alpacaAscomCommon import AlpacaAscomCommon
 from mw4.base.tpool import Worker

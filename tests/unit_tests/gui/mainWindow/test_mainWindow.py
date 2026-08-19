@@ -323,8 +323,17 @@ def test_updateTwilightAndDisk_calculates_values(mainWindow):
 
 
 def test_updateTime_displays_time(mainWindow):
-    """Test updateTime displays current time."""
-    mainWindow.updateTime()
+    """Test updateTime displays current time and timezone."""
+    mock_now = mock.MagicMock()
+    mock_now.strftime.return_value = "12:34:56"
+    mock_now.tzname.return_value = "CEST"
+    mock_now.astimezone.return_value = mock_now
+    with mock.patch("mw4.gui.mainWindow.mainWindow.datetime") as mock_dt:
+        mock_dt.now.return_value = mock_now
+        mainWindow.updateTime()
+    mock_now.astimezone.assert_called_once()
+    assert mainWindow.ui.timeComputer.text() == "12:34:56"
+    assert mainWindow.ui.statusTimeGroup.title() == "TZ: CEST"
 
 
 def test_updateStatusGUI_with_status_zero(mainWindow):

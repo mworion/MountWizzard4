@@ -93,6 +93,8 @@ class SatelliteHorizonWindow(MWidget):
         self.pointerAltAz.setVisible(True)
 
     def updatePositions(self, now: Timescale, location: GeographicPosition) -> None:
+        if not self.satellite:
+            return
         difference = self.satellite - location
         alt, az, _ = difference.at(now).altaz()
         self.ui.satAltitude.setText(f"{alt.degrees:3.2f}")

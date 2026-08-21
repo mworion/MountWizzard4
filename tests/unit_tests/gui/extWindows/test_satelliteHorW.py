@@ -86,6 +86,14 @@ def test_updatePointerAltAz_4(function):
     function.updatePointerAltAz()
 
 
+def test_updatePositions_1(function):
+    function.satellite = None
+    ts = function.app.mount.obsSite.ts
+    now = ts.tt_jd(2459523.2430)
+    location = function.app.mount.obsSite.location
+    function.updatePositions(now, location)
+
+
 def test_updatePositions_2(function):
     tle = [
         "CALSPHERE 1",

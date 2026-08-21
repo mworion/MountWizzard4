@@ -398,7 +398,7 @@ def test_abortExpose_4(function):
 
 
 def test_solveDone_1(function):
-    function.app.plateSolve.signals.result.connect(function.solveDone)
+    function.app.dReg["plateSolve"].signals.result.connect(function.solveDone)
     function.solveDone({"success": False})
 
 
@@ -414,7 +414,7 @@ def test_solveDone_2(function):
         "imagePath": "test",
         "message": "test",
     }
-    function.app.plateSolve.signals.result.connect(function.solveDone)
+    function.app.dReg["plateSolve"].signals.result.connect(function.solveDone)
     function.solveDone(result=result)
 
 
@@ -432,7 +432,7 @@ def test_solveDone_3(function):
         "message": "test",
     }
 
-    function.app.plateSolve.signals.result.connect(function.solveDone)
+    function.app.dReg["plateSolve"].signals.result.connect(function.solveDone)
     function.solveDone(result=result)
 
 
@@ -447,7 +447,7 @@ def test_solveImage_2(function):
 def test_solveImage_3(function):
     shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
     file = Path("tests/work/image/m51.fit")
-    with mock.patch.object(function.app.plateSolve, "solve"):
+    with mock.patch.object(function.app.dReg["plateSolve"].instance, "solve"):
         function.solveImage(imagePath=file)
 
 

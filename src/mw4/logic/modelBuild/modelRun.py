@@ -77,7 +77,7 @@ class ModelData(QObject):
         self.app.dReg["mount"].signals.slewed.connect(self.setMountSlewed)
         self.app.dReg["dome"].signals.slewed.connect(self.setDomeSlewed)
         self.app.dReg["camera"].signals.saved.connect(self.startNewPlateSolve)
-        self.app.plateSolve.signals.result.connect(self.collectPlateSolveResult)
+        self.app.dReg["plateSolve"].signals.result.connect(self.collectPlateSolveResult)
 
     def resetSignals(self) -> None:
         self.app.dReg["camera"].signals.exposed.disconnect(self.setImageExposed)
@@ -86,7 +86,7 @@ class ModelData(QObject):
         self.app.dReg["mount"].signals.slewed.disconnect(self.setMountSlewed)
         self.app.dReg["dome"].signals.slewed.disconnect(self.setDomeSlewed)
         self.app.dReg["camera"].signals.saved.disconnect(self.startNewPlateSolve)
-        self.app.plateSolve.signals.result.disconnect(self.collectPlateSolveResult)
+        self.app.dReg["plateSolve"].signals.result.disconnect(self.collectPlateSolveResult)
 
     def setImageExposed(self) -> None:
         if self.modelTiming == self.PROGRESSIVE:
@@ -129,7 +129,7 @@ class ModelData(QObject):
                 "message": "Slew not possible - limits ?",
                 "imagePath": self.modelBuildData[self.modelRunKey]["imagePath"],
             }
-            self.app.plateSolve.signals.result.emit(result)
+            self.app.dReg["plateSolve"].signals.result.emit(result)
             self.startSlew.emit()
             t = f"{'Slew limits ':15s}: [{self.modelRunKey}]"
             self.log.debug(t)
@@ -224,7 +224,7 @@ class ModelData(QObject):
 
     def startNewPlateSolve(self, imagePath: Path) -> None:
         self.log.debug(f"{'Start solve':15s}: [{imagePath.stem}]")
-        self.app.plateSolve.solve(imagePath)
+        self.app.dReg["plateSolve"].instance.solve(imagePath)
 
     def sendModelProgress(self) -> None:
         donePoints = sum(

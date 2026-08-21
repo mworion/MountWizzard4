@@ -73,19 +73,6 @@ class Analysis:
             self.ui.analysisGroup.setEnabled(False)
             self.ui.cancelAnalysis.setEnabled(False)
 
-    def checkAnalysisConditions(self) -> bool:
-        if self.ui.plateSolveDevice.currentText().startswith("No device"):
-            self.msg.emit(2, "Analysis", "Run error", "No plate solver selected")
-            return False
-
-        sucApp, sucIndex = self.app.plateSolve.checkAvailability()
-        if not (sucApp and sucIndex):
-            self.msg.emit(
-                2, "Analysis", "Run error", "No valid configuration for plate solver"
-            )
-            return False
-        return True
-
     def setupFlexurePoints(self) -> tuple[list, float]:
         alt = self.ui.flexureAlt.value()
         az = self.ui.flexureAz.value()

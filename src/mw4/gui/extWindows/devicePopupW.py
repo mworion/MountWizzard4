@@ -298,13 +298,13 @@ class DevicePopup(MWidget):
         self.framework = framework
 
     def checkApp(self, framework: str, folder: str = "") -> None:
-        frameworkClass = self.app.plateSolve.run[framework]
+        frameworkClass = self.app.dReg["plateSolve"].run[framework]
         sucApp = frameworkClass.checkAvailabilityProgram(folder)
         colorP = "green" if sucApp else "red"
         changeStyleDynamic(self.platesolvers[framework]["appPath"], "color", colorP)
 
     def checkIndex(self, framework: str, folder: str = "") -> None:
-        frameworkClass = self.app.plateSolve.run[framework]
+        frameworkClass = self.app.dReg["plateSolve"].run[framework]
         sucIndex = frameworkClass.checkAvailabilityIndex(folder)
         colorI = "green" if sucIndex else "red"
         changeStyleDynamic(self.platesolvers[framework]["indexPath"], "color", colorI)

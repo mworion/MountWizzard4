@@ -146,4 +146,4 @@ class Astrometry:
     def checkAvailabilityIndex(self, indexPath: str) -> bool:
         self.config.indexPath = indexPath
         self.saveConfigFile()
-        return any(self.config.indexPath.glob("*.fits"))
+        return any(Path(self.config.indexPath).glob("*.fits"))

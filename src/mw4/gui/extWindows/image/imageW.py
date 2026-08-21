@@ -345,7 +345,7 @@ class ImageWindow(MWidget):
 
     def solveDone(self, result: dict) -> None:
         self.imagingDeviceStat["solve"] = False
-        self.app.plateSolve.signals.result.disconnect(self.solveDone)
+        self.app.dReg["plateSolve"].signals.result.disconnect(self.solveDone)
 
         if not result["success"]:
             self.msg.emit(2, "Image", "Solving error", result.get("message"))
@@ -374,8 +374,8 @@ class ImageWindow(MWidget):
             return
 
         self.app.operationRunning.emit(Model.STATUS_SOLVE)
-        self.app.plateSolve.signals.result.connect(self.solveDone)
-        self.app.plateSolve.solve(imagePath, self.ui.embedData.isChecked())
+        self.app.dReg["plateSolve"].signals.result.connect(self.solveDone)
+        self.app.dReg["plateSolve"].instance.solve(imagePath, self.ui.embedData.isChecked())
         self.imagingDeviceStat["solve"] = True
         self.msg.emit(0, "Image", "Solving", imagePath.stem)
 
@@ -383,7 +383,7 @@ class ImageWindow(MWidget):
         self.signals.solveImage.emit(self.imageFileName)
 
     def abortSolve(self) -> None:
-        self.app.plateSolve.abort()
+        self.app.dReg["plateSolve"].instance.abort()
         self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def slewDirect(self, ra: Angle, dec: Angle) -> None:

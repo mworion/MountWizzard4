@@ -65,30 +65,6 @@ def test_setAnalysisOperationMode_4(function):
     function.setAnalysisOperationMode(6)
 
 
-def test_checkAnalysisConditions_1(function):
-    with mock.patch.object(
-        function.ui.plateSolveDevice, "currentText", return_value="No device"
-    ):
-        suc = function.checkAnalysisConditions()
-        assert not suc
-
-
-def test_checkAnalysisConditions_2(function):
-    with mock.patch.object(
-        function.app.plateSolve, "checkAvailability", return_value=(False, False)
-    ):
-        suc = function.checkAnalysisConditions()
-        assert not suc
-
-
-def test_checkAnalysisConditions_3(function):
-    with mock.patch.object(
-        function.app.plateSolve, "checkAvailability", return_value=(True, True)
-    ):
-        suc = function.checkAnalysisConditions()
-        assert suc
-
-
 def test_setupFlexurePoints(function):
     v, t = function.setupFlexurePoints()
     assert len(v) == 120
@@ -133,5 +109,4 @@ def test_updateAnalysisProgress_4(function):
 
 
 def test_runFlexure_1(function):
-    with mock.patch.object(function, "checkAnalysisConditions", return_value=False):
-        function.runFlexure()
+    function.runFlexure()

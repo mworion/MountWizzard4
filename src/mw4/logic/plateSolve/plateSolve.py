@@ -66,7 +66,7 @@ class PlateSolve:
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
-            timeout = self.run[self.framework].timeout
+            timeout = self.run[self.framework].config.timeout
             stdout, _ = self.process.communicate(timeout=timeout)
 
         except subprocess.TimeoutExpired as e:
@@ -122,8 +122,8 @@ class PlateSolve:
         else:
             self.signals.message.emit("solving")
             t = f"Solver start:  [{imagePath.stem}] with [{self.framework}], "
-            t += f"timeout: [{self.run[self.framework].timeout}], "
-            t += f"radius: [{self.run[self.framework].searchRadius}], "
+            t += f"timeout: [{self.run[self.framework].config.timeout}], "
+            t += f"radius: [{self.run[self.framework].config.searchRadius}], "
             self.log.debug(t)
             result = self.run[self.framework].solve(
                 imagePath=imagePath, updateHeader=updateHeader
@@ -147,12 +147,12 @@ class PlateSolve:
         self.threadPool.start(self.workerSolveLoop)
 
     def checkAvailabilityProgram(self, framework: str) -> bool:
-        appPath = Path(self.run[framework].config.appPath)
-        return self.run[framework].checkAvailabilityProgram(appPath=appPath)
+        appPath = self.run[framework].config.appPath
+        return self.run[framework].checkAvailabilityProgram(appPath)
 
     def checkAvailabilityIndex(self, framework: str) -> bool:
-        indexPath = Path(self.run[framework].config.indexPath)
-        return self.run[framework].checkAvailabilityIndex(indexPath=indexPath)
+        indexPath = self.run[framework].config.indexPath
+        return self.run[framework].checkAvailabilityIndex(indexPath)
 
     def startCommunication(self) -> None:
         sucProgram = self.checkAvailabilityProgram(self.framework)

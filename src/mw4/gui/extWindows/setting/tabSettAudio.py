@@ -124,6 +124,7 @@ class SettAudio:
             signalObj.connect(lambda value=soundKey: self.playSound(value))
 
     def playSound(self, value: str) -> None:
+        return
         if value not in self.guiAudioList:
             return
         sound = self.guiAudioList[value].currentText()

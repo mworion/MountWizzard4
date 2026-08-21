@@ -406,7 +406,7 @@ def test_startNewImageExposure_2(function, mocked_sleepAndEvents):
 
 def test_startNewPlateSolve_1(function):
     function.modelBuildData = [{"imagePath": "test"}]
-    with mock.patch.object(function.app.plateSolve, "solve"):
+    with mock.patch.object(function.app.dReg["plateSolve"].instance, "solve"):
         function.startNewPlateSolve(Path("image-000.fits"))
 
 

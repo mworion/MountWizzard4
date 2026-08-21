@@ -229,7 +229,7 @@ def test_checkApp_1(function):
         def checkAvailabilityProgram(appPath):
             return True
 
-    function.app.plateSolve.run["astap"] = Avail()
+    function.app.dReg["plateSolve"].run["astap"] = Avail()
     function.checkApp("astap", "test")
 
 
@@ -239,7 +239,7 @@ def test_checkApp_2(function):
         def checkAvailabilityProgram(appPath):
             return True
 
-    function.app.plateSolve.run["watney"] = Avail()
+    function.app.dReg["plateSolve"].run["watney"] = Avail()
     function.checkApp("watney", "test")
 
 
@@ -249,7 +249,7 @@ def test_checkApp_3(function):
         def checkAvailabilityProgram(appPath):
             return True
 
-    function.app.plateSolve.run["astrometry"] = Avail()
+    function.app.dReg["plateSolve"].run["astrometry"] = Avail()
     function.checkApp("astrometry", "test")
 
 
@@ -259,7 +259,7 @@ def test_checkIndex_1(function):
         def checkAvailabilityIndex(indexPath):
             return True
 
-    function.app.plateSolve.run["astap"] = Avail()
+    function.app.dReg["plateSolve"].run["astap"] = Avail()
     function.checkIndex("astap", "test")
 
 
@@ -269,7 +269,7 @@ def test_checkIndex_2(function):
         def checkAvailabilityIndex(indexPath):
             return True
 
-    function.app.plateSolve.run["watney"] = Avail()
+    function.app.dReg["plateSolve"].run["watney"] = Avail()
     function.checkIndex("watney", "test")
 
 
@@ -279,7 +279,7 @@ def test_checkIndex_3(function):
         def checkAvailabilityIndex(indexPath):
             return True
 
-    function.app.plateSolve.run["astrometry"] = Avail()
+    function.app.dReg["plateSolve"].run["astrometry"] = Avail()
     function.checkIndex("astrometry", "test")
 
 
@@ -289,7 +289,7 @@ def test_selectAppPath_1(function):
         def checkAvailabilityProgram(indexPath):
             return True
 
-    function.app.plateSolve.run["astrometry"] = Avail()
+    function.app.dReg["plateSolve"].run["astrometry"] = Avail()
     with (
         mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=Path("/test")),
         mock.patch.object(Path, "is_dir", return_value=False),
@@ -303,7 +303,7 @@ def test_selectAppPath_2(function):
         def checkAvailabilityProgram(appPath):
             return True
 
-    function.app.plateSolve.run["astap"] = Avail()
+    function.app.dReg["plateSolve"].run["astap"] = Avail()
     with (
         mock.patch.object(
             MWFileDialog, "getExistingDirectory", return_value=Path("/test.app")
@@ -319,7 +319,7 @@ def test_selectAppPath_3(function):
         def checkAvailabilityProgram(appPath):
             return True
 
-    function.app.plateSolve.run["astap"] = Avail()
+    function.app.dReg["plateSolve"].run["astap"] = Avail()
     with (
         mock.patch.object(
             MWFileDialog, "getExistingDirectory", return_value=Path("/Astrometry.app")
@@ -335,7 +335,7 @@ def test_selectIndexPath_1(function):
         def checkAvailabilityIndex(indexPath):
             return True
 
-    function.app.plateSolve.run["astap"] = Avail()
+    function.app.dReg["plateSolve"].run["astap"] = Avail()
     with (
         mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=Path("/test")),
         mock.patch.object(Path, "is_dir", return_value=False),
@@ -349,7 +349,7 @@ def test_selectIndexPath_2(function):
         def checkAvailabilityIndex(indexPath):
             return True
 
-    function.app.plateSolve.run = {"astap": Avail()}
+    function.app.dReg["plateSolve"].instance.run = {"astap": Avail()}
     with (
         mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=Path("/test")),
         mock.patch.object(Path, "is_dir", return_value=True),

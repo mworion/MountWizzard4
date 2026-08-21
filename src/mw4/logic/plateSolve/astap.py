@@ -71,13 +71,13 @@ class ASTAP:
         self.parent = parent
         self.data: dict[str, Any] = parent.data
         self.config = DeviceConfigASTAP()
+        self.config.deviceName = "ASTAP"
+        self.config.appPath = self.setDefaultAppPath()
+        self.config.indexPath = self.setDefaultIndexPath()
+        self.binPath: Path = self.setDefaultBinPath()
         self.tempDir: Path = parent.app.mwGlob["tempDir"]
         self.result: dict[str, Any] = {"success": False}
         self.process: Any = None
-        self.config.deviceName = "ASTAP"
-        self.binPath: Path = self.setDefaultBinPath()
-        self.config.appPath = self.setDefaultAppPath()
-        self.config.indexPath = self.setDefaultIndexPath()
 
     def setDefaultAppPath(self) -> str:
         return self.apps[platform.system()]["appPath"]
@@ -112,11 +112,11 @@ class ASTAP:
         extension = ".exe" if platform.system() == "Windows" else ""
         bin1 = Path(self.config.appPath) / (self.CLI + extension)
         bin2 = Path(self.config.appPath) / (self.GUI + extension)
-        if bin1.is_file() or bin2.is_file():
+        has_file = bin1.is_file() or bin2.is_file()
+        if has_file:
             self.binPath = bin1 if bin1.is_file() else bin2
-            return True
-        return False
+        return has_file
 
     def checkAvailabilityIndex(self, indexPath: str) -> bool:
         self.config.indexPath = indexPath
-        return any(self.config.indexPath.glob(i) for i in self.indexes)
+        return any(Path(self.config.indexPath).glob(i) for i in self.indexes)

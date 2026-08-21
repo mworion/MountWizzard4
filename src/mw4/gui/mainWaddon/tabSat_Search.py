@@ -27,7 +27,7 @@ from mw4.logic.satellites.satellite_calculations import (
     findSatUp,
     findSunlit,
 )
-from PySide6.QtCore import QObject, QPoint, QRect, Qt, Signal
+from PySide6.QtCore import QMutex, QObject, QPoint, QRect, Qt, Signal
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 from skyfield.api import EarthSatellite, Time
 from skyfield.toposlib import GeographicPosition
@@ -47,6 +47,7 @@ class SatSearch(SatData):
         self.ui = mainW.ui
         self.signals = SatSearchSignals()
         self.workerCalcSatList: Worker | None = None
+        self.mutexCalcSat = QMutex()
         SatData.satellites = AstroObjects(
             self.mainW,
             "satellite",
@@ -128,6 +129,7 @@ class SatSearch(SatData):
             self.satellites.objects[sat.name] = sat
 
     def filterListSatsData(self) -> None:
+        self.mutexCalcSat.unlock()
         t = "Filter - processed - 100%"
         self.ui.satFilterGroup.setTitle(t)
         changeStyleDynamic(self.ui.satFilterGroup, "run", "false")
@@ -301,6 +303,8 @@ class SatSearch(SatData):
             self.calcSat(sat, row, loc, timeNow, timeNext, altMin, eph)
 
     def calcSatList(self) -> None:
+        if not self.mutexCalcSat.tryLock():
+            return
         title = "Setup " + self.app.timeMgr.timeZoneString()
         self.ui.satSetupGroup.setTitle(title)
         changeStyleDynamic(self.ui.satFilterGroup, "run", True)

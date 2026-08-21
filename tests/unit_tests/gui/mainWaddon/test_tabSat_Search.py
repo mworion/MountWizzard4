@@ -132,6 +132,21 @@ def test_filterListSatsData_2(function):
         mockChangeStyle.assert_called_once_with(function.ui.satFilterGroup, "run", "false")
 
 
+def test_filterListSatsData_3(function):
+    function.ui.satFilterGroup.setEnabled(True)
+    function.ui.listSats.clear()
+    function.ui.listSats.setRowCount(0)
+    function.ui.listSats.setColumnCount(9)
+    function.ui.listSats.insertRow(0)
+    entry = QTableWidgetItem("1234")
+    function.ui.listSats.setItem(0, 0, entry)
+    entry = QTableWidgetItem("NOAA 8")
+    function.ui.listSats.setItem(0, 1, entry)
+    with mock.patch.object(function.mutexCalcSat, "unlock") as mockUnlock:
+        function.filterListSatsData()
+        mockUnlock.assert_called_once()
+
+
 def test_filterListSatsName_1(function):
     function.ui.satFilterGroup.setEnabled(True)
     function.ui.satRemoveSO.setChecked(True)
@@ -543,7 +558,15 @@ def test_workerCalcSatList_4(function):
 
 
 def test_calcSatList_1(function):
-    with mock.patch.object(function.app.threadPool, "start"):
+    with (
+        mock.patch.object(function.mutexCalcSat, "tryLock", return_value=True),
+        mock.patch.object(function.app.threadPool, "start"),
+    ):
+        function.calcSatList()
+
+
+def test_calcSatList_2(function):
+    with mock.patch.object(function.mutexCalcSat, "tryLock", return_value=False):
         function.calcSatList()
 
 

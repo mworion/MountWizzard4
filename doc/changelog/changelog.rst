@@ -51,6 +51,7 @@ Version 4.x
 - refactor: move INDI support to indipyclient library
 - refactor: move ASCOM / ALPACA support to official Alpaca python library
 - improve: faster calculation of satellite track using internal calculations
+- improve: faster handling of satellite sorting and filtering
 - improve: reworked filter set with clear behavior auf selections
 - improve: optimized poll settings
 - improve: refraction update only when needed

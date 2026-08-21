@@ -59,16 +59,18 @@ class SatSearch(SatData):
 
         self.satellites.signals.dataLoaded.connect(self.fillSatListName)
         self.prepareSatTable()
-        self.ui.satFilterText.textChanged.connect(self.filterListSats)
-        self.ui.satIsSunlit.clicked.connect(self.filterListSats)
-        self.ui.satRemoveSO.clicked.connect(self.filterListSats)
-        self.ui.satRemoveK.clicked.connect(self.filterListSats)
-        self.ui.satRemoveDQ.clicked.connect(self.filterListSats)
-        self.ui.satTwilight.activated.connect(self.filterListSats)
+        self.ui.satFilterText.textChanged.connect(self.filterListSatsName)
+        self.ui.satFilterText.returnPressed.connect(self.fillSatListName)
+        self.ui.satIsSunlit.clicked.connect(self.filterListSatsData)
+        self.ui.satRemoveSO.clicked.connect(self.filterListSatsName)
+        self.ui.satRemoveK.clicked.connect(self.filterListSatsName)
+        self.ui.satRemoveDQ.clicked.connect(self.filterListSatsName)
+        self.ui.satTwilight.activated.connect(self.filterListSatsData)
         self.signals.setSatListItem.connect(self.setListSatsEntry)
         self.ui.progSatFull.clicked.connect(self.satellites.progFull)
         self.ui.progSatFiltered.clicked.connect(self.satellites.progFiltered)
         self.ui.progSatSelected.clicked.connect(self.satellites.progSelected)
+        self.app.timebaseChanged.connect(self.fillSatListName)
         self.app.timeMgr.update3s.connect(self.calcSatListDynamic)
 
     def initConfig(self) -> None:
@@ -125,38 +127,46 @@ class SatSearch(SatData):
         for sat in satellites:
             self.satellites.objects[sat.name] = sat
 
-    def filterListSats(self) -> None:
+    def filterListSatsData(self) -> None:
         t = "Filter - processed - 100%"
         self.ui.satFilterGroup.setTitle(t)
         changeStyleDynamic(self.ui.satFilterGroup, "run", "false")
-        filterStr = self.ui.satFilterText.text().lower()
         checkIsSunlit = self.ui.satIsSunlit.isChecked()
+        selectTwilight = self.ui.satTwilight.currentIndex()
+
+        for row in range(self.ui.listSats.model().rowCount()):
+            show = True
+            if checkIsSunlit:
+                show = show and self.ui.listSats.model().index(row, 7).data()
+            if selectTwilight < 5:
+                value = self.ui.listSats.model().index(row, 8).data()
+                actTwilight = int(value) if value is not None else 6
+                show = show and actTwilight <= selectTwilight
+
+            self.ui.listSats.setRowHidden(row, not show)
+        satName = self.ui.satelliteName.text()
+        positionCursorInTable(self.ui.listSats, satName)
+
+    def filterListSatsName(self) -> None:
+        filterStr = self.ui.satFilterText.text().lower()
         checkRemoveSO = self.ui.satRemoveSO.isChecked()
         checkRemoveK = self.ui.satRemoveK.isChecked()
         checkRemoveDQ = self.ui.satRemoveDQ.isChecked()
-        selectTwilight = self.ui.satTwilight.currentIndex()
 
         for row in range(self.ui.listSats.model().rowCount()):
             name = self.ui.listSats.model().index(row, 1).data().lower()
             number = self.ui.listSats.model().index(row, 0).data().lower()
             show = filterStr in number + name
-            if checkIsSunlit:
-                show = show and self.ui.listSats.model().index(row, 7).data()
             if checkRemoveSO:
                 show = show and "starlink" not in name
                 show = show and "oneweb" not in name
                 show = show and "globalstar" not in name
                 show = show and "navstar" not in name
             if checkRemoveK:
-                show = show and "KUIPER" not in name
+                show = show and "kuiper" not in name
             if checkRemoveDQ:
-                show = show and "QUIANFAN" not in name
-                show = show and "DIGUI" not in name
-            if selectTwilight < 5:
-                value = self.ui.listSats.model().index(row, 8).data()
-                actTwilight = int(value) if value is not None else 6
-                show = show and actTwilight <= selectTwilight
-
+                show = show and "quianfan" not in name
+                show = show and "digui" not in name
             self.ui.listSats.setRowHidden(row, not show)
         satName = self.ui.satelliteName.text()
         positionCursorInTable(self.ui.listSats, satName)
@@ -282,6 +292,8 @@ class SatSearch(SatData):
             finished = (row + 1) / numSats * 100
             t = f"Filter - processed: {finished:3.0f}%"
             self.ui.satFilterGroup.setTitle(t)
+            if satTab.isRowHidden(row):
+                continue
             name = satTab.model().index(row, 1).data()
             sat = self.satellites.objects[name]
             if not self.checkSatOk(sat, timeNext):
@@ -293,7 +305,7 @@ class SatSearch(SatData):
         self.ui.satSetupGroup.setTitle(title)
         changeStyleDynamic(self.ui.satFilterGroup, "run", True)
         self.workerCalcSatList = Worker(self.runnerCalcSatList)
-        self.workerCalcSatList.signals.finished.connect(self.filterListSats)
+        self.workerCalcSatList.signals.finished.connect(self.filterListSatsData)
         self.app.threadPool.start(self.workerCalcSatList)
 
     def fillSatListName(self) -> None:
@@ -309,4 +321,5 @@ class SatSearch(SatData):
             entry.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             self.ui.listSats.setItem(row, 1, entry)
         self.satellites.dataValid = True
+        self.filterListSatsName()
         self.calcSatList()

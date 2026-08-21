@@ -88,10 +88,9 @@ def test_processSatelliteSource(function):
         function.processSatelliteSource()
 
 
-def test_filterListSats_1(function):
+def test_filterListSatsData_1(function):
     function.ui.satFilterGroup.setEnabled(True)
     function.ui.satIsSunlit.setChecked(True)
-    function.ui.satRemoveSO.setChecked(True)
     function.ui.listSats.clear()
     function.ui.listSats.setRowCount(0)
     function.ui.listSats.setColumnCount(9)
@@ -105,10 +104,49 @@ def test_filterListSats_1(function):
     entry = QTableWidgetItem("1234")
     function.ui.listSats.setItem(0, 7, entry)
     with mock.patch.object(function.ui.satTwilight, "currentIndex", return_value=1):
-        function.filterListSats()
+        function.filterListSatsData()
 
 
-def test_filterListSats_2(function):
+def test_filterListSatsData_2(function):
+    function.ui.satFilterGroup.setEnabled(True)
+    function.ui.listSats.clear()
+    function.ui.listSats.setRowCount(0)
+    function.ui.listSats.setColumnCount(9)
+    function.ui.listSats.insertRow(0)
+    entry = QTableWidgetItem("1234")
+    function.ui.listSats.setItem(0, 0, entry)
+    entry = QTableWidgetItem("NOAA 8")
+    function.ui.listSats.setItem(0, 1, entry)
+    entry = QTableWidgetItem("1")
+    function.ui.listSats.setItem(0, 8, entry)
+    entry = QTableWidgetItem("1234")
+    function.ui.listSats.setItem(0, 7, entry)
+    with (
+        mock.patch.object(function.ui.satFilterGroup, "setTitle") as mockSetTitle,
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabSat_Search, "changeStyleDynamic"
+        ) as mockChangeStyle,
+    ):
+        function.filterListSatsData()
+        mockSetTitle.assert_called_once_with("Filter - processed - 100%")
+        mockChangeStyle.assert_called_once_with(function.ui.satFilterGroup, "run", "false")
+
+
+def test_filterListSatsName_1(function):
+    function.ui.satFilterGroup.setEnabled(True)
+    function.ui.satRemoveSO.setChecked(True)
+    function.ui.listSats.clear()
+    function.ui.listSats.setRowCount(0)
+    function.ui.listSats.setColumnCount(9)
+    function.ui.listSats.insertRow(0)
+    entry = QTableWidgetItem("1234")
+    function.ui.listSats.setItem(0, 0, entry)
+    entry = QTableWidgetItem("NOAA 8")
+    function.ui.listSats.setItem(0, 1, entry)
+    function.filterListSatsName()
+
+
+def test_filterListSatsName_2(function):
     function.ui.satFilterGroup.setEnabled(True)
     function.ui.satRemoveK.setChecked(True)
     function.ui.listSats.clear()
@@ -119,15 +157,10 @@ def test_filterListSats_2(function):
     function.ui.listSats.setItem(0, 0, entry)
     entry = QTableWidgetItem("KUIPER-123")
     function.ui.listSats.setItem(0, 1, entry)
-    entry = QTableWidgetItem("1")
-    function.ui.listSats.setItem(0, 8, entry)
-    entry = QTableWidgetItem("1234")
-    function.ui.listSats.setItem(0, 7, entry)
-    with mock.patch.object(function.ui.satTwilight, "currentIndex", return_value=6):
-        function.filterListSats()
+    function.filterListSatsName()
 
 
-def test_filterListSats_3(function):
+def test_filterListSatsName_3(function):
     function.ui.satFilterGroup.setEnabled(True)
     function.ui.satRemoveDQ.setChecked(True)
     function.ui.listSats.clear()
@@ -138,15 +171,10 @@ def test_filterListSats_3(function):
     function.ui.listSats.setItem(0, 0, entry)
     entry = QTableWidgetItem("QUIANFAN-1")
     function.ui.listSats.setItem(0, 1, entry)
-    entry = QTableWidgetItem("1")
-    function.ui.listSats.setItem(0, 8, entry)
-    entry = QTableWidgetItem("1234")
-    function.ui.listSats.setItem(0, 7, entry)
-    with mock.patch.object(function.ui.satTwilight, "currentIndex", return_value=6):
-        function.filterListSats()
+    function.filterListSatsName()
 
 
-def test_filterListSats_4(function):
+def test_filterListSatsName_4(function):
     function.ui.satFilterGroup.setEnabled(True)
     function.ui.satRemoveDQ.setChecked(True)
     function.ui.listSats.clear()
@@ -157,33 +185,7 @@ def test_filterListSats_4(function):
     function.ui.listSats.setItem(0, 0, entry)
     entry = QTableWidgetItem("DIGUI-2")
     function.ui.listSats.setItem(0, 1, entry)
-    entry = QTableWidgetItem("1")
-    function.ui.listSats.setItem(0, 8, entry)
-    entry = QTableWidgetItem("1234")
-    function.ui.listSats.setItem(0, 7, entry)
-    with mock.patch.object(function.ui.satTwilight, "currentIndex", return_value=6):
-        function.filterListSats()
-
-
-def test_filterListSats_5(function):
-    function.ui.satFilterGroup.setEnabled(True)
-    function.ui.listSats.clear()
-    function.ui.listSats.setRowCount(0)
-    function.ui.listSats.setColumnCount(9)
-    function.ui.listSats.insertRow(0)
-    entry = QTableWidgetItem("1234")
-    function.ui.listSats.setItem(0, 0, entry)
-    entry = QTableWidgetItem("NOAA 8")
-    function.ui.listSats.setItem(0, 1, entry)
-    with (
-        mock.patch.object(function.ui.satFilterGroup, "setTitle") as mockSetTitle,
-        mock.patch.object(
-            mw4.gui.mainWaddon.tabSat_Search, "changeStyleDynamic"
-        ) as mockChangeStyle,
-    ):
-        function.filterListSats()
-        mockSetTitle.assert_called_once_with("Filter - processed - 100%")
-        mockChangeStyle.assert_called_once_with(function.ui.satFilterGroup, "run", "false")
+    function.filterListSatsName()
 
 
 def test_setListSatsEntry(function):
@@ -195,7 +197,7 @@ def test_setListSatsEntry(function):
 
 def test_updateListSats_1(function):
     param = [1, 2, 3, 4]
-    ts = function.app.mount.obsSite.ts.now()
+    ts = function.app.dReg["mount"].obsSite.ts.now()
     isUp = [ts]
     with mock.patch.object(function.signals, "setSatListItem") as mock_signal:
         function.updateListSats(0, param, isUp, True, 5, 4)
@@ -219,7 +221,7 @@ def test_updateListSats_3(function):
 
 def test_updateListSats_4(function):
     param = [1, 2, 3, 4]
-    ts = function.app.mount.obsSite.ts.now()
+    ts = function.app.dReg["mount"].obsSite.ts.now()
     with mock.patch.object(function.signals, "setSatListItem") as mock_signal:
         function.updateListSats(0, param, [ts], True, 3.2, 1)
         assert mock_signal.emit.called
@@ -386,7 +388,7 @@ def test_checkSatOk_1(function):
         "1 47180U 20088BL  21303.19708368  .16584525  12000-4  30219-2 0  9999",
         "2 47180  53.0402 223.8709 0008872 210.0671 150.2394 16.31518727 52528",
     ]
-    ts = function.app.mount.obsSite.ts
+    ts = function.app.dReg["mount"].obsSite.ts
     tEnd = ts.tt_jd(2459523.2430)
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
     suc = function.checkSatOk(sat, tEnd)
@@ -399,7 +401,7 @@ def test_checkSatOk_2(function):
         "1 00900U 64063C   21307.74429300  .00000461  00000-0  48370-3 0  9996",
         "2 00900  90.1716  36.8626 0025754 343.8320 164.5583 13.73613883839670",
     ]
-    ts = function.app.mount.obsSite.ts
+    ts = function.app.dReg["mount"].obsSite.ts
     tEnd = ts.tt_jd(2459523.2430)
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
     suc = function.checkSatOk(sat, tEnd)
@@ -514,6 +516,30 @@ def test_workerCalcSatList_3(function):
         mock.patch.object(function, "calcSat"),
     ):
         function.runnerCalcSatList()
+
+
+def test_workerCalcSatList_4(function):
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
+    sat = EarthSatellite(tle[1], tle[2], name=tle[0])
+
+    class Test:
+        objects: ClassVar = {"sat1": sat}
+
+    function.satellites = Test()
+    function.ui.listSats.setRowCount(0)
+    function.ui.listSats.setColumnCount(9)
+    function.ui.listSats.insertRow(0)
+    entry = QTableWidgetItem("sat1")
+    function.ui.listSats.setItem(0, 1, entry)
+    function.ui.listSats.setRowHidden(0, True)
+
+    with mock.patch.object(function, "calcSat") as mockCalcSat:
+        function.runnerCalcSatList()
+        mockCalcSat.assert_not_called()
 
 
 def test_calcSatList_1(function):

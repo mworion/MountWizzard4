@@ -73,16 +73,11 @@ class MWFileDialog(MWidget):
         self.setMaximumSize(600, 800)
         self.model = QFileSystemModel(self)
         self.model.setRootPath("")
-        if fileMode == QFileDialog.FileMode.Directory:
-            self.model.setFilter(QDir.Filter.AllDirs)
-        else:
-            self.model.setFilter(QDir.Filter.AllEntries)
-
         self.tree = QTreeView()
         self.tree.setModel(self.model)
         self.tree.setSelectionMode(
             QAbstractItemView.SelectionMode.ExtendedSelection
-            if fileMode == QFileDialog.FileMode.ExistingFiles
+            if self.fileMode == QFileDialog.FileMode.ExistingFiles
             else QAbstractItemView.SelectionMode.SingleSelection
         )
         self.tree.setSortingEnabled(True)
@@ -113,7 +108,7 @@ class MWFileDialog(MWidget):
         self.filterCombo.currentTextChanged.connect(self.onFilterChanged)
 
         acceptText = "Open" if acceptMode == QFileDialog.AcceptMode.AcceptOpen else "Save"
-        if fileMode == QFileDialog.FileMode.Directory:
+        if self.fileMode == QFileDialog.FileMode.Directory:
             acceptText = "Choose"
         self.btnAccept = QPushButton(acceptText)
         self.btnAccept.setMinimumSize(80, 25)

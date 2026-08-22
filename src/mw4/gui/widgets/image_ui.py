@@ -58,25 +58,17 @@ class Ui_ImageDialog(object):
 
         self.gridLayout_4.addWidget(self.solve, 3, 0, 1, 1)
 
-        self.exposeN = QPushButton(self.groupImageActions)
-        self.exposeN.setObjectName(u"exposeN")
-        self.exposeN.setEnabled(False)
-        self.exposeN.setMinimumSize(QSize(95, 21))
-
-        self.gridLayout_4.addWidget(self.exposeN, 1, 1, 1, 1)
-
-        self.expose = QPushButton(self.groupImageActions)
-        self.expose.setObjectName(u"expose")
-        self.expose.setEnabled(False)
-        self.expose.setMinimumSize(QSize(95, 21))
-
-        self.gridLayout_4.addWidget(self.expose, 1, 0, 1, 1)
-
         self.load = QPushButton(self.groupImageActions)
         self.load.setObjectName(u"load")
         self.load.setMinimumSize(QSize(95, 21))
 
         self.gridLayout_4.addWidget(self.load, 0, 0, 1, 1)
+
+        self.timeTagImage = QCheckBox(self.groupImageActions)
+        self.timeTagImage.setObjectName(u"timeTagImage")
+        self.timeTagImage.setMinimumSize(QSize(105, 0))
+
+        self.gridLayout_4.addWidget(self.timeTagImage, 1, 4, 1, 1)
 
         self.abortExpose = QPushButton(self.groupImageActions)
         self.abortExpose.setObjectName(u"abortExpose")
@@ -92,23 +84,17 @@ class Ui_ImageDialog(object):
 
         self.gridLayout_4.addWidget(self.abortSolve, 3, 1, 1, 1)
 
+        self.autoSolve = QCheckBox(self.groupImageActions)
+        self.autoSolve.setObjectName(u"autoSolve")
+        self.autoSolve.setMinimumSize(QSize(90, 21))
+
+        self.gridLayout_4.addWidget(self.autoSolve, 3, 2, 1, 1)
+
         self.embedData = QCheckBox(self.groupImageActions)
         self.embedData.setObjectName(u"embedData")
         self.embedData.setMinimumSize(QSize(100, 21))
 
-        self.gridLayout_4.addWidget(self.embedData, 3, 3, 1, 1)
-
-        self.autoSolve = QCheckBox(self.groupImageActions)
-        self.autoSolve.setObjectName(u"autoSolve")
-        self.autoSolve.setMinimumSize(QSize(100, 21))
-
-        self.gridLayout_4.addWidget(self.autoSolve, 3, 2, 1, 1)
-
-        self.timeTagImage = QCheckBox(self.groupImageActions)
-        self.timeTagImage.setObjectName(u"timeTagImage")
-        self.timeTagImage.setMinimumSize(QSize(105, 0))
-
-        self.gridLayout_4.addWidget(self.timeTagImage, 1, 3, 1, 1)
+        self.gridLayout_4.addWidget(self.embedData, 3, 4, 1, 1)
 
         self.slewCenter = QPushButton(self.groupImageActions)
         self.slewCenter.setObjectName(u"slewCenter")
@@ -117,12 +103,30 @@ class Ui_ImageDialog(object):
 
         self.gridLayout_4.addWidget(self.slewCenter, 0, 1, 1, 1)
 
+        self.exposeN = QPushButton(self.groupImageActions)
+        self.exposeN.setObjectName(u"exposeN")
+        self.exposeN.setEnabled(False)
+        self.exposeN.setMinimumSize(QSize(95, 21))
+
+        self.gridLayout_4.addWidget(self.exposeN, 1, 1, 1, 1)
+
+        self.expose = QPushButton(self.groupImageActions)
+        self.expose.setObjectName(u"expose")
+        self.expose.setEnabled(False)
+        self.expose.setMinimumSize(QSize(95, 21))
+
+        self.gridLayout_4.addWidget(self.expose, 1, 0, 1, 1)
+
         self.syncModelToImage = QPushButton(self.groupImageActions)
         self.syncModelToImage.setObjectName(u"syncModelToImage")
         self.syncModelToImage.setEnabled(True)
         self.syncModelToImage.setMinimumSize(QSize(95, 21))
 
-        self.gridLayout_4.addWidget(self.syncModelToImage, 0, 2, 1, 2)
+        self.gridLayout_4.addWidget(self.syncModelToImage, 0, 2, 1, 3)
+
+        self.horizontalSpacer_4 = QSpacerItem(5, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_4.addItem(self.horizontalSpacer_4, 3, 3, 1, 1)
 
 
         self.horizontalLayout_5.addWidget(self.groupImageActions)
@@ -798,18 +802,18 @@ class Ui_ImageDialog(object):
         ImageDialog.setWindowTitle(QCoreApplication.translate("ImageDialog", u"Imaging", None))
         self.groupImageActions.setTitle(QCoreApplication.translate("ImageDialog", u"Image actions", None))
         self.solve.setText(QCoreApplication.translate("ImageDialog", u"Solve", None))
-        self.exposeN.setText(QCoreApplication.translate("ImageDialog", u"Expose N", None))
-        self.expose.setText(QCoreApplication.translate("ImageDialog", u"Expose 1", None))
         self.load.setText(QCoreApplication.translate("ImageDialog", u"Load", None))
-        self.abortExpose.setText(QCoreApplication.translate("ImageDialog", u"Exp. Abort", None))
-        self.abortSolve.setText(QCoreApplication.translate("ImageDialog", u"Solve Abort", None))
-        self.embedData.setText(QCoreApplication.translate("ImageDialog", u"Embed WCS", None))
-        self.autoSolve.setText(QCoreApplication.translate("ImageDialog", u"Auto Solve", None))
 #if QT_CONFIG(tooltip)
         self.timeTagImage.setToolTip(QCoreApplication.translate("ImageDialog", u"<html><head/><body><p>If checked, the filename of the image is extended with the actual time to make it unique. Otherwise the file get just &quot;exposure&quot; and will be overwritten.</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
         self.timeTagImage.setText(QCoreApplication.translate("ImageDialog", u"Add time tags", None))
+        self.abortExpose.setText(QCoreApplication.translate("ImageDialog", u"Exp. Abort", None))
+        self.abortSolve.setText(QCoreApplication.translate("ImageDialog", u"Solve Abort", None))
+        self.autoSolve.setText(QCoreApplication.translate("ImageDialog", u"Auto Solve", None))
+        self.embedData.setText(QCoreApplication.translate("ImageDialog", u"Embed data", None))
         self.slewCenter.setText(QCoreApplication.translate("ImageDialog", u"Slew Center", None))
+        self.exposeN.setText(QCoreApplication.translate("ImageDialog", u"Expose N", None))
+        self.expose.setText(QCoreApplication.translate("ImageDialog", u"Expose 1", None))
         self.syncModelToImage.setText(QCoreApplication.translate("ImageDialog", u"Sync model to image solution", None))
         self.groupBox.setTitle(QCoreApplication.translate("ImageDialog", u"Image View", None))
         self.aspectLocked.setText(QCoreApplication.translate("ImageDialog", u"Lock aspect", None))

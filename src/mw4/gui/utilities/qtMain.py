@@ -105,7 +105,7 @@ class MWidget(QMainWindow, Styles):
     @staticmethod
     def setNoFocus(ui) -> None:
         for widget in ui.findChildren(QWidget):
-            if not isinstance(widget, QLineEdit, QComboBox):
+            if not isinstance(widget, (QLineEdit, QComboBox)):
                 widget.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
     @staticmethod

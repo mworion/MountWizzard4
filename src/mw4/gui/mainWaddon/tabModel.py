@@ -18,6 +18,7 @@ from datetime import UTC, datetime
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
+from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.logic.modelBuild.modelRun import ModelData
 from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile
@@ -168,6 +169,18 @@ class Model(TabAddon):
         self.app.dReg["mount"].signals.getModelDone.connect(self.programModelToMountFinish)
         self.app.refreshModel.emit()
 
+    def checkMountTimeSync(self) -> bool:
+        if self.app.dReg["mount"].config.syncTimeNone:
+            return True
+        col = self.mainW.rgb2hex(self.mainW.M_YELLOW)
+        question = f"<b><font color={col}>Reminder:</font></b>"
+        question += "<br></b><br>Modeling while time synchronization is active."
+        question += "<br>This might lead into model quality problems!</b>"
+        question += "<br></b><br>Would you still like to proceed?<br>"
+        buttons = ["Cancel", "Proceed"]
+        reply = MWMessageDialog.question(self.mainW, "Modeling Start", question, buttons)
+        return reply == 1
+
     def checkModelRunConditions(self) -> bool:
         if len(self.app.buildPoint.buildP) < 3:
             t = "No modeling start because less than 3 points"
@@ -266,7 +279,7 @@ class Model(TabAddon):
 
     def runBatch(self) -> None:
         self.app.operationRunning.emit(self.STATUS_MODEL_BATCH)
-        if not self.checkModelRunConditions():
+        if not self.checkModelRunConditions() or not self.checkMountTimeSync():
             self.app.operationRunning.emit(self.STATUS_IDLE)
             return
         if not self.clearAlignAndBackup():
@@ -281,6 +294,9 @@ class Model(TabAddon):
             self.msg.emit(1, "Model", "Run", "Model build cancelled by user")
         else:
             self.programModelToMount()
+        if self.ui.parkMountAfterModel.isChecked():
+            self.msg.emit(1, "Model", "Run", "Park mount after model build")
+            self.app.dReg["mount"].instance.park()
         self.app.playSound.emit("RunFinished")
         self.app.operationRunning.emit(self.STATUS_IDLE)
 
@@ -291,7 +307,7 @@ class Model(TabAddon):
             self.mainW, "Open model file(s)", folder, "Model files (*.model)"
         )
         if len(modelFilesPath) > 1:
-            self.msg.emit(0, "Model", "Run", "Combination of len(modelFilesPath) files")
+            self.msg.emit(0, "Model", "Run", f"Combination of {len(modelFilesPath)} files")
             self.modelData.name = self.setupFilenamesAndDirectories(prefix="m", postfix="add")
         elif len(modelFilesPath) == 1:
             self.modelData.name = modelFilesPath[0].stem

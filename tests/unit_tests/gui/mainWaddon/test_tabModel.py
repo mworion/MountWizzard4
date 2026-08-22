@@ -21,6 +21,7 @@ import pytest
 import time
 from mw4.gui.mainWaddon.tabModel import Model
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
+from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.logic.modelBuild.modelRun import ModelData
@@ -175,6 +176,30 @@ def test_programModelToMount_3(function):
         function.programModelToMount()
 
 
+def test_checkMountTimeSync_1(function):
+    function.app.dReg["mount"].config.syncTimeNone = True
+    result = function.checkMountTimeSync()
+    assert result
+
+
+def test_checkMountTimeSync_2(function):
+    function.app.dReg["mount"].config.syncTimeNone = False
+    with mock.patch.object(
+        MWMessageDialog, "question", return_value=1
+    ):
+        result = function.checkMountTimeSync()
+        assert result
+
+
+def test_checkMountTimeSync_3(function):
+    function.app.dReg["mount"].config.syncTimeNone = False
+    with mock.patch.object(
+        MWMessageDialog, "question", return_value=0
+    ):
+        result = function.checkMountTimeSync()
+        assert not result
+
+
 def test_checkModelRunConditions_1(function):
     function.app.data.buildP = [(0, 0, 1)]
     suc = function.checkModelRunConditions()
@@ -322,7 +347,7 @@ def test_runBatch_1(function):
 def test_runBatch_2(function):
     with (
         mock.patch.object(function, "checkModelRunConditions", return_value=True),
-        mock.patch.object(function, "clearAlignAndBackup", return_value=False),
+        mock.patch.object(function, "checkMountTimeSync", return_value=False),
     ):
         function.runBatch()
 
@@ -330,6 +355,16 @@ def test_runBatch_2(function):
 def test_runBatch_3(function):
     with (
         mock.patch.object(function, "checkModelRunConditions", return_value=True),
+        mock.patch.object(function, "checkMountTimeSync", return_value=True),
+        mock.patch.object(function, "clearAlignAndBackup", return_value=False),
+    ):
+        function.runBatch()
+
+
+def test_runBatch_4(function):
+    with (
+        mock.patch.object(function, "checkModelRunConditions", return_value=True),
+        mock.patch.object(function, "checkMountTimeSync", return_value=True),
         mock.patch.object(function, "clearAlignAndBackup", return_value=True),
         mock.patch.object(function, "setupModelInputData"),
         mock.patch.object(function.modelData, "runModel"),
@@ -338,10 +373,11 @@ def test_runBatch_3(function):
         function.runBatch()
 
 
-def test_runBatch_4(function):
+def test_runBatch_5(function):
     function.modelData.cancelBatch = True
     with (
         mock.patch.object(function, "checkModelRunConditions", return_value=True),
+        mock.patch.object(function, "checkMountTimeSync", return_value=True),
         mock.patch.object(function, "clearAlignAndBackup", return_value=True),
         mock.patch.object(function, "setupModelInputData"),
         mock.patch.object(function.modelData, "runModel"),

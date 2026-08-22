@@ -134,12 +134,6 @@ class Model(TabAddon):
             changeStyleDynamic(self.ui.endModel, "stop", "false")
             changeStyleDynamic(self.ui.pauseModel, "pause", "false")
 
-    def setupModelRunContextAndGuiStatus(self) -> None:
-        changeStyleDynamic(self.ui.runModel, "run", "true")
-        self.ui.cancelModel.setEnabled(True)
-        self.ui.endModel.setEnabled(True)
-        self.ui.pauseModel.setEnabled(True)
-
     def pauseBuild(self) -> None:
         if not self.ui.pauseModel.property("pause"):
             changeStyleDynamic(self.ui.pauseModel, "color", "yellow")
@@ -296,7 +290,7 @@ class Model(TabAddon):
             self.programModelToMount()
         if self.ui.parkMountAfterModel.isChecked():
             self.msg.emit(1, "Model", "Run", "Park mount after model build")
-            self.app.dReg["mount"].instance.park()
+            self.app.dReg["mount"].obsSite.park()
         self.app.playSound.emit("RunFinished")
         self.app.operationRunning.emit(self.STATUS_IDLE)
 

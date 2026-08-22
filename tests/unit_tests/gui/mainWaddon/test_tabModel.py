@@ -114,11 +114,6 @@ def test_setModelOperationMode_5(function):
     function.setModelOperationMode(4)
 
 
-def test_setupModelRunContextAndGuiStatus_1(function):
-    function.app.uiWindows = {"showImageW": {"classObj": None}}
-    function.setupModelRunContextAndGuiStatus()
-
-
 def test_pauseBuild_1(function):
     function.ui.pauseModel.setProperty("pause", True)
     function.pauseBuild()

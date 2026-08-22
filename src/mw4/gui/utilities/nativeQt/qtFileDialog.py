@@ -97,7 +97,7 @@ class MWFileDialog(MWidget):
         header.setSectionResizeMode(1, QHeaderView.ResizeMode.Interactive)
         header.setSectionResizeMode(2, QHeaderView.ResizeMode.Interactive)
 
-        self.upButton = QToolButton()
+        self.upButton = QPushButton()
         self.wIcon(self.upButton, "arrow-up0")
         self.upButton.setToolTip("Parent directory")
         self.upButton.clicked.connect(self.onUp)

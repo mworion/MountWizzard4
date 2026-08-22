@@ -35,6 +35,7 @@ Version 4.x
 - add: linux automatic generation of .desktop file for MW4 including dpi / scale parameters
 - add: windows automatic generation of Desktop link file for MW4 including dpi / scale parameters
 - add: macOS automatic generation of .app bundle for MW4 including dpi / scale parameters
+- add: volume setting for sound effects in settings, enable / disable sound effects in settings
 - change: faster and more reliable uploading mechanism for databases
 - change: celestrak interface url's and retrieval strategy
 - change: moving PyQt5 to major PySide6

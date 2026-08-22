@@ -17,7 +17,7 @@ import pytest
 from mw4.gui.extWindows.setting.tabSettAudio import SettAudio
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from PySide6.QtWidgets import QComboBox
+from PySide6.QtWidgets import QComboBox, QDoubleSpinBox, QGroupBox
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
@@ -47,6 +47,13 @@ def settAudio(qapp):
     parentW.ui.soundImageSolvedT = mock.MagicMock()
     parentW.ui.soundConnectionLostT = mock.MagicMock()
     parentW.ui.soundSatStartTrackingT = mock.MagicMock()
+
+    parentW.ui.AudioGroup = QGroupBox()
+    parentW.ui.AudioGroup.setCheckable(True)
+    parentW.ui.volume = QDoubleSpinBox()
+    parentW.ui.volume.setRange(0.0, 1.0)
+    parentW.ui.volume.setValue(1.0)
+    parentW.ui.volume.setDecimals(2)
 
     window = SettAudio(parentW)
     yield window
@@ -259,6 +266,157 @@ def test_multiple_init_and_store_cycles(settAudio):
     assert settAudio.ui.soundMountSlewFinished.currentIndex() == 3
 
 
+def test_initConfig_loads_play_sound_setting_enabled(settAudio):
+    """Test initConfig loads PlaySound when enabled."""
+    settAudio.app.config["SettingAudio"] = {"PlaySound": True}
+    settAudio.initConfig()
+    assert settAudio.ui.AudioGroup.isChecked()
+
+
+def test_initConfig_loads_play_sound_setting_disabled(settAudio):
+    """Test initConfig loads PlaySound when disabled."""
+    settAudio.app.config["SettingAudio"] = {"PlaySound": False}
+    settAudio.initConfig()
+    assert not settAudio.ui.AudioGroup.isChecked()
+
+
+def test_initConfig_play_sound_defaults_to_false(settAudio):
+    """Test initConfig defaults PlaySound to False when not specified."""
+    settAudio.app.config["SettingAudio"] = {}
+    settAudio.initConfig()
+    assert not settAudio.ui.AudioGroup.isChecked()
+
+
+def test_initConfig_loads_volume_setting(settAudio):
+    """Test initConfig loads Volume setting."""
+    settAudio.app.config["SettingAudio"] = {"Volume": 0.75}
+    settAudio.initConfig()
+    assert settAudio.ui.volume.value() == 0.75
+
+
+def test_initConfig_volume_defaults_to_one(settAudio):
+    """Test initConfig defaults Volume to 1 when not specified."""
+    settAudio.app.config["SettingAudio"] = {}
+    settAudio.initConfig()
+    assert settAudio.ui.volume.value() == 1
+
+
+def test_initConfig_with_all_settings(settAudio):
+    """Test initConfig loads all settings together."""
+    settAudio.app.config["SettingAudio"] = {
+        "MountSlew": 2,
+        "DomeSlew": 3,
+        "PlaySound": True,
+        "Volume": 0.5,
+    }
+    settAudio.initConfig()
+    assert settAudio.ui.soundMountSlewFinished.currentIndex() == 2
+    assert settAudio.ui.soundDomeSlewFinished.currentIndex() == 3
+    assert settAudio.ui.AudioGroup.isChecked()
+    assert settAudio.ui.volume.value() == 0.5
+
+
+def test_storeConfig_saves_play_sound_enabled(settAudio):
+    """Test storeConfig saves PlaySound when enabled."""
+    settAudio.ui.AudioGroup.setChecked(True)
+    settAudio.storeConfig()
+    assert settAudio.app.config["SettingAudio"]["PlaySound"] is True
+
+
+def test_storeConfig_saves_play_sound_disabled(settAudio):
+    """Test storeConfig saves PlaySound when disabled."""
+    settAudio.ui.AudioGroup.setChecked(False)
+    settAudio.storeConfig()
+    assert settAudio.app.config["SettingAudio"]["PlaySound"] is False
+
+
+def test_storeConfig_saves_volume_setting(settAudio):
+    """Test storeConfig saves Volume setting."""
+    settAudio.ui.volume.setValue(0.75)
+    settAudio.storeConfig()
+    assert settAudio.app.config["SettingAudio"]["Volume"] == 0.75
+
+
+def test_storeConfig_saves_volume_zero(settAudio):
+    """Test storeConfig saves Volume when set to zero."""
+    settAudio.ui.volume.setValue(0.0)
+    settAudio.storeConfig()
+    assert settAudio.app.config["SettingAudio"]["Volume"] == 0.0
+
+
+def test_storeConfig_saves_volume_one(settAudio):
+    """Test storeConfig saves Volume when set to one."""
+    settAudio.ui.volume.setValue(1.0)
+    settAudio.storeConfig()
+    assert settAudio.app.config["SettingAudio"]["Volume"] == 1.0
+
+
+def test_storeConfig_saves_all_settings_together(settAudio):
+    """Test storeConfig saves all settings together."""
+    settAudio.ui.soundMountSlewFinished.setCurrentIndex(1)
+    settAudio.ui.soundDomeSlewFinished.setCurrentIndex(2)
+    settAudio.ui.AudioGroup.setChecked(True)
+    settAudio.ui.volume.setValue(0.6)
+
+    settAudio.storeConfig()
+    config = settAudio.app.config["SettingAudio"]
+
+    assert config["MountSlew"] == 1
+    assert config["DomeSlew"] == 2
+    assert config["PlaySound"] is True
+    assert config["Volume"] == 0.6
+
+
+def test_updateConfig_preserves_play_sound_setting(settAudio):
+    """Test updateConfig preserves PlaySound setting after update."""
+    settAudio.app.config["SettingAudio"] = {}
+    settAudio.ui.AudioGroup.setChecked(True)
+    settAudio.updateConfig(1)
+    assert settAudio.app.config["SettingAudio"]["PlaySound"] is True
+
+
+def test_updateConfig_preserves_volume_setting(settAudio):
+    """Test updateConfig preserves Volume setting after update."""
+    settAudio.app.config["SettingAudio"] = {}
+    settAudio.ui.volume.setValue(0.5)
+    settAudio.updateConfig(1)
+    assert settAudio.app.config["SettingAudio"]["Volume"] == 0.5
+
+
+def test_setup_audio_connects_audio_group_signal(settAudio):
+    """Test setupAudio connects AudioGroup clicked signal."""
+    settAudio.app.config["SettingAudio"] = {}
+    settAudio.ui.AudioGroup.setChecked(True)
+    settAudio.ui.AudioGroup.clicked.emit()
+    config = settAudio.app.config["SettingAudio"]
+    assert config["PlaySound"] is True
+
+
+def test_setup_audio_connects_volume_signal(settAudio):
+    """Test setupAudio connects volume valueChanged signal."""
+    settAudio.app.config["SettingAudio"] = {}
+    settAudio.ui.volume.setValue(0.8)
+    settAudio.ui.volume.valueChanged.emit(0.8)
+    config = settAudio.app.config["SettingAudio"]
+    assert config["Volume"] == 0.8
+
+
+def test_roundtrip_play_sound_enabled(settAudio):
+    """Test roundtrip: store and load PlaySound enabled."""
+    settAudio.ui.AudioGroup.setChecked(True)
+    settAudio.storeConfig()
+    settAudio.ui.AudioGroup.setChecked(False)
+    settAudio.initConfig()
+    assert settAudio.ui.AudioGroup.isChecked()
+
+
+def test_roundtrip_play_sound_disabled(settAudio):
+    """Test roundtrip: store and load PlaySound disabled."""
+    settAudio.ui.AudioGroup.setChecked(False)
+    settAudio.storeConfig()
+    settAudio.ui.AudioGroup.setChecked(True)
+    settAudio.initConfig()
+    assert not settAudio.ui.AudioGroup.isChecked()
 
 
 

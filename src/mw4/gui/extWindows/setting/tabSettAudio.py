@@ -42,6 +42,8 @@ class SettAudio:
         for sound, uiKey in self.audioConfig.items():
             widget = getattr(self.ui, uiKey)
             widget.setCurrentIndex(config.get(sound, 0))
+        self.ui.AudioGroup.setChecked(config.get("PlaySound", False))
+        self.ui.volume.setValue(config.get("Volume", 1))
 
     def storeConfig(self) -> None:
         self.app.config["SettingAudio"] = {}
@@ -49,6 +51,8 @@ class SettAudio:
         for sound, uiKey in self.audioConfig.items():
             widget = getattr(self.ui, uiKey)
             config[sound] = widget.currentIndex()
+        config["PlaySound"] = self.ui.AudioGroup.isChecked()
+        config["Volume"] = self.ui.volume.value()
 
     def updateConfig(self, index: int) -> None:
         self.storeConfig()
@@ -64,3 +68,6 @@ class SettAudio:
             widget.activated.connect(self.updateConfig)
             widgetTest = getattr(self.ui, uiKey + "T")
             widgetTest.clicked.connect(partial(self.testSound, sound))
+        self.ui.AudioGroup.clicked.connect(self.updateConfig)
+        self.ui.volume.valueChanged.connect(self.updateConfig)
+

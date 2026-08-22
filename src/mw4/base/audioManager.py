@@ -37,6 +37,11 @@ class AudioManager:
         self.app = app
         self.sound: QSoundEffect | None = None
         self.app.playSound.connect(self.playSound)
+        self.app.dReg["mount"].signals.alert.connect(lambda: self.playSound("MountAlert"))
+        self.app.dReg["dome"].signals.slewed.connect(lambda: self.playSound("DomeSlew"))
+        self.app.dReg["mount"].signals.slewed.connect(lambda: self.playSound("MountSlew"))
+        self.app.dReg["camera"].signals.saved.connect(lambda: self.playSound("ImageSaved"))
+        self.app.dReg["plateSolve"].signals.result.connect(lambda: self.playSound("ImageSolved"))
 
     def playSound(self, sound: str) -> None:
         config = self.app.config.get("SettingAudio", {})

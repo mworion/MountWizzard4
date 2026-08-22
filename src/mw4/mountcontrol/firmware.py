@@ -31,15 +31,15 @@ class Firmware:
         self.time: str = ""
 
     @property
-    def vString(self) -> Version:
-        return self._vString
+    def vString(self) -> str:
+        return self._vString.public
 
     @vString.setter
     def vString(self, value: str) -> None:
         self._vString = Version(value)
 
     def checkNewer(self, compare: str) -> bool:
-        return self.vString >= Version(compare)
+        return self._vString >= Version(compare)
 
     def isHW2024(self) -> bool:
         return self.hardware == "Q-TYPE2024"

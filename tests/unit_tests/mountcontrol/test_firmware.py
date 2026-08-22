@@ -30,13 +30,13 @@ def test_Firmware_ok():
 
     fw = Firmware(parent=Parent())
     fw.vString = "2.15.08"
-    assert fw.vString == Version("2.15.08")
-    assert fw._vString == Version("2.15.08")
+    assert fw.vString == "2.15.8"
+    assert fw._vString == Version("2.15.8")
     fw.vString = "2.16"
-    assert fw.vString == Version("2.16")
+    assert fw.vString == "2.16"
     assert fw._vString == Version("2.16")
     fw.vString = "3.0"
-    assert fw.vString == Version("3.0")
+    assert fw.vString == "3.0"
     assert fw._vString == Version("3.0")
 
 
@@ -127,7 +127,7 @@ def test_Firmware_parse_chunks_5():
     suc = fw.parse(response, 5)
     assert suc
     assert fw.date == "Mar 19 2018"
-    assert fw.vString == Version("2.15.14")
+    assert fw.vString == "2.15.14"
     assert fw.product == "10micron GM1000HPS"
     assert fw.time == "15:56:53"
     assert fw.hardware == "Q-TYPE2012"

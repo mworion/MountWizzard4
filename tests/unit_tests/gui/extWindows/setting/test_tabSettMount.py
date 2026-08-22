@@ -242,8 +242,7 @@ def test_updateFwGui(settMount: SettMount) -> None:
     """Test updateFwGui updates firmware GUI elements."""
     mock_fw = mock.MagicMock()
     mock_fw.product = "Mount Product"
-    mock_fw.vString = mock.MagicMock()
-    mock_fw.vString.public = "1.0.0"
+    mock_fw.vString = "1.0.0"
     mock_fw.date = "2026-06-22"
     mock_fw.time = "12:00:00"
     mock_fw.hardware = "HW2024"

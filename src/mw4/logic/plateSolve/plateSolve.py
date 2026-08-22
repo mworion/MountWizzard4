@@ -79,9 +79,9 @@ class PlateSolve:
 
         delta = time.time() - timeStart
         stdoutText = stdout.decode()
-        self.log.debug(f"Solve Runtime: [{delta:2.2f}s]")
+        self.log.debug(f"{'Solve Runtime':15s}: [{delta:2.2f}s]")
         for line in stdoutText.splitlines():
-            self.log.debug(f"Solver output: [{line}]")
+            self.log.debug(f"{'Solver output':15s}: [{line}]")
         rCode = int(self.process.returncode)
         suc = rCode == 0
         msg = self.run[self.framework].returnCodes.get(rCode, "Unknown code")
@@ -113,7 +113,7 @@ class PlateSolve:
         result["raJNowS"], result["decJNowS"] = J2000ToJNow(
             result["raJ2000S"], result["decJ2000S"], timeJD
         )
-        self.log.debug(f"Solve result:  [{imagePath.stem:10s}], [{result}]")
+        self.log.debug(f"{'Solve result':15s}: [{imagePath.stem:10s}], [{result}]")
         return result
 
     def processSolveQueue(self, imagePath: Path, updateHeader: bool = False) -> None:
@@ -121,7 +121,7 @@ class PlateSolve:
             result = {"success": False, "message": f"{imagePath} not found"}
         else:
             self.signals.message.emit("solving")
-            t = f"Solver start:  [{imagePath.stem}] with [{self.framework}], "
+            t = f"{'Solver start':15s}: [{imagePath.stem}] with [{self.framework}], "
             t += f"timeout: [{self.run[self.framework].config.timeout}], "
             t += f"radius: [{self.run[self.framework].config.searchRadius}], "
             self.log.debug(t)

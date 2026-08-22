@@ -136,7 +136,7 @@ class SettMount:
 
     def updateFwGui(self, fw: Firmware) -> None:
         guiSetText(self.ui.product, "s", fw.product)
-        guiSetText(self.ui.vString, "s", fw.vString.public)
+        guiSetText(self.ui.vString, "s", fw.vString)
         guiSetText(self.ui.fwdate, "s", fw.date)
         guiSetText(self.ui.fwtime, "s", fw.time)
         guiSetText(self.ui.hardware, "s", fw.hardware)

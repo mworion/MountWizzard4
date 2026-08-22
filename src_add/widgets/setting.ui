@@ -99,7 +99,7 @@
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -6444,9 +6444,9 @@
        <widget class="QComboBox" name="soundMountAlert">
         <property name="geometry">
          <rect>
-          <x>175</x>
+          <x>165</x>
           <y>70</y>
-          <width>181</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
@@ -6477,9 +6477,9 @@
        <widget class="QComboBox" name="soundDomeSlewFinished">
         <property name="geometry">
          <rect>
-          <x>175</x>
+          <x>165</x>
           <y>45</y>
-          <width>181</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
@@ -6530,9 +6530,9 @@
        <widget class="QComboBox" name="soundRunFinished">
         <property name="geometry">
          <rect>
-          <x>175</x>
+          <x>165</x>
           <y>95</y>
-          <width>181</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
@@ -6563,9 +6563,9 @@
        <widget class="QComboBox" name="soundMountSlewFinished">
         <property name="geometry">
          <rect>
-          <x>175</x>
+          <x>165</x>
           <y>20</y>
-          <width>181</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
@@ -6596,9 +6596,9 @@
        <widget class="QComboBox" name="soundImageSaved">
         <property name="geometry">
          <rect>
-          <x>175</x>
+          <x>165</x>
           <y>120</y>
-          <width>181</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
@@ -6629,9 +6629,9 @@
        <widget class="QComboBox" name="soundImageSolved">
         <property name="geometry">
          <rect>
-          <x>175</x>
+          <x>165</x>
           <y>145</y>
-          <width>181</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
@@ -6682,9 +6682,9 @@
        <widget class="QComboBox" name="soundSatStartTracking">
         <property name="geometry">
          <rect>
-          <x>175</x>
+          <x>165</x>
           <y>195</y>
-          <width>181</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
@@ -6695,14 +6695,142 @@
        <widget class="QComboBox" name="soundConnectionLost">
         <property name="geometry">
          <rect>
-          <x>175</x>
+          <x>165</x>
           <y>170</y>
-          <width>181</width>
+          <width>151</width>
           <height>21</height>
          </rect>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the audio signal to be played when image is plate solved&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="soundMountSlewFinishedT">
+        <property name="geometry">
+         <rect>
+          <x>325</x>
+          <y>20</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the camera device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Test</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="soundDomeSlewFinishedT">
+        <property name="geometry">
+         <rect>
+          <x>325</x>
+          <y>45</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the camera device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Test</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="soundMountAlertT">
+        <property name="geometry">
+         <rect>
+          <x>325</x>
+          <y>70</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the camera device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Test</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="soundRunFinishedT">
+        <property name="geometry">
+         <rect>
+          <x>325</x>
+          <y>95</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the camera device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Test</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="soundImageSavedT">
+        <property name="geometry">
+         <rect>
+          <x>325</x>
+          <y>120</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the camera device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Test</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="soundConnectionLostT">
+        <property name="geometry">
+         <rect>
+          <x>325</x>
+          <y>170</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the camera device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Test</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="soundSatStartTrackingT">
+        <property name="geometry">
+         <rect>
+          <x>325</x>
+          <y>195</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the camera device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Test</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="soundImageSolvedT">
+        <property name="geometry">
+         <rect>
+          <x>325</x>
+          <y>145</y>
+          <width>31</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Configure the camera device. A popup will open and ask for the parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Test</string>
         </property>
        </widget>
       </widget>

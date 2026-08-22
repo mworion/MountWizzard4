@@ -13,24 +13,12 @@
 # License APL2.0
 #
 ###########################################################
-from PySide6.QtMultimedia import QSoundEffect
-from typing import Any, ClassVar
+from functools import partial
+from mw4.base.audioManager import AUDIO_SOUNDS
+from typing import Any
 
 
 class SettAudio:
-    AUDIO_SOUNDS: ClassVar[dict[str, QSoundEffect]] = {
-        "None": None,
-        "Beep": ":/sound/beep.wav",
-        "Beep1": ":/sound/beep1.wav",
-        "Horn": ":/sound/horn.wav",
-        "Beep2": ":/sound/Beep2.wav",
-        "Bleep": ":/sound/Bleep.wav",
-        "Pan1": ":/sound/Pan1.wav",
-        "Pan2": ":/sound/Pan2.wav",
-        "Alert": ":/sound/alert.wav",
-        "Alarm": ":/sound/alarm.wav",
-    }
-
     def __init__(self, parentW: Any) -> None:
         self.parentW = parentW
         self.app = parentW.app
@@ -38,95 +26,41 @@ class SettAudio:
         self.ui = parentW.ui
         self.guiAudioList: dict = {}
         self.audioConfig = {
-            "MountSlew": {
-                "configKey": "soundMountSlewFinished",
-                "uiWidget": "soundMountSlewFinished",
-                "device": "mount",
-                "signal": "slewed",
-            },
-            "DomeSlew": {
-                "configKey": "soundDomeSlewFinished",
-                "uiWidget": "soundDomeSlewFinished",
-                "device": "dome",
-                "signal": "slewed",
-            },
-            "MountAlert": {
-                "configKey": "soundMountAlert",
-                "uiWidget": "soundMountAlert",
-                "device": "mount",
-                "signal": "alert",
-            },
-            "RunFinished": {
-                "configKey": "soundRunFinished",
-                "uiWidget": "soundRunFinished",
-                "device": None,
-                "signal": None,
-            },
-            "ImageSaved": {
-                "configKey": "soundImageSaved",
-                "uiWidget": "soundImageSaved",
-                "device": "camera",
-                "signal": "saved",
-            },
-            "ImageSolved": {
-                "configKey": "soundImageSolved",
-                "uiWidget": "soundImageSolved",
-                "device": "plateSolve",
-                "signal": "result",
-            },
-            "ConnectionLost": {
-                "configKey": "soundConnectionLost",
-                "uiWidget": "soundConnectionLost",
-                "device": "mount",
-                "signal": "deviceDisconnected",
-            },
-            "SatStartTracking": {
-                "configKey": "soundSatStartTracking",
-                "uiWidget": "soundSatStartTracking",
-                "device": None,
-                "signal": None,
-            },
+            "MountSlew": "soundMountSlewFinished",
+            "DomeSlew": "soundDomeSlewFinished",
+            "MountAlert": "soundMountAlert",
+            "RunFinished": "soundRunFinished",
+            "ImageSaved": "soundImageSaved",
+            "ImageSolved": "soundImageSolved",
+            "ConnectionLost": "soundConnectionLost",
+            "SatStartTracking": "soundSatStartTracking",
         }
         self.setupAudio()
-        self.setupAudioSignals()
-        self.app.playSound.connect(self.playSound)
 
     def initConfig(self) -> None:
         config = self.app.config.get("SettingAudio", {})
-        for soundData in self.audioConfig.values():
-            widget = getattr(self.ui, soundData["uiWidget"])
-            configKey = soundData["configKey"]
-            widget.setCurrentIndex(config.get(configKey, 0))
+        for sound, uiKey in self.audioConfig.items():
+            widget = getattr(self.ui, uiKey)
+            widget.setCurrentIndex(config.get(sound, 0))
 
     def storeConfig(self) -> None:
         self.app.config["SettingAudio"] = {}
         config = self.app.config["SettingAudio"]
-        for soundData in self.audioConfig.values():
-            widget = getattr(self.ui, soundData["uiWidget"])
-            configKey = soundData["configKey"]
-            config[configKey] = widget.currentIndex()
+        for sound, uiKey in self.audioConfig.items():
+            widget = getattr(self.ui, uiKey)
+            config[sound] = widget.currentIndex()
+
+    def updateConfig(self, index: int) -> None:
+        self.storeConfig()
+
+    def testSound(self, soundOption: str) -> None:
+        self.app.playSound.emit(soundOption)
 
     def setupAudio(self) -> None:
-        for soundKey, soundData in self.audioConfig.items():
-            widget = getattr(self.ui, soundData["uiWidget"])
-            self.guiAudioList[soundKey] = widget
-            for sound in self.AUDIO_SOUNDS:
-                widget.addItem(sound)
-
-    def setupAudioSignals(self) -> None:
-        for soundKey, soundData in self.audioConfig.items():
-            device = soundData.get("device")
-            signal = soundData.get("signal")
-            if device is None or signal is None:
-                continue
-            deviceObj = self.app.dReg[device]
-            signalObj = getattr(deviceObj.signals, signal)
-            signalObj.connect(lambda value=soundKey: self.playSound(value))
-
-    def playSound(self, value: str) -> None:
-        return
-        if value not in self.guiAudioList:
-            return
-        sound = self.guiAudioList[value].currentText()
-        if self.AUDIO_SOUNDS.get(sound):
-            QSoundEffect.play(self.AUDIO_SOUNDS[sound])
+        for sound, uiKey in self.audioConfig.items():
+            widget = getattr(self.ui, uiKey)
+            for soundOption in AUDIO_SOUNDS:
+                widget.addItem(soundOption)
+            widget.activated.connect(self.updateConfig)
+            widgetTest = getattr(self.ui, uiKey + "T")
+            widgetTest.clicked.connect(partial(self.testSound, sound))

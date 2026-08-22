@@ -16,6 +16,7 @@
 import logging
 import sys
 from importlib.metadata import version
+from mw4.base.audioManager import AudioManager
 from mw4.base.bootstrap import MwGlob
 from mw4.base.deviceRegistry import DeviceRegistry
 from mw4.base.loggerMW import setCustomLoggingLevel
@@ -87,6 +88,7 @@ class MountWizzard4(QObject):
         self.messageQueue.put((1, "System", "Workdir", f"[{workDir}]"))
         self.messageQueue.put((1, "System", "Profile", f"[{profile}]"))
         self.timeMgr = TimeManager(app=self)
+        self.audioMgr = AudioManager(app=self)
         self.dReg: DeviceRegistry = DeviceRegistry(self)
         self.dReg.addDevices(self)
         self.dReg.initConfig()

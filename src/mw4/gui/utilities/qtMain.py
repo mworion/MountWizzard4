@@ -25,6 +25,7 @@ from PySide6.QtGui import (
     QKeyEvent,
 )
 from PySide6.QtWidgets import (
+    QComboBox,
     QLineEdit,
     QMainWindow,
     QPushButton,
@@ -104,7 +105,7 @@ class MWidget(QMainWindow, Styles):
     @staticmethod
     def setNoFocus(ui) -> None:
         for widget in ui.findChildren(QWidget):
-            if not isinstance(widget, QLineEdit):
+            if not isinstance(widget, QLineEdit, QComboBox):
                 widget.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
     @staticmethod

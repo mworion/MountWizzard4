@@ -100,12 +100,12 @@ class Mount(TabAddon):
         obs = self.app.dReg["mount"].obsSite
         if obs.status == 5:
             if obs.unpark():
-                self.msg.emit(0, "Mount", "Command", "Mount unparked")
+                self.msg.emit(0, "Mount", "Command", "Mount unpark")
             else:
                 self.msg.emit(2, "Mount", "Command", "Cannot unpark mount")
         else:
             if obs.park():
-                self.msg.emit(0, "Mount", "Command", "Mount parked")
+                self.msg.emit(0, "Mount", "Command", "Mount park")
             else:
                 self.msg.emit(2, "Mount", "Command", "Cannot park mount")
 

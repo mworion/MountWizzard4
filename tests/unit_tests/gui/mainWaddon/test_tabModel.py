@@ -381,6 +381,38 @@ def test_runBatch_5(function):
         function.runBatch()
 
 
+def test_runBatch_6(function):
+    function.ui.parkMountAfterModel.setChecked(True)
+    function.modelData.cancelBatch = False
+    with (
+        mock.patch.object(function, "checkModelRunConditions", return_value=True),
+        mock.patch.object(function, "checkMountTimeSync", return_value=True),
+        mock.patch.object(function, "clearAlignAndBackup", return_value=True),
+        mock.patch.object(function, "setupModelInputData"),
+        mock.patch.object(function.modelData, "runModel"),
+        mock.patch.object(function, "programModelToMount"),
+        mock.patch.object(function.app.dReg["mount"].obsSite, "park"),
+    ):
+        function.runBatch()
+        function.app.dReg["mount"].obsSite.park.assert_called_once()
+
+
+def test_runBatch_7(function):
+    function.ui.parkMountAfterModel.setChecked(False)
+    function.modelData.cancelBatch = False
+    with (
+        mock.patch.object(function, "checkModelRunConditions", return_value=True),
+        mock.patch.object(function, "checkMountTimeSync", return_value=True),
+        mock.patch.object(function, "clearAlignAndBackup", return_value=True),
+        mock.patch.object(function, "setupModelInputData"),
+        mock.patch.object(function.modelData, "runModel"),
+        mock.patch.object(function, "programModelToMount"),
+        mock.patch.object(function.app.dReg["mount"].obsSite, "park"),
+    ):
+        function.runBatch()
+        function.app.dReg["mount"].obsSite.park.assert_not_called()
+
+
 def test_runFileModel_1(function):
     with mock.patch.object(MWFileDialog, "getOpenFileNames", return_value=[]):
         function.runFileModel()

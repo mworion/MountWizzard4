@@ -28,7 +28,7 @@ from mw4.logic.satellites.satellite_calculations import (
     findSunlit,
 )
 from PySide6.QtCore import QMutex, QObject, QPoint, QRect, Qt, Signal
-from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
+from PySide6.QtWidgets import QAbstractItemView, QHeaderView, QTableWidgetItem
 from skyfield.api import EarthSatellite, Time
 from skyfield.toposlib import GeographicPosition
 from typing import Any
@@ -107,14 +107,14 @@ class SatSearch(SatData):
         hLabels = [
             "Num",
             "Satellite Name",
+            "Time\n[H:M]",
+            "Sat\n[mag]",
             "Dist\n[km]",
             "Rad v\n[km/s]",
             "Lat v\n[deg/s]",
             "Lon v\n[deg/s]",
-            "Time\n[H:M]",
-            "Sat\n[mag]",
         ]
-        hSet = [50, 200, 50, 50, 50, 50, 50, 45, 0]
+        hSet = [50, 185, 85, 40, 50, 50, 50, 50, 0]
         self.ui.listSats.setColumnCount(len(hSet))
         self.ui.listSats.setHorizontalHeaderLabels(hLabels)
         for i, hs in enumerate(hSet):
@@ -144,33 +144,32 @@ class SatSearch(SatData):
         appMag: float= 99,
         twilight: int = 4,
     ) -> None:
-        entry = QTableWidgetItem(f"{satParam[0]:5.0f}")
-        entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-        self.signals.setSatListItem.emit(row, 2, entry)
-
-        entry = QTableWidgetItem(f"{satParam[1]:+2.2f}")
-        entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-        self.signals.setSatListItem.emit(row, 3, entry)
-
-        entry = QTableWidgetItem(f"{satParam[2]:+2.2f}")
-        entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-        self.signals.setSatListItem.emit(row, 4, entry)
-
-        entry = QTableWidgetItem(f"{satParam[3]:+2.2f}")
-        entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-        self.signals.setSatListItem.emit(row, 5, entry)
-
         if isUp:
-            t = self.app.timeMgr.convertTime(isUp[0], "%H:%M") if len(isUp) else ""
+            t = self.app.timeMgr.convertTime(isUp[0], "%d.%m  %H:%M") if len(isUp) else ""
             entry = QTableWidgetItem(t)
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            self.signals.setSatListItem.emit(row, 6, entry)
-
+            self.signals.setSatListItem.emit(row, 2, entry)
         if isSunlit:
             value = f"{appMag:1.1f}" if isSunlit else ""
             entry = QCustomTableWidgetItem(value)
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            self.signals.setSatListItem.emit(row, 7, entry)
+            self.signals.setSatListItem.emit(row, 3, entry)
+
+        entry = QTableWidgetItem(f"{satParam[0]:5.0f}")
+        entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        self.signals.setSatListItem.emit(row, 4, entry)
+
+        entry = QTableWidgetItem(f"{satParam[1]:+2.2f}")
+        entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        self.signals.setSatListItem.emit(row, 5, entry)
+
+        entry = QTableWidgetItem(f"{satParam[2]:+2.2f}")
+        entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        self.signals.setSatListItem.emit(row, 6, entry)
+
+        entry = QTableWidgetItem(f"{satParam[3]:+2.2f}")
+        entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        self.signals.setSatListItem.emit(row, 7, entry)
 
         if twilight is not None:
             entry = QTableWidgetItem(f"{twilight:1.0f}")

@@ -37,12 +37,12 @@ def findSatUp(
     alt: float,
 ) -> list[Time]:
     t, events = sat.find_events(loc, tStart, tEnd, altitude_degrees=alt)
-    return t[np.equal(events, 1)][:1]
+    return t[np.equal(events, 0)][:1]
 
 
 def checkTwilight(ephemeris: Any, loc: GeographicPosition, data: list[Time]) -> int:
     if not len(data):
-        return 5
+        return 4
 
     satTime = data[0]
     f = almanac.dark_twilight_day(ephemeris, loc)

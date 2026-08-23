@@ -82,7 +82,7 @@ def test_findSatUp_2(function):
     sat = SAT()
     val = findSatUp(sat, 0, 0, 0, alt=0)
     assert len(val) == 1
-    assert val == [5]
+    assert val[0] == 7
 
 
 def test_checkTwilight_1(function):
@@ -90,7 +90,7 @@ def test_checkTwilight_1(function):
     loc = wgs84.latlon(latitude_degrees=49, longitude_degrees=-11)
     function.mount.obsSite.ts.tt_jd(2459215.5)
     val = checkTwilight(ephemeris, loc, [])
-    assert val == 5
+    assert val == 4
 
 
 def test_checkTwilight_2(function):

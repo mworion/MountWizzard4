@@ -64,6 +64,8 @@ def resetSatellites(function: SatSearch) -> None:
 def test_satSearchSignals_1(qapp: object) -> None:
     signals = SatSearchSignals()
     assert signals.setSatListItem is not None
+    assert signals.setSatListRowHidden is not None
+    assert signals.setSatGroupTitle is not None
 
 
 def test_initConfig_1(function: SatSearch) -> None:
@@ -100,14 +102,24 @@ def test_setListSatsEntry(function: SatSearch) -> None:
     function.setListSatsEntry(0, 0, entry)
 
 
-def test_clearRunnerCalcSatList(function: SatSearch) -> None:
-    with mock.patch.object(
-        mw4.gui.mainWaddon.tabSat_Search, "changeStyleDynamic"
-    ) as mockChangeStyle:
-        function.clearRunnerCalcSatList()
-        mockChangeStyle.assert_called_once_with(
-            function.ui.satFilterGroup, "run", "false"
-        )
+def test_updateVisibilityRow(function: SatSearch) -> None:
+    function.ui.listSats.setRowCount(1)
+    function.updateVisibilityRow(0, True)
+    assert function.ui.listSats.isRowHidden(0)
+    function.updateVisibilityRow(0, False)
+    assert not function.ui.listSats.isRowHidden(0)
+
+
+def test_updateTitleRunning(function: SatSearch) -> None:
+    with (
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabSat_Search, "changeStyleDynamic"
+        ) as mockChangeStyle,
+        mock.patch.object(function.ui.satFilterGroup, "setTitle") as mockSetTitle,
+    ):
+        function.updateTitleRunning("Test Title", True)
+        mockChangeStyle.assert_called_once_with(function.ui.satFilterGroup, "run", "true")
+        mockSetTitle.assert_called_once_with("Test Title")
 
 
 def test_updateListSats_1(function: SatSearch) -> None:
@@ -122,8 +134,8 @@ def test_updateListSats_1(function: SatSearch) -> None:
 def test_updateListSats_2(function: SatSearch) -> None:
     param = [1, 2, 3, 4]
     with mock.patch.object(function.signals, "setSatListItem") as mock_signal:
-        function.updateListSats(0, param, None, False, None, None)
-        # Should emit at least for the satParam values
+        function.updateListSats(0, param)
+        # Should emit for the satParam values
         assert mock_signal.emit.called
 
 
@@ -350,7 +362,9 @@ def test_calcSat_1(function: SatSearch) -> None:
         mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "checkTwilight"),
         mock.patch.object(function, "updateListSats"),
     ):
-        function.calcSat(sat, 0, 0, 0, 0, 0, 0)
+        result = function.calcSat(sat, 0, 0, 0, 0, 0, 0)
+        assert isinstance(result, tuple)
+        assert len(result) == 2
 
 
 def test_calcSat_2(function: SatSearch) -> None:
@@ -373,7 +387,9 @@ def test_calcSat_2(function: SatSearch) -> None:
                           return_value=0),
         mock.patch.object(function, "updateListSats"),
     ):
-        function.calcSat(sat, 0, 0, 0, 0, 0, 0)
+        result = function.calcSat(sat, 0, 0, 0, 0, 0, 0)
+        assert isinstance(result, tuple)
+        assert result[0] is True
 
 
 def test_calcSat_3(function: SatSearch) -> None:
@@ -391,12 +407,15 @@ def test_calcSat_3(function: SatSearch) -> None:
         ),
         mock.patch.object(function, "updateListSats"),
     ):
-        function.calcSat(sat, 0, 0, 0, 0, 0, 0)
+        result = function.calcSat(sat, 0, 0, 0, 0, 0, 0)
+        assert isinstance(result, tuple)
+        assert result == (False, 5)
 
 
 def test_runnerCalcSatList_1(function: SatSearch) -> None:
     function.ui.listSats.setRowCount(0)
-    function.runnerCalcSatList()
+    with mock.patch.object(function.signals, "setSatGroupTitle"):
+        function.runnerCalcSatList()
 
 
 def test_runnerCalcSatList_2(function: SatSearch) -> None:
@@ -417,10 +436,11 @@ def test_runnerCalcSatList_2(function: SatSearch) -> None:
     function.ui.listSats.insertRow(0)
     entry = QTableWidgetItem("sat1")
     function.ui.listSats.setItem(0, 1, entry)
-    entry = QTableWidgetItem("1")
-    function.ui.listSats.setItem(0, 8, entry)
 
-    with mock.patch.object(function, "checkSatOk", return_value=False):
+    with (
+        mock.patch.object(function, "checkSatOk", return_value=False),
+        mock.patch.object(function.signals, "setSatGroupTitle"),
+    ):
         function.runnerCalcSatList()
 
 
@@ -442,12 +462,12 @@ def test_runnerCalcSatList_3(function: SatSearch) -> None:
     function.ui.listSats.insertRow(0)
     entry = QTableWidgetItem("sat1")
     function.ui.listSats.setItem(0, 1, entry)
-    entry = QTableWidgetItem("1")
-    function.ui.listSats.setItem(0, 8, entry)
 
     with (
         mock.patch.object(function, "checkSatOk", return_value=True),
-        mock.patch.object(function, "calcSat"),
+        mock.patch.object(function, "calcSat", return_value=(True, 2)),
+        mock.patch.object(function.signals, "setSatGroupTitle"),
+        mock.patch.object(function.signals, "setSatListRowHidden"),
     ):
         function.runnerCalcSatList()
 
@@ -471,13 +491,12 @@ def test_runnerCalcSatList_4(function: SatSearch) -> None:
     function.ui.listSats.insertRow(0)
     entry = QTableWidgetItem("sat1")
     function.ui.listSats.setItem(0, 1, entry)
-    entry = QTableWidgetItem("1")
-    function.ui.listSats.setItem(0, 8, entry)
     function.ui.listSats.setRowHidden(0, True)
 
     with (
         mock.patch.object(function, "checkSatOk", return_value=True),
         mock.patch.object(function, "calcSat"),
+        mock.patch.object(function.signals, "setSatGroupTitle"),
     ):
         function.runnerCalcSatList()
 

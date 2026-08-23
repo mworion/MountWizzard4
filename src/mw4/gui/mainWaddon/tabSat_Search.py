@@ -36,6 +36,8 @@ from typing import Any
 
 class SatSearchSignals(QObject):
     setSatListItem = Signal(int, int, object)
+    setSatListRowHidden = Signal(int, bool)
+    setSatGroupTitle = Signal(str, bool)
 
 
 class SatSearch(SatData):
@@ -71,6 +73,8 @@ class SatSearch(SatData):
         self.ui.satIsSunlit.clicked.connect(self.fillSatListName)
         self.ui.satTwilight.activated.connect(self.fillSatListName)
         self.signals.setSatListItem.connect(self.setListSatsEntry)
+        self.signals.setSatGroupTitle.connect(self.updateTitleRunning)
+        self.signals.setSatListRowHidden.connect(self.updateVisibilityRow)
         self.ui.progSatFull.clicked.connect(self.satellites.progFull)
         self.ui.progSatFiltered.clicked.connect(self.satellites.progFiltered)
         self.ui.progSatSelected.clicked.connect(self.satellites.progSelected)
@@ -135,10 +139,10 @@ class SatSearch(SatData):
         self,
         row: int,
         satParam: tuple[float, float, float, float],
-        isUp: list | None = None,
+        isUp: list = [],
         isSunlit: bool = False,
-        appMag: float | None = None,
-        twilight: int | None = None,
+        appMag: float= 99,
+        twilight: int = 4,
     ) -> None:
         entry = QTableWidgetItem(f"{satParam[0]:5.0f}")
         entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
@@ -204,6 +208,13 @@ class SatSearch(SatData):
                 appMag = 99
             self.updateListSats(row, satParam, isSunlit=isSunlit, appMag=appMag)
 
+    def updateVisibilityRow(self, row: int, hide: bool) -> None:
+        self.ui.listSats.setRowHidden(row, hide)
+
+    def updateTitleRunning(self, title: str, running: bool) -> None:
+        changeStyleDynamic(self.ui.satFilterGroup, "run", "true" if running else "false")
+        self.ui.satFilterGroup.setTitle(title)
+
     def calcSat(
         self,
         sat: EarthSatellite,
@@ -213,20 +224,21 @@ class SatSearch(SatData):
         timeNext: Time,
         altMin: float,
         eph: Any,
-    ) -> None:
+    ) -> tuple[bool, int]:
         satParam = findRangeRate(sat, loc, timeNow)
         if not np.isnan(satParam).any():
             isSunlit = findSunlit(sat, eph, timeNow)
             isUp = findSatUp(sat, loc, timeNow, timeNext, altMin)
-            fitTwilight = checkTwilight(eph, loc, isUp)
+            twilight = checkTwilight(eph, loc, isUp)
             satRange = satParam[0]
             appMag = calcAppMag(sat, loc, eph, satRange, timeNow) if isSunlit else 99
         else:
-            fitTwilight = 4
+            twilight = 5
             isSunlit = False
             isUp = []
             appMag = 99
-        self.updateListSats(row, satParam, isUp, isSunlit, appMag, fitTwilight)
+        self.updateListSats(row, satParam, isUp, isSunlit, appMag, twilight)
+        return isSunlit, twilight
 
     def checkSatOk(self, sat: EarthSatellite, tEnd: Time) -> bool:
         msg = sat.at(tEnd).message
@@ -235,13 +247,8 @@ class SatSearch(SatData):
             return False
         return True
 
-    def clearRunnerCalcSatList(self) -> None:
-        t = "Filter - processed - 100%"
-        self.ui.satFilterGroup.setTitle(t)
-        changeStyleDynamic(self.ui.satFilterGroup, "run", "false")
-        self.mutexCalc.unlock()
-
     def runnerCalcSatList(self) -> None:
+        self.signals.setSatGroupTitle.emit("Filter - running", True)
         satTab = self.ui.listSats
         checkIsSunlit = self.ui.satIsSunlit.isChecked()
         selectTwilight = self.ui.satTwilight.currentIndex()
@@ -253,36 +260,30 @@ class SatSearch(SatData):
         eph = self.app.ephemeris
         numSats = satTab.rowCount()
         for row in range(numSats):
-            show = True
-            if selectTwilight < 4:
-                value = satTab.model().index(row, 8).data()
-                actTwilight = int(value) if value is not None else 4
-                show = show and actTwilight <= selectTwilight
-            show = show and not satTab.isRowHidden(row)
-            satTab.setRowHidden(row, not show)
             if not self.dataValid:
                 break
+            show = not satTab.isRowHidden(row)
             finished = (row + 1) / numSats * 100
             t = f"Filter - processed: {finished:3.0f}%"
-            self.ui.satFilterGroup.setTitle(t)
+            self.signals.setSatGroupTitle.emit(t, True)
             if satTab.isRowHidden(row):
                 continue
             name = satTab.model().index(row, 1).data()
             sat = self.satellites.objects[name]
             if not self.checkSatOk(sat, timeNext):
                 continue
-            self.calcSat(sat, row, loc, timeNow, timeNext, altMin, eph)
+            isSunlit, twilight = self.calcSat(sat, row, loc, timeNow, timeNext, altMin, eph)
             if checkIsSunlit:
-                show = show and satTab.model().index(row, 7).data()
-            show = show and not satTab.isRowHidden(row)
-            satTab.setRowHidden(row, not show)
+                show = show and isSunlit
+            show = show and (twilight <= selectTwilight)
+            self.signals.setSatListRowHidden.emit(row, not show)
+        self.signals.setSatGroupTitle.emit("Filter - processed - 100%", False)
+        self.mutexCalc.unlock()
 
     def calcSatList(self) -> None:
-        if not self.mutexCalc.tryLock():
+        if not self.mutexCalc.tryLock(3000):
             return
-        changeStyleDynamic(self.ui.satFilterGroup, "run", True)
         self.workerCalcSatList = Worker(self.runnerCalcSatList)
-        self.workerCalcSatList.signals.finished.connect(self.clearRunnerCalcSatList)
         self.app.threadPool.start(self.workerCalcSatList)
 
     def checkSatIsHidden(self, name: str, number: int) -> bool:

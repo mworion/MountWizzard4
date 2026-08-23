@@ -1469,7 +1469,7 @@ The keypad is a webbrowser showing the content from 10microns webservices direct
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -20016,48 +20016,13 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
           </property>
          </widget>
         </widget>
-        <widget class="QGroupBox" name="satSetupGroup">
-         <property name="geometry">
-          <rect>
-           <x>580</x>
-           <y>350</y>
-           <width>191</width>
-           <height>51</height>
-          </rect>
-         </property>
-         <property name="title">
-          <string>Setup</string>
-         </property>
-         <property name="large" stdset="0">
-          <bool>true</bool>
-         </property>
-         <widget class="QCheckBox" name="satCyclicUpdates">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>15</y>
-            <width>171</width>
-            <height>26</height>
-           </rect>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When checked MW4 will recalculate the satellite data and constraints every 10 minutes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Do updates every 10min</string>
-          </property>
-         </widget>
-        </widget>
         <widget class="QGroupBox" name="satFilterGroup">
          <property name="geometry">
           <rect>
            <x>580</x>
            <y>70</y>
            <width>191</width>
-           <height>276</height>
+           <height>331</height>
           </rect>
          </property>
          <property name="title">
@@ -20131,7 +20096,7 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>165</y>
+            <y>260</y>
             <width>171</width>
             <height>21</height>
            </rect>
@@ -20150,7 +20115,7 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>190</y>
+            <y>65</y>
             <width>171</width>
             <height>21</height>
            </rect>
@@ -20166,14 +20131,14 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
           <property name="geometry">
            <rect>
             <x>5</x>
-            <y>130</y>
+            <y>175</y>
             <width>181</width>
             <height>21</height>
            </rect>
           </property>
           <item>
            <property name="text">
-            <string>Full night state</string>
+            <string>Full night</string>
            </property>
           </item>
           <item>
@@ -20193,12 +20158,7 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
           </item>
           <item>
            <property name="text">
-            <string>During day</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>All satellites</string>
+            <string>Daylight</string>
            </property>
           </item>
          </widget>
@@ -20206,7 +20166,7 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
           <property name="geometry">
            <rect>
             <x>135</x>
-            <y>70</y>
+            <y>235</y>
             <width>41</width>
             <height>21</height>
            </rect>
@@ -20247,7 +20207,7 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>70</y>
+            <y>235</y>
             <width>116</width>
             <height>21</height>
            </rect>
@@ -20267,7 +20227,7 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>105</y>
+            <y>150</y>
             <width>171</width>
             <height>21</height>
            </rect>
@@ -20280,14 +20240,14 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
            </font>
           </property>
           <property name="text">
-           <string>Limit selection by visibility:</string>
+           <string>Limit selection by twilight:</string>
           </property>
          </widget>
          <widget class="QLabel" name="label_113">
           <property name="geometry">
            <rect>
             <x>180</x>
-            <y>70</y>
+            <y>235</y>
             <width>16</width>
             <height>20</height>
            </rect>
@@ -20313,7 +20273,7 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>215</y>
+            <y>90</y>
             <width>171</width>
             <height>21</height>
            </rect>
@@ -20332,7 +20292,7 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>240</y>
+            <y>115</y>
             <width>171</width>
             <height>21</height>
            </rect>
@@ -20341,7 +20301,7 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which do not contain the text string &amp;quot;STARLINK&amp;quot;, &amp;quot;ONEWEB&amp;quot;, &amp;quot;NAVSTAR&amp;quot;, &amp;quot;GLOBALSTAR&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
-           <string>Remove  DIGUI / QUIANFAN</string>
+           <string>Remove  Digui / Quianfan</string>
           </property>
          </widget>
         </widget>
@@ -25586,7 +25546,6 @@ Next point in time when satellite settles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</
   <tabstop>satRemoveSO</tabstop>
   <tabstop>satFilterText</tabstop>
   <tabstop>satAltitudeMin</tabstop>
-  <tabstop>satCyclicUpdates</tabstop>
   <tabstop>progSatFull</tabstop>
   <tabstop>progSatFiltered</tabstop>
   <tabstop>satelliteName</tabstop>

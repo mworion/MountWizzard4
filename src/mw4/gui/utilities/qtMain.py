@@ -19,7 +19,7 @@ import platform
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtCustomWindow import CustomTitleBar
 from mw4.gui.utilities.qtHelpers import svg2icon
-from PySide6.QtCore import QEvent, QSize, Qt
+from PySide6.QtCore import QEvent, QPoint, QSize, Qt
 from PySide6.QtGui import (
     QGuiApplication,
     QKeyEvent,
@@ -41,7 +41,7 @@ class MWidget(QMainWindow, Styles):
     HALF_WIDTH = 400
     HALF_HEIGHT = 310
     POPUP_HEIGHT = 150
-    RESIZE_MARGIN = 12
+    RESIZE_MARGIN = 8
 
     def __init__(self) -> None:
         super().__init__()
@@ -69,6 +69,10 @@ class MWidget(QMainWindow, Styles):
         centralWidget.setObjectName("ContainerCentral")
         centralWidget.setLayout(centralWidgetLayout)
         self.setCentralWidget(centralWidget)
+        self.installEventFilter(self)
+        centralWidget.installEventFilter(self)
+        centralWidget.setMouseTracking(True)
+        centralWidget.raise_()
 
     def changeEvent(self, event: QEvent) -> None:
         if event.type() == QEvent.Type.WindowStateChange:
@@ -76,7 +80,60 @@ class MWidget(QMainWindow, Styles):
         super().changeEvent(event)
         event.accept()
 
-    def mouseMoveEvent(self, event):
+    def eventFilter(self, watched, event):
+        # 1. Update Cursor on Mouse Move
+        if event.type() in (QEvent.Type.Leave, QEvent.Type.HoverLeave):
+            self.unsetCursor()
+            return False
+
+        if event.type()in (QEvent.Type.MouseMove, QEvent.Type.HoverMove):
+            # Map local position to main window coordinates
+            global_pos = event.globalPosition().toPoint()
+            local_pos = self.mapFromGlobal(global_pos)
+            if self.rect().contains(local_pos):
+                edges = self.getEdges(local_pos)
+                self.setResizeCursor(edges)
+            else:
+                self.unsetCursor()
+
+        # 2. Trigger Native OS Resize on Mouse Press
+        elif (
+            event.type() == QEvent.Type.MouseButtonPress
+            and event.button() == Qt.MouseButton.LeftButton
+        ):
+            global_pos = event.globalPosition().toPoint()
+            local_pos = self.mapFromGlobal(global_pos)
+            edges = self.getEdges(local_pos)
+            if edges:
+                # Triggers native OS window resize gesture (Windows/macOS/Linux)
+                self.windowHandle().startSystemResize(edges)
+                return True  # Swallow event so OS takes control of drag
+
+        return super().eventFilter(watched, event)
+
+    def getEdges(self, pos: QPoint) -> Qt.Edge:
+        """Determines which window edge(s) the mouse is currently hovering near."""
+        edges = Qt.Edge(0)
+        if pos.x() >= self.width() -  self.RESIZE_MARGIN:
+            edges |= Qt.Edge.RightEdge
+        if pos.y() >= self.height() -  self.RESIZE_MARGIN:
+            edges |= Qt.Edge.BottomEdge
+        return edges
+
+    def setResizeCursor(self, edges: Qt.Edge):
+        if not edges:
+            self.unsetCursor()
+            return
+        # Handle corners
+        if edges == (Qt.Edge.BottomEdge | Qt.Edge.RightEdge):
+            self.setCursor(Qt.CursorShape.SizeFDiagCursor)
+        # Handle edges
+        elif edges in (Qt.Edge.RightEdge):
+            self.setCursor(Qt.CursorShape.SizeHorCursor)
+        elif edges in (Qt.Edge.BottomEdge):
+            self.setCursor(Qt.CursorShape.SizeVerCursor)
+
+    def mouseMoveEventOld(self, event):
         pos = event.position()
         if self.isResizing:
             new_width = max(100, int(pos.x()))
@@ -84,7 +141,7 @@ class MWidget(QMainWindow, Styles):
             self.resize(new_width, new_height)
         super().mouseMoveEvent(event)
 
-    def mousePressEvent(self, event):
+    def mousePressEventOld(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
             pos = event.position()
             if (
@@ -94,7 +151,7 @@ class MWidget(QMainWindow, Styles):
                 self.isResizing = True
         super().mousePressEvent(event)
 
-    def mouseReleaseEvent(self, event):
+    def mouseReleaseEventOld(self, event):
         self.isResizing = False
         super().mouseReleaseEvent(event)
 

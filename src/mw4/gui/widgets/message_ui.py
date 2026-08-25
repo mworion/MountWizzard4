@@ -107,6 +107,11 @@ class Ui_MessageDialog(object):
 
         self.verticalLayout.addWidget(self.messageTable)
 
+        self.verticalSpacer = QSpacerItem(20, 5, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout.addItem(self.verticalSpacer)
+
+        self.verticalLayout.setStretch(2, 1)
 
         self.retranslateUi(MessageDialog)
 

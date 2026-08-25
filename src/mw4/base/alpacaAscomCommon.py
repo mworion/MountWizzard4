@@ -168,7 +168,6 @@ class AlpacaAscomCommon(DriverData):
 
     def runnerCommunicationLoop(self) -> None:
         while not self.stopEvent.is_set():
-            print(f"[{self.config.deviceName}] runnerCommunicationLoop: deviceConnected={self.deviceConnected}, Connected={self.getDeviceProp('Connected')}")
             if not self.deviceConnected:
                 self.handleDeviceConnect()
             elif not self.getDeviceProp("Connected"):

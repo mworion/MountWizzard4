@@ -45,6 +45,7 @@ class MWidget(QMainWindow, Styles):
 
     def __init__(self) -> None:
         super().__init__()
+        self.cursorHasResizeShape: bool = False
         self.setWindowIcon(self.mwIcon)
         self.setStyleSheet(self.mw4Style)
         self.setMouseTracking(True)
@@ -92,9 +93,7 @@ class MWidget(QMainWindow, Styles):
             local_pos = self.mapFromGlobal(global_pos)
             if self.rect().contains(local_pos):
                 edges = self.getEdges(local_pos)
-                self.setResizeCursor(edges)
-            else:
-                self.unsetCursor()
+                self.setResizeCursorShape(edges)
         # 2. Trigger Native OS Resize on Mouse Press
         elif (
             event.type() == QEvent.Type.MouseButtonPress
@@ -104,7 +103,6 @@ class MWidget(QMainWindow, Styles):
             local_pos = self.mapFromGlobal(global_pos)
             edges = self.getEdges(local_pos)
             if edges:
-                # Triggers native OS window resize gesture (Windows/macOS/Linux)
                 self.windowHandle().startSystemResize(edges)
                 return True  # Swallow event so OS takes control of drag
         return super().eventFilter(watched, event)
@@ -117,15 +115,20 @@ class MWidget(QMainWindow, Styles):
             edges |= Qt.Edge.BottomEdge
         return edges
 
-    def setResizeCursor(self, edges: Qt.Edge):
+    def setResizeCursorShape(self, edges: Qt.Edge):
         if not edges:
-            self.unsetCursor()
+            if self.cursorHasResizeShape:
+                self.cursorHasResizeShape = False
+                self.unsetCursor()
             return
         if edges == (Qt.Edge.BottomEdge | Qt.Edge.RightEdge):
+            self.cursorHasResizeShape = True
             self.setCursor(Qt.CursorShape.SizeFDiagCursor)
         elif edges == Qt.Edge.RightEdge:
+            self.cursorHasResizeShape = True
             self.setCursor(Qt.CursorShape.SizeHorCursor)
         elif edges == Qt.Edge.BottomEdge:
+            self.cursorHasResizeShape = True
             self.setCursor(Qt.CursorShape.SizeVerCursor)
 
     def setWindowTitle(self, title: str) -> None:

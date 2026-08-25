@@ -143,26 +143,38 @@ def test_getEdges_4(function):
     assert edges == Qt.Edge(0)
 
 
-def test_setResizeCursor_1(function):
-    """Test setResizeCursor with no edges."""
-    function.setResizeCursor(Qt.Edge(0))
+def test_setResizeCursorShape_1(function):
+    """Test setResizeCursorShape with no edges when no resize shape set."""
+    function.cursorHasResizeShape = False
+    function.setResizeCursorShape(Qt.Edge(0))
+    assert function.cursorHasResizeShape is False
 
 
-def test_setResizeCursor_2(function):
-    """Test setResizeCursor with right and bottom edge."""
-    function.setResizeCursor(Qt.Edge.BottomEdge | Qt.Edge.RightEdge)
+def test_setResizeCursorShape_2(function):
+    """Test setResizeCursorShape with no edges resets existing resize shape."""
+    function.cursorHasResizeShape = True
+    function.setResizeCursorShape(Qt.Edge(0))
+    assert function.cursorHasResizeShape is False
+
+
+def test_setResizeCursorShape_3(function):
+    """Test setResizeCursorShape with right and bottom edge."""
+    function.setResizeCursorShape(Qt.Edge.BottomEdge | Qt.Edge.RightEdge)
+    assert function.cursorHasResizeShape is True
     assert function.cursor().shape() == Qt.CursorShape.SizeFDiagCursor
 
 
-def test_setResizeCursor_3(function):
-    """Test setResizeCursor with right edge only."""
-    function.setResizeCursor(Qt.Edge.RightEdge)
+def test_setResizeCursorShape_4(function):
+    """Test setResizeCursorShape with right edge only."""
+    function.setResizeCursorShape(Qt.Edge.RightEdge)
+    assert function.cursorHasResizeShape is True
     assert function.cursor().shape() == Qt.CursorShape.SizeHorCursor
 
 
-def test_setResizeCursor_4(function):
-    """Test setResizeCursor with bottom edge only."""
-    function.setResizeCursor(Qt.Edge.BottomEdge)
+def test_setResizeCursorShape_5(function):
+    """Test setResizeCursorShape with bottom edge only."""
+    function.setResizeCursorShape(Qt.Edge.BottomEdge)
+    assert function.cursorHasResizeShape is True
     assert function.cursor().shape() == Qt.CursorShape.SizeVerCursor
 
 

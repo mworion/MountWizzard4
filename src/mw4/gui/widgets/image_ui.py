@@ -566,6 +566,11 @@ class Ui_ImageDialog(object):
 
         self.headerGroup = QGroupBox(ImageDialog)
         self.headerGroup.setObjectName(u"headerGroup")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.headerGroup.sizePolicy().hasHeightForWidth())
+        self.headerGroup.setSizePolicy(sizePolicy1)
         self.headerGroup.setMinimumSize(QSize(120, 0))
         self.headerGroup.setMaximumSize(QSize(0, 16777215))
         self.headerGroup.setProperty(u"large", True)
@@ -574,20 +579,13 @@ class Ui_ImageDialog(object):
         self.gridLayout.setHorizontalSpacing(4)
         self.gridLayout.setVerticalSpacing(0)
         self.gridLayout.setContentsMargins(4, 15, 4, 4)
-        self.binX = QLineEdit(self.headerGroup)
-        self.binX.setObjectName(u"binX")
-        self.binX.setEnabled(True)
-        self.binX.setFrame(False)
-        self.binX.setReadOnly(True)
+        self.binY = QLineEdit(self.headerGroup)
+        self.binY.setObjectName(u"binY")
+        self.binY.setEnabled(True)
+        self.binY.setFrame(False)
+        self.binY.setReadOnly(True)
 
-        self.gridLayout.addWidget(self.binX, 26, 0, 1, 1)
-
-        self.line_7 = QFrame(self.headerGroup)
-        self.line_7.setObjectName(u"line_7")
-        self.line_7.setFrameShadow(QFrame.Shadow.Plain)
-        self.line_7.setFrameShape(QFrame.Shape.HLine)
-
-        self.gridLayout.addWidget(self.line_7, 16, 0, 1, 2)
+        self.gridLayout.addWidget(self.binY, 26, 1, 1, 1)
 
         self.line_11 = QFrame(self.headerGroup)
         self.line_11.setObjectName(u"line_11")
@@ -596,69 +594,29 @@ class Ui_ImageDialog(object):
 
         self.gridLayout.addWidget(self.line_11, 27, 0, 1, 2)
 
-        self.scale = QLineEdit(self.headerGroup)
-        self.scale.setObjectName(u"scale")
-        self.scale.setEnabled(True)
-        self.scale.setFrame(False)
-        self.scale.setReadOnly(True)
-
-        self.gridLayout.addWidget(self.scale, 15, 1, 1, 1)
-
-        self.line_3 = QFrame(self.headerGroup)
-        self.line_3.setObjectName(u"line_3")
-        self.line_3.setFrameShadow(QFrame.Shadow.Plain)
-        self.line_3.setFrameShape(QFrame.Shape.HLine)
-
-        self.gridLayout.addWidget(self.line_3, 2, 0, 1, 2)
-
-        self.line_6 = QFrame(self.headerGroup)
-        self.line_6.setObjectName(u"line_6")
-        self.line_6.setFrameShadow(QFrame.Shadow.Plain)
-        self.line_6.setFrameShape(QFrame.Shape.HLine)
-
-        self.gridLayout.addWidget(self.line_6, 10, 0, 1, 2)
-
-        self.label_3 = QLabel(self.headerGroup)
-        self.label_3.setObjectName(u"label_3")
-
-        self.gridLayout.addWidget(self.label_3, 7, 0, 1, 2)
-
-        self.sqm = QLineEdit(self.headerGroup)
-        self.sqm.setObjectName(u"sqm")
-        self.sqm.setEnabled(True)
-        self.sqm.setFrame(False)
-        self.sqm.setReadOnly(True)
-
-        self.gridLayout.addWidget(self.sqm, 32, 0, 1, 2)
-
-        self.rotation = QLineEdit(self.headerGroup)
-        self.rotation.setObjectName(u"rotation")
-        self.rotation.setEnabled(True)
-        self.rotation.setFrame(False)
-        self.rotation.setReadOnly(True)
-
-        self.gridLayout.addWidget(self.rotation, 15, 0, 1, 1)
-
         self.label_6 = QLabel(self.headerGroup)
         self.label_6.setObjectName(u"label_6")
 
         self.gridLayout.addWidget(self.label_6, 13, 0, 1, 1)
 
-        self.ccdTemp = QLineEdit(self.headerGroup)
-        self.ccdTemp.setObjectName(u"ccdTemp")
-        self.ccdTemp.setEnabled(True)
-        self.ccdTemp.setFrame(False)
-        self.ccdTemp.setReadOnly(True)
+        self.label_7 = QLabel(self.headerGroup)
+        self.label_7.setObjectName(u"label_7")
 
-        self.gridLayout.addWidget(self.ccdTemp, 23, 1, 1, 1)
+        self.gridLayout.addWidget(self.label_7, 13, 1, 1, 1)
 
-        self.dec = QLineEdit(self.headerGroup)
-        self.dec.setObjectName(u"dec")
-        self.dec.setEnabled(True)
-        self.dec.setFrame(False)
-        self.dec.setReadOnly(True)
+        self.line_7 = QFrame(self.headerGroup)
+        self.line_7.setObjectName(u"line_7")
+        self.line_7.setFrameShadow(QFrame.Shadow.Plain)
+        self.line_7.setFrameShape(QFrame.Shape.HLine)
 
-        self.gridLayout.addWidget(self.dec, 8, 0, 1, 2)
+        self.gridLayout.addWidget(self.line_7, 16, 0, 1, 2)
+
+        self.line_5 = QFrame(self.headerGroup)
+        self.line_5.setObjectName(u"line_5")
+        self.line_5.setFrameShadow(QFrame.Shadow.Plain)
+        self.line_5.setFrameShape(QFrame.Shape.HLine)
+
+        self.gridLayout.addWidget(self.line_5, 6, 0, 1, 2)
 
         self.exposureTime = QLineEdit(self.headerGroup)
         self.exposureTime.setObjectName(u"exposureTime")
@@ -668,65 +626,6 @@ class Ui_ImageDialog(object):
 
         self.gridLayout.addWidget(self.exposureTime, 20, 0, 1, 2)
 
-        self.label = QLabel(self.headerGroup)
-        self.label.setObjectName(u"label")
-
-        self.gridLayout.addWidget(self.label, 0, 0, 1, 2)
-
-        self.object = QLineEdit(self.headerGroup)
-        self.object.setObjectName(u"object")
-        self.object.setEnabled(True)
-        self.object.setFrame(False)
-        self.object.setReadOnly(True)
-
-        self.gridLayout.addWidget(self.object, 1, 0, 1, 2)
-
-        self.label_2 = QLabel(self.headerGroup)
-        self.label_2.setObjectName(u"label_2")
-
-        self.gridLayout.addWidget(self.label_2, 3, 0, 1, 2)
-
-        self.binY = QLineEdit(self.headerGroup)
-        self.binY.setObjectName(u"binY")
-        self.binY.setEnabled(True)
-        self.binY.setFrame(False)
-        self.binY.setReadOnly(True)
-
-        self.gridLayout.addWidget(self.binY, 26, 1, 1, 1)
-
-        self.label_4 = QLabel(self.headerGroup)
-        self.label_4.setObjectName(u"label_4")
-
-        self.gridLayout.addWidget(self.label_4, 31, 0, 1, 2)
-
-        self.raFloat = QLineEdit(self.headerGroup)
-        self.raFloat.setObjectName(u"raFloat")
-        self.raFloat.setEnabled(True)
-        self.raFloat.setFrame(False)
-        self.raFloat.setReadOnly(True)
-
-        self.gridLayout.addWidget(self.raFloat, 5, 0, 1, 2)
-
-        self.filter = QLineEdit(self.headerGroup)
-        self.filter.setObjectName(u"filter")
-        self.filter.setEnabled(True)
-        self.filter.setFrame(False)
-        self.filter.setReadOnly(True)
-
-        self.gridLayout.addWidget(self.filter, 23, 0, 1, 1)
-
-        self.label_8 = QLabel(self.headerGroup)
-        self.label_8.setObjectName(u"label_8")
-
-        self.gridLayout.addWidget(self.label_8, 19, 0, 1, 2)
-
-        self.line_5 = QFrame(self.headerGroup)
-        self.line_5.setObjectName(u"line_5")
-        self.line_5.setFrameShadow(QFrame.Shadow.Plain)
-        self.line_5.setFrameShape(QFrame.Shape.HLine)
-
-        self.gridLayout.addWidget(self.line_5, 6, 0, 1, 2)
-
         self.line_9 = QFrame(self.headerGroup)
         self.line_9.setObjectName(u"line_9")
         self.line_9.setFrameShadow(QFrame.Shadow.Plain)
@@ -734,15 +633,13 @@ class Ui_ImageDialog(object):
 
         self.gridLayout.addWidget(self.line_9, 21, 0, 1, 2)
 
-        self.label_12 = QLabel(self.headerGroup)
-        self.label_12.setObjectName(u"label_12")
+        self.rotation = QLineEdit(self.headerGroup)
+        self.rotation.setObjectName(u"rotation")
+        self.rotation.setEnabled(True)
+        self.rotation.setFrame(False)
+        self.rotation.setReadOnly(True)
 
-        self.gridLayout.addWidget(self.label_12, 25, 1, 1, 1)
-
-        self.label_7 = QLabel(self.headerGroup)
-        self.label_7.setObjectName(u"label_7")
-
-        self.gridLayout.addWidget(self.label_7, 13, 1, 1, 1)
+        self.gridLayout.addWidget(self.rotation, 15, 0, 1, 1)
 
         self.line_10 = QFrame(self.headerGroup)
         self.line_10.setObjectName(u"line_10")
@@ -751,28 +648,12 @@ class Ui_ImageDialog(object):
 
         self.gridLayout.addWidget(self.line_10, 24, 0, 1, 2)
 
-        self.ra = QLineEdit(self.headerGroup)
-        self.ra.setObjectName(u"ra")
-        self.ra.setEnabled(True)
-        self.ra.setFrame(False)
-        self.ra.setReadOnly(True)
+        self.line_3 = QFrame(self.headerGroup)
+        self.line_3.setObjectName(u"line_3")
+        self.line_3.setFrameShadow(QFrame.Shadow.Plain)
+        self.line_3.setFrameShape(QFrame.Shape.HLine)
 
-        self.gridLayout.addWidget(self.ra, 4, 0, 1, 2)
-
-        self.label_11 = QLabel(self.headerGroup)
-        self.label_11.setObjectName(u"label_11")
-
-        self.gridLayout.addWidget(self.label_11, 25, 0, 1, 1)
-
-        self.label_9 = QLabel(self.headerGroup)
-        self.label_9.setObjectName(u"label_9")
-
-        self.gridLayout.addWidget(self.label_9, 22, 1, 1, 1)
-
-        self.label_10 = QLabel(self.headerGroup)
-        self.label_10.setObjectName(u"label_10")
-
-        self.gridLayout.addWidget(self.label_10, 22, 0, 1, 1)
+        self.gridLayout.addWidget(self.line_3, 2, 0, 1, 2)
 
         self.decFloat = QLineEdit(self.headerGroup)
         self.decFloat.setObjectName(u"decFloat")
@@ -782,8 +663,136 @@ class Ui_ImageDialog(object):
 
         self.gridLayout.addWidget(self.decFloat, 9, 0, 1, 2)
 
+        self.label_9 = QLabel(self.headerGroup)
+        self.label_9.setObjectName(u"label_9")
+
+        self.gridLayout.addWidget(self.label_9, 22, 1, 1, 1)
+
+        self.label_12 = QLabel(self.headerGroup)
+        self.label_12.setObjectName(u"label_12")
+
+        self.gridLayout.addWidget(self.label_12, 25, 1, 1, 1)
+
+        self.label_10 = QLabel(self.headerGroup)
+        self.label_10.setObjectName(u"label_10")
+
+        self.gridLayout.addWidget(self.label_10, 22, 0, 1, 1)
+
+        self.label_11 = QLabel(self.headerGroup)
+        self.label_11.setObjectName(u"label_11")
+
+        self.gridLayout.addWidget(self.label_11, 25, 0, 1, 1)
+
+        self.label_8 = QLabel(self.headerGroup)
+        self.label_8.setObjectName(u"label_8")
+
+        self.gridLayout.addWidget(self.label_8, 19, 0, 1, 2)
+
+        self.raFloat = QLineEdit(self.headerGroup)
+        self.raFloat.setObjectName(u"raFloat")
+        self.raFloat.setEnabled(True)
+        self.raFloat.setFrame(False)
+        self.raFloat.setReadOnly(True)
+
+        self.gridLayout.addWidget(self.raFloat, 5, 0, 1, 2)
+
+        self.line_6 = QFrame(self.headerGroup)
+        self.line_6.setObjectName(u"line_6")
+        self.line_6.setFrameShadow(QFrame.Shadow.Plain)
+        self.line_6.setFrameShape(QFrame.Shape.HLine)
+
+        self.gridLayout.addWidget(self.line_6, 10, 0, 1, 2)
+
+        self.sqm = QLineEdit(self.headerGroup)
+        self.sqm.setObjectName(u"sqm")
+        self.sqm.setEnabled(True)
+        self.sqm.setFrame(False)
+        self.sqm.setReadOnly(True)
+
+        self.gridLayout.addWidget(self.sqm, 32, 0, 1, 2)
+
+        self.scale = QLineEdit(self.headerGroup)
+        self.scale.setObjectName(u"scale")
+        self.scale.setEnabled(True)
+        self.scale.setFrame(False)
+        self.scale.setReadOnly(True)
+
+        self.gridLayout.addWidget(self.scale, 15, 1, 1, 1)
+
+        self.label_3 = QLabel(self.headerGroup)
+        self.label_3.setObjectName(u"label_3")
+
+        self.gridLayout.addWidget(self.label_3, 7, 0, 1, 2)
+
+        self.object = QLineEdit(self.headerGroup)
+        self.object.setObjectName(u"object")
+        self.object.setEnabled(True)
+        self.object.setFrame(False)
+        self.object.setReadOnly(True)
+
+        self.gridLayout.addWidget(self.object, 1, 0, 1, 2)
+
+        self.label = QLabel(self.headerGroup)
+        self.label.setObjectName(u"label")
+
+        self.gridLayout.addWidget(self.label, 0, 0, 1, 2)
+
+        self.ra = QLineEdit(self.headerGroup)
+        self.ra.setObjectName(u"ra")
+        self.ra.setEnabled(True)
+        self.ra.setFrame(False)
+        self.ra.setReadOnly(True)
+
+        self.gridLayout.addWidget(self.ra, 4, 0, 1, 2)
+
+        self.dec = QLineEdit(self.headerGroup)
+        self.dec.setObjectName(u"dec")
+        self.dec.setEnabled(True)
+        self.dec.setFrame(False)
+        self.dec.setReadOnly(True)
+
+        self.gridLayout.addWidget(self.dec, 8, 0, 1, 2)
+
+        self.label_2 = QLabel(self.headerGroup)
+        self.label_2.setObjectName(u"label_2")
+
+        self.gridLayout.addWidget(self.label_2, 3, 0, 1, 2)
+
+        self.binX = QLineEdit(self.headerGroup)
+        self.binX.setObjectName(u"binX")
+        self.binX.setEnabled(True)
+        self.binX.setFrame(False)
+        self.binX.setReadOnly(True)
+
+        self.gridLayout.addWidget(self.binX, 26, 0, 1, 1)
+
+        self.filter = QLineEdit(self.headerGroup)
+        self.filter.setObjectName(u"filter")
+        self.filter.setEnabled(True)
+        self.filter.setFrame(False)
+        self.filter.setReadOnly(True)
+
+        self.gridLayout.addWidget(self.filter, 23, 0, 1, 1)
+
+        self.ccdTemp = QLineEdit(self.headerGroup)
+        self.ccdTemp.setObjectName(u"ccdTemp")
+        self.ccdTemp.setEnabled(True)
+        self.ccdTemp.setFrame(False)
+        self.ccdTemp.setReadOnly(True)
+
+        self.gridLayout.addWidget(self.ccdTemp, 23, 1, 1, 1)
+
+        self.label_4 = QLabel(self.headerGroup)
+        self.label_4.setObjectName(u"label_4")
+
+        self.gridLayout.addWidget(self.label_4, 31, 0, 1, 2)
+
 
         self.gridLayout_2.addWidget(self.headerGroup, 1, 0, 2, 1)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.gridLayout_2.addItem(self.verticalSpacer_2, 3, 0, 1, 1)
 
 
         self.verticalLayout_2.addLayout(self.gridLayout_2)
@@ -792,7 +801,7 @@ class Ui_ImageDialog(object):
 
         self.retranslateUi(ImageDialog)
 
-        self.tabImage.setCurrentIndex(0)
+        self.tabImage.setCurrentIndex(3)
 
 
         QMetaObject.connectSlotsByName(ImageDialog)
@@ -861,16 +870,16 @@ class Ui_ImageDialog(object):
         self.tabImage.setTabText(self.tabImage.indexOf(self.Back), QCoreApplication.translate("ImageDialog", u"Back", None))
         self.tabImage.setTabText(self.tabImage.indexOf(self.BackRMS), QCoreApplication.translate("ImageDialog", u"Back RMS", None))
         self.headerGroup.setTitle(QCoreApplication.translate("ImageDialog", u"Fits Header", None))
-        self.label_3.setText(QCoreApplication.translate("ImageDialog", u"DEC [deg]", None))
         self.label_6.setText(QCoreApplication.translate("ImageDialog", u"Rot [deg]", None))
+        self.label_7.setText(QCoreApplication.translate("ImageDialog", u"Scale", None))
+        self.label_9.setText(QCoreApplication.translate("ImageDialog", u"Temp", None))
+        self.label_12.setText(QCoreApplication.translate("ImageDialog", u"Bin Y", None))
+        self.label_10.setText(QCoreApplication.translate("ImageDialog", u"Filter", None))
+        self.label_11.setText(QCoreApplication.translate("ImageDialog", u"Bin X", None))
+        self.label_8.setText(QCoreApplication.translate("ImageDialog", u"Exposure Time [s]", None))
+        self.label_3.setText(QCoreApplication.translate("ImageDialog", u"DEC [deg]", None))
         self.label.setText(QCoreApplication.translate("ImageDialog", u"Object Name", None))
         self.label_2.setText(QCoreApplication.translate("ImageDialog", u"RA [hours]", None))
         self.label_4.setText(QCoreApplication.translate("ImageDialog", u"SQM [mpas]", None))
-        self.label_8.setText(QCoreApplication.translate("ImageDialog", u"Exposure Time [s]", None))
-        self.label_12.setText(QCoreApplication.translate("ImageDialog", u"Bin Y", None))
-        self.label_7.setText(QCoreApplication.translate("ImageDialog", u"Scale", None))
-        self.label_11.setText(QCoreApplication.translate("ImageDialog", u"Bin X", None))
-        self.label_9.setText(QCoreApplication.translate("ImageDialog", u"Temp", None))
-        self.label_10.setText(QCoreApplication.translate("ImageDialog", u"Filter", None))
     # retranslateUi
 

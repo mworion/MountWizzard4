@@ -308,7 +308,7 @@ def test_calcSatListDynamic_8(function: SatSearch) -> None:
         function.calcSatListDynamic()
 
 
-def test_checkSatOk_1(function: SatSearch) -> None:
+def test_satOkSGP4_1(function: SatSearch) -> None:
     tle = [
         "STARLINK-1914",
         "1 47180U 20088BL  21303.19708368  .16584525  12000-4  30219-2 0  9999",
@@ -317,11 +317,11 @@ def test_checkSatOk_1(function: SatSearch) -> None:
     ts = function.app.dReg["mount"].obsSite.ts
     tEnd = ts.tt_jd(2459523.2430)
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
-    suc = function.checkSatOk(sat, tEnd)
+    suc = function.satOkSGP4(sat, tEnd)
     assert not suc
 
 
-def test_checkSatOk_2(function: SatSearch) -> None:
+def test_satOkSGP4_2(function: SatSearch) -> None:
     tle = [
         "CALSPHERE 1",
         "1 00900U 64063C   21307.74429300  .00000461  00000-0  48370-3 0  9996",
@@ -330,7 +330,7 @@ def test_checkSatOk_2(function: SatSearch) -> None:
     ts = function.app.dReg["mount"].obsSite.ts
     tEnd = ts.tt_jd(2459523.2430)
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
-    suc = function.checkSatOk(sat, tEnd)
+    suc = function.satOkSGP4(sat, tEnd)
     assert suc
 
 
@@ -424,7 +424,7 @@ def test_runnerCalcSatList_2(function: SatSearch) -> None:
     function.ui.listSats.setItem(0, 1, entry)
 
     with (
-        mock.patch.object(function, "checkSatOk", return_value=False),
+        mock.patch.object(function, "satOkSGP4", return_value=False),
         mock.patch.object(function.signals, "setSatGroupTitle"),
     ):
         function.runnerCalcSatList()
@@ -450,7 +450,7 @@ def test_runnerCalcSatList_3(function: SatSearch) -> None:
     function.ui.listSats.setItem(0, 1, entry)
 
     with (
-        mock.patch.object(function, "checkSatOk", return_value=True),
+        mock.patch.object(function, "satOkSGP4", return_value=True),
         mock.patch.object(function, "calcSat", return_value=(True, 2)),
         mock.patch.object(function.signals, "setSatGroupTitle"),
         mock.patch.object(function.signals, "setSatListRowHidden"),
@@ -480,7 +480,7 @@ def test_runnerCalcSatList_4(function: SatSearch) -> None:
     function.ui.listSats.setRowHidden(0, True)
 
     with (
-        mock.patch.object(function, "checkSatOk", return_value=True),
+        mock.patch.object(function, "satOkSGP4", return_value=True),
         mock.patch.object(function, "calcSat"),
         mock.patch.object(function.signals, "setSatGroupTitle"),
     ):

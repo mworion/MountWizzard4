@@ -20096,7 +20096,7 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>260</y>
+            <y>210</y>
             <width>171</width>
             <height>21</height>
            </rect>
@@ -20108,7 +20108,7 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
            <string>Satellite is sunlit</string>
           </property>
          </widget>
-         <widget class="QCheckBox" name="satRemoveSO">
+         <widget class="QCheckBox" name="satRemoveStarlink">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -20124,14 +20124,14 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which do not contain the text string &amp;quot;STARLINK&amp;quot;, &amp;quot;ONEWEB&amp;quot;, &amp;quot;NAVSTAR&amp;quot;, &amp;quot;GLOBALSTAR&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
-           <string>Remove Starlink/Oneweb</string>
+           <string>Remove Starlink</string>
           </property>
          </widget>
          <widget class="QComboBox" name="satTwilight">
           <property name="geometry">
            <rect>
             <x>5</x>
-            <y>175</y>
+            <y>295</y>
             <width>181</width>
             <height>21</height>
            </rect>
@@ -20166,7 +20166,7 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
           <property name="geometry">
            <rect>
             <x>135</x>
-            <y>235</y>
+            <y>240</y>
             <width>41</width>
             <height>21</height>
            </rect>
@@ -20207,7 +20207,7 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>235</y>
+            <y>240</y>
             <width>116</width>
             <height>21</height>
            </rect>
@@ -20227,7 +20227,7 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>150</y>
+            <y>270</y>
             <width>171</width>
             <height>21</height>
            </rect>
@@ -20247,7 +20247,7 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
           <property name="geometry">
            <rect>
             <x>180</x>
-            <y>235</y>
+            <y>240</y>
             <width>16</width>
             <height>20</height>
            </rect>
@@ -20266,14 +20266,14 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
            <bool>false</bool>
           </property>
          </widget>
-         <widget class="QCheckBox" name="satRemoveK">
+         <widget class="QCheckBox" name="satRemoveKuiper">
           <property name="enabled">
            <bool>true</bool>
           </property>
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>90</y>
+            <y>105</y>
             <width>171</width>
             <height>21</height>
            </rect>
@@ -20285,14 +20285,14 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
            <string>Remove Kuiper</string>
           </property>
          </widget>
-         <widget class="QCheckBox" name="satRemoveDQ">
+         <widget class="QCheckBox" name="satRemoveQianfan">
           <property name="enabled">
            <bool>true</bool>
           </property>
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>115</y>
+            <y>145</y>
             <width>171</width>
             <height>21</height>
            </rect>
@@ -20301,7 +20301,64 @@ When clicking the button, you could change the value.&lt;/p&gt;&lt;/body&gt;&lt;
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which do not contain the text string &amp;quot;STARLINK&amp;quot;, &amp;quot;ONEWEB&amp;quot;, &amp;quot;NAVSTAR&amp;quot;, &amp;quot;GLOBALSTAR&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
-           <string>Remove  Digui / Quianfan</string>
+           <string>Remove  Qianfan</string>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="satRemoveCosmos">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>85</y>
+            <width>171</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which do not contain the text string &amp;quot;STARLINK&amp;quot;, &amp;quot;ONEWEB&amp;quot;, &amp;quot;NAVSTAR&amp;quot;, &amp;quot;GLOBALSTAR&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Remove  Cosmos</string>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="satRemoveIridium">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>125</y>
+            <width>171</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which do not contain the text string &amp;quot;STARLINK&amp;quot;, &amp;quot;ONEWEB&amp;quot;, &amp;quot;NAVSTAR&amp;quot;, &amp;quot;GLOBALSTAR&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Remove  Iridium</string>
+          </property>
+         </widget>
+         <widget class="QCheckBox" name="satRemoveHulianwang">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>165</y>
+            <width>171</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected, the list only shows satellites which do not contain the text string &amp;quot;STARLINK&amp;quot;, &amp;quot;ONEWEB&amp;quot;, &amp;quot;NAVSTAR&amp;quot;, &amp;quot;GLOBALSTAR&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Remove  Hulianwang</string>
           </property>
          </widget>
         </widget>
@@ -25543,7 +25600,7 @@ Next point in time when satellite settles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</
   <tabstop>satSourceList</tabstop>
   <tabstop>satTwilight</tabstop>
   <tabstop>satIsSunlit</tabstop>
-  <tabstop>satRemoveSO</tabstop>
+  <tabstop>satRemoveStarlink</tabstop>
   <tabstop>satFilterText</tabstop>
   <tabstop>satAltitudeMin</tabstop>
   <tabstop>progSatFull</tabstop>
@@ -25761,8 +25818,8 @@ Next point in time when satellite settles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</
   <tabstop>genModel_5</tabstop>
   <tabstop>genModel_6</tabstop>
   <tabstop>progSatSelected</tabstop>
-  <tabstop>satRemoveK</tabstop>
-  <tabstop>satRemoveDQ</tabstop>
+  <tabstop>satRemoveKuiper</tabstop>
+  <tabstop>satRemoveQianfan</tabstop>
   <tabstop>mpcTabWidget</tabstop>
   <tabstop>cometFilterText</tabstop>
   <tabstop>cometSourceList</tabstop>

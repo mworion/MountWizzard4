@@ -519,3 +519,214 @@ def test_fillSatListName_1(function: SatSearch) -> None:
         mock.patch.object(function.mutexCalc, "tryLock", return_value=True),
     ):
         function.fillSatListName()
+
+
+def test_calcSatListDynamic_body(function: SatSearch) -> None:
+    """Test calcSatListDynamic processes visible rows with valid satellites."""
+    function.satellites.dataValid = True
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
+    sat = EarthSatellite(tle[1], tle[2], name=tle[0])
+    function.satellites.objects = {"NOAA 8": sat}
+
+    function.ui.mainTabWidget.setCurrentIndex(5)
+    function.ui.satTabWidget.setCurrentIndex(0)
+    function.ui.listSats.setRowCount(0)
+    function.ui.listSats.setColumnCount(2)
+    function.ui.listSats.insertRow(0)
+    entry = QTableWidgetItem("NOAA 8")
+    function.ui.listSats.setItem(0, 1, entry)
+    function.ui.listSats.setRowHidden(0, False)
+
+    function.dataValid = True
+    with (
+        mock.patch.object(function.ui.satTabWidget, "isVisible", return_value=True),
+        mock.patch.object(function, "updateListSats") as mockUpdate,
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[100, 1, 2, 3]
+        ),
+        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True),
+        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=5),
+        mock.patch.object(QRect, "intersects", return_value=True),
+    ):
+        function.calcSatListDynamic()
+        mockUpdate.assert_called()
+
+
+def test_checkSatNameOk_with_filter(function: SatSearch) -> None:
+    """Test checkSatNameOk applies satellite name filters."""
+    function.filterStr = "starlink"
+    function.ui.satRemoveStarlink.setChecked(True)
+    function.ui.satRemoveCosmos.setChecked(False)
+    result = function.checkSatNameOk("STARLINK-1234", 1234)
+    assert not result
+
+
+def test_checkSatNameOk_pass_filter(function: SatSearch) -> None:
+    """Test checkSatNameOk passes when filter not applied."""
+    function.filterStr = "cosmos"
+    function.ui.satRemoveStarlink.setChecked(False)
+    function.ui.satRemoveCosmos.setChecked(True)
+    result = function.checkSatNameOk("COSMOS-2234", 2234)
+    assert not result
+
+
+def test_checkSatNameOk_no_filters(function: SatSearch) -> None:
+    """Test checkSatNameOk with no filters applied."""
+    function.filterStr = "test"
+    for satFilter in function.SATFILTERS:
+        ui = getattr(function.ui, f"satRemove{satFilter}")
+        ui.setChecked(False)
+    result = function.checkSatNameOk("TEST-SAT", 1234)
+    assert result
+
+
+def test_runnerCalcSatList_data_valid_break(function: SatSearch) -> None:
+    """Test runnerCalcSatList breaks when dataValid becomes False."""
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
+    sat = EarthSatellite(tle[1], tle[2], name=tle[0])
+
+    class Test:
+        objects: ClassVar = {"sat1": sat}
+
+    function.satellites = Test()
+    function.dataValid = False
+    function.ui.listSats.setRowCount(0)
+    function.ui.listSats.setColumnCount(9)
+    function.ui.listSats.insertRow(0)
+    entry = QTableWidgetItem("sat1")
+    function.ui.listSats.setItem(0, 1, entry)
+
+    with mock.patch.object(function.signals, "setSatGroupTitle"):
+        function.runnerCalcSatList()
+
+
+def test_runnerCalcSatList_check_sunlit_true(function: SatSearch) -> None:
+    """Test runnerCalcSatList with checkIsSunlit True and satellite sunlit."""
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
+    sat = EarthSatellite(tle[1], tle[2], name=tle[0])
+
+    class Test:
+        objects: ClassVar = {"sat1": sat}
+
+    function.satellites = Test()
+    function.dataValid = True
+    function.ui.satIsSunlit.setChecked(True)
+    function.ui.listSats.setRowCount(0)
+    function.ui.listSats.setColumnCount(9)
+    function.ui.listSats.insertRow(0)
+    entry = QTableWidgetItem("sat1")
+    function.ui.listSats.setItem(0, 1, entry)
+    function.ui.listSats.setRowHidden(0, False)
+
+    with (
+        mock.patch.object(function, "satOkSGP4", return_value=True),
+        mock.patch.object(function, "calcSat", return_value=(True, 2)),
+        mock.patch.object(function.signals, "setSatGroupTitle"),
+        mock.patch.object(function.signals, "setSatListRowHidden"),
+    ):
+        function.runnerCalcSatList()
+
+
+def test_calcSatListDynamic_row_outside_viewport(function: SatSearch) -> None:
+    """Test calcSatListDynamic skips rows outside viewport."""
+    function.satellites.dataValid = True
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
+    sat = EarthSatellite(tle[1], tle[2], name=tle[0])
+    function.satellites.objects = {"NOAA 8": sat}
+
+    function.ui.mainTabWidget.setCurrentIndex(5)
+    function.ui.satTabWidget.setCurrentIndex(0)
+    function.ui.listSats.setRowCount(0)
+    function.ui.listSats.setColumnCount(2)
+    function.ui.listSats.insertRow(0)
+    entry = QTableWidgetItem("NOAA 8")
+    function.ui.listSats.setItem(0, 1, entry)
+    function.ui.listSats.setRowHidden(0, False)
+
+    function.dataValid = True
+    with (
+        mock.patch.object(function.ui.satTabWidget, "isVisible", return_value=True),
+        mock.patch.object(function, "updateListSats") as mockUpdate,
+        mock.patch.object(QRect, "intersects", return_value=False),
+    ):
+        function.calcSatListDynamic()
+        mockUpdate.assert_not_called()
+
+
+def test_calcSatListDynamic_row_hidden(function: SatSearch) -> None:
+    """Test calcSatListDynamic skips hidden rows."""
+    function.satellites.dataValid = True
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
+    sat = EarthSatellite(tle[1], tle[2], name=tle[0])
+    function.satellites.objects = {"NOAA 8": sat}
+
+    function.ui.mainTabWidget.setCurrentIndex(5)
+    function.ui.satTabWidget.setCurrentIndex(0)
+    function.ui.listSats.setRowCount(0)
+    function.ui.listSats.setColumnCount(2)
+    function.ui.listSats.insertRow(0)
+    entry = QTableWidgetItem("NOAA 8")
+    function.ui.listSats.setItem(0, 1, entry)
+    function.ui.listSats.setRowHidden(0, True)
+
+    function.dataValid = True
+    with (
+        mock.patch.object(function.ui.satTabWidget, "isVisible", return_value=True),
+        mock.patch.object(function, "updateListSats") as mockUpdate,
+        mock.patch.object(QRect, "intersects", return_value=True),
+    ):
+        function.calcSatListDynamic()
+        mockUpdate.assert_not_called()
+
+
+def test_calcSatListDynamic_satparam_nan(function: SatSearch) -> None:
+    """Test calcSatListDynamic handles NaN satParam values."""
+    function.satellites.dataValid = True
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
+    sat = EarthSatellite(tle[1], tle[2], name=tle[0])
+    function.satellites.objects = {"NOAA 8": sat}
+
+    function.ui.mainTabWidget.setCurrentIndex(5)
+    function.ui.satTabWidget.setCurrentIndex(0)
+    function.ui.listSats.setRowCount(0)
+    function.ui.listSats.setColumnCount(2)
+    function.ui.listSats.insertRow(0)
+    entry = QTableWidgetItem("NOAA 8")
+    function.ui.listSats.setItem(0, 1, entry)
+    function.ui.listSats.setRowHidden(0, False)
+
+    function.dataValid = True
+    with (
+        mock.patch.object(function.ui.satTabWidget, "isVisible", return_value=True),
+        mock.patch.object(function, "updateListSats") as mockUpdate,
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[np.nan, 1, 2, 3]
+        ),
+        mock.patch.object(QRect, "intersects", return_value=True),
+    ):
+        function.calcSatListDynamic()
+        mockUpdate.assert_called()

@@ -32,6 +32,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+from typing import ClassVar
 
 
 class MWidget(QMainWindow, Styles):
@@ -42,6 +43,11 @@ class MWidget(QMainWindow, Styles):
     HALF_HEIGHT = 310
     POPUP_HEIGHT = 150
     RESIZE_MARGIN = 8
+    CURSOR_MAP: ClassVar[dict[Qt.Edge, Qt.CursorShape]] = {
+        Qt.Edge.BottomEdge | Qt.Edge.RightEdge: Qt.CursorShape.SizeFDiagCursor,
+        Qt.Edge.RightEdge: Qt.CursorShape.SizeHorCursor,
+        Qt.Edge.BottomEdge: Qt.CursorShape.SizeVerCursor,
+    }
 
     def __init__(self) -> None:
         super().__init__()
@@ -81,55 +87,46 @@ class MWidget(QMainWindow, Styles):
         super().changeEvent(event)
         event.accept()
 
-    def eventFilter(self, watched, event):
-        # 0. Check leave Mouse Move
-        if event.type() in (QEvent.Type.Leave, QEvent.Type.HoverLeave):
+    def eventFilter(self, watched, event) -> bool:
+        etype = event.type()
+        if etype in (QEvent.Type.Leave, QEvent.Type.HoverLeave):
             self.unsetCursor()
             return False
-        # 1. Update Cursor on Mouse Move
-        if event.type()in (QEvent.Type.MouseMove, QEvent.Type.HoverMove):
-            # Map local position to main window coordinates
-            global_pos = event.globalPosition().toPoint()
-            local_pos = self.mapFromGlobal(global_pos)
-            if self.rect().contains(local_pos):
-                edges = self.getEdges(local_pos)
-                self.setResizeCursorShape(edges)
-        # 2. Trigger Native OS Resize on Mouse Press
-        elif (
-            event.type() == QEvent.Type.MouseButtonPress
-            and event.button() == Qt.MouseButton.LeftButton
+        if etype in (
+            QEvent.Type.MouseMove,
+            QEvent.Type.HoverMove,
+            QEvent.Type.MouseButtonPress,
         ):
-            global_pos = event.globalPosition().toPoint()
-            local_pos = self.mapFromGlobal(global_pos)
-            edges = self.getEdges(local_pos)
-            if edges:
+            localPos = self.mapFromGlobal(event.globalPosition().toPoint())
+            edges = self.getEdges(localPos)
+            if (
+                etype == QEvent.Type.MouseButtonPress
+                and event.button() == Qt.MouseButton.LeftButton
+                and edges
+            ):
                 self.windowHandle().startSystemResize(edges)
-                return True  # Swallow event so OS takes control of drag
+                return True
+            if self.rect().contains(localPos):
+                self.setResizeCursorShape(edges)
         return super().eventFilter(watched, event)
 
     def getEdges(self, pos: QPoint) -> Qt.Edge:
         edges = Qt.Edge(0)
-        if pos.x() >= self.width() -  self.RESIZE_MARGIN:
+        if pos.x() >= self.width() - self.RESIZE_MARGIN:
             edges |= Qt.Edge.RightEdge
-        if pos.y() >= self.height() -  self.RESIZE_MARGIN:
+        if pos.y() >= self.height() - self.RESIZE_MARGIN:
             edges |= Qt.Edge.BottomEdge
         return edges
 
-    def setResizeCursorShape(self, edges: Qt.Edge):
-        if not edges:
+    def setResizeCursorShape(self, edges: Qt.Edge) -> None:
+        shape = self.CURSOR_MAP.get(edges)
+        if shape is None:
             if self.cursorHasResizeShape:
                 self.cursorHasResizeShape = False
                 self.unsetCursor()
             return
-        if edges == (Qt.Edge.BottomEdge | Qt.Edge.RightEdge):
-            self.cursorHasResizeShape = True
-            self.setCursor(Qt.CursorShape.SizeFDiagCursor)
-        elif edges == Qt.Edge.RightEdge:
-            self.cursorHasResizeShape = True
-            self.setCursor(Qt.CursorShape.SizeHorCursor)
-        elif edges == Qt.Edge.BottomEdge:
-            self.cursorHasResizeShape = True
-            self.setCursor(Qt.CursorShape.SizeVerCursor)
+        self.cursorHasResizeShape = True
+        self.setCursor(shape)
 
     def setWindowTitle(self, title: str) -> None:
         if hasattr(self, "titleBar"):

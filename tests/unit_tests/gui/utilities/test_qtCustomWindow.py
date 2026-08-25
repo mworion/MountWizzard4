@@ -181,67 +181,11 @@ def test_window_state_changed_4():
     parent.close()
 
 
-def test_initial_pos_attribute_1(function):
-    """Test initial_pos is None at start."""
-    assert function.initialPos is None
-
-
-def test_initial_pos_attribute_2(function):
-    """Test initial_pos remains None on mouse press (uses native startSystemMove)."""
-    parent = QWidget()
-    parent.setGeometry(100, 100, 400, 300)
-    parent.show()
-    titleBar = CustomTitleBar(parent)
-
-    mouseEvent = QMouseEvent(
-        QMouseEvent.Type.MouseButtonPress,
-        QPoint(10, 10),
-        Qt.MouseButton.LeftButton,
-        Qt.MouseButtons(Qt.MouseButton.LeftButton),
-        Qt.KeyboardModifiers(),
-    )
-    with mock.patch.object(parent.windowHandle(), "startSystemMove"):
-        titleBar.mousePressEvent(mouseEvent)
-    # initialPos should remain None since we use native system move
-    assert titleBar.initialPos is None
-    parent.close()
-
-
-def test_initial_pos_cleared_1(function):
-    """Test initial_pos stays None throughout left button press/release."""
-    parent = QWidget()
-    parent.setGeometry(100, 100, 400, 300)
-    parent.show()
-    titleBar = CustomTitleBar(parent)
-
-    mouseEvent = QMouseEvent(
-        QMouseEvent.Type.MouseButtonPress,
-        QPoint(10, 10),
-        Qt.MouseButton.LeftButton,
-        Qt.MouseButtons(Qt.MouseButton.LeftButton),
-        Qt.KeyboardModifiers(),
-    )
-    with mock.patch.object(parent.windowHandle(), "startSystemMove"):
-        titleBar.mousePressEvent(mouseEvent)
-    # initialPos should be None since we use native system move
-    assert titleBar.initialPos is None
-
-    releaseEvent = QMouseEvent(
-        QMouseEvent.Type.MouseButtonRelease,
-        QPoint(10, 10),
-        Qt.MouseButton.LeftButton,
-        Qt.MouseButtons(),
-        Qt.KeyboardModifiers(),
-    )
-    titleBar.mouseReleaseEvent(releaseEvent)
-    assert titleBar.initialPos is None
-    parent.close()
-
-
 def test_mouse_press_event_1(function):
     """Test mouse press event with left button uses native system move."""
     parent = QWidget()
     parent.setGeometry(100, 100, 400, 300)
+    parent.show()
     titleBar = CustomTitleBar(parent)
 
     mouseEvent = QMouseEvent(
@@ -251,14 +195,13 @@ def test_mouse_press_event_1(function):
         Qt.MouseButtons(Qt.MouseButton.LeftButton),
         Qt.KeyboardModifiers(),
     )
-    # For right button, initialPos should stay None
-    titleBar.mousePressEvent(mouseEvent)
-    # Method should not raise exception; initialPos remains None (native system move used)
-    assert titleBar.initialPos is None
+    with mock.patch.object(parent.windowHandle(), "startSystemMove"):
+        titleBar.mousePressEvent(mouseEvent)
+    parent.close()
 
 
 def test_mouse_press_event_2(function):
-    """Test mouse press event with right button sets no initial pos."""
+    """Test mouse press event with right button does nothing."""
     parent = QWidget()
     parent.setGeometry(100, 100, 400, 300)
     titleBar = CustomTitleBar(parent)
@@ -271,137 +214,6 @@ def test_mouse_press_event_2(function):
         Qt.KeyboardModifiers(),
     )
     titleBar.mousePressEvent(mouseEvent)
-    assert titleBar.initialPos is None
-
-
-def test_mouse_move_event_1(function):
-    """Test mouse move event with no initial position."""
-    parent = QWidget()
-    parent.setGeometry(100, 100, 400, 300)
-    titleBar = CustomTitleBar(parent)
-
-    initial_x = parent.x()
-    initial_y = parent.y()
-
-    moveEvent = QMouseEvent(
-        QMouseEvent.Type.MouseMove,
-        QPoint(30, 20),
-        Qt.MouseButton.NoButton,
-        Qt.MouseButtons(),
-        Qt.KeyboardModifiers(),
-    )
-    titleBar.mouseMoveEvent(moveEvent)
-
-    assert parent.x() == initial_x
-    assert parent.y() == initial_y
-
-
-def test_mouse_move_event_2(function):
-    """Test mouse move event with left button press (uses native system move, not manual)."""
-    parent = QWidget()
-    parent.setGeometry(100, 100, 400, 300)
-    parent.show()
-    titleBar = CustomTitleBar(parent)
-
-    initial_x = parent.x()
-    initial_y = parent.y()
-
-    pressEvent = QMouseEvent(
-        QMouseEvent.Type.MouseButtonPress,
-        QPoint(10, 10),
-        Qt.MouseButton.LeftButton,
-        Qt.MouseButtons(Qt.MouseButton.LeftButton),
-        Qt.KeyboardModifiers(),
-    )
-    # Use native system move, so manual move won't occur
-    with mock.patch.object(parent.windowHandle(), "startSystemMove"):
-        titleBar.mousePressEvent(pressEvent)
-
-    moveEvent = QMouseEvent(
-        QMouseEvent.Type.MouseMove,
-        QPoint(30, 30),
-        Qt.MouseButton.NoButton,
-        Qt.MouseButtons(),
-        Qt.KeyboardModifiers(),
-    )
-    titleBar.mouseMoveEvent(moveEvent)
-
-    # Since we use native system move (not manual tracking), position should not change
-    # The OS handles the window movement
-    assert parent.x() == initial_x
-    assert parent.y() == initial_y
-    parent.close()
-
-
-def test_mouse_move_event_3(function):
-    """Test multiple mouse moves (uses native system move, not manual accumulation)."""
-    parent = QWidget()
-    parent.setGeometry(100, 100, 400, 300)
-    parent.show()
-    titleBar = CustomTitleBar(parent)
-
-    initial_x = parent.x()
-    initial_y = parent.y()
-
-    pressEvent = QMouseEvent(
-        QMouseEvent.Type.MouseButtonPress,
-        QPoint(10, 10),
-        Qt.MouseButton.LeftButton,
-        Qt.MouseButtons(Qt.MouseButton.LeftButton),
-        Qt.KeyboardModifiers(),
-    )
-    # Use native system move, so manual delta accumulation won't occur
-    with mock.patch.object(parent.windowHandle(), "startSystemMove"):
-        titleBar.mousePressEvent(pressEvent)
-
-    moveEvent1 = QMouseEvent(
-        QMouseEvent.Type.MouseMove,
-        QPoint(20, 20),
-        Qt.MouseButton.NoButton,
-        Qt.MouseButtons(),
-        Qt.KeyboardModifiers(),
-    )
-    titleBar.mouseMoveEvent(moveEvent1)
-
-    # Since native system move is used, manual position tracking won't change position
-    first_x = parent.x()
-    first_y = parent.y()
-
-    # Position should remain unchanged since we use native system move
-    assert first_x == initial_x
-    assert first_y == initial_y
-    parent.close()
-
-
-def test_mouse_release_event_1(function):
-    """Test mouse release event clears initial position (stays None with native move)."""
-    parent = QWidget()
-    parent.setGeometry(100, 100, 400, 300)
-    parent.show()
-    titleBar = CustomTitleBar(parent)
-
-    pressEvent = QMouseEvent(
-        QMouseEvent.Type.MouseButtonPress,
-        QPoint(10, 10),
-        Qt.MouseButton.LeftButton,
-        Qt.MouseButtons(Qt.MouseButton.LeftButton),
-        Qt.KeyboardModifiers(),
-    )
-    # Use native system move, so initialPos stays None
-    with mock.patch.object(parent.windowHandle(), "startSystemMove"):
-        titleBar.mousePressEvent(pressEvent)
-    assert titleBar.initialPos is None
-
-    releaseEvent = QMouseEvent(
-        QMouseEvent.Type.MouseButtonRelease,
-        QPoint(20, 20),
-        Qt.MouseButton.LeftButton,
-        Qt.MouseButtons(),
-        Qt.KeyboardModifiers(),
-    )
-    titleBar.mouseReleaseEvent(releaseEvent)
-    assert titleBar.initialPos is None
-    parent.close()
 
 
 def test_title_text_1(function):
@@ -451,29 +263,3 @@ def test_title_bar_margins_1(function):
     # Note: Layout margins are set to (10, 0, 10, 0) for HBoxLayout container
     assert layout is not None
 
-
-def test_mouse_move_event_with_initial_pos():
-    """Test mouse move event with initialPos set (manual window movement)."""
-    parent = QWidget()
-    parent.setGeometry(100, 100, 400, 300)
-    parent.show()
-    titleBar = CustomTitleBar(parent)
-
-    initial_x = parent.x()
-    initial_y = parent.y()
-
-    titleBar.initialPos = QPoint(50, 50)
-
-    moveEvent = QMouseEvent(
-        QMouseEvent.Type.MouseMove,
-        QPoint(60, 60),
-        Qt.MouseButton.NoButton,
-        Qt.MouseButtons(),
-        Qt.KeyboardModifiers(),
-    )
-    titleBar.mouseMoveEvent(moveEvent)
-
-    delta = QPoint(60, 60) - titleBar.initialPos
-    assert parent.x() == initial_x + delta.x()
-    assert parent.y() == initial_y + delta.y()
-    parent.close()

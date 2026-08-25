@@ -13,9 +13,19 @@
 # License APL2.0
 #
 ###########################################################
+from collections.abc import Callable
+from dataclasses import dataclass
 from mw4.gui.utilities.qtHelpers import svg2icon
-from PySide6.QtCore import QPoint, QSize, Qt, QTimer
+from PySide6.QtCore import QSize, Qt, QTimer
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QToolButton, QWidget
+
+
+@dataclass
+class TitleButton:
+    widget: QToolButton
+    icon: str
+    func: Callable
+    prop: str
 
 
 class CustomTitleBar(QWidget):
@@ -27,7 +37,6 @@ class CustomTitleBar(QWidget):
         self.closeButton: QToolButton = QToolButton(self)
         self.normButton: QToolButton = QToolButton(self)
         self.normButton.setVisible(False)
-        self.initialPos: QPoint | None = None
         titleBarLayout = QHBoxLayout(self)
         titleBarLayout.setContentsMargins(0, 0, 0, 0)
         titleFrame = QFrame()
@@ -41,42 +50,26 @@ class CustomTitleBar(QWidget):
         self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         frameLayout.addWidget(self.title)
 
-        buttons = {
-            "min": {
-                "widget": self.minButton,
-                "icon": "min.svg",
-                "func": self.window().showMinimized,
-            },
-            "max": {
-                "widget": self.maxButton,
-                "icon": "max.svg",
-                "func": self.window().showMaximized,
-            },
-            "norm": {
-                "widget": self.normButton,
-                "icon": "norm.svg",
-                "func": self.window().showNormal,
-            },
-            "close": {
-                "widget": self.closeButton,
-                "icon": "close.svg",
-                "func": self.window().close,
-            },
-        }
-        for button in buttons:
-            buttons[button]["widget"].setIcon(
-                svg2icon(f"assets/icon/{buttons[button]['icon']}", [0, 0, 0, 255])
-            )
-            buttons[button]["widget"].setFixedSize(QSize(16, 16))
-            buttons[button]["widget"].setFocusPolicy(Qt.FocusPolicy.NoFocus)
-            buttons[button]["widget"].clicked.connect(buttons[button]["func"])
-            buttons[button]["widget"].setProperty(button, True)
-            frameLayout.addWidget(buttons[button]["widget"])
+        for button in self.buildButtons():
+            button.widget.setIcon(svg2icon(f"assets/icon/{button.icon}", [0, 0, 0, 255]))
+            button.widget.setFixedSize(QSize(16, 16))
+            button.widget.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+            button.widget.clicked.connect(button.func)
+            button.widget.setProperty(button.prop, True)
+            frameLayout.addWidget(button.widget)
 
         titleBarLayout.addWidget(titleFrame)
         titleBarLayout.setContentsMargins(4, 4, 4, 5)
 
-    def windowStateChanged(self, state) -> None:
+    def buildButtons(self) -> list[TitleButton]:
+        return [
+            TitleButton(self.minButton, "min.svg", self.window().showMinimized, "min"),
+            TitleButton(self.maxButton, "max.svg", self.window().showMaximized, "max"),
+            TitleButton(self.normButton, "norm.svg", self.window().showNormal, "norm"),
+            TitleButton(self.closeButton, "close.svg", self.window().close, "close"),
+        ]
+
+    def windowStateChanged(self, state: Qt.WindowState) -> None:
         if self.windowFixed:
             self.maxButton.setVisible(False)
             self.normButton.setVisible(False)
@@ -94,19 +87,3 @@ class CustomTitleBar(QWidget):
             if window and window.windowHandle():
                 event.accept()
                 QTimer.singleShot(0, window.windowHandle().startSystemMove)
-                return
-
-    def mouseMoveEvent(self, event) -> None:
-        if self.initialPos is not None:
-            delta = event.position().toPoint() - self.initialPos
-            self.window().move(
-                self.window().x() + delta.x(),
-                self.window().y() + delta.y(),
-            )
-        super().mouseMoveEvent(event)
-        event.accept()
-
-    def mouseReleaseEvent(self, event) -> None:
-        self.initialPos = None
-        super().mouseReleaseEvent(event)
-        event.accept()

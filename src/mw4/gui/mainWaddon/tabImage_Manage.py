@@ -111,8 +111,8 @@ class ImageManage(TabAddon):
         self.ui.GroupControlledCamera.setEnabled(pixelX)
 
     def updateOffset(self) -> None:
-        actValue = self.app.dReg["camera"].data.get("CCD_OFFSET.OFFSET", False)
-        offsetList = self.app.dReg["camera"].data.get("CCD_OFFSET.OFFSET_LIST", False)
+        actValue = self.app.dReg["camera"].data.get("CCD_OFFSET.OFFSET", None)
+        offsetList = self.app.dReg["camera"].data.get("CCD_OFFSET.OFFSET_LIST", None)
         if offsetList and actValue:
             offsetList = list(offsetList)
             self.mainW.log.debug(f"Index: [{actValue}], List: [{offsetList}]")

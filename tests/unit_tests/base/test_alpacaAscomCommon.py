@@ -141,6 +141,20 @@ def test_getAndStoreDeviceProp(function):
     assert function.data["DRIVER_INFO.DRIVER_NAME"] == "TestDevice"
 
 
+def test_getAndStoreDeviceProp_noneValue():
+    # arrange
+    parent = Parent()
+    base = AlpacaAscomCommon(parent=parent)
+    base.config = mock.MagicMock()
+    base.config.deviceName = "TestDevice"
+    base.device = mock.MagicMock()
+    base.device.Name = None
+    # act
+    base.getAndStoreDeviceProp("Name", "DRIVER_INFO.DRIVER_NAME")
+    # assert
+    assert "DRIVER_INFO.DRIVER_NAME" not in base.data
+
+
 def test_connectDevice_successFirst(function):
     # arrange
     function.device.Connected = True

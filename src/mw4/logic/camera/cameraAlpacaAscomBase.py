@@ -77,8 +77,6 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
             self.signals.message.emit("download")
         if not self.getDeviceProp("ImageReady"):
             return
-        if not self.getDeviceProp("ImageReady"):
-            return
         data = self.getDeviceProp("ImageArray")
         data = np.array(data, dtype=np.uint16).transpose()
         self.signals.downloaded.emit(self.parent.imagePath)
@@ -90,6 +88,7 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
         self.exposing = False
 
     def pollData(self) -> None:
+        self.setExposureState()
         self.getAndStoreDeviceProp("BinX", "CCD_BINNING.HOR_BIN")
         self.getAndStoreDeviceProp("BinY", "CCD_BINNING.VERT_BIN")
         self.getAndStoreDeviceProp("Gain", "CCD_GAIN.GAIN")
@@ -98,7 +97,6 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
         self.getAndStoreDeviceProp("CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE")
         self.getAndStoreDeviceProp("CoolerOn", "CCD_COOLER.COOLER_ON")
         self.getAndStoreDeviceProp("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
-        self.setExposureState()
 
     def sendDownloadMode(self) -> None:
         if self.data.get("CAN_FAST", False):

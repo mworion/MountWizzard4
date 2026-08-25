@@ -31,7 +31,7 @@ class CommandItem:
 
 class AlpacaAscomCommon(DriverData):
     PROTOCOL_NAME: str = ""
-    UPDATE_RATE: float = 0.25
+    UPDATE_RATE: float = 0.1
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
@@ -51,10 +51,12 @@ class AlpacaAscomCommon(DriverData):
         if valueProp in self.propertyExceptions:
             return None
         try:
+            if valueProp == "ImageArray":
+                pass
             returnVal = getattr(self.device, valueProp)
             if self.loggingTrace and "ImageArray" not in valueProp:
                 self.log.debug(
-                    f"[Trace] [{self.config.deviceName}] [{valueProp}] [{returnVal}]"
+                    f"[Trace][Get] [{self.config.deviceName}] [{valueProp}] [{returnVal}]"
                 )
             return returnVal
         except (AttributeError, OSError, ValueError) as e:
@@ -74,7 +76,7 @@ class AlpacaAscomCommon(DriverData):
         try:
             setattr(self.device, valueProp, value)
             if self.loggingTrace:
-                self.log.debug(f"[Trace] [{self.config.deviceName}] [{valueProp}] [{value}]")
+                self.log.debug(f"[Trace][Set] [{self.config.deviceName}] [{valueProp}] [{value}]")
         except (AttributeError, OSError, ValueError) as e:
             self.log.debug(
                 f"[{self.config.deviceName}] property [{valueProp}] not implemented: {e}"
@@ -90,7 +92,7 @@ class AlpacaAscomCommon(DriverData):
         try:
             returnVal = getattr(self.device, valueProp)(**kwargs)
             if self.loggingTrace:
-                t = f"[Trace] [{self.config.deviceName}] "
+                t = f"[Trace][Call] [{self.config.deviceName}] "
                 t += f"[{valueProp}] [{kwargs}] [{returnVal}]"
                 self.log.debug(t)
             return returnVal
@@ -113,6 +115,8 @@ class AlpacaAscomCommon(DriverData):
 
     def getAndStoreDeviceProp(self, valueProp: str, element: str) -> None:
         value = self.getDeviceProp(valueProp)
+        if value is None:
+            return
         self.storePropertyToData(value, element)
 
     def connectDevice(self) -> bool:

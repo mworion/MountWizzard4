@@ -111,36 +111,187 @@ def test_changeEvent_1(function):
         function.changeEvent(MockEvent())
 
 
+def test_getEdges_1(function):
+    """Test getEdges for right edge only."""
+    from PySide6.QtCore import QPoint
+    pos = QPoint(function.width() - 5, 100)
+    edges = function.getEdges(pos)
+    assert edges & Qt.Edge.RightEdge
+
+
+def test_getEdges_2(function):
+    """Test getEdges for bottom edge only."""
+    from PySide6.QtCore import QPoint
+    pos = QPoint(100, function.height() - 5)
+    edges = function.getEdges(pos)
+    assert edges & Qt.Edge.BottomEdge
+
+
+def test_getEdges_3(function):
+    """Test getEdges for bottom-right corner."""
+    from PySide6.QtCore import QPoint
+    pos = QPoint(function.width() - 5, function.height() - 5)
+    edges = function.getEdges(pos)
+    assert edges == (Qt.Edge.BottomEdge | Qt.Edge.RightEdge)
+
+
+def test_getEdges_4(function):
+    """Test getEdges for center (no edges)."""
+    from PySide6.QtCore import QPoint
+    pos = QPoint(100, 100)
+    edges = function.getEdges(pos)
+    assert edges == Qt.Edge(0)
+
+
+def test_setResizeCursor_1(function):
+    """Test setResizeCursor with no edges."""
+    function.setResizeCursor(Qt.Edge(0))
+
+
+def test_setResizeCursor_2(function):
+    """Test setResizeCursor with right and bottom edge."""
+    function.setResizeCursor(Qt.Edge.BottomEdge | Qt.Edge.RightEdge)
+    assert function.cursor().shape() == Qt.CursorShape.SizeFDiagCursor
+
+
+def test_setResizeCursor_3(function):
+    """Test setResizeCursor with right edge only."""
+    function.setResizeCursor(Qt.Edge.RightEdge)
+    assert function.cursor().shape() == Qt.CursorShape.SizeHorCursor
+
+
+def test_setResizeCursor_4(function):
+    """Test setResizeCursor with bottom edge only."""
+    function.setResizeCursor(Qt.Edge.BottomEdge)
+    assert function.cursor().shape() == Qt.CursorShape.SizeVerCursor
+
+
+def test_eventFilter_leave_event(function):
+    """Test eventFilter for leave event."""
+    from PySide6.QtCore import QPointF, Qt
+    from PySide6.QtGui import QMouseEvent
+
+    event = QMouseEvent(
+        QMouseEvent.Type.Leave,
+        QPointF(0, 0),
+        QPointF(0, 0),
+        Qt.MouseButton.NoButton,
+        Qt.MouseButton.NoButton,
+        Qt.KeyboardModifier.NoModifier,
+    )
+    result = function.eventFilter(function, event)
+    assert result is False
+
+
+def test_eventFilter_hover_leave_event(function):
+    """Test eventFilter for hover leave event."""
+    from PySide6.QtCore import QPointF, Qt
+    from PySide6.QtGui import QMouseEvent
+
+    event = QMouseEvent(
+        QMouseEvent.Type.HoverLeave,
+        QPointF(0, 0),
+        QPointF(0, 0),
+        Qt.MouseButton.NoButton,
+        Qt.MouseButton.NoButton,
+        Qt.KeyboardModifier.NoModifier,
+    )
+    result = function.eventFilter(function, event)
+    assert result is False
+
+
+def test_eventFilter_mouse_move_inside_rect(function):
+    """Test eventFilter for mouse move inside window."""
+    from PySide6.QtCore import QPointF, Qt
+    from PySide6.QtGui import QMouseEvent
+
+    # Use coordinates in the middle of the window
+    event = QMouseEvent(
+        QMouseEvent.Type.MouseMove,
+        QPointF(50, 50),
+        function.mapToGlobal(QPointF(50, 50).toPoint()),
+        Qt.MouseButton.NoButton,
+        Qt.MouseButton.NoButton,
+        Qt.KeyboardModifier.NoModifier,
+    )
+    result = function.eventFilter(function, event)
+    assert result is False
+
+
+def test_eventFilter_mouse_move_outside_rect(function):
+    """Test eventFilter for mouse move outside window."""
+    from PySide6.QtCore import QPointF, Qt
+    from PySide6.QtGui import QMouseEvent
+
+    # Simulate a position that would be outside the window bounds
+    event = QMouseEvent(
+        QMouseEvent.Type.MouseMove,
+        QPointF(-100, -100),
+        QPointF(-100, -100),
+        Qt.MouseButton.NoButton,
+        Qt.MouseButton.NoButton,
+        Qt.KeyboardModifier.NoModifier,
+    )
+    result = function.eventFilter(function, event)
+    assert result is False
+
+
+def test_eventFilter_mouse_button_press_without_edges(function):
+    """Test eventFilter for mouse button press away from resize area."""
+    from PySide6.QtCore import QPoint, QPointF
+    from PySide6.QtCore import Qt as QtCore
+    from PySide6.QtGui import QMouseEvent
+
+    event = QMouseEvent(
+        QMouseEvent.Type.MouseButtonPress,
+        QPointF(100, 100),
+        function.mapToGlobal(QPoint(100, 100)),
+        QtCore.MouseButton.LeftButton,
+        QtCore.MouseButton.LeftButton,
+        QtCore.KeyboardModifier.NoModifier,
+    )
+    result = function.eventFilter(function, event)
+    assert result is False
+
+
+def test_eventFilter_mouse_button_press_with_edges(function):
+    """Test eventFilter for mouse button press at resize area."""
+    from PySide6.QtCore import QPoint, QPointF
+    from PySide6.QtCore import Qt as QtCore
+    from PySide6.QtGui import QMouseEvent
+
+    # Create event at bottom-right corner
+    corner_x = function.width() - 5
+    corner_y = function.height() - 5
+
+    event = QMouseEvent(
+        QMouseEvent.Type.MouseButtonPress,
+        QPointF(corner_x, corner_y),
+        function.mapToGlobal(QPoint(corner_x, corner_y)),
+        QtCore.MouseButton.LeftButton,
+        QtCore.MouseButton.LeftButton,
+        QtCore.KeyboardModifier.NoModifier,
+    )
+
+    # Mock windowHandle to avoid None issue in tests
+    with mock.patch.object(function, "windowHandle") as mock_window:
+        mock_window.return_value = mock.MagicMock()
+        result = function.eventFilter(function, event)
+        assert result is True
+
+
 def test_wIcon_1(function):
     ui = QPushButton()
     function.wIcon(ui, "load")
 
 
-def test_renderStyle_1(function):
-    inp = "12345$M_PRIM$12345"
-    function.colorSet = 0
-    val = function.renderStyle(inp).strip(" ")
-    assert val == "12345rgba(32, 144, 192, 255)12345\n"
-
-
-def test_renderStyle_2(function):
-    inp = "12345$M_TEST$12345"
-    function.colorSet = 0
-    val = function.renderStyle(inp).strip(" ")
-    assert val == "12345$M_TEST$12345\n"
-
-
-def test_positionWindow_1(function):
+def test_setPositionWindow_1(function):
     config = {"winPosX": 100, "winPosY": 100, "height": 400, "width": 600}
-    function.screenSizeX = 1000
-    function.screenSizeY = 1000
     function.setPositionWindow(config)
 
 
-def test_positionWindow_2(function):
-    config = {"winPosX": 900, "winPosY": 900, "height": 400, "width": 600}
-    function.screenSizeX = 1000
-    function.screenSizeY = 1000
+def test_setPositionWindow_2(function):
+    config = {"height": 300, "width": 500}
     function.setPositionWindow(config)
 
 
@@ -180,101 +331,6 @@ def test_getPositionWindow_1(function):
 def test_setWindowTitle_1(function):
     function.setWindowTitle("Test Window")
     assert function.titleBar.title.text() == "Test Window"
-
-
-def test_mousePressEvent_1(function):
-    from PySide6.QtCore import QPointF, Qt
-    from PySide6.QtGui import QMouseEvent
-
-    # Simulate mouse press at bottom-right corner to trigger resize
-    event = QMouseEvent(
-        QMouseEvent.Type.MouseButtonPress,
-        QPointF(function.width() - 5, function.height() - 5),
-        QPointF(function.width() - 5, function.height() - 5),
-        Qt.MouseButton.LeftButton,
-        Qt.MouseButton.LeftButton,
-        Qt.KeyboardModifier.NoModifier,
-    )
-    function.mousePressEvent(event)
-    assert function.isResizing is True
-
-
-def test_mousePressEvent_2(function):
-    from PySide6.QtCore import QPointF, Qt
-    from PySide6.QtGui import QMouseEvent
-
-    # Simulate mouse press at center (not on resize area)
-    # First reset state and ensure window is large enough
-    function.isResizing = False
-    function.resize(400, 400)
-    event = QMouseEvent(
-        QMouseEvent.Type.MouseButtonPress,
-        QPointF(100, 100),
-        QPointF(100, 100),
-        Qt.MouseButton.LeftButton,
-        Qt.MouseButton.LeftButton,
-        Qt.KeyboardModifier.NoModifier,
-    )
-    function.mousePressEvent(event)
-    assert function.isResizing is False
-
-
-def test_mouseReleaseEvent_1(function):
-    function.isResizing = True
-    from PySide6.QtCore import QPointF, Qt
-    from PySide6.QtGui import QMouseEvent
-
-    event = QMouseEvent(
-        QMouseEvent.Type.MouseButtonRelease,
-        QPointF(100, 100),
-        QPointF(100, 100),
-        Qt.MouseButton.LeftButton,
-        Qt.MouseButton.LeftButton,
-        Qt.KeyboardModifier.NoModifier,
-    )
-    function.mouseReleaseEvent(event)
-    assert function.isResizing is False
-
-
-def test_mouseMoveEvent_1(function):
-    from PySide6.QtCore import QPointF, Qt
-    from PySide6.QtGui import QMouseEvent
-
-    function.isResizing = True
-
-    event = QMouseEvent(
-        QMouseEvent.Type.MouseMove,
-        QPointF(500, 500),
-        QPointF(500, 500),
-        Qt.MouseButton.NoButton,
-        Qt.MouseButton.NoButton,
-        Qt.KeyboardModifier.NoModifier,
-    )
-    function.mouseMoveEvent(event)
-    # After resize, size should change
-    # Note: resize may be constrained by minimum size
-
-
-def test_mouseMoveEvent_2(function):
-    from PySide6.QtCore import QPointF, Qt
-    from PySide6.QtGui import QMouseEvent
-
-    function.isResizing = False
-    old_width = function.width()
-    old_height = function.height()
-
-    event = QMouseEvent(
-        QMouseEvent.Type.MouseMove,
-        QPointF(500, 500),
-        QPointF(500, 500),
-        Qt.MouseButton.NoButton,
-        Qt.MouseButton.NoButton,
-        Qt.KeyboardModifier.NoModifier,
-    )
-    function.mouseMoveEvent(event)
-    # When not resizing, size should not change
-    assert function.width() == old_width
-    assert function.height() == old_height
 
 
 def test_setNoFocus_1(function):

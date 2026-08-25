@@ -81,11 +81,11 @@ class MWidget(QMainWindow, Styles):
         event.accept()
 
     def eventFilter(self, watched, event):
-        # 1. Update Cursor on Mouse Move
+        # 0. Check leave Mouse Move
         if event.type() in (QEvent.Type.Leave, QEvent.Type.HoverLeave):
             self.unsetCursor()
             return False
-
+        # 1. Update Cursor on Mouse Move
         if event.type()in (QEvent.Type.MouseMove, QEvent.Type.HoverMove):
             # Map local position to main window coordinates
             global_pos = event.globalPosition().toPoint()
@@ -95,7 +95,6 @@ class MWidget(QMainWindow, Styles):
                 self.setResizeCursor(edges)
             else:
                 self.unsetCursor()
-
         # 2. Trigger Native OS Resize on Mouse Press
         elif (
             event.type() == QEvent.Type.MouseButtonPress
@@ -108,11 +107,9 @@ class MWidget(QMainWindow, Styles):
                 # Triggers native OS window resize gesture (Windows/macOS/Linux)
                 self.windowHandle().startSystemResize(edges)
                 return True  # Swallow event so OS takes control of drag
-
         return super().eventFilter(watched, event)
 
     def getEdges(self, pos: QPoint) -> Qt.Edge:
-        """Determines which window edge(s) the mouse is currently hovering near."""
         edges = Qt.Edge(0)
         if pos.x() >= self.width() -  self.RESIZE_MARGIN:
             edges |= Qt.Edge.RightEdge
@@ -124,36 +121,12 @@ class MWidget(QMainWindow, Styles):
         if not edges:
             self.unsetCursor()
             return
-        # Handle corners
         if edges == (Qt.Edge.BottomEdge | Qt.Edge.RightEdge):
             self.setCursor(Qt.CursorShape.SizeFDiagCursor)
-        # Handle edges
-        elif edges in (Qt.Edge.RightEdge):
+        elif edges == Qt.Edge.RightEdge:
             self.setCursor(Qt.CursorShape.SizeHorCursor)
-        elif edges in (Qt.Edge.BottomEdge):
+        elif edges == Qt.Edge.BottomEdge:
             self.setCursor(Qt.CursorShape.SizeVerCursor)
-
-    def mouseMoveEventOld(self, event):
-        pos = event.position()
-        if self.isResizing:
-            new_width = max(100, int(pos.x()))
-            new_height = max(100, int(pos.y()))
-            self.resize(new_width, new_height)
-        super().mouseMoveEvent(event)
-
-    def mousePressEventOld(self, event):
-        if event.button() == Qt.MouseButton.LeftButton:
-            pos = event.position()
-            if (
-                pos.x() >= self.width() - self.RESIZE_MARGIN
-                or pos.y() >= self.height() - self.RESIZE_MARGIN
-            ):
-                self.isResizing = True
-        super().mousePressEvent(event)
-
-    def mouseReleaseEventOld(self, event):
-        self.isResizing = False
-        super().mouseReleaseEvent(event)
 
     def setWindowTitle(self, title: str) -> None:
         if hasattr(self, "titleBar"):

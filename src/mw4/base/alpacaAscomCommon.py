@@ -31,7 +31,7 @@ class CommandItem:
 
 class AlpacaAscomCommon(DriverData):
     PROTOCOL_NAME: str = ""
-    UPDATE_RATE: float = 0.1
+    UPDATE_RATE: float = 0.25
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
@@ -60,14 +60,14 @@ class AlpacaAscomCommon(DriverData):
                 )
             return returnVal
         except (AttributeError, OSError, ValueError) as e:
+            self.propertyExceptions.append(valueProp)
             self.log.debug(
                 f"[{self.config.deviceName}] property [{valueProp}] not implemented: {e}"
             )
-            self.propertyExceptions.append(valueProp)
             return None
         except Exception as e:
-            self.log.debug(f"[{self.config.deviceName}] property [{valueProp}] error: {e}")
             self.propertyExceptions.append(valueProp)
+            self.log.debug(f"[{self.config.deviceName}] property [{valueProp}] error: {e}")
             return None
 
     def setDeviceProp(self, valueProp: str, value: Any) -> None:
@@ -119,19 +119,6 @@ class AlpacaAscomCommon(DriverData):
             return
         self.storePropertyToData(value, element)
 
-    def connectDevice(self) -> bool:
-        for retry in range(5):
-            self.setDeviceProp("Connected", True)
-            suc = self.getDeviceProp("Connected")
-            if suc:
-                self.log.debug(f"[{self.config.deviceName}] connected, [{retry}] retries")
-                break
-            self.connectEvent.wait(timeout=0.5)
-        else:
-            self.log.debug(f"[{self.config.deviceName}] not connected, [{retry}] retries")
-            suc = False
-        return suc
-
     def getInitialConfig(self) -> None:
         self.getAndStoreDeviceProp("Name", "DRIVER_INFO.DRIVER_NAME")
         self.getAndStoreDeviceProp("DriverVersion", "DRIVER_INFO.DRIVER_VERSION")
@@ -155,6 +142,19 @@ class AlpacaAscomCommon(DriverData):
                     f"[{self.config.deviceName}] unknown cmdType: [{cmd.cmdType}]"
                 )
 
+    def connectDevice(self) -> bool:
+        for retry in range(5):
+            self.setDeviceProp("Connected", True)
+            suc = self.getDeviceProp("Connected")
+            if suc:
+                self.log.debug(f"[{self.config.deviceName}] connected, [{retry}] retries")
+                break
+            self.connectEvent.wait(timeout=0.5)
+        else:
+            self.log.debug(f"[{self.config.deviceName}] not connected, [{retry}] retries")
+            suc = False
+        return suc
+
     def handleDeviceConnect(self) -> None:
         if not self.connectDevice():
             return
@@ -168,11 +168,12 @@ class AlpacaAscomCommon(DriverData):
 
     def runnerCommunicationLoop(self) -> None:
         while not self.stopEvent.is_set():
+            print(f"[{self.config.deviceName}] runnerCommunicationLoop: deviceConnected={self.deviceConnected}, Connected={self.getDeviceProp('Connected')}")
             if not self.deviceConnected:
                 self.handleDeviceConnect()
             elif not self.getDeviceProp("Connected"):
                 self.handleDeviceDisconnect()
-            else:
+            if self.deviceConnected:
                 self.pollData()
                 self.processCommandQueue()
             self.stopEvent.wait(timeout=self.UPDATE_RATE)

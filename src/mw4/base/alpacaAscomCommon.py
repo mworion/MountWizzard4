@@ -120,13 +120,13 @@ class AlpacaAscomCommon(DriverData):
         self.storePropertyToData(value, element)
 
     def connectDevice(self) -> bool:
-        for retry in range(25):
+        for retry in range(5):
             self.setDeviceProp("Connected", True)
             suc = self.getDeviceProp("Connected")
             if suc:
                 self.log.debug(f"[{self.config.deviceName}] connected, [{retry}] retries")
                 break
-            self.connectEvent.wait(timeout=0.2)
+            self.connectEvent.wait(timeout=0.5)
         else:
             self.log.debug(f"[{self.config.deviceName}] not connected, [{retry}] retries")
             suc = False

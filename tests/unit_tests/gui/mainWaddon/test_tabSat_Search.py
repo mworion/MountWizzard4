@@ -14,6 +14,7 @@
 #
 ###########################################################
 """Unit tests for SatSearch GUI module."""
+
 import mw4.gui
 import numpy as np
 import pytest
@@ -32,6 +33,7 @@ from unittest import mock
 @pytest.fixture(scope="module")
 def function(qapp: object) -> SatSearch:
     """Create SatSearch instance with mocked dependencies for testing."""
+
     class Test:
         objects: ClassVar = {}
 
@@ -91,9 +93,6 @@ def test_processSatelliteSource(function: SatSearch) -> None:
 
     with mock.patch.object(function.app.mount.obsSite.loader, "tle_file", return_value=[sat]):
         function.processSatelliteSource()
-
-
-
 
 
 def test_setListSatsEntry(function: SatSearch) -> None:
@@ -214,10 +213,8 @@ def test_calcSatListDynamic_5(function: SatSearch) -> None:
     function.ui.listSats.setRowHidden(0, True)
     with (
         mock.patch.object(function.ui.satTabWidget, "isVisible", return_value=True),
-        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "findSunlit",
-                          return_value=True),
-        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "calcAppMag",
-                          return_value=10),
+        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True),
+        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10),
         mock.patch.object(QRect, "intersects", return_value=True),
     ):
         function.calcSatListDynamic()
@@ -244,11 +241,9 @@ def test_calcSatListDynamic_6(function: SatSearch) -> None:
         mock.patch.object(function.ui.satTabWidget, "isVisible", return_value=True),
         mock.patch.object(function, "updateListSats"),
         mock.patch.object(
-            mw4.gui.mainWaddon.tabSat_Search, "findRangeRate",
-            return_value=[1, 2, 3]
+            mw4.gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[1, 2, 3]
         ),
-        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "findSunlit",
-                          return_value=False),
+        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=False),
         mock.patch.object(QRect, "intersects", return_value=True),
     ):
         function.calcSatListDynamic()
@@ -275,13 +270,10 @@ def test_calcSatListDynamic_7(function: SatSearch) -> None:
         mock.patch.object(function.ui.satTabWidget, "isVisible", return_value=True),
         mock.patch.object(function, "updateListSats"),
         mock.patch.object(
-            mw4.gui.mainWaddon.tabSat_Search, "findRangeRate",
-            return_value=[1, 2, 3]
+            mw4.gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[1, 2, 3]
         ),
-        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "findSunlit",
-                          return_value=True),
-        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "calcAppMag",
-                          return_value=10),
+        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True),
+        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10),
         mock.patch.object(QRect, "intersects", return_value=True),
     ):
         function.calcSatListDynamic()
@@ -307,13 +299,10 @@ def test_calcSatListDynamic_8(function: SatSearch) -> None:
         mock.patch.object(function.ui.satTabWidget, "isVisible", return_value=True),
         mock.patch.object(function, "updateListSats"),
         mock.patch.object(
-            mw4.gui.mainWaddon.tabSat_Search, "findRangeRate",
-            return_value=[np.nan, 2, 3]
+            mw4.gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=[np.nan, 2, 3]
         ),
-        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "findSunlit",
-                          return_value=True),
-        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "calcAppMag",
-                          return_value=10),
+        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True),
+        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=10),
         mock.patch.object(QRect, "intersects", return_value=True),
     ):
         function.calcSatListDynamic()
@@ -379,12 +368,10 @@ def test_calcSat_2(function: SatSearch) -> None:
         mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=(1, 1, 1, 1)
         ),
-        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "findSunlit",
-                          return_value=True),
+        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "findSunlit", return_value=True),
         mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "findSatUp"),
         mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "checkTwilight"),
-        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "calcAppMag",
-                          return_value=0),
+        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=0),
         mock.patch.object(function, "updateListSats"),
     ):
         result = function.calcSat(sat, 0, 0, 0, 0, 0, 0)
@@ -402,8 +389,7 @@ def test_calcSat_3(function: SatSearch) -> None:
 
     with (
         mock.patch.object(
-            mw4.gui.mainWaddon.tabSat_Search, "findRangeRate",
-            return_value=(np.nan, 0, 0, 0)
+            mw4.gui.mainWaddon.tabSat_Search, "findRangeRate", return_value=(np.nan, 0, 0, 0)
         ),
         mock.patch.object(function, "updateListSats"),
     ):

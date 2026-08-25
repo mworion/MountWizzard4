@@ -86,14 +86,10 @@ def test_playSound_with_valid_index(audioManager):
     audioManager.app.config["SettingAudio"] = {"MountSlew": 1, "PlaySound": True}
     with mock.patch("mw4.base.audioManager.as_file") as mock_as_file:
         mock_file_path = mock.MagicMock()
-        mock_as_file.return_value.__enter__ = mock.MagicMock(
-            return_value=mock_file_path
-        )
+        mock_as_file.return_value.__enter__ = mock.MagicMock(return_value=mock_file_path)
         mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
-        with mock.patch(
-            "mw4.base.audioManager.QSoundEffect"
-        ) as mock_sound_effect:
+        with mock.patch("mw4.base.audioManager.QSoundEffect") as mock_sound_effect:
             mock_sound_instance = mock.MagicMock()
             mock_sound_effect.return_value = mock_sound_instance
 
@@ -113,15 +109,11 @@ def test_playSound_uses_correct_wav_file(audioManager):
 
     with mock.patch("mw4.base.audioManager.as_file") as mock_as_file:
         mock_file_path = mock.MagicMock()
-        mock_as_file.return_value.__enter__ = mock.MagicMock(
-            return_value=mock_file_path
-        )
+        mock_as_file.return_value.__enter__ = mock.MagicMock(return_value=mock_file_path)
         mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
         with mock.patch("mw4.base.audioManager.files") as mock_files:
-            mock_files.return_value.joinpath = mock.MagicMock(
-                return_value=mock.MagicMock()
-            )
+            mock_files.return_value.joinpath = mock.MagicMock(return_value=mock.MagicMock())
             with mock.patch("mw4.base.audioManager.QSoundEffect"):
                 audioManager.playSound("MountSlew")
                 mock_files.return_value.joinpath.assert_called_once()
@@ -134,14 +126,10 @@ def test_playSound_sets_volume_to_one(audioManager):
     audioManager.app.config["SettingAudio"] = {"MountSlew": 1, "PlaySound": True}
     with mock.patch("mw4.base.audioManager.as_file") as mock_as_file:
         mock_file_path = mock.MagicMock()
-        mock_as_file.return_value.__enter__ = mock.MagicMock(
-            return_value=mock_file_path
-        )
+        mock_as_file.return_value.__enter__ = mock.MagicMock(return_value=mock_file_path)
         mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
-        with mock.patch(
-            "mw4.base.audioManager.QSoundEffect"
-        ) as mock_sound_effect:
+        with mock.patch("mw4.base.audioManager.QSoundEffect") as mock_sound_effect:
             mock_sound_instance = mock.MagicMock()
             mock_sound_effect.return_value = mock_sound_instance
             audioManager.playSound("MountSlew")
@@ -153,14 +141,10 @@ def test_playSound_plays_sound(audioManager):
     audioManager.app.config["SettingAudio"] = {"RunFinished": 1, "PlaySound": True}
     with mock.patch("mw4.base.audioManager.as_file") as mock_as_file:
         mock_file_path = mock.MagicMock()
-        mock_as_file.return_value.__enter__ = mock.MagicMock(
-            return_value=mock_file_path
-        )
+        mock_as_file.return_value.__enter__ = mock.MagicMock(return_value=mock_file_path)
         mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
-        with mock.patch(
-            "mw4.base.audioManager.QSoundEffect"
-        ) as mock_sound_effect:
+        with mock.patch("mw4.base.audioManager.QSoundEffect") as mock_sound_effect:
             mock_sound_instance = mock.MagicMock()
             mock_sound_effect.return_value = mock_sound_instance
             audioManager.playSound("RunFinished")
@@ -174,9 +158,7 @@ def test_playSound_with_different_sounds(audioManager):
         audioManager.app.config["SettingAudio"] = {sound: 1}
         with mock.patch("mw4.base.audioManager.as_file") as mock_as_file:
             mock_file_path = mock.MagicMock()
-            mock_as_file.return_value.__enter__ = mock.MagicMock(
-                return_value=mock_file_path
-            )
+            mock_as_file.return_value.__enter__ = mock.MagicMock(return_value=mock_file_path)
             mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
             with mock.patch("mw4.base.audioManager.QSoundEffect"):
@@ -196,14 +178,10 @@ def test_playSound_stores_sound_reference(audioManager):
     audioManager.app.config["SettingAudio"] = {"MountSlew": 2, "PlaySound": True}
     with mock.patch("mw4.base.audioManager.as_file") as mock_as_file:
         mock_file_path = mock.MagicMock()
-        mock_as_file.return_value.__enter__ = mock.MagicMock(
-            return_value=mock_file_path
-        )
+        mock_as_file.return_value.__enter__ = mock.MagicMock(return_value=mock_file_path)
         mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
-        with mock.patch(
-            "mw4.base.audioManager.QSoundEffect"
-        ) as mock_sound_effect:
+        with mock.patch("mw4.base.audioManager.QSoundEffect") as mock_sound_effect:
             mock_sound_instance = mock.MagicMock()
             mock_sound_effect.return_value = mock_sound_instance
             audioManager.playSound("MountSlew")
@@ -219,9 +197,7 @@ def test_playSound_uses_different_wav_for_different_indices(audioManager):
         audioManager.app.config["SettingAudio"] = {"MountSlew": index}
         with mock.patch("mw4.base.audioManager.as_file") as mock_as_file:
             mock_file_path = mock.MagicMock()
-            mock_as_file.return_value.__enter__ = mock.MagicMock(
-                return_value=mock_file_path
-            )
+            mock_as_file.return_value.__enter__ = mock.MagicMock(return_value=mock_file_path)
             mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
             with mock.patch("mw4.base.audioManager.files") as mock_files:
@@ -248,9 +224,7 @@ def test_audio_manager_with_all_sound_types(audioManager):
         audioManager.app.config["SettingAudio"] = {sound: 1}
         with mock.patch("mw4.base.audioManager.as_file") as mock_as_file:
             mock_file_path = mock.MagicMock()
-            mock_as_file.return_value.__enter__ = mock.MagicMock(
-                return_value=mock_file_path
-            )
+            mock_as_file.return_value.__enter__ = mock.MagicMock(return_value=mock_file_path)
             mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
             with mock.patch("mw4.base.audioManager.QSoundEffect"):
@@ -262,14 +236,10 @@ def test_playSound_creates_sound_with_app_context(audioManager):
     audioManager.app.config["SettingAudio"] = {"MountSlew": 1, "PlaySound": True}
     with mock.patch("mw4.base.audioManager.as_file") as mock_as_file:
         mock_file_path = mock.MagicMock()
-        mock_as_file.return_value.__enter__ = mock.MagicMock(
-            return_value=mock_file_path
-        )
+        mock_as_file.return_value.__enter__ = mock.MagicMock(return_value=mock_file_path)
         mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
-        with mock.patch(
-            "mw4.base.audioManager.QSoundEffect"
-        ) as mock_sound_effect:
+        with mock.patch("mw4.base.audioManager.QSoundEffect") as mock_sound_effect:
             mock_sound_instance = mock.MagicMock()
             mock_sound_effect.return_value = mock_sound_instance
             audioManager.playSound("MountSlew")
@@ -290,14 +260,10 @@ def test_multiple_play_sound_calls(audioManager):
         audioManager.app.config["SettingAudio"] = {sound: 1, "PlaySound": True}
         with mock.patch("mw4.base.audioManager.as_file") as mock_as_file:
             mock_file_path = mock.MagicMock()
-            mock_as_file.return_value.__enter__ = mock.MagicMock(
-                return_value=mock_file_path
-            )
+            mock_as_file.return_value.__enter__ = mock.MagicMock(return_value=mock_file_path)
             mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
-            with mock.patch(
-                "mw4.base.audioManager.QSoundEffect"
-            ) as mock_sound_effect:
+            with mock.patch("mw4.base.audioManager.QSoundEffect") as mock_sound_effect:
                 mock_sound_instance = mock.MagicMock()
                 mock_sound_effect.return_value = mock_sound_instance
                 audioManager.playSound(sound)
@@ -371,14 +337,10 @@ def test_playSound_with_play_sound_enabled(audioManager):
     }
     with mock.patch("mw4.base.audioManager.as_file") as mock_as_file:
         mock_file_path = mock.MagicMock()
-        mock_as_file.return_value.__enter__ = mock.MagicMock(
-            return_value=mock_file_path
-        )
+        mock_as_file.return_value.__enter__ = mock.MagicMock(return_value=mock_file_path)
         mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
-        with mock.patch(
-            "mw4.base.audioManager.QSoundEffect"
-        ) as mock_sound_effect:
+        with mock.patch("mw4.base.audioManager.QSoundEffect") as mock_sound_effect:
             mock_sound_instance = mock.MagicMock()
             mock_sound_effect.return_value = mock_sound_instance
             audioManager.playSound("MountSlew")
@@ -394,14 +356,10 @@ def test_playSound_with_custom_volume(audioManager):
     }
     with mock.patch("mw4.base.audioManager.as_file") as mock_as_file:
         mock_file_path = mock.MagicMock()
-        mock_as_file.return_value.__enter__ = mock.MagicMock(
-            return_value=mock_file_path
-        )
+        mock_as_file.return_value.__enter__ = mock.MagicMock(return_value=mock_file_path)
         mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
-        with mock.patch(
-            "mw4.base.audioManager.QSoundEffect"
-        ) as mock_sound_effect:
+        with mock.patch("mw4.base.audioManager.QSoundEffect") as mock_sound_effect:
             mock_sound_instance = mock.MagicMock()
             mock_sound_effect.return_value = mock_sound_instance
             audioManager.playSound("MountSlew")
@@ -418,14 +376,10 @@ def test_playSound_with_zero_volume(audioManager):
     }
     with mock.patch("mw4.base.audioManager.as_file") as mock_as_file:
         mock_file_path = mock.MagicMock()
-        mock_as_file.return_value.__enter__ = mock.MagicMock(
-            return_value=mock_file_path
-        )
+        mock_as_file.return_value.__enter__ = mock.MagicMock(return_value=mock_file_path)
         mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
-        with mock.patch(
-            "mw4.base.audioManager.QSoundEffect"
-        ) as mock_sound_effect:
+        with mock.patch("mw4.base.audioManager.QSoundEffect") as mock_sound_effect:
             mock_sound_instance = mock.MagicMock()
             mock_sound_effect.return_value = mock_sound_instance
             audioManager.playSound("MountSlew")
@@ -441,14 +395,10 @@ def test_playSound_with_max_volume(audioManager):
     }
     with mock.patch("mw4.base.audioManager.as_file") as mock_as_file:
         mock_file_path = mock.MagicMock()
-        mock_as_file.return_value.__enter__ = mock.MagicMock(
-            return_value=mock_file_path
-        )
+        mock_as_file.return_value.__enter__ = mock.MagicMock(return_value=mock_file_path)
         mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
-        with mock.patch(
-            "mw4.base.audioManager.QSoundEffect"
-        ) as mock_sound_effect:
+        with mock.patch("mw4.base.audioManager.QSoundEffect") as mock_sound_effect:
             mock_sound_instance = mock.MagicMock()
             mock_sound_effect.return_value = mock_sound_instance
             audioManager.playSound("MountSlew")
@@ -463,14 +413,10 @@ def test_playSound_volume_defaults_to_one(audioManager):
     }
     with mock.patch("mw4.base.audioManager.as_file") as mock_as_file:
         mock_file_path = mock.MagicMock()
-        mock_as_file.return_value.__enter__ = mock.MagicMock(
-            return_value=mock_file_path
-        )
+        mock_as_file.return_value.__enter__ = mock.MagicMock(return_value=mock_file_path)
         mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
-        with mock.patch(
-            "mw4.base.audioManager.QSoundEffect"
-        ) as mock_sound_effect:
+        with mock.patch("mw4.base.audioManager.QSoundEffect") as mock_sound_effect:
             mock_sound_instance = mock.MagicMock()
             mock_sound_effect.return_value = mock_sound_instance
             audioManager.playSound("MountSlew")
@@ -483,4 +429,3 @@ def test_playSound_returns_early_when_play_sound_missing(audioManager):
     audioManager.app.config["SettingAudio"] = {"MountSlew": 1}
     audioManager.playSound("MountSlew")
     assert audioManager.sound is None
-

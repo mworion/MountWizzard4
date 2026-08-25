@@ -114,6 +114,7 @@ def test_changeEvent_1(function):
 def test_getEdges_1(function):
     """Test getEdges for right edge only."""
     from PySide6.QtCore import QPoint
+
     pos = QPoint(function.width() - 5, 100)
     edges = function.getEdges(pos)
     assert edges & Qt.Edge.RightEdge
@@ -122,6 +123,7 @@ def test_getEdges_1(function):
 def test_getEdges_2(function):
     """Test getEdges for bottom edge only."""
     from PySide6.QtCore import QPoint
+
     pos = QPoint(100, function.height() - 5)
     edges = function.getEdges(pos)
     assert edges & Qt.Edge.BottomEdge
@@ -130,6 +132,7 @@ def test_getEdges_2(function):
 def test_getEdges_3(function):
     """Test getEdges for bottom-right corner."""
     from PySide6.QtCore import QPoint
+
     pos = QPoint(function.width() - 5, function.height() - 5)
     edges = function.getEdges(pos)
     assert edges == (Qt.Edge.BottomEdge | Qt.Edge.RightEdge)
@@ -138,6 +141,7 @@ def test_getEdges_3(function):
 def test_getEdges_4(function):
     """Test getEdges for center (no edges)."""
     from PySide6.QtCore import QPoint
+
     pos = QPoint(100, 100)
     edges = function.getEdges(pos)
     assert edges == Qt.Edge(0)

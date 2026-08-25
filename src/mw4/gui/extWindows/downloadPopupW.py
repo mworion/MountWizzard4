@@ -29,7 +29,7 @@ class DownloadPopup(MWidget):
     signalProgress = Signal(object)
     signalStatus = Signal(object)
     signalProgressBarColor = Signal(object)
-    TIMEOUT_SOURCE = 5
+    TIMEOUT_SOURCE = 10
 
     def __init__(self, parentWidget: MWidget, url: str, dest: Path, unzip: bool = False):
         super().__init__()

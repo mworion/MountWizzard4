@@ -202,9 +202,7 @@ def test_testSound_with_different_sounds(settAudio):
         "ImageSaved",
     ]
     for sound in sounds_to_test:
-        with mock.patch.object(
-            settAudio.app, "playSound"
-        ) as mock_signal:
+        with mock.patch.object(settAudio.app, "playSound") as mock_signal:
             mock_signal.emit = mock.MagicMock()
             settAudio.testSound(sound)
             assert mock_signal.emit.called
@@ -417,11 +415,3 @@ def test_roundtrip_play_sound_disabled(settAudio):
     settAudio.ui.AudioGroup.setChecked(True)
     settAudio.initConfig()
     assert not settAudio.ui.AudioGroup.isChecked()
-
-
-
-
-
-
-
-

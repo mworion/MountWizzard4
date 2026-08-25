@@ -76,7 +76,9 @@ class AlpacaAscomCommon(DriverData):
         try:
             setattr(self.device, valueProp, value)
             if self.loggingTrace:
-                self.log.debug(f"[Trace][Set] [{self.config.deviceName}] [{valueProp}] [{value}]")
+                self.log.debug(
+                    f"[Trace][Set] [{self.config.deviceName}] [{valueProp}] [{value}]"
+                )
         except (AttributeError, OSError, ValueError) as e:
             self.log.debug(
                 f"[{self.config.deviceName}] property [{valueProp}] not implemented: {e}"

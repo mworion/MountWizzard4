@@ -17,7 +17,7 @@ import re
 import shlex
 from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
-from PySide6.QtCore import QDir, QEventLoop, QModelIndex, Qt
+from PySide6.QtCore import QEventLoop, QModelIndex, Qt
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import (
     QAbstractItemView,
@@ -29,7 +29,6 @@ from PySide6.QtWidgets import (
     QLabel,
     QLineEdit,
     QPushButton,
-    QToolButton,
     QTreeView,
     QVBoxLayout,
     QWidget,

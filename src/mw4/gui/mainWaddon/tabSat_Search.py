@@ -18,7 +18,7 @@ from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.satData import SatData
 from mw4.gui.utilities.nativeQt.qtCustomTableWidgetItem import QCustomTableWidgetItem
-from mw4.gui.utilities.qtHelpers import changeStyleDynamic, positionCursorInTable
+from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.logic.databaseProcessing.sourceURL import satSourceURLs
 from mw4.logic.satellites.satellite_calculations import (
     calcAppMag,
@@ -28,10 +28,10 @@ from mw4.logic.satellites.satellite_calculations import (
     findSunlit,
 )
 from PySide6.QtCore import QMutex, QObject, QPoint, QRect, Qt, Signal
-from PySide6.QtWidgets import QAbstractItemView, QHeaderView, QTableWidgetItem
+from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 from skyfield.api import EarthSatellite, Time
 from skyfield.toposlib import GeographicPosition
-from typing import Any
+from typing import Any, ClassVar
 
 
 class SatSearchSignals(QObject):
@@ -41,6 +41,8 @@ class SatSearchSignals(QObject):
 
 
 class SatSearch(SatData):
+    SATFILTERS: ClassVar = ["Starlink", "Cosmos", "Iridium", "Kuiper", "Qianfan", "Hulianwang"]
+
     def __init__(self, mainW: Any) -> None:
         super().__init__()
         self.mainW = mainW
@@ -50,9 +52,6 @@ class SatSearch(SatData):
         self.signals = SatSearchSignals()
         self.dataValid: bool = False
         self.filterStr: str = ""
-        self.checkRemoveSO: bool = False
-        self.checkRemoveK: bool = False
-        self.checkRemoveDQ: bool = False
         self.mutexCalc: QMutex = QMutex()
         self.workerCalcSatList: Worker | None = None
         SatData.satellites = AstroObjects(
@@ -67,9 +66,9 @@ class SatSearch(SatData):
         self.prepareSatTable()
         self.satellites.signals.dataLoaded.connect(self.fillSatListName)
         self.ui.satFilterText.returnPressed.connect(self.fillSatListName)
-        self.ui.satRemoveSO.clicked.connect(self.fillSatListName)
-        self.ui.satRemoveK.clicked.connect(self.fillSatListName)
-        self.ui.satRemoveDQ.clicked.connect(self.fillSatListName)
+        for satFilter in self.SATFILTERS:
+            ui = getattr(self.ui, f"satRemove{satFilter}")
+            ui.clicked.connect(self.fillSatListName)
         self.ui.satIsSunlit.clicked.connect(self.fillSatListName)
         self.ui.satTwilight.activated.connect(self.fillSatListName)
         self.signals.setSatListItem.connect(self.setListSatsEntry)
@@ -85,22 +84,22 @@ class SatSearch(SatData):
         self.ui.satFilterText.setText(config.get("satFilterText"))
         self.ui.satTwilight.setCurrentIndex(config.get("satTwilight", 5))
         self.ui.satIsSunlit.setChecked(config.get("satIsSunlit", False))
-        self.ui.satRemoveSO.setChecked(config.get("satRemoveSO", False))
-        self.ui.satRemoveK.setChecked(config.get("satRemoveK", False))
-        self.ui.satRemoveDQ.setChecked(config.get("satRemoveDQ", False))
         self.ui.satAltitudeMin.setValue(config.get("satAltitudeMin", 30))
         self.ui.satSourceList.setCurrentIndex(config.get("satSource", 0))
+        for satFilter in self.SATFILTERS:
+            ui = getattr(self.ui, f"satRemove{satFilter}")
+            ui.setChecked(config.get(f"satRemove{satFilter}", False))
 
     def storeConfig(self) -> None:
         config = self.app.config["WindowMain"]
-        config["satSource"] = self.ui.satSourceList.currentIndex()
-        config["satTwilight"] = self.ui.satTwilight.currentIndex()
         config["satFilterText"] = self.ui.satFilterText.text()
+        config["satTwilight"] = self.ui.satTwilight.currentIndex()
         config["satIsSunlit"] = self.ui.satIsSunlit.isChecked()
-        config["satRemoveSO"] = self.ui.satRemoveSO.isChecked()
-        config["satRemoveK"] = self.ui.satRemoveK.isChecked()
-        config["satRemoveDQ"] = self.ui.satRemoveDQ.isChecked()
         config["satAltitudeMin"] = self.ui.satAltitudeMin.value()
+        config["satSource"] = self.ui.satSourceList.currentIndex()
+        for satFilter in self.SATFILTERS:
+            ui = getattr(self.ui, f"satRemove{satFilter}")
+            config[f"satRemove{satFilter}"] = ui.isChecked()
 
     def prepareSatTable(self) -> None:
         self.ui.listSats.setColumnCount(9)
@@ -139,11 +138,13 @@ class SatSearch(SatData):
         self,
         row: int,
         satParam: tuple[float, float, float, float],
-        isUp: list = [],
+        isUp: list | None = None,
         isSunlit: bool = False,
-        appMag: float= 99,
+        appMag: float = 99,
         twilight: int = 4,
     ) -> None:
+        if isUp is None:
+            isUp = []
         if isUp:
             t = self.app.timeMgr.convertTime(isUp[0], "%d.%m  %H:%M") if len(isUp) else ""
             entry = QTableWidgetItem(t)
@@ -239,7 +240,7 @@ class SatSearch(SatData):
         self.updateListSats(row, satParam, isUp, isSunlit, appMag, twilight)
         return isSunlit, twilight
 
-    def checkSatOk(self, sat: EarthSatellite, tEnd: Time) -> bool:
+    def satOkSGP4(self, sat: EarthSatellite, tEnd: Time) -> bool:
         msg = sat.at(tEnd).message
         if msg:
             self.mainW.log.warning(f"{sat.name} caused SGP4: [{msg}]")
@@ -269,7 +270,7 @@ class SatSearch(SatData):
                 continue
             name = satTab.model().index(row, 1).data()
             sat = self.satellites.objects[name]
-            if not self.checkSatOk(sat, timeNext):
+            if not self.satOkSGP4(sat, timeNext):
                 continue
             isSunlit, twilight = self.calcSat(sat, row, loc, timeNow, timeNext, altMin, eph)
             if checkIsSunlit:
@@ -285,29 +286,18 @@ class SatSearch(SatData):
         self.workerCalcSatList = Worker(self.runnerCalcSatList)
         self.app.threadPool.start(self.workerCalcSatList)
 
-    def checkSatIsHidden(self, name: str, number: int) -> bool:
+    def checkSatNameOk(self, name: str, number: int) -> bool:
         name = name.lower()
         show = self.filterStr in f"{number} {name}"
-        if self.checkRemoveSO:
-            show = show and "starlink" not in name
-            show = show and "oneweb" not in name
-            show = show and "globalstar" not in name
-            show = show and "navstar" not in name
-        if self.checkRemoveK:
-            show = show and "kuiper" not in name
-        if self.checkRemoveDQ:
-            show = show and "quianfan" not in name
-            show = show and "digui" not in name
-        return not show
+        for satFilter in self.SATFILTERS:
+            if getattr(self.ui, f"satRemove{satFilter}").isChecked():
+                show = show and satFilter.lower() not in name
+        return show
 
     def fillSatListName(self) -> None:
         self.dataValid = False
-        self.filterStr = self.ui.satFilterText.text().lower()
-        self.checkRemoveSO = self.ui.satRemoveSO.isChecked()
-        self.checkRemoveK = self.ui.satRemoveK.isChecked()
-        self.checkRemoveDQ = self.ui.satRemoveDQ.isChecked()
-
         self.ui.listSats.setRowCount(0)
+        self.filterStr = self.ui.satFilterText.text().lower()
         for name in self.satellites.objects:
             number = self.satellites.objects[name].model.satnum
             row = self.ui.listSats.rowCount()
@@ -318,6 +308,7 @@ class SatSearch(SatData):
             entry = QTableWidgetItem(name)
             entry.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             self.ui.listSats.setItem(row, 1, entry)
-            self.ui.listSats.setRowHidden(row, self.checkSatIsHidden(name, number))
+            show = self.checkSatNameOk(name, number)
+            self.ui.listSats.setRowHidden(row, not show)
         self.dataValid = True
         self.calcSatList()

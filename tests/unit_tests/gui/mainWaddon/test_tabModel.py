@@ -179,18 +179,14 @@ def test_checkMountTimeSync_1(function):
 
 def test_checkMountTimeSync_2(function):
     function.app.dReg["mount"].config.syncTimeNone = False
-    with mock.patch.object(
-        MWMessageDialog, "question", return_value=1
-    ):
+    with mock.patch.object(MWMessageDialog, "question", return_value=1):
         result = function.checkMountTimeSync()
         assert result
 
 
 def test_checkMountTimeSync_3(function):
     function.app.dReg["mount"].config.syncTimeNone = False
-    with mock.patch.object(
-        MWMessageDialog, "question", return_value=0
-    ):
+    with mock.patch.object(MWMessageDialog, "question", return_value=0):
         result = function.checkMountTimeSync()
         assert not result
 

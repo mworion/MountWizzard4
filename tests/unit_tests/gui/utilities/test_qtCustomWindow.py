@@ -262,4 +262,3 @@ def test_title_bar_margins_1(function):
     layout = function.layout()
     # Note: Layout margins are set to (10, 0, 10, 0) for HBoxLayout container
     assert layout is not None
-

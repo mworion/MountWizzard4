@@ -70,4 +70,3 @@ class SettAudio:
             widgetTest.clicked.connect(partial(self.testSound, sound))
         self.ui.AudioGroup.clicked.connect(self.updateConfig)
         self.ui.volume.valueChanged.connect(self.updateConfig)
-

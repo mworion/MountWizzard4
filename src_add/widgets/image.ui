@@ -566,7 +566,7 @@
         </size>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>3</number>
        </property>
        <property name="elideMode">
         <enum>Qt::TextElideMode::ElideNone</enum>
@@ -1231,6 +1231,12 @@
      </item>
      <item row="1" column="0" rowspan="2">
       <widget class="QGroupBox" name="headerGroup">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="minimumSize">
         <size>
          <width>120</width>
@@ -1268,8 +1274,8 @@
         <property name="verticalSpacing">
          <number>0</number>
         </property>
-        <item row="26" column="0">
-         <widget class="QLineEdit" name="binX">
+        <item row="26" column="1">
+         <widget class="QLineEdit" name="binY">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -1278,16 +1284,6 @@
           </property>
           <property name="readOnly">
            <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="16" column="0" colspan="2">
-         <widget class="Line" name="line_7">
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Plain</enum>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
           </property>
          </widget>
         </item>
@@ -1301,48 +1297,42 @@
           </property>
          </widget>
         </item>
-        <item row="15" column="1">
-         <widget class="QLineEdit" name="scale">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="frame">
-           <bool>false</bool>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0" colspan="2">
-         <widget class="Line" name="line_3">
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Plain</enum>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="0" colspan="2">
-         <widget class="Line" name="line_6">
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Plain</enum>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0" colspan="2">
-         <widget class="QLabel" name="label_3">
+        <item row="13" column="0">
+         <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>DEC [deg]</string>
+           <string>Rot [deg]</string>
           </property>
          </widget>
         </item>
-        <item row="32" column="0" colspan="2">
-         <widget class="QLineEdit" name="sqm">
+        <item row="13" column="1">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Scale</string>
+          </property>
+         </widget>
+        </item>
+        <item row="16" column="0" colspan="2">
+         <widget class="Line" name="line_7">
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Plain</enum>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0" colspan="2">
+         <widget class="Line" name="line_5">
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Plain</enum>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="20" column="0" colspan="2">
+         <widget class="QLineEdit" name="exposureTime">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -1351,6 +1341,16 @@
           </property>
           <property name="readOnly">
            <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="21" column="0" colspan="2">
+         <widget class="Line" name="line_9">
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Plain</enum>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
          </widget>
         </item>
@@ -1367,15 +1367,152 @@
           </property>
          </widget>
         </item>
-        <item row="13" column="0">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Rot [deg]</string>
+        <item row="24" column="0" colspan="2">
+         <widget class="Line" name="line_10">
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Plain</enum>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
          </widget>
         </item>
-        <item row="23" column="1">
-         <widget class="QLineEdit" name="ccdTemp">
+        <item row="2" column="0" colspan="2">
+         <widget class="Line" name="line_3">
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Plain</enum>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0" colspan="2">
+         <widget class="QLineEdit" name="decFloat">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="22" column="1">
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>Temp</string>
+          </property>
+         </widget>
+        </item>
+        <item row="25" column="1">
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>Bin Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="22" column="0">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Filter</string>
+          </property>
+         </widget>
+        </item>
+        <item row="25" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Bin X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="19" column="0" colspan="2">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Exposure Time [s]</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0" colspan="2">
+         <widget class="QLineEdit" name="raFloat">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0" colspan="2">
+         <widget class="Line" name="line_6">
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Plain</enum>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="32" column="0" colspan="2">
+         <widget class="QLineEdit" name="sqm">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="15" column="1">
+         <widget class="QLineEdit" name="scale">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0" colspan="2">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>DEC [deg]</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QLineEdit" name="object">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="frame">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Object Name</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="2">
+         <widget class="QLineEdit" name="ra">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -1400,39 +1537,6 @@
           </property>
          </widget>
         </item>
-        <item row="20" column="0" colspan="2">
-         <widget class="QLineEdit" name="exposureTime">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="frame">
-           <bool>false</bool>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" colspan="2">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Object Name</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="2">
-         <widget class="QLineEdit" name="object">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="frame">
-           <bool>false</bool>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
         <item row="3" column="0" colspan="2">
          <widget class="QLabel" name="label_2">
           <property name="text">
@@ -1440,28 +1544,8 @@
           </property>
          </widget>
         </item>
-        <item row="26" column="1">
-         <widget class="QLineEdit" name="binY">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="frame">
-           <bool>false</bool>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="31" column="0" colspan="2">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>SQM [mpas]</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0" colspan="2">
-         <widget class="QLineEdit" name="raFloat">
+        <item row="26" column="0">
+         <widget class="QLineEdit" name="binX">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -1486,59 +1570,8 @@
           </property>
          </widget>
         </item>
-        <item row="19" column="0" colspan="2">
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string>Exposure Time [s]</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0" colspan="2">
-         <widget class="Line" name="line_5">
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Plain</enum>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="21" column="0" colspan="2">
-         <widget class="Line" name="line_9">
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Plain</enum>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="25" column="1">
-         <widget class="QLabel" name="label_12">
-          <property name="text">
-           <string>Bin Y</string>
-          </property>
-         </widget>
-        </item>
-        <item row="13" column="1">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Scale</string>
-          </property>
-         </widget>
-        </item>
-        <item row="24" column="0" colspan="2">
-         <widget class="Line" name="line_10">
-          <property name="frameShadow">
-           <enum>QFrame::Shadow::Plain</enum>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0" colspan="2">
-         <widget class="QLineEdit" name="ra">
+        <item row="23" column="1">
+         <widget class="QLineEdit" name="ccdTemp">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -1550,42 +1583,28 @@
           </property>
          </widget>
         </item>
-        <item row="25" column="0">
-         <widget class="QLabel" name="label_11">
+        <item row="31" column="0" colspan="2">
+         <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>Bin X</string>
-          </property>
-         </widget>
-        </item>
-        <item row="22" column="1">
-         <widget class="QLabel" name="label_9">
-          <property name="text">
-           <string>Temp</string>
-          </property>
-         </widget>
-        </item>
-        <item row="22" column="0">
-         <widget class="QLabel" name="label_10">
-          <property name="text">
-           <string>Filter</string>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="0" colspan="2">
-         <widget class="QLineEdit" name="decFloat">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="frame">
-           <bool>false</bool>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
+           <string>SQM [mpas]</string>
           </property>
          </widget>
         </item>
        </layout>
       </widget>
+     </item>
+     <item row="3" column="0">
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
      </item>
     </layout>
    </item>

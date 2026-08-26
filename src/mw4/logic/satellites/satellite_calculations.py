@@ -172,10 +172,8 @@ def extractCorrectOrbits(times: list[Time], events: list[int], satOrbits: list[d
         satOrbits.append({"rise": times[0]})
         satOrbits[0]["culminate"] = times[0] + 0.5
         satOrbits[0]["settle"] = times[0] + 1.0
-
-    if "settle" not in satOrbits[-1]:
+    if satOrbits and "settle" not in satOrbits[-1]:
         del satOrbits[-1]
-
     return satOrbits
 
 

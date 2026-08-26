@@ -301,6 +301,46 @@ def test_extractCorrectOrbits_2(function):
     assert len(satOrbits) == 0
 
 
+def test_extractCorrectOrbits_3(function):
+    """Test synthetic orbit creation with correct keys and values."""
+    ts = function.mount.obsSite.ts
+    t0 = ts.tt_jd(2459215.5)
+
+    times = np.array([t0])
+    events = np.array([1])
+
+    satOrbits = collectAllOrbits(times, events, function.mount.obsSite)
+    satOrbits = extractCorrectOrbits(times, events, satOrbits)
+    assert len(satOrbits) == 1
+    assert "rise" in satOrbits[0]
+    assert "culminate" in satOrbits[0]
+    assert "settle" in satOrbits[0]
+    assert satOrbits[0]["rise"] == t0
+    assert satOrbits[0]["culminate"] == t0 + 0.5
+    assert satOrbits[0]["settle"] == t0 + 1.0
+
+
+def test_extractCorrectOrbits_4(function):
+    """Test removal of incomplete orbit at end of list."""
+    ts = function.mount.obsSite.ts
+
+    now = ts.tt_jd(2459215.4)
+    t0 = ts.tt_jd(2459215.5)
+    t1 = ts.tt_jd(2459215.6)
+    t2 = ts.tt_jd(2459215.7)
+    t3 = ts.tt_jd(2459215.8)
+    t4 = ts.tt_jd(2459215.9)
+
+    times = [t0, t1, t2, t3, t4]
+    events = [0, 1, 2, 0, 1]
+
+    with mock.patch.object(function.mount.obsSite.ts, "now", return_value=now):
+        satOrbits = collectAllOrbits(times, events, function.mount.obsSite)
+        satOrbits = extractCorrectOrbits(times, events, satOrbits)
+        assert len(satOrbits) == 1
+        assert "settle" in satOrbits[0]
+
+
 def test_sortFlipEvents_0(function):
     ts = function.mount.obsSite.ts
     satOrbit = {"rise": ts.tt_jd(2459215.5), "settle": ts.tt_jd(2459215.7)}

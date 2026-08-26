@@ -93,9 +93,14 @@ class AstroObjects:
         self.workerSource = Worker(self.runnerProcessSource)
         self.threadPool.start(self.workerSource)
 
-    def runDownloadPopup(self, url: str, unzip: bool) -> None:
+    def runDownloadPopup(self, url: str, unzip: bool, entry: str, fileName: str) -> None:
+        self.msg.emit(1, self.objectText.capitalize(), "Download", f"{entry}")
+        self.log.info(f"Using data for {self.objectText}  {url}, {unzip}, {fileName}")
         if DownloadPopup.download(self.window, url, self.dest, unzip):
+            self.msg.emit(1, self.objectText.capitalize(), "Source download", "Successful")
             self.procSourceData()
+        else:
+            self.msg.emit(2, self.objectText.capitalize(), "Source download", "Failed")
 
     def checkFileAgeOK(self, fileName: Path) -> bool:
         if not fileName.is_file():
@@ -124,13 +129,11 @@ class AstroObjects:
             return
 
         self.setAge(0)
-        self.msg.emit(1, self.objectText.capitalize(), "Download", f"{entry}")
-        self.log.info(f"Using data for {self.objectText}  {url}, {unzip}, {fileName}")
-        self.runDownloadPopup(url, unzip)
+        self.runDownloadPopup(url, unzip, entry, fileName)
 
     def runUploadPopup(self, url: str) -> None:
-        suc = UploadPopup.upload(self.window, url, [self.objectText], self.tempDir)
-        if suc:
+        self.log.info(f"Using data for upload: {self.objectText}  {url}")
+        if UploadPopup.upload(self.window, url, [self.objectText], self.tempDir):
             self.msg.emit(1, self.objectText.capitalize(), "Mount upload", "Successful")
         else:
             self.msg.emit(2, self.objectText.capitalize(), "Mount upload", "Failed")

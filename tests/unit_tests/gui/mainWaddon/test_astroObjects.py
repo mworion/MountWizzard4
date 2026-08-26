@@ -178,7 +178,7 @@ def test_runDownloadPopup_1(function):
         ),
         mock.patch.object(function, "procSourceData") as mock_proc,
     ):
-        function.runDownloadPopup(Path(), False)
+        function.runDownloadPopup("http://test.url", False, "test", "test.txt")
         mock_proc.assert_called_once()
 
 
@@ -189,7 +189,7 @@ def test_runDownloadPopup_2(function):
         ),
         mock.patch.object(function, "procSourceData") as mock_proc,
     ):
-        function.runDownloadPopup(Path(), False)
+        function.runDownloadPopup("http://test.url", False, "test", "test.txt")
         mock_proc.assert_not_called()
 
 
@@ -260,18 +260,18 @@ def test_loadSourceUrl_4(function):
 
 def test_runUploadPopup_1(function):
     with mock.patch("mw4.gui.mainWaddon.astroObjects.UploadPopup.upload", return_value=True):
-        function.runUploadPopup(Path())
+        function.runUploadPopup("http://localhost:3492")
 
 
 def test_runUploadPopup_2(function):
     with mock.patch("mw4.gui.mainWaddon.astroObjects.UploadPopup.upload", return_value=False):
-        function.runUploadPopup(Path())
+        function.runUploadPopup("http://localhost:3492")
 
 
 def test_runUploadPopup_calls_showWindow(function):
     """Test runUploadPopup calls exec and emits success message on True result."""
     with mock.patch("mw4.gui.mainWaddon.astroObjects.UploadPopup.upload", return_value=True):
-        function.runUploadPopup(Path())
+        function.runUploadPopup("http://localhost:3492")
 
 
 def test_progObjects_1(function):
@@ -372,7 +372,7 @@ def test_runDownloadPopup_when_online(function):
         ),
         mock.patch.object(function, "procSourceData") as mock_proc,
     ):
-        function.runDownloadPopup(Path(), False)
+        function.runDownloadPopup("http://test.url", False, "test", "test.txt")
         mock_proc.assert_called_once()
 
 

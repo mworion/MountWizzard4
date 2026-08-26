@@ -40,7 +40,7 @@ class Comet(TabAddon):
         )
         self.prepareCometTable()
         self.comets.signals.dataLoaded.connect(self.fillCometListName)
-        self.ui.cometFilterText.textChanged.connect(self.filterListComets)
+        self.ui.cometFilterText.returnPressed.connect(self.filterListComets)
         self.ui.progCometSelected.clicked.connect(self.comets.progSelected)
         self.ui.progCometFiltered.clicked.connect(self.comets.progFiltered)
         self.ui.progCometFull.clicked.connect(self.comets.progFull)

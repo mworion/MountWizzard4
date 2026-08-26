@@ -41,7 +41,7 @@ class Asteroid(TabAddon):
 
         self.asteroids.signals.dataLoaded.connect(self.fillAsteroidListName)
         self.prepareAsteroidTable()
-        self.ui.asteroidFilterText.textChanged.connect(self.filterListAsteroids)
+        self.ui.asteroidFilterText.returnPressed.connect(self.filterListAsteroids)
         self.ui.progAsteroidSelected.clicked.connect(self.asteroids.progSelected)
         self.ui.progAsteroidFiltered.clicked.connect(self.asteroids.progFiltered)
         self.ui.progAsteroidFull.clicked.connect(self.asteroids.progFull)

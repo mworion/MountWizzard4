@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+import json
 import numpy as np
 from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
@@ -113,7 +114,7 @@ class SatSearch(SatData):
             "Lat v\n[deg/s]",
             "Lon v\n[deg/s]",
         ]
-        hSet = [50, 185, 85, 40, 50, 50, 50, 50, 0]
+        hSet = [55, 180, 85, 40, 50, 50, 50, 50, 0]
         self.ui.listSats.setColumnCount(len(hSet))
         self.ui.listSats.setHorizontalHeaderLabels(hLabels)
         for i, hs in enumerate(hSet):
@@ -123,13 +124,35 @@ class SatSearch(SatData):
         self.ui.listSats.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.ui.listSats.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
-    def processSatelliteSource(self) -> None:
-        self.ui.listSats.setRowCount(0)
+    def processLoadTLE(self) -> None:
         loader = self.app.dReg["mount"].obsSite.loader
         satellites = loader.tle_file(str(self.satellites.dest))
-        self.satellites.objects.clear()
         for sat in satellites:
             self.satellites.objects[sat.name] = sat
+
+    def processLoadJsonOMM(self) -> None:
+        ts = self.app.dReg["mount"].obsSite.ts
+        with open(str(self.satellites.dest)) as f:
+            try:
+                omm_records = json.load(f)
+            except json.JSONDecodeError as e:
+                self.mainW.log.error(f"Failed to load OMM file: {e}")
+                self.msg.emit(2, "Satellite", "Error", f"Loading: {self.satellites.dest}")
+                return
+        for record in omm_records:
+            sat = EarthSatellite.from_omm(ts, record)
+            self.satellites.objects[sat.name] = sat
+
+    def processSatelliteSource(self) -> None:
+        self.ui.listSats.setRowCount(0)
+        self.satellites.objects.clear()
+        if self.satellites.dest.suffix == ".json":
+            self.processLoadJsonOMM()
+        elif self.satellites.dest.suffix == ".tle":
+            self.processLoadTLE()
+        else:
+            self.msg.emit(2, "Satellite", "Error", "Unsupported file format")
+            return
 
     def setListSatsEntry(self, row: int, col: int, entry: str) -> None:
         self.ui.listSats.setItem(row, col, entry)

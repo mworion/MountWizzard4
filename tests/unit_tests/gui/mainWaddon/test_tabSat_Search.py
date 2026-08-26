@@ -15,6 +15,7 @@
 ###########################################################
 """Unit tests for SatSearch GUI module."""
 
+import json
 import mw4.gui
 import numpy as np
 import pytest
@@ -83,16 +84,97 @@ def test_prepareSatTable_1(function: SatSearch) -> None:
     function.prepareSatTable()
 
 
-def test_processSatelliteSource(function: SatSearch) -> None:
+def test_processSatelliteSource_tle(function: SatSearch) -> None:
     tle = [
         "NOAA 8",
         "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
         "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
     ]
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
+    function.satellites.dest = Path("test.tle")
 
-    with mock.patch.object(function.app.mount.obsSite.loader, "tle_file", return_value=[sat]):
+    loader = function.app.dReg["mount"].obsSite.loader
+    with mock.patch.object(loader, "tle_file", return_value=[sat]):
         function.processSatelliteSource()
+        assert "NOAA 8" in function.satellites.objects
+
+
+def test_processSatelliteSource_json(function: SatSearch) -> None:
+    """Test processSatelliteSource with JSON OMM file."""
+    function.satellites.dest = Path("test.json")
+    omm_record = {"OBJECT_NAME": "SAT1", "OBJECT_ID": "2020-001A"}
+
+    with (
+        mock.patch("builtins.open",
+                   mock.mock_open(read_data='[{"OBJECT_NAME": "SAT1"}]')),
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabSat_Search, "EarthSatellite"
+        ) as mock_sat_class,
+        mock.patch("json.load", return_value=[omm_record]),
+    ):
+        mock_sat = mock.MagicMock()
+        mock_sat.name = "SAT1"
+        mock_sat_class.from_omm.return_value = mock_sat
+
+        function.processSatelliteSource()
+        assert "SAT1" in function.satellites.objects
+
+
+def test_processSatelliteSource_unsupported_format(function: SatSearch) -> None:
+    """Test processSatelliteSource with unsupported file format."""
+    function.satellites.dest = Path("test.txt")
+    function.processSatelliteSource()
+
+
+def test_processLoadTLE(function: SatSearch) -> None:
+    """Test processLoadTLE loads TLE file correctly."""
+    tle = [
+        "NOAA 8",
+        "1 13923U 83022A   20076.90417581  .00000005  00000-0  19448-4 0  9998",
+        "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
+    ]
+    sat = EarthSatellite(tle[1], tle[2], name=tle[0])
+    function.satellites.dest = Path("test.tle")
+
+    loader = function.app.dReg["mount"].obsSite.loader
+    with mock.patch.object(loader, "tle_file", return_value=[sat]):
+        function.processLoadTLE()
+        assert "NOAA 8" in function.satellites.objects
+
+
+def test_processLoadJsonOMM_success(function: SatSearch) -> None:
+    """Test processLoadJsonOMM successfully loads OMM records."""
+    function.satellites.dest = Path("test.json")
+    omm_record = {"OBJECT_NAME": "SAT1"}
+
+    with (
+        mock.patch("builtins.open",
+                   mock.mock_open(read_data='[{"OBJECT_NAME": "SAT1"}]')),
+        mock.patch("json.load", return_value=[omm_record]),
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabSat_Search, "EarthSatellite"
+        ) as mock_sat_class,
+    ):
+        mock_sat = mock.MagicMock()
+        mock_sat.name = "SAT1"
+        mock_sat_class.from_omm.return_value = mock_sat
+
+        function.processLoadJsonOMM()
+        assert "SAT1" in function.satellites.objects
+
+
+def test_processLoadJsonOMM_json_error(function: SatSearch) -> None:
+    """Test processLoadJsonOMM handles JSON decode error."""
+    function.satellites.dest = Path("test.json")
+
+    json_error = json.JSONDecodeError("test", "doc", 0)
+    with (
+        mock.patch("builtins.open",
+                   mock.mock_open(read_data="invalid json")),
+        mock.patch("json.load", side_effect=json_error),
+        mock.patch.object(function.mainW.log, "error"),
+    ):
+        function.processLoadJsonOMM()
 
 
 def test_setListSatsEntry(function: SatSearch) -> None:

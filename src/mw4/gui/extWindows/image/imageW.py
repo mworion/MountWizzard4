@@ -163,8 +163,26 @@ class ImageWindow(MWidget):
         elif status == Model.STATUS_IDLE:
             self.ui.groupImageActions.setEnabled(True)
 
-    def updateWindowsStats(self) -> None:
+    def showButtonExposingRunningState(self) -> None:
         if self.imagingDeviceStat.get("expose", False):
+            changeStyleDynamic(self.ui.expose, "run", "true")
+        elif self.imagingDeviceStat.get("exposeN", False):
+            changeStyleDynamic(self.ui.exposeN, "run", "true")
+        else:
+            changeStyleDynamic(self.ui.expose, "run", "false")
+            changeStyleDynamic(self.ui.exposeN, "run", "false")
+
+    def showButtonSolvingRunningState(self) -> None:
+        if self.imagingDeviceStat.get("solve", False):
+            changeStyleDynamic(self.ui.solve, "run", "true")
+        else:
+            changeStyleDynamic(self.ui.solve, "run", "false")
+
+    def setButtonExposingStatusEnabled(self) -> None:
+        if not self.app.dReg["camera"]:
+            self.ui.expose.setEnabled(False)
+            self.ui.exposeN.setEnabled(False)
+        elif self.imagingDeviceStat.get("expose", False):
             self.ui.exposeN.setEnabled(False)
             self.ui.load.setEnabled(False)
             self.ui.abortExpose.setEnabled(True)
@@ -178,29 +196,18 @@ class ImageWindow(MWidget):
             self.ui.load.setEnabled(True)
             self.ui.abortExpose.setEnabled(False)
 
+    def setButtonSolvingStatusEnabled(self) -> None:
         isPlateSolve = bool(self.app.dReg["plateSolve"].stat)
         isSolving = bool(self.imagingDeviceStat.get("solve", False))
         isImage = self.imageFileName.is_file()
-
         self.ui.solve.setEnabled(isPlateSolve and isImage)
         self.ui.abortSolve.setEnabled(isPlateSolve and isImage and isSolving)
 
-        if not self.app.dReg["camera"]:
-            self.ui.expose.setEnabled(False)
-            self.ui.exposeN.setEnabled(False)
-
-        if self.imagingDeviceStat.get("expose", False):
-            changeStyleDynamic(self.ui.expose, "run", "true")
-        elif self.imagingDeviceStat.get("exposeN", False):
-            changeStyleDynamic(self.ui.exposeN, "run", "true")
-        else:
-            changeStyleDynamic(self.ui.expose, "run", "false")
-            changeStyleDynamic(self.ui.exposeN, "run", "false")
-
-        if self.imagingDeviceStat.get("solve", False):
-            changeStyleDynamic(self.ui.solve, "run", "true")
-        else:
-            changeStyleDynamic(self.ui.solve, "run", "false")
+    def updateWindowsStats(self) -> None:          
+        self.showButtonExposingRunningState()
+        self.showButtonSolvingRunningState()
+        self.setButtonExposingStatusEnabled()
+        self.setButtonSolvingStatusEnabled()
 
     def selectImage(self) -> None:
         self.imageFileName = MWFileDialog.getOpenFileName(
@@ -268,7 +275,7 @@ class ImageWindow(MWidget):
     def showCurrent(self) -> None:
         self.showImage(self.imageFileName)
 
-    def exposeRaw(self, exposureTime: float, binning: int) -> None:
+    def exposeRaw(self, exposureTime: float, binning: int) -> bool:
         timeString = self.app.dReg["mount"].obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         if self.ui.timeTagImage.isChecked():
             self.imageFileName = self.app.mwGlob["imageDir"] / (timeString + "-exposure.fits")
@@ -277,71 +284,82 @@ class ImageWindow(MWidget):
         if not self.app.dReg["camera"].instance.expose(
             self.imageFileName, exposureTime, binning
         ):
-            self.abortExpose()
-            return
+            return False
         self.msg.emit(0, "Image", "Exposing", self.imageFileName.stem)
+        return True
 
-    def exposeImageDone(self, imagePath: Path) -> None:
+    def setImage(self) -> None:
+        self.app.operationRunning.emit(Model.STATUS_EXPOSE_1)
+        self.imagingDeviceStat["expose"] = True
+        self.app.dReg["camera"].signals.saved.connect(self.exposeImageDone)
+
+    def resetImage(self) -> None:
         self.app.dReg["camera"].signals.saved.disconnect(self.exposeImageDone)
-        self.msg.emit(0, "Image", "Exposed", imagePath.stem)
-        self.imageFileName = imagePath
-
-        if self.ui.autoSolve.isChecked():
-            self.signals.solveImage.emit(imagePath)
         self.imagingDeviceStat["expose"] = False
         self.app.operationRunning.emit(Model.STATUS_IDLE)
+
+    def exposeImageDone(self, imagePath: Path) -> None:
+        self.msg.emit(0, "Image", "Exposed", imagePath.stem)
+        self.imageFileName = imagePath
+        if self.ui.autoSolve.isChecked():
+            self.signals.solveImage.emit(imagePath)
+        self.resetImage() 
 
     def exposeImage(self) -> None:
         if not self.app.dReg["camera"].stat:
             self.msg.emit(2, "Image", "Error", "No camera connected")
             return
-        self.app.operationRunning.emit(Model.STATUS_EXPOSE_1)
-        self.imagingDeviceStat["expose"] = True
-        self.app.dReg["camera"].signals.saved.connect(self.exposeImageDone)
-        self.exposeRaw(
+        if not self.exposeRaw(
             self.app.dReg["camera"].instance.exposureTime1,
-            self.app.dReg["camera"].instance.binning1,
-        )
+            self.app.dReg["camera"].instance.binning1
+            ):
+            return
+        self.setImage()
+
+    def setImageN(self) -> None:
+        self.app.operationRunning.emit(Model.STATUS_EXPOSE_N)
+        self.msg.emit(1, "Image", "Expose", "Continuous start")
+        self.imagingDeviceStat["exposeN"] = True
+        self.app.dReg["camera"].signals.saved.connect(self.exposeImageNDone)
+
+    def resetImageN(self) -> None:
+        self.app.dReg["camera"].signals.saved.disconnect(self.exposeImageNDone)
+        self.imagingDeviceStat["exposeN"] = False
+        self.msg.emit(1, "Image", "Expose", "Continuous stopped")
+        self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def exposeImageNDone(self, imagePath: Path) -> None:
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
-        self.exposeRaw(
+        if self.exposeRaw(
             self.app.dReg["camera"].instance.exposureTimeN,
-            self.app.dReg["camera"].instance.binningN,
-        )
+            self.app.dReg["camera"].instance.binningN
+            ):
+            return
+        self.resetImageN() 
 
     def exposeImageN(self) -> None:
         if not self.app.dReg["camera"].stat:
             self.msg.emit(2, "Image", "Error", "No camera connected")
             return
-        if not self.imagingDeviceStat["exposeN"]:
-            self.app.operationRunning.emit(Model.STATUS_EXPOSE_N)
-            self.msg.emit(1, "Image", "Expose", "Continuous start")
-            self.imagingDeviceStat["exposeN"] = True
-            self.app.dReg["camera"].signals.saved.connect(self.exposeImageNDone)
-            self.exposeRaw(
-                self.app.dReg["camera"].instance.exposureTimeN,
-                self.app.dReg["camera"].instance.binningN,
-            )
-        else:
-            self.app.dReg["camera"].signals.saved.disconnect(self.exposeImageNDone)
-            self.imagingDeviceStat["exposeN"] = False
-            self.msg.emit(1, "Image", "Expose", "Continuous stopped")
-            self.app.operationRunning.emit(Model.STATUS_IDLE)
+        if not self.exposeRaw(
+            self.app.dReg["camera"].instance.exposureTimeN,
+            self.app.dReg["camera"].instance.binningN
+            ):
+            return
+        self.setImageN() 
 
     def abortExpose(self) -> None:
         self.app.dReg["camera"].instance.abort()
+        self.imageFileName = self.imageFileNameOld
         if self.imagingDeviceStat["expose"]:
             self.app.dReg["camera"].signals.saved.disconnect(self.exposeImageDone)
+            self.imagingDeviceStat["expose"] = False
         if self.imagingDeviceStat["exposeN"]:
             self.app.dReg["camera"].signals.saved.disconnect(self.exposeImageNDone)
-
-        self.imageFileName = self.imageFileNameOld
-        self.imagingDeviceStat["expose"] = False
-        self.imagingDeviceStat["exposeN"] = False
-        self.msg.emit(2, "Image", "Expose", "Exposing aborted")
+            self.imagingDeviceStat["exposeN"] = False
         self.app.operationRunning.emit(Model.STATUS_IDLE)
+        self.msg.emit(2, "Image", "Expose", "Exposing aborted")
 
     def solveDone(self, result: dict) -> None:
         self.imagingDeviceStat["solve"] = False

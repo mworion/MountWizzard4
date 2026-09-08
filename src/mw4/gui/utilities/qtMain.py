@@ -192,3 +192,10 @@ class MWidget(QMainWindow, Styles):
         config["height"] = self.frameGeometry().height()
         config["width"] = self.frameGeometry().width()
         return config
+        
+    def disconnectSlot(signal, slot) -> bool:
+        try:
+            signal.disconnect(slot)
+            return True
+        except (RuntimeError, TypeError):
+            return False

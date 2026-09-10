@@ -148,22 +148,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
-         <widget class="QPushButton" name="abortExpose">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>95</width>
-            <height>21</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Exp. Abort</string>
-          </property>
-         </widget>
-        </item>
         <item row="3" column="1">
          <widget class="QPushButton" name="abortSolve">
           <property name="enabled">
@@ -222,22 +206,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QPushButton" name="exposeN">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>95</width>
-            <height>21</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Expose N</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="0">
          <widget class="QPushButton" name="expose">
           <property name="enabled">
@@ -250,7 +218,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Expose 1</string>
+           <string>Expose</string>
           </property>
          </widget>
         </item>
@@ -282,6 +250,29 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="abortExpose">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>95</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Exp. Abort</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QCheckBox" name="continous">
+          <property name="text">
+           <string>Continous</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>

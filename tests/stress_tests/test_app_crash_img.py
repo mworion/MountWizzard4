@@ -116,7 +116,8 @@ def test_showImagesPhotometryN(qtbot, qapp):
     qtbot.waitExposed(imageW, timeout=1000)
     imageW.ui.photometryGroup.setChecked(True)
 
-    qtbot.mouseClick(imageW.ui.exposeN, Qt.LeftButton)
+    imageW.ui.continous.setChecked(True)
+    qtbot.mouseClick(imageW.ui.expose, Qt.LeftButton)
     mainThreadSleep(3000)
     qtbot.mouseClick(imageW.ui.abortExpose, Qt.LeftButton)
 

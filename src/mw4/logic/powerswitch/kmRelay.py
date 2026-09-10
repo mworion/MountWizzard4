@@ -107,7 +107,9 @@ class KMRelay:
         return result
 
     def checkConnected(self, value: Any) -> bool:
-        statusNotConnected = value is None or value.reason != "OK"
+        statusNotConnected = (
+            value is None or isinstance(value, str) or value.reason != "OK"
+        )
         statusConnected = not statusNotConnected
         if self.deviceConnected:
             if statusNotConnected:

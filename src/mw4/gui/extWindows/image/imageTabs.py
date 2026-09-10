@@ -46,7 +46,6 @@ class ImageTabs:
         self.fileHandler = parent.fileHandler
         self.photometry = parent.photometry
         self.threadPool = parent.threadPool
-        self.imagingDeviceStat = parent.imagingDeviceStat
         self.pen = pg.mkPen(color=self.parent.M_PRIM, width=2)
         self.penPink = pg.mkPen(color=self.parent.M_PINK, width=5)
         self.fontText = QFont(self.parent.window().font().family(), 16)
@@ -137,7 +136,7 @@ class ImageTabs:
         self.imageSourceRange = QRectF()
         self.ui.image.setImage(
             imageDisp=self.fileHandler.image,
-            updateGeometry=not self.imagingDeviceStat["exposeN"],
+            updateGeometry=not self.ui.continous.isChecked(),
         )
         self.setBarColor()
         self.setCrosshair()

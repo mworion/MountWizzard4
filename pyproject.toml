@@ -56,7 +56,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "numpy==2.5.2",
+    "numpy==2.5.3",
     "opencv-python-headless==5.0.0.93",
     "scipy==1.18.1",
     "astropy==8.0.1",
@@ -75,7 +75,7 @@ dependencies = [
     "ping3==5.1.5",
     "wakeonlan==4.0.0",
     "pybase64==1.5.0",
-    "websocket-client==1.9.0",
+    "websocket-client==1.9.2",
     "hidapi==0.15.0",
     "range-key-dict==1.1.0",
     "packaging==26.3",
@@ -109,10 +109,10 @@ dev = [
     "pytest-cov==7.1.0",
     "pytest-xdist==3.8.0",
     "pytest-xvfb==3.1.1",
-    "pytest-env==1.7.0",
+    "pytest-env==1.7.1",
     "invoke==2.2.1",
-    "ruff==0.16.4",
-    "coverage==7.15.4",
+    "ruff==0.16.6",
+    "coverage==7.16.0",
     "scipy-stubs==1.18.1.0",
     "fabric==3.2.3",
 ]

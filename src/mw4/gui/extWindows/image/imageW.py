@@ -30,14 +30,28 @@ from mw4.logic.photometry.photometry import Photometry
 from mw4.mountcontrol.convert import convertToDMS, convertToHMS
 from pathlib import Path
 from skyfield.api import Angle
-from typing import Any
+from typing import Any, ClassVar
 
 
 class ImageWindow(MWidget):
-    TABASPECT = ["image", "imageSource", "tiltSquare", "tiltTriangle", 
-                 "background", "backgroundRMS", "hfr", "roundnes"]
-    TABLEVEL = ["imageSource","tiltSquare", "tiltTriangle", "aberration"]
- 
+    TAB_ASPECT: ClassVar = [
+        "image",
+        "imageSource",
+        "tiltSquare",
+        "tiltTriangle",
+        "background",
+        "backgroundRMS",
+        "hfr",
+        "roundness",
+    ]
+
+    TAB_LEVEL: ClassVar = [
+        "imageSource",
+        "tiltSquare",
+        "tiltTriangle",
+        "aberration",
+    ]
+
     def __init__(self, app: Any, title: str) -> None:
         super().__init__()
         self.app = app
@@ -59,11 +73,8 @@ class ImageWindow(MWidget):
         self.binning: int = 1
         self.folder: Path = Path()
         self.result: dict = {}
-        self.imagingDeviceStat = {
-            "expose": False,
-            "exposeN": False,
-            "solve": False,
-        }
+        self.isExposing: bool = False
+        self.isSolving: bool = False
         self.tabs = ImageTabs(self)
 
     def initConfig(self) -> None:
@@ -76,6 +87,7 @@ class ImageWindow(MWidget):
         self.folder = Path(self.app.mwGlob.get("imageDir", ""))
         self.ui.showCrosshair.setChecked(config.get("showCrosshair", False))
         self.ui.aspectLocked.setChecked(config.get("aspectLocked", False))
+        self.ui.continous.setChecked(config.get("continous", False))
         self.ui.autoSolve.setChecked(config.get("autoSolve", False))
         self.ui.embedData.setChecked(config.get("embedData", False))
         self.ui.photometryGroup.setChecked(config.get("photometryGroup", False))
@@ -98,6 +110,7 @@ class ImageWindow(MWidget):
         config["imageFileName"] = str(self.imageFileName)
         config["showCrosshair"] = self.ui.showCrosshair.isChecked()
         config["aspectLocked"] = self.ui.aspectLocked.isChecked()
+        config["continous"] = self.ui.continous.isChecked()
         config["autoSolve"] = self.ui.autoSolve.isChecked()
         config["embedData"] = self.ui.embedData.isChecked()
         config["photometryGroup"] = self.ui.photometryGroup.isChecked()
@@ -117,7 +130,6 @@ class ImageWindow(MWidget):
         self.ui.snTarget.currentIndexChanged.connect(self.processPhotometry)
         self.ui.solve.clicked.connect(self.solveCurrent)
         self.ui.expose.clicked.connect(self.exposeImage)
-        self.ui.exposeN.clicked.connect(self.exposeImageN)
         self.ui.abortExpose.clicked.connect(self.abortExpose)
         self.ui.abortSolve.clicked.connect(self.abortSolve)
         self.ui.slewCenter.clicked.connect(self.slewCenter)
@@ -168,50 +180,27 @@ class ImageWindow(MWidget):
         elif status == Model.STATUS_IDLE:
             self.ui.groupImageActions.setEnabled(True)
 
-    def showButtonExposingRunningState(self) -> None:
-        if self.imagingDeviceStat.get("expose", False):
-            changeStyleDynamic(self.ui.expose, "run", "true")
-        elif self.imagingDeviceStat.get("exposeN", False):
-            changeStyleDynamic(self.ui.exposeN, "run", "true")
-        else:
-            changeStyleDynamic(self.ui.expose, "run", "false")
-            changeStyleDynamic(self.ui.exposeN, "run", "false")
-
-    def showButtonSolvingRunningState(self) -> None:
-        if self.imagingDeviceStat.get("solve", False):
-            changeStyleDynamic(self.ui.solve, "run", "true")
-        else:
-            changeStyleDynamic(self.ui.solve, "run", "false")
-
     def setButtonExposingStatusEnabled(self) -> None:
         if not self.app.dReg["camera"]:
             self.ui.expose.setEnabled(False)
-            self.ui.exposeN.setEnabled(False)
             self.ui.abortExpose.setEnabled(False)
-        elif self.imagingDeviceStat.get("expose", False):
-            self.ui.exposeN.setEnabled(False)
-            self.ui.load.setEnabled(False)
-            self.ui.abortExpose.setEnabled(True)
-        elif self.imagingDeviceStat.get("exposeN", False):
-            self.ui.expose.setEnabled(False)
+        elif self.isExposing:
             self.ui.load.setEnabled(False)
             self.ui.abortExpose.setEnabled(True)
         else:
             self.ui.expose.setEnabled(True)
-            self.ui.exposeN.setEnabled(True)
             self.ui.load.setEnabled(True)
             self.ui.abortExpose.setEnabled(False)
 
     def setButtonSolvingStatusEnabled(self) -> None:
         isPlateSolve = bool(self.app.dReg["plateSolve"].stat)
-        isSolving = bool(self.imagingDeviceStat.get("solve", False))
         isImage = self.imageFileName.is_file()
         self.ui.solve.setEnabled(isPlateSolve and isImage)
-        self.ui.abortSolve.setEnabled(isPlateSolve and isImage and isSolving)
+        self.ui.abortSolve.setEnabled(isPlateSolve and isImage and self.isSolving)
 
-    def updateWindowsStats(self) -> None:          
-        self.showButtonExposingRunningState()
-        self.showButtonSolvingRunningState()
+    def updateWindowsStats(self) -> None:
+        changeStyleDynamic(self.ui.expose, "run", "true" if self.isExposing else "false")
+        changeStyleDynamic(self.ui.solve, "run", "true" if self.isSolving else "false")
         self.setButtonExposingStatusEnabled()
         self.setButtonSolvingStatusEnabled()
 
@@ -234,13 +223,13 @@ class ImageWindow(MWidget):
 
     def copyLevels(self) -> None:
         level = self.ui.image.barItem.levels()
-        for tab in self.TABLEVEL:
-            getattr(self.ui, f"{tab}.barItem")).setLevels(level)
+        for tab in self.TAB_LEVEL:
+            getattr(self.ui, f"{tab}").barItem.setLevels(level)
 
     def setAspectLocked(self) -> None:
         isLocked = self.ui.aspectLocked.isChecked()
-        for tab in self.TABASPECT:
-            getattr(self.ui, f"{tab}.p[0]")).setAspectLocked(isLocked)
+        for tab in self.TAB_ASPECT:
+            getattr(self.ui, f"{tab}").p[0].setAspectLocked(isLocked)
 
     def resultPhotometry(self) -> None:
         changeStyleDynamic(self.ui.photometryGroup, "run", "false")
@@ -290,10 +279,9 @@ class ImageWindow(MWidget):
         return True
 
     def resetImage(self) -> None:
-        self.disconnectSlot(self.app.dReg["camera"].signals.saved, self.exposeImageDone)
-        self.disconnectSlot(self.app.dReg["camera"].signals.saved, self.exposeImageNDone)
-        self.imagingDeviceStat["expose"] = False
-        self.imagingDeviceStat["exposeN"] = False
+        self.app.dReg["camera"].signals.saved.disconnect(self.exposeImageDone)
+        self.isExposing = False
+        self.ui.continous.setEnabled(False)
         self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def exposeImageDone(self, imagePath: Path) -> None:
@@ -301,31 +289,19 @@ class ImageWindow(MWidget):
         self.imageFileName = imagePath
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
-        if self.imagingDeviceStat["exposeN"] and self.exposeRaw(
-                self.app.dReg["camera"].instance.exposureTimeN,
-                self.app.dReg["camera"].instance.binningN):
+        self.resetImage()
+        if self.ui.continous.isChecked():
+            self.ui.expose.clicked.emit()
             return
-        self.resetImage() 
 
     def exposeImage(self) -> None:
         if not self.exposeRaw(
             self.app.dReg["camera"].instance.exposureTime1,
-            self.app.dReg["camera"].instance.binning1
-            ):
+            self.app.dReg["camera"].instance.binning1,
+        ):
             return
         self.app.operationRunning.emit(Model.STATUS_EXPOSE_1)
-        self.imagingDeviceStat["expose"] = True
-        self.app.dReg["camera"].signals.saved.connect(self.exposeImageDone)
-
-    def exposeImageN(self) -> None:
-        if not self.exposeRaw(
-            self.app.dReg["camera"].instance.exposureTimeN,
-            self.app.dReg["camera"].instance.binningN
-            ):
-            return
-        self.app.operationRunning.emit(Model.STATUS_EXPOSE_N)
-        self.msg.emit(1, "Image", "Expose", "Continuous start")
-        self.imagingDeviceStat["exposeN"] = True
+        self.isExposing = True
         self.app.dReg["camera"].signals.saved.connect(self.exposeImageDone)
 
     def abortExpose(self) -> None:
@@ -335,7 +311,7 @@ class ImageWindow(MWidget):
         self.msg.emit(2, "Image", "Expose", "Exposing aborted")
 
     def solveDone(self, result: dict) -> None:
-        self.imagingDeviceStat["solve"] = False
+        self.isSolving = False
         self.app.dReg["plateSolve"].signals.result.disconnect(self.solveDone)
 
         if not result["success"]:
@@ -367,7 +343,7 @@ class ImageWindow(MWidget):
         self.app.operationRunning.emit(Model.STATUS_SOLVE)
         self.app.dReg["plateSolve"].signals.result.connect(self.solveDone)
         self.app.dReg["plateSolve"].instance.solve(imagePath, self.ui.embedData.isChecked())
-        self.imagingDeviceStat["solve"] = True
+        self.isSolving = True
         self.msg.emit(0, "Image", "Solving", imagePath.stem)
 
     def solveCurrent(self) -> None:
@@ -404,11 +380,6 @@ class ImageWindow(MWidget):
             return
 
         ra, dec = getCoordinatesFromHeader(getImageHeader(self.imageFileName))
-
-        if ra is None or dec is None:
-            self.msg.emit(2, "Image", "Mount", "No coordinates found in image")
-            return
-
         self.app.operationRunning.emit(Model.STATUS_MODEL_SYNC)
         obs = self.app.dReg["mount"].obsSite
         raJNow, decJNow = J2000ToJNow(ra, dec, obs.timeJD)

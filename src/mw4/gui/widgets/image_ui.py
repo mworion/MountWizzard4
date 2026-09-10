@@ -70,13 +70,6 @@ class Ui_ImageDialog(object):
 
         self.gridLayout_4.addWidget(self.timeTagImage, 1, 4, 1, 1)
 
-        self.abortExpose = QPushButton(self.groupImageActions)
-        self.abortExpose.setObjectName(u"abortExpose")
-        self.abortExpose.setEnabled(False)
-        self.abortExpose.setMinimumSize(QSize(95, 21))
-
-        self.gridLayout_4.addWidget(self.abortExpose, 1, 2, 1, 1)
-
         self.abortSolve = QPushButton(self.groupImageActions)
         self.abortSolve.setObjectName(u"abortSolve")
         self.abortSolve.setEnabled(False)
@@ -103,13 +96,6 @@ class Ui_ImageDialog(object):
 
         self.gridLayout_4.addWidget(self.slewCenter, 0, 1, 1, 1)
 
-        self.exposeN = QPushButton(self.groupImageActions)
-        self.exposeN.setObjectName(u"exposeN")
-        self.exposeN.setEnabled(False)
-        self.exposeN.setMinimumSize(QSize(95, 21))
-
-        self.gridLayout_4.addWidget(self.exposeN, 1, 1, 1, 1)
-
         self.expose = QPushButton(self.groupImageActions)
         self.expose.setObjectName(u"expose")
         self.expose.setEnabled(False)
@@ -127,6 +113,18 @@ class Ui_ImageDialog(object):
         self.horizontalSpacer_4 = QSpacerItem(5, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.gridLayout_4.addItem(self.horizontalSpacer_4, 3, 3, 1, 1)
+
+        self.abortExpose = QPushButton(self.groupImageActions)
+        self.abortExpose.setObjectName(u"abortExpose")
+        self.abortExpose.setEnabled(False)
+        self.abortExpose.setMinimumSize(QSize(95, 21))
+
+        self.gridLayout_4.addWidget(self.abortExpose, 1, 1, 1, 1)
+
+        self.continous = QCheckBox(self.groupImageActions)
+        self.continous.setObjectName(u"continous")
+
+        self.gridLayout_4.addWidget(self.continous, 1, 2, 1, 1)
 
 
         self.horizontalLayout_5.addWidget(self.groupImageActions)
@@ -816,14 +814,14 @@ class Ui_ImageDialog(object):
         self.timeTagImage.setToolTip(QCoreApplication.translate("ImageDialog", u"<html><head/><body><p>If checked, the filename of the image is extended with the actual time to make it unique. Otherwise the file get just &quot;exposure&quot; and will be overwritten.</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
         self.timeTagImage.setText(QCoreApplication.translate("ImageDialog", u"Add time tags", None))
-        self.abortExpose.setText(QCoreApplication.translate("ImageDialog", u"Exp. Abort", None))
         self.abortSolve.setText(QCoreApplication.translate("ImageDialog", u"Solve Abort", None))
         self.autoSolve.setText(QCoreApplication.translate("ImageDialog", u"Auto Solve", None))
         self.embedData.setText(QCoreApplication.translate("ImageDialog", u"Embed data", None))
         self.slewCenter.setText(QCoreApplication.translate("ImageDialog", u"Slew Center", None))
-        self.exposeN.setText(QCoreApplication.translate("ImageDialog", u"Expose N", None))
-        self.expose.setText(QCoreApplication.translate("ImageDialog", u"Expose 1", None))
+        self.expose.setText(QCoreApplication.translate("ImageDialog", u"Expose", None))
         self.syncModelToImage.setText(QCoreApplication.translate("ImageDialog", u"Sync model to image solution", None))
+        self.abortExpose.setText(QCoreApplication.translate("ImageDialog", u"Exp. Abort", None))
+        self.continous.setText(QCoreApplication.translate("ImageDialog", u"Continous", None))
         self.groupBox.setTitle(QCoreApplication.translate("ImageDialog", u"Image View", None))
         self.aspectLocked.setText(QCoreApplication.translate("ImageDialog", u"Lock aspect", None))
 #if QT_CONFIG(tooltip)

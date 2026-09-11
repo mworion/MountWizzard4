@@ -314,8 +314,7 @@ class MainWindow(MWidget):
         self.app.dReg.stopDevices()
         self.threadPool.waitForDone(10000)
         self.app.config = config
-        topo = self.app.initConfig()
-        self.app.dReg["mount"].obsSite.location = topo
+        self.app.initConfig()
         self.initConfig()
 
     def loadProfileGUI(self) -> None:

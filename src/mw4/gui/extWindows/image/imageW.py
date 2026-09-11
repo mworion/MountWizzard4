@@ -281,11 +281,10 @@ class ImageWindow(MWidget):
     def resetImage(self) -> None:
         self.app.dReg["camera"].signals.saved.disconnect(self.exposeImageDone)
         self.isExposing = False
-        self.ui.continous.setEnabled(False)
         self.app.operationRunning.emit(Model.STATUS_IDLE)
 
     def exposeImageDone(self, imagePath: Path) -> None:
-        self.msg.emit(0, "Image", "Exposed", imagePath.stem)
+        self.msg.emit(0, "Image", "Exposing finished", imagePath.stem)
         self.imageFileName = imagePath
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)
@@ -307,6 +306,7 @@ class ImageWindow(MWidget):
     def abortExpose(self) -> None:
         self.app.dReg["camera"].instance.abort()
         self.imageFileName = self.imageFileNameOld
+        self.ui.continous.setChecked(False)
         self.resetImage()
         self.msg.emit(2, "Image", "Expose", "Exposing aborted")
 

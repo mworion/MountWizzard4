@@ -87,27 +87,6 @@ def test_worker_run_emitsErrorOnException(qtbot):
         a.run()
 
 
-def test_worker_run_swallowsRuntimeErrorOnResult():
-    def testFunc():
-        return "x"
-
-    a = tpool.Worker(testFunc)
-    a.signals = mock.Mock()
-    a.signals.result.emit.side_effect = RuntimeError
-    a.signals.finished.emit.side_effect = RuntimeError
-    a.run()
-
-
-def test_worker_run_swallowsRuntimeErrorOnError():
-    def testFunc():
-        raise RuntimeError("boom")
-
-    a = tpool.Worker(testFunc)
-    a.signals = mock.Mock()
-    a.signals.error.emit.side_effect = RuntimeError
-    a.signals.finished.emit.side_effect = RuntimeError
-    a.run()
-
 
 def test_startWorker_guardBlocks():
     pool = mock.Mock()
@@ -164,15 +143,3 @@ def test_startWorker_connectsClearMethodToFinished():
     worker.signals.finished.emit()
     assert received == ["finished"]
 
-
-def test_startWorker_connectsClearMethodToResult():
-    pool = mock.Mock()
-    received = []
-    worker = tpool.startWorker(
-        pool,
-        lambda: None,
-        clearMethod=lambda r: received.append(r),
-        useResult=True,
-    )
-    worker.signals.result.emit("value")
-    assert received == ["value"]

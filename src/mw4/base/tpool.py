@@ -63,25 +63,11 @@ class Worker(QRunnable):
             parts.append(f" - excType: [{type(e)}], excValue: [{e}]")
             eStr = "".join(parts)
             self.log.critical(eStr)
-            try:
-                if self.signals is not None:
-                    self.signals.error.emit(eStr)
-            except RuntimeError:
-                pass
-
+            self.signals.error.emit(eStr)
         else:
-            try:
-                if self.signals is not None:
-                    self.signals.result.emit(result)
-            except RuntimeError:
-                pass
-
+            self.signals.result.emit(result)
         finally:
-            try:
-                if self.signals is not None:
-                    self.signals.finished.emit()
-            except RuntimeError:
-                pass
+            self.signals.finished.emit()
 
 
 def startWorker(
@@ -106,8 +92,7 @@ def startWorker(
     if mutex is not None and not mutex.tryLock():
         return None
     worker = Worker(target, *args, **kwargs)
-    sig = worker.signals.result if useResult else worker.signals.finished
     if clearMethod is not None:
-        sig.connect(clearMethod)
+        worker.signals.finished.connect(clearMethod)
     threadPool.start(worker)
     return worker

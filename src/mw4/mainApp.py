@@ -80,13 +80,14 @@ class MountWizzard4(QObject):
         self.isOnline: bool = False
         self.statusOperationRunning: int = 0
         self.messageQueue: Queue = Queue()
+        self.msg.connect(self.writeMessageQueue)
         self.config = loadProfileStart(self.mwGlob["configDir"])
         # Push initial lifecycle messages into the message queue.
         profile = self.config.get("profileName", "-")
         workDir = self.mwGlob["workDir"]
-        self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 started..."))
-        self.messageQueue.put((1, "System", "Workdir", f"[{workDir}]"))
-        self.messageQueue.put((1, "System", "Profile", f"[{profile}]"))
+        self.msg.emit(1, "System", "Lifecycle", "MountWizzard4 started...")
+        self.msg.emit(1, "System", "Workdir", f"[{workDir}]")
+        self.msg.emit(1, "System", "Profile", f"[{profile}]")
         self.timeMgr = TimeManager(app=self)
         self.dReg: DeviceRegistry = DeviceRegistry(self)
         self.dReg.addDevices(self)
@@ -134,11 +135,15 @@ class MountWizzard4(QObject):
     def storeStatusOperationRunning(self, status: int) -> None:
         self.statusOperationRunning = status
 
+    def writeMessageQueue(self, prio: int, source: str, mType: str, message: str) -> None:
+        self.log.debug(f"Message window:[{source} - {mType} - {message}]")
+        self.messageQueue.put((prio, source, mType, message))
+
     def aboutToQuit(self) -> None:
         self.timeMgr.stop()
 
     def quit(self) -> None:
         self.dReg.setStat("mount", False)
         self.aboutToQuit()
-        self.messageQueue.put((1, "System", "Lifecycle", "MountWizzard4 manual stopped"))
+        self.msg.emit(1, "System", "Lifecycle", "MountWizzard4 manual stopped")
         self.application.quit()

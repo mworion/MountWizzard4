@@ -42,7 +42,6 @@ class MessageWindow(MWidget):
         self.messFont: QFont | None = None
         self.messColor: list = []
         self.setupMessage()
-        self.app.msg.connect(self.writeMessageQueue)
 
     def initConfig(self) -> None:
         config = self.app.config.get("WindowMessage", {})
@@ -96,10 +95,6 @@ class MessageWindow(MWidget):
         self.app.timeMgr.update1s.connect(self.writeMessage)
         self.app.colorChange.connect(self.colorChange)
         self.show()
-
-    def writeMessageQueue(self, prio: int, source: str, mType: str, message: str) -> None:
-        self.log.debug(f"Message window:[{source} - {mType} - {message}]")
-        self.app.messageQueue.put((prio, source, mType, message))
 
     def writeMessage(self) -> None:
         while not self.app.messageQueue.empty():

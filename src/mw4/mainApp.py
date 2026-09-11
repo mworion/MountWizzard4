@@ -91,7 +91,6 @@ class MountWizzard4(QObject):
         self.timeMgr = TimeManager(app=self)
         self.dReg: DeviceRegistry = DeviceRegistry(self)
         self.dReg.addDevices(self)
-        self.dReg.initConfig()
         self.audioMgr = AudioManager(app=self)
         self.initConfig()
         self.buildPoint = BuildPoint(self)
@@ -112,6 +111,7 @@ class MountWizzard4(QObject):
             self.messageQueue.put((1, "System", "Arguments", sys.argv[1]))
 
     def initConfig(self) -> None:
+        self.dReg.initConfig()
         cfgSetting = self.config.get("SettingUpdate", {})
         setCustomLoggingLevel(self, cfgSetting.get("loglevel", "DEBUG"))
         self.isOnline = cfgSetting.get("isOnline", False)

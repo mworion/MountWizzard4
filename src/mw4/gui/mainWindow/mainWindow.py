@@ -310,12 +310,15 @@ class MainWindow(MWidget):
             self.satStatus = False
 
     def switchProfile(self, config: dict) -> None:
-        self.externalWindows.closeExtendedWindows()
+        self.app.timeMgr.stop()
         self.app.dReg.stopDevices()
+        self.externalWindows.closeExtendedWindows()
         self.threadPool.waitForDone(10000)
         self.app.config = config
         self.app.initConfig()
         self.initConfig()
+        self.app.dReg.startDevices()
+        self.app.timeMgr.start()
 
     def loadProfileGUI(self) -> None:
         folder = self.app.mwGlob["configDir"]

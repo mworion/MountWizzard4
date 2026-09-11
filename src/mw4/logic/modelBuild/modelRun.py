@@ -136,7 +136,7 @@ class ModelData(QObject):
             return
 
         if self.app.dReg["dome"].stat:
-            self.app.dReg["dome"].instance.slewDome(azimuth)
+            self.app.dReg["dome"].instance.slewDome(azimuth=azimuth.degrees)
         self.app.dReg["mount"].obsSite.startSlewing()
         t = f"{'Start slew':15s}: [{self.modelRunKey}], "
         t += f" Alt: [{altitude.degrees:03.0f}], Az: [{azimuth.degrees:03.0f}]"

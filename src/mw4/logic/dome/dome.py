@@ -235,7 +235,7 @@ class Dome:
             self.log.debug("Use old overshoot value")
 
         self.log.debug(f"Overshoot value: [{self.lastFinalAz}]")
-        return self.lastFinalAz
+        return finalAz
 
     def slewDome(self, altitude: float = 0, azimuth: float = 0, follow: bool = False) -> float:
         mount = self.app.dReg["mount"].instance

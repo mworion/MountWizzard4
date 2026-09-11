@@ -60,6 +60,7 @@ class TimeManager(QObject):
         self.unitTimeUTC: bool = True
 
     def start(self) -> None:
+        self.isStopped = False
         self.timer.start(TICK_INTERVAL_MS)
 
     def stop(self) -> None:

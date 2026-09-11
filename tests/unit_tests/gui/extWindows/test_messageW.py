@@ -79,8 +79,11 @@ def test_clearMessageTable_1(function):
     function.clearMessageTable()
 
 
-def test_writeMessageQueue(function):
-    function.writeMessageQueue(1, "test", "test", "test")
+def test_msg_signal_queue_integration(function):
+    """Test that messages in app.messageQueue can be written to the message table."""
+    function.app.messageQueue.put((0, "test", "test", "test"))
+    function.writeMessage()
+    assert function.ui.messageTable.rowCount() > 0
 
 
 def test_writeMessage_1(function):

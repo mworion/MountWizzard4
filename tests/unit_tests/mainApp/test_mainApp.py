@@ -138,6 +138,34 @@ def test_quit_prevents_double_call(app):
     mock_app_quit.assert_called_once()
 
 
+def test_writeMessageQueue(app):
+    """writeMessageQueue adds messages to the message queue."""
+    initial_size = app.messageQueue.qsize()
+    app.writeMessageQueue(1, "test", "test", "test")
+    assert app.messageQueue.qsize() == initial_size + 1
+    while app.messageQueue.qsize() > 1:
+        app.messageQueue.get()
+    prio, source, mType, message = app.messageQueue.get()
+    assert prio == 1
+    assert source == "test"
+    assert mType == "test"
+    assert message == "test"
+
+
+def test_msg_signal_connects_to_writeMessageQueue(app):
+    """msg signal is connected to writeMessageQueue method."""
+    initial_size = app.messageQueue.qsize()
+    app.msg.emit(1, "source", "type", "message")
+    assert app.messageQueue.qsize() == initial_size + 1
+    while app.messageQueue.qsize() > 1:
+        app.messageQueue.get()
+    prio, source, mType, message = app.messageQueue.get()
+    assert prio == 1
+    assert source == "source"
+    assert mType == "type"
+    assert message == "message"
+
+
 def test_getActiveDrivers(app):
     """getActiveDrivers() method is not implemented yet."""
     # TODO: This method needs to be implemented in the MountWizzard4 class

@@ -35,6 +35,7 @@ class Park(TabAddon):
     def initConfig(self) -> None:
         config = self.app.config.get("MountPark", {})
         self.mainW.ui.parkMountAfterSlew.setChecked(config.get("ParkMountAfterSlew", False))
+        self.updateParkButtonText()
 
     def storeConfig(self) -> None:
         self.app.config["MountPark"] = {}

@@ -87,7 +87,6 @@ def test_worker_run_emitsErrorOnException(qtbot):
         a.run()
 
 
-
 def test_startWorker_guardBlocks():
     pool = mock.Mock()
     worker = tpool.startWorker(pool, lambda: None, guard=lambda: False)
@@ -142,4 +141,3 @@ def test_startWorker_connectsClearMethodToFinished():
     )
     worker.signals.finished.emit()
     assert received == ["finished"]
-

@@ -18,7 +18,7 @@ import pytest
 import wakeonlan
 from mw4.gui.extWindows.setting.tabSettMount import SettMount
 from mw4.gui.widgets.setting_ui import Ui_SettingDialog
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QApplication, QWidget
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from typing import Any
 from unittest import mock
@@ -36,6 +36,7 @@ def settMount(qapp: Any) -> SettMount:
     window = SettMount(mainW)
     yield window
     mainW.app.threadPool.waitForDone(1000)
+    QApplication.processEvents()
 
 
 def test_initialization(settMount: SettMount) -> None:

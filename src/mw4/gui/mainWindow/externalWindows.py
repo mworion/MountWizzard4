@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+import logging
 from functools import partial
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.gui.extWindows.analyseW import AnalyseWindow
@@ -32,6 +33,7 @@ from typing import Any
 
 class ExternalWindows:
     def __init__(self, mainW):
+        self.log = logging.getLogger("MW4")
         self.mainW = mainW
         self.app = mainW.app
 
@@ -160,6 +162,7 @@ class ExternalWindows:
         for window in self.uiWindows:
             if not self.app.config.get(window, False):
                 continue
+            self.log.debug(f"Building window: {window}")
             self.buildWindow(window)
 
     def toggleWindow(self, windowName) -> None:
@@ -172,5 +175,6 @@ class ExternalWindows:
         for window in self.uiWindows:
             if not self.uiWindows[window]["classObj"]:
                 continue
+            self.log.debug(f"Closing window: {window}")
             self.uiWindows[window]["classObj"].close()
             mainThreadSleep(50)

@@ -164,9 +164,9 @@ class MainWindow(MWidget):
         self.mainWindowAddons.updateColorSet()
 
     def closeEvent(self, closeEvent) -> None:
-        self.app.dReg.stopDevices()
-        self.app.timeMgr.stop()
         changeStyleDynamic(self.ui.pauseModel, "pause", False)
+        self.app.timeMgr.stop()
+        self.app.dReg.stopDevices()
         self.externalWindows.closeExtendedWindows()
         self.threadPool.waitForDone(1000)
         super().closeEvent(closeEvent)

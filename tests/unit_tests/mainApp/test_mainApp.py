@@ -116,28 +116,6 @@ def test_aboutToQuit(app):
     mockStop.assert_called_once()
 
 
-def test_quit(app):
-    """Test quit() method calls aboutToQuit and quits application."""
-    with (
-        mock.patch.object(app, "aboutToQuit") as mock_about_to_quit,
-        mock.patch.object(app.application, "quit") as mock_app_quit,
-    ):
-        app.quit()
-    mock_about_to_quit.assert_called_once()
-    mock_app_quit.assert_called_once()
-
-
-def test_quit_prevents_double_call(app):
-    """Test quit() method always executes quit logic."""
-    with (
-        mock.patch.object(app, "aboutToQuit") as mock_about_to_quit,
-        mock.patch.object(app.application, "quit") as mock_app_quit,
-    ):
-        app.quit()
-    mock_about_to_quit.assert_called_once()
-    mock_app_quit.assert_called_once()
-
-
 def test_writeMessageQueue(app):
     """writeMessageQueue adds messages to the message queue."""
     initial_size = app.messageQueue.qsize()

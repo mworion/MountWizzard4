@@ -12,7 +12,7 @@
 # written in python3, (c) 2019-2026 by mworion
 # License APL2.0
 #
-###########################################################
+import logging
 from collections.abc import Iterator
 from dataclasses import fields
 from mw4.base.deviceEntry import DeviceEntry
@@ -38,6 +38,8 @@ from typing import Any
 
 
 class DeviceRegistry(QObject):
+    log = logging.getLogger("MW4")
+
     def __init__(self, app: Any) -> None:
         super().__init__()
         self.app = app
@@ -177,6 +179,7 @@ class DeviceRegistry(QObject):
         self.d[device].data.clear()
 
     def stopDevices(self) -> None:
+        self.log.debug("Stopping all devices")
         for entry in self.configurable():
             self.stopDevice(entry.name)
 
@@ -189,6 +192,7 @@ class DeviceRegistry(QObject):
         self.d[device].instance.startCommunication()
 
     def startDevices(self) -> None:
+        self.log.debug("Starting all devices")
         for entry in self.configurable():
             self.startDevice(entry.name)
 

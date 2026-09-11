@@ -17,7 +17,7 @@ import pytest
 from mw4.gui.extWindows.setting.tabSettDevice import SettDevice
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from PySide6.QtWidgets import QComboBox, QPushButton
+from PySide6.QtWidgets import QApplication, QComboBox, QPushButton
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from typing import ClassVar
 from unittest import mock
@@ -104,6 +104,7 @@ def function(qapp):
         window = SettDevice(mainW)
     yield window
     mainW.app.threadPool.waitForDone(10000)
+    QApplication.processEvents()
 
 
 def test_setupIcons_1(function):

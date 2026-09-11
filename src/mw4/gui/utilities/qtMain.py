@@ -81,6 +81,10 @@ class MWidget(QMainWindow, Styles):
         centralWidget.setMouseTracking(True)
         centralWidget.raise_()
 
+    def closeEvent(self, event):
+        self.deleteLater()
+        event.accept()
+
     def changeEvent(self, event: QEvent) -> None:
         if event.type() == QEvent.Type.WindowStateChange:
             self.titleBar.windowStateChanged(self.windowState())

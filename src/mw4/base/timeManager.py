@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+import logging
 from dateutil.tz import tzlocal
 from PySide6.QtCore import QObject, QTimer, Signal
 from skyfield.api import Time
@@ -36,6 +37,8 @@ START_SCHEDULE: list[tuple[int, str]] = [
 
 
 class TimeManager(QObject):
+    log = logging.getLogger("MW4")
+
     # --- Cyclic update signals (emitted every 100ms tick) ---
     update0_1s = Signal()
     update0_5s = Signal()
@@ -60,10 +63,12 @@ class TimeManager(QObject):
         self.unitTimeUTC: bool = True
 
     def start(self) -> None:
+        self.log.debug("Starting TimeManager")
         self.isStopped = False
         self.timer.start(TICK_INTERVAL_MS)
 
     def stop(self) -> None:
+        self.log.debug("Stopping TimeManager")
         self.isStopped = True
         self.timer.stop()
 

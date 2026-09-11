@@ -13,19 +13,22 @@
 # License APL2.0
 #
 ###########################################################
+import contextlib
 import pytest
 from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QApplication, QWidget
 from unittest import mock
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def dlg(qapp):
     parent = QWidget()
     parent.resize(400, 400)
     d = MWMessageDialog(parent=parent, title="t", question="q?")
     yield d
-    d.close()
+    with contextlib.suppress(RuntimeError):
+        d.close()
+    QApplication.processEvents()
 
 
 def test_initStandardButtons(qapp):

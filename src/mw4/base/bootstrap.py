@@ -88,6 +88,7 @@ def setupWorkDirs(workDir: Path) -> MwGlob:
 
 
 def writeSystemInfo(mwGlob: MwGlob) -> None:
+    log.info("-" * 80)
     log.info(f"[SYS] mountwizzard4    : {version('mountwizzard4')}")
     log.info(f"[SYS] platform         : {platform.system()}")
     log.info(f"[SYS] sys.executable   : {sys.executable}")
@@ -99,6 +100,7 @@ def writeSystemInfo(mwGlob: MwGlob) -> None:
     log.info(f"[SYS] python runtime   : {platform.architecture()[0]}")
     log.info(f"[SYS] PySide6 / Qt     : {PySide6.QtCore.__version__} / {qVersion()}")
     log.info(f"[SYS] node / hostname  : {platform.node()} / {socket.gethostname()}")
+    log.info("-" * 80)
 
 
 def extractDataFiles(mwGlob: MwGlob) -> None:

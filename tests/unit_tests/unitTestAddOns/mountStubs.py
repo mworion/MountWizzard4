@@ -76,6 +76,12 @@ class MountSatellite:
         return
 
 
+class MountTime:
+    def __init__(self):
+        self.timeDiff: float = 0.0
+        self.rtt: float = 0.0
+
+
 class MountModel:
     def __init__(self):
         self.starList = []
@@ -469,6 +475,7 @@ class Mount(QObject):
         self.setting = MountSetting()
         self.satellite = MountSatellite()
         self.model = MountModel()
+        self.mountTime = MountTime()
         self.host = None
         self.MAC = None
         self.loggingTrace = False

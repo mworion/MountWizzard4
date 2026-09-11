@@ -111,6 +111,7 @@ class MountWizzard4(QObject):
             self.messageQueue.put((1, "System", "Arguments", sys.argv[1]))
 
     def initConfig(self) -> None:
+        self.log.debug("Initializing configuration main application")
         self.dReg.initConfig()
         cfgSetting = self.config.get("SettingUpdate", {})
         setCustomLoggingLevel(self, cfgSetting.get("loglevel", "DEBUG"))
@@ -123,6 +124,7 @@ class MountWizzard4(QObject):
         self.timeMgr.unitTimeUTC = self.config.get("unitTimeUTC", True)
 
     def storeConfig(self) -> None:
+        self.log.debug("Storing configuration main application")
         self.config["loglevel"] = logging.getLevelName(self.log.level)
         self.dReg.storeConfig()
         location = self.dReg["mount"].location
@@ -141,9 +143,3 @@ class MountWizzard4(QObject):
 
     def aboutToQuit(self) -> None:
         self.timeMgr.stop()
-
-    def quit(self) -> None:
-        self.dReg.setStat("mount", False)
-        self.aboutToQuit()
-        self.msg.emit(1, "System", "Lifecycle", "MountWizzard4 manual stopped")
-        self.application.quit()

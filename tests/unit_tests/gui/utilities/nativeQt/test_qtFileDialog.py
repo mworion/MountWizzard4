@@ -13,15 +13,16 @@
 # License APL2.0
 #
 ###########################################################
+import contextlib
 import pytest
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from pathlib import Path
 from PySide6.QtCore import QModelIndex
-from PySide6.QtWidgets import QFileDialog, QWidget
+from PySide6.QtWidgets import QApplication, QFileDialog, QWidget
 from unittest import mock
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def dlg(qapp, tmp_path_factory):
     tmp_path = tmp_path_factory.mktemp("qtFileDialog")
     (tmp_path / "a.txt").write_text("a")
@@ -37,7 +38,9 @@ def dlg(qapp, tmp_path_factory):
     )
     d._tmp_path = tmp_path
     yield d
-    d.close()
+    with contextlib.suppress(RuntimeError):
+        d.close()
+    QApplication.processEvents()
 
 
 def test_initFileMode(qapp, tmp_path):
@@ -46,6 +49,7 @@ def test_initFileMode(qapp, tmp_path):
     assert d.fileMode == QFileDialog.FileMode.Directory
     assert d.btnAccept.text() == "Choose"
     d.close()
+    QApplication.processEvents()
 
 
 def test_initSaveMode(qapp, tmp_path):
@@ -55,6 +59,7 @@ def test_initSaveMode(qapp, tmp_path):
     )
     assert d.btnAccept.text() == "Save"
     d.close()
+    QApplication.processEvents()
 
 
 def test_initEmptyFilterFallback(qapp, tmp_path):
@@ -62,12 +67,14 @@ def test_initEmptyFilterFallback(qapp, tmp_path):
     assert d.filterCombo.count() == 1
     assert d.filterCombo.itemText(0) == "All files (*)"
     d.close()
+    QApplication.processEvents()
 
 
 def test_setCurrentDirInvalidFallsBackHome(qapp):
     d = MWFileDialog(folder=Path("/this/does/not/exist"))
     assert d.currentDir == Path.home()
     d.close()
+    QApplication.processEvents()
 
 
 def test_onUpAndPathEntered(dlg, tmp_path):
@@ -89,6 +96,7 @@ def test_onUpAtRootIsNoop(qapp):
     d.onUp()
     assert d.currentDir == Path("/")
     d.close()
+    QApplication.processEvents()
 
 
 def test_onFilterChanged(dlg):
@@ -115,6 +123,7 @@ def test_resolveSelectionDirectoryDefault(qapp, tmp_path):
     (tmp_path / "sub").mkdir(exist_ok=True)
     assert d.resolveSelection() == [tmp_path / "sub"]
     d.close()
+    QApplication.processEvents()
 
 
 def test_onSelectionChangedFiles(dlg):
@@ -142,6 +151,7 @@ def test_onSelectionChangedMultiple(qapp, tmp_path):
     assert '"y y.txt"' in d.fileNameEdit.text()
     assert "x.txt" in d.fileNameEdit.text()
     d.close()
+    QApplication.processEvents()
 
 
 def test_onSelectionChangedDirectoryMode(qapp, tmp_path):
@@ -155,6 +165,7 @@ def test_onSelectionChangedDirectoryMode(qapp, tmp_path):
     d.onSelectionChanged()
     assert d.fileNameEdit.text() == "sub"
     d.close()
+    QApplication.processEvents()
 
 
 def test_onDoubleClickedDir(dlg):
@@ -181,6 +192,7 @@ def test_onDoubleClickedIgnoredInDirMode(qapp, tmp_path):
         d.onDoubleClicked(idx)
         m.assert_not_called()
     d.close()
+    QApplication.processEvents()
 
 
 def test_onAcceptExistingFile(dlg):
@@ -211,6 +223,7 @@ def test_onAcceptRejectsNonExistingFileInExistingFileMode(qapp, tmp_path):
     d.onAccept()
     assert d.resultCode == MWFileDialog.Rejected
     d.close()
+    QApplication.processEvents()
 
 
 def test_onAcceptEmptyIsNoop(dlg):
@@ -229,6 +242,7 @@ def test_onAcceptExistingFiles(qapp, tmp_path):
         d.onAccept()
     assert d.selectedFiles() == [tmp_path / "a.txt", tmp_path / "b.txt"]
     d.close()
+    QApplication.processEvents()
 
 
 def test_onAcceptExistingFilesRejectsMissing(qapp, tmp_path):
@@ -238,6 +252,7 @@ def test_onAcceptExistingFilesRejectsMissing(qapp, tmp_path):
     d.onAccept()
     assert d.resultCode == MWFileDialog.Rejected
     d.close()
+    QApplication.processEvents()
 
 
 def test_onAcceptDirectoryRejectsFile(qapp, tmp_path):
@@ -247,6 +262,7 @@ def test_onAcceptDirectoryRejectsFile(qapp, tmp_path):
     d.onAccept()
     assert d.resultCode == MWFileDialog.Rejected
     d.close()
+    QApplication.processEvents()
 
 
 def test_onReject(dlg):

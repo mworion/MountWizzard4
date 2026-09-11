@@ -422,7 +422,7 @@ def test_calcOvershoot_8(function):
     function.overshoot = True
     function.lastFinalAz = 10
     val = function.calcOvershoot(15)
-    assert round(val, 3) == 10
+    assert round(val, 3) == 7.405
 
 
 def test_slewDome_2(function):

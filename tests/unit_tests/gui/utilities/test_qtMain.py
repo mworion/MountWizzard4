@@ -16,7 +16,7 @@ import logging
 import pytest
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QCoreApplication, Qt
 from PySide6.QtWidgets import (
     QMainWindow,
     QPushButton,
@@ -34,6 +34,7 @@ def function(qapp):
     window.ui = Ui_MainWindow()
     window.ui.setupUi(window)
     yield window
+    QCoreApplication.processEvents()
 
 
 def test_saveWindowAsPNG(function):
@@ -374,3 +375,14 @@ def test_setNoFocus_2(function):
 
     assert grandchild.focusPolicy() == Qt.FocusPolicy.NoFocus
     assert child1.focusPolicy() == Qt.FocusPolicy.NoFocus
+
+
+def test_closeEvent_1(function):
+    """Test closeEvent calls deleteLater and accepts event."""
+    from PySide6.QtGui import QCloseEvent
+
+    mock_event = mock.MagicMock(spec=QCloseEvent)
+    with mock.patch.object(function, "deleteLater") as mock_delete:
+        function.closeEvent(mock_event)
+        mock_delete.assert_called_once()
+        mock_event.accept.assert_called_once()

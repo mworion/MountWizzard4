@@ -17,6 +17,7 @@ import pytest
 from mw4.gui.extWindows.setting.tabSettDome import SettDome
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
+from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
@@ -76,6 +77,7 @@ def function(qapp):
     window = SettDome(parentW)
     yield window
     parentW.app.threadPool.waitForDone(1000)
+    QApplication.processEvents()
 
 
 def test_showDomeExplainTab(function):

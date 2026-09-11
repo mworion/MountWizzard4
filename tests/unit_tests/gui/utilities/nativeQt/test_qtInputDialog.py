@@ -13,13 +13,14 @@
 # License APL2.0
 #
 ###########################################################
+import contextlib
 import pytest
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QApplication, QWidget
 from unittest import mock
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def dlg(qapp):
     parent = QWidget()
     parent.resize(400, 400)
@@ -30,7 +31,9 @@ def dlg(qapp):
         actualValue="default",
     )
     yield d
-    d.close()
+    with contextlib.suppress(RuntimeError):
+        d.close()
+    QApplication.processEvents()
 
 
 def test_initTextMode(qapp):

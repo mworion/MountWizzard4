@@ -414,7 +414,7 @@ class Connection:
             self.log.warning(f"Error    [{self.id}]: error: [{e}], received: [{chunkRaw}]")
             return False, []
         else:
-            response = responseBytes.decode("ASCII").rstrip("#").split("#")
+            response = responseBytes.replace(b"\xdf", b"*").decode("ASCII").rstrip("#").split("#")
             if self.loggingTrace:
                 self.log.debug(f"[Trace] Response [{self.id}]: [{response}]")
             return True, response
@@ -457,7 +457,7 @@ class Connection:
                     )
                 self.closeClientHard(client)
                 return sucSend, False, "Timeout"
-            val = client.readAll().data().decode("ASCII")
+            val = client.readAll().data().replace(b"\xdf", b"*").decode("ASCII")
         except (OSError, Exception) as e:
             self.log.warning(
                 f"[Trace] Error    [{self.id}]: socket error: [{e}] in communicate raw"

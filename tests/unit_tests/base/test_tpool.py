@@ -108,6 +108,8 @@ def test_startWorker_mutexBlocks():
     worker = tpool.startWorker(pool, lambda: None, mutex=mutex)
     assert worker is None
     pool.start.assert_not_called()
+    # Properly unlock the pre-locked mutex
+    assert not mutex.tryLock()
     mutex.unlock()
 
 
@@ -116,8 +118,15 @@ def test_startWorker_mutexAcquired():
     mutex = QMutex()
     worker = tpool.startWorker(pool, lambda: None, mutex=mutex)
     assert worker is not None
+    # Mutex is locked after startWorker
     assert not mutex.tryLock()
+    # Emit finished signal to trigger automatic unlock
+    worker.signals.finished.emit()
+    # Now mutex should be unlocked
+    assert mutex.tryLock()
     mutex.unlock()
+    # Clean up worker reference
+    del worker
 
 
 def test_startWorker_startsAndReturnsWorker():
@@ -127,17 +136,32 @@ def test_startWorker_startsAndReturnsWorker():
     pool.start.assert_called_once_with(worker)
 
 
-def test_startWorker_clearMethodOptional():
+def test_startWorker_resultMethodOptional():
     pool = mock.Mock()
-    worker = tpool.startWorker(pool, lambda: None, clearMethod=None)
+    worker = tpool.startWorker(pool, lambda: None, resultMethod=None)
     assert worker is not None
 
 
-def test_startWorker_connectsClearMethodToFinished():
+def test_startWorker_connectsResultMethodToResult():
     pool = mock.Mock()
     received = []
     worker = tpool.startWorker(
-        pool, lambda: None, clearMethod=lambda: received.append("finished")
+        pool, lambda: "test_value", resultMethod=lambda value: received.append(value)
     )
+    worker.signals.result.emit("test_value")
+    assert received == ["test_value"]
+
+
+def test_startWorker_mutexUnlockedAfterWorkerFinishes():
+    pool = mock.Mock()
+    mutex = QMutex()
+    worker = tpool.startWorker(pool, lambda: None, mutex=mutex)
+    assert worker is not None
+    assert not mutex.tryLock()
+    # Simulate worker finished
     worker.signals.finished.emit()
-    assert received == ["finished"]
+    # Now mutex should be unlocked
+    assert mutex.tryLock()
+    mutex.unlock()
+    # Clean up worker reference
+    del worker

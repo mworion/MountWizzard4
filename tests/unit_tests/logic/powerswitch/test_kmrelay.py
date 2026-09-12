@@ -409,9 +409,8 @@ def test_runnerPulseWithValue2Bad(kmRelay: KMRelay) -> None:
         kmRelay.runnerPulse(3)
 
 
-def test_clearPulse(kmRelay: KMRelay) -> None:
-    kmRelay.workerPulse = mock.MagicMock()
-    kmRelay.clearPulse()
+def test_resultPulse(kmRelay: KMRelay) -> None:
+    kmRelay.resultPulse()
     assert kmRelay.workerPulse is None
 
 

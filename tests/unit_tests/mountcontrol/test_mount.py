@@ -102,36 +102,36 @@ def test_startupMountData_4(function):
     assert function.mountIsUp
 
 
-def test_clearCyclePointing_1(function):
+def test_resultCyclePointing_1(function):
     function.obsSite.flipped = False
-    function.clearCyclePointing(True)
+    function.resultCyclePointing(True)
 
 
-def test_clearCyclePointing_2(function):
+def test_resultCyclePointing_2(function):
     function.obsSite.flipped = True
     function.obsSite.status = 1
     function.statusAlert = False
-    function.clearCyclePointing(True)
+    function.resultCyclePointing(True)
     assert function.statusAlert
 
 
-def test_clearCyclePointing_3(function):
+def test_resultCyclePointing_3(function):
     function.obsSite.status = 0
     function.statusAlert = False
-    function.clearCyclePointing(True)
+    function.resultCyclePointing(True)
     assert not function.statusAlert
 
 
-def test_clearCyclePointing_4(function):
+def test_resultCyclePointing_4(function):
     function.obsSite.statusSlew = True
-    function.clearCyclePointing(True)
+    function.resultCyclePointing(True)
     assert function.statusSlew
 
 
-def test_clearCyclePointing_5(function):
+def test_resultCyclePointing_5(function):
     function.obsSite.statusSlew = False
     function.statusSlew = True
-    function.clearCyclePointing(True)
+    function.resultCyclePointing(True)
     assert not function.statusSlew
 
 
@@ -156,8 +156,8 @@ def test_cyclePointing_3(function):
     function.mutexCyclePointing.unlock()
 
 
-def test_clearCycleSetting_1(function):
-    function.clearCycleSetting(True)
+def test_resultCycleSetting_1(function):
+    function.resultCycleSetting(True)
 
 
 def test_cycleSetting_1(function):
@@ -181,8 +181,8 @@ def test_cycleSetting_3(function):
     function.mutexCycleSetting.unlock()
 
 
-def test_clearGetModel_1(function):
-    function.clearGetModel()
+def test_resultGetModel_1(function):
+    function.resultGetModel()
 
 
 def test_getModel_1(function):
@@ -197,8 +197,8 @@ def test_getModel_2(function):
         function.getModel()
 
 
-def test_clearGetNames_1(function):
-    function.clearGetNames()
+def test_resultGetNames_1(function):
+    function.resultGetNames()
 
 
 def test_GetNames_1(function):
@@ -213,8 +213,8 @@ def test_GetNames_2(function):
         function.getNames()
 
 
-def test_clearGetFW_1(function):
-    function.clearGetFW()
+def test_resultGetFW_1(function):
+    function.resultGetFW()
 
 
 def test_GetFW_1(function):
@@ -229,8 +229,8 @@ def test_GetFW_2(function):
         function.getFW()
 
 
-def test_clearGetLocation_1(function):
-    function.clearGetLocation()
+def test_resultGetLocation_1(function):
+    function.resultGetLocation()
 
 
 def test_GetLocation_1(function):
@@ -245,9 +245,8 @@ def test_GetLocation_2(function):
         function.getLocation()
 
 
-def test_clearCalcTLE_1(function):
-    function.mutexCalcTLE.unlock()
-    function.clearCalcTLE()
+def test_resultCalcTLE_1(function):
+    function.resultCalcTLE()
 
 
 def test_CalcTLE_1(function):
@@ -270,8 +269,8 @@ def test_CalcTLE_3(function):
     function.mutexCalcTLE.unlock()
 
 
-def test_clearStatTLE_1(function):
-    function.clearStatTLE()
+def test_resultStatTLE_1(function):
+    function.resultStatTLE()
 
 
 def test_StatTLE_1(function):
@@ -286,9 +285,8 @@ def test_StatTLE_2(function):
         function.statTLE()
 
 
-def test_clearGetTLE_1(function):
-    function.mutexGetTLE.lock()
-    function.clearGetTLE()
+def test_resultGetTLE_1(function):
+    function.resultGetTLE()
 
 
 def test_GetTLE_1(function):
@@ -386,8 +384,8 @@ def test_runnerProgTrajectory_2(function):
         assert not suc
 
 
-def test_clearProgTrajectory_1(function):
-    function.clearProgTrajectory()
+def test_resultProgTrajectory_1(function):
+    function.resultProgTrajectory()
 
 
 def test_progTrajectory_1(function):
@@ -443,30 +441,30 @@ def test_calcMountAltAzToDomeAltAz_2(function):
         assert valAz is None
 
 
-def test_clearCyclePointing_alert_status_1_98(function):
+def test_resultCyclePointing_alert_status_1_98(function):
     function.obsSite.status = 98
     function.statusAlert = False
     with mock.patch.object(function.signals, "alert"):
-        function.clearCyclePointing(True)
+        function.resultCyclePointing(True)
         assert function.statusAlert
 
 
-def test_clearCyclePointing_alert_status_99(function):
+def test_resultCyclePointing_alert_status_99(function):
     function.obsSite.status = 99
     function.statusAlert = False
     with mock.patch.object(function.signals, "alert"):
-        function.clearCyclePointing(True)
+        function.resultCyclePointing(True)
         assert function.statusAlert
 
 
-def test_clearCyclePointing_settlingWait(function):
+def test_resultCyclePointing_settlingWait(function):
     function.obsSite.status = 0
     function.obsSite.flipped = True
     function._waitTimeFlip = 5000
     function.obsSite.statusSlew = False
     function.statusSlew = True
     with mock.patch.object(function.settlingWait, "start"):
-        function.clearCyclePointing(True)
+        function.resultCyclePointing(True)
         assert function.settlingWait.start.called
 
 
@@ -488,27 +486,27 @@ def test_bootMount_with_bAddress_only(function):
         assert suc
 
 
-def test_clearStatTLE_signal(function):
+def test_resultStatTLE_signal(function):
     with mock.patch.object(function.signals, "statTLEdone"):
-        function.clearStatTLE()
+        function.resultStatTLE()
         assert function.signals.statTLEdone.emit.called
 
 
-def test_clearGetTLE_signal(function):
+def test_resultGetTLE_signal(function):
     with mock.patch.object(function.signals, "getTLEdone"):
-        function.clearGetTLE()
+        function.resultGetTLE()
         assert function.signals.getTLEdone.emit.called
 
 
-def test_clearCalcTLE_signal(function):
+def test_resultCalcTLE_signal(function):
     with mock.patch.object(function.signals, "calcTLEdone"):
-        function.clearCalcTLE()
+        function.resultCalcTLE()
         assert function.signals.calcTLEdone.emit.called
 
 
-def test_clearProgTrajectory_signal(function):
+def test_resultProgTrajectory_signal(function):
     with mock.patch.object(function.signals, "calcTrajectoryDone"):
-        function.clearProgTrajectory()
+        function.resultProgTrajectory()
         assert function.signals.calcTrajectoryDone.emit.called
 
 

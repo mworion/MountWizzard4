@@ -87,14 +87,10 @@ class MountTime:
             self.errorCounter = 5
             self.parent.signals.mountIsUp.emit(True)
 
-    def clearMountUp(self) -> None:
-        self.mutexCycleMountUp.unlock()
-
     def checkMountUp(self) -> None:
         worker = startWorker(
             self.threadPool,
             self.runnerMountUp,
-            self.clearMountUp,
             mutex=self.mutexCycleMountUp,
         )
         if worker is not None:

@@ -160,7 +160,7 @@ class MountDevice(QObject):
             self.signals.deviceDisconnected.emit("mount")
             self.mountIsUp = False
 
-    def clearCyclePointing(self, result: bool) -> None:
+    def resultCyclePointing(self, result: bool) -> None:
         if self.obsSite.status in self.ALERT_STATUS_CODES:
             if not self.statusAlert:
                 self.signals.alert.emit()
@@ -175,22 +175,19 @@ class MountDevice(QObject):
 
         if result:
             self.signals.pointDone.emit(self.obsSite)
-        self.mutexCyclePointing.unlock()
 
     def cyclePointing(self) -> None:
         worker = startWorker(
             self.threadPool,
             self.obsSite.pollPointing,
-            self.clearCyclePointing,
+            self.resultCyclePointing,
             mutex=self.mutexCyclePointing,
-            useResult=True,
             guard=lambda: self.mountIsUp,
         )
         if worker is not None:
             self.workerCyclePointing = worker
 
-    def clearCycleSetting(self, result: bool) -> None:
-        self.mutexCycleSetting.unlock()
+    def resultCycleSetting(self, result: bool) -> None:
         if result:
             self.signals.settingDone.emit(self.setting)
 
@@ -198,41 +195,40 @@ class MountDevice(QObject):
         worker = startWorker(
             self.threadPool,
             self.setting.pollSetting,
-            self.clearCycleSetting,
+            self.resultCycleSetting,
             mutex=self.mutexCycleSetting,
-            useResult=True,
             guard=lambda: self.mountIsUp,
         )
         if worker is not None:
             self.workerCycleSetting = worker
 
-    def clearGetModel(self) -> None:
+    def resultGetModel(self) -> None:
         self.signals.getModelDone.emit(self.model)
 
     def getModel(self) -> None:
         worker = startWorker(
             self.threadPool,
             self.model.pollStars,
-            self.clearGetModel,
+            self.resultGetModel,
             guard=lambda: self.mountIsUp,
         )
         if worker is not None:
             self.workerGetModel = worker
 
-    def clearGetNames(self) -> None:
+    def resultGetNames(self) -> None:
         self.signals.namesDone.emit(self.model)
 
     def getNames(self) -> None:
         worker = startWorker(
             self.threadPool,
             self.model.pollNames,
-            self.clearGetNames,
+            self.resultGetNames,
             guard=lambda: self.mountIsUp,
         )
         if worker is not None:
             self.workerGetNames = worker
 
-    def clearGetFW(self) -> None:
+    def resultGetFW(self) -> None:
         self.log.info(f"Product : {self.firmware.product}")
         self.log.info(f"Firmware: {self.firmware.vString}")
         self.log.info(f"Hardware: {self.firmware.hardware}")
@@ -243,34 +239,33 @@ class MountDevice(QObject):
         worker = startWorker(
             self.threadPool,
             self.firmware.poll,
-            self.clearGetFW,
+            self.resultGetFW,
             guard=lambda: self.mountIsUp,
         )
         if worker is not None:
             self.workerGetFW = worker
 
-    def clearGetLocation(self) -> None:
+    def resultGetLocation(self) -> None:
         self.signals.locationDone.emit(self.obsSite)
 
     def getLocation(self) -> None:
         worker = startWorker(
             self.threadPool,
             self.obsSite.getLocation,
-            self.clearGetLocation,
+            self.resultGetLocation,
             guard=lambda: self.mountIsUp,
         )
         if worker is not None:
             self.workerGetLocation = worker
 
-    def clearCalcTLE(self) -> None:
-        self.mutexCalcTLE.unlock()
+    def resultCalcTLE(self) -> None:
         self.signals.calcTLEdone.emit(self.satellite.tleParams)
 
     def calcTLE(self, start: float) -> None:
         worker = startWorker(
             self.threadPool,
             self.satellite.calcTLE,
-            self.clearCalcTLE,
+            self.resultCalcTLE,
             start,
             mutex=self.mutexCalcTLE,
             guard=lambda: self.mountIsUp,
@@ -278,28 +273,27 @@ class MountDevice(QObject):
         if worker is not None:
             self.workerCalcTLE = worker
 
-    def clearStatTLE(self) -> None:
+    def resultStatTLE(self) -> None:
         self.signals.statTLEdone.emit(self.satellite.tleParams)
 
     def statTLE(self) -> None:
         worker = startWorker(
             self.threadPool,
             self.satellite.statTLE,
-            self.clearStatTLE,
+            self.resultStatTLE,
             guard=lambda: self.mountIsUp,
         )
         if worker is not None:
             self.workerStatTLE = worker
 
-    def clearGetTLE(self) -> None:
-        self.mutexGetTLE.unlock()
+    def resultGetTLE(self) -> None:
         self.signals.getTLEdone.emit(self.satellite.tleParams)
 
     def getTLE(self) -> None:
         worker = startWorker(
             self.threadPool,
             self.satellite.getTLE,
-            self.clearGetTLE,
+            self.resultGetTLE,
             mutex=self.mutexGetTLE,
             guard=lambda: self.mountIsUp,
         )
@@ -329,7 +323,7 @@ class MountDevice(QObject):
             self.mountIsUp = False
         return suc
 
-    def clearProgTrajectory(self) -> None:
+    def resultProgTrajectory(self) -> None:
         self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
 
     def runnerProgTrajectory(self, alt: Angle, az: Angle, replay: bool = False) -> bool:
@@ -346,11 +340,10 @@ class MountDevice(QObject):
         worker = startWorker(
             self.threadPool,
             self.runnerProgTrajectory,
-            self.clearProgTrajectory,
+            self.resultProgTrajectory,
             alt,
             az,
             replay=replay,
-            useResult=True,
             guard=lambda: self.mountIsUp,
         )
         if worker is not None:

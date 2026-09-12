@@ -37,6 +37,21 @@ def function():
     m.MountStatus = MountStatus
     mountTime = MountTime(parent=m)
     yield mountTime
+    # Cleanup: ensure all workers are finished and all mutexes are unlocked
+    if mountTime.workerCycleMountUp is not None:
+        mountTime.workerCycleMountUp.signals.finished.emit()
+        del mountTime.workerCycleMountUp
+    if mountTime.workerPollSyncClock is not None:
+        mountTime.workerPollSyncClock.signals.finished.emit()
+        del mountTime.workerPollSyncClock
+    # Wait for thread pool to finish
+    if hasattr(mountTime, 'threadPool') and mountTime.threadPool is not None:
+        mountTime.threadPool.waitForDone()
+    # Ensure all mutexes are unlocked
+    if mountTime.mutexCycleMountUp.tryLock():
+        mountTime.mutexCycleMountUp.unlock()
+    if mountTime.mutexPollSyncClock.tryLock():
+        mountTime.mutexPollSyncClock.unlock()
 
 
 def test_mountTime_init(function):
@@ -168,10 +183,6 @@ def test_runnerMountUp_error_counter_zero(function, ping_return, socket_fails):
     assert function.errorCounter == 0
 
 
-def test_clearMountUp(function):
-    function.mutexCycleMountUp.lock()
-    function.clearMountUp()
-
 
 def test_checkMountUp_locked(function):
     function.mutexCycleMountUp.lock()
@@ -187,7 +198,6 @@ def test_checkMountUp_unlocked(function):
         function.checkMountUp()
         assert start.called
         assert function.workerCycleMountUp is not None
-    function.clearMountUp()
 
 
 @pytest.mark.parametrize(
@@ -382,12 +392,18 @@ def test_pollSyncClock_unlocked(function):
         function.pollSyncClock()
         assert start.called
         assert function.workerPollSyncClock is not None
+    # Emit finished signal to trigger automatic mutex unlock
+    if function.workerPollSyncClock is not None:
+        function.workerPollSyncClock.signals.finished.emit()
     function.clearPollSyncClock()
 
 
 def test_clearPollSyncClock(function):
     function.mutexPollSyncClock.lock()
     function.clearPollSyncClock()
+    # Ensure mutex is properly unlocked
+    assert function.mutexPollSyncClock.tryLock()
+    function.mutexPollSyncClock.unlock()
 
 
 def test_pollSyncClock_communicate_failure(function):

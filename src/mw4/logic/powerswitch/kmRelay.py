@@ -165,14 +165,14 @@ class KMRelay:
             self.log.warning(f"Relay:{relayNumber}")
             return
 
-    def clearPulse(self) -> None:
+    def resultPulse(self) -> None:
         self.workerPulse = None
 
     def pulse(self, relayNumber: int) -> None:
         self.workerPulse = startWorker(
             self.threadPool,
             self.runnerPulse,
-            self.clearPulse,
+            self.resultPulse,
             relayNumber,
         )
 

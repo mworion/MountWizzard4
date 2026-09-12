@@ -25,6 +25,7 @@ from mw4.gui.extWindows.setting.tabSettUpdate import SettUpdate
 from mw4.gui.utilities.qtHelpers import getTabAndIndex, setTabAndIndex
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import setting_ui
+from PySide6.QtCore import QEvent
 from typing import Any
 
 
@@ -82,11 +83,12 @@ class SettingWindow(MWidget):
         self.tabSettGui.setupIcons()
         self.tabSettPark.setupIcons()
 
-    def closeEvent(self, closeEvent) -> None:
+    def closeEvent(self, event: QEvent) -> None:
         self.storeConfig()
         self.tabSettDevice.closeEvent()
         self.tabSettMount.closeEvent()
-        super().closeEvent(closeEvent)
+        self.tabSettDome.closeEvent()
+        super().closeEvent(event)
 
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)

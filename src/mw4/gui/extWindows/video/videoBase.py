@@ -16,7 +16,7 @@
 import cv2
 import qimage2ndarray
 from mw4.base.threadUtils import mainThreadSleep
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.gui.utilities.qtMain import MWidget
@@ -127,8 +127,7 @@ class VideoWindowBase(MWidget):
         self.running = True
         self.capture = cv2.VideoCapture()
         self.capture.setExceptionMode(True)
-        self.workerVideo = Worker(self.runnerVideo, source, frameRate)
-        self.threadPool.start(self.workerVideo)
+        self.workerVideo = startWorker(self.threadPool, self.runnerVideo, source, frameRate)
 
     def stopVideo(self) -> None:
         changeStyleDynamic(self.ui.videoStart, "run", "false")

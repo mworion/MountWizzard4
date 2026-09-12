@@ -18,7 +18,7 @@ import pyqtgraph as pg
 from dataclasses import dataclass
 from dateutil.tz import tzlocal
 from importlib.resources import as_file, files
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, setPixmapAlpha
 from PySide6.QtCore import QPointF, Qt
@@ -86,6 +86,7 @@ class Almanac(TabAddon):
     def __init__(self, mainW: Any) -> None:
         self.mainW = mainW
         self.app = mainW.app
+        self.threadPool = mainW.app.threadPool
         self.ui = mainW.ui
 
         self.civil = None
@@ -232,11 +233,14 @@ class Almanac(TabAddon):
         self.ui.almanacGroup.setTitle(t)
         ts = self.app.dReg["mount"].obsSite.ts
         changeStyleDynamic(self.ui.almanacGroup, "run", "true")
-        self.workerCalcTwilightDataPlot = Worker(
-            self.runnerCalcTwilightDataPlot, ts, location, timeWindow
+        self.workerCalcTwilightDataPlot = startWorker(
+            self.threadPool,
+            self.runnerCalcTwilightDataPlot,
+            ts,
+            location,
+            timeWindow,
+            resultMethod=self.plotTwilightData,
         )
-        self.workerCalcTwilightDataPlot.signals.result.connect(self.plotTwilightData)
-        self.app.threadPool.start(self.workerCalcTwilightDataPlot)
 
     def showTwilightDataList(self) -> None:
         location = self.app.dReg["mount"].obsSite.location

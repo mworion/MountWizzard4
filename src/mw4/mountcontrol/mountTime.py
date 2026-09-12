@@ -22,7 +22,6 @@ from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat
 from mw4.mountcontrol.obsSite import MountStatus
 from ping3 import ping
-from PySide6.QtCore import QMutex
 from skyfield.timelib import Time
 from typing import Any
 
@@ -43,8 +42,6 @@ class MountTime:
         self.errorCounter: int = 5
         self.workerCycleMountUp: Worker | None = None
         self.workerPollSyncClock: Worker | None = None
-        self.mutexCycleMountUp = QMutex()
-        self.mutexPollSyncClock = QMutex()
         self.app.timeMgr.update1s.connect(self.checkMountUp)
         self.app.timeMgr.update30s.connect(self.syncClock)
         self.app.timeMgr.update1s.connect(self.pollSyncClock)
@@ -129,9 +126,6 @@ class MountTime:
             if not self.deltaAdjustClock(delta):
                 self.log.warning(f"Clock delta sync failed with {delta} ms")
 
-    def clearPollSyncClock(self) -> None:
-        self.mutexPollSyncClock.unlock()
-
     def runnerPollSyncClock(self) -> None:
         conn = Connection(self.parent)
         commandString = ":GJD1#"
@@ -150,7 +144,6 @@ class MountTime:
         worker = startWorker(
             self.threadPool,
             self.runnerPollSyncClock,
-            self.clearPollSyncClock,
             guard=lambda: self.parent.mountIsUp,
         )
         if worker is not None:

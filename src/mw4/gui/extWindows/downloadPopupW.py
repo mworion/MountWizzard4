@@ -17,7 +17,7 @@ import gzip
 import requests
 import shutil
 from mw4.base.threadUtils import mainThreadSleep
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from mw4.gui.utilities.qtHelpers import svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.downloadPopup_ui import Ui_DownloadPopup
@@ -69,12 +69,15 @@ class DownloadPopup(MWidget):
     def exec(self) -> bool:
         self.showWindow()
         self.loop = QEventLoop()
-        self.workerDownloadFile = Worker(
-            self.runnerDownloadFile, self.url, self.dest, self.unzip
+        self.workerDownloadFile = startWorker(
+            self.threadPool,
+            self.runnerDownloadFile,
+            self.url,
+            self.dest,
+            self.unzip,
+            resultMethod=self.closePopup,
+            finishedMethod=self.loop.quit,
         )
-        self.workerDownloadFile.signals.result.connect(self.closePopup)
-        self.workerDownloadFile.signals.finished.connect(self.loop.quit)
-        self.threadPool.start(self.workerDownloadFile)
         self.loop.exec()
         return self.returnValues["success"]
 

@@ -15,11 +15,11 @@
 ###########################################################
 import numpy as np
 from functools import partial
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import keypad_ui
 from mw4.logic.keypad.keypad import KeyPad
-from PySide6.QtCore import QMutex, QObject, Signal
+from PySide6.QtCore import QObject, Signal
 from PySide6.QtGui import QPixmap
 from qimage2ndarray import array2qimage
 from typing import Any
@@ -51,7 +51,6 @@ class KeypadWindow(MWidget):
         self.signals = KeypadSignals()
         self.keypad = KeyPad(self.signals)
         self.inputActive: bool = False
-        self.websocketMutex = QMutex()
         self.worker: Worker | None = None
 
         self.graphics = np.zeros([64, 128, 4], dtype=np.uint8)
@@ -154,9 +153,12 @@ class KeypadWindow(MWidget):
             self.app.dReg["mount"].instance.config.hostAddress,
             self.app.dReg["mount"].instance.config.port,
         )
-        self.worker = Worker(self.keypad.runnerWebsocket, host)
-        self.worker.signals.finished.connect(self.websocketClear)
-        self.threadPool.start(self.worker)
+        self.worker = startWorker(
+            self.threadPool,
+            self.keypad.runnerWebsocket,
+            host,
+            finishedMethod=self.websocketClear,
+        )
 
     def buttonPressed(self, button: str) -> None:
         self.signals.mousePressed.emit(button)

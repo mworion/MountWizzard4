@@ -14,8 +14,9 @@
 #
 ###########################################################
 import json
+import logging
 import numpy as np
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.satData import SatData
 from mw4.gui.utilities.nativeQt.qtCustomTableWidgetItem import QCustomTableWidgetItem
@@ -28,7 +29,7 @@ from mw4.logic.satellites.satellite_calculations import (
     findSatUp,
     findSunlit,
 )
-from PySide6.QtCore import QMutex, QObject, Qt, Signal
+from PySide6.QtCore import QObject, Qt, Signal
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 from skyfield.api import EarthSatellite, Time
 from skyfield.toposlib import GeographicPosition
@@ -42,18 +43,19 @@ class SatSearchSignals(QObject):
 
 
 class SatSearch(SatData):
+    log = logging.getLogger("MW4")
     SATFILTERS: ClassVar = ["Starlink", "Cosmos", "Iridium", "Kuiper", "Qianfan", "Hulianwang"]
 
     def __init__(self, mainW: Any) -> None:
         super().__init__()
         self.mainW = mainW
         self.app = mainW.app
+        self.threadPool = mainW.app.threadPool
         self.msg = mainW.app.msg
         self.ui = mainW.ui
         self.signals = SatSearchSignals()
         self.calcGeneration: int = 0
         self.filterStr: str = ""
-        self.mutexCalc: QMutex = QMutex()
         self.workerCalcSatList: Worker | None = None
         SatData.satellites = AstroObjects(
             self.mainW,
@@ -279,8 +281,8 @@ class SatSearch(SatData):
                 show = show and (twilight <= selectTwilight)
                 self.signals.setSatListRowHidden.emit(row, not show, generation)
             self.signals.setSatGroupTitle.emit("Filter - processed - 100%", False, generation)
-        finally:
-            self.mutexCalc.unlock()
+        except Exception:
+            self.log.debug(f"Error on processing list satellite [{sat}]")
 
     def calcSatList(
         self, snapshot: list[tuple[int, str, EarthSatellite, bool]], generation: int
@@ -291,12 +293,15 @@ class SatSearch(SatData):
         checkIsSunlit = self.ui.satIsSunlit.isChecked()
         selectTwilight = self.ui.satTwilight.currentIndex()
         altMin = self.ui.satAltitudeMin.value()
-        if not self.mutexCalc.tryLock(3000):
-            return
-        self.workerCalcSatList = Worker(
-            self.runnerCalcSatList, snapshot, generation, checkIsSunlit, selectTwilight, altMin
+        self.workerCalcSatList = startWorker(
+            self.threadPool,
+            self.runnerCalcSatList,
+            snapshot,
+            generation,
+            checkIsSunlit,
+            selectTwilight,
+            altMin,
         )
-        self.app.threadPool.start(self.workerCalcSatList)
 
     def checkSatNameOk(self, name: str, number: int) -> bool:
         name = name.lower()

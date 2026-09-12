@@ -26,7 +26,7 @@ from mw4.mountcontrol.obsSite import MountStatus, ObsSite
 from mw4.mountcontrol.satellite import Satellite
 from mw4.mountcontrol.setting import Setting
 from pathlib import Path
-from PySide6.QtCore import QMutex, QObject, QTimer
+from PySide6.QtCore import QObject, QTimer
 from skyfield.api import Angle
 from typing import Any, Final
 
@@ -91,10 +91,6 @@ class MountDevice(QObject):
         self.workerGetModel: Worker | None = None
         self.workerGetNames: Worker | None = None
         self.workerTrajectory: Worker | None = None
-        self.mutexCycleSetting = QMutex()
-        self.mutexCyclePointing = QMutex()
-        self.mutexGetTLE = QMutex()
-        self.mutexCalcTLE = QMutex()
         self.mountIsUp: bool = False
         self.statusAlert: bool = False
         self.statusSlew: bool = False
@@ -180,7 +176,7 @@ class MountDevice(QObject):
         self.workerCyclePointing = startWorker(
             self.threadPool,
             self.obsSite.pollPointing,
-            self.resultCyclePointing,
+            resultMethod=self.resultCyclePointing,
             guard=lambda: self.mountIsUp,
         )
 
@@ -192,7 +188,7 @@ class MountDevice(QObject):
         self.workerCycleSetting = startWorker(
             self.threadPool,
             self.setting.pollSetting,
-            self.resultCycleSetting,
+            resultMethod=self.resultCycleSetting,
             guard=lambda: self.mountIsUp,
         )
 
@@ -203,7 +199,7 @@ class MountDevice(QObject):
         self.workerGetModel = startWorker(
             self.threadPool,
             self.model.pollStars,
-            self.resultGetModel,
+            resultMethod=self.resultGetModel,
             guard=lambda: self.mountIsUp,
         )
 
@@ -214,7 +210,7 @@ class MountDevice(QObject):
         self.workerGetNames = startWorker(
             self.threadPool,
             self.model.pollNames,
-            self.resultGetNames,
+            resultMethod=self.resultGetNames,
             guard=lambda: self.mountIsUp,
         )
 
@@ -229,7 +225,7 @@ class MountDevice(QObject):
         self.workerGetFW = startWorker(
             self.threadPool,
             self.firmware.poll,
-            self.resultGetFW,
+            resultMethod=self.resultGetFW,
             guard=lambda: self.mountIsUp,
         )
 
@@ -240,7 +236,7 @@ class MountDevice(QObject):
         self.workerGetLocation = startWorker(
             self.threadPool,
             self.obsSite.getLocation,
-            self.resultGetLocation,
+            resultMethod=self.resultGetLocation,
             guard=lambda: self.mountIsUp,
         )
 
@@ -251,8 +247,8 @@ class MountDevice(QObject):
         self.workerCalcTLE = startWorker(
             self.threadPool,
             self.satellite.calcTLE,
-            self.resultCalcTLE,
             start,
+            resultMethod=self.resultCalcTLE,
             guard=lambda: self.mountIsUp,
         )
 
@@ -263,7 +259,7 @@ class MountDevice(QObject):
         self.workerStatTLE = startWorker(
             self.threadPool,
             self.satellite.statTLE,
-            self.resultStatTLE,
+            resultMethod=self.resultStatTLE,
             guard=lambda: self.mountIsUp,
         )
 
@@ -274,7 +270,7 @@ class MountDevice(QObject):
         self.workerGetTLE = startWorker(
             self.threadPool,
             self.satellite.getTLE,
-            self.resultGetTLE,
+            resultMethod=self.resultGetTLE,
             guard=lambda: self.mountIsUp,
         )
 
@@ -318,10 +314,10 @@ class MountDevice(QObject):
         self.workerTrajectory = startWorker(
             self.threadPool,
             self.runnerProgTrajectory,
-            self.resultProgTrajectory,
             alt,
             az,
             replay=replay,
+            resultMethod=self.resultProgTrajectory,
             guard=lambda: self.mountIsUp,
         )
 

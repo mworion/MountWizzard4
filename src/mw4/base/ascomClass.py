@@ -19,7 +19,7 @@ import subprocess
 import sys
 from dataclasses import dataclass, field
 from mw4.base.alpacaAscomCommon import AlpacaAscomCommon
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from typing import Any
 
 if platform.system() == "Windows":
@@ -63,8 +63,7 @@ class AscomClass(AlpacaAscomCommon):
         if not self.config.deviceName:
             return
         self.stopEvent.clear()
-        self.workerRunnerCoreLoop = Worker(self.runnerCoreLoop)
-        self.threadPool.start(self.workerRunnerCoreLoop)
+        self.workerRunnerCoreLoop = startWorker(self.threadPool, self.runnerCoreLoop)
 
     @classmethod
     def selectAscomDriver(cls, deviceName: str, deviceType: str) -> str:

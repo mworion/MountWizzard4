@@ -75,8 +75,9 @@ class Worker(QRunnable):
 def startWorker(
     threadPool: QThreadPool,
     target: Callable[..., Any],
-    resultMethod: Callable[..., Any] | None = None,
     *args: Any,
+    resultMethod: Callable[..., Any] | None = None,
+    finishedMethod: Callable[..., Any] | None = None,
     guard: Callable[[], bool] | None = None,
     **kwargs: Any,
 ) -> Worker | None:
@@ -88,5 +89,7 @@ def startWorker(
         return None
     if resultMethod is not None:
         worker.signals.result.connect(resultMethod)
+    if finishedMethod is not None:
+        worker.signals.finished.connect(finishedMethod)
     threadPool.start(worker)
     return worker

@@ -20,7 +20,7 @@ import time
 from dataclasses import dataclass, field
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker, startWorker
-from PySide6.QtCore import QMutex, QTimer, Signal
+from PySide6.QtCore import QTimer, Signal
 from typing import Any
 
 
@@ -53,7 +53,6 @@ class KMRelay:
         self.data: dict[str, Any] = {}
         self.config = DeviceConfigKMRelay()
         self.run: dict[str, Any] = {"relay": self}
-        self.mutexPoll = QMutex()
         self.status: list[int] = [0] * 8
         self.deviceConnected: bool = False
         self.timerTask = QTimer()

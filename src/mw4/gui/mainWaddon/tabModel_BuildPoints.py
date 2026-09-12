@@ -14,11 +14,9 @@
 #
 ###########################################################
 from astroquery.simbad import Simbad
-from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
-from PySide6.QtCore import QMutex
 from skyfield.api import Angle
 from typing import Any
 
@@ -29,9 +27,6 @@ class BuildPoints(TabAddon):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-
-        self.sortRunning = QMutex()
-        self.worker: Worker | None = None
         self.lastGenerator: str = "none"
         self.sortedGenerators: dict = {
             "grid": self.genBuildGrid,

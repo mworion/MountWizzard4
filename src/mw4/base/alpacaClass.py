@@ -24,7 +24,7 @@ from alpaca.switch import Switch as AlpycaSwitch
 from alpaca.telescope import Telescope as AlpycaTelescope
 from dataclasses import dataclass, field
 from mw4.base.alpacaAscomCommon import AlpacaAscomCommon
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from typing import Any, ClassVar
 
 
@@ -81,8 +81,9 @@ class AlpacaClass(AlpacaAscomCommon):
         self.stopEvent.clear()
         if not self.createAlpacaDevice(self.parent.DEVICE_TYPE):
             return
-        self.workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
-        self.threadPool.start(self.workerCommunicationLoop)
+        self.workerCommunicationLoop = startWorker(
+            self.threadPool, self.runnerCommunicationLoop
+        )
 
     def discoverAPIVersion(self) -> int:
         address = f"{self.config.hostAddress}:{self.config.port}"

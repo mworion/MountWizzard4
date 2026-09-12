@@ -441,16 +441,6 @@ def test_processRxQueue_messageEvent(function):
     )
 
 
-# ─── cleanupStop ─────────────────────────────────────────────────────────────
-
-
-def test_cleanupStop(function):
-    function.clientMutex.lock()
-    function.cleanupStop()
-    # Verify mutex was unlocked by successfully locking it again
-    assert function.clientMutex.tryLock() is True
-    function.clientMutex.unlock()
-
 
 # ─── runnerQueueClient ──────────────────────────────────────────────────────────
 
@@ -492,26 +482,15 @@ def test_runQueueClient_loggingTraceOn(function):
     function.loggingTrace = False
 
 
-# ─── startCommunication ──────────────────────────────────────────────────────
-
-
-def test_startCommunication_mutexAlreadyLocked(function):
-    function.clientMutex.lock()
-    function.startCommunication()
-    assert function.commandRunning is False
-    function.clientMutex.unlock()
+# ─── startCommunication ──────────────────────────────────────────────────
 
 
 def test_startCommunication_success(function):
-    with mock.patch("mw4.base.indiClass.Worker") as mock_worker_cls:
-        mock_worker_instance = mock.MagicMock()
-        mock_worker_cls.return_value = mock_worker_instance
-        with mock.patch.object(function.threadPool, "start"):
-            function.startCommunication()
+    with mock.patch.object(function.threadPool, "start"):
+        function.startCommunication()
     assert function.commandRunning is True
-    assert function.workerIndiQueueClient is mock_worker_instance
-    assert function.workerProcessRxQueue is mock_worker_instance
-    function.clientMutex.unlock()
+    assert function.workerIndiQueueClient is not None
+    assert function.workerProcessRxQueue is not None
 
 
 # ─── stopCommunication ───────────────────────────────────────────────────────
@@ -553,12 +532,6 @@ def test_loadIndiConfig(function):
     item = function.txQ.get_nowait()
     assert item == ("TestDevice", "CONFIG_PROCESS", {"CONFIG_PROCESS": True})
 
-
-def test_discoverDevices_mutexLocked(function):
-    function.discoverMutex.lock()
-    result = function.discoverDevices("dome", "localhost", 7624)
-    assert result == []
-    function.discoverMutex.unlock()
 
 
 def test_discoverDevices_emptyQueue(function, monkeypatch):

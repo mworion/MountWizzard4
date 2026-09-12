@@ -14,7 +14,7 @@
 #
 ###########################################################
 import logging
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
 from mw4.logic.databaseProcessing.dataWriter import DataWriter
@@ -54,7 +54,6 @@ class AstroObjects:
         self.uiSourceGroup = uiSourceGroup
         self.processSource = processSource
         self.workerSource: Worker | None = None
-        self.workerTable: Worker | None = None
         self.objects: dict = {}
         self.tempDir: Path = self.app.mwGlob["tempDir"]
         self.dataDir: Path = self.app.mwGlob["dataDir"]
@@ -90,8 +89,7 @@ class AstroObjects:
 
     def procSourceData(self) -> None:
         self.dataValid = False
-        self.workerSource = Worker(self.runnerProcessSource)
-        self.threadPool.start(self.workerSource)
+        self.workerSource = startWorker(self.threadPool, self.runnerProcessSource)
 
     def runDownloadPopup(self, url: str, unzip: bool, entry: str, fileName: str) -> None:
         self.msg.emit(1, self.objectText.capitalize(), "Download", f"{entry}")

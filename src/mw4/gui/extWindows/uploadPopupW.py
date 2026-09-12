@@ -16,7 +16,7 @@
 import re
 import requests
 from mw4.base.threadUtils import mainThreadSleep
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from mw4.gui.utilities.qtHelpers import svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.uploadPopup_ui import Ui_UploadPopup
@@ -84,6 +84,11 @@ class UploadPopup(MWidget):
         self.signalProgressBarColor.connect(self.setProgressBarColor)
         self.setIcon()
 
+    @classmethod
+    def upload(cls, parentW: MWidget, url: str, dTypes: list[str], dFilePath: Path) -> bool:
+        dlg = cls(parentW, url, dTypes, dFilePath)
+        return dlg.exec()
+
     def setIcon(self) -> None:
         pixmap = svg2pixmap("assets/icon/upload_pop.svg", self.M_PRIM)
         pixmap = pixmap.scaled(64, 64, Qt.AspectRatioMode.KeepAspectRatio)
@@ -94,22 +99,6 @@ class UploadPopup(MWidget):
         self.titleBar.normButton.setVisible(False)
         self.titleBar.maxButton.setVisible(False)
         self.titleBar.windowFixed = True
-
-    def exec(self) -> bool:
-        self.showWindow()
-        self.loop = QEventLoop()
-        self.workerPollStatus = Worker(self.runnerPollStatus)
-        self.workerUploadFile = Worker(self.runnerUploadFile)
-        self.workerUploadFile.signals.result.connect(self.closePopup)
-        self.workerUploadFile.signals.finished.connect(self.loop.quit)
-        self.threadPool.start(self.workerUploadFile)
-        self.loop.exec()
-        return self.returnValues["success"]
-
-    @classmethod
-    def upload(cls, parentW: MWidget, url: str, dTypes: list[str], dFilePath: Path) -> bool:
-        dlg = cls(parentW, url, dTypes, dFilePath)
-        return dlg.exec()
 
     def setProgressBarColor(self, colorstr: str) -> None:
         css = "QProgressBar::chunk {background-color: " + colorstr + ";}"
@@ -135,7 +124,6 @@ class UploadPopup(MWidget):
             return
         single = len(text) == 1
         multiple = len(text) > 1
-
         if single and text[0].split()[0] in ["Uploading", "Processing"]:
             self.signalStatus.emit(text[0])
         elif multiple and text[-1].split()[-1] in ["file.", "failed"]:
@@ -197,18 +185,20 @@ class UploadPopup(MWidget):
             return False
 
     def postHostData(self, files: dict) -> bool:
-        returnValues = requests.post(self.generateURL(), files=files, timeout=10)  # SEC-4
-        if returnValues.status_code != 202:
-            self.msg.emit(2, "Upload", "Error", f"Data: {returnValues.status_code}")
+        try:
+            returnValues = requests.post(self.generateURL(), files=files, timeout=10)  # SEC-4
+            if returnValues.status_code != 202:
+                self.msg.emit(2, "Upload", "Error", f"Data: {returnValues.status_code}")
+                return False
+            return True
+        except requests.RequestException as e:
+            self.msg.emit(2, "Upload", "Error", f"Data: {e}")
             return False
-        return True
 
     def runnerUploadFile(self) -> bool:
         if not self.deleteHostData():
             return False
         files = self.prepareFiles()
-        self.pollStatusRunState = True
-        self.threadPool.start(self.workerPollStatus)
         return self.postHostData(files)
 
     def closePopup(self, result: bool) -> None:
@@ -227,3 +217,17 @@ class UploadPopup(MWidget):
                 self.msg.emit(2, "Upload", "Error", "Uploaded but mount failed to save data")
         mainThreadSleep(500)
         self.close()
+
+    def exec(self) -> bool:
+        self.showWindow()
+        self.loop = QEventLoop()
+        self.workerUploadFile = startWorker(
+            self.threadPool,
+            self.runnerUploadFile,
+            resultMethod=self.closePopup,
+            finishedMethod=self.loop.quit,
+        )
+        self.pollStatusRunState = True
+        self.workerPollStatus = startWorker(self.threadPool, self.runnerPollStatus)
+        self.loop.exec()
+        return self.returnValues["success"]

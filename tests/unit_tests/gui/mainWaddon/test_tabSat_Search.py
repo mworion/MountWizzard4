@@ -23,6 +23,7 @@ from mw4.gui.mainWaddon.tabSat_Search import SatSearch, SatSearchSignals
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path
+from PySide6.QtCore import QMutex
 from PySide6.QtWidgets import QTableWidgetItem
 from skyfield.api import EarthSatellite
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -46,6 +47,7 @@ def function(qapp: object) -> SatSearch:
     mainW.app.timeMgr.convertTime = mock.MagicMock(return_value="12:00")
     mainW.app.timeMgr.timeZoneString = mock.MagicMock(return_value="(UTC)")
     window = SatSearch(mainW)
+    window.mutexCalc = QMutex()
     yield window
     mainW.app.threadPool.waitForDone(1000)
 

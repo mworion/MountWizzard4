@@ -18,7 +18,7 @@ import logging
 import numpy as np
 from astropy import wcs
 from astropy.io import fits
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from mw4.mountcontrol.convert import valueToFloat
 from pathlib import Path
 from PySide6.QtCore import QObject, Signal
@@ -178,5 +178,4 @@ class FileHandler:
         self.flipH = flipH
         self.flipV = flipV
 
-        self.workerLoadImage = Worker(self.runnerLoadImage, imagePath)
-        self.threadPool.start(self.workerLoadImage)
+        self.workerLoadImage = startWorker(self.threadPool, self.runnerLoadImage, imagePath)

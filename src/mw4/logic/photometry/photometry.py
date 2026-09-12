@@ -17,7 +17,7 @@ import logging
 import numpy as np
 import sep
 from mw4.base.tpool import Worker
-from PySide6.QtCore import QMutex, QObject, Signal
+from PySide6.QtCore import QObject, Signal
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
 from typing import Any, ClassVar
@@ -49,7 +49,6 @@ class Photometry:
         self.aberrationImage: np.ndarray = image
         self.snTarget = self.SN[snSelector]
         self.sepThreshold = self.SEP[snSelector]
-        self.lock = QMutex()
         self.workerCalcPhotometry: Worker | None = None
 
         self.objs: Any = None

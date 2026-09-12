@@ -414,7 +414,9 @@ class Connection:
             self.log.warning(f"Error    [{self.id}]: error: [{e}], received: [{chunkRaw}]")
             return False, []
         else:
-            response = responseBytes.replace(b"\xdf", b"*").decode("ASCII").rstrip("#").split("#")
+            response = (
+                responseBytes.replace(b"\xdf", b"*").decode("ASCII").rstrip("#").split("#")
+            )
             if self.loggingTrace:
                 self.log.debug(f"[Trace] Response [{self.id}]: [{response}]")
             return True, response

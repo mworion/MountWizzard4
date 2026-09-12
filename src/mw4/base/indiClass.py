@@ -17,10 +17,10 @@ import asyncio
 import logging
 import queue
 from dataclasses import dataclass, field
-from indipyclient.queclient import EventItem, QueClient, runqueclient
+from indipyclient.queclient import EventItem, QueClient
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO_CONV
-from mw4.base.tpool import Worker
-from PySide6.QtCore import QMutex, QThreadPool
+from mw4.base.tpool import Worker, startWorker
+from PySide6.QtCore import QThreadPool
 from queue import Queue
 from typing import Any
 
@@ -47,8 +47,6 @@ class IndiClass:
         self.signals: Any = parent.signals
         self.config = DeviceConfigIndi()
         self.threadPool: QThreadPool = parent.app.threadPool
-        self.clientMutex: QMutex = QMutex()
-        self.discoverMutex: QMutex = QMutex()
         self.deviceConnected: bool = False
         self.discoverList: list[str] = []
         self.isINDIGO: bool = False
@@ -107,10 +105,6 @@ class IndiClass:
             if vectors:
                 self.writeVectorsToData(item, vectors)
 
-    def cleanupStop(self) -> None:
-        self.queueClient = None
-        self.clientMutex.unlock()
-
     def runnerQueueClient(self) -> None:
         self.queueClient = QueClient(
             self.txQ,
@@ -123,17 +117,12 @@ class IndiClass:
         asyncio.run(self.queueClient.asyncrun())
 
     def startCommunication(self) -> None:
-        if not self.clientMutex.tryLock():
-            return
         self.txQ.queue.clear()
         self.rxQ.queue.clear()
         self.data.clear()
         self.commandRunning = True
-        self.workerIndiQueueClient = Worker(self.runnerQueueClient)
-        self.workerIndiQueueClient.signals.finished.connect(self.cleanupStop)
-        self.threadPool.start(self.workerIndiQueueClient)
-        self.workerProcessRxQueue = Worker(self.runnerProcessRxQueue)
-        self.threadPool.start(self.workerProcessRxQueue)
+        self.workerIndiQueueClient = startWorker(self.threadPool, self.runnerQueueClient)
+        self.workerProcessRxQueue = startWorker(self.threadPool, self.runnerProcessRxQueue)
 
     def stopCommunication(self) -> None:
         self.txQ.put(None)
@@ -145,14 +134,18 @@ class IndiClass:
         self.txQ.put((deviceName, "CONFIG_PROCESS", {"CONFIG_PROCESS": True}))
 
     def discoverDevices(self, deviceType: str, hostaddress: str, port: int) -> list[str]:
-        if not self.discoverMutex.tryLock():
-            return []
         n = self.MAX_SEARCH
         txQ = Queue()
         rxQ = Queue()
         discoverSet = set()
-        worker = Worker(runqueclient, txQ, rxQ, indihost=hostaddress, indiport=port)
-        self.threadPool.start(worker)
+        startWorker(
+            self.threadPool,
+            self.runnerQueueClient,
+            txQ,
+            rxQ,
+            indihost=hostaddress,
+            indiport=port,
+        )
         while n > 0:
             try:
                 item = rxQ.get(timeout=0.1)
@@ -167,5 +160,4 @@ class IndiClass:
                     discoverSet.add(item.devicename)
             rxQ.task_done()
         txQ.put(None)
-        self.discoverMutex.unlock()
         return list(discoverSet)

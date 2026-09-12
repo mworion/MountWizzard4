@@ -14,7 +14,7 @@
 #
 ###########################################################
 import numpy as np
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from mw4.gui.mainWaddon.satData import SatData
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, positionCursorInTable
 from mw4.logic.satellites.satellite_calculations import calcSatPasses
@@ -31,6 +31,7 @@ class SatTrack(SatData):
         super().__init__()
         self.mainW = mainW
         self.app = mainW.app
+        self.threadPool = mainW.app.threadPool
         self.msg = mainW.app.msg
         self.ui = mainW.ui
         self.satellite: EarthSatellite | None = None
@@ -216,12 +217,14 @@ class SatTrack(SatData):
         self.satOrbits = calcSatPasses(self.satellite, obsSite, setting)
 
     def showSatPasses(self) -> None:
-        self.workerPasses = Worker(self.runnerShowSatPasses)
-        self.workerPasses.signals.result.connect(self.updateSatPassesGui)
-        self.workerPasses.signals.finished.connect(self.calcTrajectoryAndShow)
         title = "Satellite passes " + self.app.timeMgr.timeZoneString()
         self.ui.satPassesGroup.setTitle(title)
-        self.app.threadPool.start(self.workerPasses)
+        self.workerPasses = startWorker(
+            self.threadPool,
+            self.runnerShowSatPasses,
+            resultMethod=self.updateSatPassesGui,
+            finishedMethod=self.calcTrajectoryAndShow,
+        )
 
     def extractSatelliteData(self, satName: str) -> None:
         if satName not in self.satellites.objects:

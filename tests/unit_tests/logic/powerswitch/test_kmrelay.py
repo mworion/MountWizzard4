@@ -19,6 +19,7 @@ import pytest
 import requests
 import time
 from mw4.logic.powerswitch.kmRelay import KMRelay
+from PySide6.QtCore import QMutex
 from unittest import mock
 
 
@@ -28,6 +29,7 @@ def kmRelay() -> KMRelay:
     app = mock.MagicMock()
     with mock.patch.object(PySide6.QtCore.QTimer, "start"):
         relay = KMRelay(app)
+    relay.mutexPoll = QMutex()
     return relay
 
 

@@ -17,6 +17,7 @@ import numpy as np
 import pytest
 from mw4.gui.extWindows.keypadW import KeypadWindow
 from mw4.gui.utilities.qtMain import MWidget
+from PySide6.QtCore import QMutex
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -27,6 +28,7 @@ from unittest import mock
 def keypad_window(qapp):
     """Create a KeypadWindow instance for testing."""
     window = KeypadWindow(app=App(), title="Keypad")
+    window.websocketMutex = QMutex()
     with mock.patch.object(window, "show"):
         yield window
         QApplication.processEvents()

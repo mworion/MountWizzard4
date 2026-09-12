@@ -19,6 +19,7 @@ from mw4.base.deviceRegistry import DeviceEntry
 from mw4.logic.measure.measure import MeasureData
 from mw4.logic.measure.measureCSV import MeasureDataCSV
 from mw4.logic.measure.measureRaw import MeasureDataRaw
+from PySide6.QtCore import QMutex
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
@@ -31,6 +32,7 @@ class Data:
 @pytest.fixture(autouse=True, scope="module")
 def function():
     func = MeasureData(app=App())
+    func.mutexMeasure = QMutex()
     yield func
 
 

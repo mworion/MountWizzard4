@@ -140,7 +140,7 @@ def test_showTwilightDataPlot_with_location(almanac):
     almanac.app.mount.obsSite.location = wgs84.latlon(
         latitude_degrees=0, longitude_degrees=0, elevation_m=0
     )
-    with mock.patch.object(almanac.app.threadPool, "start"):
+    with mock.patch("mw4.gui.mainWaddon.tabAlmanac.startWorker"):
         almanac.showTwilightDataPlot()
 
 

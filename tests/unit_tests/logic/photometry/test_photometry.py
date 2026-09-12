@@ -19,6 +19,7 @@ import numpy as np
 import pytest
 import sep
 from mw4.logic.photometry.photometry import Photometry, PhotometrySignals
+from PySide6.QtCore import QMutex
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
@@ -33,6 +34,7 @@ class Parent:
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     func = Photometry(Parent(), np.zeros((1, 1)))
+    func.lock = QMutex()
     yield func
 
 

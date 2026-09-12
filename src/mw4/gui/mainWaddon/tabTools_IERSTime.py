@@ -66,9 +66,7 @@ class IERSTime(TabAddon):
         dataTypes = ["finalsdata", "leapsec"]
         url = self.app.dReg["mount"].instance.config.hostAddress
         self.msg.emit(0, "IERS", "Uploading", "Upload to mount running")
-        suc = UploadPopup.upload(
-            self.mainW, url=url, dataTypes=dataTypes, dataFilePath=self.tempDir
-        )
+        suc = UploadPopup.upload(self.mainW, url, dataTypes, self.tempDir)
         if suc:
             self.msg.emit(1, "IERS", "Upload", "Successfully uploaded")
         else:

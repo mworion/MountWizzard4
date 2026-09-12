@@ -318,13 +318,11 @@ def test_writeHeaderCamera_withoutFocalLength() -> None:
     app = App()
     obsSite = app.mount.obsSite
 
-    with (
-        mock.patch.object(mw4.logic.fits.fitsFunction.log, "warning") as warningMock,
-        pytest.raises(UnboundLocalError),
-    ):
-        writeHeaderCamera(header, camera, obsSite)
+    with mock.patch.object(mw4.logic.fits.fitsFunction.log, "warning") as warningMock:
+        result = writeHeaderCamera(header, camera, obsSite)
 
     warningMock.assert_called_once_with("camera.focalLength not set")
+    assert result["SCALE"] == 0
 
 
 def test_writeHeaderPointing() -> None:

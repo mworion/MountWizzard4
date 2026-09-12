@@ -45,7 +45,7 @@ def function():
         mountTime.workerPollSyncClock.signals.finished.emit()
         del mountTime.workerPollSyncClock
     # Wait for thread pool to finish
-    if hasattr(mountTime, 'threadPool') and mountTime.threadPool is not None:
+    if hasattr(mountTime, "threadPool") and mountTime.threadPool is not None:
         mountTime.threadPool.waitForDone()
     # Ensure all mutexes are unlocked
     if mountTime.mutexCycleMountUp.tryLock():
@@ -181,7 +181,6 @@ def test_runnerMountUp_error_counter_zero(function, ping_return, socket_fails):
             function.runnerMountUp()
 
     assert function.errorCounter == 0
-
 
 
 def test_checkMountUp_locked(function):

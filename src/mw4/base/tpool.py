@@ -104,8 +104,10 @@ def startWorker(
         return None
     worker = Worker(target, *args, **kwargs)
     if mutex is not None:
+
         def unlock():
             mutex.unlock()
+
         worker.signals.finished.connect(unlock)
     if resultMethod is not None:
         worker.signals.result.connect(resultMethod)

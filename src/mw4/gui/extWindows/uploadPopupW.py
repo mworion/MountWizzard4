@@ -187,17 +187,19 @@ class UploadPopup(MWidget):
         try:
             returnValues = requests.delete(self.generateURL(), timeout=10)  # SEC-4
             if returnValues.status_code not in [200, 204]:
-                self.msg.emit(0, "Upload", "Error", f"Deleting File: {returnValues.status_code}")
+                self.msg.emit(
+                    2, "Upload", "Error", f"Deleting File: {returnValues.status_code}"
+                )
                 return False
             return True
         except requests.RequestException as e:
-            self.msg.emit(0, "Upload", "Error", f"Deleting File: {str(e)}")
+            self.msg.emit(2, "Upload", "Error", f"Deleting File: {e}")
             return False
 
     def postHostData(self, files: dict) -> bool:
         returnValues = requests.post(self.generateURL(), files=files, timeout=10)  # SEC-4
         if returnValues.status_code != 202:
-            self.msg.emit(0, "Upload", "Error", f"Data: {returnValues.status_code}")
+            self.msg.emit(2, "Upload", "Error", f"Data: {returnValues.status_code}")
             return False
         return True
 
@@ -219,6 +221,7 @@ class UploadPopup(MWidget):
                 mainThreadSleep(100)
             if self.returnValues["successMount"]:
                 self.signalProgressBarColor.emit("green")
+                self.msg.emit(0, "Upload", "Success", "Data updated")
             else:
                 self.signalProgressBarColor.emit("red")
                 self.msg.emit(2, "Upload", "Error", "Uploaded but mount failed to save data")

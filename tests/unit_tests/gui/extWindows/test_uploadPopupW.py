@@ -215,6 +215,17 @@ def test_deleteHostData_1(function):
 
 def test_deleteHostData_2(function):
     class Test:
+        status_code = 204
+
+    with mock.patch.object(requests, "delete", return_value=Test()) as m:
+        val = function.deleteHostData()
+        assert val
+        _, kwargs = m.call_args
+        assert kwargs.get("timeout") == 10  # SEC-4
+
+
+def test_deleteHostData_3(function):
+    class Test:
         status_code = 400
 
     with mock.patch.object(requests, "delete", return_value=Test()) as m:
@@ -222,6 +233,12 @@ def test_deleteHostData_2(function):
         assert not val
         _, kwargs = m.call_args
         assert kwargs.get("timeout") == 10  # SEC-4
+
+
+def test_deleteHostData_4(function):
+    with mock.patch.object(requests, "delete", side_effect=requests.RequestException("Error")):
+        val = function.deleteHostData()
+        assert not val
 
 
 def test_postHostData_1(function):

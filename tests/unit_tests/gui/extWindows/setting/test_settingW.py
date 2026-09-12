@@ -91,6 +91,8 @@ def test_closeEvent_closes_properly(settingWindow):
         mock.patch.object(settingWindow, "show"),
         mock.patch.object(MWidget, "closeEvent"),
         mock.patch.object(settingWindow.tabSettDevice, "closeEvent"),
+        mock.patch.object(settingWindow.tabSettMount, "closeEvent"),
+        mock.patch.object(settingWindow.tabSettDome, "closeEvent"),
     ):
         settingWindow.showWindow()
         settingWindow.closeEvent(QCloseEvent)

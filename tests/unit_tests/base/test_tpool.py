@@ -16,7 +16,6 @@
 
 
 from mw4.base import tpool
-from PySide6.QtCore import QMutex
 from unittest import mock
 
 
@@ -56,6 +55,7 @@ def test_worker_run_emitsFinishedSignal(qtbot):
         return "test"
 
     a = tpool.Worker(testFunc)
+    a.mutex.lock()
     with qtbot.waitSignal(a.signals.finished):
         a.run()
 
@@ -65,6 +65,7 @@ def test_worker_run_emitsResultSignal(qtbot):
         return "value"
 
     a = tpool.Worker(testFunc)
+    a.mutex.lock()
     with qtbot.waitSignal(a.signals.result):
         a.run()
 
@@ -74,6 +75,7 @@ def test_worker_run_doesNotEmitErrorOnSuccess(qtbot):
         return
 
     a = tpool.Worker(testFunc)
+    a.mutex.lock()
     with qtbot.assertNotEmitted(a.signals.error):
         a.run()
 
@@ -83,6 +85,7 @@ def test_worker_run_emitsErrorOnException(qtbot):
         raise RuntimeError("Test")
 
     a = tpool.Worker(testFunc)
+    a.mutex.lock()
     with qtbot.waitSignal(a.signals.error):
         a.run()
 
@@ -103,28 +106,28 @@ def test_startWorker_guardAllows():
 
 def test_startWorker_mutexBlocks():
     pool = mock.Mock()
-    mutex = QMutex()
-    mutex.lock()
-    worker = tpool.startWorker(pool, lambda: None, mutex=mutex)
-    assert worker is None
-    pool.start.assert_not_called()
-    # Properly unlock the pre-locked mutex
-    assert not mutex.tryLock()
-    mutex.unlock()
+    # Mock Worker to return a worker with a pre-locked mutex
+    with mock.patch("mw4.base.tpool.Worker") as MockWorker:
+        mock_worker = mock.Mock()
+        mock_worker.mutex.tryLock.return_value = False
+        MockWorker.return_value = mock_worker
+
+        worker = tpool.startWorker(pool, lambda: None)
+        assert worker is None
+        pool.start.assert_not_called()
 
 
 def test_startWorker_mutexAcquired():
     pool = mock.Mock()
-    mutex = QMutex()
-    worker = tpool.startWorker(pool, lambda: None, mutex=mutex)
+    worker = tpool.startWorker(pool, lambda: None)
     assert worker is not None
-    # Mutex is locked after startWorker
-    assert not mutex.tryLock()
-    # Emit finished signal to trigger automatic unlock
-    worker.signals.finished.emit()
+    # Mutex should be locked after startWorker
+    assert not worker.mutex.tryLock()
+    # Actually run the worker to unlock the mutex
+    worker.run()
     # Now mutex should be unlocked
-    assert mutex.tryLock()
-    mutex.unlock()
+    assert worker.mutex.tryLock()
+    worker.mutex.unlock()
     # Clean up worker reference
     del worker
 
@@ -154,14 +157,13 @@ def test_startWorker_connectsResultMethodToResult():
 
 def test_startWorker_mutexUnlockedAfterWorkerFinishes():
     pool = mock.Mock()
-    mutex = QMutex()
-    worker = tpool.startWorker(pool, lambda: None, mutex=mutex)
+    worker = tpool.startWorker(pool, lambda: None)
     assert worker is not None
-    assert not mutex.tryLock()
-    # Simulate worker finished
-    worker.signals.finished.emit()
+    assert not worker.mutex.tryLock()
+    # Actually run the worker to unlock the mutex
+    worker.run()
     # Now mutex should be unlocked
-    assert mutex.tryLock()
-    mutex.unlock()
+    assert worker.mutex.tryLock()
+    worker.mutex.unlock()
     # Clean up worker reference
     del worker

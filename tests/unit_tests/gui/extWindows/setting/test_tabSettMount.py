@@ -183,7 +183,7 @@ def test_bootRackCompWithValidMAC(settMount: SettMount) -> None:
             "checkFormatMAC",
             return_value="AA:BB:CC:DD:EE:FF",
         ),
-        mock.patch.object(wakeonlan, "send_magic_packet") as mock_send,
+        mock.patch.object(wakeonlan, "wake") as mock_send,
     ):
         settMount.bootRackComp()
     mock_send.assert_called_once()

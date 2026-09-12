@@ -139,21 +139,27 @@ def test_cyclePointing_1(function):
     function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.cyclePointing()
+        assert function.workerCyclePointing is None
 
 
 def test_cyclePointing_2(function):
     function.mountIsUp = True
-    function.mutexCyclePointing.lock()
     with mock.patch.object(QThreadPool, "start"):
         function.cyclePointing()
-    function.mutexCyclePointing.unlock()
+        assert function.workerCyclePointing is not None
+    if function.workerCyclePointing is not None:
+        function.workerCyclePointing.signals.finished.emit()
+        del function.workerCyclePointing
 
 
 def test_cyclePointing_3(function):
     function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.cyclePointing()
-    function.mutexCyclePointing.unlock()
+        assert function.workerCyclePointing is not None
+    if function.workerCyclePointing is not None:
+        function.workerCyclePointing.signals.finished.emit()
+        del function.workerCyclePointing
 
 
 def test_resultCycleSetting_1(function):
@@ -164,21 +170,27 @@ def test_cycleSetting_1(function):
     function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.cycleSetting()
+        assert function.workerCycleSetting is None
 
 
 def test_cycleSetting_2(function):
     function.mountIsUp = True
-    function.mutexCycleSetting.lock()
     with mock.patch.object(QThreadPool, "start"):
         function.cycleSetting()
-    function.mutexCycleSetting.unlock()
+        assert function.workerCycleSetting is not None
+    if function.workerCycleSetting is not None:
+        function.workerCycleSetting.signals.finished.emit()
+        del function.workerCycleSetting
 
 
 def test_cycleSetting_3(function):
     function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.cycleSetting()
-    function.mutexCycleSetting.unlock()
+        assert function.workerCycleSetting is not None
+    if function.workerCycleSetting is not None:
+        function.workerCycleSetting.signals.finished.emit()
+        del function.workerCycleSetting
 
 
 def test_resultGetModel_1(function):
@@ -253,20 +265,27 @@ def test_CalcTLE_1(function):
     function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.calcTLE(1234567)
+        assert function.workerCalcTLE is None
 
 
 def test_CalcTLE_2(function):
     function.mountIsUp = True
-    function.mutexCalcTLE.lock()
-    function.calcTLE(1234567)
-    function.mutexCalcTLE.unlock()
+    with mock.patch.object(QThreadPool, "start"):
+        function.calcTLE(1234567)
+        assert function.workerCalcTLE is not None
+    if function.workerCalcTLE is not None:
+        function.workerCalcTLE.signals.finished.emit()
+        del function.workerCalcTLE
 
 
 def test_CalcTLE_3(function):
     function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.calcTLE(1234567)
-    function.mutexCalcTLE.unlock()
+        assert function.workerCalcTLE is not None
+    if function.workerCalcTLE is not None:
+        function.workerCalcTLE.signals.finished.emit()
+        del function.workerCalcTLE
 
 
 def test_resultStatTLE_1(function):
@@ -293,32 +312,39 @@ def test_GetTLE_1(function):
     function.mountIsUp = False
     with mock.patch.object(QThreadPool, "start"):
         function.getTLE()
+        assert function.workerGetTLE is None
 
 
 def test_GetTLE_2(function):
     function.mountIsUp = True
-    function.mutexGetTLE.lock()
-    function.getTLE()
-    function.mutexGetTLE.unlock()
+    with mock.patch.object(QThreadPool, "start"):
+        function.getTLE()
+        assert function.workerGetTLE is not None
+    if function.workerGetTLE is not None:
+        function.workerGetTLE.signals.finished.emit()
+        del function.workerGetTLE
 
 
 def test_GetTLE_3(function):
     function.mountIsUp = True
     with mock.patch.object(QThreadPool, "start"):
         function.getTLE()
-    function.mutexGetTLE.unlock()
+        assert function.workerGetTLE is not None
+    if function.workerGetTLE is not None:
+        function.workerGetTLE.signals.finished.emit()
+        del function.workerGetTLE
 
 
 def test_bootMount_1(function):
     function.config.MAC = None
-    with mock.patch.object(wakeonlan, "send_magic_packet"):
+    with mock.patch.object(wakeonlan, "wake"):
         suc = function.bootMount()
         assert not suc
 
 
 def test_bootMount_2(function):
     function.config.MAC = "00:00:00:00:00:00"
-    with mock.patch.object(wakeonlan, "send_magic_packet"):
+    with mock.patch.object(wakeonlan, "wake"):
         suc = function.bootMount()
         assert suc
 
@@ -326,7 +352,7 @@ def test_bootMount_2(function):
 def test_bootMount_3(function):
     function.config.MAC = "00:00:00:00:00:00"
     function.config.wolAddress = "255.255.255.255"
-    with mock.patch.object(wakeonlan, "send_magic_packet"):
+    with mock.patch.object(wakeonlan, "wake"):
         suc = function.bootMount()
         assert suc
 
@@ -335,7 +361,7 @@ def test_bootMount_4(function):
     function.config.MAC = "00:00:00:00:00:00"
     function.config.wolAddress = "255.255.255.255"
     function.config.wolPort = 9
-    with mock.patch.object(wakeonlan, "send_magic_packet"):
+    with mock.patch.object(wakeonlan, "wake"):
         suc = function.bootMount()
         assert suc
 
@@ -344,7 +370,7 @@ def test_bootMount_5(function):
     function.config.MAC = "00:00:00:00:00:00"
     function.config.wolAddress = "255.255.255.255"
     function.config.wolPort = 9
-    with mock.patch.object(wakeonlan, "send_magic_packet", side_effect=OSError):
+    with mock.patch.object(wakeonlan, "wake", side_effect=OSError):
         suc = function.bootMount()
         assert not suc
 
@@ -481,7 +507,7 @@ def test_bootMount_with_bAddress_only(function):
     function.config.MAC = "00:00:00:00:00:00"
     function.config.wolAddress = "255.255.255.255"
     function.config.wolPort = 0
-    with mock.patch.object(wakeonlan, "send_magic_packet"):
+    with mock.patch.object(wakeonlan, "wake"):
         suc = function.bootMount()
         assert suc
 

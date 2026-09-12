@@ -177,56 +177,46 @@ class MountDevice(QObject):
             self.signals.pointDone.emit(self.obsSite)
 
     def cyclePointing(self) -> None:
-        worker = startWorker(
+        self.workerCyclePointing = startWorker(
             self.threadPool,
             self.obsSite.pollPointing,
             self.resultCyclePointing,
-            mutex=self.mutexCyclePointing,
             guard=lambda: self.mountIsUp,
         )
-        if worker is not None:
-            self.workerCyclePointing = worker
 
     def resultCycleSetting(self, result: bool) -> None:
         if result:
             self.signals.settingDone.emit(self.setting)
 
     def cycleSetting(self) -> None:
-        worker = startWorker(
+        self.workerCycleSetting = startWorker(
             self.threadPool,
             self.setting.pollSetting,
             self.resultCycleSetting,
-            mutex=self.mutexCycleSetting,
             guard=lambda: self.mountIsUp,
         )
-        if worker is not None:
-            self.workerCycleSetting = worker
 
     def resultGetModel(self) -> None:
         self.signals.getModelDone.emit(self.model)
 
     def getModel(self) -> None:
-        worker = startWorker(
+        self.workerGetModel = startWorker(
             self.threadPool,
             self.model.pollStars,
             self.resultGetModel,
             guard=lambda: self.mountIsUp,
         )
-        if worker is not None:
-            self.workerGetModel = worker
 
     def resultGetNames(self) -> None:
         self.signals.namesDone.emit(self.model)
 
     def getNames(self) -> None:
-        worker = startWorker(
+        self.workerGetNames = startWorker(
             self.threadPool,
             self.model.pollNames,
             self.resultGetNames,
             guard=lambda: self.mountIsUp,
         )
-        if worker is not None:
-            self.workerGetNames = worker
 
     def resultGetFW(self) -> None:
         self.log.info(f"Product : {self.firmware.product}")
@@ -236,69 +226,57 @@ class MountDevice(QObject):
         self.signals.firmwareDone.emit(self.firmware)
 
     def getFW(self) -> None:
-        worker = startWorker(
+        self.workerGetFW = startWorker(
             self.threadPool,
             self.firmware.poll,
             self.resultGetFW,
             guard=lambda: self.mountIsUp,
         )
-        if worker is not None:
-            self.workerGetFW = worker
 
     def resultGetLocation(self) -> None:
         self.signals.locationDone.emit(self.obsSite)
 
     def getLocation(self) -> None:
-        worker = startWorker(
+        self.workerGetLocation = startWorker(
             self.threadPool,
             self.obsSite.getLocation,
             self.resultGetLocation,
             guard=lambda: self.mountIsUp,
         )
-        if worker is not None:
-            self.workerGetLocation = worker
 
     def resultCalcTLE(self) -> None:
         self.signals.calcTLEdone.emit(self.satellite.tleParams)
 
     def calcTLE(self, start: float) -> None:
-        worker = startWorker(
+        self.workerCalcTLE = startWorker(
             self.threadPool,
             self.satellite.calcTLE,
             self.resultCalcTLE,
             start,
-            mutex=self.mutexCalcTLE,
             guard=lambda: self.mountIsUp,
         )
-        if worker is not None:
-            self.workerCalcTLE = worker
 
     def resultStatTLE(self) -> None:
         self.signals.statTLEdone.emit(self.satellite.tleParams)
 
     def statTLE(self) -> None:
-        worker = startWorker(
+        self.workerStatTLE = startWorker(
             self.threadPool,
             self.satellite.statTLE,
             self.resultStatTLE,
             guard=lambda: self.mountIsUp,
         )
-        if worker is not None:
-            self.workerStatTLE = worker
 
     def resultGetTLE(self) -> None:
         self.signals.getTLEdone.emit(self.satellite.tleParams)
 
     def getTLE(self) -> None:
-        worker = startWorker(
+        self.workerGetTLE = startWorker(
             self.threadPool,
             self.satellite.getTLE,
             self.resultGetTLE,
-            mutex=self.mutexGetTLE,
             guard=lambda: self.mountIsUp,
         )
-        if worker is not None:
-            self.workerGetTLE = worker
 
     def bootMount(self) -> bool:
         t = f"MAC: [{self.config.MAC}], [{self.config.wolAddress}]:[{self.config.wolPort}]"
@@ -311,7 +289,7 @@ class MountDevice(QObject):
         if self.config.wolPort:
             kwargs["port"] = self.config.wolPort
         try:
-            wakeonlan.send_magic_packet(self.config.MAC, **kwargs)
+            wakeonlan.wake(self.config.MAC, **kwargs)
         except (OSError, ValueError) as e:
             self.log.warning(f"Boot mount failed: {e}")
             return False
@@ -337,7 +315,7 @@ class MountDevice(QObject):
         if not self.mountIsUp:
             return
         self.satellite.startProgTrajectory(julD=start)
-        worker = startWorker(
+        self.workerTrajectory = startWorker(
             self.threadPool,
             self.runnerProgTrajectory,
             self.resultProgTrajectory,
@@ -346,8 +324,6 @@ class MountDevice(QObject):
             replay=replay,
             guard=lambda: self.mountIsUp,
         )
-        if worker is not None:
-            self.workerTrajectory = worker
 
     def calcTransformationMatricesTarget(
         self,

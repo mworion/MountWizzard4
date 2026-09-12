@@ -116,7 +116,7 @@ class SettMount:
     def bootRackComp(self) -> None:
         MAC = checkFormatMAC(self.ui.rackCompMAC.text())
         if MAC:
-            wakeonlan.send_magic_packet(MAC)
+            wakeonlan.wake(MAC)
             self.msg.emit(0, "Rack", "Command", "Sent boot command to rack computer")
         else:
             self.msg.emit(2, "Rack", "Command", "Rack computer cannot be booted")

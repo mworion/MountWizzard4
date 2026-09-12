@@ -88,13 +88,10 @@ class MountTime:
             self.parent.signals.mountIsUp.emit(True)
 
     def checkMountUp(self) -> None:
-        worker = startWorker(
+        self.workerCycleMountUp = startWorker(
             self.threadPool,
             self.runnerMountUp,
-            mutex=self.mutexCycleMountUp,
         )
-        if worker is not None:
-            self.workerCycleMountUp = worker
 
     def deltaAdjustClock(self, delta: int) -> bool:
         conn = Connection(self.parent)
@@ -154,7 +151,6 @@ class MountTime:
             self.threadPool,
             self.runnerPollSyncClock,
             self.clearPollSyncClock,
-            mutex=self.mutexPollSyncClock,
             guard=lambda: self.parent.mountIsUp,
         )
         if worker is not None:

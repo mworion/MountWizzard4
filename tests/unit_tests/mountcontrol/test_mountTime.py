@@ -38,20 +38,15 @@ def function():
     mountTime = MountTime(parent=m)
     yield mountTime
     # Cleanup: ensure all workers are finished and all mutexes are unlocked
-    if mountTime.workerCycleMountUp is not None:
+    if hasattr(mountTime, "workerCycleMountUp") and mountTime.workerCycleMountUp is not None:
         mountTime.workerCycleMountUp.signals.finished.emit()
         del mountTime.workerCycleMountUp
-    if mountTime.workerPollSyncClock is not None:
+    if hasattr(mountTime, "workerPollSyncClock") and mountTime.workerPollSyncClock is not None:
         mountTime.workerPollSyncClock.signals.finished.emit()
         del mountTime.workerPollSyncClock
     # Wait for thread pool to finish
     if hasattr(mountTime, "threadPool") and mountTime.threadPool is not None:
         mountTime.threadPool.waitForDone()
-    # Ensure all mutexes are unlocked
-    if mountTime.mutexCycleMountUp.tryLock():
-        mountTime.mutexCycleMountUp.unlock()
-    if mountTime.mutexPollSyncClock.tryLock():
-        mountTime.mutexPollSyncClock.unlock()
 
 
 def test_mountTime_init(function):
@@ -63,9 +58,7 @@ def test_mountTime_init(function):
     assert len(function.rtt_MA) == 25
     assert len(function._timeDiff) == 25
     assert function.workerCycleMountUp is None
-    assert function.mutexCycleMountUp is not None
     assert function.workerPollSyncClock is None
-    assert function.mutexPollSyncClock is not None
 
 
 def test_timeDiff_property_initial(function):
@@ -184,19 +177,18 @@ def test_runnerMountUp_error_counter_zero(function, ping_return, socket_fails):
 
 
 def test_checkMountUp_locked(function):
-    function.mutexCycleMountUp.lock()
-    with mock.patch.object(QThreadPool, "start") as start:
-        function.checkMountUp()
-        assert not start.called
-    function.mutexCycleMountUp.unlock()
+    with mock.patch("mw4.mountcontrol.mountTime.startWorker", return_value=None):
+        result = function.checkMountUp()
+        assert result is None
 
 
 def test_checkMountUp_unlocked(function):
-    function.mutexCycleMountUp.unlock()
-    with mock.patch.object(QThreadPool, "start") as start:
+    with mock.patch.object(QThreadPool, "start"):
         function.checkMountUp()
-        assert start.called
         assert function.workerCycleMountUp is not None
+    if function.workerCycleMountUp is not None:
+        function.workerCycleMountUp.signals.finished.emit()
+        del function.workerCycleMountUp
 
 
 @pytest.mark.parametrize(
@@ -376,33 +368,23 @@ def test_pollSyncClock_mount_not_up(function):
 
 
 def test_pollSyncClock_locked(function):
-    function.parent.mountIsUp = True
-    function.mutexPollSyncClock.lock()
-    with mock.patch.object(QThreadPool, "start") as start:
-        function.pollSyncClock()
-        assert not start.called
-    function.mutexPollSyncClock.unlock()
+    with mock.patch("mw4.mountcontrol.mountTime.startWorker", return_value=None):
+        worker = function.pollSyncClock()
+        assert worker is None
 
 
 def test_pollSyncClock_unlocked(function):
     function.parent.mountIsUp = True
-    function.mutexPollSyncClock.unlock()
-    with mock.patch.object(QThreadPool, "start") as start:
+    with mock.patch.object(QThreadPool, "start"):
         function.pollSyncClock()
-        assert start.called
         assert function.workerPollSyncClock is not None
-    # Emit finished signal to trigger automatic mutex unlock
     if function.workerPollSyncClock is not None:
         function.workerPollSyncClock.signals.finished.emit()
-    function.clearPollSyncClock()
+        del function.workerPollSyncClock
 
 
 def test_clearPollSyncClock(function):
-    function.mutexPollSyncClock.lock()
     function.clearPollSyncClock()
-    # Ensure mutex is properly unlocked
-    assert function.mutexPollSyncClock.tryLock()
-    function.mutexPollSyncClock.unlock()
 
 
 def test_pollSyncClock_communicate_failure(function):

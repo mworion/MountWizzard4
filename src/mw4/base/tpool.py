@@ -33,6 +33,7 @@ class Worker(QRunnable):
         super().__init__()
         self.setAutoDelete(False)
         self.log = logging.getLogger("MW4")
+        self.mutex = QMutex()
         self.fn = fn
         self.args = args
         self.kwargs = kwargs
@@ -67,6 +68,7 @@ class Worker(QRunnable):
         else:
             self.signals.result.emit(result)
         finally:
+            self.mutex.unlock()
             self.signals.finished.emit()
 
 
@@ -75,40 +77,15 @@ def startWorker(
     target: Callable[..., Any],
     resultMethod: Callable[..., Any] | None = None,
     *args: Any,
-    mutex: QMutex | None = None,
     guard: Callable[[], bool] | None = None,
     **kwargs: Any,
 ) -> Worker | None:
-    """
-    Build and start a Worker on the given threadPool. An optional guard
-    callable can veto execution (returning False), and an optional mutex is
-    tryLock-ed to prevent overlapping runs. The created Worker is returned so
-    the caller can keep an explicit reference alive; None is returned when the
-    guard or mutex prevents starting.
 
-    Parameters:
-    - threadPool: The QThreadPool to start the Worker on.
-    - target: The callable to be executed by the Worker.
-    - *args: Positional arguments to pass to the target callable.
-    - mutex: Optional QMutex to prevent overlapping runs.
-    - resultMethod: Optional callable to connect to the Worker's result signal.
-    - guard: Optional callable that can veto execution by returning False.
-    - **kwargs: Keyword arguments to pass to the target callable.
-
-    Returns:
-    - The created Worker if started, or None if prevented by the guard or mutex.
-    """
     if guard is not None and not guard():
         return None
-    if mutex is not None and not mutex.tryLock():
-        return None
     worker = Worker(target, *args, **kwargs)
-    if mutex is not None:
-
-        def unlock():
-            mutex.unlock()
-
-        worker.signals.finished.connect(unlock)
+    if not worker.mutex.tryLock():
+        return None
     if resultMethod is not None:
         worker.signals.result.connect(resultMethod)
     threadPool.start(worker)

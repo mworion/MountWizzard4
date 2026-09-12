@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+import contextlib
 import pytest
 from mw4.base.audioManager import AUDIO_SOUNDS, AudioManager
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -25,6 +26,8 @@ def audioManager(qapp):
     app = App()
     manager = AudioManager(app)
     yield manager
+    with contextlib.suppress(AttributeError, RuntimeError):
+        app.shutdown()
 
 
 def test_init_connects_signal_to_playSound(audioManager):

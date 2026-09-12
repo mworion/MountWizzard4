@@ -23,7 +23,6 @@ from mw4.gui.mainWaddon.tabSat_Search import SatSearch, SatSearchSignals
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path
-from PySide6.QtCore import QMutex
 from PySide6.QtWidgets import QTableWidgetItem
 from skyfield.api import EarthSatellite
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -47,7 +46,6 @@ def function(qapp: object) -> SatSearch:
     mainW.app.timeMgr.convertTime = mock.MagicMock(return_value="12:00")
     mainW.app.timeMgr.timeZoneString = mock.MagicMock(return_value="(UTC)")
     window = SatSearch(mainW)
-    window.mutexCalc = QMutex()
     yield window
     mainW.app.threadPool.waitForDone(1000)
 
@@ -359,7 +357,6 @@ def test_calcSat_3(function: SatSearch) -> None:
 
 def test_runnerCalcSatList_1(function: SatSearch) -> None:
     function.calcGeneration = 1
-    function.mutexCalc.lock()
     with mock.patch.object(function.signals, "setSatGroupTitle"):
         function.runnerCalcSatList([], 1, False, 5, 30)
 
@@ -372,7 +369,6 @@ def test_runnerCalcSatList_2(function: SatSearch) -> None:
     ]
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
     function.calcGeneration = 1
-    function.mutexCalc.lock()
     snapshot = [(0, "sat1", sat, False)]
     with (
         mock.patch.object(function, "satOkSGP4", return_value=False),
@@ -389,7 +385,6 @@ def test_runnerCalcSatList_3(function: SatSearch) -> None:
     ]
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
     function.calcGeneration = 1
-    function.mutexCalc.lock()
     snapshot = [(0, "sat1", sat, False)]
     with (
         mock.patch.object(function, "satOkSGP4", return_value=True),
@@ -409,7 +404,6 @@ def test_runnerCalcSatList_4(function: SatSearch) -> None:
     ]
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
     function.calcGeneration = 1
-    function.mutexCalc.lock()
     snapshot = [(0, "sat1", sat, True)]
     with (
         mock.patch.object(function, "satOkSGP4", return_value=True),
@@ -428,7 +422,6 @@ def test_runnerCalcSatList_generation_break(function: SatSearch) -> None:
     ]
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
     function.calcGeneration = 2
-    function.mutexCalc.lock()
     snapshot = [(0, "sat1", sat, False)]
     with (
         mock.patch.object(function.signals, "setSatGroupTitle"),
@@ -447,7 +440,6 @@ def test_runnerCalcSatList_check_sunlit_true(function: SatSearch) -> None:
     ]
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
     function.calcGeneration = 1
-    function.mutexCalc.lock()
     snapshot = [(0, "sat1", sat, False)]
     with (
         mock.patch.object(function, "satOkSGP4", return_value=True),
@@ -472,21 +464,25 @@ def test_calcSatList_empty(function: SatSearch) -> None:
 def test_calcSatList_starts_worker(function: SatSearch) -> None:
     snapshot = [(0, "sat1", mock.MagicMock(), False)]
     with (
-        mock.patch.object(function.mutexCalc, "tryLock", return_value=True),
         mock.patch.object(function.app.threadPool, "start") as mockStart,
     ):
         function.calcSatList(snapshot, 1)
         mockStart.assert_called_once()
+        if function.workerCalcSatList is not None:
+            function.workerCalcSatList.mutex.unlock()
+            del function.workerCalcSatList
 
 
 def test_calcSatList_mutex_locked(function: SatSearch) -> None:
     snapshot = [(0, "sat1", mock.MagicMock(), False)]
     with (
-        mock.patch.object(function.mutexCalc, "tryLock", return_value=False),
         mock.patch.object(function.app.threadPool, "start") as mockStart,
     ):
         function.calcSatList(snapshot, 1)
-        mockStart.assert_not_called()
+        mockStart.assert_called_once()
+        if function.workerCalcSatList is not None:
+            function.workerCalcSatList.mutex.unlock()
+            del function.workerCalcSatList
 
 
 def test_fillSatListName_1(function: SatSearch) -> None:

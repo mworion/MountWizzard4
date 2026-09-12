@@ -312,7 +312,6 @@ class SatSearch(SatData):
         return show
 
     def fillSatListName(self) -> None:
-        self.filterReady = False
         self.calcGeneration += 1
         generation = self.calcGeneration
         self.ui.listSats.setRowCount(0)

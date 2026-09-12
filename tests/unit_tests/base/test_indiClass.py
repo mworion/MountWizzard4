@@ -441,7 +441,6 @@ def test_processRxQueue_messageEvent(function):
     )
 
 
-
 # ─── runnerQueueClient ──────────────────────────────────────────────────────────
 
 
@@ -531,7 +530,6 @@ def test_loadIndiConfig(function):
     function.loadIndiConfig("TestDevice")
     item = function.txQ.get_nowait()
     assert item == ("TestDevice", "CONFIG_PROCESS", {"CONFIG_PROCESS": True})
-
 
 
 def test_discoverDevices_emptyQueue(function, monkeypatch):

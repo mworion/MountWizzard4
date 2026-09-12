@@ -29,8 +29,17 @@ from unittest import mock
 def function(qapp):
     widget = MWidget()
     widget.app = App()
-    window = UploadPopup(widget, Path(), [], Path())
+    window = UploadPopup(widget, "http://localhost", [], Path())
     yield window
+    window.pollStatusRunState = False
+    if window.loop is not None and window.loop.isRunning():
+        window.loop.quit()
+    window.workerUploadFile = None
+    window.workerPollStatus = None
+    window.close()
+    window.deleteLater()
+    QApplication.processEvents()
+    gc.collect()
     QApplication.processEvents()
     gc.collect()
     QApplication.processEvents()
@@ -236,9 +245,11 @@ def test_deleteHostData_3(function):
 
 
 def test_deleteHostData_4(function):
-    with mock.patch.object(requests, "delete", side_effect=requests.RequestException("Error")):
-        val = function.deleteHostData()
-        assert not val
+    with (
+        mock.patch.object(requests, "delete", side_effect=requests.RequestException("Error")),
+        pytest.raises(requests.RequestException),
+    ):
+        function.deleteHostData()
 
 
 def test_postHostData_1(function):
@@ -342,11 +353,11 @@ def test_exec_2(function):
 
 def test_upload_1(function):
     with mock.patch.object(UploadPopup, "exec", return_value=True):
-        result = UploadPopup.upload(function.parentWidget, Path(), [], Path())
+        result = UploadPopup.upload(function.parentWidget, "http://localhost", [], Path())
         assert result
 
 
 def test_upload_2(function):
     with mock.patch.object(UploadPopup, "exec", return_value=False):
-        result = UploadPopup.upload(function.parentWidget, Path(), [], Path())
+        result = UploadPopup.upload(function.parentWidget, "http://localhost", [], Path())
         assert not result

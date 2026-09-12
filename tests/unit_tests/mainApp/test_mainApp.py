@@ -73,10 +73,7 @@ def app(qapp):
     app_instance.update1s = MagicMock(emit=mock_emit)
     yield app_instance
     try:
-        if hasattr(app_instance, "timeMgr"):
-            app_instance.timeMgr.stop()
-        if hasattr(app_instance, "mount"):
-            app_instance.mount.stopAllMountTimers()
+        app_instance.shutdown()
     except (AttributeError, RuntimeError) as e:
         logging.getLogger("MW4").debug(f"Fixture cleanup error: {e}")
 
@@ -114,6 +111,21 @@ def test_aboutToQuit(app):
     with mock.patch.object(app.timeMgr, "stop") as mockStop:
         app.aboutToQuit()
     mockStop.assert_called_once()
+
+
+def test_shutdown(app):
+    """shutdown must stop timeMgr, stop devices, and wait for threadPool."""
+    with (
+        mock.patch.object(app.timeMgr, "stop") as mockTimerStop,
+        mock.patch.object(app.dReg, "stopDevices") as mockStopDevices,
+        mock.patch.object(app.threadPool, "clear") as mockClear,
+        mock.patch.object(app.threadPool, "waitForDone") as mockWait,
+    ):
+        app.shutdown()
+    mockTimerStop.assert_called_once()
+    mockStopDevices.assert_called_once()
+    mockClear.assert_called_once()
+    mockWait.assert_called_once()
 
 
 def test_writeMessageQueue(app):

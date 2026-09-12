@@ -213,3 +213,9 @@ class App(QObject):
     @staticmethod
     def quit():
         return
+
+    def shutdown(self) -> None:
+        """Properly shutdown the test app and clean up all resources."""
+        self.timeMgr.stop()
+        self.threadPool.clear()
+        self.threadPool.waitForDone()

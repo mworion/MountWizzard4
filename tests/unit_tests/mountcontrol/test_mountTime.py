@@ -383,7 +383,6 @@ def test_pollSyncClock_unlocked(function):
         del function.workerPollSyncClock
 
 
-
 def test_pollSyncClock_communicate_failure(function):
     function.parent.mountIsUp = True
     with mock.patch("mw4.mountcontrol.mountTime.Connection") as mock_connection:

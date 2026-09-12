@@ -149,6 +149,7 @@ class UploadPopup(MWidget):
         return returnValues.text.strip("\n").split("\n")
 
     def runnerPollStatus(self) -> None:
+        self.pollStatusRunState = True
         self.signalStatus.emit("Uploading data to mount...")
         while self.pollStatusRunState:
             text = self.getStatus()
@@ -172,28 +173,18 @@ class UploadPopup(MWidget):
         return f"http://{self.url!s}/bin/upload"
 
     def deleteHostData(self) -> bool:
-        try:
-            returnValues = requests.delete(self.generateURL(), timeout=10)  # SEC-4
-            if returnValues.status_code not in [200, 204]:
-                self.msg.emit(
-                    2, "Upload", "Error", f"Deleting File: {returnValues.status_code}"
-                )
-                return False
+        returnValues = requests.delete(self.generateURL(), timeout=10)  # SEC-4
+        if returnValues.status_code in [200, 204]:
             return True
-        except requests.RequestException as e:
-            self.msg.emit(2, "Upload", "Error", f"Deleting File: {e}")
-            return False
+        self.msg.emit(2, "Upload", "Error", f"Deleting File: {returnValues.status_code}")
+        return False
 
     def postHostData(self, files: dict) -> bool:
-        try:
-            returnValues = requests.post(self.generateURL(), files=files, timeout=10)  # SEC-4
-            if returnValues.status_code != 202:
-                self.msg.emit(2, "Upload", "Error", f"Data: {returnValues.status_code}")
-                return False
+        returnValues = requests.post(self.generateURL(), files=files, timeout=10)  # SEC-4
+        if returnValues.status_code == 202:
             return True
-        except requests.RequestException as e:
-            self.msg.emit(2, "Upload", "Error", f"Data: {e}")
-            return False
+        self.msg.emit(2, "Upload", "Error", f"Data: {returnValues.status_code}")
+        return False
 
     def runnerUploadFile(self) -> bool:
         if not self.deleteHostData():
@@ -227,7 +218,7 @@ class UploadPopup(MWidget):
             resultMethod=self.closePopup,
             finishedMethod=self.loop.quit,
         )
-        self.pollStatusRunState = True
         self.workerPollStatus = startWorker(self.threadPool, self.runnerPollStatus)
         self.loop.exec()
+        self.pollStatusRunState = False
         return self.returnValues["success"]

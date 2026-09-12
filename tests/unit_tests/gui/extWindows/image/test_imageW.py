@@ -510,3 +510,18 @@ def test_abortExpose_fail(function):
     function.app.dReg["camera"].signals.saved.connect(function.exposeImageDone)
     with mock.patch.object(function.app.dReg["camera"].instance, "abort", return_value=False):
         function.abortExpose()
+
+
+def test_setButtonExposingStatusEnabled_isExposing(function):
+    function.isExposing = True
+    function.setButtonExposingStatusEnabled()
+    assert not function.ui.load.isEnabled()
+    assert function.ui.abortExpose.isEnabled()
+
+
+def test_setButtonExposingStatusEnabled_notExposing(function):
+    function.isExposing = False
+    function.setButtonExposingStatusEnabled()
+    assert function.ui.expose.isEnabled()
+    assert function.ui.load.isEnabled()
+    assert not function.ui.abortExpose.isEnabled()

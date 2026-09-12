@@ -169,6 +169,7 @@ def test_workerProcessSource_1(function):
 def test_procSourceData_1(function):
     with mock.patch.object(function.threadPool, "start"):
         function.procSourceData()
+        function.workerSource.mutex.unlock()
 
 
 def test_runDownloadPopup_1(function):

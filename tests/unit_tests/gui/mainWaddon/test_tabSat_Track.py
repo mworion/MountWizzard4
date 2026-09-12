@@ -269,6 +269,7 @@ def test_showSatPasses_1(function):
     ):
         function.showSatPasses()
         mockStart.assert_called_once()
+        function.workerPasses.mutex.unlock()
 
 
 def test_extractSatelliteData_0(function):

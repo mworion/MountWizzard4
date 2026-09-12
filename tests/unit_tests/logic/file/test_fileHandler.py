@@ -226,3 +226,4 @@ def test_loadImage_2(function):
     shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
     with mock.patch.object(function.threadPool, "start"):
         function.loadImage(imageFileName)
+        function.workerLoadImage.mutex.unlock()

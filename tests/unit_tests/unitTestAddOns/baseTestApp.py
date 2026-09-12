@@ -14,6 +14,7 @@
 #
 ###########################################################
 # Re-export all stubs so that existing test imports remain unchanged.
+from functools import cache
 from mw4.base.deviceRegistry import DeviceEntry, DeviceRegistry
 from mw4.base.timeManager import TimeManager
 from mw4.logic.buildData.buildpoints import BuildPoint
@@ -72,6 +73,17 @@ from tests.unit_tests.unitTestAddOns.mountStubs import (  # noqa: F401
     MountSignals,
     Name,
 )
+
+
+@cache
+def loadEphemeris():
+    """Load the test ephemeris once and share it across all App instances.
+
+    ``load_file`` memory-maps the 1.1 MB BSP file, so re-loading it for every
+    fixture leaks file descriptors and is needlessly slow. Caching keeps the
+    fixture preparation clean and fast.
+    """
+    return load_file("tests/testData/de440_mw4.bsp")
 
 
 class App(QObject):
@@ -159,7 +171,7 @@ class App(QObject):
         self.telescope = Telescope()
         self.hipparcos = Hipparcos()
 
-        self.ephemeris = load_file("tests/testData/de440_mw4.bsp")
+        self.ephemeris = loadEphemeris()
         self.mwGlob = {
             "modelDir": Path("tests/work/model"),
             "imageDir": Path("tests/work/image"),

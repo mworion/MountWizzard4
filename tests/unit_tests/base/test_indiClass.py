@@ -490,6 +490,8 @@ def test_startCommunication_success(function):
     assert function.commandRunning is True
     assert function.workerIndiQueueClient is not None
     assert function.workerProcessRxQueue is not None
+    function.workerIndiQueueClient.mutex.unlock()
+    function.workerProcessRxQueue.mutex.unlock()
 
 
 # ─── stopCommunication ───────────────────────────────────────────────────────
@@ -535,7 +537,7 @@ def test_loadIndiConfig(function):
 def test_discoverDevices_emptyQueue(function, monkeypatch):
     monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
     with (
-        mock.patch("mw4.base.indiClass.Worker"),
+        mock.patch("mw4.base.indiClass.startWorker"),
         mock.patch.object(function.threadPool, "start"),
         mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
     ):
@@ -553,7 +555,7 @@ def test_discoverDevices_emptyQueue(function, monkeypatch):
 def test_discoverDevices_noneItem(function, monkeypatch):
     monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
     with (
-        mock.patch("mw4.base.indiClass.Worker"),
+        mock.patch("mw4.base.indiClass.startWorker"),
         mock.patch.object(function.threadPool, "start"),
         mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
     ):
@@ -574,7 +576,7 @@ def test_discoverDevices_withoutDeviceName(function, monkeypatch):
     item.devicename = ""
 
     with (
-        mock.patch("mw4.base.indiClass.Worker"),
+        mock.patch("mw4.base.indiClass.startWorker"),
         mock.patch.object(function.threadPool, "start"),
         mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
     ):
@@ -599,7 +601,7 @@ def test_discoverDevices_driverMatchingType(function, monkeypatch):
     item.snapshot = {"TestDome": snapshot_value}
 
     with (
-        mock.patch("mw4.base.indiClass.Worker"),
+        mock.patch("mw4.base.indiClass.startWorker"),
         mock.patch.object(function.threadPool, "start"),
         mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
     ):

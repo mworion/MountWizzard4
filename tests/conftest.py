@@ -15,6 +15,7 @@
 ###########################################################
 import gc
 import os
+from PySide6.QtCore import QCoreApplication, QThreadPool
 
 os.environ["QT_QPA_PLATFORM"] = "offscreen"
 os.environ["QT_DEBUG_PLUGINS"] = "0"
@@ -27,42 +28,37 @@ def pytest_configure(config):
 
 
 def pytest_runtest_teardown(item):
-    """Clean up Qt resources after each test."""
-    gc.collect()
-    try:
-        from PySide6.QtCore import QCoreApplication, QThreadPool
+    """Clean up Qt resources after each test.
 
-        pool = QThreadPool.globalInstance()
-        if pool is not None:
-            pool.waitForDone(100)
+    Only the global thread pool is drained (cheap when idle) so workers from
+    one test do not leak into the next. No per-test ``gc.collect()`` is done:
+    it costs ~10 ms each with many live Qt objects and dominated the runtime.
+    Tests are responsible for releasing their own Qt resources (e.g. unlocking
+    worker mutexes), so no forced collection is needed to hide leaks.
+    """
+    pool = QThreadPool.globalInstance()
+    if pool is not None:
+        pool.waitForDone(100)
 
-        app = QCoreApplication.instance()
-        if app is not None:
-            app.processEvents()
-    except Exception:
-        pass
+    app = QCoreApplication.instance()
+    if app is not None:
+        app.processEvents()
 
 
 def pytest_sessionfinish(session, exitstatus):
-    """Cleanup Qt resources after all tests complete."""
-    import sys
-    import io
+    """Cleanup Qt resources after all tests complete.
+
+    Drain the thread pool first so no worker still holds a locked mutex when
+    the owning Qt objects are garbage collected, then collect once.
+    """
+    pool = QThreadPool.globalInstance()
+    if pool is not None:
+        pool.waitForDone(1000)
+
+    app = QCoreApplication.instance()
+    if app is not None:
+        app.processEvents()
+        app.quit()
 
     gc.collect()
-    try:
-        from PySide6.QtCore import QCoreApplication, QThreadPool
-
-        pool = QThreadPool.globalInstance()
-        if pool is not None:
-            pool.waitForDone(1000)
-
-        app = QCoreApplication.instance()
-        if app is not None:
-            app.processEvents()
-            app.quit()
-            del app
-
-        gc.collect()
-    except Exception:
-        pass
 

@@ -114,3 +114,4 @@ def test_startCommunication_2(function):
     ):
         function.startCommunication()
         m_start.assert_called_once()
+        function.workerCommunicationLoop.mutex.unlock()

@@ -250,6 +250,7 @@ def test_startKeypad_creates_worker(keypad_window):
         mock_write.assert_called()
         mock_start.assert_called_once()
         keypad_window.websocketMutex.unlock()
+        keypad_window.worker.mutex.unlock()
 
 
 # Tests for buttonPressed method

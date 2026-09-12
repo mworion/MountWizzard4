@@ -277,6 +277,7 @@ def test_startCommunication_1(function):
         function.startCommunication()
         assert function.workerCommunicationLoop is not None
         m_start.assert_called_once()
+        function.workerCommunicationLoop.mutex.unlock()
 
 
 def test_startCommunication_2(function):
@@ -290,3 +291,4 @@ def test_startCommunication_2(function):
         assert not function.deviceConnected
         assert not function.stopEvent.is_set()
         m_start.assert_called_once()
+        function.workerCommunicationLoop.mutex.unlock()

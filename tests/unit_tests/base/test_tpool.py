@@ -102,6 +102,7 @@ def test_startWorker_guardAllows():
     worker = tpool.startWorker(pool, lambda: None, guard=lambda: True)
     assert worker is not None
     pool.start.assert_called_once_with(worker)
+    worker.mutex.unlock()
 
 
 def test_startWorker_mutexBlocks():
@@ -137,12 +138,14 @@ def test_startWorker_startsAndReturnsWorker():
     worker = tpool.startWorker(pool, lambda: None)
     assert isinstance(worker, tpool.Worker)
     pool.start.assert_called_once_with(worker)
+    worker.mutex.unlock()
 
 
 def test_startWorker_resultMethodOptional():
     pool = mock.Mock()
     worker = tpool.startWorker(pool, lambda: None, resultMethod=None)
     assert worker is not None
+    worker.mutex.unlock()
 
 
 def test_startWorker_connectsResultMethodToResult():
@@ -153,6 +156,7 @@ def test_startWorker_connectsResultMethodToResult():
     )
     worker.signals.result.emit("test_value")
     assert received == ["test_value"]
+    worker.mutex.unlock()
 
 
 def test_startWorker_connectsFinishedMethod():
@@ -166,6 +170,7 @@ def test_startWorker_connectsFinishedMethod():
     assert worker is not None
     worker.signals.finished.emit()
     assert received == ["finished"]
+    worker.mutex.unlock()
 
 
 def test_startWorker_connectsBothMethods():
@@ -183,6 +188,7 @@ def test_startWorker_connectsBothMethods():
     worker.signals.finished.emit()
     assert result_received == ["test_value"]
     assert finished_received == ["finished"]
+    worker.mutex.unlock()
 
 
 def test_startWorker_mutexUnlockedAfterWorkerFinishes():

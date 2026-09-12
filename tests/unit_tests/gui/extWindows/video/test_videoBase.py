@@ -143,6 +143,7 @@ def test_startVideoStream_2(function):
     function.ui.videoURL.setText("test")
     with mock.patch.object(function.threadPool, "start"):
         function.startVideo()
+        function.workerVideo.mutex.unlock()
 
 
 def test_stopVideoStream_1(function):

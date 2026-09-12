@@ -282,7 +282,7 @@ def test_statusAfterPulse(kmRelay: KMRelay) -> None:
 
     with (
         mock.patch.object(kmRelay, "getRelay", return_value=MockResult()),
-        mock.patch.object(kmRelay.threadPool, "start"),
+        mock.patch("mw4.logic.powerswitch.kmRelay.startWorker"),
     ):
         for i in range(8):
             kmRelay.pulse(i)
@@ -311,7 +311,7 @@ def test_getByteMixed(kmRelay: KMRelay) -> None:
 def test_pulseWithNoneResponse(kmRelay: KMRelay) -> None:
     with (
         mock.patch.object(kmRelay, "getRelay", return_value=None),
-        mock.patch.object(kmRelay.threadPool, "start"),
+        mock.patch("mw4.logic.powerswitch.kmRelay.startWorker"),
     ):
         kmRelay.pulse(7)
         assert kmRelay.workerPulse is not None
@@ -324,7 +324,7 @@ def test_pulseWithBadResponse(kmRelay: KMRelay) -> None:
 
     with (
         mock.patch.object(kmRelay, "getRelay", return_value=MockResult()),
-        mock.patch.object(kmRelay.threadPool, "start"),
+        mock.patch("mw4.logic.powerswitch.kmRelay.startWorker"),
     ):
         kmRelay.pulse(7)
         assert kmRelay.workerPulse is not None
@@ -337,7 +337,7 @@ def test_pulseWithGoodResponse(kmRelay: KMRelay) -> None:
 
     with (
         mock.patch.object(kmRelay, "getRelay", return_value=MockResult()),
-        mock.patch.object(kmRelay.threadPool, "start"),
+        mock.patch("mw4.logic.powerswitch.kmRelay.startWorker"),
     ):
         kmRelay.pulse(7)
         assert kmRelay.workerPulse is not None

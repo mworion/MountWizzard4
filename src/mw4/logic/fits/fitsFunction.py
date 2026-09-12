@@ -141,6 +141,7 @@ def writeHeaderCamera(header: fits.Header, camera: Any, obsSite: ObsSite) -> fit
     if camera.focalLength:
         scale = camera.binning / camera.focalLength * 206.265
     else:
+        scale = 0
         log.warning("camera.focalLength not set")
     header.append(("FOCALLEN", camera.focalLength, "Data from driver / manual input"))
     header.append(("SCALE", data.get("CCD_INFO.CCD_PIXEL_SIZE_X", 1) * scale))

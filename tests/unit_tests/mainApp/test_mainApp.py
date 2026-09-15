@@ -154,36 +154,6 @@ def test_send_cyclic(app):
                 mock_signal.emit.assert_not_called()
 
 
-def test_aboutToQuit(app):
-    """aboutToQuit must invoke shutdown with all cleanup operations."""
-    with (
-        mock.patch.object(app.timeMgr, "stop") as mockTimerStop,
-        mock.patch.object(app.dReg, "stopDevices") as mockStopDevices,
-        mock.patch.object(app.threadPool, "clear") as mockClear,
-        mock.patch.object(app.threadPool, "waitForDone") as mockWait,
-    ):
-        app.aboutToQuit()
-    mockTimerStop.assert_called_once()
-    mockStopDevices.assert_called_once()
-    mockClear.assert_called_once()
-    mockWait.assert_called_once()
-
-
-def test_shutdown(app):
-    """shutdown must stop timeMgr, stop devices, and wait for threadPool."""
-    with (
-        mock.patch.object(app.timeMgr, "stop") as mockTimerStop,
-        mock.patch.object(app.dReg, "stopDevices") as mockStopDevices,
-        mock.patch.object(app.threadPool, "clear") as mockClear,
-        mock.patch.object(app.threadPool, "waitForDone") as mockWait,
-    ):
-        app.shutdown()
-    mockTimerStop.assert_called_once()
-    mockStopDevices.assert_called_once()
-    mockClear.assert_called_once()
-    mockWait.assert_called_once()
-
-
 def test_writeMessageQueue(app):
     """writeMessageQueue adds messages to the message queue."""
     initial_size = app.messageQueue.qsize()

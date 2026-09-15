@@ -168,7 +168,7 @@ class MainWindow(MWidget):
         self.app.timeMgr.stop()
         self.app.dReg.stopDevices()
         self.externalWindows.closeExtendedWindows()
-        self.threadPool.waitForDone(1000)
+        self.threadPool.waitForDone(10000)
         super().closeEvent(closeEvent)
 
     def quitSave(self) -> None:

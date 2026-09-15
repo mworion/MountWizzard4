@@ -102,7 +102,7 @@ class MountWizzard4(QObject):
         self.dReg.startDevices()
         self.timeMgr.start()
         # Wire up application-level signal connections.
-        self.application.aboutToQuit.connect(self.aboutToQuit)
+        # self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
 
         if test:
@@ -140,14 +140,3 @@ class MountWizzard4(QObject):
     def writeMessageQueue(self, prio: int, source: str, mType: str, message: str) -> None:
         self.log.debug(f"Message window:[{source} - {mType} - {message}]")
         self.messageQueue.put((prio, source, mType, message))
-
-    def shutdown(self) -> None:
-        """Properly shutdown the application and clean up all resources."""
-        self.log.debug("Shutting down MountWizzard4")
-        self.timeMgr.stop()
-        self.dReg.stopDevices()
-        self.threadPool.clear()
-        self.threadPool.waitForDone()
-
-    def aboutToQuit(self) -> None:
-        self.shutdown()

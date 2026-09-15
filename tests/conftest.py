@@ -61,4 +61,3 @@ def pytest_sessionfinish(session, exitstatus):
         app.quit()
 
     gc.collect()
-

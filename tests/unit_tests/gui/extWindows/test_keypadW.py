@@ -72,6 +72,7 @@ def test_closeEvent_calls_cleanup_on_close(keypad_window):
         mock.patch.object(keypad_window.keypad, "closeWebsocket") as mock_close,
         mock.patch.object(keypad_window, "setupButtons"),
         mock.patch.object(MWidget, "closeEvent"),
+        mock.patch.object(keypad_window.threadPool, "waitForDone"),
     ):
         keypad_window.showWindow()
         keypad_window.closeEvent(QCloseEvent)
@@ -240,6 +241,10 @@ def test_startKeypad_blocked_when_already_running(keypad_window):
 
 def test_startKeypad_creates_worker(keypad_window):
     """Test startKeypad creates and starts worker thread."""
+    keypad_window.worker = None
+    if keypad_window.websocketMutex.tryLock():
+        keypad_window.websocketMutex.unlock()
+
     with (
         mock.patch.object(keypad_window, "clearDisplay") as mock_clear,
         mock.patch.object(keypad_window, "writeTextRow") as mock_write,
@@ -250,7 +255,8 @@ def test_startKeypad_creates_worker(keypad_window):
         mock_write.assert_called()
         mock_start.assert_called_once()
         keypad_window.websocketMutex.unlock()
-        keypad_window.worker.mutex.unlock()
+        if keypad_window.worker is not None:
+            keypad_window.worker.mutex.unlock()
 
 
 # Tests for buttonPressed method

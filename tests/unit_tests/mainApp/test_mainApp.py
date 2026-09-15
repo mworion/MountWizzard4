@@ -105,17 +105,37 @@ def test_send_cyclic(app):
     # Test signal emissions at various counter values
     # Signals are emitted if counter % interval == 0
     test_cases = [
-        (0, {"update0_1s", "update0_5s", "update1s", "update3s", "update10s",
-              "update30s", "update3m", "update30m"}),
+        (
+            0,
+            {
+                "update0_1s",
+                "update0_5s",
+                "update1s",
+                "update3s",
+                "update10s",
+                "update30s",
+                "update3m",
+                "update30m",
+            },
+        ),
         (4, {"update0_1s"}),
         (5, {"update0_1s", "update0_5s"}),
         (10, {"update0_1s", "update0_5s", "update1s"}),
         (30, {"update0_1s", "update0_5s", "update1s", "update3s"}),
         (100, {"update0_1s", "update0_5s", "update1s", "update10s"}),
-        (300, {"update0_1s", "update0_5s", "update1s", "update3s", "update10s",
-               "update30s"}),
-        (1800, {"update0_1s", "update0_5s", "update1s", "update3s", "update10s",
-                "update30s", "update3m"}),
+        (300, {"update0_1s", "update0_5s", "update1s", "update3s", "update10s", "update30s"}),
+        (
+            1800,
+            {
+                "update0_1s",
+                "update0_5s",
+                "update1s",
+                "update3s",
+                "update10s",
+                "update30s",
+                "update3m",
+            },
+        ),
     ]
 
     for counter_value, expected_signals in test_cases:

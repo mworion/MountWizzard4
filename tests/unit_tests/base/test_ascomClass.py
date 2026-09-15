@@ -280,7 +280,7 @@ def test_runnerCoreLoop_dispatchError(function):
         mock.patch("mw4.base.ascomClass.CoInitialize") as ci,
         mock.patch("mw4.base.ascomClass.CoUninitialize") as cu,
         mock.patch(
-            "mw4.base.ascomClass.client.dynamic.Dispatch", side_effect=Exception("fail")
+            "mw4.base.ascomClass.client.dynamic.Dispatch", side_effect=OSError("fail")
         ),
     ):
         function.runnerCoreLoop()
@@ -582,6 +582,8 @@ def test_startCommunication_multiple_calls(function):
     function.config.deviceName = "test.driver"
     with mock.patch.object(function.threadPool, "start") as m:
         function.startCommunication()
+        if function.workerRunnerCoreLoop:
+            function.workerRunnerCoreLoop.mutex.unlock()
         function.startCommunication()
     assert m.call_count == 2
 

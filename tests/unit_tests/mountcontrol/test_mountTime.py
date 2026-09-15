@@ -16,6 +16,7 @@
 
 import numpy as np
 import pytest
+from mw4.base import tpool
 from mw4.mountcontrol.mountTime import MountTime
 from mw4.mountcontrol.obsSite import MountStatus
 from PySide6.QtCore import QThreadPool
@@ -177,9 +178,16 @@ def test_runnerMountUp_error_counter_zero(function, ping_return, socket_fails):
 
 
 def test_checkMountUp_locked(function):
-    with mock.patch("mw4.mountcontrol.mountTime.startWorker", return_value=None):
+    worker = function.workerCycleMountUp
+    if worker is None:
+        worker = tpool.setupWorker(lambda: None)
+    worker.mutex.lock()
+    function.workerCycleMountUp = worker
+    with mock.patch.object(QThreadPool, "start") as start:
         result = function.checkMountUp()
         assert result is None
+        assert not start.called
+    worker.mutex.unlock()
 
 
 def test_checkMountUp_unlocked(function):
@@ -368,9 +376,16 @@ def test_pollSyncClock_mount_not_up(function):
 
 
 def test_pollSyncClock_locked(function):
-    with mock.patch("mw4.mountcontrol.mountTime.startWorker", return_value=None):
-        worker = function.pollSyncClock()
-        assert worker is None
+    worker = function.workerPollSyncClock
+    if worker is None:
+        worker = tpool.setupWorker(lambda: None)
+    worker.mutex.lock()
+    function.workerPollSyncClock = worker
+    with mock.patch.object(QThreadPool, "start") as start:
+        result = function.pollSyncClock()
+        assert result is None
+        assert not start.called
+    worker.mutex.unlock()
 
 
 def test_pollSyncClock_unlocked(function):

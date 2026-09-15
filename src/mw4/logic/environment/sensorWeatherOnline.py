@@ -18,7 +18,7 @@ import logging
 import numpy as np
 import requests
 from dataclasses import dataclass, field
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from pathlib import Path
 from typing import Any
 
@@ -145,9 +145,13 @@ class SensorWeatherOnline:
             self.processOpenWeatherMapData()
             self.sendStatus(True)
             return
-        self.workerGetOpenWeatherMapData = Worker(self.runnerGetOpenWeatherMapData, url)
-        self.workerGetOpenWeatherMapData.signals.result.connect(self.sendStatus)
-        self.threadPool.start(self.workerGetOpenWeatherMapData)
+        self.workerGetOpenWeatherMapData = startWorker(
+            self.workerGetOpenWeatherMapData,
+            self.threadPool,
+            self.runnerGetOpenWeatherMapData,
+            url,
+            resultMethod=self.sendStatus,
+        )
 
     def pollOpenWeatherMapData(self) -> None:
         if not self.config.apiKey or not self.app.isOnline:

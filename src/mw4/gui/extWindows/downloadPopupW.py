@@ -70,6 +70,7 @@ class DownloadPopup(MWidget):
         self.showWindow()
         self.loop = QEventLoop()
         self.workerDownloadFile = startWorker(
+            self.workerDownloadFile,
             self.threadPool,
             self.runnerDownloadFile,
             self.url,

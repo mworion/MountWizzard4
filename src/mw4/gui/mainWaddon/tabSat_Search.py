@@ -294,6 +294,7 @@ class SatSearch(SatData):
         selectTwilight = self.ui.satTwilight.currentIndex()
         altMin = self.ui.satAltitudeMin.value()
         self.workerCalcSatList = startWorker(
+            self.workerCalcSatList,
             self.threadPool,
             self.runnerCalcSatList,
             snapshot,

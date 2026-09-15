@@ -18,6 +18,7 @@ import PySide6
 import pytest
 import requests
 import time
+from mw4.base.tpool import Worker
 from mw4.logic.powerswitch.kmRelay import KMRelay
 from PySide6.QtCore import QMutex
 from unittest import mock
@@ -309,12 +310,10 @@ def test_getByteMixed(kmRelay: KMRelay) -> None:
 
 
 def test_pulseWithNoneResponse(kmRelay: KMRelay) -> None:
-    with (
-        mock.patch.object(kmRelay, "getRelay", return_value=None),
-        mock.patch("mw4.logic.powerswitch.kmRelay.startWorker"),
-    ):
+    with mock.patch.object(kmRelay, "getRelay", return_value=None):
         kmRelay.pulse(7)
         assert kmRelay.workerPulse is not None
+        assert isinstance(kmRelay.workerPulse, Worker)
 
 
 def test_pulseWithBadResponse(kmRelay: KMRelay) -> None:
@@ -322,12 +321,10 @@ def test_pulseWithBadResponse(kmRelay: KMRelay) -> None:
         reason = "Failed"
         status_code = 500
 
-    with (
-        mock.patch.object(kmRelay, "getRelay", return_value=MockResult()),
-        mock.patch("mw4.logic.powerswitch.kmRelay.startWorker"),
-    ):
+    with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
         kmRelay.pulse(7)
         assert kmRelay.workerPulse is not None
+        assert isinstance(kmRelay.workerPulse, Worker)
 
 
 def test_pulseWithGoodResponse(kmRelay: KMRelay) -> None:
@@ -335,12 +332,10 @@ def test_pulseWithGoodResponse(kmRelay: KMRelay) -> None:
         reason = "OK"
         status_code = 200
 
-    with (
-        mock.patch.object(kmRelay, "getRelay", return_value=MockResult()),
-        mock.patch("mw4.logic.powerswitch.kmRelay.startWorker"),
-    ):
+    with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
         kmRelay.pulse(7)
         assert kmRelay.workerPulse is not None
+        assert isinstance(kmRelay.workerPulse, Worker)
 
 
 def test_runnerPulseWithGoodResponse(kmRelay: KMRelay) -> None:

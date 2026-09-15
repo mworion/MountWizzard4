@@ -82,7 +82,7 @@ class AlpacaClass(AlpacaAscomCommon):
         if not self.createAlpacaDevice(self.parent.DEVICE_TYPE):
             return
         self.workerCommunicationLoop = startWorker(
-            self.threadPool, self.runnerCommunicationLoop
+            self.workerCommunicationLoop, self.threadPool, self.runnerCommunicationLoop
         )
 
     def discoverAPIVersion(self) -> int:

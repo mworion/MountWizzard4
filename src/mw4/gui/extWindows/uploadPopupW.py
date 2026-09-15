@@ -213,12 +213,15 @@ class UploadPopup(MWidget):
         self.showWindow()
         self.loop = QEventLoop()
         self.workerUploadFile = startWorker(
+            self.workerUploadFile,
             self.threadPool,
             self.runnerUploadFile,
             resultMethod=self.closePopup,
             finishedMethod=self.loop.quit,
         )
-        self.workerPollStatus = startWorker(self.threadPool, self.runnerPollStatus)
+        self.workerPollStatus = startWorker(
+            self.workerPollStatus, self.threadPool, self.runnerPollStatus
+        )
         self.loop.exec()
         self.pollStatusRunState = False
         return self.returnValues["success"]

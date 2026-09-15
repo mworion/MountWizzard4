@@ -101,16 +101,72 @@ def test_sendStart(app):
 
 
 def test_send_cyclic(app):
-    for a in [0, 4, 19, 79, 274, 574, 1787, 5986, 17985, 35984]:
-        app.timeMgr.counter = a
-        app.timeMgr.emitCyclic()
+    """emitCyclic() must emit correct signals based on counter intervals."""
+    # Test signal emissions at various counter values
+    # Signals are emitted if counter % interval == 0
+    test_cases = [
+        (0, {"update0_1s", "update0_5s", "update1s", "update3s", "update10s",
+              "update30s", "update3m", "update30m"}),
+        (4, {"update0_1s"}),
+        (5, {"update0_1s", "update0_5s"}),
+        (10, {"update0_1s", "update0_5s", "update1s"}),
+        (30, {"update0_1s", "update0_5s", "update1s", "update3s"}),
+        (100, {"update0_1s", "update0_5s", "update1s", "update10s"}),
+        (300, {"update0_1s", "update0_5s", "update1s", "update3s", "update10s",
+               "update30s"}),
+        (1800, {"update0_1s", "update0_5s", "update1s", "update3s", "update10s",
+                "update30s", "update3m"}),
+    ]
+
+    for counter_value, expected_signals in test_cases:
+        app.timeMgr.counter = counter_value
+
+        # Mock all cyclic signals to track emissions
+        mock_signals = {
+            "update0_1s": mock.MagicMock(),
+            "update0_5s": mock.MagicMock(),
+            "update1s": mock.MagicMock(),
+            "update3s": mock.MagicMock(),
+            "update10s": mock.MagicMock(),
+            "update30s": mock.MagicMock(),
+            "update3m": mock.MagicMock(),
+            "update30m": mock.MagicMock(),
+        }
+
+        # Replace signal emitters with mocks
+        with (
+            mock.patch.object(app.timeMgr, "update0_1s", mock_signals["update0_1s"]),
+            mock.patch.object(app.timeMgr, "update0_5s", mock_signals["update0_5s"]),
+            mock.patch.object(app.timeMgr, "update1s", mock_signals["update1s"]),
+            mock.patch.object(app.timeMgr, "update3s", mock_signals["update3s"]),
+            mock.patch.object(app.timeMgr, "update10s", mock_signals["update10s"]),
+            mock.patch.object(app.timeMgr, "update30s", mock_signals["update30s"]),
+            mock.patch.object(app.timeMgr, "update3m", mock_signals["update3m"]),
+            mock.patch.object(app.timeMgr, "update30m", mock_signals["update30m"]),
+        ):
+            app.timeMgr.emitCyclic()
+
+        # Verify expected signals were emitted
+        for signal_name, mock_signal in mock_signals.items():
+            if signal_name in expected_signals:
+                mock_signal.emit.assert_called_once()
+            else:
+                mock_signal.emit.assert_not_called()
 
 
 def test_aboutToQuit(app):
-    """aboutToQuit must stop the timer manager."""
-    with mock.patch.object(app.timeMgr, "stop") as mockStop:
+    """aboutToQuit must invoke shutdown with all cleanup operations."""
+    with (
+        mock.patch.object(app.timeMgr, "stop") as mockTimerStop,
+        mock.patch.object(app.dReg, "stopDevices") as mockStopDevices,
+        mock.patch.object(app.threadPool, "clear") as mockClear,
+        mock.patch.object(app.threadPool, "waitForDone") as mockWait,
+    ):
         app.aboutToQuit()
-    mockStop.assert_called_once()
+    mockTimerStop.assert_called_once()
+    mockStopDevices.assert_called_once()
+    mockClear.assert_called_once()
+    mockWait.assert_called_once()
 
 
 def test_shutdown(app):

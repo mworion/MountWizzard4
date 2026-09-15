@@ -174,6 +174,7 @@ class MountDevice(QObject):
 
     def cyclePointing(self) -> None:
         self.workerCyclePointing = startWorker(
+            self.workerCyclePointing,
             self.threadPool,
             self.obsSite.pollPointing,
             resultMethod=self.resultCyclePointing,
@@ -186,6 +187,7 @@ class MountDevice(QObject):
 
     def cycleSetting(self) -> None:
         self.workerCycleSetting = startWorker(
+            self.workerCycleSetting,
             self.threadPool,
             self.setting.pollSetting,
             resultMethod=self.resultCycleSetting,
@@ -197,6 +199,7 @@ class MountDevice(QObject):
 
     def getModel(self) -> None:
         self.workerGetModel = startWorker(
+            self.workerGetModel,
             self.threadPool,
             self.model.pollStars,
             resultMethod=self.resultGetModel,
@@ -208,6 +211,7 @@ class MountDevice(QObject):
 
     def getNames(self) -> None:
         self.workerGetNames = startWorker(
+            self.workerGetNames,
             self.threadPool,
             self.model.pollNames,
             resultMethod=self.resultGetNames,
@@ -223,6 +227,7 @@ class MountDevice(QObject):
 
     def getFW(self) -> None:
         self.workerGetFW = startWorker(
+            self.workerGetFW,
             self.threadPool,
             self.firmware.poll,
             resultMethod=self.resultGetFW,
@@ -234,6 +239,7 @@ class MountDevice(QObject):
 
     def getLocation(self) -> None:
         self.workerGetLocation = startWorker(
+            self.workerGetLocation,
             self.threadPool,
             self.obsSite.getLocation,
             resultMethod=self.resultGetLocation,
@@ -245,6 +251,7 @@ class MountDevice(QObject):
 
     def calcTLE(self, start: float) -> None:
         self.workerCalcTLE = startWorker(
+            self.workerCalcTLE,
             self.threadPool,
             self.satellite.calcTLE,
             start,
@@ -257,6 +264,7 @@ class MountDevice(QObject):
 
     def statTLE(self) -> None:
         self.workerStatTLE = startWorker(
+            self.workerStatTLE,
             self.threadPool,
             self.satellite.statTLE,
             resultMethod=self.resultStatTLE,
@@ -268,6 +276,7 @@ class MountDevice(QObject):
 
     def getTLE(self) -> None:
         self.workerGetTLE = startWorker(
+            self.workerGetTLE,
             self.threadPool,
             self.satellite.getTLE,
             resultMethod=self.resultGetTLE,
@@ -312,6 +321,7 @@ class MountDevice(QObject):
             return
         self.satellite.startProgTrajectory(julD=start)
         self.workerTrajectory = startWorker(
+            self.workerTrajectory,
             self.threadPool,
             self.runnerProgTrajectory,
             alt,

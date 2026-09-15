@@ -520,7 +520,7 @@ def test_startCommunication_clears_data(function):
     """Test that startCommunication clears data."""
     function.data = {"key": "value"}
     function.stopEvent.set()
-    with mock.patch.object(function.threadPool, "start"):
+    with mock.patch("mw4.base.sgproClass.startWorker", return_value=mock.Mock()):
         function.startCommunication()
         assert function.data == {}
 
@@ -529,7 +529,7 @@ def test_startCommunication_initializes_state(function):
     """Test that startCommunication initializes state correctly."""
     function.stopEvent.set()
     function.deviceConnected = True
-    with mock.patch.object(function.threadPool, "start"):
+    with mock.patch("mw4.base.sgproClass.startWorker", return_value=mock.Mock()):
         function.startCommunication()
         assert function.deviceConnected is False
         assert not function.stopEvent.is_set()
@@ -538,9 +538,12 @@ def test_startCommunication_initializes_state(function):
 def test_startCommunication_creates_worker(function):
     """Test that startCommunication creates a worker."""
     function.stopEvent.set()
-    with mock.patch.object(function.threadPool, "start"):
+    with mock.patch("mw4.base.sgproClass.startWorker") as mock_start:
+        mock_worker = mock.Mock()
+        mock_start.return_value = mock_worker
         function.startCommunication()
         assert function.workerCommunicationLoop is not None
+        assert function.workerCommunicationLoop == mock_worker
 
 
 def test_stopCommunication_sets_stop_event(function):

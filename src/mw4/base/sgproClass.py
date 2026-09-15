@@ -19,7 +19,7 @@ import threading
 import time
 from dataclasses import dataclass, field
 from mw4.base.driverDataClass import DriverData
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from PySide6.QtCore import QThreadPool
 from typing import Any
 
@@ -194,8 +194,9 @@ class SGProClass(DriverData):
         self.data.clear()
         self.deviceConnected = False
         self.stopEvent.clear()
-        self.workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
-        self.threadPool.start(self.workerCommunicationLoop)
+        self.workerCommunicationLoop = startWorker(
+            self.workerCommunicationLoop, self.runnerCommunicationLoop
+        )
 
     def stopCommunication(self) -> None:
         self.stopEvent.set()

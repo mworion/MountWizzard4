@@ -150,7 +150,7 @@ def test_cyclePointing_2(function):
     if function.workerCyclePointing is not None:
         function.workerCyclePointing.mutex.unlock()
         function.workerCyclePointing.signals.finished.emit()
-        del function.workerCyclePointing
+        function.workerCyclePointing = None
 
 
 def test_cyclePointing_3(function):
@@ -161,7 +161,7 @@ def test_cyclePointing_3(function):
     if function.workerCyclePointing is not None:
         function.workerCyclePointing.mutex.unlock()
         function.workerCyclePointing.signals.finished.emit()
-        del function.workerCyclePointing
+        function.workerCyclePointing = None
 
 
 def test_resultCycleSetting_1(function):
@@ -183,7 +183,7 @@ def test_cycleSetting_2(function):
     if function.workerCycleSetting is not None:
         function.workerCycleSetting.mutex.unlock()
         function.workerCycleSetting.signals.finished.emit()
-        del function.workerCycleSetting
+        function.workerCycleSetting = None
 
 
 def test_cycleSetting_3(function):
@@ -194,7 +194,7 @@ def test_cycleSetting_3(function):
     if function.workerCycleSetting is not None:
         function.workerCycleSetting.mutex.unlock()
         function.workerCycleSetting.signals.finished.emit()
-        del function.workerCycleSetting
+        function.workerCycleSetting = None
 
 
 def test_resultGetModel_1(function):
@@ -213,7 +213,7 @@ def test_getModel_2(function):
         function.getModel()
     if function.workerGetModel is not None:
         function.workerGetModel.mutex.unlock()
-        del function.workerGetModel
+        function.workerGetModel = None
 
 
 def test_resultGetNames_1(function):
@@ -232,7 +232,7 @@ def test_GetNames_2(function):
         function.getNames()
     if function.workerGetNames is not None:
         function.workerGetNames.mutex.unlock()
-        del function.workerGetNames
+        function.workerGetNames = None
 
 
 def test_resultGetFW_1(function):
@@ -251,7 +251,7 @@ def test_GetFW_2(function):
         function.getFW()
     if function.workerGetFW is not None:
         function.workerGetFW.mutex.unlock()
-        del function.workerGetFW
+        function.workerGetFW = None
 
 
 def test_resultGetLocation_1(function):
@@ -270,7 +270,7 @@ def test_GetLocation_2(function):
         function.getLocation()
     if function.workerGetLocation is not None:
         function.workerGetLocation.mutex.unlock()
-        del function.workerGetLocation
+        function.workerGetLocation = None
 
 
 def test_resultCalcTLE_1(function):
@@ -292,7 +292,7 @@ def test_CalcTLE_2(function):
     if function.workerCalcTLE is not None:
         function.workerCalcTLE.mutex.unlock()
         function.workerCalcTLE.signals.finished.emit()
-        del function.workerCalcTLE
+        function.workerCalcTLE = None
 
 
 def test_CalcTLE_3(function):
@@ -303,7 +303,7 @@ def test_CalcTLE_3(function):
     if function.workerCalcTLE is not None:
         function.workerCalcTLE.mutex.unlock()
         function.workerCalcTLE.signals.finished.emit()
-        del function.workerCalcTLE
+        function.workerCalcTLE = None
 
 
 def test_resultStatTLE_1(function):
@@ -322,7 +322,7 @@ def test_StatTLE_2(function):
         function.statTLE()
     if function.workerStatTLE is not None:
         function.workerStatTLE.mutex.unlock()
-        del function.workerStatTLE
+        function.workerStatTLE = None
 
 
 def test_resultGetTLE_1(function):
@@ -344,7 +344,7 @@ def test_GetTLE_2(function):
     if function.workerGetTLE is not None:
         function.workerGetTLE.mutex.unlock()
         function.workerGetTLE.signals.finished.emit()
-        del function.workerGetTLE
+        function.workerGetTLE = None
 
 
 def test_GetTLE_3(function):
@@ -355,7 +355,7 @@ def test_GetTLE_3(function):
     if function.workerGetTLE is not None:
         function.workerGetTLE.mutex.unlock()
         function.workerGetTLE.signals.finished.emit()
-        del function.workerGetTLE
+        function.workerGetTLE = None
 
 
 def test_bootMount_1(function):
@@ -443,7 +443,7 @@ def test_progTrajectory_1(function):
         function.progTrajectory(start=1, alt=[10], az=[10])
     if function.workerTrajectory is not None:
         function.workerTrajectory.mutex.unlock()
-        del function.workerTrajectory
+        function.workerTrajectory = None
 
 
 def test_progTrajectory_2(function):

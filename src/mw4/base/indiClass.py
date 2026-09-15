@@ -121,8 +121,12 @@ class IndiClass:
         self.rxQ.queue.clear()
         self.data.clear()
         self.commandRunning = True
-        self.workerIndiQueueClient = startWorker(self.threadPool, self.runnerQueueClient)
-        self.workerProcessRxQueue = startWorker(self.threadPool, self.runnerProcessRxQueue)
+        self.workerIndiQueueClient = startWorker(
+            self.workerIndiQueueClient, self.threadPool, self.runnerQueueClient
+        )
+        self.workerProcessRxQueue = startWorker(
+            self.workerProcessRxQueue, self.threadPool, self.runnerProcessRxQueue
+        )
 
     def stopCommunication(self) -> None:
         self.txQ.put(None)
@@ -139,6 +143,7 @@ class IndiClass:
         rxQ = Queue()
         discoverSet = set()
         startWorker(
+            None,
             self.threadPool,
             self.runnerQueueClient,
             txQ,

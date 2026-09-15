@@ -220,6 +220,7 @@ class SatTrack(SatData):
         title = "Satellite passes " + self.app.timeMgr.timeZoneString()
         self.ui.satPassesGroup.setTitle(title)
         self.workerPasses = startWorker(
+            self.workerPasses,
             self.threadPool,
             self.runnerShowSatPasses,
             resultMethod=self.updateSatPassesGui,

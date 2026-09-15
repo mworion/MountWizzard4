@@ -19,7 +19,7 @@ import requests
 from dataclasses import dataclass, field
 from importlib.resources import as_file, files
 from mw4.base.signalsDevices import Signals
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from pathlib import Path
 from PySide6.QtCore import Signal
 from typing import Any
@@ -115,9 +115,13 @@ class SeeingWeather:
         if not self.loadingFileNeeded("meteoblue.data", 0.5):
             self.sendStatus(True)
             return
-        self.workerGetSeeingData = Worker(self.runnerGetSeeingData, url)
-        self.workerGetSeeingData.signals.result.connect(self.sendStatus)
-        self.threadPool.start(self.workerGetSeeingData)
+        self.workerGetSeeingData = startWorker(
+            self.workerGetSeeingData,
+            self.threadPool,
+            self.runnerGetSeeingData,
+            url,
+            resultMethod=self.sendStatus,
+        )
 
     def pollSeeingData(self) -> None:
         if not self.config.apiKey or not self.b or not self.app.isOnline:

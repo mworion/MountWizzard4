@@ -16,7 +16,7 @@
 import logging
 import numpy as np
 import sep
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from PySide6.QtCore import QObject, Signal
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
@@ -332,7 +332,9 @@ class Photometry:
         if not self.lock.tryLock():
             return
 
-        self.workerCalcPhotometry = Worker(self.runnerCalcPhotometry)
+        self.workerCalcPhotometry = startWorker(
+            self.workerCalcPhotometry, self.threadPool, self.runnerCalcPhotometry
+        )
         self.workerCalcPhotometry.signals.result.connect(
             lambda: self.signals.sepFinished.emit()
         )

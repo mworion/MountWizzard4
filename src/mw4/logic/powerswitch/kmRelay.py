@@ -169,6 +169,7 @@ class KMRelay:
 
     def pulse(self, relayNumber: int) -> None:
         self.workerPulse = startWorker(
+            self.workerPulse,
             self.threadPool,
             self.runnerPulse,
             self.resultPulse,

@@ -72,7 +72,23 @@ class Worker(QRunnable):
             self.signals.finished.emit()
 
 
+def setupWorker(
+    target: Callable[..., Any],
+    *args: Any,
+    resultMethod: Callable[..., Any] | None = None,
+    finishedMethod: Callable[..., Any] | None = None,
+    **kwargs: Any,
+) -> Worker | None:
+    worker = Worker(target, *args, **kwargs)
+    if resultMethod is not None:
+        worker.signals.result.connect(resultMethod)
+    if finishedMethod is not None:
+        worker.signals.finished.connect(finishedMethod)
+    return worker
+
+
 def startWorker(
+    worker: Worker | None,
     threadPool: QThreadPool,
     target: Callable[..., Any],
     *args: Any,
@@ -84,12 +100,11 @@ def startWorker(
 
     if guard is not None and not guard():
         return None
-    worker = Worker(target, *args, **kwargs)
+    if worker is None:
+        worker = setupWorker(
+            target, *args, resultMethod=resultMethod, finishedMethod=finishedMethod, **kwargs
+        )
     if not worker.mutex.tryLock():
         return None
-    if resultMethod is not None:
-        worker.signals.result.connect(resultMethod)
-    if finishedMethod is not None:
-        worker.signals.finished.connect(finishedMethod)
     threadPool.start(worker)
     return worker

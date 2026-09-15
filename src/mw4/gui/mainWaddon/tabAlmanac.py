@@ -234,6 +234,7 @@ class Almanac(TabAddon):
         ts = self.app.dReg["mount"].obsSite.ts
         changeStyleDynamic(self.ui.almanacGroup, "run", "true")
         self.workerCalcTwilightDataPlot = startWorker(
+            self.workerCalcTwilightDataPlot,
             self.threadPool,
             self.runnerCalcTwilightDataPlot,
             ts,

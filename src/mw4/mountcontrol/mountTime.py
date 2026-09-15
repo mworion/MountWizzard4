@@ -86,6 +86,7 @@ class MountTime:
 
     def checkMountUp(self) -> None:
         self.workerCycleMountUp = startWorker(
+            self.workerCycleMountUp,
             self.threadPool,
             self.runnerMountUp,
         )
@@ -141,10 +142,9 @@ class MountTime:
         self._timeDiff[0] = delta
 
     def pollSyncClock(self) -> None:
-        worker = startWorker(
+        self.workerPollSyncClock = startWorker(
+            self.workerPollSyncClock,
             self.threadPool,
             self.runnerPollSyncClock,
             guard=lambda: self.parent.mountIsUp,
         )
-        if worker is not None:
-            self.workerPollSyncClock = worker

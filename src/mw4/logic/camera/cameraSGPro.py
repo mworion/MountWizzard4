@@ -15,7 +15,7 @@
 ###########################################################
 import time
 from mw4.base.sgproClass import SGProClass
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from pathlib import Path
 from typing import Any
 
@@ -110,8 +110,7 @@ class CameraSGPro(SGProClass):
 
     def expose(self) -> None:
         self.startTimeExposure = time.time()
-        self.workerExpose = Worker(self.runnerExpose)
-        self.threadPool.start(self.workerExpose)
+        self.workerExpose = startWorker(self.workerExpose, self.threadPool, self.runnerExpose)
 
     def abort(self) -> bool:
         return self.abortImage()

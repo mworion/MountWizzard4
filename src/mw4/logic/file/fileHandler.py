@@ -178,4 +178,6 @@ class FileHandler:
         self.flipH = flipH
         self.flipV = flipV
 
-        self.workerLoadImage = startWorker(self.threadPool, self.runnerLoadImage, imagePath)
+        self.workerLoadImage = startWorker(
+            self.workerLoadImage, self.threadPool, self.runnerLoadImage, imagePath
+        )

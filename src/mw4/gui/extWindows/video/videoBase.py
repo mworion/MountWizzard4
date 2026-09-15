@@ -127,7 +127,9 @@ class VideoWindowBase(MWidget):
         self.running = True
         self.capture = cv2.VideoCapture()
         self.capture.setExceptionMode(True)
-        self.workerVideo = startWorker(self.threadPool, self.runnerVideo, source, frameRate)
+        self.workerVideo = startWorker(
+            self.workerVideo, self.threadPool, self.runnerVideo, source, frameRate
+        )
 
     def stopVideo(self) -> None:
         changeStyleDynamic(self.ui.videoStart, "run", "false")

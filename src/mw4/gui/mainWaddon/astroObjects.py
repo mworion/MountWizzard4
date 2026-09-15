@@ -89,7 +89,9 @@ class AstroObjects:
 
     def procSourceData(self) -> None:
         self.dataValid = False
-        self.workerSource = startWorker(self.threadPool, self.runnerProcessSource)
+        self.workerSource = startWorker(
+            self.workerSource, self.threadPool, self.runnerProcessSource
+        )
 
     def runDownloadPopup(self, url: str, unzip: bool, entry: str, fileName: str) -> None:
         self.msg.emit(1, self.objectText.capitalize(), "Download", f"{entry}")

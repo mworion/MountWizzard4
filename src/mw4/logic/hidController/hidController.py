@@ -18,7 +18,7 @@ import logging
 import threading
 from dataclasses import dataclass, field
 from mw4.base.signalsDevices import Signals
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from PySide6.QtCore import Signal
 from typing import Any
 
@@ -172,8 +172,9 @@ class HidController:
     def startCommunication(self) -> None:
         self.deviceConnected = False
         self.stopEvent.clear()
-        self.workerCommunicationLoop = Worker(self.runnerCommunicationLoop)
-        self.threadPool.start(self.workerCommunicationLoop)
+        self.workerCommunicationLoop = startWorker(
+            self.workerCommunicationLoop, self.threadPool, self.runnerCommunicationLoop
+        )
 
     def stopCommunication(self) -> None:
         self.stopEvent.set()

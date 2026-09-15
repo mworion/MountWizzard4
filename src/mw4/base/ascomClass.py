@@ -63,7 +63,9 @@ class AscomClass(AlpacaAscomCommon):
         if not self.config.deviceName:
             return
         self.stopEvent.clear()
-        self.workerRunnerCoreLoop = startWorker(self.threadPool, self.runnerCoreLoop)
+        self.workerRunnerCoreLoop = startWorker(
+            self.workerRunnerCoreLoop, self.threadPool, self.runnerCoreLoop
+        )
 
     @classmethod
     def selectAscomDriver(cls, deviceName: str, deviceType: str) -> str:

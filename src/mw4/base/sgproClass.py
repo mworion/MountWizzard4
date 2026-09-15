@@ -195,7 +195,7 @@ class SGProClass(DriverData):
         self.deviceConnected = False
         self.stopEvent.clear()
         self.workerCommunicationLoop = startWorker(
-            self.workerCommunicationLoop, self.runnerCommunicationLoop
+            self.workerCommunicationLoop, self.threadPool, self.runnerCommunicationLoop
         )
 
     def stopCommunication(self) -> None:

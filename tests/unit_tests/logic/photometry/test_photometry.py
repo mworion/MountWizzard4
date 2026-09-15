@@ -214,3 +214,41 @@ def test_processPhotometry_3(function):
     with mock.patch.object(function.threadPool, "start"):
         function.processPhotometry(np.array(np.random.rand(100, 100) + 1), 0)
     function.lock.unlock()
+
+
+def test_processPhotometry_createsWorkerOnFirstCall(function):
+    """Test that processPhotometry creates a worker on first call."""
+    function.workerCalcPhotometry = None
+    function.image = np.array(np.random.rand(100, 100) + 1)
+    with mock.patch("mw4.logic.photometry.photometry.startWorker") as mock_start_worker:
+        mock_worker = mock.Mock()
+        mock_start_worker.return_value = mock_worker
+        function.processPhotometry(np.array(np.random.rand(100, 100) + 1), 0)
+        mock_start_worker.assert_called_once_with(
+            None,
+            function.threadPool,
+            function.runnerCalcPhotometry,
+            resultMethod=function.signals.sepFinished.emit,
+            finishedMethod=function.unlockPhotometry,
+        )
+        assert function.workerCalcPhotometry == mock_worker
+        function.lock.unlock()
+
+
+def test_processPhotometry_reusesWorker(function):
+    """Test that processPhotometry reuses worker on subsequent calls."""
+    existing_worker = mock.Mock()
+    function.workerCalcPhotometry = existing_worker
+    function.image = np.array(np.random.rand(100, 100) + 1)
+    with mock.patch("mw4.logic.photometry.photometry.startWorker") as mock_start_worker:
+        mock_start_worker.return_value = existing_worker
+        function.processPhotometry(np.array(np.random.rand(100, 100) + 1), 0)
+        mock_start_worker.assert_called_once_with(
+            existing_worker,
+            function.threadPool,
+            function.runnerCalcPhotometry,
+            resultMethod=function.signals.sepFinished.emit,
+            finishedMethod=function.unlockPhotometry,
+        )
+        assert function.workerCalcPhotometry == existing_worker
+        function.lock.unlock()

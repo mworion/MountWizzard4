@@ -333,10 +333,9 @@ class Photometry:
             return
 
         self.workerCalcPhotometry = startWorker(
-            self.workerCalcPhotometry, self.threadPool, self.runnerCalcPhotometry
+            self.workerCalcPhotometry,
+            self.threadPool,
+            self.runnerCalcPhotometry,
+            resultMethod=self.signals.sepFinished.emit,
+            finishedMethod=self.unlockPhotometry,
         )
-        self.workerCalcPhotometry.signals.result.connect(
-            lambda: self.signals.sepFinished.emit()
-        )
-        self.workerCalcPhotometry.signals.finished.connect(self.unlockPhotometry)
-        self.threadPool.start(self.workerCalcPhotometry)

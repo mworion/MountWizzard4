@@ -167,8 +167,21 @@ def test_startWorker_mutexBlocksStarting():
     worker.mutex.lock()
 
     result = tpool.startWorker(worker, pool, lambda: None)
-    assert result is None
+    assert result is worker
     pool.start.assert_not_called()
+    worker.mutex.unlock()
+
+
+def test_startWorker_updateArgsKwargsOnReuse():
+    pool = mock.Mock()
+    worker = tpool.setupWorker(lambda x, y: (x, y), 1, 2)
+
+    result = tpool.startWorker(worker, pool, lambda x, y, z: (x, y, z), 10, 20, z=30)
+
+    assert result is worker
+    assert worker.args == (10, 20)
+    assert worker.kwargs == {"z": 30}
+    pool.start.assert_called_once_with(worker)
     worker.mutex.unlock()
 
 

@@ -104,7 +104,10 @@ def startWorker(
         worker = setupWorker(
             target, *args, resultMethod=resultMethod, finishedMethod=finishedMethod, **kwargs
         )
+    else:
+        worker.args = args
+        worker.kwargs = kwargs
     if not worker.mutex.tryLock():
-        return None
+        return worker
     threadPool.start(worker)
     return worker

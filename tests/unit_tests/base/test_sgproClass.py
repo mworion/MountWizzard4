@@ -546,6 +546,33 @@ def test_startCommunication_creates_worker(function):
         assert function.workerCommunicationLoop == mock_worker
 
 
+def test_startCommunication_calls_startWorker_correctly(function):
+    """Test that startCommunication calls startWorker with correct arguments."""
+    function.stopEvent.set()
+    function.workerCommunicationLoop = None
+    with mock.patch("mw4.base.sgproClass.startWorker") as mock_start:
+        mock_worker = mock.Mock()
+        mock_start.return_value = mock_worker
+        function.startCommunication()
+        mock_start.assert_called_once_with(
+            None, function.threadPool, function.runnerCommunicationLoop
+        )
+
+
+def test_startCommunication_reuses_worker(function):
+    """Test that startCommunication reuses worker and calls startWorker."""
+    function.stopEvent.set()
+    existing_worker = mock.Mock()
+    function.workerCommunicationLoop = existing_worker
+
+    with mock.patch("mw4.base.sgproClass.startWorker") as mock_start:
+        mock_start.return_value = existing_worker
+        function.startCommunication()
+        mock_start.assert_called_once_with(
+            existing_worker, function.threadPool, function.runnerCommunicationLoop
+        )
+
+
 def test_stopCommunication_sets_stop_event(function):
     """Test that stopCommunication sets the stop event."""
     function.stopEvent.clear()

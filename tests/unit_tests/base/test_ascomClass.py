@@ -279,9 +279,7 @@ def test_runnerCoreLoop_dispatchError(function):
     with (
         mock.patch("mw4.base.ascomClass.CoInitialize") as ci,
         mock.patch("mw4.base.ascomClass.CoUninitialize") as cu,
-        mock.patch(
-            "mw4.base.ascomClass.client.dynamic.Dispatch", side_effect=OSError("fail")
-        ),
+        mock.patch("mw4.base.ascomClass.client.dynamic.Dispatch", side_effect=OSError("fail")),
     ):
         function.runnerCoreLoop()
     ci.assert_called_once()

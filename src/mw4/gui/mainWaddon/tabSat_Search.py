@@ -38,8 +38,8 @@ from typing import Any, ClassVar
 
 class SatSearchSignals(QObject):
     setSatListItem = Signal(int, int, object, int)
-    setSatListRowHidden = Signal(int, bool, int)
-    setSatGroupTitle = Signal(str, bool, int)
+    setSatListRowHidden = Signal(int, bool)
+    setSatGroupTitle = Signal(str, bool)
 
 
 class SatSearch(SatData):
@@ -84,7 +84,7 @@ class SatSearch(SatData):
     def initConfig(self) -> None:
         config = self.app.config["WindowMain"]
         self.ui.satFilterText.setText(config.get("satFilterText"))
-        self.ui.satTwilight.setCurrentIndex(config.get("satTwilight", 5))
+        self.ui.satTwilight.setCurrentIndex(config.get("satTwilight", 4))
         self.ui.satIsSunlit.setChecked(config.get("satIsSunlit", False))
         self.ui.satAltitudeMin.setValue(config.get("satAltitudeMin", 30))
         self.ui.satSourceList.setCurrentIndex(config.get("satSource", 0))
@@ -202,14 +202,10 @@ class SatSearch(SatData):
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.signals.setSatListItem.emit(row, 8, entry, generation)
 
-    def updateVisibilityRow(self, row: int, hide: bool, generation: int) -> None:
-        if generation != self.calcGeneration:
-            return
+    def updateVisibilityRow(self, row: int, hide: bool) -> None:
         self.ui.listSats.setRowHidden(row, hide)
 
-    def updateTitleRunning(self, title: str, running: bool, generation: int) -> None:
-        if generation != self.calcGeneration:
-            return
+    def updateTitleRunning(self, title: str, running: bool) -> None:
         changeStyleDynamic(self.ui.satFilterGroup, "run", "true" if running else "false")
         self.ui.satFilterGroup.setTitle(title)
 
@@ -255,7 +251,7 @@ class SatSearch(SatData):
         altMin: float,
     ) -> None:
         try:
-            self.signals.setSatGroupTitle.emit("Filter - running", True, generation)
+            self.signals.setSatGroupTitle.emit("Filter - running", True)
             loc = self.app.dReg["mount"].location
             ts = self.app.dReg["mount"].obsSite.ts
             timeNow = ts.now()
@@ -267,7 +263,7 @@ class SatSearch(SatData):
                     break
                 finished = (i + 1) / numSats * 100
                 t = f"Filter - processed: {finished:3.0f}%"
-                self.signals.setSatGroupTitle.emit(t, True, generation)
+                self.signals.setSatGroupTitle.emit(t, True)
                 if hidden:
                     continue
                 if not self.satOkSGP4(sat, timeNext):
@@ -279,8 +275,8 @@ class SatSearch(SatData):
                 if checkIsSunlit:
                     show = show and isSunlit
                 show = show and (twilight <= selectTwilight)
-                self.signals.setSatListRowHidden.emit(row, not show, generation)
-            self.signals.setSatGroupTitle.emit("Filter - processed - 100%", False, generation)
+                self.signals.setSatListRowHidden.emit(row, not show)
+            self.signals.setSatGroupTitle.emit("Filter - processed - 100%", False)
         except Exception:
             self.log.debug(f"Error on processing list satellite [{sat}]")
 
@@ -288,7 +284,7 @@ class SatSearch(SatData):
         self, snapshot: list[tuple[int, str, EarthSatellite, bool]], generation: int
     ) -> None:
         if not snapshot:
-            self.signals.setSatGroupTitle.emit("Filter - processed - 100%", False, generation)
+            self.signals.setSatGroupTitle.emit("Filter - processed - 100%", False)
             return
         checkIsSunlit = self.ui.satIsSunlit.isChecked()
         selectTwilight = self.ui.satTwilight.currentIndex()

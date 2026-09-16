@@ -192,45 +192,44 @@ def test_setListSatsEntry_stale(function: SatSearch) -> None:
 
 def test_updateVisibilityRow(function: SatSearch) -> None:
     function.ui.listSats.setRowCount(1)
-    function.calcGeneration = 2
-    function.updateVisibilityRow(0, True, 2)
+    function.updateVisibilityRow(0, True)
     assert function.ui.listSats.isRowHidden(0)
-    function.updateVisibilityRow(0, False, 2)
+    function.updateVisibilityRow(0, False)
     assert not function.ui.listSats.isRowHidden(0)
 
 
-def test_updateVisibilityRow_stale(function: SatSearch) -> None:
-    function.ui.listSats.setRowCount(1)
+def test_updateVisibilityRow_toggles_visibility(function: SatSearch) -> None:
+    function.ui.listSats.setRowCount(2)
     function.ui.listSats.setRowHidden(0, False)
-    function.calcGeneration = 7
-    function.updateVisibilityRow(0, True, 6)
-    assert not function.ui.listSats.isRowHidden(0)
+    function.ui.listSats.setRowHidden(1, False)
+    function.updateVisibilityRow(0, True)
+    function.updateVisibilityRow(1, False)
+    assert function.ui.listSats.isRowHidden(0)
+    assert not function.ui.listSats.isRowHidden(1)
 
 
 def test_updateTitleRunning(function: SatSearch) -> None:
-    function.calcGeneration = 1
     with (
         mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Search, "changeStyleDynamic"
         ) as mockChangeStyle,
         mock.patch.object(function.ui.satFilterGroup, "setTitle") as mockSetTitle,
     ):
-        function.updateTitleRunning("Test Title", True, 1)
+        function.updateTitleRunning("Test Title", True)
         mockChangeStyle.assert_called_once_with(function.ui.satFilterGroup, "run", "true")
         mockSetTitle.assert_called_once_with("Test Title")
 
 
-def test_updateTitleRunning_stale(function: SatSearch) -> None:
-    function.calcGeneration = 9
+def test_updateTitleRunning_toggles_style(function: SatSearch) -> None:
     with (
         mock.patch.object(
             mw4.gui.mainWaddon.tabSat_Search, "changeStyleDynamic"
         ) as mockChangeStyle,
         mock.patch.object(function.ui.satFilterGroup, "setTitle") as mockSetTitle,
     ):
-        function.updateTitleRunning("Test Title", False, 8)
-        mockChangeStyle.assert_not_called()
-        mockSetTitle.assert_not_called()
+        function.updateTitleRunning("Test Title", False)
+        mockChangeStyle.assert_called_once_with(function.ui.satFilterGroup, "run", "false")
+        mockSetTitle.assert_called_once_with("Test Title")
 
 
 def test_updateListSats_1(function: SatSearch) -> None:
@@ -248,6 +247,25 @@ def test_updateListSats_2(function: SatSearch) -> None:
         function.updateListSats(0, param, [], False)
         # Should emit for the satParam values
         assert mock_signal.emit.called
+
+
+def test_runnerCalcSatList_handles_exception(function: SatSearch) -> None:
+    """Test that runnerCalcSatList handles exceptions during processing."""
+    sat_obj = mock.MagicMock()
+    snapshot = [(0, "test_sat", sat_obj, False)]
+    function.calcGeneration = 1
+    with (
+        mock.patch.object(function.signals, "setSatGroupTitle"),
+        mock.patch.object(function, "satOkSGP4", return_value=True) as mock_sgp4,
+        mock.patch.object(
+            function, "calcSat", side_effect=RuntimeError("test error")
+        ) as mock_calc,
+        mock.patch.object(function.log, "debug") as mock_debug,
+    ):
+        function.runnerCalcSatList(snapshot, 1, True, 0, 10)
+        assert mock_sgp4.called  # verify we got to this point
+        assert mock_calc.called  # verify calcSat was called
+        assert mock_debug.called  # verify debug was called
 
 
 def test_updateListSats_3(function: SatSearch) -> None:

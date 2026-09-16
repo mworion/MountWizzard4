@@ -128,6 +128,19 @@ def test_closeEvent_no_double_cleanup(mainWindow):
         mock_wait.assert_called_once_with(10000)
 
 
+def test_closeEvent_logs_on_thread_timeout(mainWindow):
+    """Test closeEvent warns when the thread pool does not finish in time."""
+    with (
+        mock.patch.object(mainWindow.app.timeMgr, "stop"),
+        mock.patch.object(mainWindow.externalWindows, "closeExtendedWindows"),
+        mock.patch.object(mainWindow.threadPool, "waitForDone", return_value=False),
+        mock.patch.object(mainWindow.threadPool, "activeThreadCount", return_value=3),
+        mock.patch.object(mainWindow.log, "warning") as mock_warning,
+    ):
+        mainWindow.closeEvent(QCloseEvent())
+        mock_warning.assert_called_once()
+
+
 def test_quitSave_saves_and_closes(mainWindow):
     """Test quitSave saves profile and closes window."""
     mainWindow.ui.profileName.setText("test")
@@ -372,6 +385,22 @@ def test_switchProfile_switches_config(mainWindow):
         mock.patch.object(mainWindow.app, "initConfig", return_value=loc),
     ):
         mainWindow.switchProfile({"test": 1})
+
+
+def test_switchProfile_logs_on_thread_timeout(mainWindow):
+    """Test switchProfile warns when the thread pool does not finish in time."""
+    loc = wgs84.latlon(latitude_degrees=10, longitude_degrees=10)
+    with (
+        mock.patch.object(mainWindow.externalWindows, "closeExtendedWindows"),
+        mock.patch.object(mainWindow.externalWindows, "showExtendedWindows"),
+        mock.patch.object(mainWindow.threadPool, "waitForDone", return_value=False),
+        mock.patch.object(mainWindow.threadPool, "activeThreadCount", return_value=2),
+        mock.patch.object(mainWindow, "initConfig"),
+        mock.patch.object(mainWindow.app, "initConfig", return_value=loc),
+        mock.patch.object(mainWindow.log, "warning") as mock_warning,
+    ):
+        mainWindow.switchProfile({"test": 1})
+        mock_warning.assert_called_once()
 
 
 def test_loadProfileGUI_invalid_file(mainWindow):

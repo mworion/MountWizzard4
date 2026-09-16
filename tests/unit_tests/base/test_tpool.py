@@ -56,6 +56,7 @@ def test_worker_run_emitsFinishedSignal(qtbot):
 
     a = tpool.Worker(testFunc)
     a.mutex.lock()
+    a.locked = True
     with qtbot.waitSignal(a.signals.finished):
         a.run()
 
@@ -66,6 +67,7 @@ def test_worker_run_emitsResultSignal(qtbot):
 
     a = tpool.Worker(testFunc)
     a.mutex.lock()
+    a.locked = True
     with qtbot.waitSignal(a.signals.result):
         a.run()
 
@@ -76,6 +78,7 @@ def test_worker_run_doesNotEmitErrorOnSuccess(qtbot):
 
     a = tpool.Worker(testFunc)
     a.mutex.lock()
+    a.locked = True
     with qtbot.assertNotEmitted(a.signals.error):
         a.run()
 
@@ -86,8 +89,47 @@ def test_worker_run_emitsErrorOnException(qtbot):
 
     a = tpool.Worker(testFunc)
     a.mutex.lock()
+    a.locked = True
     with qtbot.waitSignal(a.signals.error):
         a.run()
+
+
+def test_worker_run_handlesUnexpectedException(qtbot):
+    def testFunc():
+        raise ZeroDivisionError("boom")
+
+    a = tpool.Worker(testFunc)
+    a.mutex.lock()
+    a.locked = True
+    with qtbot.waitSignal(a.signals.error):
+        a.run()
+    assert not a.locked
+    assert a.mutex.tryLock()
+    a.mutex.unlock()
+
+
+def test_worker_run_unlocksWhenLocked():
+    def testFunc():
+        return
+
+    a = tpool.Worker(testFunc)
+    a.mutex.lock()
+    a.locked = True
+    a.run()
+    assert not a.locked
+    assert a.mutex.tryLock()
+    a.mutex.unlock()
+
+
+def test_worker_run_doesNotUnlockWhenNotLocked():
+    def testFunc():
+        return
+
+    a = tpool.Worker(testFunc)
+    a.run()
+    assert not a.locked
+    assert a.mutex.tryLock()
+    a.mutex.unlock()
 
 
 def test_setupWorker_returnsWorkerInstance():
@@ -284,3 +326,24 @@ def test_startWorker_usesExistingWorker():
     assert worker is existing
     pool.start.assert_called_once_with(existing)
     existing.mutex.unlock()
+
+
+def test_startWorker_doesNotUpdateArgsWhenBusy():
+    pool = mock.Mock()
+    worker = tpool.setupWorker(lambda x, y: (x, y), 1, 2)
+    worker.mutex.lock()
+
+    result = tpool.startWorker(worker, pool, lambda x, y: (x, y), 10, 20)
+
+    assert result is worker
+    assert worker.args == (1, 2)
+    pool.start.assert_not_called()
+    worker.mutex.unlock()
+
+
+def test_startWorker_setsLockedFlag():
+    pool = mock.Mock()
+    worker = tpool.startWorker(None, pool, lambda: None)
+    assert worker.locked
+    worker.locked = False
+    worker.mutex.unlock()

@@ -234,16 +234,18 @@ def test_workerSolveLoop_empty_queue(function, monkeypatch):
 
 def test_startSolveLoop_1(function):
     function.solveLoopRunning = False
-    with mock.patch.object(function.threadPool, "start"):
+    with mock.patch("mw4.logic.plateSolve.plateSolve.startWorker") as mockStart:
         function.startSolveLoop()
     assert function.solveLoopRunning
+    mockStart.assert_called_once()
 
 
 def test_startSolveLoop_2(function):
     function.solveLoopRunning = True
-    with mock.patch.object(function.threadPool, "start"):
+    with mock.patch("mw4.logic.plateSolve.plateSolve.startWorker") as mockStart:
         function.startSolveLoop()
     assert function.solveLoopRunning
+    mockStart.assert_not_called()
 
 
 def test_checkAvailabilityProgram_1(function):

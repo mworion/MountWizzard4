@@ -168,7 +168,11 @@ class MainWindow(MWidget):
         self.app.timeMgr.stop()
         self.app.dReg.stopDevices()
         self.externalWindows.closeExtendedWindows()
-        self.threadPool.waitForDone(10000)
+        if not self.threadPool.waitForDone(10000):
+            self.log.warning(
+                f"Thread pool did not finish on close, "
+                f"active threads: [{self.threadPool.activeThreadCount()}]"
+            )
         super().closeEvent(closeEvent)
 
     def quitSave(self) -> None:
@@ -313,7 +317,11 @@ class MainWindow(MWidget):
         self.app.timeMgr.stop()
         self.app.dReg.stopDevices()
         self.externalWindows.closeExtendedWindows()
-        self.threadPool.waitForDone(10000)
+        if not self.threadPool.waitForDone(10000):
+            self.log.warning(
+                f"Thread pool did not finish on profile switch, "
+                f"active threads: [{self.threadPool.activeThreadCount()}]"
+            )
         self.app.config = config
         self.app.initConfig()
         self.initConfig()

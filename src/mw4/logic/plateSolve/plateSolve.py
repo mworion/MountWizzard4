@@ -18,7 +18,7 @@ import queue
 import subprocess
 import time
 from mw4.base.signalsDevices import Signals
-from mw4.base.tpool import Worker
+from mw4.base.tpool import Worker, startWorker
 from mw4.base.transform import J2000ToJNow
 from mw4.logic.fits.fitsFunction import (
     getImageHeader,
@@ -144,7 +144,9 @@ class PlateSolve:
         if self.solveLoopRunning:
             return
         self.solveLoopRunning = True
-        self.threadPool.start(self.workerSolveLoop)
+        self.workerSolveLoop = startWorker(
+            self.workerSolveLoop, self.threadPool, self.runnerSolveLoop
+        )
 
     def checkAvailabilityProgram(self, framework: str) -> bool:
         appPath = self.run[framework].config.appPath

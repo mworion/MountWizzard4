@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+import logging
 import wakeonlan
 from mw4.base.ethernet import checkFormatMAC
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
@@ -22,6 +23,8 @@ from typing import Any
 
 
 class SettMount:
+    log = logging.getLogger("MW4")
+
     def __init__(self, parentW: Any) -> None:
         self.parentW = parentW
         self.app = parentW.app
@@ -115,8 +118,12 @@ class SettMount:
 
     def bootRackComp(self) -> None:
         MAC = checkFormatMAC(self.ui.rackCompMAC.text())
+        Host = self.ui.rackCompWolAddress.text()
+        Port = int(self.ui.rackCompWolPort.text())
+        t = f"MAC: [{MAC}], [{Host}]:[{Port}]"
+        self.log.debug(t)
         if MAC:
-            wakeonlan.wake(MAC)
+            wakeonlan.wake(MAC, host=Host, port=Port)
             self.msg.emit(0, "Rack", "Command", "Sent boot command to rack computer")
         else:
             self.msg.emit(2, "Rack", "Command", "Rack computer cannot be booted")

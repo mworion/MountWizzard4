@@ -36,6 +36,7 @@ class Styles:
 
     STYLE = None
 
+
 # ... rest of class ...
 
 # Initialize STYLE after class definition

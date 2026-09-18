@@ -44,9 +44,9 @@ The `DeviceEntry` class maintains backward compatibility via `__getitem__()`, `_
 and `get()` methods that proxy dict-style access to the typed attributes:
 
 ```python
-entry["class"]      # proxies to entry.instance
-entry["deviceType"] # proxies to entry.deviceType
-entry["stat"]       # proxies to entry.stat
+entry["class"]  # proxies to entry.instance
+entry["deviceType"]  # proxies to entry.deviceType
+entry["stat"]  # proxies to entry.stat
 entry.get("class")  # returns entry.instance or None
 ```
 

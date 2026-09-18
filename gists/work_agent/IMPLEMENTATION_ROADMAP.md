@@ -73,12 +73,11 @@ class DeviceProtocol(Protocol):
 **Pattern for Each File**:
 ```python
 # Before:
-def process(self, data: Any) -> Any:
-    ...
+def process(self, data: Any) -> Any: ...
+
 
 # After:
-def process(self, data: DeviceMessage) -> ProcessResult:
-    ...
+def process(self, data: DeviceMessage) -> ProcessResult: ...
 ```
 
 **Acceptance Criteria**:
@@ -107,6 +106,7 @@ self.messages: queue.Queue = queue.Queue()
 
 # After:
 from typing import TypeAlias
+
 DeviceMessage: TypeAlias = dict[str, Any]  # or specific type
 self.messages: queue.Queue[DeviceMessage] = queue.Queue()
 ```
@@ -130,30 +130,43 @@ self.messages: queue.Queue[DeviceMessage] = queue.Queue()
 ```python
 class MountWizzardException(Exception):
     """Base exception for all MountWizzard4 errors"""
+
     pass
+
 
 class DeviceConnectionError(MountWizzardException):
     """Device communication connection failure"""
+
     pass
+
 
 class ProtocolCommunicationError(MountWizzardException):
     """Protocol-level communication error"""
+
     pass
+
 
 class ConfigurationError(MountWizzardException):
     """Configuration validation or loading error"""
+
     pass
+
 
 class FileIOError(MountWizzardException):
     """File I/O operation error"""
+
     pass
+
 
 class ThreadPoolError(MountWizzardException):
     """Thread pool or worker error"""
+
     pass
+
 
 class ValidationError(MountWizzardException):
     """Data validation error"""
+
     pass
 ```
 
@@ -376,15 +389,15 @@ from mw4.base.exceptions import (
 )
 
 __all__ = [
-    'DeviceRegistry',
-    'DeviceEntry',
-    'Worker',
-    'TimerManager',
-    'LoggerMW',
-    'IndiClass',
-    'AscomClass',
-    'AlpacaClass',
-    'DeviceProtocol',
+    "DeviceRegistry",
+    "DeviceEntry",
+    "Worker",
+    "TimerManager",
+    "LoggerMW",
+    "IndiClass",
+    "AscomClass",
+    "AlpacaClass",
+    "DeviceProtocol",
     # ... exceptions
 ]
 ```
@@ -408,39 +421,46 @@ __all__ = [
 ```python
 from abc import ABC, abstractmethod
 
+
 class DeviceBase(ABC):
     """Abstract base for all device types"""
-    
+
     @abstractmethod
     def startCommunication(self) -> bool:
         """Start device communication"""
         pass
-    
+
     @abstractmethod
     def stopCommunication(self) -> bool:
         """Stop device communication"""
         pass
-    
+
     @abstractmethod
     def pollData(self) -> None:
         """Poll device for data"""
         pass
-    
+
     @abstractmethod
     def getName(self) -> str:
         """Get device name"""
         pass
 
+
 class IndiDeviceProtocol(DeviceBase):
     """INDI protocol specific interface"""
+
     pass
+
 
 class AscomDeviceProtocol(DeviceBase):
     """ASCOM protocol specific interface"""
+
     pass
+
 
 class AlpacaDeviceProtocol(DeviceBase):
     """Alpaca protocol specific interface"""
+
     pass
 ```
 
@@ -466,13 +486,12 @@ class AlpacaDeviceProtocol(DeviceBase):
 ```python
 # Before:
 class IndiClass:
-    def startCommunication(self) -> bool:
-        ...
+    def startCommunication(self) -> bool: ...
+
 
 # After:
 class IndiClass(IndiDeviceProtocol):
-    def startCommunication(self) -> bool:
-        ...
+    def startCommunication(self) -> bool: ...
 ```
 
 **Acceptance Criteria**:
@@ -494,19 +513,19 @@ class IndiClass(IndiDeviceProtocol):
 ```python
 def create_device(self, protocol: str, config: dict) -> DeviceBase:
     """Create device with protocol validation"""
-    if protocol == 'INDI':
+    if protocol == "INDI":
         device = IndiClass(config)
-    elif protocol == 'ASCOM':
+    elif protocol == "ASCOM":
         device = AscomClass(config)
-    elif protocol == 'Alpaca':
+    elif protocol == "Alpaca":
         device = AlpacaClass(config)
     else:
         raise ValueError(f"Unknown protocol: {protocol}")
-    
+
     # Validate protocol implementation
     if not isinstance(device, DeviceBase):
         raise TypeError(f"Device {device} must implement DeviceBase")
-    
+
     return device
 ```
 
@@ -534,12 +553,14 @@ def create_device(self, protocol: str, config: dict) -> DeviceBase:
 ```python
 # Before:
 import os
+
 config_dir = os.path.join(home_dir, ".mw4")
 if not os.path.exists(config_dir):
     os.makedirs(config_dir)
 
 # After:
 from pathlib import Path
+
 config_dir = Path.home() / ".mw4"
 config_dir.mkdir(parents=True, exist_ok=True)
 ```
@@ -665,8 +686,10 @@ import time
 from functools import wraps
 from typing import Callable, Any
 
+
 def profile_function(func: Callable) -> Callable:
     """Decorator to profile function execution"""
+
     @wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         start = time.perf_counter()
@@ -674,7 +697,9 @@ def profile_function(func: Callable) -> Callable:
         elapsed = time.perf_counter() - start
         print(f"{func.__name__} took {elapsed:.4f}s")
         return result
+
     return wrapper
+
 
 @profile_function
 def slow_function():

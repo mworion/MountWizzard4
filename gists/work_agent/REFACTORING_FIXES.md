@@ -31,7 +31,7 @@ assert function.driversData["cover"]["frameworks"]["indi"]["test"] == 1
 # WRONG - sed was too aggressive
 assert mock_ims_meta[0].OBJECT == [...]  # Line 307
 assert mock_ims_meta[0].AUTHOR == [...]  # Line 310
-assert mock_ims_meta[0].FRAME == [...]   # Line 313
+assert mock_ims_meta[0].FRAME == [...]  # Line 313
 
 # CORRECT - restored original
 assert mock_ims_meta[0]["FITSKeywords"]["OBJECT"] == [...]

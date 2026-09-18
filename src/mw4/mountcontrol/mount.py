@@ -286,15 +286,10 @@ class MountDevice(QObject):
     def bootMount(self) -> bool:
         t = f"MAC: [{self.config.MAC}], [{self.config.wolAddress}]:[{self.config.wolPort}]"
         self.log.debug(t)
-        if self.config.MAC is None:
-            return False
-        kwargs: dict[str, Any] = {}
-        if self.config.wolAddress:
-            kwargs["ip_address"] = self.config.wolAddress
-        if self.config.wolPort:
-            kwargs["port"] = self.config.wolPort
         try:
-            wakeonlan.wake(self.config.MAC, **kwargs)
+            wakeonlan.wake(
+                self.config.MAC, host=self.config.wolAddress, port=self.config.wolPort
+            )
         except (OSError, ValueError) as e:
             self.log.warning(f"Boot mount failed: {e}")
             return False

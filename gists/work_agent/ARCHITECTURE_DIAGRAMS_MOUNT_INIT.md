@@ -296,7 +296,7 @@ firmware = self.app.mount.firmware
 ```python
 # All unified through registry (but mount initialization is cleaner)
 status = self.app.dReg["mount"].obsSite.status  # Convenience property
-location = self.app.dReg["mount"].location      # Convenience property
+location = self.app.dReg["mount"].location  # Convenience property
 firmware = self.app.dReg["mount"].instance.firmware  # Full instance access
 
 # OR still via app.mount (both work!)

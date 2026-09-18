@@ -205,6 +205,99 @@ def test_bootRackCompWithInvalidMAC(settMount: SettMount) -> None:
     )
 
 
+def test_bootRackCompParametersPassed(settMount: SettMount) -> None:
+    """Test bootRackComp passes correct parameters to wakeonlan.wake."""
+    settMount.msg = mock.MagicMock()
+    settMount.ui.rackCompMAC.setText("AA:BB:CC:DD:EE:FF")
+    settMount.ui.rackCompWolAddress.setText("192.168.1.255")
+    settMount.ui.rackCompWolPort.setText("7")
+    with (
+        mock.patch.object(
+            mw4.gui.extWindows.setting.tabSettMount,
+            "checkFormatMAC",
+            return_value="AA:BB:CC:DD:EE:FF",
+        ),
+        mock.patch.object(wakeonlan, "wake") as mock_wake,
+    ):
+        settMount.bootRackComp()
+    mock_wake.assert_called_once_with(
+        "AA:BB:CC:DD:EE:FF", host="192.168.1.255", port=7
+    )
+
+
+def test_bootRackCompDebugLog(settMount: SettMount) -> None:
+    """Test bootRackComp logs debug message with parameters."""
+    settMount.msg = mock.MagicMock()
+    settMount.ui.rackCompMAC.setText("AA:BB:CC:DD:EE:FF")
+    settMount.ui.rackCompWolAddress.setText("192.168.1.255")
+    settMount.ui.rackCompWolPort.setText("9")
+    with (
+        mock.patch.object(
+            mw4.gui.extWindows.setting.tabSettMount,
+            "checkFormatMAC",
+            return_value="AA:BB:CC:DD:EE:FF",
+        ),
+        mock.patch.object(wakeonlan, "wake"),
+        mock.patch.object(settMount.log, "debug") as mock_debug,
+    ):
+        settMount.bootRackComp()
+    mock_debug.assert_called_once()
+    debug_msg = mock_debug.call_args[0][0]
+    assert "MAC:" in debug_msg
+    assert "AA:BB:CC:DD:EE:FF" in debug_msg
+    assert "192.168.1.255" in debug_msg
+    assert "9" in debug_msg
+
+
+def test_bootRackCompPortConversion(settMount: SettMount) -> None:
+    """Test bootRackComp converts port string to integer."""
+    settMount.msg = mock.MagicMock()
+    settMount.ui.rackCompMAC.setText("AA:BB:CC:DD:EE:FF")
+    settMount.ui.rackCompWolAddress.setText("192.168.1.255")
+    settMount.ui.rackCompWolPort.setText("12345")
+    with (
+        mock.patch.object(
+            mw4.gui.extWindows.setting.tabSettMount,
+            "checkFormatMAC",
+            return_value="AA:BB:CC:DD:EE:FF",
+        ),
+        mock.patch.object(wakeonlan, "wake") as mock_wake,
+    ):
+        settMount.bootRackComp()
+    _, kwargs = mock_wake.call_args
+    assert kwargs["port"] == 12345
+    assert isinstance(kwargs["port"], int)
+
+
+def test_bootRackCompMessageSeveritySuccess(settMount: SettMount) -> None:
+    """Test bootRackComp emits success message with severity 0."""
+    settMount.msg = mock.MagicMock()
+    settMount.ui.rackCompMAC.setText("AA:BB:CC:DD:EE:FF")
+    with (
+        mock.patch.object(
+            mw4.gui.extWindows.setting.tabSettMount,
+            "checkFormatMAC",
+            return_value="AA:BB:CC:DD:EE:FF",
+        ),
+        mock.patch.object(wakeonlan, "wake"),
+    ):
+        settMount.bootRackComp()
+    severity = settMount.msg.emit.call_args[0][0]
+    assert severity == 0
+
+
+def test_bootRackCompMessageSeverityFailure(settMount: SettMount) -> None:
+    """Test bootRackComp emits error message with severity 2 on invalid MAC."""
+    settMount.msg = mock.MagicMock()
+    settMount.ui.rackCompMAC.setText("invalid")
+    with mock.patch.object(
+        mw4.gui.extWindows.setting.tabSettMount, "checkFormatMAC", return_value=False
+    ):
+        settMount.bootRackComp()
+    severity = settMount.msg.emit.call_args[0][0]
+    assert severity == 2
+
+
 def test_setMountMACWithNone(settMount: SettMount) -> None:
     """Test setMountMAC with None setting."""
     settMount.setMountMAC(None)

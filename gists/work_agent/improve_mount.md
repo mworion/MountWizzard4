@@ -51,6 +51,7 @@ def startupMountData(self) -> None:
         self.signals.deviceDisconnected.emit("mount")
         self.mountIsUpLastStatus = False
 
+
 def checkMountIsUp(self) -> None:
     self.mountIsUp = False
     try:
@@ -129,6 +130,7 @@ The codes `[1, 98, 99]` are now expressed in terms of the existing
 
 ```python
 from mw4.mountcontrol.obsSite import MountStatus, ObsSite
+
 
 class MountDevice(QObject):
     ALERT_STATUS_CODES: Final[frozenset[MountStatus]] = frozenset(

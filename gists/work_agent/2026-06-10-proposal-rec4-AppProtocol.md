@@ -22,6 +22,7 @@ class Camera:
         self.threadPool = app.threadPool
         ...
 
+
 # src/mw4/gui/mainWaddon/tabMount_Move.py
 class MountMove:
     def __init__(self, mainW: Any) -> None:
@@ -89,6 +90,7 @@ if TYPE_CHECKING:
 
 # --- Narrow capability protocols ----------------------------------------
 
+
 class HasThreadPool(Protocol):
     threadPool: "QThreadPool"
     MAX_THREAD_COUNT: int
@@ -117,6 +119,7 @@ class HasCyclicSignals(Protocol):
 
 
 # --- Aggregate application protocol -------------------------------------
+
 
 @runtime_checkable
 class AppProtocol(
@@ -197,7 +200,7 @@ class Camera:
 
     def __init__(self, app: "AppProtocol") -> None:
         self.app: "AppProtocol" = app
-        self.threadPool = app.threadPool        # → QThreadPool
+        self.threadPool = app.threadPool  # → QThreadPool
         self.signals = Signals()
         self.data: dict[str, Any] = {}
         ...
@@ -216,9 +219,9 @@ What changes for the developer:
 ```python
 from mw4.base.appProtocol import HasThreadPool, HasMessageBus
 
+
 class Camera:
-    def __init__(self, app: "HasThreadPool & HasMessageBus") -> None:
-        ...
+    def __init__(self, app: "HasThreadPool & HasMessageBus") -> None: ...
 ```
 
 This documents that `Camera` does *not* need the device registry or cyclic
@@ -256,9 +259,9 @@ if TYPE_CHECKING:
 class MountMove:
     def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
-        self.app = mainW.app               # → AppProtocol via MainWindow.app
-        self.msg = mainW.app.msg           # → SignalInstance
-        self.ui = mainW.ui                 # → Ui_MainWindow
+        self.app = mainW.app  # → AppProtocol via MainWindow.app
+        self.msg = mainW.app.msg  # → SignalInstance
+        self.ui = mainW.ui  # → Ui_MainWindow
 ```
 
 Here a concrete forward reference is cheaper than a second protocol, because a

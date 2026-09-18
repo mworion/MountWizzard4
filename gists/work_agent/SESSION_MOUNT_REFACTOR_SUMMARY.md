@@ -25,6 +25,7 @@ def __init__(self, parent: Any) -> None:
 def __init__(self, parent: Any) -> None:
     self.location: Any = None  # ✅ Initialized to None
 
+
 def startCommunication(self) -> None:
     self.location = self.app.dReg["mount"].obsSite.location  # ✅ Called after registry created
 ```

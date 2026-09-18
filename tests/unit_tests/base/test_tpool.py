@@ -347,3 +347,21 @@ def test_startWorker_setsLockedFlag():
     assert worker.locked
     worker.locked = False
     worker.mutex.unlock()
+
+
+def test_startWorker_logsDebugWhenBusy(caplog):
+    pool = mock.Mock()
+
+    def targetFunc():
+        pass
+
+    worker = tpool.setupWorker(targetFunc)
+    worker.mutex.lock()
+
+    with caplog.at_level("DEBUG"):
+        result = tpool.startWorker(worker, pool, targetFunc)
+
+    assert result is worker
+    assert "Worker targetFunc busy, skipped" in caplog.text
+    pool.start.assert_not_called()
+    worker.mutex.unlock()

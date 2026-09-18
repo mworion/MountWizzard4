@@ -118,8 +118,7 @@ Move the gist implementation into the production tree and adapt it to the produc
 
 Class definition:
 ```python
-class CameraSGPro(SGProClass):
-    ...
+class CameraSGPro(SGProClass): ...
 ```
 
 Keep/adapt:

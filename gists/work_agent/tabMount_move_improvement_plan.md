@@ -64,9 +64,7 @@ def StartDurationTimer(self) -> None:
     self.DurationTimer = QTimer()
     self.DurationTimer.setInterval(100)
     self.DurationTimer.timeout.connect(self.OnDurationTick)
-    self.CountdownRemaining = (
-        10 * self.ui.moveDuration.currentIndex()
-    )
+    self.CountdownRemaining = 10 * self.ui.moveDuration.currentIndex()
     self.DurationTimer.start()
 ```
 
@@ -118,8 +116,7 @@ unnecessary.
 
 ```python
 self.DirectionByVector: dict[tuple[int, int], str] = {
-    tuple(v["coord"]): k
-    for k, v in self.setRaDec.items()
+    tuple(v["coord"]): k for k, v in self.setRaDec.items()
 }
 ```
 
@@ -147,12 +144,8 @@ direction vectors. The logic is verbose and hard to follow.
 def MoveRaDec(self, Direction: str) -> None:
     uiList = self.setRaDec
     for Key in uiList:
-        changeStyleDynamic(
-            uiList[Key]["button"], "run", "false"
-        )
-    changeStyleDynamic(
-        uiList[Direction]["button"], "run", "true"
-    )
+        changeStyleDynamic(uiList[Key]["button"], "run", "false")
+    changeStyleDynamic(uiList[Direction]["button"], "run", "true")
     Coord = uiList[Direction]["coord"]
     match Coord:
         case [0, 0]:
@@ -222,13 +215,8 @@ class TargetInput:
     EnabledButton: QWidget
 
     def Update(self) -> None:
-        self.Target = valueToAngle(
-            self.TextField.text(),
-            preference="degrees"
-        )
-        self.EnabledButton.setEnabled(
-            self.Validator(self.Target)
-        )
+        self.Target = valueToAngle(self.TextField.text(), preference="degrees")
+        self.EnabledButton.setEnabled(self.Validator(self.Target))
 ```
 
 ---
@@ -253,14 +241,10 @@ from PySide6.QtWidgets import QButtonGroup
 
 def __init__(self, MainW: Any) -> None:
     ...
-    self.SlewSpeedGroup = QButtonGroup(
-        exclusive=True
-    )
+    self.SlewSpeedGroup = QButtonGroup(exclusive=True)
     for Speed, Info in self.slewSpeeds.items():
         self.SlewSpeedGroup.addButton(Info["button"])
-        Info["button"].clicked.connect(
-            partial(self.SetSlewSpeed, Speed)
-        )
+        Info["button"].clicked.connect(partial(self.SetSlewSpeed, Speed))
 ```
 
 ---
@@ -276,8 +260,7 @@ The `SetSlewSpeed` method is missing a type hint for its `Speed` parameter.
 - Add proper type annotation:
 
 ```python
-def SetSlewSpeed(self, Speed: str) -> None:
-    ...
+def SetSlewSpeed(self, Speed: str) -> None: ...
 ```
 
 ---

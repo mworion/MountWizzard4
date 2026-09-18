@@ -23,12 +23,14 @@ def obsSite(self) -> Any:
         raise AttributeError(f"Device '{self.name}' instance is None")
     return self.instance.obsSite
 
+
 @property
 def setting(self) -> Any:
     """Convenience property to access instance.setting directly (mount-specific)."""
     if self.instance is None:
         raise AttributeError(f"Device '{self.name}' instance is None")
     return self.instance.setting
+
 
 @property
 def location(self) -> Any:
@@ -37,6 +39,7 @@ def location(self) -> Any:
     if self.instance is None:
         raise AttributeError(f"Device '{self.name}' instance is None")
     return self.instance.obsSite.location
+
 
 @property
 def timeJD(self) -> Any:
@@ -73,16 +76,16 @@ def timeJD(self) -> Any:
 
 Before:
 ```python
-self.app.dReg["mount"].instance.obsSite.location      # 38 characters
-self.app.dReg["mount"].instance.obsSite.ts           # 36 characters
-self.app.dReg["mount"].instance.setting              # 34 characters
+self.app.dReg["mount"].instance.obsSite.location  # 38 characters
+self.app.dReg["mount"].instance.obsSite.ts  # 36 characters
+self.app.dReg["mount"].instance.setting  # 34 characters
 ```
 
 After:
 ```python
-self.app.dReg["mount"].location                       # 27 characters
-self.app.dReg["mount"].obsSite.ts                    # 28 characters
-self.app.dReg["mount"].setting                       # 27 characters
+self.app.dReg["mount"].location  # 27 characters
+self.app.dReg["mount"].obsSite.ts  # 28 characters
+self.app.dReg["mount"].setting  # 27 characters
 ```
 
 ### Files Refactored (7 files)

@@ -398,6 +398,59 @@ def test_bootMount_5(function):
         assert not suc
 
 
+def test_bootMount_6(function):
+    function.config.MAC = "00:00:00:00:00:00"
+    function.config.wolAddress = "255.255.255.255"
+    function.config.wolPort = 9
+    with mock.patch.object(wakeonlan, "wake", side_effect=ValueError):
+        suc = function.bootMount()
+        assert not suc
+
+
+def test_bootMount_7(function):
+    function.config.MAC = "00:00:00:00:00:00"
+    function.config.wolAddress = "255.255.255.255"
+    function.config.wolPort = 9
+    with mock.patch.object(wakeonlan, "wake") as mockWake:
+        suc = function.bootMount()
+        mockWake.assert_called_once_with(
+            "00:00:00:00:00:00",
+            host="255.255.255.255",
+            port=9,
+        )
+        assert suc
+
+
+def test_bootMount_8_debug_log(function):
+    function.config.MAC = "00:00:00:00:00:00"
+    function.config.wolAddress = "255.255.255.255"
+    function.config.wolPort = 9
+    with (
+        mock.patch.object(wakeonlan, "wake"),
+        mock.patch.object(function.log, "debug") as mockDebug,
+    ):
+        function.bootMount()
+        mockDebug.assert_called_once()
+        assert "MAC:" in mockDebug.call_args[0][0]
+        assert "255.255.255.255" in mockDebug.call_args[0][0]
+        assert "9" in mockDebug.call_args[0][0]
+
+
+def test_bootMount_9_warning_log_on_exception(function):
+    function.config.MAC = "00:00:00:00:00:00"
+    function.config.wolAddress = "255.255.255.255"
+    function.config.wolPort = 9
+    test_error = OSError("Connection failed")
+    with (
+        mock.patch.object(wakeonlan, "wake", side_effect=test_error),
+        mock.patch.object(function.log, "warning") as mockWarning,
+    ):
+        suc = function.bootMount()
+        mockWarning.assert_called_once()
+        assert "Boot mount failed" in mockWarning.call_args[0][0]
+        assert not suc
+
+
 def test_shutdown_1(function):
     function.mountIsUp = True
     with mock.patch.object(function.obsSite, "shutdown", return_value=True):

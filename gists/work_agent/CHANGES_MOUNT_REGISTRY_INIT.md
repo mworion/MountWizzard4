@@ -84,6 +84,7 @@ def __init__(self, app: Any) -> None:
 """Create all devices via DeviceRegistry (which creates mount first).
 This two-phase initialization ensures mount is available when dependent
 devices (Camera, SeeingWeather, Hipparcos) initialize."""
+
 self.dReg: DeviceRegistry = DeviceRegistry(self)
 ```
 

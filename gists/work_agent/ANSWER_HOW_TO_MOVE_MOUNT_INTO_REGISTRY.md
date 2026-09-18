@@ -18,9 +18,11 @@ class Camera:
     def __init__(self, app):
         self.obsSite = app.mount.obsSite  # ← Needs mount HERE
 
+
 class SeeingWeather:
     def __init__(self, app):
         self.location = app.mount.obsSite.location  # ← Needs mount HERE
+
 
 class Hipparcos:
     def __init__(self, app):

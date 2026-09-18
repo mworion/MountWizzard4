@@ -35,12 +35,13 @@ is None: continue`).
 from dataclasses import dataclass
 from typing import Any
 
+
 @dataclass
 class DeviceEntry:
     name: str
-    instance: Any | None        # device class instance (None for refraction)
+    instance: Any | None  # device class instance (None for refraction)
     deviceType: str | None
-    isConfigurable: bool        # False for mount / refraction
+    isConfigurable: bool  # False for mount / refraction
     stat: bool | None = None
 ```
 

@@ -72,12 +72,30 @@ Keep the **exact current signature** (`requireMountUp=True`) so no
 caller or existing test changes; delegate to the helper:
 
 ```python
-def runWorker(self, target, clearMethod, workerAttr, *args,
-              mutex=None, useResult=False, requireMountUp=True, **kwargs):
+def runWorker(
+    self,
+    target,
+    clearMethod,
+    workerAttr,
+    *args,
+    mutex=None,
+    useResult=False,
+    requireMountUp=True,
+    **kwargs,
+):
     guard = (lambda: self.mountIsUp) if requireMountUp else None
-    runWorker(self, self.threadPool, target, clearMethod, workerAttr,
-              *args, mutex=mutex, useResult=useResult, guard=guard,
-              **kwargs)
+    runWorker(
+        self,
+        self.threadPool,
+        target,
+        clearMethod,
+        workerAttr,
+        *args,
+        mutex=mutex,
+        useResult=useResult,
+        guard=guard,
+        **kwargs,
+    )
 ```
 
 ### 4.3 `MountTime` (`mountTime.py`) — use the helper

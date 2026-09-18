@@ -31,7 +31,7 @@ Successfully closed all GUI edge cases by adding targeted tests for the device c
 def test_populateTabsSkipsFrameworkKey(function) -> None:
     """Test populateTabs skips 'framework' key in data (line 167)."""
     function.data = {
-        "framework": "indi",  # This should be skipped  
+        "framework": "indi",  # This should be skipped
         "indi": {
             "deviceName": "test",
             "deviceList": ["test", "test1"],
@@ -115,7 +115,7 @@ def test_dispatchDriverDropdownEmitsStartDeviceWhenAllConditionsMet(function) ->
 with (
     mock.patch.object(function.ui.indiCopyConfig, "isChecked", return_value=True),
     mock.patch.object(function.ui.alpacaCopyConfig, "isChecked", return_value=False),
-    ...
+    ...,
 ):
     function.storeConfig()
 ```
@@ -135,7 +135,8 @@ with mock.patch.object(function.app.dReg, "__getitem__", return_value=mock_entry
 @dataclass
 class MockConfig:
     deviceName: str = field(default="test")
-    
+
+
 mock_framework.config = MockConfig()
 ```
 

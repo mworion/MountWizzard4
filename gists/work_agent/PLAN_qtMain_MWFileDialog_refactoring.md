@@ -51,11 +51,13 @@ def openFile(self, window: QWidget, title: str, folder: Path, filterSet: str) ->
     file = files[0] if files else ""
     return Path(file)
 
+
 def openMultipleFiles(
     self, window: QWidget, title: str, folder: Path, filterSet: str
 ) -> list[Path]:
     files = self.openFileBase(window, title, folder, filterSet, multiple=True)
     return [Path(f) for f in files]
+
 
 def saveFile(
     self,
@@ -75,6 +77,7 @@ def saveFile(
         return Path()
     return Path(dlg.selectedFiles()[0])
 
+
 def openDir(self, window: QWidget, title: str, folder: Path) -> Path:
     dlg = self.prepareFileDialog(window=window, enableDir=True)
     dlg.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
@@ -92,10 +95,12 @@ def openDir(self, window: QWidget, title: str, folder: Path) -> Path:
 def openFile(self, window: QWidget, title: str, folder: Path, filterSet: str) -> Path:
     return MWFileDialog.getOpenFileName(window, title, folder, filterSet)
 
+
 def openMultipleFiles(
     self, window: QWidget, title: str, folder: Path, filterSet: str
 ) -> list[Path]:
     return MWFileDialog.getOpenFileNames(window, title, folder, filterSet)
+
 
 def saveFile(
     self,
@@ -108,6 +113,7 @@ def saveFile(
     # Note: enableDir flag kept for backwards compatibility but has no effect;
     # MWFileDialog.AnyFile mode allows typing a new filename in any directory.
     return MWFileDialog.getSaveFileName(window, title, folder, filterSet)
+
 
 def openDir(self, window: QWidget, title: str, folder: Path) -> Path:
     return MWFileDialog.getExistingDirectory(window, title, folder)
@@ -140,60 +146,43 @@ def runDialog(dlg: QMessageBox) -> int:  # Remove QFileDialog from type hint
 def test_openFile_success(function, tmp_path):
     """Test openFile returns Path when user accepts."""
     with mock.patch.object(
-        MWFileDialog, "getOpenFileName", 
-        return_value=tmp_path / "model.fits"
+        MWFileDialog, "getOpenFileName", return_value=tmp_path / "model.fits"
     ) as m:
-        result = function.openFile(
-            QWidget(), "Load Model", tmp_path, "*.fits"
-        )
-        m.assert_called_once_with(
-            QWidget(), "Load Model", tmp_path, "*.fits"
-        )
+        result = function.openFile(QWidget(), "Load Model", tmp_path, "*.fits")
+        m.assert_called_once_with(QWidget(), "Load Model", tmp_path, "*.fits")
         assert result == tmp_path / "model.fits"
+
 
 def test_openFile_cancelled(function, tmp_path):
     """Test openFile returns empty Path when user cancels."""
-    with mock.patch.object(
-        MWFileDialog, "getOpenFileName",
-        return_value=Path()
-    ):
-        result = function.openFile(
-            QWidget(), "Load", tmp_path, "*.*"
-        )
+    with mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path()):
+        result = function.openFile(QWidget(), "Load", tmp_path, "*.*")
         assert result == Path()
+
 
 def test_openMultipleFiles(function, tmp_path):
     """Test openMultipleFiles returns list of Paths."""
     expected = [tmp_path / "a.fits", tmp_path / "b.fits"]
-    with mock.patch.object(
-        MWFileDialog, "getOpenFileNames",
-        return_value=expected
-    ):
-        result = function.openMultipleFiles(
-            QWidget(), "Load", tmp_path, "*.fits"
-        )
+    with mock.patch.object(MWFileDialog, "getOpenFileNames", return_value=expected):
+        result = function.openMultipleFiles(QWidget(), "Load", tmp_path, "*.fits")
         assert result == expected
+
 
 def test_saveFile(function, tmp_path):
     """Test saveFile returns Path."""
     with mock.patch.object(
-        MWFileDialog, "getSaveFileName",
-        return_value=tmp_path / "config.cfg"
+        MWFileDialog, "getSaveFileName", return_value=tmp_path / "config.cfg"
     ):
-        result = function.saveFile(
-            QWidget(), "Save Config", tmp_path, "*.cfg"
-        )
+        result = function.saveFile(QWidget(), "Save Config", tmp_path, "*.cfg")
         assert result == tmp_path / "config.cfg"
+
 
 def test_openDir(function, tmp_path):
     """Test openDir returns Path."""
     with mock.patch.object(
-        MWFileDialog, "getExistingDirectory",
-        return_value=tmp_path / "data"
+        MWFileDialog, "getExistingDirectory", return_value=tmp_path / "data"
     ):
-        result = function.openDir(
-            QWidget(), "Choose Directory", tmp_path
-        )
+        result = function.openDir(QWidget(), "Choose Directory", tmp_path)
         assert result == tmp_path / "data"
 ```
 

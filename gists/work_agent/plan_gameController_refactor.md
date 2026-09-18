@@ -77,11 +77,11 @@ persistence. No separate `TabSettGameController` GUI mixin is created; instead
 ```python
 @dataclass
 class DeviceConfigGameController:
-    deviceName: str  = field(default="")
-    autoStart:  bool = field(default=False)
-    moveRaDec:  bool = field(default=True)
-    moveAltAz:  bool = field(default=True)
-    tracking:   bool = field(default=True)
+    deviceName: str = field(default="")
+    autoStart: bool = field(default=False)
+    moveRaDec: bool = field(default=True)
+    moveAltAz: bool = field(default=True)
+    tracking: bool = field(default=True)
 ```
 
 - `deviceName` — HID product string of the selected controller.
@@ -220,7 +220,7 @@ from mw4.logic.gameController.gameController import GameController
 
 Add one row to `deviceSpec` (between `"focuser"` and `"lightPanel"`):
 ```python
-("gameController", GameController, "hid", True),
+(("gameController", GameController, "hid", True),)
 ```
 
 No further changes needed — the registry pipeline restores all

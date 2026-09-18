@@ -16,7 +16,7 @@ All input widgets have a minimum height of **25 pixels** as requested.
 ```python
 from PySide6.QtWidgets import (
     QDoubleSpinBox,  # NEW
-    QSpinBox,        # NEW
+    QSpinBox,  # NEW
     # ... existing imports
 )
 ```
@@ -206,10 +206,7 @@ def exec(self) -> int:
 ### Text Input with Echo Mode
 ```python
 password, ok = MWInputDialog.getText(
-    parent,
-    "Login",
-    "Enter password:",
-    echoMode=QLineEdit.EchoMode.Password
+    parent, "Login", "Enter password:", echoMode=QLineEdit.EchoMode.Password
 )
 # Uses QLineEdit with password display mode
 ```
@@ -223,7 +220,7 @@ port, ok = MWInputDialog.getInt(
     defaultValue=8080,
     minValue=1000,
     maxValue=9999,
-    step=1
+    step=1,
 )
 # Uses QSpinBox with up/down buttons for range selection
 ```
@@ -237,7 +234,7 @@ temperature, ok = MWInputDialog.getDouble(
     defaultValue=20.0,
     minValue=-50.0,
     maxValue=50.0,
-    decimals=1
+    decimals=1,
 )
 # Uses QDoubleSpinBox with 1 decimal place precision
 ```

@@ -34,9 +34,9 @@ framework = app.dReg["camera"].instance.framework
 
 **After (new shorthand):**
 ```python
-camera_signals = app.dReg["camera"].signals      # ✅ Cleaner!
-camera_data = app.dReg["camera"].data            # ✅ Cleaner!
-framework = app.dReg["camera"].framework         # ✅ Cleaner!
+camera_signals = app.dReg["camera"].signals  # ✅ Cleaner!
+camera_data = app.dReg["camera"].data  # ✅ Cleaner!
+framework = app.dReg["camera"].framework  # ✅ Cleaner!
 ```
 
 ## Error Handling

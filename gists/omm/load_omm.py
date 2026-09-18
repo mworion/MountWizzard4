@@ -5,9 +5,9 @@ from skyfield.api import load, EarthSatellite
 ts = load.timescale()
 
 # 2. Read and fix the stream format into valid JSON
-filepath = 'test.omm'
+filepath = "test.omm"
 
-with open(filepath, 'r') as f:
+with open(filepath, "r") as f:
     omm_records = json.load(f)  # Validate JSON format
 
 # 3. Parse each OMM record into a Skyfield EarthSatellite object

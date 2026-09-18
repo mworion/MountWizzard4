@@ -132,7 +132,7 @@ def create_mock_lineedit(default_value=""):
     m = mock.MagicMock()
     m._value = default_value
     m.text = mock.MagicMock(side_effect=lambda: m._value)
-    m.setText = mock.MagicMock(side_effect=lambda v: setattr(m, '_value', v))
+    m.setText = mock.MagicMock(side_effect=lambda v: setattr(m, "_value", v))
     return m
 ```
 

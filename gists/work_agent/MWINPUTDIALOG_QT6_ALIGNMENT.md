@@ -216,11 +216,9 @@ text, ok = MWInputDialog.getText(parent, "Title", "Enter text:")
 
 # Password input
 from PySide6.QtWidgets import QLineEdit
+
 password, ok = MWInputDialog.getText(
-    parent,
-    "Login",
-    "Enter password:",
-    echoMode=QLineEdit.EchoMode.Password
+    parent, "Login", "Enter password:", echoMode=QLineEdit.EchoMode.Password
 )
 ```
 
@@ -234,7 +232,7 @@ value, ok = MWInputDialog.getInt(
     defaultValue=50,
     minValue=0,
     maxValue=100,
-    step=5
+    step=5,
 )
 ```
 
@@ -248,7 +246,7 @@ value, ok = MWInputDialog.getDouble(
     defaultValue=20.0,
     minValue=-50.0,
     maxValue=50.0,
-    decimals=1
+    decimals=1,
 )
 ```
 

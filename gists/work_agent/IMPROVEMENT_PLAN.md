@@ -70,13 +70,13 @@
 **Implementation Steps**:
 1. Create `src/mw4/base/exceptions.py`:
    ```python
-   - MountWizzardException (base)
-   - DeviceConnectionError
-   - ProtocolCommunicationError
-   - ConfigurationError
-   - FileIOError
-   - ThreadPoolError
-   - ValidationError
+   -MountWizzardException(base)
+   -DeviceConnectionError
+   -ProtocolCommunicationError
+   -ConfigurationError
+   -FileIOError
+   -ThreadPoolError
+   -ValidationError
    ```
 
 2. Update error handling in:

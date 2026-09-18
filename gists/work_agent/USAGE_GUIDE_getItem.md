@@ -14,7 +14,7 @@ selected, accepted = MWInputDialog.getItem(
     parent=self,  # Parent widget for centering
     title="Color Selection",
     label="Choose a color:",
-    items=items
+    items=items,
 )
 
 if accepted:
@@ -34,7 +34,7 @@ selected, accepted = MWInputDialog.getItem(
     title="Direction",
     label="Select a direction:",
     items=items,
-    currentIndex=2  # Start with "East" selected
+    currentIndex=2,  # Start with "East" selected
 )
 ```
 
@@ -57,7 +57,7 @@ dlg = MWInputDialog(
     label="Select one:",
     inputMode="item",
     items=items,
-    currentIndex=0
+    currentIndex=0,
 )
 
 result_code = dlg.exec()

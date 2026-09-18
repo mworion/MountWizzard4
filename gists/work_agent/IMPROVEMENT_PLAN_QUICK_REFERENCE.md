@@ -109,11 +109,13 @@ from mw4.base.core.registry import DeviceRegistry
 ```python
 # BEFORE
 import os
+
 home = os.path.expanduser("~")
 config_dir = os.path.join(home, ".mw4")
 
 # AFTER
 from pathlib import Path
+
 config_dir = Path.home() / ".mw4"
 ```
 
@@ -178,29 +180,30 @@ Note:
     Thread-safe for concurrent access.
 """
 
+
 class DeviceRegistry:
     """
     Central registry for all connected devices.
-    
+
     Attributes:
         app: Parent application instance
         devices: Dictionary of registered devices
-        
+
     Thread Safety:
         Thread-safe for concurrent access.
     """
-    
+
     def createDevice(self, protocol: str, config: dict) -> Device:
         """
         Create and register a new device.
-        
+
         Args:
             protocol: Device protocol (INDI, ASCOM, Alpaca)
             config: Device configuration dictionary
-            
+
         Returns:
             Created Device instance
-            
+
         Raises:
             ValueError: If protocol is unknown
             ConfigurationError: If config is invalid

@@ -107,10 +107,10 @@ All checks passed!
 
 ```python
 # Accessing commonly-used mount attributes using convenience properties
-obs = app.dReg["mount"].obsSite           # Convenience property
-loc = app.dReg["mount"].location          # Convenience property
-jd = app.dReg["mount"].timeJD             # Convenience property
-settings = app.dReg["mount"].setting      # Convenience property
+obs = app.dReg["mount"].obsSite  # Convenience property
+loc = app.dReg["mount"].location  # Convenience property
+jd = app.dReg["mount"].timeJD  # Convenience property
+settings = app.dReg["mount"].setting  # Convenience property
 ```
 
 ### Pattern 2: Instance Methods and Attributes

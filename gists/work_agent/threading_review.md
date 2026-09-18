@@ -1,22 +1,30 @@
 # Threading Review – `startWorker` Usage
 
 Scope: all call sites of `startWorker` / the underlying `Worker`, `WorkerSignals`,
-`setupWorker` in `src/mw4/base/tpool.py`, reviewed for correct threading, mutex /
+`setupWorker` in `../../src/mw4/base/tpool.py`, reviewed for correct threading, mutex /
 lock handling, parameter passing, deadlocks and improvement potential.
 
 ---
 
-## 1. The mechanism (`src/mw4/base/tpool.py`)
+## 1. The mechanism (`../../src/mw4/base/tpool.py`)
 
 ```python
-def startWorker(worker, threadPool, target, *args,
-                resultMethod=None, finishedMethod=None, guard=None, **kwargs):
+def startWorker(
+    worker,
+    threadPool,
+    target,
+    *args,
+    resultMethod=None,
+    finishedMethod=None,
+    guard=None,
+    **kwargs,
+):
     if guard is not None and not guard():
         return None
     if worker is None:
-        worker = setupWorker(target, *args,
-                             resultMethod=resultMethod,
-                             finishedMethod=finishedMethod, **kwargs)
+        worker = setupWorker(
+            target, *args, resultMethod=resultMethod, finishedMethod=finishedMethod, **kwargs
+        )
     else:
         worker.args = args
         worker.kwargs = kwargs
@@ -26,7 +34,7 @@ def startWorker(worker, threadPool, target, *args,
     return worker
 ```
 
-Design intent (confirmed by tests in `tests/unit_tests/base/test_tpool.py`):
+Design intent (confirmed by tests in `../../tests/unit_tests/base/test_tpool.py`):
 
 - `guard` → skip start entirely, return `None`.
 - per‑`Worker` `QMutex` → **"skip if this worker is already running"** (re‑entrancy
@@ -119,7 +127,7 @@ worker (as they already do).
 ```python
 self.workerSolveLoop: Worker = Worker(self.runnerSolveLoop)
 ...
-self.threadPool.start(self.workerSolveLoop)   # no tryLock()
+self.threadPool.start(self.workerSolveLoop)  # no tryLock()
 ```
 
 `Worker.run()` unconditionally calls `self.mutex.unlock()` in its `finally`. Because
@@ -149,7 +157,7 @@ overload the return value ambiguously. **Kept for a later change.**
 `mainWindow.closeEvent` and `switchProfile` do:
 
 ```python
-self.app.dReg.stopDevices()      # must set every stopEvent / stop flag
+self.app.dReg.stopDevices()  # must set every stopEvent / stop flag
 ...
 self.threadPool.waitForDone(10000)
 ```

@@ -108,6 +108,7 @@ def startWorker(
     guard: Callable[[], bool] | None = None,
     **kwargs: Any,
 ) -> Worker | None:
+    log = logging.getLogger("MW4")
 
     if guard is not None and not guard():
         return None
@@ -117,6 +118,8 @@ def startWorker(
             target, *args, resultMethod=resultMethod, finishedMethod=finishedMethod, **kwargs
         )
     if not worker.mutex.tryLock():
+        fnName = getattr(target, "__name__", repr(target))
+        log.debug(f"Worker {fnName} busy, skipped")
         return worker
     if reuse:
         worker.args = args

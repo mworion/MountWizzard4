@@ -29,6 +29,7 @@ def openFile(self, window, title, folder, filterSet):
 ```python
 def openFile(self, window, title, folder, filterSet):
     from mw4.gui.utilities.qtFileDialog import MWFileDialog
+
     return MWFileDialog.getOpenFileName(window, title, folder, filterSet)
 ```
 
@@ -52,6 +53,7 @@ def openFile(self, window, title, folder, filterSet):
 ```python
 def openFile(self, window, title, folder, filterSet):
     from mw4.gui.utilities.qtFileDialog import MWFileDialog
+
     return MWFileDialog.getOpenFileName(window, title, folder, filterSet)
 ```
 

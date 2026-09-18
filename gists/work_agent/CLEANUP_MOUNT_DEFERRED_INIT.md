@@ -14,7 +14,8 @@ With the new two-phase initialization in DeviceRegistry, properties that were pr
 ```python
 def __init__(self, parent: Any) -> None:
     self.location: Any = None  # ← Deferred
-    
+
+
 def startCommunication(self) -> None:
     self.location = self.app.dReg["mount"].obsSite.location  # ← Initialized here
 ```
@@ -23,7 +24,8 @@ def startCommunication(self) -> None:
 ```python
 def __init__(self, parent: Any) -> None:
     self.location: Any = self.app.mount.obsSite.location  # ← Initialized immediately
-    
+
+
 def startCommunication(self) -> None:
     self.pollOpenWeatherMapData()
     self.app.update3s.connect(self.pollOpenWeatherMapData)
@@ -45,9 +47,11 @@ def __init__(self, app: Any = None) -> None:
     self.enabled: bool = False
     # Connection deferred to startCommunication to avoid circular dependency
 
+
 def startCommunication(self) -> None:
     self.app.dReg["mount"].signals.settingDone.connect(self.updateData)  # ← Deferred
     self.enabled = True
+
 
 def stopCommunication(self) -> None:
     self.app.dReg["mount"].signals.settingDone.disconnect(self.updateData)
@@ -60,9 +64,11 @@ def __init__(self, app: Any = None) -> None:
     # Connection established during init (app.mount exists from Phase 1)
     self.app.mount.signals.settingDone.connect(self.updateData)  # ← Moved back
 
+
 def startCommunication(self) -> None:
     self.enabled = True
     self.app.dReg["directWeather"].stat = False
+
 
 def stopCommunication(self) -> None:
     self.app.mount.signals.settingDone.disconnect(self.updateData)  # ← Now uses app.mount

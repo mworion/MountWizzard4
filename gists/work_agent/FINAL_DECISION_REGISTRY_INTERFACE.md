@@ -66,6 +66,7 @@ During Phase 2 (while registry is still initializing):
 def __init__(self, parent: Any) -> None:
     self.location: Any = None  # ← Initialize to None
 
+
 def startCommunication(self) -> None:
     self.location = self.app.dReg["mount"].obsSite.location  # ← Access registry here
 ```

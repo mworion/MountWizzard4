@@ -92,7 +92,7 @@ selected_item, accepted = MWInputDialog.getItem(
     title="Choose an option",
     label="Select from list:",
     items=items,
-    currentIndex=0
+    currentIndex=0,
 )
 
 if accepted:

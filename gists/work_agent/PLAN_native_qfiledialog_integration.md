@@ -79,15 +79,22 @@ Touch only the file-dialog section. Two parallel code paths:
 New helper signatures (public API additions are optional kwargs only):
 
 ```python
-def openFile(self, window, title, folder, filterSet,
-             useNative: bool | None = None) -> Path: ...
-def openMultipleFiles(self, window, title, folder, filterSet,
-                      useNative: bool | None = None) -> list[Path]: ...
-def saveFile(self, window, title, folder, filterSet,
-             enableDir: bool = False,
-             useNative: bool | None = None) -> Path: ...
-def openDir(self, window, title, folder,
-            useNative: bool | None = None) -> Path: ...
+def openFile(
+    self, window, title, folder, filterSet, useNative: bool | None = None
+) -> Path: ...
+def openMultipleFiles(
+    self, window, title, folder, filterSet, useNative: bool | None = None
+) -> list[Path]: ...
+def saveFile(
+    self,
+    window,
+    title,
+    folder,
+    filterSet,
+    enableDir: bool = False,
+    useNative: bool | None = None,
+) -> Path: ...
+def openDir(self, window, title, folder, useNative: bool | None = None) -> Path: ...
 ```
 
 `useNative is None` ⇒ resolve through `self.resolveUseNativeDialog()`

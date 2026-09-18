@@ -153,10 +153,7 @@ Tests in utilities/: 322 passed ✓
 from PySide6.QtWidgets import QLineEdit
 
 password, ok = MWInputDialog.getText(
-    parent,
-    "Login",
-    "Enter password:",
-    echoMode=QLineEdit.EchoMode.Password
+    parent, "Login", "Enter password:", echoMode=QLineEdit.EchoMode.Password
 )
 ```
 
@@ -169,7 +166,7 @@ value, ok = MWInputDialog.getInt(
     defaultValue=8080,
     minValue=1000,
     maxValue=9999,
-    step=1
+    step=1,
 )
 ```
 
@@ -182,7 +179,7 @@ temperature, ok = MWInputDialog.getDouble(
     defaultValue=20.0,
     minValue=-50.0,
     maxValue=50.0,
-    decimals=1
+    decimals=1,
 )
 ```
 

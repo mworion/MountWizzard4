@@ -22,7 +22,9 @@ Successfully fixed unit tests that were using the old `messageDialog` mocking pa
 mock.patch.object(function, "messageDialog", return_value=False)
 
 # After
-mock.patch("mw4.gui.extWindows.hemisphere.hemisphereDraw.MWMessageDialog.question", return_value=False)
+mock.patch(
+    "mw4.gui.extWindows.hemisphere.hemisphereDraw.MWMessageDialog.question", return_value=False
+)
 ```
 
 ### 2. TabModel_Manage Test File

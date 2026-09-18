@@ -220,9 +220,7 @@ def test_bootRackCompParametersPassed(settMount: SettMount) -> None:
         mock.patch.object(wakeonlan, "wake") as mock_wake,
     ):
         settMount.bootRackComp()
-    mock_wake.assert_called_once_with(
-        "AA:BB:CC:DD:EE:FF", host="192.168.1.255", port=7
-    )
+    mock_wake.assert_called_once_with("AA:BB:CC:DD:EE:FF", host="192.168.1.255", port=7)
 
 
 def test_bootRackCompDebugLog(settMount: SettMount) -> None:

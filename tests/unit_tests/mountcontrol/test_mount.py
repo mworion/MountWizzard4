@@ -360,7 +360,12 @@ def test_GetTLE_3(function):
 
 def test_bootMount_1(function):
     function.config.MAC = None
-    with mock.patch.object(wakeonlan, "wake"):
+
+    def mock_wake_side_effect(mac, host, port):
+        if mac is None:
+            raise ValueError("MAC address cannot be None")
+
+    with mock.patch.object(wakeonlan, "wake", side_effect=mock_wake_side_effect):
         suc = function.bootMount()
         assert not suc
 

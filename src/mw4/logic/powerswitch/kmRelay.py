@@ -85,24 +85,15 @@ class KMRelay:
         self.log.debug(f"Result: {url}, {reason}, {status}, {elapsed}, {text}")
 
     def getRelay(self, url: str, debug: bool = False) -> Any:
-        if self.config.hostAddress is None:
-            return ""
-        if not self.mutexPoll.tryLock():
-            return ""
-
         auth = requests.auth.HTTPBasicAuth(self.config.user, self.config.password)
         url = f"http://{self.config.hostAddress}:80{url}"
-
         try:
             result = requests.get(url, auth=auth, timeout=self.TIMEOUT)
         except (requests.RequestException, OSError) as e:
             result = ""
             self.log.critical(f"Error in request: {e}")
-
         if debug:
             self.debugOutput(result=result)
-
-        self.mutexPoll.unlock()
         return result
 
     def checkConnected(self, value: Any) -> bool:
@@ -164,15 +155,11 @@ class KMRelay:
             self.log.warning(f"Relay:{relayNumber}")
             return
 
-    def resultPulse(self) -> None:
-        self.workerPulse = None
-
     def pulse(self, relayNumber: int) -> None:
         self.workerPulse = startWorker(
             self.workerPulse,
             self.threadPool,
             self.runnerPulse,
-            self.resultPulse,
             relayNumber,
         )
 

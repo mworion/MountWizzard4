@@ -20,7 +20,6 @@ import requests
 import time
 from mw4.base.tpool import Worker
 from mw4.logic.powerswitch.kmRelay import KMRelay
-from PySide6.QtCore import QMutex
 from unittest import mock
 
 
@@ -30,7 +29,6 @@ def kmRelay() -> KMRelay:
     app = mock.MagicMock()
     with mock.patch.object(PySide6.QtCore.QTimer, "start"):
         relay = KMRelay(app)
-    relay.mutexPoll = QMutex()
     return relay
 
 
@@ -84,18 +82,27 @@ def test_debugOutputWithNone(kmRelay: KMRelay) -> None:
     kmRelay.debugOutput(None)
 
 
-def test_getRelayWithNoneHostAddress(kmRelay: KMRelay) -> None:
-    kmRelay.config.hostAddress = None
+def test_getRelayWithEmptyHostAddress(kmRelay: KMRelay) -> None:
+    kmRelay.config.hostAddress = ""
     result = kmRelay.getRelay("/status.xml", False)
     assert result == ""
 
 
-def test_getRelayWithLockedMutex(kmRelay: KMRelay) -> None:
+def test_getRelayWithValidResponse(kmRelay: KMRelay) -> None:
+    class MockResult:
+        text = "test response"
+        reason = "OK"
+        status_code = 200
+        elapsed = "0.1s"
+        url = "http://localhost/status.xml"
+
     kmRelay.config.hostAddress = "localhost"
-    kmRelay.mutexPoll.lock()
-    result = kmRelay.getRelay("/status.xml", False)
-    assert result == ""
-    kmRelay.mutexPoll.unlock()
+    kmRelay.config.user = "test"
+    kmRelay.config.password = "test"
+    with mock.patch.object(requests, "get", return_value=MockResult()):
+        result = kmRelay.getRelay("/status.xml", False)
+        assert result is not None
+        assert result.reason == "OK"
 
 
 def test_getRelayWithTimeoutException(kmRelay: KMRelay) -> None:
@@ -406,9 +413,6 @@ def test_runnerPulseWithValue2Bad(kmRelay: KMRelay) -> None:
         kmRelay.runnerPulse(3)
 
 
-def test_resultPulse(kmRelay: KMRelay) -> None:
-    kmRelay.resultPulse()
-    assert kmRelay.workerPulse is None
 
 
 def test_switchWithNoneResponse(kmRelay: KMRelay) -> None:

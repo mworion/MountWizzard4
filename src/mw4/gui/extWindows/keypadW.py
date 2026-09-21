@@ -140,13 +140,7 @@ class KeypadWindow(MWidget):
             self.buttons[button].pressed.connect(partial(self.buttonPressed, button))
             self.buttons[button].released.connect(partial(self.buttonReleased, button))
 
-    def websocketClear(self) -> None:
-        self.websocketMutex.unlock()
-
     def startKeypad(self) -> None:
-        if not self.websocketMutex.tryLock():
-            return
-
         self.clearDisplay()
         self.writeTextRow(2, "Connecting ...")
         host = (
@@ -158,7 +152,6 @@ class KeypadWindow(MWidget):
             self.threadPool,
             self.keypad.runnerWebsocket,
             host,
-            finishedMethod=self.websocketClear,
         )
 
     def buttonPressed(self, button: str) -> None:

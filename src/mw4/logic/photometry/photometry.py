@@ -321,21 +321,13 @@ class Photometry:
         objsHFR = len(self.objs)
         self.log.info(f"Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, HFR:{objsHFR}")
 
-    def unlockPhotometry(self) -> None:
-        self.lock.unlock()
-
     def processPhotometry(self, image: np.ndarray, snTarget: int) -> None:
         self.image = image.astype(np.float32)
         self.snTarget = self.SN[snTarget]
         self.sepThreshold = self.SEP[snTarget]
-
-        if not self.lock.tryLock():
-            return
-
         self.workerCalcPhotometry = startWorker(
             self.workerCalcPhotometry,
             self.threadPool,
             self.runnerCalcPhotometry,
             resultMethod=self.signals.sepFinished.emit,
-            finishedMethod=self.unlockPhotometry,
         )

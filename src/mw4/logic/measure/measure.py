@@ -19,6 +19,7 @@ from mw4.base.signalsDevices import Signals
 from mw4.logic.measure.measureAddOns import measure
 from mw4.logic.measure.measureCSV import MeasureDataCSV
 from mw4.logic.measure.measureRaw import MeasureDataRaw
+from PySide6.QtCore import QMutex
 from typing import Any
 
 
@@ -34,6 +35,7 @@ class MeasureData:
         self.signals = Signals()
         self.shorteningStart: bool = True
         self.data: dict[str, Any] = {}
+        self.mutexMeasure: QMutex = QMutex()
         self.measuredDevices: dict[str, Any] = {}
         self.framework: str = ""
         self.run: dict[str, Any] = {

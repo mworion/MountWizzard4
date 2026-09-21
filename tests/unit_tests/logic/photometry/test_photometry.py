@@ -19,7 +19,6 @@ import numpy as np
 import pytest
 import sep
 from mw4.logic.photometry.photometry import Photometry, PhotometrySignals
-from PySide6.QtCore import QMutex
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
@@ -34,7 +33,6 @@ class Parent:
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     func = Photometry(Parent(), np.zeros((1, 1)))
-    func.lock = QMutex()
     yield func
 
 
@@ -198,22 +196,10 @@ def test_workerCalcPhotometry_3(function):
         function.runnerCalcPhotometry()
 
 
-def test_unlockPhotometry(function):
-    function.lock.lock()
-    function.unlockPhotometry()
-
-
-def test_processPhotometry_2(function):
-    function.lock.lock()
-    function.processPhotometry(np.array(np.random.rand(100, 100) + 1), 0)
-    function.lock.unlock()
-
-
-def test_processPhotometry_3(function):
+def test_processPhotometry_1(function):
     function.image = np.array(np.random.rand(100, 100) + 1)
     with mock.patch.object(function.threadPool, "start"):
         function.processPhotometry(np.array(np.random.rand(100, 100) + 1), 0)
-    function.lock.unlock()
 
 
 def test_processPhotometry_createsWorkerOnFirstCall(function):
@@ -229,10 +215,8 @@ def test_processPhotometry_createsWorkerOnFirstCall(function):
             function.threadPool,
             function.runnerCalcPhotometry,
             resultMethod=function.signals.sepFinished.emit,
-            finishedMethod=function.unlockPhotometry,
         )
         assert function.workerCalcPhotometry == mock_worker
-        function.lock.unlock()
 
 
 def test_processPhotometry_reusesWorker(function):
@@ -248,7 +232,5 @@ def test_processPhotometry_reusesWorker(function):
             function.threadPool,
             function.runnerCalcPhotometry,
             resultMethod=function.signals.sepFinished.emit,
-            finishedMethod=function.unlockPhotometry,
         )
         assert function.workerCalcPhotometry == existing_worker
-        function.lock.unlock()

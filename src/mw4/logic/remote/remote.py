@@ -44,7 +44,6 @@ class Remote:
         hostAddress = QHostAddress("localhost")
         if not self.tcpServer.listen(hostAddress, 3490):
             self.log.info("Port already in use")
-            self.tcpServer = None
             return False
         else:
             self.log.info("Remote access enabled")

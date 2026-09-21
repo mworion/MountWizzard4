@@ -189,12 +189,15 @@ def test_workerGetOpenWeatherMapData_5(function):
 
 def test_sendStatus_1(function):
     function.running = True
-    function.sendStatus(False)
+    with mock.patch.object(function, "processOpenWeatherMapData"):
+        function.sendStatus(False)
 
 
 def test_sendStatus_2(function):
     function.running = False
-    function.sendStatus(True)
+    with mock.patch.object(function, "processOpenWeatherMapData") as mock_process:
+        function.sendStatus(True)
+        mock_process.assert_called_once()
 
 
 def test_getOpenWeatherMapData_1(function):
@@ -274,18 +277,6 @@ def test_pollOpenWeatherMapData_5(function):
         mock.patch.object(function, "getOpenWeatherMapData"),
     ):
         function.pollOpenWeatherMapData()
-
-
-# ------------------------------------------------------------------
-# SensorWeatherOnline — sendStatus with processOpenWeatherMapData call
-# ------------------------------------------------------------------
-def test_sendStatusCallsProcessWhenStatusTrue(function) -> None:
-    """Test that sendStatus calls processOpenWeatherMapData when status is True."""
-    function.running = False
-    function.status = True
-    with mock.patch.object(function, "processOpenWeatherMapData") as mock_process:
-        function.sendStatus(True)
-        mock_process.assert_called_once()
 
 
 # ------------------------------------------------------------------

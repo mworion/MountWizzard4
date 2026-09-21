@@ -45,7 +45,7 @@ def test_startCommunication_1(function):
 
 
 def test_startCommunication_2(function):
-    with mock.patch.object(QtNetwork.QTcpServer, "isListening", return_value=False):
+    with mock.patch.object(QtNetwork.QTcpServer, "listen", return_value=False):
         suc = function.startCommunication()
         assert not suc
 

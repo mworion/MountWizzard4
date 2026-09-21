@@ -152,6 +152,8 @@ class HidController:
             self.deviceConnected = True
 
     def handleDeviceDisconnect(self) -> None:
+        if not self.deviceConnected:
+            return
         self.deviceConnected = False
         if self.hidControllerDevice:
             self.hidControllerDevice.close()
@@ -168,6 +170,7 @@ class HidController:
                 if not connect:
                     self.handleDeviceDisconnect()
             self.stopEvent.wait(timeout=self.UPDATE_RATE)
+        self.handleDeviceDisconnect()
 
     def startCommunication(self) -> None:
         self.deviceConnected = False
@@ -179,7 +182,6 @@ class HidController:
     def stopCommunication(self) -> None:
         self.stopEvent.set()
         self.deviceConnected = False
-        self.signals.deviceDisconnected.emit(self.config.deviceName)
 
     @staticmethod
     def isValidHidControllers(name: str) -> bool:

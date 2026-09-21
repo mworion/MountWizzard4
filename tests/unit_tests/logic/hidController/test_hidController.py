@@ -572,13 +572,10 @@ def test_startCommunication_autoStartTrue(hc):
 
 def test_stopCommunication(hc):
     hc.deviceConnected = True
-    hc.config.deviceName = "TestController"
-    disconnected = []
-    hc.signals.deviceDisconnected.connect(lambda n: disconnected.append(n))
+    hc.stopEvent.clear()
     hc.stopCommunication()
     assert hc.deviceConnected is False
-    assert "TestController" in disconnected
-    hc.signals.deviceDisconnected.disconnect()
+    assert hc.stopEvent.is_set() is True
 
 
 def test_runnerCommunicationLoop_emitsConnectedSignal(hc):
@@ -604,6 +601,9 @@ def test_runnerCommunicationLoop_emitsConnectedSignal(hc):
     def wait_side_effect(timeout=None):
         return False
 
+    connected_signals = []
+    hc.signals.deviceConnected.connect(lambda n: connected_signals.append(n))
+
     hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
     with (
         mock.patch.object(hid, "enumerate", return_value=hid_devices),
@@ -611,7 +611,8 @@ def test_runnerCommunicationLoop_emitsConnectedSignal(hc):
         mock.patch.object(hc.stopEvent, "wait", side_effect=wait_side_effect),
     ):
         hc.runnerCommunicationLoop()
-    assert hc.deviceConnected is True
+    assert "Pro Controller" in connected_signals
+    assert hc.deviceConnected is False
 
 
 def test_runnerCommunicationLoop_handlesDisconnectionDuringRun(hc):
@@ -628,20 +629,21 @@ def test_runnerCommunicationLoop_handlesDisconnectionDuringRun(hc):
         def set_nonblocking(self, val):
             pass
 
-        def read(self, size, timeout_ms=None):
+        def read(self, size):
             self.call_count += 1
-            if timeout_ms == 0:
-                if self.call_count == 1:
-                    return [1, 2, 3]
-                hc.stopEvent.set()
-                raise OSError("Device disconnected")
-            return []
+            if self.call_count == 1:
+                return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            hc.stopEvent.set()
+            raise OSError("Device disconnected")
 
         def close(self):
             pass
 
     def wait_side_effect(timeout=None):
         return False
+
+    disconnected_signals = []
+    hc.signals.deviceDisconnected.connect(lambda n: disconnected_signals.append(n))
 
     hid_devices = [{"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2}]
     with (
@@ -651,6 +653,8 @@ def test_runnerCommunicationLoop_handlesDisconnectionDuringRun(hc):
     ):
         hc.runnerCommunicationLoop()
     assert hc.stopEvent.is_set() is True
+    assert len(disconnected_signals) == 1
+    assert disconnected_signals[0] == "Pro Controller"
 
 
 def test_runnerCommunicationLoop_unknownDeviceType(hc):
@@ -664,17 +668,21 @@ def test_runnerCommunicationLoop_unknownDeviceType(hc):
         def set_nonblocking(self, val):
             pass
 
-        def read(self, size, timeout_ms=None):
-            if timeout_ms == 0:
-                return [1, 2, 3]
+        def read(self, size):
             hc.stopEvent.set()
-            return []
+            return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
         def close(self):
             pass
 
     def wait_side_effect(timeout=None):
         return False
+
+    connected_signals = []
+    hc.signals.deviceConnected.connect(lambda n: connected_signals.append(n))
+
+    disconnected_signals = []
+    hc.signals.deviceDisconnected.connect(lambda n: disconnected_signals.append(n))
 
     hid_devices = [{"product_string": "Unknown Controller", "vendor_id": 1, "product_id": 2}]
     with (
@@ -684,6 +692,9 @@ def test_runnerCommunicationLoop_unknownDeviceType(hc):
     ):
         hc.runnerCommunicationLoop()
     assert hc.stopEvent.is_set() is True
+    assert "Unknown Controller" in connected_signals
+    assert len(disconnected_signals) == 1
+    assert disconnected_signals[0] == "Unknown Controller"
 
 
 def test_convertData_unknownDevice(hc):

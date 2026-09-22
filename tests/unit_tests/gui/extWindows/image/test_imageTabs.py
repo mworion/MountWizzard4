@@ -158,13 +158,11 @@ def test_showTabAberrationInspect(function):
 def test_showTabImageSources(function):
     function.photometry = FileHandler(function.parent)
     function.imageSourceRange = QRectF(1, 2, 3, 4)
-    function.photometry.objs = {
-        "x": np.linspace(0, 50, 20),
-        "y": np.linspace(50, 100, 20),
-        "theta": np.random.rand(20, 1) + 10,
-        "a": np.random.rand(20, 1) + 10,
-        "b": np.random.rand(20, 1) + 10,
-    }
+    function.photometry.xCoord = np.linspace(0, 50, 20)
+    function.photometry.yCoord = np.linspace(50, 100, 20)
+    function.photometry.theta = np.random.rand(20) + 10
+    function.photometry.aAxis = np.random.rand(20) + 10
+    function.photometry.bAxis = np.random.rand(20) + 10
     function.photometry.image = np.array(np.random.rand(100, 100) + 1)
     function.photometry.hfr = (
         np.random.rand(

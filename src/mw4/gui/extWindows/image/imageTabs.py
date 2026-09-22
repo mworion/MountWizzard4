@@ -415,17 +415,17 @@ class ImageTabs:
         if temp:
             self.ui.imageSource.p[0].getViewBox().setRange(rect=temp)
 
-        objs = self.photometry.objs
-        for i in range(len(objs)):
+        photometry = self.photometry
+        for i in range(len(photometry.hfr)):
             eItem = self.ui.imageSource.addEllipse(
-                objs["x"][i],
-                objs["y"][i],
-                objs["a"][i] * 4,
-                objs["b"][i] * 4,
-                objs["theta"][i],
+                photometry.xCoord[i],
+                photometry.yCoord[i],
+                photometry.aAxis[i] * 4,
+                photometry.bAxis[i] * 4,
+                photometry.theta[i],
             )
             if self.ui.showValues.isChecked():
-                t = f"{self.photometry.hfr[i]:2.1f}"
+                t = f"{photometry.hfr[i]:2.1f}"
                 item = pg.TextItem(text=t, color=self.parent.M_PRIM, anchor=(1, 1))
                 item.setFont(self.fontAnno)
                 item.setParentItem(eItem)

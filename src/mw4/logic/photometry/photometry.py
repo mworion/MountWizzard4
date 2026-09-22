@@ -13,10 +13,22 @@
 # License APL2.0
 #
 ###########################################################
+"""Qt adapter around the pure photometry core.
+
+The adapter owns the Qt signals and all presentation state, orchestrates the
+pure-core background estimation and source extraction, builds the display grids
+and emits the signals the image window connects to. All source data is exposed
+as flat, index-aligned arrays (xCoord, yCoord, aAxis, bAxis, theta, hfr).
+"""
+
 import logging
 import numpy as np
-import sep
 from mw4.base.tpool import Worker, startWorker
+from mw4.logic.photometry.photometry_core import (
+    Background,
+    estimateBackground,
+    extractSources,
+)
 from PySide6.QtCore import QObject, Signal
 from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
@@ -31,7 +43,7 @@ class PhotometrySignals(QObject):
     roundness = Signal()
     background = Signal()
     backgroundRMS = Signal()
-    sepFinished = Signal()
+    photometryFinished = Signal()
 
 
 class Photometry:
@@ -52,8 +64,14 @@ class Photometry:
         self.workerCalcPhotometry: Worker | None = None
 
         self.objs: Any = None
-        self.objsAll: Any = None
-        self.bkg: Any = None
+        self.bkg: Background | None = None
+
+        self.xCoord: np.ndarray = np.zeros(0)
+        self.yCoord: np.ndarray = np.zeros(0)
+        self.aAxis: np.ndarray = np.zeros(0)
+        self.bAxis: np.ndarray = np.zeros(0)
+        self.theta: np.ndarray = np.zeros(0)
+        self.elongation: np.ndarray = np.zeros(0)
 
         self.xm: np.ndarray = np.array([])
         self.ym: np.ndarray = np.array([])
@@ -73,7 +91,6 @@ class Photometry:
         self.backRMS: np.ndarray = np.zeros(0)
 
         self.hfr: np.ndarray = np.zeros(30)
-        self.hfrAll: np.ndarray = np.zeros(30)
         self.hfrMin: float = 1
         self.hfrMax: float = 1
         self.hfrPercentile: float = 1
@@ -91,8 +108,8 @@ class Photometry:
         rangeX = np.linspace(0, self.w, int(self.w / self.FILTER_SCALE))
         rangeY = np.linspace(0, self.h, int(self.h / self.FILTER_SCALE))
         self.xm, self.ym = np.meshgrid(rangeX, rangeY)
-        x = self.objs["x"] - self.w / 2
-        y = self.objs["y"] - self.h / 2
+        x = self.xCoord - self.w / 2
+        y = self.yCoord - self.h / 2
         radius = np.sqrt(x * x + y * y)
         maskOuter = np.sqrt(self.h * self.h / 4 + self.w * self.w / 4) * 0.75 < radius
         maskInner = np.sqrt(self.h * self.h / 4 + self.w * self.w / 4) * 0.25 > radius
@@ -105,7 +122,7 @@ class Photometry:
 
     def runnerGetHFR(self) -> None:
         img = griddata(
-            (self.objs["x"], self.objs["y"]),
+            (self.xCoord, self.yCoord),
             self.hfr,
             (self.xm, self.ym),
             method="nearest",
@@ -118,12 +135,11 @@ class Photometry:
         self.signals.hfr.emit()
 
     def runnerGetRoundness(self) -> None:
-        a = self.objs["a"]
-        b = self.objs["b"]
-        aspectRatio = np.maximum(a / b, b / a)
+        # 8.3: elongation (a/b) taken directly from the SourceCatalog
+        aspectRatio = self.elongation
         minB, maxB = np.percentile(aspectRatio, (50, 95))
         img = griddata(
-            (self.objs["x"], self.objs["y"]),
+            (self.xCoord, self.yCoord),
             aspectRatio,
             (self.xm, self.ym),
             method="linear",
@@ -141,8 +157,8 @@ class Photometry:
 
         xRange = [0, stepX, 2 * stepX, 3 * stepX]
         yRange = [0, stepY, 2 * stepY, 3 * stepY]
-        x = self.objs["x"]
-        y = self.objs["y"]
+        x = self.xCoord
+        y = self.yCoord
         segHFR = np.zeros((3, 3))
         for ix in range(3):
             for iy in range(3):
@@ -157,8 +173,8 @@ class Photometry:
         self.signals.hfrSquare.emit()
 
     def runnerCalcTiltValuesTriangle(self) -> None:
-        x = self.objs["x"] - self.w / 2
-        y = self.objs["y"] - self.h / 2
+        x = self.xCoord - self.w / 2
+        y = self.yCoord - self.h / 2
         radius = min(self.h / 2, self.w / 2)
         mask1 = np.sqrt(self.h * self.h + self.w * self.w) * 0.25 < radius
         mask2 = np.sqrt(self.h * self.h + self.w * self.w) > radius
@@ -217,109 +233,49 @@ class Photometry:
         self.calcBackground()
         self.calcBackgroundRMS()
 
+    def emptyResult(self) -> None:
+        self.objs = np.array([])
+        self.xCoord = np.zeros(0)
+        self.yCoord = np.zeros(0)
+        self.aAxis = np.zeros(0)
+        self.bAxis = np.zeros(0)
+        self.theta = np.zeros(0)
+        self.hfr = np.zeros(0)
+        self.elongation = np.zeros(0)
+
     def runnerCalcPhotometry(self) -> None:
-        self.bkg = sep.Background(self.image, bw=32, bh=32)
-        image_sub = self.image - self.bkg
+        self.bkg = estimateBackground(self.image)
+        imageSub = self.image - self.bkg.back()
         self.backRMS = self.bkg.rms()
         self.backSignal = self.bkg.back()
 
+        threshold = self.sepThreshold * self.backRMS
         try:
-            objs = sep.extract(
-                image_sub,
-                self.sepThreshold,
-                err=self.backRMS,
-                filter_kernel=None,
-                minarea=7,
-            )
+            result = extractSources(imageSub, self.backRMS, threshold, self.snTarget)
         except (ValueError, RuntimeError, IndexError) as e:
             self.log.error(e)
-            self.objs = np.array([])
-            self.objsAll = np.array([])
-            self.hfr = np.zeros(0)
-            self.hfrAll = np.zeros(0)
+            self.emptyResult()
             return
 
-        objsRaw = len(objs)
+        if result is None:
+            self.log.error("No sources detected")
+            self.emptyResult()
+            return
 
-        # limiting the resulting object by some constraints
-        r = np.sqrt(objs["a"] * objs["a"] + objs["b"] * objs["b"])
-        mask = (r < 15) & (r > 0.8)
-        objs = objs[mask]
-        objsSelect = len(objs)
-
-        # equivalent to FLUX_AUTO of sextractor
-        PHOT_AUTOPARAMS = [2.5, 3.5]
-
-        kronRad, krFlag = sep.kron_radius(
-            image_sub, objs["x"], objs["y"], objs["a"], objs["b"], objs["theta"], 6.0
-        )
-
-        flux, fluxErr, flag = sep.sum_ellipse(
-            image_sub,
-            objs["x"],
-            objs["y"],
-            objs["a"],
-            objs["b"],
-            objs["theta"],
-            PHOT_AUTOPARAMS[0] * kronRad,
-            subpix=1,
-        )
-
-        flag |= krFlag
-        r_min = PHOT_AUTOPARAMS[1] / 2
-
-        useCircle = kronRad * np.sqrt(objs["a"] * objs["b"]) < r_min
-        cFlux, cFluxErr, cFlag = sep.sum_circle(
-            image_sub, objs["x"][useCircle], objs["y"][useCircle], r_min, subpix=1
-        )
-
-        flux[useCircle] = cFlux
-        fluxErr[useCircle] = cFluxErr
-        flag[useCircle] = cFlag
-
-        # equivalent of FLUX_RADIUS
-        PHOT_FLUXFRAC = [0.5, 1.0]
-
-        radius, _ = sep.flux_radius(
-            image_sub,
-            objs["x"],
-            objs["y"],
-            6.0 * objs["a"],
-            PHOT_FLUXFRAC,
-            normflux=flux,
-            subpix=5,
-        )
-
-        self.objsAll = objs
-        self.hfrAll = radius[:, 0]
-
-        # limiting the resulting object by checking the S/N values
-        b = []
-        for x, y in zip(objs["x"], objs["y"]):
-            b.append(self.backSignal[int(y)][int(x)])
-
-        # calculate sn based on optimized version of
-        # http://www1.phys.vt.edu/~jhs/phys3154/snr20040108.pdf
-        sn = flux / np.sqrt(np.abs(b * radius[:, 1] * radius[:, 1] * np.pi))
-
-        # pure version of source compared to use in stellarsolver
-        # starNumPixels = np.abs(b * radius[:, 1] * radius[:, 1] * np.pi)
-        # varSky = self.bkg.globalrms * self.bkg.globalrms
-        # sn = flux / np.sqrt(flux + starNumPixels * varSky * (1 + 1 / (32 * 32)))
-
-        mask = sn > self.snTarget
-        objs = objs[mask]
-        radius = radius[:, 0]
-        radius = radius[mask]
-        objsSN = len(objs)
-
-        # and we need a min and max of HFR
-        mask = radius < 10
-        self.objs = objs[mask]
-        self.hfr = radius[mask]
+        sources, counts = result
+        self.xCoord = sources.xCoord
+        self.yCoord = sources.yCoord
+        self.aAxis = sources.aAxis
+        self.bAxis = sources.bAxis
+        self.theta = sources.theta
+        self.hfr = sources.hfr
+        self.elongation = sources.elongation
+        self.objs = sources
         self.runCalcs()
-        objsHFR = len(self.objs)
-        self.log.info(f"Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, HFR:{objsHFR}")
+        self.log.info(
+            f"Raw:{counts.raw}, Select:{counts.select}, "
+            f"SN:{counts.signalNoise}, HFR:{counts.hfr}"
+        )
 
     def processPhotometry(self, image: np.ndarray, snTarget: int) -> None:
         self.image = image.astype(np.float32)
@@ -329,5 +285,5 @@ class Photometry:
             self.workerCalcPhotometry,
             self.threadPool,
             self.runnerCalcPhotometry,
-            resultMethod=self.signals.sepFinished.emit,
+            resultMethod=self.signals.photometryFinished.emit,
         )

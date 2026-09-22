@@ -140,7 +140,7 @@ class ImageWindow(MWidget):
         self.app.showImage.connect(self.showImage)
         self.app.operationRunning.connect(self.operationMode)
         self.fileHandler.signals.imageLoaded.connect(self.processPhotometry)
-        self.photometry.signals.sepFinished.connect(self.resultPhotometry)
+        self.photometry.signals.photometryFinished.connect(self.resultPhotometry)
         self.signals.solveImage.connect(self.solveImage)
         self.operationMode(self.app.statusOperationRunning)
         self.setAspectLocked()

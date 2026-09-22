@@ -233,10 +233,10 @@ class ImageWindow(MWidget):
 
     def resultPhotometry(self) -> None:
         changeStyleDynamic(self.ui.photometryGroup, "run", "false")
-        if self.photometry.objs is None:
+        if len(self.photometry.hfr) == 0:
             self.msg.emit(2, "Image", "Photometry error", "Too low pixel stack")
         else:
-            self.msg.emit(0, "Image", "Photometry", "SEP done")
+            self.msg.emit(0, "Image", "Photometry", "Calculation done")
 
     def processPhotometry(self) -> None:
         isPhotometry = self.ui.photometryGroup.isChecked()

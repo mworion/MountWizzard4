@@ -14,6 +14,7 @@
 #
 ###########################################################
 import mw4.gui.extWindows.image.imageW
+import numpy as np
 import pyqtgraph as pg
 import pytest
 import shutil
@@ -188,12 +189,12 @@ def test_setAspectLocked(function):
 
 
 def test_resultPhotometry_1(function):
-    function.photometry.objs = None
+    function.photometry.hfr = np.zeros(0)
     function.resultPhotometry()
 
 
 def test_resultPhotometry_2(function):
-    function.photometry.objs = 1
+    function.photometry.hfr = np.ones(20)
     function.resultPhotometry()
 
 

@@ -43,7 +43,7 @@ class PhotometrySignals(QObject):
     roundness = Signal()
     background = Signal()
     backgroundRMS = Signal()
-    photometryFinished = Signal()
+    photometryFinished = Signal(object)
 
 
 class Photometry:
@@ -63,7 +63,6 @@ class Photometry:
         self.sepThreshold = self.SEP[snSelector]
         self.workerCalcPhotometry: Worker | None = None
 
-        self.objs: Any = None
         self.bkg: Background | None = None
 
         self.xCoord: np.ndarray = np.zeros(0)
@@ -234,7 +233,6 @@ class Photometry:
         self.calcBackgroundRMS()
 
     def emptyResult(self) -> None:
-        self.objs = np.array([])
         self.xCoord = np.zeros(0)
         self.yCoord = np.zeros(0)
         self.aAxis = np.zeros(0)
@@ -270,7 +268,6 @@ class Photometry:
         self.theta = sources.theta
         self.hfr = sources.hfr
         self.elongation = sources.elongation
-        self.objs = sources
         self.runCalcs()
         self.log.info(
             f"Raw:{counts.raw}, Select:{counts.select}, "

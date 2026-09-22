@@ -173,8 +173,6 @@ def test_closeEvent_skipsEntriesWithoutSignals(function):
 def test_processPopupResults_2(function):
     returnValues = {
         "device": "telescope",
-        "close": "ok",
-        "framework": "indi",
         "data": {
             "framework": "indi",
             "indi": {
@@ -182,7 +180,6 @@ def test_processPopupResults_2(function):
                 "deviceList": ["test", "test1"],
             },
         },
-        "copyConfig": [],
     }
     with (
         mock.patch.object(function.app.dReg, "writeConfigToSingleDevice"),
@@ -194,8 +191,6 @@ def test_processPopupResults_2(function):
 def test_processPopupResults_3(function):
     returnValues = {
         "device": "telescope",
-        "close": "ok",
-        "framework": "indi",
         "data": {
             "framework": "indi",
             "indi": {
@@ -203,34 +198,12 @@ def test_processPopupResults_3(function):
                 "deviceList": ["test", "test1"],
             },
         },
-        "copyConfig": ["indi"],
     }
     with (
-        mock.patch.object(function, "copyConfig"),
         mock.patch.object(function.app.dReg, "writeConfigToSingleDevice"),
         mock.patch.object(function.app.dReg, "startDevice"),
     ):
         function.processPopupResults(returnValues)
-
-
-def test_copyConfig_1(function):
-    # copyConfig returns early, so just verify it doesn't crash
-    function.copyConfig("telescope", "indi")
-
-
-def test_copyConfig_2(function):
-    # copyConfig returns early, so just verify it doesn't crash
-    function.copyConfig("telescope", "indi")
-
-
-def test_copyConfig_3(function):
-    # copyConfig returns early, so just verify it doesn't crash
-    function.copyConfig("telescope", "test")
-
-
-def test_copyConfig_4(function):
-    # copyConfig returns early, so just verify it doesn't crash
-    function.copyConfig("telescope", "indi")
 
 
 def test_callPopup_1(function):
@@ -251,7 +224,6 @@ def test_callPopup_2(function):
         "close": "ok",
         "device": "telescope",
         "data": {"framework": "indi", "indi": {"deviceName": "test"}},
-        "copyConfig": [],
     }
     with (
         mock.patch.object(function.app.dReg, "stopDevice"),

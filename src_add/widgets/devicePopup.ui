@@ -237,40 +237,6 @@
       </rect>
      </property>
     </widget>
-    <widget class="QCheckBox" name="alpacaCopyConfig">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>185</y>
-       <width>201</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LayoutDirection::LeftToRight</enum>
-     </property>
-     <property name="text">
-      <string>Copy config to all devices</string>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-     <property name="tristate">
-      <bool>false</bool>
-     </property>
-    </widget>
     <widget class="QPushButton" name="alpacaDiscover">
      <property name="geometry">
       <rect>
@@ -832,40 +798,6 @@
      </property>
      <property name="text">
       <string>Load configuration on start</string>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-     <property name="tristate">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="indiCopyConfig">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>185</y>
-       <width>201</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked if you would like to enable blind solver function in SGPro&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LayoutDirection::LeftToRight</enum>
-     </property>
-     <property name="text">
-      <string>Copy config to all devices</string>
      </property>
      <property name="checked">
       <bool>false</bool>
@@ -2753,7 +2685,6 @@
   <tabstop>alpacaPort</tabstop>
   <tabstop>alpacaDeviceList</tabstop>
   <tabstop>alpacaDiscover</tabstop>
-  <tabstop>alpacaCopyConfig</tabstop>
   <tabstop>ascomDevice</tabstop>
   <tabstop>ascomSelector</tabstop>
   <tabstop>indiHostAddress</tabstop>
@@ -2762,7 +2693,6 @@
   <tabstop>indiDiscover</tabstop>
   <tabstop>indiMessages</tabstop>
   <tabstop>indiLoadConfig</tabstop>
-  <tabstop>indiCopyConfig</tabstop>
   <tabstop>selectAstrometryAppPath</tabstop>
   <tabstop>astrometryAppPath</tabstop>
   <tabstop>selectAstrometryIndexPath</tabstop>

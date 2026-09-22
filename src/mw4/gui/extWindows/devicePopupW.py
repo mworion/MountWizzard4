@@ -37,7 +37,6 @@ class DevicePopup(MWidget):
         self.data = data
         self.device: str = device
         self.framework: str = data["framework"]
-
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self.ws)
         self.setNoFocus(self)
@@ -49,7 +48,6 @@ class DevicePopup(MWidget):
         self.move(x, y)
         pixmap = svg2pixmap("assets/icon/cogs.svg", self.M_PRIM)
         self.ui.iconPixmap.setPixmap(pixmap)
-
         self.returnValues: dict[str, Any] = {"close": "cancel"}
         self.loop: QEventLoop | None = None
         self.framework2gui = {
@@ -261,11 +259,6 @@ class DevicePopup(MWidget):
     def storeConfig(self) -> None:
         self.readFramework()
         self.readTabs()
-        self.returnValues["copyConfig"]: list = []
-        if self.ui.indiCopyConfig.isChecked():
-            self.returnValues["copyConfig"].append("indi")
-        if self.ui.alpacaCopyConfig.isChecked():
-            self.returnValues["copyConfig"].append("alpaca")
         self.returnValues["close"] = "ok"
         self.returnValues["data"] = self.data
         self.returnValues["device"] = self.device

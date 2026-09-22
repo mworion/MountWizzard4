@@ -86,12 +86,18 @@ def test_initConfig_2(function):
 
 
 def test_storeConfig_1(function):
+    function.framework = "indi"
+    function.device = "telescope"
+    function.data = {"indi": {"deviceName": "test"}}
     with (
         mock.patch.object(function, "readFramework"),
         mock.patch.object(function, "readTabs"),
         mock.patch.object(function, "close"),
     ):
         function.storeConfig()
+    assert function.returnValues["close"] == "ok"
+    assert function.returnValues["device"] == "telescope"
+    assert function.returnValues["data"]["framework"] == "indi"
 
 
 def test_selectTabs_1(function):
@@ -418,81 +424,6 @@ def test_populateTabsSkipsFrameworkKey(function) -> None:
     function.populateTabs()
     # Verify indi framework was processed
     assert function.data["indi"]["deviceName"] == "test"
-
-
-def test_storeConfigWithIndiCopyConfig(function) -> None:
-    """Test storeConfig adds 'indi' to copyConfig when checked (line 225)."""
-    function.framework = "indi"
-    function.data = {
-        "indi": {
-            "deviceName": "test_device",
-            "deviceList": ["test", "test1"],
-            "hostaddress": "localhost",
-            "messages": False,
-        },
-    }
-    # Mock the UI checkboxes
-    with (
-        mock.patch.object(function.ui.indiCopyConfig, "isChecked", return_value=True),
-        mock.patch.object(function.ui.alpacaCopyConfig, "isChecked", return_value=False),
-        mock.patch.object(function, "readFramework"),
-        mock.patch.object(function, "readTabs"),
-        mock.patch.object(function, "close"),
-    ):
-        function.storeConfig()
-        # Verify copyConfig contains "indi"
-        assert "indi" in function.returnValues["copyConfig"]
-        assert "alpaca" not in function.returnValues["copyConfig"]
-
-
-def test_storeConfigWithAlpacaCopyConfig(function) -> None:
-    """Test storeConfig adds 'alpaca' to copyConfig when checked (line 227)."""
-    function.framework = "alpaca"
-    function.data = {
-        "alpaca": {
-            "deviceName": "test_device",
-            "deviceList": ["test", "test1"],
-            "hostaddress": "localhost",
-            "port": 8000,
-        },
-    }
-    # Mock the UI checkboxes
-    with (
-        mock.patch.object(function.ui.indiCopyConfig, "isChecked", return_value=False),
-        mock.patch.object(function.ui.alpacaCopyConfig, "isChecked", return_value=True),
-        mock.patch.object(function, "readFramework"),
-        mock.patch.object(function, "readTabs"),
-        mock.patch.object(function, "close"),
-    ):
-        function.storeConfig()
-        # Verify copyConfig contains "alpaca"
-        assert "alpaca" in function.returnValues["copyConfig"]
-        assert "indi" not in function.returnValues["copyConfig"]
-
-
-def test_storeConfigWithBothCopyConfigs(function) -> None:
-    """Test storeConfig adds both 'indi' and 'alpaca' to copyConfig."""
-    function.framework = "indi"
-    function.data = {
-        "indi": {
-            "deviceName": "test_device",
-            "deviceList": ["test", "test1"],
-            "hostaddress": "localhost",
-            "messages": False,
-        },
-    }
-    # Mock the UI checkboxes
-    with (
-        mock.patch.object(function.ui.indiCopyConfig, "isChecked", return_value=True),
-        mock.patch.object(function.ui.alpacaCopyConfig, "isChecked", return_value=True),
-        mock.patch.object(function, "readFramework"),
-        mock.patch.object(function, "readTabs"),
-        mock.patch.object(function, "close"),
-    ):
-        function.storeConfig()
-        # Verify copyConfig contains both
-        assert "indi" in function.returnValues["copyConfig"]
-        assert "alpaca" in function.returnValues["copyConfig"]
 
 
 def test_closeEvent_1(function):

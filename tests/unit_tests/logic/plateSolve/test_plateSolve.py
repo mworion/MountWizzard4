@@ -107,24 +107,12 @@ def test_init_1(function):
 
 
 def test_runSolverBin_1(function):
-    class Test1:
-        @staticmethod
-        def decode():
-            return "decode"
-
-    class Test:
-        returncode = "1"
-        stderr = Test1()
-        stdout = Test1()
-
-        @staticmethod
-        def communicate(timeout=0):
-            return Test1(), Test1()
+    mock_proc = mock.MagicMock()
+    mock_proc.returncode = 1
+    mock_proc.communicate.return_value = (b"output", b"")
 
     function.framework = "astap"
-    function.run["astap"].timeout = function.run["astap"].config.timeout
-    function.run["astap"].searchRadius = function.run["astap"].config.searchRadius
-    with mock.patch.object(subprocess, "Popen", return_value=Test()):
+    with mock.patch.object(subprocess, "Popen", return_value=mock_proc):
         suc, ret = function.runSolverBin(["test", "test", "test", "test"])
         assert ret == "No solution"
         assert not suc
@@ -132,23 +120,26 @@ def test_runSolverBin_1(function):
 
 def test_runSolverBin_2(function):
     function.framework = "astap"
-    function.run["astap"].timeout = function.run["astap"].config.timeout
     mock_proc = mock.MagicMock()
     mock_proc.communicate.side_effect = OSError("Test error")
     with mock.patch.object(subprocess, "Popen", return_value=mock_proc):
-        suc, _ret = function.runSolverBin(["test", "test", "test", "test"])
+        suc, ret = function.runSolverBin(["test", "test", "test", "test"])
         assert not suc
+        assert "Exception" in ret
 
 
 def test_runSolverBin_3(function):
     function.framework = "astap"
-    function.run["astap"].timeout = function.run["astap"].config.timeout
     mock_proc = mock.MagicMock()
-    mock_proc.communicate.side_effect = subprocess.TimeoutExpired("run", 1)
+    mock_proc.communicate.side_effect = [
+        subprocess.TimeoutExpired("run", 1),
+        (b"", b""),
+    ]
     with mock.patch.object(subprocess, "Popen", return_value=mock_proc):
         suc, ret = function.runSolverBin(["test", "test", "test", "test"])
     assert not suc
     assert ret == "Timeout expired"
+    mock_proc.kill.assert_called_once()
 
 
 def test_prepareResult_1(function):

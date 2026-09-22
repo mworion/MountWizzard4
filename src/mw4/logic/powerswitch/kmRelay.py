@@ -90,7 +90,7 @@ class KMRelay:
         try:
             result = requests.get(url, auth=auth, timeout=self.TIMEOUT)
         except (requests.RequestException, OSError) as e:
-            result = ""
+            result = None
             self.log.critical(f"Error in request: {e}")
         if debug:
             self.debugOutput(result=result)

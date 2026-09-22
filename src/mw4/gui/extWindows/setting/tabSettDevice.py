@@ -197,6 +197,8 @@ class SettDevice(QObject):
         returnValues = DevicePopup.configure(self.parentW, device, data)
         if returnValues["close"] == "ok":
             self.processPopupResults(returnValues)
+        else:
+            self.app.dReg.startDevice(device)
 
     def dispatchDriverDropdown(self, device: str, position: int) -> None:
         dropDownEntry = self.deviceUi[device]["uiDropDown"].currentText()

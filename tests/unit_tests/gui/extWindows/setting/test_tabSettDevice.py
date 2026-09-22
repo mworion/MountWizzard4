@@ -236,6 +236,7 @@ def test_copyConfig_4(function):
 def test_callPopup_1(function):
     with (
         mock.patch.object(function.app.dReg, "stopDevice"),
+        mock.patch.object(function.app.dReg, "startDevice"),
         mock.patch.object(function.app.dReg, "collectConfigFromSingleDevice", return_value={}),
         mock.patch(
             "mw4.gui.extWindows.setting.tabSettDevice.DevicePopup.configure",
@@ -263,6 +264,22 @@ def test_callPopup_2(function):
     ):
         function.callPopup("cover")
         mock_process.assert_called_once_with(returnValues)
+
+
+def test_callPopup_restartsDeviceOnCancel(function):
+    """Test callPopup restarts device when result is not ok."""
+    with (
+        mock.patch.object(function.app.dReg, "stopDevice") as mock_stop,
+        mock.patch.object(function.app.dReg, "startDevice") as mock_start,
+        mock.patch.object(function.app.dReg, "collectConfigFromSingleDevice", return_value={}),
+        mock.patch(
+            "mw4.gui.extWindows.setting.tabSettDevice.DevicePopup.configure",
+            return_value={"close": "cancel"},
+        ),
+    ):
+        function.callPopup("telescope")
+        mock_stop.assert_called_once_with("telescope")
+        mock_start.assert_called_once_with("telescope")
 
 
 def test_dispatchDriverDropdown_1(function):

@@ -71,6 +71,8 @@ class PlateSolve:
 
         except subprocess.TimeoutExpired as e:
             self.log.critical(e)
+            self.process.kill()
+            stdout, _ = self.process.communicate()
             return False, "Timeout expired"
 
         except (OSError, RuntimeError) as e:

@@ -85,7 +85,7 @@ def test_debugOutputWithNone(kmRelay: KMRelay) -> None:
 def test_getRelayWithEmptyHostAddress(kmRelay: KMRelay) -> None:
     kmRelay.config.hostAddress = ""
     result = kmRelay.getRelay("/status.xml", False)
-    assert result == ""
+    assert result is None
 
 
 def test_getRelayWithValidResponse(kmRelay: KMRelay) -> None:
@@ -109,14 +109,14 @@ def test_getRelayWithTimeoutException(kmRelay: KMRelay) -> None:
     kmRelay.config.hostAddress = "localhost"
     with mock.patch.object(requests, "get", side_effect=requests.exceptions.Timeout):
         result = kmRelay.getRelay("/status.xml", False)
-        assert result == ""
+        assert result is None
 
 
 def test_getRelayWithConnectionError(kmRelay: KMRelay) -> None:
     kmRelay.config.hostAddress = "localhost"
     with mock.patch.object(requests, "get", side_effect=requests.exceptions.ConnectionError):
         result = kmRelay.getRelay("/status.xml", False)
-        assert result == ""
+        assert result is None
 
 
 def test_getRelayWithGenericException(kmRelay: KMRelay) -> None:
@@ -125,7 +125,7 @@ def test_getRelayWithGenericException(kmRelay: KMRelay) -> None:
         requests, "get", side_effect=requests.RequestException("Test error")
     ):
         result = kmRelay.getRelay("/status.xml", False)
-        assert result == ""
+        assert result is None
 
 
 def test_checkConnectedNotConnectedWithNone(kmRelay: KMRelay) -> None:
@@ -411,8 +411,6 @@ def test_runnerPulseWithValue2Bad(kmRelay: KMRelay) -> None:
         mock.patch.object(time, "sleep"),
     ):
         kmRelay.runnerPulse(3)
-
-
 
 
 def test_switchWithNoneResponse(kmRelay: KMRelay) -> None:

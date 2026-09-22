@@ -30,7 +30,7 @@ from photutils.segmentation import SourceCatalog, detect_sources
 
 
 class Background:
-    """Adapter exposing the sep.Background interface on top of photutils
+    """Adapter exposing a simple background interface on top of photutils
     Background2D. The parameters are tuned for a fast background estimate at a
     reasonable quality level (MeanBackground on 64 px boxes with a light
     sigma-clip).
@@ -61,8 +61,8 @@ class Background:
 class Sources:
     """Container for extracted source properties as flat, index-aligned arrays.
 
-    This replaces the sep-style structured array so that consumers use plain
-    attribute access instead of field indexing.
+    Consumers use plain attribute access instead of structured-array field
+    indexing.
     """
 
     xCoord: np.ndarray

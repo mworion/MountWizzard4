@@ -12,15 +12,15 @@ visualisation) as close to identical as possible.
 
 `sep` is used in exactly one production module:
 
-- `src/mw4/logic/photometry/photometry.py`
+- `../../src/mw4/logic/photometry/photometry.py`
 
 and referenced in one test module:
 
-- `tests/unit_tests/logic/photometry/test_photometry.py`
+- `../../tests/unit_tests/logic/photometry/test_photometry.py`
 
 and declared as a dependency in:
 
-- `pyproject.toml` (`"sep==1.4.1"`)
+- `../../pyproject.toml` (`"sep==1.4.1"`)
 
 No other production code imports `sep`. This makes the replacement local and
 well contained.
@@ -144,10 +144,10 @@ regression.
 
 ## 6. Implementation steps
 
-1. **Dependencies** — in `pyproject.toml`, replace `"sep==1.4.1"` with
+1. **Dependencies** — in `../../pyproject.toml`, replace `"sep==1.4.1"` with
    `"photutils==3.0.0"`. Regenerate `uv.lock` (`uv lock`).
 2. **Rewrite `runnerCalcPhotometry()`** in
-   `src/mw4/logic/photometry/photometry.py`:
+   `../../src/mw4/logic/photometry/photometry.py`:
    - swap imports (`import sep` → photutils imports + `astropy.units as u`);
    - implement the mapping in §4;
    - build the `objs` structured array to preserve the downstream contract.
@@ -158,7 +158,7 @@ regression.
    name `sepFinished` to avoid touching the image window; internal-only names
    may stay for a minimal diff (per "stay close to the task" guideline).
 5. **Update tests** in
-   `tests/unit_tests/logic/photometry/test_photometry.py`:
+   `../../tests/unit_tests/logic/photometry/test_photometry.py`:
    - replace `import sep` and the two `sep.Background(...)` fixtures with
      `Background2D` (or mock `bkg` with `background`/`background_rms`
      attributes);
@@ -176,7 +176,7 @@ regression.
   updates. Single-module change, low structural risk.
 - **Main risk:** numeric re-tuning of detection/selection thresholds against
   real FITS frames (item 5.1). Recommend validating against a known test frame
-  in `tests/testData/` and comparing detected star counts / median HFR before
+  in `../../tests/testData` and comparing detected star counts / median HFR before
   and after.
 - **Recommendation:** proceed. `photutils` covers all required features; the
   only true costs are threshold re-calibration and a modest speed reduction.

@@ -23,6 +23,11 @@ from mw4.logic.fits.fitsFunction import (
     getScaleFromHeader,
     getSQMFromHeader,
 )
+from mw4.logic.photometry.photometry_analysis import (
+    computeTiltSquareView,
+    computeTiltTriangleView,
+    tiltHint,
+)
 from PySide6.QtCore import QRectF
 from PySide6.QtGui import QFont
 from typing import Any, ClassVar
@@ -58,7 +63,7 @@ class ImageTabs:
         self.photometry.signals.hfrTriangle.connect(self.showTiltTriangle)
         self.photometry.signals.roundness.connect(self.showRoundness)
         self.photometry.signals.aberration.connect(self.showAberrationInspect)
-        self.photometry.signals.aberration.connect(self.showImageSources)
+        self.photometry.signals.sources.connect(self.showImageSources)
         self.photometry.signals.background.connect(self.showBackground)
         self.photometry.signals.backgroundRMS.connect(self.showBackgroundRMS)
         self.ui.isoLayer.clicked.connect(self.showHFR)
@@ -191,39 +196,10 @@ class ImageTabs:
 
         # calc extreme hfr values
         # arrays upper left to lower right
-        w3 = w / 3
-        h3 = h / 3
-        corners = np.array(
-            [
-                segHFR[0][2],
-                segHFR[1][2],
-                segHFR[2][2],
-                segHFR[0][1],
-                segHFR[2][1],
-                segHFR[0][0],
-                segHFR[1][0],
-                segHFR[2][0],
-            ]
+        view = computeTiltSquareView(
+            segHFR, w, h, self.photometry.hfrMedian, self.photometry.hfrOuter
         )
-        vectors = np.array(
-            [
-                [-w3, h3],
-                [0, h3],
-                [w3, h3],
-                [-w3, 0],
-                [w3, 0],
-                [-w3, -h3],
-                [0, -h3],
-                [w3, -h3],
-            ]
-        )
-        best = float(np.min(corners))
-        worst = float(np.max(corners))
-
-        # calc vectors
-        points = []
-        for vector, corner in zip(vectors, corners):
-            points.append(vector * corner / worst + np.array([w / 2, h / 2]))
+        points = view.points
 
         # draw vectors
         links = [
@@ -249,17 +225,11 @@ class ImageTabs:
             )
             plotItem.addItem(lineItem)
 
-        tiltDiff = worst - best
-        tiltPercent = 100 * tiltDiff / self.photometry.hfrMedian
-        for tiltHint in self.TILT:
-            t = f"{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}"
-            self.ui.textSquareTiltHFR.setText(t)
-            if tiltPercent < self.TILT[tiltHint]:
-                break
-
-        offAxisDiff = self.photometry.hfrOuter - segHFR[1][1]
-        offAxisPercent = 100 * offAxisDiff / self.photometry.hfrMedian
-        t = f"{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)"
+        hint = tiltHint(view.tiltPercent, self.TILT)
+        self.ui.textSquareTiltHFR.setText(
+            f"{view.tiltDiff:1.2f} ({view.tiltPercent:1.0f}%) {hint}"
+        )
+        t = f"{view.offAxisDiff:1.2f} ({view.offAxisPercent:1.0f}%)"
         self.ui.textSquareTiltOffAxis.setText(t)
         self.ui.squareMedianHFR.setText(f"{self.photometry.hfrMedian:1.2f}")
         self.ui.squareNumberStars.setText(f"{len(self.photometry.hfr):1.0f}")
@@ -276,7 +246,6 @@ class ImageTabs:
         cy = h / 2
         r25 = 0.25 * r
         r62 = 0.625 * r
-        r95 = 0.95 * r
 
         plotItem = self.ui.tiltTriangle.p[0]
         self.clearImageTab(self.ui.tiltTriangle)
@@ -300,9 +269,16 @@ class ImageTabs:
         plotItem.addItem(textItem)
 
         # add ring values
-        segData = np.array([0.0, 0.0, 0.0])
-        vectors = np.array([[0, 0], [0, 0], [0, 0]])
         offsetTiltAngle = self.ui.offsetTiltAngle.value()
+        view = computeTiltTriangleView(
+            segHFR,
+            offsetTiltAngle,
+            w,
+            h,
+            self.photometry.hfrMedian,
+            self.photometry.hfrInner,
+            self.photometry.hfrOuter,
+        )
 
         for i, angle in enumerate(range(0, 360, 120)):
             angleSep = np.radians(angle + offsetTiltAngle + 210)
@@ -316,30 +292,17 @@ class ImageTabs:
             lineItem.setPen(self.pen)
             plotItem.addItem(lineItem)
 
-            startIndexSeg = int((angle + offsetTiltAngle + 210) / 10)
-            endIndexSeg = int((angle + offsetTiltAngle + 330) / 10)
-            segData[i] = np.mean(segHFR[startIndexSeg:endIndexSeg])
-            text = f"{segData[i]:1.2f}"
+            text = f"{view.segData[i]:1.2f}"
             textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.parent.M_PRIM)
             textItem.setFont(self.fontText)
             textItem.setZValue(10)
             textItem.setText(text)
             posX = cx + r62 * np.cos(angleText)
             posY = cy + r62 * np.sin(angleText)
-            vectors[i][0] = r95 * np.cos(angleText)
-            vectors[i][1] = r95 * np.sin(angleText)
             textItem.setPos(posX, posY)
             plotItem.addItem(textItem)
 
-        best = float(np.min(segData))
-        worst = float(np.max(segData))
-        tiltDiff = worst - best
-        tiltPercent = 100 * tiltDiff / self.photometry.hfrMedian
-
-        # calc vectors
-        points = [[cx, cy]]
-        for vector, corner in zip(vectors, segData):
-            points.append(vector * corner / worst + np.array([w / 2, h / 2]))
+        points = view.points
 
         # draw vectors
         links = [[0, 1], [0, 2], [0, 3], [1, 2], [2, 3], [3, 1]]
@@ -354,15 +317,11 @@ class ImageTabs:
             )
             plotItem.addItem(lineItem)
 
-        for tiltHint in self.TILT:
-            t = f"{tiltDiff:1.2f} ({tiltPercent:1.0f}%) {tiltHint}"
-            self.ui.textTriangleTiltHFR.setText(t)
-            if tiltPercent < self.TILT[tiltHint]:
-                break
-
-        offAxisDiff = self.photometry.hfrOuter - self.photometry.hfrInner
-        offAxisPercent = 100 * offAxisDiff / self.photometry.hfrMedian
-        t = f"{offAxisDiff:1.2f} ({offAxisPercent:1.0f}%)"
+        hint = tiltHint(view.tiltPercent, self.TILT)
+        self.ui.textTriangleTiltHFR.setText(
+            f"{view.tiltDiff:1.2f} ({view.tiltPercent:1.0f}%) {hint}"
+        )
+        t = f"{view.offAxisDiff:1.2f} ({view.offAxisPercent:1.0f}%)"
         self.ui.textTriangleTiltOffAxis.setText(t)
         self.ui.triangleMedianHFR.setText(f"{self.photometry.hfrMedian:1.2f}")
         self.ui.triangleNumberStars.setText(f"{len(self.photometry.hfr):1.0f}")

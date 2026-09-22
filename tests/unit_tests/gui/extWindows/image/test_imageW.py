@@ -513,6 +513,17 @@ def test_abortExpose_fail(function):
         function.abortExpose()
 
 
+def test_setButtonExposingStatusEnabled_noCamera(function):
+    saved = function.app.dReg.d["camera"]
+    function.app.dReg.d["camera"] = None
+    try:
+        function.setButtonExposingStatusEnabled()
+        assert not function.ui.expose.isEnabled()
+        assert not function.ui.abortExpose.isEnabled()
+    finally:
+        function.app.dReg.d["camera"] = saved
+
+
 def test_setButtonExposingStatusEnabled_isExposing(function):
     function.isExposing = True
     function.setButtonExposingStatusEnabled()

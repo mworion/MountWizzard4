@@ -161,25 +161,20 @@ class SettDevice(QObject):
             else:
                 self.applyDisconnected(entry.name)
 
-    def processPopupResults(self, returnValues: dict[str, Any]) -> None:
-        device = returnValues["device"]
-        framework = returnValues["data"]["framework"]
-        deviceName = returnValues["data"][framework]["deviceName"]
+    def updateDeviceGui(self, device: str) -> None:
+        framework = self.app.dReg[device].framework
+        deviceName = self.app.dReg[device].run[framework].config.deviceName
         index = findIndexValue(self.deviceUi[device]["uiDropDown"], framework)
         itemText = f"{framework} - {deviceName}"
-        self.app.dReg.writeConfigToSingleDevice(device, returnValues["data"])
         self.deviceUi[device]["uiDropDown"].setCurrentIndex(index)
         self.deviceUi[device]["uiDropDown"].setItemText(index, itemText)
-        self.app.dReg.startDevice(device)
 
     def callPopup(self, device: str) -> None:
         self.app.dReg.stopDevice(device)
-        data = self.app.dReg.collectConfigFromSingleDevice(device)
-        returnValues = DevicePopup.configure(self.parentW, device, data)
+        returnValues = DevicePopup.configure(self.parentW, device)
         if returnValues["close"] == "ok":
-            self.processPopupResults(returnValues)
-        else:
-            self.app.dReg.startDevice(device)
+            self.updateDeviceGui(device)
+        self.app.dReg.startDevice(device)
 
     def dispatchDriverDropdown(self, device: str, position: int) -> None:
         dropDownEntry = self.deviceUi[device]["uiDropDown"].currentText()

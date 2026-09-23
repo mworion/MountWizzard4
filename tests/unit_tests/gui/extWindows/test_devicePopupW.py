@@ -42,13 +42,9 @@ class Parent:
 
 @pytest.fixture(autouse=False, scope="module")
 def function(qapp):
-    data = {
-        "framework": "indi",
-        "frameworks": {"indi": {"deviceName": "test", "deviceList": ["1", "2"]}},
-    }
     widget = MWidget()
     widget.app = App()
-    window = DevicePopup(widget, device="telescope", data=data)
+    window = DevicePopup(widget, device="telescope")
     window.log = logging.getLogger()
     yield window
     QApplication.processEvents()
@@ -57,6 +53,8 @@ def function(qapp):
 
 
 def test_initConfig_1(function):
+    function.device = "telescope"
+    function.framework = "indi"
     with (
         mock.patch.object(function, "populateTabs"),
         mock.patch.object(function, "selectTabs"),
@@ -66,15 +64,8 @@ def test_initConfig_1(function):
 
 
 def test_initConfig_2(function):
-    function.data = {
-        "framework": "astap",
-        "frameworks": {
-            "astap": {
-                "deviceName": "telescope",
-                "deviceList": ["telescope", "test2"],
-            }
-        },
-    }
+    function.device = "plateSolve"
+    function.framework = "astap"
     with (
         mock.patch.object(function, "checkApp"),
         mock.patch.object(function, "checkIndex"),
@@ -83,12 +74,12 @@ def test_initConfig_2(function):
         mock.patch.object(function, "show"),
     ):
         function.initConfig()
+    function.device = "telescope"
 
 
 def test_storeConfig_1(function):
     function.framework = "indi"
     function.device = "telescope"
-    function.data = {"indi": {"deviceName": "test"}}
     with (
         mock.patch.object(function, "readFramework"),
         mock.patch.object(function, "readTabs"),
@@ -96,94 +87,73 @@ def test_storeConfig_1(function):
     ):
         function.storeConfig()
     assert function.returnValues["close"] == "ok"
-    assert function.returnValues["device"] == "telescope"
-    assert function.returnValues["data"]["framework"] == "indi"
+    assert function.app.dReg["telescope"].instance.framework == "indi"
 
 
 def test_selectTabs_1(function):
-    function.data = {
-        "framework": "",
-        "frameworks": {
-            "astap": {
-                "test": 1,
-            }
-        },
-    }
+    function.device = "telescope"
+    function.framework = ""
     function.selectTabs()
 
 
 def test_selectTabs_2(function):
-    function.data = {
-        "framework": "astap",
-        "frameworks": {
-            "astap": {
-                "test": 1,
-            }
-        },
-    }
+    function.device = "telescope"
+    function.framework = "indi"
     function.selectTabs()
 
 
 def test_selectTabs_3(function):
-    function.data = {
-        "framework": "test",
-        "frameworks": {
-            "test": {
-                "test": 1,
-            }
-        },
-    }
+    function.device = "plateSolve"
+    function.framework = "astap"
     function.selectTabs()
+    function.device = "telescope"
 
 
 def test_populateTabs_1(function):
-    function.data = {
-        "indi": {
-            "deviceName": "test",
-            "deviceList": ["test", "test1"],
-            "hostaddress": "test",
-            "messages": True,
-        },
-    }
+    function.device = "telescope"
+    config = function.app.dReg["telescope"].run["indi"].config
+    config.deviceName = "test"
+    config.hostAddress = "localhost"
+    config.showMessage = True
     function.populateTabs()
+    assert function.ui.indiHostAddress.text() == "localhost"
+    assert function.ui.indiMessages.isChecked()
 
 
 def test_populateTabs_2(function):
-    function.data = {
-        "astap": {
-            "deviceName": "test",
-            "deviceList": ["test", "test1"],
-            "searchRadius": 30.0,
-            "timeout": 60.0,
-        },
-    }
+    function.device = "plateSolve"
+    config = function.app.dReg["plateSolve"].run["astap"].config
+    config.searchRadius = 30
+    config.timeout = 60
     function.populateTabs()
+    assert function.ui.astapSearchRadius.value() == 30
+    function.device = "telescope"
 
 
 def test_readTabs_1(function):
-    function.data = {
-        "indi": {
-            "deviceName": "telescope",
-            "deviceList": ["test", "test1"],
-            "hostaddress": "test",
-            "messages": True,
-            "port": 10,
-        },
-    }
+    function.device = "telescope"
+    function.framework = "indi"
+    function.ui.indiHostAddress.setText("host")
+    function.ui.indiPort.setText("10")
+    function.ui.indiMessages.setChecked(True)
     function.readTabs()
+    config = function.app.dReg["telescope"].run["indi"].config
+    assert config.hostAddress == "host"
+    assert config.port == 10
+    assert config.showMessage is True
 
 
 def test_readTabs_2(function):
+    function.device = "plateSolve"
     function.framework = "astap"
-    function.data = {
-        "astap": {
-            "deviceName": "test",
-            "deviceList": ["test", "test1"],
-            "searchRadius": 30.0,
-            "timeout": 60.0,
-        },
-    }
+    function.ui.astapSearchRadius.setValue(30.0)
+    function.ui.astapTimeout.setValue(60.0)
+    function.ui.astapAppPath.setText("/app")
     function.readTabs()
+    config = function.app.dReg["plateSolve"].run["astap"].config
+    assert config.searchRadius == 30.0
+    assert config.appPath == "/app"
+    function.device = "telescope"
 
 
 def test_readFramework_1(function):
@@ -409,23 +379,6 @@ def test_selectBoltwoodPath_2(function):
         assert function.ui.boltwoodPath.text() == ""
 
 
-def test_populateTabsSkipsFrameworkKey(function) -> None:
-    """Test populateTabs skips 'framework' key in data (line 167)."""
-    function.data = {
-        "framework": "indi",  # This should be skipped
-        "indi": {
-            "deviceName": "test",
-            "deviceList": ["test", "test1"],
-            "hostaddress": "localhost",
-            "messages": False,
-        },
-    }
-    # Should not raise error when skipping the "framework" key
-    function.populateTabs()
-    # Verify indi framework was processed
-    assert function.data["indi"]["deviceName"] == "test"
-
-
 def test_closeEvent_1(function):
     function.loop = mock.MagicMock(spec=QEventLoop)
     event = QCloseEvent()
@@ -477,7 +430,7 @@ def test_configure_1(function):
         return True
 
     with mock.patch.object(DevicePopup, "exec", mock_exec_ok):
-        rv = DevicePopup.configure(parent, "telescope", {"framework": "indi"})
+        rv = DevicePopup.configure(parent, "telescope")
         assert rv["close"] == "ok"
 
 
@@ -485,43 +438,8 @@ def test_configure_2(function):
     parent = MWidget()
     parent.app = App()
     with mock.patch.object(DevicePopup, "exec", return_value=False):
-        rv = DevicePopup.configure(parent, "telescope", {"framework": "indi"})
+        rv = DevicePopup.configure(parent, "telescope")
         assert rv["close"] == "cancel"
-
-
-def test_populateTabs_sgpro(function):
-    function.data = {
-        "sgpro": {
-            "deviceName": "test",
-            "deviceList": ["test", "test1"],
-            "hostaddress": "test",
-            "port": 10,
-        },
-    }
-    function.populateTabs()
-
-
-def test_readTabs_sgpro(function):
-    function.framework = "sgpro"
-    function.data = {
-        "sgpro": {
-            "deviceName": "test",
-            "deviceList": ["test", "test1"],
-            "hostaddress": "test",
-            "port": 10,
-        },
-    }
-    function.readTabs()
-
-
-def test_selectTabs_sgpro(function):
-    function.data = {
-        "framework": "sgpro",
-        "sgpro": {
-            "test": 1,
-        },
-    }
-    function.selectTabs()
 
 
 def test_discoverDevices_sgpro_empty(function):

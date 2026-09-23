@@ -87,13 +87,13 @@ checkbox (`QCheckBox`) are populated on open and written back on OK.
 
 ## Affected files
 
-1. `src/mw4/gui/extWindows/devicePopupW.py` (class `DevicePopup`)
-2. `src/mw4/gui/extWindows/setting/tabSettDevice.py` (class `SettDevice`)
+1. `../../src/mw4/gui/extWindows/devicePopupW.py` (class `DevicePopup`)
+2. `../../src/mw4/gui/extWindows/setting/tabSettDevice.py` (class `SettDevice`)
 3. Tests:
-   - `tests/unit_tests/gui/extWindows/test_devicePopupW.py`
-   - `tests/unit_tests/gui/extWindows/setting/test_tabSettDevice.py`
+   - `../../tests/unit_tests/gui/extWindows/test_devicePopupW.py`
+   - `../../tests/unit_tests/gui/extWindows/setting/test_tabSettDevice.py`
 
-`src/mw4/base/deviceRegistry.py` stays **unchanged** (collect/write single
+`../../src/mw4/base/deviceRegistry.py` stays **unchanged** (collect/write single
 methods remain for persistence).
 
 ## Detailed changes
@@ -274,9 +274,9 @@ def processPopupResults(self, device: str) -> None:
 
 1. `ruff format` + `ruff check` on changed files — resolve all findings.
 2. Run affected unit tests:
-   - `tests/unit_tests/gui/extWindows/test_devicePopupW.py`
-   - `tests/unit_tests/gui/extWindows/setting/test_tabSettDevice.py`
-   - `tests/unit_tests/base/test_deviceRegistry.py`
+   - `../../tests/unit_tests/gui/extWindows/test_devicePopupW.py`
+   - `../../tests/unit_tests/gui/extWindows/setting/test_tabSettDevice.py`
+   - `../../tests/unit_tests/base/test_deviceRegistry.py`
 3. Ensure 100% coverage for the two changed modules.
 4. Full test run as final step.
 

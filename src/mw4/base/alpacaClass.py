@@ -16,6 +16,7 @@
 import alpaca.management as alpacaMgmt
 from alpaca.camera import Camera as AlpycaCamera
 from alpaca.covercalibrator import CoverCalibrator as AlpycaCoverCalibrator
+from alpaca.discovery import search_ipv4
 from alpaca.dome import Dome as AlpycaDome
 from alpaca.filterwheel import FilterWheel as AlpycaFilterWheel
 from alpaca.focuser import Focuser as AlpycaFocuser
@@ -113,3 +114,8 @@ class AlpacaClass(AlpacaAscomCommon):
         discoverList = [f"{x['DeviceName']}:{deviceType}:{x['DeviceNumber']}" for x in temp]
         self.log.debug(f"Discovered [{deviceType}] devices at [{discoverList}]")
         return discoverList
+
+    @staticmethod
+    def discoverServers() -> list:
+        servers = search_ipv4(numquery=1, timeout=1, trace=True)
+        return servers

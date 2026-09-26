@@ -185,8 +185,6 @@ class DevicePopup(MWidget):
                 partial(self.checkIndex, framework)
             )
         self.ui.selectBoltwoodPath.clicked.connect(self.selectBoltwoodPath)
-        self.ui.alpacaDiscoverServer.clicked.connect(self.discoverServers)
-        self.ui.alpacaServerList.activated.connect(self.setAlpacaServer)
 
     def frameworksWithConfig(self) -> list[str]:
         run = self.app.dReg[self.device].run
@@ -283,24 +281,6 @@ class DevicePopup(MWidget):
         self.msg.emit(0, "alpaca", "Server selected", f"{serverName}")
         self.ui.alpacaHostAddress.setText(host)
         self.ui.alpacaPort.setText(port)
-
-    def updateServerList(self, framework: str, serverNames: list[str]) -> None:
-        self.discovers[framework]["serverList"].clear()
-        self.discovers[framework]["serverList"].setView(QListView())
-        for serverName in serverNames:
-            self.discovers[framework]["serverList"].addItem(serverName)
-
-    def discoverServers(self) -> None:
-        changeStyleDynamic(self.ui.alpacaDiscoverServer, "run", "true")
-        deviceInstance = self.app.dReg[self.device].run["alpaca"]
-        serverNames = deviceInstance.discoverServers()
-        changeStyleDynamic(self.ui.alpacaDiscoverServer, "run", "false")
-        if not serverNames:
-            self.msg.emit(2, "alpaca", "Server", "No servers found")
-            return
-        for serverName in serverNames:
-            self.msg.emit(0, "alpaca", "Server discovered", f"{serverName}")
-        self.updateServerList("alpaca", serverNames)
 
     def updateDeviceNameList(self, framework: str, deviceNames: list[str]) -> None:
         self.discovers[framework]["deviceList"].clear()

@@ -17,9 +17,10 @@ import asyncio
 import logging
 import queue
 from dataclasses import dataclass, field
-from indipyclient.queclient import EventItem, QueClient
+from indipyclient.queclient import EventItem, QueClient, runqueclient
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO_CONV
 from mw4.base.tpool import Worker, startWorker
+from pyqtgraph.util.mutex import Mutex
 from PySide6.QtCore import QThreadPool
 from queue import Queue
 from typing import Any
@@ -49,6 +50,7 @@ class IndiClass:
         self.threadPool: QThreadPool = parent.app.threadPool
         self.deviceConnected: bool = False
         self.discoverList: list[str] = []
+        self.discoverMutex: Mutex = Mutex()
         self.isINDIGO: bool = False
         self.commandRunning: bool = False
         self.loggingTrace: bool = False
@@ -138,19 +140,14 @@ class IndiClass:
         self.txQ.put((deviceName, "CONFIG_PROCESS", {"CONFIG_PROCESS": True}))
 
     def discoverDevices(self, deviceType: str, hostaddress: str, port: int) -> list[str]:
+        if not self.discoverMutex.tryLock():
+            return []
         n = self.MAX_SEARCH
         txQ = Queue()
         rxQ = Queue()
         discoverSet = set()
-        startWorker(
-            None,
-            self.threadPool,
-            self.runnerQueueClient,
-            txQ,
-            rxQ,
-            indihost=hostaddress,
-            indiport=port,
-        )
+        worker = Worker(runqueclient, txQ, rxQ, indihost=hostaddress, indiport=port)
+        self.threadPool.start(worker)
         while n > 0:
             try:
                 item = rxQ.get(timeout=0.1)
@@ -165,4 +162,5 @@ class IndiClass:
                     discoverSet.add(item.devicename)
             rxQ.task_done()
         txQ.put(None)
+        self.discoverMutex.unlock()
         return list(discoverSet)

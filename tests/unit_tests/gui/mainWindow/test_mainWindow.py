@@ -114,6 +114,21 @@ def test_closeEvent_closes_windows(mainWindow):
         mock_wait.assert_called_once_with(10000)
 
 
+def test_closeEvent_shutdownAddonsFirst(mainWindow):
+    order = mock.MagicMock()
+    order.waitForDone.return_value = True
+    with (
+        mock.patch.object(mainWindow.mainWindowAddons, "shutdown", order.shutdown),
+        mock.patch.object(mainWindow.app.timeMgr, "stop", order.timeStop),
+        mock.patch.object(mainWindow.app.dReg, "stopDevices", order.stopDevices),
+        mock.patch.object(mainWindow.externalWindows, "closeExtendedWindows"),
+        mock.patch.object(mainWindow.threadPool, "waitForDone", order.waitForDone),
+    ):
+        mainWindow.closeEvent(QCloseEvent())
+    names = [call[0] for call in order.mock_calls]
+    assert names == ["shutdown", "timeStop", "stopDevices", "waitForDone"]
+
+
 def test_closeEvent_no_double_cleanup(mainWindow):
     """Test closeEvent closes windows properly."""
     with (

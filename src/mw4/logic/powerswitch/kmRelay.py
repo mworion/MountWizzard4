@@ -16,7 +16,7 @@
 import logging
 import re
 import requests
-import time
+import threading
 from dataclasses import dataclass, field
 from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
@@ -61,15 +61,18 @@ class KMRelay:
         self.timerTask.timeout.connect(self.cyclePolling)
         self.threadPool = app.threadPool
         self.workerPulse: Worker | None = None
+        self.stopEvent: threading.Event = threading.Event()
 
     def startCommunication(self) -> None:
         if not self.config.hostAddress:
             return
 
+        self.stopEvent.clear()
         self.deviceConnected = False
         self.timerTask.start(self.UPDATE_RATE)
 
     def stopCommunication(self) -> None:
+        self.stopEvent.set()
         self.timerTask.stop()
         self.deviceConnected = False
 
@@ -149,7 +152,8 @@ class KMRelay:
         byteOn = self.getByte(relayNumber=relayNumber, state=True)
         byteOff = self.getByte(relayNumber=relayNumber, state=False)
         value1 = self.getRelay(f"/FFE0{byteOn:02X}")
-        time.sleep(self.PULSEWIDTH)
+        # interruptible pulse; the relay is switched off in any case
+        self.stopEvent.wait(self.PULSEWIDTH)
         value2 = self.getRelay(f"/FFE0{byteOff:02X}")
 
         if value1 is None or value2 is None or value1.reason != "OK" or value2.reason != "OK":

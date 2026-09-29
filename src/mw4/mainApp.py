@@ -116,7 +116,14 @@ class MountWizzard4(QObject):
         self.log.debug("Initializing configuration main application")
         self.dReg.initConfig()
         cfgSetting = self.config.get("SettingUpdate", {})
-        setCustomLoggingLevel(self, cfgSetting.get("loglevel", "DEBUG"))
+        # the settings tab owns the log level (loglevelInfo / Debug / Trace)
+        if cfgSetting.get("loglevelInfo", False):
+            level = "INFO"
+        elif cfgSetting.get("loglevelTrace", False):
+            level = "TRACE"
+        else:
+            level = "DEBUG"
+        setCustomLoggingLevel(self, level)
         self.isOnline = cfgSetting.get("isOnline", False)
         lat = self.config.get("topoLat", 51.47)
         lon = self.config.get("topoLon", 0)
@@ -127,7 +134,8 @@ class MountWizzard4(QObject):
 
     def storeConfig(self) -> None:
         self.log.debug("Storing configuration main application")
-        self.config["loglevel"] = logging.getLevelName(self.log.level)
+        # the log level is stored by the settings tab; remove the old key
+        self.config.pop("loglevel", None)
         self.dReg.storeConfig()
         location = self.dReg["mount"].location
         if location is not None:

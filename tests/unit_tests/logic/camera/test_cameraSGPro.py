@@ -151,7 +151,7 @@ def test_startExpose_success(function) -> None:
     function.data["Device.Message"] = "integrating"
     with (
         mock.patch.object(function, "captureImage", return_value=(True, {"Receipt": "1234"})),
-        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep"),
+        mock.patch.object(function.stopEvent, "wait", return_value=False),
     ):
         receipt = function.startExpose()
     assert receipt == "1234"
@@ -170,7 +170,7 @@ def test_startExpose_waits_for_integrating(function) -> None:
 
     with (
         mock.patch.object(function, "captureImage", return_value=(True, {"Receipt": "1234"})),
-        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
+        mock.patch.object(function.stopEvent, "wait", side_effect=sleepSideEffect),
     ):
         receipt = function.startExpose()
     assert receipt == "1234"
@@ -190,7 +190,7 @@ def test_runExpose(function) -> None:
     with (
         mock.patch.object(function.signals, "message") as mock_message,
         mock.patch.object(function.signals, "exposed") as mock_exposed,
-        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
+        mock.patch.object(function.stopEvent, "wait", side_effect=sleepSideEffect),
     ):
         function.runExpose()
     mock_exposed.emit.assert_called_once_with(function.parent.imagePath)
@@ -211,7 +211,7 @@ def test_runDownload(function) -> None:
     with (
         mock.patch.object(function.signals, "message") as mock_message,
         mock.patch.object(function.signals, "downloaded") as mock_downloaded,
-        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
+        mock.patch.object(function.stopEvent, "wait", side_effect=sleepSideEffect),
     ):
         function.runDownload()
     mock_downloaded.emit.assert_called_once_with(function.parent.imagePath)
@@ -233,7 +233,7 @@ def test_runSave_success(function) -> None:
         mock.patch.object(function, "getImagePath", return_value=(True, "/tmp/new.fits")),
         mock.patch.object(function.signals, "message") as mock_message,
         mock.patch("pathlib.Path.rename") as mock_rename,
-        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
+        mock.patch.object(function.stopEvent, "wait", side_effect=sleepSideEffect),
     ):
         suc = function.runSave(receipt="1234")
     assert suc is True
@@ -256,7 +256,7 @@ def test_runSave_fails(function) -> None:
     with (
         mock.patch.object(function, "getImagePath", return_value=(False, "")),
         mock.patch.object(function.signals, "message") as mock_message,
-        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
+        mock.patch.object(function.stopEvent, "wait", side_effect=sleepSideEffect),
     ):
         suc = function.runSave(receipt="1234")
     assert suc is False
@@ -284,7 +284,7 @@ def test_runnerExpose_aborted_before_integrating(function) -> None:
         mock.patch.object(function, "getImagePath", return_value=(True, "/tmp/new.fits")),
         mock.patch.object(function.parent, "writeImageFitsHeader") as mock_write,
         mock.patch("pathlib.Path.rename") as mock_rename,
-        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep"),
+        mock.patch.object(function.stopEvent, "wait", return_value=False),
     ):
         function.runnerExpose()
     mock_write.assert_called_once()
@@ -323,7 +323,7 @@ def test_runnerExpose_success(function) -> None:
         mock.patch.object(function.signals, "downloaded") as mock_downloaded,
         mock.patch.object(function.parent, "writeImageFitsHeader") as mock_write,
         mock.patch("pathlib.Path.rename") as mock_rename,
-        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
+        mock.patch.object(function.stopEvent, "wait", side_effect=sleepSideEffect),
     ):
         function.runnerExpose()
     mock_exposed.emit.assert_called_once_with(function.parent.imagePath)
@@ -341,7 +341,7 @@ def test_runnerExpose_runSave_fails(function) -> None:
         mock.patch.object(function, "getImagePath", return_value=(False, "")),
         mock.patch.object(function.parent, "writeImageFitsHeader") as mock_write,
         mock.patch("pathlib.Path.rename") as mock_rename,
-        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=sleepSideEffect),
+        mock.patch.object(function.stopEvent, "wait", side_effect=sleepSideEffect),
     ):
         function.runnerExpose()
     mock_write.assert_not_called()
@@ -360,7 +360,92 @@ def test_runnerExpose_aborted_during_integration(function) -> None:
         mock.patch.object(function, "getImagePath", return_value=(True, "/tmp/new.fits")),
         mock.patch.object(function.parent, "writeImageFitsHeader") as mock_write,
         mock.patch("pathlib.Path.rename"),
-        mock.patch("mw4.logic.camera.cameraSGPro.time.sleep", side_effect=abortOnFirstSleep),
+        mock.patch.object(function.stopEvent, "wait", side_effect=abortOnFirstSleep),
     ):
         function.runnerExpose()
     mock_write.assert_called_once()
+
+
+def test_waitForMessage_found(function) -> None:
+    function.parent.exposing = True
+    function.data["Device.Message"] = "integrating"
+    assert function.waitForMessage("integrating", True, 10)
+
+
+def test_waitForMessage_aborted(function) -> None:
+    function.parent.exposing = False
+    function.data["Device.Message"] = "waiting"
+    assert function.waitForMessage("integrating", True, 10)
+
+
+def test_waitForMessage_timeout(function) -> None:
+    function.parent.exposing = True
+    function.data["Device.Message"] = "waiting"
+    function.msg = mock.MagicMock()
+    with mock.patch(
+        "mw4.logic.camera.cameraSGPro.time.monotonic", side_effect=[0.0, 0.0, 11.0]
+    ):
+        suc = function.waitForMessage("integrating", True, 10)
+    assert not suc
+    function.msg.emit.assert_called_once_with(
+        2, "SGPro", "Timeout", "Waiting for [integrating]"
+    )
+
+
+def test_waitForMessage_stopped(function) -> None:
+    function.parent.exposing = True
+    function.data["Device.Message"] = "waiting"
+    tick = mock.MagicMock()
+    with mock.patch.object(function.stopEvent, "wait", return_value=True):
+        suc = function.waitForMessage("integrating", True, 10, tick)
+    assert not suc
+    tick.assert_called_once_with()
+
+
+def test_startExpose_timeout(function) -> None:
+    function.parent.exposing = True
+    with (
+        mock.patch.object(function, "captureImage", return_value=(True, {"Receipt": "1"})),
+        mock.patch.object(function, "waitForMessage", return_value=False),
+    ):
+        assert function.startExpose() == ""
+
+
+def test_runExpose_timeout(function) -> None:
+    with (
+        mock.patch.object(function, "waitForMessage", return_value=False),
+        mock.patch.object(function.signals, "exposed") as mock_exposed,
+    ):
+        assert not function.runExpose()
+    mock_exposed.emit.assert_not_called()
+
+
+def test_runDownload_timeout(function) -> None:
+    with (
+        mock.patch.object(function, "waitForMessage", return_value=False),
+        mock.patch.object(function.signals, "downloaded") as mock_downloaded,
+    ):
+        assert not function.runDownload()
+    mock_downloaded.emit.assert_not_called()
+
+
+def test_runSave_timeout(function) -> None:
+    with (
+        mock.patch.object(function, "waitForMessage", return_value=False),
+        mock.patch.object(function, "getImagePath") as mock_path,
+    ):
+        assert not function.runSave("1234")
+    mock_path.assert_not_called()
+
+
+def test_runnerExpose_timeoutStopsChain(function) -> None:
+    function.parent.exposing = True
+    with (
+        mock.patch.object(function, "startExpose", return_value="1234"),
+        mock.patch.object(function, "runExpose", return_value=False),
+        mock.patch.object(function, "runDownload") as mock_download,
+        mock.patch.object(function.parent, "exposeFinished") as mock_finished,
+    ):
+        function.runnerExpose()
+    mock_download.assert_not_called()
+    mock_finished.assert_called_once_with()

@@ -164,6 +164,8 @@ class MainWindow(MWidget):
         self.mainWindowAddons.updateColorSet()
 
     def closeEvent(self, closeEvent) -> None:
+        # stop running operations (e.g. a model build) before devices go down
+        self.mainWindowAddons.shutdown()
         changeStyleDynamic(self.ui.pauseModel, "pause", False)
         self.app.timeMgr.stop()
         self.app.dReg.stopDevices()

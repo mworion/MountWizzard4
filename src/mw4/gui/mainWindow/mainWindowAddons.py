@@ -87,3 +87,7 @@ class MainWindowAddons:
     def updateColorSet(self) -> None:
         for addon in self.addons.values():
             addon.updateColorSet()
+
+    def shutdown(self) -> None:
+        for addon in self.addons.values():
+            addon.shutdown()

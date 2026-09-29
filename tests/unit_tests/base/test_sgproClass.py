@@ -356,7 +356,7 @@ def test_connectDevice_success_after_retries(function):
     function.config.deviceName = "TestCamera"
     with mock.patch.object(function, "createDevice") as mock_connect:
         mock_connect.side_effect = [False, False, True]
-        with mock.patch("mw4.base.sgproClass.time.sleep"):
+        with mock.patch.object(function.stopEvent, "wait", return_value=False):
             result = function.connectDevice()
             assert result is True
             assert mock_connect.call_count == 3
@@ -367,12 +367,23 @@ def test_connectDevice_failure_all_retries(function):
     function.config.deviceName = "TestCamera"
     with (
         mock.patch.object(function, "createDevice") as mock_connect,
-        mock.patch("mw4.base.sgproClass.time.sleep"),
+        mock.patch.object(function.stopEvent, "wait", return_value=False),
     ):
         mock_connect.return_value = False
         result = function.connectDevice()
         assert result is False
         assert mock_connect.call_count == 5
+
+
+def test_connectDevice_stoppedDuringRetry(function):
+    function.config.deviceName = "TestCamera"
+    with (
+        mock.patch.object(function, "createDevice", return_value=False) as mock_connect,
+        mock.patch.object(function.stopEvent, "wait", return_value=True),
+    ):
+        result = function.connectDevice()
+    assert result is False
+    assert mock_connect.call_count == 1
 
 
 def test_connectDevice_emits_error_on_failure(function):
@@ -381,7 +392,7 @@ def test_connectDevice_emits_error_on_failure(function):
     function.config.PROTOCOL_NAME = "SGPro"
     with (
         mock.patch.object(function, "createDevice") as mock_connect,
-        mock.patch("mw4.base.sgproClass.time.sleep"),
+        mock.patch.object(function.stopEvent, "wait", return_value=False),
     ):
         mock_connect.return_value = False
         function.connectDevice()
@@ -672,7 +683,7 @@ def test_connect_retry_timing(function):
     function.config.deviceName = "TestCamera"
     with (
         mock.patch.object(function, "createDevice") as mock_connect,
-        mock.patch("mw4.base.sgproClass.time.sleep") as mock_sleep,
+        mock.patch.object(function.stopEvent, "wait", return_value=False) as mock_sleep,
     ):
         mock_connect.return_value = False
         function.connectDevice()

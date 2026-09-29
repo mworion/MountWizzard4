@@ -61,31 +61,37 @@ class PlateSolve:
 
     def runSolverBin(self, runnable: list[Any]) -> tuple[bool, str]:
         timeStart = time.time()
+        timeout = self.run[self.framework].config.timeout
         try:
-            self.process = subprocess.Popen(
+            # the context manager closes the pipes and reaps the process in any
+            # case; self.process is only a reference for abort()
+            with subprocess.Popen(
                 args=runnable,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-            )
-            timeout = self.run[self.framework].config.timeout
-            stdout, _ = self.process.communicate(timeout=timeout)
-
-        except subprocess.TimeoutExpired as e:
-            self.log.critical(e)
-            self.process.kill()
-            self.process.communicate()
-            return False, "Timeout expired"
+            ) as process:
+                self.process = process
+                try:
+                    stdout, _ = process.communicate(timeout=timeout)
+                except subprocess.TimeoutExpired as e:
+                    self.log.critical(e)
+                    process.kill()
+                    process.communicate()
+                    return False, "Timeout expired"
+                rCode = int(process.returncode)
 
         except (OSError, RuntimeError) as e:
             self.log.critical(f"Error: {e} happened")
             return False, f"Exception {e} during process run"
 
+        finally:
+            self.process = None
+
         delta = time.time() - timeStart
-        stdoutText = stdout.decode()
+        stdoutText = stdout.decode(errors="replace")
         self.log.debug(f"{'Solve Runtime':15s}: [{delta:2.2f}s]")
         for line in stdoutText.splitlines():
             self.log.debug(f"{'Solver output':15s}: [{line}]")
-        rCode = int(self.process.returncode)
         suc = rCode == 0
         msg = self.run[self.framework].returnCodes.get(rCode, "Unknown code")
         return suc, msg
@@ -175,5 +181,7 @@ class PlateSolve:
         self.solveQueue.put(data)
 
     def abort(self) -> None:
-        if self.process:
-            self.process.kill()
+        # local copy: the solver thread may reset self.process at any time
+        process = self.process
+        if process:
+            process.kill()

@@ -163,32 +163,38 @@ M6, A1, A2, A4, A8), 21 open (19 of them from the 2026-09-26 review).
 
 Effort: S (small), M (medium), L (large). Impact: ★ low → ★★★ high.
 
-| #  | Recommendation                                                                  | Refs          | Impact | Effort |
-|----|---------------------------------------------------------------------------------|---------------|:------:|:------:|
-| 1  | ✅ Fix the HID centre-stick `"STOP"` path (map to `stopMoveAll`, add a test)    | N1            |  ★★★   |   S    |
-| 2  | ✅ Harden mount response parsing (length checks before indexing, `errors="replace"`, concrete exceptions) | M1, M2, M3, M4, M5, M7, N2 | ★★★ | M |
-| 3  | ✅ ALPACA/ASCOM: blacklist only real "not implemented", never `Connected`; process the disconnect before the loop exits; use a `set` | D1, D2, T3, N3 | ★★★ | M |
-| 4  | ✅ Replace the cross-thread `QMutex` unlock in `tpool` with a thread-agnostic busy flag (`threading.Lock` or `QSemaphore(1)`); decide on callback reuse | T1, T2 | ★★★ | S |
-| 5  | Fix log level config symmetry (read and write the same key)                    | C1            |  ★★    |   S    |
-| 6  | Add deadlines to the SGPro wait loops; use `Event.wait` for interruptible sleeps | T4, T6      |  ★★    |   S    |
-| 7  | Cancel a running model in `closeEvent` before `waitForDone`                     | T5            |  ★★    |   S    |
-| 8  | Remove test hooks (`test` arg, `hasattr(app, "mount")`) via injection          | Sep 10, A3, N5 |  ★★   |   S    |
-| 9  | Align metadata: Python version (pyproject/README/instructions), classifier `4 - Beta`, header text, `.DS_Store` untracking | P1, P2, P7, R4 | ★★ | S |
-| 10 | Extend Ruff (`B`, `BLE`, `ANN`) and add a type checker in CI; close the 29 missing return types | P4, P5 | ★★ | M |
-| 11 | Plate solver: local `Popen` context manager, tolerant decode                   | D4, N4        |   ★    |   S    |
-| 12 | Small cleanups: `mountIsUp` duplicate, `os.path`, commented code, `argv` handling, config build-then-assign | M8, P6, C2, C3, C4 | ★ | S |
-| 13 | ⏸ Kept (decision 2026-09-29, section 8): Architecture (longer term): `FrameworkDevice` base, `tabMount_Command` via `MountDevice`, split the signal hub, `parent: Any` typing | A1, A2, A4, A8, Jun 5 | ★★ | L |
-| 14 | Relax `==` pins in `[project]` and rely on `uv.lock`; scope `DeprecationWarning` to `mw4` | P3, P8 | ★ | S |
-| 15 | ⏸ Kept (decision 2026-09-29, section 8): Persistent or pooled mount connection instead of one socket per command | M6 | ★★ | L |
+Status: ✅ done, 🟡 partial, ❌ open, ⏸ kept by decision (section 8).
+Status as of 2026-09-29, after recs 1–4.
 
-### Suggested sequencing
+| #  | Recommendation                                                                  | Refs          | Impact | Effort | Status |
+|----|---------------------------------------------------------------------------------|---------------|:------:|:------:|--------|
+| 1  | Fix the HID centre-stick `"STOP"` path (map to `stopMoveAll`, add a test)       | N1            |  ★★★   |   S    | ✅ Done (section 7) |
+| 2  | Harden mount response parsing (length checks before indexing, `errors="replace"`, concrete exceptions) | M1, M2, M3, M4, M5, M7, N2 | ★★★ | M | ✅ Done (section 7) |
+| 3  | ALPACA/ASCOM: blacklist only real "not implemented", never `Connected`; process the disconnect before the loop exits; use a `set` | D1, D2, T3, N3 | ★★★ | M | ✅ Done (section 7) |
+| 4  | Replace the cross-thread `QMutex` unlock in `tpool` with a thread-agnostic busy flag (`threading.Lock` or `QSemaphore(1)`); decide on callback reuse | T1, T2 | ★★★ | S | ✅ Done (section 7) |
+| 5  | Fix log level config symmetry (read and write the same key)                    | C1            |  ★★    |   S    | ❌ Open |
+| 6  | Add deadlines to the SGPro wait loops; use `Event.wait` for interruptible sleeps | T4, T6      |  ★★    |   S    | ❌ Open |
+| 7  | Cancel a running model in `closeEvent` before `waitForDone`                     | T5            |  ★★    |   S    | ❌ Open |
+| 8  | Remove test hooks (`test` arg, `hasattr(app, "mount")`) via injection          | Sep 10, A3, N5 |  ★★   |   S    | ❌ Open |
+| 9  | Align metadata: Python version (pyproject/README/instructions), classifier `4 - Beta`, header text, `.DS_Store` untracking | P1, P2, P7, R4 | ★★ | S | ❌ Open |
+| 10 | Extend Ruff (`B`, `BLE`, `ANN`) and add a type checker in CI; close the 29 missing return types | P4, P5 | ★★ | M | ❌ Open |
+| 11 | Plate solver: local `Popen` context manager, tolerant decode                   | D4, N4        |   ★    |   S    | ❌ Open |
+| 12 | Small cleanups: `mountIsUp` duplicate, `os.path`, commented code, `argv` handling, config build-then-assign | M8, P6, C2, C3, C4 | ★ | S | 🟡 Partial – P6 done with rec 4; M8, C2, C3, C4 open |
+| 13 | Architecture (longer term): `FrameworkDevice` base, `tabMount_Command` via `MountDevice`, split the signal hub, `parent: Any` typing | A1, A2, A4, A8, Jun 5 | ★★ | L | ⏸ Kept |
+| 14 | Relax `==` pins in `[project]` and rely on `uv.lock`; scope `DeprecationWarning` to `mw4` | P3, P8 | ★ | S | ❌ Open |
+| 15 | Persistent or pooled mount connection instead of one socket per command         | M6            |   ★★   |   L    | ⏸ Kept |
 
-1. **Correctness quick wins (S):** 1, 4, 5, 7. These are user-visible bugs or
-   undefined behaviour and each needs only a small change plus tests.
-2. **Hardware robustness (M):** 2, 3, 6, 11. Add a plan first (more than one
-   class). Build the tests from recorded or garbled mount and ALPACA responses.
-3. **Hygiene (S):** 8, 9, 12, 14.
-4. **Tooling (M):** 10. After 2 and 3, so that the new rules do not hit
+**Progress:** 4 done, 1 partial, 8 open, 2 kept. All ★★★ recommendations are
+done.
+
+### Suggested sequencing (remaining)
+
+1. **Correctness quick wins (S):** 5, 7. Both are small changes with tests
+   (1 and 4 of this group are done).
+2. **Hardware robustness:** 6, 11. These are the last open items at the device
+   edges (2 and 3 of this group are done).
+3. **Hygiene (S):** 8, 9, 12 (rest), 14.
+4. **Tooling (M):** 10. Now that 2 and 3 are done, the new rules no longer hit
    code that is about to change.
 5. **Architecture (L):** 13, 15 – not scheduled; the current architecture is
    kept (decision 2026-09-29, section 8).

@@ -88,6 +88,33 @@ def test_init_config(app):
     assert app.dReg["mount"].obsSite.location is not None
 
 
+@pytest.mark.parametrize(
+    ("setting", "level"),
+    [
+        ({"loglevelInfo": True}, "INFO"),
+        ({"loglevelTrace": True}, "TRACE"),
+        ({"loglevelDebug": True}, "DEBUG"),
+        ({}, "DEBUG"),
+    ],
+)
+def test_initConfig_logLevelFromSettingTab(app, setting, level):
+    app.config["SettingUpdate"] = setting
+    with mock.patch("mw4.mainApp.setCustomLoggingLevel") as setLevel:
+        app.initConfig()
+    setLevel.assert_called_once_with(app, level)
+
+
+def test_storeConfig_logLevelRoundTrip(app):
+    app.config["loglevel"] = "INFO"
+    app.config["SettingUpdate"] = {"loglevelInfo": True, "isOnline": True}
+    app.storeConfig()
+    assert "loglevel" not in app.config
+    assert app.config["SettingUpdate"] == {"loglevelInfo": True, "isOnline": True}
+    with mock.patch("mw4.mainApp.setCustomLoggingLevel") as setLevel:
+        app.initConfig()
+    setLevel.assert_called_once_with(app, "INFO")
+
+
 def test_satisfiesAppProtocol(app):
     assert isinstance(app, AppProtocol)
 

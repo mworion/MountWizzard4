@@ -16,7 +16,6 @@
 import queue
 import requests
 import threading
-import time
 from dataclasses import dataclass, field
 from mw4.base.appProtocol import AppProtocol
 from mw4.base.driverDataClass import DriverData
@@ -140,7 +139,8 @@ class SGProClass(DriverData):
             if suc:
                 self.log.debug(f"[{self.config.deviceName}] connected, [{retry}] retries")
                 break
-            time.sleep(0.2)
+            if self.stopEvent.wait(0.2):
+                break
         else:
             self.log.debug(f"[{self.config.deviceName}] not connected, [{retry}] retries")
             suc = False

@@ -35,6 +35,9 @@ class MockAddon:
     def updateColorSet(self):
         pass
 
+    def shutdown(self):
+        pass
+
 
 @pytest.fixture(autouse=True, scope="module")
 def window(qapp):
@@ -70,3 +73,15 @@ def test_setupIcons_creates_addon_icons(window):
 def test_updateColorSet_updates_addon_colors(window):
     """Test updateColorSet updates colors for all addons."""
     window.updateColorSet()
+
+
+def test_shutdown_dispatchesToAllAddons(window):
+    patches = [mock.patch.object(addon, "shutdown") for addon in window.addons.values()]
+    mocks = [p.start() for p in patches]
+    try:
+        window.shutdown()
+    finally:
+        for p in patches:
+            p.stop()
+    for m in mocks:
+        m.assert_called_once_with()

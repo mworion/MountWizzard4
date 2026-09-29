@@ -112,6 +112,20 @@ def test_storeConfig_saves_all_values(settUpdate):
     assert config["ageDatabases"] == 14
 
 
+def test_storeConfig_keepsForeignKeys(settUpdate):
+    settUpdate.app.config["SettingUpdate"] = {"otherKey": 42}
+    settUpdate.storeConfig()
+    config = settUpdate.app.config["SettingUpdate"]
+    assert config["otherKey"] == 42
+    assert "loglevelDebug" in config
+
+
+def test_storeConfig_createsSection(settUpdate):
+    settUpdate.app.config.pop("SettingUpdate", None)
+    settUpdate.storeConfig()
+    assert "isOnline" in settUpdate.app.config["SettingUpdate"]
+
+
 def test_setOnlineMode_offline(settUpdate):
     """Test setOnlineMode disables online when unchecked."""
     settUpdate.ui.isOnline.setChecked(False)

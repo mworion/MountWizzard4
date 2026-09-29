@@ -51,8 +51,7 @@ class SettUpdate:
         self.setupIERS()
 
     def storeConfig(self) -> None:
-        self.app.config["SettingUpdate"] = {}
-        config = self.app.config["SettingUpdate"]
+        config = self.app.config.setdefault("SettingUpdate", {})
         config["isOnline"] = self.ui.isOnline.isChecked()
         config["loglevelInfo"] = self.ui.loglevelInfo.isChecked()
         config["loglevelDebug"] = self.ui.loglevelDebug.isChecked()

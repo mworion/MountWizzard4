@@ -102,6 +102,12 @@ class Model(TabAddon):
             return
         self.modelData.cancelRun()
 
+    def shutdown(self) -> None:
+        if self.app.statusOperationRunning != self.STATUS_MODEL_BATCH:
+            return
+        self.msg.emit(1, "Model", "Run", "Model build cancelled on close")
+        self.cancelBatch()
+
     def pauseBatch(self) -> None:
         if not self.modelData:
             return

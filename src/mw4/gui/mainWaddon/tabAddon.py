@@ -34,3 +34,6 @@ class TabAddon:
 
     def updateColorSet(self) -> None:
         """React to a global color-set change."""
+
+    def shutdown(self) -> None:
+        """Stop running operations before the main window closes."""

@@ -78,6 +78,11 @@ def test_tabaddon_updatecolorset_returns_none():
     assert result is None
 
 
+def test_tabaddon_shutdown_returns_none():
+    addon = TabAddon()
+    assert addon.shutdown() is None
+
+
 def test_tabaddon_initconfig_callable_multiple_times():
     addon = TabAddon()
     result1 = addon.initConfig()

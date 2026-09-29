@@ -106,8 +106,14 @@ def test_init_1(function):
     assert "astap" in function.run
 
 
+def makeProcess() -> mock.MagicMock:
+    proc = mock.MagicMock()
+    proc.__enter__.return_value = proc
+    return proc
+
+
 def test_runSolverBin_1(function):
-    mock_proc = mock.MagicMock()
+    mock_proc = makeProcess()
     mock_proc.returncode = 1
     mock_proc.communicate.return_value = (b"output", b"")
 
@@ -116,21 +122,24 @@ def test_runSolverBin_1(function):
         suc, ret = function.runSolverBin(["test", "test", "test", "test"])
         assert ret == "No solution"
         assert not suc
+    assert function.process is None
+    mock_proc.__exit__.assert_called_once()
 
 
 def test_runSolverBin_2(function):
     function.framework = "astap"
-    mock_proc = mock.MagicMock()
+    mock_proc = makeProcess()
     mock_proc.communicate.side_effect = OSError("Test error")
     with mock.patch.object(subprocess, "Popen", return_value=mock_proc):
         suc, ret = function.runSolverBin(["test", "test", "test", "test"])
         assert not suc
         assert "Exception" in ret
+    assert function.process is None
 
 
 def test_runSolverBin_3(function):
     function.framework = "astap"
-    mock_proc = mock.MagicMock()
+    mock_proc = makeProcess()
     mock_proc.communicate.side_effect = [
         subprocess.TimeoutExpired("run", 1),
         (b"", b""),
@@ -140,6 +149,43 @@ def test_runSolverBin_3(function):
     assert not suc
     assert ret == "Timeout expired"
     mock_proc.kill.assert_called_once()
+    assert function.process is None
+
+
+def test_runSolverBin_popenFails(function):
+    function.framework = "astap"
+    with mock.patch.object(subprocess, "Popen", side_effect=OSError("not found")):
+        suc, ret = function.runSolverBin(["test"])
+    assert not suc
+    assert "not found" in ret
+    assert function.process is None
+
+
+def test_runSolverBin_nonUtf8Output(function):
+    function.framework = "astap"
+    mock_proc = makeProcess()
+    mock_proc.returncode = 0
+    mock_proc.communicate.return_value = (b"solved \xe4\xf6\xfc\x81", b"")
+    with mock.patch.object(subprocess, "Popen", return_value=mock_proc):
+        suc, _ = function.runSolverBin(["test"])
+    assert suc
+
+
+def test_runSolverBin_processSetWhileRunning(function):
+    function.framework = "astap"
+    mock_proc = makeProcess()
+    mock_proc.returncode = 0
+    seen = []
+
+    def communicate(timeout=None):
+        seen.append(function.process)
+        return b"", b""
+
+    mock_proc.communicate.side_effect = communicate
+    with mock.patch.object(subprocess, "Popen", return_value=mock_proc):
+        function.runSolverBin(["test"])
+    assert seen == [mock_proc]
+    assert function.process is None
 
 
 def test_prepareResult_1(function):

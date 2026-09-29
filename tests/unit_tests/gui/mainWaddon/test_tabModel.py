@@ -72,6 +72,21 @@ def test_cancelBatch_2(function):
     assert function.modelData.cancelBatch
 
 
+def test_shutdown_idle(function):
+    function.app.statusOperationRunning = function.STATUS_IDLE
+    with mock.patch.object(function, "cancelBatch") as cancel:
+        function.shutdown()
+    cancel.assert_not_called()
+
+
+def test_shutdown_modelRunning(function):
+    function.app.statusOperationRunning = function.STATUS_MODEL_BATCH
+    with mock.patch.object(function, "cancelBatch") as cancel:
+        function.shutdown()
+    cancel.assert_called_once_with()
+    function.app.statusOperationRunning = function.STATUS_IDLE
+
+
 def test_pauseBatch_1(function):
     function.modelData = None
     function.pauseBatch()

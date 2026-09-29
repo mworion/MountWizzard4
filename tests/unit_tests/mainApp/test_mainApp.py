@@ -23,7 +23,7 @@ from unittest import mock
 from unittest.mock import MagicMock
 
 
-def buildApp(qapp, argv):
+def buildApp(qapp, arguments=""):
     mwGlob = {
         "configDir": Path("tests/work/config"),
         "dataDir": Path("tests/work/data"),
@@ -67,17 +67,16 @@ def buildApp(qapp, argv):
     with (
         mock.patch("mw4.mainApp.loadProfileStart", side_effect=loadProfileStart_mock),
         mock.patch("mw4.mainApp.MainWindow") as mock_main_window,
-        mock.patch.object(sys, "argv", argv),
     ):
         mock_main_window.return_value = MagicMock()
-        app_instance = MountWizzard4(mwGlob, qapp, 1)
+        app_instance = MountWizzard4(mwGlob, qapp, 1, arguments)
     app_instance.update1s = MagicMock(emit=mock_emit)
     return app_instance
 
 
 @pytest.fixture(scope="function")
 def app(qapp):
-    app_instance = buildApp(qapp, ["mw4"])
+    app_instance = buildApp(qapp)
     yield app_instance
     app_instance.timeMgr.stop()
 
@@ -274,10 +273,23 @@ def test_main_module_entry_point():
     assert "run()" in content
 
 
-def test_init_withArgument(qapp):
-    appInstance = buildApp(qapp, ["mw4", "test"])
+def readMessages(appInstance):
     messages = []
     while not appInstance.messageQueue.empty():
         messages.append(appInstance.messageQueue.get())
-    assert (1, "System", "Arguments", "test") in messages
+    return messages
+
+
+def test_init_withArguments(qapp):
+    appInstance = buildApp(qapp, "dpi=120.0, scale=1.5, test=0")
+    messages = readMessages(appInstance)
+    assert (1, "System", "Arguments", "[dpi=120.0, scale=1.5, test=0]") in messages
+    appInstance.timeMgr.stop()
+
+
+def test_init_withoutArguments(qapp, monkeypatch):
+    monkeypatch.setattr(sys, "argv", ["mw4", "raw"])
+    appInstance = buildApp(qapp)
+    messages = readMessages(appInstance)
+    assert not [m for m in messages if m[2] == "Arguments"]
     appInstance.timeMgr.stop()

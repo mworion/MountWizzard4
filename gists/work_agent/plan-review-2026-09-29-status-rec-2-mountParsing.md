@@ -1,7 +1,7 @@
 # Plan – Status Review 2026-09-29, Recommendation 2: Harden Mount Response Parsing
 
 **Date:** 2026-09-29
-**Source:** `gists/work_agent/2026-09-29-status-review.md`, rec 2
+**Source:** `2026-09-29-status-review.md`, rec 2
 (findings M1, M2, M3, M4, M5, M7, N2)
 **Scope:** `src/mw4/mountcontrol/connection.py`, `obsSite.py`, `firmware.py`
 and the mirrored tests in `tests/unit_tests/mountcontrol/`.
@@ -46,7 +46,7 @@ reject the value.
   the version first, catch `InvalidVersion`, log a warning, return `False`, and
   leave all fields unchanged.
 
-## Tests (`tests/unit_tests/mountcontrol/`)
+## Tests (`../../tests/unit_tests/mountcontrol`)
 
 - `test_connection.py`: change the generic `Exception` side effects to
   `OSError` / `RuntimeError`. Add tests for non-ASCII bytes in `receiveData`

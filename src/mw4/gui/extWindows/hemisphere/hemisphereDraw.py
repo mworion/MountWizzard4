@@ -27,7 +27,7 @@ from skyfield.api import Angle
 
 
 class HemisphereDraw(MWidget):
-    def __init__(self, parent):
+    def __init__(self, parent) -> None:
         super().__init__()
         self.parent = parent
         self.ui = parent.ui

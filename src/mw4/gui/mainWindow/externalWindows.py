@@ -31,7 +31,7 @@ from typing import Any
 
 
 class ExternalWindows:
-    def __init__(self, mainW):
+    def __init__(self, mainW) -> None:
         self.log = logging.getLogger("MW4")
         self.mainW = mainW
         self.app = mainW.app
@@ -138,7 +138,7 @@ class ExternalWindows:
             else:
                 changeStyleDynamic(winObj["button"], "run", "false")
 
-    def storeConfigExtendedWindows(self):
+    def storeConfigExtendedWindows(self) -> None:
         for window in self.uiWindows:
             self.app.config[window] = bool(self.uiWindows[window]["classObj"])
             if self.app.config[window]:

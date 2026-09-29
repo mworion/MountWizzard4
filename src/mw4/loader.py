@@ -36,7 +36,7 @@ def setAppIcon(app: QApplication) -> None:
         app.setWindowIcon(QIcon(str(iconFile)))
 
 
-def main(test: int = 0) -> None:
+def main(test: int = 0, arguments: str = "") -> None:
     configureEnvironment()
     locale.setlocale(locale.LC_ALL, "")
     app = QApplication(sys.argv)
@@ -47,7 +47,7 @@ def main(test: int = 0) -> None:
     extractDataFiles(mwGlob=mwGlob)
     sys.excepthook = exceptHook
     setAppIcon(app)
-    mw4App = MountWizzard4(mwGlob, app, test)
+    mw4App = MountWizzard4(mwGlob, app, test, arguments)
     splash.close()
     ret = app.exec()
     del mw4App

@@ -186,7 +186,7 @@ class ModelManage(TabAddon):
         changeStyleDynamic(self.ui.modelNameGroup, "run", "true")
         self.app.dReg["mount"].instance.getNames()
 
-    def loadName(self):
+    def loadName(self) -> None:
         if self.ui.nameList.currentItem() is None:
             self.msg.emit(2, "Model", "Manage error", "No model name selected")
             return

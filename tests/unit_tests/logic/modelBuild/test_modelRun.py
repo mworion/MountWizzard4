@@ -147,7 +147,7 @@ def test_startNewSlew_1(function):
     function.mountSlewed = True
     function.cancelBatch = False
     function.endBatch = False
-    function.modelRunKey = ""
+    function.modelRunKey = "im-02"
     function.modelRunIterator = iter([])
     function.modelBuildData = {
         "im-00": {
@@ -172,6 +172,7 @@ def test_startNewSlew_1(function):
     function.startNewSlew()
     assert function.mountSlewed
     assert function.domeSlewed
+    assert function.modelRunKey == ""
 
 
 def test_startNewSlew_3(function):

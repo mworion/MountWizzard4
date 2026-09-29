@@ -49,12 +49,16 @@ def readOptions() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def run():
+def formatOptions(options: argparse.Namespace) -> str:
+    return ", ".join(f"{key}={value}" for key, value in sorted(vars(options).items()))
+
+
+def run() -> None:
     options = readOptions()
     if platform.system() == "Windows":
         os.environ["QT_SCALE_FACTOR"] = f"{options.scale:2.1f}"
         os.environ["QT_FONT_DPI"] = f"{options.dpi:2.0f}"
-    main(options.test)
+    main(options.test, formatOptions(options))
 
 
 if __name__ == "__main__":

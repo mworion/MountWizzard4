@@ -21,7 +21,7 @@ from skyfield.api import Angle
 class SlewInterface:
     log = logging.getLogger("MW4")
 
-    def __init__(self, parent):
+    def __init__(self, parent) -> None:
         self.app = parent.app
         self.msg = parent.msg
 

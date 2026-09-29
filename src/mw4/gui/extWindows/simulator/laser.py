@@ -29,13 +29,13 @@ class SimulatorLaser:
         self.app = app
         self.parent.ui.showLaser.checkStateChanged.connect(self.showEnable)
 
-    def showEnable(self):
+    def showEnable(self) -> None:
         isVisible = self.parent.ui.showLaser.isChecked()
         node = self.parent.entityModel.get("laserRoot")
         if node:
             node["entity"].setEnabled(isVisible)
 
-    def updatePositions(self):
+    def updatePositions(self) -> None:
         if not self.app.dReg["mount"].stat:
             return
 
@@ -62,7 +62,7 @@ class SimulatorLaser:
         if node:
             node["trans"].setRotationX(-alt)
 
-    def create(self):
+    def create(self) -> None:
         model = {
             "laserRoot": {
                 "parent": "ref_fusion_m",

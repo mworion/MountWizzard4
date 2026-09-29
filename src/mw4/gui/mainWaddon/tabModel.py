@@ -223,7 +223,7 @@ class Model(TabAddon):
         imageDir.mkdir(parents=True, exist_ok=True)
         return imageDir
 
-    def showProgress(self, progressData: dict):
+    def showProgress(self, progressData: dict) -> None:
         timeElapsed = time.gmtime(progressData["secondsElapsed"])
         timeEstimated = time.gmtime(progressData["secondsEstimated"])
         timeFinished = time.localtime(time.time() + progressData["secondsEstimated"])

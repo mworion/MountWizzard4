@@ -31,7 +31,7 @@ from typing import Any
 
 
 class DevicePopup(MWidget):
-    def __init__(self, parentWidget, device: str):
+    def __init__(self, parentWidget, device: str) -> None:
         super().__init__()
         self.app = parentWidget.app
         self.msg = parentWidget.app.msg

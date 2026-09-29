@@ -54,7 +54,7 @@ class UploadPopup(MWidget):
 
     def __init__(
         self, parentWidget: MWidget, url: str, dataTypes: list[str], dataFilePath: Path
-    ):
+    ) -> None:
         super().__init__()
         self.ui = Ui_UploadPopup()
         self.ui.setupUi(self.ws)

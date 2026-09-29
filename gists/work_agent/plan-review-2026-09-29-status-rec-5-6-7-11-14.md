@@ -1,7 +1,7 @@
 # Plan – Status Review 2026-09-29, Recommendations 5, 6, 7, 11, 14
 
 **Date:** 2026-09-29
-**Source:** `gists/work_agent/2026-09-29-status-review.md`, section 5
+**Source:** `2026-09-29-status-review.md`, section 5
 
 ## Rec 5 – Log level config symmetry (C1)
 
@@ -57,7 +57,7 @@ level the user chooses is stored by the settings tab as
 - `[project] dependencies`: `==X.Y.Z` → `>=X.Y.Z,<next>`, where `next` is the
   next major (for `0.x` packages the next minor). Exception: `pyside6` is
   limited to `<6.12`, because Qt minor releases change behaviour. `pywin32`
-  gets `>=312`. `uv.lock` keeps the exact versions; `uv lock` must not change
+  gets `>=312`. `../../uv.lock` keeps the exact versions; `uv lock` must not change
   any resolved version.
 - `[tool.pytest.ini_options] filterwarnings`: third-party deprecations stay
   ignored, deprecations raised from `mw4` code become errors
@@ -65,7 +65,7 @@ level the user chooses is stored by the settings tab as
 
 ## Tests
 
-Mirrored under `tests/unit_tests/`: `mainApp`, `setting/tabSettUpdate`,
+Mirrored under `../../tests/unit_tests`: `mainApp`, `setting/tabSettUpdate`,
 `camera/cameraSGPro`, `base/sgproClass`, `powerswitch/kmRelay`,
 `mainWaddon/tabAddon`, `mainWindow/mainWindowAddons`, `mainWaddon/tabModel`,
 `mainWindow/mainWindow`, `plateSolve/plateSolve`.

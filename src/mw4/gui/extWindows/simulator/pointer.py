@@ -27,13 +27,13 @@ class SimulatorPointer:
         self.app = app
         self.parent.ui.showPointer.checkStateChanged.connect(self.showEnable)
 
-    def showEnable(self):
+    def showEnable(self) -> None:
         isVisible = self.parent.ui.showPointer.isChecked()
         node = self.parent.entityModel.get("pointerRoot")
         if node:
             node["entity"].setEnabled(isVisible)
 
-    def updatePositions(self):
+    def updatePositions(self) -> None:
         if not self.app.dReg["mount"].stat:
             return
 
@@ -51,7 +51,7 @@ class SimulatorPointer:
             vec = QVector3D(intersect[0], intersect[1], intersect[2])
             node["trans"].setTranslation(vec)
 
-    def create(self):
+    def create(self) -> None:
         model = {
             "pointerRoot": {
                 "parent": "ref_fusion_m",

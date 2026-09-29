@@ -24,7 +24,7 @@ from PySide6.QtCore import QPointF
 
 
 class HorizonDraw(MWidget):
-    def __init__(self, parent):
+    def __init__(self, parent) -> None:
         super().__init__()
         self.parent = parent
         self.ui = parent.ui
@@ -66,7 +66,7 @@ class HorizonDraw(MWidget):
         self.ui.horizon.p[0].scene().sigMouseMoved.connect(self.mouseMovedHorizon)
         self.app.dReg["mount"].signals.mountIsUp.connect(self.setPointerVisibility)
 
-    def closeTab(self):
+    def closeTab(self) -> None:
         self.app.dReg["mount"].signals.pointDone.disconnect(self.drawPointer)
         self.app.dReg["mount"].signals.settingDone.disconnect(self.drawTab)
         self.app.dReg["mount"].signals.mountIsUp.disconnect(self.setPointerVisibility)

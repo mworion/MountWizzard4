@@ -14,7 +14,6 @@
 #
 ###########################################################
 import logging
-import sys
 from importlib.metadata import version
 from mw4.base.audioManager import AudioManager
 from mw4.base.bootstrap import MwGlob
@@ -71,6 +70,7 @@ class MountWizzard4(QObject):
         mwGlob: MwGlob,
         application: QApplication,
         test: int = 0,
+        arguments: str = "",
     ) -> None:
         super().__init__()
         # Set up global references, thread pool, flags, and profile.
@@ -90,6 +90,8 @@ class MountWizzard4(QObject):
         self.msg.emit(1, "System", "Lifecycle", "MountWizzard4 started...")
         self.msg.emit(1, "System", "Workdir", f"[{workDir}]")
         self.msg.emit(1, "System", "Profile", f"[{profile}]")
+        if arguments:
+            self.msg.emit(1, "System", "Arguments", f"[{arguments}]")
         self.timeMgr = TimeManager(app=self)
         self.dReg: DeviceRegistry = DeviceRegistry(self)
         self.dReg.addDevices(self)
@@ -103,14 +105,10 @@ class MountWizzard4(QObject):
         self.mainW.showWindow()
         self.dReg.startDevices()
         self.timeMgr.start()
-        # Wire up application-level signal connections.
-        # self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
 
         if test:
             self.timeMgr.update10s.connect(self.mainW.close)
-        if len(sys.argv) > 1:
-            self.messageQueue.put((1, "System", "Arguments", sys.argv[1]))
 
     def initConfig(self) -> None:
         self.log.debug("Initializing configuration main application")

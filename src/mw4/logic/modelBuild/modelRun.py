@@ -121,8 +121,9 @@ class ModelData(QObject):
         self.startExposureAfterSlew()
 
     def startNewSlew(self) -> None:
-        self.modelRunKey = next(self.modelRunIterator, False)
-        if self.cancelBatch or self.endBatch or not self.modelRunKey:
+        nextKey = next(self.modelRunIterator, None)
+        self.modelRunKey = "" if nextKey is None else nextKey
+        if self.cancelBatch or self.endBatch or nextKey is None:
             return
         altitude = self.modelBuildData[self.modelRunKey]["altitude"]
         azimuth = self.modelBuildData[self.modelRunKey]["azimuth"]

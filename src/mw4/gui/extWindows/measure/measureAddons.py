@@ -16,7 +16,7 @@
 from mw4.gui.styles.styles import Styles
 
 
-def dataPlots():
+def dataPlots() -> dict[str, dict]:
     return {
         "No chart": {},
         "Axis Stability": {

@@ -27,7 +27,7 @@ class SimulatorWorld:
         self.app = app
         self.app.updateDomeSettings.connect(self.updatePositions)
 
-    def updatePositions(self):
+    def updatePositions(self) -> None:
         """
         :return:
         """
@@ -46,7 +46,7 @@ class SimulatorWorld:
         if node:
             node["trans"].setScale3D(QVector3D(1, 1, scale))
 
-    def create(self):
+    def create(self) -> None:
         model = {
             "environRoot": {
                 "parent": "ref_fusion_m",

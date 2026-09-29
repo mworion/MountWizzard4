@@ -167,7 +167,7 @@ class SatelliteHorizonWindow(MWidget):
         plotItem.addItem(pd)
         return pd
 
-    def drawHorizonTrajectory(self, plotItem: pg.PlotItem, altitude, azimuth):
+    def drawHorizonTrajectory(self, plotItem: pg.PlotItem, altitude, azimuth) -> None:
         ts = self.obsSite.ts
         for i, satOrbit in enumerate(self.satOrbits):
             rise = satOrbit["rise"].tt

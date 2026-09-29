@@ -27,7 +27,7 @@ class SimulatorTelescope:
         self.app = app
         self.app.updateDomeSettings.connect(self.updatePositions)
 
-    def updatePositions(self):
+    def updatePositions(self) -> None:
         """
         updateSettings resize parts depending on the setting made in the dome
         tab. likewise some transformations have to be reverted as they are
@@ -84,7 +84,7 @@ class SimulatorTelescope:
         if node:
             node["trans"].setTranslation(QVector3D(0, 0, 65 * (scaleRad - 1)))
 
-    def updateRotation(self):
+    def updateRotation(self) -> None:
         """
         updateMount moves ra and dec axis according to the values in the mount.
 
@@ -103,7 +103,7 @@ class SimulatorTelescope:
         if node:
             node["trans"].setRotationZ(-angDEC.degrees)
 
-    def create(self):
+    def create(self) -> bool:
         lat = self.app.dReg["mount"].obsSite.location.latitude.degrees
         model = {
             "mountRoot": {

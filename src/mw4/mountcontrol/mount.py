@@ -92,7 +92,6 @@ class MountDevice(QObject):
         self.workerGetModel: Worker | None = None
         self.workerGetNames: Worker | None = None
         self.workerTrajectory: Worker | None = None
-        self.mountIsUp: bool = False
         self.statusAlert: bool = False
         self.statusSlew: bool = False
 

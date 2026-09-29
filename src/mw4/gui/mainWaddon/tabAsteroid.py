@@ -19,7 +19,7 @@ from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.logic.databaseProcessing.sourceURL import asteroidSourceURLs
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QAbstractItemView, QApplication, QTableWidgetItem
+from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 from typing import Any
 
 
@@ -119,57 +119,43 @@ class Asteroid(TabAddon):
 
     def filterListAsteroids(self) -> None:
         filterStr = self.ui.asteroidFilterText.text().lower()
-
-        for row in range(self.ui.listAsteroids.model().rowCount()):
-            name = self.ui.listAsteroids.model().index(row, 1).data().lower()
-            number = self.ui.listAsteroids.model().index(row, 0).data().lower()
-            show = filterStr in number + name
-            self.ui.listAsteroids.setRowHidden(row, not show)
+        table = self.ui.listAsteroids
+        model = table.model()
+        table.setUpdatesEnabled(False)
+        try:
+            for row in range(model.rowCount()):
+                name = model.index(row, 1).data().lower()
+                number = model.index(row, 0).data().lower()
+                show = filterStr in number + name
+                table.setRowHidden(row, not show)
+        finally:
+            table.setUpdatesEnabled(True)
 
     def fillAsteroidListName(self) -> None:
-        self.ui.listAsteroids.setRowCount(0)
-        for number, name in enumerate(self.asteroids.objects):
-            row = self.ui.listAsteroids.rowCount()
-            self.ui.listAsteroids.insertRow(row)
-
-            entry = QTableWidgetItem(f"{number:5d}")
-            entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            self.ui.listAsteroids.setItem(row, 0, entry)
-            entry = QTableWidgetItem(name)
-            entry.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-            self.ui.listAsteroids.setItem(row, 1, entry)
-
-            if "Orbit_type" in self.asteroids.objects[name]:
-                entry = QTableWidgetItem(self.asteroids.objects[name]["Orbit_type"])
-                entry.setTextAlignment(
-                    Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
-                )
-                self.ui.listAsteroids.setItem(row, 2, entry)
-
-            if "Perihelion_dist" in self.asteroids.objects[name]:
-                pdist = f"{self.asteroids.objects[name]['Perihelion_dist']:8.4f}"
-                entry = QTableWidgetItem(pdist)
-                entry.setTextAlignment(
-                    Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
-                )
-                self.ui.listAsteroids.setItem(row, 3, entry)
-
-            if "Aphelion_dist" in self.asteroids.objects[name]:
-                adist = f"{self.asteroids.objects[name]['Aphelion_dist']:8.4f}"
-                entry = QTableWidgetItem(adist)
-                entry.setTextAlignment(
-                    Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
-                )
-                self.ui.listAsteroids.setItem(row, 4, entry)
-
-            if "e" in self.asteroids.objects[name]:
-                e = f"{self.asteroids.objects[name]['e']:8.4f}"
-                entry = QTableWidgetItem(e)
-                entry.setTextAlignment(
-                    Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
-                )
-                self.ui.listAsteroids.setItem(row, 5, entry)
-            QApplication.processEvents()
+        table = self.ui.listAsteroids
+        alignRight = Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
+        alignLeft = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+        alignCenter = Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
+        table.setUpdatesEnabled(False)
+        try:
+            table.setRowCount(0)
+            table.setRowCount(len(self.asteroids.objects))
+            for row, (name, mp) in enumerate(self.asteroids.objects.items()):
+                cells = {0: (f"{row:5d}", alignRight), 1: (name, alignLeft)}
+                if "Orbit_type" in mp:
+                    cells[2] = (mp["Orbit_type"], alignCenter)
+                if "Perihelion_dist" in mp:
+                    cells[3] = (f"{mp['Perihelion_dist']:8.4f}", alignCenter)
+                if "Aphelion_dist" in mp:
+                    cells[4] = (f"{mp['Aphelion_dist']:8.4f}", alignCenter)
+                if "e" in mp:
+                    cells[5] = (f"{mp['e']:8.4f}", alignCenter)
+                for column, (text, alignment) in cells.items():
+                    entry = QTableWidgetItem(text)
+                    entry.setTextAlignment(alignment)
+                    table.setItem(row, column, entry)
+        finally:
+            table.setUpdatesEnabled(True)
 
         self.asteroids.dataValid = True
         self.filterListAsteroids()

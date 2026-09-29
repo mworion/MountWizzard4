@@ -41,6 +41,18 @@ def function():
     yield function
 
 
+@pytest.fixture(autouse=True)
+def resetState(function):
+    function.cancelBatch = False
+    function.pauseBatch = False
+    function.endBatch = False
+    function.modelBuildData = {}
+    function.modelRunList = []
+    function.modelRunKey = ""
+    function.retries = 0
+    yield
+
+
 @pytest.fixture
 def mocked_sleepAndEvents(monkeypatch, function):
     def test(a):
@@ -397,6 +409,7 @@ def test_startNewImageExposure_2(function, mocked_sleepAndEvents):
     function.cancelBatch = False
     function.exposureWaitTime = 1
     function.modelBuildData = {"im-00": {"imagePath": Path("test")}}
+    function.modelRunKey = "im-00"
     with (
         mock.patch.object(function, "addMountDataToModelBuildData"),
         mock.patch.object(function.app.dReg.d["camera"].instance, "expose"),
@@ -550,6 +563,7 @@ def test_checkRetryNeeded_1(function):
         "image-001": {"success": True, "imagePath": Path("test"), "message": ""},
         "image0-02": {"success": True, "imagePath": Path("test"), "message": ""},
     }
+    function.modelRunList = list(function.modelBuildData)
     assert not function.checkRetryNeeded()
 
 
@@ -567,6 +581,7 @@ def test_checkRetryNeeded_2(function):
         },
         "image0-02": {"success": False, "imagePath": Path("test"), "message": ""},
     }
+    function.modelRunList = list(function.modelBuildData)
     assert function.checkRetryNeeded()
 
 
@@ -576,6 +591,7 @@ def test_checkModelFinished_1(function):
         "image-001": {"processed": True},
         "image0-02": {"processed": True},
     }
+    function.modelRunList = list(function.modelBuildData)
     assert function.checkModelFinished()
 
 
@@ -585,17 +601,21 @@ def test_checkModelFinished_2(function):
         "image-001": {"processed": False},
         "image0-02": {"processed": True},
     }
+    function.modelRunList = list(function.modelBuildData)
     assert not function.checkModelFinished()
 
 
 def test_runThroughModelBuildData_1(function, mocked_sleepAndEvents_2):
     function.cancelBatch = False
     function.endBatch = False
+    function.modelBuildData = {"image-000": {"processed": True}}
+    function.modelRunList = ["image-000"]
     with (
         mock.patch.object(function, "startNewSlew"),
         mock.patch.object(function, "checkModelFinished", return_value=False),
     ):
         function.runThroughModelBuildData()
+    assert not function.modelBuildData["image-000"]["processed"]
 
 
 def test_generateRunIterator_1(function):

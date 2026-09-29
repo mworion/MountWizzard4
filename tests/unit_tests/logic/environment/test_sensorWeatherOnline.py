@@ -51,6 +51,33 @@ def function():
         yield func
 
 
+@pytest.fixture(autouse=True)
+def resetWeatherState(function):
+    unlockWeatherWorker(function)
+    function.data.clear()
+    function.config.apiKey = ""
+    function.config.hostAddress = "localhost"
+    function.app.isOnline = True
+    function.location = weatherLocation()
+    function.running = False
+    yield
+    unlockWeatherWorker(function)
+
+
+def unlockWeatherWorker(function):
+    worker = function.workerGetOpenWeatherMapData
+    if worker is not None and worker.locked:
+        worker.locked = False
+        worker.mutex.unlock()
+
+
+def weatherLocation():
+    location = mock.MagicMock()
+    location.latitude.degrees = 45.5
+    location.longitude.degrees = -122.5
+    return location
+
+
 def test_startCommunication_(function):
     with mock.patch.object(function, "pollOpenWeatherMapData"):
         function.startCommunication()
@@ -245,32 +272,32 @@ def test_loadingFileNeeded_3(function):
 
 
 def test_pollOpenWeatherMapData_1(function):
-    function.apiKey = ""
+    function.config.apiKey = ""
     function.pollOpenWeatherMapData()
 
 
 def test_pollOpenWeatherMapData_2(function):
-    function.apiKey = "test"
+    function.config.apiKey = "test"
     function.app.isOnline = False
     function.running = True
     function.pollOpenWeatherMapData()
 
 
 def test_pollOpenWeatherMapData_3(function):
-    function.apiKey = "test"
+    function.config.apiKey = "test"
     function.app.isOnline = True
     function.pollOpenWeatherMapData()
 
 
 def test_pollOpenWeatherMapData_4(function):
-    function.apiKey = "test"
+    function.config.apiKey = "test"
     function.app.isOnline = True
     with mock.patch.object(function, "loadingFileNeeded", return_value=False):
         function.pollOpenWeatherMapData()
 
 
 def test_pollOpenWeatherMapData_5(function):
-    function.apiKey = "test"
+    function.config.apiKey = "test"
     function.app.isOnline = True
     with (
         mock.patch.object(function, "loadingFileNeeded", return_value=True),
@@ -289,9 +316,7 @@ def test_pollOpenWeatherMapDataExtractsLocationLatLon(function) -> None:
     function.config.apiKey = "test_key"
     function.config.hostAddress = "localhost"
     function.app.isOnline = True
-    location = mock.MagicMock()
-    location.latitude.degrees = 45.5
-    location.longitude.degrees = -122.5
+    location = weatherLocation()
 
     # Mock getOpenWeatherMapData to prevent the Path+str error
     with (

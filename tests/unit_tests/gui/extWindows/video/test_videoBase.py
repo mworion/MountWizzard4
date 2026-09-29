@@ -152,11 +152,17 @@ def test_stopVideoStream_1(function):
 
 def test_restartVideo(function):
     with (
-        mock.patch.object(function, "stopVideo"),
-        mock.patch.object(function, "startVideo"),
-        mock.patch.object(mw4.gui.extWindows.video.videoBase, "mainThreadSleep"),
+        mock.patch.object(function, "stopVideo") as mockStop,
+        mock.patch.object(function, "startVideo") as mockStart,
+        mock.patch.object(
+            mw4.gui.extWindows.video.videoBase.QTimer,
+            "singleShot",
+            staticmethod(lambda ms, cb: cb()),
+        ),
     ):
         function.restartVideo()
+    mockStop.assert_called_once()
+    mockStart.assert_called_once()
 
 
 def test_receivedImage_1(function):

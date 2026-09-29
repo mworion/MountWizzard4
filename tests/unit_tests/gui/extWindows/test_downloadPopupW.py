@@ -48,8 +48,13 @@ def function(qapp):
 
 
 @pytest.fixture
-def mockedSleep(monkeypatch):
-    monkeypatch.setattr("mw4.gui.extWindows.downloadPopupW.mainThreadSleep", lambda _: None)
+def mockedTimer(monkeypatch):
+    def immediate(ms, callback):
+        callback()
+
+    monkeypatch.setattr(
+        "mw4.gui.extWindows.downloadPopupW.QTimer.singleShot", staticmethod(immediate)
+    )
 
 
 def test_setIcon(function):
@@ -221,14 +226,18 @@ def test_downloadFileWorker_9(function):
         assert not suc
 
 
-def test_closePopup_1(function, mockedSleep):
-    with mock.patch.object(function, "close"):
+def test_closePopup_1(function, mockedTimer):
+    with mock.patch.object(function, "close") as mockClose:
         function.closePopup(True)
+    assert function.returnValues["success"] is True
+    mockClose.assert_called_once()
 
 
-def test_closePopup_2(function, mockedSleep):
-    with mock.patch.object(function, "close"):
+def test_closePopup_2(function, mockedTimer):
+    with mock.patch.object(function, "close") as mockClose:
         function.closePopup(False)
+    assert function.returnValues["success"] is False
+    mockClose.assert_called_once()
 
 
 def test_exec_1(function):

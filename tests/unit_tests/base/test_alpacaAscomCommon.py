@@ -71,6 +71,30 @@ def function():
     yield func
 
 
+@pytest.fixture(autouse=True)
+def resetState(function):
+    methods = (
+        "getDeviceProp",
+        "setDeviceProp",
+        "callDeviceMethod",
+        "handleDeviceConnect",
+        "handleDeviceDisconnect",
+        "pollData",
+    )
+    for name in methods:
+        function.__dict__.pop(name, None)
+    function.signals = mock.MagicMock()
+    function.device = mock.MagicMock()
+    function.deviceConnected = False
+    function.loggingTrace = False
+    function.propertyExceptions.clear()
+    function.data.clear()
+    function.stopEvent.clear()
+    function.connectEvent.clear()
+    function.commandQueue = queue.Queue()
+    yield
+
+
 def test_commandItem():
     # arrange / act
     item = CommandItem(cmdType="call", valueProp="Test")

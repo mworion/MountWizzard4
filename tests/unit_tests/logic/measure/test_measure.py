@@ -36,6 +36,21 @@ def function():
     yield func
 
 
+@pytest.fixture(autouse=True)
+def resetMeasureState(function, measureDataCSV):
+    function.shorteningStart = True
+    function.data.clear()
+    function.measuredDevices.clear()
+    function.framework = "raw"
+    function.MAXSIZE = 48 * 60 * 60
+    function.mutexMeasure = QMutex()
+
+    csv, _app, parent, data = measureDataCSV
+    data.clear()
+    parent.data = data
+    csv.data = data
+
+
 def test_property(function):
     function.framework = "raw"
     function.deviceName = "test"
@@ -93,10 +108,13 @@ def test_stopCommunication_1(function):
 
 
 def test_checkStart_1(function):
+    function.data = {"time": []}
+    function.shorteningStart = False
     function.checkStart()
 
 
 def test_checkStart_2(function):
+    function.data = {"time": []}
     function.shorteningStart = True
     function.checkStart()
 

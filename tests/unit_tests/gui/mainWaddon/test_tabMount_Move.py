@@ -34,6 +34,19 @@ def function(qapp):
     mainW.app.threadPool.waitForDone(1000)
 
 
+@pytest.fixture(autouse=True)
+def resetMountMove(function):
+    function.app.config["WindowMain"] = {}
+    function.oldDirection = "STOP"
+    function.countdownRemaining = 0
+    function.ui.stopMoveAll.setText("STOP")
+    function.app.mount.setting.horizonLimitLow = 0
+    function.app.mount.setting.horizonLimitHigh = 90
+    yield
+    if function.durationTimer is not None:
+        function.durationTimer.stop()
+
+
 def test_initConfig_1(function):
     function.app.config["WindowMain"] = {}
     function.initConfig()

@@ -24,8 +24,7 @@ from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
-@pytest.fixture(autouse=True, scope="module")
-def function():
+def buildMountTime():
     app = App()
     m = app.mount
     m.app = app
@@ -36,7 +35,18 @@ def function():
     m.config.syncTimeNotTrack = False
     m.mountIsUp = False
     m.MountStatus = MountStatus
-    mountTime = MountTime(parent=m)
+    return MountTime(parent=m)
+
+
+def releaseWorker(worker):
+    if worker.locked:
+        worker.locked = False
+        worker.mutex.unlock()
+
+
+@pytest.fixture(autouse=True, scope="module")
+def function():
+    mountTime = buildMountTime()
     yield mountTime
     # Cleanup: ensure all workers are finished and all mutexes are unlocked
     if hasattr(mountTime, "workerCycleMountUp") and mountTime.workerCycleMountUp is not None:
@@ -50,7 +60,8 @@ def function():
         mountTime.threadPool.waitForDone()
 
 
-def test_mountTime_init(function):
+def test_mountTime_init():
+    function = buildMountTime()
     assert function.parent is not None
     assert function.app is not None
     assert function.threadPool is not None
@@ -62,8 +73,8 @@ def test_mountTime_init(function):
     assert function.workerPollSyncClock is None
 
 
-def test_timeDiff_property_initial(function):
-    assert function.timeDiff == 0.0
+def test_timeDiff_property_initial():
+    assert buildMountTime().timeDiff == 0.0
 
 
 def test_timeDiff_property_with_values(function):
@@ -191,12 +202,12 @@ def test_checkMountUp_locked(function):
 
 
 def test_checkMountUp_unlocked(function):
+    function.workerCycleMountUp = None
     with mock.patch.object(QThreadPool, "start"):
         function.checkMountUp()
         assert function.workerCycleMountUp is not None
-    if function.workerCycleMountUp is not None:
-        function.workerCycleMountUp.signals.finished.emit()
-        del function.workerCycleMountUp
+    releaseWorker(function.workerCycleMountUp)
+    function.workerCycleMountUp = None
 
 
 @pytest.mark.parametrize(
@@ -390,12 +401,12 @@ def test_pollSyncClock_locked(function):
 
 def test_pollSyncClock_unlocked(function):
     function.parent.mountIsUp = True
+    function.workerPollSyncClock = None
     with mock.patch.object(QThreadPool, "start"):
         function.pollSyncClock()
         assert function.workerPollSyncClock is not None
-    if function.workerPollSyncClock is not None:
-        function.workerPollSyncClock.signals.finished.emit()
-        del function.workerPollSyncClock
+    releaseWorker(function.workerPollSyncClock)
+    function.workerPollSyncClock = None
 
 
 def test_pollSyncClock_communicate_failure(function):

@@ -15,7 +15,6 @@
 ###########################################################
 import logging
 from functools import partial
-from mw4.base.threadUtils import mainThreadSleep
 from mw4.gui.extWindows.analyseW import AnalyseWindow
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from mw4.gui.extWindows.image.imageW import ImageWindow
@@ -177,4 +176,3 @@ class ExternalWindows:
                 continue
             self.log.debug(f"Closing window: {window}")
             self.uiWindows[window]["classObj"].close()
-            mainThreadSleep(50)

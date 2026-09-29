@@ -122,7 +122,13 @@ def test_filterListAsteroids_1(function):
     function.ui.listAsteroids.setItem(0, 0, entry)
     entry = QTableWidgetItem("NOAA 8")
     function.ui.listAsteroids.setItem(0, 1, entry)
+    function.ui.asteroidFilterText.setText("xyz")
     function.filterListAsteroids()
+    assert function.ui.listAsteroids.isRowHidden(0)
+    assert function.ui.listAsteroids.updatesEnabled()
+    function.ui.asteroidFilterText.setText("noaa")
+    function.filterListAsteroids()
+    assert not function.ui.listAsteroids.isRowHidden(0)
 
 
 def test_fillAsteroidListNames_1(function):
@@ -161,4 +167,25 @@ def test_fillAsteroidListNames_1(function):
         }
     }
     function.fillAsteroidListName()
-    assert function.ui.listAsteroids.rowCount() == 1
+    table = function.ui.listAsteroids
+    assert table.rowCount() == 1
+    assert table.item(0, 0).text() == "    0"
+    assert table.item(0, 1).text() == "test"
+    assert table.item(0, 4).text() == "  3.5836"
+    assert table.updatesEnabled()
+
+
+def test_fillAsteroidListNames_2(function):
+    function.asteroids.objects = {"a": {}, "b": {}}
+    function.fillAsteroidListName()
+    table = function.ui.listAsteroids
+    assert table.rowCount() == 2
+    assert table.item(1, 1).text() == "b"
+    assert table.item(1, 2) is None
+
+
+def test_fillAsteroidListNames_exception(function):
+    function.asteroids.objects = {"a": {"e": "no number"}}
+    with pytest.raises(ValueError):
+        function.fillAsteroidListName()
+    assert function.ui.listAsteroids.updatesEnabled()

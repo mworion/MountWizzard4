@@ -36,6 +36,7 @@ def mainWindow(qapp):
     with mock.patch.object(Almanac, "showTwilightDataPlot"):
         window = MainWindow(app=App())
     yield window
+    window.app.timeMgr.stop()
     window.app.threadPool.waitForDone(10000)
     qapp.processEvents()
 

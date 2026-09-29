@@ -52,7 +52,7 @@ def function(qapp):
     QApplication.processEvents()
 
 
-@pytest.fixture(autouse=True, scope="module")
+@pytest.fixture(autouse=True)
 def prepareFunctionState(function):
     value = np.datetime64("2014-12-12 20:20:20")
     function.app.measure.framework = ""

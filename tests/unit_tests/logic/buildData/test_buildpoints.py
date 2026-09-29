@@ -29,18 +29,35 @@ from unittest import mock
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
+    cleanBuildPointFiles()
+    func = BuildPoint(app=App())
+    yield func
+
+
+@pytest.fixture(autouse=True)
+def resetBuildPointState(function):
+    cleanBuildPointFiles()
+    function.buildP = []
+    function.horizonP = []
+    function.buildPFile = ""
+    function.app.mount.obsSite.location = wgs84.latlon(
+        latitude_degrees=48, longitude_degrees=11
+    )
+    function.app.mount.obsSite.pierside = "W"
+    function.app.mount.setting.horizonLimitHigh = 80
+    function.app.mount.setting.horizonLimitLow = 5
+    function.app.mount.setting.meridianLimitSlew = 5
+    function.app.mount.setting.meridianLimitTrack = 5
+
+
+def cleanBuildPointFiles():
     config = Path("tests/work/config")
     testdir = os.listdir(config)
     for item in testdir:
-        if item.endswith(".bpts"):
-            os.remove(os.path.join(config, item))
-        if item.endswith(".hpts"):
-            os.remove(os.path.join(config, item))
-
-    app = App()
-    app.mount.obsSite.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
-    func = BuildPoint(app=App())
-    yield func
+        if item == "empty.txt":
+            continue
+        if item.endswith((".bpts", ".hpts", ".model", ".csv", ".txt")):
+            os.remove(config / item)
 
 
 def test_topoToAltAz1(function):

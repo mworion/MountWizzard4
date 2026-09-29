@@ -122,7 +122,7 @@ dev = [
 minversion = "9.0"
 pythonpath = ["src"]
 testpaths = ["tests"]
-addopts = ["--import-mode=importlib", "-p", "no:cacheprovider"]
+addopts = ["--import-mode=importlib", "-p", "no:cacheprovider", "--dist=loadfile"]
 qt_api = "pyside6"
 filterwarnings = ["ignore::DeprecationWarning"]
 markers = [

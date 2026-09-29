@@ -35,9 +35,9 @@ def test_init_connects_signal_to_playSound(audioManager):
     assert audioManager.app.playSound is not None
 
 
-def test_init_sound_is_none(audioManager):
+def test_init_sound_is_none(qapp):
     """Test __init__ initializes sound to None."""
-    assert audioManager.sound is None
+    assert AudioManager(App()).sound is None
 
 
 def test_init_connects_playSound_signal(audioManager):
@@ -72,6 +72,7 @@ def test_audio_sounds_has_alert_options():
 
 def test_playSound_with_no_config(audioManager):
     """Test playSound with empty config returns early."""
+    audioManager.sound = None
     audioManager.app.config["SettingAudio"] = {}
     audioManager.playSound("MountSlew")
     assert audioManager.sound is None
@@ -79,6 +80,7 @@ def test_playSound_with_no_config(audioManager):
 
 def test_playSound_with_index_zero(audioManager):
     """Test playSound with index 0 (disabled) returns early."""
+    audioManager.sound = None
     audioManager.app.config["SettingAudio"] = {"MountSlew": 0, "PlaySound": True}
     audioManager.playSound("MountSlew")
     assert audioManager.sound is None

@@ -15,13 +15,12 @@
 ###########################################################
 import re
 import requests
-from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker, startWorker
 from mw4.gui.utilities.qtHelpers import svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.uploadPopup_ui import Ui_UploadPopup
 from pathlib import Path
-from PySide6.QtCore import QEventLoop, Qt, Signal
+from PySide6.QtCore import QEventLoop, Qt, QTimer, Signal
 from typing import ClassVar
 
 
@@ -74,6 +73,9 @@ class UploadPopup(MWidget):
         self.dataTypes: list[str] = dataTypes
         self.dataFilePath: Path = dataFilePath
         self.pollStatusRunState: bool = False
+        self.uploadFinished: bool = False
+        self.pollFinished: bool = False
+        self.closing: bool = False
         self.timeoutCounter: int = 0
         x = parentWidget.x() + int((parentWidget.width() - self.width()) / 2)
         y = parentWidget.y() + int((parentWidget.height() - self.height()) / 2)
@@ -192,22 +194,32 @@ class UploadPopup(MWidget):
         files = self.prepareFiles()
         return self.postHostData(files)
 
-    def closePopup(self, result: bool) -> None:
-        self.returnValues["success"] = result
-        if not result:
-            self.pollStatusRunState = False
-            self.signalProgressBarColor.emit("red")
-        else:
-            while self.pollStatusRunState:
-                mainThreadSleep(100)
+    def finalizeUpload(self) -> None:
+        if self.closing:
+            return
+        if not (self.uploadFinished and self.pollFinished):
+            return
+        if self.returnValues["success"]:
             if self.returnValues["successMount"]:
                 self.signalProgressBarColor.emit("green")
                 self.msg.emit(0, "Upload", "Success", "Data updated")
             else:
                 self.signalProgressBarColor.emit("red")
                 self.msg.emit(2, "Upload", "Error", "Uploaded but mount failed to save data")
-        mainThreadSleep(500)
-        self.close()
+        self.closing = True
+        QTimer.singleShot(500, self.close)
+
+    def finishPollStatus(self) -> None:
+        self.pollFinished = True
+        self.finalizeUpload()
+
+    def closePopup(self, result: bool) -> None:
+        self.returnValues["success"] = result
+        if not result:
+            self.pollStatusRunState = False
+            self.signalProgressBarColor.emit("red")
+        self.uploadFinished = True
+        self.finalizeUpload()
 
     def exec(self) -> bool:
         self.showWindow()
@@ -220,7 +232,10 @@ class UploadPopup(MWidget):
             finishedMethod=self.loop.quit,
         )
         self.workerPollStatus = startWorker(
-            self.workerPollStatus, self.threadPool, self.runnerPollStatus
+            self.workerPollStatus,
+            self.threadPool,
+            self.runnerPollStatus,
+            finishedMethod=self.finishPollStatus,
         )
         self.loop.exec()
         self.pollStatusRunState = False

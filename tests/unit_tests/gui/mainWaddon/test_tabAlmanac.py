@@ -44,6 +44,15 @@ def almanac(qapp):
     mainW.app.threadPool.waitForDone(1000)
 
 
+@pytest.fixture(autouse=True)
+def resetAlmanac(almanac):
+    almanac.app.mount.obsSite.location = wgs84.latlon(
+        latitude_degrees=20, longitude_degrees=10, elevation_m=500
+    )
+    almanac.closing = False
+    almanac.setColors()
+
+
 def test_initConfig_loads_config(almanac):
     """Test initConfig loads configuration."""
     with mock.patch.object(almanac, "showTwilightDataPlot"):

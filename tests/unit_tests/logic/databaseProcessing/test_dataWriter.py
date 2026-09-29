@@ -27,13 +27,21 @@ from unittest import mock
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
+    cleanEarthRotationFiles()
+    window = DataWriter(app=App())
+    yield window
+
+
+@pytest.fixture(autouse=True)
+def resetEarthRotationFiles():
+    cleanEarthRotationFiles()
+
+
+def cleanEarthRotationFiles():
     for file in ["CDFLeapSeconds.txt", "finals.data", "tai-utc.dat"]:
         path = "tests/work/data/" + file
         if os.path.isfile(path):
             os.remove(path)
-
-    window = DataWriter(app=App())
-    yield window
 
 
 def test_writeEarthRotationData_1(function):

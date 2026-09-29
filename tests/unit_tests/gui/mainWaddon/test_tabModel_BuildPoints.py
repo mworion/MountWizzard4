@@ -37,6 +37,24 @@ def function(qapp):
     mainW.app.threadPool.waitForDone(1000)
 
 
+@pytest.fixture(autouse=True)
+def resetBuildPointState(function):
+    function.app.buildPoint.buildP = []
+    function.app.deviceStat["dome"] = False
+    function.app.dReg.d["dome"].stat = False
+    for checkbox in (
+        function.ui.autoDeleteHorizon,
+        function.ui.autoDeleteMeridian,
+        function.ui.useSafetyMargin,
+        function.ui.avoidFlip,
+        function.ui.sortAZ,
+        function.ui.sortALT,
+        function.ui.sortDomeAZ,
+        function.ui.ditherBuildPoints,
+    ):
+        checkbox.setChecked(False)
+
+
 def test_initConfig_1(function):
     with mock.patch.object(function, "setupDsoGui"):
         function.initConfig()
@@ -335,6 +353,7 @@ def test_clearBuildP_1(function):
 
 
 def test_autoDeletePoints(function):
+    function.app.buildPoint.buildP = [[10, 20, 1]]
     function.ui.autoDeleteHorizon.setChecked(True)
     function.ui.autoDeleteMeridian.setChecked(True)
     function.ui.useSafetyMargin.setChecked(True)
@@ -358,6 +377,7 @@ def test_autoSortPoints_3(function):
 
 def test_autoSortPoints_4(function):
     function.app.dReg.d["dome"].stat = True
+    function.app.buildPoint.buildP = [[10, 20, 1]]
     function.ui.sortDomeAZ.setChecked(True)
     function.autoSortPoints()
 

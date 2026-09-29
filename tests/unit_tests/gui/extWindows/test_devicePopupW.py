@@ -52,6 +52,15 @@ def function(qapp):
     QApplication.processEvents()
 
 
+@pytest.fixture(autouse=True)
+def prepareFunctionState(function):
+    function.app = App()
+    function.device = "telescope"
+    function.framework = "indi"
+    function.returnValues = {"close": "cancel"}
+    function.loop = None
+
+
 def test_initConfig_1(function):
     function.device = "telescope"
     function.framework = "indi"

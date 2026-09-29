@@ -15,11 +15,17 @@
 ###########################################################
 from astropy.io import fits
 from collections.abc import Callable
+from mw4.base.tpool import Worker, startWorker
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from pathlib import Path
-from PySide6.QtWidgets import QApplication, QListView
+from PySide6.QtCore import QObject, Signal
+from PySide6.QtWidgets import QListView
 from typing import Any, ClassVar
+
+
+class RenameSignals(QObject):
+    progress = Signal(int)
 
 
 class Rename(TabAddon):
@@ -38,7 +44,10 @@ class Rename(TabAddon):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
+        self.threadPool = mainW.app.threadPool
         self.renameDir: Path = Path()
+        self.signals = RenameSignals()
+        self.workerRenameFiles: Worker | None = None
 
         self.selectorsDropDowns = {
             "rename1": self.ui.rename1,
@@ -60,6 +69,7 @@ class Rename(TabAddon):
         self.setupGuiTools()
         self.ui.renameStart.clicked.connect(self.renameRunGUI)
         self.ui.renameInputSelect.clicked.connect(self.chooseDir)
+        self.signals.progress.connect(self.ui.renameProgress.setValue)
 
     def initConfig(self) -> None:
         config = self.app.config["WindowMain"]
@@ -92,9 +102,6 @@ class Rename(TabAddon):
             for headerEntry in self.fitsHeaderKeywords:
                 selectorUI.addItem(headerEntry)
 
-    def getNumberFiles(self, search: str) -> int:
-        return sum(1 for _ in self.renameDir.glob(search))
-
     def convertHeaderEntry(self, entry: str | float, fitsKey: str) -> str:
         formatter = self.HEADER_FORMATTERS.get(fitsKey)
         if formatter is None:
@@ -111,19 +118,32 @@ class Rename(TabAddon):
             break
         return nameChunk
 
-    def renameFile(self, fileName: Path) -> None:
+    def renameFile(
+        self, fileName: Path, renameDir: Path, newObjectName: str, selections: list[str]
+    ) -> None:
         with fits.open(name=fileName) as fd:
             fitsHeader = fd[0].header
-            newObjectName = self.ui.newObjectName.text().upper()
             newFileName = newObjectName or fitsHeader.get("OBJECT", "UNKNOWN").upper()
-
-            for selector in self.selectorsDropDowns.values():
-                selection = selector.currentText()
+            for selection in selections:
                 chunk = self.processSelectors(fitsHeader, selection)
                 if chunk:
                     newFileName += f"_{chunk}"
-            newFileName = (self.renameDir / newFileName).with_suffix(".fits")
-            fileName.rename(newFileName)
+        fileName.rename((renameDir / newFileName).with_suffix(".fits"))
+
+    def runnerRenameFiles(
+        self, files: list[Path], renameDir: Path, newObjectName: str, selections: list[str]
+    ) -> int:
+        numberFiles = len(files)
+        for i, fileName in enumerate(files):
+            self.renameFile(fileName, renameDir, newObjectName, selections)
+            self.signals.progress.emit(int(100 * (i + 1) / numberFiles))
+        return numberFiles
+
+    def renameFinished(self, numberFiles: int) -> None:
+        self.msg.emit(0, "Tools", "Rename", f"{numberFiles:d} images were renamed")
+
+    def renameEnableGUI(self) -> None:
+        self.ui.renameStart.setEnabled(True)
 
     def renameRunGUI(self) -> None:
         includeSubdirs = self.ui.includeSubdirs.isChecked()
@@ -132,17 +152,26 @@ class Rename(TabAddon):
             return
 
         search = "**/*.fit*" if includeSubdirs else "*.fit*"
-        numberFiles = self.getNumberFiles(search=search)
-        if not numberFiles:
+        files = list(self.renameDir.glob(search))
+        if not files:
             self.msg.emit(2, "Tools", "Rename error", "No files to rename")
             return
 
-        for i, fileName in enumerate(self.renameDir.glob(search)):
-            self.ui.renameProgress.setValue(int(100 * (i + 1) / numberFiles))
-            QApplication.processEvents()
-            self.renameFile(fileName)
-
-        self.msg.emit(0, "Tools", "Rename", f"{numberFiles:d} images were renamed")
+        newObjectName = self.ui.newObjectName.text().upper()
+        selections = [ui.currentText() for ui in self.selectorsDropDowns.values()]
+        self.ui.renameProgress.setValue(0)
+        self.ui.renameStart.setEnabled(False)
+        self.workerRenameFiles = startWorker(
+            self.workerRenameFiles,
+            self.threadPool,
+            self.runnerRenameFiles,
+            files,
+            self.renameDir,
+            newObjectName,
+            selections,
+            resultMethod=self.renameFinished,
+            finishedMethod=self.renameEnableGUI,
+        )
 
     def chooseDir(self) -> None:
         folder = self.ui.renameDir.text()

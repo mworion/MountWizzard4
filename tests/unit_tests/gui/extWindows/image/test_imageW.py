@@ -41,6 +41,23 @@ def function(qapp):
         QApplication.processEvents()
 
 
+@pytest.fixture(autouse=True)
+def prepareFunctionState(function):
+    function.fileHandler.image = np.ones((1, 1))
+    QApplication.processEvents()
+    function.app.dReg["camera"].stat = True
+    function.app.dReg["mount"].stat = True
+    function.app.dReg["plateSolve"].stat = True
+    function.isExposing = False
+    function.isSolving = False
+    function.ui.autoSolve.setChecked(False)
+    function.ui.continous.setChecked(False)
+    function.ui.photometryGroup.setChecked(False)
+    function.fileHandler.image = None
+    function.fileHandler.header = {}
+    function.imageFileName = Path("")
+
+
 def test_classVars_tabLists(function):
     assert ImageWindow.TAB_ASPECT == [
         "image",
@@ -525,6 +542,7 @@ def test_setButtonExposingStatusEnabled_noCamera(function):
 
 
 def test_setButtonExposingStatusEnabled_isExposing(function):
+    function.ui.groupImageActions.setEnabled(True)
     function.isExposing = True
     function.setButtonExposingStatusEnabled()
     assert not function.ui.load.isEnabled()
@@ -532,6 +550,7 @@ def test_setButtonExposingStatusEnabled_isExposing(function):
 
 
 def test_setButtonExposingStatusEnabled_notExposing(function):
+    function.ui.groupImageActions.setEnabled(True)
     function.isExposing = False
     function.setButtonExposingStatusEnabled()
     assert function.ui.expose.isEnabled()

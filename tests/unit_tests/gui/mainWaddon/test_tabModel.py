@@ -192,7 +192,7 @@ def test_checkMountTimeSync_3(function):
 
 
 def test_checkModelRunConditions_1(function):
-    function.app.data.buildP = [(0, 0, 1)]
+    function.app.buildPoint.buildP = [(0, 0, 1)]
     suc = function.checkModelRunConditions()
     assert not suc
 
@@ -299,7 +299,8 @@ def test_showStatusSolve_2(function):
 
 
 def test_setupModelInputData_1(function):
-    function.app.data.buildP = [[0, 0, 1], [0, 0, 1], [0, 0, 1]]
+    function.modelData = ModelData(function.app)
+    function.app.buildPoint.buildP = [[0, 0, 1], [0, 0, 1], [0, 0, 1]]
     function.setupModelInputData()
 
 
@@ -353,6 +354,7 @@ def test_runBatch_3(function):
 
 
 def test_runBatch_4(function):
+    function.modelData = ModelData(function.app)
     with (
         mock.patch.object(function, "checkModelRunConditions", return_value=True),
         mock.patch.object(function, "checkMountTimeSync", return_value=True),
@@ -365,6 +367,7 @@ def test_runBatch_4(function):
 
 
 def test_runBatch_5(function):
+    function.modelData = ModelData(function.app)
     function.modelData.cancelBatch = True
     with (
         mock.patch.object(function, "checkModelRunConditions", return_value=True),
@@ -378,6 +381,7 @@ def test_runBatch_5(function):
 
 
 def test_runBatch_6(function):
+    function.modelData = ModelData(function.app)
     function.ui.parkMountAfterModel.setChecked(True)
     function.modelData.cancelBatch = False
     with (
@@ -394,6 +398,7 @@ def test_runBatch_6(function):
 
 
 def test_runBatch_7(function):
+    function.modelData = ModelData(function.app)
     function.ui.parkMountAfterModel.setChecked(False)
     function.modelData.cancelBatch = False
     with (

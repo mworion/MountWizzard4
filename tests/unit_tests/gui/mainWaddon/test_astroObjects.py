@@ -98,6 +98,16 @@ def function(qapp):
     patcher_ul.stop()
 
 
+@pytest.fixture(autouse=True)
+def resetAstroObjects(function):
+    function.objectText = "test"
+    function.objects = {}
+    function.app.isOnline = False
+    function.window.ui.isOnline.setChecked(False)
+    function.uiObjectList = QTableWidget()
+    function.buildSourceListDropdown()
+
+
 def test_buildSourceListDropdown_1(function):
     with mock.patch.object(function, "loadSourceUrl"):
         function.buildSourceListDropdown()
@@ -251,6 +261,7 @@ def test_loadSourceUrl_4(function):
     function.uiSourceList.clear()
     function.uiSourceList.addItem("100 brightest")
 
+    function.app.isOnline = True
     function.window.ui.isOnline.setChecked(True)
     with (
         mock.patch.object(function, "checkFileAgeOK", return_value=False),

@@ -19,6 +19,7 @@ import json
 import mw4.gui
 import numpy as np
 import pytest
+from mw4.gui.mainWaddon.satData import SatData
 from mw4.gui.mainWaddon.tabSat_Search import SatSearch, SatSearchSignals
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
@@ -45,9 +46,11 @@ def function(qapp: object) -> SatSearch:
     # Mock timeMgr methods
     mainW.app.timeMgr.convertTime = mock.MagicMock(return_value="12:00")
     mainW.app.timeMgr.timeZoneString = mock.MagicMock(return_value="(UTC)")
+    savedSatellites = SatData.satellites
     window = SatSearch(mainW)
     yield window
     mainW.app.threadPool.waitForDone(1000)
+    SatData.satellites = savedSatellites
 
 
 @pytest.fixture(autouse=True, scope="module")

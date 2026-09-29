@@ -30,6 +30,15 @@ from unittest import mock
 
 @pytest.fixture(autouse=True, scope="module")
 def setup():
+    cleanConfigFiles()
+
+
+@pytest.fixture(autouse=True)
+def resetConfigFiles():
+    cleanConfigFiles()
+
+
+def cleanConfigFiles():
     files = glob.glob("tests/work/config/*.yaml")
     for f in files:
         os.remove(f)

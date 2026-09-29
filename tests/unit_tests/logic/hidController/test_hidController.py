@@ -33,6 +33,19 @@ def hc(qapp):
     app.threadPool.waitForDone(1000)
 
 
+@pytest.fixture(autouse=True)
+def resetState(hc):
+    worker = hc.workerCommunicationLoop
+    if worker is not None and worker.locked:
+        worker.locked = False
+        worker.mutex.unlock()
+    hc.workerCommunicationLoop = None
+    hc.deviceConnected = False
+    hc.hidControllerDevice = None
+    hc.stopEvent.clear()
+    yield
+
+
 def test_deviceConfigDefaults():
     cfg = DeviceConfigHidController()
     assert cfg.deviceName == ""

@@ -16,6 +16,7 @@
 import logging
 import PySide6
 from dataclasses import dataclass, field
+from mw4.base.appProtocol import AppProtocol
 from typing import Any
 
 
@@ -27,7 +28,7 @@ class DeviceConfigMeasureRaw:
 class MeasureDataRaw(PySide6.QtCore.QObject):
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: Any = None, parent: Any = None, data: Any = None) -> None:
+    def __init__(self, app: AppProtocol, parent: Any = None, data: Any = None) -> None:
         super().__init__()
 
         self.app = app

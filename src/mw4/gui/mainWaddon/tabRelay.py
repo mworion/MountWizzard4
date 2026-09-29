@@ -15,11 +15,14 @@
 ###########################################################
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class Relay(TabAddon):
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg
@@ -50,17 +53,18 @@ class Relay(TabAddon):
     def doRelayAction(self, relayIndex: int) -> bool:
         cfg = self.app.config.get("SettingRelay", {})
         action = cfg.get(f"Action{relayIndex:1d}", 0)
+        relay = self.app.dReg["relay"].instance
         if action == 0:
-            return self.app.relay.switch(relayIndex)
+            return relay.switch(relayIndex)
         else:
-            return self.app.relay.pulse(relayIndex)
+            return relay.pulse(relayIndex)
 
     def relayButtonPressed(self, buttonIndex: int) -> None:
         if not self.doRelayAction(buttonIndex):
             self.msg.emit(2, "System", "Relay", "Action cannot be done")
 
     def updateRelayGui(self) -> None:
-        for status, button in zip(self.app.relay.status, self.relayButtons):
+        for status, button in zip(self.app.dReg["relay"].instance.status, self.relayButtons):
             if status:
                 changeStyleDynamic(button, "run", "true")
             else:

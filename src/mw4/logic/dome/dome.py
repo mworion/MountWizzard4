@@ -18,6 +18,7 @@ import numpy as np
 import platform
 import PySide6
 from collections.abc import Callable
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
 from mw4.base.transform import diffModulusAbs
 from mw4.logic.dome.domeAlpaca import DomeAlpaca
@@ -32,7 +33,7 @@ class Dome:
     log = logging.getLogger("MW4")
     DEVICE_TYPE: str = "dome"
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()

@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+from mw4.base.appProtocol import AppProtocol
 from mw4.gui.extWindows.simulator.materials import Materials
 from mw4.gui.extWindows.simulator.tools import linkModel
 from PySide6.QtGui import QVector3D
@@ -20,7 +21,7 @@ from typing import Any
 
 
 class SimulatorPointer:
-    def __init__(self, parent: Any, app: Any) -> None:
+    def __init__(self, parent: Any, app: AppProtocol) -> None:
         super().__init__()
         self.parent = parent
         self.app = app

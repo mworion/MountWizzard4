@@ -16,6 +16,7 @@
 import logging
 import platform
 from astropy.io import fits
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
 from mw4.logic.camera.cameraAlpaca import CameraAlpaca
 from mw4.logic.camera.cameraIndi import CameraIndi
@@ -32,7 +33,7 @@ class Camera:
     log = logging.getLogger("MW4")
     DEVICE_TYPE: str = "camera"
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()

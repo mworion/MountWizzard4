@@ -18,6 +18,7 @@ import logging
 import queue
 from dataclasses import dataclass, field
 from indipyclient.queclient import EventItem, QueClient, runqueclient
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.indiClassAddOns import INDI_TYPES, INDIGO_CONV
 from mw4.base.tpool import Worker, startWorker
 from pyqtgraph.util.mutex import Mutex
@@ -42,7 +43,7 @@ class IndiClass:
 
     def __init__(self, parent: Any) -> None:
         self.parent: Any = parent
-        self.app: Any = parent.app
+        self.app: AppProtocol = parent.app
         self.msg: Any = parent.app.msg
         self.data: dict = parent.data
         self.signals: Any = parent.signals

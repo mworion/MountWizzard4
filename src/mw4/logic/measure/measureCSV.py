@@ -17,6 +17,7 @@ import csv
 import logging
 import PySide6
 from dataclasses import dataclass, field
+from mw4.base.appProtocol import AppProtocol
 from pathlib import Path
 from typing import Any, ClassVar
 
@@ -82,7 +83,7 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
     log = logging.getLogger("MW4")
 
     def __init__(
-        self, app: Any = None, parent: Any = None, data: dict[str, float] | None = None
+        self, app: AppProtocol, parent: Any = None, data: dict[str, float] | None = None
     ) -> None:
         if data is None:
             data = {}

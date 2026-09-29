@@ -15,6 +15,7 @@
 ###########################################################
 import cv2
 import qimage2ndarray
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.tpool import Worker, startWorker
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
@@ -23,13 +24,12 @@ from mw4.gui.widgets import video_ui
 from PySide6.QtCore import QTimer, Signal
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QSizePolicy
-from typing import Any
 
 
 class VideoWindowBase(MWidget):
     pixmapReady = Signal(object)
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         super().__init__()
         self.app = app
         self.msg = app.msg

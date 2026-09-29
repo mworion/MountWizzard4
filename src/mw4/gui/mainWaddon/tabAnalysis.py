@@ -14,11 +14,14 @@
 #
 ###########################################################
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class Analysis:
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

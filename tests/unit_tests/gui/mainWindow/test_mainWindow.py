@@ -202,8 +202,11 @@ def test_smartTabGui_with_default_state(mainWindow):
 
 def test_smartTabGui_with_power_enabled(mainWindow):
     """Test smartTabGui with power device enabled."""
-    mainWindow.app.deviceStat["power"] = True
-    mainWindow.smartTabGui()
+    mainWindow.app.dReg.d["power"].stat = True
+    try:
+        mainWindow.smartTabGui()
+    finally:
+        mainWindow.app.dReg.d["power"].stat = None
 
 
 def test_setEnvironDeviceStats_refraction_disabled(mainWindow):
@@ -233,22 +236,25 @@ def test_setEnvironDeviceStats_no_source(mainWindow):
 def test_updateDeviceStats_enabled_device(mainWindow):
     """Test updateDeviceStats with enabled device."""
     mainWindow.deviceStatGui = {"onlineWeather": QWidget()}
-    mainWindow.app.deviceStat = {"onlineWeather": True}
+    mainWindow.app.dReg.d["onlineWeather"].stat = True
     mainWindow.updateDeviceStats()
+    assert mainWindow.deviceStatGui["onlineWeather"].property("color") == "green"
 
 
 def test_updateDeviceStats_disabled_device(mainWindow):
     """Test updateDeviceStats with disabled device."""
     mainWindow.deviceStatGui = {"onlineWeather": QWidget()}
-    mainWindow.app.deviceStat = {"onlineWeather": False}
+    mainWindow.app.dReg.d["onlineWeather"].stat = False
     mainWindow.updateDeviceStats()
+    assert mainWindow.deviceStatGui["onlineWeather"].property("color") == "red"
 
 
 def test_updateDeviceStats_null_device(mainWindow):
     """Test updateDeviceStats with null device."""
     mainWindow.deviceStatGui = {"onlineWeather": QWidget()}
-    mainWindow.app.deviceStat = {"onlineWeather": None}
+    mainWindow.app.dReg.d["onlineWeather"].stat = None
     mainWindow.updateDeviceStats()
+    assert mainWindow.deviceStatGui["onlineWeather"].property("color") == "grey"
 
 
 def test_updateDeviceStats_no_driver_entry(mainWindow):

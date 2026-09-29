@@ -18,6 +18,7 @@ import logging
 import requests
 from dataclasses import dataclass, field
 from importlib.resources import as_file, files
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker, startWorker
 from pathlib import Path
@@ -40,7 +41,7 @@ class SeeingWeather:
     DEVICE_TYPE = "observingconditions"
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: Any = None) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         super().__init__()
         self.app = app
         self.threadPool = app.threadPool

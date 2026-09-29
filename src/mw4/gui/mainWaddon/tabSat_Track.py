@@ -23,11 +23,14 @@ from mw4.mountcontrol.tleParams import TLEParams
 from PySide6.QtWidgets import QLineEdit
 from sgp4.exporter import export_tle
 from skyfield.api import Angle, EarthSatellite
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class SatTrack(SatData):
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         super().__init__()
         self.mainW = mainW
         self.app = mainW.app

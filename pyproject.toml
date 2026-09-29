@@ -141,6 +141,7 @@ plugins = ["coverage_conditional_plugin"]
 [tool.coverage.report]
 exclude_also = [
     "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
 ]
 
 [tool.coverage.coverage_conditional_plugin.rules]

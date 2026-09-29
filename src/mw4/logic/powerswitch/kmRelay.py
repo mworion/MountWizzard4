@@ -18,6 +18,7 @@ import re
 import requests
 import time
 from dataclasses import dataclass, field
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker, startWorker
 from PySide6.QtCore import QTimer, Signal
@@ -45,7 +46,7 @@ class KMRelay:
     TIMEOUT = 0.5
     PULSEWIDTH = 0.5
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         super().__init__()
         self.app = app
         self.signals = RelaySignals()
@@ -155,20 +156,22 @@ class KMRelay:
             self.log.warning(f"Relay:{relayNumber}")
             return
 
-    def pulse(self, relayNumber: int) -> None:
+    def pulse(self, relayNumber: int) -> bool:
         self.workerPulse = startWorker(
             self.workerPulse,
             self.threadPool,
             self.runnerPulse,
             relayNumber,
         )
+        return True
 
-    def switch(self, relayNumber: int) -> None:
+    def switch(self, relayNumber: int) -> bool:
         self.log.debug(f"Switch relay:{relayNumber}")
         value = self.getRelay(f"/relays.cgi?relay={relayNumber + 1:1d}")
         if value is None or value.reason != "OK":
             self.log.warning(f"Relay:{relayNumber}")
-            return
+            return False
+        return True
 
     def set(self, relayNumber: int, value: bool) -> None:
         self.log.debug(f"Set relay:{relayNumber}")

@@ -138,14 +138,6 @@ class App(QObject):
                 "automaticDome": False,
             },
         }
-        self.deviceStat = {
-            "dome": False,
-            "mount": False,
-            "camera": False,
-            "plateSolve": False,
-            "refraction": None,
-            "onlineWeather": False,
-        }
         self.statusOperationRunning = 0
         self.messageQueue = Queue()
         self.plateSolve = PlateSolve()
@@ -155,7 +147,6 @@ class App(QObject):
         self.data = Data()
         self.filter = Filter()
         self.focuser = Focuser()
-        self.measure = Measure()
         self.mount = Mount()
         self.sensor1Weather = SensorWeather()
         self.sensor2Weather = SensorWeather()
@@ -166,7 +157,6 @@ class App(QObject):
         self.onlineWeather = OnlineWeather()
         self.power = Power()
         self.dome = Dome()
-        self.relay = Relay()
         self.remote = Remote()
         self.telescope = Telescope()
         self.hipparcos = Hipparcos()

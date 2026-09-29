@@ -318,7 +318,7 @@ def test_getByteMixed(kmRelay: KMRelay) -> None:
 
 def test_pulseWithNoneResponse(kmRelay: KMRelay) -> None:
     with mock.patch.object(kmRelay, "getRelay", return_value=None):
-        kmRelay.pulse(7)
+        assert kmRelay.pulse(7)
         assert kmRelay.workerPulse is not None
         assert isinstance(kmRelay.workerPulse, Worker)
 
@@ -329,7 +329,7 @@ def test_pulseWithBadResponse(kmRelay: KMRelay) -> None:
         status_code = 500
 
     with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
-        kmRelay.pulse(7)
+        assert kmRelay.pulse(7)
         assert kmRelay.workerPulse is not None
         assert isinstance(kmRelay.workerPulse, Worker)
 
@@ -340,7 +340,7 @@ def test_pulseWithGoodResponse(kmRelay: KMRelay) -> None:
         status_code = 200
 
     with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
-        kmRelay.pulse(7)
+        assert kmRelay.pulse(7)
         assert kmRelay.workerPulse is not None
         assert isinstance(kmRelay.workerPulse, Worker)
 
@@ -415,7 +415,7 @@ def test_runnerPulseWithValue2Bad(kmRelay: KMRelay) -> None:
 
 def test_switchWithNoneResponse(kmRelay: KMRelay) -> None:
     with mock.patch.object(kmRelay, "getRelay", return_value=None):
-        kmRelay.switch(7)
+        assert not kmRelay.switch(7)
 
 
 def test_switchWithBadResponse(kmRelay: KMRelay) -> None:
@@ -424,7 +424,7 @@ def test_switchWithBadResponse(kmRelay: KMRelay) -> None:
         status_code = 500
 
     with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
-        kmRelay.switch(7)
+        assert not kmRelay.switch(7)
 
 
 def test_switchWithGoodResponse(kmRelay: KMRelay) -> None:
@@ -433,7 +433,7 @@ def test_switchWithGoodResponse(kmRelay: KMRelay) -> None:
         status_code = 200
 
     with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
-        kmRelay.switch(7)
+        assert kmRelay.switch(7)
 
 
 def test_setWithNoneResponse(kmRelay: KMRelay) -> None:

@@ -15,6 +15,7 @@
 ###########################################################
 import numpy as np
 from functools import partial
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.tpool import Worker, startWorker
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import keypad_ui
@@ -22,7 +23,6 @@ from mw4.logic.keypad.keypad import KeyPad
 from PySide6.QtCore import QObject, Signal
 from PySide6.QtGui import QPixmap
 from qimage2ndarray import array2qimage
-from typing import Any
 
 
 class KeypadSignals(QObject):
@@ -38,7 +38,7 @@ class KeypadSignals(QObject):
 
 
 class KeypadWindow(MWidget):
-    def __init__(self, app: Any, title: str) -> None:
+    def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__()
         self.app = app
         self.msg = app.msg

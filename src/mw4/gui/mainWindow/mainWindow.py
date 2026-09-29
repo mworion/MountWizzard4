@@ -16,6 +16,7 @@
 import shutil
 from datetime import datetime
 from mw4.base import packageConfig
+from mw4.base.appProtocol import AppProtocol
 from mw4.gui.mainWindow.externalWindows import ExternalWindows
 from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
 from mw4.gui.styles.styles import Styles
@@ -32,11 +33,10 @@ from mw4.logic.profiles.profile import loadConfig, saveConfig
 from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path
 from skyfield.almanac import TWILIGHTS, dark_twilight_day
-from typing import Any
 
 
 class MainWindow(MWidget):
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         super().__init__()
         self.app = app
         self.msg = app.msg

@@ -13,12 +13,12 @@
 # License APL2.0
 #
 ###########################################################
+from mw4.base.appProtocol import AppProtocol
 from mw4.gui.extWindows.video.videoBase import VideoWindowBase
-from typing import Any
 
 
 class VideoWindow(VideoWindowBase):
-    def __init__(self, app: Any, title: str) -> None:
+    def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__(app=app)
         self.title: str = "Window" + title
         self.setWindowTitle(title)

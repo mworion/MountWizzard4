@@ -78,7 +78,7 @@ class HemisphereDraw(MWidget):
         self.app.timeMgr.update3s.disconnect(self.drawAlignmentStars)
 
     def setPointerVisibility(self) -> None:
-        visible = bool(self.app.deviceStat.get("mount"))
+        visible = bool(self.app.dReg["mount"].stat)
         for plotItem in self.ui.hemisphere.p:
             item = self.ui.hemisphere.findItemByName(plotItem, "pointer")
             if item:
@@ -345,7 +345,7 @@ class HemisphereDraw(MWidget):
         self.pointerDome.setVisible(True)
 
     def drawDome(self) -> None:
-        visible = bool(self.app.deviceStat.get("dome"))
+        visible = bool(self.app.dReg["dome"].stat)
         self.pointerDome.setVisible(visible)
 
     def drawModelIsoCurve(self) -> None:

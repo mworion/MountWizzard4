@@ -16,8 +16,8 @@
 import erfa
 import logging
 import numpy as np
+from mw4.base.appProtocol import AppProtocol
 from mw4.logic.buildData.alignstars import generateAlignStars
-from typing import Any
 
 
 class Hipparcos:
@@ -30,7 +30,7 @@ class Hipparcos:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: Any = None) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         self.app = app
         self.name: list[str] = []
         self.alt: list[float] = []

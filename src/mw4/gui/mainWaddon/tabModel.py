@@ -23,7 +23,10 @@ from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.logic.modelBuild.modelRun import ModelData
 from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class Model(TabAddon):
@@ -36,7 +39,7 @@ class Model(TabAddon):
     STATUS_EXPOSE_N = 6
     STATUS_SOLVE = 7
 
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

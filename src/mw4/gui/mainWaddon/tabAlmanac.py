@@ -29,7 +29,10 @@ from skyfield import almanac
 from skyfield.timelib import Timescale
 from skyfield.toposlib import GeographicPosition
 from skyfield.trigonometry import position_angle_of
-from typing import Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 TWILIGHT_PLOT_DAYS: int = 91
 MAX_TWILIGHT_ROWS: int = 8
@@ -83,7 +86,7 @@ class Almanac(TabAddon):
         "",
     ]
 
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.threadPool = mainW.app.threadPool

@@ -16,6 +16,7 @@
 import json
 import numpy as np
 from collections.abc import Iterable
+from mw4.base.appProtocol import AppProtocol
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import analyse_ui
@@ -24,7 +25,7 @@ from typing import Any
 
 
 class AnalyseWindow(MWidget):
-    def __init__(self, app: Any, title: str) -> None:
+    def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__()
         self.app = app
         self.ui = analyse_ui.Ui_AnalyseDialog()

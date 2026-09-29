@@ -159,7 +159,7 @@ def test_doRelayAction_switch_success(function):
             "Action0": 0,
         }
     }
-    with mock.patch.object(function.app.relay, "switch", return_value=True):
+    with mock.patch.object(function.app.dReg["relay"].instance, "switch", return_value=True):
         result = function.doRelayAction(0)
         assert result is True
 
@@ -170,7 +170,7 @@ def test_doRelayAction_switch_failure(function):
             "Action0": 0,
         }
     }
-    with mock.patch.object(function.app.relay, "switch", return_value=False):
+    with mock.patch.object(function.app.dReg["relay"].instance, "switch", return_value=False):
         result = function.doRelayAction(0)
         assert result is False
 
@@ -181,7 +181,7 @@ def test_doRelayAction_pulse_success(function):
             "Action0": 1,
         }
     }
-    with mock.patch.object(function.app.relay, "pulse", return_value=True):
+    with mock.patch.object(function.app.dReg["relay"].instance, "pulse", return_value=True):
         result = function.doRelayAction(0)
         assert result is True
 
@@ -192,14 +192,14 @@ def test_doRelayAction_pulse_failure(function):
             "Action0": 1,
         }
     }
-    with mock.patch.object(function.app.relay, "pulse", return_value=False):
+    with mock.patch.object(function.app.dReg["relay"].instance, "pulse", return_value=False):
         result = function.doRelayAction(0)
         assert result is False
 
 
 def test_doRelayAction_with_config(function):
     function.app.config = {"SettingRelay": {"Action0": 0}}
-    with mock.patch.object(function.app.relay, "switch", return_value=True):
+    with mock.patch.object(function.app.dReg["relay"].instance, "switch", return_value=True):
         result = function.doRelayAction(0)
         assert result is True
 
@@ -226,32 +226,32 @@ def test_relayButtonPressed_failure(function):
 
 
 def test_updateRelayGui_all_off(function):
-    function.app.relay.status = [0, 0, 0, 0, 0, 0, 0, 0]
+    function.app.dReg["relay"].instance.status = [0, 0, 0, 0, 0, 0, 0, 0]
     with mock.patch("mw4.gui.mainWaddon.tabRelay.changeStyleDynamic"):
         function.updateRelayGui()
 
 
 def test_updateRelayGui_all_on(function):
-    function.app.relay.status = [1, 1, 1, 1, 1, 1, 1, 1]
+    function.app.dReg["relay"].instance.status = [1, 1, 1, 1, 1, 1, 1, 1]
     with mock.patch("mw4.gui.mainWaddon.tabRelay.changeStyleDynamic"):
         function.updateRelayGui()
 
 
 def test_updateRelayGui_mixed_status(function):
-    function.app.relay.status = [1, 0, 1, 0, 1, 0, 1, 0]
+    function.app.dReg["relay"].instance.status = [1, 0, 1, 0, 1, 0, 1, 0]
     with mock.patch("mw4.gui.mainWaddon.tabRelay.changeStyleDynamic"):
         function.updateRelayGui()
 
 
 def test_updateRelayGui_calls_changeStyleDynamic(function):
-    function.app.relay.status = [1, 0, 1, 0, 1, 0, 1, 0]
+    function.app.dReg["relay"].instance.status = [1, 0, 1, 0, 1, 0, 1, 0]
     with mock.patch("mw4.gui.mainWaddon.tabRelay.changeStyleDynamic") as mock_style:
         function.updateRelayGui()
         assert mock_style.call_count > 0
 
 
 def test_updateRelayGui_changeStyleDynamic_called_correctly(function):
-    function.app.relay.status = [1, 0, 0, 0, 0, 0, 0, 0]
+    function.app.dReg["relay"].instance.status = [1, 0, 0, 0, 0, 0, 0, 0]
     with mock.patch("mw4.gui.mainWaddon.tabRelay.changeStyleDynamic") as mock_style:
         function.updateRelayGui()
         first_call = mock_style.call_args_list[0]
@@ -264,7 +264,7 @@ def test_relay_buttons_connected_to_statusReady(function):
 
 
 def test_relay_statusReady_signal_emission(function):
-    function.app.relay.status = [1, 0, 0, 0, 0, 0, 0, 0]
+    function.app.dReg["relay"].instance.status = [1, 0, 0, 0, 0, 0, 0, 0]
     with mock.patch("mw4.gui.mainWaddon.tabRelay.changeStyleDynamic"):
         function.app.dReg["relay"].signals.statusReady.emit()
         function.updateRelayGui()
@@ -273,7 +273,9 @@ def test_relay_statusReady_signal_emission(function):
 def test_doRelayAction_different_indices(function):
     for i in range(8):
         function.app.config = {"SettingRelay": {f"Action{i}": 0}}
-        with mock.patch.object(function.app.relay, "switch", return_value=True):
+        with mock.patch.object(
+            function.app.dReg["relay"].instance, "switch", return_value=True
+        ):
             result = function.doRelayAction(i)
             assert result is True
 
@@ -315,11 +317,11 @@ def test_relay_relay_button_texts_set_correctly(function):
 
 
 def test_updateRelayGui_status_property_exists(function):
-    assert hasattr(function.app.relay, "status")
+    assert hasattr(function.app.dReg["relay"].instance, "status")
 
 
 def test_updateRelayGui_with_empty_status(function):
-    function.app.relay.status = []
+    function.app.dReg["relay"].instance.status = []
     with mock.patch("mw4.gui.mainWaddon.tabRelay.changeStyleDynamic"):
         function.updateRelayGui()
 
@@ -342,9 +344,9 @@ def test_doRelayAction_reads_correct_config(function):
     function.app.config = {"SettingRelay": {}}
     for i in range(8):
         function.app.config["SettingRelay"][f"Action{i}"] = 0
-    with mock.patch.object(function.app.relay, "switch", return_value=True):
+    with mock.patch.object(function.app.dReg["relay"].instance, "switch", return_value=True):
         function.doRelayAction(3)
-        function.app.relay.switch.assert_called_with(3)
+        function.app.dReg["relay"].instance.switch.assert_called_with(3)
 
 
 def test_relayButtonPressed_emits_message_on_failure(function):
@@ -378,7 +380,7 @@ def test_relay_initialization_connects_signals(function):
 
 
 def test_updateRelayGui_changeStyleDynamic_with_status_on(function):
-    function.app.relay.status = [1, 1, 1, 1, 1, 1, 1, 1]
+    function.app.dReg["relay"].instance.status = [1, 1, 1, 1, 1, 1, 1, 1]
     with mock.patch("mw4.gui.mainWaddon.tabRelay.changeStyleDynamic") as mock_style:
         function.updateRelayGui()
         calls = [c[0] for c in mock_style.call_args_list]
@@ -386,7 +388,7 @@ def test_updateRelayGui_changeStyleDynamic_with_status_on(function):
 
 
 def test_updateRelayGui_changeStyleDynamic_with_status_off(function):
-    function.app.relay.status = [0, 0, 0, 0, 0, 0, 0, 0]
+    function.app.dReg["relay"].instance.status = [0, 0, 0, 0, 0, 0, 0, 0]
     with mock.patch("mw4.gui.mainWaddon.tabRelay.changeStyleDynamic") as mock_style:
         function.updateRelayGui()
         calls = [c[0] for c in mock_style.call_args_list]

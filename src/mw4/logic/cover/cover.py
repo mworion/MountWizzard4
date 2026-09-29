@@ -15,6 +15,7 @@
 ###########################################################
 import logging
 import platform
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
 from mw4.logic.cover.coverAlpaca import CoverAlpaca
 from mw4.logic.cover.coverIndi import CoverIndi
@@ -28,7 +29,7 @@ class Cover:
     log = logging.getLogger("MW4")
     DEVICE_TYPE: str = "covercalibrator"
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()

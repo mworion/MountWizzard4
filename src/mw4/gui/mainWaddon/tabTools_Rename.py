@@ -21,7 +21,10 @@ from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from pathlib import Path
 from PySide6.QtCore import QObject, Signal
 from PySide6.QtWidgets import QListView
-from typing import Any, ClassVar
+from typing import TYPE_CHECKING, ClassVar
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class RenameSignals(QObject):
@@ -39,7 +42,7 @@ class Rename(TabAddon):
         "EXPTIME": lambda e: f"Exp{e:1.0f}s",
     }
 
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

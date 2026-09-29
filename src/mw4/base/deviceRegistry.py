@@ -15,6 +15,7 @@
 import logging
 from collections.abc import Iterator
 from dataclasses import fields
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.deviceEntry import DeviceEntry
 from mw4.logic.camera.camera import Camera
 from mw4.logic.cover.cover import Cover
@@ -40,7 +41,7 @@ from typing import Any
 class DeviceRegistry(QObject):
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         super().__init__()
         self.app = app
         self.signalsToName: dict[int, str] = {}
@@ -61,7 +62,7 @@ class DeviceRegistry(QObject):
             ),
         }
 
-    def addDevices(self, app: Any) -> None:
+    def addDevices(self, app: AppProtocol) -> None:
         deviceSpec: list[tuple[str, Any, str | None, bool]] = [
             ("camera", Camera, "camera", True),
             ("cover", Cover, "covercalibrator", True),

@@ -20,7 +20,10 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QWidget
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 @dataclass
@@ -32,7 +35,7 @@ class RefractionEntry:
 
 
 class EnvironWeather(TabAddon):
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

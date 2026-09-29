@@ -20,11 +20,14 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.logic.databaseProcessing.sourceURL import asteroidSourceURLs
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class Asteroid(TabAddon):
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.ui = mainW.ui

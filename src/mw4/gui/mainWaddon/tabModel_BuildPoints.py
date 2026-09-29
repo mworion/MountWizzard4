@@ -18,11 +18,14 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from skyfield.api import Angle
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class BuildPoints(TabAddon):
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg
@@ -333,7 +336,7 @@ class BuildPoints(TabAddon):
             self.app.buildPoint.sortAlt()
         if self.ui.sortAZ.isChecked():
             self.app.buildPoint.sortAz()
-        if self.ui.sortDomeAZ.isChecked() and bool(self.app.deviceStat.get("dome")):
+        if self.ui.sortDomeAZ.isChecked() and bool(self.app.dReg["dome"].stat):
             self.app.buildPoint.sortDomeAz()
         if self.ui.avoidFlip.isChecked():
             self.app.buildPoint.sortActualPierside()

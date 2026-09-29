@@ -16,6 +16,7 @@
 import pytest
 import shutil
 import sys
+from mw4.base.appProtocol import AppProtocol
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from unittest import mock
@@ -85,6 +86,10 @@ def test_init_config(app):
     """initConfig() sets up the location from config and custom logging level."""
     app.initConfig()
     assert app.dReg["mount"].obsSite.location is not None
+
+
+def test_satisfiesAppProtocol(app):
+    assert isinstance(app, AppProtocol)
 
 
 def test_store_config(app):

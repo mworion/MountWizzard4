@@ -30,7 +30,10 @@ from mw4.mountcontrol.convert import (
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QWidget
 from skyfield.api import Angle
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class StepSize(Enum):
@@ -56,7 +59,7 @@ class StepSize(Enum):
 
 
 class MountMove(TabAddon):
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

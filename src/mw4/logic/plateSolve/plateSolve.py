@@ -17,6 +17,7 @@ import logging
 import queue
 import subprocess
 import time
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker, startWorker
 from mw4.base.transform import J2000ToJNow
@@ -41,7 +42,7 @@ class PlateSolve:
     DEVICE_TYPE = "misc"
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()

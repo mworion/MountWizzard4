@@ -19,7 +19,10 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.logic.databaseProcessing.dataWriter import DataWriter
 from pathlib import Path
 from PySide6.QtWidgets import QListView
-from typing import Any, ClassVar
+from typing import TYPE_CHECKING, ClassVar
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class IERSTime(TabAddon):
@@ -28,7 +31,7 @@ class IERSTime(TabAddon):
         "Maia from usno.navy.mil": "https://maia.usno.navy.mil/ser7/",
     }
 
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

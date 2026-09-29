@@ -33,7 +33,10 @@ from PySide6.QtCore import QObject, Qt, Signal
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 from skyfield.api import EarthSatellite, Time
 from skyfield.toposlib import GeographicPosition
-from typing import Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class SatSearchSignals(QObject):
@@ -46,7 +49,7 @@ class SatSearch(SatData):
     log = logging.getLogger("MW4")
     SATFILTERS: ClassVar = ["Starlink", "Cosmos", "Iridium", "Kuiper", "Qianfan", "Hulianwang"]
 
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         super().__init__()
         self.mainW = mainW
         self.app = mainW.app

@@ -17,6 +17,7 @@ import json
 import logging
 import time
 from collections.abc import Iterator
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.transform import JNowToJ2000
 from mw4.logic.modelBuild.modelRunSupport import convertAngleToFloat, writeRetrofitData
@@ -40,7 +41,7 @@ class ModelData(QObject):
     statusRetry = Signal(object)
     startSlew = Signal()
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         super().__init__()
         self.app = app
         self.cancelBatch: bool = False

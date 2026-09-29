@@ -17,11 +17,14 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtHelpers import guiSetText, img2pixmap, setPixmapAlpha
 from mw4.mountcontrol.model import Model
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class ModelStatus(TabAddon):
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

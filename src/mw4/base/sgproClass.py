@@ -18,6 +18,7 @@ import requests
 import threading
 import time
 from dataclasses import dataclass, field
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker, startWorker
 from PySide6.QtCore import QThreadPool
@@ -47,7 +48,7 @@ class SGProClass(DriverData):
     def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
         self.parent = parent
-        self.app: Any = parent.app
+        self.app: AppProtocol = parent.app
         self.data: dict = parent.data
         self.msg: Any = parent.app.msg
         self.signals: Any = parent.signals

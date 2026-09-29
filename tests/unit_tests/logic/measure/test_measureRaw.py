@@ -29,7 +29,7 @@ def function():
         def measureTask():
             return True
 
-    func = MeasureDataRaw(parent=Test1())
+    func = MeasureDataRaw(app=mock.MagicMock(), parent=Test1())
     yield func
 
 

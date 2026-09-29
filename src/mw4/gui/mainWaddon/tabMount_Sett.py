@@ -28,11 +28,14 @@ from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.setting import Setting
 from skyfield.api import Angle, wgs84
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class MountSett(TabAddon):
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

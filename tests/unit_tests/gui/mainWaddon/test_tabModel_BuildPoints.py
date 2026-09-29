@@ -40,7 +40,6 @@ def function(qapp):
 @pytest.fixture(autouse=True)
 def resetBuildPointState(function):
     function.app.buildPoint.buildP = []
-    function.app.deviceStat["dome"] = False
     function.app.dReg.d["dome"].stat = False
     for checkbox in (
         function.ui.autoDeleteHorizon,
@@ -379,7 +378,9 @@ def test_autoSortPoints_4(function):
     function.app.dReg.d["dome"].stat = True
     function.app.buildPoint.buildP = [[10, 20, 1]]
     function.ui.sortDomeAZ.setChecked(True)
-    function.autoSortPoints()
+    with mock.patch.object(function.app.buildPoint, "sortDomeAz") as mockSort:
+        function.autoSortPoints()
+        mockSort.assert_called_once()
 
 
 def test_buildPointsChanged(function):
@@ -513,12 +514,12 @@ def test_genBuildFile_loadFails(function):
 
 
 def test_autoSortPoints_dome_active(function):
-    function.app.deviceStat["dome"] = True
+    function.app.dReg.d["dome"].stat = True
     function.ui.sortDomeAZ.setChecked(True)
     with mock.patch.object(function.app.buildPoint, "sortDomeAz") as mockSort:
         function.autoSortPoints()
         mockSort.assert_called_once()
-    function.app.deviceStat["dome"] = None
+    function.app.dReg.d["dome"].stat = None
     function.ui.sortDomeAZ.setChecked(False)
 
 

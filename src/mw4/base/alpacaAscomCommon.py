@@ -16,6 +16,7 @@
 import queue
 import threading
 from dataclasses import dataclass, field
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.driverDataClass import DriverData
 from PySide6.QtCore import QThreadPool
 from typing import Any
@@ -35,7 +36,7 @@ class AlpacaAscomCommon(DriverData):
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
-        self.app: Any = parent.app
+        self.app: AppProtocol = parent.app
         self.data: dict = parent.data
         self.signals: Any = parent.signals
         self.threadPool: QThreadPool = parent.app.threadPool

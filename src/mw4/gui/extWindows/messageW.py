@@ -15,12 +15,12 @@
 ###########################################################
 import logging
 import time
+from mw4.base.appProtocol import AppProtocol
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import message_ui
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QBrush, QFont
 from PySide6.QtWidgets import QTableWidgetItem
-from typing import Any
 
 
 class MessageWindow(MWidget):
@@ -30,7 +30,7 @@ class MessageWindow(MWidget):
     TEXT_WARNING = 2
     TEXT_ERROR = 3
 
-    def __init__(self, app: Any, title: str) -> None:
+    def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__()
         self.app = app
         self.ui = message_ui.Ui_MessageDialog()

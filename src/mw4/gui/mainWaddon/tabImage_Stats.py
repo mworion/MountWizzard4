@@ -18,7 +18,10 @@ import webbrowser
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import guiSetText
 from range_key_dict import RangeKeyDict
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class ImageStats(TabAddon):
@@ -66,7 +69,7 @@ class ImageStats(TabAddon):
         }
     )
 
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg

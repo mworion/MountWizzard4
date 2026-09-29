@@ -19,12 +19,12 @@ import logging
 import numpy as np
 import random
 from mw4.base import transform
+from mw4.base.appProtocol import AppProtocol
 from pathlib import Path
 from scipy.spatial import distance
 from skyfield import almanac
 from skyfield.api import Angle, Star, Timescale
 from skyfield.toposlib import GeographicPosition
-from typing import Any
 
 
 def HaDecToAltAz(ha: float, dec: float, lat: float) -> tuple[float, float]:
@@ -52,7 +52,7 @@ class BuildPoint:
 
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         self.app = app
         self.configDir: Path = app.mwGlob["configDir"]
         self._horizonP: list[list[float]] = []

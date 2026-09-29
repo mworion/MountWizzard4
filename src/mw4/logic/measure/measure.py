@@ -15,6 +15,7 @@
 ###########################################################
 import logging
 import numpy as np
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
 from mw4.logic.measure.measureAddOns import measure
 from mw4.logic.measure.measureCSV import MeasureDataCSV
@@ -29,7 +30,7 @@ class MeasureData:
     MAXSIZE = 48 * 60 * 60
     CYCLE_UPDATE_TASK = 1000
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         super().__init__()
         self.app = app
         self.signals = Signals()

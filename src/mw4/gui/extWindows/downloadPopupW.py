@@ -25,9 +25,9 @@ from PySide6.QtCore import QEventLoop, Qt, QTimer, Signal
 
 
 class DownloadPopup(MWidget):
-    signalProgress = Signal(object)
-    signalStatus = Signal(object)
-    signalProgressBarColor = Signal(object)
+    signalProgress = Signal(int)
+    signalStatus = Signal(str)
+    signalProgressBarColor = Signal(str)
     TIMEOUT_SOURCE = 10
 
     def __init__(self, parentWidget: MWidget, url: str, dest: Path, unzip: bool = False):

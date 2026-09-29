@@ -71,7 +71,7 @@ class VideoWindowBase(MWidget):
             _, frame = self.capture.retrieve()
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         except cv2.error as e:
-            self.msg.emit(2, "Video", "Compatibility", e)
+            self.msg.emit(2, "Video", "Compatibility", f"{e}")
             return
 
         image = qimage2ndarray.array2qimage(frame)

@@ -14,21 +14,26 @@
 #
 ###########################################################
 from mw4.base.signalsDevices import Signals
+from mw4.mountcontrol.firmware import Firmware
+from mw4.mountcontrol.model import Model
+from mw4.mountcontrol.obsSite import ObsSite
+from mw4.mountcontrol.setting import Setting
+from mw4.mountcontrol.tleParams import TLEParams
+from mw4.mountcontrol.trajectoryParams import TrajectoryParams
 from PySide6.QtCore import Signal
 
 
 class MountSignals(Signals):
-    pointDone = Signal(object)
-    domeDone = Signal(object)
-    settingDone = Signal(object)
-    getModelDone = Signal(object)
-    namesDone = Signal(object)
-    firmwareDone = Signal(object)
-    locationDone = Signal(object)
-    calcTLEdone = Signal(object)
-    statTLEdone = Signal(object)
-    getTLEdone = Signal(object)
-    calcTrajectoryDone = Signal(object)
-    mountIsUp = Signal(object)
+    pointDone = Signal(ObsSite)
+    settingDone = Signal(Setting)
+    getModelDone = Signal(Model)
+    namesDone = Signal(Model)
+    firmwareDone = Signal(Firmware)
+    locationDone = Signal(ObsSite)
+    calcTLEdone = Signal(TLEParams)
+    statTLEdone = Signal(TLEParams)
+    getTLEdone = Signal(TLEParams)
+    calcTrajectoryDone = Signal(TrajectoryParams)
+    mountIsUp = Signal(bool)
     slewed = Signal()
     alert = Signal()

@@ -57,10 +57,21 @@ def test_sendImage_1(function):
 def test_sendImage_2(function):
     function.capture = cv2.VideoCapture()
     function.running = False
-    with mock.patch.object(
-        cv2, "cvtColor", return_value=np.ones((10, 10, 1)), side_effect=cv2.error
-    ):
-        function.sendImage()
+    received = []
+
+    def record(*args):
+        received.append(args)
+
+    function.msg.connect(record)
+    try:
+        with mock.patch.object(
+            cv2, "cvtColor", return_value=np.ones((10, 10, 1)), side_effect=cv2.error
+        ):
+            function.sendImage()
+    finally:
+        function.msg.disconnect(record)
+    assert received[-1][2] == "Compatibility"
+    assert isinstance(received[-1][3], str)
 
 
 def test_sendImage_3(function):

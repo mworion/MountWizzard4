@@ -35,11 +35,11 @@ class DeviceConfigHidController:
 
 
 class HidControllerSignals(Signals):
-    hidABXY = Signal(object)
-    hidPMH = Signal(object)
-    hidDirection = Signal(object)
-    hidSL = Signal(object, object)
-    hidSR = Signal(object, object)
+    hidABXY = Signal(int)
+    hidPMH = Signal(int)
+    hidDirection = Signal(int)
+    hidSL = Signal(int, int)
+    hidSR = Signal(int, int)
 
 
 class HidController:

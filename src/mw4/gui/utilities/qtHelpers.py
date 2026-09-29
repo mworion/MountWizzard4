@@ -95,7 +95,7 @@ def guiSetText(
 
 def clickable(widget: QWidget) -> SignalInstance:
     class MouseClickEventFilter(QObject):
-        clicked = Signal(object)
+        clicked = Signal(QWidget)
 
         def eventFilter(self, obj: QWidget, event: QMouseEvent):
             if event.type() == QEvent.Type.MouseButtonRelease:

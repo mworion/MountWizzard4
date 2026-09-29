@@ -302,9 +302,9 @@ method names or a `qtbot.waitSignal`.
 **`base/threadUtils.py`** was deleted together with its test. There are no callers left in
 `src`. The four stress tests now use `QTest.qWait` (the Qt test equivalent).
 
-**Tests:** `test_modelRun.py` (60 → 62 tests, including a 3-point flow test
+**Tests:** `test_modelRun.py` (42 → 61 tests, including a 3-point flow test
 with one retry pass through `qtbot.waitSignal(finished)`) and `test_tabModel.py`
-(new tests for `startBatch`, `finishBatch`, `backupAfterClear` and
+(55 → 58, with new tests for `startBatch`, `finishBatch`, `backupAfterClear` and
 `programFileModel`). The module fixture now depends on `qapp`, because timers
 need a running application.
 

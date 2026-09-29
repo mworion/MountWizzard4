@@ -26,14 +26,14 @@ from qimage2ndarray import array2qimage
 
 
 class KeypadSignals(QObject):
-    textRow = Signal(object, object)
-    imgChunk = Signal(object, object, object)
-    keyPressed = Signal(object)
-    keyUp = Signal(object)
-    keyDown = Signal(object)
-    mousePressed = Signal(object)
-    mouseReleased = Signal(object)
-    cursorPos = Signal(object, object)
+    textRow = Signal(int, str)
+    imgChunk = Signal(object, int, int)
+    keyPressed = Signal(int)
+    keyUp = Signal(int)
+    keyDown = Signal(int)
+    mousePressed = Signal(str)
+    mouseReleased = Signal(str)
+    cursorPos = Signal(int, int)
     clearCursor = Signal()
 
 

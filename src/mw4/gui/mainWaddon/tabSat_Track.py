@@ -369,8 +369,8 @@ class SatTrack(SatData):
         start, end, alt, az = self.filterHorizon(start, end, alt, az)
 
         if len(alt) == 0:
-            text = "Program", "No track data (white), please revise settings"
-            self.msg.emit(2, "TLE", "Error", text)
+            text = "No track data (white), please revise settings"
+            self.msg.emit(2, "TLE", "Program error", text)
             return
 
         factor = int(len(alt) / 900)

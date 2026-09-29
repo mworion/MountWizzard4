@@ -92,6 +92,20 @@ def test_satisfiesAppProtocol(app):
     assert isinstance(app, AppProtocol)
 
 
+def test_msgSignalIsTyped(app, qtbot):
+    with qtbot.waitSignal(app.msg) as blocker:
+        app.msg.emit(1, "System", "Test", "text")
+    assert blocker.args == [1, "System", "Test", "text"]
+    assert [type(arg) for arg in blocker.args] == [int, str, str, str]
+
+
+def test_pathSignalPassesThrough(app, qtbot):
+    path = Path("image.fits")
+    with qtbot.waitSignal(app.showImage) as blocker:
+        app.showImage.emit(path)
+    assert blocker.args[0] is path
+
+
 def test_store_config(app):
     app.storeConfig()
     assert "topoLat" in app.config

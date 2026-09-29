@@ -21,7 +21,9 @@ from mw4.logic.buildData.buildpoints import BuildPoint
 from pathlib import Path
 from PySide6.QtCore import QObject, QThreadPool, Signal
 from queue import Queue
-from skyfield.api import load_file
+from skyfield.api import EarthSatellite, load_file
+from skyfield.timelib import Time
+from skyfield.toposlib import GeographicPosition
 from tests.unit_tests.unitTestAddOns.deviceStubs import (  # noqa: F401
     CSV,
     Camera,
@@ -90,8 +92,8 @@ class App(QObject):
     __version__ = "test"
     MAX_THREAD_COUNT = 30
     sendSatelliteData = Signal(object, object)
-    updateSatellite = Signal(object, object)
-    showSatellite = Signal(object, object, object, object, object)
+    updateSatellite = Signal(Time, GeographicPosition)
+    showSatellite = Signal(EarthSatellite, object, object, object, str)
     updateDomeSettings = Signal()
     drawHorizonPoints = Signal()
     drawBuildPoints = Signal()
@@ -99,15 +101,15 @@ class App(QObject):
     refreshModel = Signal()
     refreshName = Signal()
     redrawHorizon = Signal()
-    showAnalyse = Signal(object)
-    showImage = Signal(object)
+    showAnalyse = Signal(Path)
+    showImage = Signal(Path)
     updatePointMarker = Signal()
-    operationRunning = Signal(object)
+    operationRunning = Signal(int)
     colorChange = Signal()
     buildPointsChanged = Signal()
-    playSound = Signal(object)
-    msg = Signal(object, object, object, object)
-    remoteCommand = Signal(object)
+    playSound = Signal(str)
+    msg = Signal(int, str, str, str)
+    remoteCommand = Signal(str)
     onlineModeChanged = Signal()
     timebaseChanged = Signal()
     relayChanged = Signal()

@@ -637,13 +637,28 @@ def test_startProg_2(function):
 
 
 def test_startProg_3(function):
-    with (
-        mock.patch.object(function, "clearTrackingParameters"),
-        mock.patch.object(function, "selectStartEnd", return_value=(1, 1)),
-        mock.patch.object(function, "calcTrajectoryData", return_value=(0, 0)),
-        mock.patch.object(function, "filterHorizon", return_value=(0, 0, [], [])),
-    ):
-        function.startProg()
+    received = []
+
+    def record(*args):
+        received.append(args)
+
+    function.msg.connect(record)
+    try:
+        with (
+            mock.patch.object(function, "clearTrackingParameters"),
+            mock.patch.object(function, "selectStartEnd", return_value=(1, 1)),
+            mock.patch.object(function, "calcTrajectoryData", return_value=(0, 0)),
+            mock.patch.object(function, "filterHorizon", return_value=(0, 0, [], [])),
+        ):
+            function.startProg()
+    finally:
+        function.msg.disconnect(record)
+    assert received[-1] == (
+        2,
+        "TLE",
+        "Program error",
+        "No track data (white), please revise settings",
+    )
 
 
 def test_changeUnitTimeUTC_1(function):

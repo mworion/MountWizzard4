@@ -16,10 +16,10 @@
 
 import pytest
 from mw4.mountcontrol.mountSignals import MountSignals
+from mw4.mountcontrol.obsSite import ObsSite
 
 EXPECTED_SIGNALS = [
     "pointDone",
-    "domeDone",
     "settingDone",
     "getModelDone",
     "namesDone",
@@ -45,7 +45,7 @@ def test_instantiation(mountSignals):
 
 
 def test_signalCount(mountSignals):
-    assert len(EXPECTED_SIGNALS) == 14
+    assert len(EXPECTED_SIGNALS) == 13
 
 
 def test_pointDone(mountSignals):
@@ -53,9 +53,21 @@ def test_pointDone(mountSignals):
     assert callable(mountSignals.pointDone.connect)
 
 
-def test_domeDone(mountSignals):
-    assert hasattr(mountSignals, "domeDone")
-    assert callable(mountSignals.domeDone.connect)
+def test_domeDoneRemoved(mountSignals):
+    assert not hasattr(mountSignals, "domeDone")
+
+
+def test_mountIsUpIsBool(mountSignals, qtbot):
+    with qtbot.waitSignal(mountSignals.mountIsUp) as blocker:
+        mountSignals.mountIsUp.emit(True)
+    assert blocker.args == [True]
+
+
+def test_domainPayloadPassesThrough(mountSignals, qtbot):
+    payload = object.__new__(ObsSite)
+    with qtbot.waitSignal(mountSignals.pointDone) as blocker:
+        mountSignals.pointDone.emit(payload)
+    assert blocker.args[0] is payload
 
 
 def test_settingDone(mountSignals):

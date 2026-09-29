@@ -25,9 +25,9 @@ from typing import ClassVar
 
 
 class UploadPopup(MWidget):
-    signalProgress = Signal(object)
-    signalStatus = Signal(object)
-    signalProgressBarColor = Signal(object)
+    signalProgress = Signal(int)
+    signalStatus = Signal(str)
+    signalProgressBarColor = Signal(str)
     TIMEOUT_UPLOAD: ClassVar = 5
     dataNames: ClassVar = {
         "comet": {

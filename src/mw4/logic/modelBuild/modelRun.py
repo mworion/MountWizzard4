@@ -38,7 +38,7 @@ class ModelData(QObject):
     statusExpose = Signal(object)
     statusSolve = Signal(object)
     statusSlew = Signal(object)
-    statusRetry = Signal(object)
+    statusRetry = Signal(int)
     startSlew = Signal()
     finished = Signal(bool)
 

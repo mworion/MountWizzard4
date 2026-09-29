@@ -25,10 +25,13 @@ from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.logic.buildData.buildpoints import BuildPoint
 from mw4.logic.buildData.hipparcos import Hipparcos
 from mw4.logic.profiles.profile import loadProfileStart
+from pathlib import Path
 from PySide6.QtCore import QObject, QThreadPool, Signal
 from PySide6.QtWidgets import QApplication
 from queue import Queue
-from skyfield.api import wgs84
+from skyfield.api import EarthSatellite, wgs84
+from skyfield.timelib import Time
+from skyfield.toposlib import GeographicPosition
 
 
 class MountWizzard4(QObject):
@@ -36,12 +39,11 @@ class MountWizzard4(QObject):
     log = logging.getLogger("MW4")
 
     # --- UI signals ---
-    material = Signal(object, object)
-    msg = Signal(object, object, object, object)
+    msg = Signal(int, str, str, str)
     colorChange = Signal()
-    playSound = Signal(object)
-    showImage = Signal(object)
-    showAnalyse = Signal(object)
+    playSound = Signal(str)
+    showImage = Signal(Path)
+    showAnalyse = Signal(Path)
     timebaseChanged = Signal()
     onlineModeChanged = Signal()
     hidModeChanged = Signal()
@@ -53,14 +55,14 @@ class MountWizzard4(QObject):
     drawBuildPoints = Signal()
     buildPointsChanged = Signal()
     drawHorizonPoints = Signal()
-    operationRunning = Signal(object)
+    operationRunning = Signal(int)
     updateDomeSettings = Signal()
-    remoteCommand = Signal(object)
+    remoteCommand = Signal(str)
     refreshModel = Signal()
     refreshName = Signal()
     sendSatelliteData = Signal(object, object)
-    updateSatellite = Signal(object, object)
-    showSatellite = Signal(object, object, object, object, object)
+    updateSatellite = Signal(Time, GeographicPosition)
+    showSatellite = Signal(EarthSatellite, object, object, object, str)
 
     MAX_THREAD_COUNT: int = 30  # allows concurrent device polling + model workers
 

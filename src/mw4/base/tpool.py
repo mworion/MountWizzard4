@@ -24,7 +24,7 @@ from typing import Any
 
 class WorkerSignals(QObject):
     finished = Signal()
-    error = Signal(object)
+    error = Signal(str)
     result = Signal(object)
 
 

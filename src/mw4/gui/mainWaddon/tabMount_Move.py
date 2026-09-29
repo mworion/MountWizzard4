@@ -258,9 +258,13 @@ class MountMove(TabAddon):
 
         directionVector = [dirRa, dirDec]
         direction = self.convertDirection(directionVector)
-        if direction != self.oldDirection:
+        if direction == self.oldDirection:
+            return
+        if direction == "STOP":
+            self.stopMoveAll()
+        else:
             self.moveRaDec(direction)
-            self.oldDirection = direction
+        self.oldDirection = direction
 
     def setSlewSpeed(self, speed: str) -> None:
         self.slewSpeeds[speed]["func"]()

@@ -505,23 +505,26 @@ class ObsSite:
         if len(response) != numberOfChunks:
             self.log.warning("Wrong number of chunks")
             return False
+        infoSplit = response[3].split(",")
+        angularSplit = response[4].split(",")
+        if len(infoSplit) < 8 or len(angularSplit) < 5:
+            self.log.warning(f"Wrong number of fields: [{response}]")
+            return False
         self.timeSidereal = response[0]
         self.ut1_utc = response[1].replace("L", "")
         self.statusSat = response[2]
-        responseSplit = response[3].split(",")
-        self.raJNow = responseSplit[0]
-        self.decJNow = responseSplit[1]
-        self.pierside = responseSplit[2]
-        self.Az = responseSplit[3]
-        self.Alt = responseSplit[4]
-        self.timeJD = responseSplit[5]
-        self.status = responseSplit[6]
-        self.statusSlew = responseSplit[7] == "1"
-        responseSplit = response[4].split(",")
-        self.angularPosRA = responseSplit[1]
-        self.angularPosDEC = responseSplit[3]
-        self.errorAngularPosRA = responseSplit[2]
-        self.errorAngularPosDEC = responseSplit[4]
+        self.raJNow = infoSplit[0]
+        self.decJNow = infoSplit[1]
+        self.pierside = infoSplit[2]
+        self.Az = infoSplit[3]
+        self.Alt = infoSplit[4]
+        self.timeJD = infoSplit[5]
+        self.status = infoSplit[6]
+        self.statusSlew = infoSplit[7] == "1"
+        self.angularPosRA = angularSplit[1]
+        self.angularPosDEC = angularSplit[3]
+        self.errorAngularPosRA = angularSplit[2]
+        self.errorAngularPosDEC = angularSplit[4]
         return True
 
     def pollPointing(self) -> bool:
@@ -550,12 +553,12 @@ class ObsSite:
         return suc
 
     def parseSetTargetResponse(self, response: list) -> bool:
+        if len(response) != 4 or len(response[0]) < 3:
+            self.log.debug(f"Missing return values: [{response}]")
+            return False
         result = response[0][0:2]
         if result.count("0") > 0:
             self.log.debug(f"Coordinates could not be set: [{response}]")
-            return False
-        if len(response) != 4:
-            self.log.debug(f"Missing return values: [{response}]")
             return False
         self.piersideTarget = valueToInt(response[0][2])
         self.AltTarget = response[0][3:]
@@ -730,6 +733,9 @@ class ObsSite:
         commandString = ":CMCFG0#:CM#"
         suc, response, _ = conn.communicate(commandString)
         if not suc:
+            return False
+        if len(response) < 2:
+            self.log.debug(f"Missing return values: [{response}]")
             return False
         return response[1].startswith("Coord")
 

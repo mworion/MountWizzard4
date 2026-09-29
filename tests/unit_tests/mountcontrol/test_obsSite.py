@@ -715,6 +715,51 @@ def test_ObsSite_parsePointing_ok3():
     assert isinstance(obsSite.Alt, Angle)
 
 
+def test_ObsSite_parsePointing_shortInfo():
+    obsSite = ObsSite(parent=Parent())
+    obsSite.status = 0
+    response = [
+        "13:15:35.68",
+        "0.12",
+        "V",
+        "19.44591,+88.0032,W,002.9803",
+        "2458352.10403639, 100, 100, 0.1, 0.1",
+    ]
+    suc = obsSite.parsePointing(response, 5)
+    assert not suc
+    assert obsSite.status == 0
+
+
+def test_ObsSite_parsePointing_shortAngular():
+    obsSite = ObsSite(parent=Parent())
+    response = [
+        "13:15:35.68",
+        "0.12",
+        "V",
+        "19.44591,+88.0032,W,002.9803,+47.9945,2458352.10403639,5,0",
+        "2458352.10403639, 100",
+    ]
+    suc = obsSite.parsePointing(response, 5)
+    assert not suc
+
+
+def test_ObsSite_parseSetTargetResponse_empty():
+    obsSite = ObsSite(parent=Parent())
+    assert not obsSite.parseSetTargetResponse([])
+
+
+def test_ObsSite_parseSetTargetResponse_shortFirst():
+    obsSite = ObsSite(parent=Parent())
+    response = ["11", "180:00:00.0", "12:30:00.00", "+45:30:00.0"]
+    assert not obsSite.parseSetTargetResponse(response)
+
+
+def test_ObsSite_parseSetTargetResponse_notSet():
+    obsSite = ObsSite(parent=Parent())
+    response = ["102+45:00:00.0", "180:00:00.0", "12:30:00.00", "+45:30:00.0"]
+    assert not obsSite.parseSetTargetResponse(response)
+
+
 def test_ObsSite_pollPointing_ok4():
     obsSite = ObsSite(parent=Parent())
 
@@ -1358,6 +1403,14 @@ def test_syncPositionToTarget_2():
         mConn.return_value.communicate.return_value = True, response, 0
         suc = obsSite.syncPositionToTarget()
         assert suc
+
+
+def test_syncPositionToTarget_shortResponse():
+    obsSite = ObsSite(parent=Parent())
+    with mock.patch("mw4.mountcontrol.obsSite.Connection") as mConn:
+        mConn.return_value.communicate.return_value = True, [""], 0
+        suc = obsSite.syncPositionToTarget()
+        assert not suc
 
 
 def test_setHighPrecision_1():

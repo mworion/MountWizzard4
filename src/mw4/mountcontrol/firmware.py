@@ -15,7 +15,7 @@
 ###########################################################
 import logging
 from mw4.mountcontrol.connection import Connection
-from packaging.version import Version
+from packaging.version import InvalidVersion, Version
 from typing import Any
 
 
@@ -51,8 +51,12 @@ class Firmware:
         if len(response) != numberOfChunks:
             self.log.warning("wrong number of chunks")
             return False
+        try:
+            self.vString = response[1]
+        except InvalidVersion:
+            self.log.warning(f"Invalid firmware version: [{response}]")
+            return False
         self.date = response[0]
-        self.vString = response[1]
         self.product = response[2]
         self.time = response[3]
         self.hardware = response[4]

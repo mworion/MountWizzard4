@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+import pytest
 from mw4.mountcontrol.connection import Connection
 from PySide6.QtCore import QByteArray
 from unittest import mock
@@ -228,7 +229,7 @@ class TestCloseClientHard:
     def test_closeClientHard_2(self):
         conn = Connection(makeParent(host="test"))
         client = makeClient()
-        client.abort.side_effect = Exception
+        client.abort.side_effect = RuntimeError("deleted")
         conn.closeClientHard(client)
 
     def test_closeClientHard_3(self):
@@ -347,7 +348,7 @@ class TestCommunicate:
     def test_connect_socket_error(self):
         with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
             client = makeClient()
-            client.connectToHost.side_effect = Exception
+            client.connectToHost.side_effect = RuntimeError("deleted")
             m_socket.return_value = client
             conn = Connection(makeParent(host=("localhost", 3492)))
             suc, _response, _chunks = conn.communicate(":GVN#")
@@ -356,7 +357,7 @@ class TestCommunicate:
     def test_sendall_exception(self):
         with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
             client = makeClient()
-            client.write.side_effect = Exception("Test")
+            client.write.side_effect = OSError("Test")
             m_socket.return_value = client
             conn = Connection(makeParent(host=("localhost", 3492)))
             suc, _response, _chunks = conn.communicate(":GVN#")
@@ -365,7 +366,7 @@ class TestCommunicate:
     def test_recv_exception(self):
         with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
             client = makeClient(data=b"10micron GM1000HPS#")
-            client.readAll.side_effect = Exception("Test")
+            client.readAll.side_effect = OSError("Test")
             m_socket.return_value = client
             conn = Connection(makeParent(host=("localhost", 3492)))
             suc, _response, _chunks = conn.communicate(":GVN#")
@@ -374,7 +375,7 @@ class TestCommunicate:
     def test_connect_exception(self):
         with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
             client = makeClient()
-            client.connectToHost.side_effect = Exception("Test")
+            client.connectToHost.side_effect = OSError("Test")
             m_socket.return_value = client
             conn = Connection(makeParent(host=("localhost", 3492)))
             suc, _response, _chunks = conn.communicate(":GVN#")
@@ -445,7 +446,7 @@ class TestReceiveData:
 
     def test_receiveData_1(self):
         client = makeClient()
-        client.readAll.side_effect = Exception
+        client.readAll.side_effect = RuntimeError("deleted")
         conn = Connection(makeParent())
         val = conn.receiveData(client=client, numberOfChunks=0, minBytes=0)
         assert val == (False, [])
@@ -480,6 +481,19 @@ class TestReceiveData:
         val = conn.receiveData(client=client, numberOfChunks=1, minBytes=0)
         assert val == (True, ["result"])
 
+    def test_receiveData_nonAscii(self):
+        client = makeClient(data=b"12\xdf30\x80#")
+        conn = Connection(makeParent())
+        val = conn.receiveData(client=client, numberOfChunks=1, minBytes=0)
+        assert val == (True, ["12*30\ufffd"])
+
+    def test_receiveData_unexpectedException(self):
+        client = makeClient()
+        client.readAll.side_effect = AttributeError("bug")
+        conn = Connection(makeParent())
+        with pytest.raises(AttributeError):
+            conn.receiveData(client=client, numberOfChunks=0, minBytes=0)
+
 
 class TestCommunicateRaw:
     """Tests for the communicateRaw method."""
@@ -511,7 +525,7 @@ class TestCommunicateRaw:
 
     def test_communicateRaw_2(self):
         client = makeClient()
-        client.readAll.side_effect = Exception
+        client.readAll.side_effect = RuntimeError("deleted")
         conn = Connection(makeParent())
         with (
             mock.patch.object(conn, "buildClient", return_value=client),
@@ -520,7 +534,7 @@ class TestCommunicateRaw:
             suc = conn.communicateRaw("test")
             assert suc[0]
             assert not suc[1]
-            assert suc[2] == "Exception"
+            assert suc[2] == "Error: deleted"
 
     def test_communicateRaw_3(self):
         client = makeClient(data=b"test")
@@ -558,6 +572,17 @@ class TestCommunicateRaw:
         assert suc[1]
         assert suc[2] == "response"
 
+    def test_communicateRaw_nonAscii(self):
+        client = makeClient(data=b"ab\x80")
+        conn = Connection(makeParent())
+        with (
+            mock.patch.object(conn, "buildClient", return_value=client),
+            mock.patch.object(conn, "sendData", return_value=True),
+        ):
+            suc = conn.communicateRaw("test")
+        assert suc[1]
+        assert suc[2] == "ab\ufffd"
+
 
 class TestSendData:
     """Tests for the sendData method and logging."""
@@ -577,7 +602,7 @@ class TestSendData:
     def test_sendData_exception(self):
         conn = Connection(makeParent(host=("localhost", 3492)))
         client = makeClient()
-        client.write.side_effect = Exception("Test")
+        client.write.side_effect = OSError("Test")
         suc = conn.sendData(client, ":AP#")
         assert not suc
 

@@ -331,7 +331,7 @@ class Connection:
         try:
             client.abort()
             client.close()
-        except (OSError, Exception) as e:
+        except (OSError, RuntimeError) as e:
             self.log.warning(f"Error    [{self.id} {e}]: closing socket client")
 
     def buildClient(self) -> QTcpSocket | None:
@@ -355,7 +355,7 @@ class Connection:
                 self.closeClientHard(client)
                 self.log.debug(f"Timeout  [{self.id}]: socket timeout in build client")
                 return None
-        except (OSError, ValueError, TypeError, Exception) as e:
+        except (OSError, RuntimeError, TypeError, ValueError) as e:
             self.closeClientHard(client)
             self.log.warning(f"Error    [{self.id}]: socket general: [{e}] in build client")
             return None
@@ -374,7 +374,7 @@ class Connection:
                         f"[Trace] Timeout  [{self.id}]: socket timeout in send data"
                     )
                 return False
-        except (OSError, Exception) as e:
+        except (OSError, RuntimeError) as e:
             self.closeClientHard(client)
             self.log.warning(f"[Trace] Error    [{self.id}]: socket error: [{e}] in send data")
             return False
@@ -410,13 +410,12 @@ class Connection:
                 ):
                     break
 
-        except (OSError, Exception) as e:
+        except (OSError, RuntimeError) as e:
             self.log.warning(f"Error    [{self.id}]: error: [{e}], received: [{chunkRaw}]")
             return False, []
         else:
-            response = (
-                responseBytes.replace(b"\xdf", b"*").decode("ASCII").rstrip("#").split("#")
-            )
+            text = responseBytes.replace(b"\xdf", b"*").decode("ASCII", errors="replace")
+            response = text.rstrip("#").split("#")
             if self.loggingTrace:
                 self.log.debug(f"[Trace] Response [{self.id}]: [{response}]")
             return True, response
@@ -459,12 +458,13 @@ class Connection:
                     )
                 self.closeClientHard(client)
                 return sucSend, False, "Timeout"
-            val = client.readAll().data().replace(b"\xdf", b"*").decode("ASCII")
-        except (OSError, Exception) as e:
+            raw = client.readAll().data().replace(b"\xdf", b"*")
+            val = raw.decode("ASCII", errors="replace")
+        except (OSError, RuntimeError) as e:
             self.log.warning(
                 f"[Trace] Error    [{self.id}]: socket error: [{e}] in communicate raw"
             )
-            val = "Exception"
+            val = f"Error: {e}"
             sucRec = False
         else:
             if self.loggingTrace:

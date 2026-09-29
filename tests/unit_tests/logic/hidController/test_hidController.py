@@ -36,9 +36,8 @@ def hc(qapp):
 @pytest.fixture(autouse=True)
 def resetState(hc):
     worker = hc.workerCommunicationLoop
-    if worker is not None and worker.locked:
-        worker.locked = False
-        worker.mutex.unlock()
+    if worker is not None:
+        worker.release()
     hc.workerCommunicationLoop = None
     hc.deviceConnected = False
     hc.hidControllerDevice = None

@@ -39,9 +39,7 @@ def buildMountTime():
 
 
 def releaseWorker(worker):
-    if worker.locked:
-        worker.locked = False
-        worker.mutex.unlock()
+    worker.release()
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -192,13 +190,13 @@ def test_checkMountUp_locked(function):
     worker = function.workerCycleMountUp
     if worker is None:
         worker = tpool.setupWorker(lambda: None)
-    worker.mutex.lock()
+    worker.tryAcquire()
     function.workerCycleMountUp = worker
     with mock.patch.object(QThreadPool, "start") as start:
         result = function.checkMountUp()
         assert result is None
         assert not start.called
-    worker.mutex.unlock()
+    worker.release()
 
 
 def test_checkMountUp_unlocked(function):
@@ -390,13 +388,13 @@ def test_pollSyncClock_locked(function):
     worker = function.workerPollSyncClock
     if worker is None:
         worker = tpool.setupWorker(lambda: None)
-    worker.mutex.lock()
+    worker.tryAcquire()
     function.workerPollSyncClock = worker
     with mock.patch.object(QThreadPool, "start") as start:
         result = function.pollSyncClock()
         assert result is None
         assert not start.called
-    worker.mutex.unlock()
+    worker.release()
 
 
 def test_pollSyncClock_unlocked(function):

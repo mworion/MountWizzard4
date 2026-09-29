@@ -57,7 +57,7 @@ def test_init(function):
     assert isinstance(function.commandQueue, queue.Queue)
     assert isinstance(function.stopEvent, threading.Event)
     assert function.workerRunnerCoreLoop is None
-    assert isinstance(function.propertyExceptions, list)
+    assert isinstance(function.propertyExceptions, set)
     assert len(function.propertyExceptions) == 0
 
 
@@ -80,7 +80,7 @@ def test_getAscomProperty_imageArray(function):
 
 
 def test_getAscomProperty_propertyException(function):
-    function.propertyExceptions.append("Connected")
+    function.propertyExceptions.add("Connected")
     val = function.getDeviceProp("Connected")
     assert val is None
 
@@ -95,7 +95,7 @@ def test_setAscomProperty_exception(function):
 
 
 def test_setAscomProperty_propertyException(function):
-    function.propertyExceptions.append("Connected")
+    function.propertyExceptions.add("Connected")
     function.setDeviceProp("Connected", True)
 
 
@@ -133,7 +133,7 @@ def test_callAscomMethod_noKwargs(function):
 
 
 def test_callAscomMethod_propertyException(function):
-    function.propertyExceptions.append("Halt")
+    function.propertyExceptions.add("Halt")
     result = function.callDeviceMethod("Halt")
     assert result is None
 
@@ -532,7 +532,7 @@ def test_startCommunication_clears_state(function):
     """Test that startCommunication properly clears state"""
     function.deviceConnected = True
     function.data["test"] = "value"
-    function.propertyExceptions.append("test")
+    function.propertyExceptions.add("test")
     function.config.deviceName = "test.driver"
 
     with mock.patch.object(function.threadPool, "start"):
@@ -581,7 +581,7 @@ def test_startCommunication_multiple_calls(function):
     with mock.patch.object(function.threadPool, "start") as m:
         function.startCommunication()
         if function.workerRunnerCoreLoop:
-            function.workerRunnerCoreLoop.mutex.unlock()
+            function.workerRunnerCoreLoop.release()
         function.startCommunication()
     assert m.call_count == 2
 

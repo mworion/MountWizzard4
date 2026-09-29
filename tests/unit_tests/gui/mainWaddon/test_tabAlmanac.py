@@ -153,7 +153,7 @@ def test_showTwilightDataPlot_with_location(almanac):
         almanac.showTwilightDataPlot()
         assert almanac.workerCalcTwilightDataPlot is not None
     if almanac.workerCalcTwilightDataPlot is not None:
-        almanac.workerCalcTwilightDataPlot.mutex.unlock()
+        almanac.workerCalcTwilightDataPlot.release()
 
 
 def test_showTwilightDataList_without_location(almanac):

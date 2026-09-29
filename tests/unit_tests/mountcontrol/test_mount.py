@@ -148,7 +148,7 @@ def test_cyclePointing_2(function):
         function.cyclePointing()
         assert function.workerCyclePointing is not None
     if function.workerCyclePointing is not None:
-        function.workerCyclePointing.mutex.unlock()
+        function.workerCyclePointing.release()
         function.workerCyclePointing.signals.finished.emit()
         function.workerCyclePointing = None
 
@@ -159,7 +159,7 @@ def test_cyclePointing_3(function):
         function.cyclePointing()
         assert function.workerCyclePointing is not None
     if function.workerCyclePointing is not None:
-        function.workerCyclePointing.mutex.unlock()
+        function.workerCyclePointing.release()
         function.workerCyclePointing.signals.finished.emit()
         function.workerCyclePointing = None
 
@@ -181,7 +181,7 @@ def test_cycleSetting_2(function):
         function.cycleSetting()
         assert function.workerCycleSetting is not None
     if function.workerCycleSetting is not None:
-        function.workerCycleSetting.mutex.unlock()
+        function.workerCycleSetting.release()
         function.workerCycleSetting.signals.finished.emit()
         function.workerCycleSetting = None
 
@@ -192,7 +192,7 @@ def test_cycleSetting_3(function):
         function.cycleSetting()
         assert function.workerCycleSetting is not None
     if function.workerCycleSetting is not None:
-        function.workerCycleSetting.mutex.unlock()
+        function.workerCycleSetting.release()
         function.workerCycleSetting.signals.finished.emit()
         function.workerCycleSetting = None
 
@@ -212,7 +212,7 @@ def test_getModel_2(function):
     with mock.patch.object(QThreadPool, "start"):
         function.getModel()
     if function.workerGetModel is not None:
-        function.workerGetModel.mutex.unlock()
+        function.workerGetModel.release()
         function.workerGetModel = None
 
 
@@ -231,7 +231,7 @@ def test_GetNames_2(function):
     with mock.patch.object(QThreadPool, "start"):
         function.getNames()
     if function.workerGetNames is not None:
-        function.workerGetNames.mutex.unlock()
+        function.workerGetNames.release()
         function.workerGetNames = None
 
 
@@ -250,7 +250,7 @@ def test_GetFW_2(function):
     with mock.patch.object(QThreadPool, "start"):
         function.getFW()
     if function.workerGetFW is not None:
-        function.workerGetFW.mutex.unlock()
+        function.workerGetFW.release()
         function.workerGetFW = None
 
 
@@ -269,7 +269,7 @@ def test_GetLocation_2(function):
     with mock.patch.object(QThreadPool, "start"):
         function.getLocation()
     if function.workerGetLocation is not None:
-        function.workerGetLocation.mutex.unlock()
+        function.workerGetLocation.release()
         function.workerGetLocation = None
 
 
@@ -290,7 +290,7 @@ def test_CalcTLE_2(function):
         function.calcTLE(1234567)
         assert function.workerCalcTLE is not None
     if function.workerCalcTLE is not None:
-        function.workerCalcTLE.mutex.unlock()
+        function.workerCalcTLE.release()
         function.workerCalcTLE.signals.finished.emit()
         function.workerCalcTLE = None
 
@@ -301,7 +301,7 @@ def test_CalcTLE_3(function):
         function.calcTLE(1234567)
         assert function.workerCalcTLE is not None
     if function.workerCalcTLE is not None:
-        function.workerCalcTLE.mutex.unlock()
+        function.workerCalcTLE.release()
         function.workerCalcTLE.signals.finished.emit()
         function.workerCalcTLE = None
 
@@ -321,7 +321,7 @@ def test_StatTLE_2(function):
     with mock.patch.object(QThreadPool, "start"):
         function.statTLE()
     if function.workerStatTLE is not None:
-        function.workerStatTLE.mutex.unlock()
+        function.workerStatTLE.release()
         function.workerStatTLE = None
 
 
@@ -342,7 +342,7 @@ def test_GetTLE_2(function):
         function.getTLE()
         assert function.workerGetTLE is not None
     if function.workerGetTLE is not None:
-        function.workerGetTLE.mutex.unlock()
+        function.workerGetTLE.release()
         function.workerGetTLE.signals.finished.emit()
         function.workerGetTLE = None
 
@@ -353,7 +353,7 @@ def test_GetTLE_3(function):
         function.getTLE()
         assert function.workerGetTLE is not None
     if function.workerGetTLE is not None:
-        function.workerGetTLE.mutex.unlock()
+        function.workerGetTLE.release()
         function.workerGetTLE.signals.finished.emit()
         function.workerGetTLE = None
 
@@ -500,7 +500,7 @@ def test_progTrajectory_1(function):
     with mock.patch.object(QThreadPool, "start"):
         function.progTrajectory(start=1, alt=[10], az=[10])
     if function.workerTrajectory is not None:
-        function.workerTrajectory.mutex.unlock()
+        function.workerTrajectory.release()
         function.workerTrajectory = None
 
 

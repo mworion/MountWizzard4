@@ -490,7 +490,7 @@ def test_calcSatList_starts_worker(function: SatSearch) -> None:
         function.calcSatList(snapshot, 1)
         mockStart.assert_called_once()
         if function.workerCalcSatList is not None:
-            function.workerCalcSatList.mutex.unlock()
+            function.workerCalcSatList.release()
             function.workerCalcSatList = None
 
 
@@ -502,7 +502,7 @@ def test_calcSatList_mutex_locked(function: SatSearch) -> None:
         function.calcSatList(snapshot, 1)
         mockStart.assert_called_once()
         if function.workerCalcSatList is not None:
-            function.workerCalcSatList.mutex.unlock()
+            function.workerCalcSatList.release()
             function.workerCalcSatList = None
 
 

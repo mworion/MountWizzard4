@@ -490,8 +490,8 @@ def test_startCommunication_success(function):
     assert function.commandRunning is True
     assert function.workerIndiQueueClient is not None
     assert function.workerProcessRxQueue is not None
-    function.workerIndiQueueClient.mutex.unlock()
-    function.workerProcessRxQueue.mutex.unlock()
+    function.workerIndiQueueClient.release()
+    function.workerProcessRxQueue.release()
 
 
 # ─── stopCommunication ───────────────────────────────────────────────────────

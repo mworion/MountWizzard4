@@ -66,9 +66,8 @@ def resetWeatherState(function):
 
 def unlockWeatherWorker(function):
     worker = function.workerGetOpenWeatherMapData
-    if worker is not None and worker.locked:
-        worker.locked = False
-        worker.mutex.unlock()
+    if worker is not None:
+        worker.release()
 
 
 def weatherLocation():

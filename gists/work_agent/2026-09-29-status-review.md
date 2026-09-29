@@ -73,7 +73,7 @@ real hardware. Tests do not catch them, because the tests mock the hardware.
 | 2  | `# pragma: no cover`                        | ✅ Done                                                           |
 | 3  | Misplaced docstrings in `mainApp.py`        | ✅ Done                                                           |
 | 4  | `AppProtocol` instead of `app: Any`         | ✅ Done                                                           |
-| 5  | Split the app signal hub into groups        | 🟡 Partial – payloads typed, hub still on `MountWizzard4`         |
+| 5  | Split the app signal hub into groups        | ⏸ Kept – decision 2026-09-29 (section 8); payloads are typed      |
 | 6  | Mount status enum / helpers                 | ✅ Done                                                           |
 | 7  | Data-driven `addDevices` / status GUI       | ✅ Done                                                           |
 | 8  | Disk / twilight on slower cadence           | ✅ Done                                                           |
@@ -86,16 +86,16 @@ real hardware. Tests do not catch them, because the tests mock the hardware.
 |----|-----------------------------------------------------|------------------------------------------------------------|
 | 1–9, 11 | See section 10 of that review                  | ✅ Done, confirmed (Ruff clean, 100 % coverage, xdist green) |
 | 10 | Test hooks in `MountWizzard4` / `DeviceRegistry`    | ❌ Open – `mainApp.py:73,110` (`test: int = 0`), `deviceRegistry.py:49` (`hasattr(app, "mount")`, writes back `app.mount`) |
-| –  | `moveRaDecHid` → `"STOP"` → `KeyError`              | ❌ Open – see N1                                           |
+| –  | `moveRaDecHid` → `"STOP"` → `KeyError`              | ✅ Fixed – rec 1 (section 7)                               |
 | –  | `closeEvent` does not cancel a running model        | ❌ Open – `mainWindow.py:166` has no `modelData.cancelRun()` |
 
 ### 3.3 2026-09-26 review (not tracked so far)
 
 | #  | Sev | Topic                                                  | Status     | Current evidence |
 |----|:---:|--------------------------------------------------------|:----------:|------------------|
-| T1 | H   | `QMutex` locked in GUI thread, unlocked in pool thread | ❌ Open    | `tpool.py:120` `tryLock()` in the caller, `tpool.py:82` `unlock()` in `Worker.run`. A `locked` flag was added, but the cross-thread unlock is unchanged |
-| T2 | M   | Reused worker ignores new callbacks                    | ❌ Open    | `tpool.py:124-126` updates only `args`/`kwargs` |
-| T3 | M   | `propertyExceptions` is a `list`                       | ❌ Open    | `alpacaAscomCommon.py:43` |
+| T1 | H   | `QMutex` locked in GUI thread, unlocked in pool thread | ✅ Fixed   | Rec 4: `threading.Lock` busy flag |
+| T2 | M   | Reused worker ignores new callbacks                    | ✅ Fixed   | Rec 4: callbacks rebound on reuse |
+| T3 | M   | `propertyExceptions` is a `list`                       | ✅ Fixed   | Rec 3: `set[str]` |
 | T4 | M   | SGPro busy-wait without deadline                       | ❌ Open    | `cameraSGPro.py:68-91`, four `while … time.sleep(0.1)` loops |
 | T5 | M   | Shutdown sequence                                      | 🟡 Partial | `closeEvent` now stops `timeMgr` and devices before `waitForDone(10000)`; a running model is not cancelled |
 | T6 | L   | Non-interruptible `time.sleep` in workers              | ❌ Open    | `kmRelay.py`, `sgproClass.py`, `cameraSGPro.py:108` |
@@ -104,11 +104,11 @@ real hardware. Tests do not catch them, because the tests mock the hardware.
 | M3 | M   | Unchecked index access in `firmware.py`                | ✅ Fixed   | Rec 2: `InvalidVersion` handled; `syncPositionToTarget` length check |
 | M4 | M   | `except (OSError, Exception)`                          | ✅ Fixed   | Rec 2: `(OSError, RuntimeError)` |
 | M5 | M   | `decode("ASCII")` outside `try`                        | ✅ Fixed   | Rec 2: `errors="replace"` |
-| M6 | M   | New `QTcpSocket` per command, 10 s connect timeout     | ❌ Open    | `connection.py:350-354` |
+| M6 | M   | New `QTcpSocket` per command, 10 s connect timeout     | ⏸ Kept     | Decision 2026-09-29 (section 8) |
 | M7 | L   | `communicateRaw` returns literal `"Exception"`         | ✅ Fixed   | Rec 2: `"Error: <reason>"` |
 | M8 | L   | `mountIsUp` assigned twice                             | ❌ Open    | `mount.py:75,95` |
-| D1 | H   | ALPACA/ASCOM blacklists properties on any error        | ❌ Open    | `alpacaAscomCommon.py:62-68`; `OSError` (timeout) also blacklists, including `Connected` |
-| D2 | H   | `stopCommunication` never disconnects                  | ❌ Open    | `alpacaAscomCommon.py:181-185`: `stopEvent` set first, queued `Connected=False` is never processed |
+| D1 | H   | ALPACA/ASCOM blacklists properties on any error        | ✅ Fixed   | Rec 3 (section 7) |
+| D2 | H   | `stopCommunication` never disconnects                  | ✅ Fixed   | Rec 3 (section 7) |
 | D3 | L   | `ImageArray` no-op branch                              | ✅ Done    | – |
 | D4 | M   | `self.process` shared; `stdout.decode()` strict        | ❌ Open    | `plateSolve.py:64,82` |
 | D5–D7 | L | Dome `None` contract, typo, iterator sentinel        | ❌ Open    | Not addressed |
@@ -116,18 +116,18 @@ real hardware. Tests do not catch them, because the tests mock the hardware.
 | C2 | M   | `config[x] = {}` then refill                           | ❌ Open    | `tabSettUpdate.py:54` |
 | C3 | L   | Commented-out `aboutToQuit`                            | ❌ Open    | `mainApp.py:107` |
 | C4 | L   | Raw `sys.argv[1]` as message                           | ❌ Open    | `mainApp.py:112-113` |
-| A1 | M   | App as service locator / signal hub                    | 🟡 Partial | Typed via `AppProtocol`; still one hub |
-| A2 | M   | `DeviceEntry` proxy attributes                         | ❌ Open    | – |
+| A1 | M   | App as service locator / signal hub                    | ⏸ Kept     | Decision 2026-09-29 (section 8); typed via `AppProtocol` |
+| A2 | M   | `DeviceEntry` proxy attributes                         | ⏸ Kept     | Decision 2026-09-29 (section 8) |
 | A3 | M   | Test-only branch in `DeviceRegistry`                   | ❌ Open    | Same as Sep rec 10 |
-| A4 | M   | `tabMount_Command` uses `Connection` directly          | ❌ Open    | – |
+| A4 | M   | `tabMount_Command` uses `Connection` directly          | ⏸ Kept     | Decision 2026-09-29 (section 8) |
 | A5 | M   | Model data handling in GUI mixins                      | 🟡 Partial | `ModelData` is event-driven in logic; list handling still in tabs |
-| A8 | L   | Framework-dispatch boilerplate                         | ❌ Open    | 16 logic modules define `self.run = {…}` |
+| A8 | L   | Framework-dispatch boilerplate                         | ⏸ Kept     | Decision 2026-09-29 (section 8) |
 | P1 | M   | Python version mismatch                                | ❌ Open    | `pyproject.toml` `>=3.12,<3.15`, README "3.11-3.13", Copilot instructions "3.11" |
 | P2 | M   | "Production/Stable" on a beta                          | ❌ Open    | `pyproject.toml:36` |
 | P3 | M   | Runtime dependencies pinned with `==`                  | ❌ Open    | 42 `==` pins; `uv.lock` already pins |
 | P4 | M   | Ruff rule set / no type checker                        | ❌ Open    | `ignore = ["N999", "BLE001"]`; no `B`, `BLE`, `ANN`; no mypy/pyright |
 | P5 | M   | Missing return annotations                             | ❌ Open    | 29 single-line `def`s without `->` |
-| P6 | L   | `os.path.basename` in `tpool.py`                       | ❌ Open    | `tpool.py:45` |
+| P6 | L   | `os.path.basename` in `tpool.py`                       | ✅ Fixed   | Rec 4: `Path(...).name` |
 | P7 | L   | "GUI with PyQT5" header                                | ❌ Open    | `pyproject.toml:9` |
 | P8 | L   | `ignore::DeprecationWarning`                           | ❌ Open    | `pyproject.toml:127` |
 | R1 | M   | `mainApp` fixture calls missing `shutdown()`           | ✅ Done    | Fixed with Sep rec 4 |
@@ -139,6 +139,10 @@ real hardware. Tests do not catch them, because the tests mock the hardware.
 **Summary:** of 64 tracked rows, 23 are done, 5 are partial, and 36 are open.
 33 of the 36 open rows come from the 2026-09-26 review. A3 and Sep rec 10 are
 the same issue, and both are counted.
+
+**Status after recs 1–4 and the decisions of section 8** (recounted, 65 rows;
+D5–D7 is one row): 36 done, 2 partial (T5, A5), 6 kept by decision (Jun 5,
+M6, A1, A2, A4, A8), 21 open (19 of them from the 2026-09-26 review).
 
 ---
 
@@ -161,10 +165,10 @@ Effort: S (small), M (medium), L (large). Impact: ★ low → ★★★ high.
 
 | #  | Recommendation                                                                  | Refs          | Impact | Effort |
 |----|---------------------------------------------------------------------------------|---------------|:------:|:------:|
-| 1  | Fix the HID centre-stick `"STOP"` path (map to `stopMoveAll`, add a test)       | N1            |  ★★★   |   S    |
+| 1  | ✅ Fix the HID centre-stick `"STOP"` path (map to `stopMoveAll`, add a test)    | N1            |  ★★★   |   S    |
 | 2  | ✅ Harden mount response parsing (length checks before indexing, `errors="replace"`, concrete exceptions) | M1, M2, M3, M4, M5, M7, N2 | ★★★ | M |
-| 3  | ALPACA/ASCOM: blacklist only real "not implemented", never `Connected`; process the disconnect before the loop exits; use a `set` | D1, D2, T3, N3 | ★★★ | M |
-| 4  | Replace the cross-thread `QMutex` unlock in `tpool` with a thread-agnostic busy flag (`threading.Lock` or `QSemaphore(1)`); decide on callback reuse | T1, T2 | ★★★ | S |
+| 3  | ✅ ALPACA/ASCOM: blacklist only real "not implemented", never `Connected`; process the disconnect before the loop exits; use a `set` | D1, D2, T3, N3 | ★★★ | M |
+| 4  | ✅ Replace the cross-thread `QMutex` unlock in `tpool` with a thread-agnostic busy flag (`threading.Lock` or `QSemaphore(1)`); decide on callback reuse | T1, T2 | ★★★ | S |
 | 5  | Fix log level config symmetry (read and write the same key)                    | C1            |  ★★    |   S    |
 | 6  | Add deadlines to the SGPro wait loops; use `Event.wait` for interruptible sleeps | T4, T6      |  ★★    |   S    |
 | 7  | Cancel a running model in `closeEvent` before `waitForDone`                     | T5            |  ★★    |   S    |
@@ -173,9 +177,9 @@ Effort: S (small), M (medium), L (large). Impact: ★ low → ★★★ high.
 | 10 | Extend Ruff (`B`, `BLE`, `ANN`) and add a type checker in CI; close the 29 missing return types | P4, P5 | ★★ | M |
 | 11 | Plate solver: local `Popen` context manager, tolerant decode                   | D4, N4        |   ★    |   S    |
 | 12 | Small cleanups: `mountIsUp` duplicate, `os.path`, commented code, `argv` handling, config build-then-assign | M8, P6, C2, C3, C4 | ★ | S |
-| 13 | Architecture (longer term): `FrameworkDevice` base, `tabMount_Command` via `MountDevice`, split the signal hub, `parent: Any` typing | A2, A4, A8, Jun 5 | ★★ | L |
+| 13 | ⏸ Kept (decision 2026-09-29, section 8): Architecture (longer term): `FrameworkDevice` base, `tabMount_Command` via `MountDevice`, split the signal hub, `parent: Any` typing | A1, A2, A4, A8, Jun 5 | ★★ | L |
 | 14 | Relax `==` pins in `[project]` and rely on `uv.lock`; scope `DeprecationWarning` to `mw4` | P3, P8 | ★ | S |
-| 15 | Persistent or pooled mount connection instead of one socket per command         | M6            |   ★★   |   L    |
+| 15 | ⏸ Kept (decision 2026-09-29, section 8): Persistent or pooled mount connection instead of one socket per command | M6 | ★★ | L |
 
 ### Suggested sequencing
 
@@ -186,7 +190,8 @@ Effort: S (small), M (medium), L (large). Impact: ★ low → ★★★ high.
 3. **Hygiene (S):** 8, 9, 12, 14.
 4. **Tooling (M):** 10. After 2 and 3, so that the new rules do not hit
    code that is about to change.
-5. **Architecture (L):** 13, 15.
+5. **Architecture (L):** 13, 15 – not scheduled; the current architecture is
+   kept (decision 2026-09-29, section 8).
 
 ---
 
@@ -209,5 +214,18 @@ only finding here with a direct safety impact on mount motion.
 |----|--------------------------------------------------------------------------------------------|---------|
 | 1  | N1: `moveRaDecHid` calls `stopMoveAll()` when the stick returns to centre (`"STOP"`) and `moveRaDec(direction)` otherwise; `oldDirection` is updated in both cases. The unreachable `coord == [0, 0]` branch was removed from `moveRaDec`. Tests: the fake `"STOP"` button test was replaced; new `test_moveRaDecHid_centreStops` and `test_moveRaDecHid_centreRealStop` (real path down to `obsSite.stopMoveAll`); direction assertions added to the existing HID tests. Ruff clean, 4585 passed, 38 skipped, coverage 100 %. | ✅ Done |
 | 2  | Plan: `plan-review-2026-09-29-status-rec-2-mountParsing.md`. `Connection`: all `except (…, Exception)` narrowed to `(OSError, RuntimeError)` (`buildClient` also `TypeError`, `ValueError` from the port conversion) (M4). `receiveData` / `communicateRaw` decode with `errors="replace"` (M5, N2). `communicateRaw` returns `"Error: <reason>"` instead of the literal `"Exception"` (M7). `ObsSite.parsePointing` checks ≥ 8 fields in `:Ginfo` and ≥ 5 in `:GaE` before it assigns anything (M1). `parseSetTargetResponse` checks the length (4 chunks, first chunk ≥ 3 chars) before indexing (M2). `syncPositionToTarget` checks for ≥ 2 chunks (M3). `Firmware.parse` catches `InvalidVersion` and leaves the fields unchanged (M3). Tests: generic `Exception` side effects replaced by `OSError` / `RuntimeError`; new tests for non-ASCII bytes, an unexpected exception that now propagates, short pointing/target/sync responses, and an invalid firmware version. Ruff clean, 4595 passed, 38 skipped (serial and `-n auto`), coverage 100 %. Follow-up (out of scope): the `timeJD` setter still raises `TypeError` for a non-numeric value. | ✅ Done |
+| 3  | `AlpacaAscomCommon` only (the subclasses are unchanged). `propertyExceptions` is a `set` (T3). The three `except` pairs in `getDeviceProp` / `setDeviceProp` / `callDeviceMethod` go through one `handleDeviceError`. A property or method is blocked only if `isNotImplemented` is true: `AttributeError`, `NotImplementedError`, alpyca `NotImplementedException` / `ActionNotImplementedException`, or a COM error whose `excepinfo` scode is `0x80040400` (ASCOM `PropertyNotImplemented` / `MethodNotImplemented`, checked by duck typing so it is testable on every OS). `Connected` is never blocked (`NEVER_BLOCKED`). Timeouts (`OSError` / `requests` errors), `InvalidValue`, `InvalidOperation`, `NotConnected` and driver errors are logged with their type and retried (D1, N3). This also fixes a single out-of-range `set` blocking the setter for the whole session. Disconnect (D2): `stopCommunication` queues `Connected = False` **before** it sets `stopEvent`, and `runnerCommunicationLoop` calls `processCommandQueue()` after the loop, so the disconnect is actually sent. The loop starts with `clearCommandQueue()`, so a disconnect queued while no loop was running is not replayed after the next connect. Tests: 25 new (not-implemented classification incl. COM scode, no blocking for timeouts/invalid values/operations/`Connected`, stale queue dropped, disconnect sent on stop, queue-before-stop order); list → set updates in the `alpacaClass` / `ascomClass` tests. Ruff clean, 4620 passed, 38 skipped (serial and `-n auto`), coverage 100 %. | ✅ Done |
+| 4  | `tpool.py` only. T1: the `QMutex` is replaced by `Worker.busyLock` (`threading.Lock`, which may be released by any thread) behind a small API: `tryAcquire()` (sets `locked`) and `release()` (no-op when not acquired). `startWorker` acquires in the calling thread, `Worker.run` releases in `finally` in the pool thread. T2 (decision: callbacks follow the call): `Worker` stores `resultMethod` / `finishedMethod`; `setCallbacks` disconnects the old and connects the new slot only if it changed. `startWorker` rebinds on reuse only after `tryAcquire` succeeded, so a running call keeps its callbacks and a busy skip changes nothing. P6: `Path(...).name` instead of `os.path.basename`. Tests: `test_tpool.py` rewritten for the new API (32 tests, incl. release from a `threading.Thread` and from a real `QThreadPool`, callback rebind/keep/remove); 22 test modules moved from `worker.mutex.lock/unlock` and manual `locked` resets to `tryAcquire()` / `release()`. The teardown message `QMutex: destroying locked mutex` (3.4 of the Sep review) no longer appears. Ruff clean, 4621 passed, 38 skipped (serial and `-n auto`), coverage 100 %. `test_loader_main::test_main_1` still fails only in a full `pytest -s` run, as it does on the baseline. | ✅ Done |
 
+---
 
+## 8. Decisions
+
+| Date       | Rec | Decision | Affected findings |
+|------------|-----|----------|-------------------|
+| 2026-09-29 | 13  | **Keep the current architecture.** No `FrameworkDevice` base class, no split of the app signal hub, `tabMount_Command` keeps its direct `Connection`, `DeviceEntry` keeps its proxy attributes, `parent: Any` stays. The per-framework `self.run = {…}` dispatch is accepted as explicit, readable code. | A1, A2, A4, A8, Jun rec 5 (⏸ Kept) |
+| 2026-09-29 | 15  | **Keep one socket per mount command.** The 10micron command protocol stays stateless per call, so no connection pool is added. The robustness work of rec 2 (concrete exceptions, tolerant decoding, length checks) covers the error handling. | M6 (⏸ Kept) |
+
+These items are closed as "kept" and are no longer counted as open. They
+should only be reopened if a measured problem appears (e.g. latency or socket
+exhaustion on the mount for rec 15).

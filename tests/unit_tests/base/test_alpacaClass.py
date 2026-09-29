@@ -16,6 +16,7 @@
 import alpaca.management as alpacaMgmt
 import pytest
 import queue
+import requests
 import threading
 from alpaca.exceptions import NotImplementedException as AlpycaNotImplError
 from mw4.base.alpacaClass import AlpacaClass
@@ -126,7 +127,7 @@ def test_createAlpacaDevice_3(function):
 
 
 def test_getDeviceProp_propertyException(function):
-    function.propertyExceptions.append("Connected")
+    function.propertyExceptions.add("Connected")
     result = function.getDeviceProp("Connected")
     assert result is None
 
@@ -152,7 +153,7 @@ def test_getDeviceProp_3(function):
 
 
 def test_setDeviceProp_propertyException(function):
-    function.propertyExceptions.append("Connected")
+    function.propertyExceptions.add("Connected")
     function.setDeviceProp("Connected", True)
 
 
@@ -187,11 +188,20 @@ def test_setDeviceProp_3(function):
 
     function.device = DeviceWithErrorProp()
     function.setDeviceProp("TestProp", True)
-    assert "TestProp" in function.propertyExceptions
+    assert "TestProp" not in function.propertyExceptions
+
+
+def test_getDeviceProp_timeoutNotBlocked(function):
+    type(function.device).TestProp = mock.PropertyMock(
+        side_effect=requests.exceptions.Timeout("timeout")
+    )
+    result = function.getDeviceProp("TestProp")
+    assert result is None
+    assert "TestProp" not in function.propertyExceptions
 
 
 def test_callDeviceMethod_propertyException(function):
-    function.propertyExceptions.append("Halt")
+    function.propertyExceptions.add("Halt")
     result = function.callDeviceMethod("Halt")
     assert result is None
 
@@ -277,7 +287,7 @@ def test_startCommunication_1(function):
         function.startCommunication()
         assert function.workerCommunicationLoop is not None
         m_start.assert_called_once()
-        function.workerCommunicationLoop.mutex.unlock()
+        function.workerCommunicationLoop.release()
 
 
 def test_startCommunication_2(function):
@@ -291,4 +301,4 @@ def test_startCommunication_2(function):
         assert not function.deviceConnected
         assert not function.stopEvent.is_set()
         m_start.assert_called_once()
-        function.workerCommunicationLoop.mutex.unlock()
+        function.workerCommunicationLoop.release()

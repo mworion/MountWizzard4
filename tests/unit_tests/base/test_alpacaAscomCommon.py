@@ -16,6 +16,13 @@
 import pytest
 import queue
 import threading
+from alpaca.exceptions import (
+    ActionNotImplementedException,
+    InvalidOperationException,
+    InvalidValueException,
+    NotConnectedException,
+    NotImplementedException,
+)
 from mw4.base.alpacaAscomCommon import AlpacaAscomCommon, CommandItem
 from mw4.base.signalsDevices import Signals
 from pathlib import Path
@@ -117,7 +124,7 @@ def test_init(function):
     assert isinstance(function.commandQueue, queue.Queue)
     assert isinstance(function.stopEvent, threading.Event)
     assert isinstance(function.connectEvent, threading.Event)
-    assert isinstance(function.propertyExceptions, list)
+    assert isinstance(function.propertyExceptions, set)
     assert len(function.propertyExceptions) == 0
     assert function.deviceConnected is False
     assert function.loggingTrace is False
@@ -420,7 +427,7 @@ def test_getDeviceProp_inPropertyExceptions():
     base = AlpacaAscomCommon(parent=parent)
     base.config = mock.MagicMock()
     base.config.deviceName = "TestDevice"
-    base.propertyExceptions.append("Test")
+    base.propertyExceptions.add("Test")
     # act
     result = base.getDeviceProp("Test")
     # assert — early return
@@ -457,11 +464,11 @@ def test_setDeviceProp_inPropertyExceptions():
     base = AlpacaAscomCommon(parent=parent)
     base.config = mock.MagicMock()
     base.config.deviceName = "TestDevice"
-    base.propertyExceptions.append("Test")
+    base.propertyExceptions.add("Test")
     # act — must not raise and must not add a second entry
     base.setDeviceProp("Test", True)
     # assert
-    assert base.propertyExceptions.count("Test") == 1
+    assert base.propertyExceptions == {"Test"}
 
 
 def test_setDeviceProp_withLoggingTrace():
@@ -494,7 +501,7 @@ def test_callDeviceMethod_inPropertyExceptions():
     base = AlpacaAscomCommon(parent=parent)
     base.config = mock.MagicMock()
     base.config.deviceName = "TestDevice"
-    base.propertyExceptions.append("Test")
+    base.propertyExceptions.add("Test")
     # act
     result = base.callDeviceMethod("Test")
     # assert — early return
@@ -515,3 +522,135 @@ def test_callDeviceMethod_withLoggingTrace():
     # assert
     base.device.Halt.assert_called_once_with()
     assert result == "ok"
+
+
+class ComError(Exception):
+    """Mimics pywintypes.com_error with an excepinfo tuple."""
+
+    def __init__(self, excepinfo: Any) -> None:
+        super().__init__("com error")
+        self.excepinfo = excepinfo
+
+
+def makeBase() -> AlpacaAscomCommon:
+    base = AlpacaAscomCommon(parent=Parent())
+    base.config = mock.MagicMock()
+    base.config.deviceName = "TestDevice"
+    base.device = mock.MagicMock()
+    return base
+
+
+@pytest.mark.parametrize(
+    "error",
+    [
+        AttributeError("missing"),
+        NotImplementedError("missing"),
+        NotImplementedException("missing"),
+        ActionNotImplementedException("missing"),
+        ComError((0, "src", "desc", None, 0, -2147220480)),
+        ComError((0, "src", "desc", None, 0, 0x80040400)),
+    ],
+)
+def test_isNotImplemented_true(error):
+    assert makeBase().isNotImplemented(error)
+
+
+@pytest.mark.parametrize(
+    "error",
+    [
+        OSError("timeout"),
+        ValueError("bad"),
+        InvalidValueException("bad"),
+        NotConnectedException("not connected"),
+        ComError(None),
+        ComError((0, "src")),
+        ComError((0, "src", "desc", None, 0, None)),
+        ComError((0, "src", "desc", None, 0, 0x80040401)),
+    ],
+)
+def test_isNotImplemented_false(error):
+    assert not makeBase().isNotImplemented(error)
+
+
+def test_getDeviceProp_notImplementedBlocked():
+    base = makeBase()
+    type(base.device).Gain = mock.PropertyMock(side_effect=NotImplementedException("missing"))
+    assert base.getDeviceProp("Gain") is None
+    assert base.propertyExceptions == {"Gain"}
+
+
+def test_getDeviceProp_timeoutNotBlocked():
+    base = makeBase()
+    type(base.device).Gain = mock.PropertyMock(side_effect=OSError("timeout"))
+    assert base.getDeviceProp("Gain") is None
+    assert base.propertyExceptions == set()
+
+
+def test_getDeviceProp_connectedNeverBlocked():
+    class DeviceWithoutConnected:
+        pass
+
+    base = makeBase()
+    base.device = DeviceWithoutConnected()
+    assert base.getDeviceProp("Connected") is None
+    assert base.propertyExceptions == set()
+
+
+def test_setDeviceProp_invalidValueNotBlocked():
+    base = makeBase()
+    type(base.device).Gain = mock.PropertyMock(side_effect=InvalidValueException("range"))
+    base.setDeviceProp("Gain", 1000)
+    assert base.propertyExceptions == set()
+
+
+def test_callDeviceMethod_invalidOperationNotBlocked():
+    base = makeBase()
+    base.device.Move.side_effect = InvalidOperationException("parked")
+    assert base.callDeviceMethod("Move", Position=1) is None
+    assert base.propertyExceptions == set()
+
+
+def test_callDeviceMethod_notImplementedBlocked():
+    base = makeBase()
+    base.device.Move.side_effect = ComError((0, "src", "desc", None, 0, -2147220480))
+    assert base.callDeviceMethod("Move", Position=1) is None
+    assert base.propertyExceptions == {"Move"}
+
+
+def test_clearCommandQueue(function):
+    function.callDeviceMethodQueued("Halt")
+    function.setDevicePropQueued("Gain", 1)
+    function.clearCommandQueue()
+    assert function.commandQueue.empty()
+
+
+def test_runnerCommunicationLoop_dropsStaleCommands(function):
+    function.setDevicePropQueued("Connected", False)
+    function.stopEvent.set()
+    function.device.Connected = True
+    function.runnerCommunicationLoop()
+    assert function.device.Connected is True
+    assert function.commandQueue.empty()
+
+
+def test_runnerCommunicationLoop_disconnectOnStop(function):
+    function.device.Connected = True
+
+    def fakeConnect() -> None:
+        function.stopCommunication()
+
+    function.handleDeviceConnect = fakeConnect
+    function.runnerCommunicationLoop()
+    assert function.device.Connected is False
+    assert function.commandQueue.empty()
+
+
+def test_stopCommunication_queuesBeforeStop(function):
+    seen = []
+
+    def fakeSet() -> None:
+        seen.append(function.commandQueue.qsize())
+
+    with mock.patch.object(function.stopEvent, "set", side_effect=fakeSet):
+        function.stopCommunication()
+    assert seen == [1]

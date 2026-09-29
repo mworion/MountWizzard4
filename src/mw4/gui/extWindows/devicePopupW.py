@@ -275,13 +275,6 @@ class DevicePopup(MWidget):
         self.returnValues["close"] = "ok"
         self.close()
 
-    def setAlpacaServer(self) -> None:
-        serverName = self.ui.alpacaServerList.currentText()
-        host, port = serverName.split(":")
-        self.msg.emit(0, "alpaca", "Server selected", f"{serverName}")
-        self.ui.alpacaHostAddress.setText(host)
-        self.ui.alpacaPort.setText(port)
-
     def updateDeviceNameList(self, framework: str, deviceNames: list[str]) -> None:
         self.discovers[framework]["deviceList"].clear()
         self.discovers[framework]["deviceList"].setView(QListView())
@@ -296,8 +289,6 @@ class DevicePopup(MWidget):
             hostaddress = self.discovers[framework]["hostaddress"].text()
             port = self.discovers[framework]["port"].text()
             deviceNames = deviceInstance.discoverDevices(deviceType, hostaddress, port)
-        elif framework == "alpacaServer":
-            deviceNames = deviceInstance.discoverDeviceServer()
         else:
             deviceNames = deviceInstance.discoverDevices(deviceType)
         changeStyleDynamic(self.discovers[framework]["button"], "run", "false")

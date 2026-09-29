@@ -258,14 +258,14 @@ def test_runnerCalcSatList_handles_exception(function: SatSearch) -> None:
         mock.patch.object(function.signals, "setSatGroupTitle"),
         mock.patch.object(function, "satOkSGP4", return_value=True) as mock_sgp4,
         mock.patch.object(
-            function, "calcSat", side_effect=RuntimeError("test error")
+            function, "calcSat", side_effect=ValueError("test error")
         ) as mock_calc,
-        mock.patch.object(function.log, "debug") as mock_debug,
+        mock.patch.object(function.log, "warning") as mock_warning,
     ):
         function.runnerCalcSatList(snapshot, 1, True, 0, 10)
         assert mock_sgp4.called  # verify we got to this point
         assert mock_calc.called  # verify calcSat was called
-        assert mock_debug.called  # verify debug was called
+        assert "test_sat" in mock_warning.call_args[0][0]
 
 
 def test_updateListSats_3(function: SatSearch) -> None:

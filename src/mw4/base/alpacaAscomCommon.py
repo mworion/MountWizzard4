@@ -51,8 +51,6 @@ class AlpacaAscomCommon(DriverData):
         if valueProp in self.propertyExceptions:
             return None
         try:
-            if valueProp == "ImageArray":
-                pass
             returnVal = getattr(self.device, valueProp)
             if self.loggingTrace and "ImageArray" not in valueProp:
                 self.log.debug(

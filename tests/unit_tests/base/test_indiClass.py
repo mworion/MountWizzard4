@@ -534,6 +534,16 @@ def test_loadIndiConfig(function):
     assert item == ("TestDevice", "CONFIG_PROCESS", {"CONFIG_PROCESS": True})
 
 
+def test_discoverDevices_mutexLocked(function):
+    with (
+        mock.patch.object(function.discoverMutex, "tryLock", return_value=False),
+        mock.patch("mw4.base.indiClass.Worker") as mockWorker,
+    ):
+        result = function.discoverDevices("dome", "localhost", 7624)
+    assert result == []
+    mockWorker.assert_not_called()
+
+
 def test_discoverDevices_emptyQueue(function, monkeypatch):
     monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
     with (

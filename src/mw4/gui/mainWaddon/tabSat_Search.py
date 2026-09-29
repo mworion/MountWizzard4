@@ -250,6 +250,7 @@ class SatSearch(SatData):
         selectTwilight: int,
         altMin: float,
     ) -> None:
+        name = ""
         try:
             self.signals.setSatGroupTitle.emit("Filter - running", True)
             loc = self.app.dReg["mount"].location
@@ -258,7 +259,7 @@ class SatSearch(SatData):
             timeNext = ts.tt_jd(timeNow.tt + 0.25)
             eph = self.app.ephemeris
             numSats = len(snapshot)
-            for i, (row, _name, sat, hidden) in enumerate(snapshot):
+            for i, (row, name, sat, hidden) in enumerate(snapshot):
                 if generation != self.calcGeneration:
                     break
                 finished = (i + 1) / numSats * 100
@@ -277,8 +278,8 @@ class SatSearch(SatData):
                 show = show and (twilight <= selectTwilight)
                 self.signals.setSatListRowHidden.emit(row, not show)
             self.signals.setSatGroupTitle.emit("Filter - processed - 100%", False)
-        except Exception:
-            self.log.debug(f"Error on processing list satellite [{sat}]")
+        except (ArithmeticError, AttributeError, IndexError, TypeError, ValueError) as e:
+            self.log.warning(f"Error on processing list satellite [{name}]: {e}")
 
     def calcSatList(
         self, snapshot: list[tuple[int, str, EarthSatellite, bool]], generation: int

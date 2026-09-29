@@ -26,7 +26,7 @@ from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(qapp):
     try:
         function = ModelData(App())
     except (
@@ -46,27 +46,48 @@ def resetState(function):
     function.cancelBatch = False
     function.pauseBatch = False
     function.endBatch = False
+    function.passActive = False
     function.modelBuildData = {}
     function.modelRunList = []
     function.modelRunKey = ""
     function.retries = 0
+    function.numberRetries = 0
+    function.waitTimeExposure = 0
     yield
+    function.timerExposure.stop()
+    function.passActive = False
 
 
-@pytest.fixture
-def mocked_sleepAndEvents(monkeypatch, function):
-    def test(a):
-        function.pauseBatch = False
+def buildRunData(keys: list[str]) -> dict:
+    return {
+        key: {
+            "imagePath": Path(f"{key}.fits"),
+            "countSequence": i,
+            "success": False,
+            "processed": False,
+            "message": "",
+        }
+        for i, key in enumerate(keys)
+    }
 
-    monkeypatch.setattr("mw4.logic.modelBuild.modelRun.mainThreadSleep", test)
+
+def solveResult(key: str, success: bool = True, message: str = "Ok") -> dict:
+    return {"success": success, "imagePath": Path(f"{key}.fits"), "message": message}
 
 
-@pytest.fixture
-def mocked_sleepAndEvents_2(monkeypatch, function):
-    def test(a):
-        function.cancelBatch = True
-
-    monkeypatch.setattr("mw4.logic.modelBuild.modelRun.mainThreadSleep", test)
+def test_setupAndResetSignals(function):
+    function.modelTiming = function.PROGRESSIVE
+    exposed = function.app.dReg["camera"].signals.exposed
+    with mock.patch.object(function, "startSlew") as mockSlew:
+        function.setupSignals()
+        try:
+            exposed.emit(Path("test.fits"))
+            assert mockSlew.emit.call_count == 1
+        finally:
+            function.resetSignals()
+        exposed.emit(Path("test.fits"))
+        assert mockSlew.emit.call_count == 1
+    function.modelTiming = function.CONSERVATIVE
 
 
 def test_setImageExposed(function):
@@ -399,22 +420,57 @@ def test_addMountDataToModelBuildData_1(function):
     assert "decJNowM" in function.modelBuildData["im-00"]
 
 
-def test_startNewImageExposure_1(function, mocked_sleepAndEvents):
+def test_startNewImageExposure_1(function):
     function.cancelBatch = True
     function.startNewImageExposure()
+    assert not function.timerExposure.isActive()
 
 
-def test_startNewImageExposure_2(function, mocked_sleepAndEvents):
+def test_startNewImageExposure_2(function):
+    function.waitTimeExposure = 2
+    function.startNewImageExposure()
+    assert function.timerExposure.isActive()
+    assert function.timerExposure.interval() == 2000
+
+
+def test_checkPauseAndExpose_1(function):
+    function.endBatch = True
+    with mock.patch.object(function, "exposeImage") as mockExpose:
+        function.checkPauseAndExpose()
+    mockExpose.assert_not_called()
+    assert not function.timerExposure.isActive()
+
+
+def test_checkPauseAndExpose_2(function):
     function.pauseBatch = True
-    function.cancelBatch = False
-    function.exposureWaitTime = 1
+    with mock.patch.object(function, "exposeImage") as mockExpose:
+        function.checkPauseAndExpose()
+    mockExpose.assert_not_called()
+    assert function.timerExposure.isActive()
+    assert function.timerExposure.interval() == function.PAUSE_POLL_MS
+
+
+def test_checkPauseAndExpose_3(function):
+    with mock.patch.object(function, "exposeImage") as mockExpose:
+        function.checkPauseAndExpose()
+    mockExpose.assert_called_once()
+
+
+def test_startNewImageExposure_timerExposes(function, qtbot):
+    with mock.patch.object(function, "exposeImage") as mockExpose:
+        function.startNewImageExposure()
+        qtbot.waitUntil(lambda: mockExpose.called, timeout=1000)
+
+
+def test_exposeImage_1(function):
     function.modelBuildData = {"im-00": {"imagePath": Path("test")}}
     function.modelRunKey = "im-00"
     with (
         mock.patch.object(function, "addMountDataToModelBuildData"),
-        mock.patch.object(function.app.dReg.d["camera"].instance, "expose"),
+        mock.patch.object(function.app.dReg.d["camera"].instance, "expose") as mockExpose,
     ):
-        function.startNewImageExposure()
+        function.exposeImage()
+    mockExpose.assert_called_once()
 
 
 def test_startNewPlateSolve_1(function):
@@ -605,19 +661,6 @@ def test_checkModelFinished_2(function):
     assert not function.checkModelFinished()
 
 
-def test_runThroughModelBuildData_1(function, mocked_sleepAndEvents_2):
-    function.cancelBatch = False
-    function.endBatch = False
-    function.modelBuildData = {"image-000": {"processed": True}}
-    function.modelRunList = ["image-000"]
-    with (
-        mock.patch.object(function, "startNewSlew"),
-        mock.patch.object(function, "checkModelFinished", return_value=False),
-    ):
-        function.runThroughModelBuildData()
-    assert not function.modelBuildData["image-000"]["processed"]
-
-
 def test_generateRunIterator_1(function):
     function.retriesReverse = False
     function.retries = 1
@@ -654,66 +697,257 @@ def test_generateRunIterator_2(function):
     assert list(function.modelRunIterator) == ["image-001", "image-000"]
 
 
-def test_runThroughModelBuildDataRetries_1(function):
-    function.cancelBatch = False
-    function.endBatch = False
-    function.retries = 1
-    function.numberRetries = 2
+def test_collectPlateSolveResult_finishesPass(function, qtbot):
+    function.modelBuildData = buildRunData(["im-00"])
+    function.modelRunList = ["im-00"]
+    function.passActive = True
     with (
-        mock.patch.object(function, "generateRunIterator"),
-        mock.patch.object(function, "runThroughModelBuildData"),
-        mock.patch.object(function, "checkRetryNeeded", return_value=False),
+        mock.patch.object(function, "sendModelProgress"),
+        mock.patch.object(function, "finishModel") as mockFinish,
     ):
-        function.runThroughModelBuildDataRetries()
+        function.collectPlateSolveResult(solveResult("im-00"))
+        mockFinish.assert_not_called()
+        qtbot.waitUntil(lambda: mockFinish.called, timeout=1000)
+    assert not function.passActive
 
 
-def test_runThroughModelBuildDataRetries_2(function):
+def test_startPass_1(function):
+    function.retries = 1
     function.cancelBatch = True
+    retrySlot = mock.MagicMock()
+    function.statusRetry.connect(retrySlot)
+    try:
+        with (
+            mock.patch.object(function, "finishModel") as mockFinish,
+            mock.patch.object(function, "generateRunIterator") as mockGen,
+        ):
+            function.startPass()
+    finally:
+        function.statusRetry.disconnect(retrySlot)
+    retrySlot.assert_called_once_with(1)
+    mockFinish.assert_called_once()
+    mockGen.assert_not_called()
+
+
+def test_startPass_2(function, qtbot):
+    function.modelBuildData = buildRunData(["im-00"])
+    function.modelRunList = []
+    with (
+        mock.patch.object(function, "startSlew") as mockSlew,
+        mock.patch.object(function, "finishModel") as mockFinish,
+    ):
+        function.startPass()
+        assert function.passActive
+        qtbot.waitUntil(lambda: mockFinish.called, timeout=1000)
+    mockSlew.emit.assert_not_called()
+
+
+def test_startPass_3(function):
+    function.modelBuildData = buildRunData(["im-00", "im-01"])
+    function.modelBuildData["im-00"]["processed"] = True
+    function.modelRunList = ["im-00", "im-01"]
+    with mock.patch.object(function, "startSlew") as mockSlew:
+        function.startPass()
+    mockSlew.emit.assert_called_once()
+    assert function.passActive
+    assert not function.modelBuildData["im-00"]["processed"]
+
+
+def test_finishPass_1(function):
+    function.passActive = False
+    with mock.patch.object(function, "finishModel") as mockFinish:
+        function.finishPass()
+    mockFinish.assert_not_called()
+
+
+def test_finishPass_2(function):
+    function.passActive = True
+    function.numberRetries = 2
+    with (
+        mock.patch.object(function, "checkRetryNeeded", return_value=True),
+        mock.patch.object(function, "startPass") as mockStart,
+        mock.patch.object(function, "finishModel") as mockFinish,
+    ):
+        function.finishPass()
+    assert function.retries == 1
+    mockStart.assert_called_once()
+    mockFinish.assert_not_called()
+
+
+def test_finishPass_3(function):
+    function.passActive = True
+    function.numberRetries = 2
+    function.retries = 2
+    with (
+        mock.patch.object(function, "checkRetryNeeded", return_value=True),
+        mock.patch.object(function, "startPass") as mockStart,
+        mock.patch.object(function, "finishModel") as mockFinish,
+    ):
+        function.finishPass()
+    mockStart.assert_not_called()
+    mockFinish.assert_called_once()
+
+
+def test_finishPass_4(function):
+    function.passActive = True
+    function.numberRetries = 2
     function.endBatch = True
-    function.retries = 1
+    with (
+        mock.patch.object(function, "checkRetryNeeded", return_value=True),
+        mock.patch.object(function, "startPass") as mockStart,
+        mock.patch.object(function, "finishModel") as mockFinish,
+    ):
+        function.finishPass()
+    mockStart.assert_not_called()
+    mockFinish.assert_called_once()
+
+
+def test_finishPass_5(function):
+    function.passActive = True
     function.numberRetries = 2
     with (
-        mock.patch.object(function, "generateRunIterator"),
-        mock.patch.object(function, "runThroughModelBuildData"),
-        mock.patch.object(function, "checkRetryNeeded", return_value=True),
+        mock.patch.object(function, "checkRetryNeeded", return_value=False),
+        mock.patch.object(function, "startPass") as mockStart,
+        mock.patch.object(function, "finishModel") as mockFinish,
     ):
-        function.runThroughModelBuildDataRetries()
+        function.finishPass()
+    mockStart.assert_not_called()
+    mockFinish.assert_called_once()
 
 
-def test_runThroughModelBuildDataRetries_3(function):
-    function.cancelBatch = False
-    function.endBatch = False
-    function.retries = 1
-    function.numberRetries = 2
+def test_finishModel_1(function, qtbot):
+    function.cancelBatch = True
+    function.timerExposure.start(10000)
     with (
-        mock.patch.object(function, "generateRunIterator"),
-        mock.patch.object(function, "runThroughModelBuildData"),
-        mock.patch.object(function, "checkRetryNeeded", return_value=True),
+        mock.patch.object(function, "resetSignals") as mockReset,
+        mock.patch.object(function, "buildProgModel") as mockBuild,
+        qtbot.waitSignal(function.finished) as blocker,
     ):
-        function.runThroughModelBuildDataRetries()
+        function.finishModel()
+    assert blocker.args == [True]
+    assert not function.timerExposure.isActive()
+    mockReset.assert_called_once()
+    mockBuild.assert_not_called()
 
 
-def test_runModel_1(function):
+def test_finishModel_2(function, qtbot):
+    def build():
+        function.modelProgData = [1, 2]
+
+    with (
+        mock.patch.object(function, "resetSignals"),
+        mock.patch.object(function, "buildProgModel", side_effect=build),
+        qtbot.waitSignal(function.finished) as blocker,
+    ):
+        function.finishModel()
+    assert blocker.args == [False]
+    assert function.modelProgData == []
+
+
+def test_finishModel_3(function, qtbot):
+    def build():
+        function.modelProgData = [1, 2, 3]
+
+    with (
+        mock.patch.object(function, "resetSignals"),
+        mock.patch.object(function, "buildProgModel", side_effect=build),
+        qtbot.waitSignal(function.finished) as blocker,
+    ):
+        function.finishModel()
+    assert blocker.args == [False]
+    assert function.modelProgData == [1, 2, 3]
+
+
+def test_stopRun_1(function):
+    function.timerExposure.start(10000)
+    with mock.patch.object(function, "finishPass") as mockFinish:
+        function.stopRun()
+    assert not function.timerExposure.isActive()
+    mockFinish.assert_not_called()
+
+
+def test_stopRun_2(function, qtbot):
+    function.passActive = True
+    with mock.patch.object(function, "finishModel") as mockFinish:
+        function.stopRun()
+        mockFinish.assert_not_called()
+        qtbot.waitUntil(lambda: mockFinish.called, timeout=1000)
+
+
+def test_cancelRun(function):
+    with mock.patch.object(function, "stopRun") as mockStop:
+        function.cancelRun()
+    assert function.cancelBatch
+    mockStop.assert_called_once()
+
+
+def test_endRun(function):
+    with mock.patch.object(function, "stopRun") as mockStop:
+        function.endRun()
+    assert function.endBatch
+    mockStop.assert_called_once()
+
+
+def test_resetBatchFlags(function):
+    function.cancelBatch = function.endBatch = function.pauseBatch = True
+    function.passActive = True
+    function.resetBatchFlags()
+    assert not any(
+        [function.cancelBatch, function.endBatch, function.pauseBatch, function.passActive]
+    )
+
+
+def test_runModel_1(function, qtbot):
     function.modelInputData = []
-    function.runModel()
+    with (
+        mock.patch.object(function, "startPass") as mockStart,
+        qtbot.waitSignal(function.finished) as blocker,
+    ):
+        function.runModel()
+    assert blocker.args == [False]
+    mockStart.assert_not_called()
 
 
 def test_runModel_2(function):
     function.modelInputData = [(0, 0, True)]
-    function.cancelBatch = False
     with (
+        mock.patch.object(function, "setupSignals") as mockSetup,
         mock.patch.object(function, "prepareModelBuildData"),
-        mock.patch.object(function, "runThroughModelBuildData"),
+        mock.patch.object(function, "startPass") as mockStart,
+    ):
+        function.runModel()
+    mockSetup.assert_called_once()
+    mockStart.assert_called_once()
+
+
+def test_runModel_flowWithRetry(function, qtbot):
+    keys = ["image-000", "image-001", "image-002"]
+    function.numberRetries = 1
+    passes = []
+
+    def prepare():
+        function.modelBuildData = buildRunData(keys)
+        function.modelRunList = list(keys)
+
+    def slew():
+        passes.append(list(function.modelRunList))
+        for key in function.modelRunList:
+            success = len(passes) > 1 or key != "image-001"
+            function.collectPlateSolveResult(solveResult(key, success=success))
+
+    function.modelInputData = [(10, 0), (20, 90), (30, 180)]
+    with (
+        mock.patch.object(function, "setupSignals"),
+        mock.patch.object(function, "resetSignals"),
+        mock.patch.object(function, "prepareModelBuildData", side_effect=prepare),
+        mock.patch.object(function, "startSlew") as mockSlew,
+        mock.patch.object(function, "sendModelProgress"),
         mock.patch.object(function, "buildProgModel"),
+        qtbot.waitSignal(function.finished, timeout=2000) as blocker,
     ):
+        mockSlew.emit.side_effect = slew
         function.runModel()
-
-
-def test_runModel_3(function):
-    function.modelInputData = [(0, 0, True)]
-    function.cancelBatch = True
-    with (
-        mock.patch.object(function, "prepareModelBuildData"),
-        mock.patch.object(function, "runThroughModelBuildData"),
-    ):
-        function.runModel()
+    assert blocker.args == [False]
+    assert passes == [keys, ["image-001"]]
+    assert all(function.modelBuildData[key]["success"] for key in keys)
+    assert function.retries == 1

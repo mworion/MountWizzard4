@@ -19,10 +19,10 @@ import os
 import pytest
 import shutil
 from mw4.base.bootstrap import extractDataFiles
-from mw4.base.threadUtils import mainThreadSleep
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from PySide6.QtCore import Qt, QThreadPool
+from PySide6.QtTest import QTest
 
 mwglob = {
     "dataDir": Path("tests/work/assets"),
@@ -76,7 +76,7 @@ def test_showImages(qtbot, qapp):
 
     for i in range(50):
         app.showImage.emit(f"tests/work/image/star{i % 3 + 1}.fits")
-        mainThreadSleep(500)
+        QTest.qWait(500)
 
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
         pass
@@ -97,7 +97,7 @@ def test_showImagesPhotometry(qtbot, qapp):
 
     for i in range(50):
         app.showImage.emit(f"tests/work/image/star{i % 3 + 1}.fits")
-        mainThreadSleep(1000)
+        QTest.qWait(1000)
 
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
         pass
@@ -118,7 +118,7 @@ def test_showImagesPhotometryN(qtbot, qapp):
 
     imageW.ui.continous.setChecked(True)
     qtbot.mouseClick(imageW.ui.expose, Qt.LeftButton)
-    mainThreadSleep(3000)
+    QTest.qWait(3000)
     qtbot.mouseClick(imageW.ui.abortExpose, Qt.LeftButton)
 
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):

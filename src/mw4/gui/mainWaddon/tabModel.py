@@ -14,8 +14,9 @@
 #
 ###########################################################
 import time
+from collections.abc import Callable
 from datetime import UTC, datetime
-from mw4.base.threadUtils import mainThreadSleep
+from functools import partial
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
@@ -23,6 +24,7 @@ from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.logic.modelBuild.modelRun import ModelData
 from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile
 from pathlib import Path
+from PySide6.QtCore import QTimer
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -38,6 +40,7 @@ class Model(TabAddon):
     STATUS_EXPOSE_1 = 5
     STATUS_EXPOSE_N = 6
     STATUS_SOLVE = 7
+    CLEAR_WAIT_MS = 1000
 
     def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
@@ -60,6 +63,7 @@ class Model(TabAddon):
         self.modelData.statusSlew.connect(self.showStatusSlew)
         self.modelData.statusRetry.connect(self.showStatusRetry)
         self.modelData.progress.connect(self.showProgress)
+        self.modelData.finished.connect(self.finishBatch)
 
     def initConfig(self) -> None:
         config = self.app.config["WindowMain"]
@@ -96,7 +100,7 @@ class Model(TabAddon):
     def cancelBatch(self) -> None:
         if not self.modelData:
             return
-        self.modelData.cancelBatch = True
+        self.modelData.cancelRun()
 
     def pauseBatch(self) -> None:
         if not self.modelData:
@@ -107,7 +111,7 @@ class Model(TabAddon):
     def endBatch(self) -> None:
         if not self.modelData:
             return
-        self.modelData.endBatch = True
+        self.modelData.endRun()
 
     def setModelOperationMode(self, status: int) -> None:
         if status == self.STATUS_MODEL_BATCH:
@@ -147,9 +151,9 @@ class Model(TabAddon):
 
     def programModelToMountFinish(self) -> None:
         self.app.dReg["mount"].signals.getModelDone.disconnect(self.programModelToMountFinish)
-        self.msg.emit(1, "Model", "Writing model", f"[{self.modelData.name}]")
+        self.msg.emit(1, "Model", "Writing model", f"[{self.modelData.modelName}]")
         self.modelData.generateSaveData()
-        modelPath = self.app.mwGlob["modelDir"] / (self.modelData.name + ".model")
+        modelPath = self.app.mwGlob["modelDir"] / (self.modelData.modelName + ".model")
         self.modelData.saveModelData(modelPath)
         self.app.dReg["mount"].model.storeName("actual")
 
@@ -162,7 +166,7 @@ class Model(TabAddon):
         ):
             self.msg.emit(3, "Model", "Run error", f"{'Program':12s} Failed - error")
             return
-        self.msg.emit(1, "Model", "Program", f"[{self.modelData.name}] with success")
+        self.msg.emit(1, "Model", "Program", f"[{self.modelData.modelName}] with success")
         self.app.dReg["mount"].signals.getModelDone.connect(self.programModelToMountFinish)
         self.app.refreshModel.emit()
 
@@ -189,19 +193,22 @@ class Model(TabAddon):
             return False
         return True
 
-    def clearAlignAndBackup(self) -> bool:
+    def clearAlignAndBackup(self, continuation: Callable[[], None]) -> bool:
         if not self.app.dReg["mount"].model.clearModel():
             self.msg.emit(2, "Model", "Run error", "Actual model cannot be cleared")
             self.msg.emit(2, "", "", "Model build cancelled")
             return False
 
         self.msg.emit(1, "Model", "Clear model", "Waiting 1s ...")
-        mainThreadSleep(1000)
+        QTimer.singleShot(self.CLEAR_WAIT_MS, partial(self.backupAfterClear, continuation))
+        return True
+
+    def backupAfterClear(self, continuation: Callable[[], None]) -> None:
         self.msg.emit(1, "Model", "Clear model", "Actual model is cleared")
         if not self.app.dReg["mount"].model.storeName("backup"):
             t = "Cannot save backup model on mount, proceeding with model run"
             self.msg.emit(2, "Model", "Run error", t)
-        return True
+        continuation()
 
     def setupFilenamesAndDirectories(self, prefix: str = "", postfix: str = "") -> Path:
         nameTime = self.app.dReg["mount"].obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
@@ -255,7 +262,7 @@ class Model(TabAddon):
     def setupBatchData(self) -> None:
         imageDir = self.setupFilenamesAndDirectories(prefix="m", postfix="build")
         self.modelData.imageDir = imageDir
-        self.modelData.name = imageDir.stem
+        self.modelData.modelName = imageDir.stem
         self.modelData.numberRetries = self.ui.numberBuildRetries.value()
         self.modelData.retriesReverse = self.ui.retriesReverse.isChecked()
         self.modelData.waitTimeExposure = self.ui.waitTimeExposure.value()
@@ -268,26 +275,30 @@ class Model(TabAddon):
 
     def setModelTiming(self) -> None:
         if self.ui.progressiveTiming.isChecked():
-            self.modelData.timing = self.modelData.PROGRESSIVE
+            self.modelData.modelTiming = self.modelData.PROGRESSIVE
         elif self.ui.normalTiming.isChecked():
-            self.modelData.timing = self.modelData.NORMAL
+            self.modelData.modelTiming = self.modelData.NORMAL
         elif self.ui.conservativeTiming.isChecked():
-            self.modelData.timing = self.modelData.CONSERVATIVE
+            self.modelData.modelTiming = self.modelData.CONSERVATIVE
 
     def runBatch(self) -> None:
         self.app.operationRunning.emit(self.STATUS_MODEL_BATCH)
+        self.modelData.resetBatchFlags()
         if not self.checkModelRunConditions() or not self.checkMountTimeSync():
             self.app.operationRunning.emit(self.STATUS_IDLE)
             return
-        if not self.clearAlignAndBackup():
+        if not self.clearAlignAndBackup(self.startBatch):
             self.app.operationRunning.emit(self.STATUS_IDLE)
-            return
+
+    def startBatch(self) -> None:
         self.setModelTiming()
         self.setupBatchData()
-        self.msg.emit(1, "Model", "Run", f"[{self.modelData.name}]")
+        self.msg.emit(1, "Model", "Run", f"[{self.modelData.modelName}]")
         self.setupModelInputData()
         self.modelData.runModel()
-        if self.modelData.cancelBatch:
+
+    def finishBatch(self, cancelled: bool) -> None:
+        if cancelled:
             self.msg.emit(1, "Model", "Run", "Model build cancelled by user")
         else:
             self.programModelToMount()
@@ -305,16 +316,19 @@ class Model(TabAddon):
         )
         if len(modelFilesPath) > 1:
             self.msg.emit(0, "Model", "Run", f"Combination of {len(modelFilesPath)} files")
-            self.modelData.name = self.setupFilenamesAndDirectories(prefix="m", postfix="add")
+            imageDir = self.setupFilenamesAndDirectories(prefix="m", postfix="add")
+            self.modelData.modelName = imageDir.stem
         elif len(modelFilesPath) == 1:
-            self.modelData.name = modelFilesPath[0].stem
+            self.modelData.modelName = modelFilesPath[0].stem
         else:
             self.msg.emit(1, "Model", "Run", "Model from file cancelled - no files selected")
             return
-        if not self.clearAlignAndBackup():
-            return
 
         self.app.operationRunning.emit(self.STATUS_MODEL_FILE)
+        if not self.clearAlignAndBackup(partial(self.programFileModel, modelFilesPath)):
+            self.app.operationRunning.emit(self.STATUS_IDLE)
+
+    def programFileModel(self, modelFilesPath: list[Path]) -> None:
         self.modelData.modelBuildData, message = loadModelsFromFile(modelFilesPath)
         self.modelData.buildProgModel()
         if self.modelData.modelBuildData:

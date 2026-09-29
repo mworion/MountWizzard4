@@ -1,6 +1,6 @@
 # Plan – Review 2026-09-29, Recommendation 6 (June #4): `App` Protocol
 
-Source: `gists/work_agent/2026-09-29-review.md` (section 4.1, rec 6),
+Source: `2026-09-29-review.md` (section 4.1, rec 6),
 proposal `gists/work_agent/2026-06-10-proposal-rec4-AppProtocol.md`.
 
 Goal: replace the untyped `app: Any` seams with one structural contract
@@ -44,7 +44,7 @@ and is **not** part of the protocol.
 
 The protocol must describe the real `MountWizzard4`. The accesses above are
 changed to the `dReg` form. The related tests (≈50 references to
-`app.relay` / `app.measure` / `app.deviceStat` in `tests/unit_tests`) are updated
+`app.relay` / `app.measure` / `app.deviceStat` in `../../tests/unit_tests`) are updated
 to set up state through `app.dReg[...]`. The stub keeps its attributes until
 Phase 5 so the unrelated tests stay green.
 
@@ -57,7 +57,7 @@ the outcomes (title text, status color, `sortDomeAz` call, relay return values).
 (Phase 5 part), because no test needs them anymore. Ruff clean, 4554 passed,
 38 skipped (serial and `-n auto`), coverage 100 %.
 
-## 2. Phase 2 – `src/mw4/base/appProtocol.py`
+## 2. Phase 2 – `../../src/mw4/base/appProtocol.py`
 
 - One module, no runtime `mw4` imports (all referenced classes are imported
   under `if TYPE_CHECKING:` with `from __future__ import annotations`). Consumers
@@ -72,7 +72,7 @@ the outcomes (title text, status color, `sortDomeAz` call, relay return values).
   - methods `initConfig() -> None`, `storeConfig() -> None`.
 - Narrow sub-protocols (`HasThreadPool`, …) from the proposal are **not**
   added now (see decision D2).
-- `pyproject.toml`: add `"if TYPE_CHECKING:"` to
+- `../../pyproject.toml`: add `"if TYPE_CHECKING:"` to
   `[tool.coverage.report] exclude_also` (config, not a pragma) so the one
   import block does not break the 100 % gate.
 - Spike: check that the PySide6 stubs resolve `Signal` on the class to
@@ -81,7 +81,7 @@ the outcomes (title text, status color, `sortDomeAz` call, relay return values).
 
 **Result – ✅ Done**
 
-- `src/mw4/base/appProtocol.py` added. Deviation from the list above: the
+- `../../src/mw4/base/appProtocol.py` added. Deviation from the list above: the
   protocol contains only the members that consumers **actually use** (checked by
   grep outside `mainApp.py`). `application`, `audioMgr`, `expireData` and the
   signals `material` / `drawHorizonPoints` are used only inside `MountWizzard4`
@@ -90,8 +90,8 @@ the outcomes (title text, status color, `sortDomeAz` call, relay return values).
 - Spike: PySide6 6.11.2 `QtCore.pyi` declares
   `Signal.__get__(instance: QObject, …) -> SignalInstance`, so typing the
   signals as `SignalInstance` is correct.
-- `pyproject.toml`: `"if TYPE_CHECKING:"` added to `exclude_also`.
-- Tests: new `tests/unit_tests/base/test_appProtocol.py` (the stub `App`
+- `../../pyproject.toml`: `"if TYPE_CHECKING:"` added to `exclude_also`.
+- Tests: new `../../tests/unit_tests/base/test_appProtocol.py` (the stub `App`
   satisfies the protocol, `object()` and a partial object do not, and the
   member set is checked) plus `test_satisfiesAppProtocol` in
   `tests/unit_tests/mainApp/test_mainApp.py` against the real `MountWizzard4`
@@ -130,7 +130,7 @@ typed transitively.
 
 ## 5. Phase 5 – Tests
 
-- New `tests/unit_tests/base/test_appProtocol.py` (module scope):
+- New `../../tests/unit_tests/base/test_appProtocol.py` (module scope):
   - `isinstance(App(), AppProtocol)` for the test stub;
   - `isinstance(<real MountWizzard4 from the existing mainApp fixture>,
     AppProtocol)` so production drift is caught at test time.
@@ -181,7 +181,7 @@ typed transitively.
 |----|--------------------------------------------------------------------------|---------------------|
 | D1 | Include the Phase 1 bug fixes in this change, or as a separate change?   | Include (prereq)    |
 | D2 | Single `AppProtocol` only, or also narrow sub-protocols now?             | Single only         |
-| D3 | Add a static checker (pyright or mypy) as dev dependency and run it on `src/mw4/base` + `logic`? Without it the protocol only helps the IDE. | Separate follow-up |
+| D3 | Add a static checker (pyright or mypy) as dev dependency and run it on `../../src/mw4/base` + `logic`? Without it the protocol only helps the IDE. | Separate follow-up |
 | D4 | `mainW` typed as concrete `MainWindow` (proposal) vs. a `MainWindowProtocol`? | Concrete `MainWindow` |
 
 

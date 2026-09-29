@@ -18,12 +18,11 @@ import logging
 import time
 from collections.abc import Iterator
 from mw4.base.appProtocol import AppProtocol
-from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.transform import JNowToJ2000
 from mw4.logic.modelBuild.modelRunSupport import convertAngleToFloat, writeRetrofitData
 from mw4.mountcontrol.progStar import ProgStar
 from pathlib import Path
-from PySide6.QtCore import QObject, Signal
+from PySide6.QtCore import QObject, QTimer, Signal
 from skyfield.api import Angle, Star
 from typing import Any
 
@@ -34,12 +33,14 @@ class ModelData(QObject):
     PROGRESSIVE = 2
     NORMAL = 1
     CONSERVATIVE = 0
+    PAUSE_POLL_MS = 500
 
     statusExpose = Signal(object)
     statusSolve = Signal(object)
     statusSlew = Signal(object)
     statusRetry = Signal(object)
     startSlew = Signal()
+    finished = Signal(bool)
 
     def __init__(self, app: AppProtocol) -> None:
         super().__init__()
@@ -69,6 +70,10 @@ class ModelData(QObject):
         self.retriesReverse: bool = False
         self.mountSlewed: bool = False
         self.domeSlewed: bool = False
+        self.passActive: bool = False
+        self.timerExposure = QTimer(self)
+        self.timerExposure.setSingleShot(True)
+        self.timerExposure.timeout.connect(self.checkPauseAndExpose)
         self.startSlew.connect(self.startNewSlew)
 
     def setupSignals(self) -> None:
@@ -206,12 +211,17 @@ class ModelData(QObject):
     def startNewImageExposure(self) -> None:
         if self.cancelBatch or self.endBatch:
             return
+        self.timerExposure.start(int(self.waitTimeExposure * 1000))
 
-        waitTime = self.waitTimeExposure
-        while self.pauseBatch or waitTime > 0:
-            mainThreadSleep(500)
-            waitTime -= 1
+    def checkPauseAndExpose(self) -> None:
+        if self.cancelBatch or self.endBatch:
+            return
+        if self.pauseBatch:
+            self.timerExposure.start(self.PAUSE_POLL_MS)
+            return
+        self.exposeImage()
 
+    def exposeImage(self) -> None:
         self.addMountDataToModelBuildData()
         item = self.modelBuildData[self.modelRunKey]
         cam = self.app.dReg["camera"].instance
@@ -259,6 +269,8 @@ class ModelData(QObject):
         self.sendModelProgress()
         self.log.debug(t)
         self.statusSolve.emit(item)
+        if self.checkModelFinished():
+            QTimer.singleShot(0, self.finishPass)
 
     def prepareModelBuildData(self) -> None:
         self.modelBuildData.clear()
@@ -299,14 +311,6 @@ class ModelData(QObject):
     def checkModelFinished(self) -> bool:
         return all(self.modelBuildData[key]["processed"] for key in self.modelRunList)
 
-    def runThroughModelBuildData(self) -> None:
-        self.endBatch = self.cancelBatch = False
-        for key in self.modelRunList:
-            self.modelBuildData[key]["processed"] = False
-        self.startSlew.emit()
-        while not self.cancelBatch and not self.endBatch and not self.checkModelFinished():
-            mainThreadSleep(500)
-
     def generateRunIterator(self) -> None:
         nextList = []
         self.log.debug(f"{'Run retries':15s}: Count: [{self.numberRetries:1.0f}]")
@@ -321,30 +325,38 @@ class ModelData(QObject):
             self.modelRunList = nextList
         self.modelRunIterator = iter(self.modelRunList)
 
-    def runThroughModelBuildDataRetries(self) -> None:
-        while self.retries <= self.numberRetries:
-            if self.retries > 0:
-                self.statusRetry.emit(self.retries)
-            if self.cancelBatch or self.endBatch:
-                break
-            self.generateRunIterator()
-            self.runThroughModelBuildData()
-            if not self.checkRetryNeeded():
-                break
-            self.retries += 1
-
-    def runModel(self) -> None:
-        if not self.modelInputData:
+    def startPass(self) -> None:
+        if self.retries > 0:
+            self.statusRetry.emit(self.retries)
+        if self.cancelBatch or self.endBatch:
+            self.finishModel()
             return
+        self.generateRunIterator()
+        for key in self.modelRunList:
+            self.modelBuildData[key]["processed"] = False
+        self.passActive = True
+        if not self.modelRunList:
+            QTimer.singleShot(0, self.finishPass)
+            return
+        self.startSlew.emit()
 
-        self.log.debug(f"{'Start model':15s}")
-        self.runTime = time.time()
-        self.setupSignals()
-        self.prepareModelBuildData()
-        self.runThroughModelBuildDataRetries()
+    def finishPass(self) -> None:
+        if not self.passActive:
+            return
+        self.passActive = False
+        stopped = self.cancelBatch or self.endBatch
+        if not stopped and self.retries < self.numberRetries and self.checkRetryNeeded():
+            self.retries += 1
+            self.startPass()
+            return
+        self.finishModel()
+
+    def finishModel(self) -> None:
+        self.timerExposure.stop()
+        self.resetSignals()
         if self.cancelBatch:
             self.log.info(f"{'Cancel model':15s}: by user")
-            self.resetSignals()
+            self.finished.emit(True)
             return
         self.buildProgModel()
         modelSize = len(self.modelProgData)
@@ -352,4 +364,32 @@ class ModelData(QObject):
             self.log.warning(f"Only {modelSize} points available")
             self.modelProgData = []
         self.log.debug(f"{'Finish model':15s}: len: [{modelSize}]")
-        self.resetSignals()
+        self.finished.emit(False)
+
+    def stopRun(self) -> None:
+        self.timerExposure.stop()
+        if self.passActive:
+            QTimer.singleShot(0, self.finishPass)
+
+    def cancelRun(self) -> None:
+        self.cancelBatch = True
+        self.stopRun()
+
+    def endRun(self) -> None:
+        self.endBatch = True
+        self.stopRun()
+
+    def resetBatchFlags(self) -> None:
+        self.cancelBatch = self.endBatch = self.pauseBatch = False
+        self.passActive = False
+
+    def runModel(self) -> None:
+        if not self.modelInputData:
+            self.finished.emit(False)
+            return
+
+        self.log.debug(f"{'Start model':15s}")
+        self.runTime = time.time()
+        self.setupSignals()
+        self.prepareModelBuildData()
+        self.startPass()

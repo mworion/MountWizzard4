@@ -26,7 +26,7 @@ def registry() -> DeviceRegistry:
     """Registry fixture with full app and devices populated."""
     try:
         app = App()
-        dReg = DeviceRegistry(app)
+        dReg = DeviceRegistry(app, mount=app.mount)
         dReg.addDevices(app)
         return dReg
     except (
@@ -237,7 +237,7 @@ def test_initPhase1OnlyMountExists() -> None:
     """After __init__, only mount device exists."""
     try:
         app = App()
-        dReg = DeviceRegistry(app)
+        dReg = DeviceRegistry(app, mount=app.mount)
         assert "mount" in dReg.d
         assert "camera" not in dReg.d
         assert "dome" not in dReg.d
@@ -257,7 +257,7 @@ def test_initPhase2AllDevicesExist() -> None:
     """After addDevices(), all devices exist."""
     try:
         app = App()
-        dReg = DeviceRegistry(app)
+        dReg = DeviceRegistry(app, mount=app.mount)
         dReg.addDevices(app)
         assert "mount" in dReg.d
         assert "camera" in dReg.d
@@ -276,78 +276,44 @@ def test_initPhase2AllDevicesExist() -> None:
 
 
 def test_initPhase2MountAccessibleDuringAddDevices() -> None:
-    """Mount is accessible during addDevices() for device initialization."""
-    try:
-        app = App()
-        dReg = DeviceRegistry(app)
-        assert app.mount is not None
-        dReg.addDevices(app)
-        assert dReg["mount"].instance is app.mount
-    except (
-        RuntimeError,
-        ImportError,
-        AttributeError,
-        ConnectionError,
-        OSError,
-        ValueError,
-    ) as e:
-        pytest.skip(f"App initialization failed: {e}")
+    """Injected mount is kept before and after addDevices()."""
+    app = App()
+    dReg = DeviceRegistry(app, mount=app.mount)
+    assert dReg["mount"].instance is app.mount
+    dReg.addDevices(app)
+    assert dReg["mount"].instance is app.mount
 
 
 def test_initProductionCreatesNewMount() -> None:
-    """In production (no pre-existing mount), __init__ creates new MountDevice."""
-    try:
-        from mw4.mountcontrol.mount import MountDevice
+    """Without an injected mount, __init__ creates a MountDevice, no write-back."""
+    from mw4.mountcontrol.mount import MountDevice
 
-        app = App()
-        # Ensure app.mount doesn't exist before initialization
-        if hasattr(app, "mount"):
-            delattr(app, "mount")
-
-        dReg = DeviceRegistry(app)
-
-        # Assert mount was created
-        assert hasattr(app, "mount")
-        assert app.mount is not None
-        assert isinstance(app.mount, MountDevice)
-        # Assert mount entry is in registry
-        assert "mount" in dReg.d
-        assert dReg["mount"].instance is app.mount
-    except (
-        RuntimeError,
-        ImportError,
-        AttributeError,
-        ConnectionError,
-        OSError,
-        ValueError,
-    ) as e:
-        pytest.skip(f"App initialization failed: {e}")
+    app = App()
+    stubMount = app.mount
+    dReg = DeviceRegistry(app)
+    assert isinstance(dReg["mount"].instance, MountDevice)
+    assert app.mount is stubMount
 
 
-def test_initTestModeMountsInjected() -> None:
-    """In test mode (pre-existing mount), __init__ uses injected mount."""
-    try:
-        from mw4.mountcontrol.mount import MountDevice
+def test_initInjectedMount() -> None:
+    """An injected mount is used as instance, the app is not modified."""
+    app = App()
+    stubMount = app.mount
+    sentinel = object()
+    dReg = DeviceRegistry(app, mount=sentinel)
+    assert dReg["mount"].instance is sentinel
+    assert app.mount is stubMount
 
-        app = App()
-        # Create a mock mount and inject it
-        mock_mount = MountDevice(app, verbose=True)
-        app.mount = mock_mount
 
-        dReg = DeviceRegistry(app)
+def test_initIgnoresAppMountAttribute() -> None:
+    """A mount attribute on the app is not picked up by the registry."""
+    from mw4.mountcontrol.mount import MountDevice
 
-        # Assert the injected mount is used
-        assert dReg["mount"].instance is mock_mount
-        assert app.mount is mock_mount
-    except (
-        RuntimeError,
-        ImportError,
-        AttributeError,
-        ConnectionError,
-        OSError,
-        ValueError,
-    ) as e:
-        pytest.skip(f"App initialization failed: {e}")
+    app = App()
+    app.mount = MagicMock()
+    dReg = DeviceRegistry(app)
+    assert dReg["mount"].instance is not app.mount
+    assert isinstance(dReg["mount"].instance, MountDevice)
 
 
 # ------------------------------------------------------------------
@@ -358,7 +324,7 @@ def test_initConnectsStopDevicesSignal(registry: DeviceRegistry) -> None:
     # Create new app and registry to test connections
     try:
         app = App()
-        dReg = DeviceRegistry(app)
+        dReg = DeviceRegistry(app, mount=app.mount)
         # If no exception, signals are properly connected
         assert dReg.app is app
     except (
@@ -376,7 +342,7 @@ def test_initConnectsStartStopDeviceSignals(registry: DeviceRegistry) -> None:
     """Test that device-specific start/stop signals are connected."""
     # Test that when signals are emitted, registry handles them
     app = App()
-    dReg = DeviceRegistry(app)
+    dReg = DeviceRegistry(app, mount=app.mount)
     dReg.addDevices(app)
 
     # The connections should be established without errors

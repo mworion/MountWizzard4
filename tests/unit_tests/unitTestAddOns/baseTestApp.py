@@ -177,7 +177,7 @@ class App(QObject):
         self.threadPool = QThreadPool()
         self.uiWindows = {}
         self.mainW = MainW()
-        self.dReg = DeviceRegistry(self)
+        self.dReg = DeviceRegistry(self, mount=self.mount)
         self.dReg.addDevices(self)
         self.buildPoint = BuildPoint(self)
         self.isOnline = False

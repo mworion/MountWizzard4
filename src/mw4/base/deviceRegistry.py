@@ -41,22 +41,16 @@ from typing import Any
 class DeviceRegistry(QObject):
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: AppProtocol) -> None:
+    def __init__(self, app: AppProtocol, mount: MountDevice | None = None) -> None:
         super().__init__()
         self.app = app
         self.signalsToName: dict[int, str] = {}
-
-        if hasattr(app, "mount") and app.mount is not None:
-            # Test only: tests inject mock mounts before calling registry
-            mount_instance = app.mount
-        else:
-            mount_instance = MountDevice(app, verbose=True)
-            app.mount = mount_instance
-
+        if mount is None:
+            mount = MountDevice(app, verbose=True)
         self.d: dict[str, DeviceEntry] = {
             "mount": DeviceEntry(
                 name="mount",
-                instance=mount_instance,
+                instance=mount,
                 deviceType="10micron",
                 isConfigurable=False,
             ),

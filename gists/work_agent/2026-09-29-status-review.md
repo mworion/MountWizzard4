@@ -17,30 +17,37 @@
 
 ## 1. Executive Summary
 
-The code base is in very good shape. Ruff reports no findings, all 4583 tests
-pass in about 10 s with `-n auto`, and coverage is **100 %** (18,492 statements).
+The code base is in very good shape. Ruff reports no findings, all 4653 tests
+pass in about 12 s with `-n auto`, and coverage is **100 %** (18,572 statements).
 The structural items from June and early September are done: the nested event
 loop sleep is gone, `app: Any` is gone, the model run is event-driven, and the
-signal payloads are typed.
+signal payloads are typed. **All correctness and hardware robustness findings
+of the 2026-09-26 review are implemented:** mount protocol parsing is hardened
+with length checks and concrete exceptions, ALPACA/ASCOM blacklisting only
+blocks truly unimplemented features, the worker busy flag is thread-agnostic,
+SGPro waits have deadlines, the HID centre-stick bug is fixed, and the log level
+configuration is symmetrical. The test-only branch in `DeviceRegistry` is
+replaced by constructor injection (rec 8).
 
-The **2026-09-29 review tracked only its own list**. Most findings from the
-**2026-09-26 review** (threading, mount protocol parsing, ALPACA/ASCOM driver
-handling, config symmetry, tooling) were never picked up and are **still open**.
-They are now the main risk area, because they concern runtime correctness with
-real hardware. Tests do not catch them, because the tests mock the hardware.
+**Status of recommendations (15):** 11 done, 2 partial (10 – P4 type checker;
+12 – C2 in the remaining tabs), 0 open, 2 kept by decision (13, 15). All ★★★
+impact items are closed. The `test` argument of `MountWizzard4` stays by
+definition (section 8).
 
-**Overall maturity rating:** Strong (4 / 5). Structure and test quality are
-5 / 5. Robustness against faulty devices and networks is the weak spot.
+**Overall maturity rating:** Very strong (4.5 / 5). Structure, test quality and
+hardware robustness are strong. Remaining: type checker tooling, broad
+`except Exception` in the ALPACA/SGPro/tpool layer, and the C2 config
+refactoring in the remaining tabs.
 
 | Dimension             | Rating | Short note                                                       |
 |-----------------------|:------:|------------------------------------------------------------------|
 | PySide6 / Qt6         |  5/5   | No nested loops; `processEvents` only in splash and plot base    |
-| Pythonic style        |  4/5   | Ruff clean; 29 defs without return annotation; 4 × `except Exception` |
-| Architecture          |  4/5   | `AppProtocol` in place; test hooks and framework boilerplate remain |
-| Robustness / hardware |  3/5   | Protocol parsing, ALPACA blacklisting, SGPro waits have no guards |
+| Pythonic style        |  4/5   | Ruff clean; all 29 return types annotated; 8 broad `except … Exception` remain |
+| Architecture          |  5/5   | `AppProtocol` in place; mount injected into `DeviceRegistry`; boilerplate kept by decision |
+| Robustness / hardware |  5/5   | Protocol parsing hardened; ALPACA handling fixed; SGPro/mount waits guarded |
 | Performance           |  4/5   | One socket per mount command; otherwise good                    |
-| Test health           |  5/5   | 4583 passed, 38 skipped, 100 % coverage, xdist-safe              |
-| Tooling / metadata    |  3/5   | Python versions, classifier, and header text are inconsistent   |
+| Test health           |  5/5   | 4653 passed, 38 skipped, 100 % coverage, xdist-safe              |
+| Tooling / metadata    |  4/5   | Python versions, header aligned; type checker not yet in CI     |
 
 ---
 
@@ -50,15 +57,15 @@ real hardware. Tests do not catch them, because the tests mock the hardware.
 |------------------------------------------|-----------------------------------------------|
 | `ruff check src tests`                   | ✅ All checks passed                          |
 | `ruff format --check src tests`          | ✅ 463 files already formatted                |
-| `pytest tests/unit_tests -n auto --cov`  | ✅ 4583 passed, 38 skipped, 9.7 s             |
-| Coverage (macOS)                         | ✅ 100 % (18,492 statements, 0 missed)        |
+| `pytest tests/unit_tests -n auto --cov`  | ✅ 4653 passed, 38 skipped, 11.9 s            |
+| Coverage (macOS)                         | ✅ 100 % (18,572 statements, 0 missed)        |
 | `# pragma: no cover` / `# noqa` / `TODO` | 0 / 0 / 0                                     |
 | `Signal(object …)` (excl. widgets)       | 10 (by design, see Sep rec 9)                 |
 | `parent: Any`                            | 51                                            |
-| `except Exception`                       | 4 (`tpool.py:69`, `alpacaAscomCommon.py:67,86,106`) |
-| `except (…, Exception)`                  | 5 in `mountcontrol/connection.py`             |
-| `time.sleep` in src                      | 7 (all in worker threads)                     |
-| Single-line `def` without `->`           | 29                                            |
+| `except Exception`                       | 4 (`tpool.py:110`, `alpacaAscomCommon.py:90,103,116`) |
+| `except (…, Exception)`                  | 4 (`alpacaClass.py:70,95,103`, `sgproClass.py:76`); 0 in `connection.py` |
+| `time.sleep` in src                      | not recounted (T6: worker waits use `stopEvent.wait`) |
+| Single-line `def` without `->`           | 0 (all annotated)                             |
 | Largest modules                          | `alignstars.py` (840), `obsSite.py` (740), `styleSheets.py` (703), `tabMount_Sett.py` (533) |
 
 ---
@@ -85,7 +92,7 @@ real hardware. Tests do not catch them, because the tests mock the hardware.
 | #  | Topic                                               | Status                                                     |
 |----|-----------------------------------------------------|------------------------------------------------------------|
 | 1–9, 11 | See section 10 of that review                  | ✅ Done, confirmed (Ruff clean, 100 % coverage, xdist green) |
-| 10 | Test hooks in `MountWizzard4` / `DeviceRegistry`    | ❌ Open – `mainApp.py:73,110` (`test: int = 0`), `deviceRegistry.py:49` (`hasattr(app, "mount")`, writes back `app.mount`) |
+| 10 | Test hooks in `MountWizzard4` / `DeviceRegistry`    | ✅ Fixed – rec 8 (section 7): `DeviceRegistry` takes an injected `mount`; `MountWizzard4.test` kept by definition (section 8) |
 | –  | `moveRaDecHid` → `"STOP"` → `KeyError`              | ✅ Fixed – rec 1 (section 7)                               |
 | –  | `closeEvent` does not cancel a running model        | ✅ Fixed – rec 7 (section 7)                               |
 
@@ -118,7 +125,7 @@ real hardware. Tests do not catch them, because the tests mock the hardware.
 | C4 | L   | Raw `sys.argv[1]` as message                           | ✅ Fixed   | Rec 12 (section 7) |
 | A1 | M   | App as service locator / signal hub                    | ⏸ Kept     | Decision 2026-09-29 (section 8); typed via `AppProtocol` |
 | A2 | M   | `DeviceEntry` proxy attributes                         | ⏸ Kept     | Decision 2026-09-29 (section 8) |
-| A3 | M   | Test-only branch in `DeviceRegistry`                   | ❌ Open    | Same as Sep rec 10 |
+| A3 | M   | Test-only branch in `DeviceRegistry`                   | ✅ Fixed   | Rec 8: `mount` constructor argument, no `app.mount` read/write |
 | A4 | M   | `tabMount_Command` uses `Connection` directly          | ⏸ Kept     | Decision 2026-09-29 (section 8) |
 | A5 | M   | Model data handling in GUI mixins                      | 🟡 Partial | `ModelData` is event-driven in logic; list handling still in tabs |
 | A8 | L   | Framework-dispatch boilerplate                         | ⏸ Kept     | Decision 2026-09-29 (section 8) |
@@ -136,22 +143,16 @@ real hardware. Tests do not catch them, because the tests mock the hardware.
 | R4 | L   | Tracked `.DS_Store`                                    | ✅ Fixed   | Rec 9: 6 files removed from the index; `.gitignore` covers them |
 | R5 | L   | Artefacts in working tree                              | ⏸ Kept     | Decision 2026-09-29 (section 8) |
 
-**Summary:** of 64 tracked rows, 23 are done, 5 are partial, and 36 are open.
-33 of the 36 open rows come from the 2026-09-26 review. A3 and Sep rec 10 are
-the same issue, and both are counted.
+**Summary (baseline, 2026-09-29):** of 64 tracked rows, 23 are done, 5 are partial,
+and 36 are open. 33 of the 36 open rows come from the 2026-09-26 review.
 
-**Status after recs 1–4 and the decisions of section 8** (recounted, 65 rows;
-D5–D7 is one row): 36 done, 2 partial (T5, A5), 6 kept by decision (Jun 5,
-M6, A1, A2, A4, A8), 21 open (19 of them from the 2026-09-26 review).
+**Status after recs 1–7, 9, 11, 12 (except C2), 14 and 10 (P5)** (65 rows;
+D5–D7 is one row): 52 done, 2 partial (A5, C2), 8 kept by decision (Jun 5, A1,
+A2, A4, A8, M6, P2, R5), 3 open (Sep 10, A3, P4).
 
-**Status after recs 5, 6, 7, 11, 14** (65 rows): 44 done, 2 partial (A5, C2),
-6 kept by decision, 13 open.
-
-**Status after rec 12 (M8, C3, C4) and D5–D7** (65 rows): 48 done, 2 partial
-(A5, C2), 6 kept by decision, 9 open.
-
-**Status after rec 9 and P5** (65 rows): 52 done, 2 partial (A5, C2), 8 kept
-by decision (+ P2, R5), 3 open (Sep 10, A3, P4).
+**Status after rec 8** (65 rows): 54 done, 2 partial (A5, C2), 8 kept by
+decision, 1 open (P4). All ★★★ and hardware robustness findings of the
+2026-09-26 review are resolved.
 
 ---
 
@@ -173,7 +174,7 @@ by decision (+ P2, R5), 3 open (Sep 10, A3, P4).
 Effort: S (small), M (medium), L (large). Impact: ★ low → ★★★ high.
 
 Status: ✅ done, 🟡 partial, ❌ open, ⏸ kept by decision (section 8).
-Status as of 2026-09-29, after recs 1–7, 9, 11, 14, 12 (except C2) and 10 (P5).
+Status as of 2026-09-30, after recs 1–9, 11, 14, 12 (except C2) and 10 (P5).
 
 | #  | Recommendation                                                                  | Refs          | Impact | Effort | Status |
 |----|---------------------------------------------------------------------------------|---------------|:------:|:------:|--------|
@@ -184,7 +185,7 @@ Status as of 2026-09-29, after recs 1–7, 9, 11, 14, 12 (except C2) and 10 (P5)
 | 5  | Fix log level config symmetry (read and write the same key)                    | C1            |  ★★    |   S    | ✅ Done (section 7) |
 | 6  | Add deadlines to the SGPro wait loops; use `Event.wait` for interruptible sleeps | T4, T6      |  ★★    |   S    | ✅ Done (section 7) |
 | 7  | Cancel a running model in `closeEvent` before `waitForDone`                     | T5            |  ★★    |   S    | ✅ Done (section 7) |
-| 8  | Remove test hooks (`test` arg, `hasattr(app, "mount")`) via injection          | Sep 10, A3, N5 |  ★★   |   S    | ❌ Open |
+| 8  | Remove test hooks (`test` arg, `hasattr(app, "mount")`) via injection          | Sep 10, A3, N5 |  ★★   |   S    | ✅ Done (section 7) – `DeviceRegistry` hook removed; N5 (`test` arg) kept (section 8) |
 | 9  | Align metadata: Python version (pyproject/README/instructions), classifier `4 - Beta`, header text, `.DS_Store` untracking | P1, P2, P7, R4 | ★★ | S | ✅ Done (section 7); P2 kept (section 8) |
 | 10 | Extend Ruff (`B`, `BLE`, `ANN`) and add a type checker in CI; close the 29 missing return types | P4, P5 | ★★ | M | 🟡 Partial – P5 done (section 7); P4 open |
 | 11 | Plate solver: local `Popen` context manager, tolerant decode                   | D4, N4        |   ★    |   S    | ✅ Done (section 7) |
@@ -193,13 +194,14 @@ Status as of 2026-09-29, after recs 1–7, 9, 11, 14, 12 (except C2) and 10 (P5)
 | 14 | Relax `==` pins in `[project]` and rely on `uv.lock`; scope `DeprecationWarning` to `mw4` | P3, P8 | ★ | S | ✅ Done (section 7) |
 | 15 | Persistent or pooled mount connection instead of one socket per command         | M6            |   ★★   |   L    | ⏸ Kept |
 
-**Progress:** 10 done, 2 partial (10, 12), 1 open (8), 2 kept. All ★★★
-recommendations and all correctness and hardware robustness items are done.
+**Progress:** 11 done, 2 partial (10 – P4; 12 – C2 in other tabs), 0 open,
+2 kept (13, 15). All ★★★ recommendations and all correctness and hardware
+robustness items are done.
 
 ### Suggested sequencing (remaining)
 
-1. **Hygiene (S):** 8, 12 (C2 in the remaining tabs).
-2. **Tooling (M):** 10 (P4: Ruff rules, type checker).
+1. **Hygiene (S):** 12 (C2 in remaining config tabs).
+2. **Tooling (M):** 10 (P4: Ruff rules `B`, `BLE`, `ANN`; type checker in CI).
 3. **Architecture (L):** 13, 15 – not scheduled; the current architecture is
    kept (decision 2026-09-29, section 8).
 
@@ -207,18 +209,23 @@ recommendations and all correctness and hardware robustness items are done.
 
 ## 6. Closing Note
 
-The refactoring cycle from June to September delivered what it aimed for: a
-clean, typed, event-driven Qt application with a complete and parallel-safe
-test suite. The remaining risk is no longer in the structure. It is at the
-**edges**, where the application talks to real devices: the mount protocol
-parser, the ALPACA/ASCOM property handling, SGPro polling, and the worker mutex.
-These issues were found on 2026-09-26 but never scheduled. The next cycle should
-start with them, together with the confirmed HID `"STOP"` bug (N1), which is the
-only finding here with a direct safety impact on mount motion.
+The refactoring cycle from June to September has closed all ★★★ items and the
+2026-09-26 hardware robustness findings: the mount protocol parser is hardened,
+ALPACA/ASCOM error handling is corrected, the worker busy flag is thread-safe,
+SGPro waits have deadlines, the HID centre-stick bug is fixed, and the log level
+configuration is symmetrical.
+
+The `DeviceRegistry` test hook is replaced by constructor injection (rec 8).
+Remaining work is minor: C2 in the remaining config tabs, type checker tooling
+in CI (P4), and the broad `except Exception` handlers in the ALPACA/SGPro/tpool
+layer. The current architecture (single-socket commands, app-as-service-hub,
+framework-dispatch boilerplate) is kept by decision. The next cycle can focus on
+performance profiling, extended feature requests, or the long-term architecture
+items if they show a real measured problem.
 
 ---
 
-## 7. Implementation Update (2026-09-29)
+## 7. Implementation Update (2026-09-29 / 2026-09-30)
 
 | #  | Change                                                                                     | Status  |
 |----|--------------------------------------------------------------------------------------------|---------|
@@ -229,6 +236,7 @@ only finding here with a direct safety impact on mount motion.
 | 5, 6, 7, 11, 14 | Plan: `plan-review-2026-09-29-status-rec-5-6-7-11-14.md`. **Rec 5 (C1):** `mainApp.initConfig` derives the log level from `SettingUpdate.loglevelInfo/Trace` (default `DEBUG`); `storeConfig` no longer writes a top-level `loglevel` and removes an old key. `SettUpdate.storeConfig` updates its section with `setdefault` instead of replacing it (C2 for this file). **Rec 6 (T4, T6):** `CameraSGPro.waitForMessage` polls with `stopEvent.wait(0.1)` and has deadlines (start 30 s, exposure time + 60 s, download 120 s, save 60 s); a timeout logs a warning, shows a message and ends the run; `exposeFinished()` is always called. `SGProClass.connectDevice` and `KMRelay.runnerPulse` use `stopEvent.wait` (the relay "off" command is always sent). **Rec 7 (T5):** new `TabAddon.shutdown()` hook, dispatched by `MainWindowAddons.shutdown()`, called first in `closeEvent`; `Model.shutdown()` cancels a running model batch. **Rec 11 (D4, N4):** `runSolverBin` uses `with subprocess.Popen(...)`, reads the return code from the local process, resets `self.process` in `finally`, decodes with `errors="replace"`; `abort()` works on a local copy. **Rec 14 (P3, P8):** runtime dependencies use `>=X,<next major` (`0.x`: next minor; `pyside6 <6.12`; `pywin32 >=312`); `uv lock` changed only the specifiers, no resolved version. `filterwarnings` adds `error::DeprecationWarning:mw4`, which found `QMouseEvent.pos()` in `qtHelpers.clickable` → replaced by `position().toPoint()`. Ruff clean, 4647 passed, 38 skipped (serial and `-n auto`), coverage 100 %. | ✅ Done |
 | 12 (M8, C3, C4), D5–D7 | Plan: `plan-review-2026-09-29-status-rec-12-cleanups.md`. **M8:** duplicate `self.mountIsUp` in `Mount.__init__` removed. **C3:** commented-out `aboutToQuit` line and its stale comment removed from `mainApp.py`. **C4:** `MountWizzard4` no longer reads `sys.argv`; new `cli.formatOptions()` turns the parsed `argparse` options into text (`dpi=…, scale=…, test=…`), `cli.run` passes it via `loader.main(test, arguments)` to `MountWizzard4(..., arguments)`, which emits it as `Arguments` message only if it is not empty. **D5:** `Dome.calcSlewTarget` is typed `tuple[float, float, float \| None, float \| None]` and returns `None` for x/y explicitly without geometry and on a geometry error – before, a real geometry error (`intersect is None`) raised `TypeError`. **D6:** `targetInDomeShutter` uses `M - B` in the BC check (as in the referenced formula), typed with `np.ndarray`; typo "mez" → "met". **D7:** `ModelRun.startNewSlew` uses `next(iterator, None)`; `modelRunKey` stays a `str` (`""` when exhausted). Tests: `test_cli` (`formatOptions`, `main` call args), `test_loader_main` (arguments passed through), `test_mainApp` (message with/without arguments, raw `sys.argv` ignored), `test_dome` (geometry error without intersect, `slewDome` slews without `checkSlewNeeded`), `test_modelRun` (`modelRunKey == ""`). Ruff clean, 4652 passed, 38 skipped (`-n auto`), coverage 100 %. | ✅ Done |
 | 9, 10 (P5) | Plan: `plan-review-2026-09-29-status-rec-9-metadata-P5.md`. **P1:** `pyproject.toml` (`>=3.12,<3.15`) is the reference; `README.rst` says 3.12-3.14, `.github/copilot-instructions.md` says 3.12–3.14 and 3.12 language features. **P7:** `pyproject.toml` header "GUI with PySide". **R4:** 6 tracked `.DS_Store` files (`.github/`, `doc/`, `doc/config/`, `doc/workflows/`, `src/mw4/assets/`, `tests/`) removed from the index with `git rm --cached`; `.gitignore` already lists `.DS_Store`. **P2, R5:** kept (section 8). **P5:** all 29 functions without return annotation annotated (26 × `None`, `Telescope.create -> bool`, `dataPlots -> dict[str, dict]`, `Styles.generateCMaps -> list[pg.ColorMap]`); `ruff check --select ANN201,ANN202,ANN204,ANN205,ANN206` (excl. `gui/widgets`) is clean. No behaviour change. Ruff clean, 4652 passed, 38 skipped (`-n auto`), coverage 100 %. | ✅ Done |
+| 8  | Plan: `plan-review-2026-09-29-status-rec-8-deviceRegistryHook.md` (2026-09-30). `DeviceRegistry.__init__(app, mount: MountDevice \| None = None)`: an injected mount is used, otherwise a new `MountDevice(app, verbose=True)` is created. The `hasattr(app, "mount")` branch and the write-back `app.mount = …` are removed (no consumer in `src/mw4`; not part of `AppProtocol`). `mainApp.py` is unchanged (`DeviceRegistry(self)`); its `test` argument stays by definition (section 8). Tests: `baseTestApp.App` passes `mount=self.mount`; `test_deviceEntry` fixture injects a `MagicMock` mount; `test_deviceRegistry` passes `mount=app.mount` in the fixture and construction tests; the three hook tests are rewritten (injected mount kept across `addDevices`, default creates `MountDevice` without write-back, injected sentinel used) and `test_initIgnoresAppMountAttribute` is new. Ruff clean, 4653 passed, 38 skipped (`-n auto`), coverage 100 % (18,572 statements). | ✅ Done |
 
 ---
 
@@ -240,6 +248,7 @@ only finding here with a direct safety impact on mount motion.
 | 2026-09-29 | 15  | **Keep one socket per mount command.** The 10micron command protocol stays stateless per call, so no connection pool is added. The robustness work of rec 2 (concrete exceptions, tolerant decoding, length checks) covers the error handling. | M6 (⏸ Kept) |
 | 2026-09-29 | 9   | **Keep the classifier `Development Status :: 5 - Production/Stable`** although the version is a beta. | P2 (⏸ Kept) |
 | 2026-09-29 | –   | **Artefacts in the working tree are accepted** (untracked test assets, `data/`). | R5 (⏸ Kept) |
+| 2026-09-30 | 8   | **Keep the `test` argument of `MountWizzard4`** (`mainApp.py`, auto-close after `update10s`) by definition. Only the `DeviceRegistry` hook is removed. | N5, Sep rec 10 (`MountWizzard4` part) (⏸ Kept) |
 
 These items are closed as "kept" and are no longer counted as open. They
 should only be reopened if a measured problem appears (e.g. latency or socket

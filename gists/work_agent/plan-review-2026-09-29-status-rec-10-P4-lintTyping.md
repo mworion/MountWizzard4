@@ -173,7 +173,10 @@ No Node.js setup step is needed.
 ## 4. Order and Commits
 
 **Status 2026-09-30:** phase 1 ✅ and phase 2 ✅ done (see the status review,
-section 7); phases 3–5 open.
+section 7). Phase 4 step 1 ✅ (pyrefly in `dev`, `[tool.pyrefly]`, `uv.lock`);
+steps 2–5 (first run, fixes) open. Phase 5 ✅ (`lint` job in `unit_ubuntu.yml`;
+`pyrefly check` is present but commented out until phase 4 is clean). Phase 3
+open.
 
 One commit per phase (1 → 5); each phase leaves Ruff, tests and coverage
 green, so the work can stop after any phase. Phases 1–3 are independent of the

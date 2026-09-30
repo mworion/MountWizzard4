@@ -133,7 +133,7 @@ in CI (P4 phases 3–5).
 | P1 | M   | Python version mismatch                                | ✅ Fixed   | Rec 9: README / Copilot instructions follow `pyproject.toml` (3.12–3.14) |
 | P2 | M   | "Production/Stable" on a beta                          | ⏸ Kept     | Decision 2026-09-29 (section 8) |
 | P3 | M   | Runtime dependencies pinned with `==`                  | ✅ Fixed   | Rec 14 (section 7) |
-| P4 | M   | Ruff rule set / no type checker                        | 🟡 Partial | Rec 10 phases 1–2 (section 7): `B` and `BLE` enabled; `ANN001`, pyrefly and CI lint job open |
+| P4 | M   | Ruff rule set / no type checker                        | 🟡 Partial | Rec 10 (section 7): `B`, `BLE` enabled; CI `lint` job runs Ruff; pyrefly configured, check commented out; `ANN001` and pyrefly fixes open |
 | P5 | M   | Missing return annotations                             | ✅ Fixed   | Rec 10 (P5 part): all 29 annotated; `ANN20x` clean |
 | P6 | L   | `os.path.basename` in `tpool.py`                       | ✅ Fixed   | Rec 4: `Path(...).name` |
 | P7 | L   | "GUI with PyQT5" header                                | ✅ Fixed   | Rec 9: "GUI with PySide" |

@@ -162,10 +162,10 @@ class BuildPoint:
         if not self.horizonP:
             return
 
-        altH, azH = zip(*self.horizonP)
+        altH, azH = zip(*self.horizonP, strict=True)
         azI = range(0, 361, 1)
         altI = np.interp(azI, azH, altH)
-        horizonInterpol = np.asarray([[x, y] for x, y in zip(azI, altI)])
+        horizonInterpol = np.asarray([[x, y] for x, y in zip(azI, altI, strict=True)])
         self._buildP = [
             x for x in self._buildP if not self.isCloseHorizonLine(x, margin, horizonInterpol)
         ]
@@ -175,7 +175,7 @@ class BuildPoint:
 
     def sortDomeAz(self) -> None:
         pointsNew = []
-        for i, point in enumerate(self._buildP):
+        for point in self._buildP:
             alt = point[0]
             az = point[1]
             _, domeAz = self.app.dReg["mount"].instance.calcMountAltAzToDomeAltAz(alt, az)
@@ -474,7 +474,7 @@ class BuildPoint:
         azimuth = np.degrees(theta) % 360
 
         self.clearBuildP()
-        for alt, az in zip(altitude, azimuth):
+        for alt, az in zip(altitude, azimuth, strict=True):
             if alt > 0:
                 self.addBuildP([int(alt), int(az), self.UNPROCESSED])
 

@@ -81,7 +81,7 @@ def test_showImagesPhotometry(qtbot, qapp):
 
     TAB = [1, 4]
     gc.disable()
-    for i in range(20):
+    for _i in range(20):
         if randint(0, 1):
             imageW.ui.isoLayer.click()
             qtbot.wait(50)

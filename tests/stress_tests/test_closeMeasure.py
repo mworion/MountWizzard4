@@ -83,14 +83,14 @@ def test_1(qtbot, qapp):
         "skyTemp": np.array([1] * count),
         "powTemp": np.array([1] * count),
     }
-    for i in range(count):
+    for _i in range(count):
         value = np.datetime64(f"2014-12-12 20:20:{count:02d}")
         app.measure.data["time"] = np.append(app.measure.data["time"], value)
 
     qtbot.waitExposed(app.mainW, timeout=1000)
     QTest.qWait(100)
 
-    for index in range(5):
+    for _index in range(5):
         qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
         c = app.mainW.externalWindows.uiWindows["showMeasureW"]["classObj"]
         qtbot.waitExposed(c, timeout=3000)

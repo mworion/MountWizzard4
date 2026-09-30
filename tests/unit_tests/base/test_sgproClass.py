@@ -16,6 +16,7 @@
 import contextlib
 import pytest
 import queue
+import requests
 import threading
 from mw4.base.sgproClass import CommandItem, DeviceConfigSGPro, SGProClass
 from mw4.base.signalsDevices import Signals
@@ -148,7 +149,7 @@ def test_requestProperty_timeout_exception(function):
     function.config.hostAddress = "localhost"
     function.config.port = 59590
     with mock.patch("mw4.base.sgproClass.requests.get") as mock_get:
-        mock_get.side_effect = Exception("Timeout")
+        mock_get.side_effect = requests.exceptions.Timeout("Timeout")
         result = function.requestProperty("testProp")
         assert result == {}
 
@@ -158,9 +159,26 @@ def test_requestProperty_connection_error(function):
     function.config.hostAddress = "localhost"
     function.config.port = 59590
     with mock.patch("mw4.base.sgproClass.requests.get") as mock_get:
-        mock_get.side_effect = Exception("Connection refused")
+        mock_get.side_effect = requests.exceptions.ConnectionError("Connection refused")
         result = function.requestProperty("testProp")
         assert result == {}
+
+
+def test_requestProperty_osError(function):
+    """A plain socket error is handled like a request error."""
+    with mock.patch("mw4.base.sgproClass.requests.post") as mock_post:
+        mock_post.side_effect = OSError("socket")
+        result = function.requestProperty("testProp", params={"a": 1})
+        assert result == {}
+
+
+def test_requestProperty_unexpectedPropagates(function):
+    """An unexpected exception type is no longer swallowed."""
+    with (
+        mock.patch("mw4.base.sgproClass.requests.get", side_effect=ZeroDivisionError),
+        pytest.raises(ZeroDivisionError),
+    ):
+        function.requestProperty("testProp")
 
 
 def test_requestProperty_invalid_status_code(function):

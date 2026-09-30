@@ -46,13 +46,13 @@ class SettAudio:
         self.ui.volume.setValue(config.get("Volume", 1))
 
     def storeConfig(self) -> None:
-        self.app.config["SettingAudio"] = {}
-        config = self.app.config["SettingAudio"]
+        config: dict[str, Any] = {}
         for sound, uiKey in self.audioConfig.items():
             widget = getattr(self.ui, uiKey)
             config[sound] = widget.currentIndex()
         config["PlaySound"] = self.ui.AudioGroup.isChecked()
         config["Volume"] = self.ui.volume.value()
+        self.app.config["SettingAudio"] = config
 
     def updateConfig(self, index: int) -> None:
         self.storeConfig()

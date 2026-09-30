@@ -64,7 +64,10 @@ class Relay(TabAddon):
             self.msg.emit(2, "System", "Relay", "Action cannot be done")
 
     def updateRelayGui(self) -> None:
-        for status, button in zip(self.app.dReg["relay"].instance.status, self.relayButtons):
+        # the status list is empty until the relay box has reported; truncate
+        for status, button in zip(
+            self.app.dReg["relay"].instance.status, self.relayButtons, strict=False
+        ):
             if status:
                 changeStyleDynamic(button, "run", "true")
             else:

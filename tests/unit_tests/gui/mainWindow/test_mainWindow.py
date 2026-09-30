@@ -72,6 +72,34 @@ def test_storeConfig_without_windowmain_config(mainWindow):
         mainWindow.storeConfig()
 
 
+def test_storeConfig_keepsWindowMainKeys(mainWindow):
+    """WindowMain is shared with the tabs and is updated in place, not cleared."""
+    section = {"tabKey": 5}
+    mainWindow.app.config["WindowMain"] = section
+    with (
+        mock.patch.object(mainWindow.mainWindowAddons, "storeConfig"),
+        mock.patch.object(mainWindow.externalWindows, "storeConfigExtendedWindows"),
+    ):
+        mainWindow.storeConfig()
+    assert mainWindow.app.config["WindowMain"] is section
+    assert section["tabKey"] == 5
+    assert "orderMain" in section
+
+
+def test_storeConfig_keepsWindowMainKeysOnError(mainWindow):
+    """An exception in a tab leaves the earlier WindowMain keys in place."""
+    mainWindow.app.config["WindowMain"] = {"tabKey": 5}
+    with (
+        mock.patch.object(
+            mainWindow.mainWindowAddons, "storeConfig", side_effect=RuntimeError
+        ),
+        mock.patch.object(mainWindow.externalWindows, "storeConfigExtendedWindows"),
+        pytest.raises(RuntimeError),
+    ):
+        mainWindow.storeConfig()
+    assert mainWindow.app.config["WindowMain"]["tabKey"] == 5
+
+
 def test_setupIcons_calls_addons(mainWindow):
     """Test setupIcons calls mainWindowAddons setupIcons."""
     with mock.patch.object(mainWindow.mainWindowAddons, "setupIcons"):

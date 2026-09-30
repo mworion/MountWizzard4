@@ -157,7 +157,7 @@ def test_genGreaterCircle1(function):
     )
     function.horizonP = []
     function.genGreaterCircle(10, 10, 5)
-    for i, (alt, az, status) in enumerate(function.buildP):
+    for _i, (alt, az, status) in enumerate(function.buildP):
         assert alt <= 90
         assert az <= 360
         assert alt >= 0
@@ -171,7 +171,7 @@ def test_genGreaterCircle2(function):
     )
     function.horizonP = []
     function.genGreaterCircle(10, 10, 5)
-    for i, (alt, az, status) in enumerate(function.buildP):
+    for _i, (alt, az, status) in enumerate(function.buildP):
         assert alt <= 90
         assert az <= 360
         assert alt >= 0
@@ -295,7 +295,7 @@ def test_isCloseHorizonLine_1(function):
     margin = 5
     azI = range(0, 361, 1)
     altI = np.interp(azI, [0, 90, 180, 360], [42, 42, 42, 42])
-    horizonI = np.asarray([[x, y] for x, y in zip(azI, altI)])
+    horizonI = np.asarray([[x, y] for x, y in zip(azI, altI, strict=True)])
     suc = function.isCloseHorizonLine(point, margin, horizonI)
     assert suc
 
@@ -305,7 +305,7 @@ def test_isCloseHorizonLine_2(function):
     margin = 1
     azI = range(0, 361, 1)
     altI = np.interp(azI, [0, 90, 180, 360], [42, 42, 42, 42])
-    horizonI = np.asarray([[x, y] for x, y in zip(azI, altI)])
+    horizonI = np.asarray([[x, y] for x, y in zip(azI, altI, strict=True)])
     suc = function.isCloseHorizonLine(point, margin, horizonI)
     assert not suc
 
@@ -898,7 +898,7 @@ def test_ditherPoints_multiple_points(function):
     function.buildP = [[10, 10, 1], [20, 20, 0], [30, 30, 2]]
     function.ditherPoints()
 
-    for i, p in enumerate(function.buildP):
+    for _i, p in enumerate(function.buildP):
         # Points should have been modified by random dither
         assert p[2] == 0  # Status should be reset to UNPROCESSED
     assert len(function.buildP) == 3
@@ -953,7 +953,7 @@ def test_genAlign_azimuth_wrapping(function):
     suc = function.genAlign(altBase=30, azBase=350, numberBase=4)
     assert suc
     # Check that azimuth values are properly wrapped
-    for alt, az, status in function.buildP:
+    for _alt, az, _status in function.buildP:
         assert 0 <= az <= 360
 
 
@@ -1074,7 +1074,7 @@ def test_generateCelestialEquator_with_negative_latitude(function):
     )
     value = function.generateCelestialEquator()
     assert len(value) > 0
-    for alt, az in value:
+    for alt, _az in value:
         assert alt > 0
 
 

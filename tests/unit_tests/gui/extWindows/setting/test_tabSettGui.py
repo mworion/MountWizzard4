@@ -353,3 +353,14 @@ def test_runMacOsConfig(settGui):
         mock_file.assert_called()
         mock_executable_path.chmod.assert_called_with(0o755)
         mock_app_dir.chmod.assert_called_with(0o755)
+
+
+def test_storeConfig_keepsSectionOnError(settGui):
+    sentinel = {"colorSet": 1}
+    settGui.app.config["SettingGui"] = sentinel
+    with (
+        mock.patch.object(settGui.ui.dpi, "value", side_effect=RuntimeError),
+        pytest.raises(RuntimeError),
+    ):
+        settGui.storeConfig()
+    assert settGui.app.config["SettingGui"] is sentinel

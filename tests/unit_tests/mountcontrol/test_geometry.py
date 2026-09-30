@@ -245,7 +245,7 @@ def test_geometry_1(function):
         ],
     ]
 
-    for t, r in zip(testValues, results):
+    for t, r in zip(testValues, results, strict=True):
         val = function.geometry.calcTransformationMatrices(
             dec=Angle(degrees=t[0]),
             ha=Angle(hours=t[1]),
@@ -403,7 +403,7 @@ def test_geometry_2(function):
         ],
     ]
 
-    for t, r in zip(testValues, results):
+    for t, r in zip(testValues, results, strict=True):
         val = function.geometry.calcTransformationMatrices(
             dec=Angle(degrees=t[0]),
             ha=Angle(hours=t[1]),
@@ -561,7 +561,7 @@ def test_geometry_3(function):
         ],
     ]
 
-    for t, r in zip(testValues, results):
+    for t, r in zip(testValues, results, strict=True):
         val = function.geometry.calcTransformationMatrices(
             dec=Angle(degrees=t[0]),
             ha=Angle(hours=t[1]),
@@ -719,7 +719,7 @@ def test_geometry_4(function):
         ],
     ]
 
-    for t, r in zip(testValues, results):
+    for t, r in zip(testValues, results, strict=True):
         val = function.geometry.calcTransformationMatrices(
             dec=Angle(degrees=t[0]),
             ha=Angle(hours=t[1]),

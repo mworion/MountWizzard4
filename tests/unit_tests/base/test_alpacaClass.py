@@ -18,6 +18,7 @@ import pytest
 import queue
 import requests
 import threading
+from alpaca.exceptions import AlpacaRequestException
 from alpaca.exceptions import NotImplementedException as AlpycaNotImplError
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.signalsDevices import Signals
@@ -126,6 +127,24 @@ def test_createAlpacaDevice_3(function):
         assert not suc
 
 
+def test_createAlpacaDevice_badArgument(function):
+    with mock.patch.object(function.config, "number", "x"):
+        suc = function.createAlpacaDevice("camera")
+    assert not suc
+
+
+def test_createAlpacaDevice_unexpectedPropagates(function):
+    class RaisingClass:
+        def __init__(self, *args, **kwargs):
+            raise ZeroDivisionError
+
+    with (
+        mock.patch.dict(AlpacaClass.DEVICE_TYPE_MAP, {"dome": RaisingClass}),
+        pytest.raises(ZeroDivisionError),
+    ):
+        function.createAlpacaDevice("dome")
+
+
 def test_getDeviceProp_propertyException(function):
     function.propertyExceptions.add("Connected")
     result = function.getDeviceProp("Connected")
@@ -225,9 +244,27 @@ def test_callDeviceMethod_3(function):
 
 
 def test_discoverAPIVersion_1(function):
-    with mock.patch.object(alpacaMgmt, "apiversions", side_effect=Exception()):
+    with mock.patch.object(
+        alpacaMgmt, "apiversions", side_effect=requests.exceptions.ConnectionError()
+    ):
         val = function.discoverAPIVersion()
         assert val == 0
+
+
+def test_discoverAPIVersion_requestError(function):
+    with mock.patch.object(
+        alpacaMgmt, "apiversions", side_effect=AlpacaRequestException(500, "error")
+    ):
+        val = function.discoverAPIVersion()
+        assert val == 0
+
+
+def test_discoverAPIVersion_unexpectedPropagates(function):
+    with (
+        mock.patch.object(alpacaMgmt, "apiversions", side_effect=ZeroDivisionError()),
+        pytest.raises(ZeroDivisionError),
+    ):
+        function.discoverAPIVersion()
 
 
 def test_discoverAPIVersion_2(function):
@@ -243,9 +280,25 @@ def test_discoverAPIVersion_3(function):
 
 
 def test_discoverAlpacaDevices_1(function):
-    with mock.patch.object(alpacaMgmt, "configureddevices", side_effect=Exception()):
+    with mock.patch.object(
+        alpacaMgmt, "configureddevices", side_effect=requests.exceptions.Timeout()
+    ):
         val = function.discoverAlpacaDevices(function.hostaddress, function.port)
         assert val == []
+
+
+def test_discoverAlpacaDevices_missingValue(function):
+    with mock.patch.object(alpacaMgmt, "configureddevices", side_effect=KeyError("Value")):
+        val = function.discoverAlpacaDevices(function.hostaddress, function.port)
+        assert val == []
+
+
+def test_discoverAlpacaDevices_unexpectedPropagates(function):
+    with (
+        mock.patch.object(alpacaMgmt, "configureddevices", side_effect=ZeroDivisionError()),
+        pytest.raises(ZeroDivisionError),
+    ):
+        function.discoverAlpacaDevices(function.hostaddress, function.port)
 
 
 def test_discoverAlpacaDevices_2(function):

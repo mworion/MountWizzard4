@@ -350,3 +350,15 @@ def test_settpark_has_saveActualPosition_method(settPark):
     """Test SettPark has saveActualPosition method."""
     assert hasattr(settPark, "saveActualPosition")
     assert callable(settPark.saveActualPosition)
+
+
+def test_storeConfig_keepsSectionOnError(settPark):
+    sentinel = {"ParkText0": "keep"}
+    settPark.app.config["SettingPark"] = sentinel
+    widget = settPark.parkAz[5]
+    with (
+        mock.patch.object(widget, "value", side_effect=RuntimeError),
+        pytest.raises(RuntimeError),
+    ):
+        settPark.storeConfig()
+    assert settPark.app.config["SettingPark"] is sentinel

@@ -68,7 +68,7 @@ class MeasureWindow(MWidget):
             config[setName] = self.mSetUI[setName].currentIndex()
 
     def showWindow(self) -> None:
-        for i, setName in enumerate(self.mSetUI):
+        for setName in self.mSetUI:
             self.mSetUI[setName].currentIndexChanged.connect(
                 partial(self.changeChart, setName)
             )
@@ -86,7 +86,7 @@ class MeasureWindow(MWidget):
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
         self.ui.measure.colorChange()
-        for setName, plotItem in zip(self.mSetUI.keys(), self.ui.measure.p):
+        for setName, plotItem in zip(self.mSetUI.keys(), self.ui.measure.p, strict=True):
             values = self.dataPlots.get(self.mSetUI[setName].currentText(), 0)
             self.resetPlotItem(plotItem, values)
         self.drawMeasure()
@@ -188,7 +188,7 @@ class MeasureWindow(MWidget):
         self.drawMeasure()
 
     def processDrawMeasure(self, x: np.ndarray, noChart: bool) -> None:
-        for i, v in enumerate(zip(self.mSetUI.keys(), self.ui.measure.p)):
+        for i, v in enumerate(zip(self.mSetUI.keys(), self.ui.measure.p, strict=True)):
             setName, plotItem = v
             title = self.mSetUI[setName].currentText()
 

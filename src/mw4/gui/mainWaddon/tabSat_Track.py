@@ -323,7 +323,7 @@ class SatTrack(SatData):
         self, alt: np.ndarray, az: np.ndarray
     ) -> tuple[np.ndarray, np.ndarray, int]:
         timeDelayStart = 0
-        for altitude, azimuth in zip(alt, az):
+        for altitude, azimuth in zip(alt, az, strict=True):
             if self.app.buildPoint.isAboveHorizon([altitude, azimuth]):
                 break
             timeDelayStart += 1
@@ -335,7 +335,7 @@ class SatTrack(SatData):
         self, alt: np.ndarray, az: np.ndarray
     ) -> tuple[np.ndarray, np.ndarray, int]:
         timeDelayEnd = 0
-        for altitude, azimuth in reversed(list(zip(alt, az))):
+        for altitude, azimuth in reversed(list(zip(alt, az, strict=True))):
             if self.app.buildPoint.isAboveHorizon([altitude, azimuth]):
                 break
             timeDelayEnd += 1

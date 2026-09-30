@@ -326,3 +326,15 @@ def test_relay_settings_roundtrip(settRelay):
     assert saved_config["RelayText1"] == "Light"
     assert saved_config["Action0"] == 0
     assert saved_config["Action1"] == 1
+
+
+def test_storeConfig_keepsSectionOnError(settRelay):
+    sentinel = {"RelayText0": "keep"}
+    settRelay.app.config["SettingRelay"] = sentinel
+    widget = settRelay.relayButtonTexts[3]
+    with (
+        mock.patch.object(widget, "text", side_effect=RuntimeError),
+        pytest.raises(RuntimeError),
+    ):
+        settRelay.storeConfig()
+    assert settRelay.app.config["SettingRelay"] is sentinel

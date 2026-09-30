@@ -143,7 +143,7 @@ def collectAllOrbits(
 ) -> list[dict[str, Time]]:
     counter = 0
     satOrbits = []
-    for ti, event in zip(times, events):
+    for ti, event in zip(times, events, strict=True):
         if event == 0:
             satOrbits.append({"rise": ti})
 

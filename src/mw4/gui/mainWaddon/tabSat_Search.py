@@ -262,7 +262,8 @@ class SatSearch(SatData):
             timeNext = ts.tt_jd(timeNow.tt + 0.25)
             eph = self.app.ephemeris
             numSats = len(snapshot)
-            for i, (row, name, sat, hidden) in enumerate(snapshot):
+            for i, (row, satName, sat, hidden) in enumerate(snapshot):
+                name = satName  # reported by the except handler below
                 if generation != self.calcGeneration:
                     break
                 finished = (i + 1) / numSats * 100

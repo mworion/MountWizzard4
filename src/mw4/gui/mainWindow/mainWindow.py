@@ -106,10 +106,8 @@ class MainWindow(MWidget):
         Styles.transparency = transparency
         self.setStyleSheet(self.mw4Style)
         config = self.app.config
-        if "WindowMain" not in config:
-            config["WindowMain"] = {}
         self.ui.profileName.setText(config.get("profileName"))
-        config = config["WindowMain"]
+        config = config.setdefault("WindowMain", {})
         self.setPositionWindow(config)
         setTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
         setTabAndIndex(self.ui.mountTabWidget, config, "orderMount")
@@ -126,11 +124,8 @@ class MainWindow(MWidget):
     def storeConfig(self) -> None:
         config = self.app.config
         config["profileName"] = self.ui.profileName.text()
-        if "WindowMain" not in config:
-            config["WindowMain"] = {}
-        else:
-            config["WindowMain"].clear()
-        config = config["WindowMain"]
+        # shared section: the main tabs add their keys later, so update in place
+        config = config.setdefault("WindowMain", {})
         self.getPositionWindow(config)
         getTabAndIndex(self.ui.mainTabWidget, config, "orderMain")
         getTabAndIndex(self.ui.mountTabWidget, config, "orderMount")

@@ -85,7 +85,8 @@ class EnvironSeeing(TabAddon):
         ts = self.app.dReg["mount"].obsSite.ts
         data["time"] = []
 
-        for date, hour in zip(data["date"], data["hour"]):
+        # external meteoblue data; keep the tolerant truncation
+        for date, hour in zip(data["date"], data["hour"], strict=False):
             y, m, d = date.split("-")
             data["time"].append(ts.utc(int(y), int(m), int(d), hour, 0, 0))
 

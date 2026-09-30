@@ -118,7 +118,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         if not plotItem.items:
             return
 
-        alt, az = zip(*horizonP)
+        alt, az = zip(*horizonP, strict=True)
         path = QPainterPath()
         if not polar:
             altF = np.concatenate([[0], [alt[0]], alt, [alt[-1]], [0]])
@@ -226,6 +226,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             ["N", "E", "S", "W", "NE", "SE", "SW", "NW"],
             [0, maxL, 0, -maxL, maxL * 0.75, maxL * 0.75, -maxL * 0.75, -maxL * 0.75],
             [maxL, 0, -maxL, 0, maxL * 0.75, -maxL * 0.75, -maxL * 0.75, maxL * 0.75],
+            strict=True,
         ):
             textItem = pg.TextItem(color=self.M_PRIM, anchor=(0.5, 0.5))
             textItem.setHtml(f"<b>{text}</b>")

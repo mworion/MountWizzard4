@@ -17,6 +17,7 @@ import alpaca.management as alpacaMgmt
 from alpaca.camera import Camera as AlpycaCamera
 from alpaca.covercalibrator import CoverCalibrator as AlpycaCoverCalibrator
 from alpaca.dome import Dome as AlpycaDome
+from alpaca.exceptions import AlpacaRequestException
 from alpaca.filterwheel import FilterWheel as AlpycaFilterWheel
 from alpaca.focuser import Focuser as AlpycaFocuser
 from alpaca.observingconditions import ObservingConditions as AlpycaObsConditions
@@ -67,7 +68,7 @@ class AlpacaClass(AlpacaAscomCommon):
         address = f"{self.config.hostAddress}:{self.config.port}"
         try:
             self.device = deviceClass(address, self.config.number, self.config.protocol)
-        except (ConnectionError, TimeoutError, OSError, RuntimeError, Exception) as e:
+        except (OSError, RuntimeError, TypeError, ValueError, AttributeError) as e:
             self.log.error(f"Create device exception: [{e}]")
             return False
 
@@ -92,7 +93,7 @@ class AlpacaClass(AlpacaAscomCommon):
             if not versions:
                 return 0
             return max(versions)
-        except (ConnectionError, TimeoutError, OSError, Exception) as e:
+        except (OSError, ValueError, KeyError, AlpacaRequestException) as e:
             self.log.error(f"Discover API exception: [{e}]")
             return 0
 
@@ -100,7 +101,7 @@ class AlpacaClass(AlpacaAscomCommon):
         address = f"{hostaddress}:{port}"
         try:
             return alpacaMgmt.configureddevices(address)
-        except (ConnectionError, TimeoutError, OSError, Exception) as e:
+        except (OSError, ValueError, KeyError, AlpacaRequestException) as e:
             self.log.error(f"Search devices exception: [{e}]")
             return []
 

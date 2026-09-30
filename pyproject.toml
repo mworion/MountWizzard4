@@ -163,11 +163,15 @@ exclude = ["src/mw4/gui/widgets/*"]
 
 [tool.ruff.lint]
 extend-select = [
-    "E", "T2", "UP", "I", "C", "LOG", "W", "SIM", "A", "RUF"
+    "E", "T2", "UP", "I", "C", "LOG", "W", "SIM", "A", "RUF", "B", "BLE"
 ]
-ignore = ["N999", "BLE001"]
+ignore = ["N999"]  # camelCase module names are the project convention
 
 [tool.ruff.lint.per-file-ignores]
+# driver boundary: alpyca / COM can raise anything; handleDeviceError classifies it
+"src/mw4/base/alpacaAscomCommon.py" = ["BLE001"]
+# worker boundary: nothing may escape into the pool thread (busy flag release)
+"src/mw4/base/tpool.py" = ["BLE001"]
 
 [tool.ruff.lint.isort]
 no-sections = true

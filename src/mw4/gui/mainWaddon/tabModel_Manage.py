@@ -133,7 +133,7 @@ class ModelManage(TabAddon):
             ang=errorAngle,
             range={"xMin": -91, "yMin": -91, "xMax": 91, "yMax": 91},
             bar=True,
-            data=list(zip(index, error)),
+            data=list(zip(index, error, strict=True)),
             reverse=True,
             tip="PointNo: {data[0]}\nErrorRMS: {data[1]:0.1f}".format,
         )

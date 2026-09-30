@@ -17,8 +17,8 @@
 
 ## 1. Executive Summary
 
-The code base is in very good shape. Ruff reports no findings, all 4653 tests
-pass in about 12 s with `-n auto`, and coverage is **100 %** (18,572 statements).
+The code base is in very good shape. Ruff reports no findings, all 4669 tests
+pass in about 10 s with `-n auto`, and coverage is **100 %** (18,562 statements).
 The structural items from June and early September are done: the nested event
 loop sleep is gone, `app: Any` is gone, the model run is event-driven, and the
 signal payloads are typed. **All correctness and hardware robustness findings
@@ -27,27 +27,28 @@ with length checks and concrete exceptions, ALPACA/ASCOM blacklisting only
 blocks truly unimplemented features, the worker busy flag is thread-agnostic,
 SGPro waits have deadlines, the HID centre-stick bug is fixed, and the log level
 configuration is symmetrical. The test-only branch in `DeviceRegistry` is
-replaced by constructor injection (rec 8).
+replaced by constructor injection (rec 8), and all config sections are stored
+atomically (C2, rec 12).
 
-**Status of recommendations (15):** 11 done, 2 partial (10 – P4 type checker;
-12 – C2 in the remaining tabs), 0 open, 2 kept by decision (13, 15). All ★★★
-impact items are closed. The `test` argument of `MountWizzard4` stays by
-definition (section 8).
+**Status of recommendations (15):** 12 done, 1 partial (10 – P4 type checker),
+0 open, 2 kept by decision (13, 15). All ★★★ impact items are closed. The
+`test` argument of `MountWizzard4` stays by definition (section 8).
 
 **Overall maturity rating:** Very strong (4.5 / 5). Structure, test quality and
-hardware robustness are strong. Remaining: type checker tooling, broad
-`except Exception` in the ALPACA/SGPro/tpool layer, and the C2 config
-refactoring in the remaining tabs.
+hardware robustness are strong. Ruff now also enforces `B` (bugbear) and `BLE`
+(blind except); broad `except Exception` only remains at the two deliberate
+boundaries. Remaining: `ANN001` parameter types and the pyrefly type checker
+in CI (P4 phases 3–5).
 
 | Dimension             | Rating | Short note                                                       |
 |-----------------------|:------:|------------------------------------------------------------------|
 | PySide6 / Qt6         |  5/5   | No nested loops; `processEvents` only in splash and plot base    |
-| Pythonic style        |  4/5   | Ruff clean; all 29 return types annotated; 8 broad `except … Exception` remain |
+| Pythonic style        |  5/5   | Ruff clean incl. `B` and `BLE`; all 29 return types annotated; explicit `zip(strict=…)` |
 | Architecture          |  5/5   | `AppProtocol` in place; mount injected into `DeviceRegistry`; boilerplate kept by decision |
 | Robustness / hardware |  5/5   | Protocol parsing hardened; ALPACA handling fixed; SGPro/mount waits guarded |
 | Performance           |  4/5   | One socket per mount command; otherwise good                    |
-| Test health           |  5/5   | 4653 passed, 38 skipped, 100 % coverage, xdist-safe              |
-| Tooling / metadata    |  4/5   | Python versions, header aligned; type checker not yet in CI     |
+| Test health           |  5/5   | 4669 passed, 38 skipped, 100 % coverage, xdist-safe              |
+| Tooling / metadata    |  4/5   | Python versions, header aligned; Ruff not yet in CI; type checker (pyrefly) open |
 
 ---
 
@@ -57,13 +58,13 @@ refactoring in the remaining tabs.
 |------------------------------------------|-----------------------------------------------|
 | `ruff check src tests`                   | ✅ All checks passed                          |
 | `ruff format --check src tests`          | ✅ 463 files already formatted                |
-| `pytest tests/unit_tests -n auto --cov`  | ✅ 4653 passed, 38 skipped, 11.9 s            |
-| Coverage (macOS)                         | ✅ 100 % (18,572 statements, 0 missed)        |
+| `pytest tests/unit_tests -n auto --cov`  | ✅ 4669 passed, 38 skipped, 9.4 s             |
+| Coverage (macOS)                         | ✅ 100 % (18,562 statements, 0 missed)        |
 | `# pragma: no cover` / `# noqa` / `TODO` | 0 / 0 / 0                                     |
 | `Signal(object …)` (excl. widgets)       | 10 (by design, see Sep rec 9)                 |
 | `parent: Any`                            | 51                                            |
-| `except Exception`                       | 4 (`tpool.py:110`, `alpacaAscomCommon.py:90,103,116`) |
-| `except (…, Exception)`                  | 4 (`alpacaClass.py:70,95,103`, `sgproClass.py:76`); 0 in `connection.py` |
+| `except Exception`                       | 4, all at deliberate boundaries (`tpool.py` worker, `alpacaAscomCommon.py` ×3 driver calls); `BLE001` enabled with per-file ignores for these 2 files |
+| `except (…, Exception)`                  | 0 (`alpacaClass`, `sgproClass`, `connection.py` narrowed) |
 | `time.sleep` in src                      | not recounted (T6: worker waits use `stopEvent.wait`) |
 | Single-line `def` without `->`           | 0 (all annotated)                             |
 | Largest modules                          | `alignstars.py` (840), `obsSite.py` (740), `styleSheets.py` (703), `tabMount_Sett.py` (533) |
@@ -120,7 +121,7 @@ refactoring in the remaining tabs.
 | D4 | M   | `self.process` shared; `stdout.decode()` strict        | ✅ Fixed   | Rec 11 (section 7) |
 | D5–D7 | L | Dome `None` contract, typo, iterator sentinel        | ✅ Fixed   | Rec 12 (section 7) |
 | C1 | H   | Log level config asymmetric                            | ✅ Fixed   | Rec 5 (section 7) |
-| C2 | M   | `config[x] = {}` then refill                           | 🟡 Partial | Rec 5: fixed in `tabSettUpdate.py`; other tabs unchanged |
+| C2 | M   | `config[x] = {}` then refill                           | ✅ Fixed   | Rec 5 (`tabSettUpdate`) and rec 12 (section 7): single-owner sections built locally and assigned once; `WindowMain` updated in place |
 | C3 | L   | Commented-out `aboutToQuit`                            | ✅ Fixed   | Rec 12 (section 7) |
 | C4 | L   | Raw `sys.argv[1]` as message                           | ✅ Fixed   | Rec 12 (section 7) |
 | A1 | M   | App as service locator / signal hub                    | ⏸ Kept     | Decision 2026-09-29 (section 8); typed via `AppProtocol` |
@@ -132,7 +133,7 @@ refactoring in the remaining tabs.
 | P1 | M   | Python version mismatch                                | ✅ Fixed   | Rec 9: README / Copilot instructions follow `pyproject.toml` (3.12–3.14) |
 | P2 | M   | "Production/Stable" on a beta                          | ⏸ Kept     | Decision 2026-09-29 (section 8) |
 | P3 | M   | Runtime dependencies pinned with `==`                  | ✅ Fixed   | Rec 14 (section 7) |
-| P4 | M   | Ruff rule set / no type checker                        | ❌ Open    | `ignore = ["N999", "BLE001"]`; no `B`, `BLE`, `ANN`; no mypy/pyright |
+| P4 | M   | Ruff rule set / no type checker                        | 🟡 Partial | Rec 10 phases 1–2 (section 7): `B` and `BLE` enabled; `ANN001`, pyrefly and CI lint job open |
 | P5 | M   | Missing return annotations                             | ✅ Fixed   | Rec 10 (P5 part): all 29 annotated; `ANN20x` clean |
 | P6 | L   | `os.path.basename` in `tpool.py`                       | ✅ Fixed   | Rec 4: `Path(...).name` |
 | P7 | L   | "GUI with PyQT5" header                                | ✅ Fixed   | Rec 9: "GUI with PySide" |
@@ -154,18 +155,24 @@ A2, A4, A8, M6, P2, R5), 3 open (Sep 10, A3, P4).
 decision, 1 open (P4). All ★★★ and hardware robustness findings of the
 2026-09-26 review are resolved.
 
+**Status after rec 12 (C2)** (65 rows): 55 done, 1 partial (A5), 8 kept by
+decision, 1 open (P4).
+
+**Status after rec 10 phases 1–2** (65 rows): 55 done, 2 partial (A5, P4),
+8 kept by decision, 0 open.
+
 ---
 
 ## 4. New Findings
 
-| #  | Sev | Location                                | Finding |
-|----|:---:|-----------------------------------------|---------|
-| N1 | H   | `gui/mainWaddon/tabMount_Move.py:219-262` | Confirmed bug: `convertDirection` returns `"STOP"` for `[0, 0]`. When the joystick returns to centre, `moveRaDecHid` calls `moveRaDec("STOP")`, which reads `self.setButtons["STOP"]` → `KeyError`. The mount keeps moving because no stop command is sent. The `coord == [0, 0]` branch in `moveRaDec` is unreachable. Also, a missing `return` after `stopMoveAll()` would let the code continue if the branch were reached. |
-| N2 | M   | `mountcontrol/connection.py:418`        | Combined with M5: a single non-ASCII byte other than `0xDF` raises in the poll worker, and `tpool` logs it only at `critical`. The polled state stays half-updated. |
-| N3 | M   | `base/alpacaAscomCommon.py:61-70`       | The specific `except (AttributeError, OSError, ValueError)` branch logs "not implemented" for `OSError`. A network timeout is reported as a missing feature and blacklisted permanently (D1). |
-| N4 | L   | `logic/plateSolve/plateSolve.py:82`     | `stdout.decode()` without `errors="replace"`; ASTAP/Watney on Windows can write code-page output and then raise `UnicodeDecodeError`, which is not in the caught exceptions. |
-| N5 | L   | `mainApp.py:73,110`                     | `test: int = 0` connects `update10s` to `mainW.close`. It is part of the public constructor and of the production code path. |
-| N6 | L   | Repository                              | `gists/work_agent` has 100+ status/plan markdown files. Most are obsolete. Archive them so the current review and open plans are easy to find. |
+| #  | Sev | Location                                | Finding | Status |
+|----|:---:|-----------------------------------------|---------|--------|
+| N1 | H   | `gui/mainWaddon/tabMount_Move.py:219-262` | Confirmed bug: `convertDirection` returns `"STOP"` for `[0, 0]`. When the joystick returns to centre, `moveRaDecHid` calls `moveRaDec("STOP")`, which reads `self.setButtons["STOP"]` → `KeyError`. The mount keeps moving because no stop command is sent. The `coord == [0, 0]` branch in `moveRaDec` is unreachable. Also, a missing `return` after `stopMoveAll()` would let the code continue if the branch were reached. | ✅ Fixed – rec 1 (section 7) |
+| N2 | M   | `mountcontrol/connection.py:418`        | Combined with M5: a single non-ASCII byte other than `0xDF` raises in the poll worker, and `tpool` logs it only at `critical`. The polled state stays half-updated. | ✅ Fixed – rec 2: `errors="replace"` in `receiveData` / `communicateRaw` |
+| N3 | M   | `base/alpacaAscomCommon.py:61-70`       | The specific `except (AttributeError, OSError, ValueError)` branch logs "not implemented" for `OSError`. A network timeout is reported as a missing feature and blacklisted permanently (D1). | ✅ Fixed – rec 3: only real "not implemented" errors block; timeouts are retried |
+| N4 | L   | `logic/plateSolve/plateSolve.py:82`     | `stdout.decode()` without `errors="replace"`; ASTAP/Watney on Windows can write code-page output and then raise `UnicodeDecodeError`, which is not in the caught exceptions. | ✅ Fixed – rec 11: tolerant decode, local `Popen` |
+| N5 | L   | `mainApp.py:73,110`                     | `test: int = 0` connects `update10s` to `mainW.close`. It is part of the public constructor and of the production code path. | ⏸ Kept – decision 2026-09-30 (section 8) |
+| N6 | L   | Repository                              | `gists/work_agent` has 100+ status/plan markdown files. Most are obsolete. Archive them so the current review and open plans are easy to find. | ✅ Fixed – 113 files moved to `gists/work_agent/archive/` (section 7) |
 
 ---
 
@@ -174,7 +181,7 @@ decision, 1 open (P4). All ★★★ and hardware robustness findings of the
 Effort: S (small), M (medium), L (large). Impact: ★ low → ★★★ high.
 
 Status: ✅ done, 🟡 partial, ❌ open, ⏸ kept by decision (section 8).
-Status as of 2026-09-30, after recs 1–9, 11, 14, 12 (except C2) and 10 (P5).
+Status as of 2026-09-30, after recs 1–9, 11, 12, 14 and 10 (P5).
 
 | #  | Recommendation                                                                  | Refs          | Impact | Effort | Status |
 |----|---------------------------------------------------------------------------------|---------------|:------:|:------:|--------|
@@ -187,22 +194,21 @@ Status as of 2026-09-30, after recs 1–9, 11, 14, 12 (except C2) and 10 (P5).
 | 7  | Cancel a running model in `closeEvent` before `waitForDone`                     | T5            |  ★★    |   S    | ✅ Done (section 7) |
 | 8  | Remove test hooks (`test` arg, `hasattr(app, "mount")`) via injection          | Sep 10, A3, N5 |  ★★   |   S    | ✅ Done (section 7) – `DeviceRegistry` hook removed; N5 (`test` arg) kept (section 8) |
 | 9  | Align metadata: Python version (pyproject/README/instructions), classifier `4 - Beta`, header text, `.DS_Store` untracking | P1, P2, P7, R4 | ★★ | S | ✅ Done (section 7); P2 kept (section 8) |
-| 10 | Extend Ruff (`B`, `BLE`, `ANN`) and add a type checker in CI; close the 29 missing return types | P4, P5 | ★★ | M | 🟡 Partial – P5 done (section 7); P4 open |
+| 10 | Extend Ruff (`B`, `BLE`, `ANN`) and add a type checker in CI; close the 29 missing return types | P4, P5 | ★★ | M | 🟡 Partial – P5 done; P4 phases 1–2 (`B`, `BLE`) done (section 7); phases 3–5 (`ANN001`, pyrefly, CI) open |
 | 11 | Plate solver: local `Popen` context manager, tolerant decode                   | D4, N4        |   ★    |   S    | ✅ Done (section 7) |
-| 12 | Small cleanups: `mountIsUp` duplicate, `os.path`, commented code, `argv` handling, config build-then-assign | M8, P6, C2, C3, C4 | ★ | S | 🟡 Partial – P6 with rec 4; C2 for `tabSettUpdate` with rec 5; M8, C3, C4 (and D5–D7) done (section 7); only C2 (other tabs) open |
+| 12 | Small cleanups: `mountIsUp` duplicate, `os.path`, commented code, `argv` handling, config build-then-assign | M8, P6, C2, C3, C4 | ★ | S | ✅ Done (section 7) – P6 with rec 4; M8, C3, C4 (and D5–D7); C2 with rec 5 (`tabSettUpdate`) and 2026-09-30 (remaining sections) |
 | 13 | Architecture (longer term): `FrameworkDevice` base, `tabMount_Command` via `MountDevice`, split the signal hub, `parent: Any` typing | A1, A2, A4, A8, Jun 5 | ★★ | L | ⏸ Kept |
 | 14 | Relax `==` pins in `[project]` and rely on `uv.lock`; scope `DeprecationWarning` to `mw4` | P3, P8 | ★ | S | ✅ Done (section 7) |
 | 15 | Persistent or pooled mount connection instead of one socket per command         | M6            |   ★★   |   L    | ⏸ Kept |
 
-**Progress:** 11 done, 2 partial (10 – P4; 12 – C2 in other tabs), 0 open,
-2 kept (13, 15). All ★★★ recommendations and all correctness and hardware
-robustness items are done.
+**Progress:** 12 done, 1 partial (10 – P4), 0 open, 2 kept (13, 15). All ★★★
+recommendations and all correctness and hardware robustness items are done.
 
 ### Suggested sequencing (remaining)
 
-1. **Hygiene (S):** 12 (C2 in remaining config tabs).
-2. **Tooling (M):** 10 (P4: Ruff rules `B`, `BLE`, `ANN`; type checker in CI).
-3. **Architecture (L):** 13, 15 – not scheduled; the current architecture is
+1. **Tooling (M):** 10 (P4 phases 3–5: `ANN001`, pyrefly type checker, CI lint
+   job; plan: `plan-review-2026-09-29-status-rec-10-P4-lintTyping.md`).
+2. **Architecture (L):** 13, 15 – not scheduled; the current architecture is
    kept (decision 2026-09-29, section 8).
 
 ---
@@ -215,13 +221,14 @@ ALPACA/ASCOM error handling is corrected, the worker busy flag is thread-safe,
 SGPro waits have deadlines, the HID centre-stick bug is fixed, and the log level
 configuration is symmetrical.
 
-The `DeviceRegistry` test hook is replaced by constructor injection (rec 8).
-Remaining work is minor: C2 in the remaining config tabs, type checker tooling
-in CI (P4), and the broad `except Exception` handlers in the ALPACA/SGPro/tpool
-layer. The current architecture (single-socket commands, app-as-service-hub,
-framework-dispatch boilerplate) is kept by decision. The next cycle can focus on
-performance profiling, extended feature requests, or the long-term architecture
-items if they show a real measured problem.
+The `DeviceRegistry` test hook is replaced by constructor injection (rec 8),
+and config sections are stored atomically (C2). Ruff enforces `B` and `BLE`
+(rec 10, phases 1–2). Remaining work is minor: parameter annotations
+(`ANN001`), the pyrefly type checker and a CI lint job (P4 phases 3–5). The
+current architecture (single-socket commands,
+app-as-service-hub, framework-dispatch boilerplate) is kept by decision. The
+next cycle can focus on performance profiling, extended feature requests, or
+the long-term architecture items if they show a real measured problem.
 
 ---
 
@@ -237,6 +244,9 @@ items if they show a real measured problem.
 | 12 (M8, C3, C4), D5–D7 | Plan: `plan-review-2026-09-29-status-rec-12-cleanups.md`. **M8:** duplicate `self.mountIsUp` in `Mount.__init__` removed. **C3:** commented-out `aboutToQuit` line and its stale comment removed from `mainApp.py`. **C4:** `MountWizzard4` no longer reads `sys.argv`; new `cli.formatOptions()` turns the parsed `argparse` options into text (`dpi=…, scale=…, test=…`), `cli.run` passes it via `loader.main(test, arguments)` to `MountWizzard4(..., arguments)`, which emits it as `Arguments` message only if it is not empty. **D5:** `Dome.calcSlewTarget` is typed `tuple[float, float, float \| None, float \| None]` and returns `None` for x/y explicitly without geometry and on a geometry error – before, a real geometry error (`intersect is None`) raised `TypeError`. **D6:** `targetInDomeShutter` uses `M - B` in the BC check (as in the referenced formula), typed with `np.ndarray`; typo "mez" → "met". **D7:** `ModelRun.startNewSlew` uses `next(iterator, None)`; `modelRunKey` stays a `str` (`""` when exhausted). Tests: `test_cli` (`formatOptions`, `main` call args), `test_loader_main` (arguments passed through), `test_mainApp` (message with/without arguments, raw `sys.argv` ignored), `test_dome` (geometry error without intersect, `slewDome` slews without `checkSlewNeeded`), `test_modelRun` (`modelRunKey == ""`). Ruff clean, 4652 passed, 38 skipped (`-n auto`), coverage 100 %. | ✅ Done |
 | 9, 10 (P5) | Plan: `plan-review-2026-09-29-status-rec-9-metadata-P5.md`. **P1:** `pyproject.toml` (`>=3.12,<3.15`) is the reference; `README.rst` says 3.12-3.14, `.github/copilot-instructions.md` says 3.12–3.14 and 3.12 language features. **P7:** `pyproject.toml` header "GUI with PySide". **R4:** 6 tracked `.DS_Store` files (`.github/`, `doc/`, `doc/config/`, `doc/workflows/`, `src/mw4/assets/`, `tests/`) removed from the index with `git rm --cached`; `.gitignore` already lists `.DS_Store`. **P2, R5:** kept (section 8). **P5:** all 29 functions without return annotation annotated (26 × `None`, `Telescope.create -> bool`, `dataPlots -> dict[str, dict]`, `Styles.generateCMaps -> list[pg.ColorMap]`); `ruff check --select ANN201,ANN202,ANN204,ANN205,ANN206` (excl. `gui/widgets`) is clean. No behaviour change. Ruff clean, 4652 passed, 38 skipped (`-n auto`), coverage 100 %. | ✅ Done |
 | 8  | Plan: `plan-review-2026-09-29-status-rec-8-deviceRegistryHook.md` (2026-09-30). `DeviceRegistry.__init__(app, mount: MountDevice \| None = None)`: an injected mount is used, otherwise a new `MountDevice(app, verbose=True)` is created. The `hasattr(app, "mount")` branch and the write-back `app.mount = …` are removed (no consumer in `src/mw4`; not part of `AppProtocol`). `mainApp.py` is unchanged (`DeviceRegistry(self)`); its `test` argument stays by definition (section 8). Tests: `baseTestApp.App` passes `mount=self.mount`; `test_deviceEntry` fixture injects a `MagicMock` mount; `test_deviceRegistry` passes `mount=app.mount` in the fixture and construction tests; the three hook tests are rewritten (injected mount kept across `addDevices`, default creates `MountDevice` without write-back, injected sentinel used) and `test_initIgnoresAppMountAttribute` is new. Ruff clean, 4653 passed, 38 skipped (`-n auto`), coverage 100 % (18,572 statements). | ✅ Done |
+| N6 | 2026-09-30. `gists/work_agent` cleaned up: 113 obsolete notes, plans, reports and helper scripts moved to `gists/work_agent/archive/` (112 with `git mv`, history kept; 1 untracked file with `mv`). 18 files stay at the top level: the four reviews (`2026-06-10`, `2026-09-26`, `2026-09-29`, this status review), `2026-06-10-proposal-rec4-AppProtocol.md` and the 13 `plan-review-2026-09-29-*` plans, i.e. every file linked from the kept reviews. No link from a kept file to a moved file; archived files have no `../../` links. Three links in the June and 2026-09-29 reviews already pointed to deleted sources (`threadUtils.py`, `timerManager.py`) before the move and are left as history. No code change. | ✅ Done |
+| 12 (C2) | Plan: `plan-review-2026-09-29-status-rec-12-C2-configSections.md` (2026-09-30). **Rule A (single owner):** `tabMount_Park` (`MountPark`), `tabSettRelay`, `tabSettAudio`, `tabSettMount` (`SettingRack`), `tabSettGui`, `tabSettPark` build the section as a local dict and assign it once; a widget error leaves the old section unchanged, old keys are still dropped. In `tabSettGui` / `tabSettMount` the device config writes and `hidModeChanged.emit()` keep their order. **Rule B (shared):** `MainWindow.storeConfig` / `initConfig` use `setdefault("WindowMain", {})`; the `.clear()` is gone, because ~18 main tabs add their keys afterwards. Trade-off: keys of removed tabs stay in the profile (harmless, explicit lookups). `SettingDome` (referenced by `Geometry.cfg` / `Dome.cfg`) is unchanged; `geometry.py:70` only creates it if missing. Tests: one atomicity test per Rule A module (widget read raises → section is still the sentinel); `test_mainWindow`: `WindowMain` kept in place with foreign keys, and kept when `mainWindowAddons.storeConfig` raises. Ruff clean, 4661 passed, 38 skipped (`-n auto`), coverage 100 % (18,559 statements). | ✅ Done |
+| 10 (P4 ph. 1–2) | Plan: `plan-review-2026-09-29-status-rec-10-P4-lintTyping.md` (2026-09-30). **Phase 1 (`B`):** `extend-select` += `B`. 31 `zip()` in `src` got an explicit `strict=`: 26 × `strict=True` (both sides from one computation or validated rows – the horizon/build-point loader checks `len(row) == 2`), 5 × `strict=False` with a comment where truncation is intended: `analyseW` ×3 (model file on disk), `tabEnviron_Seeing` (external meteoblue data), `tabRelay` (status list empty until the relay reports – an existing test covers it). `B007`: unused loop variables removed or renamed; `tiltHint` rewritten without leaking the loop variable (same result); `tabSat_Search` sets `name` explicitly in the loop because the `except` handler logs it (the plain rename broke `test_runnerCalcSatList_handles_exception`). Tests: 13 `zip` → `strict=True`, 12 `B007` renames, `B011` → `pytest.fail`. **Phase 2 (`BLE`):** `extend-select` += `BLE`; `BLE001` removed from `ignore`, kept only as per-file ignore with a reason for `alpacaAscomCommon.py` (driver boundary, `handleDeviceError` classifies) and `tpool.py` (worker boundary). `alpacaClass.createAlpacaDevice` catches `(OSError, RuntimeError, TypeError, ValueError, AttributeError)`, `discoverAPIVersion` / `discoverAlpacaDevices` `(OSError, ValueError, KeyError, AlpacaRequestException)` (alpyca raises `requests` errors = `OSError`, JSON `ValueError`, missing `"Value"` `KeyError`, HTTP ≠ 200 `AlpacaRequestException`); `sgproClass.requestProperty` `(requests.RequestException, OSError)`. `N999` stays ignored (active: 157 camelCase module names; the plan's "dead config" note was wrong and is corrected). Tests: generic `Exception` side effects replaced by concrete ones; new tests for bad device arguments, `AlpacaRequestException`, missing `"Value"`, plain `OSError` in SGPro, and unexpected exception types that now propagate (4). Ruff clean, 4669 passed, 38 skipped (`-n auto`), coverage 100 % (18,562 statements). | ✅ Done |
 
 ---
 
@@ -249,7 +259,8 @@ items if they show a real measured problem.
 | 2026-09-29 | 9   | **Keep the classifier `Development Status :: 5 - Production/Stable`** although the version is a beta. | P2 (⏸ Kept) |
 | 2026-09-29 | –   | **Artefacts in the working tree are accepted** (untracked test assets, `data/`). | R5 (⏸ Kept) |
 | 2026-09-30 | 8   | **Keep the `test` argument of `MountWizzard4`** (`mainApp.py`, auto-close after `update10s`) by definition. Only the `DeviceRegistry` hook is removed. | N5, Sep rec 10 (`MountWizzard4` part) (⏸ Kept) |
+| 2026-09-30 | 10  | **Type checker is pyrefly** (`pyrefly==1.3.2`, Rust binary wheel, no Node.js), configured in `[tool.pyrefly]` of `pyproject.toml` and run in CI with `uv run pyrefly check`. pyright and mypy are not used. | P4 (plan `plan-review-2026-09-29-status-rec-10-P4-lintTyping.md`) |
 
-These items are closed as "kept" and are no longer counted as open. They
+Rows marked ⏸ are closed as "kept" and are no longer counted as open. They
 should only be reopened if a measured problem appears (e.g. latency or socket
 exhaustion on the mount for rec 15).

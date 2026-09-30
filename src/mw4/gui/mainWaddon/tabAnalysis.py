@@ -83,7 +83,7 @@ class Analysis:
         duration = self.ui.flexureDuration.value()
         numberPoints = int(duration * 60 / waitTime)
         data = []
-        for i in range(numberPoints):
+        for _ in range(numberPoints):
             data.append((alt, az))
         return data, waitTime
 

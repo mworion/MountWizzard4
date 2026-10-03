@@ -137,7 +137,7 @@ def test_setExposureState_busy_value_zero_not_exposing(function):
 
 
 def test_setExposureState_busy_value_zero(function):
-    """State 'Busy' and value == 0, self.exposing=True → exposed signal + downloading message."""
+    """State 'Busy' and value == 0, self.exposing=True → exposed signal + message."""
     function.parent.exposing = True
     function.exposing = True
     vectors = {

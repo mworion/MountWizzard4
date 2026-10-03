@@ -196,7 +196,7 @@ def test_setExposureState_stateNot2Exposing(function):
         function.setExposureState()
     function.signals.exposed.disconnect(exposedSlot)
     function.signals.message.disconnect(msgSlot)
-    assert function.exposing is True
+    assert function.exposing is False
     exposedSlot.assert_called_once_with(function.parent.imagePath)
     msgSlot.assert_called_once_with("download")
     function.exposing = False

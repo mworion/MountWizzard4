@@ -75,6 +75,7 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
         if state != 2 and self.exposing:
             self.signals.exposed.emit(self.parent.imagePath)
             self.signals.message.emit("download")
+            self.exposing = False
         if not self.getDeviceProp("ImageReady"):
             return
         data = self.getDeviceProp("ImageArray")

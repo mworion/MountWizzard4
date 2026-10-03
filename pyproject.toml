@@ -24,7 +24,7 @@ package-data = ["data/**/*.*"]
 
 [project]
 name = "mountwizzard4"
-version = "4.0.0b34"
+version = "4.0.0b35"
 license = "Apache-2.0"
 description = "Tool for managing 10_micron mounts"
 readme = "README.rst"
@@ -72,7 +72,7 @@ dependencies = [
     "requests>=2.34.2,<3",
     "python-dateutil>=2.9.0.post0,<3",
     "pylnk3>=0.4.3,<0.5",
-    "ping3>=5.1.5,<6",
+    "ping3==5.1.6",
     "wakeonlan>=4.0.0,<5",
     "pybase64>=1.5.0,<2",
     "websocket-client>=1.9.2,<2",
@@ -111,7 +111,7 @@ dev = [
     "pytest-xvfb==3.1.1",
     "pytest-env==1.7.1",
     "invoke==2.2.1",
-    "ruff==0.16.9",
+    "ruff==0.16.10",
     "pyrefly==1.3.2",
     "coverage==7.16.2",
     "scipy-stubs==1.18.1.1",

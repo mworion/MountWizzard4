@@ -95,22 +95,18 @@ class ModelData(QObject):
         self.app.dReg["plateSolve"].signals.result.disconnect(self.collectPlateSolveResult)
 
     def setImageExposed(self) -> None:
-        print("setImageExposed")
         if self.modelTiming == self.PROGRESSIVE:
             self.startSlew.emit()
 
     def setImageDownloaded(self) -> None:
-        print("setImageDownloaded")
         if self.modelTiming == self.NORMAL:
             self.startSlew.emit()
 
     def setImageSaved(self) -> None:
-        print("setImageSaved")
         if self.modelTiming == self.CONSERVATIVE:
             self.startSlew.emit()
 
     def startExposureAfterSlew(self) -> None:
-        print("startExposureAfterSlew")
         if self.mountSlewed and self.domeSlewed:
             self.startNewImageExposure()
 

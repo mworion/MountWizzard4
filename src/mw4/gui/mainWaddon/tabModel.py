@@ -139,7 +139,6 @@ class Model(TabAddon):
             self.ui.endModel.setEnabled(False)
             self.ui.pauseModel.setEnabled(False)
         else:
-            self.ui.runModelGroup.setEnabled(True)
             self.ui.dataModel.setEnabled(True)
             self.ui.runModel.setEnabled(True)
             changeStyleDynamic(self.ui.runModel, "run", "false")

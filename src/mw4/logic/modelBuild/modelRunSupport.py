@@ -108,8 +108,7 @@ def loadModelsFromFile(modelFilesPath: list[Path]) -> tuple[dict[str, dict[str, 
             log.warning(errText)
             return model, errText
 
-    modelLoad = convertFloatToAngle(modelLoad)[:99]
-    for i, mPoint in enumerate(modelLoad):
+    for i, mPoint in enumerate(convertFloatToAngle(modelLoad)[:99]):
         model[f"point-{i:03d}"] = mPoint
     if len(modelLoad) > 99:
         return model, "Too many model points in files, cut of to 99"
@@ -175,7 +174,7 @@ def compareFile(
             fileModel = json.load(inFile)
             fileModelData = generateFileModelData(fileModel)
         except json.JSONDecodeError as e:
-            log.warning(f"Cannot load model file: {[inFile]}, error: {e}")
+            log.warning(f"{'Cannot load':15s}: model file [{[inFile]}], error: {e}")
         else:
             pointsIn, pointsOut = findKeysSourceInDest(fileModelData, mountModelData)
 
@@ -189,7 +188,12 @@ def findFittingModel(mountModel: Model, modelPath: Path) -> tuple[Path, list]:
     pointsOut = []
     for modelFilePath in sorted(modelPath.glob("*.model"), key=lambda x: x.stem):
         pointsIn, pointsOut = compareFile(modelFilePath, mountModelData)
-        if len(pointsIn) > 2:
+        fileCount = len(pointsIn) + len(pointsOut)
+        mountCount = len(mountModelData)
+        isModel = len(pointsIn) >= 3
+        isNotLarger = fileCount <= mountCount
+        isOverlapping = mountCount - len(pointsIn) <= 3
+        if isModel and isNotLarger and isOverlapping:
             fittedModelPath = modelFilePath
             break
 

@@ -215,7 +215,7 @@ def test_loadModelsFromFile_4():
     ]
     model, msg = loadModelsFromFile(modelFilesPath)
     assert len(model) == 99
-    assert msg == "Model data loaded"
+    assert msg == "Too many model points in files, cut of to 99"
     assert isinstance(model["point-000"]["raJNowM"], Angle)
 
 
@@ -287,8 +287,9 @@ def test_compareFile_2():
 
 
 def test_findFittingModel_1():
+    mountData = {i: {} for i in range(5)}
     with mock.patch.object(
-        mw4.logic.modelBuild.modelRunSupport, "generateMountModelData", return_value={}
+        mw4.logic.modelBuild.modelRunSupport, "generateMountModelData", return_value=mountData
     ):
         with mock.patch.object(
             mw4.logic.modelBuild.modelRunSupport, "compareFile", return_value=([1, 2, 3], [4])
@@ -298,13 +299,41 @@ def test_findFittingModel_1():
         assert filePath == Path("tests/testData/test.model")
 
 
-def test_findFittingModel_2():
-    with mock.patch.object(
-        mw4.logic.modelBuild.modelRunSupport, "generateMountModelData", return_value={}
+def runFindFittingModel(mountCount, pointsIn, pointsOut):
+    mountData = {i: {} for i in range(mountCount)}
+    with (
+        mock.patch.object(
+            mw4.logic.modelBuild.modelRunSupport,
+            "generateMountModelData",
+            return_value=mountData,
+        ),
+        mock.patch.object(
+            mw4.logic.modelBuild.modelRunSupport,
+            "compareFile",
+            return_value=(pointsIn, pointsOut),
+        ),
     ):
-        with mock.patch.object(
-            mw4.logic.modelBuild.modelRunSupport, "compareFile", return_value=([1], [4])
-        ):
-            filePath, pointsOut = findFittingModel({}, Path("tests/testData"))
-        assert pointsOut == [4]
-        assert filePath == Path()
+        return findFittingModel({}, Path("tests/testData"))
+
+
+def test_findFittingModel_2():
+    filePath, pointsOut = runFindFittingModel(5, [1], [4])
+    assert pointsOut == [4]
+    assert filePath == Path()
+
+
+def test_findFittingModel_3():
+    filePath, pointsOut = runFindFittingModel(5, [1, 2, 3, 4, 5], [6])
+    assert pointsOut == [6]
+    assert filePath == Path()
+
+
+def test_findFittingModel_4():
+    filePath, pointsOut = runFindFittingModel(8, [1, 2, 3, 4], [])
+    assert pointsOut == []
+    assert filePath == Path()
+
+
+def test_findFittingModel_5():
+    filePath, _ = runFindFittingModel(6, [1, 2, 3], [])
+    assert filePath == Path("tests/testData/test.model")

@@ -101,11 +101,11 @@ class PlateSolve:
     ) -> dict[str, Any]:
         result: dict[str, Any] = {"success": False, "message": msg, "imagePath": imagePath}
         if not suc:
-            self.log.warning(f"Error: [{imagePath.stem}], message: {msg}")
+            self.log.warning(f"{'Error':15s}: [{imagePath.stem}], message: {msg}")
             return result
 
         if not wcsPath.is_file():
-            self.log.warning(f"Solve files for [{wcsPath.stem}] missing")
+            self.log.warning(f"{'Warning':15s}: Solve files for [{wcsPath.stem}] missing")
             result["message"] = "Solve failed, no WCS file"
             return result
 

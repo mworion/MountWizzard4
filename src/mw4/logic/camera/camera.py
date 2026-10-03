@@ -162,4 +162,7 @@ class Camera:
         with fits.open(self.imagePath, mode="update", output_verify="silentfix") as HDU:
             header = writeHeaderCamera(HDU[0].header, self, self.app.dReg["mount"].obsSite)
             header = writeHeaderPointing(header, self.app.dReg["mount"].obsSite)
+            t = f"FITS header written: RA: [{header['RA']}], DEC: [{header['DEC']}]"
+            t+= f", FOCALLEN: [{header['FOCALLEN']}], SCALE: [{header['SCALE']}]"
+            self.log.debug(t)
             HDU[0].header = header

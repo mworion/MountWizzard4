@@ -92,8 +92,9 @@ def convertAngleToFloat(model: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return model
 
 
-def loadModelsFromFile(modelFilesPath: list[Path]) -> tuple[list[dict[str, Any]], str]:
-    model = []
+def loadModelsFromFile(modelFilesPath: list[Path]) -> tuple[dict[str, dict[str, Any]], str]:
+    model = {}
+    modelLoad = []
     for path in modelFilesPath:
         if not path.is_file():
             return model, f"File {path} does not exist"
@@ -101,16 +102,16 @@ def loadModelsFromFile(modelFilesPath: list[Path]) -> tuple[list[dict[str, Any]]
         try:
             with open(path) as infile:
                 model_part = json.load(infile)
-                model += model_part
+                modelLoad += model_part
         except json.JSONDecodeError:
             errText = f"Cannot load model json file: {path.name}"
             log.warning(errText)
             return model, errText
 
-    model = convertFloatToAngle(model)
-
-    if len(model) > 99:
-        model = model[:99]
+    modelLoad = convertFloatToAngle(modelLoad)[:99]
+    for i, mPoint in enumerate(modelLoad):
+        model[f"point-{i:03d}"] = mPoint
+    if len(modelLoad) > 99:
         return model, "Too many model points in files, cut of to 99"
     return model, "Model data loaded"
 

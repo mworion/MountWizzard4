@@ -184,7 +184,7 @@ def test_convertAngleToFloat_1():
 def test_loadModelsFromFile_1():
     modelFilesPath = [Path()]
     model, msg = loadModelsFromFile(modelFilesPath)
-    assert model == []
+    assert model == {}
     assert msg == "File . does not exist"
 
 
@@ -193,6 +193,8 @@ def test_loadModelsFromFile_2():
     modelFilesPath = [Path("tests/work/model/test.model")]
     model, msg = loadModelsFromFile(modelFilesPath)
     assert len(model) == 58
+    assert "point-000" in model
+    assert "point-057" in model
     assert msg == "Model data loaded"
 
 
@@ -213,8 +215,8 @@ def test_loadModelsFromFile_4():
     ]
     model, msg = loadModelsFromFile(modelFilesPath)
     assert len(model) == 99
-    assert msg == "Too many model points in files, cut of to 99"
-    assert isinstance(model[0]["raJNowM"], Angle)
+    assert msg == "Model data loaded"
+    assert isinstance(model["point-000"]["raJNowM"], Angle)
 
 
 def test_findKeysFromSourceInDest_1():

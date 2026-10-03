@@ -308,9 +308,9 @@ class Model(TabAddon):
             self.msg.emit(1, "Model", "Run", "Model build cancelled by user")
         else:
             self.programModelToMount()
-        if self.ui.parkMountAfterModel.isChecked():
-            self.msg.emit(1, "Model", "Run", "Park mount after model build")
-            self.app.dReg["mount"].obsSite.park()
+            if self.ui.parkMountAfterModel.isChecked():
+                self.msg.emit(1, "Model", "Run", "Park mount after model build")
+                self.app.dReg["mount"].obsSite.park()
         self.app.playSound.emit("RunFinished")
         self.app.operationRunning.emit(self.STATUS_IDLE)
 

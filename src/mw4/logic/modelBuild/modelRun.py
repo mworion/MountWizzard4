@@ -50,7 +50,7 @@ class ModelData(QObject):
         self.endBatch: bool = False
         self.modelTiming: int = self.CONSERVATIVE
         self.modelInputData: list[tuple[float, float]] = []
-        self.modelBuildData: dict[str, dict[str, Any]] = {}
+        self.modelBuildData: list[dict[str, Any]] = []
         self.modelRunList: list[str] = []
         self.modelRunIterator: Iterator[str] | None = None
         self.modelRunKey: str = ""

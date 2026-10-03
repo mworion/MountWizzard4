@@ -412,11 +412,15 @@ def test_finishBatch_1(function):
         mock.patch.object(function, "programModelToMount") as mockProgram,
         mock.patch.object(function.app.dReg["mount"].obsSite, "park") as mockPark,
         mock.patch.object(function, "msg") as mockMsg,
+        mock.patch.object(function.app, "playSound") as mockSound,
+        mock.patch.object(function.app, "operationRunning") as mockOp,
     ):
         function.finishBatch(True)
     mockProgram.assert_not_called()
     mockPark.assert_not_called()
     assert "cancelled" in mockMsg.emit.call_args_list[0][0][3]
+    mockSound.emit.assert_called_once_with("RunFinished")
+    mockOp.emit.assert_called_once_with(function.STATUS_IDLE)
 
 
 def test_finishBatch_2(function):
@@ -424,21 +428,46 @@ def test_finishBatch_2(function):
     with (
         mock.patch.object(function, "programModelToMount") as mockProgram,
         mock.patch.object(function.app.dReg["mount"].obsSite, "park") as mockPark,
+        mock.patch.object(function, "msg") as mockMsg,
+        mock.patch.object(function.app, "playSound") as mockSound,
         mock.patch.object(function.app, "operationRunning") as mockOp,
     ):
         function.finishBatch(False)
     mockProgram.assert_called_once()
     mockPark.assert_called_once()
+    assert "Park mount after model build" in mockMsg.emit.call_args_list[-1][0][3]
+    mockSound.emit.assert_called_once_with("RunFinished")
     mockOp.emit.assert_called_once_with(function.STATUS_IDLE)
     function.ui.parkMountAfterModel.setChecked(False)
+
+
+def test_finishBatch_3(function):
+    function.ui.parkMountAfterModel.setChecked(False)
+    with (
+        mock.patch.object(function, "programModelToMount") as mockProgram,
+        mock.patch.object(function.app.dReg["mount"].obsSite, "park") as mockPark,
+        mock.patch.object(function.app, "playSound") as mockSound,
+        mock.patch.object(function.app, "operationRunning") as mockOp,
+    ):
+        function.finishBatch(False)
+    mockProgram.assert_called_once()
+    mockPark.assert_not_called()
+    mockSound.emit.assert_called_once_with("RunFinished")
+    mockOp.emit.assert_called_once_with(function.STATUS_IDLE)
 
 
 def test_finishBatch_connectedToModelData(function):
     function.modelData = ModelData(function.app)
     function.modelData.finished.connect(function.finishBatch)
-    with mock.patch.object(function, "programModelToMount") as mockProgram:
+    with (
+        mock.patch.object(function, "programModelToMount") as mockProgram,
+        mock.patch.object(function.app, "playSound") as mockSound,
+        mock.patch.object(function.app, "operationRunning") as mockOp,
+    ):
         function.modelData.finished.emit(False)
     mockProgram.assert_called_once()
+    mockSound.emit.assert_called_once_with("RunFinished")
+    mockOp.emit.assert_called_once_with(function.STATUS_IDLE)
 
 
 def test_runFileModel_1(function):

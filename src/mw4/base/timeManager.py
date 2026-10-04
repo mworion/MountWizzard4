@@ -15,9 +15,9 @@
 ###########################################################
 import logging
 from dateutil.tz import tzlocal
+from mw4.base.appProtocol import AppProtocol
 from PySide6.QtCore import QObject, QTimer, Signal
 from skyfield.api import Time
-from typing import Any
 
 TICK_INTERVAL_MS: int = 100
 CYCLIC_SCHEDULE: list[tuple[int, str]] = [
@@ -52,7 +52,7 @@ class TimeManager(QObject):
     start1s = Signal()
     start3s = Signal()
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         super().__init__()
         self.app: QObject = app
         self.counter: int = 0

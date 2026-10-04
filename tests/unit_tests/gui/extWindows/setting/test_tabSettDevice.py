@@ -170,73 +170,23 @@ def test_closeEvent_skipsEntriesWithoutSignals(function):
         realEntry.instance = origInstance
 
 
-def test_processPopupResults_2(function):
-    returnValues = {
-        "device": "telescope",
-        "close": "ok",
-        "framework": "indi",
-        "data": {
-            "framework": "indi",
-            "indi": {
-                "deviceName": "",
-                "deviceList": ["test", "test1"],
-            },
-        },
-        "copyConfig": [],
-    }
-    with (
-        mock.patch.object(function.app.dReg, "writeConfigToSingleDevice"),
-        mock.patch.object(function.app.dReg, "startDevice"),
-    ):
-        function.processPopupResults(returnValues)
+def test_updateDeviceGui_1(function):
+    function.app.dReg["telescope"].instance.framework = "indi"
+    function.app.dReg["telescope"].run["indi"].config.deviceName = ""
+    function.updateDeviceGui("telescope")
 
 
-def test_processPopupResults_3(function):
-    returnValues = {
-        "device": "telescope",
-        "close": "ok",
-        "framework": "indi",
-        "data": {
-            "framework": "indi",
-            "indi": {
-                "deviceName": "test_device",
-                "deviceList": ["test", "test1"],
-            },
-        },
-        "copyConfig": ["indi"],
-    }
-    with (
-        mock.patch.object(function, "copyConfig"),
-        mock.patch.object(function.app.dReg, "writeConfigToSingleDevice"),
-        mock.patch.object(function.app.dReg, "startDevice"),
-    ):
-        function.processPopupResults(returnValues)
-
-
-def test_copyConfig_1(function):
-    # copyConfig returns early, so just verify it doesn't crash
-    function.copyConfig("telescope", "indi")
-
-
-def test_copyConfig_2(function):
-    # copyConfig returns early, so just verify it doesn't crash
-    function.copyConfig("telescope", "indi")
-
-
-def test_copyConfig_3(function):
-    # copyConfig returns early, so just verify it doesn't crash
-    function.copyConfig("telescope", "test")
-
-
-def test_copyConfig_4(function):
-    # copyConfig returns early, so just verify it doesn't crash
-    function.copyConfig("telescope", "indi")
+def test_updateDeviceGui_2(function):
+    function.app.dReg["telescope"].instance.framework = "indi"
+    function.app.dReg["telescope"].run["indi"].config.deviceName = "test_device"
+    function.updateDeviceGui("telescope")
+    function.app.dReg["telescope"].run["indi"].config.deviceName = ""
 
 
 def test_callPopup_1(function):
     with (
         mock.patch.object(function.app.dReg, "stopDevice"),
-        mock.patch.object(function.app.dReg, "collectConfigFromSingleDevice", return_value={}),
+        mock.patch.object(function.app.dReg, "startDevice"),
         mock.patch(
             "mw4.gui.extWindows.setting.tabSettDevice.DevicePopup.configure",
             return_value={"close": "cancel"},
@@ -246,23 +196,35 @@ def test_callPopup_1(function):
 
 
 def test_callPopup_2(function):
-    returnValues = {
-        "close": "ok",
-        "device": "telescope",
-        "data": {"framework": "indi", "indi": {"deviceName": "test"}},
-        "copyConfig": [],
-    }
     with (
         mock.patch.object(function.app.dReg, "stopDevice"),
-        mock.patch.object(function.app.dReg, "collectConfigFromSingleDevice", return_value={}),
+        mock.patch.object(function.app.dReg, "startDevice") as mock_start,
         mock.patch(
             "mw4.gui.extWindows.setting.tabSettDevice.DevicePopup.configure",
-            return_value=returnValues,
+            return_value={"close": "ok"},
         ),
-        mock.patch.object(function, "processPopupResults") as mock_process,
+        mock.patch.object(function, "updateDeviceGui") as mock_update,
     ):
         function.callPopup("cover")
-        mock_process.assert_called_once_with(returnValues)
+        mock_update.assert_called_once_with("cover")
+        mock_start.assert_called_once_with("cover")
+
+
+def test_callPopup_restartsDeviceOnCancel(function):
+    """Test callPopup starts device and skips gui update when result is not ok."""
+    with (
+        mock.patch.object(function.app.dReg, "stopDevice") as mock_stop,
+        mock.patch.object(function.app.dReg, "startDevice") as mock_start,
+        mock.patch(
+            "mw4.gui.extWindows.setting.tabSettDevice.DevicePopup.configure",
+            return_value={"close": "cancel"},
+        ),
+        mock.patch.object(function, "updateDeviceGui") as mock_update,
+    ):
+        function.callPopup("telescope")
+        mock_stop.assert_called_once_with("telescope")
+        mock_start.assert_called_once_with("telescope")
+        mock_update.assert_not_called()
 
 
 def test_dispatchDriverDropdown_1(function):

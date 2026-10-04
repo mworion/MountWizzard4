@@ -50,6 +50,7 @@ class CameraIndi(IndiClass):
         if state == "Busy" and value == 0 and self.exposing:
             self.signals.exposed.emit(self.parent.imagePath)
             self.signals.message.emit("downloading")
+            self.exposing = False
         if state == "Ok" and value == 0 and self.exposing:
             self.signals.downloaded.emit(self.parent.imagePath)
             self.signals.message.emit("")

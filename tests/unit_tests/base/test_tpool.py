@@ -13,9 +13,9 @@
 # License APL2.0
 #
 ###########################################################
-
-
+import threading
 from mw4.base import tpool
+from PySide6.QtCore import QThreadPool
 from unittest import mock
 
 
@@ -43,42 +43,27 @@ def test_clearPrintErrorStack():
 
 
 def test_worker_hasSignalsAttribute():
-    def testFunc():
-        return "test"
-
-    a = tpool.Worker(testFunc)
+    a = tpool.Worker(lambda: "test")
     assert a.signals is not None
 
 
 def test_worker_run_emitsFinishedSignal(qtbot):
-    def testFunc():
-        return "test"
-
-    a = tpool.Worker(testFunc)
-    a.mutex.lock()
-    a.locked = True
+    a = tpool.Worker(lambda: "test")
+    a.tryAcquire()
     with qtbot.waitSignal(a.signals.finished):
         a.run()
 
 
 def test_worker_run_emitsResultSignal(qtbot):
-    def testFunc():
-        return "value"
-
-    a = tpool.Worker(testFunc)
-    a.mutex.lock()
-    a.locked = True
+    a = tpool.Worker(lambda: "value")
+    a.tryAcquire()
     with qtbot.waitSignal(a.signals.result):
         a.run()
 
 
 def test_worker_run_doesNotEmitErrorOnSuccess(qtbot):
-    def testFunc():
-        return
-
-    a = tpool.Worker(testFunc)
-    a.mutex.lock()
-    a.locked = True
+    a = tpool.Worker(lambda: None)
+    a.tryAcquire()
     with qtbot.assertNotEmitted(a.signals.error):
         a.run()
 
@@ -88,8 +73,7 @@ def test_worker_run_emitsErrorOnException(qtbot):
         raise RuntimeError("Test")
 
     a = tpool.Worker(testFunc)
-    a.mutex.lock()
-    a.locked = True
+    a.tryAcquire()
     with qtbot.waitSignal(a.signals.error):
         a.run()
 
@@ -99,60 +83,119 @@ def test_worker_run_handlesUnexpectedException(qtbot):
         raise ZeroDivisionError("boom")
 
     a = tpool.Worker(testFunc)
-    a.mutex.lock()
-    a.locked = True
+    a.tryAcquire()
     with qtbot.waitSignal(a.signals.error):
         a.run()
     assert not a.locked
-    assert a.mutex.tryLock()
-    a.mutex.unlock()
+    assert a.tryAcquire()
+    a.release()
 
 
-def test_worker_run_unlocksWhenLocked():
-    def testFunc():
-        return
-
-    a = tpool.Worker(testFunc)
-    a.mutex.lock()
-    a.locked = True
+def test_worker_run_releasesWhenAcquired():
+    a = tpool.Worker(lambda: None)
+    a.tryAcquire()
     a.run()
     assert not a.locked
-    assert a.mutex.tryLock()
-    a.mutex.unlock()
+    assert a.tryAcquire()
+    a.release()
 
 
-def test_worker_run_doesNotUnlockWhenNotLocked():
-    def testFunc():
-        return
-
-    a = tpool.Worker(testFunc)
+def test_worker_run_doesNotReleaseWhenNotAcquired():
+    a = tpool.Worker(lambda: None)
     a.run()
     assert not a.locked
-    assert a.mutex.tryLock()
-    a.mutex.unlock()
+    assert a.tryAcquire()
+    a.release()
+
+
+def test_worker_tryAcquire_busy():
+    a = tpool.Worker(lambda: None)
+    assert a.tryAcquire()
+    assert a.locked
+    assert not a.tryAcquire()
+    a.release()
+    assert not a.locked
+
+
+def test_worker_release_notAcquired():
+    a = tpool.Worker(lambda: None)
+    a.release()
+    assert not a.locked
+    assert a.tryAcquire()
+    a.release()
+
+
+def test_worker_releaseFromOtherThread():
+    a = tpool.Worker(lambda: None)
+    assert a.tryAcquire()
+    thread = threading.Thread(target=a.run)
+    thread.start()
+    thread.join(timeout=5)
+    assert not a.locked
+    assert a.tryAcquire()
+    a.release()
+
+
+def test_worker_releaseFromPool():
+    pool = QThreadPool()
+    worker = tpool.startWorker(None, pool, lambda: 42)
+    assert pool.waitForDone(5000)
+    assert not worker.locked
+    assert worker.tryAcquire()
+    worker.release()
+
+
+def test_worker_setCallbacks_rebind():
+    first = []
+    second = []
+    a = tpool.Worker(lambda: None)
+    a.setCallbacks(first.append, None)
+    a.signals.result.emit(1)
+    a.setCallbacks(second.append, None)
+    a.signals.result.emit(2)
+    assert first == [1]
+    assert second == [2]
+    assert a.resultMethod == second.append
+
+
+def test_worker_setCallbacks_sameNoReconnect():
+    received = []
+    a = tpool.Worker(lambda: None)
+    a.setCallbacks(received.append, None)
+    a.setCallbacks(received.append, None)
+    a.signals.result.emit(1)
+    assert received == [1]
+
+
+def test_worker_setCallbacks_remove():
+    received = []
+    a = tpool.Worker(lambda: None)
+    a.setCallbacks(None, lambda: received.append("f"))
+    a.setCallbacks(None, None)
+    a.signals.finished.emit()
+    assert received == []
+    assert a.finishedMethod is None
 
 
 def test_setupWorker_returnsWorkerInstance():
     worker = tpool.setupWorker(lambda: None)
     assert isinstance(worker, tpool.Worker)
-    worker.mutex.unlock()
+    assert not worker.locked
 
 
 def test_setupWorker_connectsResultAndFinishedMethods():
-    result_received = []
-    finished_received = []
+    resultReceived = []
+    finishedReceived = []
     worker = tpool.setupWorker(
         lambda value: value,
         "arg",
-        resultMethod=lambda value: result_received.append(value),
-        finishedMethod=lambda: finished_received.append("finished"),
+        resultMethod=resultReceived.append,
+        finishedMethod=lambda: finishedReceived.append("finished"),
     )
-    assert worker is not None
     worker.signals.result.emit("arg")
     worker.signals.finished.emit()
-    assert result_received == ["arg"]
-    assert finished_received == ["finished"]
-    worker.mutex.unlock()
+    assert resultReceived == ["arg"]
+    assert finishedReceived == ["finished"]
 
 
 def test_setupWorker_passesArgsAndKwargsToWorker():
@@ -163,29 +206,14 @@ def test_setupWorker_passesArgsAndKwargsToWorker():
         return (a, b, c)
 
     worker = tpool.setupWorker(target, 1, 2, c=3)
-    assert worker is not None
     worker.run()
     assert received == [(1, 2, 3)]
 
 
-def test_setupWorker_mutexNotLockedAfterCreation():
-    worker = tpool.setupWorker(lambda: None)
-    assert isinstance(worker, tpool.Worker)
-    assert worker.mutex.tryLock()
-    worker.mutex.unlock()
-    worker.mutex.unlock()
-
-
 def test_setupWorker_noMethodsConnectedWhenNone():
-    result_received = []
-    finished_received = []
     worker = tpool.setupWorker(lambda: None, resultMethod=None, finishedMethod=None)
-    assert worker is not None
-    worker.signals.result.emit("value")
-    worker.signals.finished.emit()
-    assert result_received == []
-    assert finished_received == []
-    worker.mutex.unlock()
+    assert worker.resultMethod is None
+    assert worker.finishedMethod is None
 
 
 def test_startWorker_guardBlocks():
@@ -198,125 +226,61 @@ def test_startWorker_guardBlocks():
 def test_startWorker_guardAllows():
     pool = mock.Mock()
     worker = tpool.startWorker(None, pool, lambda: None, guard=lambda: True)
-    assert worker is not None
     pool.start.assert_called_once_with(worker)
-    worker.mutex.unlock()
+    worker.release()
 
 
-def test_startWorker_mutexBlocksStarting():
+def test_startWorker_busyBlocksStarting():
     pool = mock.Mock()
     worker = tpool.setupWorker(lambda: None)
-    worker.mutex.lock()
-
+    worker.tryAcquire()
     result = tpool.startWorker(worker, pool, lambda: None)
     assert result is worker
     pool.start.assert_not_called()
-    worker.mutex.unlock()
+    worker.release()
 
 
 def test_startWorker_updateArgsKwargsOnReuse():
     pool = mock.Mock()
     worker = tpool.setupWorker(lambda x, y: (x, y), 1, 2)
-
     result = tpool.startWorker(worker, pool, lambda x, y, z: (x, y, z), 10, 20, z=30)
-
     assert result is worker
     assert worker.args == (10, 20)
     assert worker.kwargs == {"z": 30}
     pool.start.assert_called_once_with(worker)
-    worker.mutex.unlock()
+    worker.release()
 
 
-def test_startWorker_mutexAcquired():
+def test_startWorker_updateCallbacksOnReuse():
     pool = mock.Mock()
-    worker = tpool.startWorker(None, pool, lambda: None)
-    assert worker is not None
-    # Mutex should be locked after startWorker
-    assert not worker.mutex.tryLock()
-    # Actually run the worker to unlock the mutex
+    first = []
+    second = []
+    worker = tpool.startWorker(None, pool, lambda: 1, resultMethod=first.append)
     worker.run()
-    # Now mutex should be unlocked
-    assert worker.mutex.tryLock()
-    worker.mutex.unlock()
-    # Clean up worker reference
-    del worker
-
-
-def test_startWorker_startsAndReturnsWorker():
-    pool = mock.Mock()
-    worker = tpool.startWorker(None, pool, lambda: None)
-    assert isinstance(worker, tpool.Worker)
-    pool.start.assert_called_once_with(worker)
-    worker.mutex.unlock()
-
-
-def test_startWorker_resultMethodOptional():
-    pool = mock.Mock()
-    worker = tpool.startWorker(None, pool, lambda: None, resultMethod=None)
-    assert worker is not None
-    worker.mutex.unlock()
-
-
-def test_startWorker_connectsResultMethodToResult():
-    pool = mock.Mock()
-    received = []
-    worker = tpool.startWorker(
-        None,
-        pool,
-        lambda: "test_value",
-        resultMethod=lambda value: received.append(value),
-    )
-    worker.signals.result.emit("test_value")
-    assert received == ["test_value"]
-    worker.mutex.unlock()
-
-
-def test_startWorker_connectsFinishedMethod():
-    pool = mock.Mock()
-    received = []
-    worker = tpool.startWorker(
-        None,
-        pool,
-        lambda: None,
-        finishedMethod=lambda: received.append("finished"),
-    )
-    assert worker is not None
-    worker.signals.finished.emit()
-    assert received == ["finished"]
-    worker.mutex.unlock()
-
-
-def test_startWorker_connectsBothMethods():
-    pool = mock.Mock()
-    result_received = []
-    finished_received = []
-    worker = tpool.startWorker(
-        None,
-        pool,
-        lambda: "test_value",
-        resultMethod=lambda value: result_received.append(value),
-        finishedMethod=lambda: finished_received.append("finished"),
-    )
-    assert worker is not None
-    worker.signals.result.emit("test_value")
-    worker.signals.finished.emit()
-    assert result_received == ["test_value"]
-    assert finished_received == ["finished"]
-    worker.mutex.unlock()
-
-
-def test_startWorker_mutexUnlockedAfterWorkerFinishes():
-    pool = mock.Mock()
-    worker = tpool.startWorker(None, pool, lambda: None)
-    assert worker is not None
-    assert not worker.mutex.tryLock()
-    # Actually run the worker to unlock the mutex
+    tpool.startWorker(worker, pool, lambda: 2, resultMethod=second.append)
     worker.run()
-    # Now mutex should be unlocked
-    assert worker.mutex.tryLock()
-    worker.mutex.unlock()
-    # Clean up worker reference
-    del worker
+    assert first == [1]
+    assert second == [1]
+    assert worker.resultMethod == second.append
+
+
+def test_startWorker_keepsCallbacksWhenBusy():
+    pool = mock.Mock()
+    first = []
+    worker = tpool.startWorker(None, pool, lambda: 1, resultMethod=first.append)
+    tpool.startWorker(worker, pool, lambda: 2, resultMethod=print)
+    assert worker.resultMethod == first.append
+    worker.release()
+
+
+def test_startWorker_acquired():
+    pool = mock.Mock()
+    worker = tpool.startWorker(None, pool, lambda: None)
+    assert worker.locked
+    assert not worker.tryAcquire()
+    worker.run()
+    assert worker.tryAcquire()
+    worker.release()
 
 
 def test_startWorker_usesExistingWorker():
@@ -325,28 +289,18 @@ def test_startWorker_usesExistingWorker():
     worker = tpool.startWorker(existing, pool, lambda: None)
     assert worker is existing
     pool.start.assert_called_once_with(existing)
-    existing.mutex.unlock()
+    existing.release()
 
 
 def test_startWorker_doesNotUpdateArgsWhenBusy():
     pool = mock.Mock()
     worker = tpool.setupWorker(lambda x, y: (x, y), 1, 2)
-    worker.mutex.lock()
-
+    worker.tryAcquire()
     result = tpool.startWorker(worker, pool, lambda x, y: (x, y), 10, 20)
-
     assert result is worker
     assert worker.args == (1, 2)
     pool.start.assert_not_called()
-    worker.mutex.unlock()
-
-
-def test_startWorker_setsLockedFlag():
-    pool = mock.Mock()
-    worker = tpool.startWorker(None, pool, lambda: None)
-    assert worker.locked
-    worker.locked = False
-    worker.mutex.unlock()
+    worker.release()
 
 
 def test_startWorker_logsDebugWhenBusy(caplog):
@@ -356,12 +310,10 @@ def test_startWorker_logsDebugWhenBusy(caplog):
         pass
 
     worker = tpool.setupWorker(targetFunc)
-    worker.mutex.lock()
-
+    worker.tryAcquire()
     with caplog.at_level("DEBUG"):
         result = tpool.startWorker(worker, pool, targetFunc)
-
     assert result is worker
     assert "Worker targetFunc busy, skipped" in caplog.text
     pool.start.assert_not_called()
-    worker.mutex.unlock()
+    worker.release()

@@ -34,6 +34,19 @@ def function(qapp):
     mainW.app.threadPool.waitForDone(1000)
 
 
+@pytest.fixture(autouse=True)
+def resetMountMove(function):
+    function.app.config["WindowMain"] = {}
+    function.oldDirection = "STOP"
+    function.countdownRemaining = 0
+    function.ui.stopMoveAll.setText("STOP")
+    function.app.mount.setting.horizonLimitLow = 0
+    function.app.mount.setting.horizonLimitHigh = 90
+    yield
+    if function.durationTimer is not None:
+        function.durationTimer.stop()
+
+
 def test_initConfig_1(function):
     function.app.config["WindowMain"] = {}
     function.initConfig()
@@ -137,18 +150,48 @@ def test_moveDuration_5(function):
 
 
 def test_moveRaDecHid_1(function):
-    with mock.patch.object(function, "stopMoveAll"):
+    with (
+        mock.patch.object(function, "stopMoveAll") as stop,
+        mock.patch.object(function, "moveRaDec") as move,
+    ):
         function.moveRaDecHid(128, 128)
+    stop.assert_not_called()
+    move.assert_not_called()
+    assert function.oldDirection == "STOP"
 
 
 def test_moveRaDecHid_2(function):
-    with mock.patch.object(function, "moveRaDec"):
+    with mock.patch.object(function, "moveRaDec") as move:
         function.moveRaDecHid(0, 0)
+    move.assert_called_once_with("NW")
+    assert function.oldDirection == "NW"
 
 
 def test_moveRaDecHid_3(function):
-    with mock.patch.object(function, "moveRaDec"):
+    with mock.patch.object(function, "moveRaDec") as move:
         function.moveRaDecHid(255, 255)
+    move.assert_called_once_with("SE")
+    assert function.oldDirection == "SE"
+
+
+def test_moveRaDecHid_centreStops(function):
+    function.oldDirection = "N"
+    with (
+        mock.patch.object(function, "stopMoveAll") as stop,
+        mock.patch.object(function, "moveRaDec") as move,
+    ):
+        function.moveRaDecHid(128, 128)
+    stop.assert_called_once()
+    move.assert_not_called()
+    assert function.oldDirection == "STOP"
+
+
+def test_moveRaDecHid_centreRealStop(function):
+    function.oldDirection = "N"
+    with mock.patch.object(function.app.mount.obsSite, "stopMoveAll") as stop:
+        function.moveRaDecHid(128, 128)
+    stop.assert_called_once()
+    assert function.oldDirection == "STOP"
 
 
 def test_moveRaDec_1(function):

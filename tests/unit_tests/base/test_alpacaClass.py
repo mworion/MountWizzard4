@@ -16,7 +16,9 @@
 import alpaca.management as alpacaMgmt
 import pytest
 import queue
+import requests
 import threading
+from alpaca.exceptions import AlpacaRequestException
 from alpaca.exceptions import NotImplementedException as AlpycaNotImplError
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.signalsDevices import Signals
@@ -125,8 +127,26 @@ def test_createAlpacaDevice_3(function):
         assert not suc
 
 
+def test_createAlpacaDevice_badArgument(function):
+    with mock.patch.object(function.config, "number", "x"):
+        suc = function.createAlpacaDevice("camera")
+    assert not suc
+
+
+def test_createAlpacaDevice_unexpectedPropagates(function):
+    class RaisingClass:
+        def __init__(self, *args, **kwargs):
+            raise ZeroDivisionError
+
+    with (
+        mock.patch.dict(AlpacaClass.DEVICE_TYPE_MAP, {"dome": RaisingClass}),
+        pytest.raises(ZeroDivisionError),
+    ):
+        function.createAlpacaDevice("dome")
+
+
 def test_getDeviceProp_propertyException(function):
-    function.propertyExceptions.append("Connected")
+    function.propertyExceptions.add("Connected")
     result = function.getDeviceProp("Connected")
     assert result is None
 
@@ -152,7 +172,7 @@ def test_getDeviceProp_3(function):
 
 
 def test_setDeviceProp_propertyException(function):
-    function.propertyExceptions.append("Connected")
+    function.propertyExceptions.add("Connected")
     function.setDeviceProp("Connected", True)
 
 
@@ -187,11 +207,20 @@ def test_setDeviceProp_3(function):
 
     function.device = DeviceWithErrorProp()
     function.setDeviceProp("TestProp", True)
-    assert "TestProp" in function.propertyExceptions
+    assert "TestProp" not in function.propertyExceptions
+
+
+def test_getDeviceProp_timeoutNotBlocked(function):
+    type(function.device).TestProp = mock.PropertyMock(
+        side_effect=requests.exceptions.Timeout("timeout")
+    )
+    result = function.getDeviceProp("TestProp")
+    assert result is None
+    assert "TestProp" not in function.propertyExceptions
 
 
 def test_callDeviceMethod_propertyException(function):
-    function.propertyExceptions.append("Halt")
+    function.propertyExceptions.add("Halt")
     result = function.callDeviceMethod("Halt")
     assert result is None
 
@@ -215,9 +244,27 @@ def test_callDeviceMethod_3(function):
 
 
 def test_discoverAPIVersion_1(function):
-    with mock.patch.object(alpacaMgmt, "apiversions", side_effect=Exception()):
+    with mock.patch.object(
+        alpacaMgmt, "apiversions", side_effect=requests.exceptions.ConnectionError()
+    ):
         val = function.discoverAPIVersion()
         assert val == 0
+
+
+def test_discoverAPIVersion_requestError(function):
+    with mock.patch.object(
+        alpacaMgmt, "apiversions", side_effect=AlpacaRequestException(500, "error")
+    ):
+        val = function.discoverAPIVersion()
+        assert val == 0
+
+
+def test_discoverAPIVersion_unexpectedPropagates(function):
+    with (
+        mock.patch.object(alpacaMgmt, "apiversions", side_effect=ZeroDivisionError()),
+        pytest.raises(ZeroDivisionError),
+    ):
+        function.discoverAPIVersion()
 
 
 def test_discoverAPIVersion_2(function):
@@ -233,9 +280,25 @@ def test_discoverAPIVersion_3(function):
 
 
 def test_discoverAlpacaDevices_1(function):
-    with mock.patch.object(alpacaMgmt, "configureddevices", side_effect=Exception()):
+    with mock.patch.object(
+        alpacaMgmt, "configureddevices", side_effect=requests.exceptions.Timeout()
+    ):
         val = function.discoverAlpacaDevices(function.hostaddress, function.port)
         assert val == []
+
+
+def test_discoverAlpacaDevices_missingValue(function):
+    with mock.patch.object(alpacaMgmt, "configureddevices", side_effect=KeyError("Value")):
+        val = function.discoverAlpacaDevices(function.hostaddress, function.port)
+        assert val == []
+
+
+def test_discoverAlpacaDevices_unexpectedPropagates(function):
+    with (
+        mock.patch.object(alpacaMgmt, "configureddevices", side_effect=ZeroDivisionError()),
+        pytest.raises(ZeroDivisionError),
+    ):
+        function.discoverAlpacaDevices(function.hostaddress, function.port)
 
 
 def test_discoverAlpacaDevices_2(function):
@@ -277,7 +340,7 @@ def test_startCommunication_1(function):
         function.startCommunication()
         assert function.workerCommunicationLoop is not None
         m_start.assert_called_once()
-        function.workerCommunicationLoop.mutex.unlock()
+        function.workerCommunicationLoop.release()
 
 
 def test_startCommunication_2(function):
@@ -291,4 +354,4 @@ def test_startCommunication_2(function):
         assert not function.deviceConnected
         assert not function.stopEvent.is_set()
         m_start.assert_called_once()
-        function.workerCommunicationLoop.mutex.unlock()
+        function.workerCommunicationLoop.release()

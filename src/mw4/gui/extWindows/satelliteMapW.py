@@ -18,17 +18,17 @@ import pyqtgraph as pg
 from collections.abc import Iterator
 from importlib.resources import as_file, files
 from io import BytesIO
+from mw4.base.appProtocol import AppProtocol
 from mw4.gui.utilities.qtGenerateSprites import makeSat
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import satelliteMap_ui
 from PySide6.QtCore import Qt
 from skyfield.api import EarthSatellite, Timescale, wgs84
 from skyfield.toposlib import GeographicPosition
-from typing import Any
 
 
 class SatelliteMapWindow(MWidget):
-    def __init__(self, app: Any, title: str) -> None:
+    def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__()
         self.app = app
         self.obsSite = app.dReg["mount"].obsSite

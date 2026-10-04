@@ -57,10 +57,21 @@ def test_sendImage_1(function):
 def test_sendImage_2(function):
     function.capture = cv2.VideoCapture()
     function.running = False
-    with mock.patch.object(
-        cv2, "cvtColor", return_value=np.ones((10, 10, 1)), side_effect=cv2.error
-    ):
-        function.sendImage()
+    received = []
+
+    def record(*args):
+        received.append(args)
+
+    function.msg.connect(record)
+    try:
+        with mock.patch.object(
+            cv2, "cvtColor", return_value=np.ones((10, 10, 1)), side_effect=cv2.error
+        ):
+            function.sendImage()
+    finally:
+        function.msg.disconnect(record)
+    assert received[-1][2] == "Compatibility"
+    assert isinstance(received[-1][3], str)
 
 
 def test_sendImage_3(function):
@@ -143,7 +154,7 @@ def test_startVideoStream_2(function):
     function.ui.videoURL.setText("test")
     with mock.patch.object(function.threadPool, "start"):
         function.startVideo()
-        function.workerVideo.mutex.unlock()
+        function.workerVideo.release()
 
 
 def test_stopVideoStream_1(function):
@@ -152,11 +163,17 @@ def test_stopVideoStream_1(function):
 
 def test_restartVideo(function):
     with (
-        mock.patch.object(function, "stopVideo"),
-        mock.patch.object(function, "startVideo"),
-        mock.patch.object(mw4.gui.extWindows.video.videoBase, "mainThreadSleep"),
+        mock.patch.object(function, "stopVideo") as mockStop,
+        mock.patch.object(function, "startVideo") as mockStart,
+        mock.patch.object(
+            mw4.gui.extWindows.video.videoBase.QTimer,
+            "singleShot",
+            staticmethod(lambda ms, cb: cb()),
+        ),
     ):
         function.restartVideo()
+    mockStop.assert_called_once()
+    mockStart.assert_called_once()
 
 
 def test_receivedImage_1(function):

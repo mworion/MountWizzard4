@@ -16,7 +16,7 @@
 import json
 import numpy as np
 from collections.abc import Iterable
-from mw4.base.threadUtils import mainThreadSleep
+from mw4.base.appProtocol import AppProtocol
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import analyse_ui
@@ -25,7 +25,7 @@ from typing import Any
 
 
 class AnalyseWindow(MWidget):
-    def __init__(self, app: Any, title: str) -> None:
+    def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__()
         self.app = app
         self.ui = analyse_ui.Ui_AnalyseDialog()
@@ -301,7 +301,10 @@ class AnalyseWindow(MWidget):
         ticks = [(x, f"{x}") for x in range(-80, 90, 20)]
         self.ui.decRawErrorsRef.p[0].getAxis("bottom").setTicks([ticks])
         self.ui.decRawErrorsRef.p[0].getAxis("top").setTicks([ticks])
-        y = [x if p == "W" else -x for x, p in zip(self.errorDEC_S, self.pierside)]
+        # lists come from a model file on disk; keep the tolerant truncation
+        y = [
+            x if p == "W" else -x for x, p in zip(self.errorDEC_S, self.pierside, strict=False)
+        ]
         color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in self.pierside]
         self.ui.decRawErrorsRef.plot(
             self.angularPosDEC,
@@ -334,7 +337,8 @@ class AnalyseWindow(MWidget):
         ticks = [(x, f"{x}") for x in range(-80, 90, 20)]
         self.ui.decErrorsRef.p[0].getAxis("bottom").setTicks([ticks])
         self.ui.decErrorsRef.p[0].getAxis("top").setTicks([ticks])
-        y = [x if p == "W" else -x for x, p in zip(self.errorDEC, self.pierside)]
+        # lists come from a model file on disk; keep the tolerant truncation
+        y = [x if p == "W" else -x for x, p in zip(self.errorDEC, self.pierside, strict=False)]
         color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in self.pierside]
         self.ui.decErrorsRef.plot(
             self.angularPosDEC,
@@ -360,7 +364,8 @@ class AnalyseWindow(MWidget):
     def drawErrorAscending(self) -> None:
         self.ui.errorAscending.p[0].setLabel("bottom", "Starcount")
         self.ui.errorAscending.p[0].setLabel("left", "Error per Star [arcsec]")
-        temp = sorted(zip(self.errorRMS, self.pierside))
+        # lists come from a model file on disk; keep the tolerant truncation
+        temp = sorted(zip(self.errorRMS, self.pierside, strict=False))
         y = [x[0] for x in temp]
         pierside = [x[1] for x in temp]
         color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in pierside]
@@ -461,7 +466,6 @@ class AnalyseWindow(MWidget):
     def drawAll(self) -> None:
         for chart in self.charts:
             chart()
-            mainThreadSleep(0)
         self.linkViewsAltAz()
         self.linkViewsRa()
         self.linkViewsDec()

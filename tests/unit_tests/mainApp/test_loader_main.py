@@ -60,6 +60,7 @@ def test_main_1():
         mock.patch.object(sys, "exit") as mockExit,
         mock.patch.object(sys, "excepthook"),
     ):
-        mw4.loader.main()
+        mw4.loader.main(1, "test=1")
         mockMw4.assert_called_once()
+        assert mockMw4.call_args.args[2:] == (1, "test=1")
         mockExit.assert_called_once_with(0)

@@ -14,6 +14,7 @@
 #
 ###########################################################
 import numpy as np
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.transform import J2000ToJNow
 from mw4.gui.extWindows.image.imageSignals import ImageWindowSignals
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
@@ -30,7 +31,7 @@ from mw4.logic.photometry.photometry import Photometry
 from mw4.mountcontrol.convert import convertToDMS, convertToHMS
 from pathlib import Path
 from skyfield.api import Angle
-from typing import Any, ClassVar
+from typing import ClassVar
 
 
 class ImageWindow(MWidget):
@@ -52,7 +53,7 @@ class ImageWindow(MWidget):
         "aberration",
     ]
 
-    def __init__(self, app: Any, title: str) -> None:
+    def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__()
         self.app = app
         self.msg = app.msg
@@ -140,7 +141,7 @@ class ImageWindow(MWidget):
         self.app.showImage.connect(self.showImage)
         self.app.operationRunning.connect(self.operationMode)
         self.fileHandler.signals.imageLoaded.connect(self.processPhotometry)
-        self.photometry.signals.sepFinished.connect(self.resultPhotometry)
+        self.photometry.signals.photometryFinished.connect(self.resultPhotometry)
         self.signals.solveImage.connect(self.solveImage)
         self.operationMode(self.app.statusOperationRunning)
         self.setAspectLocked()
@@ -233,10 +234,10 @@ class ImageWindow(MWidget):
 
     def resultPhotometry(self) -> None:
         changeStyleDynamic(self.ui.photometryGroup, "run", "false")
-        if self.photometry.objs is None:
+        if len(self.photometry.hfr) == 0:
             self.msg.emit(2, "Image", "Photometry error", "Too low pixel stack")
         else:
-            self.msg.emit(0, "Image", "Photometry", "SEP done")
+            self.msg.emit(0, "Image", "Photometry", "Calculation done")
 
     def processPhotometry(self) -> None:
         isPhotometry = self.ui.photometryGroup.isChecked()

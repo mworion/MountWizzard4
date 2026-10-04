@@ -357,3 +357,15 @@ def test_closeEvent(settMount: SettMount) -> None:
     """Test closeEvent disconnects signals successfully."""
     # This should execute without raising any errors
     settMount.closeEvent()
+
+
+def test_storeConfigKeepsSectionOnError(settMount: SettMount) -> None:
+    sentinel = {"rackCompMAC": "keep"}
+    settMount.app.config["SettingRack"] = sentinel
+    widget = settMount.ui.rackCompWolPort
+    with (
+        mock.patch.object(widget, "text", side_effect=RuntimeError),
+        pytest.raises(RuntimeError),
+    ):
+        settMount.storeConfig()
+    assert settMount.app.config["SettingRack"] is sentinel

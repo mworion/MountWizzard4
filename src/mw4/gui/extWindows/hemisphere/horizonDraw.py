@@ -24,7 +24,7 @@ from PySide6.QtCore import QPointF
 
 
 class HorizonDraw(MWidget):
-    def __init__(self, parent):
+    def __init__(self, parent) -> None:
         super().__init__()
         self.parent = parent
         self.ui = parent.ui
@@ -66,7 +66,7 @@ class HorizonDraw(MWidget):
         self.ui.horizon.p[0].scene().sigMouseMoved.connect(self.mouseMovedHorizon)
         self.app.dReg["mount"].signals.mountIsUp.connect(self.setPointerVisibility)
 
-    def closeTab(self):
+    def closeTab(self) -> None:
         self.app.dReg["mount"].signals.pointDone.disconnect(self.drawPointer)
         self.app.dReg["mount"].signals.settingDone.disconnect(self.drawTab)
         self.app.dReg["mount"].signals.mountIsUp.disconnect(self.setPointerVisibility)
@@ -166,9 +166,9 @@ class HorizonDraw(MWidget):
         self.app.redrawHorizon.emit()
 
     def updateDataHorizonPoints(self, x: list, y: list) -> None:
-        hp = [[y, x] for y, x in zip(y, x)]
+        hp = [[y, x] for y, x in zip(y, x, strict=True)]
         hp.sort(key=lambda s: x[1]) if len(x) > 1 else x
-        y, x = zip(*hp)
+        y, x = zip(*hp, strict=True)
         self.horizonPlot.setData(x=x, y=y)
         self.app.buildPoint.horizonP = hp
         self.drawTab()
@@ -196,7 +196,7 @@ class HorizonDraw(MWidget):
         hp = self.app.buildPoint.horizonP
         if len(hp) == 0:
             return
-        alt, az = zip(*hp)
+        alt, az = zip(*hp, strict=True)
         alt = np.array(alt)
         az = np.array(az)
         self.horizonPlot.setData(x=az, y=alt)

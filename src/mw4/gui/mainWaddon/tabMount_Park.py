@@ -16,11 +16,14 @@
 from functools import partial
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from skyfield.api import Angle
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class Park(TabAddon):
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg
@@ -38,9 +41,8 @@ class Park(TabAddon):
         self.updateParkButtonText()
 
     def storeConfig(self) -> None:
-        self.app.config["MountPark"] = {}
-        config = self.app.config["MountPark"]
-        config["ParkMountAfterSlew"] = self.mainW.ui.parkMountAfterSlew.isChecked()
+        config = {"ParkMountAfterSlew": self.mainW.ui.parkMountAfterSlew.isChecked()}
+        self.app.config["MountPark"] = config
 
     def updateParkButtonText(self) -> None:
         config = self.app.config.get("SettingPark", {})

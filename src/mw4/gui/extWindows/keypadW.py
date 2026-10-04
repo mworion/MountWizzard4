@@ -15,6 +15,7 @@
 ###########################################################
 import numpy as np
 from functools import partial
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.tpool import Worker, startWorker
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import keypad_ui
@@ -22,23 +23,22 @@ from mw4.logic.keypad.keypad import KeyPad
 from PySide6.QtCore import QObject, Signal
 from PySide6.QtGui import QPixmap
 from qimage2ndarray import array2qimage
-from typing import Any
 
 
 class KeypadSignals(QObject):
-    textRow = Signal(object, object)
-    imgChunk = Signal(object, object, object)
-    keyPressed = Signal(object)
-    keyUp = Signal(object)
-    keyDown = Signal(object)
-    mousePressed = Signal(object)
-    mouseReleased = Signal(object)
-    cursorPos = Signal(object, object)
+    textRow = Signal(int, str)
+    imgChunk = Signal(object, int, int)
+    keyPressed = Signal(int)
+    keyUp = Signal(int)
+    keyDown = Signal(int)
+    mousePressed = Signal(str)
+    mouseReleased = Signal(str)
+    cursorPos = Signal(int, int)
     clearCursor = Signal()
 
 
 class KeypadWindow(MWidget):
-    def __init__(self, app: Any, title: str) -> None:
+    def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__()
         self.app = app
         self.msg = app.msg
@@ -140,13 +140,7 @@ class KeypadWindow(MWidget):
             self.buttons[button].pressed.connect(partial(self.buttonPressed, button))
             self.buttons[button].released.connect(partial(self.buttonReleased, button))
 
-    def websocketClear(self) -> None:
-        self.websocketMutex.unlock()
-
     def startKeypad(self) -> None:
-        if not self.websocketMutex.tryLock():
-            return
-
         self.clearDisplay()
         self.writeTextRow(2, "Connecting ...")
         host = (
@@ -158,7 +152,6 @@ class KeypadWindow(MWidget):
             self.threadPool,
             self.keypad.runnerWebsocket,
             host,
-            finishedMethod=self.websocketClear,
         )
 
     def buttonPressed(self, button: str) -> None:

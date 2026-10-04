@@ -15,6 +15,7 @@
 import logging
 from collections.abc import Iterator
 from dataclasses import fields
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.deviceEntry import DeviceEntry
 from mw4.logic.camera.camera import Camera
 from mw4.logic.cover.cover import Cover
@@ -40,28 +41,22 @@ from typing import Any
 class DeviceRegistry(QObject):
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol, mount: MountDevice | None = None) -> None:
         super().__init__()
         self.app = app
         self.signalsToName: dict[int, str] = {}
-
-        if hasattr(app, "mount") and app.mount is not None:
-            # Test only: tests inject mock mounts before calling registry
-            mount_instance = app.mount
-        else:
-            mount_instance = MountDevice(app, verbose=True)
-            app.mount = mount_instance
-
+        if mount is None:
+            mount = MountDevice(app, verbose=True)
         self.d: dict[str, DeviceEntry] = {
             "mount": DeviceEntry(
                 name="mount",
-                instance=mount_instance,
+                instance=mount,
                 deviceType="10micron",
                 isConfigurable=False,
             ),
         }
 
-    def addDevices(self, app: Any) -> None:
+    def addDevices(self, app: AppProtocol) -> None:
         deviceSpec: list[tuple[str, Any, str | None, bool]] = [
             ("camera", Camera, "camera", True),
             ("cover", Cover, "covercalibrator", True),

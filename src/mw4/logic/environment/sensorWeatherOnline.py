@@ -44,7 +44,6 @@ class SensorWeatherOnline:
         self.threadPool = parent.app.threadPool
         self.workerGetOpenWeatherMapData: Worker | None = None
         self.running: bool = False
-        self.status: bool = False
 
     def startCommunication(self) -> None:
         self.location = self.app.dReg["mount"].obsSite.location
@@ -130,7 +129,7 @@ class SensorWeatherOnline:
         elif status and not self.running:
             self.signals.deviceConnected.emit(self.config.deviceName)
             self.running = True
-        if self.status:
+        if status:
             self.processOpenWeatherMapData()
 
     def loadingFileNeeded(self, fileName: Path, hours: float) -> bool:

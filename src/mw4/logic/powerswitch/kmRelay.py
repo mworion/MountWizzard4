@@ -16,8 +16,9 @@
 import logging
 import re
 import requests
-import time
+import threading
 from dataclasses import dataclass, field
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker, startWorker
 from PySide6.QtCore import QTimer, Signal
@@ -45,7 +46,7 @@ class KMRelay:
     TIMEOUT = 0.5
     PULSEWIDTH = 0.5
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         super().__init__()
         self.app = app
         self.signals = RelaySignals()
@@ -60,15 +61,18 @@ class KMRelay:
         self.timerTask.timeout.connect(self.cyclePolling)
         self.threadPool = app.threadPool
         self.workerPulse: Worker | None = None
+        self.stopEvent: threading.Event = threading.Event()
 
     def startCommunication(self) -> None:
         if not self.config.hostAddress:
             return
 
+        self.stopEvent.clear()
         self.deviceConnected = False
         self.timerTask.start(self.UPDATE_RATE)
 
     def stopCommunication(self) -> None:
+        self.stopEvent.set()
         self.timerTask.stop()
         self.deviceConnected = False
 
@@ -85,24 +89,15 @@ class KMRelay:
         self.log.debug(f"Result: {url}, {reason}, {status}, {elapsed}, {text}")
 
     def getRelay(self, url: str, debug: bool = False) -> Any:
-        if self.config.hostAddress is None:
-            return ""
-        if not self.mutexPoll.tryLock():
-            return ""
-
         auth = requests.auth.HTTPBasicAuth(self.config.user, self.config.password)
         url = f"http://{self.config.hostAddress}:80{url}"
-
         try:
             result = requests.get(url, auth=auth, timeout=self.TIMEOUT)
         except (requests.RequestException, OSError) as e:
-            result = ""
+            result = None
             self.log.critical(f"Error in request: {e}")
-
         if debug:
             self.debugOutput(result=result)
-
-        self.mutexPoll.unlock()
         return result
 
     def checkConnected(self, value: Any) -> bool:
@@ -157,31 +152,30 @@ class KMRelay:
         byteOn = self.getByte(relayNumber=relayNumber, state=True)
         byteOff = self.getByte(relayNumber=relayNumber, state=False)
         value1 = self.getRelay(f"/FFE0{byteOn:02X}")
-        time.sleep(self.PULSEWIDTH)
+        # interruptible pulse; the relay is switched off in any case
+        self.stopEvent.wait(self.PULSEWIDTH)
         value2 = self.getRelay(f"/FFE0{byteOff:02X}")
 
         if value1 is None or value2 is None or value1.reason != "OK" or value2.reason != "OK":
             self.log.warning(f"Relay:{relayNumber}")
             return
 
-    def resultPulse(self) -> None:
-        self.workerPulse = None
-
-    def pulse(self, relayNumber: int) -> None:
+    def pulse(self, relayNumber: int) -> bool:
         self.workerPulse = startWorker(
             self.workerPulse,
             self.threadPool,
             self.runnerPulse,
-            self.resultPulse,
             relayNumber,
         )
+        return True
 
-    def switch(self, relayNumber: int) -> None:
+    def switch(self, relayNumber: int) -> bool:
         self.log.debug(f"Switch relay:{relayNumber}")
         value = self.getRelay(f"/relays.cgi?relay={relayNumber + 1:1d}")
         if value is None or value.reason != "OK":
             self.log.warning(f"Relay:{relayNumber}")
-            return
+            return False
+        return True
 
     def set(self, relayNumber: int, value: bool) -> None:
         self.log.debug(f"Set relay:{relayNumber}")

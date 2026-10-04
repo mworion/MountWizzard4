@@ -19,10 +19,10 @@ import numpy as np
 import os
 import pytest
 from mw4.base.bootstrap import extractDataFiles
-from mw4.base.threadUtils import mainThreadSleep
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from PySide6.QtCore import Qt, QThreadPool
+from PySide6.QtTest import QTest
 from random import randint
 
 mwglob = {
@@ -83,22 +83,22 @@ def test_1(qtbot, qapp):
         "skyTemp": np.array([1] * count),
         "powTemp": np.array([1] * count),
     }
-    for i in range(count):
+    for _i in range(count):
         value = np.datetime64(f"2014-12-12 20:20:{count:02d}")
         app.measure.data["time"] = np.append(app.measure.data["time"], value)
 
     qtbot.waitExposed(app.mainW, timeout=1000)
-    mainThreadSleep(100)
+    QTest.qWait(100)
 
-    for index in range(5):
+    for _index in range(5):
         qtbot.mouseClick(app.mainW.ui.openMeasureW, Qt.LeftButton)
         c = app.mainW.externalWindows.uiWindows["showMeasureW"]["classObj"]
         qtbot.waitExposed(c, timeout=3000)
         c.ui.set0.setCurrentIndex(3)
-        mainThreadSleep(50)
+        QTest.qWait(50)
         c.drawMeasure()
-        mainThreadSleep(randint(500, 1500))
+        QTest.qWait(randint(500, 1500))
         c.close()
-        mainThreadSleep(50)
+        QTest.qWait(50)
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
         pass

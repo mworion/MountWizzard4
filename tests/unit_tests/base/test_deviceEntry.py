@@ -28,7 +28,7 @@ def registry() -> DeviceRegistry:
     app.msg = mock.MagicMock()
     app.threadPool = QThreadPool()
     app.threadPool.activeThreadCount = mock.MagicMock(return_value=0)
-    dReg = DeviceRegistry(app)
+    dReg = DeviceRegistry(app, mount=mock.MagicMock())
     # Skip addDevices to avoid cascading initialization errors
     return dReg
 

@@ -23,11 +23,14 @@ from mw4.mountcontrol.tleParams import TLEParams
 from PySide6.QtWidgets import QLineEdit
 from sgp4.exporter import export_tle
 from skyfield.api import Angle, EarthSatellite
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class SatTrack(SatData):
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         super().__init__()
         self.mainW = mainW
         self.app = mainW.app
@@ -320,7 +323,7 @@ class SatTrack(SatData):
         self, alt: np.ndarray, az: np.ndarray
     ) -> tuple[np.ndarray, np.ndarray, int]:
         timeDelayStart = 0
-        for altitude, azimuth in zip(alt, az):
+        for altitude, azimuth in zip(alt, az, strict=True):
             if self.app.buildPoint.isAboveHorizon([altitude, azimuth]):
                 break
             timeDelayStart += 1
@@ -332,7 +335,7 @@ class SatTrack(SatData):
         self, alt: np.ndarray, az: np.ndarray
     ) -> tuple[np.ndarray, np.ndarray, int]:
         timeDelayEnd = 0
-        for altitude, azimuth in reversed(list(zip(alt, az))):
+        for altitude, azimuth in reversed(list(zip(alt, az, strict=True))):
             if self.app.buildPoint.isAboveHorizon([altitude, azimuth]):
                 break
             timeDelayEnd += 1
@@ -366,8 +369,8 @@ class SatTrack(SatData):
         start, end, alt, az = self.filterHorizon(start, end, alt, az)
 
         if len(alt) == 0:
-            text = "Program", "No track data (white), please revise settings"
-            self.msg.emit(2, "TLE", "Error", text)
+            text = "No track data (white), please revise settings"
+            self.msg.emit(2, "TLE", "Program error", text)
             return
 
         factor = int(len(alt) / 900)

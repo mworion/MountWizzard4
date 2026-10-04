@@ -29,7 +29,10 @@ from skyfield import almanac
 from skyfield.timelib import Timescale
 from skyfield.toposlib import GeographicPosition
 from skyfield.trigonometry import position_angle_of
-from typing import Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 TWILIGHT_PLOT_DAYS: int = 91
 MAX_TWILIGHT_ROWS: int = 8
@@ -83,7 +86,7 @@ class Almanac(TabAddon):
         "",
     ]
 
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.threadPool = mainW.app.threadPool
@@ -136,8 +139,8 @@ class Almanac(TabAddon):
         xTicks = np.arange(xMin, xMax, (xMax - xMin) / 9)
         xLabels = ts.tt_jd(xTicks).utc_strftime("%d%b")
         xLabels[0] = ""
-        xTicks = [(x, y) for x, y in zip(xTicks, xLabels)]
-        yTicks = [(x, y) for x, y in zip(self.Y_TICKS, self.Y_LABELS)]
+        xTicks = [(x, y) for x, y in zip(xTicks, xLabels, strict=True)]
+        yTicks = [(x, y) for x, y in zip(self.Y_TICKS, self.Y_LABELS, strict=True)]
         pen = pg.mkPen(color="transparent")
         penLine = pg.mkPen(color=self.mainW.rgb2hex(self.mainW.M_PINK), width=2)
         plotItem = self.ui.twilight.p[0]
@@ -190,7 +193,7 @@ class Almanac(TabAddon):
     ) -> None:
         widget.clear()
         text = ""
-        for eventTime, event in zip(times, events):
+        for eventTime, event in zip(times, events, strict=True):
             text += f"{self.app.timeMgr.convertTime(eventTime, timeFormat)} "
             text += f"{labels[event]}"
             widget.insertPlainText(text)

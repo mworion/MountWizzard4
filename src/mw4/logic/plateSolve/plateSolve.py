@@ -17,6 +17,7 @@ import logging
 import queue
 import subprocess
 import time
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker, startWorker
 from mw4.base.transform import J2000ToJNow
@@ -41,7 +42,7 @@ class PlateSolve:
     DEVICE_TYPE = "misc"
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
@@ -60,29 +61,37 @@ class PlateSolve:
 
     def runSolverBin(self, runnable: list[Any]) -> tuple[bool, str]:
         timeStart = time.time()
+        timeout = self.run[self.framework].config.timeout
         try:
-            self.process = subprocess.Popen(
+            # the context manager closes the pipes and reaps the process in any
+            # case; self.process is only a reference for abort()
+            with subprocess.Popen(
                 args=runnable,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-            )
-            timeout = self.run[self.framework].config.timeout
-            stdout, _ = self.process.communicate(timeout=timeout)
-
-        except subprocess.TimeoutExpired as e:
-            self.log.critical(e)
-            return False, "Timeout expired"
+            ) as process:
+                self.process = process
+                try:
+                    stdout, _ = process.communicate(timeout=timeout)
+                except subprocess.TimeoutExpired as e:
+                    self.log.critical(e)
+                    process.kill()
+                    process.communicate()
+                    return False, "Timeout expired"
+                rCode = int(process.returncode)
 
         except (OSError, RuntimeError) as e:
             self.log.critical(f"Error: {e} happened")
             return False, f"Exception {e} during process run"
 
+        finally:
+            self.process = None
+
         delta = time.time() - timeStart
-        stdoutText = stdout.decode()
+        stdoutText = stdout.decode(errors="replace")
         self.log.debug(f"{'Solve Runtime':15s}: [{delta:2.2f}s]")
         for line in stdoutText.splitlines():
             self.log.debug(f"{'Solver output':15s}: [{line}]")
-        rCode = int(self.process.returncode)
         suc = rCode == 0
         msg = self.run[self.framework].returnCodes.get(rCode, "Unknown code")
         return suc, msg
@@ -92,11 +101,11 @@ class PlateSolve:
     ) -> dict[str, Any]:
         result: dict[str, Any] = {"success": False, "message": msg, "imagePath": imagePath}
         if not suc:
-            self.log.warning(f"Error: [{imagePath.stem}], message: {msg}")
+            self.log.warning(f"{'Error':15s}: [{imagePath.stem}], message: {msg}")
             return result
 
         if not wcsPath.is_file():
-            self.log.warning(f"Solve files for [{wcsPath.stem}] missing")
+            self.log.warning(f"{'Warning':15s}: Solve files for [{wcsPath.stem}] missing")
             result["message"] = "Solve failed, no WCS file"
             return result
 
@@ -172,5 +181,7 @@ class PlateSolve:
         self.solveQueue.put(data)
 
     def abort(self) -> None:
-        if self.process:
-            self.process.kill()
+        # local copy: the solver thread may reset self.process at any time
+        process = self.process
+        if process:
+            process.kill()

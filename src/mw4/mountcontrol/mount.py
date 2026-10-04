@@ -16,6 +16,7 @@
 import logging
 import wakeonlan
 from dataclasses import dataclass, field
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.tpool import Worker, startWorker
 from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.geometry import Geometry
@@ -57,7 +58,7 @@ class MountDevice(QObject):
 
     def __init__(
         self,
-        app: Any,
+        app: AppProtocol,
         verbose: bool = False,
     ) -> None:
         super().__init__()
@@ -91,7 +92,6 @@ class MountDevice(QObject):
         self.workerGetModel: Worker | None = None
         self.workerGetNames: Worker | None = None
         self.workerTrajectory: Worker | None = None
-        self.mountIsUp: bool = False
         self.statusAlert: bool = False
         self.statusSlew: bool = False
 

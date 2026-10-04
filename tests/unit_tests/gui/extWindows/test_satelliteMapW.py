@@ -119,7 +119,7 @@ def test_updatePositions_3(function):
 
 def test_unlinkWrap(function):
     data = [1, 2, 3, 170, 180, -180, -100, 3, 4]
-    for slc in function.unlinkWrap(data):
+    for _slc in function.unlinkWrap(data):
         pass
 
 

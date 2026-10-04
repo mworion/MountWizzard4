@@ -28,11 +28,14 @@ from mw4.logic.modelBuild.modelRunSupport import (
 from mw4.mountcontrol.model import Model
 from pathlib import Path
 from PySide6.QtCore import Qt
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class ModelManage(TabAddon):
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg
@@ -130,7 +133,7 @@ class ModelManage(TabAddon):
             ang=errorAngle,
             range={"xMin": -91, "yMin": -91, "xMax": 91, "yMax": 91},
             bar=True,
-            data=list(zip(index, error)),
+            data=list(zip(index, error, strict=True)),
             reverse=True,
             tip="PointNo: {data[0]}\nErrorRMS: {data[1]:0.1f}".format,
         )
@@ -183,7 +186,7 @@ class ModelManage(TabAddon):
         changeStyleDynamic(self.ui.modelNameGroup, "run", "true")
         self.app.dReg["mount"].instance.getNames()
 
-    def loadName(self):
+    def loadName(self) -> None:
         if self.ui.nameList.currentItem() is None:
             self.msg.emit(2, "Model", "Manage error", "No model name selected")
             return

@@ -47,12 +47,12 @@ class SettPark:
         self.app.parkChanged.emit()
 
     def storeConfig(self) -> None:
-        self.app.config["SettingPark"] = {}
-        config = self.app.config["SettingPark"]
+        config: dict[str, Any] = {}
         for i in range(10):
             config[f"ParkText{i:1d}"] = self.parkTexts[i].text()
             config[f"ParkAlt{i:1d}"] = self.parkAlt[i].value()
             config[f"ParkAz{i:1d}"] = self.parkAz[i].value()
+        self.app.config["SettingPark"] = config
         self.app.parkChanged.emit()
 
     def setupIcons(self) -> None:

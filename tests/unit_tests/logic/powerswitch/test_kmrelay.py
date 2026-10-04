@@ -17,10 +17,8 @@
 import PySide6
 import pytest
 import requests
-import time
 from mw4.base.tpool import Worker
 from mw4.logic.powerswitch.kmRelay import KMRelay
-from PySide6.QtCore import QMutex
 from unittest import mock
 
 
@@ -30,7 +28,6 @@ def kmRelay() -> KMRelay:
     app = mock.MagicMock()
     with mock.patch.object(PySide6.QtCore.QTimer, "start"):
         relay = KMRelay(app)
-    relay.mutexPoll = QMutex()
     return relay
 
 
@@ -59,14 +56,30 @@ def test_startCommunicationWithoutHostAddress(kmRelay: KMRelay) -> None:
 
 def test_startCommunicationWithHostAddress(kmRelay: KMRelay) -> None:
     kmRelay.config.hostAddress = "localhost"
+    kmRelay.stopEvent.set()
     kmRelay.startCommunication()
     assert kmRelay.deviceConnected is False
+    assert not kmRelay.stopEvent.is_set()
+    kmRelay.timerTask.stop()
 
 
 def test_stopCommunication(kmRelay: KMRelay) -> None:
     kmRelay.deviceConnected = True
     kmRelay.stopCommunication()
     assert kmRelay.deviceConnected is False
+    assert kmRelay.stopEvent.is_set()
+    kmRelay.stopEvent.clear()
+
+
+def test_runnerPulse_offSentAfterStop(kmRelay: KMRelay) -> None:
+    class MockResult:
+        reason = "OK"
+
+    kmRelay.stopEvent.set()
+    with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()) as getRelay:
+        kmRelay.runnerPulse(3)
+    kmRelay.stopEvent.clear()
+    assert getRelay.call_count == 2
 
 
 def test_debugOutputWithValidResult(kmRelay: KMRelay) -> None:
@@ -84,32 +97,41 @@ def test_debugOutputWithNone(kmRelay: KMRelay) -> None:
     kmRelay.debugOutput(None)
 
 
-def test_getRelayWithNoneHostAddress(kmRelay: KMRelay) -> None:
-    kmRelay.config.hostAddress = None
+def test_getRelayWithEmptyHostAddress(kmRelay: KMRelay) -> None:
+    kmRelay.config.hostAddress = ""
     result = kmRelay.getRelay("/status.xml", False)
-    assert result == ""
+    assert result is None
 
 
-def test_getRelayWithLockedMutex(kmRelay: KMRelay) -> None:
+def test_getRelayWithValidResponse(kmRelay: KMRelay) -> None:
+    class MockResult:
+        text = "test response"
+        reason = "OK"
+        status_code = 200
+        elapsed = "0.1s"
+        url = "http://localhost/status.xml"
+
     kmRelay.config.hostAddress = "localhost"
-    kmRelay.mutexPoll.lock()
-    result = kmRelay.getRelay("/status.xml", False)
-    assert result == ""
-    kmRelay.mutexPoll.unlock()
+    kmRelay.config.user = "test"
+    kmRelay.config.password = "test"
+    with mock.patch.object(requests, "get", return_value=MockResult()):
+        result = kmRelay.getRelay("/status.xml", False)
+        assert result is not None
+        assert result.reason == "OK"
 
 
 def test_getRelayWithTimeoutException(kmRelay: KMRelay) -> None:
     kmRelay.config.hostAddress = "localhost"
     with mock.patch.object(requests, "get", side_effect=requests.exceptions.Timeout):
         result = kmRelay.getRelay("/status.xml", False)
-        assert result == ""
+        assert result is None
 
 
 def test_getRelayWithConnectionError(kmRelay: KMRelay) -> None:
     kmRelay.config.hostAddress = "localhost"
     with mock.patch.object(requests, "get", side_effect=requests.exceptions.ConnectionError):
         result = kmRelay.getRelay("/status.xml", False)
-        assert result == ""
+        assert result is None
 
 
 def test_getRelayWithGenericException(kmRelay: KMRelay) -> None:
@@ -118,7 +140,7 @@ def test_getRelayWithGenericException(kmRelay: KMRelay) -> None:
         requests, "get", side_effect=requests.RequestException("Test error")
     ):
         result = kmRelay.getRelay("/status.xml", False)
-        assert result == ""
+        assert result is None
 
 
 def test_checkConnectedNotConnectedWithNone(kmRelay: KMRelay) -> None:
@@ -311,7 +333,7 @@ def test_getByteMixed(kmRelay: KMRelay) -> None:
 
 def test_pulseWithNoneResponse(kmRelay: KMRelay) -> None:
     with mock.patch.object(kmRelay, "getRelay", return_value=None):
-        kmRelay.pulse(7)
+        assert kmRelay.pulse(7)
         assert kmRelay.workerPulse is not None
         assert isinstance(kmRelay.workerPulse, Worker)
 
@@ -322,7 +344,7 @@ def test_pulseWithBadResponse(kmRelay: KMRelay) -> None:
         status_code = 500
 
     with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
-        kmRelay.pulse(7)
+        assert kmRelay.pulse(7)
         assert kmRelay.workerPulse is not None
         assert isinstance(kmRelay.workerPulse, Worker)
 
@@ -333,7 +355,7 @@ def test_pulseWithGoodResponse(kmRelay: KMRelay) -> None:
         status_code = 200
 
     with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
-        kmRelay.pulse(7)
+        assert kmRelay.pulse(7)
         assert kmRelay.workerPulse is not None
         assert isinstance(kmRelay.workerPulse, Worker)
 
@@ -345,7 +367,7 @@ def test_runnerPulseWithGoodResponse(kmRelay: KMRelay) -> None:
 
     with (
         mock.patch.object(kmRelay, "getRelay", return_value=MockResult()),
-        mock.patch.object(time, "sleep"),
+        mock.patch.object(kmRelay.stopEvent, "wait"),
     ):
         kmRelay.runnerPulse(3)
 
@@ -357,7 +379,7 @@ def test_runnerPulseWithValue1None(kmRelay: KMRelay) -> None:
 
     with (
         mock.patch.object(kmRelay, "getRelay", side_effect=[None, MockResult()]),
-        mock.patch.object(time, "sleep"),
+        mock.patch.object(kmRelay.stopEvent, "wait"),
     ):
         kmRelay.runnerPulse(3)
 
@@ -369,7 +391,7 @@ def test_runnerPulseWithValue2None(kmRelay: KMRelay) -> None:
 
     with (
         mock.patch.object(kmRelay, "getRelay", side_effect=[MockResult(), None]),
-        mock.patch.object(time, "sleep"),
+        mock.patch.object(kmRelay.stopEvent, "wait"),
     ):
         kmRelay.runnerPulse(3)
 
@@ -385,7 +407,7 @@ def test_runnerPulseWithValue1Bad(kmRelay: KMRelay) -> None:
 
     with (
         mock.patch.object(kmRelay, "getRelay", side_effect=[MockResultBad(), MockResultOK()]),
-        mock.patch.object(time, "sleep"),
+        mock.patch.object(kmRelay.stopEvent, "wait"),
     ):
         kmRelay.runnerPulse(3)
 
@@ -401,19 +423,14 @@ def test_runnerPulseWithValue2Bad(kmRelay: KMRelay) -> None:
 
     with (
         mock.patch.object(kmRelay, "getRelay", side_effect=[MockResultOK(), MockResultBad()]),
-        mock.patch.object(time, "sleep"),
+        mock.patch.object(kmRelay.stopEvent, "wait"),
     ):
         kmRelay.runnerPulse(3)
 
 
-def test_resultPulse(kmRelay: KMRelay) -> None:
-    kmRelay.resultPulse()
-    assert kmRelay.workerPulse is None
-
-
 def test_switchWithNoneResponse(kmRelay: KMRelay) -> None:
     with mock.patch.object(kmRelay, "getRelay", return_value=None):
-        kmRelay.switch(7)
+        assert not kmRelay.switch(7)
 
 
 def test_switchWithBadResponse(kmRelay: KMRelay) -> None:
@@ -422,7 +439,7 @@ def test_switchWithBadResponse(kmRelay: KMRelay) -> None:
         status_code = 500
 
     with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
-        kmRelay.switch(7)
+        assert not kmRelay.switch(7)
 
 
 def test_switchWithGoodResponse(kmRelay: KMRelay) -> None:
@@ -431,7 +448,7 @@ def test_switchWithGoodResponse(kmRelay: KMRelay) -> None:
         status_code = 200
 
     with mock.patch.object(kmRelay, "getRelay", return_value=MockResult()):
-        kmRelay.switch(7)
+        assert kmRelay.switch(7)
 
 
 def test_setWithNoneResponse(kmRelay: KMRelay) -> None:

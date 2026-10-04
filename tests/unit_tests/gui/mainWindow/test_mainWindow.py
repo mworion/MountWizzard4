@@ -36,6 +36,7 @@ def mainWindow(qapp):
     with mock.patch.object(Almanac, "showTwilightDataPlot"):
         window = MainWindow(app=App())
     yield window
+    window.app.timeMgr.stop()
     window.app.threadPool.waitForDone(10000)
     qapp.processEvents()
 
@@ -69,6 +70,34 @@ def test_storeConfig_without_windowmain_config(mainWindow):
         mock.patch.object(mainWindow.externalWindows, "storeConfigExtendedWindows"),
     ):
         mainWindow.storeConfig()
+
+
+def test_storeConfig_keepsWindowMainKeys(mainWindow):
+    """WindowMain is shared with the tabs and is updated in place, not cleared."""
+    section = {"tabKey": 5}
+    mainWindow.app.config["WindowMain"] = section
+    with (
+        mock.patch.object(mainWindow.mainWindowAddons, "storeConfig"),
+        mock.patch.object(mainWindow.externalWindows, "storeConfigExtendedWindows"),
+    ):
+        mainWindow.storeConfig()
+    assert mainWindow.app.config["WindowMain"] is section
+    assert section["tabKey"] == 5
+    assert "orderMain" in section
+
+
+def test_storeConfig_keepsWindowMainKeysOnError(mainWindow):
+    """An exception in a tab leaves the earlier WindowMain keys in place."""
+    mainWindow.app.config["WindowMain"] = {"tabKey": 5}
+    with (
+        mock.patch.object(
+            mainWindow.mainWindowAddons, "storeConfig", side_effect=RuntimeError
+        ),
+        mock.patch.object(mainWindow.externalWindows, "storeConfigExtendedWindows"),
+        pytest.raises(RuntimeError),
+    ):
+        mainWindow.storeConfig()
+    assert mainWindow.app.config["WindowMain"]["tabKey"] == 5
 
 
 def test_setupIcons_calls_addons(mainWindow):
@@ -111,6 +140,21 @@ def test_closeEvent_closes_windows(mainWindow):
         mock_stop.assert_called_once()
         mock_close_ext.assert_called_once()
         mock_wait.assert_called_once_with(10000)
+
+
+def test_closeEvent_shutdownAddonsFirst(mainWindow):
+    order = mock.MagicMock()
+    order.waitForDone.return_value = True
+    with (
+        mock.patch.object(mainWindow.mainWindowAddons, "shutdown", order.shutdown),
+        mock.patch.object(mainWindow.app.timeMgr, "stop", order.timeStop),
+        mock.patch.object(mainWindow.app.dReg, "stopDevices", order.stopDevices),
+        mock.patch.object(mainWindow.externalWindows, "closeExtendedWindows"),
+        mock.patch.object(mainWindow.threadPool, "waitForDone", order.waitForDone),
+    ):
+        mainWindow.closeEvent(QCloseEvent())
+    names = [call[0] for call in order.mock_calls]
+    assert names == ["shutdown", "timeStop", "stopDevices", "waitForDone"]
 
 
 def test_closeEvent_no_double_cleanup(mainWindow):
@@ -201,8 +245,11 @@ def test_smartTabGui_with_default_state(mainWindow):
 
 def test_smartTabGui_with_power_enabled(mainWindow):
     """Test smartTabGui with power device enabled."""
-    mainWindow.app.deviceStat["power"] = True
-    mainWindow.smartTabGui()
+    mainWindow.app.dReg.d["power"].stat = True
+    try:
+        mainWindow.smartTabGui()
+    finally:
+        mainWindow.app.dReg.d["power"].stat = None
 
 
 def test_setEnvironDeviceStats_refraction_disabled(mainWindow):
@@ -232,22 +279,25 @@ def test_setEnvironDeviceStats_no_source(mainWindow):
 def test_updateDeviceStats_enabled_device(mainWindow):
     """Test updateDeviceStats with enabled device."""
     mainWindow.deviceStatGui = {"onlineWeather": QWidget()}
-    mainWindow.app.deviceStat = {"onlineWeather": True}
+    mainWindow.app.dReg.d["onlineWeather"].stat = True
     mainWindow.updateDeviceStats()
+    assert mainWindow.deviceStatGui["onlineWeather"].property("color") == "green"
 
 
 def test_updateDeviceStats_disabled_device(mainWindow):
     """Test updateDeviceStats with disabled device."""
     mainWindow.deviceStatGui = {"onlineWeather": QWidget()}
-    mainWindow.app.deviceStat = {"onlineWeather": False}
+    mainWindow.app.dReg.d["onlineWeather"].stat = False
     mainWindow.updateDeviceStats()
+    assert mainWindow.deviceStatGui["onlineWeather"].property("color") == "red"
 
 
 def test_updateDeviceStats_null_device(mainWindow):
     """Test updateDeviceStats with null device."""
     mainWindow.deviceStatGui = {"onlineWeather": QWidget()}
-    mainWindow.app.deviceStat = {"onlineWeather": None}
+    mainWindow.app.dReg.d["onlineWeather"].stat = None
     mainWindow.updateDeviceStats()
+    assert mainWindow.deviceStatGui["onlineWeather"].property("color") == "grey"
 
 
 def test_updateDeviceStats_no_driver_entry(mainWindow):

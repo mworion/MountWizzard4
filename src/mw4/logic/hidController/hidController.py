@@ -17,6 +17,7 @@ import hid
 import logging
 import threading
 from dataclasses import dataclass, field
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker, startWorker
 from PySide6.QtCore import Signal
@@ -34,11 +35,11 @@ class DeviceConfigHidController:
 
 
 class HidControllerSignals(Signals):
-    hidABXY = Signal(object)
-    hidPMH = Signal(object)
-    hidDirection = Signal(object)
-    hidSL = Signal(object, object)
-    hidSR = Signal(object, object)
+    hidABXY = Signal(int)
+    hidPMH = Signal(int)
+    hidDirection = Signal(int)
+    hidSL = Signal(int, int)
+    hidSR = Signal(int, int)
 
 
 class HidController:
@@ -46,7 +47,7 @@ class HidController:
     log = logging.getLogger("MW4")
     UPDATE_RATE: float = 0.05
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = HidControllerSignals()
@@ -152,6 +153,8 @@ class HidController:
             self.deviceConnected = True
 
     def handleDeviceDisconnect(self) -> None:
+        if not self.deviceConnected:
+            return
         self.deviceConnected = False
         if self.hidControllerDevice:
             self.hidControllerDevice.close()
@@ -168,6 +171,7 @@ class HidController:
                 if not connect:
                     self.handleDeviceDisconnect()
             self.stopEvent.wait(timeout=self.UPDATE_RATE)
+        self.handleDeviceDisconnect()
 
     def startCommunication(self) -> None:
         self.deviceConnected = False
@@ -179,7 +183,6 @@ class HidController:
     def stopCommunication(self) -> None:
         self.stopEvent.set()
         self.deviceConnected = False
-        self.signals.deviceDisconnected.emit(self.config.deviceName)
 
     @staticmethod
     def isValidHidControllers(name: str) -> bool:

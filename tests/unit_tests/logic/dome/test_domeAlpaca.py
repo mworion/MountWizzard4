@@ -50,6 +50,13 @@ def function():
     yield func
 
 
+@pytest.fixture(autouse=True)
+def resetDomeState(function):
+    function.data.clear()
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+
+
 def test_getInitialConfig_1(function):
     with (
         mock.patch.object(function, "getAndStoreDeviceProp") as m,
@@ -183,4 +190,4 @@ def test_startCommunication_2(function):
     ):
         function.startCommunication()
         m_start.assert_called_once()
-        function.workerCommunicationLoop.mutex.unlock()
+        function.workerCommunicationLoop.release()

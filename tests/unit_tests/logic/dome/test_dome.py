@@ -319,8 +319,37 @@ def test_calcSlewTarget_2(function):
     alt, az, x, y = function.calcSlewTarget(altitude, azimuth, func)
     assert alt == 20
     assert az == 20
-    assert x == 5
-    assert y == 10
+    assert x is None
+    assert y is None
+
+
+def test_calcSlewTarget_geometryErrorNoIntersect(function):
+    def func():
+        return None, None, None, None, None
+
+    function.useGeometry = True
+    alt, az, x, y = function.calcSlewTarget(20, 30, func)
+    assert (alt, az, x, y) == (20, 30, None, None)
+
+
+def test_slewDome_geometryErrorSlewsWithoutCheck(function):
+    function.framework = "indi"
+    function.useGeometry = True
+    function.useDynamicFollowing = True
+    mount = function.app.dReg["mount"].instance
+    with (
+        mock.patch.object(
+            mount,
+            "calcTransformationMatricesTarget",
+            return_value=(None, None, None, None, None),
+        ),
+        mock.patch.object(function, "checkSlewNeeded") as checkSlew,
+        mock.patch.object(function, "calcOvershoot", return_value=30),
+        mock.patch.object(function.run["indi"], "slewToAltAz") as slew,
+    ):
+        function.slewDome(altitude=20, azimuth=30)
+    checkSlew.assert_not_called()
+    slew.assert_called_once_with(azimuth=30, altitude=20)
 
 
 def test_calcSlewTarget_3(function):
@@ -422,7 +451,7 @@ def test_calcOvershoot_8(function):
     function.overshoot = True
     function.lastFinalAz = 10
     val = function.calcOvershoot(15)
-    assert round(val, 3) == 7.405
+    assert round(val, 3) == 10
 
 
 def test_slewDome_2(function):

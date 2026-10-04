@@ -16,8 +16,8 @@
 import queue
 import requests
 import threading
-import time
 from dataclasses import dataclass, field
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.driverDataClass import DriverData
 from mw4.base.tpool import Worker, startWorker
 from PySide6.QtCore import QThreadPool
@@ -47,7 +47,7 @@ class SGProClass(DriverData):
     def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
         self.parent = parent
-        self.app: Any = parent.app
+        self.app: AppProtocol = parent.app
         self.data: dict = parent.data
         self.msg: Any = parent.app.msg
         self.signals: Any = parent.signals
@@ -73,7 +73,7 @@ class SGProClass(DriverData):
                     f"{url}/{valueProp}?format=json",
                     timeout=self.SGPRO_TIMEOUT,
                 )
-        except (ConnectionError, TimeoutError, requests.RequestException, Exception) as e:
+        except (requests.RequestException, OSError) as e:
             self.log.debug(
                 f"[{self.config.deviceName}] method [{valueProp}] not implemented: {e}"
             )
@@ -139,7 +139,8 @@ class SGProClass(DriverData):
             if suc:
                 self.log.debug(f"[{self.config.deviceName}] connected, [{retry}] retries")
                 break
-            time.sleep(0.2)
+            if self.stopEvent.wait(0.2):
+                break
         else:
             self.log.debug(f"[{self.config.deviceName}] not connected, [{retry}] retries")
             suc = False

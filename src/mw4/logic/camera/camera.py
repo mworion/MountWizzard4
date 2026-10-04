@@ -16,6 +16,7 @@
 import logging
 import platform
 from astropy.io import fits
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
 from mw4.logic.camera.cameraAlpaca import CameraAlpaca
 from mw4.logic.camera.cameraIndi import CameraIndi
@@ -32,7 +33,7 @@ class Camera:
     log = logging.getLogger("MW4")
     DEVICE_TYPE: str = "camera"
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
@@ -161,4 +162,7 @@ class Camera:
         with fits.open(self.imagePath, mode="update", output_verify="silentfix") as HDU:
             header = writeHeaderCamera(HDU[0].header, self, self.app.dReg["mount"].obsSite)
             header = writeHeaderPointing(header, self.app.dReg["mount"].obsSite)
+            t = f"FITS header written: RA: [{header['RA']}], DEC: [{header['DEC']}]"
+            t += f", FOCALLEN: [{header['FOCALLEN']}], SCALE: [{header['SCALE']}]"
+            self.log.debug(t)
             HDU[0].header = header

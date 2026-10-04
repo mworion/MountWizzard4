@@ -14,6 +14,7 @@
 #
 ###########################################################
 import time
+from collections.abc import Callable
 from mw4.base.sgproClass import SGProClass
 from mw4.base.tpool import Worker, startWorker
 from pathlib import Path
@@ -21,11 +22,48 @@ from typing import Any
 
 
 class CameraSGPro(SGProClass):
+    POLL_INTERVAL: float = 0.1
+    START_TIMEOUT: float = 30
+    EXPOSE_MARGIN: float = 60
+    DOWNLOAD_TIMEOUT: float = 120
+    SAVE_TIMEOUT: float = 60
+
     def __init__(self, parent: Any) -> None:
         self.deviceType: str = "camera"
         super().__init__(parent=parent)
         self.startTimeExposure: float = 0
         self.workerExpose: Worker | None = None
+
+    def waitForMessage(
+        self,
+        text: str,
+        present: bool,
+        timeout: float,
+        tick: Callable[[], None] | None = None,
+    ) -> bool:
+        # waits until the presence of text in Device.Message equals present. an
+        # abort (exposing cleared) ends the wait with True as before; a timeout
+        # or a stopped communication returns False.
+        deadline = time.monotonic() + timeout
+        while self.parent.exposing:
+            if (text in self.data.get("Device.Message", "")) == present:
+                break
+            if time.monotonic() > deadline:
+                self.log.warning(f"[{self.config.deviceName}] timeout waiting for [{text}]")
+                self.msg.emit(2, self.PROTOCOL_NAME, "Timeout", f"Waiting for [{text}]")
+                return False
+            if tick is not None:
+                tick()
+            if self.stopEvent.wait(self.POLL_INTERVAL):
+                return False
+        return True
+
+    def showTimeLeft(self) -> None:
+        timeLeft = max(self.parent.exposureTime - time.time() + self.startTimeExposure, 0)
+        self.signals.message.emit(f"expose {timeLeft:3.0f} s")
+
+    def showDownload(self) -> None:
+        self.signals.message.emit("download")
 
     def captureImage(self, params: dict) -> tuple[bool, dict]:
         response = self.requestProperty("image", params=params)
@@ -65,30 +103,27 @@ class CameraSGPro(SGProClass):
         if not receipt:
             self.log.debug(f"No receipt received. {response}")
             return ""
-        while self.parent.exposing and "integrating" not in self.data.get(
-            "Device.Message", ""
-        ):
-            time.sleep(0.1)
+        if not self.waitForMessage("integrating", True, self.START_TIMEOUT):
+            return ""
         return receipt
 
-    def runExpose(self) -> None:
-        while self.parent.exposing and "integrating" in self.data.get("Device.Message", ""):
-            timeLeft = max(self.parent.exposureTime - time.time() + self.startTimeExposure, 0)
-            text = f"expose {timeLeft:3.0f} s"
-            self.signals.message.emit(text)
-            time.sleep(0.1)
+    def runExpose(self) -> bool:
+        timeout = self.parent.exposureTime + self.EXPOSE_MARGIN
+        if not self.waitForMessage("integrating", False, timeout, self.showTimeLeft):
+            return False
         self.signals.exposed.emit(self.parent.imagePath)
+        return True
 
-    def runDownload(self) -> None:
-        while self.parent.exposing and "ready" not in self.data.get("Device.Message", ""):
-            self.signals.message.emit("download")
-            time.sleep(0.1)
+    def runDownload(self) -> bool:
+        if not self.waitForMessage("ready", True, self.DOWNLOAD_TIMEOUT, self.showDownload):
+            return False
         self.signals.downloaded.emit(self.parent.imagePath)
+        return True
 
     def runSave(self, receipt: str) -> bool:
         self.signals.message.emit("save")
-        while self.parent.exposing and "idle" not in self.data.get("Device.Message", ""):
-            time.sleep(0.1)
+        if not self.waitForMessage("idle", True, self.SAVE_TIMEOUT):
+            return False
 
         suc, imagePath = self.getImagePath(receipt)
         if suc:
@@ -98,14 +133,9 @@ class CameraSGPro(SGProClass):
 
     def runnerExpose(self) -> None:
         receipt = self.startExpose()
-        if not receipt:
-            self.parent.exposeFinished()
-            return
-        self.runExpose()
-        self.runDownload()
-        if self.runSave(receipt):
+        if receipt and self.runExpose() and self.runDownload() and self.runSave(receipt):
             self.parent.writeImageFitsHeader()
-            time.sleep(1)
+            self.stopEvent.wait(1)
         self.parent.exposeFinished()
 
     def expose(self) -> None:

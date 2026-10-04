@@ -19,6 +19,7 @@ import sys
 import time
 from collections.abc import Callable
 from logging.handlers import RotatingFileHandler
+from mw4.base.appProtocol import AppProtocol
 from pathlib import Path
 from typing import Any
 
@@ -88,13 +89,13 @@ def setupLogging() -> None:
     redirectSTD()
 
 
-def setTrace(app: Any, enable: bool = False) -> None:
+def setTrace(app: AppProtocol, enable: bool = False) -> None:
     for device in app.dReg.configurable():
         for framework in device.run:
             device.instance.run[framework].loggingTrace = enable
 
 
-def setCustomLoggingLevel(app: Any, level: str = "DEBUG") -> None:
+def setCustomLoggingLevel(app: AppProtocol, level: str = "DEBUG") -> None:
     if level == "TRACE":
         logging.getLogger("MW4").setLevel("DEBUG")
         app.dReg["mount"].instance.loggingTrace = True

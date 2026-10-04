@@ -16,22 +16,23 @@
 import gzip
 import requests
 import shutil
-from mw4.base.threadUtils import mainThreadSleep
 from mw4.base.tpool import Worker, startWorker
 from mw4.gui.utilities.qtHelpers import svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.downloadPopup_ui import Ui_DownloadPopup
 from pathlib import Path
-from PySide6.QtCore import QEventLoop, Qt, Signal
+from PySide6.QtCore import QEventLoop, Qt, QTimer, Signal
 
 
 class DownloadPopup(MWidget):
-    signalProgress = Signal(object)
-    signalStatus = Signal(object)
-    signalProgressBarColor = Signal(object)
+    signalProgress = Signal(int)
+    signalStatus = Signal(str)
+    signalProgressBarColor = Signal(str)
     TIMEOUT_SOURCE = 10
 
-    def __init__(self, parentWidget: MWidget, url: str, dest: Path, unzip: bool = False):
+    def __init__(
+        self, parentWidget: MWidget, url: str, dest: Path, unzip: bool = False
+    ) -> None:
         super().__init__()
         self.parentWidget = parentWidget
         self.msg = parentWidget.app.msg
@@ -153,6 +154,5 @@ class DownloadPopup(MWidget):
         else:
             self.signalProgressBarColor.emit("red")
             self.signalStatus.emit("Download failed")
-        mainThreadSleep(500)
         self.returnValues["success"] = result
-        self.close()
+        QTimer.singleShot(500, self.close)

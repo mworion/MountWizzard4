@@ -19,12 +19,15 @@ from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.logic.databaseProcessing.sourceURL import cometSourceURLs
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QAbstractItemView, QApplication, QTableWidgetItem
-from typing import Any
+from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class Comet(TabAddon):
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.ui = mainW.ui
@@ -115,62 +118,46 @@ class Comet(TabAddon):
 
     def filterListComets(self) -> None:
         filterStr = self.ui.cometFilterText.text().lower()
-        model = self.ui.listComets.model()
-
-        for row in range(model.rowCount()):
-            name = model.index(row, 1).data().lower()
-            number = model.index(row, 0).data().lower()
-            show = filterStr in number + name
-            self.ui.listComets.setRowHidden(row, not show)
+        table = self.ui.listComets
+        model = table.model()
+        table.setUpdatesEnabled(False)
+        try:
+            for row in range(model.rowCount()):
+                name = model.index(row, 1).data().lower()
+                number = model.index(row, 0).data().lower()
+                show = filterStr in number + name
+                table.setRowHidden(row, not show)
+        finally:
+            table.setUpdatesEnabled(True)
 
     def fillCometListName(self) -> None:
-        self.ui.listComets.setRowCount(0)
-        for number, name in enumerate(self.comets.objects):
-            row = self.ui.listComets.rowCount()
-            self.ui.listComets.insertRow(row)
-
-            entry = QTableWidgetItem(f"{number:5d}")
-            entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-            self.ui.listComets.setItem(row, 0, entry)
-
-            entry = QTableWidgetItem(name)
-            entry.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-            self.ui.listComets.setItem(row, 1, entry)
-
-            if "Orbit_type" in self.comets.objects[name]:
-                entry = QTableWidgetItem(self.comets.objects[name]["Orbit_type"])
-                entry.setTextAlignment(
-                    Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
-                )
-                self.ui.listComets.setItem(row, 2, entry)
-
-            if "Year_of_perihelion" in self.comets.objects[name]:
-                y = self.comets.objects[name]["Year_of_perihelion"]
-                m = self.comets.objects[name]["Month_of_perihelion"]
-                d = self.comets.objects[name]["Day_of_perihelion"]
-                date = f"{y:4d}-{m:02d}-{d:02.0f}"
-                entry = QTableWidgetItem(date)
-                entry.setTextAlignment(
-                    Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
-                )
-                self.ui.listComets.setItem(row, 3, entry)
-
-            if "Perihelion_dist" in self.comets.objects[name]:
-                dist = f"{self.comets.objects[name]['Perihelion_dist']:8.4f}"
-                entry = QTableWidgetItem(dist)
-                entry.setTextAlignment(
-                    Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
-                )
-                self.ui.listComets.setItem(row, 4, entry)
-
-            if "e" in self.comets.objects[name]:
-                e = f"{self.comets.objects[name]['e']:8.4f}"
-                entry = QTableWidgetItem(e)
-                entry.setTextAlignment(
-                    Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
-                )
-                self.ui.listComets.setItem(row, 5, entry)
-            QApplication.processEvents()
+        table = self.ui.listComets
+        alignRight = Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
+        alignLeft = Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
+        alignCenter = Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
+        table.setUpdatesEnabled(False)
+        try:
+            table.setRowCount(0)
+            table.setRowCount(len(self.comets.objects))
+            for row, (name, mp) in enumerate(self.comets.objects.items()):
+                cells = {0: (f"{row:5d}", alignRight), 1: (name, alignLeft)}
+                if "Orbit_type" in mp:
+                    cells[2] = (mp["Orbit_type"], alignCenter)
+                if "Year_of_perihelion" in mp:
+                    y = mp["Year_of_perihelion"]
+                    m = mp["Month_of_perihelion"]
+                    d = mp["Day_of_perihelion"]
+                    cells[3] = (f"{y:4d}-{m:02d}-{d:02.0f}", alignCenter)
+                if "Perihelion_dist" in mp:
+                    cells[4] = (f"{mp['Perihelion_dist']:8.4f}", alignCenter)
+                if "e" in mp:
+                    cells[5] = (f"{mp['e']:8.4f}", alignCenter)
+                for column, (text, alignment) in cells.items():
+                    entry = QTableWidgetItem(text)
+                    entry.setTextAlignment(alignment)
+                    table.setItem(row, column, entry)
+        finally:
+            table.setUpdatesEnabled(True)
 
         self.comets.dataValid = True
         self.filterListComets()

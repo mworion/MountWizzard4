@@ -415,3 +415,14 @@ def test_roundtrip_play_sound_disabled(settAudio):
     settAudio.ui.AudioGroup.setChecked(True)
     settAudio.initConfig()
     assert not settAudio.ui.AudioGroup.isChecked()
+
+
+def test_storeConfig_keepsSectionOnError(settAudio):
+    sentinel = {"Volume": 0.5}
+    settAudio.app.config["SettingAudio"] = sentinel
+    with (
+        mock.patch.object(settAudio.ui.volume, "value", side_effect=RuntimeError),
+        pytest.raises(RuntimeError),
+    ):
+        settAudio.storeConfig()
+    assert settAudio.app.config["SettingAudio"] is sentinel

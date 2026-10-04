@@ -14,6 +14,7 @@
 #
 ###########################################################
 import logging
+from mw4.base.appProtocol import AppProtocol
 from mw4.gui.extWindows.setting.tabSettAudio import SettAudio
 from mw4.gui.extWindows.setting.tabSettDevice import SettDevice
 from mw4.gui.extWindows.setting.tabSettDome import SettDome
@@ -26,13 +27,12 @@ from mw4.gui.utilities.qtHelpers import getTabAndIndex, setTabAndIndex
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import setting_ui
 from PySide6.QtCore import QEvent
-from typing import Any
 
 
 class SettingWindow(MWidget):
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: Any, title: str) -> None:
+    def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__()
         self.app = app
         self.ui = setting_ui.Ui_SettingDialog()

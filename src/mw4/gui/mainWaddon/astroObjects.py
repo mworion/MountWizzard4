@@ -39,7 +39,7 @@ class AstroObjects:
         uiSourceList,
         uiSourceGroup,
         processSource,
-    ):
+    ) -> None:
         self.window = window
         self.app = window.app
         self.threadPool = window.app.threadPool

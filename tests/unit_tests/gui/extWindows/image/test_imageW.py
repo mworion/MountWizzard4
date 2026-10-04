@@ -14,6 +14,7 @@
 #
 ###########################################################
 import mw4.gui.extWindows.image.imageW
+import numpy as np
 import pyqtgraph as pg
 import pytest
 import shutil
@@ -38,6 +39,23 @@ def function(qapp):
         func = ImageWindow(App(), title="Image")
         yield func
         QApplication.processEvents()
+
+
+@pytest.fixture(autouse=True)
+def prepareFunctionState(function):
+    function.fileHandler.image = np.ones((1, 1))
+    QApplication.processEvents()
+    function.app.dReg["camera"].stat = True
+    function.app.dReg["mount"].stat = True
+    function.app.dReg["plateSolve"].stat = True
+    function.isExposing = False
+    function.isSolving = False
+    function.ui.autoSolve.setChecked(False)
+    function.ui.continous.setChecked(False)
+    function.ui.photometryGroup.setChecked(False)
+    function.fileHandler.image = None
+    function.fileHandler.header = {}
+    function.imageFileName = Path("")
 
 
 def test_classVars_tabLists(function):
@@ -188,12 +206,12 @@ def test_setAspectLocked(function):
 
 
 def test_resultPhotometry_1(function):
-    function.photometry.objs = None
+    function.photometry.hfr = np.zeros(0)
     function.resultPhotometry()
 
 
 def test_resultPhotometry_2(function):
-    function.photometry.objs = 1
+    function.photometry.hfr = np.ones(20)
     function.resultPhotometry()
 
 
@@ -512,7 +530,19 @@ def test_abortExpose_fail(function):
         function.abortExpose()
 
 
+def test_setButtonExposingStatusEnabled_noCamera(function):
+    saved = function.app.dReg.d["camera"]
+    function.app.dReg.d["camera"] = None
+    try:
+        function.setButtonExposingStatusEnabled()
+        assert not function.ui.expose.isEnabled()
+        assert not function.ui.abortExpose.isEnabled()
+    finally:
+        function.app.dReg.d["camera"] = saved
+
+
 def test_setButtonExposingStatusEnabled_isExposing(function):
+    function.ui.groupImageActions.setEnabled(True)
     function.isExposing = True
     function.setButtonExposingStatusEnabled()
     assert not function.ui.load.isEnabled()
@@ -520,6 +550,7 @@ def test_setButtonExposingStatusEnabled_isExposing(function):
 
 
 def test_setButtonExposingStatusEnabled_notExposing(function):
+    function.ui.groupImageActions.setEnabled(True)
     function.isExposing = False
     function.setButtonExposingStatusEnabled()
     assert function.ui.expose.isEnabled()

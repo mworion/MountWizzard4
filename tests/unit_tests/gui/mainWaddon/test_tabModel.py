@@ -72,6 +72,21 @@ def test_cancelBatch_2(function):
     assert function.modelData.cancelBatch
 
 
+def test_shutdown_idle(function):
+    function.app.statusOperationRunning = function.STATUS_IDLE
+    with mock.patch.object(function, "cancelBatch") as cancel:
+        function.shutdown()
+    cancel.assert_not_called()
+
+
+def test_shutdown_modelRunning(function):
+    function.app.statusOperationRunning = function.STATUS_MODEL_BATCH
+    with mock.patch.object(function, "cancelBatch") as cancel:
+        function.shutdown()
+    cancel.assert_called_once_with()
+    function.app.statusOperationRunning = function.STATUS_IDLE
+
+
 def test_pauseBatch_1(function):
     function.modelData = None
     function.pauseBatch()
@@ -128,7 +143,7 @@ def test_pauseBuild_2(function):
 
 def test_programModelToMountFinish_1(function):
     function.modelData = ModelData(App)
-    function.modelData.name = "Test"
+    function.modelData.modelName = "Test"
     function.app.mount.signals.getModelDone.connect(function.programModelToMountFinish)
     with (
         mock.patch.object(function.modelData, "generateSaveData"),
@@ -139,7 +154,7 @@ def test_programModelToMountFinish_1(function):
 
 def test_programModelToMount_1(function):
     function.modelData = ModelData(App)
-    function.modelData.name = "Test"
+    function.modelData.modelName = "Test"
     function.modelData.modelProgData = []
     with mock.patch.object(
         function.app.mount.model, "programModelFromStarList", return_value=False
@@ -149,7 +164,7 @@ def test_programModelToMount_1(function):
 
 def test_programModelToMount_2(function):
     function.modelData = ModelData(App)
-    function.modelData.name = "Test"
+    function.modelData.modelName = "Test"
     function.modelData.modelProgData = [1, 2, 3]
     with mock.patch.object(
         function.app.mount.model, "programModelFromStarList", return_value=False
@@ -159,7 +174,7 @@ def test_programModelToMount_2(function):
 
 def test_programModelToMount_3(function):
     function.modelData = ModelData(App)
-    function.modelData.name = "Test"
+    function.modelData.modelName = "Test"
 
     function.modelData.modelProgData = [1, 2, 3]
     with (
@@ -192,7 +207,7 @@ def test_checkMountTimeSync_3(function):
 
 
 def test_checkModelRunConditions_1(function):
-    function.app.data.buildP = [(0, 0, 1)]
+    function.app.buildPoint.buildP = [(0, 0, 1)]
     suc = function.checkModelRunConditions()
     assert not suc
 
@@ -210,39 +225,47 @@ def test_checkModelRunConditions_4(function):
 
 
 def test_clearAlignAndBackup_1(function):
+    continuation = mock.MagicMock()
     with mock.patch.object(function.app.mount.model, "clearModel", return_value=False):
-        suc = function.clearAlignAndBackup()
-        assert not suc
+        suc = function.clearAlignAndBackup(continuation)
+    assert not suc
+    continuation.assert_not_called()
 
 
-def test_clearAlignAndBackup_2(function):
+def test_clearAlignAndBackup_2(function, qtbot):
+    continuation = mock.MagicMock()
     with (
         mock.patch.object(function.app.mount.model, "clearModel", return_value=True),
+        mock.patch.object(function, "CLEAR_WAIT_MS", 0),
+        mock.patch.object(function, "backupAfterClear") as mockBackup,
+    ):
+        suc = function.clearAlignAndBackup(continuation)
+        assert suc
+        mockBackup.assert_not_called()
+        qtbot.waitUntil(lambda: mockBackup.called, timeout=1000)
+    mockBackup.assert_called_once_with(continuation)
+
+
+def test_backupAfterClear_1(function):
+    continuation = mock.MagicMock()
+    with (
         mock.patch.object(function.app.mount.model, "storeName", return_value=False),
-        mock.patch.object(mw4.gui.mainWaddon.tabModel, "mainThreadSleep"),
+        mock.patch.object(function, "msg") as mockMsg,
     ):
-        suc = function.clearAlignAndBackup()
-        assert suc
+        function.backupAfterClear(continuation)
+    continuation.assert_called_once()
+    assert mockMsg.emit.call_args_list[-1][0][0] == 2
 
 
-def test_clearAlignAndBackup_3(function):
+def test_backupAfterClear_2(function):
+    continuation = mock.MagicMock()
     with (
-        mock.patch.object(function.app.mount.model, "clearModel", return_value=True),
         mock.patch.object(function.app.mount.model, "storeName", return_value=True),
-        mock.patch.object(mw4.gui.mainWaddon.tabModel, "mainThreadSleep"),
+        mock.patch.object(function, "msg") as mockMsg,
     ):
-        suc = function.clearAlignAndBackup()
-        assert suc
-
-
-def test_clearAlignAndBackup_4(function):
-    with (
-        mock.patch.object(function.app.mount.model, "clearModel", return_value=True),
-        mock.patch.object(function.app.mount.model, "storeName", return_value=True),
-        mock.patch.object(mw4.gui.mainWaddon.tabModel, "mainThreadSleep"),
-    ):
-        suc = function.clearAlignAndBackup()
-        assert suc
+        function.backupAfterClear(continuation)
+    continuation.assert_called_once()
+    assert mockMsg.emit.call_count == 1
 
 
 def test_setupFilenamesAndDirectories_1(function):
@@ -299,7 +322,8 @@ def test_showStatusSolve_2(function):
 
 
 def test_setupModelInputData_1(function):
-    function.app.data.buildP = [[0, 0, 1], [0, 0, 1], [0, 0, 1]]
+    function.modelData = ModelData(function.app)
+    function.app.buildPoint.buildP = [[0, 0, 1], [0, 0, 1], [0, 0, 1]]
     function.setupModelInputData()
 
 
@@ -313,21 +337,21 @@ def test_setModelTiming_1(function):
     function.modelData = ModelData(App())
     function.ui.progressiveTiming.setChecked(True)
     function.setModelTiming()
-    assert function.modelData.timing == function.modelData.PROGRESSIVE
+    assert function.modelData.modelTiming == function.modelData.PROGRESSIVE
 
 
 def test_setModelTiming_2(function):
     function.modelData = ModelData(App())
     function.ui.normalTiming.setChecked(True)
     function.setModelTiming()
-    assert function.modelData.timing == function.modelData.NORMAL
+    assert function.modelData.modelTiming == function.modelData.NORMAL
 
 
 def test_setModelTiming_3(function):
     function.modelData = ModelData(App())
     function.ui.conservativeTiming.setChecked(True)
     function.setModelTiming()
-    assert function.modelData.timing == function.modelData.CONSERVATIVE
+    assert function.modelData.modelTiming == function.modelData.CONSERVATIVE
 
 
 def test_runBatch_1(function):
@@ -344,69 +368,106 @@ def test_runBatch_2(function):
 
 
 def test_runBatch_3(function):
+    function.modelData = ModelData(function.app)
     with (
         mock.patch.object(function, "checkModelRunConditions", return_value=True),
         mock.patch.object(function, "checkMountTimeSync", return_value=True),
         mock.patch.object(function, "clearAlignAndBackup", return_value=False),
+        mock.patch.object(function.app, "operationRunning") as mockOp,
     ):
         function.runBatch()
+    assert mockOp.emit.call_args_list[-1][0][0] == function.STATUS_IDLE
 
 
 def test_runBatch_4(function):
-    with (
-        mock.patch.object(function, "checkModelRunConditions", return_value=True),
-        mock.patch.object(function, "checkMountTimeSync", return_value=True),
-        mock.patch.object(function, "clearAlignAndBackup", return_value=True),
-        mock.patch.object(function, "setupModelInputData"),
-        mock.patch.object(function.modelData, "runModel"),
-        mock.patch.object(function, "programModelToMount"),
-    ):
-        function.runBatch()
-
-
-def test_runBatch_5(function):
+    function.modelData = ModelData(function.app)
     function.modelData.cancelBatch = True
     with (
         mock.patch.object(function, "checkModelRunConditions", return_value=True),
         mock.patch.object(function, "checkMountTimeSync", return_value=True),
-        mock.patch.object(function, "clearAlignAndBackup", return_value=True),
-        mock.patch.object(function, "setupModelInputData"),
-        mock.patch.object(function.modelData, "runModel"),
-        mock.patch.object(function, "programModelToMount"),
+        mock.patch.object(function, "clearAlignAndBackup", return_value=True) as mockClear,
+        mock.patch.object(function.modelData, "runModel") as mockRun,
     ):
         function.runBatch()
+    assert not function.modelData.cancelBatch
+    mockClear.assert_called_once_with(function.startBatch)
+    mockRun.assert_not_called()
 
 
-def test_runBatch_6(function):
-    function.ui.parkMountAfterModel.setChecked(True)
-    function.modelData.cancelBatch = False
+def test_startBatch_1(function):
+    function.modelData = ModelData(function.app)
     with (
-        mock.patch.object(function, "checkModelRunConditions", return_value=True),
-        mock.patch.object(function, "checkMountTimeSync", return_value=True),
-        mock.patch.object(function, "clearAlignAndBackup", return_value=True),
+        mock.patch.object(function, "setModelTiming"),
+        mock.patch.object(function, "setupBatchData"),
         mock.patch.object(function, "setupModelInputData"),
-        mock.patch.object(function.modelData, "runModel"),
-        mock.patch.object(function, "programModelToMount"),
-        mock.patch.object(function.app.dReg["mount"].obsSite, "park"),
+        mock.patch.object(function.modelData, "runModel") as mockRun,
     ):
-        function.runBatch()
-        function.app.dReg["mount"].obsSite.park.assert_called_once()
+        function.startBatch()
+    mockRun.assert_called_once()
 
 
-def test_runBatch_7(function):
+def test_finishBatch_1(function):
     function.ui.parkMountAfterModel.setChecked(False)
-    function.modelData.cancelBatch = False
     with (
-        mock.patch.object(function, "checkModelRunConditions", return_value=True),
-        mock.patch.object(function, "checkMountTimeSync", return_value=True),
-        mock.patch.object(function, "clearAlignAndBackup", return_value=True),
-        mock.patch.object(function, "setupModelInputData"),
-        mock.patch.object(function.modelData, "runModel"),
-        mock.patch.object(function, "programModelToMount"),
-        mock.patch.object(function.app.dReg["mount"].obsSite, "park"),
+        mock.patch.object(function, "programModelToMount") as mockProgram,
+        mock.patch.object(function.app.dReg["mount"].obsSite, "park") as mockPark,
+        mock.patch.object(function, "msg") as mockMsg,
+        mock.patch.object(function.app, "playSound") as mockSound,
+        mock.patch.object(function.app, "operationRunning") as mockOp,
     ):
-        function.runBatch()
-        function.app.dReg["mount"].obsSite.park.assert_not_called()
+        function.finishBatch(True)
+    mockProgram.assert_not_called()
+    mockPark.assert_not_called()
+    assert "cancelled" in mockMsg.emit.call_args_list[0][0][3]
+    mockSound.emit.assert_called_once_with("RunFinished")
+    mockOp.emit.assert_called_once_with(function.STATUS_IDLE)
+
+
+def test_finishBatch_2(function):
+    function.ui.parkMountAfterModel.setChecked(True)
+    with (
+        mock.patch.object(function, "programModelToMount") as mockProgram,
+        mock.patch.object(function.app.dReg["mount"].obsSite, "park") as mockPark,
+        mock.patch.object(function, "msg") as mockMsg,
+        mock.patch.object(function.app, "playSound") as mockSound,
+        mock.patch.object(function.app, "operationRunning") as mockOp,
+    ):
+        function.finishBatch(False)
+    mockProgram.assert_called_once()
+    mockPark.assert_called_once()
+    assert "Park mount after model build" in mockMsg.emit.call_args_list[-1][0][3]
+    mockSound.emit.assert_called_once_with("RunFinished")
+    mockOp.emit.assert_called_once_with(function.STATUS_IDLE)
+    function.ui.parkMountAfterModel.setChecked(False)
+
+
+def test_finishBatch_3(function):
+    function.ui.parkMountAfterModel.setChecked(False)
+    with (
+        mock.patch.object(function, "programModelToMount") as mockProgram,
+        mock.patch.object(function.app.dReg["mount"].obsSite, "park") as mockPark,
+        mock.patch.object(function.app, "playSound") as mockSound,
+        mock.patch.object(function.app, "operationRunning") as mockOp,
+    ):
+        function.finishBatch(False)
+    mockProgram.assert_called_once()
+    mockPark.assert_not_called()
+    mockSound.emit.assert_called_once_with("RunFinished")
+    mockOp.emit.assert_called_once_with(function.STATUS_IDLE)
+
+
+def test_finishBatch_connectedToModelData(function):
+    function.modelData = ModelData(function.app)
+    function.modelData.finished.connect(function.finishBatch)
+    with (
+        mock.patch.object(function, "programModelToMount") as mockProgram,
+        mock.patch.object(function.app, "playSound") as mockSound,
+        mock.patch.object(function.app, "operationRunning") as mockOp,
+    ):
+        function.modelData.finished.emit(False)
+    mockProgram.assert_called_once()
+    mockSound.emit.assert_called_once_with("RunFinished")
+    mockOp.emit.assert_called_once_with(function.STATUS_IDLE)
 
 
 def test_runFileModel_1(function):
@@ -415,51 +476,24 @@ def test_runFileModel_1(function):
 
 
 def test_runFileModel_2(function):
-    model = [
-        {
-            "altitude": 44.556745182012854,
-            "azimuth": 37.194805194805184,
-            "binning": 1.0,
-            "countSequence": 0,
-            "decJNowS": Angle(degrees=64.3246),
-            "decJNowM": Angle(degrees=64.32841185357267),
-            "errorDEC": -229.0210134131381,
-            "errorRMS": 237.1,
-            "errorRA": -61.36599559380768,
-            "exposureTime": 3.0,
-            "fastReadout": True,
-            "julianDate": "2019-06-08T08:57:57Z",
-            "name": "m-file-2019-06-08-08-57-44",
-            "lenSequence": 3,
-            "imagePath": "/Users/mw/PycharmProjects/MountWizzard4/image/m-file-2019-06-08-08"
-            "-57-44/image-000.fits",
-            "pierside": "W",
-            "raJNowS": Angle(hours=8.42882),
-            "raJNowM": Angle(hours=8.427692953132278),
-            "siderealTime": Angle(hours=12.5),
-            "subFrame": 100.0,
-            "success": False,
-        },
-    ]
-
-    val = (model, "Error")
     function.modelData = ModelData(App)
     with (
         mock.patch.object(MWFileDialog, "getOpenFileNames", return_value=[Path("test.model")]),
-        mock.patch.object(function, "clearAlignAndBackup", return_value=True),
-        mock.patch.object(function.modelData, "buildProgModel"),
-        mock.patch.object(mw4.gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=val),
-        mock.patch.object(function.modelData, "buildProgModel"),
-        mock.patch.object(function, "programModelToMount"),
+        mock.patch.object(function, "clearAlignAndBackup", return_value=True) as mockClear,
+        mock.patch.object(function, "programFileModel") as mockProgram,
     ):
         function.runFileModel()
-        assert function.modelData.name == "test"
+    assert function.modelData.modelName == "test"
+    mockClear.assert_called_once()
+    mockProgram.assert_not_called()
+    continuation = mockClear.call_args[0][0]
+    continuation()
+    mockProgram.assert_called_once_with([Path("test.model")])
 
 
 def test_runFileModel_3(function):
     function.modelData = ModelData(App)
-    function.modelData.name = "Test"
-
+    function.modelData.modelName = "Test"
     files = [Path("test1.model"), Path("test2.model")]
     with (
         mock.patch.object(function, "clearAlignAndBackup", return_value=True),
@@ -467,19 +501,14 @@ def test_runFileModel_3(function):
         mock.patch.object(
             function, "setupFilenamesAndDirectories", return_value=Path("m-test1-add")
         ),
-        mock.patch.object(
-            mw4.gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=([], "")
-        ),
-        mock.patch.object(function.modelData, "buildProgModel"),
-        mock.patch.object(function, "programModelToMount"),
     ):
         function.runFileModel()
-        assert function.modelData.name == Path("m-test1-add")
+    assert function.modelData.modelName == "m-test1-add"
 
 
 def test_runFileModel_4(function):
     function.modelData = ModelData(App)
-    function.modelData.name = "Test"
+    function.modelData.modelName = "Test"
     files = [Path("test1.model"), Path("test2.model")]
     with (
         mock.patch.object(function, "clearAlignAndBackup", return_value=False),
@@ -487,5 +516,36 @@ def test_runFileModel_4(function):
         mock.patch.object(
             function, "setupFilenamesAndDirectories", return_value=Path("m-test1-add")
         ),
+        mock.patch.object(function.app, "operationRunning") as mockOp,
     ):
         function.runFileModel()
+    assert mockOp.emit.call_args_list[-1][0][0] == function.STATUS_IDLE
+
+
+def test_programFileModel_1(function):
+    model = [{"success": True}]
+    function.modelData = ModelData(App)
+    with (
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=(model, "")
+        ),
+        mock.patch.object(function.modelData, "buildProgModel"),
+        mock.patch.object(function, "programModelToMount") as mockProgram,
+    ):
+        function.programFileModel([Path("test.model")])
+    mockProgram.assert_called_once()
+
+
+def test_programFileModel_2(function):
+    function.modelData = ModelData(App)
+    with (
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=([], "Error")
+        ),
+        mock.patch.object(function.modelData, "buildProgModel"),
+        mock.patch.object(function, "programModelToMount") as mockProgram,
+        mock.patch.object(function, "msg") as mockMsg,
+    ):
+        function.programFileModel([Path("test.model")])
+    mockProgram.assert_not_called()
+    mockMsg.emit.assert_called_once_with(3, "Model", "Run error", "Error")

@@ -18,6 +18,7 @@ import numpy as np
 import platform
 import PySide6
 from collections.abc import Callable
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
 from mw4.base.transform import diffModulusAbs
 from mw4.logic.dome.domeAlpaca import DomeAlpaca
@@ -32,7 +33,7 @@ class Dome:
     log = logging.getLogger("MW4")
     DEVICE_TYPE: str = "dome"
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()
@@ -146,7 +147,9 @@ class Dome:
         return A, B, C
 
     @staticmethod
-    def targetInDomeShutter(A, B, C, M) -> bool:
+    def targetInDomeShutter(
+        A: np.ndarray, B: np.ndarray, C: np.ndarray, M: np.ndarray
+    ) -> bool:
         """
         Based on the maths presented on:
             https://stackoverflow.com/questions/2752725/
@@ -158,7 +161,7 @@ class Dome:
         :return:
         """
         checkAB = 0 <= np.dot(B - A, M - A) <= np.dot(B - A, B - A)
-        checkBC = 0 <= np.dot(C - B, M - A) <= np.dot(C - B, C - B)
+        checkBC = 0 <= np.dot(C - B, M - B) <= np.dot(C - B, C - B)
         result = checkAB and checkBC
         return result
 
@@ -169,7 +172,7 @@ class Dome:
         :return:
         """
         if not self.checkTargetConditions():
-            self.log.info("Target conditions not mez, slewing anyway")
+            self.log.info("Target conditions not met, slewing anyway")
             return True
 
         azimuth = self.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION", 0)
@@ -179,25 +182,22 @@ class Dome:
         self.log.debug(f"Slew needed: [{slewNeeded}]")
         return slewNeeded
 
-    def calcSlewTarget(self, altitude: float, azimuth: float, func: Callable) -> tuple:
-        if self.useGeometry:
-            alt, az, intersect, _, _ = func()
+    def calcSlewTarget(
+        self, altitude: float, azimuth: float, func: Callable
+    ) -> tuple[float, float, float | None, float | None]:
+        """
+        x and y are the intersection with the dome shutter plane. They are None
+        without geometry or on a geometry error, checkSlewNeeded needs both.
+        """
+        if not self.useGeometry:
+            return altitude, azimuth, None, None
 
-            if alt is None or az is None:
-                self.log.info(f"Geometry error, alt:{altitude}, az:{azimuth}")
-                alt = altitude
-                az = azimuth
-            else:
-                alt = alt.degrees
-                az = az.degrees
-        else:
-            alt = altitude
-            az = azimuth
-            intersect = [None, None, None]
+        alt, az, intersect, _, _ = func()
+        if alt is None or az is None or intersect is None:
+            self.log.info(f"Geometry error, alt:{altitude}, az:{azimuth}")
+            return altitude, azimuth, None, None
 
-        x = intersect[0]
-        y = intersect[1]
-        return alt, az, x, y
+        return alt.degrees, az.degrees, intersect[0], intersect[1]
 
     def calcOvershoot(self, az: float) -> float:
         if not self.overshoot:
@@ -235,7 +235,7 @@ class Dome:
             self.log.debug("Use old overshoot value")
 
         self.log.debug(f"Overshoot value: [{self.lastFinalAz}]")
-        return finalAz
+        return self.lastFinalAz
 
     def slewDome(self, altitude: float = 0, azimuth: float = 0, follow: bool = False) -> float:
         mount = self.app.dReg["mount"].instance

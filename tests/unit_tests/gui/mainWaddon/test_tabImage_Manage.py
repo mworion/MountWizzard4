@@ -33,6 +33,13 @@ def function(qapp):
     mainW.app.threadPool.waitForDone(1000)
 
 
+@pytest.fixture(autouse=True)
+def resetDeviceData(function):
+    for deviceName in ("camera", "filter", "cover", "lightPanel", "dome", "focuser"):
+        function.app.dReg.d[deviceName].instance.data = {}
+    function.app.dReg.d["dome"].stat = False
+
+
 def test_initConfig_1(function):
     function.initConfig()
 
@@ -362,7 +369,9 @@ def test_setGain_5(function):
 
 
 def test_setFilterNumber_1(function):
-    function.setFilterNumber()
+    function.app.dReg.d["filter"].instance.data["FILTER_SLOT.FILTER_SLOT_VALUE"] = None
+    with mock.patch.object(MWInputDialog, "getInt", return_value=(1, False)):
+        function.setFilterNumber()
 
 
 def test_setFilterNumber_2(function):

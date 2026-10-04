@@ -14,6 +14,7 @@
 #
 ###########################################################
 import logging
+from mw4.base.appProtocol import AppProtocol
 from mw4.gui.extWindows.simulator.buildPoints import SimulatorBuildPoints
 from mw4.gui.extWindows.simulator.dome import SimulatorDome
 from mw4.gui.extWindows.simulator.horizon import SimulatorHorizon
@@ -31,13 +32,12 @@ from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.Qt3DRender import Qt3DRender
 from PySide6.QtGui import QVector3D
 from PySide6.QtWidgets import QWidget
-from typing import Any
 
 
 class SimulatorWindow(MWidget):
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: Any, title: str) -> None:
+    def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__()
         self.app = app
         self.ui = simulator_ui.Ui_SimulatorDialog()

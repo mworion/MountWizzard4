@@ -11,7 +11,7 @@ weather, and satellite workflows.
 
 | Area              | Technology                                |
 |-------------------|-------------------------------------------|
-| Language          | Python 3.11 compatible                    |
+| Language          | Python 3.12–3.14 (`requires-python` in pyproject.toml) |
 | GUI               | PySide6 (Qt6), PyQtGraph                  |
 | Astronomy         | Astropy, Skyfield, SGP4, SEP, PyERFA      |
 | Data Processing   | NumPy, SciPy, OpenCV (headless)           |
@@ -107,7 +107,7 @@ def test_myFunction(app):
 - Ruff will be used as formatter and linter when finished. All findings will
   be resolved.
 - As the last step before completion, the overall package will be tested.
-- Python 3.11 language features should be used.
+- Python 3.12 language features should be used (minimum of `requires-python`).
 - There is a clear separation between business logic in `src/mw4/logic` and
   the GUI in `src/mw4/gui`.
 - For the GUI, PySide6 is used.

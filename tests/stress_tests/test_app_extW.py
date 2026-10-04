@@ -18,10 +18,10 @@ import glob
 import os
 import pytest
 from mw4.base.bootstrap import extractDataFiles
-from mw4.base.threadUtils import mainThreadSleep
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from PySide6.QtCore import Qt, QThreadPool
+from PySide6.QtTest import QTest
 
 mwglob = {
     "dataDir": Path("tests/work/assets"),
@@ -122,7 +122,7 @@ def test_2(qtbot, qapp):
         app.mainW.externalWindows.uiWindows["showAnalyseW"]["classObj"], timeout=1000
     )
 
-    mainThreadSleep(1000)
+    QTest.qWait(1000)
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
         pass
 
@@ -137,7 +137,7 @@ def test_3(qtbot, qapp):
         app.mainW.externalWindows.uiWindows["showHemisphereW"]["classObj"], timeout=1000
     )
 
-    mainThreadSleep(1000)
+    QTest.qWait(1000)
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
         pass
 
@@ -152,7 +152,7 @@ def test_4(qtbot, qapp):
         app.mainW.externalWindows.uiWindows["showImageW"]["classObj"], timeout=1000
     )
 
-    mainThreadSleep(1000)
+    QTest.qWait(1000)
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
         pass
 
@@ -167,7 +167,7 @@ def test_5(qtbot, qapp):
         app.mainW.externalWindows.uiWindows["showKeypadW"]["classObj"], timeout=1000
     )
 
-    mainThreadSleep(1000)
+    QTest.qWait(1000)
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
         pass
 
@@ -182,7 +182,7 @@ def test_6(qtbot, qapp):
         app.mainW.externalWindows.uiWindows["showMeasureW"]["classObj"], timeout=1000
     )
 
-    mainThreadSleep(1000)
+    QTest.qWait(1000)
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
         pass
 
@@ -197,7 +197,7 @@ def test_7(qtbot, qapp):
         app.mainW.externalWindows.uiWindows["showMessageW"]["classObj"], timeout=1000
     )
 
-    mainThreadSleep(1000)
+    QTest.qWait(1000)
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
         pass
 
@@ -213,6 +213,6 @@ def test_8(qtbot, qapp):
         timeout=1000,
     )
 
-    mainThreadSleep(1000)
+    QTest.qWait(1000)
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
         pass

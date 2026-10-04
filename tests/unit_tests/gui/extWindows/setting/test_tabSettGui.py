@@ -64,6 +64,26 @@ def settGui(qapp):
     parentW.app.threadPool.waitForDone(1000)
 
 
+@pytest.fixture(autouse=True)
+def prepareSettGuiState(settGui):
+    cfg = settGui.app.dReg["hidController"].instance.config
+    cfg.dome = False
+    cfg.moveAltAz = True
+    cfg.moveRaDec = False
+    cfg.tracking = True
+    cfg.parkStop = True
+    settGui.app.config["SettingGui"] = {}
+    settGui.ui.colorSet.setCurrentIndex(0)
+    settGui.ui.hidDome.setChecked(False)
+    settGui.ui.hidAltAz.setChecked(True)
+    settGui.ui.hidRaDec.setChecked(False)
+    settGui.ui.hidTracking.setChecked(True)
+    settGui.ui.hidParkStop.setChecked(True)
+    settGui.ui.writeLinuxConfig.setEnabled(True)
+    settGui.ui.writeWindowsConfig.setEnabled(True)
+    settGui.ui.writeMacOsConfig.setEnabled(True)
+
+
 def test_initConfig_with_defaults(settGui):
     """Test initConfig loads default values."""
     settGui.app.config["SettingGui"] = {}
@@ -333,3 +353,14 @@ def test_runMacOsConfig(settGui):
         mock_file.assert_called()
         mock_executable_path.chmod.assert_called_with(0o755)
         mock_app_dir.chmod.assert_called_with(0o755)
+
+
+def test_storeConfig_keepsSectionOnError(settGui):
+    sentinel = {"colorSet": 1}
+    settGui.app.config["SettingGui"] = sentinel
+    with (
+        mock.patch.object(settGui.ui.dpi, "value", side_effect=RuntimeError),
+        pytest.raises(RuntimeError),
+    ):
+        settGui.storeConfig()
+    assert settGui.app.config["SettingGui"] is sentinel

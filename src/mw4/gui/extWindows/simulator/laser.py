@@ -14,6 +14,7 @@
 #
 ###########################################################
 import numpy as np
+from mw4.base.appProtocol import AppProtocol
 from mw4.gui.extWindows.simulator.materials import Materials
 from mw4.gui.extWindows.simulator.tools import linkModel
 from PySide6.QtGui import QVector3D
@@ -22,19 +23,19 @@ from typing import Any
 
 
 class SimulatorLaser:
-    def __init__(self, parent: Any, app: Any) -> None:
+    def __init__(self, parent: Any, app: AppProtocol) -> None:
         super().__init__()
         self.parent = parent
         self.app = app
         self.parent.ui.showLaser.checkStateChanged.connect(self.showEnable)
 
-    def showEnable(self):
+    def showEnable(self) -> None:
         isVisible = self.parent.ui.showLaser.isChecked()
         node = self.parent.entityModel.get("laserRoot")
         if node:
             node["entity"].setEnabled(isVisible)
 
-    def updatePositions(self):
+    def updatePositions(self) -> None:
         if not self.app.dReg["mount"].stat:
             return
 
@@ -61,7 +62,7 @@ class SimulatorLaser:
         if node:
             node["trans"].setRotationX(-alt)
 
-    def create(self):
+    def create(self) -> None:
         model = {
             "laserRoot": {
                 "parent": "ref_fusion_m",

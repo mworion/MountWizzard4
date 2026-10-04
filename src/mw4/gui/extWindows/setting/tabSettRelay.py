@@ -40,11 +40,11 @@ class SettRelay:
         self.app.relayChanged.emit()
 
     def storeConfig(self) -> None:
-        self.app.config["SettingRelay"] = {}
-        config = self.app.config["SettingRelay"]
+        config: dict[str, Any] = {}
         for i in range(8):
             config[f"RelayText{i:1d}"] = self.relayButtonTexts[i].text()
             config[f"Action{i:1d}"] = self.relayDropDowns[i].currentIndex()
+        self.app.config["SettingRelay"] = config
         self.app.relayChanged.emit()
 
     def setupRelayGui(self) -> None:

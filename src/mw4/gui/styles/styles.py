@@ -67,7 +67,7 @@ class Styles:
     def colorMapStyle(self) -> list[Any]:
         return self.generateCMaps()
 
-    def __init__(self):
+    def __init__(self) -> None:
         with as_file(files("mw4").joinpath("assets/icon/mw4.ico")) as icon:
             self.mwIcon = QIcon(str(icon))
 
@@ -152,7 +152,7 @@ class Styles:
         rgba_colors = rgba_colors * 255
         return pg.ColorMap(pos, rgba_colors.astype(np.uint8))
 
-    def generateCMaps(self):
+    def generateCMaps(self) -> list[pg.ColorMap]:
         colorMaps = [self.generateCmapGYR()]
         for cMapString in self.COLOR_MAPS_STRINGS:
             colorMaps.append(self.convertColorMap2Alpha(cMapString))

@@ -14,9 +14,7 @@
 #
 ###########################################################
 import numpy as np
-import os
 import pytest
-import shutil
 from astropy.io import fits
 from mw4.gui.mainWaddon.tabTools_Rename import Rename
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
@@ -42,6 +40,7 @@ def function(qapp):
 def resetState(function):
     # chooseDir tests leave renameDir as a tuple; reset to a Path before each test.
     function.renameDir = Path("tests/work/image")
+    function.workerRenameFiles = None
     yield
 
 
@@ -62,24 +61,6 @@ def test_setupGuiTools(function):
     function.setupGuiTools()
     for ui in function.selectorsDropDowns.values():
         assert ui.count() == 7
-
-
-def test_getNumberFiles_1(function):
-    function.renameDir = Path("tests/testData")
-    number = function.getNumberFiles("**/*.fit*")
-    assert number > 0
-
-
-def test_getNumberFiles_2(function):
-    function.renameDir = Path("tests/testData")
-    number = function.getNumberFiles("**/star*.fit*")
-    assert number == 3
-
-
-def test_getNumberFiles_3(function):
-    function.renameDir = Path("tests/testData")
-    number = function.getNumberFiles("star*.fit*")
-    assert number == 3
 
 
 def test_convertHeaderEntry_1(function):
@@ -173,74 +154,131 @@ def test_processSelectors_imagetyp(function):
     assert name == "Light Frame"
 
 
-def test_renameFile_1(function):
-    function.renameDir = Path("tests/work/image")
+def writeFits(fileName: Path, header: dict) -> Path:
     hdu = fits.PrimaryHDU(np.arange(100.0))
-    hduList = fits.HDUList([hdu])
-    hduList.writeto(Path("tests/work/image/m01.fit"), overwrite=True)
-    with mock.patch.object(Path, "rename"):
-        function.renameFile(Path("tests/work/image/m01.fit"))
+    for key, value in header.items():
+        hdu.header[key] = value
+    fits.HDUList([hdu]).writeto(fileName, overwrite=True)
+    return fileName
+
+
+def test_renameFile_1(function):
+    fileName = writeFits(Path("tests/work/image/m01.fit"), {})
+    with mock.patch.object(Path, "rename") as mockRename:
+        function.renameFile(fileName, Path("tests/work/image"), "", ["None"])
+    mockRename.assert_called_once_with(Path("tests/work/image/UNKNOWN.fits"))
 
 
 def test_renameFile_2(function):
-    function.renameDir = Path("tests/work/image")
-    hdu = fits.PrimaryHDU(np.arange(100.0))
-    hduList = fits.HDUList([hdu])
-    hduList.writeto(Path("tests/work/image/m02.fit"), overwrite=True)
-
-    with mock.patch.object(Path, "rename"):
-        function.renameFile(Path("tests/work/image/m02.fit"))
+    fileName = writeFits(Path("tests/work/image/m02.fit"), {"OBJECT": "m51"})
+    with mock.patch.object(Path, "rename") as mockRename:
+        function.renameFile(fileName, Path("tests/work/image"), "", ["None"])
+    mockRename.assert_called_once_with(Path("tests/work/image/M51.fits"))
 
 
 def test_renameFile_3(function):
-    function.renameDir = Path("tests/work/image")
-    hdu = fits.PrimaryHDU(np.arange(100.0))
-    hduList = fits.HDUList([hdu])
-    function.ui.newObjectName.setText("test")
-    hduList.writeto(Path("tests/work/image/m03.fit"), overwrite=True)
-
-    with mock.patch.object(Path, "rename"):
-        function.renameFile(Path("tests/work/image/m03.fit"))
+    fileName = writeFits(Path("tests/work/image/m03.fit"), {"OBJECT": "m51"})
+    with mock.patch.object(Path, "rename") as mockRename:
+        function.renameFile(fileName, Path("tests/work/image"), "TEST", ["None"])
+    mockRename.assert_called_once_with(Path("tests/work/image/TEST.fits"))
 
 
 def test_renameFile_4(function):
-    hdu = fits.PrimaryHDU(np.arange(100.0))
-    hdu.header["FILTER"] = "test"
-    hduList = fits.HDUList([hdu])
-    hduList.writeto(Path("tests/work/image/m04.fit"), overwrite=True)
-    function.ui.rename1.clear()
-    function.ui.rename1.addItem("Filter")
+    fileName = writeFits(Path("tests/work/image/m04.fit"), {"FILTER": "red", "EXPTIME": 30})
+    with mock.patch.object(Path, "rename") as mockRename:
+        function.renameFile(
+            fileName, Path("tests/work/image"), "TEST", ["Filter", "None", "Exp Time"]
+        )
+    mockRename.assert_called_once_with(Path("tests/work/image/TEST_red_Exp30s.fits"))
 
-    with mock.patch.object(os, "rename"):
-        function.renameFile(Path("tests/work/image/m04.fit"))
+
+def test_runnerRenameFiles_1(function):
+    files = [Path("a.fit"), Path("b.fit")]
+    with (
+        mock.patch.object(function, "renameFile") as mockRename,
+        mock.patch.object(function.signals, "progress") as mockProgress,
+    ):
+        number = function.runnerRenameFiles(files, Path("tests/work/image"), "", ["None"])
+    assert number == 2
+    assert mockRename.call_count == 2
+    assert [c.args[0] for c in mockProgress.emit.call_args_list] == [50, 100]
+
+
+def test_renameFinished_1(function):
+    with mock.patch.object(function, "msg") as mockMsg:
+        function.renameFinished(3)
+    mockMsg.emit.assert_called_once_with(0, "Tools", "Rename", "3 images were renamed")
+
+
+def test_renameEnableGUI_1(function):
+    function.ui.renameStart.setEnabled(False)
+    function.renameEnableGUI()
+    assert function.ui.renameStart.isEnabled()
 
 
 def test_renameRunGUI_1(function):
     function.renameDir = Path("tests/work/xxx")
     function.ui.includeSubdirs.setChecked(False)
-    function.renameRunGUI()
+    with (
+        mock.patch.object(function, "msg") as mockMsg,
+        mock.patch("mw4.gui.mainWaddon.tabTools_Rename.startWorker") as mockStart,
+    ):
+        function.renameRunGUI()
+    assert mockMsg.emit.call_args.args[3] == "No valid input directory given"
+    mockStart.assert_not_called()
 
 
 def test_renameRunGUI_2(function):
     function.ui.includeSubdirs.setChecked(True)
-    function.renameDir = Path("tests/work/image")
-    with mock.patch.object(function, "getNumberFiles", return_value=0):
+    with (
+        mock.patch.object(Path, "glob", return_value=iter([])),
+        mock.patch.object(function, "msg") as mockMsg,
+        mock.patch("mw4.gui.mainWaddon.tabTools_Rename.startWorker") as mockStart,
+    ):
         function.renameRunGUI()
+    assert mockMsg.emit.call_args.args[3] == "No files to rename"
+    mockStart.assert_not_called()
 
 
 def test_renameRunGUI_3(function):
-    shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
-    function.renameDir = Path("tests/work/image")
+    files = [Path("tests/work/image/m51.fit")]
     function.ui.includeSubdirs.setChecked(False)
-    with mock.patch.object(function, "renameFile"):
+    function.ui.newObjectName.setText("test")
+    function.ui.rename1.clear()
+    function.ui.rename1.addItem("Filter")
+    function.ui.renameStart.setEnabled(True)
+    with (
+        mock.patch.object(Path, "glob", return_value=iter(files)) as mockGlob,
+        mock.patch("mw4.gui.mainWaddon.tabTools_Rename.startWorker") as mockStart,
+    ):
         function.renameRunGUI()
+    mockGlob.assert_called_once_with("*.fit*")
+    assert not function.ui.renameStart.isEnabled()
+    args = mockStart.call_args.args
+    assert args[2] == function.runnerRenameFiles
+    assert args[3] == files
+    assert args[4] == Path("tests/work/image")
+    assert args[5] == "TEST"
+    assert args[6][0] == "Filter"
+    assert len(args[6]) == 6
+    function.ui.renameStart.setEnabled(True)
 
 
-def test_renameRunGUI_4(function):
-    shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
-    function.renameDir = Path("tests/work/image")
-    with mock.patch.object(function, "renameFile"):
+def test_renameRunGUI_4(function, qtbot):
+    fileName = writeFits(Path("tests/work/image/r1.fit"), {"OBJECT": "m51"})
+    function.ui.includeSubdirs.setChecked(False)
+    function.ui.newObjectName.setText("")
+    function.ui.renameProgress.setValue(0)
+    with (
+        mock.patch.object(Path, "glob", return_value=iter([fileName])),
+        mock.patch.object(Path, "rename") as mockRename,
+        mock.patch.object(function, "msg") as mockMsg,
+    ):
         function.renameRunGUI()
+        qtbot.waitUntil(function.ui.renameStart.isEnabled, timeout=5000)
+    mockRename.assert_called_once_with(Path("tests/work/image/M51.fits"))
+    assert mockMsg.emit.call_args.args[3] == "1 images were renamed"
+    assert function.ui.renameProgress.value() == 100
 
 
 def test_chooseDir_1(function):

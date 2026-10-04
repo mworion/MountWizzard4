@@ -131,7 +131,24 @@ def test_app_calls_main_function(mock_platform, mock_main, monkeypatch):
 
     cli.run()
 
-    mock_main.assert_called_once()
+    mock_main.assert_called_once_with(0, "dpi=96, scale=1, test=0")
+
+
+def test_formatOptions(monkeypatch):
+    monkeypatch.setattr(sys, "argv", ["mw4.cli", "-d", "120", "-s", "1.5", "-t", "1"])
+    opts = cli.readOptions()
+    assert cli.formatOptions(opts) == "dpi=120.0, scale=1.5, test=1"
+
+
+@patch("mw4.cli.main")
+@patch("platform.system")
+def test_app_passesParsedOptions(mock_platform, mock_main, monkeypatch):
+    monkeypatch.setattr(sys, "argv", ["mw4.cli", "--dpi", "120", "-t", "1"])
+    mock_platform.return_value = "Linux"
+
+    cli.run()
+
+    mock_main.assert_called_once_with(1, "dpi=120.0, scale=1, test=1")
 
 
 def test_readOptions_withNegativeValues(monkeypatch):

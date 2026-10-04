@@ -27,13 +27,21 @@ from unittest import mock
 
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
+    cleanEarthRotationFiles()
+    window = DataWriter(app=App())
+    yield window
+
+
+@pytest.fixture(autouse=True)
+def resetEarthRotationFiles():
+    cleanEarthRotationFiles()
+
+
+def cleanEarthRotationFiles():
     for file in ["CDFLeapSeconds.txt", "finals.data", "tai-utc.dat"]:
         path = "tests/work/data/" + file
         if os.path.isfile(path):
             os.remove(path)
-
-    window = DataWriter(app=App())
-    yield window
 
 
 def test_writeEarthRotationData_1(function):
@@ -101,7 +109,7 @@ def test_generateCycleCountPackedText(function):
         418,
     ]
     texts = ["00", "01", "13", "A8", "C7", "G2", "J3", "a0", "f8"]
-    for cycle, text in zip(cycles, texts):
+    for cycle, text in zip(cycles, texts, strict=True):
         val = function.generateCycleCountTextPacked(cycle)
         assert val == text
 
@@ -130,7 +138,7 @@ def test_generatePackedDesignation_1(function):
         "K07Tf8A",
     ]
 
-    for desig, res in zip(designations, results):
+    for desig, res in zip(designations, results, strict=True):
         val = function.generateDesignationPacked(desig)
         assert val == res
 
@@ -139,7 +147,7 @@ def test_convertDatePacked(function):
     values = ["01", "10", "30", "01", "22", "99"]
     results = ["1", "A", "U", "1", "M", " "]
 
-    for value, result in zip(values, results):
+    for value, result in zip(values, results, strict=True):
         val = function.convertDatePacked(value)
         assert val == result
 
@@ -149,7 +157,7 @@ def test_generateDatePacked(function):
     days = ["01", "10", "30", "01", "22"]
     results = ["11", "1A", "9U", "A1", "AM"]
 
-    for mon, day, result in zip(months, days, results):
+    for mon, day, result in zip(months, days, results, strict=True):
         val = function.generateDatePacked(mon, day)
         assert val == result
 
@@ -165,7 +173,7 @@ def test_generateOldDesignationPacked_1(function):
     numberTexts = ["(1)", "(100)", "(5986)", "(12345)", "(123456)"]
     results = ["00001  ", "00100  ", "05986  ", "12345  ", "C3456  "]
 
-    for numberText, result in zip(numberTexts, results):
+    for numberText, result in zip(numberTexts, results, strict=True):
         val = function.generateOldDesignationPacked(numberText)
         assert val == result
 
@@ -207,7 +215,7 @@ def test_writeAsteroidMPC_3(function):
         testLines = f.readlines()
     with open("tests/testData/mpc_asteroid_test.txt") as f:
         refLines = f.readlines()
-    for test, ref in zip(testLines, refLines):
+    for test, ref in zip(testLines, refLines, strict=True):
         assert test[0:8] == ref[0:8]
         assert test[14:202] == ref[14:202]
 
@@ -240,7 +248,7 @@ def test_writeAsteroidMPC_5(function):
         testLines = f.readlines()
     with open("tests/testData/nea_extended_mini.txt") as f:
         refLines = f.readlines()
-    for test, ref in zip(testLines, refLines):
+    for test, ref in zip(testLines, refLines, strict=True):
         if ref[0:3] in ["PLS"]:
             continue
         assert test[0:7] == ref[0:7]

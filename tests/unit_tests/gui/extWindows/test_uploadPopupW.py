@@ -46,11 +46,13 @@ def function(qapp):
 
 
 @pytest.fixture
-def mocked_sleepAndEvents(monkeypatch, function):
-    def test(a):
-        function.pollStatusRunState = False
+def mocked_timer(monkeypatch):
+    def immediate(ms, callback):
+        callback()
 
-    monkeypatch.setattr("mw4.gui.extWindows.uploadPopupW.mainThreadSleep", test)
+    monkeypatch.setattr(
+        "mw4.gui.extWindows.uploadPopupW.QTimer.singleShot", staticmethod(immediate)
+    )
 
 
 def test_setIcon(function):
@@ -304,23 +306,63 @@ def test_uploadFileWorker_3(function):
         assert function.runnerUploadFile()
 
 
-def test_closePopup_1(function, mocked_sleepAndEvents):
-    with mock.patch.object(function, "close"):
-        function.closePopup(False)
+def test_finalizeUpload_1(function):
+    function.closing = True
+    with mock.patch.object(function, "close") as mockClose:
+        function.finalizeUpload()
+    mockClose.assert_not_called()
 
 
-def test_closePopup_2(function, mocked_sleepAndEvents):
-    function.returnValues["successMount"] = True
-    function.pollStatusRunState = True
-    with mock.patch.object(function, "close"):
-        function.closePopup(True)
+def test_finalizeUpload_2(function):
+    function.closing = False
+    function.uploadFinished = True
+    function.pollFinished = False
+    with mock.patch.object(function, "close") as mockClose:
+        function.finalizeUpload()
+    mockClose.assert_not_called()
 
 
-def test_closePopup_3(function, mocked_sleepAndEvents):
+def test_finishPollStatus_1(function, mocked_timer):
+    function.closing = False
+    function.uploadFinished = True
+    function.pollFinished = False
+    function.returnValues["success"] = True
     function.returnValues["successMount"] = False
-    function.pollStatusRunState = False
-    with mock.patch.object(function, "close"):
+    with mock.patch.object(function, "close") as mockClose:
+        function.finishPollStatus()
+    assert function.pollFinished
+    mockClose.assert_called_once()
+
+
+def test_closePopup_1(function, mocked_timer):
+    function.closing = False
+    function.uploadFinished = False
+    function.pollFinished = True
+    with mock.patch.object(function, "close") as mockClose:
+        function.closePopup(False)
+    assert function.returnValues["success"] is False
+    assert function.pollStatusRunState is False
+    mockClose.assert_called_once()
+
+
+def test_closePopup_2(function, mocked_timer):
+    function.closing = False
+    function.uploadFinished = False
+    function.pollFinished = False
+    function.returnValues["successMount"] = True
+    with mock.patch.object(function, "close") as mockClose:
         function.closePopup(True)
+    mockClose.assert_not_called()
+
+
+def test_closePopup_3(function, mocked_timer):
+    function.closing = False
+    function.uploadFinished = False
+    function.pollFinished = True
+    function.returnValues["successMount"] = True
+    with mock.patch.object(function, "close") as mockClose:
+        function.closePopup(True)
+    mockClose.assert_called_once()
 
 
 def test_exec_1(function):

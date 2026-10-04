@@ -36,11 +36,14 @@ from mw4.gui.mainWaddon.tabSat_Search import SatSearch
 from mw4.gui.mainWaddon.tabSat_Track import SatTrack
 from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
 from mw4.gui.mainWaddon.tabTools_Rename import Rename
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class MainWindowAddons:
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
 
@@ -84,3 +87,7 @@ class MainWindowAddons:
     def updateColorSet(self) -> None:
         for addon in self.addons.values():
             addon.updateColorSet()
+
+    def shutdown(self) -> None:
+        for addon in self.addons.values():
+            addon.shutdown()

@@ -180,6 +180,7 @@ class MountSetting:
         self.autoPowerOn = "None"
         self.typeConnection = 1
         self.trackingRate = 60.2
+        self.slewRate = 0
         self.slewRateMin = 0
         self.slewRateMax = 1
         self.webInterfaceStat = True

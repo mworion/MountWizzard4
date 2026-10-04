@@ -77,7 +77,7 @@ def test_list_to_array_replaces_none_and_nan(function):
     src = [1.5, None, 3, float("nan"), "4.2", "x"]
     arr = function.list2array(src, fill=0.0, dtype=np.float32)
     expected = np.array([1.5, 0.0, 3.0, 0.0, 4.2, 0.0], dtype=np.float32)
-    for i, item in enumerate(src):
+    for i, _item in enumerate(src):
         assert expected[i] == arr[i]
 
 

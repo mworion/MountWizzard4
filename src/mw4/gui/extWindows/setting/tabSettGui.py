@@ -57,12 +57,13 @@ class SettGui:
         self.ui.writeMacOsConfig.setEnabled(platform.system() == "Darwin")
 
     def storeConfig(self) -> None:
-        self.app.config["SettingGui"] = {}
-        config = self.app.config["SettingGui"]
-        config["colorSet"] = self.ui.colorSet.currentIndex()
-        config["transparency"] = self.ui.transparency.value()
-        config["scale"] = self.ui.scale.value()
-        config["dpi"] = self.ui.dpi.value()
+        config = {
+            "colorSet": self.ui.colorSet.currentIndex(),
+            "transparency": self.ui.transparency.value(),
+            "scale": self.ui.scale.value(),
+            "dpi": self.ui.dpi.value(),
+        }
+        self.app.config["SettingGui"] = config
         cfg = self.app.dReg["hidController"].instance.config
         cfg.dome = self.ui.hidDome.isChecked()
         cfg.moveAltAz = self.ui.hidAltAz.isChecked()

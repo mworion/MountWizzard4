@@ -14,11 +14,14 @@
 #
 ###########################################################
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class Analysis:
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.msg
@@ -80,7 +83,7 @@ class Analysis:
         duration = self.ui.flexureDuration.value()
         numberPoints = int(duration * 60 / waitTime)
         data = []
-        for i in range(numberPoints):
+        for _ in range(numberPoints):
             data.append((alt, az))
         return data, waitTime
 

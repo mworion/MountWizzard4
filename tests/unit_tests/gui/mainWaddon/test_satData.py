@@ -19,4 +19,4 @@ from mw4.gui.mainWaddon.satData import SatData
 
 
 def test_class_1():
-    assert SatData.satellites is None
+    assert "satellites" in vars(SatData)

@@ -82,7 +82,7 @@ class MWidget(QMainWindow, Styles):
         centralWidget.setMouseTracking(True)
         centralWidget.raise_()
 
-    def closeEvent(self, event):
+    def closeEvent(self, event) -> None:
         self.deleteLater()
         event.accept()
 

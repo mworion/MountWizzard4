@@ -15,6 +15,7 @@
 ###########################################################
 import logging
 from dataclasses import dataclass, field
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
 from PySide6.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer, QTcpSocket
 from typing import Any
@@ -29,7 +30,7 @@ class Remote:
     DEVICE_TYPE = "misc"
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         self.signals = Signals()
         self.app = app
         self.data: dict[str, Any] = {}
@@ -44,7 +45,6 @@ class Remote:
         hostAddress = QHostAddress("localhost")
         if not self.tcpServer.listen(hostAddress, 3490):
             self.log.info("Port already in use")
-            self.tcpServer = None
             return False
         else:
             self.log.info("Remote access enabled")

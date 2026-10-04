@@ -33,7 +33,10 @@ from PySide6.QtCore import QObject, Qt, Signal
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 from skyfield.api import EarthSatellite, Time
 from skyfield.toposlib import GeographicPosition
-from typing import Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar
+
+if TYPE_CHECKING:
+    from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class SatSearchSignals(QObject):
@@ -46,7 +49,7 @@ class SatSearch(SatData):
     log = logging.getLogger("MW4")
     SATFILTERS: ClassVar = ["Starlink", "Cosmos", "Iridium", "Kuiper", "Qianfan", "Hulianwang"]
 
-    def __init__(self, mainW: Any) -> None:
+    def __init__(self, mainW: "MainWindow") -> None:
         super().__init__()
         self.mainW = mainW
         self.app = mainW.app
@@ -250,6 +253,7 @@ class SatSearch(SatData):
         selectTwilight: int,
         altMin: float,
     ) -> None:
+        name = ""
         try:
             self.signals.setSatGroupTitle.emit("Filter - running", True)
             loc = self.app.dReg["mount"].location
@@ -258,7 +262,8 @@ class SatSearch(SatData):
             timeNext = ts.tt_jd(timeNow.tt + 0.25)
             eph = self.app.ephemeris
             numSats = len(snapshot)
-            for i, (row, _name, sat, hidden) in enumerate(snapshot):
+            for i, (row, satName, sat, hidden) in enumerate(snapshot):
+                name = satName  # reported by the except handler below
                 if generation != self.calcGeneration:
                     break
                 finished = (i + 1) / numSats * 100
@@ -277,8 +282,8 @@ class SatSearch(SatData):
                 show = show and (twilight <= selectTwilight)
                 self.signals.setSatListRowHidden.emit(row, not show)
             self.signals.setSatGroupTitle.emit("Filter - processed - 100%", False)
-        except Exception:
-            self.log.debug(f"Error on processing list satellite [{sat}]")
+        except (ArithmeticError, AttributeError, IndexError, TypeError, ValueError) as e:
+            self.log.warning(f"Error on processing list satellite [{name}]: {e}")
 
     def calcSatList(
         self, snapshot: list[tuple[int, str, EarthSatellite, bool]], generation: int

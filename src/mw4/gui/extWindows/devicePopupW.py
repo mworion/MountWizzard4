@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+from dataclasses import fields
 from functools import partial
 from mw4.base.alpacaClass import AlpacaClass
 from mw4.base.ascomClass import AscomClass
@@ -30,14 +31,12 @@ from typing import Any
 
 
 class DevicePopup(MWidget):
-    def __init__(self, parentWidget, device: str, data: dict[str, Any]):
+    def __init__(self, parentWidget, device: str) -> None:
         super().__init__()
         self.app = parentWidget.app
         self.msg = parentWidget.app.msg
-        self.data = data
         self.device: str = device
-        self.framework: str = data["framework"]
-
+        self.framework: str = self.app.dReg[device].framework
         self.ui = Ui_DevicePopup()
         self.ui.setupUi(self.ws)
         self.setNoFocus(self)
@@ -49,15 +48,14 @@ class DevicePopup(MWidget):
         self.move(x, y)
         pixmap = svg2pixmap("assets/icon/cogs.svg", self.M_PRIM)
         self.ui.iconPixmap.setPixmap(pixmap)
-
         self.returnValues: dict[str, Any] = {"close": "cancel"}
         self.loop: QEventLoop | None = None
         self.framework2gui = {
             "indi": {
-                "hostaddress": self.ui.indiHostAddress,
+                "hostAddress": self.ui.indiHostAddress,
                 "port": self.ui.indiPort,
                 "deviceName": self.ui.indiDeviceList,
-                "messages": self.ui.indiMessages,
+                "showMessage": self.ui.indiMessages,
                 "loadConfig": self.ui.indiLoadConfig,
             },
             "alpaca": {
@@ -171,6 +169,7 @@ class DevicePopup(MWidget):
             self.discovers[framework]["button"].clicked.connect(
                 partial(self.discoverDevices, framework)
             )
+
         self.ui.ascomSelector.clicked.connect(self.selectAscomDriver)
         for framework in self.platesolvers:
             self.platesolvers[framework]["selectAppPath"].clicked.connect(
@@ -187,35 +186,44 @@ class DevicePopup(MWidget):
             )
         self.ui.selectBoltwoodPath.clicked.connect(self.selectBoltwoodPath)
 
+    def frameworksWithConfig(self) -> list[str]:
+        run = self.app.dReg[self.device].run
+        return [fw for fw in run if hasattr(run[fw], "config")]
+
+    def frameworkConfig(self, framework: str) -> Any:
+        return self.app.dReg[self.device].run[framework].config
+
     def populateTabs(self) -> None:
-        for framework in self.data:
-            if framework == "framework":
-                continue
-            for element in self.data[framework]:
+        for framework in self.frameworksWithConfig():
+            config = self.frameworkConfig(framework)
+            for f in fields(config):
+                element = f.name
                 ui = self.framework2gui[framework].get(element)
+                value = getattr(config, element)
                 if isinstance(ui, QComboBox):
                     ui.clear()
                     ui.setView(QListView())
-                    ui.addItem(self.data[framework]["deviceName"])
+                    ui.addItem(config.deviceName)
                 elif isinstance(ui, QLineEdit):
-                    ui.setText(f"{self.data[framework][element]}")
+                    ui.setText(f"{value}")
                 elif isinstance(ui, QCheckBox):
-                    ui.setChecked(self.data[framework][element])
+                    ui.setChecked(value)
                 elif isinstance(ui, QDoubleSpinBox):
-                    ui.setValue(self.data[framework][element])
+                    ui.setValue(value)
 
     def selectTabs(self) -> None:
         tabIndex = getTabIndex(self.ui.tab, self.framework)
         self.ui.tab.setCurrentIndex(tabIndex)
+        frameworks = self.frameworksWithConfig()
         for index in range(self.ui.tab.count()):
-            isVisible = self.ui.tab.widget(index).objectName() in self.data
+            isVisible = self.ui.tab.widget(index).objectName() in frameworks
             self.ui.tab.setTabVisible(index, isVisible)
 
     def initConfig(self) -> None:
         self.setWindowTitle(f"Setup driver for {self.device}")
         self.populateTabs()
         self.selectTabs()
-        framework = self.data.get("framework", "")
+        framework = self.framework
         if framework in self.platesolvers:
             self.checkApp(framework, self.platesolvers[framework]["appPath"].text())
             self.checkIndex(framework, self.platesolvers[framework]["indexPath"].text())
@@ -234,8 +242,8 @@ class DevicePopup(MWidget):
         return self.returnValues["close"] == "ok"
 
     @classmethod
-    def configure(cls, parentWidget: Any, device: str, data: dict[str, Any]) -> dict[str, Any]:
-        dlg = cls(parentWidget, device, data)
+    def configure(cls, parentWidget: Any, device: str) -> dict[str, Any]:
+        dlg = cls(parentWidget, device)
         dlg.exec()
         return dlg.returnValues
 
@@ -244,32 +252,27 @@ class DevicePopup(MWidget):
         self.framework = self.ui.tab.widget(index).objectName()
 
     def readTabs(self) -> None:
-        for element in self.data[self.framework]:
+        config = self.frameworkConfig(self.framework)
+        for f in fields(config):
+            element = f.name
             ui = self.framework2gui[self.framework].get(element)
             if isinstance(ui, QComboBox):
-                self.data[self.framework]["deviceName"] = ui.currentText()
+                config.deviceName = ui.currentText()
             elif isinstance(ui, QLineEdit):
-                if isinstance(self.data[self.framework][element], int):
-                    self.data[self.framework][element] = int(ui.text())
+                if isinstance(getattr(config, element), int):
+                    setattr(config, element, int(ui.text()))
                 else:
-                    self.data[self.framework][element] = ui.text()
+                    setattr(config, element, ui.text())
             elif isinstance(ui, QCheckBox):
-                self.data[self.framework][element] = ui.isChecked()
+                setattr(config, element, ui.isChecked())
             elif isinstance(ui, QDoubleSpinBox):
-                self.data[self.framework][element] = ui.value()
+                setattr(config, element, ui.value())
 
     def storeConfig(self) -> None:
         self.readFramework()
         self.readTabs()
-        self.returnValues["copyConfig"]: list = []
-        if self.ui.indiCopyConfig.isChecked():
-            self.returnValues["copyConfig"].append("indi")
-        if self.ui.alpacaCopyConfig.isChecked():
-            self.returnValues["copyConfig"].append("alpaca")
+        self.app.dReg[self.device].instance.framework = self.framework
         self.returnValues["close"] = "ok"
-        self.returnValues["data"] = self.data
-        self.returnValues["device"] = self.device
-        self.returnValues["data"]["framework"] = self.framework
         self.close()
 
     def updateDeviceNameList(self, framework: str, deviceNames: list[str]) -> None:

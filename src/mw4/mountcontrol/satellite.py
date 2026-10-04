@@ -182,7 +182,7 @@ class Satellite:
         az = az.degrees
         alt = alt.degrees
         commandString = "".join(
-            f":TRADD{azimuth},{altitude}#" for azimuth, altitude in zip(az, alt)
+            f":TRADD{azimuth},{altitude}#" for azimuth, altitude in zip(az, alt, strict=True)
         )
         conn = Connection(self.parent)
         suc, response, numberOfChunks = conn.communicate(commandString)

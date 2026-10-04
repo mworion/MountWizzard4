@@ -69,11 +69,12 @@ class SettMount:
         self.ui.syncTimeNotTrack.clicked.connect(self.storeConfig)
 
     def storeConfig(self) -> None:
-        self.app.config["SettingRack"] = {}
-        config = self.app.config["SettingRack"]
-        config["rackCompMAC"] = self.ui.rackCompMAC.text()
-        config["rackCompWolAddress"] = self.ui.rackCompWolAddress.text()
-        config["rackCompWolPort"] = self.ui.rackCompWolPort.text()
+        config = {
+            "rackCompMAC": self.ui.rackCompMAC.text(),
+            "rackCompWolAddress": self.ui.rackCompWolAddress.text(),
+            "rackCompWolPort": self.ui.rackCompWolPort.text(),
+        }
+        self.app.config["SettingRack"] = config
 
         port = 3492 if self.ui.port3492.isChecked() else 3490
         host = self.ui.hostAddress.text()

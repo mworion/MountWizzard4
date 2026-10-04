@@ -16,12 +16,12 @@
 import cv2
 import numpy as np
 import pyqtgraph as pg
+from mw4.base.appProtocol import AppProtocol
 from mw4.gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
 from mw4.gui.extWindows.hemisphere.horizonDraw import HorizonDraw
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import hemisphere_ui
 from PySide6.QtCore import QPointF, Qt
-from typing import Any
 
 
 class HemisphereWindow(MWidget):
@@ -41,7 +41,7 @@ class HemisphereWindow(MWidget):
         - checked build points 50
     """
 
-    def __init__(self, app: Any, title: str) -> None:
+    def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__()
         self.app = app
         self.msg = app.msg

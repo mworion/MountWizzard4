@@ -14,9 +14,9 @@
 #
 ###########################################################
 from importlib.resources import as_file, files
+from mw4.base.appProtocol import AppProtocol
 from PySide6.QtCore import QUrl
 from PySide6.QtMultimedia import QSoundEffect
-from typing import Any
 
 AUDIO_SOUNDS: dict[str, str] = {
     "None": "",
@@ -33,7 +33,7 @@ AUDIO_SOUNDS: dict[str, str] = {
 
 
 class AudioManager:
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         self.app = app
         self.sound: QSoundEffect | None = None
         self.app.playSound.connect(self.playSound)

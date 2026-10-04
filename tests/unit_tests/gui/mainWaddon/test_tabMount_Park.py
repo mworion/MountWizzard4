@@ -275,3 +275,15 @@ def test_slewToPark_with_park_after_slew_enabled(function):
     ):
         function.slewToPark(0)
         function.app.dReg["mount"].signals.slewed.connect.assert_called_once()
+
+
+def test_storeConfig_keepsSectionOnError(function):
+    sentinel = {"ParkMountAfterSlew": True}
+    function.app.config["MountPark"] = sentinel
+    widget = function.mainW.ui.parkMountAfterSlew
+    with (
+        mock.patch.object(widget, "isChecked", side_effect=RuntimeError),
+        pytest.raises(RuntimeError),
+    ):
+        function.storeConfig()
+    assert function.app.config["MountPark"] is sentinel

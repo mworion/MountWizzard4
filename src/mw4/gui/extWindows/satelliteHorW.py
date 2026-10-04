@@ -16,17 +16,17 @@
 import numpy as np
 import pyqtgraph as pg
 from collections.abc import Iterator
+from mw4.base.appProtocol import AppProtocol
 from mw4.gui.utilities.qtGenerateSprites import makePointer, makeSat
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import satelliteHor_ui
 from PySide6.QtCore import Qt
 from skyfield.api import EarthSatellite, Timescale
 from skyfield.toposlib import GeographicPosition
-from typing import Any
 
 
 class SatelliteHorizonWindow(MWidget):
-    def __init__(self, app: Any, title: str) -> None:
+    def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__()
         self.app = app
         self.obsSite = app.dReg["mount"].obsSite
@@ -167,7 +167,7 @@ class SatelliteHorizonWindow(MWidget):
         plotItem.addItem(pd)
         return pd
 
-    def drawHorizonTrajectory(self, plotItem: pg.PlotItem, altitude, azimuth):
+    def drawHorizonTrajectory(self, plotItem: pg.PlotItem, altitude, azimuth) -> None:
         ts = self.obsSite.ts
         for i, satOrbit in enumerate(self.satOrbits):
             rise = satOrbit["rise"].tt

@@ -21,6 +21,8 @@ import mw4.gui.mainWaddon.tabModel_Manage
 import os
 import pytest
 import shutil
+import warnings
+from contextlib import suppress
 from mw4.gui.mainWaddon.tabModel_Manage import ModelManage
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtMain import MWidget
@@ -49,6 +51,25 @@ def function(qapp):
     window = ModelManage(mainW)
     yield window
     mainW.app.threadPool.waitForDone(10000)
+
+
+def disconnectSignal(signal):
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", RuntimeWarning)
+        with suppress(RuntimeError, TypeError):
+            signal.disconnect()
+
+
+@pytest.fixture(autouse=True)
+def resetModelState(function):
+    disconnectSignal(function.app.mount.signals.getModelDone)
+    disconnectSignal(function.app.mount.signals.namesDone)
+    function.app.mount.model.starList = []
+    function.app.mount.model.nameList = []
+    function.app.mount.model.numberStars = 0
+    function.app.mount.model.errorRMS = 0
+    function.runningOptimize = False
+    function.runningTargetRMS = False
 
 
 def test_initConfig_1(function):
@@ -100,6 +121,7 @@ def test_showModelPosition_2(function):
         number=1,
     )
     function.app.mount.model.starList = [star, star, star]
+    function.app.mount.model.numberStars = 3
     function.showModelPosition()
 
 

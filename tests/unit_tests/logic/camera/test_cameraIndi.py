@@ -137,7 +137,7 @@ def test_setExposureState_busy_value_zero_not_exposing(function):
 
 
 def test_setExposureState_busy_value_zero(function):
-    """State 'Busy' and value == 0, self.exposing=True → exposed signal with imagePath."""
+    """State 'Busy' and value == 0, self.exposing=True → exposed signal + message."""
     function.parent.exposing = True
     function.exposing = True
     vectors = {
@@ -146,11 +146,15 @@ def test_setExposureState_busy_value_zero(function):
             "members": {"CCD_EXPOSURE_VALUE": {"floatvalue": 0.0}},
         }
     }
-    slot = mock.MagicMock()
-    function.signals.exposed.connect(slot)
+    exposed_slot = mock.MagicMock()
+    msg_slot = mock.MagicMock()
+    function.signals.exposed.connect(exposed_slot)
+    function.signals.message.connect(msg_slot)
     function.setExposureState(vectors)
-    slot.assert_called_once_with(function.parent.imagePath)
-    function.signals.exposed.disconnect(slot)
+    exposed_slot.assert_called_once_with(function.parent.imagePath)
+    msg_slot.assert_called_once_with("downloading")
+    function.signals.exposed.disconnect(exposed_slot)
+    function.signals.message.disconnect(msg_slot)
     function.exposing = False
     function.parent.exposing = False
 
@@ -187,13 +191,21 @@ def test_setExposureState_alert(function):
             "members": {"CCD_EXPOSURE_VALUE": {"floatvalue": 0.0}},
         }
     }
+    exposed_slot = mock.MagicMock()
+    downloaded_slot = mock.MagicMock()
+    function.signals.exposed.connect(exposed_slot)
+    function.signals.downloaded.connect(downloaded_slot)
     with (
         mock.patch.object(function.parent, "exposeFinished") as mock_finished,
         mock.patch.object(function, "abort") as mock_abort,
     ):
         function.setExposureState(vectors)
+        exposed_slot.assert_called_once_with(Path())
+        downloaded_slot.assert_called_once_with(Path())
         mock_finished.assert_called_once()
         mock_abort.assert_called_once()
+    function.signals.exposed.disconnect(exposed_slot)
+    function.signals.downloaded.disconnect(downloaded_slot)
     function.parent.exposing = False
 
 
@@ -392,6 +404,9 @@ def test_saveImageBLOB_fits(function):
     mock_temp_dir.__truediv__ = mock.MagicMock(return_value=mock_blob_file)
     function.app.mwGlob["tempDir"] = mock_temp_dir
     function.parent.imagePath = Path("tests/work/temp/capture.fits")
+    function.exposing = True
+    msg_slot = mock.MagicMock()
+    function.signals.message.connect(msg_slot)
     with (
         mock.patch.object(function.parent, "writeImageFitsHeader") as mock_fits,
         mock.patch.object(function.parent, "exposeFinished") as mock_fin,
@@ -399,8 +414,11 @@ def test_saveImageBLOB_fits(function):
         function.saveImageBLOB(item, vectors)
         assert function.parent.imagePath == Path("tests/work/temp/capture.fits")
         mock_blob_file.replace.assert_called_once_with(function.parent.imagePath)
+        msg_slot.assert_called_once_with("saving")
         mock_fits.assert_called_once()
         mock_fin.assert_called_once()
+        assert function.exposing is False
+    function.signals.message.disconnect(msg_slot)
 
 
 def test_saveImageBLOB_xisf(function):
@@ -418,6 +436,9 @@ def test_saveImageBLOB_xisf(function):
     mock_temp_dir.__truediv__ = mock.MagicMock(return_value=mock_blob_file)
     function.app.mwGlob["tempDir"] = mock_temp_dir
     function.parent.imagePath = Path("tests/work/temp/capture.fits")
+    function.exposing = True
+    msg_slot = mock.MagicMock()
+    function.signals.message.connect(msg_slot)
     with (
         mock.patch.object(function, "writeImageXisfHeader") as mock_xisf,
         mock.patch.object(function.parent, "exposeFinished") as mock_fin,
@@ -425,8 +446,11 @@ def test_saveImageBLOB_xisf(function):
         function.saveImageBLOB(item, vectors)
         assert function.parent.imagePath == Path("tests/work/temp/capture.xisf")
         mock_blob_file.replace.assert_called_once_with(function.parent.imagePath)
+        msg_slot.assert_called_once_with("saving")
         mock_xisf.assert_called_once()
         mock_fin.assert_called_once()
+        assert function.exposing is False
+    function.signals.message.disconnect(msg_slot)
 
 
 # ---------------------------------------------------------------------------

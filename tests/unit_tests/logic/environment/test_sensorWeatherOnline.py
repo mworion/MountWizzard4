@@ -51,6 +51,32 @@ def function():
         yield func
 
 
+@pytest.fixture(autouse=True)
+def resetWeatherState(function):
+    unlockWeatherWorker(function)
+    function.data.clear()
+    function.config.apiKey = ""
+    function.config.hostAddress = "localhost"
+    function.app.isOnline = True
+    function.location = weatherLocation()
+    function.running = False
+    yield
+    unlockWeatherWorker(function)
+
+
+def unlockWeatherWorker(function):
+    worker = function.workerGetOpenWeatherMapData
+    if worker is not None:
+        worker.release()
+
+
+def weatherLocation():
+    location = mock.MagicMock()
+    location.latitude.degrees = 45.5
+    location.longitude.degrees = -122.5
+    return location
+
+
 def test_startCommunication_(function):
     with mock.patch.object(function, "pollOpenWeatherMapData"):
         function.startCommunication()
@@ -189,12 +215,15 @@ def test_workerGetOpenWeatherMapData_5(function):
 
 def test_sendStatus_1(function):
     function.running = True
-    function.sendStatus(False)
+    with mock.patch.object(function, "processOpenWeatherMapData"):
+        function.sendStatus(False)
 
 
 def test_sendStatus_2(function):
     function.running = False
-    function.sendStatus(True)
+    with mock.patch.object(function, "processOpenWeatherMapData") as mock_process:
+        function.sendStatus(True)
+        mock_process.assert_called_once()
 
 
 def test_getOpenWeatherMapData_1(function):
@@ -242,50 +271,38 @@ def test_loadingFileNeeded_3(function):
 
 
 def test_pollOpenWeatherMapData_1(function):
-    function.apiKey = ""
+    function.config.apiKey = ""
     function.pollOpenWeatherMapData()
 
 
 def test_pollOpenWeatherMapData_2(function):
-    function.apiKey = "test"
+    function.config.apiKey = "test"
     function.app.isOnline = False
     function.running = True
     function.pollOpenWeatherMapData()
 
 
 def test_pollOpenWeatherMapData_3(function):
-    function.apiKey = "test"
+    function.config.apiKey = "test"
     function.app.isOnline = True
     function.pollOpenWeatherMapData()
 
 
 def test_pollOpenWeatherMapData_4(function):
-    function.apiKey = "test"
+    function.config.apiKey = "test"
     function.app.isOnline = True
     with mock.patch.object(function, "loadingFileNeeded", return_value=False):
         function.pollOpenWeatherMapData()
 
 
 def test_pollOpenWeatherMapData_5(function):
-    function.apiKey = "test"
+    function.config.apiKey = "test"
     function.app.isOnline = True
     with (
         mock.patch.object(function, "loadingFileNeeded", return_value=True),
         mock.patch.object(function, "getOpenWeatherMapData"),
     ):
         function.pollOpenWeatherMapData()
-
-
-# ------------------------------------------------------------------
-# SensorWeatherOnline — sendStatus with processOpenWeatherMapData call
-# ------------------------------------------------------------------
-def test_sendStatusCallsProcessWhenStatusTrue(function) -> None:
-    """Test that sendStatus calls processOpenWeatherMapData when status is True."""
-    function.running = False
-    function.status = True
-    with mock.patch.object(function, "processOpenWeatherMapData") as mock_process:
-        function.sendStatus(True)
-        mock_process.assert_called_once()
 
 
 # ------------------------------------------------------------------
@@ -298,9 +315,7 @@ def test_pollOpenWeatherMapDataExtractsLocationLatLon(function) -> None:
     function.config.apiKey = "test_key"
     function.config.hostAddress = "localhost"
     function.app.isOnline = True
-    location = mock.MagicMock()
-    location.latitude.degrees = 45.5
-    location.longitude.degrees = -122.5
+    location = weatherLocation()
 
     # Mock getOpenWeatherMapData to prevent the Path+str error
     with (

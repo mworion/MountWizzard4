@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+import pytest
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 
 
@@ -76,6 +77,11 @@ def test_tabaddon_updatecolorset_returns_none():
     addon = TabAddon()
     result = addon.updateColorSet()
     assert result is None
+
+
+def test_tabaddon_shutdown_returns_none():
+    addon = TabAddon()
+    assert addon.shutdown() is None
 
 
 def test_tabaddon_initconfig_callable_multiple_times():
@@ -225,7 +231,7 @@ def test_tabaddon_method_exception_not_thrown():
         addon.setupIcons()
         addon.updateColorSet()
     except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
-        assert False, "Methods should not throw exceptions"
+        pytest.fail("Methods should not throw exceptions")
 
 
 def test_tabaddon_docstring_exists():

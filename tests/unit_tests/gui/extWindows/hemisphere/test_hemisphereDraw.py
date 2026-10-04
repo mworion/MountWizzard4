@@ -36,6 +36,23 @@ def function(qapp):
     QApplication.processEvents()
 
 
+@pytest.fixture(autouse=True)
+def prepareFunctionState(function):
+    function.ui.normalModeHem.setChecked(True)
+    function.ui.editModeHem.setChecked(False)
+    function.ui.alignmentModeHem.setChecked(False)
+    function.ui.showAlignStar.setChecked(False)
+    function.ui.showSlewPath.setChecked(False)
+    function.modelPointsText = []
+    function.alignmentStarsText = []
+    function.app.dReg.d["mount"].stat = False
+    function.app.dReg.d["dome"].stat = False
+    function.app.mount.model.numberStars = 0
+    function.app.mount.model.starList = []
+    function.app.buildPoint.buildP = []
+    function.app.data.buildP = []
+
+
 def test_initConfig_1(function):
     function.initConfig()
 
@@ -185,9 +202,14 @@ def test_drawModelPoints_1(function):
 
 def test_drawModelPoints_2(function):
     function.modelPoints = pg.PlotDataItem(x=[1, 2], y=[1, 2], symbol="o")
-    function.app.data.buildP = [(1, 1, 0), (2, 2, 0)]
-    with mock.patch.object(function, "setModelPointsAppearanceInPlot"):
+    function.app.buildPoint.buildP = [(1, 1, 0), (2, 2, 0)]
+    item = pg.PlotDataItem()
+    with (
+        mock.patch.object(function.ui.hemisphere, "findItemByName", return_value=item),
+        mock.patch.object(function, "setModelPointsAppearanceInPlot") as mockAppearance,
+    ):
         function.drawModelPoints()
+    assert mockAppearance.call_count == len(function.ui.hemisphere.p)
 
 
 def test_drawModelText_1(function):

@@ -44,6 +44,15 @@ def almanac(qapp):
     mainW.app.threadPool.waitForDone(1000)
 
 
+@pytest.fixture(autouse=True)
+def resetAlmanac(almanac):
+    almanac.app.mount.obsSite.location = wgs84.latlon(
+        latitude_degrees=20, longitude_degrees=10, elevation_m=500
+    )
+    almanac.closing = False
+    almanac.setColors()
+
+
 def test_initConfig_loads_config(almanac):
     """Test initConfig loads configuration."""
     with mock.patch.object(almanac, "showTwilightDataPlot"):
@@ -144,7 +153,7 @@ def test_showTwilightDataPlot_with_location(almanac):
         almanac.showTwilightDataPlot()
         assert almanac.workerCalcTwilightDataPlot is not None
     if almanac.workerCalcTwilightDataPlot is not None:
-        almanac.workerCalcTwilightDataPlot.mutex.unlock()
+        almanac.workerCalcTwilightDataPlot.release()
 
 
 def test_showTwilightDataList_without_location(almanac):

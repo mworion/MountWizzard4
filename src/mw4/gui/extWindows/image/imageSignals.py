@@ -13,8 +13,9 @@
 # License APL2.0
 #
 ###########################################################
+from pathlib import Path
 from PySide6.QtCore import QObject, Signal
 
 
 class ImageWindowSignals(QObject):
-    solveImage = Signal(object)
+    solveImage = Signal(Path)

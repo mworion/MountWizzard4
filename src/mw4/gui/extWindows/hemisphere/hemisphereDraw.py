@@ -27,7 +27,7 @@ from skyfield.api import Angle
 
 
 class HemisphereDraw(MWidget):
-    def __init__(self, parent):
+    def __init__(self, parent) -> None:
         super().__init__()
         self.parent = parent
         self.ui = parent.ui
@@ -78,7 +78,7 @@ class HemisphereDraw(MWidget):
         self.app.timeMgr.update3s.disconnect(self.drawAlignmentStars)
 
     def setPointerVisibility(self) -> None:
-        visible = bool(self.app.deviceStat.get("mount"))
+        visible = bool(self.app.dReg["mount"].stat)
         for plotItem in self.ui.hemisphere.p:
             item = self.ui.hemisphere.findItemByName(plotItem, "pointer")
             if item:
@@ -117,7 +117,7 @@ class HemisphereDraw(MWidget):
             return
 
         for i, plotItem in enumerate(self.ui.hemisphere.p):
-            alt, az = zip(*celestial)
+            alt, az = zip(*celestial, strict=True)
             alt = np.array(alt)
             az = np.array(az)
             pd = pg.ScatterPlotItem()
@@ -147,7 +147,7 @@ class HemisphereDraw(MWidget):
         pd.setZValue(30)
         self.alignmentStars = pd
         plotItem.addItem(pd)
-        for i in range(len(hip.name)):
+        for _ in range(len(hip.name)):
             textItem = pg.TextItem(anchor=(0.5, 1.1))
             self.alignmentStarsText.append(textItem)
             plotItem.addItem(textItem)
@@ -176,7 +176,7 @@ class HemisphereDraw(MWidget):
         hip.calculateAlignStarPositionsAltAz()
         isAlignMode = self.ui.alignmentModeHem.isChecked()
         self.alignmentStars.setData(x=hip.az, y=hip.alt)
-        for i, val in enumerate(zip(hip.alt, hip.az, hip.name)):
+        for i, val in enumerate(zip(hip.alt, hip.az, hip.name, strict=True)):
             alt, az, name = val
             color = self.M_YELLOW if isAlignMode else self.M_YELLOW1
 
@@ -220,7 +220,7 @@ class HemisphereDraw(MWidget):
         if not self.app.buildPoint.buildP:
             return
 
-        y, x, statusList = zip(*self.app.buildPoint.buildP)
+        y, x, statusList = zip(*self.app.buildPoint.buildP, strict=True)
         for index, plotItem in enumerate(self.ui.hemisphere.p):
             item = self.ui.hemisphere.findItemByName(plotItem, "model")
             if not item:
@@ -259,7 +259,7 @@ class HemisphereDraw(MWidget):
             plotItem.addItem(textItem)
 
     def updateDataBuildPoints(self, x: list[float], y: list[float]) -> None:
-        bp = [[y, x, self.app.buildPoint.UNPROCESSED] for y, x in zip(y, x)]
+        bp = [[y, x, self.app.buildPoint.UNPROCESSED] for y, x in zip(y, x, strict=True)]
         self.app.buildPoint.buildP = bp
         self.drawModelPoints()
         self.drawModelText()
@@ -345,7 +345,7 @@ class HemisphereDraw(MWidget):
         self.pointerDome.setVisible(True)
 
     def drawDome(self) -> None:
-        visible = bool(self.app.deviceStat.get("dome"))
+        visible = bool(self.app.dReg["dome"].stat)
         self.pointerDome.setVisible(visible)
 
     def drawModelIsoCurve(self) -> None:

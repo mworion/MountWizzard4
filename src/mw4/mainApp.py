@@ -14,7 +14,6 @@
 #
 ###########################################################
 import logging
-import sys
 from importlib.metadata import version
 from mw4.base.audioManager import AudioManager
 from mw4.base.bootstrap import MwGlob
@@ -25,10 +24,13 @@ from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.logic.buildData.buildpoints import BuildPoint
 from mw4.logic.buildData.hipparcos import Hipparcos
 from mw4.logic.profiles.profile import loadProfileStart
+from pathlib import Path
 from PySide6.QtCore import QObject, QThreadPool, Signal
 from PySide6.QtWidgets import QApplication
 from queue import Queue
-from skyfield.api import wgs84
+from skyfield.api import EarthSatellite, wgs84
+from skyfield.timelib import Time
+from skyfield.toposlib import GeographicPosition
 
 
 class MountWizzard4(QObject):
@@ -36,12 +38,11 @@ class MountWizzard4(QObject):
     log = logging.getLogger("MW4")
 
     # --- UI signals ---
-    material = Signal(object, object)
-    msg = Signal(object, object, object, object)
+    msg = Signal(int, str, str, str)
     colorChange = Signal()
-    playSound = Signal(object)
-    showImage = Signal(object)
-    showAnalyse = Signal(object)
+    playSound = Signal(str)
+    showImage = Signal(Path)
+    showAnalyse = Signal(Path)
     timebaseChanged = Signal()
     onlineModeChanged = Signal()
     hidModeChanged = Signal()
@@ -53,14 +54,14 @@ class MountWizzard4(QObject):
     drawBuildPoints = Signal()
     buildPointsChanged = Signal()
     drawHorizonPoints = Signal()
-    operationRunning = Signal(object)
+    operationRunning = Signal(int)
     updateDomeSettings = Signal()
-    remoteCommand = Signal(object)
+    remoteCommand = Signal(str)
     refreshModel = Signal()
     refreshName = Signal()
     sendSatelliteData = Signal(object, object)
-    updateSatellite = Signal(object, object)
-    showSatellite = Signal(object, object, object, object, object)
+    updateSatellite = Signal(Time, GeographicPosition)
+    showSatellite = Signal(EarthSatellite, object, object, object, str)
 
     MAX_THREAD_COUNT: int = 30  # allows concurrent device polling + model workers
 
@@ -69,6 +70,7 @@ class MountWizzard4(QObject):
         mwGlob: MwGlob,
         application: QApplication,
         test: int = 0,
+        arguments: str = "",
     ) -> None:
         super().__init__()
         # Set up global references, thread pool, flags, and profile.
@@ -88,6 +90,8 @@ class MountWizzard4(QObject):
         self.msg.emit(1, "System", "Lifecycle", "MountWizzard4 started...")
         self.msg.emit(1, "System", "Workdir", f"[{workDir}]")
         self.msg.emit(1, "System", "Profile", f"[{profile}]")
+        if arguments:
+            self.msg.emit(1, "System", "Arguments", f"[{arguments}]")
         self.timeMgr = TimeManager(app=self)
         self.dReg: DeviceRegistry = DeviceRegistry(self)
         self.dReg.addDevices(self)
@@ -101,20 +105,23 @@ class MountWizzard4(QObject):
         self.mainW.showWindow()
         self.dReg.startDevices()
         self.timeMgr.start()
-        # Wire up application-level signal connections.
-        # self.application.aboutToQuit.connect(self.aboutToQuit)
         self.operationRunning.connect(self.storeStatusOperationRunning)
 
         if test:
             self.timeMgr.update10s.connect(self.mainW.close)
-        if len(sys.argv) > 1:
-            self.messageQueue.put((1, "System", "Arguments", sys.argv[1]))
 
     def initConfig(self) -> None:
         self.log.debug("Initializing configuration main application")
         self.dReg.initConfig()
         cfgSetting = self.config.get("SettingUpdate", {})
-        setCustomLoggingLevel(self, cfgSetting.get("loglevel", "DEBUG"))
+        # the settings tab owns the log level (loglevelInfo / Debug / Trace)
+        if cfgSetting.get("loglevelInfo", False):
+            level = "INFO"
+        elif cfgSetting.get("loglevelTrace", False):
+            level = "TRACE"
+        else:
+            level = "DEBUG"
+        setCustomLoggingLevel(self, level)
         self.isOnline = cfgSetting.get("isOnline", False)
         lat = self.config.get("topoLat", 51.47)
         lon = self.config.get("topoLon", 0)
@@ -125,7 +132,8 @@ class MountWizzard4(QObject):
 
     def storeConfig(self) -> None:
         self.log.debug("Storing configuration main application")
-        self.config["loglevel"] = logging.getLevelName(self.log.level)
+        # the log level is stored by the settings tab; remove the old key
+        self.config.pop("loglevel", None)
         self.dReg.storeConfig()
         location = self.dReg["mount"].location
         if location is not None:
@@ -138,5 +146,5 @@ class MountWizzard4(QObject):
         self.statusOperationRunning = status
 
     def writeMessageQueue(self, prio: int, source: str, mType: str, message: str) -> None:
-        self.log.debug(f"Message window:[{source} - {mType} - {message}]")
+        self.log.debug(f"Message window : [{source} - {mType} - {message}]")
         self.messageQueue.put((prio, source, mType, message))

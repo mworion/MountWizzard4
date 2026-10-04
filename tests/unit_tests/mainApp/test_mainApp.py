@@ -13,17 +13,17 @@
 # License APL2.0
 #
 ###########################################################
-import logging
 import pytest
 import shutil
+import sys
+from mw4.base.appProtocol import AppProtocol
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from unittest import mock
 from unittest.mock import MagicMock
 
 
-@pytest.fixture(scope="function")
-def app(qapp):
+def buildApp(qapp, arguments=""):
     mwGlob = {
         "configDir": Path("tests/work/config"),
         "dataDir": Path("tests/work/data"),
@@ -69,19 +69,67 @@ def app(qapp):
         mock.patch("mw4.mainApp.MainWindow") as mock_main_window,
     ):
         mock_main_window.return_value = MagicMock()
-        app_instance = MountWizzard4(mwGlob, qapp, 1)
+        app_instance = MountWizzard4(mwGlob, qapp, 1, arguments)
     app_instance.update1s = MagicMock(emit=mock_emit)
+    return app_instance
+
+
+@pytest.fixture(scope="function")
+def app(qapp):
+    app_instance = buildApp(qapp)
     yield app_instance
-    try:
-        app_instance.shutdown()
-    except (AttributeError, RuntimeError) as e:
-        logging.getLogger("MW4").debug(f"Fixture cleanup error: {e}")
+    app_instance.timeMgr.stop()
 
 
 def test_init_config(app):
     """initConfig() sets up the location from config and custom logging level."""
     app.initConfig()
     assert app.dReg["mount"].obsSite.location is not None
+
+
+@pytest.mark.parametrize(
+    ("setting", "level"),
+    [
+        ({"loglevelInfo": True}, "INFO"),
+        ({"loglevelTrace": True}, "TRACE"),
+        ({"loglevelDebug": True}, "DEBUG"),
+        ({}, "DEBUG"),
+    ],
+)
+def test_initConfig_logLevelFromSettingTab(app, setting, level):
+    app.config["SettingUpdate"] = setting
+    with mock.patch("mw4.mainApp.setCustomLoggingLevel") as setLevel:
+        app.initConfig()
+    setLevel.assert_called_once_with(app, level)
+
+
+def test_storeConfig_logLevelRoundTrip(app):
+    app.config["loglevel"] = "INFO"
+    app.config["SettingUpdate"] = {"loglevelInfo": True, "isOnline": True}
+    app.storeConfig()
+    assert "loglevel" not in app.config
+    assert app.config["SettingUpdate"] == {"loglevelInfo": True, "isOnline": True}
+    with mock.patch("mw4.mainApp.setCustomLoggingLevel") as setLevel:
+        app.initConfig()
+    setLevel.assert_called_once_with(app, "INFO")
+
+
+def test_satisfiesAppProtocol(app):
+    assert isinstance(app, AppProtocol)
+
+
+def test_msgSignalIsTyped(app, qtbot):
+    with qtbot.waitSignal(app.msg) as blocker:
+        app.msg.emit(1, "System", "Test", "text")
+    assert blocker.args == [1, "System", "Test", "text"]
+    assert [type(arg) for arg in blocker.args] == [int, str, str, str]
+
+
+def test_pathSignalPassesThrough(app, qtbot):
+    path = Path("image.fits")
+    with qtbot.waitSignal(app.showImage) as blocker:
+        app.showImage.emit(path)
+    assert blocker.args[0] is path
 
 
 def test_store_config(app):
@@ -223,3 +271,25 @@ def test_main_module_entry_point():
     content = main_file.read_text()
     assert "from mw4.cli import run" in content
     assert "run()" in content
+
+
+def readMessages(appInstance):
+    messages = []
+    while not appInstance.messageQueue.empty():
+        messages.append(appInstance.messageQueue.get())
+    return messages
+
+
+def test_init_withArguments(qapp):
+    appInstance = buildApp(qapp, "dpi=120.0, scale=1.5, test=0")
+    messages = readMessages(appInstance)
+    assert (1, "System", "Arguments", "[dpi=120.0, scale=1.5, test=0]") in messages
+    appInstance.timeMgr.stop()
+
+
+def test_init_withoutArguments(qapp, monkeypatch):
+    monkeypatch.setattr(sys, "argv", ["mw4", "raw"])
+    appInstance = buildApp(qapp)
+    messages = readMessages(appInstance)
+    assert not [m for m in messages if m[2] == "Arguments"]
+    appInstance.timeMgr.stop()

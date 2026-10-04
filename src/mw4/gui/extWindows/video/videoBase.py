@@ -15,22 +15,21 @@
 ###########################################################
 import cv2
 import qimage2ndarray
-from mw4.base.threadUtils import mainThreadSleep
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.tpool import Worker, startWorker
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import video_ui
-from PySide6.QtCore import Signal
+from PySide6.QtCore import QTimer, Signal
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QSizePolicy
-from typing import Any
 
 
 class VideoWindowBase(MWidget):
     pixmapReady = Signal(object)
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         super().__init__()
         self.app = app
         self.msg = app.msg
@@ -72,7 +71,7 @@ class VideoWindowBase(MWidget):
             _, frame = self.capture.retrieve()
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         except cv2.error as e:
-            self.msg.emit(2, "Video", "Compatibility", e)
+            self.msg.emit(2, "Video", "Compatibility", f"{e}")
             return
 
         image = qimage2ndarray.array2qimage(frame)
@@ -139,8 +138,7 @@ class VideoWindowBase(MWidget):
 
     def restartVideo(self) -> None:
         self.stopVideo()
-        mainThreadSleep(1000)
-        self.startVideo()
+        QTimer.singleShot(1000, self.startVideo)
 
     def receivedImage(self, pixmap: QPixmap) -> None:
         if not self.running or pixmap is None:

@@ -29,6 +29,13 @@ def function(qapp):
         QApplication.processEvents()
 
 
+@pytest.fixture(autouse=True)
+def prepareFunctionState(function):
+    function.parent.entityModel = {}
+    function.app.buildPoint.horizonP = None
+    function.app.data.horizonP = None
+
+
 def test_showEnable_1(function):
     function.parent.entityModel["horizonRoot"] = {"entity": Qt3DCore.QEntity()}
     function.showEnable()

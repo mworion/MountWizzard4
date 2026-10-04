@@ -15,10 +15,12 @@
 ###########################################################
 import queue
 import threading
+from alpaca.exceptions import ActionNotImplementedException, NotImplementedException
 from dataclasses import dataclass, field
+from mw4.base.appProtocol import AppProtocol
 from mw4.base.driverDataClass import DriverData
 from PySide6.QtCore import QThreadPool
-from typing import Any
+from typing import Any, ClassVar
 
 
 @dataclass
@@ -32,14 +34,26 @@ class CommandItem:
 class AlpacaAscomCommon(DriverData):
     PROTOCOL_NAME: str = ""
     UPDATE_RATE: float = 0.25
+    # errors which mean the driver does not provide the property or method. only
+    # these put an entry into propertyExceptions. communication errors (e.g.
+    # OSError from a timeout) or invalid values / operations are retried.
+    NOT_IMPLEMENTED_ERRORS: ClassVar[tuple[type[Exception], ...]] = (
+        AttributeError,
+        NotImplementedError,
+        NotImplementedException,
+        ActionNotImplementedException,
+    )
+    # scode of ASCOM (Property|Method)NotImplementedException in a COM error
+    ASCOM_NOT_IMPLEMENTED: int = 0x80040400
+    NEVER_BLOCKED: ClassVar[frozenset[str]] = frozenset({"Connected"})
 
     def __init__(self, parent: Any) -> None:
         super().__init__(parent.data)
-        self.app: Any = parent.app
+        self.app: AppProtocol = parent.app
         self.data: dict = parent.data
         self.signals: Any = parent.signals
         self.threadPool: QThreadPool = parent.app.threadPool
-        self.propertyExceptions: list[str] = []
+        self.propertyExceptions: set[str] = set()
         self.device: Any = None
         self.deviceConnected: bool = False
         self.commandQueue: queue.Queue = queue.Queue()
@@ -47,27 +61,34 @@ class AlpacaAscomCommon(DriverData):
         self.connectEvent: threading.Event = threading.Event()
         self.loggingTrace: bool = False
 
+    def isNotImplemented(self, e: Exception) -> bool:
+        if isinstance(e, self.NOT_IMPLEMENTED_ERRORS):
+            return True
+        excepInfo = getattr(e, "excepinfo", None)
+        if not excepInfo or len(excepInfo) < 6 or not isinstance(excepInfo[5], int):
+            return False
+        return excepInfo[5] & 0xFFFFFFFF == self.ASCOM_NOT_IMPLEMENTED
+
+    def handleDeviceError(self, kind: str, valueProp: str, e: Exception) -> None:
+        name = self.config.deviceName
+        if self.isNotImplemented(e) and valueProp not in self.NEVER_BLOCKED:
+            self.propertyExceptions.add(valueProp)
+            self.log.debug(f"[{name}] {kind} [{valueProp}] not implemented: {e}")
+            return
+        self.log.debug(f"[{name}] {kind} [{valueProp}] error: [{type(e).__name__}] {e}")
+
     def getDeviceProp(self, valueProp: str) -> Any:
         if valueProp in self.propertyExceptions:
             return None
         try:
-            if valueProp == "ImageArray":
-                pass
             returnVal = getattr(self.device, valueProp)
             if self.loggingTrace and "ImageArray" not in valueProp:
                 self.log.debug(
                     f"[Trace][Get] [{self.config.deviceName}] [{valueProp}] [{returnVal}]"
                 )
             return returnVal
-        except (AttributeError, OSError, ValueError) as e:
-            self.propertyExceptions.append(valueProp)
-            self.log.debug(
-                f"[{self.config.deviceName}] property [{valueProp}] not implemented: {e}"
-            )
-            return None
         except Exception as e:
-            self.propertyExceptions.append(valueProp)
-            self.log.debug(f"[{self.config.deviceName}] property [{valueProp}] error: {e}")
+            self.handleDeviceError("property", valueProp, e)
             return None
 
     def setDeviceProp(self, valueProp: str, value: Any) -> None:
@@ -79,14 +100,8 @@ class AlpacaAscomCommon(DriverData):
                 self.log.debug(
                     f"[Trace][Set] [{self.config.deviceName}] [{valueProp}] [{value}]"
                 )
-        except (AttributeError, OSError, ValueError) as e:
-            self.log.debug(
-                f"[{self.config.deviceName}] property [{valueProp}] not implemented: {e}"
-            )
-            self.propertyExceptions.append(valueProp)
         except Exception as e:
-            self.log.debug(f"[{self.config.deviceName}] property [{valueProp}] error: {e}")
-            self.propertyExceptions.append(valueProp)
+            self.handleDeviceError("property", valueProp, e)
 
     def callDeviceMethod(self, valueProp: str, **kwargs: Any) -> Any:
         if valueProp in self.propertyExceptions:
@@ -98,15 +113,8 @@ class AlpacaAscomCommon(DriverData):
                 t += f"[{valueProp}] [{kwargs}] [{returnVal}]"
                 self.log.debug(t)
             return returnVal
-        except (AttributeError, OSError, ValueError) as e:
-            self.log.debug(
-                f"[{self.config.deviceName}] method [{valueProp}] not implemented: {e}"
-            )
-            self.propertyExceptions.append(valueProp)
-            return None
         except Exception as e:
-            self.log.debug(f"[{self.config.deviceName}] method [{valueProp}] error: {e}")
-            self.propertyExceptions.append(valueProp)
+            self.handleDeviceError("method", valueProp, e)
             return None
 
     def setDevicePropQueued(self, valueProp: str, value: Any) -> None:
@@ -168,7 +176,17 @@ class AlpacaAscomCommon(DriverData):
         self.deviceConnected = False
         self.signals.deviceDisconnected.emit(self.config.deviceName)
 
+    def clearCommandQueue(self) -> None:
+        while True:
+            try:
+                self.commandQueue.get_nowait()
+            except queue.Empty:
+                break
+
     def runnerCommunicationLoop(self) -> None:
+        # commands left over from a previous session (e.g. the disconnect queued
+        # by stopCommunication while no loop was running) must not be replayed
+        self.clearCommandQueue()
         while not self.stopEvent.is_set():
             if not self.deviceConnected:
                 self.handleDeviceConnect()
@@ -178,9 +196,13 @@ class AlpacaAscomCommon(DriverData):
                 self.pollData()
                 self.processCommandQueue()
             self.stopEvent.wait(timeout=self.UPDATE_RATE)
+        # send the commands queued until the stop, including the disconnect
+        self.processCommandQueue()
 
     def stopCommunication(self) -> None:
-        self.stopEvent.set()
+        # queue the disconnect before setting the stop event, so the loop always
+        # finds it when it leaves
         self.setDevicePropQueued("Connected", False)
+        self.stopEvent.set()
         self.deviceConnected = False
         self.signals.deviceDisconnected.emit(self.config.deviceName)

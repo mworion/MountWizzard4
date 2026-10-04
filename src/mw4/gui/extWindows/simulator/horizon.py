@@ -14,6 +14,7 @@
 #
 ###########################################################
 import numpy as np
+from mw4.base.appProtocol import AppProtocol
 from mw4.gui.extWindows.simulator.materials import Materials
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
@@ -25,7 +26,7 @@ class SimulatorHorizon:
     WALL_RADIUS = 4
     WALL_SPACE = 5
 
-    def __init__(self, parent: Any, app: Any) -> None:
+    def __init__(self, parent: Any, app: AppProtocol) -> None:
         super().__init__()
         self.parent = parent
         self.app = app
@@ -88,6 +89,6 @@ class SimulatorHorizon:
         horizonEntity.setParent(parent)
         self.parent.entityModel["horizonRoot"] = {"entity": horizonEntity}
 
-        for alt, az in zip(horizonAlt, horizonAz):
+        for alt, az in zip(horizonAlt, horizonAz, strict=True):
             self.createWall(horizonEntity, alt, az)
         self.showEnable()

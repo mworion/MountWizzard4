@@ -13,13 +13,34 @@
 # License APL2.0
 #
 ###########################################################
+"""Qt adapter around the pure photometry core.
+
+The adapter owns the Qt signals and all presentation state, orchestrates the
+pure-core background estimation and source extraction, builds the display grids
+and emits the signals the image window connects to. All source data is exposed
+as flat, index-aligned arrays (xCoord, yCoord, aAxis, bAxis, theta, hfr).
+"""
+
 import logging
 import numpy as np
-import sep
 from mw4.base.tpool import Worker, startWorker
+from mw4.logic.photometry.photometry_analysis import (
+    GridGeometry,
+    computeAberrationImage,
+    computeBackground,
+    computeBackgroundRMS,
+    computeGridGeometry,
+    computeHFR,
+    computeRoundness,
+    computeTiltSquare,
+    computeTiltTriangle,
+)
+from mw4.logic.photometry.photometry_core import (
+    Background,
+    estimateBackground,
+    extractSources,
+)
 from PySide6.QtCore import QObject, Signal
-from scipy.interpolate import griddata
-from scipy.ndimage import uniform_filter
 from typing import Any, ClassVar
 
 
@@ -28,10 +49,11 @@ class PhotometrySignals(QObject):
     hfrSquare = Signal()
     hfrTriangle = Signal()
     aberration = Signal()
+    sources = Signal()
     roundness = Signal()
     background = Signal()
     backgroundRMS = Signal()
-    sepFinished = Signal()
+    photometryFinished = Signal(object)
 
 
 class Photometry:
@@ -39,7 +61,7 @@ class Photometry:
     ABERRATION_SIZE = 250
     FILTER_SCALE = 10
     SN: ClassVar = [30, 20, 15, 10, 10]
-    SEP: ClassVar = [3.0, 3.0, 2.5, 2.5, 2.0]
+    THRESHOLD_FACTORS: ClassVar = [3.0, 3.0, 2.5, 2.5, 2.0]
 
     def __init__(self, parent: Any, image: np.ndarray, snSelector: int = 0) -> None:
         self.threadPool = parent.app.threadPool
@@ -48,12 +70,18 @@ class Photometry:
         self.image: np.ndarray = image
         self.aberrationImage: np.ndarray = image
         self.snTarget = self.SN[snSelector]
-        self.sepThreshold = self.SEP[snSelector]
+        self.thresholdFactor = self.THRESHOLD_FACTORS[snSelector]
         self.workerCalcPhotometry: Worker | None = None
 
-        self.objs: Any = None
-        self.objsAll: Any = None
-        self.bkg: Any = None
+        self.bkg: Background | None = None
+        self.geom: GridGeometry | None = None
+
+        self.xCoord: np.ndarray = np.zeros(0)
+        self.yCoord: np.ndarray = np.zeros(0)
+        self.aAxis: np.ndarray = np.zeros(0)
+        self.bAxis: np.ndarray = np.zeros(0)
+        self.theta: np.ndarray = np.zeros(0)
+        self.elongation: np.ndarray = np.zeros(0)
 
         self.xm: np.ndarray = np.array([])
         self.ym: np.ndarray = np.array([])
@@ -73,7 +101,6 @@ class Photometry:
         self.backRMS: np.ndarray = np.zeros(0)
 
         self.hfr: np.ndarray = np.zeros(30)
-        self.hfrAll: np.ndarray = np.zeros(30)
         self.hfrMin: float = 1
         self.hfrMax: float = 1
         self.hfrPercentile: float = 1
@@ -85,124 +112,59 @@ class Photometry:
         self.hfrSegSquare = np.zeros((3, 3))
 
     def baseCalcs(self) -> None:
-        self.h, self.w = self.image.shape
-        self.filterConstW = int(self.w / (self.FILTER_SCALE * 3))
-        self.filterConstH = int(self.h / (self.FILTER_SCALE * 3))
-        rangeX = np.linspace(0, self.w, int(self.w / self.FILTER_SCALE))
-        rangeY = np.linspace(0, self.h, int(self.h / self.FILTER_SCALE))
-        self.xm, self.ym = np.meshgrid(rangeX, rangeY)
-        x = self.objs["x"] - self.w / 2
-        y = self.objs["y"] - self.h / 2
-        radius = np.sqrt(x * x + y * y)
-        maskOuter = np.sqrt(self.h * self.h / 4 + self.w * self.w / 4) * 0.75 < radius
-        maskInner = np.sqrt(self.h * self.h / 4 + self.w * self.w / 4) * 0.25 > radius
-        outerHFR = self.hfr[maskOuter]
-        innerHFR = self.hfr[maskInner]
-        self.hfrOuter = float(np.median(outerHFR)) if outerHFR.size > 0 else np.nan
-        self.hfrInner = float(np.median(innerHFR)) if innerHFR.size > 0 else np.nan
-        self.hfrPercentile = np.percentile(self.hfr, 90)
-        self.hfrMedian = np.median(self.hfr)
+        self.geom = computeGridGeometry(self.image, self.FILTER_SCALE)
+        self.h = self.geom.h
+        self.w = self.geom.w
+        self.filterConstW = self.geom.filterConstW
+        self.filterConstH = self.geom.filterConstH
+        self.xm = self.geom.xm
+        self.ym = self.geom.ym
 
     def runnerGetHFR(self) -> None:
-        img = griddata(
-            (self.objs["x"], self.objs["y"]),
-            self.hfr,
-            (self.xm, self.ym),
-            method="nearest",
-            fill_value=np.min(self.hfr),
-        )
-        self.hfrGrid = uniform_filter(img, size=[self.filterConstH, self.filterConstW])
-        minB, maxB = np.percentile(self.hfrGrid, (50, 95))
-        self.hfrMin = minB
-        self.hfrMax = maxB
+        res = computeHFR(self.geom, self.xCoord, self.yCoord, self.hfr)
+        self.hfrGrid = res.grid
+        self.hfrMin = res.hfrMin
+        self.hfrMax = res.hfrMax
+        self.hfrPercentile = res.percentile
+        self.hfrMedian = res.median
+        self.hfrInner = res.inner
+        self.hfrOuter = res.outer
         self.signals.hfr.emit()
 
     def runnerGetRoundness(self) -> None:
-        a = self.objs["a"]
-        b = self.objs["b"]
-        aspectRatio = np.maximum(a / b, b / a)
-        minB, maxB = np.percentile(aspectRatio, (50, 95))
-        img = griddata(
-            (self.objs["x"], self.objs["y"]),
-            aspectRatio,
-            (self.xm, self.ym),
-            method="linear",
-            fill_value=np.min(aspectRatio),
-        )
-        self.roundnessGrid = uniform_filter(img, size=[self.filterConstH, self.filterConstW])
-        self.roundnessPercentile = np.percentile(aspectRatio, 90)
-        self.roundnessMin = minB
-        self.roundnessMax = maxB
+        res = computeRoundness(self.geom, self.xCoord, self.yCoord, self.elongation)
+        self.roundnessGrid = res.grid
+        self.roundnessMin = res.roundnessMin
+        self.roundnessMax = res.roundnessMax
+        self.roundnessPercentile = res.percentile
         self.signals.roundness.emit()
 
     def runnerCalcTiltValuesSquare(self) -> None:
-        stepY = int(self.h / 3)
-        stepX = int(self.w / 3)
-
-        xRange = [0, stepX, 2 * stepX, 3 * stepX]
-        yRange = [0, stepY, 2 * stepY, 3 * stepY]
-        x = self.objs["x"]
-        y = self.objs["y"]
-        segHFR = np.zeros((3, 3))
-        for ix in range(3):
-            for iy in range(3):
-                xMin = xRange[ix]
-                xMax = xRange[ix + 1]
-                yMin = yRange[iy]
-                yMax = yRange[iy + 1]
-                hfr = self.hfr[(x > xMin) & (x < xMax) & (y > yMin) & (y < yMax)]
-                if hfr.size > 0:
-                    segHFR[ix][iy] = np.median(hfr)
-        self.hfrSegSquare = segHFR
+        self.hfrSegSquare = computeTiltSquare(self.geom, self.xCoord, self.yCoord, self.hfr)
         self.signals.hfrSquare.emit()
 
     def runnerCalcTiltValuesTriangle(self) -> None:
-        x = self.objs["x"] - self.w / 2
-        y = self.objs["y"] - self.h / 2
-        radius = min(self.h / 2, self.w / 2)
-        mask1 = np.sqrt(self.h * self.h + self.w * self.w) * 0.25 < radius
-        mask2 = np.sqrt(self.h * self.h + self.w * self.w) > radius
-        segHFR = np.zeros(36)
-        angles = np.mod(np.arctan2(y, x), 2 * np.pi)
-        rangeA = np.radians(range(0, 361, 10))
-        for i in range(36):
-            mask3 = rangeA[i] < angles
-            mask4 = rangeA[i + 1] > angles
-            hfrVal = self.hfr[mask1 & mask2 & mask3 & mask4]
-            if hfrVal.size > 0:
-                segHFR[i] = np.median(hfrVal)
-        self.hfrSegTriangle = np.concatenate([segHFR, segHFR])
+        self.hfrSegTriangle = computeTiltTriangle(
+            self.geom, self.xCoord, self.yCoord, self.hfr
+        )
         self.signals.hfrTriangle.emit()
 
     def calcAberrationInspectView(self) -> None:
-        size = self.ABERRATION_SIZE
-        if self.w < 3 * size or self.h < 3 * size:
-            self.aberrationImage = self.image
-            return
-
-        dw = int((self.w - 3 * size) / 2)
-        dh = int((self.h - 3 * size) / 2)
-
-        img = np.delete(self.image, np.s_[size : size + dh], axis=0)
-        img = np.delete(img, np.s_[size * 2 : size * 2 + dh], axis=0)
-        img = np.delete(img, np.s_[size : size + dw], axis=1)
-        img = np.delete(img, np.s_[size * 2 : size * 2 + dw], axis=1)
+        img, cropped = computeAberrationImage(self.image, self.ABERRATION_SIZE)
         self.aberrationImage = img
-        self.signals.aberration.emit()
+        if cropped:
+            self.signals.aberration.emit()
+            self.signals.sources.emit()
 
     def calcBackground(self) -> None:
-        maxB = float(np.max(self.backSignal)) / self.bkg.globalback
-        minB = float(np.min(self.backSignal)) / self.bkg.globalback
-        img = self.backSignal / self.bkg.globalback
-        self.background = uniform_filter(img, size=[self.filterConstH, self.filterConstW])
-        self.backgroundMin = minB
-        self.backgroundMax = maxB
+        res = computeBackground(self.geom, self.backSignal, self.bkg.globalback)
+        self.background = res.background
+        self.backgroundMin = res.backgroundMin
+        self.backgroundMax = res.backgroundMax
         self.signals.background.emit()
 
     def calcBackgroundRMS(self) -> None:
-        self.backgroundRMS = uniform_filter(
-            self.backRMS, size=[self.filterConstH, self.filterConstW]
-        )
+        self.backgroundRMS = computeBackgroundRMS(self.geom, self.backRMS)
         self.signals.backgroundRMS.emit()
 
     def runCalcs(self) -> None:
@@ -217,125 +179,55 @@ class Photometry:
         self.calcBackground()
         self.calcBackgroundRMS()
 
+    def emptyResult(self) -> None:
+        self.xCoord = np.zeros(0)
+        self.yCoord = np.zeros(0)
+        self.aAxis = np.zeros(0)
+        self.bAxis = np.zeros(0)
+        self.theta = np.zeros(0)
+        self.hfr = np.zeros(0)
+        self.elongation = np.zeros(0)
+
     def runnerCalcPhotometry(self) -> None:
-        self.bkg = sep.Background(self.image, bw=32, bh=32)
-        image_sub = self.image - self.bkg
+        self.bkg = estimateBackground(self.image)
+        imageSub = self.image - self.bkg.back()
         self.backRMS = self.bkg.rms()
         self.backSignal = self.bkg.back()
 
+        threshold = self.thresholdFactor * self.backRMS
         try:
-            objs = sep.extract(
-                image_sub,
-                self.sepThreshold,
-                err=self.backRMS,
-                filter_kernel=None,
-                minarea=7,
-            )
+            result = extractSources(imageSub, self.backRMS, threshold, self.snTarget)
         except (ValueError, RuntimeError, IndexError) as e:
             self.log.error(e)
-            self.objs = np.array([])
-            self.objsAll = np.array([])
-            self.hfr = np.zeros(0)
-            self.hfrAll = np.zeros(0)
+            self.emptyResult()
             return
 
-        objsRaw = len(objs)
+        if result is None:
+            self.log.error("No sources detected")
+            self.emptyResult()
+            return
 
-        # limiting the resulting object by some constraints
-        r = np.sqrt(objs["a"] * objs["a"] + objs["b"] * objs["b"])
-        mask = (r < 15) & (r > 0.8)
-        objs = objs[mask]
-        objsSelect = len(objs)
-
-        # equivalent to FLUX_AUTO of sextractor
-        PHOT_AUTOPARAMS = [2.5, 3.5]
-
-        kronRad, krFlag = sep.kron_radius(
-            image_sub, objs["x"], objs["y"], objs["a"], objs["b"], objs["theta"], 6.0
-        )
-
-        flux, fluxErr, flag = sep.sum_ellipse(
-            image_sub,
-            objs["x"],
-            objs["y"],
-            objs["a"],
-            objs["b"],
-            objs["theta"],
-            PHOT_AUTOPARAMS[0] * kronRad,
-            subpix=1,
-        )
-
-        flag |= krFlag
-        r_min = PHOT_AUTOPARAMS[1] / 2
-
-        useCircle = kronRad * np.sqrt(objs["a"] * objs["b"]) < r_min
-        cFlux, cFluxErr, cFlag = sep.sum_circle(
-            image_sub, objs["x"][useCircle], objs["y"][useCircle], r_min, subpix=1
-        )
-
-        flux[useCircle] = cFlux
-        fluxErr[useCircle] = cFluxErr
-        flag[useCircle] = cFlag
-
-        # equivalent of FLUX_RADIUS
-        PHOT_FLUXFRAC = [0.5, 1.0]
-
-        radius, _ = sep.flux_radius(
-            image_sub,
-            objs["x"],
-            objs["y"],
-            6.0 * objs["a"],
-            PHOT_FLUXFRAC,
-            normflux=flux,
-            subpix=5,
-        )
-
-        self.objsAll = objs
-        self.hfrAll = radius[:, 0]
-
-        # limiting the resulting object by checking the S/N values
-        b = []
-        for x, y in zip(objs["x"], objs["y"]):
-            b.append(self.backSignal[int(y)][int(x)])
-
-        # calculate sn based on optimized version of
-        # http://www1.phys.vt.edu/~jhs/phys3154/snr20040108.pdf
-        sn = flux / np.sqrt(np.abs(b * radius[:, 1] * radius[:, 1] * np.pi))
-
-        # pure version of source compared to use in stellarsolver
-        # starNumPixels = np.abs(b * radius[:, 1] * radius[:, 1] * np.pi)
-        # varSky = self.bkg.globalrms * self.bkg.globalrms
-        # sn = flux / np.sqrt(flux + starNumPixels * varSky * (1 + 1 / (32 * 32)))
-
-        mask = sn > self.snTarget
-        objs = objs[mask]
-        radius = radius[:, 0]
-        radius = radius[mask]
-        objsSN = len(objs)
-
-        # and we need a min and max of HFR
-        mask = radius < 10
-        self.objs = objs[mask]
-        self.hfr = radius[mask]
+        sources, counts = result
+        self.xCoord = sources.xCoord
+        self.yCoord = sources.yCoord
+        self.aAxis = sources.aAxis
+        self.bAxis = sources.bAxis
+        self.theta = sources.theta
+        self.hfr = sources.hfr
+        self.elongation = sources.elongation
         self.runCalcs()
-        objsHFR = len(self.objs)
-        self.log.info(f"Raw:{objsRaw}, Select:{objsSelect}, SN:{objsSN}, HFR:{objsHFR}")
-
-    def unlockPhotometry(self) -> None:
-        self.lock.unlock()
+        self.log.info(
+            f"Raw:{counts.raw}, Select:{counts.select}, "
+            f"SN:{counts.signalNoise}, HFR:{counts.hfr}"
+        )
 
     def processPhotometry(self, image: np.ndarray, snTarget: int) -> None:
         self.image = image.astype(np.float32)
         self.snTarget = self.SN[snTarget]
-        self.sepThreshold = self.SEP[snTarget]
-
-        if not self.lock.tryLock():
-            return
-
+        self.thresholdFactor = self.THRESHOLD_FACTORS[snTarget]
         self.workerCalcPhotometry = startWorker(
             self.workerCalcPhotometry,
             self.threadPool,
             self.runnerCalcPhotometry,
-            resultMethod=self.signals.sepFinished.emit,
-            finishedMethod=self.unlockPhotometry,
+            resultMethod=self.signals.photometryFinished.emit,
         )

@@ -216,47 +216,39 @@ def test_setupButtons_connects_button_signals(keypad_window):
     # Verify buttons are properly connected (no exception means success)
 
 
-# Tests for websocketClear method
-
-
-def test_websocketClear_unlocks_mutex(keypad_window):
-    """Test websocketClear unlocks the websocket mutex."""
-    keypad_window.websocketMutex.lock()
-    keypad_window.websocketClear()
-    # Verify mutex can be locked again (was unlocked)
-    assert keypad_window.websocketMutex.tryLock()
-    keypad_window.websocketMutex.unlock()
-
-
 # Tests for startKeypad method
 
 
-def test_startKeypad_blocked_when_already_running(keypad_window):
-    """Test startKeypad returns early when mutex already locked."""
-    keypad_window.websocketMutex.lock()
-    keypad_window.startKeypad()
-    keypad_window.websocketMutex.unlock()
-    # Should return early without starting new worker
+def test_startKeypad_initializes_display(keypad_window):
+    """Test startKeypad initializes display with connecting message."""
+    with (
+        mock.patch.object(keypad_window, "clearDisplay") as mock_clear,
+        mock.patch.object(keypad_window, "writeTextRow") as mock_write,
+    ):
+        keypad_window.startKeypad()
+        mock_clear.assert_called_once()
+        mock_write.assert_called_once_with(2, "Connecting ...")
 
 
 def test_startKeypad_creates_worker(keypad_window):
     """Test startKeypad creates and starts worker thread."""
     keypad_window.worker = None
-    if keypad_window.websocketMutex.tryLock():
-        keypad_window.websocketMutex.unlock()
 
     with (
-        mock.patch.object(keypad_window, "clearDisplay") as mock_clear,
-        mock.patch.object(keypad_window, "writeTextRow") as mock_write,
-        mock.patch.object(keypad_window.threadPool, "start") as mock_start,
+        mock.patch("mw4.gui.extWindows.keypadW.startWorker") as mock_start_worker,
+        mock.patch.object(keypad_window, "clearDisplay"),
+        mock.patch.object(keypad_window, "writeTextRow"),
     ):
         keypad_window.startKeypad()
-        mock_clear.assert_called_once()
-        mock_write.assert_called()
-        mock_start.assert_called_once()
-        keypad_window.websocketMutex.unlock()
-        if keypad_window.worker is not None:
-            keypad_window.worker.mutex.unlock()
+        mock_start_worker.assert_called_once()
+        args = mock_start_worker.call_args[0]
+        assert args[0] is None  # self.worker
+        assert args[1] == keypad_window.threadPool
+        assert args[2] == keypad_window.keypad.runnerWebsocket
+        assert args[3] == (
+            keypad_window.app.dReg["mount"].instance.config.hostAddress,
+            keypad_window.app.dReg["mount"].instance.config.port,
+        )
 
 
 # Tests for buttonPressed method

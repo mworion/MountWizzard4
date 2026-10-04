@@ -15,6 +15,7 @@
 ###########################################################
 import logging
 import shutil
+from mw4.base.appProtocol import AppProtocol
 from pathlib import Path
 from sgp4.exporter import export_tle
 from typing import Any
@@ -23,7 +24,7 @@ from typing import Any
 class DataWriter:
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: Any) -> None:
+    def __init__(self, app: AppProtocol) -> None:
         super().__init__()
         self.app = app
 

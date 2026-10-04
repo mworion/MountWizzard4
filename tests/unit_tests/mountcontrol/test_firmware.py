@@ -151,6 +151,19 @@ def test_Firmware_parse_chunks_6():
     assert not suc
 
 
+def test_Firmware_parse_invalidVersion():
+    class Parent:
+        host = None
+
+    fw = Firmware(parent=Parent())
+    response = ["Mar 19 2018", "2.1\ufffd.x", "10micron GM1000HPS", "15:56:53", "Q-TYPE2012"]
+    suc = fw.parse(response, 5)
+    assert not suc
+    assert fw.vString == "0.0.0"
+    assert fw.date == ""
+    assert fw.hardware == ""
+
+
 #
 #
 # testing poll

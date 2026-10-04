@@ -15,7 +15,6 @@
 ###########################################################
 import logging
 from functools import partial
-from mw4.base.threadUtils import mainThreadSleep
 from mw4.gui.extWindows.analyseW import AnalyseWindow
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from mw4.gui.extWindows.image.imageW import ImageWindow
@@ -32,7 +31,7 @@ from typing import Any
 
 
 class ExternalWindows:
-    def __init__(self, mainW):
+    def __init__(self, mainW) -> None:
         self.log = logging.getLogger("MW4")
         self.mainW = mainW
         self.app = mainW.app
@@ -139,7 +138,7 @@ class ExternalWindows:
             else:
                 changeStyleDynamic(winObj["button"], "run", "false")
 
-    def storeConfigExtendedWindows(self):
+    def storeConfigExtendedWindows(self) -> None:
         for window in self.uiWindows:
             self.app.config[window] = bool(self.uiWindows[window]["classObj"])
             if self.app.config[window]:
@@ -177,4 +176,3 @@ class ExternalWindows:
                 continue
             self.log.debug(f"Closing window: {window}")
             self.uiWindows[window]["classObj"].close()
-            mainThreadSleep(50)

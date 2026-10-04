@@ -122,7 +122,13 @@ def test_filterListComets_1(function):
     function.ui.listComets.setItem(0, 0, entry)
     entry = QTableWidgetItem("NOAA 8")
     function.ui.listComets.setItem(0, 1, entry)
+    function.ui.cometFilterText.setText("xyz")
     function.filterListComets()
+    assert function.ui.listComets.isRowHidden(0)
+    assert function.ui.listComets.updatesEnabled()
+    function.ui.cometFilterText.setText("noaa")
+    function.filterListComets()
+    assert not function.ui.listComets.isRowHidden(0)
 
 
 def test_fillCometListNames_1(function):
@@ -149,4 +155,25 @@ def test_fillCometListNames_1(function):
         }
     }
     function.fillCometListName()
-    assert function.ui.listComets.rowCount() == 1
+    table = function.ui.listComets
+    assert table.rowCount() == 1
+    assert table.item(0, 0).text() == "    0"
+    assert table.item(0, 1).text() == "test"
+    assert table.item(0, 3).text() == "1971-04-08"
+    assert table.updatesEnabled()
+
+
+def test_fillCometListNames_2(function):
+    function.comets.objects = {"a": {}, "b": {}}
+    function.fillCometListName()
+    table = function.ui.listComets
+    assert table.rowCount() == 2
+    assert table.item(1, 1).text() == "b"
+    assert table.item(1, 2) is None
+
+
+def test_fillCometListNames_exception(function):
+    function.comets.objects = {"a": {"e": "no number"}}
+    with pytest.raises(ValueError):
+        function.fillCometListName()
+    assert function.ui.listComets.updatesEnabled()

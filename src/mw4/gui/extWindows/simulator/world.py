@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+from mw4.base.appProtocol import AppProtocol
 from mw4.gui.extWindows.simulator.materials import Materials
 from mw4.gui.extWindows.simulator.tools import linkModel
 from PySide6.QtGui import QVector3D
@@ -20,13 +21,13 @@ from typing import Any
 
 
 class SimulatorWorld:
-    def __init__(self, parent: Any, app: Any) -> None:
+    def __init__(self, parent: Any, app: AppProtocol) -> None:
         super().__init__()
         self.parent = parent
         self.app = app
         self.app.updateDomeSettings.connect(self.updatePositions)
 
-    def updatePositions(self):
+    def updatePositions(self) -> None:
         """
         :return:
         """
@@ -45,7 +46,7 @@ class SimulatorWorld:
         if node:
             node["trans"].setScale3D(QVector3D(1, 1, scale))
 
-    def create(self):
+    def create(self) -> None:
         model = {
             "environRoot": {
                 "parent": "ref_fusion_m",

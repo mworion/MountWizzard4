@@ -24,7 +24,7 @@ class Materials(Styles):
     meshed build programmatically inside the simulator
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.mountBlack = Qt3DExtras.QMetalRoughMaterial()

@@ -18,7 +18,6 @@ import mw4.gui.mainWaddon
 import mw4.gui.mainWaddon.tabModel
 import os
 import pytest
-import time
 from mw4.gui.mainWaddon.tabModel import Model
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
@@ -61,11 +60,6 @@ def test_setWaitTimeFlip_1(function):
     function.setWaitTimeFlip()
 
 
-def test_cancelBatch_1(function):
-    function.modelData = None
-    function.cancelBatch()
-
-
 def test_cancelBatch_2(function):
     function.modelData = ModelData(App)
     function.cancelBatch()
@@ -87,20 +81,10 @@ def test_shutdown_modelRunning(function):
     function.app.statusOperationRunning = function.STATUS_IDLE
 
 
-def test_pauseBatch_1(function):
-    function.modelData = None
-    function.pauseBatch()
-
-
 def test_pauseBatch_2(function):
     function.modelData = ModelData(App)
     function.pauseBatch()
     assert function.modelData.pauseBatch
-
-
-def test_endBatch_1(function):
-    function.modelData = None
-    function.endBatch()
 
 
 def test_endBatch_2(function):
@@ -129,27 +113,31 @@ def test_setModelOperationMode_5(function):
     function.setModelOperationMode(4)
 
 
-def test_pauseBuild_1(function):
-    function.ui.pauseModel.setProperty("pause", True)
-    function.pauseBuild()
-    assert function.ui.pauseModel.property("pause") == "false"
-
-
-def test_pauseBuild_2(function):
-    function.ui.pauseModel.setProperty("pause", False)
-    function.pauseBuild()
-    assert function.ui.pauseModel.property("pause")
-
-
 def test_programModelToMountFinish_1(function):
     function.modelData = ModelData(App)
     function.modelData.modelName = "Test"
     function.app.mount.signals.getModelDone.connect(function.programModelToMountFinish)
     with (
-        mock.patch.object(function.modelData, "generateSaveData"),
-        mock.patch.object(function.modelData, "saveModelData"),
+        mock.patch.object(function.modelData, "generateSaveData", return_value=True),
+        mock.patch.object(function.modelData, "saveModelData") as mockSave,
     ):
         function.programModelToMountFinish()
+    mockSave.assert_called_once()
+    assert not function.modelDoneConnected
+
+
+def test_programModelToMountFinish_2(function):
+    function.modelData = ModelData(App)
+    function.modelData.modelName = "Test"
+    function.app.mount.signals.getModelDone.connect(function.programModelToMountFinish)
+    with (
+        mock.patch.object(function.modelData, "generateSaveData", return_value=False),
+        mock.patch.object(function.modelData, "saveModelData") as mockSave,
+        mock.patch.object(function, "msg") as mockMsg,
+    ):
+        function.programModelToMountFinish()
+    mockSave.assert_not_called()
+    assert mockMsg.emit.call_args_list[-1][0][0] == 2
 
 
 def test_programModelToMount_1(function):
@@ -183,7 +171,13 @@ def test_programModelToMount_3(function):
         ),
         mock.patch.object(function.app.mount.model, "storeName"),
     ):
+        function.modelDoneConnected = False
         function.programModelToMount()
+        assert function.modelDoneConnected
+        function.programModelToMount()
+        assert function.modelDoneConnected
+    function.app.mount.signals.getModelDone.disconnect(function.programModelToMountFinish)
+    function.modelDoneConnected = False
 
 
 def test_checkMountTimeSync_1(function):
@@ -278,16 +272,26 @@ def test_setupFilenamesAndDirectories_2(function):
         function.setupFilenamesAndDirectories()
 
 
+def test_formatDuration_1(function):
+    assert function.formatDuration(0) == "00:00:00"
+    assert function.formatDuration(3661.7) == "01:01:01"
+    assert function.formatDuration(90000) == "25:00:00"
+
+
 def test_showProgress_1(function):
     function.showProgress(
         {
             "count": 10,
-            "number": 1,
-            "modelPercent": 10,
-            "secondsElapsed": time.time(),
-            "secondsEstimated": time.time(),
+            "number": 20,
+            "modelPercent": 50,
+            "secondsElapsed": 65,
+            "secondsEstimated": 3600,
         }
     )
+    assert function.ui.timeElapsed.text() == "00:01:05"
+    assert function.ui.timeEstimated.text() == "01:00:00"
+    assert function.ui.modelProgress.value() == 50
+    assert function.ui.numberPoints.text() == "10 / 20"
 
 
 def test_showStatusExposure(function):
@@ -355,16 +359,22 @@ def test_setModelTiming_3(function):
 
 
 def test_runBatch_1(function):
-    with mock.patch.object(function, "checkModelRunConditions", return_value=False):
+    with (
+        mock.patch.object(function, "checkModelRunConditions", return_value=False),
+        mock.patch.object(function.app, "operationRunning") as mockOp,
+    ):
         function.runBatch()
+    mockOp.emit.assert_not_called()
 
 
 def test_runBatch_2(function):
     with (
         mock.patch.object(function, "checkModelRunConditions", return_value=True),
         mock.patch.object(function, "checkMountTimeSync", return_value=False),
+        mock.patch.object(function.app, "operationRunning") as mockOp,
     ):
         function.runBatch()
+    mockOp.emit.assert_not_called()
 
 
 def test_runBatch_3(function):

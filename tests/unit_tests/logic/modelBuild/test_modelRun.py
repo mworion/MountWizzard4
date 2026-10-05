@@ -111,8 +111,13 @@ def test_setImageSaved(function):
 def test_startExposureAfterSlew_1(function):
     function.mountSlewed = True
     function.domeSlewed = True
-    with mock.patch.object(function, "startNewImageExposure"):
-        function.setMountSlewed()
+    function.slewPending = True
+    with mock.patch.object(function, "startNewImageExposure") as mockExpose:
+        function.startExposureAfterSlew()
+        mockExpose.assert_called_once_with()
+        assert not function.slewPending
+        function.startExposureAfterSlew()
+        mockExpose.assert_called_once_with()
 
 
 def test_setMountSlewed_1(function):
@@ -252,6 +257,7 @@ def test_startNewSlew_4(function):
         function.startNewSlew()
         assert not function.mountSlewed
         assert not function.domeSlewed
+        assert function.slewPending
 
 
 def test_addMountModelToBuildModel_1(function):
@@ -265,7 +271,7 @@ def test_addMountModelToBuildModel_1(function):
             mw4.logic.modelBuild.modelRun, "convertAngleToFloat", return_value=[1, 2, 3]
         ),
     ):
-        function.addMountModelToBuildModel()
+        assert function.addMountModelToBuildModel()
     assert len(function.modelSaveData) == 3
 
 
@@ -280,14 +286,14 @@ def test_addMountModelToBuildModel_2(function):
             mw4.logic.modelBuild.modelRun, "convertAngleToFloat", return_value=[1, 2, 3]
         ),
     ):
-        function.addMountModelToBuildModel()
+        assert not function.addMountModelToBuildModel()
 
     assert len(function.modelSaveData) == 0
 
 
 def test_collectBuildModelResults_1(function):
     function.modelSaveData = [1, 2, 3]
-    function.modelBuildData = []
+    function.modelBuildData = {}
 
     function.collectBuildModelResults()
     assert function.modelSaveData == []
@@ -323,14 +329,16 @@ def test_collectBuildModelResults_2(function):
     assert "profile" in function.modelSaveData[0]
     assert "firmware" in function.modelSaveData[0]
     assert "latitude" in function.modelSaveData[0]
+    assert "version" not in function.modelBuildData["im-00"]
+    assert function.modelSaveData[0] is not function.modelBuildData["im-00"]
 
 
 def test_generateSaveData_1(function):
     with (
         mock.patch.object(function, "collectBuildModelResults"),
-        mock.patch.object(function, "addMountModelToBuildModel"),
+        mock.patch.object(function, "addMountModelToBuildModel", return_value=True),
     ):
-        function.generateSaveData()
+        assert function.generateSaveData()
 
 
 def test_saveModelData_1(function):
@@ -725,9 +733,23 @@ def test_startPass_1(function):
             function.startPass()
     finally:
         function.statusRetry.disconnect(retrySlot)
-    retrySlot.assert_called_once_with(1)
+    retrySlot.assert_not_called()
     mockFinish.assert_called_once()
     mockGen.assert_not_called()
+
+
+def test_startPass_retrySignal(function):
+    function.retries = 1
+    function.modelBuildData = buildRunData(["im-00"])
+    function.modelRunList = ["im-00"]
+    retrySlot = mock.MagicMock()
+    function.statusRetry.connect(retrySlot)
+    try:
+        with mock.patch.object(function, "startSlew"):
+            function.startPass()
+    finally:
+        function.statusRetry.disconnect(retrySlot)
+    retrySlot.assert_called_once_with(1)
 
 
 def test_startPass_2(function, qtbot):

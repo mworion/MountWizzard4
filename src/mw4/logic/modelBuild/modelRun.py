@@ -70,6 +70,7 @@ class ModelData(QObject):
         self.retriesReverse: bool = False
         self.mountSlewed: bool = False
         self.domeSlewed: bool = False
+        self.slewPending: bool = False
         self.passActive: bool = False
         self.timerExposure = QTimer(self)
         self.timerExposure.setSingleShot(True)
@@ -107,7 +108,8 @@ class ModelData(QObject):
             self.startSlew.emit()
 
     def startExposureAfterSlew(self) -> None:
-        if self.mountSlewed and self.domeSlewed:
+        if self.slewPending and self.mountSlewed and self.domeSlewed:
+            self.slewPending = False
             self.startNewImageExposure()
 
     def setMountSlewed(self) -> None:
@@ -122,56 +124,63 @@ class ModelData(QObject):
 
     def startNewSlew(self) -> None:
         nextKey = next(self.modelRunIterator, None)
-        self.modelRunKey = "" if nextKey is None else nextKey
+        self.modelRunKey = nextKey or ""
         if self.cancelBatch or self.endBatch or nextKey is None:
             return
-        altitude = self.modelBuildData[self.modelRunKey]["altitude"]
-        azimuth = self.modelBuildData[self.modelRunKey]["azimuth"]
+        mount = self.app.dReg["mount"]
+        dome = self.app.dReg["dome"]
+        point = self.modelBuildData[nextKey]
+        altitude = point["altitude"]
+        azimuth = point["azimuth"]
         self.mountSlewed = False
         self.domeSlewed = False
-        self.statusSlew.emit([self.modelRunKey, altitude.degrees, azimuth.degrees])
-        if not self.app.dReg["mount"].obsSite.setTargetAltAz(altitude, azimuth):
+        self.slewPending = False
+        self.statusSlew.emit([nextKey, altitude.degrees, azimuth.degrees])
+        if not mount.obsSite.setTargetAltAz(altitude, azimuth):
             result = {
                 "success": False,
                 "message": "Slew not possible - limits ?",
-                "imagePath": self.modelBuildData[self.modelRunKey]["imagePath"],
+                "imagePath": point["imagePath"],
             }
             self.app.dReg["plateSolve"].signals.result.emit(result)
             self.startSlew.emit()
-            t = f"{'Slew limits ':15s}: [{self.modelRunKey}]"
+            t = f"{'Slew limits ':15s}: [{nextKey}]"
             self.log.debug(t)
             return
 
-        if self.app.dReg["dome"].stat:
-            self.app.dReg["dome"].instance.slewDome(azimuth=azimuth.degrees)
-        self.app.dReg["mount"].obsSite.startSlewing()
-        t = f"{'Start slew':15s}: [{self.modelRunKey}], "
+        self.slewPending = True
+        if dome.stat:
+            dome.instance.slewDome(azimuth=azimuth.degrees)
+        mount.obsSite.startSlewing()
+        t = f"{'Start slew':15s}: [{nextKey}], "
         t += f" Alt: [{altitude.degrees:03.0f}], Az: [{azimuth.degrees:03.0f}]"
         self.log.debug(t)
 
-    def addMountModelToBuildModel(self) -> None:
-        mount_entry = self.app.dReg["mount"]
-        if len(mount_entry.model.starList) == len(self.modelSaveData):
-            self.modelSaveData = writeRetrofitData(mount_entry.model, self.modelSaveData)
-            self.modelSaveData = convertAngleToFloat(self.modelSaveData)
-        else:
+    def addMountModelToBuildModel(self) -> bool:
+        mount = self.app.dReg["mount"]
+        if len(mount.model.starList) != len(self.modelSaveData):
             self.log.warning("Error in model data: difference in length")
             self.modelSaveData = []
+            return False
+        self.modelSaveData = writeRetrofitData(mount.model, self.modelSaveData)
+        self.modelSaveData = convertAngleToFloat(self.modelSaveData)
+        return True
 
     def collectBuildModelResults(self) -> None:
         self.modelSaveData.clear()
-        for key in self.modelBuildData:
-            if not self.modelBuildData[key]["success"]:
+        for item in self.modelBuildData.values():
+            if not item["success"]:
                 continue
-            self.modelSaveData.append(self.modelBuildData[key])
-            self.modelSaveData[-1]["version"] = self.version
-            self.modelSaveData[-1]["profile"] = self.profile
-            self.modelSaveData[-1]["firmware"] = self.firmware
-            self.modelSaveData[-1]["latitude"] = self.latitude
+            saveItem = dict(item)
+            saveItem["version"] = self.version
+            saveItem["profile"] = self.profile
+            saveItem["firmware"] = self.firmware
+            saveItem["latitude"] = self.latitude
+            self.modelSaveData.append(saveItem)
 
-    def generateSaveData(self) -> None:
+    def generateSaveData(self) -> bool:
         self.collectBuildModelResults()
-        self.addMountModelToBuildModel()
+        return self.addMountModelToBuildModel()
 
     def saveModelData(self, modelPath: Path) -> None:
         self.log.debug(f"{'Save model':15s}: Len: [{len(self.modelSaveData)}]")
@@ -327,11 +336,11 @@ class ModelData(QObject):
         self.modelRunIterator = iter(self.modelRunList)
 
     def startPass(self) -> None:
-        if self.retries > 0:
-            self.statusRetry.emit(self.retries)
         if self.cancelBatch or self.endBatch:
             self.finishModel()
             return
+        if self.retries > 0:
+            self.statusRetry.emit(self.retries)
         self.generateRunIterator()
         for key in self.modelRunList:
             self.modelBuildData[key]["processed"] = False

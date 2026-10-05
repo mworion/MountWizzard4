@@ -13,9 +13,8 @@
 # License APL2.0
 #
 ###########################################################
-import time
 from collections.abc import Callable
-from datetime import UTC, datetime
+from datetime import datetime, timedelta
 from functools import partial
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
@@ -47,8 +46,7 @@ class Model(TabAddon):
         self.app = mainW.app
         self.msg = mainW.app.msg
         self.ui = mainW.ui
-        self.timeStartModeling = None
-        self.model: list = []
+        self.modelDoneConnected: bool = False
         self.modelData = ModelData(self.app)
 
         self.ui.runModel.clicked.connect(self.runBatch)
@@ -98,8 +96,6 @@ class Model(TabAddon):
         self.app.dReg["mount"].instance.waitTimeFlip = self.ui.waitTimeMountFlip.value()
 
     def cancelBatch(self) -> None:
-        if not self.modelData:
-            return
         self.modelData.cancelRun()
 
     def shutdown(self) -> None:
@@ -109,14 +105,10 @@ class Model(TabAddon):
         self.cancelBatch()
 
     def pauseBatch(self) -> None:
-        if not self.modelData:
-            return
         self.modelData.pauseBatch = not self.modelData.pauseBatch
         changeStyleDynamic(self.ui.pauseModel, "pause", self.modelData.pauseBatch)
 
     def endBatch(self) -> None:
-        if not self.modelData:
-            return
         self.modelData.endRun()
 
     def setModelOperationMode(self, status: int) -> None:
@@ -146,20 +138,16 @@ class Model(TabAddon):
             changeStyleDynamic(self.ui.endModel, "stop", "false")
             changeStyleDynamic(self.ui.pauseModel, "pause", "false")
 
-    def pauseBuild(self) -> None:
-        if not self.ui.pauseModel.property("pause"):
-            changeStyleDynamic(self.ui.pauseModel, "color", "yellow")
-            changeStyleDynamic(self.ui.pauseModel, "pause", "true")
-        else:
-            changeStyleDynamic(self.ui.pauseModel, "color", "")
-            changeStyleDynamic(self.ui.pauseModel, "pause", "false")
-
     def programModelToMountFinish(self) -> None:
         self.app.dReg["mount"].signals.getModelDone.disconnect(self.programModelToMountFinish)
+        self.modelDoneConnected = False
         self.msg.emit(1, "Model", "Writing model", f"[{self.modelData.modelName}]")
-        self.modelData.generateSaveData()
-        modelPath = self.app.mwGlob["modelDir"] / (self.modelData.modelName + ".model")
-        self.modelData.saveModelData(modelPath)
+        if self.modelData.generateSaveData():
+            modelPath = self.app.mwGlob["modelDir"] / (self.modelData.modelName + ".model")
+            self.modelData.saveModelData(modelPath)
+        else:
+            t = "Model data inconsistent with mount model, model file not saved"
+            self.msg.emit(2, "Model", "Run error", t)
         self.app.dReg["mount"].model.storeName("actual")
 
     def programModelToMount(self) -> None:
@@ -172,7 +160,9 @@ class Model(TabAddon):
             self.msg.emit(3, "Model", "Run error", f"{'Program':12s} Failed - error")
             return
         self.msg.emit(1, "Model", "Program", f"[{self.modelData.modelName}] with success")
-        self.app.dReg["mount"].signals.getModelDone.connect(self.programModelToMountFinish)
+        if not self.modelDoneConnected:
+            self.app.dReg["mount"].signals.getModelDone.connect(self.programModelToMountFinish)
+            self.modelDoneConnected = True
         self.app.refreshModel.emit()
 
     def checkMountTimeSync(self) -> bool:
@@ -222,31 +212,31 @@ class Model(TabAddon):
         imageDir.mkdir(parents=True, exist_ok=True)
         return imageDir
 
+    @staticmethod
+    def formatDuration(seconds: float) -> str:
+        hours, remainder = divmod(int(seconds), 3600)
+        minutes, secs = divmod(remainder, 60)
+        return f"{hours:02d}:{minutes:02d}:{secs:02d}"
+
     def showProgress(self, progressData: dict) -> None:
-        timeElapsed = time.gmtime(progressData["secondsElapsed"])
-        timeEstimated = time.gmtime(progressData["secondsEstimated"])
-        timeFinished = time.localtime(time.time() + progressData["secondsEstimated"])
-        self.ui.timeElapsed.setText(
-            datetime(*timeElapsed[:6], tzinfo=UTC).strftime("%H:%M:%S")
+        timeFinished = datetime.now().astimezone() + timedelta(
+            seconds=progressData["secondsEstimated"]
         )
-        self.ui.timeEstimated.setText(
-            datetime(*timeEstimated[:6], tzinfo=UTC).strftime("%H:%M:%S")
-        )
-        self.ui.timeFinished.setText(
-            datetime(*timeFinished[:6], tzinfo=UTC).strftime("%H:%M:%S")
-        )
+        self.ui.timeElapsed.setText(self.formatDuration(progressData["secondsElapsed"]))
+        self.ui.timeEstimated.setText(self.formatDuration(progressData["secondsEstimated"]))
+        self.ui.timeFinished.setText(timeFinished.strftime("%H:%M:%S"))
         self.ui.modelProgress.setValue(progressData["modelPercent"])
         self.ui.numberPoints.setText(f"{progressData['count']} / {progressData['number']}")
 
-    def showStatusExposure(self, statusData: tuple) -> None:
-        t = f"[{statusData[0]}], ExpTime: [{statusData[1]}s], Binning: [{statusData[2]:1f}] "
+    def showStatusExposure(self, statusData: list) -> None:
+        t = f"[{statusData[0]}], ExpTime: [{statusData[1]}s], Binning: [{statusData[2]:.0f}] "
         self.msg.emit(0, "Model", "Exposure", t)
 
-    def showStatusSlew(self, statusData: tuple) -> None:
+    def showStatusSlew(self, statusData: list) -> None:
         t = f"[{statusData[0]}], Alt: [{statusData[1]:3.2f}], Az: [{statusData[2]:3.2f}]"
         self.msg.emit(0, "Model", "Slewing", t)
 
-    def showStatusRetry(self, statusData) -> None:
+    def showStatusRetry(self, statusData: int) -> None:
         t = f"Retry run # [{statusData:02d}] for model run"
         self.msg.emit(1, "Model", "Retry start", t)
 
@@ -287,11 +277,10 @@ class Model(TabAddon):
             self.modelData.modelTiming = self.modelData.CONSERVATIVE
 
     def runBatch(self) -> None:
-        self.app.operationRunning.emit(self.STATUS_MODEL_BATCH)
         self.modelData.resetBatchFlags()
         if not self.checkModelRunConditions() or not self.checkMountTimeSync():
-            self.app.operationRunning.emit(self.STATUS_IDLE)
             return
+        self.app.operationRunning.emit(self.STATUS_MODEL_BATCH)
         if not self.clearAlignAndBackup(self.startBatch):
             self.app.operationRunning.emit(self.STATUS_IDLE)
 

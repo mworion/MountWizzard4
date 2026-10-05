@@ -37,11 +37,19 @@ class PegasusUPBIndi(IndiClass):
                 self.signals.version.emit(2)
             self.modelVersion = 2
 
+    @staticmethod
+    def parseVersion(version: str) -> tuple[int, ...]:
+        try:
+            return tuple(int(x) for x in str(version).split("."))
+        except ValueError:
+            return (0,)
+
     def checkFirmwareInfo(self, vectors: dict) -> None:
         firmwareInfo = vectors.get("FIRMWARE_INFO", {})
         if not firmwareInfo:
             return
-        if firmwareInfo["members"].get("VERSION", {"value": "1.4"})["value"] < "1.5":
+        version = firmwareInfo["members"].get("VERSION", {"value": "1.4"})["value"]
+        if self.parseVersion(version) < (1, 5):
             if self.modelVersion != 1:
                 self.signals.version.emit(1)
             self.modelVersion = 1
@@ -62,9 +70,7 @@ class PegasusUPBIndi(IndiClass):
                 (self.config.deviceName, "AUX_POWER_OUTLET", {f"OUTLET_{port}": value})
             )
         else:
-            value = (
-                "Off" if self.data[f"POWER_CHANNELS.POWER_CHANNEL_{port}"] else "On"
-            )
+            value = "Off" if self.data[f"POWER_CHANNELS.POWER_CHANNEL_{port}"] else "On"
             self.txQ.put(
                 (self.config.deviceName, "POWER_CHANNELS", {f"POWER_CHANNEL_{port}": value})
             )
@@ -72,7 +78,7 @@ class PegasusUPBIndi(IndiClass):
     def toggleHubUSB(self) -> None:
         if self.isINDIGO:
             return
-        value = "Off" if self.data["USB_HUB_CONTROL.INDI_ENABLED"]else "On"
+        value = "Off" if self.data["USB_HUB_CONTROL.INDI_ENABLED"] else "On"
         self.txQ.put((self.config.deviceName, "USB_HUB_CONTROL", {"INDI_ENABLED": value}))
 
     def togglePortUSB(self, port: str) -> None:
@@ -83,33 +89,15 @@ class PegasusUPBIndi(IndiClass):
             value = "Off" if self.data[f"USB_PORTS.USB_PORT_{port}"] else "On"
             self.txQ.put((self.config.deviceName, "USB_PORTS", {f"USB_PORT_{port}": value}))
 
-    def toggleAutoDew(self) -> None:
-        if self.isINDIGO:
-            value = "Off" if self.data["AUX_DEW_CONTROL.MANUAL"] else "On"
-            self.txQ.put((self.config.deviceName, "AUX_DEW_CONTROL", {"MANUAL": value}))
-            value = "Off" if self.data["AUX_DEW_CONTROL.MANUAL"] else "On"
-            self.txQ.put((self.config.deviceName, "AUX_DEW_CONTROL", {"AUTOMATIC": value}))
-        else:
-            if self.modelVersion == 1:
-                if "AUTO_DEW.INDI_ENABLED" not in self.data:
-                    return
-                value = "Off" if self.data["AUTO_DEW.INDI_ENABLED"] else "On"
-                self.txQ.put((self.config.deviceName, "AUTO_DEW", {"INDI_ENABLED": value}))
-            else:
-                if "AUTO_DEW_CONTROL.DEW_CHANNEL_1" not in self.data:
-                    return
-                value = "Off" if self.data["AUTO_DEW_CONTROL.DEW_CHANNEL_1"] else "On"
-                self.txQ.put((self.config.deviceName, "AUTO_DEW_CONTROL", {"DEW_CHANNEL_1": value}))
-                self.txQ.put((self.config.deviceName, "AUTO_DEW_CONTROL", {"DEW_CHANNEL_2": value}))
-                self.txQ.put((self.config.deviceName, "AUTO_DEW_CONTROL", {"DEW_CHANNEL_3": value}))
-
     def sendDew(self, port: str, value: float) -> None:
         if self.isINDIGO:
             self.txQ.put(
                 (self.config.deviceName, "AUX_HEATER_OUTLET", {f"OUTLET_{port}": value})
             )
         else:
-            self.txQ.put((self.config.deviceName, "DEW_DUTY_CYCLES", {f"DEW_CHANNEL_{port}": value}))
+            self.txQ.put(
+                (self.config.deviceName, "DEW_DUTY_CYCLES", {f"DEW_CHANNEL_{port}": value})
+            )
 
     def sendAdjustableOutput(self, value: float) -> None:
         if self.isINDIGO:

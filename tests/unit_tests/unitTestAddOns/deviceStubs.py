@@ -468,19 +468,11 @@ class Power:
         return True
 
     @staticmethod
-    def togglePowerPortBoot(port=None):
-        return True
-
-    @staticmethod
     def toggleHubUSB():
         return True
 
     @staticmethod
     def togglePortUSB(port=None):
-        return True
-
-    @staticmethod
-    def toggleAutoDew():
         return True
 
     @staticmethod

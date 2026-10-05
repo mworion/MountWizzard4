@@ -36,19 +36,29 @@ def function(qapp):
 
 def test_setGuiVersion_1(function):
     function.setGuiVersion()
+    assert function.version == 1
 
 
 def test_setGuiVersion_2(function):
     function.setGuiVersion(version=2)
+    assert function.version == 2
+
+
+def test_setGuiVersion_3(function):
+    function.setGuiVersion(version=3)
+    assert function.version == 3
 
 
 def test_updatePowerGui_1(function):
+    function.setGuiVersion(version=1)
     function.updatePowerGui()
 
 
 def test_updatePowerGui_2(function):
-    function.app.dReg.d["power"].instance.data = {"FIRMWARE_INFO.VERSION": "1.5"}
+    function.setGuiVersion(version=2)
+    function.app.dReg.d["power"].instance.data = {"DEW_LABELS.DEW_CHANNEL_1": 5}
     function.updatePowerGui()
+    function.setGuiVersion(version=1)
 
 
 def test_setDewCycle_1(function):
@@ -86,34 +96,28 @@ def test_togglePortUSB_1(function):
         function.togglePortUSB("1")
 
 
+def test_setAdjustableOutput_1(function):
+    function.ui.adjustableOutput.setText("-")
+    with mock.patch.object(MWInputDialog, "getDouble", return_value=(0, False)):
+        assert not function.setAdjustableOutput()
+
+
 def test_setAdjustableOutput_2(function):
     function.ui.adjustableOutput.setText("10")
     with mock.patch.object(MWInputDialog, "getDouble", return_value=(0, False)):
-        function.setAdjustableOutput()
+        assert not function.setAdjustableOutput()
 
 
 def test_setAdjustableOutput_3(function):
     function.ui.adjustableOutput.setText("10")
     with (
         mock.patch.object(MWInputDialog, "getDouble", return_value=(0, True)),
-        mock.patch.object(
-            function.app.dReg.d["power"].instance,
-            "sendAdjustableOutput",
-            return_value=True,
-        ),
+        mock.patch.object(function.app.dReg.d["power"].instance, "sendAdjustableOutput"),
     ):
-        function.setAdjustableOutput()
+        assert function.setAdjustableOutput()
 
 
 def test_rebootUPB_1(function):
-    with mock.patch.object(
-        function.app.dReg.d["power"].instance, "reboot", return_value=False
-    ):
-        suc = function.rebootUPB()
-        assert not suc
-
-
-def test_rebootUPB_2(function):
-    with mock.patch.object(function.app.dReg.d["power"].instance, "reboot", return_value=True):
-        suc = function.rebootUPB()
-        assert suc
+    with mock.patch.object(function.app.dReg.d["power"].instance, "reboot") as reboot:
+        function.rebootUPB()
+        reboot.assert_called_once()

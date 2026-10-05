@@ -49,17 +49,11 @@ class PegasusUPB:
     def togglePowerPort(self, port: str) -> None:
         self.run[self.framework].togglePowerPort(port=port)
 
-    def togglePowerPortBoot(self, port: str) -> None:
-        self.run[self.framework].togglePowerPortBoot(port=port)
-
     def toggleHubUSB(self) -> None:
         self.run[self.framework].toggleHubUSB()
 
     def togglePortUSB(self, port: str) -> None:
         self.run[self.framework].togglePortUSB(port=port)
-
-    def toggleAutoDew(self) -> None:
-        self.run[self.framework].toggleAutoDew()
 
     def sendDew(self, port: str, value: float) -> None:
         self.run[self.framework].sendDew(port=port, value=value)

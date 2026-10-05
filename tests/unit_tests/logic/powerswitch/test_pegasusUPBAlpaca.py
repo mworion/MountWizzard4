@@ -75,10 +75,6 @@ def test_togglePowerPort_1(function):
     assert not function.commandQueue.empty()
 
 
-def test_togglePowerPortBoot_1(function):
-    function.togglePowerPortBoot("1")
-
-
 def test_toggleHubUSB_1(function):
     function.toggleHubUSB()
 
@@ -96,22 +92,6 @@ def test_togglePortUSB_2(function):
         while not function.commandQueue.empty():
             function.commandQueue.get_nowait()
         function.togglePortUSB("1")
-        assert not function.commandQueue.empty()
-
-
-def test_toggleAutoDew_1(function):
-    with mock.patch.object(function, "getDeviceProp", return_value=21):
-        while not function.commandQueue.empty():
-            function.commandQueue.get_nowait()
-        function.toggleAutoDew()
-        assert not function.commandQueue.empty()
-
-
-def test_toggleAutoDew_2(function):
-    with mock.patch.object(function, "getDeviceProp", return_value=15):
-        while not function.commandQueue.empty():
-            function.commandQueue.get_nowait()
-        function.toggleAutoDew()
         assert not function.commandQueue.empty()
 
 

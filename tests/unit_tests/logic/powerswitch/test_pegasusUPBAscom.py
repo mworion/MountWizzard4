@@ -65,10 +65,6 @@ def test_togglePowerPort(function):
     m.assert_called_once_with("SetSwitch", Id=0, State=False)
 
 
-def test_togglePowerPortBoot(function):
-    function.togglePowerPortBoot("1")
-
-
 def test_toggleHubUSB(function):
     function.toggleHubUSB()
 
@@ -86,22 +82,6 @@ def test_togglePortUSB_UPBv2(function):
     with mock.patch.object(function, "callDeviceMethodQueued") as m:
         function.togglePortUSB("1")
     m.assert_called_once_with("SetSwitch", Id=7, State=False)
-
-
-def test_toggleAutoDew_UPB(function):
-    function.device.MaxSwitch = 15
-    function.data["AUTO_DEW.INDI_ENABLED"] = False
-    with mock.patch.object(function, "callDeviceMethodQueued") as m:
-        function.toggleAutoDew()
-    m.assert_called_once_with("SetSwitch", Id=7, State=True)
-
-
-def test_toggleAutoDew_UPBv2(function):
-    function.device.MaxSwitch = 21
-    function.data["AUTO_DEW.DEW_A"] = False
-    with mock.patch.object(function, "callDeviceMethodQueued") as m:
-        function.toggleAutoDew()
-    m.assert_called_once_with("SetSwitch", Id=13, State=True)
 
 
 def test_sendDew_UPB(function):

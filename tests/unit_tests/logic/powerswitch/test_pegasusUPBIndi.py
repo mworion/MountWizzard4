@@ -92,6 +92,15 @@ def test_checkDriverInfo_non_upb_already_2(function):
     function.signals.version.disconnect(slot)
 
 
+def test_parseVersion_valid(function):
+    assert function.parseVersion("1.10") == (1, 10)
+    assert function.parseVersion("1.10") > function.parseVersion("1.4")
+
+
+def test_parseVersion_invalid(function):
+    assert function.parseVersion("abc") == (0,)
+
+
 def test_checkFirmwareInfo_absent(function):
     function.modelVersion = 0
     function.checkFirmwareInfo({})
@@ -262,94 +271,6 @@ def test_togglePortUSB_indigo_on_to_off(function):
     function.togglePortUSB(port="2")
     assert function.txQ.qsize() == 1
     assert function.txQ.get() == ("test_upb", "AUX_USB_PORT", {"PORT_2": "Off"})
-
-
-def test_toggleAutoDew_indigo_manual_on(function):
-    function.txQ = Queue()
-    function.isINDIGO = True
-    function.data["AUX_DEW_CONTROL.MANUAL"] = True
-    function.toggleAutoDew()
-    assert function.txQ.qsize() == 2
-    assert function.txQ.get() == ("test_upb", "AUX_DEW_CONTROL", {"MANUAL": "Off"})
-    assert function.txQ.get() == ("test_upb", "AUX_DEW_CONTROL", {"AUTOMATIC": "Off"})
-
-
-def test_toggleAutoDew_indigo_manual_off(function):
-    function.txQ = Queue()
-    function.isINDIGO = True
-    function.data["AUX_DEW_CONTROL.MANUAL"] = False
-    function.toggleAutoDew()
-    assert function.txQ.qsize() == 2
-    assert function.txQ.get() == ("test_upb", "AUX_DEW_CONTROL", {"MANUAL": "On"})
-    assert function.txQ.get() == ("test_upb", "AUX_DEW_CONTROL", {"AUTOMATIC": "On"})
-
-
-def test_toggleAutoDew_indi_v1_no_indi_enabled(function):
-    function.txQ = Queue()
-    function.isINDIGO = False
-    function.modelVersion = 1
-    function.data.pop("AUTO_DEW.INDI_ENABLED", None)
-    function.toggleAutoDew()
-    assert function.txQ.qsize() == 0
-
-
-def test_toggleAutoDew_indi_v1_enabled_on(function):
-    function.txQ = Queue()
-    function.isINDIGO = False
-    function.modelVersion = 1
-    function.data["AUTO_DEW.INDI_ENABLED"] = True
-    function.toggleAutoDew()
-    assert function.txQ.qsize() == 1
-    assert function.txQ.get() == ("test_upb", "AUTO_DEW", {"INDI_ENABLED": "Off"})
-
-
-def test_toggleAutoDew_indi_v1_enabled_off(function):
-    function.txQ = Queue()
-    function.isINDIGO = False
-    function.modelVersion = 1
-    function.data["AUTO_DEW.INDI_ENABLED"] = False
-    function.toggleAutoDew()
-    assert function.txQ.qsize() == 1
-    assert function.txQ.get() == ("test_upb", "AUTO_DEW", {"INDI_ENABLED": "On"})
-
-
-def test_toggleAutoDew_indi_v2_no_channel_1(function):
-    function.txQ = Queue()
-    function.isINDIGO = False
-    function.modelVersion = 2
-    function.data.pop("AUTO_DEW_CONTROL.DEW_CHANNEL_1", None)
-    function.toggleAutoDew()
-    assert function.txQ.qsize() == 0
-
-
-def test_toggleAutoDew_indi_v2_channel_1_on(function):
-    function.txQ = Queue()
-    function.isINDIGO = False
-    function.modelVersion = 2
-    function.data["AUTO_DEW_CONTROL.DEW_CHANNEL_1"] = True
-    function.toggleAutoDew()
-    assert function.txQ.qsize() == 3
-    for i in ("1", "2", "3"):
-        assert function.txQ.get() == (
-            "test_upb",
-            "AUTO_DEW_CONTROL",
-            {f"DEW_CHANNEL_{i}": "Off"},
-        )
-
-
-def test_toggleAutoDew_indi_v2_channel_1_off(function):
-    function.txQ = Queue()
-    function.isINDIGO = False
-    function.modelVersion = 2
-    function.data["AUTO_DEW_CONTROL.DEW_CHANNEL_1"] = False
-    function.toggleAutoDew()
-    assert function.txQ.qsize() == 3
-    for i in ("1", "2", "3"):
-        assert function.txQ.get() == (
-            "test_upb",
-            "AUTO_DEW_CONTROL",
-            {f"DEW_CHANNEL_{i}": "On"},
-        )
 
 
 def test_sendDew_indi(function):

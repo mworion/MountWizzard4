@@ -67,9 +67,6 @@ class PegasusUPBAlpacaAscomBase(AlpacaAscomCommon):
         val = self.data.get(f"POWER_CONTROL.POWER_CONTROL_{port}", True)
         self.callDeviceMethodQueued("SetSwitch", Id=switchNumber, State=not val)
 
-    def togglePowerPortBoot(self, port: str) -> None:
-        pass
-
     def toggleHubUSB(self) -> None:
         pass
 
@@ -79,15 +76,6 @@ class PegasusUPBAlpacaAscomBase(AlpacaAscomCommon):
             switchNumber = int(port) + 6
             val = self.data.get(f"USB_PORT_CONTROL.PORT_{port}", True)
             self.callDeviceMethodQueued("SetSwitch", Id=switchNumber, State=not val)
-
-    def toggleAutoDew(self) -> None:
-        model = "UPB" if self.getDeviceProp("MaxSwitch") == 15 else "UPBv2"
-        if model == "UPB":
-            val = self.data.get("AUTO_DEW.INDI_ENABLED", False)
-            self.callDeviceMethodQueued("SetSwitch", Id=7, State=not val)
-        else:
-            val = self.data.get("AUTO_DEW.DEW_A", False)
-            self.callDeviceMethodQueued("SetSwitch", Id=13, State=not val)
 
     def sendDew(self, port: str, value: float) -> None:
         model = "UPB" if self.getDeviceProp("MaxSwitch") == 15 else "UPBv2"

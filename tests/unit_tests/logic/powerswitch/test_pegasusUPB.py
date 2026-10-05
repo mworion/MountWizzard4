@@ -87,24 +87,6 @@ def test_togglePowerPort(function):
         mock_toggle.assert_called_once_with(port="1")
 
 
-# ---------------------------------------------------------------------------
-# togglePowerPortBoot
-# ---------------------------------------------------------------------------
-
-
-def test_togglePowerPortBoot(function):
-    """togglePowerPortBoot() delegates to the active framework adapter."""
-    function.framework = "indi"
-    with mock.patch.object(function.run["indi"], "togglePowerPortBoot") as mock_toggle:
-        function.togglePowerPortBoot("1")
-        mock_toggle.assert_called_once_with(port="1")
-
-
-# ---------------------------------------------------------------------------
-# toggleHubUSB
-# ---------------------------------------------------------------------------
-
-
 def test_toggleHubUSB(function):
     """toggleHubUSB() delegates to the active framework adapter."""
     function.framework = "indi"
@@ -124,24 +106,6 @@ def test_togglePortUSB(function):
     with mock.patch.object(function.run["indi"], "togglePortUSB") as mock_toggle:
         function.togglePortUSB("1")
         mock_toggle.assert_called_once_with(port="1")
-
-
-# ---------------------------------------------------------------------------
-# toggleAutoDew
-# ---------------------------------------------------------------------------
-
-
-def test_toggleAutoDew(function):
-    """toggleAutoDew() delegates to the active framework adapter."""
-    function.framework = "indi"
-    with mock.patch.object(function.run["indi"], "toggleAutoDew") as mock_toggle:
-        function.toggleAutoDew()
-        mock_toggle.assert_called_once()
-
-
-# ---------------------------------------------------------------------------
-# sendDew
-# ---------------------------------------------------------------------------
 
 
 def test_sendDew(function):

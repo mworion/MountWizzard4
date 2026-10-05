@@ -49,56 +49,20 @@ double connect, stray slewed signal, retry+cancel ordering.
 | 3.1 | Do not reset `processed` for already processed points on retry; compute progress against the total number of points and keep the percentage monotonic. |
 | 3.2 | Estimate remaining time from points done in the current pass vs. points of the current pass. |
 
-## Phase 4 – Typed data model (internal refactoring, OPEN)
+## Phase 4 – Typed config (middle path, DONE)
 
-State after phases 1, 2 and 5 (this is the baseline for Phase 4):
-- `OperationStatus(IntEnum)` exists (`mw4/base/operationStatus.py`).
-- `ModelData` no longer owns save data or `version/profile/firmware/latitude`
-  (`buildSaveData` / `saveModelFile` in `modelRunSupport`; the tab builds the
-  meta via `getSaveMeta()`).
-- `ModelData` talks to the GUI only via signals: `pointStatus(int, int)`,
-  `pointMarkersChanged`, `progress`, `statusExpose/Solve/Slew/Retry`,
-  `finished`. `startSlew` is a queued self-signal.
-- Public config attributes still written by `Model.setupBatchData` /
-  `setModelTiming`: `imageDir`, `modelName`, `numberRetries`,
-  `retriesReverse`, `waitTimeExposure`, `plateSolveApp`, `modelTiming`.
-- Run state attributes: `cancelBatch`, `pauseBatch`, `endBatch`,
-  `passActive`, `slewPending`, `mountSlewed`, `domeSlewed`,
-  `pointsInFlight`, `retries`, `runTime`, `modelRunList/Iterator/Key`.
-- `modelBuildData` is still `dict[str, dict[str, Any]]` with magic string
-  keys; `loadModelsFromFile`, `buildSaveData`, `writeRetrofitData`,
-  `convertAngleToFloat/FloatToAngle` operate on those dicts.
+Decision: only `ModelTiming` and `ModelRunConfig`; `modelBuildData` stays
+`dict[str, dict[str, Any]]` (no `ModelPoint`, to avoid regression risk in the
+run flow and the saved `.model` format).
 
-Steps:
-1. `modelTypes.py` (new, `src/mw4/logic/modelBuild/`):
-   - `class ModelTiming(IntEnum)`: `CONSERVATIVE=0`, `NORMAL=1`,
-     `PROGRESSIVE=2` (replaces the class constants on `ModelData`; update
-     `tabModel.setModelTiming` and the tests that use
-     `modelData.PROGRESSIVE` etc.).
-   - `@dataclass(frozen=True) class ModelRunConfig`: `imageDir`,
-     `modelName`, `numberRetries`, `retriesReverse`, `waitTimeExposure`,
-     `modelTiming`, `plateSolveApp`.
-   - `@dataclass class ModelPoint`: typed fields for the keys written in
-     `prepareModelBuildData`, `addMountDataToModelBuildData`,
-     `exposeImage` and the plate-solve result (`success`, `message`,
-     `processed`, ...), plus `toDict()` / `fromDict()`.
-2. `ModelData.runModel(config)`: tab builds the config from the UI in one
-   place (merge `setupBatchData` + `setModelTiming`); drop the 7 public
-   config attributes.
-3. Group the run flags into one small state object or keep them as they
-   are if that is simpler (decide when implementing; no behaviour change).
-4. `modelBuildData: dict[str, ModelPoint]`. Adapt `startNewSlew`,
-   `exposeImage`, `collectPlateSolveResult`, `buildProgModel`,
-   `checkRetryNeeded`, `generateRunIterator`, `sendModelProgress`.
-   At the file boundaries convert with `toDict()` / `fromDict()` so
-   `modelRunSupport` and the JSON format stay unchanged.
-5. Tests: update fixtures (`buildRunData`, `solveResult`) and add
-   round-trip tests (`fromDict(toDict(x)) == x`, and a saved model file
-   from `testData` loads and saves identically).
-
-Risk: widest change, touches almost every method of `ModelData`. Do it in
-its own commit; verify the saved `.model` JSON is byte-identical for the
-same input.
+- `src/mw4/logic/modelBuild/modelTypes.py`: `ModelTiming(IntEnum)` and frozen
+  `ModelRunConfig` (`imageDir`, `numberRetries`, `retriesReverse`,
+  `waitTimeExposure`, `modelTiming`, `plateSolveApp`).
+- `ModelData.runModel(config)` stores `self.config`; the class constants and
+  the six public config attributes are gone. `modelName` stays on
+  `ModelData` because the file-model flow uses it too.
+- Tab: `setupBatchData()` returns the config, `getModelTiming()` replaces
+  `setModelTiming()`.
 
 ## Phase 5 – Move business logic out of the GUI (DONE)
 

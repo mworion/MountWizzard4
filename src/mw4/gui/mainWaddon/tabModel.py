@@ -23,6 +23,7 @@ from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.logic.modelBuild.modelRun import ModelData
 from mw4.logic.modelBuild.modelRunSupport import buildSaveData, saveModelFile
+from mw4.logic.modelBuild.modelTypes import ModelRunConfig, ModelTiming
 from pathlib import Path
 from PySide6.QtCore import QTimer
 from typing import TYPE_CHECKING, Any
@@ -265,22 +266,24 @@ class Model(TabAddon):
         for point in self.app.buildPoint.buildP:
             self.modelData.modelInputData.append(point)
 
-    def setupBatchData(self) -> None:
-        imageDir = self.setupFilenamesAndDirectories(prefix="m", postfix="build")
-        self.modelData.imageDir = imageDir
-        self.modelData.modelName = imageDir.stem
-        self.modelData.numberRetries = self.ui.numberBuildRetries.value()
-        self.modelData.retriesReverse = self.ui.retriesReverse.isChecked()
-        self.modelData.waitTimeExposure = self.ui.waitTimeExposure.value()
-        self.modelData.plateSolveApp = self.app.dReg["plateSolve"].framework
-
-    def setModelTiming(self) -> None:
+    def getModelTiming(self) -> ModelTiming:
         if self.ui.progressiveTiming.isChecked():
-            self.modelData.modelTiming = self.modelData.PROGRESSIVE
-        elif self.ui.normalTiming.isChecked():
-            self.modelData.modelTiming = self.modelData.NORMAL
-        elif self.ui.conservativeTiming.isChecked():
-            self.modelData.modelTiming = self.modelData.CONSERVATIVE
+            return ModelTiming.PROGRESSIVE
+        if self.ui.normalTiming.isChecked():
+            return ModelTiming.NORMAL
+        return ModelTiming.CONSERVATIVE
+
+    def setupBatchData(self) -> ModelRunConfig:
+        imageDir = self.setupFilenamesAndDirectories(prefix="m", postfix="build")
+        self.modelData.modelName = imageDir.stem
+        return ModelRunConfig(
+            imageDir=imageDir,
+            numberRetries=self.ui.numberBuildRetries.value(),
+            retriesReverse=self.ui.retriesReverse.isChecked(),
+            waitTimeExposure=self.ui.waitTimeExposure.value(),
+            modelTiming=self.getModelTiming(),
+            plateSolveApp=self.app.dReg["plateSolve"].framework,
+        )
 
     def runBatch(self) -> None:
         self.modelData.resetBatchFlags()
@@ -291,11 +294,10 @@ class Model(TabAddon):
             self.app.operationRunning.emit(OperationStatus.IDLE)
 
     def startBatch(self) -> None:
-        self.setModelTiming()
-        self.setupBatchData()
+        config = self.setupBatchData()
         self.msg.emit(1, "Model", "Run", f"[{self.modelData.modelName}]")
         self.setupModelInputData()
-        self.modelData.runModel()
+        self.modelData.runModel(config)
 
     def finishBatch(self, cancelled: bool) -> None:
         if cancelled:

@@ -25,6 +25,7 @@ from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.logic.modelBuild.modelRun import ModelData
+from mw4.logic.modelBuild.modelTypes import ModelRunConfig, ModelTiming
 from pathlib import Path
 from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -360,29 +361,33 @@ def test_setupModelInputData_1(function):
 
 def test_setupBatchData_1(function):
     function.modelData = ModelData(App)
-    with mock.patch.object(function, "setupFilenamesAndDirectories", return_value=(Path(""))):
-        function.setupBatchData()
-
-
-def test_setModelTiming_1(function):
-    function.modelData = ModelData(App())
-    function.ui.progressiveTiming.setChecked(True)
-    function.setModelTiming()
-    assert function.modelData.modelTiming == function.modelData.PROGRESSIVE
-
-
-def test_setModelTiming_2(function):
-    function.modelData = ModelData(App())
+    function.ui.numberBuildRetries.setValue(2)
+    function.ui.retriesReverse.setChecked(True)
+    function.ui.waitTimeExposure.setValue(3)
     function.ui.normalTiming.setChecked(True)
-    function.setModelTiming()
-    assert function.modelData.modelTiming == function.modelData.NORMAL
+    with mock.patch.object(function, "setupFilenamesAndDirectories", return_value=Path("m-x")):
+        config = function.setupBatchData()
+    assert config.imageDir == Path("m-x")
+    assert config.numberRetries == 2
+    assert config.retriesReverse
+    assert config.waitTimeExposure == 3
+    assert config.modelTiming == ModelTiming.NORMAL
+    assert function.modelData.modelName == "m-x"
 
 
-def test_setModelTiming_3(function):
-    function.modelData = ModelData(App())
+def test_getModelTiming_1(function):
+    function.ui.progressiveTiming.setChecked(True)
+    assert function.getModelTiming() == ModelTiming.PROGRESSIVE
+
+
+def test_getModelTiming_2(function):
+    function.ui.normalTiming.setChecked(True)
+    assert function.getModelTiming() == ModelTiming.NORMAL
+
+
+def test_getModelTiming_3(function):
     function.ui.conservativeTiming.setChecked(True)
-    function.setModelTiming()
-    assert function.modelData.modelTiming == function.modelData.CONSERVATIVE
+    assert function.getModelTiming() == ModelTiming.CONSERVATIVE
 
 
 def test_runBatch_1(function):
@@ -455,14 +460,14 @@ def test_runBatch_cancelDuringClearWait(function, qtbot):
 
 def test_startBatch_1(function):
     function.modelData = ModelData(function.app)
+    config = ModelRunConfig()
     with (
-        mock.patch.object(function, "setModelTiming"),
-        mock.patch.object(function, "setupBatchData"),
+        mock.patch.object(function, "setupBatchData", return_value=config),
         mock.patch.object(function, "setupModelInputData"),
         mock.patch.object(function.modelData, "runModel") as mockRun,
     ):
         function.startBatch()
-    mockRun.assert_called_once()
+    mockRun.assert_called_once_with(config)
 
 
 def test_finishBatch_1(function):

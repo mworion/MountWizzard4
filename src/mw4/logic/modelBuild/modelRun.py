@@ -20,6 +20,7 @@ from mw4.base.appProtocol import AppProtocol
 from mw4.base.transform import JNowToJ2000
 from mw4.logic.buildData.buildpoints import BuildPoint
 from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile
+from mw4.logic.modelBuild.modelTypes import ModelRunConfig, ModelTiming
 from mw4.mountcontrol.progStar import ProgStar
 from pathlib import Path
 from PySide6.QtCore import QObject, Qt, QTimer, Signal
@@ -32,9 +33,6 @@ class ModelData(QObject):
     progress = Signal(dict)
     pointStatus = Signal(int, int)
     pointMarkersChanged = Signal()
-    PROGRESSIVE = 2
-    NORMAL = 1
-    CONSERVATIVE = 0
     PAUSE_POLL_MS = 500
 
     statusExpose = Signal(object)
@@ -50,7 +48,7 @@ class ModelData(QObject):
         self.cancelBatch: bool = False
         self.pauseBatch: bool = False
         self.endBatch: bool = False
-        self.modelTiming: int = self.CONSERVATIVE
+        self.config = ModelRunConfig()
         self.modelInputData: list[tuple[float, float]] = []
         self.modelBuildData: dict[str, dict[str, Any]] = {}
         self.modelRunList: list[str] = []
@@ -58,13 +56,8 @@ class ModelData(QObject):
         self.modelRunKey: str = ""
         self.modelProgData: list[ProgStar] = []
         self.modelName: str = ""
-        self.imageDir: Path = Path()
-        self.plateSolveApp: str = ""
-        self.waitTimeExposure: float = 0
         self.runTime: float = 0
-        self.numberRetries: int = 0
         self.retries: int = 0
-        self.retriesReverse: bool = False
         self.mountSlewed: bool = False
         self.domeSlewed: bool = False
         self.slewPending: bool = False
@@ -93,15 +86,15 @@ class ModelData(QObject):
         self.app.dReg["plateSolve"].signals.result.disconnect(self.collectPlateSolveResult)
 
     def setImageExposed(self) -> None:
-        if self.modelTiming == self.PROGRESSIVE:
+        if self.config.modelTiming == ModelTiming.PROGRESSIVE:
             self.startSlew.emit()
 
     def setImageDownloaded(self) -> None:
-        if self.modelTiming == self.NORMAL:
+        if self.config.modelTiming == ModelTiming.NORMAL:
             self.startSlew.emit()
 
     def setImageSaved(self) -> None:
-        if self.modelTiming == self.CONSERVATIVE:
+        if self.config.modelTiming == ModelTiming.CONSERVATIVE:
             self.startSlew.emit()
 
     def startExposureAfterSlew(self) -> None:
@@ -192,7 +185,7 @@ class ModelData(QObject):
     def startNewImageExposure(self) -> None:
         if self.cancelBatch or self.endBatch:
             return
-        self.timerExposure.start(int(self.waitTimeExposure * 1000))
+        self.timerExposure.start(int(self.config.waitTimeExposure * 1000))
 
     def checkPauseAndExpose(self) -> None:
         if self.cancelBatch or self.endBatch:
@@ -259,7 +252,7 @@ class ModelData(QObject):
         for index, point in enumerate(self.modelInputData):
             self.pointStatus.emit(index, BuildPoint.UNPROCESSED)
             modelItem = {}
-            imagePath = self.imageDir / f"image-{index:03d}.fits"
+            imagePath = self.config.imageDir / f"image-{index:03d}.fits"
             modelItem["imagePath"] = imagePath
             modelItem["altitude"] = Angle(degrees=point[0])
             modelItem["azimuth"] = Angle(degrees=point[1])
@@ -268,7 +261,7 @@ class ModelData(QObject):
             modelItem["subFrame"] = self.app.dReg["camera"].instance.subFrame
             modelItem["fastReadout"] = self.app.dReg["camera"].instance.fastReadout
             modelItem["name"] = self.modelName
-            modelItem["plateSolveApp"] = self.plateSolveApp
+            modelItem["plateSolveApp"] = self.config.plateSolveApp
             modelItem["focalLength"] = self.app.dReg["camera"].instance.focalLength
             modelItem["countSequence"] = index
             modelItem["message"] = ""
@@ -292,13 +285,13 @@ class ModelData(QObject):
 
     def generateRunIterator(self) -> None:
         nextList = []
-        self.log.debug(f"{'Run retries':15s}: Count: [{self.numberRetries:1.0f}]")
+        self.log.debug(f"{'Run retries':15s}: Count: [{self.config.numberRetries:1.0f}]")
         for key in self.modelRunList:
             if self.modelBuildData[key]["success"]:
                 continue
             if not self.modelBuildData[key]["message"].startswith("Slew not possible"):
                 nextList.append(key)
-        if self.retriesReverse and self.retries % 2 == 1:
+        if self.config.retriesReverse and self.retries % 2 == 1:
             self.modelRunList = list(reversed(nextList))
         else:
             self.modelRunList = nextList
@@ -324,7 +317,11 @@ class ModelData(QObject):
             return
         self.passActive = False
         stopped = self.cancelBatch or self.endBatch
-        if not stopped and self.retries < self.numberRetries and self.checkRetryNeeded():
+        if (
+            not stopped
+            and self.retries < self.config.numberRetries
+            and self.checkRetryNeeded()
+        ):
             self.retries += 1
             self.startPass()
             return
@@ -362,7 +359,8 @@ class ModelData(QObject):
         self.cancelBatch = self.endBatch = self.pauseBatch = False
         self.passActive = False
 
-    def runModel(self) -> None:
+    def runModel(self, config: ModelRunConfig) -> None:
+        self.config = config
         if not self.modelInputData:
             self.finished.emit(False)
             return

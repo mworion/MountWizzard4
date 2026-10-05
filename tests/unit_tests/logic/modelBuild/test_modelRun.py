@@ -16,8 +16,10 @@
 
 import mw4.logic.modelBuild.modelRun
 import pytest
+from dataclasses import replace
 from mw4.logic.buildData.buildpoints import BuildPoint
 from mw4.logic.modelBuild.modelRun import ModelData
+from mw4.logic.modelBuild.modelTypes import ModelRunConfig, ModelTiming
 from pathlib import Path
 from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -50,8 +52,8 @@ def resetState(function):
     function.modelRunList = []
     function.modelRunKey = ""
     function.retries = 0
-    function.numberRetries = 0
-    function.waitTimeExposure = 0
+    function.config = replace(function.config, numberRetries=0)
+    function.config = replace(function.config, waitTimeExposure=0)
     yield
     function.timerExposure.stop()
     function.passActive = False
@@ -75,7 +77,7 @@ def solveResult(key: str, success: bool = True, message: str = "Ok") -> dict:
 
 
 def test_setupAndResetSignals(function):
-    function.modelTiming = function.PROGRESSIVE
+    function.config = replace(function.config, modelTiming=ModelTiming.PROGRESSIVE)
     exposed = function.app.dReg["camera"].signals.exposed
     with mock.patch.object(function, "startSlew") as mockSlew:
         function.setupSignals()
@@ -86,7 +88,7 @@ def test_setupAndResetSignals(function):
             function.resetSignals()
         exposed.emit(Path("test.fits"))
         assert mockSlew.emit.call_count == 1
-    function.modelTiming = function.CONSERVATIVE
+    function.config = replace(function.config, modelTiming=ModelTiming.CONSERVATIVE)
 
 
 def test_startSlew_isQueued(function, qtbot):
@@ -99,19 +101,19 @@ def test_startSlew_isQueued(function, qtbot):
 
 
 def test_setImageExposed(function):
-    function.modelTiming = 2
+    function.config = replace(function.config, modelTiming=ModelTiming.PROGRESSIVE)
     with mock.patch.object(function, "startNewSlew"):
         function.setImageExposed()
 
 
 def test_setImageDownloaded(function):
-    function.modelTiming = 1
+    function.config = replace(function.config, modelTiming=ModelTiming.NORMAL)
     with mock.patch.object(function, "startNewSlew"):
         function.setImageDownloaded()
 
 
 def test_setImageSaved(function):
-    function.modelTiming = 0
+    function.config = replace(function.config, modelTiming=ModelTiming.CONSERVATIVE)
     with mock.patch.object(function, "startNewSlew"):
         function.setImageSaved()
 
@@ -376,7 +378,7 @@ def test_startNewImageExposure_1(function):
 
 
 def test_startNewImageExposure_2(function):
-    function.waitTimeExposure = 2
+    function.config = replace(function.config, waitTimeExposure=2)
     function.startNewImageExposure()
     assert function.timerExposure.isActive()
     assert function.timerExposure.interval() == 2000
@@ -618,7 +620,7 @@ def test_checkModelFinished_2(function):
 
 
 def test_generateRunIterator_1(function):
-    function.retriesReverse = False
+    function.config = replace(function.config, retriesReverse=False)
     function.retries = 1
     function.modelRunList = ["image-000", "image-001", "image-002", "image-003"]
     function.modelBuildData = {
@@ -636,7 +638,7 @@ def test_generateRunIterator_1(function):
 
 
 def test_generateRunIterator_2(function):
-    function.retriesReverse = True
+    function.config = replace(function.config, retriesReverse=True)
     function.retries = 1
     function.modelRunList = ["image-000", "image-001", "image-002", "image-003"]
     function.modelBuildData = {
@@ -732,7 +734,7 @@ def test_finishPass_1(function):
 
 def test_finishPass_2(function):
     function.passActive = True
-    function.numberRetries = 2
+    function.config = replace(function.config, numberRetries=2)
     with (
         mock.patch.object(function, "checkRetryNeeded", return_value=True),
         mock.patch.object(function, "startPass") as mockStart,
@@ -746,7 +748,7 @@ def test_finishPass_2(function):
 
 def test_finishPass_3(function):
     function.passActive = True
-    function.numberRetries = 2
+    function.config = replace(function.config, numberRetries=2)
     function.retries = 2
     with (
         mock.patch.object(function, "checkRetryNeeded", return_value=True),
@@ -760,7 +762,7 @@ def test_finishPass_3(function):
 
 def test_finishPass_4(function):
     function.passActive = True
-    function.numberRetries = 2
+    function.config = replace(function.config, numberRetries=2)
     function.endBatch = True
     with (
         mock.patch.object(function, "checkRetryNeeded", return_value=True),
@@ -774,7 +776,7 @@ def test_finishPass_4(function):
 
 def test_finishPass_5(function):
     function.passActive = True
-    function.numberRetries = 2
+    function.config = replace(function.config, numberRetries=2)
     with (
         mock.patch.object(function, "checkRetryNeeded", return_value=False),
         mock.patch.object(function, "startPass") as mockStart,
@@ -865,7 +867,7 @@ def test_runModel_cancelBeforeStart(function, qtbot):
         mock.patch.object(function, "startSlew") as mockSlew,
         qtbot.waitSignal(function.finished, timeout=1000) as blocker,
     ):
-        function.runModel()
+        function.runModel(ModelRunConfig(numberRetries=function.config.numberRetries))
     assert blocker.args == [True]
     mockSlew.emit.assert_not_called()
 
@@ -885,7 +887,7 @@ def test_runModel_1(function, qtbot):
         mock.patch.object(function, "startPass") as mockStart,
         qtbot.waitSignal(function.finished) as blocker,
     ):
-        function.runModel()
+        function.runModel(ModelRunConfig(numberRetries=function.config.numberRetries))
     assert blocker.args == [False]
     mockStart.assert_not_called()
 
@@ -897,14 +899,14 @@ def test_runModel_2(function):
         mock.patch.object(function, "prepareModelBuildData"),
         mock.patch.object(function, "startPass") as mockStart,
     ):
-        function.runModel()
+        function.runModel(ModelRunConfig(numberRetries=function.config.numberRetries))
     mockSetup.assert_called_once()
     mockStart.assert_called_once()
 
 
 def test_runModel_flowWithRetry(function, qtbot):
     keys = ["image-000", "image-001", "image-002"]
-    function.numberRetries = 1
+    function.config = replace(function.config, numberRetries=1)
     passes = []
 
     def prepare():
@@ -928,7 +930,7 @@ def test_runModel_flowWithRetry(function, qtbot):
         qtbot.waitSignal(function.finished, timeout=2000) as blocker,
     ):
         mockSlew.emit.side_effect = slew
-        function.runModel()
+        function.runModel(ModelRunConfig(numberRetries=function.config.numberRetries))
     assert blocker.args == [False]
     assert passes == [keys, ["image-001"]]
     assert all(function.modelBuildData[key]["success"] for key in keys)

@@ -317,3 +317,55 @@ def test_startWorker_logsDebugWhenBusy(caplog):
     assert "Worker targetFunc busy, skipped" in caplog.text
     pool.start.assert_not_called()
     worker.release()
+
+
+def test_worker_tryAcquire_setsStartTime():
+    a = tpool.Worker(lambda: None)
+    assert a.startTime is None
+    assert a.elapsed() == 0.0
+    a.tryAcquire()
+    assert a.startTime is not None
+    duration = a.release()
+    assert duration >= 0
+    assert a.startTime is None
+
+
+def test_worker_release_notAcquiredReturnsNone():
+    a = tpool.Worker(lambda: None)
+    assert a.release() is None
+
+
+def test_worker_run_logsSlowRun(caplog):
+    def targetFunc():
+        pass
+
+    a = tpool.Worker(targetFunc)
+    a.tryAcquire()
+    a.startTime -= 10
+    with caplog.at_level("WARNING"):
+        a.run()
+    assert "Worker targetFunc finished after" in caplog.text
+    assert "(slow)" in caplog.text
+
+
+def test_worker_run_noLogOnFastRun(caplog):
+    a = tpool.Worker(lambda: None)
+    a.tryAcquire()
+    with caplog.at_level("WARNING"):
+        a.run()
+    assert "slow" not in caplog.text
+
+
+def test_startWorker_logsElapsedWhenBusy(caplog):
+    pool = mock.Mock()
+
+    def targetFunc():
+        pass
+
+    worker = tpool.setupWorker(targetFunc)
+    worker.tryAcquire()
+    worker.startTime -= 12
+    with caplog.at_level("DEBUG"):
+        tpool.startWorker(worker, pool, targetFunc)
+    assert "busy, skipped (running for 12." in caplog.text
+    worker.release()

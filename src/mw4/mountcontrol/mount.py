@@ -47,10 +47,6 @@ class DeviceConfigMount:
 
 
 class MountDevice(QObject):
-    CYCLE_POINTING: Final[int] = 500
-    CYCLE_DOME: Final[int] = 950
-    CYCLE_SETTING: Final[int] = 3100
-    SOCKET_TIMEOUT: Final[float] = 1.0
     ALERT_STATUS_CODES: Final[frozenset[MountStatus]] = frozenset(
         {MountStatus.STOPPED, MountStatus.UNKNOWN, MountStatus.ERROR}
     )
@@ -100,7 +96,7 @@ class MountDevice(QObject):
         self.settlingWait.timeout.connect(self.waitAfterSettlingAndEmit)
         self.signals.mountIsUp.connect(self.startupMountData)
         self.app.timeMgr.update0_5s.connect(self.cyclePointing)
-        self.app.timeMgr.update1s.connect(self.cycleSetting)
+        self.app.timeMgr.update3s.connect(self.cycleSetting)
         self.app.timeMgr.update1s.connect(self.collectData)
         self.app.timeMgr.start3s.connect(self.resetAfterStart)
         self.data: dict = {}

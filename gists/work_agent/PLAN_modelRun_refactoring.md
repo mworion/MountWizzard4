@@ -1,6 +1,6 @@
 # Plan: Improve `modelRun.py` and `tabModel.py`
 
-Scope: `src/mw4/logic/modelBuild/modelRun.py`,
+Scope: `../../src/mw4/logic/modelBuild/modelRun.py`,
 `src/mw4/gui/mainWaddon/tabModel.py` (+ new/related modules in
 `src/mw4/logic/modelBuild/`).
 Tests: `tests/unit_tests/logic/modelBuild/test_modelRun*.py`,
@@ -55,7 +55,7 @@ Decision: only `ModelTiming` and `ModelRunConfig`; `modelBuildData` stays
 `dict[str, dict[str, Any]]` (no `ModelPoint`, to avoid regression risk in the
 run flow and the saved `.model` format).
 
-- `src/mw4/logic/modelBuild/modelTypes.py`: `ModelTiming(IntEnum)` and frozen
+- `../../src/mw4/logic/modelBuild/modelTypes.py`: `ModelTiming(IntEnum)` and frozen
   `ModelRunConfig` (`imageDir`, `numberRetries`, `retriesReverse`,
   `waitTimeExposure`, `modelTiming`, `plateSolveApp`).
 - `ModelData.runModel(config)` stores `self.config`; the class constants and
@@ -75,7 +75,7 @@ run flow and the saved `.model` format).
 ## Phase 6 – Finalisation (DONE for phases 1, 2, 5; repeat after Phase 4)
 
 1. `uv run ruff format` / `uv run ruff check` on all touched files,
-   fix all findings; verify line length from `pyproject.toml`.
+   fix all findings; verify line length from `../../pyproject.toml`.
 2. Run the touched test modules with coverage (100 % for the changed
    modules).
 3. Run the complete test suite as the last step.

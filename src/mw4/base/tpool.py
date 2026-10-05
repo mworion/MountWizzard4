@@ -16,11 +16,15 @@
 import logging
 import sys
 import threading
+import time
 from collections.abc import Callable
 from pathlib import Path
 from PySide6.QtCore import QObject, QRunnable, QThreadPool, Signal, SignalInstance, Slot
 from types import TracebackType
 from typing import Any
+
+# runs longer than this (seconds) are logged as slow
+SLOW_WORKER_THRESHOLD = 5.0
 
 
 class WorkerSignals(QObject):
@@ -39,6 +43,7 @@ class Worker(QRunnable):
         # released by any thread, a QMutex must be unlocked by its owner thread.
         self.busyLock = threading.Lock()
         self.locked = False
+        self.startTime: float | None = None
         self.fn = fn
         self.args = args
         self.kwargs = kwargs
@@ -50,13 +55,22 @@ class Worker(QRunnable):
         if not self.busyLock.acquire(blocking=False):
             return False
         self.locked = True
+        self.startTime = time.monotonic()
         return True
 
-    def release(self) -> None:
+    def elapsed(self) -> float:
+        if self.startTime is None:
+            return 0.0
+        return time.monotonic() - self.startTime
+
+    def release(self) -> float | None:
         if not self.locked:
-            return
+            return None
+        duration = self.elapsed()
+        self.startTime = None
         self.locked = False
         self.busyLock.release()
+        return duration
 
     @staticmethod
     def rebind(
@@ -118,7 +132,10 @@ class Worker(QRunnable):
         finally:
             # only releases when this run acquired the flag via startWorker; a
             # directly started worker never acquired it
-            self.release()
+            duration = self.release()
+            if duration is not None and duration > SLOW_WORKER_THRESHOLD:
+                fnName = getattr(self.fn, "__name__", repr(self.fn))
+                self.log.warning(f"Worker {fnName} finished after {duration:.1f}s (slow)")
             self.signals.finished.emit()
 
 
@@ -155,7 +172,7 @@ def startWorker(
         )
     if not worker.tryAcquire():
         fnName = getattr(target, "__name__", repr(target))
-        log.debug(f"Worker {fnName} busy, skipped")
+        log.debug(f"Worker {fnName} busy, skipped (running for {worker.elapsed():.1f}s)")
         return worker
     if reuse:
         # a reused worker gets the arguments and callbacks of this call; this is

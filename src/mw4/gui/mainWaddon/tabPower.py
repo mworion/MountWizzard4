@@ -36,21 +36,15 @@ class Power(TabAddon):
             "3": self.ui.powerPort3,
             "4": self.ui.powerPort4,
         }
-        self.powerBoot = {
-            "1": self.ui.powerBootPort1,
-            "2": self.ui.powerBootPort2,
-            "3": self.ui.powerBootPort3,
-            "4": self.ui.powerBootPort4,
-        }
-        self.dew = {
-            "A": self.ui.dewA,
-            "B": self.ui.dewB,
-            "C": self.ui.dewC,
+        self.dewCycle = {
+            "1": self.ui.dewCycle1,
+            "2": self.ui.dewCycle2,
+            "3": self.ui.dewCycle3,
         }
         self.dewLabel = {
-            1: self.ui.groupDewA,
-            2: self.ui.groupDewB,
-            3: self.ui.groupDewC,
+            "1": self.ui.groupDew1,
+            "2": self.ui.groupDew2,
+            "3": self.ui.groupDew3,
         }
         self.current = {
             "1": self.ui.powerCurrent1,
@@ -75,17 +69,14 @@ class Power(TabAddon):
 
         # gui tasks
         self.ui.hubUSB.clicked.connect(self.toggleHubUSB)
-        self.ui.autoDew.clicked.connect(self.toggleAutoDew)
         self.ui.rebootUPB.clicked.connect(self.rebootUPB)
         clickable(self.ui.adjustableOutput).connect(self.setAdjustableOutput)
 
         # setting gui elements
-        for name, button in self.dew.items():
-            clickable(button).connect(partial(self.setDew, name))
+        for name, button in self.dewCycle.items():
+            clickable(button).connect(partial(self.setDewCycle, name))
         for name, button in self.powerOnOFF.items():
             button.clicked.connect(partial(self.togglePowerPort, name))
-        for name, button in self.powerBoot.items():
-            button.clicked.connect(partial(self.togglePowerBootPort, name))
         for name, button in self.portUSB.items():
             button.clicked.connect(partial(self.togglePortUSB, name))
 
@@ -97,12 +88,12 @@ class Power(TabAddon):
 
     def setGuiVersion(self, version=1) -> None:
         if version == 1:
-            self.ui.groupDewC.setVisible(False)
+            self.ui.groupDew3.setVisible(False)
             self.ui.groupPortUSB.setVisible(False)
             self.ui.groupHubUSB.setVisible(True)
             self.ui.groupAdjustableOutput.setVisible(False)
         elif version == 2:
-            self.ui.groupDewC.setVisible(True)
+            self.ui.groupDew3.setVisible(True)
             self.ui.groupPortUSB.setVisible(True)
             self.ui.groupHubUSB.setVisible(False)
             self.ui.groupAdjustableOutput.setVisible(True)
@@ -110,29 +101,25 @@ class Power(TabAddon):
     def updatePowerGui(self) -> None:
         for name, button in self.powerOnOFF.items():
             value = self.app.dReg["power"].data.get(
-                f"POWER_CONTROL.POWER_CONTROL_{name}", False
+                f"POWER_CHANNELS.POWER_CHANNEL_{name}", False
             )
             changeStyleDynamic(button, "run", value)
 
-        for name, button in self.powerBoot.items():
-            value = self.app.dReg["power"].data.get(f"POWER_ON_BOOT.POWER_PORT_{name}", False)
-            button.setChecked(value)
-
         for name, button in self.current.items():
-            value = self.app.dReg["power"].data.get(f"POWER_CURRENT.POWER_CURRENT_{name}")
+            value = self.app.dReg["power"].data.get(f"POWER_CURRENTS.POWER_CHANNEL_{name}")
             guiSetText(button, "4.2f", value)
 
-        for name, button in self.dew.items():
-            value = self.app.dReg["power"].data.get(f"DEW_PWM.DEW_{name}")
+        for name, button in self.dewCycle.items():
+            value = self.app.dReg["power"].data.get(f"DEW_DUTY_CYCLES.DEW_CHANNEL_{name}")
             guiSetText(button, "3.0f", value)
 
         for name, button in self.dewLabel.items():
-            value = self.app.dReg["power"].data.get(f"DEW_CONTROL_LABEL.DEW_LABEL_{name}", "")
+            value = self.app.dReg["power"].data.get(f"DEW_LABELS.DEW_CHANNEL_{name}", "")
             button.setTitle(f"{value:1s}")
 
         for name, button in self.powerLabel.items():
             value = self.app.dReg["power"].data.get(
-                f"POWER_CONTROL_LABEL.POWER_LABEL_{name}", f"Power {name}"
+                f"POWER_LABELS.POWER_CHANNEL_{name}", f"Power {name}"
             )
             button.setText(value)
 
@@ -150,38 +137,31 @@ class Power(TabAddon):
         value = self.app.dReg["power"].data.get("POWER_SENSORS.SENSOR_POWER")
         guiSetText(self.ui.sensorPower, "4.2f", value)
 
-        value = self.app.dReg["power"].data.get("DEW_CURRENT.DEW_CURRENT_A")
-        guiSetText(self.ui.dewCurrentA, "4.2f", value)
-        value = self.app.dReg["power"].data.get("DEW_CURRENT.DEW_CURRENT_B")
-        guiSetText(self.ui.dewCurrentB, "4.2f", value)
-        value = self.app.dReg["power"].data.get("DEW_CURRENT.DEW_CURRENT_C")
-        guiSetText(self.ui.dewCurrentC, "4.2f", value)
-
-        value1 = self.app.dReg["power"].data.get("AUTO_DEW.INDI_ENABLED", False)
-        value2 = self.app.dReg["power"].data.get("AUTO_DEW.DEW_A", False)
-        value3 = self.app.dReg["power"].data.get("AUTO_DEW.DEW_B", False)
-        value4 = self.app.dReg["power"].data.get("AUTO_DEW.DEW_C", False)
-        value = value1 or value2 or value3 or value4
-        changeStyleDynamic(self.ui.autoDew, "run", value)
+        value = self.app.dReg["power"].data.get("DEW_CURRENT.DEW_CHANNEL_1")
+        guiSetText(self.ui.dewCurrent1, "4.2f", value)
+        value = self.app.dReg["power"].data.get("DEW_CURRENT.DEW_CHANNEL_2")
+        guiSetText(self.ui.dewCurrent2, "4.2f", value)
+        value = self.app.dReg["power"].data.get("DEW_CURRENT.DEW_CHANNEL_3")
+        guiSetText(self.ui.dewCurrent3, "4.2f", value)
 
         if self.app.dReg["power"].data.get("FIRMWARE_INFO.VERSION", "1.4") > "1.4":
             value = self.app.dReg["power"].data.get(
-                "ADJUSTABLE_VOLTAGE.ADJUSTABLE_VOLTAGE_VALUE"
+                "VARIABLE_VOLTAGES.VAR_CHANNEL_1"
             )
             guiSetText(self.ui.adjustableOutput, "4.1f", value)
 
             for name, button in self.portUSB.items():
-                value = self.app.dReg["power"].data.get(f"USB_PORT_CONTROL.PORT_{name}", False)
+                value = self.app.dReg["power"].data.get(f"USB_PORTS.USB_PORT_{name}", False)
                 changeStyleDynamic(button, "run", value)
 
         else:
             value = self.app.dReg["power"].data.get("USB_HUB_CONTROL.INDI_ENABLED", False)
             changeStyleDynamic(self.ui.hubUSB, "run", value)
 
-    def setDew(self, name: str) -> bool:
-        actValue = valueToInt(self.dew[name].text())
+    def setDewCycle(self, name: str, widget) -> bool:
+        actValue = valueToInt(self.dewCycle[name].text())
         value, ok = MWInputDialog.getInt(
-            self,
+            self.mainW,
             f"Set dew PWM {name}",
             "Value (0-100):",
             actValue,
@@ -196,22 +176,16 @@ class Power(TabAddon):
     def togglePowerPort(self, name: str) -> bool:
         return self.app.dReg["power"].instance.togglePowerPort(name)
 
-    def togglePowerBootPort(self, name: str) -> bool:
-        return self.app.dReg["power"].instance.togglePowerPortBoot(name)
-
     def toggleHubUSB(self) -> bool:
         return self.app.dReg["power"].instance.toggleHubUSB()
 
     def togglePortUSB(self, name: str) -> bool:
         return self.app.dReg["power"].instance.togglePortUSB(name)
 
-    def toggleAutoDew(self) -> bool:
-        return self.app.dReg["power"].instance.toggleAutoDew()
-
     def setAdjustableOutput(self) -> bool:
         actValue = float(self.ui.adjustableOutput.text())
         value, ok = MWInputDialog.getDouble(
-            self, "Set Voltage Output", "Value (3-12):", actValue, 3, 12, 1
+            self.mainW, "Set Voltage Output", "Value (3-12):", actValue, 3, 12, 1
         )
 
         if not ok:

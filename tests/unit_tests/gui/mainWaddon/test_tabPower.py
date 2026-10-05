@@ -51,37 +51,18 @@ def test_updatePowerGui_2(function):
     function.updatePowerGui()
 
 
-def test_setDew_1(function):
+def test_setDewCycle_1(function):
     with mock.patch.object(MWInputDialog, "getInt", return_value=(0, False)):
-        function.setDew("A")
+        assert not function.setDewCycle("1", None)
 
 
-def test_setDew_2(function):
-    with mock.patch.object(MWInputDialog, "getInt", return_value=(0, False)):
-        function.setDew("A")
-
-
-def test_setDew_3(function):
-    with mock.patch.object(MWInputDialog, "getInt", return_value=(0, False)):
-        function.ui.dewA.setText("10")
-        function.setDew("A")
-
-
-def test_setDew_4(function):
+def test_setDewCycle_2(function):
     with (
         mock.patch.object(MWInputDialog, "getInt", return_value=(0, True)),
         mock.patch.object(function.app.dReg.d["power"].instance, "sendDew", return_value=True),
     ):
-        function.setDew("A")
-
-
-def test_setDew_5(function):
-    with (
-        mock.patch.object(MWInputDialog, "getInt", return_value=(0, True)),
-        mock.patch.object(function.app.dReg.d["power"].instance, "sendDew", return_value=True),
-    ):
-        function.ui.dewA.setText("10")
-        function.setDew("A")
+        function.ui.dewCycle1.setText("10")
+        assert function.setDewCycle("1", None)
 
 
 def test_togglePowerPort_1(function):
@@ -89,20 +70,6 @@ def test_togglePowerPort_1(function):
         function.app.dReg.d["power"].instance, "togglePowerPort", return_value=True
     ):
         function.togglePowerPort("1")
-
-
-def test_togglePowerBootPort_1(function):
-    with mock.patch.object(
-        function.app.dReg.d["power"].instance, "togglePowerPortBoot", return_value=True
-    ):
-        function.togglePowerBootPort("2")
-
-
-def test_togglePowerBootPort_2(function):
-    with mock.patch.object(
-        function.app.dReg.d["power"].instance, "togglePowerPortBoot", return_value=True
-    ):
-        function.togglePowerBootPort("1")
 
 
 def test_toggleHubUSB_1(function):
@@ -117,13 +84,6 @@ def test_togglePortUSB_1(function):
         function.app.dReg.d["power"].instance, "togglePortUSB", return_value=True
     ):
         function.togglePortUSB("1")
-
-
-def test_toggleAutoDew_1(function):
-    with mock.patch.object(
-        function.app.dReg.d["power"].instance, "toggleAutoDew", return_value=True
-    ):
-        function.toggleAutoDew()
 
 
 def test_setAdjustableOutput_2(function):

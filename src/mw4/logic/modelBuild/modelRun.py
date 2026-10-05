@@ -13,16 +13,16 @@
 # License APL2.0
 #
 ###########################################################
-import json
 import logging
 import time
 from collections.abc import Iterator
 from mw4.base.appProtocol import AppProtocol
 from mw4.base.transform import JNowToJ2000
-from mw4.logic.modelBuild.modelRunSupport import convertAngleToFloat, writeRetrofitData
+from mw4.logic.buildData.buildpoints import BuildPoint
+from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile
 from mw4.mountcontrol.progStar import ProgStar
 from pathlib import Path
-from PySide6.QtCore import QObject, QTimer, Signal
+from PySide6.QtCore import QObject, Qt, QTimer, Signal
 from skyfield.api import Angle, Star
 from typing import Any
 
@@ -30,6 +30,8 @@ from typing import Any
 class ModelData(QObject):
     log = logging.getLogger("MW4")
     progress = Signal(dict)
+    pointStatus = Signal(int, int)
+    pointMarkersChanged = Signal()
     PROGRESSIVE = 2
     NORMAL = 1
     CONSERVATIVE = 0
@@ -55,13 +57,8 @@ class ModelData(QObject):
         self.modelRunIterator: Iterator[str] | None = None
         self.modelRunKey: str = ""
         self.modelProgData: list[ProgStar] = []
-        self.modelSaveData: list = []
         self.modelName: str = ""
         self.imageDir: Path = Path()
-        self.latitude: float = 0
-        self.version: str = ""
-        self.firmware: str = ""
-        self.profile: str = ""
         self.plateSolveApp: str = ""
         self.waitTimeExposure: float = 0
         self.runTime: float = 0
@@ -75,7 +72,7 @@ class ModelData(QObject):
         self.timerExposure = QTimer(self)
         self.timerExposure.setSingleShot(True)
         self.timerExposure.timeout.connect(self.checkPauseAndExpose)
-        self.startSlew.connect(self.startNewSlew)
+        self.startSlew.connect(self.startNewSlew, Qt.ConnectionType.QueuedConnection)
 
     def setupSignals(self) -> None:
         self.app.dReg["camera"].signals.exposed.connect(self.setImageExposed)
@@ -156,37 +153,6 @@ class ModelData(QObject):
         t += f" Alt: [{altitude.degrees:03.0f}], Az: [{azimuth.degrees:03.0f}]"
         self.log.debug(t)
 
-    def addMountModelToBuildModel(self) -> bool:
-        mount = self.app.dReg["mount"]
-        if len(mount.model.starList) != len(self.modelSaveData):
-            self.log.warning("Error in model data: difference in length")
-            self.modelSaveData = []
-            return False
-        self.modelSaveData = writeRetrofitData(mount.model, self.modelSaveData)
-        self.modelSaveData = convertAngleToFloat(self.modelSaveData)
-        return True
-
-    def collectBuildModelResults(self) -> None:
-        self.modelSaveData.clear()
-        for item in self.modelBuildData.values():
-            if not item["success"]:
-                continue
-            saveItem = dict(item)
-            saveItem["version"] = self.version
-            saveItem["profile"] = self.profile
-            saveItem["firmware"] = self.firmware
-            saveItem["latitude"] = self.latitude
-            self.modelSaveData.append(saveItem)
-
-    def generateSaveData(self) -> bool:
-        self.collectBuildModelResults()
-        return self.addMountModelToBuildModel()
-
-    def saveModelData(self, modelPath: Path) -> None:
-        self.log.debug(f"{'Save model':15s}: Len: [{len(self.modelSaveData)}]")
-        with open(modelPath, "w") as outfile:
-            json.dump(self.modelSaveData, outfile, sort_keys=True, indent=4)
-
     def buildProgModel(self) -> None:
         self.log.debug(f"{'Build progmodel':15s}: Len: [{len(self.modelBuildData)}]")
         self.modelProgData = []
@@ -200,6 +166,11 @@ class ModelData(QObject):
             pierside = mPoint["pierside"]
             programmingPoint = ProgStar(mCoord, sCoord, sidereal, pierside)
             self.modelProgData.append(programmingPoint)
+
+    def loadFromFiles(self, modelFilesPath: list[Path]) -> str:
+        self.modelBuildData, message = loadModelsFromFile(modelFilesPath)
+        self.buildProgModel()
+        return message
 
     def addMountDataToModelBuildData(self) -> None:
         item = self.modelBuildData[self.modelRunKey]
@@ -268,13 +239,11 @@ class ModelData(QObject):
     def collectPlateSolveResult(self, result: dict[str, Any]) -> None:
         key = result["imagePath"].stem
         item = self.modelBuildData[key]
-        if result["success"]:
-            self.app.buildPoint.setStatusBuildPSolved(item["countSequence"])
-        else:
-            self.app.buildPoint.setStatusBuildPFailed(item["countSequence"])
+        status = BuildPoint.SOLVED if result["success"] else BuildPoint.FAILED
+        self.pointStatus.emit(item["countSequence"], status)
         item.update(result)
         t = f"{'Collect solve':15s}: [{key}], [{item['message']}], [{item}]"
-        self.app.updatePointMarker.emit()
+        self.pointMarkersChanged.emit()
         item["processed"] = True
         self.sendModelProgress()
         self.log.debug(t)
@@ -288,7 +257,7 @@ class ModelData(QObject):
         self.retries = 0
         self.log.debug(f"{'Prepare model':15s}: Len: [{len(self.modelInputData)}]")
         for index, point in enumerate(self.modelInputData):
-            self.app.buildPoint.setStatusBuildPUnprocessed(index)
+            self.pointStatus.emit(index, BuildPoint.UNPROCESSED)
             modelItem = {}
             imagePath = self.imageDir / f"image-{index:03d}.fits"
             modelItem["imagePath"] = imagePath

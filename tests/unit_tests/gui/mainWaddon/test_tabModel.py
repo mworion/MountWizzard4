@@ -18,6 +18,7 @@ import mw4.gui.mainWaddon
 import mw4.gui.mainWaddon.tabModel
 import os
 import pytest
+from mw4.base.operationStatus import OperationStatus
 from mw4.gui.mainWaddon.tabModel import Model
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
@@ -61,24 +62,24 @@ def test_setWaitTimeFlip_1(function):
 
 
 def test_cancelBatch_2(function):
-    function.modelData = ModelData(App)
+    function.modelData = ModelData(function.app)
     function.cancelBatch()
     assert function.modelData.cancelBatch
 
 
 def test_shutdown_idle(function):
-    function.app.statusOperationRunning = function.STATUS_IDLE
+    function.app.statusOperationRunning = OperationStatus.IDLE
     with mock.patch.object(function, "cancelBatch") as cancel:
         function.shutdown()
     cancel.assert_not_called()
 
 
 def test_shutdown_modelRunning(function):
-    function.app.statusOperationRunning = function.STATUS_MODEL_BATCH
+    function.app.statusOperationRunning = OperationStatus.MODEL_BATCH
     with mock.patch.object(function, "cancelBatch") as cancel:
         function.shutdown()
     cancel.assert_called_once_with()
-    function.app.statusOperationRunning = function.STATUS_IDLE
+    function.app.statusOperationRunning = OperationStatus.IDLE
 
 
 def test_pauseBatch_2(function):
@@ -113,13 +114,39 @@ def test_setModelOperationMode_5(function):
     function.setModelOperationMode(4)
 
 
+def test_getSaveMeta_1(function):
+    meta = function.getSaveMeta()
+    assert set(meta) == {"version", "profile", "firmware", "latitude"}
+
+
+def test_setPointStatus_1(function):
+    with mock.patch.object(function.app.buildPoint, "setStatusBuildP") as mockStatus:
+        function.setPointStatus(2, 1)
+    mockStatus.assert_called_once_with(2, 1)
+
+
+def test_pointSignals_1(function):
+    tab = Model(function.mainW)
+    with mock.patch.object(tab.app.buildPoint, "setStatusBuildP") as mockStatus:
+        tab.modelData.pointStatus.emit(1, 2)
+    mockStatus.assert_called_once_with(1, 2)
+
+
+def test_pointSignals_2(function, qtbot):
+    tab = Model(function.mainW)
+    with qtbot.waitSignal(tab.app.updatePointMarker, timeout=1000):
+        tab.modelData.pointMarkersChanged.emit()
+
+
 def test_programModelToMountFinish_1(function):
     function.modelData = ModelData(App)
     function.modelData.modelName = "Test"
     function.app.mount.signals.getModelDone.connect(function.programModelToMountFinish)
     with (
-        mock.patch.object(function.modelData, "generateSaveData", return_value=True),
-        mock.patch.object(function.modelData, "saveModelData") as mockSave,
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabModel, "buildSaveData", return_value=[{"a": 1}]
+        ),
+        mock.patch.object(mw4.gui.mainWaddon.tabModel, "saveModelFile") as mockSave,
     ):
         function.programModelToMountFinish()
     mockSave.assert_called_once()
@@ -131,8 +158,8 @@ def test_programModelToMountFinish_2(function):
     function.modelData.modelName = "Test"
     function.app.mount.signals.getModelDone.connect(function.programModelToMountFinish)
     with (
-        mock.patch.object(function.modelData, "generateSaveData", return_value=False),
-        mock.patch.object(function.modelData, "saveModelData") as mockSave,
+        mock.patch.object(mw4.gui.mainWaddon.tabModel, "buildSaveData", return_value=None),
+        mock.patch.object(mw4.gui.mainWaddon.tabModel, "saveModelFile") as mockSave,
         mock.patch.object(function, "msg") as mockMsg,
     ):
         function.programModelToMountFinish()
@@ -386,7 +413,7 @@ def test_runBatch_3(function):
         mock.patch.object(function.app, "operationRunning") as mockOp,
     ):
         function.runBatch()
-    assert mockOp.emit.call_args_list[-1][0][0] == function.STATUS_IDLE
+    assert mockOp.emit.call_args_list[-1][0][0] == OperationStatus.IDLE
 
 
 def test_runBatch_4(function):
@@ -402,6 +429,28 @@ def test_runBatch_4(function):
     assert not function.modelData.cancelBatch
     mockClear.assert_called_once_with(function.startBatch)
     mockRun.assert_not_called()
+
+
+def test_runBatch_cancelDuringClearWait(function, qtbot):
+    function.modelData = ModelData(function.app)
+    function.app.buildPoint.buildP = [[10, 0, 1], [20, 90, 1], [30, 180, 1]]
+    with (
+        mock.patch.object(function, "checkMountTimeSync", return_value=True),
+        mock.patch.object(function.app.mount.model, "clearModel", return_value=True),
+        mock.patch.object(function.app.mount.model, "storeName", return_value=True),
+        mock.patch.object(function, "CLEAR_WAIT_MS", 50),
+        mock.patch.object(function, "setupBatchData"),
+        mock.patch.object(function.app.buildPoint, "setStatusBuildPUnprocessed"),
+        mock.patch.object(function.modelData, "startSlew") as mockSlew,
+        mock.patch.object(function, "finishBatch") as mockFinish,
+    ):
+        function.modelData.finished.connect(function.finishBatch)
+        function.runBatch()
+        function.cancelBatch()
+        qtbot.waitUntil(lambda: mockFinish.called, timeout=2000)
+        function.modelData.finished.disconnect(function.finishBatch)
+    mockSlew.emit.assert_not_called()
+    mockFinish.assert_called_once_with(True)
 
 
 def test_startBatch_1(function):
@@ -430,7 +479,7 @@ def test_finishBatch_1(function):
     mockPark.assert_not_called()
     assert "cancelled" in mockMsg.emit.call_args_list[0][0][3]
     mockSound.emit.assert_called_once_with("RunFinished")
-    mockOp.emit.assert_called_once_with(function.STATUS_IDLE)
+    mockOp.emit.assert_called_once_with(OperationStatus.IDLE)
 
 
 def test_finishBatch_2(function):
@@ -447,7 +496,7 @@ def test_finishBatch_2(function):
     mockPark.assert_called_once()
     assert "Park mount after model build" in mockMsg.emit.call_args_list[-1][0][3]
     mockSound.emit.assert_called_once_with("RunFinished")
-    mockOp.emit.assert_called_once_with(function.STATUS_IDLE)
+    mockOp.emit.assert_called_once_with(OperationStatus.IDLE)
     function.ui.parkMountAfterModel.setChecked(False)
 
 
@@ -463,7 +512,7 @@ def test_finishBatch_3(function):
     mockProgram.assert_called_once()
     mockPark.assert_not_called()
     mockSound.emit.assert_called_once_with("RunFinished")
-    mockOp.emit.assert_called_once_with(function.STATUS_IDLE)
+    mockOp.emit.assert_called_once_with(OperationStatus.IDLE)
 
 
 def test_finishBatch_connectedToModelData(function):
@@ -477,7 +526,7 @@ def test_finishBatch_connectedToModelData(function):
         function.modelData.finished.emit(False)
     mockProgram.assert_called_once()
     mockSound.emit.assert_called_once_with("RunFinished")
-    mockOp.emit.assert_called_once_with(function.STATUS_IDLE)
+    mockOp.emit.assert_called_once_with(OperationStatus.IDLE)
 
 
 def test_runFileModel_1(function):
@@ -529,30 +578,26 @@ def test_runFileModel_4(function):
         mock.patch.object(function.app, "operationRunning") as mockOp,
     ):
         function.runFileModel()
-    assert mockOp.emit.call_args_list[-1][0][0] == function.STATUS_IDLE
+    assert mockOp.emit.call_args_list[-1][0][0] == OperationStatus.IDLE
 
 
 def test_programFileModel_1(function):
-    model = [{"success": True}]
     function.modelData = ModelData(App)
+    function.modelData.modelBuildData = {"point-000": {"success": True}}
     with (
-        mock.patch.object(
-            mw4.gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=(model, "")
-        ),
-        mock.patch.object(function.modelData, "buildProgModel"),
+        mock.patch.object(function.modelData, "loadFromFiles", return_value="") as mockLoad,
         mock.patch.object(function, "programModelToMount") as mockProgram,
     ):
         function.programFileModel([Path("test.model")])
+    mockLoad.assert_called_once_with([Path("test.model")])
     mockProgram.assert_called_once()
 
 
 def test_programFileModel_2(function):
     function.modelData = ModelData(App)
+    function.modelData.modelBuildData = {}
     with (
-        mock.patch.object(
-            mw4.gui.mainWaddon.tabModel, "loadModelsFromFile", return_value=([], "Error")
-        ),
-        mock.patch.object(function.modelData, "buildProgModel"),
+        mock.patch.object(function.modelData, "loadFromFiles", return_value="Error"),
         mock.patch.object(function, "programModelToMount") as mockProgram,
         mock.patch.object(function, "msg") as mockMsg,
     ):

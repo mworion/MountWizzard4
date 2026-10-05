@@ -13,6 +13,7 @@
 # License APL2.0
 #
 ###########################################################
+from mw4.base.operationStatus import OperationStatus
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from typing import TYPE_CHECKING, Any
 
@@ -28,7 +29,7 @@ class Analysis:
         self.ui = mainW.ui
 
         self.ui.analysisProgress.setValue(0)
-        self.app.operationRunning.emit(0)
+        self.app.operationRunning.emit(OperationStatus.IDLE)
         self.imageDirAnalysis = ""
         self.analysisName = ""
         self.analysisRunning = False
@@ -95,7 +96,7 @@ class Analysis:
         self.ui.analysisProgress.setValue(0)
 
         self.app.playSound.emit("RunFinished")
-        self.app.operationRunning.emit(0)
+        self.app.operationRunning.emit(OperationStatus.IDLE)
 
     def cancelAnalysis(self) -> None:
         self.restoreAnalysisDefaultContextAndGuiStatus()

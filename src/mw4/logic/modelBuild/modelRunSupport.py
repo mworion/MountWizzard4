@@ -92,6 +92,22 @@ def convertAngleToFloat(model: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return model
 
 
+def buildSaveData(
+    buildData: dict[str, dict[str, Any]], meta: dict[str, Any], mountModel: Model
+) -> list[dict[str, Any]] | None:
+    saveData = [dict(item) | meta for item in buildData.values() if item["success"]]
+    if len(mountModel.starList) != len(saveData):
+        log.warning("Error in model data: difference in length")
+        return None
+    return convertAngleToFloat(writeRetrofitData(mountModel, saveData))
+
+
+def saveModelFile(modelPath: Path, saveData: list[dict[str, Any]]) -> None:
+    log.debug(f"{'Save model':15s}: Len: [{len(saveData)}]")
+    with open(modelPath, "w") as outfile:
+        json.dump(saveData, outfile, sort_keys=True, indent=4)
+
+
 def loadModelsFromFile(modelFilesPath: list[Path]) -> tuple[dict[str, dict[str, Any]], str]:
     model = {}
     modelLoad = []

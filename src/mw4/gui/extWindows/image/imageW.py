@@ -15,11 +15,11 @@
 ###########################################################
 import numpy as np
 from mw4.base.appProtocol import AppProtocol
+from mw4.base.operationStatus import OperationStatus
 from mw4.base.transform import J2000ToJNow
 from mw4.gui.extWindows.image.imageSignals import ImageWindowSignals
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
-from mw4.gui.mainWaddon.tabModel import Model
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, getTabIndex
@@ -176,9 +176,9 @@ class ImageWindow(MWidget):
             self.ui.tabImage.setTabEnabled(i, False)
 
     def operationMode(self, status: int) -> None:
-        if status == Model.STATUS_MODEL_BATCH:
+        if status == OperationStatus.MODEL_BATCH:
             self.ui.groupImageActions.setEnabled(False)
-        elif status == Model.STATUS_IDLE:
+        elif status == OperationStatus.IDLE:
             self.ui.groupImageActions.setEnabled(True)
 
     def setButtonExposingStatusEnabled(self) -> None:
@@ -282,7 +282,7 @@ class ImageWindow(MWidget):
     def resetImage(self) -> None:
         self.app.dReg["camera"].signals.saved.disconnect(self.exposeImageDone)
         self.isExposing = False
-        self.app.operationRunning.emit(Model.STATUS_IDLE)
+        self.app.operationRunning.emit(OperationStatus.IDLE)
 
     def exposeImageDone(self, imagePath: Path) -> None:
         self.msg.emit(0, "Image", "Exposing finished", imagePath.stem)
@@ -300,7 +300,7 @@ class ImageWindow(MWidget):
             self.app.dReg["camera"].instance.binning1,
         ):
             return
-        self.app.operationRunning.emit(Model.STATUS_EXPOSE_1)
+        self.app.operationRunning.emit(OperationStatus.EXPOSE_1)
         self.isExposing = True
         self.app.dReg["camera"].signals.saved.connect(self.exposeImageDone)
 
@@ -317,7 +317,7 @@ class ImageWindow(MWidget):
 
         if not result["success"]:
             self.msg.emit(2, "Image", "Solving error", result.get("message"))
-            self.app.operationRunning.emit(Model.STATUS_IDLE)
+            self.app.operationRunning.emit(OperationStatus.IDLE)
             return
 
         text = f"RA: {convertToHMS(result['raJ2000S'])} "
@@ -335,13 +335,13 @@ class ImageWindow(MWidget):
 
         if self.ui.embedData.isChecked():
             self.showCurrent()
-        self.app.operationRunning.emit(Model.STATUS_IDLE)
+        self.app.operationRunning.emit(OperationStatus.IDLE)
 
     def solveImage(self, imagePath: Path) -> None:
         if not imagePath.is_file():
             return
 
-        self.app.operationRunning.emit(Model.STATUS_SOLVE)
+        self.app.operationRunning.emit(OperationStatus.SOLVE)
         self.app.dReg["plateSolve"].signals.result.connect(self.solveDone)
         self.app.dReg["plateSolve"].instance.solve(imagePath, self.ui.embedData.isChecked())
         self.isSolving = True
@@ -352,7 +352,7 @@ class ImageWindow(MWidget):
 
     def abortSolve(self) -> None:
         self.app.dReg["plateSolve"].instance.abort()
-        self.app.operationRunning.emit(Model.STATUS_IDLE)
+        self.app.operationRunning.emit(OperationStatus.IDLE)
 
     def slewDirect(self, ra: Angle, dec: Angle) -> None:
         if not self.app.dReg["mount"].stat:
@@ -381,7 +381,7 @@ class ImageWindow(MWidget):
             return
 
         ra, dec = getCoordinatesFromHeader(getImageHeader(self.imageFileName))
-        self.app.operationRunning.emit(Model.STATUS_MODEL_SYNC)
+        self.app.operationRunning.emit(OperationStatus.MODEL_SYNC)
         obs = self.app.dReg["mount"].obsSite
         raJNow, decJNow = J2000ToJNow(ra, dec, obs.timeJD)
         obs.setTargetRaDec(raJNow, decJNow)
@@ -392,4 +392,4 @@ class ImageWindow(MWidget):
         else:
             t = "No sync, match failed because coordinates to far off for model"
             self.msg.emit(2, "Model", "Run error", t)
-        self.app.operationRunning.emit(Model.STATUS_IDLE)
+        self.app.operationRunning.emit(OperationStatus.IDLE)

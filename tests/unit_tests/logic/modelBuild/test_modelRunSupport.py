@@ -19,6 +19,7 @@ import mw4.logic.modelBuild.modelRunSupport
 import shutil
 from datetime import datetime
 from mw4.logic.modelBuild.modelRunSupport import (
+    buildSaveData,
     compareFile,
     convertAngleToFloat,
     convertFloatToAngle,
@@ -27,6 +28,7 @@ from mw4.logic.modelBuild.modelRunSupport import (
     generateFileModelData,
     generateMountModelData,
     loadModelsFromFile,
+    saveModelFile,
     writeRetrofitData,
 )
 from mw4.mountcontrol import obsSite
@@ -179,6 +181,41 @@ def test_convertAngleToFloat_1():
     assert isinstance(jsonModel[0]["decJNowS"], float)
     assert isinstance(jsonModel[0]["raJNowS"], float)
     assert isinstance(jsonModel[0]["imagePath"], str)
+
+
+def test_buildSaveData_1():
+    mountModel = mock.MagicMock()
+    mountModel.starList = [1, 2]
+    buildData = {
+        "im-00": {"success": True, "altitude": Angle(degrees=1), "a": 1},
+        "im-01": {"success": False, "altitude": Angle(degrees=2)},
+        "im-02": {"success": True, "altitude": Angle(degrees=3), "version": "old"},
+    }
+    meta = {"version": "1.0", "profile": "p"}
+    with mock.patch.object(
+        mw4.logic.modelBuild.modelRunSupport, "writeRetrofitData", side_effect=lambda m, d: d
+    ):
+        result = buildSaveData(buildData, meta, mountModel)
+    assert len(result) == 2
+    assert result[0]["version"] == "1.0"
+    assert result[1]["version"] == "1.0"
+    assert result[0]["profile"] == "p"
+    assert result[0]["altitude"] == 1.0
+    assert isinstance(buildData["im-00"]["altitude"], Angle)
+    assert "profile" not in buildData["im-00"]
+
+
+def test_buildSaveData_2():
+    mountModel = mock.MagicMock()
+    mountModel.starList = [1]
+    buildData = {"im-00": {"success": True}, "im-01": {"success": True}}
+    assert buildSaveData(buildData, {}, mountModel) is None
+
+
+def test_saveModelFile_1(tmp_path):
+    modelPath = tmp_path / "test.model"
+    saveModelFile(modelPath, [{"a": 1}])
+    assert json.loads(modelPath.read_text()) == [{"a": 1}]
 
 
 def test_loadModelsFromFile_1():

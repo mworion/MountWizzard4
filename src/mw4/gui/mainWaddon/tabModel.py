@@ -16,29 +16,22 @@
 from collections.abc import Callable
 from datetime import datetime, timedelta
 from functools import partial
+from mw4.base.operationStatus import OperationStatus
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.logic.modelBuild.modelRun import ModelData
-from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile
+from mw4.logic.modelBuild.modelRunSupport import buildSaveData, saveModelFile
 from pathlib import Path
 from PySide6.QtCore import QTimer
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class Model(TabAddon):
-    STATUS_IDLE = 0
-    STATUS_MODEL_BATCH = 1
-    STATUS_MODEL_FILE = 2
-    STATUS_MODEL_SYNC = 3
-    STATUS_MODEL_ITERATIVE = 4
-    STATUS_EXPOSE_1 = 5
-    STATUS_EXPOSE_N = 6
-    STATUS_SOLVE = 7
     CLEAR_WAIT_MS = 1000
 
     def __init__(self, mainW: "MainWindow") -> None:
@@ -62,6 +55,8 @@ class Model(TabAddon):
         self.modelData.statusRetry.connect(self.showStatusRetry)
         self.modelData.progress.connect(self.showProgress)
         self.modelData.finished.connect(self.finishBatch)
+        self.modelData.pointStatus.connect(self.setPointStatus)
+        self.modelData.pointMarkersChanged.connect(self.app.updatePointMarker)
 
     def initConfig(self) -> None:
         config = self.app.config["WindowMain"]
@@ -99,7 +94,7 @@ class Model(TabAddon):
         self.modelData.cancelRun()
 
     def shutdown(self) -> None:
-        if self.app.statusOperationRunning != self.STATUS_MODEL_BATCH:
+        if self.app.statusOperationRunning != OperationStatus.MODEL_BATCH:
             return
         self.msg.emit(1, "Model", "Run", "Model build cancelled on close")
         self.cancelBatch()
@@ -112,7 +107,7 @@ class Model(TabAddon):
         self.modelData.endRun()
 
     def setModelOperationMode(self, status: int) -> None:
-        if status == self.STATUS_MODEL_BATCH:
+        if status == OperationStatus.MODEL_BATCH:
             self.ui.runModelGroup.setEnabled(True)
             self.ui.dataModel.setEnabled(False)
             self.ui.cancelModel.setEnabled(True)
@@ -122,9 +117,9 @@ class Model(TabAddon):
             changeStyleDynamic(self.ui.runModel, "run", "true")
             changeStyleDynamic(self.ui.cancelModel, "stop", "true")
             changeStyleDynamic(self.ui.endModel, "stop", "true")
-        elif status == self.STATUS_MODEL_FILE:
+        elif status == OperationStatus.MODEL_FILE:
             self.ui.runModelGroup.setEnabled(False)
-        elif status == self.STATUS_MODEL_SYNC:
+        elif status == OperationStatus.MODEL_SYNC:
             self.ui.runModelGroup.setEnabled(False)
             self.ui.dataModel.setEnabled(False)
             self.ui.cancelModel.setEnabled(False)
@@ -138,17 +133,33 @@ class Model(TabAddon):
             changeStyleDynamic(self.ui.endModel, "stop", "false")
             changeStyleDynamic(self.ui.pauseModel, "pause", "false")
 
+    def getSaveMeta(self) -> dict[str, Any]:
+        mount = self.app.dReg["mount"]
+        return {
+            "version": f"{self.app.__version__}",
+            "profile": self.ui.profileName.text(),
+            "firmware": mount.instance.firmware.vString,
+            "latitude": mount.obsSite.location.latitude.degrees,
+        }
+
+    def setPointStatus(self, index: int, status: int) -> None:
+        self.app.buildPoint.setStatusBuildP(index, status)
+
     def programModelToMountFinish(self) -> None:
         self.app.dReg["mount"].signals.getModelDone.disconnect(self.programModelToMountFinish)
         self.modelDoneConnected = False
         self.msg.emit(1, "Model", "Writing model", f"[{self.modelData.modelName}]")
-        if self.modelData.generateSaveData():
-            modelPath = self.app.mwGlob["modelDir"] / (self.modelData.modelName + ".model")
-            self.modelData.saveModelData(modelPath)
-        else:
+        mount = self.app.dReg["mount"]
+        saveData = buildSaveData(
+            self.modelData.modelBuildData, self.getSaveMeta(), mount.model
+        )
+        if saveData is None:
             t = "Model data inconsistent with mount model, model file not saved"
             self.msg.emit(2, "Model", "Run error", t)
-        self.app.dReg["mount"].model.storeName("actual")
+        else:
+            modelPath = self.app.mwGlob["modelDir"] / (self.modelData.modelName + ".model")
+            saveModelFile(modelPath, saveData)
+        mount.model.storeName("actual")
 
     def programModelToMount(self) -> None:
         if not self.modelData.modelProgData:
@@ -261,11 +272,6 @@ class Model(TabAddon):
         self.modelData.numberRetries = self.ui.numberBuildRetries.value()
         self.modelData.retriesReverse = self.ui.retriesReverse.isChecked()
         self.modelData.waitTimeExposure = self.ui.waitTimeExposure.value()
-        self.modelData.version = f"{self.app.__version__}"
-        self.modelData.profile = self.ui.profileName.text()
-        self.modelData.firmware = self.app.dReg["mount"].instance.firmware.vString
-        obsSite = self.app.dReg["mount"].obsSite
-        self.modelData.latitude = obsSite.location.latitude.degrees
         self.modelData.plateSolveApp = self.app.dReg["plateSolve"].framework
 
     def setModelTiming(self) -> None:
@@ -280,9 +286,9 @@ class Model(TabAddon):
         self.modelData.resetBatchFlags()
         if not self.checkModelRunConditions() or not self.checkMountTimeSync():
             return
-        self.app.operationRunning.emit(self.STATUS_MODEL_BATCH)
+        self.app.operationRunning.emit(OperationStatus.MODEL_BATCH)
         if not self.clearAlignAndBackup(self.startBatch):
-            self.app.operationRunning.emit(self.STATUS_IDLE)
+            self.app.operationRunning.emit(OperationStatus.IDLE)
 
     def startBatch(self) -> None:
         self.setModelTiming()
@@ -300,7 +306,7 @@ class Model(TabAddon):
                 self.msg.emit(1, "Model", "Run", "Park mount after model build")
                 self.app.dReg["mount"].obsSite.park()
         self.app.playSound.emit("RunFinished")
-        self.app.operationRunning.emit(self.STATUS_IDLE)
+        self.app.operationRunning.emit(OperationStatus.IDLE)
 
     def runFileModel(self) -> None:
         self.msg.emit(1, "Model", "Run", "Model from file")
@@ -318,16 +324,15 @@ class Model(TabAddon):
             self.msg.emit(1, "Model", "Run", "Model from file cancelled - no files selected")
             return
 
-        self.app.operationRunning.emit(self.STATUS_MODEL_FILE)
+        self.app.operationRunning.emit(OperationStatus.MODEL_FILE)
         if not self.clearAlignAndBackup(partial(self.programFileModel, modelFilesPath)):
-            self.app.operationRunning.emit(self.STATUS_IDLE)
+            self.app.operationRunning.emit(OperationStatus.IDLE)
 
     def programFileModel(self, modelFilesPath: list[Path]) -> None:
-        self.modelData.modelBuildData, message = loadModelsFromFile(modelFilesPath)
-        self.modelData.buildProgModel()
+        message = self.modelData.loadFromFiles(modelFilesPath)
         if self.modelData.modelBuildData:
             self.programModelToMount()
         else:
             self.msg.emit(3, "Model", "Run error", message)
         self.app.playSound.emit("RunFinished")
-        self.app.operationRunning.emit(self.STATUS_IDLE)
+        self.app.operationRunning.emit(OperationStatus.IDLE)

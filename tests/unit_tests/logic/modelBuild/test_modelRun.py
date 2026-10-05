@@ -14,10 +14,9 @@
 #
 ###########################################################
 
-import builtins
-import json
 import mw4.logic.modelBuild.modelRun
 import pytest
+from mw4.logic.buildData.buildpoints import BuildPoint
 from mw4.logic.modelBuild.modelRun import ModelData
 from pathlib import Path
 from skyfield.api import Angle
@@ -88,6 +87,15 @@ def test_setupAndResetSignals(function):
         exposed.emit(Path("test.fits"))
         assert mockSlew.emit.call_count == 1
     function.modelTiming = function.CONSERVATIVE
+
+
+def test_startSlew_isQueued(function, qtbot):
+    function.cancelBatch = True
+    function.modelRunIterator = iter(["im-00"])
+    function.startSlew.emit()
+    assert function.modelRunKey == ""
+    qtbot.waitUntil(lambda: function.modelRunKey == "im-00", timeout=1000)
+    function.cancelBatch = False
 
 
 def test_setImageExposed(function):
@@ -207,14 +215,18 @@ def test_startNewSlew_3(function):
         },
     }
 
-    with mock.patch.object(
-        function.app.dReg.d["mount"].instance.obsSite,
-        "setTargetAltAz",
-        return_value=False,
+    with (
+        mock.patch.object(
+            function.app.dReg.d["mount"].instance.obsSite,
+            "setTargetAltAz",
+            return_value=False,
+        ),
+        mock.patch.object(function, "startSlew") as mockSlew,
     ):
         function.startNewSlew()
         assert not function.mountSlewed
         assert not function.domeSlewed
+        mockSlew.emit.assert_called_once_with()
 
 
 def test_startNewSlew_4(function):
@@ -260,91 +272,19 @@ def test_startNewSlew_4(function):
         assert function.slewPending
 
 
-def test_addMountModelToBuildModel_1(function):
-    function.app.dReg.d["mount"].instance.model.starList = [1, 2, 3]
-    function.modelSaveData = [1, 2, 3]
+def test_loadFromFiles_1(function):
     with (
         mock.patch.object(
-            mw4.logic.modelBuild.modelRun, "writeRetrofitData", return_value=[1, 2, 3]
+            mw4.logic.modelBuild.modelRun,
+            "loadModelsFromFile",
+            return_value=({"point-000": {"success": True}}, "Loaded"),
         ),
-        mock.patch.object(
-            mw4.logic.modelBuild.modelRun, "convertAngleToFloat", return_value=[1, 2, 3]
-        ),
+        mock.patch.object(function, "buildProgModel") as mockBuild,
     ):
-        assert function.addMountModelToBuildModel()
-    assert len(function.modelSaveData) == 3
-
-
-def test_addMountModelToBuildModel_2(function):
-    function.app.dReg.d["mount"].instance.model.starList = [1, 2]
-    function.modelSaveData = [1, 2, 3]
-    with (
-        mock.patch.object(
-            mw4.logic.modelBuild.modelRun, "writeRetrofitData", return_value=[1, 2, 3]
-        ),
-        mock.patch.object(
-            mw4.logic.modelBuild.modelRun, "convertAngleToFloat", return_value=[1, 2, 3]
-        ),
-    ):
-        assert not function.addMountModelToBuildModel()
-
-    assert len(function.modelSaveData) == 0
-
-
-def test_collectBuildModelResults_1(function):
-    function.modelSaveData = [1, 2, 3]
-    function.modelBuildData = {}
-
-    function.collectBuildModelResults()
-    assert function.modelSaveData == []
-
-
-def test_collectBuildModelResults_2(function):
-    jd = function.app.dReg.d["mount"].instance.obsSite.timeJD
-    function.modelBuildData = {
-        "im-00": {
-            "altitude": Angle(degrees=0),
-            "azimuth": Angle(degrees=0),
-            "julianDate": jd,
-            "success": True,
-        },
-        "im-01": {
-            "altitude": Angle(degrees=1),
-            "azimuth": Angle(degrees=1),
-            "julianDate": jd,
-            "success": False,
-        },
-        "im-02": {
-            "dec": Angle(degrees=0),
-            "ra": Angle(hours=0),
-            "julianDate": jd,
-            "success": True,
-        },
-    }
-    function.modelSaveData = [1, 2, 3]
-
-    function.collectBuildModelResults()
-    assert len(function.modelSaveData) == 2
-    assert "version" in function.modelSaveData[0]
-    assert "profile" in function.modelSaveData[0]
-    assert "firmware" in function.modelSaveData[0]
-    assert "latitude" in function.modelSaveData[0]
-    assert "version" not in function.modelBuildData["im-00"]
-    assert function.modelSaveData[0] is not function.modelBuildData["im-00"]
-
-
-def test_generateSaveData_1(function):
-    with (
-        mock.patch.object(function, "collectBuildModelResults"),
-        mock.patch.object(function, "addMountModelToBuildModel", return_value=True),
-    ):
-        assert function.generateSaveData()
-
-
-def test_saveModelData_1(function):
-    function.modelSaveData = [1, 2, 3]
-    with mock.patch.object(builtins, "open"), mock.patch.object(json, "dump"):
-        function.saveModelData(Path(""))
+        message = function.loadFromFiles([Path("test.model")])
+    assert message == "Loaded"
+    assert function.modelBuildData == {"point-000": {"success": True}}
+    mockBuild.assert_called_once()
 
 
 def test_buildProgModel_1(function):
@@ -517,10 +457,13 @@ def test_collectPlateSolveResult_1(function):
         "message": "Ok",
     }
     with (
-        mock.patch.object(function.app.data, "setStatusBuildP"),
         mock.patch.object(function, "sendModelProgress"),
+        mock.patch.object(function, "pointStatus") as mockStatus,
+        mock.patch.object(function, "pointMarkersChanged") as mockMarkers,
     ):
         function.collectPlateSolveResult(result)
+    mockStatus.emit.assert_called_once_with(0, BuildPoint.SOLVED)
+    mockMarkers.emit.assert_called_once_with()
 
 
 def test_collectPlateSolveResult_2(function):
@@ -614,9 +557,13 @@ def test_prepareModelBuildData_1(function):
 
     with (
         mock.patch.object(function, "sendModelProgress"),
-        mock.patch.object(function.app.data, "setStatusBuildPUnprocessed"),
+        mock.patch.object(function, "pointStatus") as mockStatus,
     ):
         function.prepareModelBuildData()
+        assert mockStatus.emit.call_args_list == [
+            mock.call(0, BuildPoint.UNPROCESSED),
+            mock.call(1, BuildPoint.UNPROCESSED),
+        ]
         assert len(function.modelBuildData) == 2
         assert function.modelBuildData["image-000"]["altitude"].degrees == 5
         assert function.modelBuildData["image-000"]["azimuth"].degrees == 0
@@ -909,6 +856,18 @@ def test_endRun(function):
         function.endRun()
     assert function.endBatch
     mockStop.assert_called_once()
+
+
+def test_runModel_cancelBeforeStart(function, qtbot):
+    function.modelInputData = [(10, 0), (20, 90), (30, 180)]
+    function.cancelBatch = True
+    with (
+        mock.patch.object(function, "startSlew") as mockSlew,
+        qtbot.waitSignal(function.finished, timeout=1000) as blocker,
+    ):
+        function.runModel()
+    assert blocker.args == [True]
+    mockSlew.emit.assert_not_called()
 
 
 def test_resetBatchFlags(function):

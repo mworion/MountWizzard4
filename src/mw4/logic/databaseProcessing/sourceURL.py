@@ -1,18 +1,6 @@
-############################################################
-#
-#       #   #  #   #   #    #
-#      ##  ##  #  ##  #    #
-#     # # # #  # # # #    #  #
-#    #  ##  #  ##  ##    ######
-#   #   #   #  #   #       #
-#
-# Python-based Tool for interaction with the 10_micron mounts
-# GUI with PySide
-#
-# written in python3, (c) 2019-2026 by mworion
-# License APL2.0
-#
-###########################################################
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
 satBaseUrl: str = "https://celestrak.org/NORAD/elements/gp.php?"  # SEC-5: changed http → https
 satSourceURLs: dict[str, dict[str, str | bool]] = {
     "100 brightest": {

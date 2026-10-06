@@ -1,18 +1,6 @@
-############################################################
-#
-#       #   #  #   #   #    #
-#      ##  ##  #  ##  #    #
-#     # # # #  # # # #    #  #
-#    #  ##  #  ##  ##    ######
-#   #   #   #  #   #       #
-#
-# Python-based Tool for interaction with the 10_micron mounts
-# GUI with PySide
-#
-# written in python3, (c) 2019-2026 by mworion
-# License APL2.0
-#
-###########################################################
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
 from mw4.base.appProtocol import AppProtocol
 from mw4.gui.extWindows.simulator.tools import linkModel
 from typing import Any

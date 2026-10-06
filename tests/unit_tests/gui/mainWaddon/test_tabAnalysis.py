@@ -1,20 +1,6 @@
-############################################################
-#
-#       #   #  #   #   #    #
-#      ##  ##  #  ##  #    #
-#     # # # #  # # # #    #  #
-#    #  ##  #  ##  ##    ######
-#   #   #   #  #   #       #
-#
-# Python-based Tool for interaction with the 10_micron mounts
-# GUI with PySide for python !
-
-#
-# written in python3, (c) 2019-2024 by mworion
-# License APL2.0
-#
-###########################################################
-
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
 import pytest
 from mw4.gui.mainWaddon.tabAnalysis import Analysis
 from mw4.gui.utilities.qtMain import MWidget

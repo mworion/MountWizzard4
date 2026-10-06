@@ -260,9 +260,7 @@ class ImageWindow(MWidget):
             self.imageFileName = self.app.mwGlob["imageDir"] / (timeString + "-exposure.fits")
         else:
             self.imageFileName = self.app.mwGlob["imageDir"] / "exposure.fits"
-        if not self.app.dReg["camera"].instance.expose(
-            self.imageFileName, exposureTime, binning
-        ):
+        if not self.app.dReg["camera"].instance.expose(self.imageFileName, exposureTime, binning):
             return False
         self.msg.emit(0, "Image", "Exposing", self.imageFileName.stem)
         return True

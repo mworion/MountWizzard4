@@ -144,9 +144,7 @@ def test_downloadFileWorker_2(function):
 
 
 def test_downloadFileWorker_3(function):
-    with mock.patch.object(
-        function, "getFileFromUrl", return_value=True, side_effect=TimeoutError
-    ):
+    with mock.patch.object(function, "getFileFromUrl", return_value=True, side_effect=TimeoutError):
         suc = function.runnerDownloadFile(
             url="http://localhost", dest=Path("tests/work/temp/test.txt")
         )

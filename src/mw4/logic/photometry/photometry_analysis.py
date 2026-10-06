@@ -230,18 +230,13 @@ def computeTiltSquareView(
     worst = float(np.max(corners))
     centre = np.array([w / 2, h / 2])
     points = np.array(
-        [
-            vector * corner / worst + centre
-            for vector, corner in zip(vectors, corners, strict=True)
-        ]
+        [vector * corner / worst + centre for vector, corner in zip(vectors, corners, strict=True)]
     )
     tiltDiff = worst - best
     tiltPercent = 100 * tiltDiff / hfrMedian
     offAxisDiff = hfrOuter - segHFR[1][1]
     offAxisPercent = 100 * offAxisDiff / hfrMedian
-    return TiltSquareView(
-        points, best, worst, tiltDiff, tiltPercent, offAxisDiff, offAxisPercent
-    )
+    return TiltSquareView(points, best, worst, tiltDiff, tiltPercent, offAxisDiff, offAxisPercent)
 
 
 def computeTiltTriangleView(

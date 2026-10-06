@@ -348,6 +348,5 @@ def test_loader_subprocess_cycles():
 
     for r in results:
         assert r["t_total"] <= MAX_CYCLE_S, (
-            f"Cycle {r['cycle']:02d}: total {r['t_total']:.2f}s "
-            f"exceeds limit {MAX_CYCLE_S:.1f}s"
+            f"Cycle {r['cycle']:02d}: total {r['t_total']:.2f}s exceeds limit {MAX_CYCLE_S:.1f}s"
         )

@@ -203,9 +203,7 @@ def test_prepareResult_3(function):
         mock.patch.object(
             mw4.logic.plateSolve.plateSolve, "getSolutionFromWCSHeader", return_value=solve
         ),
-        mock.patch.object(
-            mw4.logic.plateSolve.plateSolve, "updateImageFileHeaderWithSolution"
-        ),
+        mock.patch.object(mw4.logic.plateSolve.plateSolve, "updateImageFileHeaderWithSolution"),
         mock.patch.object(mw4.logic.plateSolve.plateSolve, "J2000ToJNow", return_value=(1, 1)),
     ):
         result = function.prepareResult(
@@ -275,9 +273,7 @@ def test_startSolveLoop_2(function):
 
 def test_checkAvailabilityProgram_1(function):
     function.framework = "astap"
-    with mock.patch.object(
-        function.run["astap"], "checkAvailabilityProgram", return_value=True
-    ):
+    with mock.patch.object(function.run["astap"], "checkAvailabilityProgram", return_value=True):
         assert function.checkAvailabilityProgram("astap")
 
 

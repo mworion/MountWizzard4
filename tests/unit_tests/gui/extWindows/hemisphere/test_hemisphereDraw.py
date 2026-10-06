@@ -88,9 +88,7 @@ def test_drawCelestialEquator_1(function):
 
 
 def test_drawCelestialEquator_2(function):
-    with mock.patch.object(
-        function.app.data, "generateCelestialEquator", return_value=[(1, 1)]
-    ):
+    with mock.patch.object(function.app.data, "generateCelestialEquator", return_value=[(1, 1)]):
         function.drawCelestialEquator()
 
 
@@ -103,41 +101,31 @@ def test_setupAlignmentStars(function):
 
 
 def test_calculateRelevance_1(function):
-    function.app.mount.obsSite.location = wgs84.latlon(
-        longitude_degrees=0, latitude_degrees=45
-    )
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0, latitude_degrees=45)
     val = function.calculateRelevance(40, 180)
     assert round(val, 3) == 0.845
 
 
 def test_calculateRelevance_2(function):
-    function.app.mount.obsSite.location = wgs84.latlon(
-        longitude_degrees=0, latitude_degrees=45
-    )
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0, latitude_degrees=45)
     val = function.calculateRelevance(0, 0)
     assert val == 0
 
 
 def test_calculateRelevance_3(function):
-    function.app.mount.obsSite.location = wgs84.latlon(
-        longitude_degrees=0, latitude_degrees=45
-    )
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0, latitude_degrees=45)
     val = function.calculateRelevance(30, 180)
     assert val > 0
 
 
 def test_calculateRelevance_4(function):
-    function.app.mount.obsSite.location = wgs84.latlon(
-        longitude_degrees=0, latitude_degrees=45
-    )
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0, latitude_degrees=45)
     val = function.calculateRelevance(40, 10)
     assert val == 0
 
 
 def test_calculateRelevance_5(function):
-    function.app.mount.obsSite.location = wgs84.latlon(
-        longitude_degrees=0, latitude_degrees=-45
-    )
+    function.app.mount.obsSite.location = wgs84.latlon(longitude_degrees=0, latitude_degrees=-45)
     val = function.calculateRelevance(40, 10)
     assert val > 0
 
@@ -341,9 +329,7 @@ def test_slewStar_2(function):
             "mw4.gui.extWindows.hemisphere.hemisphereDraw.MWMessageDialog.question",
             return_value=0,
         ),
-        mock.patch.object(
-            function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
-        ),
+        mock.patch.object(function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)),
     ):
         function.slewStar(QPointF(1, 1))
 
@@ -364,9 +350,7 @@ def test_slewStar_3(function):
             "mw4.gui.extWindows.hemisphere.hemisphereDraw.MWMessageDialog.question",
             return_value=0,
         ),
-        mock.patch.object(
-            function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
-        ),
+        mock.patch.object(function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)),
     ):
         function.slewStar(QPointF(1, 1))
 
@@ -386,9 +370,7 @@ def test_slewStar_4(function):
             "mw4.gui.extWindows.hemisphere.hemisphereDraw.MWMessageDialog.question",
             return_value=1,
         ),
-        mock.patch.object(
-            function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
-        ),
+        mock.patch.object(function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)),
         mock.patch.object(function.slewInterface, "slewTargetRaDec", return_value=False),
     ):
         function.slewStar(QPointF(1, 1))
@@ -409,9 +391,7 @@ def test_slewStar_5(function):
             "mw4.gui.extWindows.hemisphere.hemisphereDraw.MWMessageDialog.question",
             return_value=2,
         ),
-        mock.patch.object(
-            function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)
-        ),
+        mock.patch.object(function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(0, 0)),
         mock.patch.object(function.slewInterface, "slewTargetRaDec", return_value=True),
     ):
         function.slewStar(QPointF(1, 1))
@@ -473,9 +453,7 @@ def test_drawTab_2(function):
 
 
 def test_drawCelestialEquator_empty(function):
-    with mock.patch.object(
-        function.app.buildPoint, "generateCelestialEquator", return_value=None
-    ):
+    with mock.patch.object(function.app.buildPoint, "generateCelestialEquator", return_value=None):
         function.drawCelestialEquator()
 
 

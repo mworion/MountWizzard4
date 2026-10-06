@@ -424,9 +424,7 @@ def test_processRxQueue_messageEvent(function):
         function.runnerProcessRxQueue()
     finally:
         function.msg = original_msg
-    mock_msg.emit.assert_called_once_with(
-        0, "INDI", "Device message", f"{'MyDevice':15s} test msg"
-    )
+    mock_msg.emit.assert_called_once_with(0, "INDI", "Device message", f"{'MyDevice':15s} test msg")
 
 
 # ─── runnerQueueClient ──────────────────────────────────────────────────────────

@@ -139,9 +139,7 @@ def test_calcTrajectoryAndShow_4(function):
 
 def test_workerShowSatPasses_0(function):
     function.satellite = None
-    with mock.patch.object(
-        function.app.timeMgr, "timeZoneString", return_value="", create=True
-    ):
+    with mock.patch.object(function.app.timeMgr, "timeZoneString", return_value="", create=True):
         function.runnerShowSatPasses()
 
 
@@ -163,9 +161,7 @@ def test_workerShowSatPasses_1(function):
     ]
     with (
         mock.patch.object(function, "clearTrackingParameters"),
-        mock.patch.object(
-            mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
-        ),
+        mock.patch.object(mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits),
     ):
         function.runnerShowSatPasses()
 
@@ -189,9 +185,7 @@ def test_workerShowSatPasses_2(function):
     ]
     with (
         mock.patch.object(function, "clearTrackingParameters"),
-        mock.patch.object(
-            mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
-        ),
+        mock.patch.object(mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits),
     ):
         function.runnerShowSatPasses()
 
@@ -213,9 +207,7 @@ def test_workerShowSatPasses_3(function):
     ]
     with (
         mock.patch.object(function, "clearTrackingParameters"),
-        mock.patch.object(
-            mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits
-        ),
+        mock.patch.object(mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits),
     ):
         function.runnerShowSatPasses()
 
@@ -677,9 +669,7 @@ def test_updateSatelliteTrackGui_1(function):
     ]
 
     with (
-        mock.patch.object(
-            function.app.timeMgr, "timeZoneString", return_value="", create=True
-        ),
+        mock.patch.object(function.app.timeMgr, "timeZoneString", return_value="", create=True),
         mock.patch.object(function.app.timeMgr, "convertTime", return_value="", create=True),
     ):
         function.updateSatelliteTrackGui(Test())
@@ -705,9 +695,7 @@ def test_updateSatelliteTrackGui_2(function):
     ]
 
     with (
-        mock.patch.object(
-            function.app.timeMgr, "timeZoneString", return_value="", create=True
-        ),
+        mock.patch.object(function.app.timeMgr, "timeZoneString", return_value="", create=True),
         mock.patch.object(function.app.timeMgr, "convertTime", return_value="", create=True),
     ):
         function.updateSatelliteTrackGui(Test())
@@ -725,9 +713,7 @@ def test_updateSatelliteTrackGui_3(function):
 
     function.satOrbits = []
 
-    with mock.patch.object(
-        function.app.timeMgr, "timeZoneString", return_value="", create=True
-    ):
+    with mock.patch.object(function.app.timeMgr, "timeZoneString", return_value="", create=True):
         function.updateSatelliteTrackGui(Test())
 
 
@@ -758,9 +744,7 @@ def test_startTrack_1(function):
 
 def test_startTrack_2(function):
     function.app.dReg.d["mount"].stat = True
-    with mock.patch.object(
-        function.app.mount.satellite, "slewTLE", return_value=(False, "test")
-    ):
+    with mock.patch.object(function.app.mount.satellite, "slewTLE", return_value=(False, "test")):
         function.startTrack()
 
 
@@ -768,27 +752,21 @@ def test_startTrack_3(function):
     """Mount online, status != 5, slewTLE succeeds → full success path."""
     function.app.dReg.d["mount"].stat = True
     function.app.mount.obsSite.status = 1
-    with mock.patch.object(
-        function.app.mount.satellite, "slewTLE", return_value=(True, "test")
-    ):
+    with mock.patch.object(function.app.mount.satellite, "slewTLE", return_value=(True, "test")):
         function.startTrack()
 
 
 def test_startTrack_4(function):
     function.app.dReg.d["mount"].stat = True
     function.app.mount.obsSite.status = 5
-    with mock.patch.object(
-        function.app.mount.satellite, "slewTLE", return_value=(False, "test")
-    ):
+    with mock.patch.object(function.app.mount.satellite, "slewTLE", return_value=(False, "test")):
         function.startTrack()
 
 
 def test_startTrack_5(function):
     function.app.dReg.d["mount"].stat = True
     function.app.mount.obsSite.status = 5
-    with mock.patch.object(
-        function.app.mount.satellite, "slewTLE", return_value=(True, "test")
-    ):
+    with mock.patch.object(function.app.mount.satellite, "slewTLE", return_value=(True, "test")):
         function.startTrack()
 
 
@@ -796,9 +774,7 @@ def test_startTrack_6(function):
     function.app.dReg.d["mount"].stat = True
     function.app.mount.obsSite.status = 5
     with (
-        mock.patch.object(
-            function.app.mount.satellite, "slewTLE", return_value=(True, "test")
-        ),
+        mock.patch.object(function.app.mount.satellite, "slewTLE", return_value=(True, "test")),
         mock.patch.object(function.app.mount.obsSite, "unpark", return_value=True),
     ):
         function.startTrack()
@@ -808,13 +784,9 @@ def test_startTrack_7(function):
     function.app.dReg.d["mount"].stat = True
     function.app.mount.obsSite.status = 5
     with (
-        mock.patch.object(
-            function.app.mount.satellite, "slewTLE", return_value=(True, "test")
-        ),
+        mock.patch.object(function.app.mount.satellite, "slewTLE", return_value=(True, "test")),
         mock.patch.object(function.app.mount.obsSite, "unpark", return_value=False),
-        mock.patch.object(
-            function.app.mount.satellite, "clearTrackingOffsets", return_value=True
-        ),
+        mock.patch.object(function.app.mount.satellite, "clearTrackingOffsets", return_value=True),
     ):
         function.startTrack()
 
@@ -894,14 +866,10 @@ def test_followMount_4(function):
 
 
 def test_setTrackingOffsets_1(function):
-    with mock.patch.object(
-        function.app.mount.satellite, "setTrackingOffsets", return_value=True
-    ):
+    with mock.patch.object(function.app.mount.satellite, "setTrackingOffsets", return_value=True):
         function.setTrackingOffsets()
 
 
 def test_setTrackingOffsets_2(function):
-    with mock.patch.object(
-        function.app.mount.satellite, "setTrackingOffsets", return_value=False
-    ):
+    with mock.patch.object(function.app.mount.satellite, "setTrackingOffsets", return_value=False):
         function.setTrackingOffsets()

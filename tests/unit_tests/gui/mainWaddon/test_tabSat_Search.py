@@ -96,9 +96,7 @@ def test_processSatelliteSource_json(function: SatSearch) -> None:
 
     with (
         mock.patch("builtins.open", mock.mock_open(read_data='[{"OBJECT_NAME": "SAT1"}]')),
-        mock.patch.object(
-            mw4.gui.mainWaddon.tabSat_Search, "EarthSatellite"
-        ) as mock_sat_class,
+        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "EarthSatellite") as mock_sat_class,
         mock.patch("json.load", return_value=[omm_record]),
     ):
         mock_sat = mock.MagicMock()
@@ -139,9 +137,7 @@ def test_processLoadJsonOMM_success(function: SatSearch) -> None:
     with (
         mock.patch("builtins.open", mock.mock_open(read_data='[{"OBJECT_NAME": "SAT1"}]')),
         mock.patch("json.load", return_value=[omm_record]),
-        mock.patch.object(
-            mw4.gui.mainWaddon.tabSat_Search, "EarthSatellite"
-        ) as mock_sat_class,
+        mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "EarthSatellite") as mock_sat_class,
     ):
         mock_sat = mock.MagicMock()
         mock_sat.name = "SAT1"
@@ -248,9 +244,7 @@ def test_runnerCalcSatList_handles_exception(function: SatSearch) -> None:
     with (
         mock.patch.object(function.signals, "setSatGroupTitle"),
         mock.patch.object(function, "satOkSGP4", return_value=True) as mock_sgp4,
-        mock.patch.object(
-            function, "calcSat", side_effect=ValueError("test error")
-        ) as mock_calc,
+        mock.patch.object(function, "calcSat", side_effect=ValueError("test error")) as mock_calc,
         mock.patch.object(function.log, "warning") as mock_warning,
     ):
         function.runnerCalcSatList(snapshot, 1, True, 0, 10)

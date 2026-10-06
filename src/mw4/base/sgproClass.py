@@ -62,9 +62,7 @@ class SGProClass(DriverData):
                     timeout=self.SGPRO_TIMEOUT,
                 )
         except (requests.RequestException, OSError) as e:
-            self.log.debug(
-                f"[{self.config.deviceName}] method [{valueProp}] not implemented: {e}"
-            )
+            self.log.debug(f"[{self.config.deviceName}] method [{valueProp}] not implemented: {e}")
             return {}
 
         if response.status_code != 200:
@@ -151,9 +149,7 @@ class SGProClass(DriverData):
             if cmd.cmdType == "call":
                 self.callDeviceMethod(cmd.valueProp, **cmd.kwargs)
             else:
-                self.log.warning(
-                    f"[{self.config.deviceName}] unknown cmdType: [{cmd.cmdType}]"
-                )
+                self.log.warning(f"[{self.config.deviceName}] unknown cmdType: [{cmd.cmdType}]")
 
     def handleDeviceConnect(self) -> None:
         if not self.connectDevice():

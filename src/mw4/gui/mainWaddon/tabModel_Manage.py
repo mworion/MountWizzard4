@@ -125,9 +125,7 @@ class ModelManage(TabAddon):
             reverse=True,
             tip="PointNo: {data[0]}\nErrorRMS: {data[1]:0.1f}".format,
         )
-        self.ui.modelPositions.plotLoc(
-            self.app.dReg["mount"].obsSite.location.latitude.degrees
-        )
+        self.ui.modelPositions.plotLoc(self.app.dReg["mount"].obsSite.location.latitude.degrees)
         self.ui.modelPositions.scatterItem.sigClicked.connect(self.pointClicked)
 
     def showErrorAscending(self) -> None:
@@ -224,9 +222,7 @@ class ModelManage(TabAddon):
             with open(self.fittedModelPath) as actFile:
                 actModel = convertFloatToAngle(json.load(actFile))
         except json.JSONDecodeError as e:
-            self.mainW.log.warning(
-                f"Cannot load model file: {[self.fittedModelPath]}, error: {e}"
-            )
+            self.mainW.log.warning(f"Cannot load model file: {[self.fittedModelPath]}, error: {e}")
             return
 
         newModel = []
@@ -254,9 +250,7 @@ class ModelManage(TabAddon):
         )
         self.writeBuildModelOptimized(pointsOut)
         if self.fittedModelPath.is_file():
-            self.msg.emit(
-                0, "Model", "Manage", f"{'Found:':12s} [{self.fittedModelPath.stem}]"
-            )
+            self.msg.emit(0, "Model", "Manage", f"{'Found:':12s} [{self.fittedModelPath.stem}]")
             self.ui.originalModel.setText(self.fittedModelPath.stem)
 
         else:
@@ -273,9 +267,7 @@ class ModelManage(TabAddon):
         self.app.dReg["mount"].instance.getModel()
 
     def clearModel(self) -> None:
-        if not MWMessageDialog.question(
-            self.mainW, "Clear model", "Clear actual alignment model"
-        ):
+        if not MWMessageDialog.question(self.mainW, "Clear model", "Clear actual alignment model"):
             return
         if not self.app.dReg["mount"].model.clearModel():
             self.msg.emit(2, "Model", "Manage error", "Actual model cannot be cleared")

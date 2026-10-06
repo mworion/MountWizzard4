@@ -130,9 +130,7 @@ class ImageManage(TabAddon):
             guiSetText(self.ui.gainCam, "3.0f", actValue)
 
     def updateCooler(self) -> None:
-        coolerTemp = self.app.dReg["camera"].data.get(
-            "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", 0
-        )
+        coolerTemp = self.app.dReg["camera"].data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", 0)
         coolerPower = self.app.dReg["camera"].data.get("CCD_COOLER_POWER.CCD_COOLER_VALUE", 0)
         coolerOn = self.app.dReg["camera"].data.get("CCD_COOLER.COOLER_ON", False)
         guiSetText(self.ui.coolerTemp, "3.1f", coolerTemp)
@@ -152,9 +150,7 @@ class ImageManage(TabAddon):
         guiSetText(self.ui.filterName, "s", filterName)
 
     def updateFocuser(self) -> None:
-        focus = self.app.dReg["focuser"].data.get(
-            "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0
-        )
+        focus = self.app.dReg["focuser"].data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
         guiSetText(self.ui.focuserPosition, "6.0f", focus)
 
     def updateImagingParam(self) -> None:
@@ -195,9 +191,7 @@ class ImageManage(TabAddon):
         if not canSetCCDTemp:
             return
 
-        actValue = self.app.dReg["camera"].data.get(
-            "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", None
-        )
+        actValue = self.app.dReg["camera"].data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", None)
         if actValue is None:
             return
 
@@ -370,17 +364,13 @@ class ImageManage(TabAddon):
         self.app.dReg["cover"].instance.haltCover()
 
     def moveFocuserIn(self) -> None:
-        pos = self.app.dReg["focuser"].data.get(
-            "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0
-        )
+        pos = self.app.dReg["focuser"].data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
         step = self.ui.focuserSteps.value()
         newPos = int(pos - step)
         self.app.dReg["focuser"].instance.move(position=newPos)
 
     def moveFocuserOut(self) -> None:
-        pos = self.app.dReg["focuser"].data.get(
-            "ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0
-        )
+        pos = self.app.dReg["focuser"].data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
         step = self.ui.focuserSteps.value()
         newPos = int(pos + step)
         self.app.dReg["focuser"].instance.move(position=newPos)

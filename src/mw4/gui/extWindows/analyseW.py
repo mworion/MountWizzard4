@@ -290,9 +290,7 @@ class AnalyseWindow(MWidget):
         self.ui.decRawErrorsRef.p[0].getAxis("bottom").setTicks([ticks])
         self.ui.decRawErrorsRef.p[0].getAxis("top").setTicks([ticks])
         # lists come from a model file on disk; keep the tolerant truncation
-        y = [
-            x if p == "W" else -x for x, p in zip(self.errorDEC_S, self.pierside, strict=False)
-        ]
+        y = [x if p == "W" else -x for x, p in zip(self.errorDEC_S, self.pierside, strict=False)]
         color = [self.M_GREEN if p == "W" else self.M_YELLOW for p in self.pierside]
         self.ui.decRawErrorsRef.plot(
             self.angularPosDEC,

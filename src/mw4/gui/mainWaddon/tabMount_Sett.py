@@ -516,6 +516,4 @@ class MountSett(TabAddon):
             changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "yellow")
         else:
             changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "red")
-        guiSetText(
-            self.ui.timeUTC, "s", self.app.dReg["mount"].timeJD.utc_strftime("%H:%M:%S")
-        )
+        guiSetText(self.ui.timeUTC, "s", self.app.dReg["mount"].timeJD.utc_strftime("%H:%M:%S"))

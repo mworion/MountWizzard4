@@ -176,9 +176,7 @@ def test_showWindow_initializes_ui_and_starts_keypad(keypad_window):
     with (
         mock.patch.object(keypad_window, "setupButtons") as mock_setup,
         mock.patch.object(keypad_window, "startKeypad") as mock_start,
-        mock.patch.object(
-            keypad_window.app.mount.setting, "setWebInterface", return_value=False
-        ),
+        mock.patch.object(keypad_window.app.mount.setting, "setWebInterface", return_value=False),
     ):
         keypad_window.showWindow()
         mock_setup.assert_called()

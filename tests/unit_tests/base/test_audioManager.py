@@ -194,9 +194,7 @@ def test_playSound_uses_different_wav_for_different_indices(audioManager):
             mock_as_file.return_value.__exit__ = mock.MagicMock(return_value=False)
 
             with mock.patch("mw4.base.audioManager.files") as mock_files:
-                mock_files.return_value.joinpath = mock.MagicMock(
-                    return_value=mock.MagicMock()
-                )
+                mock_files.return_value.joinpath = mock.MagicMock(return_value=mock.MagicMock())
                 with mock.patch("mw4.base.audioManager.QSoundEffect"):
                     audioManager.playSound("MountSlew")
 

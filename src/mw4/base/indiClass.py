@@ -55,9 +55,7 @@ class IndiClass:
         message = item.snapshot[self.config.deviceName].dictdump().get("messages")
         if not message:
             return
-        self.msg.emit(
-            0, "INDI", "Device message", f"{self.config.deviceName:15s} {message[0][1]}"
-        )
+        self.msg.emit(0, "INDI", "Device message", f"{self.config.deviceName:15s} {message[0][1]}")
 
     def setStatusDeviceConnected(self, item: EventItem) -> None:
         status = item.snapshot[self.config.deviceName]["CONNECTION"].get("CONNECT") == "On"

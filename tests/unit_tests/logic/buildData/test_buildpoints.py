@@ -28,9 +28,7 @@ def resetBuildPointState(function):
     function.buildP = []
     function.horizonP = []
     function.buildPFile = ""
-    function.app.mount.obsSite.location = wgs84.latlon(
-        latitude_degrees=48, longitude_degrees=11
-    )
+    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
     function.app.mount.obsSite.pierside = "W"
     function.app.mount.setting.horizonLimitHigh = 80
     function.app.mount.setting.horizonLimitLow = 5
@@ -140,9 +138,7 @@ def test_horizonP1(function):
 
 
 def test_genGreaterCircle1(function):
-    function.app.mount.obsSite.location = wgs84.latlon(
-        latitude_degrees=48, longitude_degrees=11
-    )
+    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
     function.horizonP = []
     function.genGreaterCircle(10, 10, 5)
     for _i, (alt, az, status) in enumerate(function.buildP):
@@ -154,9 +150,7 @@ def test_genGreaterCircle1(function):
 
 
 def test_genGreaterCircle2(function):
-    function.app.mount.obsSite.location = wgs84.latlon(
-        latitude_degrees=-48, longitude_degrees=11
-    )
+    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=-48, longitude_degrees=11)
     function.horizonP = []
     function.genGreaterCircle(10, 10, 5)
     for _i, (alt, az, status) in enumerate(function.buildP):
@@ -811,9 +805,7 @@ def test_genAlign5(function):
 
 
 def test_generateCelestialEquator_1(function):
-    function.app.mount.obsSite.location = wgs84.latlon(
-        latitude_degrees=48, longitude_degrees=11
-    )
+    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=48, longitude_degrees=11)
     value = function.generateCelestialEquator()
     assert len(value) == 1728
 
@@ -1057,9 +1049,7 @@ def test_deleteCloseMeridian_with_points_near_meridian(function):
 
 def test_generateCelestialEquator_with_negative_latitude(function):
     """Test generateCelestialEquator at southern hemisphere"""
-    function.app.mount.obsSite.location = wgs84.latlon(
-        latitude_degrees=-30, longitude_degrees=150
-    )
+    function.app.mount.obsSite.location = wgs84.latlon(latitude_degrees=-30, longitude_degrees=150)
     value = function.generateCelestialEquator()
     assert len(value) > 0
     for alt, _az in value:

@@ -174,9 +174,7 @@ def test_runnerCalcPhotometry_success(function):
 
 def test_runnerCalcPhotometry_noSources(function):
     function.image = np.array(np.random.rand(100, 100) + 1).astype(np.float32)
-    with mock.patch.object(
-        mw4.logic.photometry.photometry, "extractSources", return_value=None
-    ):
+    with mock.patch.object(mw4.logic.photometry.photometry, "extractSources", return_value=None):
         function.runnerCalcPhotometry()
         assert function.hfr.size == 0
 

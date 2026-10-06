@@ -541,9 +541,7 @@ def test_genBuildGoldenSpiral_iteration_exhausted(function):
         function.app.buildPoint.buildP = [1]
 
     with (
-        mock.patch.object(
-            function.app.buildPoint, "generateGoldenSpiral", side_effect=keepBuildP
-        ),
+        mock.patch.object(function.app.buildPoint, "generateGoldenSpiral", side_effect=keepBuildP),
         mock.patch.object(function, "autoDeletePoints"),
         mock.patch.object(function, "processPoints"),
     ):

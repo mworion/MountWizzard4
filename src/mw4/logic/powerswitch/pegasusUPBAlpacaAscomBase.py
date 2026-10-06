@@ -42,12 +42,8 @@ class PegasusUPBAlpacaAscomBase(AlpacaAscomCommon):
             self.getAndStoreDeviceProp("GetSwitch(13)", "AUTO_DEW.DEW_A")
             self.getAndStoreDeviceProp("GetSwitch(13)", "AUTO_DEW.DEW_B")
             self.getAndStoreDeviceProp("GetSwitch(13)", "AUTO_DEW.DEW_C")
-            self.getAndStoreDeviceProp(
-                "GetSwitchValue(17) / 10", "POWER_SENSORS.SENSOR_VOLTAGE"
-            )
-            self.getAndStoreDeviceProp(
-                "GetSwitchValue(18) / 10", "POWER_SENSORS.SENSOR_CURRENT"
-            )
+            self.getAndStoreDeviceProp("GetSwitchValue(17) / 10", "POWER_SENSORS.SENSOR_VOLTAGE")
+            self.getAndStoreDeviceProp("GetSwitchValue(18) / 10", "POWER_SENSORS.SENSOR_CURRENT")
             self.getAndStoreDeviceProp("GetSwitchValue(19)", "POWER_SENSORS.SENSOR_POWER")
 
     def togglePowerPort(self, port: str) -> None:

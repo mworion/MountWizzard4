@@ -403,9 +403,7 @@ def test_setMeridianLimitTrack_3(function):
     function.app.mount.setting.meridianLimitTrack = 10
     with (
         mock.patch.object(MWInputDialog, "getInt", return_value=(10, True)),
-        mock.patch.object(
-            function.app.mount.setting, "setMeridianLimitTrack", return_value=False
-        ),
+        mock.patch.object(function.app.mount.setting, "setMeridianLimitTrack", return_value=False),
     ):
         suc = function.setMeridianLimitTrack()
         assert not suc
@@ -415,9 +413,7 @@ def test_setMeridianLimitTrack_4(function):
     function.app.mount.setting.meridianLimitTrack = 10
     with (
         mock.patch.object(MWInputDialog, "getInt", return_value=(10, True)),
-        mock.patch.object(
-            function.app.mount.setting, "setMeridianLimitTrack", return_value=True
-        ),
+        mock.patch.object(function.app.mount.setting, "setMeridianLimitTrack", return_value=True),
     ):
         suc = function.setMeridianLimitTrack()
         assert suc
@@ -434,9 +430,7 @@ def test_setMeridianLimitSlew_3(function):
     function.app.mount.setting.meridianLimitSlew = 10
     with (
         mock.patch.object(MWInputDialog, "getInt", return_value=(10, True)),
-        mock.patch.object(
-            function.app.mount.setting, "setMeridianLimitSlew", return_value=False
-        ),
+        mock.patch.object(function.app.mount.setting, "setMeridianLimitSlew", return_value=False),
     ):
         suc = function.setMeridianLimitSlew()
         assert not suc
@@ -446,9 +440,7 @@ def test_setMeridianLimitSlew_4(function):
     function.app.mount.setting.meridianLimitSlew = 10
     with (
         mock.patch.object(MWInputDialog, "getInt", return_value=(10, True)),
-        mock.patch.object(
-            function.app.mount.setting, "setMeridianLimitSlew", return_value=True
-        ),
+        mock.patch.object(function.app.mount.setting, "setMeridianLimitSlew", return_value=True),
     ):
         suc = function.setMeridianLimitSlew()
         assert suc
@@ -465,9 +457,7 @@ def test_setHorizonLimitHigh_3(function):
     function.app.mount.setting.horizonLimitHigh = 10
     with (
         mock.patch.object(MWInputDialog, "getInt", return_value=(10, True)),
-        mock.patch.object(
-            function.app.mount.setting, "setHorizonLimitHigh", return_value=False
-        ),
+        mock.patch.object(function.app.mount.setting, "setHorizonLimitHigh", return_value=False),
     ):
         suc = function.setHorizonLimitHigh()
         assert not suc
@@ -477,9 +467,7 @@ def test_setHorizonLimitHigh_4(function):
     function.app.mount.setting.horizonLimitHigh = 10
     with (
         mock.patch.object(MWInputDialog, "getInt", return_value=(10, True)),
-        mock.patch.object(
-            function.app.mount.setting, "setHorizonLimitHigh", return_value=True
-        ),
+        mock.patch.object(function.app.mount.setting, "setHorizonLimitHigh", return_value=True),
     ):
         suc = function.setHorizonLimitHigh()
         assert suc
@@ -496,9 +484,7 @@ def test_setHorizonLimitLow_3(function):
     function.app.mount.setting.horizonLimitLow = 10
     with (
         mock.patch.object(MWInputDialog, "getInt", return_value=(10, True)),
-        mock.patch.object(
-            function.app.mount.setting, "setHorizonLimitLow", return_value=False
-        ),
+        mock.patch.object(function.app.mount.setting, "setHorizonLimitLow", return_value=False),
     ):
         suc = function.setHorizonLimitLow()
         assert not suc
@@ -671,9 +657,7 @@ def test_setDualAxisTracking_3(function):
     function.app.mount.setting.statusDualAxisTracking = True
     with (
         mock.patch.object(MWInputDialog, "getItem", return_value=("ON", True)),
-        mock.patch.object(
-            function.app.mount.setting, "setDualAxisTracking", return_value=False
-        ),
+        mock.patch.object(function.app.mount.setting, "setDualAxisTracking", return_value=False),
     ):
         suc = function.setDualAxisTracking()
         assert not suc
@@ -683,9 +667,7 @@ def test_setDualAxisTracking_4(function):
     function.app.mount.setting.statusDualAxisTracking = True
     with (
         mock.patch.object(MWInputDialog, "getItem", return_value=("ON", True)),
-        mock.patch.object(
-            function.app.mount.setting, "setDualAxisTracking", return_value=True
-        ),
+        mock.patch.object(function.app.mount.setting, "setDualAxisTracking", return_value=True),
     ):
         suc = function.setDualAxisTracking()
         assert suc
@@ -783,9 +765,7 @@ def test_setRefractionPress_3(function):
     function.app.mount.setting.slewRate = 10
     with (
         mock.patch.object(MWInputDialog, "getDouble", return_value=(10, True)),
-        mock.patch.object(
-            function.app.mount.setting, "setRefractionPress", return_value=False
-        ),
+        mock.patch.object(function.app.mount.setting, "setRefractionPress", return_value=False),
     ):
         suc = function.setRefractionPress()
         assert not suc
@@ -917,9 +897,7 @@ def test_setMeridianLimitTrack_1(function):
     function.app.mount.setting.meridianLimitTrack = 10
     with (
         mock.patch.object(MWInputDialog, "getInt", return_value=(10, True)),
-        mock.patch.object(
-            function.app.mount.setting, "setMeridianLimitTrack", return_value=True
-        ),
+        mock.patch.object(function.app.mount.setting, "setMeridianLimitTrack", return_value=True),
     ):
         suc = function.setMeridianLimitTrack()
         assert suc
@@ -929,9 +907,7 @@ def test_setMeridianLimitSlew_1(function):
     function.app.mount.setting.meridianLimitSlew = 10
     with (
         mock.patch.object(MWInputDialog, "getInt", return_value=(10, True)),
-        mock.patch.object(
-            function.app.mount.setting, "setMeridianLimitSlew", return_value=True
-        ),
+        mock.patch.object(function.app.mount.setting, "setMeridianLimitSlew", return_value=True),
     ):
         suc = function.setMeridianLimitSlew()
         assert suc
@@ -941,9 +917,7 @@ def test_setHorizonLimitHigh_1(function):
     function.app.mount.setting.horizonLimitHigh = 10
     with (
         mock.patch.object(MWInputDialog, "getInt", return_value=(10, True)),
-        mock.patch.object(
-            function.app.mount.setting, "setHorizonLimitHigh", return_value=True
-        ),
+        mock.patch.object(function.app.mount.setting, "setHorizonLimitHigh", return_value=True),
     ):
         suc = function.setHorizonLimitHigh()
         assert suc
@@ -1003,9 +977,7 @@ def test_setDualAxisTracking_1(function):
     function.app.mount.setting.statusDualAxisTracking = True
     with (
         mock.patch.object(MWInputDialog, "getItem", return_value=("ON", True)),
-        mock.patch.object(
-            function.app.mount.setting, "setDualAxisTracking", return_value=True
-        ),
+        mock.patch.object(function.app.mount.setting, "setDualAxisTracking", return_value=True),
     ):
         suc = function.setDualAxisTracking()
         assert suc

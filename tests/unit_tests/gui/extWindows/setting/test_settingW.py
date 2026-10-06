@@ -36,11 +36,7 @@ def settingWindow(qapp):
 
     def mockConfigurable():
         for entry in app.dReg.d.values():
-            if (
-                entry.name in validDevices
-                and entry.isConfigurable
-                and entry.instance is not None
-            ):
+            if entry.name in validDevices and entry.isConfigurable and entry.instance is not None:
                 yield entry
 
     with mock.patch.object(app.dReg, "configurable", mockConfigurable):

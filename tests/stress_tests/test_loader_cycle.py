@@ -220,9 +220,7 @@ def test_loader_startup_cycles(qtbot, qapp):
         # ── run until auto-quit ───────────────────────────
         if status == "ok":
             try:
-                with qtbot.waitSignal(
-                    app.timeMgr.update10s, timeout=QUIT_TIMEOUT_MS, raising=True
-                ):
+                with qtbot.waitSignal(app.timeMgr.update10s, timeout=QUIT_TIMEOUT_MS, raising=True):
                     pass  # event loop runs here; update10s fires → quit()
             except (RuntimeError, TimeoutError) as exc:
                 status = f"quit-timeout ({exc.__class__.__name__})"
@@ -270,6 +268,5 @@ def test_loader_startup_cycles(qtbot, qapp):
             f"Cycle {r['cycle']:02d}: total {r['t_total']:.2f}s exceeds limit {MAX_CYCLE_S}s"
         )
         assert r["pool_after"] == 0, (
-            f"Cycle {r['cycle']:02d}: "
-            f"{r['pool_after']} worker thread(s) still active after drain"
+            f"Cycle {r['cycle']:02d}: {r['pool_after']} worker thread(s) still active after drain"
         )

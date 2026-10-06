@@ -73,9 +73,7 @@ def test_setupLogging_configures_logging_format(clean_log_directory):
     logger = logging.getLogger()
     assert logger.handlers, "Logger should have at least one handler."
     handler = logger.handlers[0]
-    assert isinstance(handler, logging.Handler), (
-        "Handler should be an instance of logging.Handler."
-    )
+    assert isinstance(handler, logging.Handler), "Handler should be an instance of logging.Handler."
 
 
 def test_setupLogging_configures_specific_log_levels(clean_log_directory):

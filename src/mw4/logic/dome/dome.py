@@ -135,9 +135,7 @@ class Dome:
         return A, B, C
 
     @staticmethod
-    def targetInDomeShutter(
-        A: np.ndarray, B: np.ndarray, C: np.ndarray, M: np.ndarray
-    ) -> bool:
+    def targetInDomeShutter(A: np.ndarray, B: np.ndarray, C: np.ndarray, M: np.ndarray) -> bool:
         """
         Based on the maths presented on:
             https://stackoverflow.com/questions/2752725/

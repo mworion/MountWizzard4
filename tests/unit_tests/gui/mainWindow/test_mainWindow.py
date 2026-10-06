@@ -78,9 +78,7 @@ def test_storeConfig_keepsWindowMainKeysOnError(mainWindow):
     """An exception in a tab leaves the earlier WindowMain keys in place."""
     mainWindow.app.config["WindowMain"] = {"tabKey": 5}
     with (
-        mock.patch.object(
-            mainWindow.mainWindowAddons, "storeConfig", side_effect=RuntimeError
-        ),
+        mock.patch.object(mainWindow.mainWindowAddons, "storeConfig", side_effect=RuntimeError),
         mock.patch.object(mainWindow.externalWindows, "storeConfigExtendedWindows"),
         pytest.raises(RuntimeError),
     ):
@@ -119,9 +117,7 @@ def test_closeEvent_closes_windows(mainWindow):
     """Test closeEvent closes extended windows and stops timer."""
     with (
         mock.patch.object(mainWindow.app.timeMgr, "stop") as mock_stop,
-        mock.patch.object(
-            mainWindow.externalWindows, "closeExtendedWindows"
-        ) as mock_close_ext,
+        mock.patch.object(mainWindow.externalWindows, "closeExtendedWindows") as mock_close_ext,
         mock.patch.object(mainWindow.threadPool, "waitForDone") as mock_wait,
     ):
         mainWindow.closeEvent(QCloseEvent())
@@ -149,9 +145,7 @@ def test_closeEvent_no_double_cleanup(mainWindow):
     """Test closeEvent closes windows properly."""
     with (
         mock.patch.object(mainWindow.app.timeMgr, "stop") as mock_stop,
-        mock.patch.object(
-            mainWindow.externalWindows, "closeExtendedWindows"
-        ) as mock_close_ext,
+        mock.patch.object(mainWindow.externalWindows, "closeExtendedWindows") as mock_close_ext,
         mock.patch.object(mainWindow.threadPool, "waitForDone") as mock_wait,
     ):
         mainWindow.closeEvent(QCloseEvent())
@@ -455,9 +449,7 @@ def test_loadProfileGUI_valid_config(mainWindow):
     with (
         mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("test.cfg")),
         mock.patch.object(Path, "is_file", return_value=True),
-        mock.patch.object(
-            mw4.gui.mainWindow.mainWindow, "loadConfig", return_value={"test": 1}
-        ),
+        mock.patch.object(mw4.gui.mainWindow.mainWindow, "loadConfig", return_value={"test": 1}),
         mock.patch.object(mainWindow, "switchProfile"),
         mock.patch.object(mainWindow, "saveProfile"),
     ):

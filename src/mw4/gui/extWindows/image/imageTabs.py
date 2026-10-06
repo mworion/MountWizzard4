@@ -214,9 +214,7 @@ class ImageTabs:
             plotItem.addItem(lineItem)
 
         hint = tiltHint(view.tiltPercent, self.TILT)
-        self.ui.textSquareTiltHFR.setText(
-            f"{view.tiltDiff:1.2f} ({view.tiltPercent:1.0f}%) {hint}"
-        )
+        self.ui.textSquareTiltHFR.setText(f"{view.tiltDiff:1.2f} ({view.tiltPercent:1.0f}%) {hint}")
         t = f"{view.offAxisDiff:1.2f} ({view.offAxisPercent:1.0f}%)"
         self.ui.textSquareTiltOffAxis.setText(t)
         self.ui.squareMedianHFR.setText(f"{self.photometry.hfrMedian:1.2f}")

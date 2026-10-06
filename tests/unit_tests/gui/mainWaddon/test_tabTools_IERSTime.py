@@ -58,12 +58,8 @@ def test_progEarthRotationData_1(function):
 def test_progEarthRotationData_2(function):
     function.app.mount.host = ("127.0.0.1", 3294)
     with (
-        mock.patch.object(
-            function.databaseProcessing, "writeEarthRotationData", return_value=True
-        ),
-        mock.patch(
-            "mw4.gui.mainWaddon.tabTools_IERSTime.UploadPopup.upload", return_value=True
-        ),
+        mock.patch.object(function.databaseProcessing, "writeEarthRotationData", return_value=True),
+        mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.UploadPopup.upload", return_value=True),
     ):
         function.progEarthRotationData()
 
@@ -71,12 +67,8 @@ def test_progEarthRotationData_2(function):
 def test_progEarthRotationData_3(function):
     function.app.mount.host = ("127.0.0.1", 3294)
     with (
-        mock.patch.object(
-            function.databaseProcessing, "writeEarthRotationData", return_value=True
-        ),
-        mock.patch(
-            "mw4.gui.mainWaddon.tabTools_IERSTime.UploadPopup.upload", return_value=False
-        ),
+        mock.patch.object(function.databaseProcessing, "writeEarthRotationData", return_value=True),
+        mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.UploadPopup.upload", return_value=False),
     ):
         function.progEarthRotationData()
 

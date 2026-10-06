@@ -94,9 +94,7 @@ class MessageWindow(MWidget):
 
             if source:
                 item = QTableWidgetItem(f"{timePrefix}")
-                item.setTextAlignment(
-                    Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
-                )
+                item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
                 item.setForeground(self.messColor[prio])
                 self.ui.messageTable.setItem(row, self.TEXT_NORMAL, item)
 

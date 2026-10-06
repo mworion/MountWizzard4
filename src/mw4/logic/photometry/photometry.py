@@ -132,9 +132,7 @@ class Photometry:
         self.signals.hfrSquare.emit()
 
     def runnerCalcTiltValuesTriangle(self) -> None:
-        self.hfrSegTriangle = computeTiltTriangle(
-            self.geom, self.xCoord, self.yCoord, self.hfr
-        )
+        self.hfrSegTriangle = computeTiltTriangle(self.geom, self.xCoord, self.yCoord, self.hfr)
         self.signals.hfrTriangle.emit()
 
     def calcAberrationInspectView(self) -> None:
@@ -205,8 +203,7 @@ class Photometry:
         self.elongation = sources.elongation
         self.runCalcs()
         self.log.info(
-            f"Raw:{counts.raw}, Select:{counts.select}, "
-            f"SN:{counts.signalNoise}, HFR:{counts.hfr}"
+            f"Raw:{counts.raw}, Select:{counts.select}, SN:{counts.signalNoise}, HFR:{counts.hfr}"
         )
 
     def processPhotometry(self, image: np.ndarray, snTarget: int) -> None:

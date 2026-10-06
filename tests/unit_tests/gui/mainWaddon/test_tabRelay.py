@@ -206,9 +206,7 @@ def test_relayButtonPressed_failure(function):
     try:
         with mock.patch.object(function, "doRelayAction", return_value=False):
             function.relayButtonPressed(0)
-            mock_msg.emit.assert_called_once_with(
-                2, "System", "Relay", "Action cannot be done"
-            )
+            mock_msg.emit.assert_called_once_with(2, "System", "Relay", "Action cannot be done")
     finally:
         function.msg = original_msg
 
@@ -261,9 +259,7 @@ def test_relay_statusReady_signal_emission(function):
 def test_doRelayAction_different_indices(function):
     for i in range(8):
         function.app.config = {"SettingRelay": {f"Action{i}": 0}}
-        with mock.patch.object(
-            function.app.dReg["relay"].instance, "switch", return_value=True
-        ):
+        with mock.patch.object(function.app.dReg["relay"].instance, "switch", return_value=True):
             result = function.doRelayAction(i)
             assert result is True
 

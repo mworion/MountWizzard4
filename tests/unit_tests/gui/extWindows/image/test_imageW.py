@@ -162,9 +162,7 @@ def test_selectImage_1(function):
 def test_selectImage_2(function):
     function.ui.autoSolve.setChecked(False)
     with (
-        mock.patch.object(
-            MWFileDialog, "getOpenFileName", return_value=Path("c:/test/test.fits")
-        ),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("c:/test/test.fits")),
         mock.patch.object(Path, "is_file", return_value=True),
     ):
         function.selectImage()
@@ -174,9 +172,7 @@ def test_selectImage_2(function):
 def test_selectImage_3(function):
     function.ui.autoSolve.setChecked(True)
     with (
-        mock.patch.object(
-            MWFileDialog, "getOpenFileName", return_value=Path("c:/test/test.fits")
-        ),
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("c:/test/test.fits")),
         mock.patch.object(Path, "is_file", return_value=True),
     ):
         function.selectImage()
@@ -473,9 +469,7 @@ def test_syncModelToImage_3(function):
             "J2000ToJNow",
             return_value=(Angle(hours=10), Angle(degrees=10)),
         ),
-        mock.patch.object(
-            function.app.mount.obsSite, "syncPositionToTarget", return_value=False
-        ),
+        mock.patch.object(function.app.mount.obsSite, "syncPositionToTarget", return_value=False),
     ):
         function.syncModelToImage()
 
@@ -489,9 +483,7 @@ def test_syncModelToImage_4(function):
             "getCoordinatesFromHeader",
             return_value=(Angle(hours=10), Angle(degrees=10)),
         ),
-        mock.patch.object(
-            function.app.mount.obsSite, "syncPositionToTarget", return_value=False
-        ),
+        mock.patch.object(function.app.mount.obsSite, "syncPositionToTarget", return_value=False),
     ):
         function.syncModelToImage()
 
@@ -505,9 +497,7 @@ def test_syncModelToImage_5(function):
             "getCoordinatesFromHeader",
             return_value=(Angle(hours=10), Angle(degrees=10)),
         ),
-        mock.patch.object(
-            function.app.mount.obsSite, "syncPositionToTarget", return_value=True
-        ),
+        mock.patch.object(function.app.mount.obsSite, "syncPositionToTarget", return_value=True),
     ):
         function.syncModelToImage()
 

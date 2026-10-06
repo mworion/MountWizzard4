@@ -358,9 +358,7 @@ class Connection:
             if not client.waitForBytesWritten(self.SOCKET_TIMEOUT * 1000):
                 self.closeClientHard(client)
                 if self.loggingTrace:
-                    self.log.debug(
-                        f"[Trace] Timeout  [{self.id}]: socket timeout in send data"
-                    )
+                    self.log.debug(f"[Trace] Timeout  [{self.id}]: socket timeout in send data")
                 return False
         except (OSError, RuntimeError) as e:
             self.closeClientHard(client)

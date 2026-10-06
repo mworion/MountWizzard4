@@ -370,14 +370,10 @@ def test_waitForMessage_timeout(function) -> None:
     function.parent.exposing = True
     function.data["Device.Message"] = "waiting"
     function.msg = mock.MagicMock()
-    with mock.patch(
-        "mw4.logic.camera.cameraSGPro.time.monotonic", side_effect=[0.0, 0.0, 11.0]
-    ):
+    with mock.patch("mw4.logic.camera.cameraSGPro.time.monotonic", side_effect=[0.0, 0.0, 11.0]):
         suc = function.waitForMessage("integrating", True, 10)
     assert not suc
-    function.msg.emit.assert_called_once_with(
-        2, "SGPro", "Timeout", "Waiting for [integrating]"
-    )
+    function.msg.emit.assert_called_once_with(2, "SGPro", "Timeout", "Waiting for [integrating]")
 
 
 def test_waitForMessage_stopped(function) -> None:

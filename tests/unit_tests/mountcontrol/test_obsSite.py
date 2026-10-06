@@ -96,9 +96,7 @@ def test_Site_location_3():
     elev = 100
     lon = 100
     lat = 45
-    obsSite.location = wgs84.latlon(
-        longitude_degrees=lon, latitude_degrees=lat, elevation_m=elev
-    )
+    obsSite.location = wgs84.latlon(longitude_degrees=lon, latitude_degrees=lat, elevation_m=elev)
     assert math.isclose(obsSite.location.longitude.dms()[0], 100, abs_tol=1e-6)
     assert math.isclose(obsSite.location.longitude.dms()[1], 0, abs_tol=1e-6)
     assert math.isclose(obsSite.location.longitude.dms()[2], 0, abs_tol=1e-6)

@@ -87,9 +87,7 @@ class ObsSite:
 
     # Derived from MountStatus / _STATUS_LABELS - do not duplicate.
     _STATUS_VALID: frozenset[int] = frozenset(int(s) for s in MountStatus)
-    STAT: ClassVar[dict[str, str]] = {
-        str(int(s)): label for s, label in _STATUS_LABELS.items()
-    }
+    STAT: ClassVar[dict[str, str]] = {str(int(s)): label for s, label in _STATUS_LABELS.items()}
 
     STAT_SAT: ClassVar = {
         "V": "slewing to transit",
@@ -175,9 +173,7 @@ class ObsSite:
         lat = stringToDegree(lat)
         lon = stringToDegree(lon)
         elev = valueToFloat(elev)
-        self._location = wgs84.latlon(
-            latitude_degrees=lat, longitude_degrees=lon, elevation_m=elev
-        )
+        self._location = wgs84.latlon(latitude_degrees=lat, longitude_degrees=lon, elevation_m=elev)
 
     @property
     def timeJD(self) -> Time:
@@ -472,11 +468,7 @@ class ObsSite:
             return False
         elev = response[0]
         # LX200 protocol encodes east as negative - swap sign to east-positive convention
-        lon = (
-            response[1].replace("-", "+")
-            if "-" in response[1]
-            else response[1].replace("+", "-")
-        )
+        lon = response[1].replace("-", "+") if "-" in response[1] else response[1].replace("+", "-")
         lat = response[2]
         self.location = [lat, lon, elev]
         return True

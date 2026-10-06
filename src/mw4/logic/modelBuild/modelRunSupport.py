@@ -34,9 +34,7 @@ degreeAngles = [
 ]
 
 
-def writeRetrofitData(
-    mountModel: Model, buildModel: list[dict[str, Any]]
-) -> list[dict[str, Any]]:
+def writeRetrofitData(mountModel: Model, buildModel: list[dict[str, Any]]) -> list[dict[str, Any]]:
     for i, mPoint in enumerate(buildModel):
         mPoint["errorRMS"] = mountModel.starList[i].errorRMS
         mPoint["errorAngle"] = mountModel.starList[i].errorAngle

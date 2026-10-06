@@ -53,9 +53,7 @@ class SettDome:
             (self.ui.domeClearanceZenith, 8),
         ]
         for widget, index in self.domeExplainTabs:
-            widget.valueChanged.connect(
-                lambda checked, idx=index: self.showDomeExplainTab(idx)
-            )
+            widget.valueChanged.connect(lambda checked, idx=index: self.showDomeExplainTab(idx))
 
     def showDomeExplainTab(self, index: int) -> None:
         self.ui.tabDomeExplain.setCurrentIndex(index)
@@ -129,16 +127,10 @@ class SettDome:
         self.ui.domeRadius.setValue(value)
         value = float(self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_SHUTTER_WIDTH", 0))
         self.ui.domeClearOpening.setValue(value)
-        value = float(
-            self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT", 0)
-        )
+        value = float(self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_NORTH_DISPLACEMENT", 0))
         self.ui.domeNorthOffset.setValue(value)
-        value = float(
-            self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_EAST_DISPLACEMENT", 0)
-        )
+        value = float(self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_EAST_DISPLACEMENT", 0))
         self.ui.domeEastOffset.setValue(value)
-        value = float(
-            self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_UP_DISPLACEMENT", 0)
-        )
+        value = float(self.app.dReg["dome"].data.get("DOME_MEASUREMENTS.DM_UP_DISPLACEMENT", 0))
         self.ui.domeVerticalOffset.setValue(value)
         self.storeConfig()

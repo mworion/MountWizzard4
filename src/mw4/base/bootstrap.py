@@ -43,9 +43,7 @@ def configureEnvironment() -> None:
     faulthandler.enable()
     warnings.filterwarnings("ignore", category=RuntimeWarning)
     warnings.filterwarnings("ignore", category=FITSFixedWarning)
-    warnings.filterwarnings(
-        "ignore", message="astropy.samp", category=AstropyDeprecationWarning
-    )
+    warnings.filterwarnings("ignore", message="astropy.samp", category=AstropyDeprecationWarning)
     iers.conf.auto_download = False
     data.conf.allow_internet = False
     setupLogging()

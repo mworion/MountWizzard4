@@ -198,9 +198,9 @@ def test_updateFilterRefractionParameters_2(function):
     function.app.dReg.d["sensor1Weather"].instance.data[
         "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
     ] = 10
-    function.app.dReg.d["sensor1Weather"].instance.data[
-        "WEATHER_PARAMETERS.WEATHER_PRESSURE"
-    ] = 1000
+    function.app.dReg.d["sensor1Weather"].instance.data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = (
+        1000
+    )
     function.updateFilterRefractionParameters()
 
 
@@ -215,9 +215,9 @@ def test_updateFilterRefractionParameters_4(function):
     function.app.dReg.d["sensor1Weather"].instance.data[
         "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
     ] = 10
-    function.app.dReg.d["sensor1Weather"].instance.data[
-        "WEATHER_PARAMETERS.WEATHER_PRESSURE"
-    ] = 1000
+    function.app.dReg.d["sensor1Weather"].instance.data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = (
+        1000
+    )
     function.updateFilterRefractionParameters()
 
 
@@ -227,9 +227,9 @@ def test_updateFilterRefractionParameters_5(function):
     function.app.dReg.d["sensor1Weather"].instance.data[
         "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
     ] = 10
-    function.app.dReg.d["sensor1Weather"].instance.data[
-        "WEATHER_PARAMETERS.WEATHER_PRESSURE"
-    ] = 1000
+    function.app.dReg.d["sensor1Weather"].instance.data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = (
+        1000
+    )
     function.updateFilterRefractionParameters()
 
 
@@ -260,9 +260,7 @@ def test_updateRefractionParameters_3(function):
     function.app.dReg.d["mount"].stat = False
     with (
         mock.patch.object(function, "isValidRefractionSource", return_value=True),
-        mock.patch.object(
-            function, "movingAverageRefractionParameters", return_value=(0, 950)
-        ),
+        mock.patch.object(function, "movingAverageRefractionParameters", return_value=(0, 950)),
     ):
         function.updateRefractionParameters()
 
@@ -272,9 +270,7 @@ def test_updateRefractionParameters_4(function):
     function.app.dReg.d["mount"].stat = True
     with (
         mock.patch.object(function, "isValidRefractionSource", return_value=True),
-        mock.patch.object(
-            function, "movingAverageRefractionParameters", return_value=(0, 950)
-        ),
+        mock.patch.object(function, "movingAverageRefractionParameters", return_value=(0, 950)),
     ):
         function.updateRefractionParameters()
 
@@ -286,9 +282,7 @@ def test_updateRefractionParameters_5(function):
     function.app.mount.obsSite.status = 0
     with (
         mock.patch.object(function, "isValidRefractionSource", return_value=True),
-        mock.patch.object(
-            function, "movingAverageRefractionParameters", return_value=(10, 10)
-        ),
+        mock.patch.object(function, "movingAverageRefractionParameters", return_value=(10, 10)),
     ):
         function.updateRefractionParameters()
 
@@ -300,9 +294,7 @@ def test_updateRefractionParameters_6(function):
     function.app.mount.obsSite.status = 0
     with (
         mock.patch.object(function, "isValidRefractionSource", return_value=True),
-        mock.patch.object(
-            function, "movingAverageRefractionParameters", return_value=(10, 10)
-        ),
+        mock.patch.object(function, "movingAverageRefractionParameters", return_value=(10, 10)),
     ):
         function.updateRefractionParameters()
 
@@ -315,13 +307,9 @@ def test_updateRefractionParameters_7(function):
 
     with (
         mock.patch.object(function, "isValidRefractionSource", return_value=True),
-        mock.patch.object(
-            function, "movingAverageRefractionParameters", return_value=(10, 10)
-        ),
+        mock.patch.object(function, "movingAverageRefractionParameters", return_value=(10, 10)),
         mock.patch.object(function.app.mount.setting, "setRefractionTemp", return_value=False),
-        mock.patch.object(
-            function.app.mount.setting, "setRefractionPress", return_value=False
-        ),
+        mock.patch.object(function.app.mount.setting, "setRefractionPress", return_value=False),
     ):
         function.updateRefractionParameters()
 
@@ -334,9 +322,7 @@ def test_updateRefractionParameters_8(function):
 
     with (
         mock.patch.object(function, "isValidRefractionSource", return_value=True),
-        mock.patch.object(
-            function, "movingAverageRefractionParameters", return_value=(10, 10)
-        ),
+        mock.patch.object(function, "movingAverageRefractionParameters", return_value=(10, 10)),
         mock.patch.object(function.app.mount.setting, "setRefractionTemp", return_value=True),
         mock.patch.object(function.app.mount.setting, "setRefractionPress", return_value=True),
     ):
@@ -347,15 +333,13 @@ def test_updateSourceGui_1(function):
     function.app.dReg.d["sensor1Weather"].instance.data[
         "WEATHER_PARAMETERS.WEATHER_TEMPERATURE"
     ] = 10.5
-    function.app.dReg.d["sensor1Weather"].instance.data[
-        "WEATHER_PARAMETERS.WEATHER_PRESSURE"
-    ] = 1000
-    function.app.dReg.d["sensor1Weather"].instance.data[
-        "WEATHER_PARAMETERS.WEATHER_DEWPOINT"
-    ] = 10.5
-    function.app.dReg.d["sensor1Weather"].instance.data[
-        "WEATHER_PARAMETERS.WEATHER_HUMIDITY"
-    ] = 10
+    function.app.dReg.d["sensor1Weather"].instance.data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = (
+        1000
+    )
+    function.app.dReg.d["sensor1Weather"].instance.data["WEATHER_PARAMETERS.WEATHER_DEWPOINT"] = (
+        10.5
+    )
+    function.app.dReg.d["sensor1Weather"].instance.data["WEATHER_PARAMETERS.WEATHER_HUMIDITY"] = 10
     function.updateSourceGui()
     assert function.ui.temperature1.text() == "10.5"
     assert function.ui.pressure1.text() == "1000"

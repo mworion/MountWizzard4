@@ -160,16 +160,12 @@ def updateImageFileHeaderWithSolution(imagePath: Path, solution: dict[str, Any])
         HDU[0].header = writeSolutionToHeader(HDU[0].header, solution)
 
 
-def getSolutionFromWCSHeader(
-    wcsHeader: fits.Header, imageHeader: fits.Header
-) -> dict[str, Any]:
+def getSolutionFromWCSHeader(wcsHeader: fits.Header, imageHeader: fits.Header) -> dict[str, Any]:
     """
     CRVAL1 and CRVAL2 give the center coordinate as right ascension and
     declination or longitude and latitude in decimal degrees.
     """
-    raJ2000 = valueToAngle(
-        valueToFloat(wcsHeader.get("CRVAL1", 0)) * 24 / 360, preference="hours"
-    )
+    raJ2000 = valueToAngle(valueToFloat(wcsHeader.get("CRVAL1", 0)) * 24 / 360, preference="hours")
     decJ2000 = valueToAngle(wcsHeader.get("CRVAL2", 0), preference="degrees")
     angle, scale, mirrored = calcAngleScaleFromWCSHeader(header=wcsHeader)
     raMount, decMount = getCoordinatesFromHeader(header=imageHeader)

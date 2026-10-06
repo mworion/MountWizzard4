@@ -455,44 +455,32 @@ def test_updateLightPanelGui_3(function):
 
 
 def test_setCoverPark_1(function):
-    with mock.patch.object(
-        function.app.dReg.d["cover"].instance, "closeCover", return_value=False
-    ):
+    with mock.patch.object(function.app.dReg.d["cover"].instance, "closeCover", return_value=False):
         function.setCoverPark()
 
 
 def test_setCoverPark_2(function):
-    with mock.patch.object(
-        function.app.dReg.d["cover"].instance, "closeCover", return_value=True
-    ):
+    with mock.patch.object(function.app.dReg.d["cover"].instance, "closeCover", return_value=True):
         function.setCoverPark()
 
 
 def test_setCoverUnpark_1(function):
-    with mock.patch.object(
-        function.app.dReg.d["cover"].instance, "openCover", return_value=False
-    ):
+    with mock.patch.object(function.app.dReg.d["cover"].instance, "openCover", return_value=False):
         function.setCoverUnpark()
 
 
 def test_setCoverUnpark_2(function):
-    with mock.patch.object(
-        function.app.dReg.d["cover"].instance, "openCover", return_value=True
-    ):
+    with mock.patch.object(function.app.dReg.d["cover"].instance, "openCover", return_value=True):
         function.setCoverUnpark()
 
 
 def test_setCoverHalt_1(function):
-    with mock.patch.object(
-        function.app.dReg.d["cover"].instance, "haltCover", return_value=False
-    ):
+    with mock.patch.object(function.app.dReg.d["cover"].instance, "haltCover", return_value=False):
         function.setCoverHalt()
 
 
 def test_setCoverHalt_2(function):
-    with mock.patch.object(
-        function.app.dReg.d["cover"].instance, "haltCover", return_value=True
-    ):
+    with mock.patch.object(function.app.dReg.d["cover"].instance, "haltCover", return_value=True):
         function.setCoverHalt()
 
 
@@ -676,9 +664,7 @@ def test_domeSlewCCW_0(function):
 
 def test_domeSlewCCW_1(function):
     function.app.dReg.d["dome"].stat = True
-    with mock.patch.object(
-        function.app.dReg.d["dome"].instance, "slewCCW", return_value=False
-    ):
+    with mock.patch.object(function.app.dReg.d["dome"].instance, "slewCCW", return_value=False):
         function.domeSlewCCW()
 
 
@@ -695,17 +681,13 @@ def test_domeAbortSlew_0(function):
 
 def test_domeAbortSlew_1(function):
     function.app.dReg.d["dome"].stat = True
-    with mock.patch.object(
-        function.app.dReg.d["dome"].instance, "abortSlew", return_value=False
-    ):
+    with mock.patch.object(function.app.dReg.d["dome"].instance, "abortSlew", return_value=False):
         function.domeAbortSlew()
 
 
 def test_domeAbortSlew_2(function):
     function.app.dReg.d["dome"].stat = True
-    with mock.patch.object(
-        function.app.dReg.d["dome"].instance, "abortSlew", return_value=True
-    ):
+    with mock.patch.object(function.app.dReg.d["dome"].instance, "abortSlew", return_value=True):
         function.domeAbortSlew()
 
 
@@ -716,17 +698,13 @@ def test_domeOpenShutter_0(function):
 
 def test_domeOpenShutter_1(function):
     function.app.dReg.d["dome"].stat = True
-    with mock.patch.object(
-        function.app.dReg.d["dome"].instance, "openShutter", return_value=False
-    ):
+    with mock.patch.object(function.app.dReg.d["dome"].instance, "openShutter", return_value=False):
         function.domeOpenShutter()
 
 
 def test_domeOpenShutter_2(function):
     function.app.dReg.d["dome"].stat = True
-    with mock.patch.object(
-        function.app.dReg.d["dome"].instance, "openShutter", return_value=True
-    ):
+    with mock.patch.object(function.app.dReg.d["dome"].instance, "openShutter", return_value=True):
         function.domeOpenShutter()
 
 
@@ -745,9 +723,7 @@ def test_domeCloseShutter_1(function):
 
 def test_domeCloseShutter_2(function):
     function.app.dReg.d["dome"].stat = True
-    with mock.patch.object(
-        function.app.dReg.d["dome"].instance, "closeShutter", return_value=True
-    ):
+    with mock.patch.object(function.app.dReg.d["dome"].instance, "closeShutter", return_value=True):
         function.domeCloseShutter()
 
 

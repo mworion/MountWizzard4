@@ -26,9 +26,7 @@ class HorizonDraw(MWidget):
         config = self.app.config.get("WindowHemisphere", {})
         fileName = config.get("horizonMaskFileName", "")
         self.ui.horizonMaskFileName.setText(fileName)
-        horizonFile = self.app.mwGlob["configDir"] / (
-            self.ui.horizonMaskFileName.text() + ".hpts"
-        )
+        horizonFile = self.app.mwGlob["configDir"] / (self.ui.horizonMaskFileName.text() + ".hpts")
         self.app.buildPoint.loadHorizonP(horizonFile)
         fileName = config.get("terrainFileName", "")
         self.ui.terrainFileName.setText(fileName)
@@ -74,9 +72,7 @@ class HorizonDraw(MWidget):
         imgLoad = np.array(cv2.imread(terrainFile, cv2.IMREAD_GRAYSCALE))
         height, width = imgLoad.shape
         if 2 * height != width:
-            self.msg.emit(
-                0, "Hemisphere", "Terrain", "Wrong aspect ration of image, should be 2:1"
-            )
+            self.msg.emit(0, "Hemisphere", "Terrain", "Wrong aspect ration of image, should be 2:1")
             return
 
         imgLoad = cv2.resize(imgLoad, (360, 180))

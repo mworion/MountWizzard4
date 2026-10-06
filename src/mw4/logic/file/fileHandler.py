@@ -155,9 +155,7 @@ class FileHandler:
         # self.image = np.dstack((self.image, alphaChannel))
         self.signals.imageLoaded.emit()
 
-    def loadImage(
-        self, imagePath: Path = Path(), flipH: bool = False, flipV: bool = False
-    ) -> None:
+    def loadImage(self, imagePath: Path = Path(), flipH: bool = False, flipV: bool = False) -> None:
         if not imagePath.is_file():
             return
 

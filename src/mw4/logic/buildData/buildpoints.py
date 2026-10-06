@@ -269,9 +269,7 @@ class BuildPoint:
         decList = list(range(-15, -15 + int(100 / stepDec) * stepDec, stepDec))
         if lat < 0:
             decList = [-x for x in decList]
-        haList = list(
-            reversed(range(-distFlip, -distFlip - int(125 / stepHA) * stepHA, -stepHA))
-        )
+        haList = list(reversed(range(-distFlip, -distFlip - int(125 / stepHA) * stepHA, -stepHA)))
         for i, dec in enumerate(decList):
             haFinal = haList if i % 2 else reversed(haList)
             for ha in haFinal:
@@ -280,9 +278,7 @@ class BuildPoint:
                     self.addBuildP([alt, az, self.UNPROCESSED])
 
         decList = reversed(decList)
-        haList = list(
-            reversed(range(distFlip, distFlip + int(125 / stepHA) * stepHA, +stepHA))
-        )
+        haList = list(reversed(range(distFlip, distFlip + int(125 / stepHA) * stepHA, +stepHA)))
         for i, dec in enumerate(decList):
             haFinal = haList if i % 2 else reversed(haList)
             for ha in haFinal:

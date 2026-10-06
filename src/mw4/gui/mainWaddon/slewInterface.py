@@ -18,9 +18,7 @@ class SlewInterface:
         altitudeT = self.app.dReg["mount"].obsSite.AltTarget
 
         if self.app.dReg["dome"].stat:
-            delta = self.app.dReg["dome"].instance.slewDome(
-                altitudeT.degrees, azimuthT.degrees
-            )
+            delta = self.app.dReg["dome"].instance.slewDome(altitudeT.degrees, azimuthT.degrees)
             geoStat = "Geometry corrected" if delta else "Equal mount"
             text = f"{geoStat}"
             text += f", az: {azimuthT.degrees:3.1f} delta: {delta:3.1f}"

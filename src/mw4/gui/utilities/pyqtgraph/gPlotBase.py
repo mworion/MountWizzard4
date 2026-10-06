@@ -65,9 +65,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
                 plotItem.getAxis(side).setTextPen(self.pen)
                 plotItem.getAxis(side).setGrid(32)
 
-    def addBarItem(
-        self, interactive: bool = False, plotItem: pg.PlotItem | None = None
-    ) -> None:
+    def addBarItem(self, interactive: bool = False, plotItem: pg.PlotItem | None = None) -> None:
         if plotItem is None:
             plotItem = self.p[0]
         self.barItem = pg.ColorBarItem(width=15, interactive=interactive, rounding=0.025)
@@ -196,9 +194,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         plotItem.addLine(x=0, pen=self.penGrid)
         plotItem.addLine(y=0, pen=self.penGrid)
 
-        font = QFont(
-            self.window().font().family(), int(self.window().font().pointSize() * 1.1)
-        )
+        font = QFont(self.window().font().family(), int(self.window().font().pointSize() * 1.1))
         for r in gridLines:
             circle = pg.QtWidgets.QGraphicsEllipseItem(-r, -r, int(r * 2), int(r * 2))
             circle.setPen(self.penGrid)

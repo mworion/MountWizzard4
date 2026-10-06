@@ -111,9 +111,7 @@ def calcSatelliteMeridianTransit(
     return westOfMeridianAt
 
 
-def calcPassEvents(
-    sat: EarthSatellite, obsSite: ObsSite, minAlt: float = 5
-) -> tuple[list, list]:
+def calcPassEvents(sat: EarthSatellite, obsSite: ObsSite, minAlt: float = 5) -> tuple[list, list]:
     if minAlt is None:
         minAlt = 5
     minAlt = max(minAlt, 5)
@@ -171,9 +169,7 @@ def classifyFlipTiming(rise: Time, settle: Time, event: Time) -> str:
     return "flipEarly"
 
 
-def sortFlipEvents(
-    satOrbit: list[dict], t0: list[Time], t1: list[Time], t2: list[Time]
-) -> dict:
+def sortFlipEvents(satOrbit: list[dict], t0: list[Time], t1: list[Time], t2: list[Time]) -> dict:
     settle = satOrbit["settle"]
     rise = satOrbit["rise"]
     if t0:

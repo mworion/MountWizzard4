@@ -172,9 +172,7 @@ def test_procSourceData_1(function):
 
 def test_runDownloadPopup_1(function):
     with (
-        mock.patch(
-            "mw4.gui.mainWaddon.astroObjects.DownloadPopup.download", return_value=True
-        ),
+        mock.patch("mw4.gui.mainWaddon.astroObjects.DownloadPopup.download", return_value=True),
         mock.patch.object(function, "procSourceData") as mock_proc,
     ):
         function.runDownloadPopup("http://test.url", False, "test", "test.txt")
@@ -183,9 +181,7 @@ def test_runDownloadPopup_1(function):
 
 def test_runDownloadPopup_2(function):
     with (
-        mock.patch(
-            "mw4.gui.mainWaddon.astroObjects.DownloadPopup.download", return_value=False
-        ),
+        mock.patch("mw4.gui.mainWaddon.astroObjects.DownloadPopup.download", return_value=False),
         mock.patch.object(function, "procSourceData") as mock_proc,
     ):
         function.runDownloadPopup("http://test.url", False, "test", "test.txt")
@@ -367,9 +363,7 @@ def test_progFull_1(function):
 def test_runDownloadPopup_when_online(function):
     """Test runDownloadPopup calls download and procSourceData on success."""
     with (
-        mock.patch(
-            "mw4.gui.mainWaddon.astroObjects.DownloadPopup.download", return_value=True
-        ),
+        mock.patch("mw4.gui.mainWaddon.astroObjects.DownloadPopup.download", return_value=True),
         mock.patch.object(function, "procSourceData") as mock_proc,
     ):
         function.runDownloadPopup("http://test.url", False, "test", "test.txt")

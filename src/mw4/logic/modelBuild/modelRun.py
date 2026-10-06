@@ -200,9 +200,7 @@ class ModelData(QObject):
         self.app.dReg["plateSolve"].instance.solve(imagePath)
 
     def sendModelProgress(self) -> None:
-        donePoints = sum(
-            1 for key in self.modelBuildData if self.modelBuildData[key]["processed"]
-        )
+        donePoints = sum(1 for key in self.modelBuildData if self.modelBuildData[key]["processed"])
         fraction = donePoints / len(self.modelBuildData)
         secondsElapsed = time.time() - self.runTime
         secondsBase = secondsElapsed / fraction
@@ -305,11 +303,7 @@ class ModelData(QObject):
             return
         self.passActive = False
         stopped = self.cancelBatch or self.endBatch
-        if (
-            not stopped
-            and self.retries < self.config.numberRetries
-            and self.checkRetryNeeded()
-        ):
+        if not stopped and self.retries < self.config.numberRetries and self.checkRetryNeeded():
             self.retries += 1
             self.startPass()
             return

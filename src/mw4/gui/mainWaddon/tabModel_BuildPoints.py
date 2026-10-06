@@ -166,9 +166,7 @@ class BuildPoints(TabAddon):
         distFlip = int(self.ui.meridianDistanceFlip.value())
         suc = self.app.buildPoint.genGreaterCircle(stepHA, stepDec, distFlip)
         if not suc:
-            self.msg.emit(
-                2, "Model", "Buildpoints", "Build points celestial cannot be generated"
-            )
+            self.msg.emit(2, "Model", "Buildpoints", "Build points celestial cannot be generated")
             return
 
         if self.ui.ditherBuildPoints.isChecked():
@@ -184,9 +182,7 @@ class BuildPoints(TabAddon):
         location = self.app.dReg["mount"].obsSite.location
 
         if any(x is None for x in [ha, dec, location, lst]):
-            self.msg.emit(
-                2, "Model", "Buildpoints", "DSO Path cannot be generated - mount off"
-            )
+            self.msg.emit(2, "Model", "Buildpoints", "DSO Path cannot be generated - mount off")
             return
 
         if self.simbadRa and self.simbadDec:
@@ -272,9 +268,7 @@ class BuildPoints(TabAddon):
         suc = self.app.buildPoint.loadBuildP(fullFileName)
         if suc:
             self.ui.buildPFileName.setText(fullFileName.stem)
-            self.msg.emit(
-                0, "Model", "Buildpoints", f"Build file [{fullFileName.name}] loaded"
-            )
+            self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fullFileName.name}] loaded")
         else:
             self.msg.emit(
                 2,

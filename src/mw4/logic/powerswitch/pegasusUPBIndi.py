@@ -54,9 +54,7 @@ class PegasusUPBIndi(IndiClass):
     def togglePowerPort(self, port: str) -> None:
         if self.isINDIGO:
             value = "Off" if self.data[f"AUX_POWER_OUTLET.OUTLET_{port}"] else "On"
-            self.txQ.put(
-                (self.config.deviceName, "AUX_POWER_OUTLET", {f"OUTLET_{port}": value})
-            )
+            self.txQ.put((self.config.deviceName, "AUX_POWER_OUTLET", {f"OUTLET_{port}": value}))
         else:
             value = "Off" if self.data[f"POWER_CHANNELS.POWER_CHANNEL_{port}"] else "On"
             self.txQ.put(
@@ -79,9 +77,7 @@ class PegasusUPBIndi(IndiClass):
 
     def sendDew(self, port: str, value: float) -> None:
         if self.isINDIGO:
-            self.txQ.put(
-                (self.config.deviceName, "AUX_HEATER_OUTLET", {f"OUTLET_{port}": value})
-            )
+            self.txQ.put((self.config.deviceName, "AUX_HEATER_OUTLET", {f"OUTLET_{port}": value}))
         else:
             self.txQ.put(
                 (self.config.deviceName, "DEW_DUTY_CYCLES", {f"DEW_CHANNEL_{port}": value})

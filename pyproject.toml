@@ -158,7 +158,7 @@ exclude_also = [
 ]
 
 [tool.ruff]
-line-length = 95
+line-length = 100
 indent-width = 4
 exclude = ["src/mw4/gui/widgets/*"]
 

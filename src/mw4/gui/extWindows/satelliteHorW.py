@@ -125,9 +125,7 @@ class SatelliteHorizonWindow(MWidget):
         plotItem.getAxis("left").setTicks([yTicks])
         plotItem.setLabel("bottom", "Azimuth [deg]")
         plotItem.setLabel("left", "Altitude [deg]")
-        plotItem.setLimits(
-            xMin=0, xMax=360, yMin=-0, yMax=90, minXRange=360 / 4, minYRange=90 / 4
-        )
+        plotItem.setLimits(xMin=0, xMax=360, yMin=-0, yMax=90, minXRange=360 / 4, minYRange=90 / 4)
         plotItem.setXRange(0, 360)
         plotItem.setYRange(0, 90)
         plotItem.disableAutoRange()
@@ -171,9 +169,7 @@ class SatelliteHorizonWindow(MWidget):
             alt, az, _ = (self.satellite - self.obsSite.location).at(vecT).altaz()
 
             for slc in self.unlinkWrap(az.degrees):
-                pd = pg.PlotDataItem(
-                    x=az.degrees[slc], y=alt.degrees[slc], pen=self.pens[2 * i]
-                )
+                pd = pg.PlotDataItem(x=az.degrees[slc], y=alt.degrees[slc], pen=self.pens[2 * i])
                 plotItem.addItem(pd)
 
             vector = np.arange(flip, settle, step)

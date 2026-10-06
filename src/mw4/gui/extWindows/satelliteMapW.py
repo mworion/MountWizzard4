@@ -206,9 +206,7 @@ class SatelliteMapWindow(MWidget):
         lat = subPoints.latitude.degrees
         lon = subPoints.longitude.degrees
         for slc in self.unlinkWrap(lon):
-            pd = pg.PlotDataItem(
-                x=lon[slc], y=lat[slc], pen=pg.mkPen(width=1, color=self.M_TER1)
-            )
+            pd = pg.PlotDataItem(x=lon[slc], y=lat[slc], pen=pg.mkPen(width=1, color=self.M_TER1))
             pd.setZValue(-10)
             plotItem.addItem(pd)
 

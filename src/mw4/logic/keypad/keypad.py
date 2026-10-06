@@ -306,9 +306,7 @@ class KeyPad:
         message = [*message, 3]
         self.send(message)
 
-    def on_data(
-        self, ws: websocket.WebSocketApp, data: list, typeOpcode: int, cont: bool
-    ) -> None:
+    def on_data(self, ws: websocket.WebSocketApp, data: list, typeOpcode: int, cont: bool) -> None:
         result = []
         started = False
         for i in range(len(data)):

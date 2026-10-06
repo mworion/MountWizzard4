@@ -355,9 +355,7 @@ def test_saveImageBLOB_not_setblob(function):
     item.eventtype = "DefBLOB"
     vectors = {
         "CCD1": {
-            "members": {
-                "CCD1": {"filename": "test.fits", "blobformat": ".fits", "blobsize": 100}
-            }
+            "members": {"CCD1": {"filename": "test.fits", "blobformat": ".fits", "blobsize": 100}}
         }
     }
     with mock.patch.object(function.parent, "exposeFinished") as mock_fin:
@@ -382,9 +380,7 @@ def test_saveImageBLOB_fits(function):
     item.eventtype = "SetBLOB"
     vectors = {
         "CCD1": {
-            "members": {
-                "CCD1": {"filename": "image.fits", "blobformat": ".fits", "blobsize": 1024}
-            }
+            "members": {"CCD1": {"filename": "image.fits", "blobformat": ".fits", "blobsize": 1024}}
         }
     }
     mock_blob_file = mock.MagicMock()
@@ -414,9 +410,7 @@ def test_saveImageBLOB_xisf(function):
     item.eventtype = "SetBLOB"
     vectors = {
         "CCD1": {
-            "members": {
-                "CCD1": {"filename": "image.xisf", "blobformat": ".xisf", "blobsize": 2048}
-            }
+            "members": {"CCD1": {"filename": "image.xisf", "blobformat": ".xisf", "blobsize": 2048}}
         }
     }
     mock_blob_file = mock.MagicMock()

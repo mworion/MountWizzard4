@@ -132,9 +132,7 @@ def test_programModelToMountFinish_1(function):
     function.modelData.modelName = "Test"
     function.app.mount.signals.getModelDone.connect(function.programModelToMountFinish)
     with (
-        mock.patch.object(
-            mw4.gui.mainWaddon.tabModel, "buildSaveData", return_value=[{"a": 1}]
-        ),
+        mock.patch.object(mw4.gui.mainWaddon.tabModel, "buildSaveData", return_value=[{"a": 1}]),
         mock.patch.object(mw4.gui.mainWaddon.tabModel, "saveModelFile") as mockSave,
     ):
         function.programModelToMountFinish()
@@ -182,9 +180,7 @@ def test_programModelToMount_3(function):
 
     function.modelData.modelProgData = [1, 2, 3]
     with (
-        mock.patch.object(
-            function.app.mount.model, "programModelFromStarList", return_value=True
-        ),
+        mock.patch.object(function.app.mount.model, "programModelFromStarList", return_value=True),
         mock.patch.object(function.app.mount.model, "storeName"),
     ):
         function.modelDoneConnected = False

@@ -139,9 +139,7 @@ class Model(TabAddon):
         self.modelDoneConnected = False
         self.msg.emit(1, "Model", "Writing model", f"[{self.modelData.modelName}]")
         mount = self.app.dReg["mount"]
-        saveData = buildSaveData(
-            self.modelData.modelBuildData, self.getSaveMeta(), mount.model
-        )
+        saveData = buildSaveData(self.modelData.modelBuildData, self.getSaveMeta(), mount.model)
         if saveData is None:
             t = "Model data inconsistent with mount model, model file not saved"
             self.msg.emit(2, "Model", "Run error", t)
@@ -154,9 +152,7 @@ class Model(TabAddon):
         if not self.modelData.modelProgData:
             self.msg.emit(3, "Model", "Run error", "No sufficient model data available")
             return
-        if not self.app.dReg["mount"].model.programModelFromStarList(
-            self.modelData.modelProgData
-        ):
+        if not self.app.dReg["mount"].model.programModelFromStarList(self.modelData.modelProgData):
             self.msg.emit(3, "Model", "Run error", f"{'Program':12s} Failed - error")
             return
         self.msg.emit(1, "Model", "Program", f"[{self.modelData.modelName}] with success")

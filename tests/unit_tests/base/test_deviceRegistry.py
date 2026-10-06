@@ -29,81 +29,61 @@ def registry() -> DeviceRegistry:
 
 
 def test_deviceEntrySignalsPropertyRaisesWhenInstanceNone() -> None:
-    entry = DeviceEntry(
-        name="refraction", instance=None, deviceType=None, isConfigurable=False
-    )
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
     with pytest.raises(AttributeError):
         _ = entry.signals
 
 
 def test_deviceEntryDataPropertyRaisesWhenInstanceNone() -> None:
-    entry = DeviceEntry(
-        name="refraction", instance=None, deviceType=None, isConfigurable=False
-    )
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
     with pytest.raises(AttributeError):
         _ = entry.data
 
 
 def test_deviceEntryObsSitePropertyRaisesWhenInstanceNone() -> None:
-    entry = DeviceEntry(
-        name="refraction", instance=None, deviceType=None, isConfigurable=False
-    )
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
     with pytest.raises(AttributeError):
         _ = entry.obsSite
 
 
 def test_deviceEntrySettingPropertyRaisesWhenInstanceNone() -> None:
-    entry = DeviceEntry(
-        name="refraction", instance=None, deviceType=None, isConfigurable=False
-    )
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
     with pytest.raises(AttributeError):
         _ = entry.setting
 
 
 def test_deviceEntryLocationPropertyRaisesWhenInstanceNone() -> None:
-    entry = DeviceEntry(
-        name="refraction", instance=None, deviceType=None, isConfigurable=False
-    )
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
     with pytest.raises(AttributeError):
         _ = entry.location
 
 
 def test_deviceEntryTimeJDPropertyRaisesWhenInstanceNone() -> None:
-    entry = DeviceEntry(
-        name="refraction", instance=None, deviceType=None, isConfigurable=False
-    )
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
     with pytest.raises(AttributeError):
         _ = entry.timeJD
 
 
 def test_deviceEntryModelPropertyRaisesWhenInstanceNone() -> None:
-    entry = DeviceEntry(
-        name="refraction", instance=None, deviceType=None, isConfigurable=False
-    )
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
     with pytest.raises(AttributeError):
         _ = entry.model
 
 
 def test_deviceEntryGeometryPropertyRaisesWhenInstanceNone() -> None:
-    entry = DeviceEntry(
-        name="refraction", instance=None, deviceType=None, isConfigurable=False
-    )
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
     with pytest.raises(AttributeError):
         _ = entry.geometry
 
 
 def test_deviceEntryFirmwarePropertyRaisesWhenInstanceNone() -> None:
-    entry = DeviceEntry(
-        name="refraction", instance=None, deviceType=None, isConfigurable=False
-    )
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
     with pytest.raises(AttributeError):
         _ = entry.firmware
 
 
 def test_deviceEntrySatellitePropertyRaisesWhenInstanceNone() -> None:
-    entry = DeviceEntry(
-        name="refraction", instance=None, deviceType=None, isConfigurable=False
-    )
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
     with pytest.raises(AttributeError):
         _ = entry.satellite
 

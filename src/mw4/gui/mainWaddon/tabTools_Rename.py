@@ -166,8 +166,6 @@ class Rename(TabAddon):
 
     def chooseDir(self) -> None:
         folder = self.ui.renameDir.text()
-        self.renameDir = MWFileDialog.getExistingDirectory(
-            self.mainW, "Choose Input Dir", folder
-        )
+        self.renameDir = MWFileDialog.getExistingDirectory(self.mainW, "Choose Input Dir", folder)
         self.ui.renameDir.setText(str(self.renameDir))
         self.ui.renameProgress.setValue(0)

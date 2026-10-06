@@ -42,9 +42,7 @@ class SettMount:
         self.ui.wolAutomatic.setChecked(self.app.dReg["mount"].instance.config.wolAutomatic)
         self.ui.syncTimeNone.setChecked(self.app.dReg["mount"].instance.config.syncTimeNone)
         self.ui.syncTimeCont.setChecked(self.app.dReg["mount"].instance.config.syncTimeCont)
-        self.ui.syncTimeNotTrack.setChecked(
-            self.app.dReg["mount"].instance.config.syncTimeNotTrack
-        )
+        self.ui.syncTimeNotTrack.setChecked(self.app.dReg["mount"].instance.config.syncTimeNotTrack)
         self.ui.hostAddress.textChanged.connect(self.storeConfig)
         self.ui.MAC.textChanged.connect(self.storeConfig)
         self.ui.wolAddress.textChanged.connect(self.storeConfig)

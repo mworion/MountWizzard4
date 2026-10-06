@@ -186,12 +186,8 @@ def test_slewToPark_requires_posAlt_attribute(function):
     function.posAz[0].value.return_value = 180.0
     function.posTexts[0].text.return_value = "Test Position"
     with (
-        mock.patch.object(
-            function.app.dReg["mount"].obsSite, "setTargetAltAz", return_value=True
-        ),
-        mock.patch.object(
-            function.app.dReg["mount"].obsSite, "startSlewing", return_value=True
-        ),
+        mock.patch.object(function.app.dReg["mount"].obsSite, "setTargetAltAz", return_value=True),
+        mock.patch.object(function.app.dReg["mount"].obsSite, "startSlewing", return_value=True),
     ):
         function.slewToPark(0)
 
@@ -254,12 +250,8 @@ def test_slewToPark_with_park_after_slew_enabled(function):
     function.mainW.ui.parkMountAfterSlew.setChecked(True)
     function.app.dReg["mount"].signals.slewed = mock.MagicMock()
     with (
-        mock.patch.object(
-            function.app.dReg["mount"].obsSite, "setTargetAltAz", return_value=True
-        ),
-        mock.patch.object(
-            function.app.dReg["mount"].obsSite, "startSlewing", return_value=True
-        ),
+        mock.patch.object(function.app.dReg["mount"].obsSite, "setTargetAltAz", return_value=True),
+        mock.patch.object(function.app.dReg["mount"].obsSite, "startSlewing", return_value=True),
     ):
         function.slewToPark(0)
         function.app.dReg["mount"].signals.slewed.connect.assert_called_once()

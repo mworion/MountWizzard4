@@ -271,9 +271,7 @@ class MountDevice(QObject):
         t = f"MAC: [{self.config.MAC}], [{self.config.wolAddress}]:[{self.config.wolPort}]"
         self.log.debug(t)
         try:
-            wakeonlan.wake(
-                self.config.MAC, host=self.config.wolAddress, port=self.config.wolPort
-            )
+            wakeonlan.wake(self.config.MAC, host=self.config.wolAddress, port=self.config.wolPort)
         except (OSError, ValueError) as e:
             self.log.warning(f"Boot mount failed: {e}")
             return False
@@ -293,9 +291,7 @@ class MountDevice(QObject):
         self.satellite.preCalcTrajectory(replay=replay)
         return replay
 
-    def progTrajectory(
-        self, start: float, alt: Angle, az: Angle, replay: bool = False
-    ) -> None:
+    def progTrajectory(self, start: float, alt: Angle, az: Angle, replay: bool = False) -> None:
         if not self.mountIsUp:
             return
         self.satellite.startProgTrajectory(julD=start)
@@ -328,9 +324,7 @@ class MountDevice(QObject):
         pierside = self.obsSite.pierside
         return self.geometry.calcTransformationMatrices(ha, dec, lat, pierside)
 
-    def calcMountAltAzToDomeAltAz(
-        self, alt: float, az: float
-    ) -> tuple[Angle | None, Angle | None]:
+    def calcMountAltAzToDomeAltAz(self, alt: float, az: float) -> tuple[Angle | None, Angle | None]:
         suc = self.obsSite.setTargetAltAz(alt=Angle(degrees=alt), az=Angle(degrees=az))
         if not suc:
             return None, None

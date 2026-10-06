@@ -112,9 +112,7 @@ class ExternalWindows:
         }
 
         for window in self.uiWindows:
-            self.uiWindows[window]["button"].clicked.connect(
-                partial(self.toggleWindow, window)
-            )
+            self.uiWindows[window]["button"].clicked.connect(partial(self.toggleWindow, window))
         self.app.timeMgr.update1s.connect(self.updateWindowsStats)
 
     def updateWindowsStats(self) -> None:

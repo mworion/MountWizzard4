@@ -67,9 +67,7 @@ def test_app_on_windows_sets_environment_variables(mock_platform, mock_main, mon
 
 @patch("mw4.cli.main")
 @patch("platform.system")
-def test_app_on_linux_does_not_set_environment_variables(
-    mock_platform, mock_main, monkeypatch
-):
+def test_app_on_linux_does_not_set_environment_variables(mock_platform, mock_main, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli", "--dpi", "120", "--scale", "1.5"])
     mock_platform.return_value = "Linux"
 
@@ -85,9 +83,7 @@ def test_app_on_linux_does_not_set_environment_variables(
 
 @patch("mw4.cli.main")
 @patch("platform.system")
-def test_app_on_darwin_does_not_set_environment_variables(
-    mock_platform, mock_main, monkeypatch
-):
+def test_app_on_darwin_does_not_set_environment_variables(mock_platform, mock_main, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli"])
     mock_platform.return_value = "Darwin"
 

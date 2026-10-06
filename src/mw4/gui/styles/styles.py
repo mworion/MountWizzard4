@@ -15,9 +15,7 @@ from typing import Any, ClassVar
 class Styles:
     COLOR_MAPS_STRINGS: ClassVar = ["CET-L2", "plasma", "cividis", "magma", "CET-D1A"]
     STYLE = (
-        MAC_STYLE + BASIC_STYLE
-        if platform.system() == "Darwin"
-        else NON_MAC_STYLE + BASIC_STYLE
+        MAC_STYLE + BASIC_STYLE if platform.system() == "Darwin" else NON_MAC_STYLE + BASIC_STYLE
     )
 
     colorSet: int = 0
@@ -28,9 +26,7 @@ class Styles:
 
     def __getattr__(self, name: str) -> list:
         if not name.startswith("M_"):
-            raise AttributeError(
-                f"'{self.__class__.__name__}' object has no attribute '{name}'"
-            )
+            raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{name}'")
         if name.endswith("a"):
             val = colors[name[:-1]][self.colorSet].copy()
             val[3] = int(val[3] * self.transparency)

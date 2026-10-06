@@ -109,9 +109,7 @@ def test_requestProperty_get_success(function):
         mock_get.return_value = mock_response
         result = function.requestProperty("testProp")
         assert result == response_data
-        mock_get.assert_called_once_with(
-            "http://localhost:59590/testProp?format=json", timeout=3
-        )
+        mock_get.assert_called_once_with("http://localhost:59590/testProp?format=json", timeout=3)
 
 
 def test_requestProperty_post_with_params(function):

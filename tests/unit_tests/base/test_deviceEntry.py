@@ -25,9 +25,7 @@ def registry() -> DeviceRegistry:
 # DeviceEntry — attribute access
 # ------------------------------------------------------------------
 def test_deviceEntryAttributes() -> None:
-    entry = DeviceEntry(
-        name="test", instance=object(), deviceType="camera", isConfigurable=True
-    )
+    entry = DeviceEntry(name="test", instance=object(), deviceType="camera", isConfigurable=True)
     assert entry.name == "test"
     assert entry.deviceType == "camera"
     assert entry.isConfigurable is True

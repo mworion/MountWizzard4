@@ -309,9 +309,7 @@ def test_handleDeviceDisconnect(function):
     function.handleDeviceDisconnect()
     # assert
     assert function.deviceConnected is False
-    function.signals.deviceDisconnected.emit.assert_called_once_with(
-        function.config.deviceName
-    )
+    function.signals.deviceDisconnected.emit.assert_called_once_with(function.config.deviceName)
 
 
 def test_runnerCommunicationLoop_stopImmediate(function):
@@ -386,9 +384,7 @@ def test_stopCommunication(function):
     # assert
     assert function.stopEvent.is_set()
     assert function.deviceConnected is False
-    function.signals.deviceDisconnected.emit.assert_called_once_with(
-        function.config.deviceName
-    )
+    function.signals.deviceDisconnected.emit.assert_called_once_with(function.config.deviceName)
     # "Connected" must be queued
     item = function.commandQueue.get_nowait()
     assert item.cmdType == "set"

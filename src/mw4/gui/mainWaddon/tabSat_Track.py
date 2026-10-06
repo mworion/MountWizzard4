@@ -472,16 +472,12 @@ class SatTrack(SatData):
 
         azimuth = obs.Az.degrees
         altitude = obs.Alt.degrees
-        self.app.dReg["dome"].instance.slewDome(
-            altitude=altitude, azimuth=azimuth, follow=True
-        )
+        self.app.dReg["dome"].instance.slewDome(altitude=altitude, azimuth=azimuth, follow=True)
 
     def setTrackingOffsets(self) -> None:
         valT = self.ui.satOffTime.value()
         valR = self.ui.satOffRa.value()
         valD = self.ui.satOffDec.value()
-        suc = self.app.dReg["mount"].satellite.setTrackingOffsets(
-            Time=valT, RA=valR, DECcorr=valD
-        )
+        suc = self.app.dReg["mount"].satellite.setTrackingOffsets(Time=valT, RA=valR, DECcorr=valD)
         if not suc:
             self.msg.emit(2, "TLE", "Command error", "Cannot change offset")

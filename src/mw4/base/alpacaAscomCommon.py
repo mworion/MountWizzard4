@@ -85,9 +85,7 @@ class AlpacaAscomCommon(DriverData):
         try:
             setattr(self.device, valueProp, value)
             if self.loggingTrace:
-                self.log.debug(
-                    f"[Trace][Set] [{self.config.deviceName}] [{valueProp}] [{value}]"
-                )
+                self.log.debug(f"[Trace][Set] [{self.config.deviceName}] [{valueProp}] [{value}]")
         except Exception as e:
             self.handleDeviceError("property", valueProp, e)
 
@@ -136,9 +134,7 @@ class AlpacaAscomCommon(DriverData):
             elif cmd.cmdType == "set":
                 self.setDeviceProp(cmd.valueProp, cmd.value)
             else:
-                self.log.warning(
-                    f"[{self.config.deviceName}] unknown cmdType: [{cmd.cmdType}]"
-                )
+                self.log.warning(f"[{self.config.deviceName}] unknown cmdType: [{cmd.cmdType}]")
 
     def connectDevice(self) -> bool:
         for retry in range(5):

@@ -122,9 +122,7 @@ class PlateSolve:
             t += f"timeout: [{self.run[self.framework].config.timeout}], "
             t += f"radius: [{self.run[self.framework].config.searchRadius}], "
             self.log.debug(t)
-            result = self.run[self.framework].solve(
-                imagePath=imagePath, updateHeader=updateHeader
-            )
+            result = self.run[self.framework].solve(imagePath=imagePath, updateHeader=updateHeader)
         self.signals.message.emit("")
         self.signals.result.emit(result)
 

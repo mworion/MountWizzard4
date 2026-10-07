@@ -9,8 +9,9 @@ from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.geometry import Geometry
 from mw4.mountcontrol.model import Model
 from mw4.mountcontrol.mountSignals import MountSignals
+from mw4.mountcontrol.mountStatus import MountStatus
 from mw4.mountcontrol.mountTimeConnectivity import MountTimeConnectivity
-from mw4.mountcontrol.obsSite import MountStatus, ObsSite
+from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.satellite import Satellite
 from mw4.mountcontrol.setting import Setting
 from pathlib import Path

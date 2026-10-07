@@ -6,8 +6,8 @@ import numpy as np
 import pytest
 import wakeonlan
 from mw4.base import tpool
+from mw4.mountcontrol.mountStatus import MountStatus
 from mw4.mountcontrol.mountTimeConnectivity import MountTimeConnectivity
-from mw4.mountcontrol.obsSite import MountStatus
 from PySide6.QtCore import QThreadPool
 from unittest import mock
 

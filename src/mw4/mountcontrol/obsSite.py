@@ -3,11 +3,9 @@
 # Copyright (c) 2019-2026 mworion
 import logging
 import numpy as np
-from enum import IntEnum
 from mw4.base.transform import diffModulusSign
-from mw4.mountcontrol.connection import Connection
+from mw4.mountcontrol.angleProperty import AngleProperty
 from mw4.mountcontrol.convert import (
-    sexagesimalizeToInt,
     stringToAngle,
     stringToDegree,
     valueToAngle,
@@ -15,61 +13,15 @@ from mw4.mountcontrol.convert import (
     valueToInt,
 )
 from mw4.mountcontrol.mountContext import MountContext
+from mw4.mountcontrol.mountStatus import STATUS_LABELS, MountStatus
+from mw4.mountcontrol.obsSiteCommands import ObsSiteCommands
 from skyfield.api import Angle, Loader, load, wgs84
 from skyfield.timelib import Time, Timescale
 from skyfield.toposlib import GeographicPosition
 from typing import Any, ClassVar
 
 
-class MountStatus(IntEnum):
-    """Numeric status codes reported by the 10micron mount.
-
-    Defined as an :class:`IntEnum` so existing integer comparisons keep
-    working while consumers can refer to symbolic names. The human-readable
-    label associated with each code lives in :data:`_STATUS_LABELS` and is
-    the single source of truth for both the valid-code set and the textual
-    descriptions exposed through :class:`ObsSite`.
-    """
-
-    TRACKING = 0
-    STOPPED = 1
-    SLEWING_TO_PARK = 2
-    UNPARKING = 3
-    SLEWING_TO_HOME = 4
-    PARKED = 5
-    SLEWING = 6
-    TRACKING_OFF = 7
-    MOTOR_LOW_TEMP = 8
-    TRACKING_OUTSIDE_LIMITS = 9
-    FOLLOWING_SATELLITE = 10
-    USER_OK_NEEDED = 11
-    UNKNOWN = 98
-    ERROR = 99
-
-
-# Single source of truth for the mount status codes and their human-readable
-# labels. The valid-code set and the legacy ``STAT`` mapping used by the GUI
-# are derived from this dictionary so a new status only needs to be added in
-# one place (plus the :class:`MountStatus` enum above).
-_STATUS_LABELS: dict[MountStatus, str] = {
-    MountStatus.TRACKING: "tracking",
-    MountStatus.STOPPED: "stopped after STOP",
-    MountStatus.SLEWING_TO_PARK: "slewing park position",
-    MountStatus.UNPARKING: "unparking",
-    MountStatus.SLEWING_TO_HOME: "slewing home position",
-    MountStatus.PARKED: "parked",
-    MountStatus.SLEWING: "slewing / going to stop",
-    MountStatus.TRACKING_OFF: "tracking Off",
-    MountStatus.MOTOR_LOW_TEMP: "motor low temperature",
-    MountStatus.TRACKING_OUTSIDE_LIMITS: "tracking outside limits",
-    MountStatus.FOLLOWING_SATELLITE: "following satellite",
-    MountStatus.USER_OK_NEEDED: "user OK needed",
-    MountStatus.UNKNOWN: "unknown status",
-    MountStatus.ERROR: "error",
-}
-
-
-class ObsSite:
+class ObsSite(ObsSiteCommands):
     """
     The class Site inherits all information and handling site data
     attributes of the connected mount and provides the abstracted interface
@@ -86,9 +38,9 @@ class ObsSite:
 
     log = logging.getLogger("MW4")
 
-    # Derived from MountStatus / _STATUS_LABELS - do not duplicate.
+    # Derived from MountStatus / STATUS_LABELS - do not duplicate.
     _STATUS_VALID: frozenset[int] = frozenset(int(s) for s in MountStatus)
-    STAT: ClassVar[dict[str, str]] = {str(int(s)): label for s, label in _STATUS_LABELS.items()}
+    STAT: ClassVar[dict[str, str]] = {str(int(s)): label for s, label in STATUS_LABELS.items()}
 
     STAT_SAT: ClassVar = {
         "V": "slewing to transit",
@@ -209,27 +161,9 @@ class ObsSite:
         elif isinstance(value, Angle):
             self._timeSidereal = value
 
-    @property
-    def raJNow(self) -> Angle:
-        return self._raJNow
+    raJNow = AngleProperty("hours")
 
-    @raJNow.setter
-    def raJNow(self, value: Any) -> None:
-        if isinstance(value, Angle):
-            self._raJNow = value
-            return
-        self._raJNow = valueToAngle(value, preference="hours")
-
-    @property
-    def raJNowTarget(self) -> Angle:
-        return self._raJNowTarget
-
-    @raJNowTarget.setter
-    def raJNowTarget(self, value: Any) -> None:
-        if isinstance(value, Angle):
-            self._raJNowTarget = value
-            return
-        self._raJNowTarget = stringToAngle(value, preference="hours")
+    raJNowTarget = AngleProperty("hours", parser="string")
 
     @property
     def haJNow(self) -> Angle:
@@ -243,93 +177,21 @@ class ObsSite:
         ha = (self._timeSidereal.hours - self._raJNowTarget.hours + 24) % 24
         return Angle(hours=ha)
 
-    @property
-    def decJNow(self) -> Angle:
-        return self._decJNow
+    decJNow = AngleProperty("degrees")
 
-    @decJNow.setter
-    def decJNow(self, value: Any) -> None:
-        if isinstance(value, Angle):
-            self._decJNow = value
-            return
-        self._decJNow = valueToAngle(value, preference="degrees")
+    decJNowTarget = AngleProperty("degrees", parser="string")
 
-    @property
-    def decJNowTarget(self) -> Angle:
-        return self._decJNowTarget
+    angularPosRA = AngleProperty("degrees")
 
-    @decJNowTarget.setter
-    def decJNowTarget(self, value: Any) -> None:
-        if isinstance(value, Angle):
-            self._decJNowTarget = value
-            return
-        self._decJNowTarget = stringToAngle(value, preference="degrees")
+    angularPosDEC = AngleProperty("degrees")
 
-    @property
-    def angularPosRA(self) -> Angle:
-        return self._angularPosRA
+    errorAngularPosRA = AngleProperty("degrees")
 
-    @angularPosRA.setter
-    def angularPosRA(self, value: Any) -> None:
-        if isinstance(value, Angle):
-            self._angularPosRA = value
-            return
-        self._angularPosRA = valueToAngle(value, preference="degrees")
+    errorAngularPosDEC = AngleProperty("degrees")
 
-    @property
-    def angularPosDEC(self) -> Angle:
-        return self._angularPosDEC
+    angularPosRATarget = AngleProperty("degrees")
 
-    @angularPosDEC.setter
-    def angularPosDEC(self, value: Any) -> None:
-        if isinstance(value, Angle):
-            self._angularPosDEC = value
-            return
-        self._angularPosDEC = valueToAngle(value, preference="degrees")
-
-    @property
-    def errorAngularPosRA(self) -> Angle:
-        return self._errorAngularPosRA
-
-    @errorAngularPosRA.setter
-    def errorAngularPosRA(self, value: Any) -> None:
-        if isinstance(value, Angle):
-            self._errorAngularPosRA = value
-            return
-        self._errorAngularPosRA = valueToAngle(value, preference="degrees")
-
-    @property
-    def errorAngularPosDEC(self) -> Angle:
-        return self._errorAngularPosDEC
-
-    @errorAngularPosDEC.setter
-    def errorAngularPosDEC(self, value: Any) -> None:
-        if isinstance(value, Angle):
-            self._errorAngularPosDEC = value
-            return
-        self._errorAngularPosDEC = valueToAngle(value, preference="degrees")
-
-    @property
-    def angularPosRATarget(self) -> Angle:
-        return self._angularPosRATarget
-
-    @angularPosRATarget.setter
-    def angularPosRATarget(self, value: Any) -> None:
-        if isinstance(value, Angle):
-            self._angularPosRATarget = value
-            return
-        self._angularPosRATarget = valueToAngle(value, preference="degrees")
-
-    @property
-    def angularPosDECTarget(self) -> Angle:
-        return self._angularPosDECTarget
-
-    @angularPosDECTarget.setter
-    def angularPosDECTarget(self, value: Any) -> None:
-        if isinstance(value, Angle):
-            self._angularPosDECTarget = value
-            return
-        self._angularPosDECTarget = valueToAngle(value, preference="degrees")
+    angularPosDECTarget = AngleProperty("degrees")
 
     @property
     def pierside(self) -> str:
@@ -354,27 +216,9 @@ class ObsSite:
         elif value == 3:
             self._piersideTarget = "E"
 
-    @property
-    def Alt(self) -> Angle:
-        return self._Alt
+    Alt = AngleProperty("degrees")
 
-    @Alt.setter
-    def Alt(self, value: Any) -> None:
-        if isinstance(value, Angle):
-            self._Alt = value
-            return
-        self._Alt = valueToAngle(value, preference="degrees")
-
-    @property
-    def AltTarget(self) -> Angle:
-        return self._AltTarget
-
-    @AltTarget.setter
-    def AltTarget(self, value: Any) -> None:
-        if isinstance(value, Angle):
-            self._AltTarget = value
-            return
-        self._AltTarget = stringToAngle(value, preference="degrees")
+    AltTarget = AngleProperty("degrees", parser="string")
 
     @property
     def Az(self) -> Angle:
@@ -392,16 +236,7 @@ class ObsSite:
         self.AzDirection = direction
         self.lastAz = az
 
-    @property
-    def AzTarget(self) -> Angle:
-        return self._AzTarget
-
-    @AzTarget.setter
-    def AzTarget(self, value: Any) -> None:
-        if isinstance(value, Angle):
-            self._AzTarget = value
-            return
-        self._AzTarget = stringToAngle(value, preference="degrees")
+    AzTarget = AngleProperty("degrees", parser="string")
 
     @property
     def status(self) -> int:
@@ -458,270 +293,3 @@ class ObsSite:
     @statusSlew.setter
     def statusSlew(self, value: Any) -> None:
         self._statusSlew = bool(value)
-
-    def parseLocation(self, response: list, numberOfChunks: int) -> bool:
-        """
-        Due to compatibility with the LX200 protocol, east longitude is transmitted
-        as negative; we invert the sign so that east longitude is positive internally.
-        """
-        if len(response) != numberOfChunks:
-            self.log.warning("Wrong number of chunks")
-            return False
-        elev = response[0]
-        # LX200 protocol encodes east as negative - swap sign to east-positive convention
-        lon = response[1].replace("-", "+") if "-" in response[1] else response[1].replace("+", "-")
-        lat = response[2]
-        self.location = [lat, lon, elev]
-        return True
-
-    def getLocation(self) -> bool:
-        conn = Connection(self.parent)
-        commandString = ":Gev#:Gg#:Gt#"
-        suc, response, numberOfChunks = conn.communicate(commandString)
-        if not suc:
-            return False
-        return self.parseLocation(response, numberOfChunks)
-
-    def parsePointing(self, response: list, numberOfChunks: int) -> bool:
-        if len(response) != numberOfChunks:
-            self.log.warning("Wrong number of chunks")
-            return False
-        infoSplit = response[3].split(",")
-        angularSplit = response[4].split(",")
-        if len(infoSplit) < 8 or len(angularSplit) < 5:
-            self.log.warning(f"Wrong number of fields: [{response}]")
-            return False
-        self.timeSidereal = response[0]
-        self.ut1_utc = response[1].replace("L", "")
-        self.statusSat = response[2]
-        self.raJNow = infoSplit[0]
-        self.decJNow = infoSplit[1]
-        self.pierside = infoSplit[2]
-        self.Az = infoSplit[3]
-        self.Alt = infoSplit[4]
-        self.timeJD = infoSplit[5]
-        self.status = infoSplit[6]
-        self.statusSlew = infoSplit[7] == "1"
-        self.angularPosRA = angularSplit[1]
-        self.angularPosDEC = angularSplit[3]
-        self.errorAngularPosRA = angularSplit[2]
-        self.errorAngularPosDEC = angularSplit[4]
-        return True
-
-    def pollPointing(self) -> bool:
-        conn = Connection(self.parent)
-        commandString = ":GS#:GDUT#:TLESCK#:Ginfo#:GaE#"
-        suc, response, numberOfChunks = conn.communicate(commandString)
-        if not suc:
-            return False
-        return self.parsePointing(response, numberOfChunks)
-
-    def startSlewing(self, slewType: str = "normal") -> bool:
-        slewTypes = {
-            "normal": ":MS#",
-            "notrack": ":MA#",
-            "stop": ":MaX#",
-            "park": ":PaX#",
-            "polar": ":MSap#",
-            "ortho": ":MSao#",
-            "keep": ":MS#" if self.status == 0 else ":MA#",
-        }
-
-        self.flipped = self.piersideTarget != self.pierside
-        conn = Connection(self.parent)
-        commandString = ":PO#" + slewTypes[slewType]
-        suc, _, _ = conn.communicate(commandString, responseCheck="0")
-        return suc
-
-    def parseSetTargetResponse(self, response: list) -> bool:
-        if len(response) != 4 or len(response[0]) < 3:
-            self.log.debug(f"Missing return values: [{response}]")
-            return False
-        result = response[0][0:2]
-        if result.count("0") > 0:
-            self.log.debug(f"Coordinates could not be set: [{response}]")
-            return False
-        self.piersideTarget = valueToInt(response[0][2])
-        self.AltTarget = response[0][3:]
-        self.AzTarget = response[1]
-        self.raJNowTarget = response[2]
-        self.decJNowTarget = response[3]
-        return valueToInt(response[0][2]) != 0
-
-    def setTargetAltAz(self, alt: Angle, az: Angle) -> bool:
-        sgn, h, m, s, frac = sexagesimalizeToInt(alt.degrees, 1)
-        sign = "+" if sgn >= 0 else "-"
-        setAlt = f":Sa{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#"
-
-        sgn, h, m, s, frac = sexagesimalizeToInt(az.degrees, 1)
-        sign = "+" if sgn >= 0 else "-"
-        setAz = f":Sz{sign}{h:03d}*{m:02d}:{s:02d}.{frac:1d}#"
-
-        getTargetStatus = ":GTsid#:Ga#:Gz#:Gr#:Gd#"
-
-        conn = Connection(self.parent)
-        commandString = setAlt + setAz + getTargetStatus
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        return self.parseSetTargetResponse(response)
-
-    def setTargetRaDec(self, ra: Angle, dec: Angle) -> bool:
-        sgn, h, m, s, frac = sexagesimalizeToInt(ra.hours, 2)
-        setRa = f":Sr{h:02d}:{m:02d}:{s:02d}.{frac:02d}#"
-
-        sgn, h, m, s, frac = sexagesimalizeToInt(dec.degrees, 1)
-        sign = "+" if sgn >= 0 else "-"
-        setDec = f":Sd{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#"
-
-        getTargetStatus = ":GTsid#:Ga#:Gz#:Gr#:Gd#"
-
-        conn = Connection(self.parent)
-        commandString = setRa + setDec + getTargetStatus
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        return self.parseSetTargetResponse(response)
-
-    def shutdown(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":shutdown#", responseCheck="1")
-        return suc
-
-    def setLocation(self, location: GeographicPosition) -> bool:
-        conn = Connection(self.parent)
-
-        sgn, h, m, s, frac = sexagesimalizeToInt(location.longitude.degrees, 1)
-        sign = "+" if sgn < 0 else "-"
-        setLon = f":Sg{sign}{h:03d}*{m:02d}:{s:02d}.{frac:1d}#"
-
-        sgn, h, m, s, frac = sexagesimalizeToInt(location.latitude.degrees, 1)
-        sign = "+" if sgn >= 0 else "-"
-        setLat = f":St{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#"
-
-        sign = "+" if location.elevation.m > 0 else "-"
-        setElev = f":Sev{sign}{location.elevation.m:06.1f}#"
-
-        commandString = setLon + setLat + setElev
-        suc, _, _ = conn.communicate(commandString, responseCheck="1")
-        return suc
-
-    def setLatitude(self, lat: Angle) -> bool:
-        conn = Connection(self.parent)
-        sgn, h, m, s, frac = sexagesimalizeToInt(lat.degrees, 1)
-        sign = "+" if sgn >= 0 else "-"
-        commandString = f":St{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="1")
-        return suc
-
-    def setLongitude(self, lon: Angle) -> bool:
-        conn = Connection(self.parent)
-        sgn, h, m, s, frac = sexagesimalizeToInt(lon.degrees, 1)
-        sign = "+" if sgn < 0 else "-"
-        commandString = f":Sg{sign}{h:03d}*{m:02d}:{s:02d}.{frac:1d}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="1")
-        return suc
-
-    def setElevation(self, elev: float) -> bool:
-        conn = Connection(self.parent)
-        sign = "+" if elev > 0 else "-"
-        commandString = f":Sev{sign}{abs(elev):06.1f}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="1")
-        return suc
-
-    def startTracking(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":PO#:AP#")
-        return suc
-
-    def stopTracking(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":RT9#")
-        return suc
-
-    def park(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":hP#")
-        return suc
-
-    def unpark(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":PO#")
-        return suc
-
-    def parkOnActualPosition(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":PiP#", responseCheck="1")
-        return suc
-
-    def stop(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":STOP#")
-        return suc
-
-    def flip(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":FLIP#", responseCheck="1")
-        return suc
-
-    def moveNorth(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":PO#:Mn#")
-        return suc
-
-    def moveEast(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":PO#:Me#")
-        return suc
-
-    def moveSouth(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":PO#:Ms#")
-        return suc
-
-    def moveWest(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":PO#:Mw#")
-        return suc
-
-    def stopMoveAll(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":Q#")
-        return suc
-
-    def stopMoveNorth(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":Qn#")
-        return suc
-
-    def stopMoveEast(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":Qe#")
-        return suc
-
-    def stopMoveSouth(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":Qs#")
-        return suc
-
-    def stopMoveWest(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":Qw#")
-        return suc
-
-    def syncPositionToTarget(self) -> bool:
-        conn = Connection(self.parent)
-        commandString = ":CMCFG0#:CM#"
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return False
-        if len(response) < 2:
-            self.log.debug(f"Missing return values: [{response}]")
-            return False
-        return response[1].startswith("Coord")
-
-    def setHighPrecision(self) -> bool:
-        conn = Connection(self.parent)
-        commandString = ":U2#"
-        suc, _, _ = conn.communicate(commandString)
-        return suc

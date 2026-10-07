@@ -18,7 +18,7 @@ from mw4.mountcontrol.obsSiteCommands import ObsSiteCommands
 from skyfield.api import Angle, Loader, load, wgs84
 from skyfield.timelib import Time, Timescale
 from skyfield.toposlib import GeographicPosition
-from typing import Any, ClassVar
+from typing import ClassVar
 
 
 class ObsSite(ObsSiteCommands):
@@ -109,7 +109,7 @@ class ObsSite(ObsSiteCommands):
         return self._location
 
     @location.setter
-    def location(self, value: Any) -> None:
+    def location(self, value: GeographicPosition | list | tuple) -> None:
         if isinstance(value, GeographicPosition):
             self._location = value
             return
@@ -135,7 +135,7 @@ class ObsSite(ObsSiteCommands):
         return self.ts.now()
 
     @timeJD.setter
-    def timeJD(self, value: Any) -> None:
+    def timeJD(self, value: str | float | None) -> None:
         value = valueToFloat(value)
         self._timeJD = self.ts.tt_jd(value + self.UTC2TT)
 
@@ -144,7 +144,7 @@ class ObsSite(ObsSiteCommands):
         return self._ut1_utc
 
     @ut1_utc.setter
-    def ut1_utc(self, value: Any) -> None:
+    def ut1_utc(self, value: str | float | None) -> None:
         value = valueToFloat(value)
         self._ut1_utc = value / 86400
 
@@ -153,7 +153,7 @@ class ObsSite(ObsSiteCommands):
         return self._timeSidereal
 
     @timeSidereal.setter
-    def timeSidereal(self, value: Any) -> None:
+    def timeSidereal(self, value: str | float | Angle) -> None:
         if isinstance(value, str):
             self._timeSidereal = stringToAngle(value, preference="hours")
         elif isinstance(value, (int, float)):
@@ -198,7 +198,7 @@ class ObsSite(ObsSiteCommands):
         return self._pierside
 
     @pierside.setter
-    def pierside(self, value: Any) -> None:
+    def pierside(self, value: str) -> None:
         if value in ["E", "W", "e", "w"]:
             value = value.capitalize()
             self._pierside = value
@@ -210,7 +210,7 @@ class ObsSite(ObsSiteCommands):
         return self._piersideTarget
 
     @piersideTarget.setter
-    def piersideTarget(self, value: Any) -> None:
+    def piersideTarget(self, value: int) -> None:
         if value == 2:
             self._piersideTarget = "W"
         elif value == 3:
@@ -225,7 +225,7 @@ class ObsSite(ObsSiteCommands):
         return self._Az
 
     @Az.setter
-    def Az(self, value: Any) -> None:
+    def Az(self, value: Angle | str | float | None) -> None:
         if isinstance(value, Angle):
             self._Az = value
         else:
@@ -243,7 +243,7 @@ class ObsSite(ObsSiteCommands):
         return self._status
 
     @status.setter
-    def status(self, value: Any) -> None:
+    def status(self, value: str | float | None) -> None:
         self._status = valueToInt(value)
         if self._status not in self._STATUS_VALID:
             self._status = MountStatus.ERROR
@@ -291,5 +291,5 @@ class ObsSite(ObsSiteCommands):
         return self._statusSlew
 
     @statusSlew.setter
-    def statusSlew(self, value: Any) -> None:
+    def statusSlew(self, value: bool | int | str) -> None:
         self._statusSlew = bool(value)

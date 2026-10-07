@@ -182,7 +182,13 @@ class, `MountTimeConnectivity`, which has already been created.
 - Same log messages and the same `mountIsUp` signal emissions as before.
 - `MountDevice` has no `bootMount`/`shutdown`; callers use `mountTimeConnectivity`.
 
-## Step 5 - Typing cleanup
+## Step 5 - Typing cleanup (DONE)
+
+Result: `ObsSite` setters narrowed (`location`: `GeographicPosition | list | tuple`,
+`piersideTarget`: `int`, numeric/str inputs for `timeJD`, `ut1_utc`, `status`, ...), `Any`
+import removed from `obsSite.py`; `Any` remains only on the `location`/`piersideTarget`
+annotations in the `ObsSiteCommands` mixin (needed to avoid override errors). pyrefly: 627
+errors (baseline 629).
 
 1. `ObsSite` explicit setters (`location`, `timeJD`, `ut1_utc`, `status`, `statusSlew`,
    `pierside*`): replace `value: Any` with a narrower union where the accepted input

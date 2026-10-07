@@ -162,7 +162,7 @@ Findings that drive the design:
 - Tests: `test_mountData.py`, plus delegation, `data` property and `connectTimers`
   tests in `test_mount.py`.
 
-## Step 4 - Connectivity and time stay together in `MountTimeConnectivity` (decision changed)
+## Step 4 - Connectivity and time stay together in `MountTimeConnectivity` (DONE, decision changed)
 
 ### Decision
 The former plan split the reachability probe into a separate `MountMonitor`. This is
@@ -170,15 +170,12 @@ dropped: power, reachability/round-trip time and clock sync are closely related 
 clock delta subtracts `rtt`; shutdown/boot determine `mountIsUp`), so they stay in one
 class, `MountTimeConnectivity`, which has already been created.
 
-### Remaining actions
-1. Only wiring: the three timer connections in `MountTimeConnectivity.__init__`
-   (`update1s -> checkMountUp`, `update30s -> syncClock`, `update1s -> pollSyncClock`)
-   move into `MountDevice.connectTimers()` (step 3c).
-2. If `mountTimeConnectivity.py` grows noticeably, keep sections ordered: power,
-   reachability, clock. No further split unless measured necessary.
-3. Tests: `test_mountTimeConnectivity.py` already contains the power tests
-   (`test_bootMount_*`, `test_shutdown_*`) moved from `test_mount.py`; keep the
-   module-scoped fixture/cleanup of workers (`workerCycleMountUp`, `workerPollSyncClock`).
+### Actions (DONE)
+1. Timer wiring: the three connections of `MountTimeConnectivity` moved into
+   `MountDevice.connectTimers()` as part of step 3c.
+2. Section order in `mountTimeConnectivity.py` is power, reachability, clock; no further split.
+3. Tests: `test_mountTimeConnectivity.py` contains the power tests moved from `test_mount.py`
+   and keeps the module-scoped fixture/cleanup of workers.
 4. Windows/platform: none of this code is platform specific; no guards needed.
 
 ### Acceptance

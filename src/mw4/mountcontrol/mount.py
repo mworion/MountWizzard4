@@ -8,6 +8,7 @@ from mw4.base.tpool import Worker, startWorker
 from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.geometry import Geometry
 from mw4.mountcontrol.model import Model
+from mw4.mountcontrol.mountData import MountData
 from mw4.mountcontrol.mountSignals import MountSignals
 from mw4.mountcontrol.mountStatus import MountStatus
 from mw4.mountcontrol.mountTimeConnectivity import MountTimeConnectivity
@@ -53,7 +54,6 @@ class MountDevice(QObject):
         self.run: dict[str, Any] = {"10micron": self}
         self.framework: str = "10micron"
         self.threadPool = app.threadPool
-        self.timeMgr = app.timeMgr
         self.updateDomeSettings = app.updateDomeSettings
         self.domeConfig: dict[str, Any] = app.config.setdefault("SettingDome", {})
         self.pathToData: Path = app.mwGlob["dataDir"]
@@ -68,6 +68,7 @@ class MountDevice(QObject):
         self.geometry = Geometry(self)
         self.model = Model(self)
         self.mountTimeConnectivity = MountTimeConnectivity(self)
+        self.mountData = MountData(self.obsSite, self.mountTimeConnectivity)
 
         self.workerCycleSetting: Worker | None = None
         self.workerCyclePointing: Worker | None = None
@@ -86,13 +87,21 @@ class MountDevice(QObject):
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitAfterSettlingAndEmit)
         self.signals.mountIsUp.connect(self.startupMountData)
-        self.app.timeMgr.update0_5s.connect(self.cyclePointing)
-        self.app.timeMgr.update3s.connect(self.cycleSetting)
-        self.app.timeMgr.update1s.connect(self.collectData)
-        self.app.timeMgr.start3s.connect(self.resetAfterStart)
-        self.data: dict = {}
-        self.raRef: float = 0.0
-        self.decRef: float = 0.0
+        self.connectTimers()
+
+    @property
+    def data(self) -> dict:
+        return self.mountData.data
+
+    def connectTimers(self) -> None:
+        timeMgr = self.app.timeMgr
+        timeMgr.update1s.connect(self.mountTimeConnectivity.checkMountUp)
+        timeMgr.update30s.connect(self.mountTimeConnectivity.syncClock)
+        timeMgr.update1s.connect(self.mountTimeConnectivity.pollSyncClock)
+        timeMgr.update0_5s.connect(self.cyclePointing)
+        timeMgr.update3s.connect(self.cycleSetting)
+        timeMgr.update1s.connect(self.collectData)
+        timeMgr.start3s.connect(self.resetAfterStart)
 
     @property
     def waitTimeFlip(self) -> float:
@@ -105,23 +114,10 @@ class MountDevice(QObject):
         self._waitTimeFlip = int(value * 1000)
 
     def resetAfterStart(self) -> None:
-        self.raRef = self.obsSite.raJNow.degrees
-        self.decRef = self.obsSite.decJNow.degrees
+        self.mountData.reset()
 
     def collectData(self) -> None:
-        if self.obsSite.statusSlew:
-            self.raRef = self.obsSite.raJNow.degrees
-            self.decRef = self.obsSite.decJNow.degrees
-
-        deltaRaJNow = (self.obsSite.raJNow.degrees - self.raRef) * 3600
-        deltaDecJNow = (self.obsSite.decJNow.degrees - self.decRef) * 3600
-        self.data["deltaRaJNow"] = deltaRaJNow
-        self.data["deltaDecJNow"] = deltaDecJNow
-        self.data["errorAngularPosRA"] = self.obsSite.errorAngularPosRA.degrees * 3600
-        self.data["errorAngularPosDEC"] = self.obsSite.errorAngularPosDEC.degrees * 3600
-        self.data["status"] = self.obsSite.status
-        self.data["timeDiff"] = self.mountTimeConnectivity.timeDiff * 1000
-        self.data["rtt"] = self.mountTimeConnectivity.rtt * 1000
+        self.mountData.collect()
 
     def waitAfterSettlingAndEmit(self) -> None:
         self.signals.slewed.emit()
@@ -129,7 +125,7 @@ class MountDevice(QObject):
     def stopAllMountTimers(self) -> None:
         self.settlingWait.stop()
 
-    def startupMountData(self, status) -> None:
+    def startupMountData(self, status: bool) -> None:
         if status and not self.mountIsUp:
             self.mountIsUp = True
             self.obsSite.setHighPrecision()

@@ -63,8 +63,7 @@ Findings that drive the design:
      defined with `TYPE_CHECKING` imports, and `DeviceConfigMount` stays in `mount.py`
      unless it must move (then move it to `mountContext.py` and update imports).
    - The two application couplings are exposed explicitly on the context instead of
-     `parent.app`: `timeMgr: TimeManagerProtocol` (members `update1s`, `update30s`) and
-     `domeConfig: dict` + `updateDomeSettings: SignalInstance`.
+     `parent.app`: `domeConfig: dict` + `updateDomeSettings: SignalInstance`.
      Check `src/mw4/base/appProtocol.py` first: reuse its existing protocol types for
      `timeMgr` rather than inventing new ones.
 2. Change `parent: Any` -> `parent: MountContext` in `Connection`, `ObsSite`, `Firmware`,
@@ -150,52 +149,18 @@ Findings that drive the design:
   (`grep` of external usages passes, `test_obsSite.py` untouched or only import changes).
 - 100 % coverage for `mountStatus.py`, `angleProperty.py`, `obsSite.py`.
 
-## Step 3 - Slim down `MountDevice` (`mount.py`, 332 lines)
+## Step 3 - Slim down `MountDevice` (DONE)
 
-### Current state
-
-- Orchestration: signals, 10 `worker*` handles, `getX`/`resultX` pairs
-  (`getFW`, `getLocation`, `getModel`, `getNames`, `getTLE`, `calcTLE`, `statTLE`,
-  `progTrajectory`, `cyclePointing`, `cycleSetting`).
-- Derived data: `raRef`, `decRef`, `data`, `resetAfterStart`, `collectData`.
-- Power (`bootMount`, `shutdown`): already moved to `MountTimeConnectivity`.
-- Wiring: four `app.timeMgr.*.connect(...)` calls in `__init__`.
-- `startupMountData(self, status)` has no type annotation.
-
-### Actions
-
-3a. Derived data -> `mountData.py`
-1. `class MountData` (no Qt) with `raRef`, `decRef`, `data`, `reset()`, `collect()`;
-   constructor takes `obsSite` and `mountTimeConnectivity` (explicit dependencies, not parent).
-2. `MountDevice` creates `self.mountData` and keeps `self.data` as a property that
-   returns `self.mountData.data` so GUI/logic callers (`mount.data[...]`) do not change.
-   `collectData`/`resetAfterStart` stay on `MountDevice` as thin timer slots calling
-   `mountData` (their names are connected to timer signals and may be patched in tests).
-3. Tests: `test_mountData.py` (slew resets reference, delta computation, arcsec
-   conversion of error values, timeDiff/rtt in ms); remove the same assertions from
-   `test_mount.py`.
-
-3b. Power
-- Done: `bootMount`/`shutdown` live in `MountTimeConnectivity`; the GUI calls
-  `instance.mountTimeConnectivity.bootMount()/shutdown()`. Nothing left to do here.
-
-3c. Timer wiring
-1. One method `connectTimers(self) -> None` in `MountDevice` that makes all
-   timer connections currently spread over `MountDevice.__init__` (4) and
-   `MountTimeConnectivity.__init__` (3): 0.5 s pointing, 3 s setting, 1 s collect, start3s reset,
-   1 s mount-up check, 30 s clock sync, 1 s poll clock.
-2. `__init__` calls `connectTimers()` last, after all sub-objects exist.
-3. Test: assert each timer signal is connected (patch `timeMgr` with mocks and check
-   `.connect.assert_any_call`).
-
-3d. Typing
-- `startupMountData(self, status: bool) -> None`.
-- Worker attributes keep the `worker{NameOfFunction}` / `runner{NameOfFunction}`
-  naming rule.
-
-### Acceptance
-- `MountDevice` only orchestrates; no arithmetic on mount data inside it.
-- All external usages (`app.dReg["mount"].instance.data[...]`, signals) unchanged.
+- `mountData.py`: `MountData(obsSite, mountTimeConnectivity)` holds `raRef`, `decRef`,
+  `data`, `reset()`, `collect()`. `MountDevice.data` is a property returning
+  `mountData.data`; `resetAfterStart`/`collectData` remain as thin timer slots.
+- Power (`bootMount`/`shutdown`) already lives in `MountTimeConnectivity`.
+- `MountDevice.connectTimers()` makes all seven timer connections (the three of
+  `MountTimeConnectivity` are no longer made in its `__init__`); called last in `__init__`.
+  Consequently `timeMgr` was removed from `MountContext` (no sub-object needs it any more).
+- `startupMountData(self, status: bool)` is typed.
+- Tests: `test_mountData.py`, plus delegation, `data` property and `connectTimers`
+  tests in `test_mount.py`.
 
 ## Step 4 - Connectivity and time stay together in `MountTimeConnectivity` (decision changed)
 

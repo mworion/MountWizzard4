@@ -30,9 +30,6 @@ class MountTimeConnectivity:
         self.errorCounter: int = 5
         self.workerCycleMountUp: Worker | None = None
         self.workerPollSyncClock: Worker | None = None
-        self.parent.timeMgr.update1s.connect(self.checkMountUp)
-        self.parent.timeMgr.update30s.connect(self.syncClock)
-        self.parent.timeMgr.update1s.connect(self.pollSyncClock)
 
     @property
     def timeDiff(self) -> float:

@@ -6,7 +6,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
-    from mw4.base.timeManager import TimeManager
     from mw4.mountcontrol.firmware import Firmware
     from mw4.mountcontrol.mount import DeviceConfigMount
     from mw4.mountcontrol.mountSignals import MountSignals
@@ -30,6 +29,5 @@ class MountContext(Protocol):
     firmware: Firmware
     threadPool: QThreadPool
     pathToData: Path
-    timeMgr: TimeManager
     domeConfig: dict[str, Any]
     updateDomeSettings: SignalInstance

@@ -40,12 +40,33 @@ def test_properties_waitTimeFlip_2(function):
 
 
 def test_resetAfterStart(function):
-    function.resetAfterStart()
+    with mock.patch.object(function.mountData, "reset") as mockReset:
+        function.resetAfterStart()
+        mockReset.assert_called_once()
 
 
-def test_collectData_1(function):
-    function.obsSite.statusSlew = True
-    function.collectData()
+def test_collectData(function):
+    with mock.patch.object(function.mountData, "collect") as mockCollect:
+        function.collectData()
+        mockCollect.assert_called_once()
+
+
+def test_data_property(function):
+    assert function.data is function.mountData.data
+
+
+def test_connectTimers(function):
+    timeMgr = mock.MagicMock()
+    function.app.timeMgr = timeMgr
+    function.connectTimers()
+    conn = function.mountTimeConnectivity
+    timeMgr.update1s.connect.assert_any_call(conn.checkMountUp)
+    timeMgr.update1s.connect.assert_any_call(conn.pollSyncClock)
+    timeMgr.update1s.connect.assert_any_call(function.collectData)
+    timeMgr.update30s.connect.assert_called_once_with(conn.syncClock)
+    timeMgr.update0_5s.connect.assert_called_once_with(function.cyclePointing)
+    timeMgr.update3s.connect.assert_called_once_with(function.cycleSetting)
+    timeMgr.start3s.connect.assert_called_once_with(function.resetAfterStart)
 
 
 def test_waitAfterSettlingAndEmit(function):
@@ -449,15 +470,6 @@ def test_resultCyclePointing_settlingWait(function):
     with mock.patch.object(function.settlingWait, "start"):
         function.resultCyclePointing(True)
         assert function.settlingWait.start.called
-
-
-def test_collectData_no_slew(function):
-    function.obsSite.statusSlew = False
-    function.raRef = 100.0
-    function.decRef = 50.0
-    function.collectData()
-    assert function.raRef == 100.0
-    assert function.decRef == 50.0
 
 
 def test_resultStatTLE_signal(function):

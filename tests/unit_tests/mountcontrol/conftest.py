@@ -23,7 +23,6 @@ def mountContext() -> SimpleNamespace:
         firmware=mock.MagicMock(),
         threadPool=QThreadPool(),
         pathToData=Path("tests/work/data"),
-        timeMgr=mock.MagicMock(),
         domeConfig={},
         updateDomeSettings=mock.MagicMock(),
     )

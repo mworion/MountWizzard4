@@ -44,7 +44,6 @@ def function(mountContext):
 def test_mountTimeConnectivity_init(mountContext):
     function = buildMountTimeConnectivity(mountContext)
     assert function.parent is not None
-    assert function.parent.timeMgr is not None
     assert function.threadPool is not None
     assert function.timePC is not None
     assert function.rtt == 0

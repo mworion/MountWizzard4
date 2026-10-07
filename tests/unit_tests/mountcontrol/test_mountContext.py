@@ -15,7 +15,6 @@ EXPECTED = {
     "firmware",
     "threadPool",
     "pathToData",
-    "timeMgr",
     "domeConfig",
     "updateDomeSettings",
 }

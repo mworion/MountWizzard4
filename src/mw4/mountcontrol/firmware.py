@@ -3,14 +3,14 @@
 # Copyright (c) 2019-2026 mworion
 import logging
 from mw4.mountcontrol.connection import Connection
+from mw4.mountcontrol.mountContext import MountContext
 from packaging.version import InvalidVersion, Version
-from typing import Any
 
 
 class Firmware:
     log = logging.getLogger("MW4")
 
-    def __init__(self, parent: Any) -> None:
+    def __init__(self, parent: MountContext) -> None:
         self.parent = parent
         self.product: str = ""
         self._vString: Version = Version("0.0.0")

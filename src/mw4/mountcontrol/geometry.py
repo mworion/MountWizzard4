@@ -4,6 +4,7 @@
 import logging
 import numpy as np
 from mw4.mountcontrol.convert import valueToFloat
+from mw4.mountcontrol.mountContext import MountContext
 from skyfield.api import Angle
 from typing import Any, ClassVar
 
@@ -52,11 +53,9 @@ class Geometry:
         },
     }
 
-    def __init__(self, parent: Any) -> None:
+    def __init__(self, parent: MountContext) -> None:
         self.parent = parent
-        if "SettingDome" not in parent.app.config:
-            parent.app.config["SettingDome"] = {}
-        self.cfg = parent.app.config["SettingDome"]
+        self.cfg = parent.domeConfig
         self.loggingTrace: bool = parent.loggingTrace
         self.offBaseAltAxisX: float = 0
         self.offBaseAltAxisZ: float = 0
@@ -75,7 +74,7 @@ class Geometry:
         self._offPlateOTA: float = 0
         self.transMatrix = None
         self.transVector = None
-        self.parent.app.updateDomeSettings.connect(self.loadParametersFromConfig)
+        self.parent.updateDomeSettings.connect(self.loadParametersFromConfig)
 
     @property
     def offNorth(self) -> float:

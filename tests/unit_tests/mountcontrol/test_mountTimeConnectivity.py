@@ -9,22 +9,16 @@ from mw4.base import tpool
 from mw4.mountcontrol.mountTimeConnectivity import MountTimeConnectivity
 from mw4.mountcontrol.obsSite import MountStatus
 from PySide6.QtCore import QThreadPool
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
-def buildMountTimeConnectivity():
-    app = App()
-    m = app.mount
-    m.app = app
-    m.threadPool = app.threadPool
-    m.config.hostAddress = "192.168.1.1"
-    m.config.port = 3040
-    m.config.syncTimeNone = False
-    m.config.syncTimeNotTrack = False
-    m.mountIsUp = False
-    m.MountStatus = MountStatus
-    return MountTimeConnectivity(parent=m)
+def buildMountTimeConnectivity(mountContext):
+    mountContext.config.hostAddress = "192.168.1.1"
+    mountContext.config.port = 3040
+    mountContext.config.syncTimeNone = False
+    mountContext.config.syncTimeNotTrack = False
+    mountContext.mountIsUp = False
+    return MountTimeConnectivity(parent=mountContext)
 
 
 def releaseWorker(worker):
@@ -32,8 +26,8 @@ def releaseWorker(worker):
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
-    mountTime = buildMountTimeConnectivity()
+def function(mountContext):
+    mountTime = buildMountTimeConnectivity(mountContext)
     yield mountTime
     # Cleanup: ensure all workers are finished and all mutexes are unlocked
     if hasattr(mountTime, "workerCycleMountUp") and mountTime.workerCycleMountUp is not None:
@@ -47,10 +41,10 @@ def function():
         mountTime.threadPool.waitForDone()
 
 
-def test_mountTimeConnectivity_init():
-    function = buildMountTimeConnectivity()
+def test_mountTimeConnectivity_init(mountContext):
+    function = buildMountTimeConnectivity(mountContext)
     assert function.parent is not None
-    assert function.app is not None
+    assert function.parent.timeMgr is not None
     assert function.threadPool is not None
     assert function.timePC is not None
     assert function.rtt == 0
@@ -60,8 +54,8 @@ def test_mountTimeConnectivity_init():
     assert function.workerPollSyncClock is None
 
 
-def test_timeDiff_property_initial():
-    assert buildMountTimeConnectivity().timeDiff == 0.0
+def test_timeDiff_property_initial(mountContext):
+    assert buildMountTimeConnectivity(mountContext).timeDiff == 0.0
 
 
 def test_timeDiff_property_with_values(function):
@@ -276,7 +270,7 @@ def test_syncClock_mount_not_up(function):
 def test_syncClock_tracking_mode_disabled_when_tracking(function):
     function.parent.mountIsUp = True
     function.parent.config.syncTimeNotTrack = True
-    function.parent.obsSite.status = function.parent.MountStatus.TRACKING
+    function.parent.obsSite.status = MountStatus.TRACKING
     with mock.patch.object(function, "deltaAdjustClock"):
         function.syncClock()
         function.deltaAdjustClock.assert_not_called()
@@ -286,7 +280,7 @@ def test_syncClock_tracking_mode_disabled_when_tracking(function):
 def test_syncClock_satellite_following_mode_disabled(function):
     function.parent.mountIsUp = True
     function.parent.config.syncTimeNotTrack = True
-    function.parent.obsSite.status = function.parent.MountStatus.FOLLOWING_SATELLITE
+    function.parent.obsSite.status = MountStatus.FOLLOWING_SATELLITE
     with mock.patch.object(function, "deltaAdjustClock"):
         function.syncClock()
         function.deltaAdjustClock.assert_not_called()
@@ -297,7 +291,7 @@ def test_syncClock_delta_too_small(function):
     function.parent.mountIsUp = True
     function.parent.config.syncTimeNone = False
     function.parent.config.syncTimeNotTrack = False
-    function.parent.obsSite.status = function.parent.MountStatus.STOPPED
+    function.parent.obsSite.status = MountStatus.STOPPED
     function._timeDiff = np.array([0.005] + [0.0] * 24)
     with mock.patch.object(function, "deltaAdjustClock"):
         function.syncClock()
@@ -316,7 +310,7 @@ def test_syncClock_delta_clamping(function, time_diff_val, expected_delta):
     function.parent.mountIsUp = True
     function.parent.config.syncTimeNone = False
     function.parent.config.syncTimeNotTrack = False
-    function.parent.obsSite.status = function.parent.MountStatus.STOPPED
+    function.parent.obsSite.status = MountStatus.STOPPED
     function._timeDiff = np.full(25, time_diff_val)
     with mock.patch.object(function, "deltaAdjustClock", return_value=True):
         function.syncClock()
@@ -327,7 +321,7 @@ def test_syncClock_absolutAdjustClock_called_for_large_delta(function):
     function.parent.mountIsUp = True
     function.parent.config.syncTimeNone = False
     function.parent.config.syncTimeNotTrack = False
-    function.parent.obsSite.status = function.parent.MountStatus.STOPPED
+    function.parent.obsSite.status = MountStatus.STOPPED
     function._timeDiff = np.full(25, 2.0)
     with (
         mock.patch.object(function, "deltaAdjustClock") as mock_delta,
@@ -342,7 +336,7 @@ def test_syncClock_adjustClock_failure(function):
     function.parent.mountIsUp = True
     function.parent.config.syncTimeNone = False
     function.parent.config.syncTimeNotTrack = False
-    function.parent.obsSite.status = function.parent.MountStatus.STOPPED
+    function.parent.obsSite.status = MountStatus.STOPPED
     function._timeDiff = np.full(25, 0.05)
     with (
         mock.patch.object(function, "deltaAdjustClock", return_value=False),
@@ -356,7 +350,7 @@ def test_syncClock_absolutAdjustClock_failure(function):
     function.parent.mountIsUp = True
     function.parent.config.syncTimeNone = False
     function.parent.config.syncTimeNotTrack = False
-    function.parent.obsSite.status = function.parent.MountStatus.STOPPED
+    function.parent.obsSite.status = MountStatus.STOPPED
     function._timeDiff = np.full(25, 2.0)
     with (
         mock.patch.object(function, "absolutAdjustClock", return_value=False),

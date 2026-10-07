@@ -14,6 +14,7 @@ from mw4.mountcontrol.convert import (
     valueToFloat,
     valueToInt,
 )
+from mw4.mountcontrol.mountContext import MountContext
 from skyfield.api import Angle, Loader, load, wgs84
 from skyfield.timelib import Time, Timescale
 from skyfield.toposlib import GeographicPosition
@@ -98,7 +99,7 @@ class ObsSite:
         "E": "no slew requested",
     }
 
-    def __init__(self, parent: Any, verbose: bool = False) -> None:
+    def __init__(self, parent: MountContext, verbose: bool = False) -> None:
         self.parent = parent
         self.pathToData = parent.pathToData
         self.verbose = verbose

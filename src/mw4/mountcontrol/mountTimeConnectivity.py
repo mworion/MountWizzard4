@@ -9,19 +9,18 @@ from datetime import UTC, datetime
 from mw4.base.tpool import Worker, startWorker
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat
+from mw4.mountcontrol.mountContext import MountContext
 from mw4.mountcontrol.obsSite import MountStatus
 from ping3 import ping
 from skyfield.timelib import Time
-from typing import Any
 
 
 class MountTimeConnectivity:
     log = logging.getLogger("MW4")
     SOCKET_TIMEOUT = 0.2
 
-    def __init__(self, parent: Any) -> None:
+    def __init__(self, parent: MountContext) -> None:
         self.parent = parent
-        self.app = parent.app
         self.threadPool = parent.threadPool
         self.ts = parent.obsSite.ts
         self.timePC: Time = self.ts.now()
@@ -31,9 +30,9 @@ class MountTimeConnectivity:
         self.errorCounter: int = 5
         self.workerCycleMountUp: Worker | None = None
         self.workerPollSyncClock: Worker | None = None
-        self.app.timeMgr.update1s.connect(self.checkMountUp)
-        self.app.timeMgr.update30s.connect(self.syncClock)
-        self.app.timeMgr.update1s.connect(self.pollSyncClock)
+        self.parent.timeMgr.update1s.connect(self.checkMountUp)
+        self.parent.timeMgr.update30s.connect(self.syncClock)
+        self.parent.timeMgr.update1s.connect(self.pollSyncClock)
 
     @property
     def timeDiff(self) -> float:
@@ -117,7 +116,7 @@ class MountTimeConnectivity:
     def syncClock(self) -> None:
         if self.parent.config.syncTimeNone or not self.parent.mountIsUp:
             return
-        mountTracks = self.app.dReg["mount"].obsSite.status in [
+        mountTracks = self.parent.obsSite.status in [
             MountStatus.TRACKING,
             MountStatus.FOLLOWING_SATELLITE,
         ]

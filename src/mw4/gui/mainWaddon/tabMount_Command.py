@@ -6,10 +6,11 @@ import webbrowser
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.mountcontrol.connection import Connection
 from PySide6.QtGui import QTextCursor
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 if TYPE_CHECKING:
     from mw4.gui.mainWindow.mainWindow import MainWindow
+    from mw4.mountcontrol.mountContext import MountContext
 
 
 class MountCommand(TabAddon):
@@ -63,7 +64,7 @@ class MountCommand(TabAddon):
             self.msg.emit(0, "System", "Mount", "mount manual opened")
 
     def commandRaw(self) -> None:
-        conn = Connection(self.app.dReg["mount"].instance)
+        conn = Connection(cast("MountContext", self.app.dReg["mount"].instance))
         cmd = self.ui.commandInput.text()
         self.ui.commandStatus.clear()
         self.ui.commandOutput.clear()

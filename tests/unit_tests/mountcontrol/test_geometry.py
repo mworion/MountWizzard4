@@ -822,12 +822,18 @@ def test_calcTransformationMatrices_negative_discriminant(function):
         assert mock_error.called
 
 
-def test_init_creates_settingDome_config(function):
-    original = function.app.config.pop("SettingDome")
+def test_init_uses_domeConfig_of_parent(function):
     geometry = Geometry(function)
-    assert "SettingDome" in function.app.config
-    assert geometry.cfg is function.app.config["SettingDome"]
-    function.app.config["SettingDome"] = original
+    assert geometry.cfg is function.domeConfig
+    assert function.domeConfig is function.app.config["SettingDome"]
+
+
+def test_init_creates_settingDome_config():
+    app = App()
+    del app.config["SettingDome"]
+    m = MountDevice(app=app)
+    assert app.config["SettingDome"] == {}
+    assert m.domeConfig is app.config["SettingDome"]
 
 
 def test_loadParametersFromConfig_1(function):

@@ -4,10 +4,11 @@
 import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToAngle, valueToFloat
+from mw4.mountcontrol.mountContext import MountContext
 from mw4.mountcontrol.tleParams import TLEParams
 from mw4.mountcontrol.trajectoryParams import TrajectoryParams
 from skyfield.api import Angle
-from typing import Any, ClassVar
+from typing import ClassVar
 
 
 class Satellite:
@@ -30,7 +31,7 @@ class Satellite:
         "E": "No slew to satellite requested",
     }
 
-    def __init__(self, parent: Any) -> None:
+    def __init__(self, parent: MountContext) -> None:
         self.parent = parent
         self.obsSite = parent.obsSite
         self.tleParams = TLEParams(obsSite=parent.obsSite)

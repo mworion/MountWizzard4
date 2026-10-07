@@ -4,6 +4,7 @@
 import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat, valueToInt
+from mw4.mountcontrol.mountContext import MountContext
 from typing import Any, ClassVar
 
 
@@ -20,7 +21,7 @@ class Setting:
     }
     log = logging.getLogger("MW4")
 
-    def __init__(self, parent: Any) -> None:
+    def __init__(self, parent: MountContext) -> None:
         self.parent = parent
         self.slewRate: float = 0
         self.slewRateMin: float = 0

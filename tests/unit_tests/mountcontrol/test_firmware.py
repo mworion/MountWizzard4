@@ -12,11 +12,8 @@ from unittest import mock
 #
 
 
-def test_Firmware_ok():
-    class Parent:
-        host = None
-
-    fw = Firmware(parent=Parent())
+def test_Firmware_ok(mountContext):
+    fw = Firmware(parent=mountContext)
     fw.vString = "2.15.08"
     assert fw.vString == "2.15.8"
     assert fw._vString == Version("2.15.8")
@@ -28,31 +25,22 @@ def test_Firmware_ok():
     assert fw._vString == Version("3.0")
 
 
-def test_Firmware_checkNewer_2():
-    class Parent:
-        host = None
-
-    fw = Firmware(parent=Parent())
+def test_Firmware_checkNewer_2(mountContext):
+    fw = Firmware(parent=mountContext)
     fw.vString = "2.99.99"
     suc = fw.checkNewer("3")
     assert not suc
 
 
-def test_Firmware_checkNewer_3():
-    class Parent:
-        host = None
-
-    fw = Firmware(parent=Parent())
+def test_Firmware_checkNewer_3(mountContext):
+    fw = Firmware(parent=mountContext)
     fw.vString = "2.99.99"
     suc = fw.checkNewer("2.99.98")
     assert suc
 
 
-def test_isHW2024_1():
-    class Parent:
-        host = None
-
-    fw = Firmware(parent=Parent())
+def test_isHW2024_1(mountContext):
+    fw = Firmware(parent=mountContext)
     fw.hardware = "Q-TYPE2024"
     suc = fw.isHW2024()
     assert suc
@@ -60,11 +48,8 @@ def test_isHW2024_1():
     assert not suc
 
 
-def test_isHW2012_1():
-    class Parent:
-        host = None
-
-    fw = Firmware(parent=Parent())
+def test_isHW2012_1(mountContext):
+    fw = Firmware(parent=mountContext)
     fw.hardware = "Q-TYPE2012"
     suc = fw.isHW2012()
     assert suc
@@ -79,32 +64,23 @@ def test_isHW2012_1():
 #
 
 
-def test_Firmware_parse_empty():
-    class Parent:
-        host = None
-
-    fw = Firmware(parent=Parent())
+def test_Firmware_parse_empty(mountContext):
+    fw = Firmware(parent=mountContext)
     # connection returns 0 chunks but parse expects 5
     suc = fw.parse([], 5)
     assert not suc
 
 
-def test_Firmware_parse_chunks_4():
-    class Parent:
-        host = None
-
-    fw = Firmware(parent=Parent())
+def test_Firmware_parse_chunks_4(mountContext):
+    fw = Firmware(parent=mountContext)
     # connection returns 4 chunks but parse expects 5
     response = ["Mar 19 2018", "2.15.14", "10micron GM1000HPS", "15:56:53"]
     suc = fw.parse(response, 5)
     assert not suc
 
 
-def test_Firmware_parse_chunks_5():
-    class Parent:
-        host = None
-
-    fw = Firmware(parent=Parent())
+def test_Firmware_parse_chunks_5(mountContext):
+    fw = Firmware(parent=mountContext)
     response = [
         "Mar 19 2018",
         "2.15.14",
@@ -121,11 +97,8 @@ def test_Firmware_parse_chunks_5():
     assert fw.hardware == "Q-TYPE2012"
 
 
-def test_Firmware_parse_chunks_6():
-    class Parent:
-        host = None
-
-    fw = Firmware(parent=Parent())
+def test_Firmware_parse_chunks_6(mountContext):
+    fw = Firmware(parent=mountContext)
     # connection returns 6 chunks but parse expects 5
     response = [
         "Mar 19 2018",
@@ -139,11 +112,8 @@ def test_Firmware_parse_chunks_6():
     assert not suc
 
 
-def test_Firmware_parse_invalidVersion():
-    class Parent:
-        host = None
-
-    fw = Firmware(parent=Parent())
+def test_Firmware_parse_invalidVersion(mountContext):
+    fw = Firmware(parent=mountContext)
     response = ["Mar 19 2018", "2.1\ufffd.x", "10micron GM1000HPS", "15:56:53", "Q-TYPE2012"]
     suc = fw.parse(response, 5)
     assert not suc
@@ -159,11 +129,8 @@ def test_Firmware_parse_invalidVersion():
 #
 
 
-def test_Firmware_poll_ok():
-    class Parent:
-        host = None
-
-    fw = Firmware(parent=Parent())
+def test_Firmware_poll_ok(mountContext):
+    fw = Firmware(parent=mountContext)
 
     response = [
         "Mar 19 2018",
@@ -179,11 +146,8 @@ def test_Firmware_poll_ok():
         assert suc
 
 
-def test_Firmware_poll_not_ok1():
-    class Parent:
-        host = None
-
-    fw = Firmware(parent=Parent())
+def test_Firmware_poll_not_ok1(mountContext):
+    fw = Firmware(parent=mountContext)
 
     response = [
         "Mar 19 2018",

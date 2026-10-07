@@ -52,6 +52,9 @@ class MountDevice(QObject):
         self.run: dict[str, Any] = {"10micron": self}
         self.framework: str = "10micron"
         self.threadPool = app.threadPool
+        self.timeMgr = app.timeMgr
+        self.updateDomeSettings = app.updateDomeSettings
+        self.domeConfig: dict[str, Any] = app.config.setdefault("SettingDome", {})
         self.pathToData: Path = app.mwGlob["dataDir"]
         self.verbose: bool = verbose
         self.loggingTrace: bool = False

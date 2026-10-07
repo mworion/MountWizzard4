@@ -12,6 +12,7 @@ from mw4.mountcontrol.convert import (
     valueToInt,
 )
 from mw4.mountcontrol.modelStar import ModelStar
+from mw4.mountcontrol.mountContext import MountContext
 from mw4.mountcontrol.progStar import ProgStar
 from skyfield.api import Angle, Star
 from typing import Any
@@ -20,7 +21,7 @@ from typing import Any
 class Model:
     log = logging.getLogger("MW4")
 
-    def __init__(self, parent: Any) -> None:
+    def __init__(self, parent: MountContext) -> None:
         self.parent = parent
         self._starList: list = []
         self._nameList: list = []

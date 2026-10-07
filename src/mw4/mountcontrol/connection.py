@@ -3,8 +3,8 @@
 # Copyright (c) 2019-2026 mworion
 import logging
 import uuid
+from mw4.mountcontrol.mountContext import MountContext
 from PySide6.QtNetwork import QAbstractSocket, QTcpSocket
-from typing import Any
 
 
 class Connection:
@@ -269,7 +269,7 @@ class Connection:
         )
     )
 
-    def __init__(self, parent: Any) -> None:
+    def __init__(self, parent: MountContext) -> None:
         self.parent = parent
         self.host = (parent.config.hostAddress, parent.config.port)
         self.loggingTrace = parent.loggingTrace

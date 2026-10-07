@@ -506,8 +506,8 @@ class MountSett(TabAddon):
             return False
 
     def showTimeDiff(self) -> None:
-        delta = self.app.dReg["mount"].instance.mountTime.timeDiff * 1000
-        rtt = self.app.dReg["mount"].instance.mountTime.rtt * 1000
+        delta = self.app.dReg["mount"].instance.mountTimeConnectivity.timeDiff * 1000
+        rtt = self.app.dReg["mount"].instance.mountTimeConnectivity.rtt * 1000
         guiSetText(self.ui.timeDeltaPC2Mount, "4.0f", delta)
         guiSetText(self.ui.rtt, "4.1f", rtt)
         if abs(delta) < 100:

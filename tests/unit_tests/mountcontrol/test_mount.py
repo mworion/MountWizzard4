@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import pytest
-import wakeonlan
 from mw4.mountcontrol.mount import MountDevice
 from mw4.mountcontrol.mountSignals import MountSignals
 from PySide6.QtCore import QThreadPool
@@ -346,120 +345,6 @@ def test_GetTLE_3(function):
         function.workerGetTLE = None
 
 
-def test_bootMount_1(function):
-    function.config.MAC = None
-
-    def mock_wake_side_effect(mac, host, port):
-        if mac is None:
-            raise ValueError("MAC address cannot be None")
-
-    with mock.patch.object(wakeonlan, "wake", side_effect=mock_wake_side_effect):
-        suc = function.bootMount()
-        assert not suc
-
-
-def test_bootMount_2(function):
-    function.config.MAC = "00:00:00:00:00:00"
-    with mock.patch.object(wakeonlan, "wake"):
-        suc = function.bootMount()
-        assert suc
-
-
-def test_bootMount_3(function):
-    function.config.MAC = "00:00:00:00:00:00"
-    function.config.wolAddress = "255.255.255.255"
-    with mock.patch.object(wakeonlan, "wake"):
-        suc = function.bootMount()
-        assert suc
-
-
-def test_bootMount_4(function):
-    function.config.MAC = "00:00:00:00:00:00"
-    function.config.wolAddress = "255.255.255.255"
-    function.config.wolPort = 9
-    with mock.patch.object(wakeonlan, "wake"):
-        suc = function.bootMount()
-        assert suc
-
-
-def test_bootMount_5(function):
-    function.config.MAC = "00:00:00:00:00:00"
-    function.config.wolAddress = "255.255.255.255"
-    function.config.wolPort = 9
-    with mock.patch.object(wakeonlan, "wake", side_effect=OSError):
-        suc = function.bootMount()
-        assert not suc
-
-
-def test_bootMount_6(function):
-    function.config.MAC = "00:00:00:00:00:00"
-    function.config.wolAddress = "255.255.255.255"
-    function.config.wolPort = 9
-    with mock.patch.object(wakeonlan, "wake", side_effect=ValueError):
-        suc = function.bootMount()
-        assert not suc
-
-
-def test_bootMount_7(function):
-    function.config.MAC = "00:00:00:00:00:00"
-    function.config.wolAddress = "255.255.255.255"
-    function.config.wolPort = 9
-    with mock.patch.object(wakeonlan, "wake") as mockWake:
-        suc = function.bootMount()
-        mockWake.assert_called_once_with(
-            "00:00:00:00:00:00",
-            host="255.255.255.255",
-            port=9,
-        )
-        assert suc
-
-
-def test_bootMount_8_debug_log(function):
-    function.config.MAC = "00:00:00:00:00:00"
-    function.config.wolAddress = "255.255.255.255"
-    function.config.wolPort = 9
-    with (
-        mock.patch.object(wakeonlan, "wake"),
-        mock.patch.object(function.log, "debug") as mockDebug,
-    ):
-        function.bootMount()
-        mockDebug.assert_called_once()
-        assert "MAC:" in mockDebug.call_args[0][0]
-        assert "255.255.255.255" in mockDebug.call_args[0][0]
-        assert "9" in mockDebug.call_args[0][0]
-
-
-def test_bootMount_9_warning_log_on_exception(function):
-    function.config.MAC = "00:00:00:00:00:00"
-    function.config.wolAddress = "255.255.255.255"
-    function.config.wolPort = 9
-    test_error = OSError("Connection failed")
-    with (
-        mock.patch.object(wakeonlan, "wake", side_effect=test_error),
-        mock.patch.object(function.log, "warning") as mockWarning,
-    ):
-        suc = function.bootMount()
-        mockWarning.assert_called_once()
-        assert "Boot mount failed" in mockWarning.call_args[0][0]
-        assert not suc
-
-
-def test_shutdown_1(function):
-    function.mountIsUp = True
-    with mock.patch.object(function.obsSite, "shutdown", return_value=True):
-        suc = function.shutdown()
-        assert suc
-        assert not function.mountIsUp
-
-
-def test_shutdown_2(function):
-    function.mountIsUp = True
-    with mock.patch.object(function.obsSite, "shutdown", return_value=False):
-        suc = function.shutdown()
-        assert not suc
-        assert function.mountIsUp
-
-
 def test_runnerProgTrajectory_1(function):
     alt = [10, 20, 30]
     az = [10, 20, 30]
@@ -573,15 +458,6 @@ def test_collectData_no_slew(function):
     function.collectData()
     assert function.raRef == 100.0
     assert function.decRef == 50.0
-
-
-def test_bootMount_with_bAddress_only(function):
-    function.config.MAC = "00:00:00:00:00:00"
-    function.config.wolAddress = "255.255.255.255"
-    function.config.wolPort = 0
-    with mock.patch.object(wakeonlan, "wake"):
-        suc = function.bootMount()
-        assert suc
 
 
 def test_resultStatTLE_signal(function):

@@ -91,14 +91,14 @@ class SettMount:
         self.ui.GroupWOL.setEnabled(self.app.dReg["mount"].firmware.isHW2012())
 
     def mountBoot(self) -> None:
-        if self.app.dReg["mount"].instance.bootMount():
+        if self.app.dReg["mount"].instance.mountTimeConnectivity.bootMount():
             self.msg.emit(0, "Mount", "Command", "Sent boot command to mount")
         else:
             self.msg.emit(2, "Mount", "Command", "Mount cannot be booted")
 
     def mountShutdown(self) -> None:
         self.app.dReg.setStat("mount", False)
-        if self.app.dReg["mount"].instance.shutdown():
+        if self.app.dReg["mount"].instance.mountTimeConnectivity.shutdown():
             self.msg.emit(0, "Mount", "Command", "Shutting mount down")
         else:
             self.msg.emit(2, "Mount", "Command", "Mount cannot be shutdown")

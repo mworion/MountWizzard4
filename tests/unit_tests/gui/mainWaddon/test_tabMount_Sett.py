@@ -31,7 +31,7 @@ def function(qapp):
 
     type(mount_time_mock).timeDiff = mock.PropertyMock(side_effect=get_timeDiff)
     type(mount_time_mock).rtt = mock.PropertyMock(side_effect=get_rtt)
-    mainW.app.dReg["mount"].instance.mountTime = mount_time_mock
+    mainW.app.dReg["mount"].instance.mountTimeConnectivity = mount_time_mock
 
     window = MountSett(mainW)
     yield window

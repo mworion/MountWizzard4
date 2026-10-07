@@ -4,15 +4,16 @@
 
 import numpy as np
 import pytest
+import wakeonlan
 from mw4.base import tpool
-from mw4.mountcontrol.mountTime import MountTime
+from mw4.mountcontrol.mountTimeConnectivity import MountTimeConnectivity
 from mw4.mountcontrol.obsSite import MountStatus
 from PySide6.QtCore import QThreadPool
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
-def buildMountTime():
+def buildMountTimeConnectivity():
     app = App()
     m = app.mount
     m.app = app
@@ -23,7 +24,7 @@ def buildMountTime():
     m.config.syncTimeNotTrack = False
     m.mountIsUp = False
     m.MountStatus = MountStatus
-    return MountTime(parent=m)
+    return MountTimeConnectivity(parent=m)
 
 
 def releaseWorker(worker):
@@ -32,7 +33,7 @@ def releaseWorker(worker):
 
 @pytest.fixture(autouse=True, scope="module")
 def function():
-    mountTime = buildMountTime()
+    mountTime = buildMountTimeConnectivity()
     yield mountTime
     # Cleanup: ensure all workers are finished and all mutexes are unlocked
     if hasattr(mountTime, "workerCycleMountUp") and mountTime.workerCycleMountUp is not None:
@@ -46,8 +47,8 @@ def function():
         mountTime.threadPool.waitForDone()
 
 
-def test_mountTime_init():
-    function = buildMountTime()
+def test_mountTimeConnectivity_init():
+    function = buildMountTimeConnectivity()
     assert function.parent is not None
     assert function.app is not None
     assert function.threadPool is not None
@@ -60,7 +61,7 @@ def test_mountTime_init():
 
 
 def test_timeDiff_property_initial():
-    assert buildMountTime().timeDiff == 0.0
+    assert buildMountTimeConnectivity().timeDiff == 0.0
 
 
 def test_timeDiff_property_with_values(function):
@@ -99,7 +100,7 @@ def test_runnerMountUp_error_counter_decrements(function, ping_return, socket_fa
 
     if socket_fails:
         with (
-            mock.patch("mw4.mountcontrol.mountTime.ping", return_value=ping_return),
+            mock.patch("mw4.mountcontrol.mountTimeConnectivity.ping", return_value=ping_return),
             mock.patch("socket.socket") as mock_socket,
         ):
             mock_socket.return_value.__enter__.return_value.connect.side_effect = OSError(
@@ -108,7 +109,7 @@ def test_runnerMountUp_error_counter_decrements(function, ping_return, socket_fa
             function.runnerMountUp()
             assert function.rtt_MA[0] == pytest.approx(ping_return)
     else:
-        with mock.patch("mw4.mountcontrol.mountTime.ping", return_value=ping_return):
+        with mock.patch("mw4.mountcontrol.mountTimeConnectivity.ping", return_value=ping_return):
             function.runnerMountUp()
 
     assert function.parent.mountIsUp is False
@@ -120,7 +121,7 @@ def test_runnerMountUp_socket_success(function):
     function.rtt_MA = np.zeros(25)
     function.errorCounter = 2
     with (
-        mock.patch("mw4.mountcontrol.mountTime.ping", return_value=0.05),
+        mock.patch("mw4.mountcontrol.mountTimeConnectivity.ping", return_value=0.05),
         mock.patch("socket.socket"),
         mock.patch.object(function.parent.signals, "mountIsUp"),
     ):
@@ -134,7 +135,7 @@ def test_runnerMountUp_rtt_moving_average(function):
     function.rtt_MA = np.zeros(25)
     function.rtt = 0
     with (
-        mock.patch("mw4.mountcontrol.mountTime.ping", return_value=0.1),
+        mock.patch("mw4.mountcontrol.mountTimeConnectivity.ping", return_value=0.1),
         mock.patch("socket.socket"),
         mock.patch.object(function.parent.signals, "mountIsUp"),
     ):
@@ -159,7 +160,7 @@ def test_runnerMountUp_error_counter_zero(function, ping_return, socket_fails):
 
     if socket_fails:
         with (
-            mock.patch("mw4.mountcontrol.mountTime.ping", return_value=ping_return),
+            mock.patch("mw4.mountcontrol.mountTimeConnectivity.ping", return_value=ping_return),
             mock.patch("socket.socket") as mock_socket,
         ):
             mock_socket.return_value.__enter__.return_value.connect.side_effect = OSError(
@@ -168,7 +169,7 @@ def test_runnerMountUp_error_counter_zero(function, ping_return, socket_fails):
             function.runnerMountUp()
             assert function.rtt_MA[0] == pytest.approx(ping_return)
     else:
-        with mock.patch("mw4.mountcontrol.mountTime.ping", return_value=ping_return):
+        with mock.patch("mw4.mountcontrol.mountTimeConnectivity.ping", return_value=ping_return):
             function.runnerMountUp()
 
     assert function.errorCounter == 0
@@ -205,7 +206,7 @@ def test_checkMountUp_unlocked(function):
     ],
 )
 def test_deltaAdjustClock(function, delta, expected_cmd):
-    with mock.patch("mw4.mountcontrol.mountTime.Connection") as mock_connection:
+    with mock.patch("mw4.mountcontrol.mountTimeConnectivity.Connection") as mock_connection:
         mock_conn_instance = mock.Mock()
         mock_connection.return_value = mock_conn_instance
         mock_conn_instance.communicate.return_value = (True, "1", "")
@@ -219,7 +220,7 @@ def test_deltaAdjustClock(function, delta, expected_cmd):
 
 
 def test_deltaAdjustClock_communicate_failure(function):
-    with mock.patch("mw4.mountcontrol.mountTime.Connection") as mock_connection:
+    with mock.patch("mw4.mountcontrol.mountTimeConnectivity.Connection") as mock_connection:
         mock_conn_instance = mock.Mock()
         mock_connection.return_value = mock_conn_instance
         mock_conn_instance.communicate.return_value = (False, "", "")
@@ -230,7 +231,7 @@ def test_deltaAdjustClock_communicate_failure(function):
 
 
 def test_absolutAdjustClock_success(function):
-    with mock.patch("mw4.mountcontrol.mountTime.Connection") as mock_connection:
+    with mock.patch("mw4.mountcontrol.mountTimeConnectivity.Connection") as mock_connection:
         mock_conn_instance = mock.Mock()
         mock_connection.return_value = mock_conn_instance
         mock_conn_instance.communicate.return_value = (True, "1", "")
@@ -245,7 +246,7 @@ def test_absolutAdjustClock_success(function):
 
 
 def test_absolutAdjustClock_communicate_failure(function):
-    with mock.patch("mw4.mountcontrol.mountTime.Connection") as mock_connection:
+    with mock.patch("mw4.mountcontrol.mountTimeConnectivity.Connection") as mock_connection:
         mock_conn_instance = mock.Mock()
         mock_connection.return_value = mock_conn_instance
         mock_conn_instance.communicate.return_value = (False, "", "")
@@ -397,7 +398,7 @@ def test_pollSyncClock_unlocked(function):
 
 def test_pollSyncClock_communicate_failure(function):
     function.parent.mountIsUp = True
-    with mock.patch("mw4.mountcontrol.mountTime.Connection") as mock_connection:
+    with mock.patch("mw4.mountcontrol.mountTimeConnectivity.Connection") as mock_connection:
         mock_conn_instance = mock.Mock()
         mock_connection.return_value = mock_conn_instance
         mock_conn_instance.communicate.return_value = (False, "", "")
@@ -410,7 +411,7 @@ def test_pollSyncClock_communicate_failure(function):
 def test_pollSyncClock_success(function):
     function.parent.mountIsUp = True
     function.rtt = 0.01
-    with mock.patch("mw4.mountcontrol.mountTime.Connection") as mock_connection:
+    with mock.patch("mw4.mountcontrol.mountTimeConnectivity.Connection") as mock_connection:
         mock_conn_instance = mock.Mock()
         mock_connection.return_value = mock_conn_instance
         mock_conn_instance.communicate.return_value = (True, ["2460000.5"], "")
@@ -427,7 +428,7 @@ def test_pollSyncClock_updates_timeDiff_array(function):
     function.parent.mountIsUp = True
     function.rtt = 0.01
     function._timeDiff = np.zeros(25)
-    with mock.patch("mw4.mountcontrol.mountTime.Connection") as mock_connection:
+    with mock.patch("mw4.mountcontrol.mountTimeConnectivity.Connection") as mock_connection:
         mock_conn_instance = mock.Mock()
         mock_connection.return_value = mock_conn_instance
         mock_conn_instance.communicate.return_value = (True, ["2460000.5"], "")
@@ -542,3 +543,126 @@ def test_setStatus_called_with_empty_string(function):
         function.setMountStatusOff("")
         mock_log.assert_called_once_with("")
         assert function.errorCounter == 4
+
+
+def test_bootMount_1(function):
+    function.parent.config.MAC = None
+
+    def mock_wake_side_effect(mac, host, port):
+        if mac is None:
+            raise ValueError("MAC address cannot be None")
+
+    with mock.patch.object(wakeonlan, "wake", side_effect=mock_wake_side_effect):
+        suc = function.bootMount()
+        assert not suc
+
+
+def test_bootMount_2(function):
+    function.parent.config.MAC = "00:00:00:00:00:00"
+    with mock.patch.object(wakeonlan, "wake"):
+        suc = function.bootMount()
+        assert suc
+
+
+def test_bootMount_3(function):
+    function.parent.config.MAC = "00:00:00:00:00:00"
+    function.parent.config.wolAddress = "255.255.255.255"
+    with mock.patch.object(wakeonlan, "wake"):
+        suc = function.bootMount()
+        assert suc
+
+
+def test_bootMount_4(function):
+    function.parent.config.MAC = "00:00:00:00:00:00"
+    function.parent.config.wolAddress = "255.255.255.255"
+    function.parent.config.wolPort = 9
+    with mock.patch.object(wakeonlan, "wake"):
+        suc = function.bootMount()
+        assert suc
+
+
+def test_bootMount_5(function):
+    function.parent.config.MAC = "00:00:00:00:00:00"
+    function.parent.config.wolAddress = "255.255.255.255"
+    function.parent.config.wolPort = 9
+    with mock.patch.object(wakeonlan, "wake", side_effect=OSError):
+        suc = function.bootMount()
+        assert not suc
+
+
+def test_bootMount_6(function):
+    function.parent.config.MAC = "00:00:00:00:00:00"
+    function.parent.config.wolAddress = "255.255.255.255"
+    function.parent.config.wolPort = 9
+    with mock.patch.object(wakeonlan, "wake", side_effect=ValueError):
+        suc = function.bootMount()
+        assert not suc
+
+
+def test_bootMount_7(function):
+    function.parent.config.MAC = "00:00:00:00:00:00"
+    function.parent.config.wolAddress = "255.255.255.255"
+    function.parent.config.wolPort = 9
+    with mock.patch.object(wakeonlan, "wake") as mockWake:
+        suc = function.bootMount()
+        mockWake.assert_called_once_with(
+            "00:00:00:00:00:00",
+            host="255.255.255.255",
+            port=9,
+        )
+        assert suc
+
+
+def test_bootMount_8_debug_log(function):
+    function.parent.config.MAC = "00:00:00:00:00:00"
+    function.parent.config.wolAddress = "255.255.255.255"
+    function.parent.config.wolPort = 9
+    with (
+        mock.patch.object(wakeonlan, "wake"),
+        mock.patch.object(function.log, "debug") as mockDebug,
+    ):
+        function.bootMount()
+        mockDebug.assert_called_once()
+        assert "MAC:" in mockDebug.call_args[0][0]
+        assert "255.255.255.255" in mockDebug.call_args[0][0]
+        assert "9" in mockDebug.call_args[0][0]
+
+
+def test_bootMount_9_warning_log_on_exception(function):
+    function.parent.config.MAC = "00:00:00:00:00:00"
+    function.parent.config.wolAddress = "255.255.255.255"
+    function.parent.config.wolPort = 9
+    test_error = OSError("Connection failed")
+    with (
+        mock.patch.object(wakeonlan, "wake", side_effect=test_error),
+        mock.patch.object(function.log, "warning") as mockWarning,
+    ):
+        suc = function.bootMount()
+        mockWarning.assert_called_once()
+        assert "Boot mount failed" in mockWarning.call_args[0][0]
+        assert not suc
+
+
+def test_shutdown_1(function):
+    function.parent.mountIsUp = True
+    with mock.patch.object(function.parent.obsSite, "shutdown", return_value=True, create=True):
+        suc = function.shutdown()
+        assert suc
+        assert not function.parent.mountIsUp
+
+
+def test_shutdown_2(function):
+    function.parent.mountIsUp = True
+    with mock.patch.object(function.parent.obsSite, "shutdown", return_value=False, create=True):
+        suc = function.shutdown()
+        assert not suc
+        assert function.parent.mountIsUp
+
+
+def test_bootMount_10(function):
+    function.parent.config.MAC = "00:00:00:00:00:00"
+    function.parent.config.wolAddress = "255.255.255.255"
+    function.parent.config.wolPort = 0
+    with mock.patch.object(wakeonlan, "wake"):
+        suc = function.bootMount()
+        assert suc

@@ -5,6 +5,10 @@ sites of moved symbols). Behaviour is preserved: commands sent to the mount, sig
 and the `MountDevice` API used by GUI/logic stay the same.
 
 Decisions:
+- Already done (pre-step): `MountTime` was renamed to `MountTimeConnectivity`
+  (`mountTimeConnectivity.py`, attribute `MountDevice.mountTimeConnectivity`) and now owns
+  power (`bootMount`, `shutdown`), reachability/round-trip probing and clock sync, as
+  these are closely related. All steps below refer to this state.
 - `Connection` stays instantiated per call (`Connection(self.parent)`). Its constructor
   keeps taking the parent object; only the type annotation changes (step 1).
 - No backwards-compatibility aliases for moved symbols; all import sites are updated.
@@ -37,13 +41,15 @@ Decisions:
 | `Model`      | `obsSite.location`, passes parent to `Connection`                      |
 | `Satellite`  | `obsSite` (also builds `TLEParams`/`TrajectoryParams`), `Connection`   |
 | `Geometry`   | `app.config`, `app.updateDomeSettings`, `loggingTrace`, `obsSite.location` |
-| `MountTime`  | `app` (`timeMgr`, `dReg["mount"]`), `threadPool`, `obsSite` (`ts`, `UTC2TT`, `status` via `dReg`), `config` (`hostAddress`, `port`, `syncTimeNone`, `syncTimeNotTrack`), `mountIsUp`, `signals.mountIsUp` |
+| `MountTimeConnectivity` | `app` (`timeMgr`, `dReg["mount"]`), `threadPool`, `obsSite` (`ts`, `UTC2TT`, `status` via `dReg`), `config` (`hostAddress`, `port`, `syncTimeNone`, `syncTimeNotTrack`), `mountIsUp`, `signals.mountIsUp` |
 
 Findings that drive the design:
-- `MountTime.syncClock` reads the mount through `self.app.dReg["mount"].obsSite.status`
+- `MountTimeConnectivity` additionally uses `config.MAC`, `config.wolAddress`,
+  `config.wolPort` (boot) and `obsSite.shutdown()`.
+- `MountTimeConnectivity.syncClock` reads the mount through `self.app.dReg["mount"].obsSite.status`
   although `self.parent.obsSite.status` is the same object -> remove the registry detour.
 - `Geometry` writes `parent.app.config["SettingDome"]` and connects to
-  `parent.app.updateDomeSettings`; `MountTime` connects to `app.timeMgr.*`.
+  `parent.app.updateDomeSettings`; `MountTimeConnectivity` connects to `app.timeMgr.*`.
   These are the only places where the sub-objects depend on the application object.
 
 ### Actions
@@ -62,12 +68,12 @@ Findings that drive the design:
      Check `src/mw4/base/appProtocol.py` first: reuse its existing protocol types for
      `timeMgr` rather than inventing new ones.
 2. Change `parent: Any` -> `parent: MountContext` in `Connection`, `ObsSite`, `Firmware`,
-   `Setting`, `Model`, `Satellite`, `Geometry`, `MountTime`.
+   `Setting`, `Model`, `Satellite`, `Geometry`, `MountTimeConnectivity`.
 3. `Geometry.__init__`: replace `parent.app.config` handling by
    `self.cfg = parent.domeConfig` (the `setdefault("SettingDome", {})` stays in
    `MountDevice`, where the app is known) and
    `parent.updateDomeSettings.connect(self.loadParametersFromConfig)`.
-4. `MountTime.__init__`: drop `self.app`; use `parent.timeMgr` for the three timer
+4. `MountTimeConnectivity.__init__`: drop `self.app`; use `parent.timeMgr` for the three timer
    connections (they move in step 4, see there). `syncClock` uses `self.parent.obsSite`.
 5. `MountDevice`: provide `timeMgr`, `domeConfig`, `updateDomeSettings` as attributes
    set in `__init__` from `app` (before the sub-objects are created!).
@@ -76,7 +82,7 @@ Findings that drive the design:
      returning a `types.SimpleNamespace`/small fake class that satisfies the Protocol
      (real `DeviceConfigMount`, `MountSignals`, mock `timeMgr`, mock thread pool).
    - Replace the per-test `Parent` classes and `App().mount` hacks
-     (`test_firmware.py`, `test_mountTime.py` incl. `m.MountStatus = MountStatus`)
+     (`test_firmware.py`, `test_mountTimeConnectivity.py` incl. `m.MountStatus = MountStatus`)
      by the fixture.
    - Add a test that `MountDevice` satisfies `MountContext` (attribute presence).
 
@@ -113,7 +119,7 @@ Findings that drive the design:
 1. New module `mountStatus.py` containing `MountStatus` and `_STATUS_LABELS`
    (rename without underscore: `STATUS_LABELS`, since it becomes module-public).
 2. `ObsSite` imports from `mountStatus`; keeps `_STATUS_VALID`/`STAT` derivation as is.
-3. Update import sites: `mount.py`, `mountTime.py`, tests (`test_mountTime.py`), and
+3. Update import sites: `mount.py`, `mountTimeConnectivity.py`, tests (`test_mountTimeConnectivity.py`), and
    whichever GUI module references it (`grep -rn "MountStatus" src tests`).
 4. New `tests/unit_tests/mountcontrol/test_mountStatus.py`: all enum codes have a label,
    labels unique, codes match the 10micron status table.
@@ -152,7 +158,7 @@ Findings that drive the design:
   (`getFW`, `getLocation`, `getModel`, `getNames`, `getTLE`, `calcTLE`, `statTLE`,
   `progTrajectory`, `cyclePointing`, `cycleSetting`).
 - Derived data: `raRef`, `decRef`, `data`, `resetAfterStart`, `collectData`.
-- Power: `bootMount` (wake-on-LAN), `shutdown`.
+- Power (`bootMount`, `shutdown`): already moved to `MountTimeConnectivity`.
 - Wiring: four `app.timeMgr.*.connect(...)` calls in `__init__`.
 - `startupMountData(self, status)` has no type annotation.
 
@@ -160,7 +166,7 @@ Findings that drive the design:
 
 3a. Derived data -> `mountData.py`
 1. `class MountData` (no Qt) with `raRef`, `decRef`, `data`, `reset()`, `collect()`;
-   constructor takes `obsSite` and `mountTime` (explicit dependencies, not parent).
+   constructor takes `obsSite` and `mountTimeConnectivity` (explicit dependencies, not parent).
 2. `MountDevice` creates `self.mountData` and keeps `self.data` as a property that
    returns `self.mountData.data` so GUI/logic callers (`mount.data[...]`) do not change.
    `collectData`/`resetAfterStart` stay on `MountDevice` as thin timer slots calling
@@ -169,15 +175,14 @@ Findings that drive the design:
    conversion of error values, timeDiff/rtt in ms); remove the same assertions from
    `test_mount.py`.
 
-3b. Power -> decide after 3a
-- If `bootMount`/`shutdown` stay as small methods they remain on `MountDevice`
-  (no extraction for two short methods). Only extract to `mountPower.py` if more
-  power logic (e.g. mount off timing) is planned. Default decision: keep.
+3b. Power
+- Done: `bootMount`/`shutdown` live in `MountTimeConnectivity`; the GUI calls
+  `instance.mountTimeConnectivity.bootMount()/shutdown()`. Nothing left to do here.
 
 3c. Timer wiring
 1. One method `connectTimers(self) -> None` in `MountDevice` that makes all
    timer connections currently spread over `MountDevice.__init__` (4) and
-   `MountTime.__init__` (3): 0.5 s pointing, 3 s setting, 1 s collect, start3s reset,
+   `MountTimeConnectivity.__init__` (3): 0.5 s pointing, 3 s setting, 1 s collect, start3s reset,
    1 s mount-up check, 30 s clock sync, 1 s poll clock.
 2. `__init__` calls `connectTimers()` last, after all sub-objects exist.
 3. Test: assert each timer signal is connected (patch `timeMgr` with mocks and check
@@ -192,39 +197,28 @@ Findings that drive the design:
 - `MountDevice` only orchestrates; no arithmetic on mount data inside it.
 - All external usages (`app.dReg["mount"].instance.data[...]`, signals) unchanged.
 
-## Step 4 - Connectivity probe out of `MountTime`
+## Step 4 - Connectivity and time stay together in `MountTimeConnectivity` (decision changed)
 
-### Current state
-`MountTime` holds two unrelated responsibilities:
-1. Reachability: `runnerMountUp`, `checkMountUp`, `setMountStatusOff`, `rtt`, `rtt_MA`,
-   `errorCounter`, `workerCycleMountUp`, `SOCKET_TIMEOUT` (ping3 + raw socket).
-2. Clock: `timePC`, `_timeDiff`, `timeDiff`, `deltaAdjustClock`,
-   `absolutAdjustClock`, `syncClock`, `runnerPollSyncClock`, `pollSyncClock`,
-   `workerPollSyncClock`.
+### Decision
+The former plan split the reachability probe into a separate `MountMonitor`. This is
+dropped: power, reachability/round-trip time and clock sync are closely related (the
+clock delta subtracts `rtt`; shutdown/boot determine `mountIsUp`), so they stay in one
+class, `MountTimeConnectivity`, which has already been created.
 
-`MountTime.runnerPollSyncClock` subtracts `self.rtt` (written by the probe) from the
-clock delta -> the two parts share the round-trip time.
-
-### Actions
-
-1. New module `mountMonitor.py`: `class MountMonitor(parent: MountContext)` with the
-   whole reachability part (incl. `rtt` property). Behaviour, log texts and the
-   `errorCounter` throttling stay identical.
-2. `MountTime.__init__(parent, monitor: MountMonitor)` (or `rttProvider: Callable[[], float]`;
-   prefer the monitor reference, it is simpler) and uses `monitor.rtt` in
-   `runnerPollSyncClock`.
-3. `MountDevice.__init__` creates `MountMonitor` before `MountTime` and passes it.
-   `MountDevice.collectData` reads `rtt` from `self.monitor.rtt`.
-   Timer connection `update1s -> monitor.checkMountUp` is made in `connectTimers()`.
-4. Tests: split `test_mountTime.py` into `test_mountTime.py` (clock) and
-   `test_mountMonitor.py` (ping None/False, socket OSError, success path, error
-   counter, worker start). Preserve the existing module-scoped fixture/cleanup of
-   workers (`workerCycleMountUp.signals.finished.emit()`).
-5. Windows/platform: none of this code is platform specific; no guards needed.
+### Remaining actions
+1. Only wiring: the three timer connections in `MountTimeConnectivity.__init__`
+   (`update1s -> checkMountUp`, `update30s -> syncClock`, `update1s -> pollSyncClock`)
+   move into `MountDevice.connectTimers()` (step 3c).
+2. If `mountTimeConnectivity.py` grows noticeably, keep sections ordered: power,
+   reachability, clock. No further split unless measured necessary.
+3. Tests: `test_mountTimeConnectivity.py` already contains the power tests
+   (`test_bootMount_*`, `test_shutdown_*`) moved from `test_mount.py`; keep the
+   module-scoped fixture/cleanup of workers (`workerCycleMountUp`, `workerPollSyncClock`).
+4. Windows/platform: none of this code is platform specific; no guards needed.
 
 ### Acceptance
-- `mountTime.py` imports neither `ping3` nor `socket`.
 - Same log messages and the same `mountIsUp` signal emissions as before.
+- `MountDevice` has no `bootMount`/`shutdown`; callers use `mountTimeConnectivity`.
 
 ## Step 5 - Typing cleanup
 
@@ -240,10 +234,11 @@ clock delta -> the two parts share the round-trip time.
 
 ```
 0 baseline -> 1 context -> 2a status ->- 2b descriptor -> 5 typing
-                       \-> 3a data -> 3c timers -> 4 monitor
+                       \-> 3a data -> 3c timers -> 4 timer wiring
 ```
 - Steps 2 and 3/4 are independent after step 1 and can be done in either order.
-- 3c and 4 both touch timer wiring: do 3c first, then 4 only moves one connection.
+- Step 4 is reduced to moving the timer connections of `MountTimeConnectivity` into
+  `connectTimers()` (part of 3c).
 - Step 5 last.
 
 ## Verification after each step

@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import logging
-import wakeonlan
 from dataclasses import dataclass, field
 from mw4.base.appProtocol import AppProtocol
 from mw4.base.tpool import Worker, startWorker
@@ -10,7 +9,7 @@ from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.geometry import Geometry
 from mw4.mountcontrol.model import Model
 from mw4.mountcontrol.mountSignals import MountSignals
-from mw4.mountcontrol.mountTime import MountTime
+from mw4.mountcontrol.mountTimeConnectivity import MountTimeConnectivity
 from mw4.mountcontrol.obsSite import MountStatus, ObsSite
 from mw4.mountcontrol.satellite import Satellite
 from mw4.mountcontrol.setting import Setting
@@ -64,7 +63,7 @@ class MountDevice(QObject):
         self.satellite = Satellite(self)
         self.geometry = Geometry(self)
         self.model = Model(self)
-        self.mountTime = MountTime(self)
+        self.mountTimeConnectivity = MountTimeConnectivity(self)
 
         self.workerCycleSetting: Worker | None = None
         self.workerCyclePointing: Worker | None = None
@@ -117,8 +116,8 @@ class MountDevice(QObject):
         self.data["errorAngularPosRA"] = self.obsSite.errorAngularPosRA.degrees * 3600
         self.data["errorAngularPosDEC"] = self.obsSite.errorAngularPosDEC.degrees * 3600
         self.data["status"] = self.obsSite.status
-        self.data["timeDiff"] = self.mountTime.timeDiff * 1000
-        self.data["rtt"] = self.mountTime.rtt * 1000
+        self.data["timeDiff"] = self.mountTimeConnectivity.timeDiff * 1000
+        self.data["rtt"] = self.mountTimeConnectivity.rtt * 1000
 
     def waitAfterSettlingAndEmit(self) -> None:
         self.signals.slewed.emit()
@@ -266,22 +265,6 @@ class MountDevice(QObject):
             resultMethod=self.resultGetTLE,
             guard=lambda: self.mountIsUp,
         )
-
-    def bootMount(self) -> bool:
-        t = f"MAC: [{self.config.MAC}], [{self.config.wolAddress}]:[{self.config.wolPort}]"
-        self.log.debug(t)
-        try:
-            wakeonlan.wake(self.config.MAC, host=self.config.wolAddress, port=self.config.wolPort)
-        except (OSError, ValueError) as e:
-            self.log.warning(f"Boot mount failed: {e}")
-            return False
-        return True
-
-    def shutdown(self) -> bool:
-        suc = self.obsSite.shutdown()
-        if suc:
-            self.mountIsUp = False
-        return suc
 
     def resultProgTrajectory(self) -> None:
         self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)

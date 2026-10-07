@@ -64,10 +64,18 @@ class MountSatellite:
         return
 
 
-class MountTime:
+class MountTimeConnectivity:
     def __init__(self):
         self.timeDiff: float = 0.0
         self.rtt: float = 0.0
+
+    @staticmethod
+    def bootMount():
+        return True
+
+    @staticmethod
+    def shutdown():
+        return True
 
 
 class MountModel:
@@ -462,7 +470,7 @@ class Mount(QObject):
         self.setting = MountSetting()
         self.satellite = MountSatellite()
         self.model = MountModel()
-        self.mountTime = MountTime()
+        self.mountTimeConnectivity = MountTimeConnectivity()
         self.host = None
         self.MAC = None
         self.loggingTrace = False
@@ -479,14 +487,6 @@ class Mount(QObject):
 
     @staticmethod
     def getFW():
-        return True
-
-    @staticmethod
-    def bootMount():
-        return True
-
-    @staticmethod
-    def shutdown():
         return True
 
     @staticmethod

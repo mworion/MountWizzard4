@@ -1,8 +1,27 @@
 # Plan: mountcontrol architecture refactoring
 
-Scope: `src/mw4/mountcontrol` and `tests/unit_tests/mountcontrol` (plus the import
+Scope: `../../src/mw4/mountcontrol` and `tests/unit_tests/mountcontrol` (plus the import
 sites of moved symbols). Behaviour is preserved: commands sent to the mount, signals,
 and the `MountDevice` API used by GUI/logic stay the same.
+
+## Status
+
+| Step | Topic | State |
+|------|-------|-------|
+| pre  | `MountTime` -> `MountTimeConnectivity` incl. power (boot/shutdown) | done |
+| 1    | Typed `MountContext` instead of `parent: Any` | done |
+| 2    | Split `ObsSite` (`mountStatus`, `angleProperty`, `obsSiteCommands`) | done |
+| 3    | Slim down `MountDevice` (`mountData`, `connectTimers`) | done |
+| 4    | Connectivity stays in `MountTimeConnectivity` (timer wiring only) | done |
+| 5    | Typing cleanup | done |
+
+Final result: 4844 tests passed (38 skipped), 100 % coverage, ruff clean, pyrefly
+627 errors (baseline 629).
+
+New modules in `../../src/mw4/mountcontrol`: `mountTimeConnectivity.py`, `mountContext.py`,
+`mountStatus.py`, `angleProperty.py`, `obsSiteCommands.py`, `mountData.py`.
+New tests: `conftest.py`, `test_mountTimeConnectivity.py` (renamed), `test_mountContext.py`,
+`test_mountStatus.py`, `test_angleProperty.py`, `test_obsSiteCommands.py`, `test_mountData.py`.
 
 Decisions:
 - Already done (pre-step): `MountTime` was renamed to `MountTimeConnectivity`
@@ -28,7 +47,7 @@ Decisions:
    each step.
 3. `uv run pyrefly check` baseline error count (for step 5 comparison).
 
-## Step 1 - Typed parent context instead of `parent: Any`
+## Step 1 - Typed parent context instead of `parent: Any` (DONE)
 
 ### Current state (measured by grep on `parent.*`)
 
@@ -54,7 +73,7 @@ Findings that drive the design:
 
 ### Actions
 
-1. New module `src/mw4/mountcontrol/mountContext.py`:
+1. New module `../../src/mw4/mountcontrol/mountContext.py`:
    - `class MountContext(Protocol)` with read-only attributes typed exactly as used:
      `config: DeviceConfigMount`, `loggingTrace: bool`, `mountIsUp: bool` (settable),
      `signals: MountSignals`, `obsSite: ObsSite`, `firmware: Firmware`,
@@ -62,35 +81,39 @@ Findings that drive the design:
    - To avoid import cycles (`mount.py` imports all sub-modules) the Protocol is
      defined with `TYPE_CHECKING` imports, and `DeviceConfigMount` stays in `mount.py`
      unless it must move (then move it to `mountContext.py` and update imports).
-   - The two application couplings are exposed explicitly on the context instead of
-     `parent.app`: `domeConfig: dict` + `updateDomeSettings: SignalInstance`.
-     Check `src/mw4/base/appProtocol.py` first: reuse its existing protocol types for
-     `timeMgr` rather than inventing new ones.
+   - The application coupling is exposed explicitly on the context instead of
+     `parent.app`: `domeConfig: dict[str, Any]` + `updateDomeSettings: SignalInstance`.
+     (`timeMgr` was part of the context in step 1 and removed in step 3c, when the
+     timer connections moved to `MountDevice`.)
 2. Change `parent: Any` -> `parent: MountContext` in `Connection`, `ObsSite`, `Firmware`,
    `Setting`, `Model`, `Satellite`, `Geometry`, `MountTimeConnectivity`.
 3. `Geometry.__init__`: replace `parent.app.config` handling by
    `self.cfg = parent.domeConfig` (the `setdefault("SettingDome", {})` stays in
    `MountDevice`, where the app is known) and
    `parent.updateDomeSettings.connect(self.loadParametersFromConfig)`.
-4. `MountTimeConnectivity.__init__`: drop `self.app`; use `parent.timeMgr` for the three timer
-   connections (they move in step 4, see there). `syncClock` uses `self.parent.obsSite`.
-5. `MountDevice`: provide `timeMgr`, `domeConfig`, `updateDomeSettings` as attributes
-   set in `__init__` from `app` (before the sub-objects are created!).
+4. `MountTimeConnectivity.__init__`: drop `self.app`; `syncClock` uses
+   `self.parent.obsSite` (timer connections: see step 3c).
+5. `MountDevice`: provides `domeConfig`, `updateDomeSettings` as attributes set in
+   `__init__` from `app` (before the sub-objects are created!).
 6. Tests:
-   - Add `tests/unit_tests/mountcontrol/conftest.py` with a `mountContext` fixture
+   - Add `../../tests/unit_tests/mountcontrol/conftest.py` with a `mountContext` fixture
      returning a `types.SimpleNamespace`/small fake class that satisfies the Protocol
-     (real `DeviceConfigMount`, `MountSignals`, mock `timeMgr`, mock thread pool).
-   - Replace the per-test `Parent` classes and `App().mount` hacks
-     (`test_firmware.py`, `test_mountTimeConnectivity.py` incl. `m.MountStatus = MountStatus`)
-     by the fixture.
-   - Add a test that `MountDevice` satisfies `MountContext` (attribute presence).
+     (real `DeviceConfigMount`, `MountSignals`, mock thread pool; module scoped).
+   - Replaced the per-test `Parent` classes and `App().mount` hacks in
+     `test_firmware.py` and `test_mountTimeConnectivity.py` by the fixture. The local
+     fakes in `test_connection.py` and `test_obsSite.py` were left as they are.
+   - `test_mountContext.py`: member list of the Protocol, `MountDevice` and the fixture
+     satisfy it (attribute presence).
+   - `test_geometry.py`: the `SettingDome` creation test now checks `MountDevice.domeConfig`.
 
-### Acceptance
+### Result / acceptance
 - No `parent: Any` left in `mountcontrol`; `grep -n "parent.app" src/mw4/mountcontrol`
-  returns nothing except in `mount.py`.
-- Tests green, 100 % coverage, `pyrefly` error count not higher than baseline.
+  returns nothing. `DeviceConfigMount` stayed in `mount.py`.
+- Typing `dReg["mount"].instance` (`Any | None`) in `tabMount_Command.py` needed a
+  `cast("MountContext", ...)` at the single `Connection(...)` call.
+- Tests green, 100 % coverage, pyrefly not above baseline.
 
-## Step 2 - Split `ObsSite`
+## Step 2 - Split `ObsSite` (DONE)
 
 ### Current state of `obsSite.py` (726 lines)
 
@@ -120,7 +143,7 @@ Findings that drive the design:
 2. `ObsSite` imports from `mountStatus`; keeps `_STATUS_VALID`/`STAT` derivation as is.
 3. Update import sites: `mount.py`, `mountTimeConnectivity.py`, tests (`test_mountTimeConnectivity.py`), and
    whichever GUI module references it (`grep -rn "MountStatus" src tests`).
-4. New `tests/unit_tests/mountcontrol/test_mountStatus.py`: all enum codes have a label,
+4. New `../../tests/unit_tests/mountcontrol/test_mountStatus.py`: all enum codes have a label,
    labels unique, codes match the 10micron status table.
 
 2b. Angle descriptor
@@ -144,10 +167,20 @@ Findings that drive the design:
 - Move the command methods into `obsSiteCommands.py` as a mixin `ObsSiteCommands`
   used by `ObsSite`. Decide after measuring; do not do it speculatively.
 
-### Acceptance
-- Public attribute/method names and semantics of `ObsSite` unchanged
-  (`grep` of external usages passes, `test_obsSite.py` untouched or only import changes).
-- 100 % coverage for `mountStatus.py`, `angleProperty.py`, `obsSite.py`.
+### Result / acceptance
+- 2a: `mountStatus.py` (`MountStatus`, `STATUS_LABELS`); imports updated in `mount.py`,
+  `mountTimeConnectivity.py` and tests; `test_mountStatus.py` added.
+- 2b: `AngleProperty` replaces 13 property pairs (`raJNow`, `decJNow`, `angularPosRA/DEC`,
+  `errorAngularPosRA/DEC`, `angularPosRATarget/DECTarget`, `Alt`, `raJNowTarget`,
+  `decJNowTarget`, `AltTarget`, `AzTarget`). `timeSidereal` (numeric branch) and `Az`
+  (direction tracking) stay explicit. `test_angleProperty.py` was written and run against
+  the old implementation first (173 tests), then kept as regression tests.
+- 2c: executed, as `obsSite.py` was still 563 lines after 2a/2b: command and parsing
+  methods moved to the `ObsSiteCommands` mixin (`obsSite.py` 295 lines,
+  `obsSiteCommands.py` 289 lines). The command tests moved from `test_obsSite.py` to
+  `test_obsSiteCommands.py` (76 tests, patching `obsSiteCommands.Connection`).
+- Public attribute/method names and semantics of `ObsSite` unchanged; 100 % coverage for
+  all new modules.
 
 ## Step 3 - Slim down `MountDevice` (DONE)
 
@@ -184,29 +217,26 @@ class, `MountTimeConnectivity`, which has already been created.
 
 ## Step 5 - Typing cleanup (DONE)
 
-Result: `ObsSite` setters narrowed (`location`: `GeographicPosition | list | tuple`,
-`piersideTarget`: `int`, numeric/str inputs for `timeJD`, `ut1_utc`, `status`, ...), `Any`
-import removed from `obsSite.py`; `Any` remains only on the `location`/`piersideTarget`
-annotations in the `ObsSiteCommands` mixin (needed to avoid override errors). pyrefly: 627
-errors (baseline 629).
+1. `ObsSite` explicit setters narrowed: `location` `GeographicPosition | list | tuple`,
+   `timeJD`/`ut1_utc`/`status` `str | float | int | None`, `timeSidereal`
+   `str | float | int | Angle`, `pierside` `str`, `piersideTarget` `int`, `Az`
+   `Angle | str | float | int | None`, `statusSlew` `bool | int | str`.
+2. `Any` import removed from `obsSite.py`; `Any` remains only on the `location` and
+   `piersideTarget` declarations in the `ObsSiteCommands` mixin (narrower types cause
+   pyrefly override/assignment errors).
+3. `Connection.__init__` was already `MountContext` after step 1.
+4. pyrefly: 627 errors (baseline 629). Remaining mountcontrol findings are in code not
+   touched here (`convert.py`, `geometry.py`, skyfield `Angle` attributes typed `reify`).
 
-1. `ObsSite` explicit setters (`location`, `timeJD`, `ut1_utc`, `status`, `statusSlew`,
-   `pierside*`): replace `value: Any` with a narrower union where the accepted input
-   is known (`str | float | int | Angle | None`, `list | tuple | GeographicPosition`
-   for `location`); keep `Any` only where the converter genuinely accepts anything.
-2. `Connection.__init__`: already `MountContext` after step 1.
-3. `uv run pyrefly check`: error count must be <= baseline; fix new findings.
-4. Remove the leftover `Any` imports.
-
-## Order and dependencies
+## Order and dependencies (as executed)
 
 ```
 0 baseline -> 1 context -> 2a status ->- 2b descriptor -> 5 typing
                        \-> 3a data -> 3c timers -> 4 timer wiring
 ```
 - Steps 2 and 3/4 are independent after step 1 and can be done in either order.
-- Step 4 is reduced to moving the timer connections of `MountTimeConnectivity` into
-  `connectTimers()` (part of 3c).
+- Step 4 was reduced to moving the timer connections of `MountTimeConnectivity` into
+  `connectTimers()` (done within 3c).
 - Step 5 last.
 
 ## Verification after each step
@@ -214,7 +244,7 @@ errors (baseline 629).
 1. `ruff format src tests` and `ruff check src tests` (all findings resolved).
 2. `pytest tests/unit_tests/mountcontrol --cov=mw4.mountcontrol --cov-report=term-missing`
    -> 100 %.
-3. `pytest` for the callers touched by moved symbols (`tests/unit_tests/gui/mainWaddon`,
+3. `pytest` for the callers touched by moved symbols (`../../tests/unit_tests/gui/mainWaddon`,
    `tests/unit_tests/logic`, `tests/unit_tests/base/test_deviceRegistry.py` ...).
 4. `uv run pyrefly check`.
 5. Smoke run of the application against the simulator/dummy mount if available:
@@ -228,7 +258,7 @@ Final: run the complete test suite with overall coverage, ruff over everything.
 |------|------------|
 | Many external modules use `MountDevice`/`ObsSite` | Keep public names stable; grep every moved symbol; step-wise commits |
 | Descriptor changes setter semantics (`valueToAngle` vs `stringToAngle`, `Angle` passthrough) | Parametrized regression tests per attribute before replacing; `parser` parameter keeps the two variants explicit |
-| Startup/timer order (`mountIsUp`, `start3s`, signals) | `connectTimers()` called last; tests assert connections; smoke run |
+| Startup/timer order (`mountIsUp`, `start3s`, signals) | `connectTimers()` called last; tests assert connections; smoke run still to be done manually |
 | Tests rely on `_privateAttr` of sub-objects | Descriptor uses the same `_name` backing attribute |
 | Module-scoped worker fixtures leak threads when splitting tests | Copy the existing cleanup block into the new test modules |
 | Import cycles from `MountContext` | `TYPE_CHECKING` imports only; Protocol lives in its own module |
@@ -237,4 +267,4 @@ Final: run the complete test suite with overall coverage, ruff over everything.
 
 - Per-call `Connection` creation (kept as is, by decision).
 - Behaviour/protocol changes towards the mount, new features, GUI changes.
-- `src/mw4/gui/widgets` (generated).
+- `../../src/mw4/gui/widgets` (generated).

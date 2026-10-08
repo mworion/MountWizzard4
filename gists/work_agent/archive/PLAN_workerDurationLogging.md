@@ -1,19 +1,23 @@
 # Plan: log duration of pollSetting / pollPointing when they hang
 
+**Status:** implemented in `src/mw4/base/tpool.py` (checked 2026-10-08). The
+plan stays active only for the optional follow-up at the end: the logging is
+in place, so the next step is to evaluate it in the field.
+
 ## Goal
 Find out why `Worker pollSetting busy, skipped` repeats for ~40 s. Log how long
 a worker has been running when it is skipped, and how long it took once it
 finishes. Nothing else changes.
 
 ## Analysis
-- `startWorker` (`../../src/mw4/base/tpool.py`) skips a call when `tryAcquire()` fails.
+- `startWorker` (`../../../src/mw4/base/tpool.py`) skips a call when `tryAcquire()` fails.
   The skip log has no information about the running call.
 - `Worker.run` does not measure the runtime.
-- `cycleSetting` / `cyclePointing` (`../../src/mw4/mountcontrol/mount.py`) use
+- `cycleSetting` / `cyclePointing` (`../../../src/mw4/mountcontrol/mount.py`) use
   `startWorker`, so a generic change in `tpool.py` covers both and every other
   worker.
 
-## Changes (only `../../src/mw4/base/tpool.py`)
+## Changes (only `../../../src/mw4/base/tpool.py`)
 1. Constants
    - `SLOW_WORKER_THRESHOLD = 5.0` (seconds). A finished run longer than this
      is logged at warning level.
@@ -33,10 +37,11 @@ finishes. Nothing else changes.
 6. `startWorker` skip branch
    - Extend the message to
      `Worker {fnName} busy, skipped (running for {elapsed:.1f}s)`, with
-     `elapsed = time.monotonic() - worker.startTime` (guard against `None`).
+     `elapsed = worker.elapsed()`. Deviation: a new helper `Worker.elapsed()`
+     returns `0.0` when `startTime` is `None`; `release` uses it too.
    - Keep it at debug level.
 
-## Tests (`../../tests/unit_tests/base/test_tpool.py`, module scope, 100 % coverage)
+## Tests (done, `../../../tests/unit_tests/base/test_tpool.py`, module scope, 100 % coverage)
 - `tryAcquire` sets `startTime`; `release` returns a duration and resets it.
 - `release` without a prior acquire returns `None`.
 - `run` with a patched `time.monotonic` (and a lowered threshold) logs the
@@ -44,12 +49,12 @@ finishes. Nothing else changes.
 - `startWorker` on a busy worker logs `busy, skipped (running for ...)`.
 - Existing tests keep passing.
 
-## Finish
+## Finish (done)
 - `uv run ruff format` and `uv run ruff check`, resolve all findings.
 - `uv run pytest tests/unit_tests/base/test_tpool.py --cov=mw4.base.tpool`
   (100 %), then the whole package.
 
-## Optional follow-up (not part of this task)
+## Optional follow-up (open, not part of this task)
 Log which mount command was running inside `pollSetting` when it hangs
 (`mountcontrol/connection.py`). Only do this if the new logging shows the
 hang is inside the mount communication.

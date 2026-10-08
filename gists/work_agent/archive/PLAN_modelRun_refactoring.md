@@ -1,6 +1,6 @@
 # Plan: Improve `modelRun.py` and `tabModel.py`
 
-Scope: `../../src/mw4/logic/modelBuild/modelRun.py`,
+Scope: `../../../src/mw4/logic/modelBuild/modelRun.py`,
 `src/mw4/gui/mainWaddon/tabModel.py` (+ new/related modules in
 `src/mw4/logic/modelBuild/`).
 Tests: `tests/unit_tests/logic/modelBuild/test_modelRun*.py`,
@@ -13,7 +13,23 @@ independently mergeable commit.
 
 ---
 
-## Phase 1 – Small bug fixes (low risk)
+## Status
+
+| Phase | Topic | State |
+|-------|-------|-------|
+| 1 | Small bug fixes | done |
+| 2 | Robust slew / cancel behaviour | done (2.2, 2.3 reverted by decision) |
+| 3 | Progress estimation | skipped by decision |
+| 4 | Typed config | done |
+| 5 | Business logic out of the GUI | done |
+| 6 | Finalisation | done after each phase |
+
+State checked against the code on 2026-10-08. Since the plan was written,
+`ModelRun` became event-driven (see `archive/plan-review-2026-09-29-rec-1-modelRunEventDriven.md`):
+the busy loop is gone, passes are driven by `startPass` / `finishPass` / `passActive`, and
+`ModelData` exposes `cancelRun` / `endRun`.
+
+## Phase 1 – Small bug fixes (DONE)
 
 | # | Change | File |
 |---|--------|------|
@@ -33,14 +49,14 @@ independently mergeable commit.
 Tests: extend existing tests; add cases for mismatch warning, no
 double connect, stray slewed signal, retry+cancel ordering.
 
-## Phase 2 – Robust slew / cancel behaviour
+## Phase 2 – Robust slew / cancel behaviour (DONE)
 
 | # | Change |
 |---|--------|
-| 2.1 | Replace the recursion in `startNewSlew` on "Slew not possible" (emit result + `startSlew.emit()`) by connecting `startSlew` with `Qt.QueuedConnection` (or an explicit loop) to bound stack depth. |
+| 2.1 | DONE (`startSlew` is connected with `Qt.ConnectionType.QueuedConnection`). Replace the recursion in `startNewSlew` on "Slew not possible" (emit result + `startSlew.emit()`) by connecting `startSlew` with `Qt.QueuedConnection` (or an explicit loop) to bound stack depth. |
 | 2.2 | REVERTED by decision: no device is stopped or aborted on cancel or end (no `abortDevices`, no in-flight tracking). |
 | 2.3 | REVERTED by decision: *End* keeps the original semantics (stop scheduling, finish the pass immediately, program with solved points) and never stops or aborts any device. |
-| 2.4 | Add a test for cancel during the 1 s clear wait in `runBatch` (explicit rather than accidental behaviour). |
+| 2.4 | DONE (`test_runBatch_cancelDuringClearWait`). Add a test for cancel during the 1 s clear wait in `runBatch` (explicit rather than accidental behaviour). |
 
 ## Phase 3 – Progress estimation (SKIPPED by decision – keep current behaviour)
 
@@ -55,7 +71,7 @@ Decision: only `ModelTiming` and `ModelRunConfig`; `modelBuildData` stays
 `dict[str, dict[str, Any]]` (no `ModelPoint`, to avoid regression risk in the
 run flow and the saved `.model` format).
 
-- `../../src/mw4/logic/modelBuild/modelTypes.py`: `ModelTiming(IntEnum)` and frozen
+- `../../../src/mw4/logic/modelBuild/modelTypes.py`: `ModelTiming(IntEnum)` and frozen
   `ModelRunConfig` (`imageDir`, `numberRetries`, `retriesReverse`,
   `waitTimeExposure`, `modelTiming`, `plateSolveApp`).
 - `ModelData.runModel(config)` stores `self.config`; the class constants and
@@ -72,18 +88,19 @@ run flow and the saved `.model` format).
 | 5.2 | `ModelData.loadFromFiles(paths) -> str` (stateful part). `runFileModel` stays in the tab (dialog, naming, operation state). |
 | 5.3 | `ModelData` emits `pointStatus(index, status)` and `pointMarkersChanged`; the tab forwards them to `app.buildPoint` and `app.updatePointMarker`. `ModelData` no longer touches `app.buildPoint` / `app.updatePointMarker`. |
 
-## Phase 6 – Finalisation (DONE for phases 1, 2, 5; repeat after Phase 4)
+## Phase 6 – Finalisation (DONE; repeated after each phase)
 
 1. `uv run ruff format` / `uv run ruff check` on all touched files,
-   fix all findings; verify line length from `../../pyproject.toml`.
+   fix all findings; verify line length from `../../../pyproject.toml`.
 2. Run the touched test modules with coverage (100 % for the changed
    modules).
 3. Run the complete test suite as the last step.
 
 ## Order and dependencies
 
-Phase 1 -> 2 -> (3 skipped) -> 4 -> 5 -> 6 (after each).
+Phase 1 -> 2 -> (3 skipped) -> 4 -> 5 -> 6 (after each). All executed.
 
 ## Open questions
 
-- Desired semantics of "End" (finish in-flight points vs. stop now)?
+None. "End" semantics were decided in 2.3: stop scheduling, finish the pass
+immediately, program with the solved points, never abort any device.

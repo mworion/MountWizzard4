@@ -9,7 +9,7 @@ from collections.abc import Callable
 from pathlib import Path
 from PySide6.QtCore import QObject, QRunnable, QThreadPool, Signal, SignalInstance, Slot
 from types import TracebackType
-from typing import Any
+from typing import Any, cast
 
 # runs longer than this (seconds) are logged as slow
 SLOW_WORKER_THRESHOLD = 5.0
@@ -98,7 +98,7 @@ class Worker(QRunnable):
 
         except (OSError, ValueError, RuntimeError, TypeError, AttributeError, KeyError) as e:
             # as we want to send a clear message to the log file
-            _, _, tb = sys.exc_info()
+            tb = cast(TracebackType, sys.exc_info()[2])
 
             # moving toward the end of the trace; collect frames then join once
             parts = [f"{e} {self.formatTbFrame(tb)}"]

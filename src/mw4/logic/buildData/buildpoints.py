@@ -44,7 +44,7 @@ class BuildPoint:
         self.app = app
         self.configDir: Path = app.mwGlob["configDir"]
         self._horizonP: list[list[float]] = []
-        self._buildP: list[tuple[float, float, int]] = []
+        self._buildP: list[list[float]] = []
 
     @property
     def horizonP(self) -> list[list[float]]:
@@ -55,14 +55,14 @@ class BuildPoint:
         self._horizonP = value
 
     @property
-    def buildP(self) -> list[tuple[float, float, int]]:
+    def buildP(self) -> list[list[float]]:
         return self._buildP
 
     @buildP.setter
-    def buildP(self, value: list[tuple[float, float, int]]) -> None:
+    def buildP(self, value: list[list[float]]) -> None:
         self._buildP = value
 
-    def addBuildP(self, value: tuple[float, float, int], position: int = 999) -> None:
+    def addBuildP(self, value: list[float], position: int = 999) -> None:
         high = self.app.dReg["mount"].setting.horizonLimitHigh or 90
         low = self.app.dReg["mount"].setting.horizonLimitLow or 0
 
@@ -106,7 +106,7 @@ class BuildPoint:
 
     @staticmethod
     def isCloseHorizonLine(
-        point: tuple[int, int], margin: int, horizonI: list[tuple[int, int]]
+        point: list[float], margin: int, horizonI: list[tuple[int, int]]
     ) -> bool:
         """
         https://codereview.stackexchange.com/questions
@@ -119,7 +119,7 @@ class BuildPoint:
 
         return val < margin
 
-    def isAboveHorizon(self, point: tuple[int, int]) -> bool:
+    def isAboveHorizon(self, point: list[float]) -> bool:
         point[1] = min(max(point[1], 0), 360)
         x = range(361)
         if self.horizonP:
@@ -132,7 +132,7 @@ class BuildPoint:
         y = np.interp(x, xRef, yRef)
         return point[0] > y[int(point[1])]
 
-    def isCloseMeridian(self, point: tuple[int, int]) -> bool:
+    def isCloseMeridian(self, point: list[float]) -> bool:
         slew = self.app.dReg["mount"].setting.meridianLimitSlew
         track = self.app.dReg["mount"].setting.meridianLimitTrack
         value = max(slew, track)
@@ -238,9 +238,9 @@ class BuildPoint:
         return True
 
     def saveBuildP(self, fileName: str) -> None:
-        fileName = self.configDir / (fileName + ".bpts")
+        filePath = self.configDir / (fileName + ".bpts")
         points = [(x[0], x[1]) for x in self.buildP]
-        with open(fileName, "w") as handle:
+        with open(filePath, "w") as handle:
             json.dump(points, handle, indent=4)
 
     def loadHorizonP(self, fullFileName: Path) -> bool:

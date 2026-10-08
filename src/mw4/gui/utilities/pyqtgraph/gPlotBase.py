@@ -5,6 +5,7 @@ import numpy as np
 import pyqtgraph as pg
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.pyqtgraph.gCustomViewBox import CustomViewBox
+from numpy.typing import ArrayLike
 from PySide6.QtGui import QBrush, QFont, QPainterPath, QPen
 from PySide6.QtWidgets import QApplication
 from scipy.interpolate import griddata
@@ -77,7 +78,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         plotItem.layout.setColumnFixedWidth(4, 5)
 
     @staticmethod
-    def toPolar(az: list, alt: list) -> tuple:
+    def toPolar(az: ArrayLike, alt: ArrayLike) -> tuple:
         az = np.array(az)
         alt = np.array(alt)
         theta = np.radians(90 - az)

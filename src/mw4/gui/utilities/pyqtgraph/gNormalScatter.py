@@ -4,6 +4,7 @@
 import numpy as np
 import pyqtgraph as pg
 from mw4.gui.utilities.pyqtgraph.gPlotBase import PlotBase
+from numpy.typing import ArrayLike
 from PySide6.QtGui import QColor
 from typing import Any
 
@@ -92,7 +93,7 @@ class NormalScatter(PlotBase):
         else:
             self.scatterItem.addPoints(spots, tip=tip)
 
-    def plot(self, x: np.ndarray, y: np.ndarray, **kwargs: Any) -> bool | None:
+    def plot(self, x: ArrayLike, y: ArrayLike, **kwargs: Any) -> bool | None:
         self.p[0].clear()
         self.p[0].showAxes(True, showValues=True)
         self.scatterItem = pg.ScatterPlotItem(hoverable=True, hoverSize=10, hoverPen=self.pen)

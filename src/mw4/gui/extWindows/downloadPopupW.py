@@ -20,7 +20,6 @@ class DownloadPopup(MWidget):
 
     def __init__(self, parentWidget: MWidget, url: str, dest: Path, unzip: bool = False) -> None:
         super().__init__()
-        self.parentWidget = parentWidget
         self.msg = parentWidget.app.msg
         self.threadPool = parentWidget.app.threadPool
         self.workerDownloadFile: Worker | None = None

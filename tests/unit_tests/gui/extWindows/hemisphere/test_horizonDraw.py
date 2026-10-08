@@ -113,7 +113,7 @@ def test_selectTerrainFile_1(function):
 def test_selectTerrainFile_2(function):
     with (
         mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("terrain.jpg")),
-        mock.patch.object(function.parent, "redrawAll"),
+        mock.patch.object(function.parentWindow, "redrawAll"),
         mock.patch.object(Path, "is_file", return_value=True),
         mock.patch.object(function, "loadTerrainImage"),
     ):
@@ -121,7 +121,7 @@ def test_selectTerrainFile_2(function):
 
 
 def test_clearTerrainFile(function):
-    with mock.patch.object(function.parent, "redrawAll"):
+    with mock.patch.object(function.parentWindow, "redrawAll"):
         function.clearTerrainFile()
 
 
@@ -210,7 +210,7 @@ def test_updateDataHorizonPoints(function):
 
 
 def test_clearHorizonMask(function):
-    with mock.patch.object(function.parent, "redrawAll"):
+    with mock.patch.object(function.parentWindow, "redrawAll"):
         function.clearHorizonMask()
 
 
@@ -225,7 +225,7 @@ def test_addActualPosition_2(function):
 
 
 def test_prepareView(function):
-    with mock.patch.object(function.parent, "preparePlotItem"):
+    with mock.patch.object(function.parentWindow, "preparePlotItem"):
         function.prepareView()
 
 
@@ -267,13 +267,13 @@ def test_drawTab_1(function):
     function.ui.showMountLimits.setChecked(True)
     with (
         mock.patch.object(function, "prepareView"),
-        mock.patch.object(function.parent, "drawTerrainImage"),
+        mock.patch.object(function.parentWindow, "drawTerrainImage"),
         mock.patch.object(function, "setupView"),
         mock.patch.object(function, "drawView"),
         mock.patch.object(function, "setupPointer"),
         mock.patch.object(function, "drawPointer"),
-        mock.patch.object(function.parent, "drawMeridianLimits"),
-        mock.patch.object(function.parent, "drawHorizonLimits"),
+        mock.patch.object(function.parentWindow, "drawMeridianLimits"),
+        mock.patch.object(function.parentWindow, "drawHorizonLimits"),
     ):
         function.drawTab()
 

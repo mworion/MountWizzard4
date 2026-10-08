@@ -55,7 +55,7 @@ def test_setPointerVisibility(function):
 
 
 def test_mouseMoved_1(function):
-    with mock.patch.object(function.parent, "mouseMoved"):
+    with mock.patch.object(function.parentWindow, "mouseMoved"):
         function.mouseMovedHemisphere(pos=QPointF(1, 1))
 
 
@@ -432,9 +432,9 @@ def test_drawTab_1(function):
     function.app.mount.model.numberStars = 5
     with (
         mock.patch.object(function, "drawCelestialEquator"),
-        mock.patch.object(function.parent, "drawTerrainImage"),
-        mock.patch.object(function.parent, "drawMeridianLimits"),
-        mock.patch.object(function.parent, "drawHorizonLimits"),
+        mock.patch.object(function.parentWindow, "drawTerrainImage"),
+        mock.patch.object(function.parentWindow, "drawMeridianLimits"),
+        mock.patch.object(function.parentWindow, "drawHorizonLimits"),
         mock.patch.object(function, "drawModelIsoCurve"),
         mock.patch.object(function, "drawHorizon"),
     ):

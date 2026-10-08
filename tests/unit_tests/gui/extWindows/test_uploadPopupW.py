@@ -18,6 +18,7 @@ def function(qapp):
     widget = MWidget()
     widget.app = App()
     window = UploadPopup(widget, "http://localhost", [], Path())
+    window.parentW = widget
     yield window
     window.pollStatusRunState = False
     if window.loop is not None and window.loop.isRunning():
@@ -383,11 +384,11 @@ def test_exec_2(function):
 
 def test_upload_1(function):
     with mock.patch.object(UploadPopup, "exec", return_value=True):
-        result = UploadPopup.upload(function.parentWidget, "http://localhost", [], Path())
+        result = UploadPopup.upload(function.parentW, "http://localhost", [], Path())
         assert result
 
 
 def test_upload_2(function):
     with mock.patch.object(UploadPopup, "exec", return_value=False):
-        result = UploadPopup.upload(function.parentWidget, "http://localhost", [], Path())
+        result = UploadPopup.upload(function.parentW, "http://localhost", [], Path())
         assert not result

@@ -22,6 +22,7 @@ def function(qapp):
     widget = MWidget()
     widget.app = App()
     window = DownloadPopup(parentWidget=widget, url="http://localhost", dest=Path())
+    window.parentW = widget
     yield window
     if window.loop is not None and window.loop.isRunning():
         window.loop.quit()
@@ -256,11 +257,11 @@ def test_exec_2(function):
 
 def test_download_1(function):
     with mock.patch.object(DownloadPopup, "exec", return_value=True):
-        result = DownloadPopup.download(function.parentWidget, "http://localhost", Path())
+        result = DownloadPopup.download(function.parentW, "http://localhost", Path())
         assert result
 
 
 def test_download_2(function):
     with mock.patch.object(DownloadPopup, "exec", return_value=False):
-        result = DownloadPopup.download(function.parentWidget, "http://localhost", Path())
+        result = DownloadPopup.download(function.parentW, "http://localhost", Path())
         assert not result

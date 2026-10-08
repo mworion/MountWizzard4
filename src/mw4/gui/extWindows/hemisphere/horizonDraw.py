@@ -9,12 +9,16 @@ from mw4.gui.utilities.qtGenerateSprites import makePointer
 from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
 from PySide6.QtCore import QPointF
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 
 
 class HorizonDraw(MWidget):
-    def __init__(self, parent) -> None:
+    def __init__(self, parent: "HemisphereWindow") -> None:
         super().__init__()
-        self.parent = parent
+        self.parentWindow = parent
         self.ui = parent.ui
         self.app = parent.app
         self.msg = parent.msg
@@ -62,7 +66,7 @@ class HorizonDraw(MWidget):
 
     def mouseMovedHorizon(self, pos: QPointF) -> None:
         viewBox = self.ui.horizon.p[0].getViewBox()
-        self.parent.mouseMoved(viewBox, pos)
+        self.parentWindow.mouseMoved(viewBox, pos)
 
     def loadTerrainImage(self, terrainFile: Path) -> None:
         if not terrainFile.is_file():
@@ -86,7 +90,7 @@ class HorizonDraw(MWidget):
         folder = self.app.mwGlob["configDir"]
         fileTypes = "Terrain images (*.jpg)"
         loadFilePath = MWFileDialog.getOpenFileName(
-            self.parent, "Open terrain image", folder, fileTypes
+            self.parentWindow, "Open terrain image", folder, fileTypes
         )
         if not loadFilePath.is_file():
             return
@@ -95,18 +99,18 @@ class HorizonDraw(MWidget):
         self.ui.showTerrain.setChecked(True)
         self.loadTerrainImage(loadFilePath)
         self.msg.emit(0, "Hemisphere", "Terrain", f"Mask [{loadFilePath.name}] loaded")
-        self.parent.redrawAll()
+        self.parentWindow.redrawAll()
 
     def clearTerrainFile(self) -> None:
         self.ui.terrainFileName.setText("")
         self.ui.showTerrain.setChecked(False)
-        self.parent.redrawAll()
+        self.parentWindow.redrawAll()
 
     def loadHorizonMask(self) -> None:
         folder = self.app.mwGlob["configDir"]
         fileTypes = "Horizon mask files (*.hpts);; CSV Files (*.csv);; MW3 Files (*.txt)"
         loadFilePath = MWFileDialog.getOpenFileName(
-            self.parent, "Open horizon mask file", folder, fileTypes
+            self.parentWindow, "Open horizon mask file", folder, fileTypes
         )
         if not loadFilePath.is_file():
             return
@@ -132,7 +136,7 @@ class HorizonDraw(MWidget):
     def saveHorizonMaskAs(self) -> None:
         folder = self.app.mwGlob["configDir"]
         saveFilePath = MWFileDialog.getSaveFileName(
-            self.parent, "Save horizon mask file", folder, "Horizon mask files (*.hpts)"
+            self.parentWindow, "Save horizon mask file", folder, "Horizon mask files (*.hpts)"
         )
         if not saveFilePath.stem:
             return
@@ -174,7 +178,7 @@ class HorizonDraw(MWidget):
 
     def prepareView(self) -> None:
         plotItem = self.ui.horizon.p[0]
-        self.parent.preparePlotItem(plotItem)
+        self.parentWindow.preparePlotItem(plotItem)
 
     def drawView(self) -> None:
         hp = self.app.buildPoint.horizonP
@@ -233,10 +237,10 @@ class HorizonDraw(MWidget):
     def drawTab(self) -> None:
         self.prepareView()
         if self.ui.showTerrain.isChecked():
-            self.parent.drawTerrainImage(self.ui.horizon.p[0])
+            self.parentWindow.drawTerrainImage(self.ui.horizon.p[0])
         if self.ui.showMountLimits.isChecked():
-            self.parent.drawMeridianLimits(self.ui.horizon.p[0])
-            self.parent.drawHorizonLimits(self.ui.horizon.p[0])
+            self.parentWindow.drawMeridianLimits(self.ui.horizon.p[0])
+            self.parentWindow.drawHorizonLimits(self.ui.horizon.p[0])
         self.setupView()
         self.drawView()
         if self.ui.editModeHor.isChecked():

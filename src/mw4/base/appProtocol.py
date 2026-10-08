@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from mw4.gui.mainWindow.mainWindow import MainWindow
     from mw4.logic.buildData.buildpoints import BuildPoint
     from mw4.logic.buildData.hipparcos import Hipparcos
-    from PySide6.QtCore import QThreadPool, SignalInstance
+    from PySide6.QtCore import QThreadPool, Signal
     from queue import Queue
     from skyfield.jpllib import SpiceKernel
 
@@ -44,29 +44,29 @@ class AppProtocol(Protocol):
     mainW: MainWindow
 
     # --- signals ---
-    msg: SignalInstance
-    colorChange: SignalInstance
-    playSound: SignalInstance
-    showImage: SignalInstance
-    showAnalyse: SignalInstance
-    timebaseChanged: SignalInstance
-    onlineModeChanged: SignalInstance
-    hidModeChanged: SignalInstance
-    relayChanged: SignalInstance
-    parkChanged: SignalInstance
-    redrawHemisphere: SignalInstance
-    redrawHorizon: SignalInstance
-    updatePointMarker: SignalInstance
-    drawBuildPoints: SignalInstance
-    buildPointsChanged: SignalInstance
-    operationRunning: SignalInstance
-    updateDomeSettings: SignalInstance
-    remoteCommand: SignalInstance
-    refreshModel: SignalInstance
-    refreshName: SignalInstance
-    sendSatelliteData: SignalInstance
-    updateSatellite: SignalInstance
-    showSatellite: SignalInstance
+    msg: Signal
+    colorChange: Signal
+    playSound: Signal
+    showImage: Signal
+    showAnalyse: Signal
+    timebaseChanged: Signal
+    onlineModeChanged: Signal
+    hidModeChanged: Signal
+    relayChanged: Signal
+    parkChanged: Signal
+    redrawHemisphere: Signal
+    redrawHorizon: Signal
+    updatePointMarker: Signal
+    drawBuildPoints: Signal
+    buildPointsChanged: Signal
+    operationRunning: Signal
+    updateDomeSettings: Signal
+    remoteCommand: Signal
+    refreshModel: Signal
+    refreshName: Signal
+    sendSatelliteData: Signal
+    updateSatellite: Signal
+    showSatellite: Signal
 
     # --- configuration ---
     def initConfig(self) -> None: ...

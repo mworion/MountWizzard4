@@ -47,7 +47,7 @@ class Camera:
         self.widthASCOM: int = 100
         self.heightASCOM: int = 100
 
-        self.run = {
+        self.run: dict[str, Any] = {
             "indi": CameraIndi(self),
             "alpaca": CameraAlpaca(self),
         }

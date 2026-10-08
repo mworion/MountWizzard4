@@ -6,6 +6,7 @@ from dateutil.tz import tzlocal
 from mw4.base.appProtocol import AppProtocol
 from PySide6.QtCore import QObject, QTimer, Signal
 from skyfield.api import Time
+from typing import cast
 
 TICK_INTERVAL_MS: int = 100
 CYCLIC_SCHEDULE: list[tuple[int, str]] = [
@@ -85,6 +86,6 @@ class TimeManager(QObject):
 
     def convertTime(self, value: Time, fString: str) -> str:
         if self.unitTimeUTC:
-            return value.utc_strftime(fString)
+            return cast(str, value.utc_strftime(fString))
         else:
             return value.astimezone(tzlocal()).strftime(fString)

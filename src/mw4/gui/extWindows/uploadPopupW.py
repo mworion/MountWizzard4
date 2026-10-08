@@ -51,7 +51,6 @@ class UploadPopup(MWidget):
         self.setFixedSize(self.HALF_WIDTH, self.POPUP_HEIGHT)
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
         self.returnValues = {"success": False, "successMount": False}
-        self.parentWidget = parentWidget
         self.msg = parentWidget.app.msg
         self.threadPool = parentWidget.app.threadPool
         self.workerUploadFile: Worker | None = None

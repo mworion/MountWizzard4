@@ -54,7 +54,7 @@ class SatTrack(SatData):
                 "date": self.ui.satDate_3,
             },
         }
-        self.satOrbits = {}
+        self.satOrbits: list[dict] | dict = {}
         self.app.dReg["mount"].signals.calcTLEdone.connect(self.updateSatelliteTrackGui)
         self.app.dReg["mount"].signals.calcTrajectoryDone.connect(self.updateInternalTrackGui)
         self.app.dReg["mount"].signals.getTLEdone.connect(self.getSatelliteDataFromDatabase)

@@ -12,12 +12,16 @@ from pyqtgraph.GraphicsScene.mouseEvents import MouseClickEvent
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QFont
 from skyfield.api import Angle
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 
 
 class HemisphereDraw(MWidget):
-    def __init__(self, parent) -> None:
+    def __init__(self, parent: "HemisphereWindow") -> None:
         super().__init__()
-        self.parent = parent
+        self.parentWindow = parent
         self.ui = parent.ui
         self.app = parent.app
         self.msg = parent.msg
@@ -74,7 +78,7 @@ class HemisphereDraw(MWidget):
 
     def mouseMovedHemisphere(self, pos: QPointF) -> None:
         viewBox = self.ui.hemisphere.p[0].getViewBox()
-        self.parent.mouseMoved(viewBox, pos)
+        self.parentWindow.mouseMoved(viewBox, pos)
 
     def enableOperationModeChange(self, status: int) -> None:
         isRunning = status != 0
@@ -92,9 +96,9 @@ class HemisphereDraw(MWidget):
 
     def prepareView(self) -> None:
         plotItem = self.ui.hemisphere.p[0]
-        self.parent.preparePlotItem(plotItem)
+        self.parentWindow.preparePlotItem(plotItem)
         polarItem = self.ui.hemisphere.p[1]
-        self.parent.preparePolarItem(polarItem)
+        self.parentWindow.preparePolarItem(polarItem)
         self.modelPointsText = []
         self.alignmentStarsText = []
         plotItem.getViewBox().callbackMDC = self.mouseDoubleClick
@@ -357,7 +361,7 @@ class HemisphereDraw(MWidget):
         question += f"   Azimuth: {azimuth.degrees:3.1f}°</font>"
         question += "<br><br>Would you like to start slewing?<br>"
 
-        if not MWMessageDialog.question(self.parent, "Slewing mount", question):
+        if not MWMessageDialog.question(self.parentWindow, "Slewing mount", question):
             return
         self.slewInterface.slewTargetAltAz(altitude, azimuth)
 
@@ -384,7 +388,7 @@ class HemisphereDraw(MWidget):
 
         buttons = ["Cancel", "Ortho Align", "Polar Align"]
         question = question + warning if isDAT else question
-        reply = MWMessageDialog.question(self.parent, "Slewing mount", question, buttons)
+        reply = MWMessageDialog.question(self.parentWindow, "Slewing mount", question, buttons)
         if reply == 0:
             return
         elif reply == 1:
@@ -413,10 +417,10 @@ class HemisphereDraw(MWidget):
         if self.ui.showCelestial.isChecked():
             self.drawCelestialEquator()
         if self.ui.showTerrain.isChecked():
-            self.parent.drawTerrainImage(self.ui.hemisphere.p[0])
+            self.parentWindow.drawTerrainImage(self.ui.hemisphere.p[0])
         if self.ui.showMountLimits.isChecked():
-            self.parent.drawMeridianLimits(self.ui.hemisphere.p[0])
-            self.parent.drawHorizonLimits(self.ui.hemisphere.p[0])
+            self.parentWindow.drawMeridianLimits(self.ui.hemisphere.p[0])
+            self.parentWindow.drawHorizonLimits(self.ui.hemisphere.p[0])
         if self.ui.showIsoModel.isChecked():
             self.drawModelIsoCurve()
         self.setupAlignmentStars()

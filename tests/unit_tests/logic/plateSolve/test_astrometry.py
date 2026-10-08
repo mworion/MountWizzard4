@@ -15,17 +15,14 @@ from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(tmp_path_factory):
     files = glob.glob("tests/work/image/*.fit*")
     for f in files:
         os.remove(f)
-    for file in os.listdir("tests/work/temp"):
-        fileP = os.path.join("tests/work/temp", file)
-        if "temp" not in file:
-            continue
-        os.remove(fileP)
 
-    parent = PlateSolve(app=App())
+    app = App()
+    app.mwGlob["tempDir"] = tmp_path_factory.mktemp("solverTemp")
+    parent = PlateSolve(app=app)
     func = Astrometry(parent=parent)
     yield func
 

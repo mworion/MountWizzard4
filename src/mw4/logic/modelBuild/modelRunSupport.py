@@ -123,9 +123,7 @@ def findKeysSourceInDest(buildModel: list[dict], refModel: list[dict]) -> tuple[
     for buildPoint in buildModel:
         for mountPoint in refModel:
             dHA = refModel[mountPoint]["ha"] - buildModel[buildPoint]["ha"]
-            dHA = dHA / refModel[mountPoint]["ha"]
             dDEC = refModel[mountPoint]["dec"] - buildModel[buildPoint]["dec"]
-            dDEC = dDEC / refModel[mountPoint]["dec"]
 
             fitHA = abs(dHA) < 1e-4
             fitDEC = abs(dDEC) < 1e-4

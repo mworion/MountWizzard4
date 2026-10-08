@@ -267,6 +267,14 @@ def test_findKeysFromSourceInDest_3():
     assert 1 in val2
 
 
+def test_findKeysFromSourceInDest_4():
+    source = {1: {"ha": 0, "dec": 0}, 2: {"ha": 0.001, "dec": 0}}
+    dest = {1: {"ha": 0, "dec": 0}}
+    val1, val2 = findKeysSourceInDest(source, dest)
+    assert val1 == [1]
+    assert val2 == [2]
+
+
 def test_generateFileModelData_1():
     model = [
         {

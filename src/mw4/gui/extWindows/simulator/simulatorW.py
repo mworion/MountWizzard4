@@ -18,8 +18,9 @@ from mw4.gui.widgets import simulator_ui
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.Qt3DRender import Qt3DRender
-from PySide6.QtGui import QVector3D
+from PySide6.QtGui import QCloseEvent, QVector3D
 from PySide6.QtWidgets import QWidget
+from typing import Any
 
 
 class SimulatorWindow(MWidget):
@@ -48,8 +49,8 @@ class SimulatorWindow(MWidget):
         self.window3D.defaultFrameGraph().setClearColor("#00000000")
         self.container = QWidget.createWindowContainer(self.window3D)
         self.ui.simulator.addWidget(self.container)
-        self.camera = None
-        self.cameraController = None
+        self.camera: Any = None
+        self.cameraController: Any = None
         self.setupCamera(self.entityModel["root"]["entity"])
         self.createScene()
         self.setupRenderSortPolicy()
@@ -83,14 +84,14 @@ class SimulatorWindow(MWidget):
         config["showSlewPath"] = self.ui.showSlewPath.isChecked()
         config["showHorizon"] = self.ui.showHorizon.isChecked()
 
-    def closeEvent(self, closeEvent) -> None:
+    def closeEvent(self, event: QCloseEvent) -> None:
         self.app.dReg["mount"].signals.pointDone.disconnect(self.buildPoints.updatePositions)
         self.app.dReg["mount"].signals.pointDone.disconnect(self.laser.updatePositions)
         self.app.dReg["mount"].signals.pointDone.disconnect(self.pointer.updatePositions)
         self.app.dReg["mount"].signals.pointDone.disconnect(self.telescope.updateRotation)
         self.entityModel.clear()
         self.storeConfig()
-        super().closeEvent(closeEvent)
+        super().closeEvent(event)
 
     def showWindow(self) -> None:
         self.ui.topView.clicked.connect(self.topView)

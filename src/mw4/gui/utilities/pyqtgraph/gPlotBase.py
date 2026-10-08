@@ -27,7 +27,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.scatterItem: pg.ScatterPlotItem | None = None
         self.imageItem: pg.ImageItem | None = None
         self.barItem: pg.ColorBarItem | None = None
-        self.horizon = None
+        self.horizon: Any = None
         self.p: list = []
         self.p.append(self.addPlot(viewBox=CustomViewBox()))
         self.setupItems()

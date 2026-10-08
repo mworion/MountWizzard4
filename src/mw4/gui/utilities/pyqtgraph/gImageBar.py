@@ -11,8 +11,8 @@ from typing import Any
 class ImageBar(PlotBase):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-        self.lx = None
-        self.ly = None
+        self.lx: Any = None
+        self.ly: Any = None
         self.setupItems()
         self.addBarItem(interactive=True)
         self.barItem.setVisible(True)

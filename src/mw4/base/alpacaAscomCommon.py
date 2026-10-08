@@ -33,6 +33,7 @@ class AlpacaAscomCommon(DriverData):
     )
     # scode of ASCOM (Property|Method)NotImplementedException in a COM error
     ASCOM_NOT_IMPLEMENTED: int = 0x80040400
+    config: Any
     NEVER_BLOCKED: ClassVar[frozenset[str]] = frozenset({"Connected"})
 
     def __init__(self, parent: Any) -> None:

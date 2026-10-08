@@ -63,11 +63,11 @@ class MeasureWindow(MWidget):
         self.app.timeMgr.update1s.connect(self.setTitle)
         self.show()
 
-    def closeEvent(self, closeEvent: QCloseEvent) -> None:
+    def closeEvent(self, event: QCloseEvent) -> None:
         self.app.timeMgr.update1s.disconnect(self.drawMeasure)
         self.app.timeMgr.update1s.disconnect(self.setTitle)
         self.storeConfig()
-        super().closeEvent(closeEvent)
+        super().closeEvent(event)
 
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)

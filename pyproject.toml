@@ -185,4 +185,38 @@ max-complexity = 10
 project-includes = ["src/mw4"]
 project-excludes = ["src/mw4/gui/widgets/**"]
 python-version = "3.12"
+replace-imports-with-any = ["pythoncom", "win32com.*", "hid"]
+
+# per-path error kinds dominated by numpy / skyfield / astropy / Qt stub limits
+[[tool.pyrefly.sub-config]]
+matches = "src/mw4/mountcontrol/**"
+[tool.pyrefly.sub-config.errors]
+bad-argument-type = false
+unsupported-operation = false
+bad-assignment = false
+no-matching-overload = false
+bad-return = false
+
+[[tool.pyrefly.sub-config]]
+matches = "src/mw4/logic/**"
+[tool.pyrefly.sub-config.errors]
+bad-argument-type = false
+unsupported-operation = false
+no-matching-overload = false
+bad-index = false
+not-iterable = false
+bad-return = false
+
+[[tool.pyrefly.sub-config]]
+matches = "src/mw4/base/**"
+[tool.pyrefly.sub-config.errors]
+bad-assignment = false
+no-matching-overload = false
+
+[[tool.pyrefly.sub-config]]
+matches = "src/mw4/gui/**"
+[tool.pyrefly.sub-config.errors]
+not-callable = false
+no-matching-overload = false
+unsupported-operation = false
 

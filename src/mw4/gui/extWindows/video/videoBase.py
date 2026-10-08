@@ -10,7 +10,7 @@ from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import video_ui
 from PySide6.QtCore import QTimer, Signal
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QCloseEvent, QPixmap
 from PySide6.QtWidgets import QSizePolicy
 
 
@@ -34,9 +34,9 @@ class VideoWindowBase(MWidget):
         self.runningCounter: int = 0
         self.workerVideo: Worker | None = None
 
-    def closeEvent(self, closeEvent) -> None:
+    def closeEvent(self, event: QCloseEvent) -> None:
         self.stopVideo()
-        super().closeEvent(closeEvent)
+        super().closeEvent(event)
 
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)

@@ -9,12 +9,12 @@ from typing import Any
 
 class CustomViewBox(pg.ViewBox):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        self._previousGeometry = None
+        self._previousGeometry: Any = None
         super().__init__(*args, **kwargs)
-        self.plotDataItem = None
-        self.dragOffset = None
-        self.dragPoint = None
-        self.enableLimitX = None
+        self.plotDataItem: Any = None
+        self.dragOffset: Any = None
+        self.dragPoint: Any = None
+        self.enableLimitX: Any = None
         self.epsilonCurve = 2
         self.epsilonFree = 360
         self.setOpts(*args, **kwargs)
@@ -134,69 +134,69 @@ class CustomViewBox(pg.ViewBox):
         else:
             self.setYRange(yRange[0], yRange[1], update=True)
 
-    def mouseDragEvent(self, event: QEvent, axis=None) -> None:
+    def mouseDragEvent(self, ev: Any, axis: int | None = None) -> None:
         if self.plotDataItem is None:
-            super().mouseDragEvent(event)
+            super().mouseDragEvent(ev)
             return
 
-        if event.button() != Qt.MouseButton.LeftButton:
-            event.ignore()
+        if ev.button() != Qt.MouseButton.LeftButton:
+            ev.ignore()
             return
 
-        if event.isStart():
-            posScene = event.buttonDownScenePos()
+        if ev.isStart():
+            posScene = ev.buttonDownScenePos()
             pos = self.mapSceneToView(posScene)
             spot = self.plotDataItem.scatter.pointsAt(pos)
             if len(spot) == 0:
-                event.ignore()
+                ev.ignore()
                 return
             spot = spot[0]
             self.dragPoint = spot
             self.dragOffset = spot.pos() - pos
 
-        elif event.isFinish():
+        elif ev.isFinish():
             self.dragPoint = None
-            event.accept()
+            ev.accept()
             return
         else:
             if self.dragPoint is None:
-                event.ignore()
+                ev.ignore()
                 return
 
-        posScene = event.scenePos()
+        posScene = ev.scenePos()
         pos = self.mapSceneToView(posScene)
         posNew = pos + self.dragOffset
         index = self.dragPoint.index()
         data = self.plotDataItem.getData()
         x, y = self.checkLimits(data, index, posNew)
         self.updateData(x=x, y=y)
-        event.accept()
+        ev.accept()
 
-    def mouseClickEvent(self, event) -> None:
-        if self.plotDataItem is None and event.button() == Qt.MouseButton.RightButton:
+    def mouseClickEvent(self, ev: Any) -> None:
+        if self.plotDataItem is None and ev.button() == Qt.MouseButton.RightButton:
             self.rightMouseRange()
-            event.accept()
+            ev.accept()
             return
         elif self.plotDataItem is None:
-            super().mouseClickEvent(event)
+            super().mouseClickEvent(ev)
             return
 
-        posScene = event.scenePos()
+        posScene = ev.scenePos()
         pos = self.mapSceneToView(posScene)
         spot = self.plotDataItem.scatter.pointsAt(pos)
 
-        if event.button() == Qt.MouseButton.RightButton:
+        if ev.button() == Qt.MouseButton.RightButton:
             if len(spot) == 0:
                 self.rightMouseRange()
             else:
                 spot = spot[0]
                 ind = spot.index()
                 self.delUpdate(ind)
-            event.accept()
+            ev.accept()
             return
 
-        if event.button() == Qt.MouseButton.LeftButton:
-            posScene = event.scenePos()
+        if ev.button() == Qt.MouseButton.LeftButton:
+            posScene = ev.scenePos()
             pos = self.mapSceneToView(posScene)
             index = self.getCurveIndex(pos)
             if index is not None:
@@ -205,10 +205,10 @@ class CustomViewBox(pg.ViewBox):
                 index = self.getNearestPointIndex(pos)
                 if index is not None:
                     self.addUpdate(index, pos)
-            event.accept()
+            ev.accept()
             return
 
-        event.ignore()
+        ev.ignore()
         return
 
     def mouseDoubleClickEvent(self, event, QGraphicsSceneMouseEvent=None) -> None:

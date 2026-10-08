@@ -12,8 +12,8 @@ class NormalScatter(PlotBase):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.setupItems()
-        self.colorInx = None
-        self.col = None
+        self.colorInx: Any = None
+        self.col: Any = None
         self.p[0].setVisible(True)
 
     def setupRangeLimits(self, x: np.ndarray, y: np.ndarray, kwargs: dict) -> None:
@@ -92,7 +92,7 @@ class NormalScatter(PlotBase):
         else:
             self.scatterItem.addPoints(spots, tip=tip)
 
-    def plot(self, x: np.ndarray, y: np.ndarray, **kwargs: Any) -> None:
+    def plot(self, x: np.ndarray, y: np.ndarray, **kwargs: Any) -> bool | None:
         self.p[0].clear()
         self.p[0].showAxes(True, showValues=True)
         self.scatterItem = pg.ScatterPlotItem(hoverable=True, hoverSize=10, hoverPen=self.pen)

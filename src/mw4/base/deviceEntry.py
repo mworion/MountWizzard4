@@ -8,7 +8,7 @@ from typing import Any
 @dataclass
 class DeviceEntry:
     name: str
-    instance: Any | None
+    instance: Any
     deviceType: str | None
     isConfigurable: bool
     stat: bool | None = field(default=None)

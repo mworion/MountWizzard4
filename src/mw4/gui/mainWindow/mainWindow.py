@@ -20,6 +20,7 @@ from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.logic.profiles.profile import loadConfig, saveConfig
 from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path
+from PySide6.QtGui import QCloseEvent
 from skyfield.almanac import TWILIGHTS, dark_twilight_day
 
 
@@ -146,7 +147,7 @@ class MainWindow(MWidget):
         self.setupIcons()
         self.mainWindowAddons.updateColorSet()
 
-    def closeEvent(self, closeEvent) -> None:
+    def closeEvent(self, event: QCloseEvent) -> None:
         # stop running operations (e.g. a model build) before devices go down
         self.mainWindowAddons.shutdown()
         changeStyleDynamic(self.ui.pauseModel, "pause", False)
@@ -158,7 +159,7 @@ class MainWindow(MWidget):
                 f"Thread pool did not finish on close, "
                 f"active threads: [{self.threadPool.activeThreadCount()}]"
             )
-        super().closeEvent(closeEvent)
+        super().closeEvent(event)
 
     def quitSave(self) -> None:
         self.saveProfile()

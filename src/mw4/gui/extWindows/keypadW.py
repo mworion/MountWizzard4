@@ -9,7 +9,7 @@ from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import keypad_ui
 from mw4.logic.keypad.keypad import KeyPad
 from PySide6.QtCore import QObject, Signal
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QCloseEvent, QPixmap
 from qimage2ndarray import array2qimage
 
 
@@ -82,11 +82,11 @@ class KeypadWindow(MWidget):
         config = configMain["WindowKeypad"]
         self.getPositionWindow(config)
 
-    def closeEvent(self, closeEvent) -> None:
+    def closeEvent(self, event: QCloseEvent) -> None:
         self.storeConfig()
         self.keypad.closeWebsocket()
         self.websocketMutex.unlock()
-        super().closeEvent(closeEvent)
+        super().closeEvent(event)
 
     def keyPressEvent(self, keyEvent) -> None:
         key = keyEvent.key()

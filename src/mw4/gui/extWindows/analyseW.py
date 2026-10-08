@@ -8,7 +8,9 @@ from mw4.base.appProtocol import AppProtocol
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import analyse_ui
+from numpy.typing import DTypeLike
 from pathlib import Path
+from PySide6.QtGui import QCloseEvent
 from typing import Any
 
 
@@ -73,10 +75,10 @@ class AnalyseWindow(MWidget):
         config["showHorizon"] = self.ui.showHorizon.isChecked()
         config["linkViews"] = self.ui.linkViews.isChecked()
 
-    def closeEvent(self, closeEvent) -> None:
+    def closeEvent(self, event: QCloseEvent) -> None:
         self.storeConfig()
         self.ui.showISO.setChecked(False)
-        super().closeEvent(closeEvent)
+        super().closeEvent(event)
 
     def showWindow(self) -> None:
         self.show()
@@ -132,7 +134,7 @@ class AnalyseWindow(MWidget):
 
     @staticmethod
     def list2array(
-        values: Iterable[Any], fill: float = 0.0, dtype: np.dtype = np.float32
+        values: Iterable[Any], fill: float = 0.0, dtype: DTypeLike = np.float32
     ) -> np.ndarray:
 
         def _clean(v: Any) -> float:

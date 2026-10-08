@@ -18,6 +18,7 @@ from mw4.logic.fits.fitsFunction import getCoordinatesFromHeader, getImageHeader
 from mw4.logic.photometry.photometry import Photometry
 from mw4.mountcontrol.convert import convertToDMS, convertToHMS
 from pathlib import Path
+from PySide6.QtGui import QCloseEvent
 from skyfield.api import Angle
 from typing import ClassVar
 
@@ -138,9 +139,9 @@ class ImageWindow(MWidget):
         self.colorChange()
         self.show()
 
-    def closeEvent(self, closeEvent) -> None:
+    def closeEvent(self, event: QCloseEvent) -> None:
         self.storeConfig()
-        super().closeEvent(closeEvent)
+        super().closeEvent(event)
 
     def setupIcons(self) -> None:
         self.wIcon(self.ui.load, "load")

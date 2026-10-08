@@ -3,6 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 from mw4.base.appProtocol import AppProtocol
 from mw4.gui.extWindows.video.videoBase import VideoWindowBase
+from PySide6.QtGui import QCloseEvent
 
 
 class VideoWindow(VideoWindowBase):
@@ -33,7 +34,7 @@ class VideoWindow(VideoWindowBase):
         config["user"] = self.user
         config["password"] = self.password
 
-    def closeEvent(self, closeEvent) -> None:
+    def closeEvent(self, event: QCloseEvent) -> None:
         self.pixmapReady.disconnect(self.receivedImage)
         self.storeConfig()
-        super().closeEvent(closeEvent)
+        super().closeEvent(event)

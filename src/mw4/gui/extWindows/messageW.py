@@ -7,7 +7,7 @@ from mw4.base.appProtocol import AppProtocol
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import message_ui
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QBrush, QFont
+from PySide6.QtGui import QBrush, QCloseEvent, QFont
 from PySide6.QtWidgets import QTableWidgetItem
 
 
@@ -41,9 +41,9 @@ class MessageWindow(MWidget):
         config = configMain["WindowMessage"]
         self.getPositionWindow(config)
 
-    def closeEvent(self, closeEvent) -> None:
+    def closeEvent(self, event: QCloseEvent) -> None:
         self.storeConfig()
-        super().closeEvent(closeEvent)
+        super().closeEvent(event)
 
     def clearMessageTable(self) -> None:
         mesTab = self.ui.messageTable

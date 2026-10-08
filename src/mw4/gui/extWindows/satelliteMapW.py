@@ -11,6 +11,7 @@ from mw4.gui.utilities.qtGenerateSprites import makeSat
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import satelliteMap_ui
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QCloseEvent
 from skyfield.api import EarthSatellite, Timescale, wgs84
 from skyfield.toposlib import GeographicPosition
 
@@ -50,11 +51,11 @@ class SatelliteMapWindow(MWidget):
         config = configMain["WindowSatelliteMap"]
         self.getPositionWindow(config)
 
-    def closeEvent(self, closeEvent) -> None:
+    def closeEvent(self, event: QCloseEvent) -> None:
         self.storeConfig()
         self.app.showSatellite.disconnect(self.drawSatellite)
         self.app.updateSatellite.disconnect(self.updatePositions)
-        super().closeEvent(closeEvent)
+        super().closeEvent(event)
 
     def showWindow(self) -> None:
         self.app.colorChange.connect(self.colorChange)

@@ -10,6 +10,7 @@ from mw4.gui.extWindows.hemisphere.horizonDraw import HorizonDraw
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import hemisphere_ui
 from PySide6.QtCore import QPointF, Qt
+from PySide6.QtGui import QCloseEvent
 
 
 class HemisphereWindow(MWidget):
@@ -80,13 +81,13 @@ class HemisphereWindow(MWidget):
         config["azimuthShift"] = self.ui.azimuthShift.value()
         config["altitudeShift"] = self.ui.altitudeShift.value()
 
-    def closeEvent(self, closeEvent) -> None:
+    def closeEvent(self, event: QCloseEvent) -> None:
         self.ui.normalModeHem.setChecked(True)
         self.ui.normalModeHor.setChecked(True)
         self.storeConfig()
         self.hemisphereDraw.closeTab()
         self.horizonDraw.closeTab()
-        super().closeEvent(closeEvent)
+        super().closeEvent(event)
 
     def showWindow(self) -> None:
         self.app.colorChange.connect(self.colorChange)

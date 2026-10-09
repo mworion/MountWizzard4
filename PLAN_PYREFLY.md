@@ -58,6 +58,9 @@ In `[tool.pyrefly]` (pyproject.toml):
   as skyfield `.degrees` (`mountcontrol/satellite.py:305`).
 
 ## Phase 4 – Baseline and CI
+**Done:** pyrefly reports 0 errors, so no baseline file is needed. `uv run pyrefly check`
+is enabled in the lint job of `.github/workflows/unit_ubuntu.yml`.
+
 1. `uv run pyrefly check --baseline=pyrefly-baseline.json --update-baseline`
    and commit the file.
 2. Add `pyrefly check --baseline=...` to the existing lint step so only new
@@ -102,6 +105,7 @@ Phases 3–4.
 | Group 4 value types, `parentDevice` rename in measure, `MWidget.app: AppProtocol`, removed dead `websocketMutex.unlock()` in `KeypadWindow.closeEvent` (real bug: raised AttributeError on close) | done | 54 |
 | Group 1 stub gaps: `findItemByName -> Any`, `col[int(act)]`, `timeJD: Time`, targeted ignores for `ci.layout`, `plotItem.layout`, `step_days` | done | 35 |
 | Group 2 dynamic widget attributes: `RefractionEntry.group: QGroupBox`, `addons: dict[str, Any]`, `inputWidget: Any`, `saveWindowAsPNG(window: MWidget)`, ignores for `clickFilters` | done | 21 |
+| Group 3 Optionals: guards in `calcBackground`, `sendProgressValue`, `updateListColors`, `getTabIndex`, `slewStar` (real bug: floats passed as `Angle`); `str()` for `header.get`; rename in `kmRelay.set`; `hidControllerDevice: Any`; targeted ignores | done | 0 |
 
 Full suite after each step: 100 % coverage, Ruff clean.
 

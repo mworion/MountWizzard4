@@ -86,6 +86,7 @@ class FileHandler:
             return False
         if self.header is None:
             self.log.debug("No header data in FITS")
+            # pyrefly: ignore[bad-assignment]
             self.image = np.zeros((0, 0))
             return False
         if self.header.get("NAXIS") != 2:
@@ -142,7 +143,7 @@ class FileHandler:
             return
 
         self.cleanImageFormat()
-        bayerPattern = self.header.get("BAYERPAT", "").strip()
+        bayerPattern = str(self.header.get("BAYERPAT", "")).strip()
         if bayerPattern:
             self.debayerImage(bayerPattern)
             self.log.debug(f"Image has bayer pattern: {bayerPattern}")

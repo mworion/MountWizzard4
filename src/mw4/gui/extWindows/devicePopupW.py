@@ -204,6 +204,7 @@ class DevicePopup(MWidget):
         self.ui.tab.setCurrentIndex(tabIndex)
         frameworks = self.frameworksWithConfig()
         for index in range(self.ui.tab.count()):
+            # pyrefly: ignore[missing-attribute]
             isVisible = self.ui.tab.widget(index).objectName() in frameworks
             self.ui.tab.setTabVisible(index, isVisible)
 
@@ -237,6 +238,7 @@ class DevicePopup(MWidget):
 
     def readFramework(self) -> None:
         index = self.ui.tab.currentIndex()
+        # pyrefly: ignore[missing-attribute]
         self.framework = self.ui.tab.widget(index).objectName()
 
     def readTabs(self) -> None:

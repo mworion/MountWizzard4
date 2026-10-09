@@ -27,7 +27,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 from qimage2ndarray import array2qimage, rgb_view
-from skyfield.api import Angle
+from typing import Any
 
 
 def changeStyleDynamic(widget: QWidget, widgetProperty: str, value: str | bool) -> None:
@@ -54,7 +54,7 @@ def findIndexValue(ui: QComboBox, searchString: str, relaxed: bool = False) -> i
     return 0
 
 
-def guiSetText(ui: QLineEdit, formatElement: str, value: float | Angle | str | bool | None) -> None:
+def guiSetText(ui: QLineEdit, formatElement: str, value: Any) -> None:
     if value is None:
         text = ""
     elif formatElement.startswith("HSTR"):
@@ -142,6 +142,8 @@ def svg2icon(svgFileName: str, color: list[int]) -> QIcon:
 
 def getTabIndex(tab: QTabWidget, name: str) -> int:
     tabWidget = tab.findChild(QWidget, name)
+    if tabWidget is None:
+        return -1
     tabIndex = tab.indexOf(tabWidget)
     return tabIndex
 
@@ -149,6 +151,7 @@ def getTabIndex(tab: QTabWidget, name: str) -> int:
 def getTabAndIndex(tab: QTabWidget, config: dict, name: str) -> None:
     config[name] = {"index": tab.currentIndex()}
     for index in range(tab.count()):
+        # pyrefly: ignore[missing-attribute]
         config[name][f"{index:02d}"] = tab.widget(index).objectName()
 
 

@@ -70,7 +70,8 @@ class MessageWindow(MWidget):
         for row in range(self.ui.messageTable.rowCount()):
             for col in range(self.ui.messageTable.columnCount()):
                 item = self.ui.messageTable.item(row, col)
-                item.setForeground(self.messColor[0])
+                if item is not None:
+                    item.setForeground(self.messColor[0])
 
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)

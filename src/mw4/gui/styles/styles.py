@@ -129,7 +129,9 @@ class Styles:
 
     def convertColorMap2Alpha(self, colorMap: str) -> pg.ColorMap:
         cmap = pg.colormap.get(colorMap)
+        # pyrefly: ignore[missing-attribute]
         col = cmap.color
+        # pyrefly: ignore[missing-attribute]
         pos = cmap.pos
         rgba_colors = col.copy()
         rgba_colors[:, 3] = self.transparency

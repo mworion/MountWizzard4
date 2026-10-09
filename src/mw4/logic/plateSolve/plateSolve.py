@@ -36,7 +36,7 @@ class PlateSolve:
         self.signals = Signals()
         self.solveQueue: queue.Queue = queue.Queue()
         self.solveLoopRunning: bool = False
-        self.workerSolveLoop: Worker = Worker(self.runnerSolveLoop)
+        self.workerSolveLoop: Worker | None = Worker(self.runnerSolveLoop)
         self.process: subprocess.Popen | None = None
         self.data: dict[str, Any] = {}
         self.framework: str = ""

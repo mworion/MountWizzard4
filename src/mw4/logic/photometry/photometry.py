@@ -143,6 +143,8 @@ class Photometry:
             self.signals.sources.emit()
 
     def calcBackground(self) -> None:
+        if self.bkg is None:
+            return
         res = computeBackground(self.geom, self.backSignal, self.bkg.globalback)
         self.background = res.background
         self.backgroundMin = res.backgroundMin

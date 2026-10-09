@@ -377,6 +377,8 @@ class HemisphereDraw(MWidget):
         hip = self.app.hipparcos
         name = hip.name[index]
         ra, dec = hip.getAlignStarRaDecFromName(hip.name[index])
+        if ra is None or dec is None:
+            return
 
         question = "<b>Polar / Ortho Alignment procedure</b>"
         question += "<br>Selected alignment star: "
@@ -401,7 +403,9 @@ class HemisphereDraw(MWidget):
 
         t = f"Align [{alignType}] to [{name}]"
         self.msg.emit(1, "Hemisphere", "Align", t)
-        self.slewInterface.slewTargetRaDec(ra, dec, slewType=alignType, epoch="JNow")
+        self.slewInterface.slewTargetRaDec(
+            Angle(hours=ra), Angle(degrees=dec), slewType=alignType, epoch="JNow"
+        )
 
     def mouseDoubleClick(self, _: MouseClickEvent, posView: QPointF) -> None:
         if self.ui.alignmentModeHem.isChecked():

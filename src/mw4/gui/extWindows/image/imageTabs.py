@@ -93,7 +93,7 @@ class ImageTabs:
         self.ui.image.showCrosshair(self.ui.showCrosshair.isChecked())
 
     def writeHeaderDataToGUI(self, header: fits.Header) -> None:
-        guiSetText(self.ui.object, "s", header.get("OBJECT", "").upper())
+        guiSetText(self.ui.object, "s", str(header.get("OBJECT", "")).upper())
         ra, dec = getCoordinatesFromHeader(header=header)
         guiSetText(self.ui.ra, "HSTR", ra)
         # pyrefly: ignore[bad-argument-type]

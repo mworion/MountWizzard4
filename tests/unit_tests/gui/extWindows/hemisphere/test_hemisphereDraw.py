@@ -334,6 +334,27 @@ def test_slewStar_2(function):
         function.slewStar(QPointF(1, 1))
 
 
+def test_slewStar_unknownStar(function):
+    class Spot:
+        @staticmethod
+        def index():
+            return 0
+
+    function.app.hipparcos.name = ["test"]
+    function.alignmentStars = pg.ScatterPlotItem(x=[0, 1, 2], y=[0, 1, 2])
+    with (
+        mock.patch.object(function.alignmentStars, "pointsAt", return_value=[Spot()]),
+        mock.patch.object(
+            function.app.hipparcos, "getAlignStarRaDecFromName", return_value=(None, None)
+        ),
+        mock.patch(
+            "mw4.gui.extWindows.hemisphere.hemisphereDraw.MWMessageDialog.question"
+        ) as mockQuestion,
+    ):
+        function.slewStar(QPointF(1, 1))
+        mockQuestion.assert_not_called()
+
+
 def test_slewStar_3(function):
     class Spot:
         @staticmethod

@@ -52,8 +52,7 @@ jobs:
         run: |
           uv run ruff format --check src tests
           uv run ruff check src tests
-          # type check (rec 10 / P4 phase 4) - enable once pyrefly reports clean
-          # uv run pyrefly check
+          uv run pyrefly check
         
   run_tests_ubuntu_0:
     needs: build_package

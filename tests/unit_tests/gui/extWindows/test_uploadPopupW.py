@@ -76,6 +76,12 @@ def test_sendProgressValue(function):
     function.sendProgressValue("12")
 
 
+def test_sendProgressValue_noDigits(function):
+    function.signalProgress = mock.Mock()
+    function.sendProgressValue("no digits")
+    function.signalProgress.emit.assert_not_called()
+
+
 def test_pollDispatcherHelper(function):
     text = "Processing"
     function.pollDispatcherHelper(text)

@@ -40,7 +40,7 @@ class HidController:
         self.threadPool = app.threadPool
         self.signals = HidControllerSignals()
         self.deviceConnected: bool = False
-        self.hidControllerDevice = None
+        self.hidControllerDevice: Any = None
         self.data: dict[str, Any] = {}
         self.framework: str = "hid"
         self.run: dict[str, Any] = {"hid": self}

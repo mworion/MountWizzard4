@@ -55,6 +55,11 @@ def test_updateListColors(function):
     function.updateListColors()
 
 
+def test_updateListColors_emptyCell(function):
+    function.ui.messageTable.setRowCount(1)
+    function.updateListColors()
+
+
 def test_colorChange(function):
     with (
         mock.patch.object(function, "setupMessage"),

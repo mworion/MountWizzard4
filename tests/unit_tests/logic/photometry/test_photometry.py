@@ -95,6 +95,11 @@ def test_showTabBackground(function):
     function.calcBackground()
 
 
+def test_calcBackground_noBackground(function):
+    function.bkg = None
+    function.calcBackground()
+
+
 def test_showTabBackgroundRMS(function):
     function.geom = makeGeom()
     function.backRMS = np.random.rand(100, 100) + 1

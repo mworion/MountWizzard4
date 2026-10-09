@@ -221,6 +221,11 @@ def test_getTabIndex(function):
     assert index == 1
 
 
+def test_getTabIndex_unknownName(function):
+    widget = QTabWidget()
+    assert getTabIndex(widget, "unknown") == -1
+
+
 def test_setTabAndIndex_1(function):
     widget = QTabWidget()
     config = {"test": 0}

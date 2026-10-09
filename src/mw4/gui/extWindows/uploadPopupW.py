@@ -100,7 +100,10 @@ class UploadPopup(MWidget):
         self.ui.statusText.setText(statusText)
 
     def sendProgressValue(self, text: str) -> None:
-        progressValue = int(re.search(r"\d+", text).group())
+        match = re.search(r"\d+", text)
+        if match is None:
+            return
+        progressValue = int(match.group())
         self.signalProgress.emit(progressValue)
 
     def pollDispatcherHelper(self, text: str) -> None:

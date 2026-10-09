@@ -168,6 +168,6 @@ class KMRelay:
     def set(self, relayNumber: int, value: bool) -> None:
         self.log.debug(f"Set relay:{relayNumber}")
         byteOn = self.getByte(relayNumber=relayNumber, state=value)
-        value = self.getRelay(f"/FFE0{byteOn:02X}")
-        if value is None or value.reason != "OK":
+        response = self.getRelay(f"/FFE0{byteOn:02X}")
+        if response is None or response.reason != "OK":
             self.log.warning(f"Relay:{relayNumber}")

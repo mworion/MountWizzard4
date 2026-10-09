@@ -7,7 +7,7 @@ from functools import partial
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
 from PySide6.QtCore import Signal
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QGroupBox
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 @dataclass
 class RefractionEntry:
-    group: QWidget
+    group: QGroupBox
     data: dict
     signals: Signal
     uiPost: str

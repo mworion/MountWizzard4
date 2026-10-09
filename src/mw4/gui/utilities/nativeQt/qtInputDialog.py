@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+from typing import Any
 
 
 class MWInputDialog(MWidget):
@@ -70,7 +71,7 @@ class MWInputDialog(MWidget):
             parsedValue = str(actualValue) if actualValue else ""
 
         if self.inputMode == "int":
-            self.inputWidget = QSpinBox()
+            self.inputWidget: Any = QSpinBox()
             self.inputWidget.setMinimum(int(self.minValue))
             self.inputWidget.setMaximum(int(self.maxValue))
             self.inputWidget.setSingleStep(self.step)

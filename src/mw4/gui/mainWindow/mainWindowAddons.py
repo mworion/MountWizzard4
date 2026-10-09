@@ -1,7 +1,6 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
-from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.mainWaddon.tabAlmanac import Almanac
 from mw4.gui.mainWaddon.tabAsteroid import Asteroid
 from mw4.gui.mainWaddon.tabComet import Comet
@@ -24,7 +23,7 @@ from mw4.gui.mainWaddon.tabSat_Search import SatSearch
 from mw4.gui.mainWaddon.tabSat_Track import SatTrack
 from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
 from mw4.gui.mainWaddon.tabTools_Rename import Rename
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from mw4.gui.mainWindow.mainWindow import MainWindow
@@ -35,7 +34,7 @@ class MainWindowAddons:
         self.mainW = mainW
         self.app = mainW.app
 
-        self.addons: dict[str, TabAddon] = {
+        self.addons: dict[str, Any] = {
             "Almanac": Almanac(mainW),
             "Asteroid": Asteroid(mainW),
             "BuildPoints": BuildPoints(mainW),

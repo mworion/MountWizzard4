@@ -12,6 +12,7 @@ from pathlib import Path
 from scipy.spatial import distance
 from skyfield import almanac
 from skyfield.api import Angle, Star, Timescale
+from skyfield.timelib import Time
 from skyfield.toposlib import GeographicPosition
 
 
@@ -418,7 +419,7 @@ class BuildPoint:
         self,
         ha: Angle,
         dec: Angle,
-        timeJD: float,
+        timeJD: Time,
         location: GeographicPosition,
         numberPoints: int,
         keep: bool = False,
@@ -432,6 +433,7 @@ class BuildPoint:
         endTime = ts.tt_jd(timeJD.tt + 1.1)
         eph = self.app.ephemeris
         f = almanac.risings_and_settings(eph, star, location)
+        # pyrefly: ignore[missing-attribute]
         f.step_days = 0.08
         t, y = almanac.find_discrete(startTime, endTime, f)
 

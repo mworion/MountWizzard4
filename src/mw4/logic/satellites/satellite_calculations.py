@@ -109,6 +109,7 @@ def calcSatelliteMeridianTransit(
         delta = (az.degrees + tolerance + 360) % 360 - 180
         return delta < 0
 
+    # pyrefly: ignore[missing-attribute]
     westOfMeridianAt.step_days = 0.4
     return westOfMeridianAt
 

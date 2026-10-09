@@ -154,13 +154,17 @@ class HemisphereWindow(MWidget):
         plotItem.clear()
         showPolar = self.ui.showPolar.isChecked()
         if not showPolar:
+            # pyrefly: ignore[missing-attribute]
             self.ui.hemisphere.ci.layout.setColumnStretchFactor(0, 17)
+            # pyrefly: ignore[missing-attribute]
             self.ui.hemisphere.ci.layout.setColumnStretchFactor(1, 0)
             plotItem.setVisible(False)
             return
 
         plotItem.setVisible(True)
+        # pyrefly: ignore[missing-attribute]
         self.ui.hemisphere.ci.layout.setColumnStretchFactor(0, 17)
+        # pyrefly: ignore[missing-attribute]
         self.ui.hemisphere.ci.layout.setColumnStretchFactor(1, 10)
         plotItem.showAxes(False, showValues=False)
         plotItem.setMouseEnabled(x=False, y=False)

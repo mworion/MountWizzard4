@@ -238,7 +238,7 @@ class HemisphereDraw(MWidget):
         )
         for i, (alt, az, act) in enumerate(self.app.buildPoint.buildP):
             col = [self.M_TER, self.M_RED, self.M_GREEN]
-            colActive = col[act]
+            colActive = col[int(act)]
             color = self.M_PINK if isEdit else colActive
             text = f"{i:02d}"
             textItem = pg.TextItem(anchor=(0.5, 1.1))

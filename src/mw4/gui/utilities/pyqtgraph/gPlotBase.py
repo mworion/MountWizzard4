@@ -74,8 +74,8 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         for side in ("left", "top", "right", "bottom"):
             self.barItem.getAxis(side).setPen(self.pen)
             self.barItem.getAxis(side).setTextPen(self.pen)
-        plotItem.layout.addItem(self.barItem, 2, 5)
-        plotItem.layout.setColumnFixedWidth(4, 5)
+        plotItem.layout.addItem(self.barItem, 2, 5)  # pyrefly: ignore[missing-attribute]
+        plotItem.layout.setColumnFixedWidth(4, 5)  # pyrefly: ignore[missing-attribute]
 
     @staticmethod
     def toPolar(az: ArrayLike, alt: ArrayLike) -> tuple:
@@ -87,7 +87,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         return x, y
 
     @staticmethod
-    def findItemByName(plotItem: pg.PlotItem, name: str) -> pg.GraphicsObject | None:
+    def findItemByName(plotItem: pg.PlotItem, name: str) -> Any:
         for item in plotItem.items:
             if hasattr(item, "nameStr") and item.nameStr == name:
                 return item

@@ -134,7 +134,7 @@ class MWidget(QMainWindow, Styles):
                 widget.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
     @staticmethod
-    def saveWindowAsPNG(window: QWidget) -> None:
+    def saveWindowAsPNG(window: "MWidget") -> None:
         name = window.windowTitle().replace(" ", "_")
         timeTrigger = datetime.datetime.now(datetime.UTC)
         timeTag = timeTrigger.strftime("%Y-%m-%d-%H-%M-%S")
@@ -143,7 +143,7 @@ class MWidget(QMainWindow, Styles):
         window.log.info(f"Screenshot: [{fullFileName}]")
         window.grab().save(fullFileName)
 
-    def saveAllWindowsAsPNG(self, window: QWidget) -> None:
+    def saveAllWindowsAsPNG(self, window: "MWidget") -> None:
         windows = window.app.mainW.externalWindows.uiWindows
         self.saveWindowAsPNG(window)
         for windowKey in windows:

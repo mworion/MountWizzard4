@@ -94,7 +94,9 @@ def clickable(widget: QWidget) -> SignalInstance:
     clickEventFilter = MouseClickEventFilter(widget)
     widget.installEventFilter(clickEventFilter)
     if not hasattr(widget, "clickFilters"):
+        # pyrefly: ignore[missing-attribute]
         widget.clickFilters = []
+    # pyrefly: ignore[missing-attribute]
     widget.clickFilters.append(clickEventFilter)
     return clickEventFilter.clicked
 

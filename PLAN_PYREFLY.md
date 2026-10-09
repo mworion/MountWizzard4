@@ -100,6 +100,8 @@ Phases 3–4.
 | `tpool`: `setupWorker -> Worker`, `if worker is None` narrowing | done | 85 |
 | `NormalScatter.plot` / `PolarScatter.plot`: `np.asarray` inputs, `setGrid(y: ArrayLike)` | done | 74 |
 | Group 4 value types, `parentDevice` rename in measure, `MWidget.app: AppProtocol`, removed dead `websocketMutex.unlock()` in `KeypadWindow.closeEvent` (real bug: raised AttributeError on close) | done | 54 |
+| Group 1 stub gaps: `findItemByName -> Any`, `col[int(act)]`, `timeJD: Time`, targeted ignores for `ci.layout`, `plotItem.layout`, `step_days` | done | 35 |
+| Group 2 dynamic widget attributes: `RefractionEntry.group: QGroupBox`, `addons: dict[str, Any]`, `inputWidget: Any`, `saveWindowAsPNG(window: MWidget)`, ignores for `clickFilters` | done | 21 |
 
 Full suite after each step: 100 % coverage, Ruff clean.
 

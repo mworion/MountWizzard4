@@ -59,7 +59,7 @@ In `[tool.pyrefly]` (pyproject.toml):
 
 ## Phase 4 – Baseline and CI
 **Done:** pyrefly reports 0 errors, so no baseline file is needed. `uv run pyrefly check`
-is enabled in the lint job of `.github/workflows/unit_ubuntu.yml`.
+is enabled in the lint job of `../../.github/workflows/unit_ubuntu.yml`.
 
 1. `uv run pyrefly check --baseline=pyrefly-baseline.json --update-baseline`
    and commit the file.
@@ -75,7 +75,7 @@ is enabled in the lint job of `.github/workflows/unit_ubuntu.yml`.
 
 ## Constraints (project rules)
 - camelCase, full type annotations, no leading-underscore helpers, no
-  `# pragma: no cover`, do not touch `src/mw4/gui/widgets`, no new features.
+  `# pragma: no cover`, do not touch `../../src/mw4/gui/widgets`, no new features.
 
 ## Expected result
 625 → roughly 250 after Phases 1–2, → 0 reported (new errors only) after

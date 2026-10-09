@@ -29,13 +29,29 @@ to a filename substring check. This can delete unrelated local files in that
 directory when the tests run. Prefer isolated temporary directories or cleanup
 limited to files created by each fixture.
 
+## Changes since review (pyrefly cleanup)
+
+- Type fixes: signatures aligned with Qt/pyqtgraph parents (`closeEvent`,
+  mouse events), `Any` for lifecycle attributes, `parent` shadowing renamed
+  (`parentWindow`, `parentDevice`), `MWidget.app: AppProtocol`.
+- Targeted `# pyrefly: ignore[...]` for third-party stub gaps; per-path
+  sub-configs in `pyproject.toml`.
+- Real bugs fixed (tests added):
+  - `KeypadWindow.closeEvent` called a removed `websocketMutex`.
+  - `hemisphereDraw.slewStar` passed floats where `Angle` was required.
+  - `Remote.stopCommunication`, `chooseSatellite`, `updatePositions`,
+    `calcBackground`, `sendProgressValue`, `updateListColors`, `getTabIndex`
+    lacked `None` guards.
+- CI: `uv run pyrefly check` enabled in `.github/workflows/unit_ubuntu.yml`.
+
 ## Validation
 
 - `uv run ruff format --check src tests`: passed.
 - `uv run ruff check src tests`: passed.
-- `uv run pytest tests/unit_tests`: **4,844 passed, 38 skipped**.
-- `uv run pyrefly check`: reported **627 errors**. The check is currently
-  commented out in the Ubuntu CI workflow.
+- `uv run pytest tests/unit_tests`: **4,853 passed, 38 skipped**, 100% coverage.
+- `uv run pyrefly check`: initially reported **627 errors**; now **0 errors**
+  (see `archive/2026-10-09-plan-pyrefly.md`). The check is enabled in the lint
+  job of the Ubuntu CI workflow.
 - A default `uv run pytest` run showed failures in `../../tests/stress_tests` and was
   stopped before completion; those failures were not diagnosed.
 

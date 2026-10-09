@@ -20,7 +20,7 @@ class MeasureDataRaw(PySide6.QtCore.QObject):
         super().__init__()
 
         self.app = app
-        self.parent = parent
+        self.parentDevice = parent
         self.data = parent.data
         self.config = DeviceConfigMeasureRaw()
         self.timerTask = PySide6.QtCore.QTimer()
@@ -28,7 +28,7 @@ class MeasureDataRaw(PySide6.QtCore.QObject):
         self.timerTask.timeout.connect(self.measureTask)
 
     def startCommunication(self) -> None:
-        self.timerTask.start(self.parent.CYCLE_UPDATE_TASK)
+        self.timerTask.start(self.parentDevice.CYCLE_UPDATE_TASK)
 
     def stopCommunication(self) -> None:
         self.timerTask.stop()
@@ -46,4 +46,4 @@ class MeasureDataRaw(PySide6.QtCore.QObject):
             mount pointing position
 
         """
-        self.parent.measureTask()
+        self.parentDevice.measureTask()

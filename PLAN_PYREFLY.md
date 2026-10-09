@@ -94,30 +94,47 @@ Phases 3–4.
 | Targeted `# pyrefly: ignore[...]` for 3rd-party stub gaps (astropy `HDUList`, skyfield `reify`/`lazyproperty`/`Satrec`, pyqtgraph `PlotItem`, `ctypes.windll`, ...) | done | 145 |
 | Pattern A: lifecycle attributes typed `Any` (`PlotBase` items, `SatData.satellites`); no runtime change | done | 113 |
 | Pattern B: `Remote.stopCommunication` guard for `tcpServer is None` (+ test), `clientConnection` / `VideoBase.capture` typed `Any` | done | 100 |
+| Pattern C: `chooseSatellite` guard (real bug: no row selected), `updatePositions` guard, `satellite` passed explicitly to `drawEarth*` | done | 94 |
+| `tabSat_Search.setListSatsEntry`: `entry: QTableWidgetItem` | done | 91 |
+| `remote.py`: dead `nextBlockSize` assignment removed | done | 90 |
+| `tpool`: `setupWorker -> Worker`, `if worker is None` narrowing | done | 85 |
+| `NormalScatter.plot` / `PolarScatter.plot`: `np.asarray` inputs, `setGrid(y: ArrayLike)` | done | 74 |
+| Group 4 value types, `parentDevice` rename in measure, `MWidget.app: AppProtocol`, removed dead `websocketMutex.unlock()` in `KeypadWindow.closeEvent` (real bug: raised AttributeError on close) | done | 54 |
 
 Full suite after each step: 100 % coverage, Ruff clean.
 
-### Findings on the remaining `NoneType` errors
-Most are not crash paths: the attribute is `None` only until a start-up
-step (setup, `startVideo`, `addConnection`), and the code only runs after
-it. The types did not express this order. Fixes are therefore split:
-- pattern A (type annotation only, no behavior change): done
-- pattern B (real guard where a call before start would fail): done, only
-  `Remote.stopCommunication` was a real hole
-- pattern C (entry points that need a selected satellite, `satelliteMapW`,
-  `tabSat_Track`): open, check first whether a timer can fire early
-- pattern D (single cases, e.g. `tpool.startWorker`, `devicePopupW`,
-  `imageW`, `styles`, `fileHandler`, `hidController`, `photometry`): open
+### Findings on the earlier `NoneType` errors
+Most were not crash paths: the attribute is `None` only until a start-up
+step, and the code only runs after it; the types did not express this
+order. Handled by annotation only (pattern A/B), plus real guards where a
+call before start can fail (`Remote.stopCommunication`,
+`chooseSatellite`, `updatePositions`).
 
-### What is left (100 errors)
-- 61 `missing-attribute`, of which 24 are `NoneType` (patterns C and D);
-  the rest are Qt/mixin attributes (`FunctionType`, `QWidget`, `TabAddon`,
-  `list`).
-- 25 `bad-argument-type`, 6 `unexpected-keyword`, 3 `bad-argument-count`
-  (PySide `setData`, pyqtgraph kwargs), 4 `bad-assignment`, 1 `bad-index`.
+### What is left (74 errors, by cause)
+1. Shadowed or stub-mismatched Qt/pyqtgraph members (about 26)
+   - `hemisphereDraw` 12: pyqtgraph `setData(x=, y=)` / `setPos` resolved
+     to `QGraphicsItem` stubs (kwargs, missing `key`/`value`).
+   - `ci.layout` seen as a method: `hemisphereW` 4, `gPlotBase` 2.
+   - `self.parent` shadowing: `measureCSV` 2, `measureRaw` 2, and
+     `uploadPopupW`/`downloadPopupW`/`keypadW` (`list` has no `msg`,
+     `threadPool`, `unlock`).
+   - `step_days` (`buildpoints`, `satellite_calculations`): skyfield stub.
+   Proposal: rename shadowing attributes (like `parentWindow`), targeted
+   ignores for pure stub gaps.
+2. Dynamic attributes on Qt widgets (about 14): `qtHelpers.clickFilters`,
+   `qtMain.app/log`, `tabEnviron_Weather`, `mainWindow` `TabAddon`
+   members, `qtInputDialog` union. Proposal: declare the attributes or
+   use a typed helper/`cast`.
+3. Real Optionals (about 12): `devicePopupW`, `styles`, `imageTabs`,
+   `messageW`, `fileHandler`, `hidController`, `photometry`,
+   `plateSolve`, `kmRelay`. Proposal: review each; add guards with tests
+   where the value can really be `None`.
+4. Value type mismatches (about 12): `buildPoints` status `float` vs
+   `int`, `tabModel` (tuple vs list, `numberRetries` float), `measureW`,
+   `tabTools_Rename` (`str` vs `Path`), `simulatorW` node type,
+   `timeManager`, `horizonDraw`, `gPlotBase.brush` (`QPen` stored as
+   `QBrush`). Proposal: annotation fixes or explicit `int()` / `Path()`.
 
 ### Remaining work
-1. Pattern C and D (review case by case, guards need tests for 100 %
-   coverage).
-2. Qt/pyqtgraph kwargs and `setData` findings: targeted ignores or casts.
-3. Phase 4: baseline file and CI step.
+1. Group 4 and group 1 (parent renames), then group 2 and 3.
+2. Phase 4: baseline file and CI step.

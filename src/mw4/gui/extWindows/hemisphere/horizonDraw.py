@@ -156,8 +156,8 @@ class HorizonDraw(MWidget):
     def updateDataHorizonPoints(self, x: list, y: list) -> None:
         hp = [[y, x] for y, x in zip(y, x, strict=True)]
         hp.sort(key=lambda s: x[1]) if len(x) > 1 else x
-        y, x = zip(*hp, strict=True)
-        self.horizonPlot.setData(x=x, y=y)
+        ys, xs = zip(*hp, strict=True)
+        self.horizonPlot.setData(x=xs, y=ys)
         self.app.buildPoint.horizonP = hp
         self.drawTab()
 

@@ -78,7 +78,7 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
         super().__init__()
 
         self.app = app
-        self.parent = parent
+        self.parentDevice = parent
         self.data = parent.data
         self.config = DeviceConfigMeasureCSV()
         self.config.deviceName = "CSV to file"
@@ -105,7 +105,7 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
             csvWriter.writerow(row)
 
     def startCommunication(self) -> None:
-        self.timerTask.start(self.parent.CYCLE_UPDATE_TASK)
+        self.timerTask.start(self.parentDevice.CYCLE_UPDATE_TASK)
         nameTime = self.app.dReg["mount"].timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         self.csvFilename = self.app.mwGlob["measureDir"] / f"measure-{nameTime}.csv"
         self.writeHeaderCSV()
@@ -114,5 +114,5 @@ class MeasureDataCSV(PySide6.QtCore.QObject):
         self.timerTask.stop()
 
     def measureTask(self) -> None:
-        self.parent.measureTask()
+        self.parentDevice.measureTask()
         self.writeCSV()

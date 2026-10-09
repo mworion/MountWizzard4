@@ -179,7 +179,7 @@ class SimulatorBuildPoints:
         isSlewPath = self.parent.ui.showSlewPath.isChecked()
 
         for index, point in enumerate(self.app.buildPoint.buildP):
-            status = point[2]
+            status = int(point[2])
             e, x, y, z = self.createPoint(
                 buildPointEntity, np.radians(point[0]), np.radians(-point[1]), status
             )

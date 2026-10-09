@@ -262,7 +262,7 @@ class Model(TabAddon):
         self.modelData.modelName = imageDir.stem
         return ModelRunConfig(
             imageDir=imageDir,
-            numberRetries=self.ui.numberBuildRetries.value(),
+            numberRetries=int(self.ui.numberBuildRetries.value()),
             retriesReverse=self.ui.retriesReverse.isChecked(),
             waitTimeExposure=self.ui.waitTimeExposure.value(),
             modelTiming=self.getModelTiming(),

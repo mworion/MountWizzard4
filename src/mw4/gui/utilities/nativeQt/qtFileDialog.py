@@ -319,7 +319,7 @@ class MWFileDialog(MWidget):
         cls,
         parent: QWidget | None,
         title: str,
-        folder: Path,
+        folder: Path | str,
     ) -> Path:
         dlg = cls(
             parent=parent,

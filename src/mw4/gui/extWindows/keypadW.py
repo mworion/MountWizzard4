@@ -85,7 +85,6 @@ class KeypadWindow(MWidget):
     def closeEvent(self, event: QCloseEvent) -> None:
         self.storeConfig()
         self.keypad.closeWebsocket()
-        self.websocketMutex.unlock()
         super().closeEvent(event)
 
     def keyPressEvent(self, keyEvent) -> None:

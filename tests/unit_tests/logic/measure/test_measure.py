@@ -185,7 +185,7 @@ def measureDataRaw():
 def test_measureDataRawInit(measureDataRaw):
     raw, app, parent, data = measureDataRaw
     assert raw.app == app
-    assert raw.parent == parent
+    assert raw.parentDevice == parent
     assert raw.data == data
     assert raw.config.deviceName == "RAW display"
     assert hasattr(raw, "config")
@@ -224,7 +224,7 @@ def measureDataCSV():
 def test_measureDataCSVInit(measureDataCSV):
     csv, app, parent, data = measureDataCSV
     assert csv.app == app
-    assert csv.parent == parent
+    assert csv.parentDevice == parent
     assert csv.data == data
     assert csv.config.deviceName == "CSV to file"
     assert hasattr(csv, "config")

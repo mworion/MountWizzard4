@@ -19,7 +19,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         pg.setConfigOptions(antialias=True, imageAxisOrder="row-major")
         self.pen: QPen = pg.mkPen(color=self.M_PRIM, width=1)
         self.penPink: QPen = pg.mkPen(color=self.M_PINK, width=1)
-        self.brush: QBrush = pg.mkPen(color=self.M_SEC)
+        self.brush: QBrush = pg.mkBrush(color=self.M_SEC)
         self.penGrid: QPen = pg.mkPen(color=self.M_SEC)
         self.brushGrid: QBrush = pg.mkBrush(color=self.rgb2hex(self.M_PRIM))
         self.penHorizon: QPen = pg.mkPen(color=self.rgb2hex(self.M_PRIM), width=1)

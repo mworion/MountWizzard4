@@ -119,7 +119,7 @@ class SimulatorWindow(MWidget):
         self.cameraController.setLookSpeed(90)
 
     def findFrameGraphNode(
-        self, node: Qt3DRender.QFrameGraphNode, nodeType: type
+        self, node: Qt3DCore.QNode, nodeType: type
     ) -> Qt3DRender.QFrameGraphNode | None:
         if isinstance(node, nodeType):
             return node  # type: ignore[return-value]

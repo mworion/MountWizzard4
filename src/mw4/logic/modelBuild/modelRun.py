@@ -37,7 +37,7 @@ class ModelData(QObject):
         self.pauseBatch: bool = False
         self.endBatch: bool = False
         self.config = ModelRunConfig()
-        self.modelInputData: list[tuple[float, float]] = []
+        self.modelInputData: list[list[float]] = []
         self.modelBuildData: dict[str, dict[str, Any]] = {}
         self.modelRunList: list[str] = []
         self.modelRunIterator: Iterator[str] | None = None

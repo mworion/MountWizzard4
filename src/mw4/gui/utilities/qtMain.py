@@ -4,6 +4,7 @@
 import datetime
 import logging
 import platform
+from mw4.base.appProtocol import AppProtocol
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtCustomWindow import CustomTitleBar
 from mw4.gui.utilities.qtHelpers import svg2icon
@@ -26,6 +27,7 @@ from typing import ClassVar
 
 class MWidget(QMainWindow, Styles):
     log = logging.getLogger("MW4")
+    app: AppProtocol
     FULL_WIDTH = 800
     FULL_HEIGHT = 620
     HALF_WIDTH = 400

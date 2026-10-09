@@ -73,7 +73,7 @@ class MeasureWindow(MWidget):
         self.setStyleSheet(self.mw4Style)
         self.ui.measure.colorChange()
         for setName, plotItem in zip(self.mSetUI.keys(), self.ui.measure.p, strict=True):
-            values = self.dataPlots.get(self.mSetUI[setName].currentText(), 0)
+            values = self.dataPlots.get(self.mSetUI[setName].currentText(), {})
             self.resetPlotItem(plotItem, values)
         self.drawMeasure()
 
@@ -93,7 +93,7 @@ class MeasureWindow(MWidget):
             for text in self.dataPlots:
                 ui.addItem(text)
 
-    def constructPlotItem(self, plotItem, chart: dict, x: list[float]) -> None:
+    def constructPlotItem(self, plotItem, chart: dict, x: list[float] | np.ndarray) -> None:
         yMin, yMax, fixed = chart["template"].get("range", (None, None, False))
         if yMin is not None and yMax is not None:
             minYRange = (yMax - yMin) if fixed else (yMax - yMin) / 4

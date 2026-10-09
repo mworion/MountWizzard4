@@ -88,4 +88,5 @@ class TimeManager(QObject):
         if self.unitTimeUTC:
             return cast(str, value.utc_strftime(fString))
         else:
+            # pyrefly: ignore[missing-attribute]
             return value.astimezone(tzlocal()).strftime(fString)

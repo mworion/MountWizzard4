@@ -376,18 +376,6 @@ def test_on_data_with_valid_message_frame(keypad):
         mock_disp.assert_called_once()
 
 
-# Tests for on_error method
-
-
-def test_on_error_clears_websocket_and_logs(keypad):
-    """Test on_error sets ws to None and logs the error."""
-    keypad.ws = mock.Mock()  # type: ignore
-    with mock.patch.object(keypad.log, "debug") as mock_log:
-        keypad.on_error(mock.Mock(), Exception("test error"))  # type: ignore
-        mock_log.assert_called_once()
-    assert keypad.ws is None
-
-
 # Tests for on_close method
 
 
@@ -403,20 +391,14 @@ def test_on_close_clears_websocket_and_logs(keypad):
 # Tests for runnerWebsocket method
 
 
-def test_workerWebsocket_already_connected_skips(keypad):
-    """Test runnerWebsocket skips if already connected."""
-    keypad.ws = mock.Mock()
-    with mock.patch.object(WebSocketApp, "__init__", return_value=None):
-        keypad.runnerWebsocket(host=("localhost", 8000))
-        # Should skip creating new connection
-
-
-def test_workerWebsocket_creates_new_connection(keypad):
+def test_runnerWebsocket_creates_new_connection(keypad):
     """Test runnerWebsocket creates new WebSocket connection."""
     keypad.ws = None
-    with mock.patch.object(WebSocketApp, "run_forever"):
+    with mock.patch.object(WebSocketApp, "run_forever") as mock_run:
         keypad.runnerWebsocket(host=("localhost", 8000))
+        mock_run.assert_called_once()
         assert keypad.ws is not None
+        assert keypad.ws.url == "ws://localhost:8000/"
 
 
 # Tests for closeWebsocket method

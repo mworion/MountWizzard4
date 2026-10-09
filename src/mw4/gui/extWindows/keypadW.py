@@ -129,6 +129,8 @@ class KeypadWindow(MWidget):
             self.buttons[button].released.connect(partial(self.buttonReleased, button))
 
     def startKeypad(self) -> None:
+        if self.keypad.ws is not None:
+            return
         self.clearDisplay()
         self.writeTextRow(2, "Connecting ...")
         host = (

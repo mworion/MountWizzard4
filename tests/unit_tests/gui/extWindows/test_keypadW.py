@@ -24,7 +24,8 @@ def keypad_window(qapp):
 
 
 def test_init_connects_mountConnected_to_startKeypad(keypad_window):
-    """Test mountConnected signal is connected to startKeypad in init."""
+    """Test mountIsUp signal is connected to startKeypad in init."""
+    keypad_window.keypad.ws = None
     with (
         mock.patch("mw4.gui.extWindows.keypadW.startWorker") as mock_start_worker,
         mock.patch.object(keypad_window, "clearDisplay"),
@@ -217,8 +218,22 @@ def test_setupButtons_connects_button_signals(keypad_window):
 # Tests for startKeypad method
 
 
+def test_startKeypad_already_connected_skips(keypad_window):
+    """Test startKeypad returns early if websocket already exists."""
+    keypad_window.keypad.ws = mock.Mock()
+    with (
+        mock.patch("mw4.gui.extWindows.keypadW.startWorker") as mock_start_worker,
+        mock.patch.object(keypad_window, "clearDisplay") as mock_clear,
+    ):
+        keypad_window.startKeypad()
+        mock_clear.assert_not_called()
+        mock_start_worker.assert_not_called()
+    keypad_window.keypad.ws = None
+
+
 def test_startKeypad_initializes_display(keypad_window):
     """Test startKeypad initializes display with connecting message."""
+    keypad_window.keypad.ws = None
     with (
         mock.patch.object(keypad_window, "clearDisplay") as mock_clear,
         mock.patch.object(keypad_window, "writeTextRow") as mock_write,

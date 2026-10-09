@@ -178,7 +178,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         err = np.concatenate([z, z, z])
         self.addIsoItem(az, alt, err, plotItem=plotItem, levels=levels)
 
-    def setGrid(self, y: int = 0, plotItem: pg.PlotItem | None = None, **kwargs: Any) -> None:
+    def setGrid(self, y: ArrayLike = 0, plotItem: pg.PlotItem | None = None, **kwargs: Any) -> None:
         if plotItem is None:
             plotItem = self.p[0]
         textAngle = np.radians(150)

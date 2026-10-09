@@ -54,7 +54,6 @@ class Remote:
             self.log.warning("Cannot establish incoming connection")
             return
 
-        self.clientConnection.nextBlockSize = 0
         self.clientConnection.readyRead.connect(self.receiveMessage)
         self.clientConnection.disconnected.connect(self.removeConnection)
         self.clientConnection.errorOccurred.connect(self.handleError)

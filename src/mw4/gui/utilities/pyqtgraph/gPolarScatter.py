@@ -16,7 +16,8 @@ class PolarScatter(NormalScatter):
         self.addBarItem()
 
     def plot(self, x: ArrayLike, y: ArrayLike, **kwargs: Any) -> bool | None:
-        x = np.radians(90 - x)
+        x = np.radians(90 - np.asarray(x))
+        y = np.asarray(y)
         if kwargs.get("reverse", False):
             posX = (90 - y) * np.cos(x)
             posY = (90 - y) * np.sin(x)

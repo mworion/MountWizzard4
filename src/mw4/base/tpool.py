@@ -133,7 +133,7 @@ def setupWorker(
     resultMethod: Callable[..., Any] | None = None,
     finishedMethod: Callable[..., Any] | None = None,
     **kwargs: Any,
-) -> Worker | None:
+) -> Worker:
     worker = Worker(target, *args, **kwargs)
     worker.setCallbacks(resultMethod, finishedMethod)
     return worker
@@ -154,7 +154,7 @@ def startWorker(
     if guard is not None and not guard():
         return None
     reuse = worker is not None
-    if not reuse:
+    if worker is None:
         worker = setupWorker(
             target, *args, resultMethod=resultMethod, finishedMethod=finishedMethod, **kwargs
         )

@@ -94,6 +94,8 @@ class NormalScatter(PlotBase):
             self.scatterItem.addPoints(spots, tip=tip)
 
     def plot(self, x: ArrayLike, y: ArrayLike, **kwargs: Any) -> bool | None:
+        x = np.asarray(x)
+        y = np.asarray(y)
         self.p[0].clear()
         self.p[0].showAxes(True, showValues=True)
         self.scatterItem = pg.ScatterPlotItem(hoverable=True, hoverSize=10, hoverPen=self.pen)

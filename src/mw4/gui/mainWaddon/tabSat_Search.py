@@ -146,7 +146,9 @@ class SatSearch(SatData):
             self.msg.emit(2, "Satellite", "Error", "Unsupported file format")
             return
 
-    def setListSatsEntry(self, row: int, col: int, entry: str, generation: int) -> None:
+    def setListSatsEntry(
+        self, row: int, col: int, entry: QTableWidgetItem, generation: int
+    ) -> None:
         if generation != self.calcGeneration:
             return
         self.ui.listSats.setItem(row, col, entry)

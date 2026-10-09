@@ -376,13 +376,27 @@ def test_on_data_with_valid_message_frame(keypad):
         mock_disp.assert_called_once()
 
 
+# Tests for on_error method
+
+
+def test_on_error_clears_websocket_and_logs(keypad):
+    """Test on_error sets ws to None and logs the error."""
+    keypad.ws = mock.Mock()  # type: ignore
+    with mock.patch.object(keypad.log, "debug") as mock_log:
+        keypad.on_error(mock.Mock(), Exception("test error"))  # type: ignore
+        mock_log.assert_called_once()
+    assert keypad.ws is None
+
+
 # Tests for on_close method
 
 
-def test_on_close_clears_websocket(keypad):
-    """Test on_close sets ws to None when connection closes."""
+def test_on_close_clears_websocket_and_logs(keypad):
+    """Test on_close sets ws to None and logs the close message."""
     keypad.ws = mock.Mock()  # type: ignore
-    keypad.on_close(mock.Mock(), None, None)  # type: ignore
+    with mock.patch.object(keypad.log, "debug") as mock_log:
+        keypad.on_close(mock.Mock(), 1000, "closed")  # type: ignore
+        mock_log.assert_called_once_with("Keypad websocket closed: %s", "closed")
     assert keypad.ws is None
 
 

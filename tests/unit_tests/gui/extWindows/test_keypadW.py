@@ -20,6 +20,20 @@ def keypad_window(qapp):
         QApplication.processEvents()
 
 
+# Tests for __init__ method
+
+
+def test_init_connects_mountConnected_to_startKeypad(keypad_window):
+    """Test mountConnected signal is connected to startKeypad in init."""
+    with (
+        mock.patch("mw4.gui.extWindows.keypadW.startWorker") as mock_start_worker,
+        mock.patch.object(keypad_window, "clearDisplay"),
+        mock.patch.object(keypad_window, "writeTextRow"),
+    ):
+        keypad_window.app.dReg["mount"].signals.mountIsUp.emit(True)
+        mock_start_worker.assert_called()
+
+
 # Tests for initConfig method
 
 

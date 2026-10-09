@@ -322,10 +322,15 @@ class KeyPad:
                     if started:
                         result.append(data[i])
 
+    def on_error(self, ws: websocket.WebSocketApp, error: Exception) -> None:
+        self.ws = None
+        self.log.debug("Keypad websocket error: %s", error)
+
     def on_close(
         self, ws: websocket.WebSocketApp, close_status_code: int | None, close_msg: str | None
     ) -> None:
         self.ws = None
+        self.log.debug("Keypad websocket closed: %s", close_msg)
 
     def runnerWebsocket(self, host: tuple) -> None:
         if self.ws is not None:
@@ -335,6 +340,7 @@ class KeyPad:
         self.ws = websocket.WebSocketApp(
             f"ws://{ipaddress}:8000/",
             on_data=self.on_data,
+            on_error=self.on_error,
             on_close=self.on_close,
             subprotocols=["binary"],
         )

@@ -40,6 +40,7 @@ class KeypadWindow(MWidget):
         self.keypad = KeyPad(self.signals)
         self.inputActive: bool = False
         self.worker: Worker | None = None
+        self.app.dReg["mount"].signals.mountIsUp.connect(self.startKeypad)
 
         self.graphics = np.zeros([64, 128, 4], dtype=np.uint8)
         self.buttons = {

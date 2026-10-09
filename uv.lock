@@ -682,7 +682,7 @@ wheels = [
 
 [[package]]
 name = "mountwizzard4"
-version = "4.0.0b35"
+version = "4.0.0b36"
 source = { editable = "." }
 dependencies = [
     { name = "alpyca" },

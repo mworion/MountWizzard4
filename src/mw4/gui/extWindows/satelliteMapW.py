@@ -87,6 +87,9 @@ class SatelliteMapWindow(MWidget):
         return world
 
     def updatePositions(self, now: Timescale, location: GeographicPosition) -> None:
+        if self.satellite is None:
+            return
+
         observe = self.satellite.at(now)
         subPoint = wgs84.subpoint_of(observe)
         self.ui.satLatitude.setText(f"{subPoint.latitude.degrees:3.2f}")
@@ -166,8 +169,10 @@ class SatelliteMapWindow(MWidget):
         )
         return pd
 
-    def prepareEarthSatellite(self, plotItem: pg.PlotItem) -> pg.PlotDataItem:
-        subPoint = wgs84.subpoint_of(self.satellite.at(self.obsSite.ts.now()))
+    def prepareEarthSatellite(
+        self, plotItem: pg.PlotItem, satellite: EarthSatellite
+    ) -> pg.PlotDataItem:
+        subPoint = wgs84.subpoint_of(satellite.at(self.obsSite.ts.now()))
         lat = subPoint.latitude.degrees
         lon = subPoint.longitude.degrees
         pd = self.prepareSatellite([lon], [lat])
@@ -176,7 +181,7 @@ class SatelliteMapWindow(MWidget):
         plotItem.addItem(pd)
         return pd
 
-    def drawEarthTrajectory(self, plotItem: pg.PlotItem) -> None:
+    def drawEarthTrajectory(self, plotItem: pg.PlotItem, satellite: EarthSatellite) -> None:
         for i, satOrbit in enumerate(self.satOrbits):
             rise = satOrbit["rise"].tt
             settle = satOrbit["settle"].tt
@@ -187,7 +192,7 @@ class SatelliteMapWindow(MWidget):
             flip = satOrbit["flip"].tt
             vector = np.arange(rise, flip, step)
             vecT = self.obsSite.ts.tt_jd(vector)
-            subPoints = wgs84.subpoint_of(self.satellite.at(vecT))
+            subPoints = wgs84.subpoint_of(satellite.at(vecT))
             lat = subPoints.latitude.degrees
             lon = subPoints.longitude.degrees
             for slc in self.unlinkWrap(lon):
@@ -196,7 +201,7 @@ class SatelliteMapWindow(MWidget):
 
             vector = np.arange(flip, settle, step)
             vecT = self.obsSite.ts.tt_jd(vector)
-            subPoints = wgs84.subpoint_of(self.satellite.at(vecT))
+            subPoints = wgs84.subpoint_of(satellite.at(vecT))
             lat = subPoints.latitude.degrees
             lon = subPoints.longitude.degrees
             for slc in self.unlinkWrap(lon):
@@ -208,7 +213,7 @@ class SatelliteMapWindow(MWidget):
         step = 0.001 * (settle - rise)
         vector = np.arange(rise - 0.15, settle, step)
         vecT = self.obsSite.ts.tt_jd(vector)
-        subPoints = wgs84.subpoint_of(self.satellite.at(vecT))
+        subPoints = wgs84.subpoint_of(satellite.at(vecT))
         lat = subPoints.latitude.degrees
         lon = subPoints.longitude.degrees
         for slc in self.unlinkWrap(lon):
@@ -216,13 +221,13 @@ class SatelliteMapWindow(MWidget):
             pd.setZValue(-10)
             plotItem.addItem(pd)
 
-    def drawEarth(self) -> None:
+    def drawEarth(self, satellite: EarthSatellite) -> None:
         plotItem = self.ui.satEarth.p[0]
         self.prepareEarth(plotItem)
         self.drawShoreLine(plotItem)
         self.drawPosition(plotItem)
-        self.plotSatPosEarth = self.prepareEarthSatellite(plotItem)
-        self.drawEarthTrajectory(plotItem)
+        self.plotSatPosEarth = self.prepareEarthSatellite(plotItem, satellite)
+        self.drawEarthTrajectory(plotItem, satellite)
 
     def drawSatellite(
         self,
@@ -237,4 +242,4 @@ class SatelliteMapWindow(MWidget):
         self.satOrbits = satOrbits
         if satOrbits is None or self.obsSite is None:
             return
-        self.drawEarth()
+        self.drawEarth(satellite)

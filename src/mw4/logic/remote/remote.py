@@ -5,7 +5,7 @@ import logging
 from dataclasses import dataclass, field
 from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
-from PySide6.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer, QTcpSocket
+from PySide6.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer
 from typing import Any
 
 
@@ -25,7 +25,7 @@ class Remote:
         self.config = DeviceConfigRemote()
         self.framework: str = ""
         self.run: dict[str, Any] = {"tcp": self}
-        self.clientConnection: QTcpSocket | None = None
+        self.clientConnection: Any = None
         self.tcpServer: QTcpServer | None = None
 
     def startCommunication(self) -> bool:
@@ -41,7 +41,7 @@ class Remote:
             return True
 
     def stopCommunication(self) -> None:
-        if self.tcpServer.isListening():
+        if self.tcpServer is not None and self.tcpServer.isListening():
             self.tcpServer.close()
         self.signals.deviceDisconnected.emit(self.config.deviceName)
 

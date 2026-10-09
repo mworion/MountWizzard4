@@ -65,7 +65,7 @@ class ObsSite(ObsSiteCommands):
         self.ts: Timescale = load.timescale(builtin=True)
         self._timeJD: Time = self.ts.now()
         self.ut1_utc: float = 0
-        self._timeSidereal: Angle | None = Angle(hours=0)
+        self._timeSidereal: Angle = Angle(hours=0)
         self._raJNow: Angle = Angle(hours=0)
         self._raJNowTarget: Angle = Angle(hours=0)
         self._decJNow: Angle = Angle(degrees=0)
@@ -149,7 +149,7 @@ class ObsSite(ObsSiteCommands):
         self._ut1_utc = value / 86400
 
     @property
-    def timeSidereal(self) -> Angle | None:
+    def timeSidereal(self) -> Angle:
         return self._timeSidereal
 
     @timeSidereal.setter

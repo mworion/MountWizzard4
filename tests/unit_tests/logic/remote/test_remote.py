@@ -47,6 +47,11 @@ def test_stopCommunication_1(function):
         function.stopCommunication()
 
 
+def test_stopCommunication_2(function):
+    function.tcpServer = None
+    function.stopCommunication()
+
+
 def test_addConnection_1(function):
     function.tcpServer = None
     function.addConnection()

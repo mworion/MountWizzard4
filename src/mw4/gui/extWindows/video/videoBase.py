@@ -12,6 +12,7 @@ from mw4.gui.widgets import video_ui
 from PySide6.QtCore import QTimer, Signal
 from PySide6.QtGui import QCloseEvent, QPixmap
 from PySide6.QtWidgets import QSizePolicy
+from typing import Any
 
 
 class VideoWindowBase(MWidget):
@@ -28,7 +29,7 @@ class VideoWindowBase(MWidget):
         self.setMinimumSize(self.HALF_WIDTH, self.HALF_HEIGHT)
         self.setMaximumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.running: bool = False
-        self.capture = None
+        self.capture: Any = None
         self.user: str = ""
         self.password: str = ""  # nosec B105 — empty-string default, not a hardcoded credential
         self.runningCounter: int = 0

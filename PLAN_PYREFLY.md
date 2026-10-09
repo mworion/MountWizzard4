@@ -92,17 +92,32 @@ Phases 3–4.
 | `AppProtocol` signals typed `Signal` | done | 201 |
 | Type inconsistencies (`buildP` lists, `ArrayLike`, `Camera.run`, casts, ...) | done | 188 |
 | Targeted `# pyrefly: ignore[...]` for 3rd-party stub gaps (astropy `HDUList`, skyfield `reify`/`lazyproperty`/`Satrec`, pyqtgraph `PlotItem`, `ctypes.windll`, ...) | done | 145 |
+| Pattern A: lifecycle attributes typed `Any` (`PlotBase` items, `SatData.satellites`); no runtime change | done | 113 |
+| Pattern B: `Remote.stopCommunication` guard for `tcpServer is None` (+ test), `clientConnection` / `VideoBase.capture` typed `Any` | done | 100 |
 
 Full suite after each step: 100 % coverage, Ruff clean.
 
-### What is left (145 errors)
-- 106 `missing-attribute`, of which about 69 are real `Optional` values
-  (`satellite`, `clientConnection`, `tcpServer`, `barItem`, ...), the rest
-  Qt/mixin attributes (`FunctionType`, `QWidget`, `TabAddon`, `list`).
+### Findings on the remaining `NoneType` errors
+Most are not crash paths: the attribute is `None` only until a start-up
+step (setup, `startVideo`, `addConnection`), and the code only runs after
+it. The types did not express this order. Fixes are therefore split:
+- pattern A (type annotation only, no behavior change): done
+- pattern B (real guard where a call before start would fail): done, only
+  `Remote.stopCommunication` was a real hole
+- pattern C (entry points that need a selected satellite, `satelliteMapW`,
+  `tabSat_Track`): open, check first whether a timer can fire early
+- pattern D (single cases, e.g. `tpool.startWorker`, `devicePopupW`,
+  `imageW`, `styles`, `fileHandler`, `hidController`, `photometry`): open
+
+### What is left (100 errors)
+- 61 `missing-attribute`, of which 24 are `NoneType` (patterns C and D);
+  the rest are Qt/mixin attributes (`FunctionType`, `QWidget`, `TabAddon`,
+  `list`).
 - 25 `bad-argument-type`, 6 `unexpected-keyword`, 3 `bad-argument-count`
   (PySide `setData`, pyqtgraph kwargs), 4 `bad-assignment`, 1 `bad-index`.
 
 ### Remaining work
-1. Real Optionals: narrow case by case (watch the 100 % coverage rule).
+1. Pattern C and D (review case by case, guards need tests for 100 %
+   coverage).
 2. Qt/pyqtgraph kwargs and `setData` findings: targeted ignores or casts.
 3. Phase 4: baseline file and CI step.

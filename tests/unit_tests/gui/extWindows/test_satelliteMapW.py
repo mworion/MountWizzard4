@@ -72,6 +72,11 @@ def test_loadMap_1(function):
         assert len(seg["xDeg"]) > 0
 
 
+def test_updatePositions_1(function):
+    function.satellite = None
+    function.updatePositions(None, None)
+
+
 def test_updatePositions_2(function):
     tle = [
         "CALSPHERE 1",
@@ -135,7 +140,7 @@ def test_prepareEarthSatellite(function):
         "2 00900  90.1667  38.3458 0029262  87.9699 341.0031 13.73667773851231",
     ]
     function.satellite = EarthSatellite(*tle[1:3], name=tle[0])
-    function.prepareEarthSatellite(pg.PlotItem())
+    function.prepareEarthSatellite(pg.PlotItem(), function.satellite)
 
 
 def test_drawEarthTrajectory_1(function):
@@ -159,7 +164,7 @@ def test_drawEarthTrajectory_1(function):
         {"rise": t3, "culminate": t3, "flip": t3, "settle": t4},
     ]
     function.satOrbits = satOrbits
-    function.drawEarthTrajectory(pg.PlotItem())
+    function.drawEarthTrajectory(pg.PlotItem(), function.satellite)
 
 
 def test_drawEarth_1(function):
@@ -167,7 +172,7 @@ def test_drawEarth_1(function):
         mock.patch.object(function, "prepareEarthSatellite"),
         mock.patch.object(function, "drawEarthTrajectory"),
     ):
-        function.drawEarth()
+        function.drawEarth(None)
 
 
 def test_drawSatellite_1(function):

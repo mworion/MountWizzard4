@@ -259,7 +259,11 @@ class SatTrack(SatData):
         self.app.dReg["mount"].instance.getTLE()
 
     def chooseSatellite(self) -> None:
-        satName = self.ui.listSats.item(self.ui.listSats.currentRow(), 1).text()
+        item = self.ui.listSats.item(self.ui.listSats.currentRow(), 1)
+        if item is None:
+            return
+
+        satName = item.text()
         if self.app.dReg["mount"].stat:
             self.programSatToMount(satName)
         else:

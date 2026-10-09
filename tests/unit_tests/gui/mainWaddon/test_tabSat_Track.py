@@ -390,6 +390,15 @@ def test_programSatToMount_4(function):
         function.programSatToMount(satName="TIANGONG 2")
 
 
+def test_chooseSatellite_0(function):
+    with (
+        mock.patch.object(function.ui.listSats, "item", return_value=None),
+        mock.patch.object(function, "extractSatelliteData") as extract,
+    ):
+        function.chooseSatellite()
+        extract.assert_not_called()
+
+
 def test_chooseSatellite_1(function):
     satTab = function.ui.listSats
     function.app.dReg.d["mount"].stat = True

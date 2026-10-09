@@ -4,8 +4,23 @@
 import contextlib
 import pytest
 from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
+from PySide6.QtCore import QCoreApplication, QEvent
 from PySide6.QtWidgets import QApplication, QWidget
 from unittest import mock
+
+
+@pytest.fixture(autouse=True)
+def cleanupTopLevelWidgets(qapp):
+    """Destroy all dialogs and parents left over by a test while the
+    QApplication is still alive, so no widget is deleted late by the garbage
+    collector or at interpreter shutdown.
+    """
+    yield
+    for widget in QApplication.topLevelWidgets():
+        widget.close()
+        widget.deleteLater()
+    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
+    QApplication.processEvents()
 
 
 @pytest.fixture(scope="function")

@@ -444,6 +444,7 @@ class Connection:
                     )
                 self.closeClientHard(client)
                 return sucSend, False, "Timeout"
+            # pyrefly: ignore[missing-attribute]
             raw = client.readAll().data().replace(b"\xdf", b"*")
             val = raw.decode("ASCII", errors="replace")
         except (OSError, RuntimeError) as e:

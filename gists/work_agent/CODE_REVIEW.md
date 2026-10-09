@@ -24,7 +24,7 @@ astronomical coordinates.
 - `tests/unit_tests/logic/plateSolve/test_astrometry.py:20-26`
 - `tests/unit_tests/logic/plateSolve/test_watney.py:20-26`
 
-Each fixture removes files in the shared `tests/work/temp` directory according
+Each fixture removes files in the shared `../../tests/work/temp` directory according
 to a filename substring check. This can delete unrelated local files in that
 directory when the tests run. Prefer isolated temporary directories or cleanup
 limited to files created by each fixture.
@@ -36,11 +36,11 @@ limited to files created by each fixture.
 - `uv run pytest tests/unit_tests`: **4,844 passed, 38 skipped**.
 - `uv run pyrefly check`: reported **627 errors**. The check is currently
   commented out in the Ubuntu CI workflow.
-- A default `uv run pytest` run showed failures in `tests/stress_tests` and was
+- A default `uv run pytest` run showed failures in `../../tests/stress_tests` and was
   stopped before completion; those failures were not diagnosed.
 
 ## Worktree note
 
 The plate-solver test fixtures clean and recreate files under
-`tests/work/temp`. That directory contained untracked files before the review,
+`../../tests/work/temp`. That directory contained untracked files before the review,
 so their contents may have changed during the test run.

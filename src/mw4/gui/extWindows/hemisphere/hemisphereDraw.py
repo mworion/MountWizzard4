@@ -19,12 +19,12 @@ if TYPE_CHECKING:
 
 
 class HemisphereDraw(MWidget):
-    def __init__(self, parent: "HemisphereWindow") -> None:
+    def __init__(self, parentWindow: "HemisphereWindow") -> None:
         super().__init__()
-        self.parentWindow = parent
-        self.ui = parent.ui
-        self.app = parent.app
-        self.msg = parent.msg
+        self.parentWindow = parentWindow
+        self.ui = parentWindow.ui
+        self.app = parentWindow.app
+        self.msg = parentWindow.msg
         self.slewInterface = SlewInterface(self)
         self.pointerDome: pg.QtWidgets.QGraphicsRectItem = pg.QtWidgets.QGraphicsRectItem()
         self.modelPointsText: list = []
@@ -273,6 +273,7 @@ class HemisphereDraw(MWidget):
                     connect="all",
                     pen=pen,
                 )
+                # pyrefly: ignore[missing-attribute]
                 pd.nameStr = "model"
                 vb = plotItem.getViewBox()
                 vb.setPlotDataItem(pd)
@@ -287,6 +288,7 @@ class HemisphereDraw(MWidget):
                     connect="all",
                     pen=pen,
                 )
+                # pyrefly: ignore[missing-attribute]
                 pd.nameStr = "model"
                 vb = plotItem.getViewBox()
                 if i == 0:
@@ -304,6 +306,7 @@ class HemisphereDraw(MWidget):
             pd.setData(x=[0], y=[0])
             pd.setPen(pg.mkPen(color=self.M_PINK))
             pd.setZValue(60)
+            # pyrefly: ignore[missing-attribute]
             pd.nameStr = "pointer"
             plotItem.addItem(pd)
             pd.setVisible(False)

@@ -72,6 +72,7 @@ class EnvironWeather(TabAddon):
             self.refractionSources[source].signals.deviceDisconnected.connect(
                 partial(self.clearSourceGui, source)
             )
+            # pyrefly: ignore[missing-attribute]
             self.refractionSources[source].group.clicked.connect(
                 partial(self.selectRefractionSource, source)
             )

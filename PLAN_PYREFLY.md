@@ -77,3 +77,32 @@ In `[tool.pyrefly]` (pyproject.toml):
 ## Expected result
 625 → roughly 250 after Phases 1–2, → 0 reported (new errors only) after
 Phases 3–4.
+
+---
+
+## Status (implementation log)
+
+| Step | Result | Errors after |
+|------|--------|--------------|
+| Baseline | | 625 |
+| Phase 1 (override names/signatures, import config) | done | 579 |
+| Phase 2 (`DeviceEntry.instance: Any`, `Any` annotations for untyped `None` attrs) | done | 419 |
+| Phase 3 (per-path `sub-config` disabling stub-driven kinds) | done | 212 |
+| Hemisphere `parent` -> `parentWindow` (attribute and constructor), popup `parentWidget` removed | done | 208 |
+| `AppProtocol` signals typed `Signal` | done | 201 |
+| Type inconsistencies (`buildP` lists, `ArrayLike`, `Camera.run`, casts, ...) | done | 188 |
+| Targeted `# pyrefly: ignore[...]` for 3rd-party stub gaps (astropy `HDUList`, skyfield `reify`/`lazyproperty`/`Satrec`, pyqtgraph `PlotItem`, `ctypes.windll`, ...) | done | 145 |
+
+Full suite after each step: 100 % coverage, Ruff clean.
+
+### What is left (145 errors)
+- 106 `missing-attribute`, of which about 69 are real `Optional` values
+  (`satellite`, `clientConnection`, `tcpServer`, `barItem`, ...), the rest
+  Qt/mixin attributes (`FunctionType`, `QWidget`, `TabAddon`, `list`).
+- 25 `bad-argument-type`, 6 `unexpected-keyword`, 3 `bad-argument-count`
+  (PySide `setData`, pyqtgraph kwargs), 4 `bad-assignment`, 1 `bad-index`.
+
+### Remaining work
+1. Real Optionals: narrow case by case (watch the 100 % coverage rule).
+2. Qt/pyqtgraph kwargs and `setData` findings: targeted ignores or casts.
+3. Phase 4: baseline file and CI step.

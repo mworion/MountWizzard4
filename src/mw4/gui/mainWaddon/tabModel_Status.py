@@ -37,14 +37,17 @@ class ModelStatus(TabAddon):
         guiSetText(self.ui.errorRMS1, "5.1f", model.errorRMS)
         guiSetText(self.ui.terms, "2.0f", model.terms)
         val = None if model.positionAngle is None else model.positionAngle.degrees
+        # pyrefly: ignore[bad-argument-type]
         guiSetText(self.ui.positionAngle, "5.1f", val)
         val = None if model.polarError is None else model.polarError.degrees * 3600
         guiSetText(self.ui.polarError, "5.0f", val)
         val = None if model.orthoError is None else model.orthoError.degrees * 3600
         guiSetText(self.ui.orthoError, "5.0f", val)
         val = None if model.azimuthError is None else model.azimuthError.degrees
+        # pyrefly: ignore[bad-argument-type]
         guiSetText(self.ui.azimuthError, "5.1f", val)
         val = None if model.altitudeError is None else model.altitudeError.degrees
+        # pyrefly: ignore[bad-argument-type]
         guiSetText(self.ui.altitudeError, "5.1f", val)
 
     def updateTurnKnobsGUI(self, model: Model) -> None:

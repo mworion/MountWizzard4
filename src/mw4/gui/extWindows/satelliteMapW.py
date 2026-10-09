@@ -116,12 +116,17 @@ class SatelliteMapWindow(MWidget):
         plotItem.getAxis("top").setTicks([xTicks])
         plotItem.setLabel("bottom", "Longitude [deg]")
         plotItem.setLabel("left", "Latitude [deg]")
+        # pyrefly: ignore[missing-attribute]
         plotItem.setLimits(
             xMin=-180, xMax=180, yMin=-90, yMax=90, minXRange=360 / 4, minYRange=180 / 4
         )
+        # pyrefly: ignore[missing-attribute]
         plotItem.setXRange(-180, 180)
+        # pyrefly: ignore[missing-attribute]
         plotItem.setYRange(-90, 90)
+        # pyrefly: ignore[missing-attribute]
         plotItem.disableAutoRange()
+        # pyrefly: ignore[missing-attribute]
         plotItem.setMouseEnabled(x=True, y=True)
         plotItem.clear()
 

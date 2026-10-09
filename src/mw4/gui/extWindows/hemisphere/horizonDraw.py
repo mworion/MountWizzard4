@@ -16,12 +16,12 @@ if TYPE_CHECKING:
 
 
 class HorizonDraw(MWidget):
-    def __init__(self, parent: "HemisphereWindow") -> None:
+    def __init__(self, parentWindow: "HemisphereWindow") -> None:
         super().__init__()
-        self.parentWindow = parent
-        self.ui = parent.ui
-        self.app = parent.app
-        self.msg = parent.msg
+        self.parentWindow = parentWindow
+        self.ui = parentWindow.ui
+        self.app = parentWindow.app
+        self.msg = parentWindow.msg
         self.horizonPlot: pg.PlotDataItem = pg.PlotDataItem()
         self.imageTerrain: np.ndarray = np.zeros((0, 0))
         self.pointerHor: pg.ScatterPlotItem = pg.ScatterPlotItem()

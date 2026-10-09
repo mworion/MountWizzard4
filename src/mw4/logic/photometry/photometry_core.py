@@ -102,8 +102,11 @@ def extractSources(
     elongation = np.asarray(catalog.elongation, dtype=float)
     xCoord = np.asarray(catalog.x_centroid, dtype=float)
     yCoord = np.asarray(catalog.y_centroid, dtype=float)
+    # pyrefly: ignore[missing-attribute]
     aAxis = np.asarray(catalog.semimajor_axis.value, dtype=float)
+    # pyrefly: ignore[missing-attribute]
     bAxis = np.asarray(catalog.semiminor_axis.value, dtype=float)
+    # pyrefly: ignore[missing-attribute]
     theta = np.asarray(catalog.orientation.to(u.rad).value, dtype=float)
     raw = len(hfr)
 

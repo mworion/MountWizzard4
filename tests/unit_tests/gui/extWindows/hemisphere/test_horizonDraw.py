@@ -23,7 +23,7 @@ from unittest import mock
 @pytest.fixture(autouse=True, scope="module")
 def function(qapp):
     shutil.copy("tests/testData/terrain.jpg", "tests/work/config/terrain.jpg")
-    func = HorizonDraw(parent=HemisphereWindow(app=App(), title="Hemisphere"))
+    func = HorizonDraw(parentWindow=HemisphereWindow(app=App(), title="Hemisphere"))
     yield func
     QApplication.processEvents()
     gc.collect()

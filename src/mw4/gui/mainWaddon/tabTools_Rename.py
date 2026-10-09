@@ -113,6 +113,7 @@ class Rename(TabAddon):
         self, fileName: Path, renameDir: Path, newObjectName: str, selections: list[str]
     ) -> None:
         with fits.open(name=fileName) as fd:
+            # pyrefly: ignore[missing-attribute]
             fitsHeader = fd[0].header
             newFileName = newObjectName or fitsHeader.get("OBJECT", "UNKNOWN").upper()
             for selection in selections:

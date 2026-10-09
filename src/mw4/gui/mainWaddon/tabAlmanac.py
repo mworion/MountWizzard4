@@ -259,7 +259,9 @@ class Almanac(TabAddon):
         e = earth.at(timeJD)
 
         # calc phases for obstruction
+        # pyrefly: ignore[missing-attribute]
         _, sunLon, _ = e.observe(sun).apparent().ecliptic_latlon()
+        # pyrefly: ignore[missing-attribute]
         _, moonLon, _ = e.observe(moon).apparent().ecliptic_latlon()
 
         mpIllumination = almanac.fraction_illuminated(ephemeris, "moon", now)

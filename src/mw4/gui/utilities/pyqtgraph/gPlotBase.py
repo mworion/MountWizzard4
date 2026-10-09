@@ -25,9 +25,9 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         self.penHorizon: QPen = pg.mkPen(color=self.rgb2hex(self.M_PRIM), width=1)
         self.brushHorizon: QBrush = pg.mkBrush(color=self.rgb2hex(self.M_PRIM2) + "80")
         self.defRange: dict = {}
-        self.scatterItem: pg.ScatterPlotItem | None = None
-        self.imageItem: pg.ImageItem | None = None
-        self.barItem: pg.ColorBarItem | None = None
+        self.scatterItem: Any = None
+        self.imageItem: Any = None
+        self.barItem: Any = None
         self.horizon: Any = None
         self.p: list = []
         self.p.append(self.addPlot(viewBox=CustomViewBox()))
@@ -120,6 +120,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
         horItem.setPen(self.penHorizon)
         horItem.setBrush(self.brushHorizon)
         horItem.setZValue(-5)
+        # pyrefly: ignore[missing-attribute]
         horItem.nameStr = "horizon"
         plotItem.addItem(horItem)
 
@@ -135,6 +136,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
             pd = pg.IsocurveItem()
             pd.setData(zm, level)
             pd.setZValue(10)
+            # pyrefly: ignore[missing-attribute]
             pd.nameStr = "iso"
             pd.setPen(pg.mkPen(color=colorVal))
             plotItem.addItem(pd)

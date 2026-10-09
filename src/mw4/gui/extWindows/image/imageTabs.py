@@ -96,8 +96,10 @@ class ImageTabs:
         guiSetText(self.ui.object, "s", header.get("OBJECT", "").upper())
         ra, dec = getCoordinatesFromHeader(header=header)
         guiSetText(self.ui.ra, "HSTR", ra)
+        # pyrefly: ignore[bad-argument-type]
         guiSetText(self.ui.raFloat, "2.5f", ra.hours)
         guiSetText(self.ui.dec, "DSTR", dec)
+        # pyrefly: ignore[bad-argument-type]
         guiSetText(self.ui.decFloat, "2.5f", dec.degrees)
         guiSetText(self.ui.scale, "5.3f", getScaleFromHeader(header=header))
         guiSetText(self.ui.rotation, "6.2f", header.get("ANGLE", 0))

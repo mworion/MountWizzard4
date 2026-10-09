@@ -164,6 +164,7 @@ class MountMove(TabAddon):
             self.setButtons[d]["buttonRaDec"].clicked.connect(partial(self.moveRaDec, d))
             self.setButtons[d]["buttonAltAz"].clicked.connect(partial(self.moveAltAz, d))
         for s in self.slewSpeeds:
+            # pyrefly: ignore[missing-attribute]
             self.slewSpeeds[s]["button"].clicked.connect(partial(self.setSlewSpeed, s))
         self.ui.moveStepSizeAltAz.clear()
         for step_size in StepSize:

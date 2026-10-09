@@ -46,7 +46,9 @@ def findRangeRate(
     return (
         satRange.km,
         radRate.km_per_s,
+        # pyrefly: ignore[missing-attribute]
         latRate.degrees.per_second,
+        # pyrefly: ignore[missing-attribute]
         lonRate.degrees.per_second,
     )
 
@@ -117,6 +119,7 @@ def calcPassEvents(sat: EarthSatellite, obsSite: ObsSite, minAlt: float = 5) -> 
     minAlt = max(minAlt, 5)
 
     loc = obsSite.location
+    # pyrefly: ignore[missing-attribute]
     orbitCycleTime = np.pi / sat.model.no_kozai / 12 / 60
     t0 = obsSite.ts.tt_jd(obsSite.timeJD.tt - orbitCycleTime)
     t1 = obsSite.ts.tt_jd(obsSite.timeJD.tt + 5)

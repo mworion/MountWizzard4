@@ -69,6 +69,7 @@ def setupWorkDirs(workDir: Path) -> MwGlob:
         "logDir": workDir / "log",
     }
     for path in mwGlob.values():
+        # pyrefly: ignore[missing-attribute]
         path.mkdir(parents=True, exist_ok=True)
     return mwGlob
 
@@ -84,12 +85,14 @@ def writeSystemInfo(mwGlob: MwGlob) -> None:
     log.info(f"[SYS] release          : {platform.release()}")
     log.info(f"[SYS] python           : {platform.python_version()}")
     log.info(f"[SYS] python runtime   : {platform.architecture()[0]}")
+    # pyrefly: ignore[missing-attribute]
     log.info(f"[SYS] PySide6 / Qt     : {PySide6.QtCore.__version__} / {qVersion()}")
     log.info(f"[SYS] node / hostname  : {platform.node()} / {socket.gethostname()}")
     log.info("-" * 80)
 
 
 def extractDataFiles(mwGlob: MwGlob) -> None:
+    # pyrefly: ignore[missing-attribute]
     sourceFiles = files("mw4").joinpath("assets/data").glob("*.*")
     for file in sourceFiles:
         with as_file(file) as src:
@@ -103,4 +106,5 @@ def minimizeStartTerminal() -> None:
     if platform.system() == "Windows":
         import ctypes
 
+        # pyrefly: ignore[missing-attribute]
         ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)

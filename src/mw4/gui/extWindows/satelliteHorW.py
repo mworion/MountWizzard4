@@ -126,10 +126,15 @@ class SatelliteHorizonWindow(MWidget):
         plotItem.getAxis("left").setTicks([yTicks])
         plotItem.setLabel("bottom", "Azimuth [deg]")
         plotItem.setLabel("left", "Altitude [deg]")
+        # pyrefly: ignore[missing-attribute]
         plotItem.setLimits(xMin=0, xMax=360, yMin=-0, yMax=90, minXRange=360 / 4, minYRange=90 / 4)
+        # pyrefly: ignore[missing-attribute]
         plotItem.setXRange(0, 360)
+        # pyrefly: ignore[missing-attribute]
         plotItem.setYRange(0, 90)
+        # pyrefly: ignore[missing-attribute]
         plotItem.disableAutoRange()
+        # pyrefly: ignore[missing-attribute]
         plotItem.setMouseEnabled(x=True, y=True)
         plotItem.clear()
 

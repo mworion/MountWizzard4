@@ -23,6 +23,7 @@ log = logging.getLogger()
 
 def getImageHeader(imagePath: Path) -> fits.Header:
     with fits.open(imagePath) as HDU:
+        # pyrefly: ignore[missing-attribute]
         return HDU[0].header
 
 
@@ -157,6 +158,7 @@ def writeSolutionToHeader(header: fits.Header, solution: dict[str, Any]) -> fits
 
 def updateImageFileHeaderWithSolution(imagePath: Path, solution: dict[str, Any]) -> None:
     with fits.open(imagePath, mode="update", output_verify="silentfix+warn") as HDU:
+        # pyrefly: ignore[missing-attribute]
         HDU[0].header = writeSolutionToHeader(HDU[0].header, solution)
 
 

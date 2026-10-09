@@ -227,6 +227,7 @@ class SatSearch(SatData):
         return isSunlit, twilight
 
     def satOkSGP4(self, sat: EarthSatellite, tEnd: Time) -> bool:
+        # pyrefly: ignore[missing-attribute]
         msg = sat.at(tEnd).message
         if msg:
             self.mainW.log.warning(f"{sat.name} caused SGP4: [{msg}]")

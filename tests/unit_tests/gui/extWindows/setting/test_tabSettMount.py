@@ -125,7 +125,7 @@ def test_mountBootSuccess(settMount: SettMount) -> None:
     """Test mountBoot with successful boot command."""
     settMount.msg = mock.MagicMock()
     with mock.patch.object(
-        settMount.app.dReg["mount"].instance.mountTimeConnectivity, "bootMount", return_value=True
+        settMount.app.dReg["mount"].instance.mountTimeConn, "bootMount", return_value=True
     ):
         settMount.mountBoot()
     settMount.msg.emit.assert_called_with(0, "Mount", "Command", "Sent boot command to mount")
@@ -135,7 +135,7 @@ def test_mountBootFailure(settMount: SettMount) -> None:
     """Test mountBoot with failed boot command."""
     settMount.msg = mock.MagicMock()
     with mock.patch.object(
-        settMount.app.dReg["mount"].instance.mountTimeConnectivity, "bootMount", return_value=False
+        settMount.app.dReg["mount"].instance.mountTimeConn, "bootMount", return_value=False
     ):
         settMount.mountBoot()
     settMount.msg.emit.assert_called_with(2, "Mount", "Command", "Mount cannot be booted")
@@ -145,7 +145,7 @@ def test_mountShutdownSuccess(settMount: SettMount) -> None:
     """Test mountShutdown with successful shutdown command."""
     settMount.msg = mock.MagicMock()
     with mock.patch.object(
-        settMount.app.dReg["mount"].instance.mountTimeConnectivity, "shutdown", return_value=True
+        settMount.app.dReg["mount"].instance.mountTimeConn, "shutdown", return_value=True
     ):
         settMount.mountShutdown()
     settMount.msg.emit.assert_called_with(0, "Mount", "Command", "Shutting mount down")
@@ -155,7 +155,7 @@ def test_mountShutdownFailure(settMount: SettMount) -> None:
     """Test mountShutdown with failed shutdown command."""
     settMount.msg = mock.MagicMock()
     with mock.patch.object(
-        settMount.app.dReg["mount"].instance.mountTimeConnectivity, "shutdown", return_value=False
+        settMount.app.dReg["mount"].instance.mountTimeConn, "shutdown", return_value=False
     ):
         settMount.mountShutdown()
     settMount.msg.emit.assert_called_with(2, "Mount", "Command", "Mount cannot be shutdown")

@@ -63,7 +63,7 @@ def setupLogging() -> None:
         level=logging.DEBUG,
         format="[%(asctime)s.%(msecs)03d]"
         "[%(levelname)1.1s]"
-        "[%(filename)15.15s]"
+        "[%(filename)20.20s]"
         "[%(lineno)4s]"
         " %(message)s",
         handlers=[logHandler],

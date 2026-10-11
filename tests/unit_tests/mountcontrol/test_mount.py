@@ -59,7 +59,7 @@ def test_connectTimers(function):
     timeMgr = mock.MagicMock()
     function.app.timeMgr = timeMgr
     function.connectTimers()
-    conn = function.mountTimeConnectivity
+    conn = function.mountTimeConn
     timeMgr.update1s.connect.assert_any_call(conn.checkMountUp)
     timeMgr.update1s.connect.assert_any_call(conn.pollSyncClock)
     timeMgr.update1s.connect.assert_any_call(function.collectData)

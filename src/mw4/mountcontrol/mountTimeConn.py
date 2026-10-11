@@ -15,9 +15,11 @@ from ping3 import ping
 from skyfield.timelib import Time
 
 
-class MountTimeConnectivity:
+class MountTimeConn:
     log = logging.getLogger("MW4")
     SOCKET_TIMEOUT = 0.2
+    # ping3 defaults to 4s; keep ping + socket below the 1s polling cycle
+    PING_TIMEOUT = 0.7
 
     def __init__(self, parent: MountContext) -> None:
         self.parent = parent
@@ -67,12 +69,11 @@ class MountTimeConnectivity:
         if not self.parent.config.hostAddress:
             self.setMountStatusOff("No host address")
             return
-        rttLocal = ping(self.parent.config.hostAddress)
-        if rttLocal is None:
-            self.setMountStatusOff(f"Host: [{self.parent.config.hostAddress}] not resolved")
-            return
-        if rttLocal is False:
-            self.setMountStatusOff(f"Timeout: [{self.parent.config.hostAddress}] no response")
+        rttLocal = ping(self.parent.config.hostAddress, timeout=self.PING_TIMEOUT)
+        if not rttLocal:
+            self.setMountStatusOff(
+                f"No mount at [{self.parent.config.hostAddress}], error [Timeout]"
+            )
             return
         self.rtt_MA = np.roll(self.rtt_MA, 1)
         self.rtt_MA[0] = rttLocal

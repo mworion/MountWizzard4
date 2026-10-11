@@ -64,7 +64,7 @@ class MountSatellite:
         return
 
 
-class MountTimeConnectivity:
+class MountTimeConn:
     def __init__(self):
         self.timeDiff: float = 0.0
         self.rtt: float = 0.0
@@ -470,7 +470,7 @@ class Mount(QObject):
         self.setting = MountSetting()
         self.satellite = MountSatellite()
         self.model = MountModel()
-        self.mountTimeConnectivity = MountTimeConnectivity()
+        self.mountTimeConn = MountTimeConn()
         self.host = None
         self.MAC = None
         self.loggingTrace = False

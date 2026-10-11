@@ -11,7 +11,7 @@ from mw4.mountcontrol.model import Model
 from mw4.mountcontrol.mountData import MountData
 from mw4.mountcontrol.mountSignals import MountSignals
 from mw4.mountcontrol.mountStatus import MountStatus
-from mw4.mountcontrol.mountTimeConnectivity import MountTimeConnectivity
+from mw4.mountcontrol.mountTimeConn import MountTimeConn
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.satellite import Satellite
 from mw4.mountcontrol.setting import Setting
@@ -67,8 +67,8 @@ class MountDevice(QObject):
         self.satellite = Satellite(self)
         self.geometry = Geometry(self)
         self.model = Model(self)
-        self.mountTimeConnectivity = MountTimeConnectivity(self)
-        self.mountData = MountData(self.obsSite, self.mountTimeConnectivity)
+        self.mountTimeConn = MountTimeConn(self)
+        self.mountData = MountData(self.obsSite, self.mountTimeConn)
 
         self.workerCycleSetting: Worker | None = None
         self.workerCyclePointing: Worker | None = None
@@ -95,9 +95,9 @@ class MountDevice(QObject):
 
     def connectTimers(self) -> None:
         timeMgr = self.app.timeMgr
-        timeMgr.update1s.connect(self.mountTimeConnectivity.checkMountUp)
-        timeMgr.update30s.connect(self.mountTimeConnectivity.syncClock)
-        timeMgr.update1s.connect(self.mountTimeConnectivity.pollSyncClock)
+        timeMgr.update1s.connect(self.mountTimeConn.checkMountUp)
+        timeMgr.update30s.connect(self.mountTimeConn.syncClock)
+        timeMgr.update1s.connect(self.mountTimeConn.pollSyncClock)
         timeMgr.update0_5s.connect(self.cyclePointing)
         timeMgr.update3s.connect(self.cycleSetting)
         timeMgr.update1s.connect(self.collectData)

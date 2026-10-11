@@ -1,7 +1,7 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
-from mw4.mountcontrol.mountTimeConnectivity import MountTimeConnectivity
+from mw4.mountcontrol.mountTimeConn import MountTimeConn
 from mw4.mountcontrol.obsSite import ObsSite
 
 
@@ -10,9 +10,9 @@ class MountData:
     time) collected cyclically for the GUI and the measurement logging.
     """
 
-    def __init__(self, obsSite: ObsSite, mountTimeConnectivity: MountTimeConnectivity) -> None:
+    def __init__(self, obsSite: ObsSite, mountTimeConn: MountTimeConn) -> None:
         self.obsSite = obsSite
-        self.mountTimeConnectivity = mountTimeConnectivity
+        self.mountTimeConn = mountTimeConn
         self.data: dict = {}
         self.raRef: float = 0.0
         self.decRef: float = 0.0
@@ -30,5 +30,5 @@ class MountData:
         self.data["errorAngularPosRA"] = self.obsSite.errorAngularPosRA.degrees * 3600
         self.data["errorAngularPosDEC"] = self.obsSite.errorAngularPosDEC.degrees * 3600
         self.data["status"] = self.obsSite.status
-        self.data["timeDiff"] = self.mountTimeConnectivity.timeDiff * 1000
-        self.data["rtt"] = self.mountTimeConnectivity.rtt * 1000
+        self.data["timeDiff"] = self.mountTimeConn.timeDiff * 1000
+        self.data["rtt"] = self.mountTimeConn.rtt * 1000

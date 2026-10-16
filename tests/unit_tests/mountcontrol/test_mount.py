@@ -386,9 +386,12 @@ def test_GetTLE_3(function):
 def test_runnerProgTrajectory_1(function):
     alt = [10, 20, 30]
     az = [10, 20, 30]
-    with mock.patch.object(function.satellite, "addTrajectoryPoint"):
-        suc = function.runnerProgTrajectory(alt, az, True)
-        assert suc
+    with (
+        mock.patch.object(function.satellite, "addTrajectoryPoint"),
+        mock.patch.object(function.satellite, "preCalcTrajectory") as mockPre,
+    ):
+        function.runnerProgTrajectory(alt, az, True)
+        mockPre.assert_called_once_with(replay=True)
 
 
 def test_runnerProgTrajectory_2(function):
@@ -398,8 +401,7 @@ def test_runnerProgTrajectory_2(function):
         mock.patch.object(function.satellite, "addTrajectoryPoint"),
         mock.patch.object(function.satellite, "preCalcTrajectory"),
     ):
-        suc = function.runnerProgTrajectory(alt, az, False)
-        assert not suc
+        function.runnerProgTrajectory(alt, az, False)
 
 
 def test_resultProgTrajectory_1(function):

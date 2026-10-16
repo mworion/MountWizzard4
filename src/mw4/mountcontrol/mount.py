@@ -272,10 +272,9 @@ class MountDevice(QObject):
     def resultProgTrajectory(self) -> None:
         self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
 
-    def runnerProgTrajectory(self, alt: Angle, az: Angle, replay: bool = False) -> bool:
+    def runnerProgTrajectory(self, alt: Angle, az: Angle, replay: bool = False) -> None:
         self.satellite.addTrajectoryPoint(alt, az)
         self.satellite.preCalcTrajectory(replay=replay)
-        return replay
 
     def progTrajectory(self, start: float, alt: Angle, az: Angle, replay: bool = False) -> None:
         if not self.mountIsUp:

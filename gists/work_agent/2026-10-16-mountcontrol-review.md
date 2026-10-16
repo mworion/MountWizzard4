@@ -310,3 +310,31 @@ src/mw4/mountcontrol` 0 errors, `pytest tests/unit_tests/mountcontrol`
 - 0 m elevation is sent as `+` instead of `-`; confirm that the mount
   accepts both.
 
+
+## 7. Section 5, steps 1 to 5: verification
+
+Each point was checked against the current code and tests. The findings in
+sections 2.1 and 3 were already fixed before steps 6 and 7; the review text
+above was written from an older state.
+
+| Step | Point                                   | State | Evidence                                                                 |
+|------|-----------------------------------------|-------|--------------------------------------------------------------------------|
+| 1    | `convertRaToAngle` degree input (2.1.1) | done  | `convertRaToAngle("180.0").hours == 12.0`; test case `["180.0", 180.0]`  |
+| 1    | `shutdown` signal (2.1.2)               | done  | `MountTimeConn.shutdown` only emits the signal; `test_shutdown_1/2`      |
+| 1    | stale `flipped` (2.1.3)                 | done  | `resultCyclePointing` resets it; `test_resultCyclePointing_flippedConsumed` |
+| 2    | geometry vs. location order (2.1.4)     | done  | `resultGetLocation` calls `loadParametersFromConfig`; `test_resultGetLocation_2` |
+| 2    | dome config keys (2.2.4)                | done  | `Geometry.domeParam` falls back to `domeDefaults`                        |
+| 3    | `Setting.parseSetting` validation       | done  | `validateSetting`; `test_validateSetting_*`                              |
+| 3    | `Model.parseStars` validation           | done  | field count check; `test_Model_parseStars_malformedFields`               |
+| 4    | `communicateRaw` after failed send      | done  | returns `"Send error"`; `test_communicateRaw_sendFailed`                 |
+| 5    | remove `Any`, re-run Pyrefly            | done  | see below                                                                |
+
+Step 5 details:
+
+- All setters and properties listed in 3.1 use concrete types.
+- The five `# type: ignore[attr-defined]` in `jdParamMixin.py` are gone.
+- `Geometry.transMatrix` and `transVector` are annotated.
+- `runnerProgTrajectory` now returns `None`.
+- The remaining `Any` are `MountDevice.run`, `MountDevice.domeConfig` and
+  `MountContext.domeConfig`. They hold heterogeneous values and are kept.
+- `pyrefly check src/mw4/mountcontrol`: 0 errors.

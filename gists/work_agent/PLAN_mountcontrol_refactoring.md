@@ -1,6 +1,6 @@
 # Plan: mountcontrol refactoring and low-severity cleanup
 
-Source: `gists/work_agent/2026-10-16-mountcontrol-review.md`, steps 6 and 7.
+Source: `2026-10-16-mountcontrol-review.md`, steps 6 and 7.
 Scope: `src/mw4/mountcontrol`, tests in `tests/unit_tests/mountcontrol`.
 
 ## Rules for every step
@@ -13,8 +13,8 @@ Scope: `src/mw4/mountcontrol`, tests in `tests/unit_tests/mountcontrol`.
     (100 % coverage, no `# pragma: no cover`)
   - `uv run ruff format` and `uv run ruff check`
 - Type annotations on all functions, camelCase, no leading underscore.
-- Tests are module scoped and mirror the `src/mw4/mountcontrol` layout.
-- Callers outside `mountcontrol` (grep `src/mw4`) must be updated in the same step.
+- Tests are module scoped and mirror the `../../src/mw4/mountcontrol` layout.
+- Callers outside `mountcontrol` (grep `../../src/mw4`) must be updated in the same step.
 - At the end: run the full test suite.
 
 ---
@@ -23,14 +23,14 @@ Scope: `src/mw4/mountcontrol`, tests in `tests/unit_tests/mountcontrol`.
 
 ### 6.1 Split `convert.py`
 
-1. Grep all importers of `convert` in `src/mw4` and `tests`.
+1. Grep all importers of `convert` in `../../src/mw4` and `tests`.
 2. Create two modules:
    - `convert.py`: mount protocol parsing (`stringToDegree`, `valueToFloat`,
      `valueToInt`, `valueToAngle`, `sexagesimalizeToInt`, ...).
    - `convertGui.py`: GUI input/output formatting (`convertRaToAngle`,
      `convertDecToAngle`, `formatLatToText`, `convertToDMS`, `convertToHMS`, ...).
 3. Update imports in all callers. No re-export shims.
-4. Split `tests/unit_tests/mountcontrol/test_convert.py` the same way.
+4. Split `../../tests/unit_tests/mountcontrol/test_convert.py` the same way.
 5. Done when: both modules are covered 100 % and ruff is clean.
 
 ### 6.2 Command helper for `Setting` and `ObsSiteCommands`

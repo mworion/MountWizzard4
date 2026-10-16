@@ -1,6 +1,6 @@
 # Plan: mountcontrol review recommendations 1-5
 
-Source: `gists/work_agent/2026-10-16-mountcontrol-review.md`, section 5.
+Source: `2026-10-16-mountcontrol-review.md`, section 5.
 
 ## Step 1 - fix the three high-severity bugs (with regression tests)
 - `convert.convertRaToAngle`: validate the float branch in degrees
@@ -28,6 +28,6 @@ Source: `gists/work_agent/2026-10-16-mountcontrol-review.md`, section 5.
 - Run Pyrefly on the package.
 
 ## Finish
-- Ruff format and check, tests for `tests/unit_tests/mountcontrol` with 100 %
+- Ruff format and check, tests for `../../tests/unit_tests/mountcontrol` with 100 %
   coverage, then the whole test suite.
 

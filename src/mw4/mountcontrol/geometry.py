@@ -6,7 +6,15 @@ import numpy as np
 from mw4.mountcontrol.convert import valueToFloat
 from mw4.mountcontrol.mountContext import MountContext
 from skyfield.api import Angle
-from typing import Any, ClassVar
+from typing import ClassVar
+
+type TransformResult = tuple[
+    Angle | None,
+    Angle | None,
+    np.ndarray | None,
+    np.ndarray | None,
+    np.ndarray | None,
+]
 
 
 class Geometry:
@@ -53,10 +61,22 @@ class Geometry:
         },
     }
 
+    # fallback values for a dome configuration which is not (fully) stored yet
+    domeDefaults: ClassVar = {
+        "use10micronDef": False,
+        "northOffset": 0,
+        "eastOffset": 0,
+        "verticalOffset": 0,
+        "offGEM": 0,
+        "offLAT": 0,
+        "radius": 1.5,
+    }
+
     def __init__(self, parent: MountContext) -> None:
         self.parent = parent
         self.cfg = parent.domeConfig
         self.loggingTrace: bool = parent.loggingTrace
+        self.offLAT: float = 0
         self.offBaseAltAxisX: float = 0
         self.offBaseAltAxisZ: float = 0
         self.offAltAxisGemX: float = 0
@@ -72,8 +92,8 @@ class Geometry:
         self._offVertGEM: float = 0
         self._offGEM: float = 0
         self._offPlateOTA: float = 0
-        self.transMatrix = None
-        self.transVector = None
+        self.transMatrix: list[np.ndarray] | None = None
+        self.transVector: list[np.ndarray] | None = None
         self.parent.updateDomeSettings.connect(self.loadParametersFromConfig)
 
     @property
@@ -81,33 +101,33 @@ class Geometry:
         return self._offNorth
 
     @offNorth.setter
-    def offNorth(self, value: Any) -> None:
+    def offNorth(self, value: str | float | None) -> None:
         self._offNorth = valueToFloat(value)
         lat = self.parent.obsSite.location.latitude.radians
         val = valueToFloat(value) + self.offBaseAltAxisX
         val += np.cos(abs(lat)) * self.offAltAxisGemX
         val -= np.sin(abs(lat)) * self.offAltAxisGemZ
-        self._offNorthGEM = val
+        self._offNorthGEM = float(val)
 
     @property
     def offNorthGEM(self) -> float:
         return self._offNorthGEM
 
     @offNorthGEM.setter
-    def offNorthGEM(self, value: Any) -> None:
+    def offNorthGEM(self, value: str | float | None) -> None:
         self._offNorthGEM = valueToFloat(value)
         lat = self.parent.obsSite.location.latitude.radians
         val = valueToFloat(value) - self.offBaseAltAxisX
         val -= np.cos(abs(lat)) * self.offAltAxisGemX
         val += np.sin(abs(lat)) * self.offAltAxisGemZ
-        self._offNorth = val
+        self._offNorth = float(val)
 
     @property
     def offEast(self) -> float:
         return self._offEast
 
     @offEast.setter
-    def offEast(self, value: Any) -> None:
+    def offEast(self, value: str | float | None) -> None:
         self._offEast = valueToFloat(value)
         self._offEastGEM = valueToFloat(value)
 
@@ -116,7 +136,7 @@ class Geometry:
         return self._offEastGEM
 
     @offEastGEM.setter
-    def offEastGEM(self, value: Any) -> None:
+    def offEastGEM(self, value: str | float | None) -> None:
         self._offEastGEM = valueToFloat(value)
         self._offEast = valueToFloat(value)
 
@@ -125,33 +145,33 @@ class Geometry:
         return self._offVert
 
     @offVert.setter
-    def offVert(self, value: Any) -> None:
+    def offVert(self, value: str | float | None) -> None:
         self._offVert = valueToFloat(value)
         lat = self.parent.obsSite.location.latitude.radians
         val = valueToFloat(value) + self.offBaseAltAxisZ
         val += np.sin(abs(lat)) * self.offAltAxisGemX
         val += np.cos(abs(lat)) * self.offAltAxisGemZ
-        self._offVertGEM = val
+        self._offVertGEM = float(val)
 
     @property
     def offVertGEM(self) -> float:
         return self._offVertGEM
 
     @offVertGEM.setter
-    def offVertGEM(self, value: Any) -> None:
+    def offVertGEM(self, value: str | float | None) -> None:
         self._offVertGEM = valueToFloat(value)
         lat = self.parent.obsSite.location.latitude.radians
         val = valueToFloat(value) - self.offBaseAltAxisZ
         val -= np.sin(abs(lat)) * self.offAltAxisGemX
         val -= np.cos(abs(lat)) * self.offAltAxisGemZ
-        self._offVert = val
+        self._offVert = float(val)
 
     @property
     def offGEM(self) -> float:
         return self._offGEM
 
     @offGEM.setter
-    def offGEM(self, value: Any) -> None:
+    def offGEM(self, value: str | float | None) -> None:
         self._offGEM = valueToFloat(value)
         self._offPlateOTA = self._offGEM - self.offGemPlate
 
@@ -160,7 +180,7 @@ class Geometry:
         return self._offPlateOTA
 
     @offPlateOTA.setter
-    def offPlateOTA(self, value: Any) -> None:
+    def offPlateOTA(self, value: str | float | None) -> None:
         self._offPlateOTA = valueToFloat(value)
         self._offGEM = self._offPlateOTA + self.offGemPlate
 
@@ -173,17 +193,20 @@ class Geometry:
         vars(self).update(self.geometryData[mountType])
         self.loadParametersFromConfig()
 
+    def domeParam(self, key: str) -> float:
+        return self.cfg.get(key, self.domeDefaults[key])
+
     def loadParametersFromConfig(self) -> None:
-        if self.cfg["use10micronDef"]:
-            self.offNorth = self.cfg["northOffset"]
-            self.offEast = self.cfg["eastOffset"]
-            self.offVert = self.cfg["verticalOffset"]
+        if self.domeParam("use10micronDef"):
+            self.offNorth = self.domeParam("northOffset")
+            self.offEast = self.domeParam("eastOffset")
+            self.offVert = self.domeParam("verticalOffset")
         else:
-            self.offNorthGEM = self.cfg["northOffset"]
-            self.offEastGEM = self.cfg["eastOffset"]
-            self.offVertGEM = self.cfg["verticalOffset"]
-        self.offGEM = self.cfg["offGEM"]
-        self.offLAT = self.cfg["offLAT"]
+            self.offNorthGEM = self.domeParam("northOffset")
+            self.offEastGEM = self.domeParam("eastOffset")
+            self.offVertGEM = self.domeParam("verticalOffset")
+        self.offGEM = self.domeParam("offGEM")
+        self.offLAT = self.domeParam("offLAT")
 
     @staticmethod
     def transformRot(axis: str, angle: float) -> np.ndarray:
@@ -230,20 +253,14 @@ class Geometry:
 
     def calcTransformationMatrices(
         self, ha: Angle, dec: Angle, lat: Angle, pierside: str = "W"
-    ) -> tuple[
-        Angle | None,
-        Angle | None,
-        np.ndarray | None,
-        np.ndarray | None,
-        np.ndarray | None,
-    ]:
+    ) -> TransformResult:
         if self.loggingTrace:
             text = f"[Trace] HA:{ha.hours}, DEC:{dec.degrees}, LAT:{lat.degrees}, "
             text += f"pierside:{pierside} ,"
             text += f"offGEM:{self.offGEM}, offPlateOTA:{self.offPlateOTA}, "
             text += f"offNorth:{self.offNorth}, offEast:{self.offEast}, "
-            text += f"offVert:{self.offVert}, offLAT:{self.cfg['offLAT']}, "
-            text += f"domeRadius:{self.cfg['radius']}"
+            text += f"offVert:{self.offVert}, offLAT:{self.domeParam('offLAT')}, "
+            text += f"domeRadius:{self.domeParam('radius')}"
             self.log.debug(text)
 
         ha = ha.degrees
@@ -350,7 +367,7 @@ class Geometry:
         # installed but not centered should be a translation in y. if the scope is
         # de-centered looking in the direction of the scope (out of the hemisphere)
         # to the right it's a negative y otherwise a positive one
-        vec7 = [0, -self.cfg["offLAT"], 0]
+        vec7 = [0, -self.domeParam("offLAT"), 0]
         T8 = np.dot(T7, self.transformTranslate(vec7))
         P9 = np.dot(T8, P0)
 
@@ -374,7 +391,7 @@ class Geometry:
         PB = P9[:-1]
 
         p = 2 * np.dot(PD, PB)
-        q = np.dot(PB, PB) - self.cfg["radius"] ** 2
+        q = np.dot(PB, PB) - self.domeParam("radius") ** 2
 
         if self.loggingTrace:
             self.log.debug(f"[Trace] Geometry calc p:[{p}], q:[{q}]")

@@ -110,6 +110,17 @@ def test_startupMountData_4(function):
     assert function.mountIsUp
 
 
+def test_startupMountData_5(function):
+    function.mountIsUp = True
+    with (
+        mock.patch.object(function.obsSite, "shutdown", return_value=True),
+        mock.patch.object(function.signals, "deviceDisconnected") as mockSignal,
+    ):
+        assert function.mountTimeConn.shutdown()
+        mockSignal.emit.assert_called_once_with("mount")
+    assert not function.mountIsUp
+
+
 def test_resultCyclePointing_1(function):
     function.obsSite.flipped = False
     function.resultCyclePointing(True)
@@ -264,6 +275,12 @@ def test_GetFW_2(function):
 
 def test_resultGetLocation_1(function):
     function.resultGetLocation()
+
+
+def test_resultGetLocation_2(function):
+    with mock.patch.object(function.geometry, "loadParametersFromConfig") as mockLoad:
+        function.resultGetLocation()
+        mockLoad.assert_called_once()
 
 
 def test_GetLocation_1(function):
@@ -470,6 +487,22 @@ def test_resultCyclePointing_settlingWait(function):
     with mock.patch.object(function.settlingWait, "start"):
         function.resultCyclePointing(True)
         assert function.settlingWait.start.called
+
+
+def test_resultCyclePointing_flippedConsumed(function):
+    function.obsSite.status = 0
+    function.obsSite.flipped = True
+    function._waitTimeFlip = 5000
+    function.obsSite.statusSlew = False
+    function.statusSlew = True
+    with mock.patch.object(function.settlingWait, "start") as mockStart:
+        function.resultCyclePointing(True)
+        mockStart.assert_called_once_with(5000)
+    assert not function.obsSite.flipped
+    function.statusSlew = True
+    with mock.patch.object(function.settlingWait, "start") as mockStart:
+        function.resultCyclePointing(True)
+        mockStart.assert_called_once_with(0)
 
 
 def test_resultStatTLE_signal(function):

@@ -210,11 +210,11 @@ class ObsSite(ObsSiteCommands):
         return self._piersideTarget
 
     @piersideTarget.setter
-    def piersideTarget(self, value: int) -> None:
-        if value == 2:
-            self._piersideTarget = "W"
-        elif value == 3:
-            self._piersideTarget = "E"
+    def piersideTarget(self, value: str) -> None:
+        if value in ["E", "W"]:
+            self._piersideTarget = value
+        else:
+            self.log.info(f"Malformed value: {value}")
 
     Alt = AngleProperty("degrees")
 

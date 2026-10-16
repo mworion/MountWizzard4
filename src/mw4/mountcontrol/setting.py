@@ -5,7 +5,7 @@ import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat, valueToInt
 from mw4.mountcontrol.mountContext import MountContext
-from typing import Any, ClassVar
+from typing import ClassVar
 
 
 class Setting:
@@ -64,7 +64,7 @@ class Setting:
         return self._typeConnection
 
     @typeConnection.setter
-    def typeConnection(self, value: Any) -> None:
+    def typeConnection(self, value: str | int | None) -> None:
         value = valueToInt(value)
         if value not in [0, 1, 2, 3]:
             value = 0
@@ -126,9 +126,27 @@ class Setting:
     def timeToMeridian(self) -> int:
         return int(self.timeToFlip - self.meridianLimitTrack * 4)
 
+    def validateSetting(self, response: list[str]) -> bool:
+        """
+        The response consists of 24 chunks, with firmware 3.2.5 and newer of 27.
+        Commands without a '#' terminator are merged into the next chunk, so
+        some chunks carry more than one value.
+        """
+        newer = self.parent.firmware.checkNewer("3.2.5")
+        if len(response) < (27 if newer else 24):
+            return False
+        if len(response[9]) < 6 or len(response[10]) < 3:
+            return False
+        if response[11].count(",") != 1:
+            return False
+        return not (newer and len(response[25].split(",")) < 4)
+
     def parseSetting(self, response: list, numberOfChunks: int) -> bool:
         if len(response) != numberOfChunks:
             self.log.warning("wrong number of chunks")
+            return False
+        if not self.validateSetting(response):
+            self.log.warning(f"malformed setting response: [{response}]")
             return False
 
         self.slewRate = valueToFloat(response[0])

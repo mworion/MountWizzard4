@@ -4,7 +4,6 @@
 import numpy as np
 import re
 from skyfield.api import Angle
-from typing import Any
 
 
 def stringToDegree(value: str) -> float:
@@ -60,7 +59,7 @@ def stringToAngle(value: str, preference: str = "degrees") -> Angle:
     return angleFromValue(stringToDegree(value), preference)
 
 
-def valueToFloat(value: Any) -> float:
+def valueToFloat(value: str | float | None) -> float:
     if value == "E" or value is None:
         return 0
     try:
@@ -70,11 +69,11 @@ def valueToFloat(value: Any) -> float:
     return value
 
 
-def valueToAngle(value: Any, preference: str = "degrees") -> Angle:
+def valueToAngle(value: str | float | None, preference: str = "degrees") -> Angle:
     return angleFromValue(valueToFloat(value), preference)
 
 
-def valueToInt(value: Any) -> int:
+def valueToInt(value: str | float | None) -> int:
     if value is None:
         return 0
     try:
@@ -196,8 +195,13 @@ def convertRaToAngle(value: str) -> Angle:
     isSexagesimal, isFloat, elements = parseCoordToAngleString(value, "H")
 
     if isFloat:
+        # plain numbers are interpreted as degrees (0 <= value < 360)
         angle = float(value.replace(",", "."))
-    elif isSexagesimal:
+        if angle >= 360 or angle < 0:
+            angle = 0
+        return Angle(hours=angle / 360 * 24)
+
+    if isSexagesimal:
         angle = float(elements[2])
         if elements[3] is not None:
             angle += float(elements[3]) / 60
@@ -209,7 +213,7 @@ def convertRaToAngle(value: str) -> Angle:
     if angle >= 24 or angle < 0:
         angle = 0
 
-    return Angle(hours=angle / 360 * 24) if isFloat else Angle(hours=angle)
+    return Angle(hours=angle)
 
 
 def convertDecToAngle(value: str) -> Angle:

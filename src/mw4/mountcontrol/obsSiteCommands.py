@@ -7,7 +7,7 @@ from mw4.mountcontrol.convert import sexagesimalizeToInt, valueToInt
 from mw4.mountcontrol.mountContext import MountContext
 from skyfield.api import Angle
 from skyfield.toposlib import GeographicPosition
-from typing import Any
+from typing import ClassVar
 
 
 class ObsSiteCommands:
@@ -18,8 +18,9 @@ class ObsSiteCommands:
 
     parent: MountContext
     log = logging.getLogger("MW4")
-    location: Any
-    piersideTarget: Any
+    PIERSIDE_CODES: ClassVar[dict[int, str]] = {2: "W", 3: "E"}
+    location: GeographicPosition | list | tuple
+    piersideTarget: str
 
     def parseLocation(self, response: list, numberOfChunks: int) -> bool:
         """
@@ -103,12 +104,15 @@ class ObsSiteCommands:
         if result.count("0") > 0:
             self.log.debug(f"Coordinates could not be set: [{response}]")
             return False
-        self.piersideTarget = valueToInt(response[0][2])
+        pierCode = valueToInt(response[0][2])
+        # the mount codes the target pierside as 2 (west) and 3 (east)
+        if pierCode in self.PIERSIDE_CODES:
+            self.piersideTarget = self.PIERSIDE_CODES[pierCode]
         self.AltTarget = response[0][3:]
         self.AzTarget = response[1]
         self.raJNowTarget = response[2]
         self.decJNowTarget = response[3]
-        return valueToInt(response[0][2]) != 0
+        return pierCode != 0
 
     def setTargetAltAz(self, alt: Angle, az: Angle) -> bool:
         sgn, h, m, s, frac = sexagesimalizeToInt(alt.degrees, 1)

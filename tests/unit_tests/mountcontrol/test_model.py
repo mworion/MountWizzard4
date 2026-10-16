@@ -610,6 +610,20 @@ def test_Model_parseStars_ok():
     assert len(model.starList) == 11
 
 
+def test_Model_parseStars_malformedFields():
+    obsSite = App().mount.obsSite
+    obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
+
+    model = Model(parent=makeParent())
+    response = [
+        "21:52:58.95,+08*56:10.1,   5.7,201",
+        "21:06:10.79,+45*20:52.8,  12.1",
+    ]
+    suc = model.parseStars(response, 2)
+    assert not suc
+    assert len(model.starList) == 0
+
+
 def test_Model_parseStars_not_ok1():
     obsSite = App().mount.obsSite
     obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)

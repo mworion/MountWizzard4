@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from mw4.base.appProtocol import AppProtocol
 from mw4.base.tpool import Worker, startWorker
 from mw4.mountcontrol.firmware import Firmware
-from mw4.mountcontrol.geometry import Geometry
+from mw4.mountcontrol.geometry import Geometry, TransformResult
 from mw4.mountcontrol.model import Model
 from mw4.mountcontrol.mountData import MountData
 from mw4.mountcontrol.mountSignals import MountSignals
@@ -150,6 +150,8 @@ class MountDevice(QObject):
         settleWait = self._waitTimeFlip if self.obsSite.flipped else 0
         if not self.obsSite.statusSlew and self.statusSlew:
             self.settlingWait.start(settleWait)
+            # the flip applies to one slew only, do not carry it to the next
+            self.obsSite.flipped = False
         self.statusSlew = self.obsSite.statusSlew
 
         if result:
@@ -218,6 +220,8 @@ class MountDevice(QObject):
         )
 
     def resultGetLocation(self) -> None:
+        # the GEM offsets depend on the latitude, so recalculate them now
+        self.geometry.loadParametersFromConfig()
         self.signals.locationDone.emit(self.obsSite)
 
     def getLocation(self) -> None:
@@ -289,18 +293,14 @@ class MountDevice(QObject):
             guard=lambda: self.mountIsUp,
         )
 
-    def calcTransformationMatricesTarget(
-        self,
-    ) -> tuple[Angle | None, Angle | None, Any, Any, Any]:
+    def calcTransformationMatricesTarget(self) -> TransformResult:
         ha = self.obsSite.haJNowTarget
         dec = self.obsSite.decJNowTarget
         lat = self.obsSite.location.latitude
         pierside = self.obsSite.piersideTarget
         return self.geometry.calcTransformationMatrices(ha, dec, lat, pierside)
 
-    def calcTransformationMatricesActual(
-        self,
-    ) -> tuple[Angle | None, Angle | None, Any, Any, Any]:
+    def calcTransformationMatricesActual(self) -> TransformResult:
         ha = self.obsSite.haJNow
         dec = self.obsSite.decJNow
         lat = self.obsSite.location.latitude

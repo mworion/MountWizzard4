@@ -55,7 +55,9 @@ class MountTimeConn:
     def shutdown(self) -> bool:
         suc = self.parent.obsSite.shutdown()
         if suc:
-            self.parent.mountIsUp = False
+            # the signal drives MountDevice.startupMountData, which resets
+            # mountIsUp and emits deviceDisconnected
+            self.parent.signals.mountIsUp.emit(False)
         return suc
 
     def setMountStatusOff(self, logText: str) -> None:

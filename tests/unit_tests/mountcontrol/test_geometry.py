@@ -857,3 +857,25 @@ def test_updateDomeSettings_signal_connected(function):
     function.geometry.offGEM = 0.0
     function.geometry.parent.app.updateDomeSettings.emit()
     assert function.geometry.offGEM == 999.0
+
+
+def test_domeParam_1(function):
+    function.geometry.cfg.pop("radius", None)
+    assert function.geometry.domeParam("radius") == 1.5
+
+
+def test_domeParam_2(function):
+    function.geometry.cfg["radius"] = 2.5
+    assert function.geometry.domeParam("radius") == 2.5
+    function.geometry.cfg["radius"] = 1.5
+
+
+def test_loadParametersFromConfig_emptyConfig(function):
+    saved = dict(function.geometry.cfg)
+    function.geometry.cfg.clear()
+    try:
+        function.geometry.loadParametersFromConfig()
+        assert function.geometry.offEast == 0
+        assert function.geometry.offLAT == 0
+    finally:
+        function.geometry.cfg.update(saved)

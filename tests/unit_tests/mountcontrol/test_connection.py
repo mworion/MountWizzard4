@@ -502,14 +502,25 @@ class TestCommunicateRaw:
         conn = Connection(makeParent())
         with (
             mock.patch.object(conn, "buildClient", return_value=client),
-            mock.patch.object(conn, "sendData", return_value=False),
+            mock.patch.object(conn, "sendData", return_value=True),
         ):
             suc = conn.communicateRaw("test")
-            assert not suc[0]
+            assert suc[0]
             assert not suc[1]
             assert suc[2] == "Timeout"
         client.abort.assert_called_once()
         client.close.assert_called_once()
+
+    def test_communicateRaw_sendFailed(self):
+        client = makeClient()
+        conn = Connection(makeParent())
+        with (
+            mock.patch.object(conn, "buildClient", return_value=client),
+            mock.patch.object(conn, "sendData", return_value=False),
+        ):
+            suc = conn.communicateRaw("test")
+            assert suc == (False, False, "Send error")
+        client.waitForReadyRead.assert_not_called()
 
     def test_communicateRaw_2(self):
         client = makeClient()

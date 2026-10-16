@@ -15,7 +15,6 @@ from mw4.mountcontrol.modelStar import ModelStar
 from mw4.mountcontrol.mountContext import MountContext
 from mw4.mountcontrol.progStar import ProgStar
 from skyfield.api import Angle, Star
-from typing import Any
 
 
 class Model:
@@ -50,7 +49,7 @@ class Model:
         return self._numberStars
 
     @numberStars.setter
-    def numberStars(self, value: Any) -> None:
+    def numberStars(self, value: str | int | None) -> None:
         self._numberStars = valueToInt(value)
 
     def addStar(self, value: ModelStar) -> None:
@@ -71,7 +70,7 @@ class Model:
         return self._nameList
 
     @nameList.setter
-    def nameList(self, value: Any) -> None:
+    def nameList(self, value: list[str]) -> None:
         self._nameList = (
             value if isinstance(value, list) and all(isinstance(x, str) for x in value) else []
         )
@@ -81,7 +80,7 @@ class Model:
         return self._numberNames
 
     @numberNames.setter
-    def numberNames(self, value: Any) -> None:
+    def numberNames(self, value: str | int | None) -> None:
         self._numberNames = valueToInt(value)
 
     def addName(self, value: str) -> None:
@@ -138,8 +137,11 @@ class Model:
         if len(response) != numberOfChunks:
             self.log.warning("Wrong number of chunks")
             return False
-        for number, starData in enumerate(response):
-            ra, dec, err, angle = starData.split(",")
+        starFields = [starData.split(",") for starData in response]
+        if any(len(fields) != 4 for fields in starFields):
+            self.log.warning(f"Malformed star data: [{response}]")
+            return False
+        for number, (ra, dec, err, angle) in enumerate(starFields):
             ra = stringToAngle(ra, preference="hours")
             dec = stringToAngle(dec, preference="degrees")
             coord = Star(ra=ra, dec=dec)

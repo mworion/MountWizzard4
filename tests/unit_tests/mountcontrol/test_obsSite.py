@@ -431,16 +431,29 @@ def test_angularPosDECTarget_2():
 def test_Site_piersideTarget():
     obsSite = ObsSite(parent=Parent())
 
-    obsSite.piersideTarget = 2
+    obsSite.piersideTarget = "W"
     assert obsSite.piersideTarget == "W"
-    obsSite.piersideTarget = 3
+    obsSite.piersideTarget = "E"
     assert obsSite.piersideTarget == "E"
-    obsSite.piersideTarget = 0
-    assert obsSite.piersideTarget == "E"
-    obsSite.piersideTarget = 2
+    obsSite.piersideTarget = "W"
+    obsSite.piersideTarget = "x"
     assert obsSite.piersideTarget == "W"
-    obsSite.piersideTarget = 3
+    obsSite.piersideTarget = "E"
     assert obsSite.piersideTarget == "E"
+
+
+def test_Site_parseSetTargetResponse_pierside():
+    obsSite = ObsSite(parent=Parent())
+    response = ["122+45*00:00.0", "180*00:00.0", "12:00:00.00", "+45*00:00.0"]
+    assert obsSite.parseSetTargetResponse(response)
+    assert obsSite.piersideTarget == "W"
+    response[0] = "123+45*00:00.0"
+    assert obsSite.parseSetTargetResponse(response)
+    assert obsSite.piersideTarget == "E"
+    obsSite.piersideTarget = "W"
+    response[0] = "121+45*00:00.0"
+    assert obsSite.parseSetTargetResponse(response)
+    assert obsSite.piersideTarget == "W"
 
 
 def test_Site_status():

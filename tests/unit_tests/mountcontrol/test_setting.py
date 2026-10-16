@@ -447,7 +447,7 @@ def test_Setting_parse_not_ok2(function):
         "1",
     ]
     suc = function.parseSetting(response, 27)
-    assert suc
+    assert not suc
 
 
 def test_Setting_parse_not_ok3(function):
@@ -1305,3 +1305,73 @@ def test_setAutoPower_ok(function):
         mConn.return_value.communicate.return_value = True, response, 1
         suc = setting.setAutoPower(True)
         assert suc
+
+
+def buildValidResponse() -> list[str]:
+    return [
+        "15",
+        "1",
+        "20",
+        "0426",
+        "05",
+        "+010.0",
+        "0950.0",
+        "60.2",
+        "+033.0",
+        "101+90*",
+        "+00*",
+        "E,2018-08-11",
+        "1",
+        "0",
+        "00:00:00:00:00:00",
+        "N",
+        "0",
+        "987.0,0100",
+        "+20,5",
+        "90.4",
+        "-13,5",
+        "60.2",
+        "1",
+        "00005.000",
+        "1",
+        "A,G,N,H",
+        "1",
+    ]
+
+
+def test_validateSetting_ok(function):
+    assert function.validateSetting(buildValidResponse())
+
+
+def test_validateSetting_tooShort(function):
+    assert not function.validateSetting(buildValidResponse()[:26])
+
+
+def test_validateSetting_shortFlags(function):
+    response = buildValidResponse()
+    response[9] = "101"
+    assert not function.validateSetting(response)
+
+
+def test_validateSetting_shortHorizon(function):
+    response = buildValidResponse()
+    response[10] = "+0"
+    assert not function.validateSetting(response)
+
+
+def test_validateSetting_malformedUTC(function):
+    response = buildValidResponse()
+    response[11] = "E"
+    assert not function.validateSetting(response)
+
+
+def test_validateSetting_malformedConfig(function):
+    response = buildValidResponse()
+    response[25] = "A,G"
+    assert not function.validateSetting(response)
+
+
+def test_parseSetting_malformed(function):
+    response = buildValidResponse()
+    response[11] = "E"
+    assert not function.parseSetting(response, 27)

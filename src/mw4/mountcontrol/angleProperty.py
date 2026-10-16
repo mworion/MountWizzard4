@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from mw4.mountcontrol.convert import stringToAngle, valueToAngle
 from skyfield.api import Angle
-from typing import Any, Literal, overload
+from typing import Literal, overload
 
 
 class AngleProperty:
@@ -41,7 +41,7 @@ class AngleProperty:
             return self
         return getattr(obj, self.attr)
 
-    def __set__(self, obj: object, value: Any) -> None:
+    def __set__(self, obj: object, value: Angle | str | float | None) -> None:
         if not isinstance(value, Angle):
             value = self.convert(value, preference=self.preference)
         setattr(obj, self.attr, value)

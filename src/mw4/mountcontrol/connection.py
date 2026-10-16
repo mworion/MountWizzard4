@@ -436,6 +436,9 @@ class Connection:
             return False, False, "Socket error"
 
         sucSend = self.sendData(client, commandString)
+        if not sucSend:
+            # sendData has already closed the client
+            return False, False, "Send error"
         try:
             if not client.waitForReadyRead(self.SOCKET_TIMEOUT * 1000):
                 if self.loggingTrace:

@@ -653,18 +653,25 @@ def test_bootMount_9_warning_log_on_exception(function):
 
 def test_shutdown_1(function):
     function.parent.mountIsUp = True
-    with mock.patch.object(function.parent.obsSite, "shutdown", return_value=True, create=True):
+    with (
+        mock.patch.object(function.parent.obsSite, "shutdown", return_value=True, create=True),
+        mock.patch.object(function.parent.signals, "mountIsUp") as mockSignal,
+    ):
         suc = function.shutdown()
         assert suc
-        assert not function.parent.mountIsUp
+        mockSignal.emit.assert_called_once_with(False)
 
 
 def test_shutdown_2(function):
     function.parent.mountIsUp = True
-    with mock.patch.object(function.parent.obsSite, "shutdown", return_value=False, create=True):
+    with (
+        mock.patch.object(function.parent.obsSite, "shutdown", return_value=False, create=True),
+        mock.patch.object(function.parent.signals, "mountIsUp") as mockSignal,
+    ):
         suc = function.shutdown()
         assert not suc
         assert function.parent.mountIsUp
+        mockSignal.emit.assert_not_called()
 
 
 def test_bootMount_10(function):

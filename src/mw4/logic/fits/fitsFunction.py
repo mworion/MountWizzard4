@@ -5,13 +5,12 @@ import logging
 import numpy as np
 from astropy.io import fits
 from mw4.base.transform import JNowToJ2000
-from mw4.mountcontrol.convert import (
+from mw4.mountcontrol.convert import valueToAngle, valueToFloat
+from mw4.mountcontrol.convertGui import (
     convertDecToAngle,
     convertRaToAngle,
     formatLatToText,
     formatLonToText,
-    valueToAngle,
-    valueToFloat,
 )
 from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path

@@ -270,6 +270,15 @@ def test_startSlewing_1_2():
         assert not suc
 
 
+def test_startSlewing_unknown_type():
+    obsSite = ObsSite(parent=Parent())
+
+    with mock.patch("mw4.mountcontrol.obsSiteCommands.Connection") as mConn:
+        suc = obsSite.startSlewing(slewType="unknown")
+        assert not suc
+        mConn.assert_not_called()
+
+
 def test_startSlewing_3():
     obsSite = ObsSite(parent=Parent())
     response = "1#"
@@ -868,3 +877,12 @@ def test_setHighPrecision_2():
         mConn.return_value.communicate.return_value = True, response, 0
         suc = obsSite.setHighPrecision()
         assert suc
+
+
+def test_setElevation_zero_sign():
+    obsSite = ObsSite(parent=Parent())
+    with mock.patch("mw4.mountcontrol.obsSiteCommands.Connection") as mConn:
+        mConn.return_value.communicate.return_value = True, [], 0
+        obsSite.setElevation(0)
+        args = mConn.return_value.communicate.call_args
+        assert args.args[0] == ":Sev+0000.0#"

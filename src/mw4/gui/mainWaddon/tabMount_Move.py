@@ -8,12 +8,12 @@ from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable
-from mw4.mountcontrol.convert import (
+from mw4.mountcontrol.convert import valueToAngle
+from mw4.mountcontrol.convertGui import (
     convertDecToAngle,
     convertRaToAngle,
     formatDstrToText,
     formatHstrToText,
-    valueToAngle,
 )
 from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QWidget

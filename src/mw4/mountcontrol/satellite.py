@@ -37,9 +37,18 @@ class Satellite:
         self.tleParams = TLEParams(obsSite=parent.obsSite)
         self.trajectoryParams = TrajectoryParams(obsSite=parent.obsSite)
 
-    def parseGetTLE(self, response: list, numberOfChunks: int) -> bool:
-        if len(response) != numberOfChunks:
+    def checkChunks(self, response: list, numberOfChunks: int, expected: int | None = None) -> bool:
+        """
+        Checks that the response has the announced number of chunks and, if
+        given, the expected number of chunks.
+        """
+        if len(response) != numberOfChunks or (expected is not None and len(response) != expected):
             self.log.warning("wrong number of chunks")
+            return False
+        return True
+
+    def parseGetTLE(self, response: list, numberOfChunks: int) -> bool:
+        if not self.checkChunks(response, numberOfChunks):
             return False
         if response[0] == "E":
             return False
@@ -125,12 +134,12 @@ class Satellite:
         julD -= self.obsSite.UTC2TT
         conn = Connection(self.parent)
         command = f":TLEGAZ{julD}#:TLEGEQ{julD}#:TLEP{julD},{duration}#"
-        suc, response, _numberOfChunks = conn.communicate(command)
+        suc, response, _ = conn.communicate(command)
         if not suc:
             return False
         return self.parseCalcTLE(response)
 
-    def slewTLE(self) -> tuple:
+    def slewTLE(self) -> tuple[bool, str]:
         conn = Connection(self.parent)
         suc, response, numberOfChunks = conn.communicate(":TLES#")
         if numberOfChunks != 1:
@@ -151,7 +160,7 @@ class Satellite:
 
     def statTLE(self) -> bool:
         conn = Connection(self.parent)
-        suc, response, _numberOfChunks = conn.communicate(":TLESCK#")
+        suc, response, _ = conn.communicate(":TLESCK#")
         if not suc:
             return False
         return self.parseStatTLE(response)
@@ -168,21 +177,22 @@ class Satellite:
         return suc
 
     def addTrajectoryPoint(self, alt: Angle, az: Angle) -> bool:
-        az = az.degrees
-        alt = alt.degrees
+        azDegrees = az.degrees
+        altDegrees = alt.degrees
+        if len(azDegrees) != len(altDegrees):
+            self.log.warning("azimuth and altitude differ in length")
+            return False
+
         commandString = "".join(
-            f":TRADD{azimuth},{altitude}#" for azimuth, altitude in zip(az, alt, strict=True)
+            f":TRADD{azimuth},{altitude}#"
+            for azimuth, altitude in zip(azDegrees, altDegrees, strict=True)
         )
         conn = Connection(self.parent)
         suc, response, numberOfChunks = conn.communicate(commandString)
         if not suc:
             return False
 
-        if len(response) != numberOfChunks:
-            self.log.warning("wrong number of chunks")
-            return False
-        if len(response) != len(az):
-            self.log.warning("wrong number of chunks")
+        if not self.checkChunks(response, numberOfChunks, len(azDegrees)):
             return False
 
         return all(r != "E" for r in response)
@@ -197,11 +207,7 @@ class Satellite:
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
         if not suc:
             return False
-        if len(response) != numberOfChunks:
-            self.log.warning("wrong number of chunks")
-            return False
-        if len(response) != 1:
-            self.log.warning("wrong number of chunks")
+        if not self.checkChunks(response, numberOfChunks, 1):
             return False
         # should be 'E' only , actually wrong 'N' in
         if response[0] in ["E", "N"]:
@@ -225,11 +231,7 @@ class Satellite:
         if not suc:
             return False
 
-        if len(response) != numberOfChunks:
-            self.log.warning("wrong number of chunks")
-            return False
-        if len(response) != 4:
-            self.log.warning("wrong number of chunks")
+        if not self.checkChunks(response, numberOfChunks, 4):
             return False
         self.trajectoryParams.offsetRA = valueToFloat(response[0])
         self.trajectoryParams.offsetDEC = valueToFloat(response[1])
@@ -259,16 +261,15 @@ class Satellite:
             cmd += f":TROFFSET4,{Time:+05.1f}#"
             responseLen += 1
 
+        if not cmd:
+            return False
+
         conn = Connection(self.parent)
         suc, response, numberOfChunks = conn.communicate(commandString=cmd)
         if not suc:
             return False
 
-        if len(response) != numberOfChunks:
-            self.log.warning("wrong number of chunks")
-            return False
-        if len(response) != responseLen:
-            self.log.warning("wrong number of chunks")
+        if not self.checkChunks(response, numberOfChunks, responseLen):
             return False
 
         return all(res != "E" for res in response)

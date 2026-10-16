@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 from importlib.resources import as_file, files
-from mw4.mountcontrol.convert import formatDstrToText, formatHstrToText
+from mw4.mountcontrol.convertGui import formatDstrToText, formatHstrToText
 from PySide6.QtCore import (
     QEvent,
     QObject,

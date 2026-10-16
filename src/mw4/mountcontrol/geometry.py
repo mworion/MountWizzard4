@@ -251,67 +251,61 @@ class Geometry:
         )
         return T
 
-    def calcTransformationMatrices(
-        self, ha: Angle, dec: Angle, lat: Angle, pierside: str = "W"
-    ) -> TransformResult:
-        if self.loggingTrace:
-            text = f"[Trace] HA:{ha.hours}, DEC:{dec.degrees}, LAT:{lat.degrees}, "
-            text += f"pierside:{pierside} ,"
-            text += f"offGEM:{self.offGEM}, offPlateOTA:{self.offPlateOTA}, "
-            text += f"offNorth:{self.offNorth}, offEast:{self.offEast}, "
-            text += f"offVert:{self.offVert}, offLAT:{self.domeParam('offLAT')}, "
-            text += f"domeRadius:{self.domeParam('radius')}"
-            self.log.debug(text)
+    def logTransformInput(self, ha: Angle, dec: Angle, lat: Angle, pierside: str) -> None:
+        text = f"[Trace] HA:{ha.hours}, DEC:{dec.degrees}, LAT:{lat.degrees}, "
+        text += f"pierside:{pierside} ,"
+        text += f"offGEM:{self.offGEM}, offPlateOTA:{self.offPlateOTA}, "
+        text += f"offNorth:{self.offNorth}, offEast:{self.offEast}, "
+        text += f"offVert:{self.offVert}, offLAT:{self.domeParam('offLAT')}, "
+        text += f"domeRadius:{self.domeParam('radius')}"
+        self.log.debug(text)
 
-        ha = ha.degrees
-        dec = dec.degrees
-        lat = lat.degrees
-
+    def calcBaseTransforms(self, latDeg: float) -> list[np.ndarray]:
+        """
+        Transformations T0..T3 from the dome center to the rotation axis of the
+        latitude compensation. All angles are in degrees.
+        """
         # the equator of the dome and it's middle point of the hemisphere is
-        # zero point for coordinate system.
-        P0 = np.array([0, 0, 0, 1])
-
-        # next adjustment if the position of the base of mount in relation dome
-        # sphere. This measurement is according the 10micron definition. In case
-        # we use e ASCOM definition, this values will be 0.
-        # The offset in north is x and the offset in east is -y. in vertical
-        # direction up is positive, which means the mount is above the middle
-        # point of dome
-        vec0 = [self.offNorth, -self.offEast, self.offVert]
-        T0 = self.transformTranslate(vec0)
-        P1 = np.dot(T0, P0)
+        # zero point for coordinate system. next adjustment is the position
+        # of the base of mount in relation dome sphere. This measurement is
+        # according the 10micron definition. In case we use e ASCOM definition,
+        # this values will be 0. The offset in north is x and the offset in
+        # east is -y. in vertical direction up is positive, which means the
+        # mount is above the middle point of dome
+        T0 = self.transformTranslate([self.offNorth, -self.offEast, self.offVert])
 
         # the rotation around z axis (polar direction) to adjust the orientation
         # of the mount to true north, if the fixed pier does not make it.
         # turning counterclockwise is positive
         # we also take into account Southern Hemisphere
-        rotBase = self.azAdj if lat > 0 else self.azAdj + 180
+        rotBase = self.azAdj if latDeg > 0 else self.azAdj + 180
         T1 = np.dot(T0, self.transformRotZ(rotBase))
-        P2 = np.dot(T1, P0)
 
         # next we have the translation between the baseplate and the rotation
         # axis for the altitude adjustment. the axis is normally above the plate
         # (positive z) and sometime shifted. shift north mean positive x
-        vec2 = [self.offBaseAltAxisX, 0, self.offBaseAltAxisZ]
-        T2 = np.dot(T1, self.transformTranslate(vec2))
-        P3 = np.dot(T2, P0)
+        T2 = np.dot(T1, self.transformTranslate([self.offBaseAltAxisX, 0, self.offBaseAltAxisZ]))
 
         # next step is the rotation around y-axis for compensation of latitude.
         # the adjustment angle compensates the latitude. for lat = 0 we have 0
         # degree correction and below the North Pole there is 90 deg correction
-        # needed. so phi = -lat because it's a turn counterclockwise around Y,
-        # all angles are in radians
-        self.altAdj = -abs(lat)
+        # needed. so phi = -lat because it's a turn counterclockwise around Y
+        self.altAdj = -abs(latDeg)
         T3 = np.dot(T2, self.transformRotY(self.altAdj))
-        P4 = np.dot(T3, P0)
+        return [T0, T1, T2, T3]
 
+    def calcAxisTransforms(
+        self, T3: np.ndarray, haDeg: float, decDeg: float, latDeg: float, pierside: str
+    ) -> list[np.ndarray]:
+        """
+        Transformations T4..T7 from the latitude compensation to the center of
+        the scope. All angles are in degrees.
+        """
         # next is the translation fom the rotation axis of the lat compensation
         # of the mount to the GEM point of the mount. GEM means the crossing of
         # the ra and dec axis of the german equatorial mount basically there
         # should be a translation in x/z plane up and forward (to north)
-        vec4 = [self.offAltAxisGemX, 0, self.offAltAxisGemZ]
-        T4 = np.dot(T3, self.transformTranslate(vec4))
-        P5 = np.dot(T4, P0)
+        T4 = np.dot(T3, self.transformTranslate([self.offAltAxisGemX, 0, self.offAltAxisGemZ]))
 
         # next is the rotation around the ra axis of the mount, this is rotation
         # around x this should be (as we don't track) measured in HA, where
@@ -324,16 +318,15 @@ class Geometry:
         # Beyond the pole
         # HA_sky = HA_mech + 12h, expressed in range ± 12h
         # You have to take care about Southern Hemisphere ha axis.
-        if lat < 0:
-            ha = -ha
+        if latDeg < 0:
+            haDeg = -haDeg
+            decDeg = -decDeg
             checkPier = "W"
         else:
             checkPier = "E"
 
-        value = -ha + 90 if pierside == checkPier else -ha + 270
-
-        T5 = np.dot(T4, self.transformRotX(value))
-        P6 = np.dot(T5, P0)
+        valueHa = -haDeg + 90 if pierside == checkPier else -haDeg + 270
+        T5 = np.dot(T4, self.transformRotX(valueHa))
 
         # the rotation around dec axis of the mount is next step. this rotation
         # is around z axis. dec = 0 means rectangular directing scope. direction
@@ -344,52 +337,44 @@ class Geometry:
         # Dec_sky = Dec_mech
         # Beyond the pole
         # Dec_sky = 180d - Dec_mech, expressed in range ± 90d
-        if lat < 0:
-            dec = -dec
-
-        value = dec - 90
+        valueDec = decDeg - 90
         if pierside == checkPier:
-            value = -value
-
-        T6 = np.dot(T5, self.transformRotZ(value))
-        P7 = np.dot(T6, P0)
+            valueDec = -valueDec
+        T6 = np.dot(T5, self.transformRotZ(valueDec))
 
         # the translation from GEM to the center of the scope, this should be a
         # translation in z. it consists of two parts: the user scope measures and
         # the distance from GEM to baseplate, which is depending on mount type
         # and is fixed and secondly the distance between the mount plate and
         # the scope line of sight axis
-        vec6 = [0, 0, self.offPlateOTA + self.offGemPlate]
-        T7 = np.dot(T6, self.transformTranslate(vec6))
-        P8 = np.dot(T7, P0)
+        T7 = np.dot(T6, self.transformTranslate([0, 0, self.offPlateOTA + self.offGemPlate]))
+        return [T4, T5, T6, T7]
 
-        # the translation from center of the scope, to the side if a second scope is
-        # installed but not centered should be a translation in y. if the scope is
-        # de-centered looking in the direction of the scope (out of the hemisphere)
-        # to the right it's a negative y otherwise a positive one
-        vec7 = [0, -self.domeParam("offLAT"), 0]
-        T8 = np.dot(T7, self.transformTranslate(vec7))
-        P9 = np.dot(T8, P0)
+    def calcScopeTransforms(self, T7: np.ndarray) -> list[np.ndarray]:
+        """
+        Transformations T8 and T9 for the scope offset and the line of sight.
+        """
+        # the translation from center of the scope, to the side if a second scope
+        # is installed but not centered should be a translation in y. if the
+        # scope is de-centered looking in the direction of the scope (out of the
+        # hemisphere) to the right it's a negative y otherwise a positive one
+        T8 = np.dot(T7, self.transformTranslate([0, -self.domeParam("offLAT"), 0]))
 
-        # calculating the direction of scope for dome geometry. pointing direction
-        # is in x-axis, length is standard 1. P10 would be the head of the vector,
-        # P9 is the base of the vector. subtracting gives the resulting direction
-        # of the vector which is in PD
-        vec9 = [1, 0, 0]
-        T9 = np.dot(T8, self.transformTranslate(vec9))
-        P10 = np.dot(T9, P0)
-        PD = (P10 - P9)[:-1]
+        # the pointing direction is in x-axis, length is standard 1
+        T9 = np.dot(T8, self.transformTranslate([1, 0, 0]))
+        return [T8, T9]
 
-        # calculating the crossing point between view of sight of the scope and the
-        # dome hemisphere using the traditional p-q formula
-        # if you have g: v = v0 + t * t_Dir and hem: x^2 + y^2 + z^2 = r^2
-        # with v0 = PB and t_Dir = PD you get t1 and t2 from p-q formula as
-        # t1 = -p/2 + sqr (p^2/4 - q), t2 = -p/2 - sqr (p^2/4 - q)
-        # for the right point whe have to choose the one, which crosses the
-        # hemisphere above the scope point as we normally are looking upward.
-        # and we have to use scalar product on a cartesian system
-        PB = P9[:-1]
-
+    def calcDomeIntersection(self, PB: np.ndarray, PD: np.ndarray) -> np.ndarray | None:
+        """
+        Crossing point between view of sight of the scope and the dome
+        hemisphere using the traditional p-q formula
+        if you have g: v = v0 + t * t_Dir and hem: x^2 + y^2 + z^2 = r^2
+        with v0 = PB and t_Dir = PD you get t1 and t2 from p-q formula as
+        t1 = -p/2 + sqr (p^2/4 - q), t2 = -p/2 - sqr (p^2/4 - q)
+        for the right point whe have to choose the one, which crosses the
+        hemisphere above the scope point as we normally are looking upward.
+        and we have to use scalar product on a cartesian system.
+        """
         p = 2 * np.dot(PD, PB)
         q = np.dot(PB, PB) - self.domeParam("radius") ** 2
 
@@ -399,45 +384,57 @@ class Geometry:
         # there should be always a reasonable solution
         if (p * p / 4 - q) < 0:
             self.log.error("Geometry solution impossible")
-            return None, None, None, None, None
-
-        t1 = -p / 2 + np.sqrt(p * p / 4 - q)
+            return None
 
         # we choose the positive solution as we look in the positive direction
         # and can omit the view to the back
-        intersect = PB + np.dot(t1, PD)
+        t1 = -p / 2 + np.sqrt(p * p / 4 - q)
+        return PB + np.dot(t1, PD)
 
-        # simplify the names and calculate the geometry angles based on the
-        # coordinates of the intersection between line of sight and dome
-        # hemisphere. as we have y to the left because of the right turning
-        # homogeneous coordinate system, we have to negate the angle of azimuth.
-        # we use arctan2 for getting the full quadrants and shifting
-        # the angle in a value range from 0 ... 2pi
+    @staticmethod
+    def calcDomeAngles(intersect: np.ndarray) -> tuple[Angle, Angle]:
+        """
+        Geometry angles (alt, az) based on the coordinates of the intersection
+        between line of sight and dome hemisphere. as we have y to the left
+        because of the right turning homogeneous coordinate system, we have to
+        negate the angle of azimuth. we use arctan2 for getting the full
+        quadrants and shifting the angle in a value range from 0 ... 2pi
+        """
+        x, y, z = intersect[0], intersect[1], intersect[2]
+        azDome = Angle(radians=np.mod(-np.arctan2(y, x), 2 * np.pi))
+        altDome = Angle(radians=np.arctan2(z, np.sqrt(x * x + y * y)))
+        return altDome, azDome
 
-        x = intersect[0]
-        y = intersect[1]
-        z = intersect[2]
+    def calcTransformationMatrices(
+        self, ha: Angle, dec: Angle, lat: Angle, pierside: str = "W"
+    ) -> TransformResult:
+        if self.loggingTrace:
+            self.logTransformInput(ha, dec, lat, pierside)
 
-        value = np.mod(-np.arctan2(y, x), 2 * np.pi)
-        azDome = Angle(radians=value)
-        base = np.sqrt(x * x + y * y)
+        haDeg = ha.degrees
+        decDeg = dec.degrees
+        latDeg = lat.degrees
 
-        altDome = Angle(radians=np.arctan2(z, base))
+        transforms = self.calcBaseTransforms(latDeg)
+        transforms += self.calcAxisTransforms(transforms[3], haDeg, decDeg, latDeg, pierside)
+        transforms += self.calcScopeTransforms(transforms[7])
 
-        self.transMatrix = [T0, T1, T2, T3, T4, T5, T6, T7, T8, T9]
-        self.transVector = [
-            P0[:-1],
-            P1[:-1],
-            P2[:-1],
-            P3[:-1],
-            P4[:-1],
-            P5[:-1],
-            P6[:-1],
-            P7[:-1],
-            P8[:-1],
-            P9[:-1],
-            P10[:-1],
-        ]
+        # the vectors are the origin point transformed by each step. P10 would
+        # be the head of the line of sight vector, P9 is the base of it.
+        # subtracting gives the resulting direction of the vector which is PD
+        P0 = np.array([0, 0, 0, 1])
+        vectors = [P0] + [np.dot(T, P0) for T in transforms]
+        PD = (vectors[10] - vectors[9])[:-1]
+        PB = vectors[9][:-1]
+
+        intersect = self.calcDomeIntersection(PB, PD)
+        if intersect is None:
+            return None, None, None, None, None
+
+        altDome, azDome = self.calcDomeAngles(intersect)
+
+        self.transMatrix = transforms
+        self.transVector = [P[:-1] for P in vectors]
 
         if self.loggingTrace:
             self.log.debug(f"[Trace] az:{azDome}, alt:{altDome}")

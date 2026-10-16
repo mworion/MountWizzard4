@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import logging
+from mw4.mountcontrol.convert import validatePierside
 from skyfield.api import Angle, Star
 
 
@@ -21,8 +22,9 @@ class ProgStar:
 
     @pierside.setter
     def pierside(self, value: str) -> None:
-        if value in ["E", "W", "e", "w"]:
-            self._pierside = value.capitalize()
-        else:
+        pierside = validatePierside(value)
+        if pierside is None:
             self._pierside = "E"
             self.log.warning(f"Malformed value: {value}")
+        else:
+            self._pierside = pierside

@@ -737,3 +737,21 @@ def test_clearTrackingOffsets():
     with mock.patch.object(Connection, "communicate", return_value=(True, ["V"], 1)):
         suc = sat.clearTrackingOffsets()
         assert suc
+
+
+def test_addTrajectoryPoint_length_mismatch():
+    sat = Satellite(App().mount)
+    az = Angle(degrees=[1, 2, 3])
+    alt = Angle(degrees=[1, 2])
+    with mock.patch.object(Connection, "communicate") as mComm:
+        suc = sat.addTrajectoryPoint(alt=alt, az=az)
+        assert not suc
+        mComm.assert_not_called()
+
+
+def test_setTrackingOffsets_no_values():
+    sat = Satellite(App().mount)
+    with mock.patch.object(Connection, "communicate") as mComm:
+        suc = sat.setTrackingOffsets()
+        assert not suc
+        mComm.assert_not_called()

@@ -13,7 +13,7 @@ class MountData:
     def __init__(self, obsSite: ObsSite, mountTimeConn: MountTimeConn) -> None:
         self.obsSite = obsSite
         self.mountTimeConn = mountTimeConn
-        self.data: dict = {}
+        self.data: dict[str, float] = {}
         self.raRef: float = 0.0
         self.decRef: float = 0.0
 

@@ -47,7 +47,6 @@ class MountDevice(QObject):
         verbose: bool = False,
     ) -> None:
         super().__init__()
-        self._waitTime = 0
         self._waitTimeFlip = 0
         self.app = app
         self.config = DeviceConfigMount()
@@ -90,7 +89,7 @@ class MountDevice(QObject):
         self.connectTimers()
 
     @property
-    def data(self) -> dict:
+    def data(self) -> dict[str, float]:
         return self.mountData.data
 
     def connectTimers(self) -> None:

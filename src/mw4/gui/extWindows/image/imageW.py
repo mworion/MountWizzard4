@@ -16,7 +16,7 @@ from mw4.gui.widgets import image_ui
 from mw4.logic.file.fileHandler import FileHandler
 from mw4.logic.fits.fitsFunction import getCoordinatesFromHeader, getImageHeader
 from mw4.logic.photometry.photometry import Photometry
-from mw4.mountcontrol.convert import convertToDMS, convertToHMS
+from mw4.mountcontrol.convertGui import convertToDMS, convertToHMS
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
 from skyfield.api import Angle

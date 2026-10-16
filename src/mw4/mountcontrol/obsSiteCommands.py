@@ -5,6 +5,7 @@ import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import sexagesimalizeToInt, valueToInt
 from mw4.mountcontrol.mountContext import MountContext
+from mw4.mountcontrol.mountStatus import MountStatus
 from skyfield.api import Angle
 from skyfield.toposlib import GeographicPosition
 from typing import ClassVar
@@ -20,7 +21,16 @@ class ObsSiteCommands:
     log = logging.getLogger("MW4")
     PIERSIDE_CODES: ClassVar[dict[int, str]] = {2: "W", 3: "E"}
     location: GeographicPosition | list | tuple
+    status: int
+    pierside: str
     piersideTarget: str
+    flipped: bool
+
+    def sendCommand(self, commandString: str, responseCheck: str = "") -> bool:
+        """Send a command to the mount and return only the success flag."""
+        conn = Connection(self.parent)
+        suc, _, _ = conn.communicate(commandString, responseCheck=responseCheck)
+        return suc
 
     def parseLocation(self, response: list, numberOfChunks: int) -> bool:
         """
@@ -87,14 +97,14 @@ class ObsSiteCommands:
             "park": ":PaX#",
             "polar": ":MSap#",
             "ortho": ":MSao#",
-            "keep": ":MS#" if self.status == 0 else ":MA#",
+            "keep": ":MS#" if self.status == MountStatus.TRACKING else ":MA#",
         }
+        if slewType not in slewTypes:
+            self.log.warning(f"Unknown slew type: [{slewType}]")
+            return False
 
         self.flipped = self.piersideTarget != self.pierside
-        conn = Connection(self.parent)
-        commandString = ":PO#" + slewTypes[slewType]
-        suc, _, _ = conn.communicate(commandString, responseCheck="0")
-        return suc
+        return self.sendCommand(":PO#" + slewTypes[slewType], responseCheck="0")
 
     def parseSetTargetResponse(self, response: list) -> bool:
         if len(response) != 4 or len(response[0]) < 3:
@@ -150,13 +160,9 @@ class ObsSiteCommands:
         return self.parseSetTargetResponse(response)
 
     def shutdown(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":shutdown#", responseCheck="1")
-        return suc
+        return self.sendCommand(":shutdown#", responseCheck="1")
 
     def setLocation(self, location: GeographicPosition) -> bool:
-        conn = Connection(self.parent)
-
         sgn, h, m, s, frac = sexagesimalizeToInt(location.longitude.degrees, 1)
         sign = "+" if sgn < 0 else "-"
         setLon = f":Sg{sign}{h:03d}*{m:02d}:{s:02d}.{frac:1d}#"
@@ -165,115 +171,75 @@ class ObsSiteCommands:
         sign = "+" if sgn >= 0 else "-"
         setLat = f":St{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#"
 
-        sign = "+" if location.elevation.m > 0 else "-"
+        sign = "+" if location.elevation.m >= 0 else "-"
         setElev = f":Sev{sign}{location.elevation.m:06.1f}#"
 
-        commandString = setLon + setLat + setElev
-        suc, _, _ = conn.communicate(commandString, responseCheck="1")
-        return suc
+        return self.sendCommand(setLon + setLat + setElev, responseCheck="1")
 
     def setLatitude(self, lat: Angle) -> bool:
-        conn = Connection(self.parent)
         sgn, h, m, s, frac = sexagesimalizeToInt(lat.degrees, 1)
         sign = "+" if sgn >= 0 else "-"
         commandString = f":St{sign}{h:02d}*{m:02d}:{s:02d}.{frac:1d}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="1")
-        return suc
+        return self.sendCommand(commandString, responseCheck="1")
 
     def setLongitude(self, lon: Angle) -> bool:
-        conn = Connection(self.parent)
         sgn, h, m, s, frac = sexagesimalizeToInt(lon.degrees, 1)
         sign = "+" if sgn < 0 else "-"
         commandString = f":Sg{sign}{h:03d}*{m:02d}:{s:02d}.{frac:1d}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="1")
-        return suc
+        return self.sendCommand(commandString, responseCheck="1")
 
     def setElevation(self, elev: float) -> bool:
-        conn = Connection(self.parent)
-        sign = "+" if elev > 0 else "-"
+        sign = "+" if elev >= 0 else "-"
         commandString = f":Sev{sign}{abs(elev):06.1f}#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="1")
-        return suc
+        return self.sendCommand(commandString, responseCheck="1")
 
     def startTracking(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":PO#:AP#")
-        return suc
+        return self.sendCommand(":PO#:AP#")
 
     def stopTracking(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":RT9#")
-        return suc
+        return self.sendCommand(":RT9#")
 
     def park(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":hP#")
-        return suc
+        return self.sendCommand(":hP#")
 
     def unpark(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":PO#")
-        return suc
+        return self.sendCommand(":PO#")
 
     def parkOnActualPosition(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":PiP#", responseCheck="1")
-        return suc
+        return self.sendCommand(":PiP#", responseCheck="1")
 
     def stop(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":STOP#")
-        return suc
+        return self.sendCommand(":STOP#")
 
     def flip(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":FLIP#", responseCheck="1")
-        return suc
+        return self.sendCommand(":FLIP#", responseCheck="1")
 
     def moveNorth(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":PO#:Mn#")
-        return suc
+        return self.sendCommand(":PO#:Mn#")
 
     def moveEast(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":PO#:Me#")
-        return suc
+        return self.sendCommand(":PO#:Me#")
 
     def moveSouth(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":PO#:Ms#")
-        return suc
+        return self.sendCommand(":PO#:Ms#")
 
     def moveWest(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":PO#:Mw#")
-        return suc
+        return self.sendCommand(":PO#:Mw#")
 
     def stopMoveAll(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":Q#")
-        return suc
+        return self.sendCommand(":Q#")
 
     def stopMoveNorth(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":Qn#")
-        return suc
+        return self.sendCommand(":Qn#")
 
     def stopMoveEast(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":Qe#")
-        return suc
+        return self.sendCommand(":Qe#")
 
     def stopMoveSouth(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":Qs#")
-        return suc
+        return self.sendCommand(":Qs#")
 
     def stopMoveWest(self) -> bool:
-        conn = Connection(self.parent)
-        suc, _, _ = conn.communicate(":Qw#")
-        return suc
+        return self.sendCommand(":Qw#")
 
     def syncPositionToTarget(self) -> bool:
         conn = Connection(self.parent)
@@ -287,7 +253,4 @@ class ObsSiteCommands:
         return response[1].startswith("Coord")
 
     def setHighPrecision(self) -> bool:
-        conn = Connection(self.parent)
-        commandString = ":U2#"
-        suc, _, _ = conn.communicate(commandString)
-        return suc
+        return self.sendCommand(":U2#")

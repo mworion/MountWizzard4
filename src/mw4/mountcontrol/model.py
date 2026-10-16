@@ -100,7 +100,7 @@ class Model:
         return True
 
     def parseNumberNames(self, response: list, numberOfChunks: int) -> bool:
-        if len(response) != 1:
+        if len(response) != numberOfChunks or len(response) != 1:
             self.log.warning("wrong number of chunks: expected exactly 1")
             return False
         self.numberNames = response[0]
@@ -147,6 +147,8 @@ class Model:
             coord = Star(ra=ra, dec=dec)
             errorRMS = valueToFloat(err)
             errorAngle = valueToAngle(angle)
+            # the mount reports the star position as hour angle and declination,
+            # therefore the first value is used as hour angle for alt / az
             alt, az = topoToAltAz(ra, dec, self.parent.obsSite.location.latitude)
             modelStar = ModelStar(coord, errorRMS, errorAngle, number, alt, az)
             self.addStar(modelStar)
@@ -245,7 +247,8 @@ class Model:
     @staticmethod
     def formatSexagesimalRA(hours: float) -> str:
         _, h, m, s, frac = sexagesimalizeToInt(hours, 1)
-        return f"{h:02d}:{m:02d}:{s:02d}.{frac:1d}"
+        # rounding values just below 24 h must wrap to 0 h
+        return f"{h % 24:02d}:{m:02d}:{s:02d}.{frac:1d}"
 
     @staticmethod
     def formatSexagesimalDec(degrees: float) -> str:

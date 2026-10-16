@@ -947,3 +947,13 @@ def gatherData(number):
         if i == number - 1:
             break
     return build
+
+
+def test_parseNumberNames_chunk_mismatch():
+    model = Model(App().mount)
+    suc = model.parseNumberNames(["1"], 2)
+    assert not suc
+
+
+def test_formatSexagesimalRA_wraps_at_24h():
+    assert Model.formatSexagesimalRA(23.99999999) == "00:00:00.0"

@@ -6,7 +6,7 @@ import os
 import platform
 from dataclasses import dataclass, field
 from mw4.logic.fits.fitsFunction import getHintFromImageFile
-from mw4.mountcontrol.convert import convertToDMS, convertToHMS
+from mw4.mountcontrol.convertGui import convertToDMS, convertToHMS
 from pathlib import Path
 from typing import Any, ClassVar
 

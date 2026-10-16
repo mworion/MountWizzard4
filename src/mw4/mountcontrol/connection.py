@@ -320,7 +320,7 @@ class Connection:
             client.abort()
             client.close()
         except (OSError, RuntimeError) as e:
-            self.log.warning(f"Error    [{self.id} {e}]: closing socket client")
+            self.log.warning(f"Error    [{self.id}]: [{e}] closing socket client")
 
     def buildClient(self) -> QTcpSocket | None:
         if not self.host:
@@ -362,7 +362,7 @@ class Connection:
                 return False
         except (OSError, RuntimeError) as e:
             self.closeClientHard(client)
-            self.log.warning(f"[Trace] Error    [{self.id}]: socket error: [{e}] in send data")
+            self.log.warning(f"Error    [{self.id}]: socket error: [{e}] in send data")
             return False
         else:
             return True
@@ -447,13 +447,10 @@ class Connection:
                     )
                 self.closeClientHard(client)
                 return sucSend, False, "Timeout"
-            # pyrefly: ignore[missing-attribute]
-            raw = client.readAll().data().replace(b"\xdf", b"*")
+            raw = bytes(client.readAll().data()).replace(b"\xdf", b"*")
             val = raw.decode("ASCII", errors="replace")
         except (OSError, RuntimeError) as e:
-            self.log.warning(
-                f"[Trace] Error    [{self.id}]: socket error: [{e}] in communicate raw"
-            )
+            self.log.warning(f"Error    [{self.id}]: socket error: [{e}] in communicate raw")
             val = f"Error: {e}"
             sucRec = False
         else:

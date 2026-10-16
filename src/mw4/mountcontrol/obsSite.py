@@ -8,6 +8,7 @@ from mw4.mountcontrol.angleProperty import AngleProperty
 from mw4.mountcontrol.convert import (
     stringToAngle,
     stringToDegree,
+    validatePierside,
     valueToAngle,
     valueToFloat,
     valueToInt,
@@ -70,8 +71,6 @@ class ObsSite(ObsSiteCommands):
         self._raJNowTarget: Angle = Angle(hours=0)
         self._decJNow: Angle = Angle(degrees=0)
         self._decJNowTarget: Angle = Angle(degrees=0)
-        self._haJNow: Angle = Angle(hours=0)
-        self._haJNowTarget: Angle = Angle(degrees=0)
         self._angularPosRA: Angle = Angle(degrees=0)
         self._angularPosDEC: Angle = Angle(degrees=0)
         self._errorAngularPosRA: Angle = Angle(degrees=0)
@@ -211,10 +210,11 @@ class ObsSite(ObsSiteCommands):
 
     @piersideTarget.setter
     def piersideTarget(self, value: str) -> None:
-        if value in ["E", "W"]:
-            self._piersideTarget = value
-        else:
+        pierside = validatePierside(value)
+        if pierside is None:
             self.log.info(f"Malformed value: {value}")
+        else:
+            self._piersideTarget = pierside
 
     Alt = AngleProperty("degrees")
 

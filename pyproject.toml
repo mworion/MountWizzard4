@@ -175,7 +175,6 @@ ignore = ["N999"]  # camelCase module names are the project convention
 # known oversized functions (see review M1); remove entries when split up
 "src/mw4/gui/utilities/nativeQt/qtFileDialog.py" = ["PLR0915"]
 "src/mw4/gui/utilities/nativeQt/qtInputDialog.py" = ["PLR0915"]
-"src/mw4/logic/databaseProcessing/dataWriter.py" = ["PLR0915"]
 
 [tool.ruff.lint.isort]
 no-sections = true

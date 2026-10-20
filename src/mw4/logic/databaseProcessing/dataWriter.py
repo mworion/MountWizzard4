@@ -172,96 +172,65 @@ class DataWriter:
 
         return designationPacked
 
-    def writeAsteroidMPC(self, datas: list[dict[str, Any]], dataFilePath: Path) -> None:
+    def formatDesignation(self, data: dict[str, Any]) -> str:
+        if "Number" in data:
+            return self.generateOldDesignationPacked(data.get("Number", ""))
+        return self.generateDesignationPacked(data.get("Principal_desig", ""))
+
+    @staticmethod
+    def formatArc(data: dict[str, Any]) -> str:
+        if "Arc_years" in data:
+            return f"{data.get('Arc_years', ''):9s}"
+        if "Arc_length" in data:
+            return f"{data.get('Arc_length', 0):4.0f} days"
+        return f"{'':9s}"
+
+    @staticmethod
+    def formatNameField(data: dict[str, Any]) -> str:
+        if "Number" in data:
+            return f"{data.get('Number', ''):>8s} {data.get('Name', ''):18s}"
+        return f"{'':9s}{data.get('Principal_desig', ''):18s}"
+
+    def formatAsteroidRecord(self, data: dict[str, Any]) -> str:
         """
         data format of json and file description in
         https://minorplanetcenter.net/Extended_Files/Extended_MPCORB_Data_Format_Manual.pdf
         we have a mix of new and old style designation to manage. the old style seem to
-        have the ley 'Number' in json, new style not.
+        have the key 'Number' in json, new style not.
         """
+        epochPacked = self.generateEpochPacked(data.get("Epoch", 0))
+        fields = [
+            f"{self.formatDesignation(data):7s}",
+            f"{data.get('H', 0):<5g}",
+            f"{data.get('G', 0):5g}",
+            f"{epochPacked:5s}",
+            f"{data.get('M', 0):9.5f}",
+            f" {data.get('Peri', 0):9.5f}",
+            f" {data.get('Node', 0):9.5f}",
+            f" {data.get('i', 0):9.5f}",
+            f" {data.get('e', 0):9.7f}",
+            f"{data.get('n', 0):11.8f}",
+            f"{data.get('a', 0):11.7f}",
+            f" {data.get('U', ''):1s}",
+            f"{data.get('Ref', ''):9s}",
+            f"{data.get('Num_obs', 0):5.0f}",
+            f"{data.get('Num_opps', 0):3.0f}",
+            self.formatArc(data),
+            f"{data.get('rms', 0):4.2f}",
+            f"{data.get('Perturbers', ''):3s}",
+            f"{data.get('Perturbers_2', ''):3s}",
+            f"{data.get('Computer', ''):10s}",
+            f"{data.get('Hex_flags', ''):4s}",
+            self.formatNameField(data),
+            f"{data.get('Last_obs', '').replace('-', ''):8s}",
+            f"{data.get('Tp', 0):13.5f}",
+        ]
+        return " ".join(fields)
+
+    def writeAsteroidMPC(self, datas: list[dict[str, Any]], dataFilePath: Path) -> None:
         dest = dataFilePath / "asteroids.mpc"
-
         with open(dest, "w") as f:
-            for data in datas:
-                line = ""
-
-                if "Number" in data:
-                    numberText = data.get("Number", "")
-                    designationPacked = self.generateOldDesignationPacked(numberText)
-
-                else:
-                    designation = data.get("Principal_desig", "")
-                    designationPacked = self.generateDesignationPacked(designation)
-
-                line += f"{designationPacked:7s}"
-                line += f"{'':1s}"
-                line += f"{data.get('H', 0):<5g}"
-                line += f"{'':1s}"
-                line += f"{data.get('G', 0):5g}"
-                line += f"{'':1s}"
-
-                epochPacked = self.generateEpochPacked(data.get("Epoch", 0))
-
-                line += f"{epochPacked:5s}"
-                line += f"{'':1s}"
-                line += f"{data.get('M', 0):9.5f}"
-                line += f"{'':2s}"
-                line += f"{data.get('Peri', 0):9.5f}"
-                line += f"{'':2s}"
-                line += f"{data.get('Node', 0):9.5f}"
-                line += f"{'':2s}"
-                line += f"{data.get('i', 0):9.5f}"
-                line += f"{'':2s}"
-                line += f"{data.get('e', 0):9.7f}"
-                line += f"{'':1s}"
-                line += f"{data.get('n', 0):11.8f}"
-                line += f"{'':1s}"
-                line += f"{data.get('a', 0):11.7f}"
-                line += f"{'':2s}"
-                line += f"{data.get('U', ''):1s}"
-                line += f"{'':1s}"
-                line += f"{data.get('Ref', ''):9s}"
-                line += f"{'':1s}"
-                line += f"{data.get('Num_obs', 0):5.0f}"
-                line += f"{'':1s}"
-                line += f"{data.get('Num_opps', 0):3.0f}"
-
-                line += f"{'':1s}"
-                if "Arc_years" in data:
-                    line += f"{data.get('Arc_years', ''):9s}"
-
-                elif "Arc_length" in data:
-                    arcLength = data.get("Arc_length", 0)
-                    line += f"{arcLength:4.0f} days"
-
-                else:
-                    line += f"{'':9s}"
-
-                line += f"{'':1s}"
-                line += f"{data.get('rms', 0):4.2f}"
-                line += f"{'':1s}"
-                line += f"{data.get('Perturbers', ''):3s}"
-                line += f"{'':1s}"
-                line += f"{data.get('Perturbers_2', ''):3s}"
-                line += f"{'':1s}"
-                line += f"{data.get('Computer', ''):10s}"
-                line += f"{'':1s}"
-                line += f"{data.get('Hex_flags', ''):4s}"
-                line += f"{'':1s}"
-
-                if "Number" in data:
-                    line += f"{data.get('Number', ''):>8s} {data.get('Name', ''):18s}"
-
-                else:
-                    line += f"{'':9s}"
-                    line += f"{data.get('Principal_desig', ''):18s}"
-
-                line += f"{'':1s}"
-                line += f"{data.get('Last_obs', '').replace('-', ''):8s}"
-                line += f"{'':1s}"
-                line += f"{data.get('Tp', 0):13.5f}"
-                line += "\n"
-                f.write(line)
+            f.writelines(self.formatAsteroidRecord(data) + "\n" for data in datas)
 
     @staticmethod
     def writeSatelliteTLE(datas: list[Any], dataFilePath: Path) -> None:

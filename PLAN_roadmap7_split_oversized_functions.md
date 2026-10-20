@@ -114,7 +114,7 @@ into a **pure function in `logic`** and a thin GUI method:
 - Tests: new `tests/unit_tests/logic/photometry/test_imageStats.py`, `test_tiltGeometry.py`
   incl. zero/None focal length branches; GUI tests reduced to wiring.
 
-### WP 6 – `writeAsteroidMPC` (low risk)
+### WP 6 – `writeAsteroidMPC` (low risk) — ✅ done 2026-10-20
 
 - Split into `formatAsteroidRecord(data: dict) -> str` (pure, handles old vs. new
   designation) and `writeAsteroidMPC` (open file, loop, write).

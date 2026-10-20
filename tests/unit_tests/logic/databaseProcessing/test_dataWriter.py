@@ -283,3 +283,45 @@ def t_writeSatelliteTLE_2(function):
     assert tle[0] == refLines[0].strip("\n")
     assert tle[1] == refLines[1].strip("\n")
     assert tle[2] == refLines[2].strip("\n")
+
+
+def test_formatDesignation_oldStyle(function):
+    with mock.patch.object(function, "generateOldDesignationPacked", return_value="A") as m:
+        assert function.formatDesignation({"Number": "1"}) == "A"
+    m.assert_called_once_with("1")
+
+
+def test_formatDesignation_newStyle(function):
+    with mock.patch.object(function, "generateDesignationPacked", return_value="B") as m:
+        assert function.formatDesignation({"Principal_desig": "2020 AB"}) == "B"
+    m.assert_called_once_with("2020 AB")
+
+
+@pytest.mark.parametrize(
+    "data, expected",
+    [
+        ({"Arc_years": "1990-2020"}, "1990-2020"),
+        ({"Arc_length": 12}, "  12 days"),
+        ({}, "         "),
+    ],
+)
+def test_formatArc(function, data, expected):
+    assert function.formatArc(data) == expected
+
+
+def test_formatNameField_oldStyle(function):
+    assert (
+        function.formatNameField({"Number": "(1)", "Name": "Ceres"}) == f"{'(1)':>8s} {'Ceres':18s}"
+    )
+
+
+def test_formatNameField_newStyle(function):
+    assert function.formatNameField({"Principal_desig": "2020 AB"}) == f"{'':9s}{'2020 AB':18s}"
+
+
+def test_formatAsteroidRecord_matchesReference(function):
+    with open("tests/testData/mpc_asteroid_test.json") as f:
+        data = json.load(f)
+    with open("tests/testData/mpc_asteroid_test.txt") as f:
+        refLine = f.readline()
+    assert function.formatAsteroidRecord(data[0])[:202] == refLine[:202]

@@ -1,7 +1,7 @@
 # MountWizzard4 – Code Review (2026-10-20)
 
 Scope: `src/mw4` (excluding generated `gui/widgets`), tests, tooling, repo hygiene.
-Revision: `0fd73dad3`, version `4.0.0b36`.
+Revision: `0fd73dad3`, version `4.0.0b36`. Updated after roadmap items 1–7 (2026-10-20).
 Method: static inspection and metrics (ruff, pyrefly, AST scan, grep counts, existing
 coverage data). The test suite itself was **not** re-run for this review.
 
@@ -23,7 +23,7 @@ data-as-code files.
 | Pythonic style  | B+     | Modern 3.12 typing, dataclasses, generators; some `hasattr`/dict plumbing |
 | Maintainability | B      | Consistent conventions; large `gui` tree, config coupling, 3 near-duplicate patterns |
 | Quality         | A-     | ruff clean, pyrefly 0 errors, 100 % coverage, few broad excepts (all justified) |
-| Testability     | B+     | 4.8k tests, 1:1 test-per-module; heavy Qt/app stubbing, stress tests not in CI scope |
+| Testability     | B+     | 5.1k tests, 1:1 test-per-module; heavy Qt/app stubbing, stress tests not in CI scope |
 | Readability     | B+     | camelCase consistent, short methods; a few outliers |
 
 ## 2. Key figures
@@ -32,7 +32,7 @@ data-as-code files.
 |--------|-------|
 | Python modules in `src/mw4` | ~212 (excl. `__init__`, widgets) |
 | LOC `gui` / `logic` / `mountcontrol` / `base` | 33.1k (incl. generated widgets) / 7.7k / 3.5k / 1.9k |
-| Test files / test functions | 213 / ~4.8k (1:1 with source modules) |
+| Test files / test functions | 216 / ~5.1k (1:1 with source modules) |
 | `ruff check src` | clean (E, T2, UP, I, C, LOG, W, SIM, A, RUF, B, BLE; mccabe ≤ 10) |
 | `pyrefly check` | 0 errors, **54 suppressed**, 30 warnings hidden |
 | Functions with return annotation | 1752 / 1817 (96 %) |
@@ -44,7 +44,7 @@ data-as-code files.
 | `config[…]` / `config.get(…)` accesses | 438 |
 | f-string in `log.*(...)` | 173 → **0** (done, enforced by `G004`) |
 | Functions > 50 lines (excl. data file) | 16 (was 25; largest 91 L, was 293 L) |
-| Files | largest `alignstars.py` 828 lines, `styleSheets.py` 691 |
+| Files | largest `alignstars.py` 830 lines (data constant), `styleSheets.py` 691 |
 
 ## 3. Strengths
 
@@ -92,7 +92,7 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 | P2 | M | Repeated `self.d[device].run[framework].config` chains in `DeviceRegistry.collectConfigFromSingleDevice` (4 evaluations per iteration). | Use local variables, and `dataclasses.asdict(config)` instead of manual field loop. |
 | P3 | M | `dict[str, Any]` is the default data carrier (`Camera.data`, `run`, `config`). | Use `TypedDict` or dataclasses where keys are fixed; `run: dict[str, Any]` could be `dict[str, FrameworkDriver]` with a shared Protocol. |
 | P4 | M | ✅ **Done 2026-10-20.** 173 logging calls used f-strings; all converted to lazy `%`-style, `G004` now enforced in ruff. | – |
-| P5 | L | ✅ **Done 2026-10-20.** `generateAlignStars()` (825 lines) returns the `ALIGN_STARS` constant in `logic/buildData/alignstars.py`; public API unchanged, the `PLR0915` ignore was dropped. | – |
+| P5 | L | ✅ **Done 2026-10-20.** `generateAlignStars()` (825 lines) now returns a copy of the `ALIGN_STARS` constant in `logic/buildData/alignstars.py`; public API unchanged, the `PLR0915` ignore was dropped. | – |
 | P6 | L | Many "constants" are instance attributes initialised to magic values (`posXASCOM`, `widthASCOM`, `exposureTime1`/`N`). Leading-underscore *attributes* (`_binning`, `_subFrame`) with property wrappers contradict the "no underscore" convention only partially. | Group into small dataclasses (`SubFrame`, `Binning`), keeping convention intact. |
 | P7 | L | `# type: ignore` (3) and pyrefly `sub-config` that disables `bad-argument-type`, `bad-return`, `bad-assignment` for **all** of `mountcontrol`. | Accept as pragmatic for numpy/skyfield stubs, but track the 54 suppressed errors and tighten per-file over time (`pyrefly check --min-severity=warn` shows 30 additional warnings). |
 | P8 | L | Platform handling by `if platform.system() == "Windows":` in many modules (≈60 `platform` hits). | Centralise in `base/platform.py` (`IS_WINDOWS`) and use a back-end factory so devices don't branch inline. |
@@ -157,20 +157,23 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 **Quick wins (≤ 1 day each)** – ✅ all done on 2026-10-20
 1. ✅ Added ruff rules `G004` (lazy logging, 167 call sites fixed), `S113` (request timeout,
    no findings) and `PLR0915` (statement budget; 7 known oversized functions listed in
-   `per-file-ignores`, see M1).
-2. ✅ `generateAlignStars` now reads a JSON data file (P5).
+   `per-file-ignores`; all 7 ignores have since been removed, see M1).
+2. ✅ `generateAlignStars` returns the `ALIGN_STARS` data constant instead of 825 lines of code (P5).
 3. ✅ Contract test `AppProtocol` ⇄ `MountWizzard4` (M6).
 4. ✅ Branch coverage enabled and brought back to 100 % (T2); dead comment removed (R3);
    classifier and script aliases fixed (H4/H5); `Worker.run` simplified (Q1).
 
-Next up: the **Medium** items below.
+Next up: the remaining **Medium** items below (5, 6, 8). Open decision: lowering the global
+`PLR0915` budget from 50.
 
 **Medium (1–2 weeks)**
 5. Typed device access on `DeviceRegistry` (A2).
 6. Split `AppProtocol` into role protocols and group signals (A1) – start with new code and
    migrate tabs opportunistically.
-7. Break up the top-10 oversized functions (M1) and extract calculations from tabs into
-   `logic` (A5).
+7. ✅ Done 2026-10-20: oversized functions broken up (M1: 25 → 16 over 50 L, largest 293 → 91 L,
+   all `PLR0915` ignores removed); image stats, tilt geometry, asteroid MPC formatting and
+   satellite track calculations extracted to `logic/` (A5, partly). `pyrefly` back to 0 errors;
+   suite 5079 passed at 100 % line and branch coverage.
 8. Move QSS to template files (M5); centralise platform checks (P8).
 
 **Strategic**

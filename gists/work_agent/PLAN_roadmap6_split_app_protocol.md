@@ -1,6 +1,6 @@
 # Plan – Roadmap item 6: split `AppProtocol` and group signals (A1)
 
-Source: `2026-10-20_review_copilot.md`, finding **A1**, roadmap *Medium* item 6.
+Source: `../../2026-10-20_review_copilot.md`, finding **A1**, roadmap *Medium* item 6.
 Status: **WP 6.1–6.6 implemented.** Decisions: 8 roles, signal grouping as in §3.2
 (the `HasSignals` role is folded into `HasMessaging`: `signals`, `messageQueue`).
 
@@ -30,7 +30,7 @@ hierarchy needs only that role: 15 modules (`HasThreadPool` 9, `HasDevices` 5,
   | `isOnline` | 11 | | `hipparcos`, `ephemeris`, `mainW`, … | ≤ 6 |
 
 - Signals are a flat list on `MountWizzard4` (`mainApp.py`) and again on the test stub
-  (`tests/unit_tests/unitTestAddOns/baseTestApp.py`), so a new signal needs three edits.
+  (`../../tests/unit_tests/unitTestAddOns/baseTestApp.py`), so a new signal needs three edits.
 - `drawHorizonPoints` exists on both app classes but is **not** in the protocol (drift the
   protocol contract test does not catch because it only checks listed members).
 

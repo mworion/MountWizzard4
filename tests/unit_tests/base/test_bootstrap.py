@@ -7,7 +7,7 @@ import pytest
 import socket
 import sys
 import traceback
-from mw4.base import platformInfo
+from mw4.base import bootstrap, platformInfo
 from mw4.base.bootstrap import (
     configureEnvironment,
     exceptHook,
@@ -174,3 +174,41 @@ def test_minimize_start_terminal_non_windows():
     ):
         minimizeStartTerminal()
         mock_ctypes.windll.user32.ShowWindow.assert_called_once()
+
+
+def test_namesImportable():
+    """Every public camelCase name is importable from mw4.base.bootstrap."""
+    from mw4.base.bootstrap import (
+        configureEnvironment,
+        exceptHook,
+        extractDataFiles,
+        minimizeStartTerminal,
+        setupWorkDirs,
+        writeSystemInfo,
+    )
+
+    assert callable(configureEnvironment)
+    assert callable(exceptHook)
+    assert callable(extractDataFiles)
+    assert callable(minimizeStartTerminal)
+    assert callable(setupWorkDirs)
+    assert callable(writeSystemInfo)
+
+
+def test_minimizeStartTerminalNonWindows():
+    """minimizeStartTerminal is a no-op on non-Windows platforms."""
+    with patchPlatform("Linux"):
+        bootstrap.minimizeStartTerminal()  # must not raise
+
+
+def test_minimizeStartTerminalOnWindows():
+    """The Windows code path in minimizeStartTerminal calls ShowWindow."""
+    mockCtypes = mock.MagicMock()
+    with (
+        patchPlatform("Windows"),
+        mock.patch.dict(sys.modules, {"ctypes": mockCtypes}),
+    ):
+        bootstrap.minimizeStartTerminal()
+    mockCtypes.windll.user32.ShowWindow.assert_called_once_with(
+        mockCtypes.windll.kernel32.GetConsoleWindow(), 0
+    )

@@ -1,7 +1,7 @@
 # MountWizzard4 – Code Review (2026-10-20)
 
 Scope: `src/mw4` (excluding generated `gui/widgets`), tests, tooling, repo hygiene.
-Revision: `0fd73dad3`, version `4.0.0b36`. Updated after roadmap items 1–7 (2026-10-20).
+Revision: `1d7985738`, version `4.0.0b36`. Updated after roadmap items 1–8 (2026-10-20).
 Method: static inspection and metrics (ruff, pyrefly, AST scan, grep counts, existing
 coverage data). The test suite itself was **not** re-run for this review.
 
@@ -44,7 +44,7 @@ data-as-code files.
 | `config[…]` / `config.get(…)` accesses | 438 |
 | f-string in `log.*(...)` | 173 → **0** (done, enforced by `G004`) |
 | Functions > 50 lines (excl. data file) | 16 (was 25; largest 91 L, was 293 L) |
-| Files | largest `alignstars.py` 830 lines (data constant), `styleSheets.py` 691 |
+| Files | largest `alignstars.py` 830 lines (data constant); QSS now in `assets/styles/*.qss`, `gui/styles/styles.py` 150 lines |
 
 ## 3. Strengths
 
@@ -95,7 +95,7 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 | P5 | L | ✅ **Done 2026-10-20.** `generateAlignStars()` (825 lines) now returns a copy of the `ALIGN_STARS` constant in `logic/buildData/alignstars.py`; public API unchanged, the `PLR0915` ignore was dropped. | – |
 | P6 | L | Many "constants" are instance attributes initialised to magic values (`posXASCOM`, `widthASCOM`, `exposureTime1`/`N`). Leading-underscore *attributes* (`_binning`, `_subFrame`) with property wrappers contradict the "no underscore" convention only partially. | Group into small dataclasses (`SubFrame`, `Binning`), keeping convention intact. |
 | P7 | L | `# type: ignore` (3) and pyrefly `sub-config` that disables `bad-argument-type`, `bad-return`, `bad-assignment` for **all** of `mountcontrol`. | Accept as pragmatic for numpy/skyfield stubs, but track the 54 suppressed errors and tighten per-file over time (`pyrefly check --min-severity=warn` shows 30 additional warnings). |
-| P8 | L | ✅ **Done.** Platform handling by `if platform.system() == "Windows":` in many modules (≈60 `platform` hits). | Centralise in `base/platform.py` (`IS_WINDOWS`) and use a back-end factory so devices don't branch inline. |
+| P8 | L | ✅ **Done 2026-10-20 (WP 8).** `base/platformInfo.py` is the only caller of `platform.system()` (was ≈60 hits); modules use `platformInfo.IS_WINDOWS` and `registerWindowsBackends`, tests patch the constants. Platform handling by `if platform.system() == "Windows":` in many modules (≈60 `platform` hits). | Centralise in `base/platform.py` (`IS_WINDOWS`) and use a back-end factory so devices don't branch inline. |
 
 ### 4.3 Maintainability
 
@@ -105,7 +105,7 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 | M2 | M | **Long parameter lists** in a few places: `qtInputDialog.__init__` 12 args, `tabSat_Search.calcSat` 9, `updateListSats` 8, `astroObjects.__init__` 8. | Use dataclass parameter objects or keyword-only args (`*,`). |
 | M3 | M | **Duplicated framework wrappers.** Per device there is `deviceIndi`, `deviceAlpaca`, `deviceSGPro`, `deviceAscom` plus shared `*Class.py` in `base`. This is a good pattern but likely contains copy-paste across devices (camera/focuser/dome/filter/cover). | Run a duplication scan (e.g. `pylint --enable=duplicate-code` or `jscpd`) and extract common bases/mixins for connect/disconnect/poll/error handling. |
 | M4 | M | `base/` mixes infrastructure (`tpool`, `loggerMW`, `bootstrap`) with domain-ish helpers (`transform`, `timeManager`, `ascomClass`, `sgproClass`, `indiClass`). | Move driver-protocol classes to `logic/drivers/` (or `base/drivers/`) to keep `base` dependency-free. |
-| M5 | M | ✅ **Done.** Styles: `gui/styles/styleSheets.py` is 691 lines of Python-embedded QSS. | Move to `.qss` templates with placeholders; makes theming testable and diffable. |
+| M5 | M | ✅ **Done 2026-10-20 (WP 8).** QSS moved to `assets/styles/{basic,mac,nonMac}.qss` templates with placeholders, rendered by `gui/styles/styles.py`; a golden-file test (`tests/testData/styleGolden.json`) guards the output. Styles: `gui/styles/styleSheets.py` is 691 lines of Python-embedded QSS. | Move to `.qss` templates with placeholders; makes theming testable and diffable. |
 | M6 | M | ✅ **Done 2026-10-20; signals now declared once in `AppSignals` (A1)** (contract test `test_concreteAppProvidesAllProtocolMembers`). `AppProtocol` is kept manually in sync with `MountWizzard4` (signals declared twice). `drawHorizonPoints` exists only on the concrete class but nothing consumes it, so its absence from the Protocol is intended. | Longer term: derive the signal list from one place (see A1). |
 | M7 | L | Docstring style/language quality varies (e.g. typos in `alignstars` docstring: "assdataets", lower-case sentence starts, mixed numpy/rst). | Pick one style (Google or NumPy) and let ruff `D`-rules (limited subset) check public APIs. |
 | M8 | L | `DeviceRegistry.addDevices(app)` takes `app` although `self.app` already exists; `("refraction", lambda _app: None, None, False)` is a placeholder device entry. | Remove the redundant parameter; model "no instance" explicitly rather than with a lambda returning `None`. |
@@ -163,18 +163,17 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 4. ✅ Branch coverage enabled and brought back to 100 % (T2); dead comment removed (R3);
    classifier and script aliases fixed (H4/H5); `Worker.run` simplified (Q1).
 
-Next up: the remaining **Medium** items below (5, 6, 8). Open decision: lowering the global
+Next up: the **Strategic** items below (9–12). Open decision: lowering the global
 `PLR0915` budget from 50.
 
 **Medium (1–2 weeks)**
-5. Typed device access on `DeviceRegistry` (A2).
-6. Split `AppProtocol` into role protocols and group signals (A1) – start with new code and
-   migrate tabs opportunistically.
+5. ✅ Done: typed device access on `DeviceRegistry` (A2).
+6. ✅ Done: `AppProtocol` split into role protocols, signals grouped (A1).
 7. ✅ Done 2026-10-20: oversized functions broken up (M1: 25 → 16 over 50 L, largest 293 → 91 L,
    all `PLR0915` ignores removed); image stats, tilt geometry, asteroid MPC formatting and
    satellite track calculations extracted to `logic/` (A5, partly). `pyrefly` back to 0 errors;
    suite 5079 passed at 100 % line and branch coverage.
-8. Move QSS to template files (M5); centralise platform checks (P8).
+8. ✅ Done 2026-10-20: QSS moved to template files (M5); platform checks centralised in `base/platformInfo.py` (P8).
 
 **Strategic**
 9. Typed, versioned configuration dataclasses with migration (A3).

@@ -1,6 +1,6 @@
 # Plan – Roadmap item 8: QSS templates (M5) and central platform handling (P8)
 
-Source: `2026-10-20_review_copilot.md`, findings **M5** and **P8**, roadmap *Medium* item 8.
+Source: `../../2026-10-20_review_copilot.md`, findings **M5** and **P8**, roadmap *Medium* item 8.
 Status: **implemented.** Decisions: 7.1 shared Windows back-end registration helper only (no factory); 7.2 templates in `src/mw4/assets/styles/`; 7.3 constants read at import; 7.4 both parts in one go. Golden-hash test guards the rendered output; `TID251` bans `platform.system` outside `base/platformInfo.py`.
 in either order and shipped separately (WP 8.A = styles, WP 8.B = platform).
 
@@ -27,7 +27,7 @@ in either order and shipped separately (WP 8.A = styles, WP 8.B = platform).
   2. **Per-OS lookup** (`astap`, `astrometry`, `watney`): `apps[platform.system()]`,
      `Darwin or Linux` branches, `.exe` suffix.
   3. **GUI/bootstrap** (`bootstrap`, `cli`, `qtMain`, `tabSettGui`, `styles`).
-- Critical coupling: `pyproject.toml` configures the coverage plugin with the **literal source
+- Critical coupling: `../../pyproject.toml` configures the coverage plugin with the **literal source
   text** `if platform\.system\(\) == "Windows":` (rule) and omits `ascomClass.py` and
   `cameraAscom.py` on non-Windows. Any rewrite of the guard must update that rule, otherwise
   coverage on Linux/macOS drops below 100 %.
@@ -57,7 +57,7 @@ configuration to a different structure beyond the OS lookup.
   `nonMac + basic` otherwise, using the platform helper from 8.B (or `platform.system()` until
   that lands). `STYLE` stops being a class attribute; `mw4Style` calls `styleTemplate()`.
 - Template text is cached (`functools.cache`) – it never changes at runtime.
-- Packaging: `uv_build` ships everything under `src/mw4`, but verify the wheel contains the
+- Packaging: `uv_build` ships everything under `../../src/mw4`, but verify the wheel contains the
   `.qss` files (the `package-data` entry in `pyproject.toml` currently only names `data/**`).
 - Tests: the old `isinstance` tests are replaced by
   - a **golden test**: rendered output for each colour set × platform equals a stored
@@ -139,7 +139,7 @@ Total ≈ 2.75 days. 8.A (1–2) and 8.B (1–3) are independent; 8.A2 can use t
    The review proposes the factory; it is larger (touches `AppProtocol`-independent logic
    in 10 modules plus the coverage config) and gains little because the conditional import
    cannot disappear.
-2. **Template location:** `src/mw4/assets/styles/` (recommended, next to icons) or beside the
+2. **Template location:** `../../src/mw4/assets/styles` (recommended, next to icons) or beside the
    Python in `gui/styles/`?
 3. Constants read at import (recommended) or functions called at use time (easier to patch,
    marginally slower and more verbose)?

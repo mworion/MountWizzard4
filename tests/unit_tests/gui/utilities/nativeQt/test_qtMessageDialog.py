@@ -11,12 +11,15 @@ from unittest import mock
 
 @pytest.fixture(autouse=True)
 def cleanupTopLevelWidgets(qapp):
-    """Destroy all dialogs and parents left over by a test while the
+    """Destroy all dialogs and parents created by a test while the
     QApplication is still alive, so no widget is deleted late by the garbage
     collector or at interpreter shutdown.
     """
+    existing = set(QApplication.topLevelWidgets())
     yield
     for widget in QApplication.topLevelWidgets():
+        if widget in existing:
+            continue
         widget.close()
         widget.deleteLater()
     QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)

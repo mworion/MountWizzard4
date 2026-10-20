@@ -23,7 +23,7 @@ data-as-code files.
 | Pythonic style  | B+     | Modern 3.12 typing, dataclasses, generators; some `hasattr`/dict plumbing |
 | Maintainability | B      | Consistent conventions; large `gui` tree, config coupling, 3 near-duplicate patterns |
 | Quality         | A-     | ruff clean, pyrefly 0 errors, 100 % coverage, few broad excepts (all justified) |
-| Testability     | B+     | 5.1k tests, 1:1 test-per-module; heavy Qt/app stubbing, stress tests not in CI scope |
+| Testability     | B+     | 5.1k tests, strict 1:1 test-per-module layout (verified); heavy Qt/app stubbing, stress tests not in CI scope |
 | Readability     | B+     | camelCase consistent, short methods; a few outliers |
 
 ## 2. Key figures
@@ -32,7 +32,7 @@ data-as-code files.
 |--------|-------|
 | Python modules in `src/mw4` | ~212 (excl. `__init__`, widgets) |
 | LOC `gui` / `logic` / `mountcontrol` / `base` | 33.1k (incl. generated widgets) / 7.7k / 3.5k / 1.9k |
-| Test files / test functions | 216 / ~5.1k (1:1 with source modules) |
+| Test files / test functions | 216 / ~5.1k (strict 1:1 `src/mw4/x/y.py` → `tests/unit_tests/x/test_y.py`, verified by script: 0 modules without a test) |
 | `ruff check src` | clean (E, T2, UP, I, C, LOG, W, SIM, A, RUF, B, BLE; mccabe ≤ 10) |
 | `pyrefly check` | 0 errors, **54 suppressed**, 30 warnings hidden |
 | Functions with return annotation | 1752 / 1817 (96 %) |
@@ -130,6 +130,7 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 | T4 | M | Tests mock heavily with `unittest.mock`; risk of tests verifying mocks instead of behaviour for GUI tabs. | Prefer fakes (in-memory device back-ends) over `MagicMock` for devices; keep `pytest-qt` signal-based assertions (`qtbot.waitSignal`). |
 | T5 | M | Windows-only code is excluded from non-Windows coverage via conditional plugin – good – but is only validated on the Windows workflow. | Keep Windows CI mandatory; add contract tests for ASCOM/COM wrappers against a fake `win32com` so logic is checked on every OS. |
 | T6 | L | Test data, `tests/work/*` generated assets show up as untracked files in `git status`. | Ensure `tests/work` is in `.gitignore` or generated into `tmp_path`. |
+| T8 | L | ✅ **Done 2026-10-20.** Test layout aligned 1:1 with `src/mw4`: 19 modules lacked a matching test file. 18 were misnamed/misplaced and were renamed with `git mv` (`mainApp/test_*` → `tests/unit_tests/test_*`, `test_s_*` → `test_*` in `simulator/`, `test_driverData` → `test_driverDataClass`, `test_boltwoodWeather` → `test_sensorWeatherBoltwood`, `test_fitsFunctions` → `test_fitsFunction`, `test_qCustomTableWidgetItem` → `test_qtCustomTableWidgetItem`); `test_loader_func.py` (it tested `bootstrap`) was merged into `base/test_bootstrap.py`. `base/appSignals.py` had no test and got `base/test_appSignals.py` (100 %). | Keep the mapping enforced, e.g. a small meta-test or CI script that fails when a module has no `test_<module>.py`. |
 | T7 | L | Property-based tests (`hypothesis`) would fit transformations in `base/transform.py` and `mountcontrol/geometry.py` / `convert.py`. | Add for round-trip conversions (hms/dms parsing, coordinate transforms). |
 
 ### 4.6 Readability

@@ -54,7 +54,7 @@ def settGui(qapp):
 
 @pytest.fixture(autouse=True)
 def prepareSettGuiState(settGui):
-    cfg = settGui.app.dReg["hidController"].instance.config
+    cfg = settGui.app.dReg.hidController.instance.config
     cfg.dome = False
     cfg.moveAltAz = True
     cfg.moveRaDec = False
@@ -92,13 +92,13 @@ def test_storeConfig_saves_hidParkStop(settGui):
     """Test storeConfig saves hidParkStop."""
     settGui.ui.hidParkStop.setChecked(False)
     settGui.storeConfig()
-    cfg = settGui.app.dReg["hidController"].instance.config
+    cfg = settGui.app.dReg.hidController.instance.config
     assert cfg.parkStop is False
 
 
 def test_initConfig_hidParkStop_unchecked(settGui):
     """Test initConfig with hidParkStop unchecked."""
-    settGui.app.dReg["hidController"].instance.config.parkStop = False
+    settGui.app.dReg.hidController.instance.config.parkStop = False
     settGui.ui.hidParkStop.setChecked(True)
     settGui.initConfig()
     assert settGui.ui.hidParkStop.isChecked() is False
@@ -197,7 +197,7 @@ def test_storeConfig_saves_all_hid_settings(settGui):
     settGui.ui.hidTracking.setChecked(False)
     settGui.storeConfig()
 
-    cfg = settGui.app.dReg["hidController"].instance.config
+    cfg = settGui.app.dReg.hidController.instance.config
     assert cfg.dome is True
     assert cfg.moveAltAz is False
     assert cfg.moveRaDec is True
@@ -207,10 +207,10 @@ def test_storeConfig_saves_all_hid_settings(settGui):
 def test_initConfig_loads_all_settings(settGui):
     """Test initConfig loads all saved settings."""
     settGui.app.config["SettingGui"] = {"colorSet": 2, "transparency": 0.5}
-    settGui.app.dReg["hidController"].instance.config.dome = True
-    settGui.app.dReg["hidController"].instance.config.moveAltAz = False
-    settGui.app.dReg["hidController"].instance.config.moveRaDec = True
-    settGui.app.dReg["hidController"].instance.config.tracking = False
+    settGui.app.dReg.hidController.instance.config.dome = True
+    settGui.app.dReg.hidController.instance.config.moveAltAz = False
+    settGui.app.dReg.hidController.instance.config.moveRaDec = True
+    settGui.app.dReg.hidController.instance.config.tracking = False
     settGui.initConfig()
 
     assert settGui.ui.colorSet.currentIndex() == 2

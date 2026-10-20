@@ -50,16 +50,16 @@ class HorizonDraw(MWidget):
         self.ui.normalModeHor.clicked.connect(self.setOperationMode)
         self.ui.editModeHor.clicked.connect(self.setOperationMode)
         self.app.signals.hemisphere.redrawHorizon.connect(self.drawTab)
-        self.app.dReg["mount"].signals.pointDone.connect(self.drawPointer)
-        self.app.dReg["mount"].signals.settingDone.connect(self.drawTab)
+        self.app.dReg.mount.signals.pointDone.connect(self.drawPointer)
+        self.app.dReg.mount.signals.settingDone.connect(self.drawTab)
         self.ui.showMountLimits.clicked.connect(self.drawTab)
         self.ui.horizon.p[0].scene().sigMouseMoved.connect(self.mouseMovedHorizon)
-        self.app.dReg["mount"].signals.mountIsUp.connect(self.setPointerVisibility)
+        self.app.dReg.mount.signals.mountIsUp.connect(self.setPointerVisibility)
 
     def closeTab(self) -> None:
-        self.app.dReg["mount"].signals.pointDone.disconnect(self.drawPointer)
-        self.app.dReg["mount"].signals.settingDone.disconnect(self.drawTab)
-        self.app.dReg["mount"].signals.mountIsUp.disconnect(self.setPointerVisibility)
+        self.app.dReg.mount.signals.pointDone.disconnect(self.drawPointer)
+        self.app.dReg.mount.signals.settingDone.disconnect(self.drawTab)
+        self.app.dReg.mount.signals.mountIsUp.disconnect(self.setPointerVisibility)
 
     def setPointerVisibility(self, status) -> None:
         self.pointerHor.setVisible(status)
@@ -168,8 +168,8 @@ class HorizonDraw(MWidget):
 
     def addActualPosition(self) -> None:
         vb = self.ui.horizon.p[0].getViewBox()
-        az = self.app.dReg["mount"].obsSite.Az
-        alt = self.app.dReg["mount"].obsSite.Alt
+        az = self.app.dReg.mount.obsSite.Az
+        alt = self.app.dReg.mount.obsSite.Alt
         az = az.degrees
         alt = alt.degrees
         index = vb.getNearestPointIndex(QPointF(az, alt))
@@ -199,7 +199,7 @@ class HorizonDraw(MWidget):
         plotItem.addItem(self.pointerHor)
 
     def drawPointer(self) -> None:
-        obsSite = self.app.dReg["mount"].obsSite
+        obsSite = self.app.dReg.mount.obsSite
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
         self.pointerHor.setData(x=[az], y=[alt])

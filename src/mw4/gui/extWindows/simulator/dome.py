@@ -13,9 +13,9 @@ class SimulatorDome:
         super().__init__()
         self.parent = parent
         self.app = app
-        self.app.dReg["dome"].signals.deviceConnected.connect(lambda: self.showEnable(True))
-        self.app.dReg["dome"].signals.deviceDisconnected.connect(lambda: self.showEnable(False))
-        self.app.dReg["dome"].signals.azimuth.connect(self.updateAzimuth)
+        self.app.dReg.dome.signals.deviceConnected.connect(lambda: self.showEnable(True))
+        self.app.dReg.dome.signals.deviceDisconnected.connect(lambda: self.showEnable(False))
+        self.app.dReg.dome.signals.azimuth.connect(self.updateAzimuth)
         self.app.timeMgr.update1s.connect(self.updateShutter)
         self.parent.ui.domeTransparent.checkStateChanged.connect(self.setTransparency)
 
@@ -67,7 +67,7 @@ class SimulatorDome:
             node["trans"].setRotationZ(-azimuth)
 
     def updateShutter(self) -> None:
-        if "DOME_SHUTTER.SHUTTER_OPEN" not in self.app.dReg["dome"].data:
+        if "DOME_SHUTTER.SHUTTER_OPEN" not in self.app.dReg.dome.data:
             return
 
         cfg = self.app.config["SettingDome"]
@@ -75,7 +75,7 @@ class SimulatorDome:
         width = cfg.get("domeClearOpening", 0.4) * 1000
         scale = 1 + (radius - 1250) / 1250
         scaleSlit = (1 + (width - 600) / 600 / 2) * 0.9
-        isOpen = self.app.dReg["dome"].data["DOME_SHUTTER.SHUTTER_OPEN"]
+        isOpen = self.app.dReg.dome.data["DOME_SHUTTER.SHUTTER_OPEN"]
         shiftShutter = width / 2 / scale if isOpen else 0
 
         for nodeItem in ["domeSlit1", "domeSlit2"]:
@@ -143,7 +143,7 @@ class SimulatorDome:
             },
         }
         linkModel(model, self.parent.entityModel)
-        self.showEnable(self.app.dReg["dome"].stat is True)
+        self.showEnable(self.app.dReg.dome.stat is True)
         self.updateAzimuth(0)
         self.updateShutter()
         self.updateSize()

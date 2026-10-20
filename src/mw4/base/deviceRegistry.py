@@ -24,7 +24,7 @@ from mw4.logic.remote.remote import Remote
 from mw4.logic.telescope.telescope import Telescope
 from mw4.mountcontrol.mount import MountDevice
 from PySide6.QtCore import QObject
-from typing import Any
+from typing import Any, Literal, overload
 
 
 class DeviceRegistry(QObject):
@@ -36,7 +36,7 @@ class DeviceRegistry(QObject):
         self.signalsToName: dict[int, str] = {}
         if mount is None:
             mount = MountDevice(app, verbose=True)
-        self.d: dict[str, DeviceEntry] = {
+        self.d: dict[str, DeviceEntry[Any]] = {
             "mount": DeviceEntry(
                 name="mount",
                 instance=mount,
@@ -83,23 +83,176 @@ class DeviceRegistry(QObject):
                 sig.deviceDisconnected.connect(self.deviceDisconnected)
 
     # ------------------------------------------------------------------
-    # Mapping protocol — keeps ``"x" in dReg`` and ``dReg["x"]`` working
+    # Typed access, backed by self.d so replaced entries never drift
+    # ------------------------------------------------------------------
+    @property
+    def mount(self) -> DeviceEntry[MountDevice]:
+        return self.d["mount"]
+
+    @property
+    def camera(self) -> DeviceEntry[Camera]:
+        return self.d["camera"]
+
+    @property
+    def cover(self) -> DeviceEntry[Cover]:
+        return self.d["cover"]
+
+    @property
+    def directWeather(self) -> DeviceEntry[DirectWeather]:
+        return self.d["directWeather"]
+
+    @property
+    def dome(self) -> DeviceEntry[Dome]:
+        return self.d["dome"]
+
+    @property
+    def filter(self) -> DeviceEntry[Filter]:
+        return self.d["filter"]
+
+    @property
+    def focuser(self) -> DeviceEntry[Focuser]:
+        return self.d["focuser"]
+
+    @property
+    def hidController(self) -> DeviceEntry[HidController]:
+        return self.d["hidController"]
+
+    @property
+    def lightPanel(self) -> DeviceEntry[LightPanel]:
+        return self.d["lightPanel"]
+
+    @property
+    def measure(self) -> DeviceEntry[MeasureData]:
+        return self.d["measure"]
+
+    @property
+    def plateSolve(self) -> DeviceEntry[PlateSolve]:
+        return self.d["plateSolve"]
+
+    @property
+    def power(self) -> DeviceEntry[PegasusUPB]:
+        return self.d["power"]
+
+    @property
+    def relay(self) -> DeviceEntry[KMRelay]:
+        return self.d["relay"]
+
+    @property
+    def refraction(self) -> DeviceEntry[None]:
+        return self.d["refraction"]
+
+    @property
+    def remote(self) -> DeviceEntry[Remote]:
+        return self.d["remote"]
+
+    @property
+    def seeingWeather(self) -> DeviceEntry[SeeingWeather]:
+        return self.d["seeingWeather"]
+
+    @property
+    def sensor1Weather(self) -> DeviceEntry[SensorWeather]:
+        return self.d["sensor1Weather"]
+
+    @property
+    def sensor2Weather(self) -> DeviceEntry[SensorWeather]:
+        return self.d["sensor2Weather"]
+
+    @property
+    def sensor3Weather(self) -> DeviceEntry[SensorWeather]:
+        return self.d["sensor3Weather"]
+
+    @property
+    def sensor4Weather(self) -> DeviceEntry[SensorWeather]:
+        return self.d["sensor4Weather"]
+
+    @property
+    def telescope(self) -> DeviceEntry[Telescope]:
+        return self.d["telescope"]
+
+    # ------------------------------------------------------------------
+    # Mapping protocol — keeps membership tests and dynamic key lookups working
     # ------------------------------------------------------------------
     def __iter__(self) -> Iterator[str]:
         return iter(self.d)
 
-    def __getitem__(self, name: str) -> DeviceEntry:
+    @overload
+    def __getitem__(self, name: Literal["mount"]) -> DeviceEntry[MountDevice]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["camera"]) -> DeviceEntry[Camera]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["cover"]) -> DeviceEntry[Cover]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["directWeather"]) -> DeviceEntry[DirectWeather]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["dome"]) -> DeviceEntry[Dome]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["filter"]) -> DeviceEntry[Filter]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["focuser"]) -> DeviceEntry[Focuser]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["hidController"]) -> DeviceEntry[HidController]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["lightPanel"]) -> DeviceEntry[LightPanel]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["measure"]) -> DeviceEntry[MeasureData]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["plateSolve"]) -> DeviceEntry[PlateSolve]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["power"]) -> DeviceEntry[PegasusUPB]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["relay"]) -> DeviceEntry[KMRelay]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["refraction"]) -> DeviceEntry[None]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["remote"]) -> DeviceEntry[Remote]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["seeingWeather"]) -> DeviceEntry[SeeingWeather]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["sensor1Weather"]) -> DeviceEntry[SensorWeather]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["sensor2Weather"]) -> DeviceEntry[SensorWeather]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["sensor3Weather"]) -> DeviceEntry[SensorWeather]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["sensor4Weather"]) -> DeviceEntry[SensorWeather]: ...
+
+    @overload
+    def __getitem__(self, name: Literal["telescope"]) -> DeviceEntry[Telescope]: ...
+
+    @overload
+    def __getitem__(self, name: str) -> DeviceEntry[Any]: ...
+
+    def __getitem__(self, name: str) -> DeviceEntry[Any]:
         return self.d[name]
 
     def __contains__(self, name: object) -> bool:
         return name in self.d
 
-    def configurable(self) -> Iterator[DeviceEntry]:
+    def configurable(self) -> Iterator[DeviceEntry[Any]]:
         for entry in self.d.values():
             if entry.isConfigurable and entry.instance is not None:
                 yield entry
 
-    def realDrivers(self) -> Iterator[DeviceEntry]:
+    def realDrivers(self) -> Iterator[DeviceEntry[Any]]:
         for entry in self.d.values():
             if entry.instance is not None:
                 yield entry

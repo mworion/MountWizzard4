@@ -54,10 +54,10 @@ class EnvironSeeing(TabAddon):
         self.ui = mainW.ui
         self.seeingEnabled: bool = False
 
-        signals = self.app.dReg["seeingWeather"].signals
+        signals = self.app.dReg.seeingWeather.signals
         signals.deviceDisconnected.connect(self.clearSeeingEntries)
         self.app.signals.system.timebaseChanged.connect(self.updateSeeingEntries)
-        self.app.dReg["seeingWeather"].signals.update.connect(self.prepareSeeingTable)
+        self.app.dReg.seeingWeather.signals.update.connect(self.prepareSeeingTable)
         clickable(self.ui.seeingIcon).connect(self.openWeb)
         self.app.signals.ui.colorChange.connect(self.updateSeeingEntries)
 
@@ -70,7 +70,7 @@ class EnvironSeeing(TabAddon):
         self.ui.seeing.setVisible(False)
 
     def addSkyfieldTimeObject(self, data: dict) -> None:
-        ts = self.app.dReg["mount"].obsSite.ts
+        ts = self.app.dReg.mount.obsSite.ts
         data["time"] = []
 
         # external meteoblue data; keep the tolerant truncation
@@ -130,17 +130,17 @@ class EnvironSeeing(TabAddon):
         item.setForeground(QColor(*self.mainW.M_PINK))
         val = data["seeing_arcsec"][i]
         self.ui.limitForecast.setText(f"{val}")
-        val = self.app.dReg["seeingWeather"].data["meta"]["last_model_update"]
+        val = self.app.dReg.seeingWeather.data["meta"]["last_model_update"]
         self.ui.limitForecastDate.setText(f"{val}")
         return i
 
     def updateSeeingEntries(self) -> None:
-        if "hourly" not in self.app.dReg["seeingWeather"].data:
+        if "hourly" not in self.app.dReg.seeingWeather.data:
             return
         self.ui.seeingGroup.setTitle("Seeing data " + self.app.timeMgr.timeZoneString())
-        ts = self.app.dReg["mount"].obsSite.ts
+        ts = self.app.dReg.mount.obsSite.ts
         seeTab = self.ui.seeing
-        data = self.app.dReg["seeingWeather"].data["hourly"]
+        data = self.app.dReg.seeingWeather.data["hourly"]
         self.addSkyfieldTimeObject(data)
         columnCenter = 1
         for i in range(96):

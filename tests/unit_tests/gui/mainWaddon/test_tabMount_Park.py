@@ -142,24 +142,24 @@ def test_updateParkButtonText_default_text(function):
 
 
 def test_parkAtPos_disconnects_signal(function):
-    function.app.dReg["mount"].signals.slewed = mock.MagicMock()
-    function.app.dReg["mount"].signals.slewed.disconnect = mock.MagicMock()
+    function.app.dReg.mount.signals.slewed = mock.MagicMock()
+    function.app.dReg.mount.signals.slewed.disconnect = mock.MagicMock()
     with mock.patch.object(
-        function.app.dReg["mount"].obsSite, "parkOnActualPosition", return_value=True
+        function.app.dReg.mount.obsSite, "parkOnActualPosition", return_value=True
     ):
         function.parkAtPos()
-        function.app.dReg["mount"].signals.slewed.disconnect.assert_called_once()
+        function.app.dReg.mount.signals.slewed.disconnect.assert_called_once()
 
 
 def test_parkAtPos_failure_emits_message(function):
-    function.app.dReg["mount"].signals.slewed = mock.MagicMock()
-    function.app.dReg["mount"].signals.slewed.disconnect = mock.MagicMock()
+    function.app.dReg.mount.signals.slewed = mock.MagicMock()
+    function.app.dReg.mount.signals.slewed.disconnect = mock.MagicMock()
     mock_msg = mock.MagicMock()
     original_msg = function.msg
     function.msg = mock_msg
     try:
         with mock.patch.object(
-            function.app.dReg["mount"].obsSite, "parkOnActualPosition", return_value=False
+            function.app.dReg.mount.obsSite, "parkOnActualPosition", return_value=False
         ):
             function.parkAtPos()
             mock_msg.emit.assert_called_once_with(
@@ -186,8 +186,8 @@ def test_slewToPark_requires_posAlt_attribute(function):
     function.posAz[0].value.return_value = 180.0
     function.posTexts[0].text.return_value = "Test Position"
     with (
-        mock.patch.object(function.app.dReg["mount"].obsSite, "setTargetAltAz", return_value=True),
-        mock.patch.object(function.app.dReg["mount"].obsSite, "startSlewing", return_value=True),
+        mock.patch.object(function.app.dReg.mount.obsSite, "setTargetAltAz", return_value=True),
+        mock.patch.object(function.app.dReg.mount.obsSite, "startSlewing", return_value=True),
     ):
         function.slewToPark(0)
 
@@ -205,7 +205,7 @@ def test_slewToPark_when_setTargetAltAz_fails(function):
     function.msg = mock_msg
     try:
         with mock.patch.object(
-            function.app.dReg["mount"].obsSite, "setTargetAltAz", return_value=False
+            function.app.dReg.mount.obsSite, "setTargetAltAz", return_value=False
         ):
             function.slewToPark(0)
             mock_msg.emit.assert_called_once()
@@ -226,12 +226,8 @@ def test_slewToPark_when_startSlewing_fails(function):
     function.msg = mock_msg
     try:
         with (
-            mock.patch.object(
-                function.app.dReg["mount"].obsSite, "setTargetAltAz", return_value=True
-            ),
-            mock.patch.object(
-                function.app.dReg["mount"].obsSite, "startSlewing", return_value=False
-            ),
+            mock.patch.object(function.app.dReg.mount.obsSite, "setTargetAltAz", return_value=True),
+            mock.patch.object(function.app.dReg.mount.obsSite, "startSlewing", return_value=False),
         ):
             function.slewToPark(0)
             mock_msg.emit.assert_called_once()
@@ -248,13 +244,13 @@ def test_slewToPark_with_park_after_slew_enabled(function):
     function.posAz[0].value.return_value = 180.0
     function.posTexts[0].text.return_value = "Test Position"
     function.mainW.ui.parkMountAfterSlew.setChecked(True)
-    function.app.dReg["mount"].signals.slewed = mock.MagicMock()
+    function.app.dReg.mount.signals.slewed = mock.MagicMock()
     with (
-        mock.patch.object(function.app.dReg["mount"].obsSite, "setTargetAltAz", return_value=True),
-        mock.patch.object(function.app.dReg["mount"].obsSite, "startSlewing", return_value=True),
+        mock.patch.object(function.app.dReg.mount.obsSite, "setTargetAltAz", return_value=True),
+        mock.patch.object(function.app.dReg.mount.obsSite, "startSlewing", return_value=True),
     ):
         function.slewToPark(0)
-        function.app.dReg["mount"].signals.slewed.connect.assert_called_once()
+        function.app.dReg.mount.signals.slewed.connect.assert_called_once()
 
 
 def test_storeConfig_keepsSectionOnError(function):

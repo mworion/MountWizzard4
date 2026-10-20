@@ -41,12 +41,12 @@ class Hipparcos:
         :return: lists for alt, az and name of star
         """
 
-        location = self.app.dReg["mount"].obsSite.location
+        location = self.app.dReg.mount.obsSite.location
 
         if location is None:
             return False
 
-        t = self.app.dReg["mount"].obsSite.timeJD
+        t = self.app.dReg.mount.obsSite.timeJD
         star = list(self.alignStars.values())
         self.name = list(self.alignStars.keys())
 
@@ -93,7 +93,7 @@ class Hipparcos:
 
         if name not in self.alignStars:
             return None, None
-        timeJD = self.app.dReg["mount"].timeJD
+        timeJD = self.app.dReg.mount.timeJD
         values = self.alignStars[name]
 
         ra, dec, eo = erfa.atci13(

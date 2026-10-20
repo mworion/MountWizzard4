@@ -18,7 +18,7 @@ class ModelStatus(TabAddon):
         self.msg = mainW.app.signals.ui.msg
         self.ui = mainW.ui
 
-        ms = self.app.dReg["mount"].signals
+        ms = self.app.dReg.mount.signals
         ms.getModelDone.connect(self.updateAlignGUI)
         ms.getModelDone.connect(self.updateTurnKnobsGUI)
 

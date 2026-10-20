@@ -173,7 +173,7 @@ class HemisphereWindow(MWidget):
         plotItem.setYRange(-90, 90)
         plotItem.disableAutoRange()
         self.ui.hemisphere.setGrid(plotItem=plotItem, reverse=True)
-        lat = self.app.dReg["mount"].obsSite.location.latitude.degrees
+        lat = self.app.dReg.mount.obsSite.location.latitude.degrees
         self.ui.hemisphere.plotLoc(lat, plotItem=plotItem)
 
     def drawTerrainImage(self, plotItem: pg.PlotItem) -> None:
@@ -195,8 +195,8 @@ class HemisphereWindow(MWidget):
         plotItem.addItem(imgItem)
 
     def drawMeridianLimits(self, plotItem: pg.PlotItem) -> None:
-        slew = self.app.dReg["mount"].setting.meridianLimitSlew
-        track = self.app.dReg["mount"].setting.meridianLimitTrack
+        slew = self.app.dReg.mount.setting.meridianLimitSlew
+        track = self.app.dReg.mount.setting.meridianLimitTrack
         mSlew = pg.QtWidgets.QGraphicsRectItem(180 - slew, 0, 2 * slew, 90)
         mSlew.setPen(pg.mkPen(color=self.rgb2hex(self.M_YELLOW1)))
         mSlew.setBrush(pg.mkBrush(color=self.rgb2hex(self.M_YELLOW)))
@@ -209,8 +209,8 @@ class HemisphereWindow(MWidget):
         plotItem.addItem(mTrack)
 
     def drawHorizonLimits(self, plotItem: pg.PlotItem) -> None:
-        high = self.app.dReg["mount"].setting.horizonLimitHigh
-        low = self.app.dReg["mount"].setting.horizonLimitLow
+        high = self.app.dReg.mount.setting.horizonLimitHigh
+        low = self.app.dReg.mount.setting.horizonLimitLow
         hLow = pg.QtWidgets.QGraphicsRectItem(0, high, 360, 90 - high)
         hLow.setPen(pg.mkPen(color=self.rgb2hex(self.M_RED1)))
         hLow.setBrush(pg.mkBrush(color=self.rgb2hex(self.M_RED)))

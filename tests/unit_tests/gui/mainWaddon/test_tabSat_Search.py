@@ -83,7 +83,7 @@ def test_processSatelliteSource_tle(function: SatSearch) -> None:
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
     function.satellites.dest = Path("test.tle")
 
-    loader = function.app.dReg["mount"].obsSite.loader
+    loader = function.app.dReg.mount.obsSite.loader
     with mock.patch.object(loader, "tle_file", return_value=[sat]):
         function.processSatelliteSource()
         assert "NOAA 8" in function.satellites.objects
@@ -123,7 +123,7 @@ def test_processLoadTLE(function: SatSearch) -> None:
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
     function.satellites.dest = Path("test.tle")
 
-    loader = function.app.dReg["mount"].obsSite.loader
+    loader = function.app.dReg.mount.obsSite.loader
     with mock.patch.object(loader, "tle_file", return_value=[sat]):
         function.processLoadTLE()
         assert "NOAA 8" in function.satellites.objects
@@ -221,7 +221,7 @@ def test_updateTitleRunning_toggles_style(function: SatSearch) -> None:
 
 def test_updateListSats_1(function: SatSearch) -> None:
     param = [1, 2, 3, 4]
-    ts = function.app.dReg["mount"].obsSite.ts.now()
+    ts = function.app.dReg.mount.obsSite.ts.now()
     isUp = [ts]
     with mock.patch.object(function.signals, "setSatListItem") as mock_signal:
         function.updateListSats(0, param, isUp, True, 5, 4)
@@ -269,7 +269,7 @@ def test_updateListSats_5(function: SatSearch) -> None:
 
 def test_updateListSats_4(function: SatSearch) -> None:
     param = [1, 2, 3, 4]
-    ts = function.app.dReg["mount"].obsSite.ts.now()
+    ts = function.app.dReg.mount.obsSite.ts.now()
     with mock.patch.object(function.signals, "setSatListItem") as mock_signal:
         function.updateListSats(0, param, [ts], True, 3.2, 1)
         assert mock_signal.emit.called
@@ -281,7 +281,7 @@ def test_satOkSGP4_1(function: SatSearch) -> None:
         "1 47180U 20088BL  21303.19708368  .16584525  12000-4  30219-2 0  9999",
         "2 47180  53.0402 223.8709 0008872 210.0671 150.2394 16.31518727 52528",
     ]
-    ts = function.app.dReg["mount"].obsSite.ts
+    ts = function.app.dReg.mount.obsSite.ts
     tEnd = ts.tt_jd(2459523.2430)
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
     suc = function.satOkSGP4(sat, tEnd)
@@ -294,7 +294,7 @@ def test_satOkSGP4_2(function: SatSearch) -> None:
         "1 00900U 64063C   21307.74429300  .00000461  00000-0  48370-3 0  9996",
         "2 00900  90.1716  36.8626 0025754 343.8320 164.5583 13.73613883839670",
     ]
-    ts = function.app.dReg["mount"].obsSite.ts
+    ts = function.app.dReg.mount.obsSite.ts
     tEnd = ts.tt_jd(2459523.2430)
     sat = EarthSatellite(tle[1], tle[2], name=tle[0])
     suc = function.satOkSGP4(sat, tEnd)

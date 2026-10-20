@@ -38,7 +38,7 @@ def test_initialization(settMount: SettMount) -> None:
 def test_initConfigLoadsDefaults(settMount: SettMount) -> None:
     """Test initConfig loads configuration with defaults."""
     settMount.app.config["SettingMount"] = {}
-    with mock.patch.object(settMount.app.dReg["mount"].instance, "getFW"):
+    with mock.patch.object(settMount.app.dReg.mount.instance, "getFW"):
         settMount.initConfig()
     assert settMount.ui.rackCompMAC.text() == "00:00:00:00:00"
     assert settMount.ui.rackCompWolAddress.text() == "255.255.255.255"
@@ -52,7 +52,7 @@ def test_initConfigLoadsFromConfig(settMount: SettMount) -> None:
         "rackCompWolAddress": "192.168.1.255",
         "rackCompWolPort": "7",
     }
-    with mock.patch.object(settMount.app.dReg["mount"].instance, "getFW"):
+    with mock.patch.object(settMount.app.dReg.mount.instance, "getFW"):
         settMount.initConfig()
     assert settMount.ui.rackCompMAC.text() == "AA:BB:CC:DD:EE:FF"
     assert settMount.ui.rackCompWolAddress.text() == "192.168.1.255"
@@ -78,12 +78,12 @@ def test_storeConfig(settMount: SettMount) -> None:
     assert config["rackCompMAC"] == "AA:BB:CC:DD:EE:FF"
     assert config["rackCompWolAddress"] == "192.168.1.255"
     assert config["rackCompWolPort"] == "7"
-    assert settMount.app.dReg["mount"].instance.config.hostAddress == "192.168.1.100"
-    assert settMount.app.dReg["mount"].instance.config.MAC == "11:22:33:44:55:66"
-    assert settMount.app.dReg["mount"].instance.config.wolAddress == "192.168.1.1"
-    assert settMount.app.dReg["mount"].instance.config.wolPort == 9000
-    assert settMount.app.dReg["mount"].instance.config.wolAutomatic is True
-    assert settMount.app.dReg["mount"].instance.config.port == 3492
+    assert settMount.app.dReg.mount.instance.config.hostAddress == "192.168.1.100"
+    assert settMount.app.dReg.mount.instance.config.MAC == "11:22:33:44:55:66"
+    assert settMount.app.dReg.mount.instance.config.wolAddress == "192.168.1.1"
+    assert settMount.app.dReg.mount.instance.config.wolPort == 9000
+    assert settMount.app.dReg.mount.instance.config.wolAutomatic is True
+    assert settMount.app.dReg.mount.instance.config.port == 3492
 
 
 def test_storeConfigPort3490(settMount: SettMount) -> None:
@@ -92,40 +92,40 @@ def test_storeConfigPort3490(settMount: SettMount) -> None:
     settMount.ui.port3490.setChecked(True)
     settMount.ui.port3492.setChecked(False)
     settMount.storeConfig()
-    assert settMount.app.dReg["mount"].instance.config.port == 3490
+    assert settMount.app.dReg.mount.instance.config.port == 3490
 
 
 def test_setMountCapabilitiesWithHW2012(settMount: SettMount) -> None:
     """Test setMountCapabilities enables WOL group for HW2012."""
-    original_firmware = settMount.app.dReg["mount"].instance.firmware
+    original_firmware = settMount.app.dReg.mount.instance.firmware
     try:
         mock_fw = mock.MagicMock()
         mock_fw.isHW2012 = mock.MagicMock(return_value=True)
-        settMount.app.dReg["mount"].instance.firmware = mock_fw
+        settMount.app.dReg.mount.instance.firmware = mock_fw
         settMount.setMountCapabilities(mock_fw)
         assert settMount.ui.GroupWOL.isEnabled()
     finally:
-        settMount.app.dReg["mount"].instance.firmware = original_firmware
+        settMount.app.dReg.mount.instance.firmware = original_firmware
 
 
 def test_setMountCapabilitiesWithoutHW2012(settMount: SettMount) -> None:
     """Test setMountCapabilities disables WOL group for non-HW2012."""
-    original_firmware = settMount.app.dReg["mount"].instance.firmware
+    original_firmware = settMount.app.dReg.mount.instance.firmware
     try:
         mock_fw = mock.MagicMock()
         mock_fw.isHW2012 = mock.MagicMock(return_value=False)
-        settMount.app.dReg["mount"].instance.firmware = mock_fw
+        settMount.app.dReg.mount.instance.firmware = mock_fw
         settMount.setMountCapabilities(mock_fw)
         assert not settMount.ui.GroupWOL.isEnabled()
     finally:
-        settMount.app.dReg["mount"].instance.firmware = original_firmware
+        settMount.app.dReg.mount.instance.firmware = original_firmware
 
 
 def test_mountBootSuccess(settMount: SettMount) -> None:
     """Test mountBoot with successful boot command."""
     settMount.msg = mock.MagicMock()
     with mock.patch.object(
-        settMount.app.dReg["mount"].instance.mountTimeConn, "bootMount", return_value=True
+        settMount.app.dReg.mount.instance.mountTimeConn, "bootMount", return_value=True
     ):
         settMount.mountBoot()
     settMount.msg.emit.assert_called_with(0, "Mount", "Command", "Sent boot command to mount")
@@ -135,7 +135,7 @@ def test_mountBootFailure(settMount: SettMount) -> None:
     """Test mountBoot with failed boot command."""
     settMount.msg = mock.MagicMock()
     with mock.patch.object(
-        settMount.app.dReg["mount"].instance.mountTimeConn, "bootMount", return_value=False
+        settMount.app.dReg.mount.instance.mountTimeConn, "bootMount", return_value=False
     ):
         settMount.mountBoot()
     settMount.msg.emit.assert_called_with(2, "Mount", "Command", "Mount cannot be booted")
@@ -145,7 +145,7 @@ def test_mountShutdownSuccess(settMount: SettMount) -> None:
     """Test mountShutdown with successful shutdown command."""
     settMount.msg = mock.MagicMock()
     with mock.patch.object(
-        settMount.app.dReg["mount"].instance.mountTimeConn, "shutdown", return_value=True
+        settMount.app.dReg.mount.instance.mountTimeConn, "shutdown", return_value=True
     ):
         settMount.mountShutdown()
     settMount.msg.emit.assert_called_with(0, "Mount", "Command", "Shutting mount down")
@@ -155,7 +155,7 @@ def test_mountShutdownFailure(settMount: SettMount) -> None:
     """Test mountShutdown with failed shutdown command."""
     settMount.msg = mock.MagicMock()
     with mock.patch.object(
-        settMount.app.dReg["mount"].instance.mountTimeConn, "shutdown", return_value=False
+        settMount.app.dReg.mount.instance.mountTimeConn, "shutdown", return_value=False
     ):
         settMount.mountShutdown()
     settMount.msg.emit.assert_called_with(2, "Mount", "Command", "Mount cannot be shutdown")

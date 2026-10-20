@@ -37,7 +37,7 @@ class ModelManage(TabAddon):
             self.showErrorAscending,
             self.showErrorDistribution,
         ]
-        ms = self.app.dReg["mount"].instance.signals
+        ms = self.app.dReg.mount.instance.signals
         for slot in modelShowSlots:
             ms.getModelDone.connect(slot)
         ms.namesDone.connect(self.setNameList)
@@ -104,7 +104,7 @@ class ModelManage(TabAddon):
         self.ui.nameList.sortItems()
 
     def showModelPosition(self) -> None:
-        model = self.app.dReg["mount"].model
+        model = self.app.dReg.mount.model
         if not model.numberStars or not model.starList:
             self.ui.modelPositions.p[0].clear()
             return
@@ -125,11 +125,11 @@ class ModelManage(TabAddon):
             reverse=True,
             tip="PointNo: {data[0]}\nErrorRMS: {data[1]:0.1f}".format,
         )
-        self.ui.modelPositions.plotLoc(self.app.dReg["mount"].obsSite.location.latitude.degrees)
+        self.ui.modelPositions.plotLoc(self.app.dReg.mount.obsSite.location.latitude.degrees)
         self.ui.modelPositions.scatterItem.sigClicked.connect(self.pointClicked)
 
     def showErrorAscending(self) -> None:
-        model = self.app.dReg["mount"].model
+        model = self.app.dReg.mount.model
         error = np.array([star.errorRMS for star in model.starList])
         if len(error) == 0:
             self.ui.errorAscending.p[0].clear()
@@ -144,7 +144,7 @@ class ModelManage(TabAddon):
         )
 
     def showErrorDistribution(self) -> None:
-        model = self.app.dReg["mount"].model
+        model = self.app.dReg.mount.model
         error = np.array([x.errorRMS for x in model.starList])
         if len(error) == 0:
             self.ui.errorDistribution.p[0].clear()
@@ -160,24 +160,24 @@ class ModelManage(TabAddon):
         self.ui.deleteName.setEnabled(True)
         self.ui.saveName.setEnabled(True)
         self.ui.loadName.setEnabled(True)
-        self.app.dReg["mount"].instance.signals.namesDone.disconnect(self.clearRefreshName)
+        self.app.dReg.mount.instance.signals.namesDone.disconnect(self.clearRefreshName)
         self.msg.emit(0, "Model", "Manage", "Model names refreshed")
 
     def refreshName(self) -> None:
-        self.app.dReg["mount"].instance.signals.namesDone.connect(self.clearRefreshName)
+        self.app.dReg.mount.instance.signals.namesDone.connect(self.clearRefreshName)
         self.ui.deleteName.setEnabled(False)
         self.ui.saveName.setEnabled(False)
         self.ui.loadName.setEnabled(False)
         changeStyleDynamic(self.ui.refreshName, "run", "true")
         changeStyleDynamic(self.ui.modelNameGroup, "run", "true")
-        self.app.dReg["mount"].instance.getNames()
+        self.app.dReg.mount.instance.getNames()
 
     def loadName(self) -> None:
         if self.ui.nameList.currentItem() is None:
             self.msg.emit(2, "Model", "Manage error", "No model name selected")
             return
         modelName = self.ui.nameList.currentItem().text()
-        if not self.app.dReg["mount"].model.loadName(modelName):
+        if not self.app.dReg.mount.model.loadName(modelName):
             self.msg.emit(2, "Model", "Manage error", f"Model load failed: [{modelName}]")
             return
         self.msg.emit(0, "Model", "Manage", f"Model loaded: [{modelName}]")
@@ -189,7 +189,7 @@ class ModelManage(TabAddon):
             self.msg.emit(2, "Model", "Manage error", "No model name given")
             return
 
-        if not self.app.dReg["mount"].model.storeName(modelName):
+        if not self.app.dReg.mount.model.storeName(modelName):
             self.msg.emit(2, "Model", "Manage error", f"Model cannot be saved [{modelName}]")
             return
         self.msg.emit(0, "Model", "Manage", f"Model saved: [{modelName}]")
@@ -206,7 +206,7 @@ class ModelManage(TabAddon):
         ):
             return
 
-        if not self.app.dReg["mount"].model.deleteName(modelName):
+        if not self.app.dReg.mount.model.deleteName(modelName):
             self.msg.emit(2, "Model", "Manage error", f"Model cannot be deleted [{modelName}]")
             return
         self.msg.emit(0, "Model", "Manage", f"Model deleted: [{modelName}]")
@@ -233,7 +233,7 @@ class ModelManage(TabAddon):
                 continue
             newModel.append(element)
 
-        newModel = writeRetrofitData(self.app.dReg["mount"].model, newModel)
+        newModel = writeRetrofitData(self.app.dReg.mount.model, newModel)
         newModel = convertAngleToFloat(newModel)
         with open(newPath, "w+") as newFile:
             json.dump(newModel, newFile, sort_keys=True, indent=4)
@@ -245,10 +245,10 @@ class ModelManage(TabAddon):
         self.ui.deleteWorstPoint.setEnabled(True)
         self.ui.runOptimize.setEnabled(True)
         self.ui.clearModel.setEnabled(True)
-        self.app.dReg["mount"].instance.signals.getModelDone.disconnect(self.clearRefreshModel)
+        self.app.dReg.mount.instance.signals.getModelDone.disconnect(self.clearRefreshModel)
         self.msg.emit(0, "Model", "Manage", "Model data refreshed")
         self.fittedModelPath, pointsOut = findFittingModel(
-            self.app.dReg["mount"].model, self.app.mwGlob["modelDir"]
+            self.app.dReg.mount.model, self.app.mwGlob["modelDir"]
         )
         self.writeBuildModelOptimized(pointsOut)
         if self.fittedModelPath.is_file():
@@ -262,23 +262,23 @@ class ModelManage(TabAddon):
     def refreshModel(self) -> None:
         changeStyleDynamic(self.ui.refreshModel, "run", "true")
         changeStyleDynamic(self.ui.modelGroup, "run", "true")
-        self.app.dReg["mount"].instance.signals.getModelDone.connect(self.clearRefreshModel)
+        self.app.dReg.mount.instance.signals.getModelDone.connect(self.clearRefreshModel)
         self.ui.deleteWorstPoint.setEnabled(False)
         self.ui.runOptimize.setEnabled(False)
         self.ui.clearModel.setEnabled(False)
-        self.app.dReg["mount"].instance.getModel()
+        self.app.dReg.mount.instance.getModel()
 
     def clearModel(self) -> None:
         if not MWMessageDialog.question(self.mainW, "Clear model", "Clear actual alignment model"):
             return
-        if not self.app.dReg["mount"].model.clearModel():
+        if not self.app.dReg.mount.model.clearModel():
             self.msg.emit(2, "Model", "Manage error", "Actual model cannot be cleared")
             return
         self.msg.emit(0, "Model", "Manage", "Actual model cleared")
         self.refreshModel()
 
     def deleteWorstPoint(self) -> None:
-        model = self.app.dReg["mount"].model
+        model = self.app.dReg.mount.model
         if not model.numberStars:
             return
 
@@ -295,9 +295,9 @@ class ModelManage(TabAddon):
     def finishOptimize(self) -> None:
         """ " """
         if self.ui.optimizeOverall.isChecked():
-            self.app.dReg["mount"].instance.signals.getModelDone.disconnect(self.runTargetRMS)
+            self.app.dReg.mount.instance.signals.getModelDone.disconnect(self.runTargetRMS)
         else:
-            self.app.dReg["mount"].instance.signals.getModelDone.disconnect(self.runSingleRMS)
+            self.app.dReg.mount.instance.signals.getModelDone.disconnect(self.runSingleRMS)
 
         changeStyleDynamic(self.ui.runOptimize, "run", "false")
         self.ui.deleteWorstPoint.setEnabled(True)
@@ -308,7 +308,7 @@ class ModelManage(TabAddon):
         self.refreshModel()
 
     def runTargetRMS(self) -> None:
-        mount = self.app.dReg["mount"].instance
+        mount = self.app.dReg.mount.instance
         if mount.model.errorRMS < self.ui.targetRMS.value():
             self.runningOptimize = False
         numberStars = 0 if mount.model.numberStars is None else mount.model.numberStars
@@ -332,7 +332,7 @@ class ModelManage(TabAddon):
             self.finishOptimize()
 
     def runSingleRMS(self) -> None:
-        mount = self.app.dReg["mount"].instance
+        mount = self.app.dReg.mount.instance
         if all(star.errorRMS < self.ui.targetRMS.value() for star in mount.model.starList):
             self.runningOptimize = False
         numberStars = 0 if mount.model.numberStars is None else mount.model.numberStars
@@ -367,10 +367,10 @@ class ModelManage(TabAddon):
         changeStyleDynamic(self.ui.runOptimize, "run", "true")
 
         if self.ui.optimizeOverall.isChecked():
-            self.app.dReg["mount"].instance.signals.getModelDone.connect(self.runTargetRMS)
+            self.app.dReg.mount.instance.signals.getModelDone.connect(self.runTargetRMS)
             self.runTargetRMS()
         else:
-            self.app.dReg["mount"].instance.signals.getModelDone.connect(self.runSingleRMS)
+            self.app.dReg.mount.instance.signals.getModelDone.connect(self.runSingleRMS)
             self.runSingleRMS()
 
     def cancelOptimize(self) -> None:
@@ -388,13 +388,13 @@ class ModelManage(TabAddon):
             return
 
         index = points[0].data()[0]
-        error = self.app.dReg["mount"].model.starList[index].errorRMS
+        error = self.app.dReg.mount.model.starList[index].errorRMS
         text = f"Do you want to delete \npoint {index:3.0f}"
         text += f"\nRMS of {error:5.1f} arcsec"
 
         if not MWMessageDialog.question(self.mainW, "Deleting point", text):
             return
-        if not self.app.dReg["mount"].model.deletePoint(index):
+        if not self.app.dReg.mount.model.deletePoint(index):
             self.msg.emit(2, "Model", "Manage error", f"Point {index:3.0f} cannot be deleted")
             return
 

@@ -84,7 +84,7 @@ def test_storeConfig_1(function):
     ):
         function.storeConfig()
     assert function.returnValues["close"] == "ok"
-    assert function.app.dReg["telescope"].instance.framework == "indi"
+    assert function.app.dReg.telescope.instance.framework == "indi"
 
 
 def test_selectTabs_1(function):
@@ -108,7 +108,7 @@ def test_selectTabs_3(function):
 
 def test_populateTabs_1(function):
     function.device = "telescope"
-    config = function.app.dReg["telescope"].run["indi"].config
+    config = function.app.dReg.telescope.run["indi"].config
     config.deviceName = "test"
     config.hostAddress = "localhost"
     config.showMessage = True
@@ -119,7 +119,7 @@ def test_populateTabs_1(function):
 
 def test_populateTabs_2(function):
     function.device = "plateSolve"
-    config = function.app.dReg["plateSolve"].run["astap"].config
+    config = function.app.dReg.plateSolve.run["astap"].config
     config.searchRadius = 30
     config.timeout = 60
     function.populateTabs()
@@ -134,7 +134,7 @@ def test_readTabs_1(function):
     function.ui.indiPort.setText("10")
     function.ui.indiMessages.setChecked(True)
     function.readTabs()
-    config = function.app.dReg["telescope"].run["indi"].config
+    config = function.app.dReg.telescope.run["indi"].config
     assert config.hostAddress == "host"
     assert config.port == 10
     assert config.showMessage is True
@@ -147,7 +147,7 @@ def test_readTabs_2(function):
     function.ui.astapTimeout.setValue(60.0)
     function.ui.astapAppPath.setText("/app")
     function.readTabs()
-    config = function.app.dReg["plateSolve"].run["astap"].config
+    config = function.app.dReg.plateSolve.run["astap"].config
     assert config.searchRadius == 30.0
     assert config.appPath == "/app"
     function.device = "telescope"
@@ -202,7 +202,7 @@ def test_checkApp_1(function):
         def checkAvailabilityProgram(appPath):
             return True
 
-    function.app.dReg["plateSolve"].run["astap"] = Avail()
+    function.app.dReg.plateSolve.run["astap"] = Avail()
     function.checkApp("astap", "test")
 
 
@@ -212,7 +212,7 @@ def test_checkApp_2(function):
         def checkAvailabilityProgram(appPath):
             return True
 
-    function.app.dReg["plateSolve"].run["watney"] = Avail()
+    function.app.dReg.plateSolve.run["watney"] = Avail()
     function.checkApp("watney", "test")
 
 
@@ -222,7 +222,7 @@ def test_checkApp_3(function):
         def checkAvailabilityProgram(appPath):
             return True
 
-    function.app.dReg["plateSolve"].run["astrometry"] = Avail()
+    function.app.dReg.plateSolve.run["astrometry"] = Avail()
     function.checkApp("astrometry", "test")
 
 
@@ -232,7 +232,7 @@ def test_checkIndex_1(function):
         def checkAvailabilityIndex(indexPath):
             return True
 
-    function.app.dReg["plateSolve"].run["astap"] = Avail()
+    function.app.dReg.plateSolve.run["astap"] = Avail()
     function.checkIndex("astap", "test")
 
 
@@ -242,7 +242,7 @@ def test_checkIndex_2(function):
         def checkAvailabilityIndex(indexPath):
             return True
 
-    function.app.dReg["plateSolve"].run["watney"] = Avail()
+    function.app.dReg.plateSolve.run["watney"] = Avail()
     function.checkIndex("watney", "test")
 
 
@@ -252,7 +252,7 @@ def test_checkIndex_3(function):
         def checkAvailabilityIndex(indexPath):
             return True
 
-    function.app.dReg["plateSolve"].run["astrometry"] = Avail()
+    function.app.dReg.plateSolve.run["astrometry"] = Avail()
     function.checkIndex("astrometry", "test")
 
 
@@ -262,7 +262,7 @@ def test_selectAppPath_1(function):
         def checkAvailabilityProgram(indexPath):
             return True
 
-    function.app.dReg["plateSolve"].run["astrometry"] = Avail()
+    function.app.dReg.plateSolve.run["astrometry"] = Avail()
     with (
         mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=Path("/test")),
         mock.patch.object(Path, "is_dir", return_value=False),
@@ -276,7 +276,7 @@ def test_selectAppPath_2(function):
         def checkAvailabilityProgram(appPath):
             return True
 
-    function.app.dReg["plateSolve"].run["astap"] = Avail()
+    function.app.dReg.plateSolve.run["astap"] = Avail()
     with (
         mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=Path("/test.app")),
         mock.patch.object(Path, "is_dir", return_value=True),
@@ -290,7 +290,7 @@ def test_selectAppPath_3(function):
         def checkAvailabilityProgram(appPath):
             return True
 
-    function.app.dReg["plateSolve"].run["astap"] = Avail()
+    function.app.dReg.plateSolve.run["astap"] = Avail()
     with (
         mock.patch.object(
             MWFileDialog, "getExistingDirectory", return_value=Path("/Astrometry.app")
@@ -306,7 +306,7 @@ def test_selectIndexPath_1(function):
         def checkAvailabilityIndex(indexPath):
             return True
 
-    function.app.dReg["plateSolve"].run["astap"] = Avail()
+    function.app.dReg.plateSolve.run["astap"] = Avail()
     with (
         mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=Path("/test")),
         mock.patch.object(Path, "is_dir", return_value=False),
@@ -320,7 +320,7 @@ def test_selectIndexPath_2(function):
         def checkAvailabilityIndex(indexPath):
             return True
 
-    function.app.dReg["plateSolve"].instance.run = {"astap": Avail()}
+    function.app.dReg.plateSolve.instance.run = {"astap": Avail()}
     with (
         mock.patch.object(MWFileDialog, "getExistingDirectory", return_value=Path("/test")),
         mock.patch.object(Path, "is_dir", return_value=True),
@@ -436,7 +436,7 @@ def test_configure_2(function):
 def test_discoverDevices_sgpro_empty(function):
     sgproInstance = mock.MagicMock()
     sgproInstance.discoverDevices = mock.MagicMock(return_value=())
-    function.app.dReg["telescope"].run["sgpro"] = sgproInstance
+    function.app.dReg.telescope.run["sgpro"] = sgproInstance
     with mock.patch.object(SGProClass, "discoverDevices", return_value=()):
         function.discoverDevices("sgpro", QWidget())
 
@@ -444,7 +444,7 @@ def test_discoverDevices_sgpro_empty(function):
 def test_discoverDevices_sgpro_devices_found(function):
     sgproInstance = mock.MagicMock()
     sgproInstance.discoverDevices = mock.MagicMock(return_value=("Test1", "Test2"))
-    function.app.dReg["telescope"].run["sgpro"] = sgproInstance
+    function.app.dReg.telescope.run["sgpro"] = sgproInstance
     with mock.patch.object(SGProClass, "discoverDevices", return_value=("Test1", "Test2")):
         function.discoverDevices("sgpro", QWidget())
 

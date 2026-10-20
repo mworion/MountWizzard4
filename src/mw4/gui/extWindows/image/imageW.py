@@ -171,7 +171,7 @@ class ImageWindow(MWidget):
             self.ui.groupImageActions.setEnabled(True)
 
     def setButtonExposingStatusEnabled(self) -> None:
-        if not self.app.dReg["camera"]:
+        if not self.app.dReg.camera:
             self.ui.expose.setEnabled(False)
             self.ui.abortExpose.setEnabled(False)
         elif self.isExposing:
@@ -183,7 +183,7 @@ class ImageWindow(MWidget):
             self.ui.abortExpose.setEnabled(False)
 
     def setButtonSolvingStatusEnabled(self) -> None:
-        isPlateSolve = bool(self.app.dReg["plateSolve"].stat)
+        isPlateSolve = bool(self.app.dReg.plateSolve.stat)
         isImage = self.imageFileName.is_file()
         self.ui.solve.setEnabled(isPlateSolve and isImage)
         self.ui.abortSolve.setEnabled(isPlateSolve and isImage and self.isSolving)
@@ -253,21 +253,21 @@ class ImageWindow(MWidget):
         self.showImage(self.imageFileName)
 
     def exposeRaw(self, exposureTime: float, binning: int) -> bool:
-        if not self.app.dReg["camera"].stat:
+        if not self.app.dReg.camera.stat:
             self.msg.emit(2, "Image", "Error", "No camera connected")
             return False
-        timeString = self.app.dReg["mount"].obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
+        timeString = self.app.dReg.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         if self.ui.timeTagImage.isChecked():
             self.imageFileName = self.app.mwGlob["imageDir"] / (timeString + "-exposure.fits")
         else:
             self.imageFileName = self.app.mwGlob["imageDir"] / "exposure.fits"
-        if not self.app.dReg["camera"].instance.expose(self.imageFileName, exposureTime, binning):
+        if not self.app.dReg.camera.instance.expose(self.imageFileName, exposureTime, binning):
             return False
         self.msg.emit(0, "Image", "Exposing", self.imageFileName.stem)
         return True
 
     def resetImage(self) -> None:
-        self.app.dReg["camera"].signals.saved.disconnect(self.exposeImageDone)
+        self.app.dReg.camera.signals.saved.disconnect(self.exposeImageDone)
         self.isExposing = False
         self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)
 
@@ -283,16 +283,16 @@ class ImageWindow(MWidget):
 
     def exposeImage(self) -> None:
         if not self.exposeRaw(
-            self.app.dReg["camera"].instance.exposureTime1,
-            self.app.dReg["camera"].instance.binning1,
+            self.app.dReg.camera.instance.exposureTime1,
+            self.app.dReg.camera.instance.binning1,
         ):
             return
         self.app.signals.ui.operationRunning.emit(OperationStatus.EXPOSE_1)
         self.isExposing = True
-        self.app.dReg["camera"].signals.saved.connect(self.exposeImageDone)
+        self.app.dReg.camera.signals.saved.connect(self.exposeImageDone)
 
     def abortExpose(self) -> None:
-        self.app.dReg["camera"].instance.abort()
+        self.app.dReg.camera.instance.abort()
         self.imageFileName = self.imageFileNameOld
         self.ui.continous.setChecked(False)
         self.resetImage()
@@ -300,7 +300,7 @@ class ImageWindow(MWidget):
 
     def solveDone(self, result: dict) -> None:
         self.isSolving = False
-        self.app.dReg["plateSolve"].signals.result.disconnect(self.solveDone)
+        self.app.dReg.plateSolve.signals.result.disconnect(self.solveDone)
 
         if not result["success"]:
             self.msg.emit(2, "Image", "Solving error", result.get("message"))
@@ -329,8 +329,8 @@ class ImageWindow(MWidget):
             return
 
         self.app.signals.ui.operationRunning.emit(OperationStatus.SOLVE)
-        self.app.dReg["plateSolve"].signals.result.connect(self.solveDone)
-        self.app.dReg["plateSolve"].instance.solve(imagePath, self.ui.embedData.isChecked())
+        self.app.dReg.plateSolve.signals.result.connect(self.solveDone)
+        self.app.dReg.plateSolve.instance.solve(imagePath, self.ui.embedData.isChecked())
         self.isSolving = True
         self.msg.emit(0, "Image", "Solving", imagePath.stem)
 
@@ -338,11 +338,11 @@ class ImageWindow(MWidget):
         self.signals.solveImage.emit(self.imageFileName)
 
     def abortSolve(self) -> None:
-        self.app.dReg["plateSolve"].instance.abort()
+        self.app.dReg.plateSolve.instance.abort()
         self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)
 
     def slewDirect(self, ra: Angle, dec: Angle) -> None:
-        if not self.app.dReg["mount"].stat:
+        if not self.app.dReg.mount.stat:
             self.msg.emit(2, "Image", "Mount", "Mount is not connected")
             return
         question = "<b>Slewing to target</b>"
@@ -360,7 +360,7 @@ class ImageWindow(MWidget):
         self.slewDirect(ra, dec)
 
     def syncModelToImage(self) -> None:
-        if not self.app.dReg["mount"].stat:
+        if not self.app.dReg.mount.stat:
             self.msg.emit(2, "Image", "Mount", "Mount is not connected")
             return
         if not self.imageFileName.is_file():
@@ -369,7 +369,7 @@ class ImageWindow(MWidget):
 
         ra, dec = getCoordinatesFromHeader(getImageHeader(self.imageFileName))
         self.app.signals.ui.operationRunning.emit(OperationStatus.MODEL_SYNC)
-        obs = self.app.dReg["mount"].obsSite
+        obs = self.app.dReg.mount.obsSite
         raJNow, decJNow = J2000ToJNow(ra, dec, obs.timeJD)
         obs.setTargetRaDec(raJNow, decJNow)
 

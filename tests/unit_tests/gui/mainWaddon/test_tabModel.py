@@ -193,20 +193,20 @@ def test_programModelToMount_3(function):
 
 
 def test_checkMountTimeSync_1(function):
-    function.app.dReg["mount"].config.syncTimeNone = True
+    function.app.dReg.mount.config.syncTimeNone = True
     result = function.checkMountTimeSync()
     assert result
 
 
 def test_checkMountTimeSync_2(function):
-    function.app.dReg["mount"].config.syncTimeNone = False
+    function.app.dReg.mount.config.syncTimeNone = False
     with mock.patch.object(MWMessageDialog, "question", return_value=1):
         result = function.checkMountTimeSync()
         assert result
 
 
 def test_checkMountTimeSync_3(function):
-    function.app.dReg["mount"].config.syncTimeNone = False
+    function.app.dReg.mount.config.syncTimeNone = False
     with mock.patch.object(MWMessageDialog, "question", return_value=0):
         result = function.checkMountTimeSync()
         assert not result
@@ -458,7 +458,7 @@ def test_finishBatch_1(function):
     function.ui.parkMountAfterModel.setChecked(False)
     with (
         mock.patch.object(function, "programModelToMount") as mockProgram,
-        mock.patch.object(function.app.dReg["mount"].obsSite, "park") as mockPark,
+        mock.patch.object(function.app.dReg.mount.obsSite, "park") as mockPark,
         mock.patch.object(function, "msg") as mockMsg,
         mock.patch.object(function.app.signals.ui, "playSound") as mockSound,
         mock.patch.object(function.app.signals.ui, "operationRunning") as mockOp,
@@ -475,7 +475,7 @@ def test_finishBatch_2(function):
     function.ui.parkMountAfterModel.setChecked(True)
     with (
         mock.patch.object(function, "programModelToMount") as mockProgram,
-        mock.patch.object(function.app.dReg["mount"].obsSite, "park") as mockPark,
+        mock.patch.object(function.app.dReg.mount.obsSite, "park") as mockPark,
         mock.patch.object(function, "msg") as mockMsg,
         mock.patch.object(function.app.signals.ui, "playSound") as mockSound,
         mock.patch.object(function.app.signals.ui, "operationRunning") as mockOp,
@@ -493,7 +493,7 @@ def test_finishBatch_3(function):
     function.ui.parkMountAfterModel.setChecked(False)
     with (
         mock.patch.object(function, "programModelToMount") as mockProgram,
-        mock.patch.object(function.app.dReg["mount"].obsSite, "park") as mockPark,
+        mock.patch.object(function.app.dReg.mount.obsSite, "park") as mockPark,
         mock.patch.object(function.app.signals.ui, "playSound") as mockSound,
         mock.patch.object(function.app.signals.ui, "operationRunning") as mockOp,
     ):

@@ -19,7 +19,7 @@ def function(qapp):
     mainW.ui.setupUi(mainW)
     mainW.ui.mountHost = mock.MagicMock()
     mainW.ui.mountHost.text.return_value = "192.168.1.1"
-    mainW.app.dReg["mount"].instance.host = "192.168.1.1"
+    mainW.app.dReg.mount.instance.host = "192.168.1.1"
     window = MountCommand(mainW)
     yield window
     mainW.app.threadPool.waitForDone(1000)

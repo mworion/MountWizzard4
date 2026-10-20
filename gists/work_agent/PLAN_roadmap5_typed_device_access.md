@@ -1,7 +1,11 @@
 # Plan – Roadmap item 5: typed device access on `DeviceRegistry` (A2)
 
 Source: `2026-10-20_review_copilot.md`, finding **A2**, roadmap *Medium* item 5.
-Status: **plan only, nothing implemented yet.**
+Status: **WP 5.1–5.6 implemented.** Decisions: typed names are read-only properties backed by
+`self.d`; `Literal` overloads kept; `DeviceEntry.instance` not renamed. Deviation: `instance`
+is typed `T` (not `T | None`) to avoid ~114 narrowing sites; `requireInstance()` still raises
+for `None`. 689 literal `dReg["x"]` sites migrated to `dReg.x`; pyrefly 0 errors, 54
+suppressions unchanged.
 
 ## 1. Problem (measured)
 

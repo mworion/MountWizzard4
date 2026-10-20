@@ -85,10 +85,10 @@ class SimulatorWindow(MWidget):
         config["showHorizon"] = self.ui.showHorizon.isChecked()
 
     def closeEvent(self, event: QCloseEvent) -> None:
-        self.app.dReg["mount"].signals.pointDone.disconnect(self.buildPoints.updatePositions)
-        self.app.dReg["mount"].signals.pointDone.disconnect(self.laser.updatePositions)
-        self.app.dReg["mount"].signals.pointDone.disconnect(self.pointer.updatePositions)
-        self.app.dReg["mount"].signals.pointDone.disconnect(self.telescope.updateRotation)
+        self.app.dReg.mount.signals.pointDone.disconnect(self.buildPoints.updatePositions)
+        self.app.dReg.mount.signals.pointDone.disconnect(self.laser.updatePositions)
+        self.app.dReg.mount.signals.pointDone.disconnect(self.pointer.updatePositions)
+        self.app.dReg.mount.signals.pointDone.disconnect(self.telescope.updateRotation)
         self.entityModel.clear()
         self.storeConfig()
         super().closeEvent(event)
@@ -101,10 +101,10 @@ class SimulatorWindow(MWidget):
         self.ui.westView.clicked.connect(self.westView)
         self.app.signals.ui.colorChange.connect(self.colorChange)
         self.camera.positionChanged.connect(self.limitPositionZ)
-        self.app.dReg["mount"].signals.pointDone.connect(self.buildPoints.updatePositions)
-        self.app.dReg["mount"].signals.pointDone.connect(self.laser.updatePositions)
-        self.app.dReg["mount"].signals.pointDone.connect(self.pointer.updatePositions)
-        self.app.dReg["mount"].signals.pointDone.connect(self.telescope.updateRotation)
+        self.app.dReg.mount.signals.pointDone.connect(self.buildPoints.updatePositions)
+        self.app.dReg.mount.signals.pointDone.connect(self.laser.updatePositions)
+        self.app.dReg.mount.signals.pointDone.connect(self.pointer.updatePositions)
+        self.app.dReg.mount.signals.pointDone.connect(self.telescope.updateRotation)
         self.show()
 
     def setupCamera(self, parentEntity) -> None:

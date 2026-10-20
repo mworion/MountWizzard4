@@ -122,8 +122,8 @@ def test_setup_creates_park_position_widgets(settPark):
 
 def test_saveActualPosition_saves_current_position(settPark):
     """Test saveActualPosition saves current mount position."""
-    settPark.app.dReg["mount"].obsSite.Alt = Angle(degrees=10)
-    settPark.app.dReg["mount"].obsSite.Az = Angle(degrees=10)
+    settPark.app.dReg.mount.obsSite.Alt = Angle(degrees=10)
+    settPark.app.dReg.mount.obsSite.Az = Angle(degrees=10)
     settPark.saveActualPosition(0)
 
     assert settPark.ui.parkAlt0.value() == 10
@@ -215,8 +215,8 @@ def test_saveActualPosition_updates_all_values(settPark):
     """Test saveActualPosition updates altitude, azimuth and stores."""
     test_alt = 42.5
     test_az = 123.75
-    settPark.app.dReg["mount"].obsSite.Alt = Angle(degrees=test_alt)
-    settPark.app.dReg["mount"].obsSite.Az = Angle(degrees=test_az)
+    settPark.app.dReg.mount.obsSite.Alt = Angle(degrees=test_alt)
+    settPark.app.dReg.mount.obsSite.Az = Angle(degrees=test_az)
 
     settPark.saveActualPosition(3)
 
@@ -230,8 +230,8 @@ def test_saveActualPosition_updates_all_values(settPark):
 def test_saveActualPosition_multiple_positions(settPark):
     """Test saveActualPosition can update different positions."""
     for i in range(3):
-        settPark.app.dReg["mount"].obsSite.Alt = Angle(degrees=i * 10)
-        settPark.app.dReg["mount"].obsSite.Az = Angle(degrees=i * 30)
+        settPark.app.dReg.mount.obsSite.Alt = Angle(degrees=i * 10)
+        settPark.app.dReg.mount.obsSite.Az = Angle(degrees=i * 30)
         settPark.saveActualPosition(i)
 
     for i in range(3):

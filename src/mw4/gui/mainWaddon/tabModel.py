@@ -77,7 +77,7 @@ class Model(TabAddon):
         self.mainW.wIcon(self.ui.dataModel, "choose")
 
     def setWaitTimeFlip(self) -> None:
-        self.app.dReg["mount"].instance.waitTimeFlip = self.ui.waitTimeMountFlip.value()
+        self.app.dReg.mount.instance.waitTimeFlip = self.ui.waitTimeMountFlip.value()
 
     def cancelBatch(self) -> None:
         self.modelData.cancelRun()
@@ -123,7 +123,7 @@ class Model(TabAddon):
             changeStyleDynamic(self.ui.pauseModel, "pause", "false")
 
     def getSaveMeta(self) -> dict[str, Any]:
-        mount = self.app.dReg["mount"]
+        mount = self.app.dReg.mount
         return {
             "version": f"{self.app.__version__}",
             "profile": self.ui.profileName.text(),
@@ -135,10 +135,10 @@ class Model(TabAddon):
         self.app.buildPoint.setStatusBuildP(index, status)
 
     def programModelToMountFinish(self) -> None:
-        self.app.dReg["mount"].signals.getModelDone.disconnect(self.programModelToMountFinish)
+        self.app.dReg.mount.signals.getModelDone.disconnect(self.programModelToMountFinish)
         self.modelDoneConnected = False
         self.msg.emit(1, "Model", "Writing model", f"[{self.modelData.modelName}]")
-        mount = self.app.dReg["mount"]
+        mount = self.app.dReg.mount
         saveData = buildSaveData(self.modelData.modelBuildData, self.getSaveMeta(), mount.model)
         if saveData is None:
             t = "Model data inconsistent with mount model, model file not saved"
@@ -152,17 +152,17 @@ class Model(TabAddon):
         if not self.modelData.modelProgData:
             self.msg.emit(3, "Model", "Run error", "No sufficient model data available")
             return
-        if not self.app.dReg["mount"].model.programModelFromStarList(self.modelData.modelProgData):
+        if not self.app.dReg.mount.model.programModelFromStarList(self.modelData.modelProgData):
             self.msg.emit(3, "Model", "Run error", f"{'Program':12s} Failed - error")
             return
         self.msg.emit(1, "Model", "Program", f"[{self.modelData.modelName}] with success")
         if not self.modelDoneConnected:
-            self.app.dReg["mount"].signals.getModelDone.connect(self.programModelToMountFinish)
+            self.app.dReg.mount.signals.getModelDone.connect(self.programModelToMountFinish)
             self.modelDoneConnected = True
         self.app.signals.model.refreshModel.emit()
 
     def checkMountTimeSync(self) -> bool:
-        if self.app.dReg["mount"].config.syncTimeNone:
+        if self.app.dReg.mount.config.syncTimeNone:
             return True
         col = self.mainW.rgb2hex(self.mainW.M_YELLOW)
         question = f"<b><font color={col}>Reminder:</font></b>"
@@ -185,7 +185,7 @@ class Model(TabAddon):
         return True
 
     def clearAlignAndBackup(self, continuation: Callable[[], None]) -> bool:
-        if not self.app.dReg["mount"].model.clearModel():
+        if not self.app.dReg.mount.model.clearModel():
             self.msg.emit(2, "Model", "Run error", "Actual model cannot be cleared")
             self.msg.emit(2, "", "", "Model build cancelled")
             return False
@@ -196,13 +196,13 @@ class Model(TabAddon):
 
     def backupAfterClear(self, continuation: Callable[[], None]) -> None:
         self.msg.emit(1, "Model", "Clear model", "Actual model is cleared")
-        if not self.app.dReg["mount"].model.storeName("backup"):
+        if not self.app.dReg.mount.model.storeName("backup"):
             t = "Cannot save backup model on mount, proceeding with model run"
             self.msg.emit(2, "Model", "Run error", t)
         continuation()
 
     def setupFilenamesAndDirectories(self, prefix: str = "", postfix: str = "") -> Path:
-        nameTime = self.app.dReg["mount"].obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
+        nameTime = self.app.dReg.mount.obsSite.timeJD.utc_strftime("%Y-%m-%d-%H-%M-%S")
         name = f"{prefix}-{nameTime}-{postfix}"
         imageDir = self.app.mwGlob["imageDir"] / name
         imageDir.mkdir(parents=True, exist_ok=True)
@@ -266,7 +266,7 @@ class Model(TabAddon):
             retriesReverse=self.ui.retriesReverse.isChecked(),
             waitTimeExposure=self.ui.waitTimeExposure.value(),
             modelTiming=self.getModelTiming(),
-            plateSolveApp=self.app.dReg["plateSolve"].framework,
+            plateSolveApp=self.app.dReg.plateSolve.framework,
         )
 
     def runBatch(self) -> None:
@@ -290,7 +290,7 @@ class Model(TabAddon):
             self.programModelToMount()
             if self.ui.parkMountAfterModel.isChecked():
                 self.msg.emit(1, "Model", "Run", "Park mount after model build")
-                self.app.dReg["mount"].obsSite.park()
+                self.app.dReg.mount.obsSite.park()
         self.app.signals.ui.playSound.emit("RunFinished")
         self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)
 

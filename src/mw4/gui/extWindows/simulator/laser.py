@@ -24,10 +24,10 @@ class SimulatorLaser:
             node["entity"].setEnabled(isVisible)
 
     def updatePositions(self) -> None:
-        if not self.app.dReg["mount"].stat:
+        if not self.app.dReg.mount.stat:
             return
 
-        _, _, _, PB, PD = self.app.dReg["mount"].instance.calcTransformationMatricesActual()
+        _, _, _, PB, PD = self.app.dReg.mount.instance.calcTransformationMatricesActual()
 
         if PB is None or PD is None:
             return

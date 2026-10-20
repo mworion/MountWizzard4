@@ -18,7 +18,7 @@ class SatelliteHorizonWindow(MWidget):
     def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__()
         self.app = app
-        self.obsSite = app.dReg["mount"].obsSite
+        self.obsSite = app.dReg.mount.obsSite
         self.threadPool = app.threadPool
         self.ui = satelliteHor_ui.Ui_SatelliteHorizonDialog()
         self.ui.setupUi(self.ws)
@@ -39,7 +39,7 @@ class SatelliteHorizonWindow(MWidget):
         self.app.signals.model.showSatellite.connect(self.drawSatellite)
         self.app.signals.model.updateSatellite.connect(self.updatePositions)
         self.app.signals.hemisphere.redrawHorizon.connect(self.drawHorizon)
-        self.app.dReg["mount"].signals.mountIsUp.connect(self.setPointerVisibility)
+        self.app.dReg.mount.signals.mountIsUp.connect(self.setPointerVisibility)
 
     def initConfig(self) -> None:
         self.setPositionWindow(self.app.config.get("WindowSatelliteHor", {}))
@@ -55,13 +55,13 @@ class SatelliteHorizonWindow(MWidget):
         self.app.signals.model.showSatellite.disconnect(self.drawSatellite)
         self.app.signals.model.updateSatellite.disconnect(self.updatePositions)
         self.app.signals.hemisphere.redrawHorizon.disconnect(self.drawHorizon)
-        self.app.dReg["mount"].signals.mountIsUp.disconnect(self.setPointerVisibility)
-        self.app.dReg["mount"].signals.pointDone.disconnect(self.updatePointerAltAz)
+        self.app.dReg.mount.signals.mountIsUp.disconnect(self.setPointerVisibility)
+        self.app.dReg.mount.signals.pointDone.disconnect(self.updatePointerAltAz)
         self.app.signals.ui.colorChange.disconnect(self.colorChange)
         super().closeEvent(event)
 
     def showWindow(self) -> None:
-        self.app.dReg["mount"].signals.pointDone.connect(self.updatePointerAltAz)
+        self.app.dReg.mount.signals.pointDone.connect(self.updatePointerAltAz)
         self.app.signals.ui.colorChange.connect(self.colorChange)
         self.app.signals.model.sendSatelliteData.emit([], [])
         self.show()

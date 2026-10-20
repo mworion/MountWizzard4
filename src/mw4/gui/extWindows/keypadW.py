@@ -40,7 +40,7 @@ class KeypadWindow(MWidget):
         self.keypad = KeyPad(self.signals)
         self.inputActive: bool = False
         self.worker: Worker | None = None
-        self.app.dReg["mount"].signals.mountIsUp.connect(self.startKeypad)
+        self.app.dReg.mount.signals.mountIsUp.connect(self.startKeypad)
 
         self.graphics = np.zeros([64, 128, 4], dtype=np.uint8)
         self.buttons = {
@@ -134,8 +134,8 @@ class KeypadWindow(MWidget):
         self.clearDisplay()
         self.writeTextRow(2, "Connecting ...")
         host = (
-            self.app.dReg["mount"].instance.config.hostAddress,
-            self.app.dReg["mount"].instance.config.port,
+            self.app.dReg.mount.instance.config.hostAddress,
+            self.app.dReg.mount.instance.config.port,
         )
         self.worker = startWorker(
             self.worker,

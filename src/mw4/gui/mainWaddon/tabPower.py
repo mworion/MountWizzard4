@@ -52,7 +52,7 @@ class Power(TabAddon):
             button.clicked.connect(partial(self.togglePortUSB, name))
 
         # functional signals
-        self.app.dReg["power"].signals.version.connect(self.setGuiVersion)
+        self.app.dReg.power.signals.version.connect(self.setGuiVersion)
 
         # cyclic tasks
         self.app.timeMgr.update1s.connect(self.updatePowerGui)
@@ -71,7 +71,7 @@ class Power(TabAddon):
             self.ui.groupAdjustableOutput.setVisible(True)
 
     def updatePowerGui(self) -> None:
-        data = self.app.dReg["power"].data
+        data = self.app.dReg.power.data
         for name, button in self.powerOnOFF.items():
             value = data.get(f"POWER_CHANNELS.POWER_CHANNEL_{name}", False)
             changeStyleDynamic(button, "run", value)
@@ -116,17 +116,17 @@ class Power(TabAddon):
         )
         if not ok:
             return False
-        self.app.dReg["power"].instance.sendDew(name, value)
+        self.app.dReg.power.instance.sendDew(name, value)
         return True
 
     def togglePowerPort(self, name: str) -> None:
-        self.app.dReg["power"].instance.togglePowerPort(name)
+        self.app.dReg.power.instance.togglePowerPort(name)
 
     def toggleHubUSB(self) -> None:
-        self.app.dReg["power"].instance.toggleHubUSB()
+        self.app.dReg.power.instance.toggleHubUSB()
 
     def togglePortUSB(self, name: str) -> None:
-        self.app.dReg["power"].instance.togglePortUSB(name)
+        self.app.dReg.power.instance.togglePortUSB(name)
 
     def setAdjustableOutput(self) -> bool:
         actValue = valueToFloat(self.ui.adjustableOutput.text())
@@ -135,8 +135,8 @@ class Power(TabAddon):
         )
         if not ok:
             return False
-        self.app.dReg["power"].instance.sendAdjustableOutput(value=value)
+        self.app.dReg.power.instance.sendAdjustableOutput(value=value)
         return True
 
     def rebootUPB(self) -> None:
-        self.app.dReg["power"].instance.reboot()
+        self.app.dReg.power.instance.reboot()

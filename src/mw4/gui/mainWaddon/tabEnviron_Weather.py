@@ -43,32 +43,32 @@ class EnvironWeather(TabAddon):
         return {
             "sensor1Weather": RefractionEntry(
                 group=self.ui.sensor1Group,
-                data=self.app.dReg["sensor1Weather"].data,
-                signals=self.app.dReg["sensor1Weather"].signals,
+                data=self.app.dReg.sensor1Weather.data,
+                signals=self.app.dReg.sensor1Weather.signals,
                 uiPost="1",
             ),
             "sensor2Weather": RefractionEntry(
                 group=self.ui.sensor2Group,
-                data=self.app.dReg["sensor2Weather"].data,
-                signals=self.app.dReg["sensor2Weather"].signals,
+                data=self.app.dReg.sensor2Weather.data,
+                signals=self.app.dReg.sensor2Weather.signals,
                 uiPost="2",
             ),
             "sensor3Weather": RefractionEntry(
                 group=self.ui.sensor3Group,
-                data=self.app.dReg["sensor3Weather"].data,
-                signals=self.app.dReg["sensor3Weather"].signals,
+                data=self.app.dReg.sensor3Weather.data,
+                signals=self.app.dReg.sensor3Weather.signals,
                 uiPost="3",
             ),
             "sensor4Weather": RefractionEntry(
                 group=self.ui.sensor4Group,
-                data=self.app.dReg["sensor4Weather"].data,
-                signals=self.app.dReg["sensor4Weather"].signals,
+                data=self.app.dReg.sensor4Weather.data,
+                signals=self.app.dReg.sensor4Weather.signals,
                 uiPost="4",
             ),
             "directWeather": RefractionEntry(
                 group=self.ui.directGroup,
-                data=self.app.dReg["directWeather"].data,
-                signals=self.app.dReg["directWeather"].signals,
+                data=self.app.dReg.directWeather.data,
+                signals=self.app.dReg.directWeather.signals,
                 uiPost="Direct",
             ),
         }
@@ -84,8 +84,8 @@ class EnvironWeather(TabAddon):
             )
 
         # weather functions
-        self.app.dReg["mount"].signals.settingDone.connect(self.updateSourceGui)
-        self.app.dReg["mount"].signals.settingDone.connect(self.updateRefractionUpdateType)
+        self.app.dReg.mount.signals.settingDone.connect(self.updateSourceGui)
+        self.app.dReg.mount.signals.settingDone.connect(self.updateRefractionUpdateType)
         self.ui.refracManual.clicked.connect(self.setRefractionUpdateType)
         self.ui.refracCont.clicked.connect(self.setRefractionUpdateType)
         self.ui.refracNoTrack.clicked.connect(self.setRefractionUpdateType)
@@ -152,7 +152,7 @@ class EnvironWeather(TabAddon):
         if self.refractionSource != "directWeather":
             return
 
-        setting = self.app.dReg["mount"].setting
+        setting = self.app.dReg.mount.setting
         if setting.weatherStatus == 0:
             self.ui.refracManual.setChecked(True)
         elif setting.weatherStatus == 1:
@@ -162,19 +162,19 @@ class EnvironWeather(TabAddon):
 
     def setRefractionUpdateType(self) -> None:
         if self.refractionSource != "directWeather":
-            self.app.dReg["mount"].setting.setDirectWeatherUpdateType(0)
+            self.app.dReg.mount.setting.setDirectWeatherUpdateType(0)
             return
 
-        if self.app.dReg["mount"].setting.weatherStatus == 0:
+        if self.app.dReg.mount.setting.weatherStatus == 0:
             self.ui.refracCont.setChecked(True)
 
         # otherwise, we have to switch it on or off
         if self.ui.refracManual.isChecked():
-            self.app.dReg["mount"].setting.setDirectWeatherUpdateType(0)
+            self.app.dReg.mount.setting.setDirectWeatherUpdateType(0)
         elif self.ui.refracNoTrack.isChecked():
-            self.app.dReg["mount"].setting.setDirectWeatherUpdateType(1)
+            self.app.dReg.mount.setting.setDirectWeatherUpdateType(1)
         else:
-            self.app.dReg["mount"].setting.setDirectWeatherUpdateType(2)
+            self.app.dReg.mount.setting.setDirectWeatherUpdateType(2)
 
     def setRefractionSourceGui(self) -> None:
         for source in self.refractionSources:
@@ -234,16 +234,16 @@ class EnvironWeather(TabAddon):
             return
         if self.refractionSource == "directWeather":
             return
-        if not self.app.dReg["mount"].stat:
+        if not self.app.dReg.mount.stat:
             return
         if self.ui.refracManual.isChecked():
             return
-        if self.ui.refracNoTrack.isChecked() and self.app.dReg["mount"].obsSite.isTracking:
+        if self.ui.refracNoTrack.isChecked() and self.app.dReg.mount.obsSite.isTracking:
             return
 
         temp, press = self.movingAverageRefractionParameters()
         if abs(temp - self.tempLast) > 0.1 or abs(press - self.pressLast) > 5:
-            self.app.dReg["mount"].setting.setRefractionParam(temp, press)
+            self.app.dReg.mount.setting.setRefractionParam(temp, press)
             self.tempLast = temp
             self.pressLast = press
 

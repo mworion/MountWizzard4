@@ -175,11 +175,11 @@ class BuildPoints(TabAddon):
 
     def genBuildDSO(self) -> None:
         self.lastGenerator = "dso"
-        ha = self.app.dReg["mount"].obsSite.raJNow
-        dec = self.app.dReg["mount"].obsSite.decJNow
-        lst = self.app.dReg["mount"].obsSite.timeSidereal
-        timeJD = self.app.dReg["mount"].obsSite.timeJD
-        location = self.app.dReg["mount"].obsSite.location
+        ha = self.app.dReg.mount.obsSite.raJNow
+        dec = self.app.dReg.mount.obsSite.decJNow
+        lst = self.app.dReg.mount.obsSite.timeSidereal
+        timeJD = self.app.dReg.mount.obsSite.timeJD
+        location = self.app.dReg.mount.obsSite.location
 
         if any(x is None for x in [ha, dec, location, lst]):
             self.msg.emit(2, "Model", "Buildpoints", "DSO Path cannot be generated - mount off")
@@ -236,7 +236,7 @@ class BuildPoints(TabAddon):
     def genModel(self) -> None:
         self.lastGenerator = "model"
         self.app.buildPoint.clearBuildP()
-        model = self.app.dReg["mount"].model
+        model = self.app.dReg.mount.model
         for star in model.starList:
             self.app.buildPoint.addBuildP(
                 [int(star.alt.degrees), int(star.az.degrees), self.app.buildPoint.UNPROCESSED]
@@ -318,7 +318,7 @@ class BuildPoints(TabAddon):
             self.app.buildPoint.sortAlt()
         if self.ui.sortAZ.isChecked():
             self.app.buildPoint.sortAz()
-        if self.ui.sortDomeAZ.isChecked() and bool(self.app.dReg["dome"].stat):
+        if self.ui.sortDomeAZ.isChecked() and bool(self.app.dReg.dome.stat):
             self.app.buildPoint.sortDomeAz()
         if self.ui.avoidFlip.isChecked():
             self.app.buildPoint.sortActualPierside()

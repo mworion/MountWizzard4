@@ -19,19 +19,19 @@ def function(qapp):
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
-    mainW.app.dReg["mount"].instance.workerCycleClock = None
+    mainW.app.dReg.mount.instance.workerCycleClock = None
 
     mount_time_mock = mock.MagicMock()
 
     def get_timeDiff():
-        return mainW.app.dReg["mount"].instance.obsSite.timeDiff
+        return mainW.app.dReg.mount.instance.obsSite.timeDiff
 
     def get_rtt():
         return 0.01
 
     type(mount_time_mock).timeDiff = mock.PropertyMock(side_effect=get_timeDiff)
     type(mount_time_mock).rtt = mock.PropertyMock(side_effect=get_rtt)
-    mainW.app.dReg["mount"].instance.mountTimeConn = mount_time_mock
+    mainW.app.dReg.mount.instance.mountTimeConn = mount_time_mock
 
     window = MountSett(mainW)
     yield window
@@ -867,7 +867,7 @@ def test_init(function):
     mainW.app = App()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
-    mainW.app.dReg["mount"].instance.workerCycleClock = None
+    mainW.app.dReg.mount.instance.workerCycleClock = None
     window = MountSett(mainW)
     assert window.mainW is mainW
     assert window.app is mainW.app
@@ -877,19 +877,19 @@ def test_init(function):
 
 def test_showOffset_5(function):
     function.app.mount.obsSite.timeDiff = 0.2
-    function.app.dReg["mount"].instance.workerCycleClock = True
+    function.app.dReg.mount.instance.workerCycleClock = True
     function.showTimeDiff()
 
 
 def test_showOffset_6(function):
     function.app.mount.obsSite.timeDiff = 0.3
-    function.app.dReg["mount"].instance.workerCycleClock = True
+    function.app.dReg.mount.instance.workerCycleClock = True
     function.showTimeDiff()
 
 
 def test_showOffset_7(function):
     function.app.mount.obsSite.timeDiff = 0.6
-    function.app.dReg["mount"].instance.workerCycleClock = True
+    function.app.dReg.mount.instance.workerCycleClock = True
     function.showTimeDiff()
 
 

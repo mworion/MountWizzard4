@@ -25,7 +25,7 @@ class Relay(TabAddon):
             self.ui.relayButton6,
             self.ui.relayButton7,
         ]
-        self.app.dReg["relay"].signals.statusReady.connect(self.updateRelayGui)
+        self.app.dReg.relay.signals.statusReady.connect(self.updateRelayGui)
         self.app.signals.system.relayChanged.connect(self.updateRelayButtonText)
 
     def updateRelayButtonText(self) -> None:
@@ -41,7 +41,7 @@ class Relay(TabAddon):
     def doRelayAction(self, relayIndex: int) -> bool:
         cfg = self.app.config.get("SettingRelay", {})
         action = cfg.get(f"Action{relayIndex:1d}", 0)
-        relay = self.app.dReg["relay"].instance
+        relay = self.app.dReg.relay.instance
         if action == 0:
             return relay.switch(relayIndex)
         else:
@@ -54,7 +54,7 @@ class Relay(TabAddon):
     def updateRelayGui(self) -> None:
         # the status list is empty until the relay box has reported; truncate
         for status, button in zip(
-            self.app.dReg["relay"].instance.status, self.relayButtons, strict=False
+            self.app.dReg.relay.instance.status, self.relayButtons, strict=False
         ):
             if status:
                 changeStyleDynamic(button, "run", "true")

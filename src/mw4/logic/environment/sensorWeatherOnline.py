@@ -34,7 +34,7 @@ class SensorWeatherOnline:
         self.running: bool = False
 
     def startCommunication(self) -> None:
-        self.location = self.app.dReg["mount"].obsSite.location
+        self.location = self.app.dReg.mount.obsSite.location
         self.pollOpenWeatherMapData()
         self.app.timeMgr.update3s.connect(self.pollOpenWeatherMapData)
 
@@ -124,7 +124,7 @@ class SensorWeatherOnline:
         filePath = self.app.mwGlob["dataDir"] / fileName
         if not filePath.is_file():
             return True
-        ageData = self.app.dReg["mount"].obsSite.loader.days_old(fileName)
+        ageData = self.app.dReg.mount.obsSite.loader.days_old(fileName)
         return ageData > hours / 24
 
     def getOpenWeatherMapData(self, url: str) -> None:

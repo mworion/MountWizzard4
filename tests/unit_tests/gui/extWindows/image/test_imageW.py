@@ -33,9 +33,9 @@ def function(qapp):
 def prepareFunctionState(function):
     function.fileHandler.image = np.ones((1, 1))
     QApplication.processEvents()
-    function.app.dReg["camera"].stat = True
-    function.app.dReg["mount"].stat = True
-    function.app.dReg["plateSolve"].stat = True
+    function.app.dReg.camera.stat = True
+    function.app.dReg.mount.stat = True
+    function.app.dReg.plateSolve.stat = True
     function.isExposing = False
     function.isSolving = False
     function.ui.autoSolve.setChecked(False)
@@ -148,9 +148,9 @@ def test_updateWindowsStats_3(function):
 def test_updateWindowsStats_noCameraDevice(function):
     function.isExposing = False
     function.isSolving = False
-    function.app.dReg["camera"].stat = False
+    function.app.dReg.camera.stat = False
     function.updateWindowsStats()
-    function.app.dReg["camera"].stat = True
+    function.app.dReg.camera.stat = True
 
 
 def test_selectImage_1(function):
@@ -237,49 +237,49 @@ def test_showCurrent_1(function):
 
 
 def test_exposeRaw_1(function):
-    function.app.dReg["camera"].instance.subFrame = 100
+    function.app.dReg.camera.instance.subFrame = 100
     function.ui.timeTagImage.setChecked(True)
-    with mock.patch.object(function.app.dReg["camera"].instance, "expose", return_value=True):
+    with mock.patch.object(function.app.dReg.camera.instance, "expose", return_value=True):
         function.exposeRaw(exposureTime=1, binning=1)
 
 
 def test_exposeRaw_2(function):
-    function.app.dReg["camera"].instance.subFrame = 100
+    function.app.dReg.camera.instance.subFrame = 100
     function.ui.timeTagImage.setChecked(False)
-    with mock.patch.object(function.app.dReg["camera"].instance, "expose", return_value=True):
+    with mock.patch.object(function.app.dReg.camera.instance, "expose", return_value=True):
         function.exposeRaw(exposureTime=1, binning=1)
 
 
 def test_exposeRaw_3(function):
-    function.app.dReg["camera"].instance.subFrame = 100
+    function.app.dReg.camera.instance.subFrame = 100
     with (
-        mock.patch.object(function.app.dReg["camera"].instance, "expose", return_value=False),
-        mock.patch.object(function.app.dReg["camera"].instance, "abort", return_value=True),
+        mock.patch.object(function.app.dReg.camera.instance, "expose", return_value=False),
+        mock.patch.object(function.app.dReg.camera.instance, "abort", return_value=True),
     ):
         function.exposeRaw(exposureTime=1, binning=1)
 
 
 def test_exposeImageDone_1(function):
     function.ui.autoSolve.setChecked(False)
-    function.app.dReg["camera"].instance.signals.saved.connect(function.exposeImageDone)
+    function.app.dReg.camera.instance.signals.saved.connect(function.exposeImageDone)
     function.exposeImageDone(Path("test"))
 
 
 def test_exposeImageDone_2(function):
     function.ui.autoSolve.setChecked(True)
-    function.app.dReg["camera"].instance.signals.saved.connect(function.exposeImageDone)
+    function.app.dReg.camera.instance.signals.saved.connect(function.exposeImageDone)
     function.exposeImageDone(Path("test"))
 
 
 def test_exposeImage_1(function):
-    function.app.dReg["camera"].stat = True
-    function.app.dReg["camera"].instance.data = {}
-    with mock.patch.object(function.app.dReg["camera"].instance, "expose", return_value=True):
+    function.app.dReg.camera.stat = True
+    function.app.dReg.camera.instance.data = {}
+    with mock.patch.object(function.app.dReg.camera.instance, "expose", return_value=True):
         function.exposeImage()
 
 
 def test_exposeImage_noCameraConnected(function):
-    function.app.dReg["camera"].stat = False
+    function.app.dReg.camera.stat = False
     mock_msg = mock.MagicMock()
     original_msg = function.msg
     function.msg = mock_msg
@@ -293,26 +293,26 @@ def test_exposeImage_noCameraConnected(function):
 def test_exposeImageDone_continuous(function):
     function.ui.autoSolve.setChecked(False)
     function.ui.continous.setChecked(True)
-    function.app.dReg["camera"].signals.saved.connect(function.exposeImageDone)
+    function.app.dReg.camera.signals.saved.connect(function.exposeImageDone)
     function.exposeImageDone(Path("test"))
 
 
 def test_exposeImageDone_continuousAutoSolve(function):
     function.ui.autoSolve.setChecked(True)
     function.ui.continous.setChecked(True)
-    function.app.dReg["camera"].signals.saved.connect(function.exposeImageDone)
+    function.app.dReg.camera.signals.saved.connect(function.exposeImageDone)
     function.exposeImageDone(Path("test"))
 
 
 def test_exposeImageDone_noContinuous(function):
     function.ui.continous.setChecked(False)
-    function.app.dReg["camera"].signals.saved.connect(function.exposeImageDone)
+    function.app.dReg.camera.signals.saved.connect(function.exposeImageDone)
     function.exposeImageDone(Path("test"))
 
 
 def test_abortExpose_1(function):
-    function.app.dReg["camera"].signals.saved.connect(function.exposeImageDone)
-    with mock.patch.object(function.app.dReg["camera"].instance, "abort"):
+    function.app.dReg.camera.signals.saved.connect(function.exposeImageDone)
+    with mock.patch.object(function.app.dReg.camera.instance, "abort"):
         function.abortExpose()
 
 
@@ -320,9 +320,9 @@ def test_abortExpose_2(function):
     function.isExposing = True
     function.imageFileNameOld = Path("old.fits")
     function.imageFileName = Path("new.fits")
-    function.app.dReg["camera"].signals.saved.connect(function.exposeImageDone)
-    function.app.dReg["camera"].signals.saved.connect(function.showImage)
-    with mock.patch.object(function.app.dReg["camera"].instance, "abort"):
+    function.app.dReg.camera.signals.saved.connect(function.exposeImageDone)
+    function.app.dReg.camera.signals.saved.connect(function.showImage)
+    with mock.patch.object(function.app.dReg.camera.instance, "abort"):
         function.abortExpose()
 
 
@@ -330,9 +330,9 @@ def test_abortExpose_3(function):
     function.isExposing = False
     function.imageFileNameOld = Path("old.fits")
     function.imageFileName = Path("new.fits")
-    function.app.dReg["camera"].signals.saved.connect(function.exposeImageDone)
-    function.app.dReg["camera"].signals.saved.connect(function.showImage)
-    with mock.patch.object(function.app.dReg["camera"].instance, "abort"):
+    function.app.dReg.camera.signals.saved.connect(function.exposeImageDone)
+    function.app.dReg.camera.signals.saved.connect(function.showImage)
+    with mock.patch.object(function.app.dReg.camera.instance, "abort"):
         function.abortExpose()
 
 
@@ -341,13 +341,13 @@ def test_abortExpose_4(function):
     function.ui.continous.setChecked(True)
     function.imageFileNameOld = Path("old.fits")
     function.imageFileName = Path("new.fits")
-    function.app.dReg["camera"].signals.saved.connect(function.exposeImageDone)
-    with mock.patch.object(function.app.dReg["camera"].instance, "abort"):
+    function.app.dReg.camera.signals.saved.connect(function.exposeImageDone)
+    with mock.patch.object(function.app.dReg.camera.instance, "abort"):
         function.abortExpose()
 
 
 def test_solveDone_1(function):
-    function.app.dReg["plateSolve"].signals.result.connect(function.solveDone)
+    function.app.dReg.plateSolve.signals.result.connect(function.solveDone)
     function.solveDone({"success": False})
 
 
@@ -363,7 +363,7 @@ def test_solveDone_2(function):
         "imagePath": "test",
         "message": "test",
     }
-    function.app.dReg["plateSolve"].signals.result.connect(function.solveDone)
+    function.app.dReg.plateSolve.signals.result.connect(function.solveDone)
     function.solveDone(result=result)
 
 
@@ -381,7 +381,7 @@ def test_solveDone_3(function):
         "message": "test",
     }
 
-    function.app.dReg["plateSolve"].signals.result.connect(function.solveDone)
+    function.app.dReg.plateSolve.signals.result.connect(function.solveDone)
     function.solveDone(result=result)
 
 
@@ -396,7 +396,7 @@ def test_solveImage_2(function):
 def test_solveImage_3(function):
     shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
     file = Path("tests/work/image/m51.fit")
-    with mock.patch.object(function.app.dReg["plateSolve"].instance, "solve"):
+    with mock.patch.object(function.app.dReg.plateSolve.instance, "solve"):
         function.solveImage(imagePath=file)
 
 
@@ -503,8 +503,8 @@ def test_syncModelToImage_5(function):
 
 
 def test_abortExpose_fail(function):
-    function.app.dReg["camera"].signals.saved.connect(function.exposeImageDone)
-    with mock.patch.object(function.app.dReg["camera"].instance, "abort", return_value=False):
+    function.app.dReg.camera.signals.saved.connect(function.exposeImageDone)
+    with mock.patch.object(function.app.dReg.camera.instance, "abort", return_value=False):
         function.abortExpose()
 
 

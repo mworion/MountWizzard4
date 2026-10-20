@@ -60,7 +60,7 @@ class MountWizzard4(QObject):
         self.initConfig()
         self.buildPoint = BuildPoint(self)
         self.hipparcos = Hipparcos(self)
-        self.ephemeris = self.dReg["mount"].obsSite.loader("de440_mw4.bsp")
+        self.ephemeris = self.dReg.mount.obsSite.loader("de440_mw4.bsp")
         self.mainW = MainWindow(self)
         self.mainW.initConfig()
         self.mainW.showWindow()
@@ -88,7 +88,7 @@ class MountWizzard4(QObject):
         lon = self.config.get("topoLon", 0)
         elev = self.config.get("topoElev", 46)
         topo = wgs84.latlon(longitude_degrees=lon, latitude_degrees=lat, elevation_m=elev)
-        self.dReg["mount"].obsSite.location = topo
+        self.dReg.mount.obsSite.location = topo
         self.timeMgr.unitTimeUTC = self.config.get("unitTimeUTC", True)
 
     def storeConfig(self) -> None:
@@ -96,7 +96,7 @@ class MountWizzard4(QObject):
         # the log level is stored by the settings tab; remove the old key
         self.config.pop("loglevel", None)
         self.dReg.storeConfig()
-        location = self.dReg["mount"].location
+        location = self.dReg.mount.location
         if location is not None:
             self.config["topoLat"] = float(location.latitude.degrees)
             self.config["topoLon"] = float(location.longitude.degrees)

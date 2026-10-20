@@ -28,7 +28,7 @@ def function(qapp):
 @pytest.fixture(autouse=True)
 def prepareFunctionState(function):
     value = np.datetime64("2014-12-12 20:20:20")
-    measure = function.app.dReg["measure"].instance
+    measure = function.app.dReg.measure.instance
     measure.framework = ""
     measure.data.clear()
     measure.data.update(
@@ -122,13 +122,13 @@ def test_colorChange(function):
 
 
 def test_setTitle_1(function):
-    function.app.dReg["measure"].instance.framework = ""
+    function.app.dReg.measure.instance.framework = ""
     function.setTitle()
 
 
 def test_setTitle_2(function):
-    function.app.dReg["measure"].instance.framework = "csv"
-    function.app.dReg["measure"].run["csv"].csvFilename = Path("csv")
+    function.app.dReg.measure.instance.framework = "csv"
+    function.app.dReg.measure.run["csv"].csvFilename = Path("csv")
     with mock.patch.object(function, "setWindowTitle") as mockTitle:
         function.setTitle()
     mockTitle.assert_called_once_with("Measuring:   csv")
@@ -152,14 +152,14 @@ def test_setupButtons(function):
 def test_constructPlotItem_1(function):
     plotItem = pg.PlotItem()
     values = function.dataPlots["Pressure"]
-    x = function.app.dReg["measure"].data["time"].astype("datetime64[s]").astype("int")
+    x = function.app.dReg.measure.data["time"].astype("datetime64[s]").astype("int")
     function.constructPlotItem(plotItem, values, x)
 
 
 def test_plotting_1(function):
     plotItem = pg.PlotItem()
     values = function.dataPlots["Pressure"]
-    x = function.app.dReg["measure"].data["time"].astype("datetime64[s]").astype("int")
+    x = function.app.dReg.measure.data["time"].astype("datetime64[s]").astype("int")
     function.plotting(plotItem, values, x)
 
 
@@ -266,7 +266,7 @@ def test_processDrawMeasure_1(function):
         function.ui.set3.setCurrentIndex(0)
         function.ui.set4.setCurrentIndex(0)
         function.oldTitle = ["No chart", "Voltage", "No chart", "No chart", "No chart"]
-        x = function.app.dReg["measure"].data["time"].astype("datetime64[s]").astype("int")
+        x = function.app.dReg.measure.data["time"].astype("datetime64[s]").astype("int")
         with (
             mock.patch.object(function, "plotting"),
             mock.patch.object(function, "resetPlotItem"),
@@ -293,7 +293,7 @@ def test_processDrawMeasure_2(function):
         function.ui.set3.setCurrentIndex(0)
         function.ui.set4.setCurrentIndex(0)
         function.oldTitle = ["No chart"] * 5
-        x = function.app.dReg["measure"].data["time"].astype("datetime64[s]").astype("int")
+        x = function.app.dReg.measure.data["time"].astype("datetime64[s]").astype("int")
         with (
             mock.patch.object(function, "plotting"),
             mock.patch.object(function, "resetPlotItem"),
@@ -316,7 +316,7 @@ def test_drawMeasure_2(function):
 
 
 def test_drawMeasure_3(function):
-    function.app.dReg["measure"].data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
+    function.app.dReg.measure.data["time"] = np.empty(shape=[0, 1], dtype="datetime64")
     with mock.patch.object(function, "processDrawMeasure"):
         function.drawMeasure()
     function.drawLock.unlock()
@@ -335,7 +335,7 @@ def test_setTitle_csvFramework(function):
 def test_plotting_withExistingPlotItem(function):
     plotItem = pg.PlotItem()
     values = function.dataPlots["Pressure"]
-    x = function.app.dReg["measure"].data["time"].astype("datetime64[s]").astype("int")
+    x = function.app.dReg.measure.data["time"].astype("datetime64[s]").astype("int")
     values["template"]["legendRef"] = pg.LegendItem()
     firstKey = next(iter(values["lineItems"].keys()))
     values["lineItems"][firstKey]["plotItemRef"] = plotItem.plot()
@@ -345,7 +345,7 @@ def test_plotting_withExistingPlotItem(function):
 def test_plotting_newPlotItemWithLegend(function):
     plotItem = pg.PlotItem()
     values = function.dataPlots["Pressure"]
-    x = function.app.dReg["measure"].data["time"].astype("datetime64[s]").astype("int")
+    x = function.app.dReg.measure.data["time"].astype("datetime64[s]").astype("int")
     values["template"]["legendRef"] = pg.LegendItem()
     for line in values["lineItems"].values():
         line["plotItemRef"] = None
@@ -379,7 +379,7 @@ def test_plotting_noNewPlotExistingItem(function):
     x = np.arange(10)
     with (
         mock.patch.object(function, "constructPlotItem") as construct,
-        mock.patch.dict(function.app.dReg["measure"].data, {"a": np.arange(10)}),
+        mock.patch.dict(function.app.dReg.measure.data, {"a": np.arange(10)}),
     ):
         function.plotting(plotItem, chart, x)
     construct.assert_not_called()
@@ -395,7 +395,7 @@ def test_plotting_newItemWithoutLegend(function):
     x = np.arange(10)
     with (
         mock.patch.object(function, "constructPlotItem"),
-        mock.patch.dict(function.app.dReg["measure"].data, {"a": np.arange(10)}),
+        mock.patch.dict(function.app.dReg.measure.data, {"a": np.arange(10)}),
     ):
         function.plotting(plotItem, chart, x)
     assert chart["lineItems"]["a"]["plotItemRef"] is plotItem.plot.return_value

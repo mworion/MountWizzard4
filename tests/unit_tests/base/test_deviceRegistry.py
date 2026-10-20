@@ -2,9 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import pytest
+import re
 from dataclasses import dataclass, field
 from mw4.base.deviceRegistry import DeviceEntry, DeviceRegistry
+from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from typing import get_args, get_overloads, get_type_hints
 from unittest import mock
 from unittest.mock import MagicMock, patch
 
@@ -742,3 +745,47 @@ def test_addDevicesSkipsSignalsForInstanceWithoutSignals() -> None:
         dReg.addDevices(app)
     assert id(dReg.d["mount"].signals) in dReg.signalsToName
     assert "measure" not in dReg.signalsToName.values()
+
+
+# ------------------------------------------------------------------
+# Typed access
+# ------------------------------------------------------------------
+def typedNames(registry: DeviceRegistry) -> set[str]:
+    return set(registry.d)
+
+
+def test_typedAttributeIsSameObjectAsDictEntry(registry: DeviceRegistry) -> None:
+    for name in typedNames(registry):
+        assert getattr(registry, name) is registry.d[name]
+        assert registry[name] is registry.d[name]
+
+
+def test_typedAttributeFollowsReplacedEntry(registry: DeviceRegistry) -> None:
+    entry = DeviceEntry(name="camera", instance=None, deviceType=None, isConfigurable=False)
+    registry.d["camera"] = entry
+    assert registry.camera is entry
+
+
+def test_typedAttributesMatchSpecAndOverloads(registry: DeviceRegistry) -> None:
+    properties = {
+        name
+        for name, value in vars(DeviceRegistry).items()
+        if isinstance(value, property) and name in registry.d
+    }
+    assert properties == typedNames(registry)
+    literals = {
+        arg
+        for overload in get_overloads(DeviceRegistry.__getitem__)
+        for arg in get_args(get_type_hints(overload)["name"])
+    }
+    assert literals == typedNames(registry)
+
+
+def test_noLiteralLookupsInSource() -> None:
+    pattern = re.compile(r"dReg\[\s*[\"']\w+[\"']\s*\]")
+    offenders = [
+        str(path)
+        for path in Path("src/mw4").rglob("*.py")
+        if "widgets" not in path.parts and pattern.search(path.read_text())
+    ]
+    assert not offenders

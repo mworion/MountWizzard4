@@ -148,7 +148,7 @@ def test_closeEvent_skipsEntriesWithoutSignals(function):
     class Entry:
         name = "telescope"
 
-    realEntry = function.app.dReg["telescope"]
+    realEntry = function.app.dReg.telescope
     origInstance = realEntry.instance
     realEntry.instance = NoSigInstance()
     try:
@@ -159,16 +159,16 @@ def test_closeEvent_skipsEntriesWithoutSignals(function):
 
 
 def test_updateDeviceGui_1(function):
-    function.app.dReg["telescope"].instance.framework = "indi"
-    function.app.dReg["telescope"].run["indi"].config.deviceName = ""
+    function.app.dReg.telescope.instance.framework = "indi"
+    function.app.dReg.telescope.run["indi"].config.deviceName = ""
     function.updateDeviceGui("telescope")
 
 
 def test_updateDeviceGui_2(function):
-    function.app.dReg["telescope"].instance.framework = "indi"
-    function.app.dReg["telescope"].run["indi"].config.deviceName = "test_device"
+    function.app.dReg.telescope.instance.framework = "indi"
+    function.app.dReg.telescope.run["indi"].config.deviceName = "test_device"
     function.updateDeviceGui("telescope")
-    function.app.dReg["telescope"].run["indi"].config.deviceName = ""
+    function.app.dReg.telescope.run["indi"].config.deviceName = ""
 
 
 def test_callPopup_1(function):
@@ -283,7 +283,7 @@ def test_applyDisconnected_1(function):
 
 
 def test_deviceConnected_resolvesNameViaSender(function):
-    sig = function.app.dReg["dome"].signals
+    sig = function.app.dReg.dome.signals
     function.signalsToName[id(sig)] = "dome"
     with mock.patch.object(function, "sender", return_value=sig):
         function.deviceConnected("ignored")
@@ -295,7 +295,7 @@ def test_deviceConnected_unknownSenderIsNoOp(function):
 
 
 def test_deviceDisconnected_resolvesNameViaSender(function):
-    sig = function.app.dReg["dome"].signals
+    sig = function.app.dReg.dome.signals
     function.signalsToName[id(sig)] = "dome"
     with mock.patch.object(function, "sender", return_value=sig):
         function.deviceDisconnected("ignored")
@@ -384,7 +384,7 @@ def test_init_skipsEntriesWithoutSignals(function):
     class NoSigInstance:
         pass
 
-    realEntry = function.app.dReg["telescope"]
+    realEntry = function.app.dReg.telescope
     origInstance = realEntry.instance
     realEntry.instance = NoSigInstance()
     try:

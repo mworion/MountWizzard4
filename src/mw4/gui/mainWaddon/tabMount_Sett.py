@@ -55,7 +55,7 @@ class MountSett(TabAddon):
         self.ui = mainW.ui
         self.typeConnectionTexts = ["RS-232", "GPS/RS-232", "LAN", "WiFi"]
 
-        ms = self.app.dReg["mount"].signals
+        ms = self.app.dReg.mount.signals
         ms.locationDone.connect(self.updateLocGUI)
         ms.pointDone.connect(self.updatePointGUI)
         ms.settingDone.connect(self.updateSettingGUI)
@@ -77,8 +77,8 @@ class MountSett(TabAddon):
         clickable(self.ui.statusAPO).connect(self.setAPO)
         clickable(self.ui.statusRefraction).connect(self.setRefraction)
         clickable(self.ui.settleTimeMount).connect(self.setSettleTimeMount)
-        self.app.dReg["mount"].signals.firmwareDone.connect(self.setWOLorAPO)
-        self.updateLocGUI(self.app.dReg["mount"].obsSite)
+        self.app.dReg.mount.signals.firmwareDone.connect(self.setWOLorAPO)
+        self.updateLocGUI(self.app.dReg.mount.obsSite)
 
     def setWOLorAPO(self, fw: Firmware) -> None:
         self.ui.statusWOL.setEnabled(fw.isHW2012())
@@ -127,7 +127,7 @@ class MountSett(TabAddon):
             changeStyleDynamic(ui, "color", "")
 
     def activeTrackingMode(self, sett: Setting) -> str | None:
-        obsSite = self.app.dReg["mount"].obsSite
+        obsSite = self.app.dReg.mount.obsSite
         if obsSite.status is None:
             return None
         if obsSite.isFollowingSatellite:
@@ -171,7 +171,7 @@ class MountSett(TabAddon):
         self.ui.siteElevation.setText(str(location.elevation.m))
 
     def setMeridianLimitTrack(self) -> bool:
-        sett = self.app.dReg["mount"].setting
+        sett = self.app.dReg.mount.setting
         actValue = 0 if not sett.meridianLimitTrack else int(sett.meridianLimitTrack)
         from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 
@@ -188,7 +188,7 @@ class MountSett(TabAddon):
             return False
 
     def setMeridianLimitSlew(self) -> bool:
-        sett = self.app.dReg["mount"].setting
+        sett = self.app.dReg.mount.setting
         actValue = 0 if not sett.meridianLimitSlew else int(sett.meridianLimitSlew)
         value, ok = MWInputDialog.getInt(
             self.mainW, "Set Meridian Limit Slew", "Value (0-30):", actValue, 0, 30, 1
@@ -203,7 +203,7 @@ class MountSett(TabAddon):
             return False
 
     def setHorizonLimitHigh(self) -> bool:
-        sett = self.app.dReg["mount"].setting
+        sett = self.app.dReg.mount.setting
         actValue = 0 if sett.horizonLimitHigh is None else int(sett.horizonLimitHigh)
         value, ok = MWInputDialog.getInt(
             self.mainW, "Set Horizon Limit High", "Value (0-90):", actValue, 0, 90, 1
@@ -218,7 +218,7 @@ class MountSett(TabAddon):
             return False
 
     def setHorizonLimitLow(self) -> bool:
-        sett = self.app.dReg["mount"].setting
+        sett = self.app.dReg.mount.setting
         actValue = 0 if sett.horizonLimitLow is None else int(sett.horizonLimitLow)
         value, ok = MWInputDialog.getInt(
             self.mainW,
@@ -239,7 +239,7 @@ class MountSett(TabAddon):
             return False
 
     def setSlewRate(self) -> bool:
-        sett = self.app.dReg["mount"].setting
+        sett = self.app.dReg.mount.setting
         actValue = 0 if sett.slewRate is None else int(sett.slewRate)
         minRate = 0 if sett.slewRateMin is None else int(sett.slewRateMin)
         maxRate = 0 if sett.slewRateMax is None else int(sett.slewRateMax)
@@ -264,7 +264,7 @@ class MountSett(TabAddon):
     def setLocationValues(
         self, lat: Angle | None = None, lon: Angle | None = None, elev: float | None = None
     ) -> None:
-        obs = self.app.dReg["mount"].obsSite
+        obs = self.app.dReg.mount.obsSite
         loc = obs.location
         lat = loc.latitude if lat is None else lat
         lon = loc.longitude if lon is None else lon
@@ -275,13 +275,13 @@ class MountSett(TabAddon):
             latitude_degrees=lat.degrees,
             elevation_m=elev,
         )
-        if self.app.dReg["mount"].stat:
+        if self.app.dReg.mount.stat:
             obs.setLocation(topo)
-            self.app.dReg["mount"].instance.getLocation()
+            self.app.dReg.mount.instance.getLocation()
         else:
             obs.location = topo
-            self.updateLocGUI(self.app.dReg["mount"].obsSite)
-            self.app.dReg["mount"].signals.locationDone.emit(self.app.dReg["mount"].obsSite)
+            self.updateLocGUI(self.app.dReg.mount.obsSite)
+            self.app.dReg.mount.signals.locationDone.emit(self.app.dReg.mount.obsSite)
 
         t = f"Location set to:     [{lat.degrees:3.2f} deg, "
         t += f"{lon.degrees:3.2f} deg, {elev:4.1f} m]"
@@ -312,7 +312,7 @@ class MountSett(TabAddon):
         self.setLocationValues(lat=value)
 
     def setElevation(self) -> bool:
-        obs = self.app.dReg["mount"].obsSite
+        obs = self.app.dReg.mount.obsSite
         value, ok = MWInputDialog.getDouble(
             self.mainW,
             "Set Site Elevation",
@@ -328,7 +328,7 @@ class MountSett(TabAddon):
         return True
 
     def setUnattendedFlip(self) -> bool:
-        sett = self.app.dReg["mount"].setting
+        sett = self.app.dReg.mount.setting
         value, ok = MWInputDialog.getItem(
             self.mainW,
             "Set Unattended Flip",
@@ -346,7 +346,7 @@ class MountSett(TabAddon):
         return suc
 
     def setWebinterface(self) -> bool:
-        sett = self.app.dReg["mount"].setting
+        sett = self.app.dReg.mount.setting
         value, ok = MWInputDialog.getItem(
             self.mainW,
             "Set Web Interface",
@@ -364,7 +364,7 @@ class MountSett(TabAddon):
         return suc
 
     def setDualAxisTracking(self) -> bool:
-        sett = self.app.dReg["mount"].setting
+        sett = self.app.dReg.mount.setting
         value, ok = MWInputDialog.getItem(
             self.mainW,
             "Set Dual Axis Tracking",
@@ -382,7 +382,7 @@ class MountSett(TabAddon):
         return suc
 
     def setWOL(self) -> bool:
-        sett = self.app.dReg["mount"].setting
+        sett = self.app.dReg.mount.setting
         act = 0 if sett.wakeOnLan == "ON" else 1
         value, ok = MWInputDialog.getItem(
             self.mainW, "Set Wake On Lan", "Value: On / Off", ["ON", "OFF"], act
@@ -397,7 +397,7 @@ class MountSett(TabAddon):
         return suc
 
     def setAPO(self) -> bool:
-        sett = self.app.dReg["mount"].setting
+        sett = self.app.dReg.mount.setting
         act = 0 if sett.autoPowerOn else 1
         value, ok = MWInputDialog.getItem(
             self.mainW, "Set Auto Power On", "Value: On / Off", ["ON", "OFF"], act
@@ -412,7 +412,7 @@ class MountSett(TabAddon):
         return suc
 
     def setRefractionTemp(self) -> bool:
-        sett = self.app.dReg["mount"].setting
+        sett = self.app.dReg.mount.setting
         actValue = 0 if sett.refractionTemp is None else sett.refractionTemp
         minVal = -40
         maxVal = 75
@@ -435,7 +435,7 @@ class MountSett(TabAddon):
             return False
 
     def setRefractionPress(self) -> bool:
-        sett = self.app.dReg["mount"].setting
+        sett = self.app.dReg.mount.setting
         actValue = 0 if sett.refractionPress is None else sett.refractionPress
         minVal = 500
         maxVal = 1300
@@ -458,7 +458,7 @@ class MountSett(TabAddon):
             return False
 
     def setRefraction(self) -> bool:
-        sett = self.app.dReg["mount"].setting
+        sett = self.app.dReg.mount.setting
         value, ok = MWInputDialog.getItem(
             self.mainW,
             "Set Refraction Correction",
@@ -476,7 +476,7 @@ class MountSett(TabAddon):
         return suc
 
     def setSettleTimeMount(self) -> bool:
-        sett = self.app.dReg["mount"].setting
+        sett = self.app.dReg.mount.setting
         actValue = 0 if sett.settleTime is None else int(sett.settleTime)
         value, ok = MWInputDialog.getInt(
             self.mainW, "Set Settle Time", "Value (0-999):", actValue, 0, 999, 1
@@ -491,8 +491,8 @@ class MountSett(TabAddon):
             return False
 
     def showTimeDiff(self) -> None:
-        delta = self.app.dReg["mount"].instance.mountTimeConn.timeDiff * 1000
-        rtt = self.app.dReg["mount"].instance.mountTimeConn.rtt * 1000
+        delta = self.app.dReg.mount.instance.mountTimeConn.timeDiff * 1000
+        rtt = self.app.dReg.mount.instance.mountTimeConn.rtt * 1000
         guiSetText(self.ui.timeDeltaPC2Mount, "4.0f", delta)
         guiSetText(self.ui.rtt, "4.1f", rtt)
         if abs(delta) < 100:
@@ -501,4 +501,4 @@ class MountSett(TabAddon):
             changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "yellow")
         else:
             changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "red")
-        guiSetText(self.ui.timeUTC, "s", self.app.dReg["mount"].timeJD.utc_strftime("%H:%M:%S"))
+        guiSetText(self.ui.timeUTC, "s", self.app.dReg.mount.timeJD.utc_strftime("%H:%M:%S"))

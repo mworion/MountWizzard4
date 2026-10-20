@@ -32,10 +32,10 @@ class HemisphereDraw(MWidget):
         self.alignmentStarsText: list = []
 
     def initConfig(self) -> None:
-        self.app.dReg["mount"].signals.pointDone.connect(self.drawPointer)
-        self.app.dReg["dome"].signals.azimuth.connect(self.setDomeAzimuth)
-        self.app.dReg["dome"].signals.deviceDisconnected.connect(self.drawDome)
-        self.app.dReg["mount"].signals.getModelDone.connect(self.drawTab)
+        self.app.dReg.mount.signals.pointDone.connect(self.drawPointer)
+        self.app.dReg.dome.signals.azimuth.connect(self.setDomeAzimuth)
+        self.app.dReg.dome.signals.deviceDisconnected.connect(self.drawDome)
+        self.app.dReg.mount.signals.getModelDone.connect(self.drawTab)
         self.app.signals.hemisphere.updatePointMarker.connect(self.setupModel)
         self.app.signals.hemisphere.redrawHemisphere.connect(self.drawTab)
         self.app.signals.hemisphere.redrawHorizon.connect(self.drawHorizon)
@@ -59,10 +59,10 @@ class HemisphereDraw(MWidget):
         self.ui.hemisphere.p[0].scene().sigMouseMoved.connect(self.mouseMovedHemisphere)
 
     def closeTab(self) -> None:
-        self.app.dReg["mount"].signals.pointDone.disconnect(self.drawPointer)
-        self.app.dReg["mount"].signals.getModelDone.disconnect(self.drawTab)
-        self.app.dReg["dome"].signals.azimuth.disconnect(self.setDomeAzimuth)
-        self.app.dReg["dome"].signals.deviceDisconnected.disconnect(self.drawDome)
+        self.app.dReg.mount.signals.pointDone.disconnect(self.drawPointer)
+        self.app.dReg.mount.signals.getModelDone.disconnect(self.drawTab)
+        self.app.dReg.dome.signals.azimuth.disconnect(self.setDomeAzimuth)
+        self.app.dReg.dome.signals.deviceDisconnected.disconnect(self.drawDome)
         self.app.signals.hemisphere.updatePointMarker.disconnect(self.setupModel)
         self.app.signals.hemisphere.redrawHemisphere.disconnect(self.drawTab)
         self.app.signals.hemisphere.redrawHorizon.disconnect(self.drawHorizon)
@@ -70,7 +70,7 @@ class HemisphereDraw(MWidget):
         self.app.timeMgr.update3s.disconnect(self.drawAlignmentStars)
 
     def setPointerVisibility(self) -> None:
-        visible = bool(self.app.dReg["mount"].stat)
+        visible = bool(self.app.dReg.mount.stat)
         for plotItem in self.ui.hemisphere.p:
             item = self.ui.hemisphere.findItemByName(plotItem, "pointer")
             if item:
@@ -145,7 +145,7 @@ class HemisphereDraw(MWidget):
             plotItem.addItem(textItem)
 
     def calculateRelevance(self, alt: float, az: float) -> float:
-        isNorth = self.app.dReg["mount"].obsSite.location.latitude.degrees > 0
+        isNorth = self.app.dReg.mount.obsSite.location.latitude.degrees > 0
         altFak = 1 - np.minimum(np.abs(alt - 30), 35) / 35
         if isNorth:
             azFak = 1 - np.minimum(diffModulusAbs(0, az - 180, 360), 75) / 75
@@ -320,7 +320,7 @@ class HemisphereDraw(MWidget):
                 item.setVisible(True)
         if not items:
             return
-        obsSite = self.app.dReg["mount"].obsSite
+        obsSite = self.app.dReg.mount.obsSite
         alt = obsSite.Alt.degrees
         az = obsSite.Az.degrees
         items[0].setData(x=[az], y=[alt])
@@ -340,11 +340,11 @@ class HemisphereDraw(MWidget):
         self.pointerDome.setVisible(True)
 
     def drawDome(self) -> None:
-        visible = bool(self.app.dReg["dome"].stat)
+        visible = bool(self.app.dReg.dome.stat)
         self.pointerDome.setVisible(visible)
 
     def drawModelIsoCurve(self) -> None:
-        model = self.app.dReg["mount"].model
+        model = self.app.dReg.mount.model
         if len(model.starList) == 0:
             return
         alt = np.array([x.alt.degrees for x in model.starList])
@@ -385,7 +385,7 @@ class HemisphereDraw(MWidget):
         col = self.rgb2hex(self.M_PRIM)
         question += f"<font color={col}>{name}.</font>"
         question += "<br>Would you like to start alignment?<br>"
-        isDAT = self.app.dReg["mount"].setting.statusDualAxisTracking
+        isDAT = self.app.dReg.mount.setting.statusDualAxisTracking
         col = self.rgb2hex(self.M_YELLOW)
         warning = f"<br><i><font color={col}>"
         warning += "Dual Axis Tracking is actually enabled!<br>"
@@ -414,10 +414,10 @@ class HemisphereDraw(MWidget):
             self.slewDirect(posView)
 
     def drawTab(self) -> None:
-        hasModel = bool(self.app.dReg["mount"].model.numberStars)
+        hasModel = bool(self.app.dReg.mount.model.numberStars)
         self.ui.alignmentModeHem.setEnabled(hasModel)
         self.ui.showIsoModel.setEnabled(hasModel)
-        isMount = bool(self.app.dReg["mount"].stat)
+        isMount = bool(self.app.dReg.mount.stat)
         self.ui.showMountLimits.setEnabled(isMount)
 
         self.prepareView()

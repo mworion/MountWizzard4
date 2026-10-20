@@ -117,13 +117,13 @@ class SatSearch(SatData):
         self.ui.listSats.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
     def processLoadTLE(self) -> None:
-        loader = self.app.dReg["mount"].obsSite.loader
+        loader = self.app.dReg.mount.obsSite.loader
         satellites = loader.tle_file(str(self.satellites.dest))
         for sat in satellites:
             self.satellites.objects[sat.name] = sat
 
     def processLoadJsonOMM(self) -> None:
-        ts = self.app.dReg["mount"].obsSite.ts
+        ts = self.app.dReg.mount.obsSite.ts
         with open(str(self.satellites.dest)) as f:
             try:
                 omm_records = json.load(f)
@@ -247,8 +247,8 @@ class SatSearch(SatData):
         name = ""
         try:
             self.signals.setSatGroupTitle.emit("Filter - running", True)
-            loc = self.app.dReg["mount"].location
-            ts = self.app.dReg["mount"].obsSite.ts
+            loc = self.app.dReg.mount.location
+            ts = self.app.dReg.mount.obsSite.ts
             timeNow = ts.now()
             timeNext = ts.tt_jd(timeNow.tt + 0.25)
             eph = self.app.ephemeris

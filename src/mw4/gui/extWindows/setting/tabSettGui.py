@@ -24,7 +24,7 @@ class SettGui:
         self.ui.dpi.setValue(config.get("dpi", 96))
         self.ui.colorSet.setCurrentIndex(colSet)
         self.ui.transparency.setValue(config.get("transparency", 1))
-        cfg = self.app.dReg["hidController"].instance.config
+        cfg = self.app.dReg.hidController.instance.config
         self.ui.hidDome.setChecked(cfg.dome)
         self.ui.hidAltAz.setChecked(cfg.moveAltAz)
         self.ui.hidRaDec.setChecked(cfg.moveRaDec)
@@ -52,7 +52,7 @@ class SettGui:
             "dpi": self.ui.dpi.value(),
         }
         self.app.config["SettingGui"] = config
-        cfg = self.app.dReg["hidController"].instance.config
+        cfg = self.app.dReg.hidController.instance.config
         cfg.dome = self.ui.hidDome.isChecked()
         cfg.moveAltAz = self.ui.hidAltAz.isChecked()
         cfg.moveRaDec = self.ui.hidRaDec.isChecked()

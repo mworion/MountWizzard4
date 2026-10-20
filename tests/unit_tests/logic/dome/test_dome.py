@@ -324,7 +324,7 @@ def test_slewDome_geometryErrorSlewsWithoutCheck(function):
     function.framework = "indi"
     function.useGeometry = True
     function.useDynamicFollowing = True
-    mount = function.app.dReg["mount"].instance
+    mount = function.app.dReg.mount.instance
     with (
         mock.patch.object(
             mount,
@@ -377,7 +377,7 @@ def test_calcOvershoot_3(function):
     function.radius = 1.5
     function.avoidFirstSlewOvershoot = False
     function.overshoot = True
-    function.app.dReg["mount"].obsSite.AzDirection = None
+    function.app.dReg.mount.obsSite.AzDirection = None
     val = function.calcOvershoot(100)
     assert val == 100
 
@@ -389,7 +389,7 @@ def test_calcOvershoot_4(function):
     function.avoidFirstSlewOvershoot = False
     function.overshoot = True
     function.lastFinalAz = None
-    function.app.dReg["mount"].obsSite.AzDirection = 1
+    function.app.dReg.mount.obsSite.AzDirection = 1
     val = function.calcOvershoot(100)
     assert round(val, 3) == 107.595
 
@@ -401,7 +401,7 @@ def test_calcOvershoot_5(function):
     function.avoidFirstSlewOvershoot = False
     function.overshoot = True
     function.lastFinalAz = 10
-    function.app.dReg["mount"].obsSite.AzDirection = 1
+    function.app.dReg.mount.obsSite.AzDirection = 1
     val = function.calcOvershoot(100)
     assert round(val, 3) == 107.595
 
@@ -411,7 +411,7 @@ def test_calcOvershoot_6(function):
     function.openingHysteresis = 0.2
     function.radius = 1.5
     function.avoidFirstSlewOvershoot = False
-    function.app.dReg["mount"].obsSite.AzDirection = 1
+    function.app.dReg.mount.obsSite.AzDirection = 1
     function.overshoot = True
     function.lastFinalAz = 10
     val = function.calcOvershoot(30)
@@ -423,7 +423,7 @@ def test_calcOvershoot_7(function):
     function.openingHysteresis = 0.2
     function.radius = 1.5
     function.avoidFirstSlewOvershoot = False
-    function.app.dReg["mount"].obsSite.AzDirection = -1
+    function.app.dReg.mount.obsSite.AzDirection = -1
     function.overshoot = True
     function.lastFinalAz = 10
     val = function.calcOvershoot(30)
@@ -435,7 +435,7 @@ def test_calcOvershoot_8(function):
     function.openingHysteresis = 0.2
     function.radius = 1.5
     function.avoidFirstSlewOvershoot = False
-    function.app.dReg["mount"].obsSite.AzDirection = -1
+    function.app.dReg.mount.obsSite.AzDirection = -1
     function.overshoot = True
     function.lastFinalAz = 10
     val = function.calcOvershoot(15)

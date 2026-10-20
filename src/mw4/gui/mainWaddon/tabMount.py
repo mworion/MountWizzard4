@@ -16,12 +16,12 @@ class Mount(TabAddon):
         self.msg = mainW.app.signals.ui.msg
         self.ui = mainW.ui
 
-        self.app.dReg["hidController"].signals.hidABXY.connect(self.changeParkHid)
-        self.app.dReg["hidController"].signals.hidABXY.connect(self.stopHid)
-        self.app.dReg["hidController"].signals.hidABXY.connect(self.changeTrackingHid)
-        self.app.dReg["hidController"].signals.hidABXY.connect(self.flipMountHid)
-        self.app.dReg["hidController"].signals.deviceConnected.connect(self.setHidIcons)
-        self.app.dReg["hidController"].signals.deviceDisconnected.connect(self.setHidIcons)
+        self.app.dReg.hidController.signals.hidABXY.connect(self.changeParkHid)
+        self.app.dReg.hidController.signals.hidABXY.connect(self.stopHid)
+        self.app.dReg.hidController.signals.hidABXY.connect(self.changeTrackingHid)
+        self.app.dReg.hidController.signals.hidABXY.connect(self.flipMountHid)
+        self.app.dReg.hidController.signals.deviceConnected.connect(self.setHidIcons)
+        self.app.dReg.hidController.signals.deviceDisconnected.connect(self.setHidIcons)
         self.app.signals.system.hidModeChanged.connect(self.setHidIcons)
         self.ui.flipMount.clicked.connect(self.flipMount)
         self.ui.tracking.clicked.connect(self.changeTracking)
@@ -50,13 +50,13 @@ class Mount(TabAddon):
 
     def setHidIcons(self) -> None:
         base = {
-            self.ui.controller1: self.app.dReg["hidController"].instance.config.moveAltAz,
-            self.ui.controller2: self.app.dReg["hidController"].instance.config.moveRaDec,
-            self.ui.controller3: self.app.dReg["hidController"].instance.config.tracking,
-            self.ui.controller4: self.app.dReg["hidController"].instance.config.parkStop,
-            self.ui.controller5: self.app.dReg["hidController"].instance.config.dome,
+            self.ui.controller1: self.app.dReg.hidController.instance.config.moveAltAz,
+            self.ui.controller2: self.app.dReg.hidController.instance.config.moveRaDec,
+            self.ui.controller3: self.app.dReg.hidController.instance.config.tracking,
+            self.ui.controller4: self.app.dReg.hidController.instance.config.parkStop,
+            self.ui.controller5: self.app.dReg.hidController.instance.config.dome,
         }
-        connected = self.app.dReg["hidController"].stat
+        connected = self.app.dReg.hidController.stat
         for ui, statFlag in base.items():
             if connected and statFlag:
                 status = 2
@@ -71,7 +71,7 @@ class Mount(TabAddon):
             self.changeTracking()
 
     def changeTracking(self) -> None:
-        obs = self.app.dReg["mount"].obsSite
+        obs = self.app.dReg.mount.obsSite
         if obs.status == 0:
             if obs.stopTracking():
                 self.msg.emit(0, "Mount", "Command", "Stopped tracking")
@@ -88,7 +88,7 @@ class Mount(TabAddon):
             self.changePark()
 
     def changePark(self) -> None:
-        obs = self.app.dReg["mount"].obsSite
+        obs = self.app.dReg.mount.obsSite
         if obs.status == 5:
             if obs.unpark():
                 self.msg.emit(0, "Mount", "Command", "Mount unpark")
@@ -101,19 +101,19 @@ class Mount(TabAddon):
                 self.msg.emit(2, "Mount", "Command", "Cannot park mount")
 
     def setLunarTracking(self) -> None:
-        if self.app.dReg["mount"].setting.setLunarTracking():
+        if self.app.dReg.mount.setting.setLunarTracking():
             self.msg.emit(0, "Mount", "Command", "Tracking set to Lunar")
         else:
             self.msg.emit(2, "Mount", "Command", "Cannot set tracking to Lunar")
 
     def setSiderealTracking(self) -> None:
-        if self.app.dReg["mount"].setting.setSiderealTracking():
+        if self.app.dReg.mount.setting.setSiderealTracking():
             self.msg.emit(0, "Mount", "Command", "Tracking set to Sidereal")
         else:
             self.msg.emit(2, "Mount", "Command", "Cannot set tracking to Sidereal")
 
     def setSolarTracking(self) -> None:
-        if self.app.dReg["mount"].setting.setSolarTracking():
+        if self.app.dReg.mount.setting.setSolarTracking():
             self.msg.emit(0, "Mount", "Command", "Tracking set to Solar")
         else:
             self.msg.emit(2, "Mount", "Command", "Cannot set tracking to Solar")
@@ -123,7 +123,7 @@ class Mount(TabAddon):
             self.flipMount()
 
     def flipMount(self) -> None:
-        if self.app.dReg["mount"].obsSite.flip():
+        if self.app.dReg.mount.obsSite.flip():
             self.msg.emit(0, "Mount", "Command", "Mount flipped")
         else:
             self.msg.emit(2, "Mount", "Command", "Cannot flip mount")
@@ -133,7 +133,7 @@ class Mount(TabAddon):
             self.stop()
 
     def stop(self) -> None:
-        if self.app.dReg["mount"].obsSite.stop():
+        if self.app.dReg.mount.obsSite.stop():
             self.msg.emit(0, "Mount", "Command", "Mount stopped")
         else:
             self.msg.emit(2, "Mount", "Command", "Cannot stop mount")

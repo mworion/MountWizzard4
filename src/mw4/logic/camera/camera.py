@@ -28,13 +28,14 @@ class Camera:
         self.data: dict[str, Any] = {}
         self.exposing: bool = False
         self.fastReadout: bool = False
+        self.fastDownload: bool = False
         self.imagePath: Path = Path()
         self.exposureTime: float = 1
         self.exposureTime1: float = 1
         self.exposureTimeN: float = 1
         self.binning1: int = 1
         self.binningN: int = 1
-        self.focalLength: int = 1
+        self.focalLength: float = 1
         self.framework: str = ""
         self._binning: int = 1
         self._subFrame: int = 100
@@ -149,8 +150,8 @@ class Camera:
     def writeImageFitsHeader(self) -> None:
         with fits.open(self.imagePath, mode="update", output_verify="silentfix") as HDU:
             # pyrefly: ignore[missing-attribute]
-            header = writeHeaderCamera(HDU[0].header, self, self.app.dReg["mount"].obsSite)
-            header = writeHeaderPointing(header, self.app.dReg["mount"].obsSite)
+            header = writeHeaderCamera(HDU[0].header, self, self.app.dReg.mount.obsSite)
+            header = writeHeaderPointing(header, self.app.dReg.mount.obsSite)
             t = f"FITS header written: RA: [{header['RA']}], DEC: [{header['DEC']}]"
             t += f", FOCALLEN: [{header['FOCALLEN']}], SCALE: [{header['SCALE']}]"
             self.log.debug(t)

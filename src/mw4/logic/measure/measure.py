@@ -76,7 +76,7 @@ class MeasureData:
             return
         self.checkStart()
         self.checkSize()
-        timeStamp = self.app.dReg["mount"].obsSite.timeJD.utc_datetime().replace(tzinfo=None)
+        timeStamp = self.app.dReg.mount.obsSite.timeJD.utc_datetime().replace(tzinfo=None)
         self.data["time"] = np.append(self.data["time"], np.datetime64(timeStamp))
         for device in self.measuredDevices:
             for source in measure[device]:

@@ -48,7 +48,7 @@ class SettPark:
             self.parentW.wIcon(getattr(self.ui, f"parkSave{i:1d}"), "download")
 
     def saveActualPosition(self, index: int) -> None:
-        obs = self.app.dReg["mount"].obsSite
+        obs = self.app.dReg.mount.obsSite
         self.parkAlt[index].setValue(obs.Alt.degrees)
         self.parkAz[index].setValue(obs.Az.degrees)
         self.storeConfig()

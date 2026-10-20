@@ -1,19 +1,19 @@
 # Plan – Roadmap item 7: break up oversized functions (M1) and move calculations out of tabs (A5)
 
-Source: `2026-10-20_review_copilot.md`, roadmap *Medium* item 7.
+Source: `../../2026-10-20_review_copilot.md`, roadmap *Medium* item 7.
 Status: **plan only, nothing implemented yet.**
 
 ## 1. Goals
 
-1. Remove the 7 `PLR0915` per-file ignores in `pyproject.toml` by splitting the functions
+1. Remove the 7 `PLR0915` per-file ignores in `../../pyproject.toml` by splitting the functions
    they cover, then lower the global statement budget (50 → 40) if feasible.
 2. Reduce the biggest "data in code" and "widget building in `__init__`" functions to short
    orchestration code.
-3. Move pure calculations (no Qt, no `self.ui`) out of tabs into `src/mw4/logic`, so they
+3. Move pure calculations (no Qt, no `self.ui`) out of tabs into `../../src/mw4/logic`, so they
    are unit-testable without Qt.
 
 Non-goals: behaviour changes, new features, GUI layout changes, edits to
-`src/mw4/gui/widgets` (generated).
+`../../src/mw4/gui/widgets` (generated).
 
 ## 2. Rules for every step (project conventions)
 
@@ -75,7 +75,7 @@ Ordered by risk (lowest first); WPs are independent unless noted.
   returning its entity; `create` only assembles them.
 - Tests: existing simulator tests keep passing; add tests per new builder (entity count,
   parent, transform) using the mocked entity approach already used in
-  `tests/unit_tests/gui/extWindows/simulator`.
+  `../../tests/unit_tests/gui/extWindows/simulator`.
 
 ### WP 3 – Native Qt dialogs (medium risk) — ✅ done 2026-10-20
 
@@ -111,7 +111,7 @@ into a **pure function in `logic`** and a thin GUI method:
 - Pure functions take plain numbers/dicts, return dataclasses; no Qt, no `app`.
 - Constants such as `206.265` get a named module constant (`ARCSEC_PER_RAD_FACTOR`) with a
   comment on the unit.
-- Tests: new `tests/unit_tests/logic/photometry/test_imageStats.py`, `test_tiltGeometry.py`
+- Tests: new `../../tests/unit_tests/logic/photometry/test_imageStats.py`, `test_tiltGeometry.py`
   incl. zero/None focal length branches; GUI tests reduced to wiring.
 
 ### WP 6 – `writeAsteroidMPC` (low risk) — ✅ done 2026-10-20
@@ -147,10 +147,10 @@ All `PLR0915` ignores removed; review updated (functions > 50 lines: 25 → 16, 
 Target ≤ 10 not reached; the rest is a decision for the deferred statement budget.
 
 
-- Remove the 7 `PLR0915` entries from `pyproject.toml` as each WP lands.
+- Remove the 7 `PLR0915` entries from `../../pyproject.toml` as each WP lands.
 - Statement budget: **decision deferred.** Only the 7 explicit `PLR0915` ignores are
   removed in this plan; the global limit stays at 50 until decided.
-- Update `2026-10-20_review_copilot.md`: mark M1 and A5 progress, refresh the metrics
+- Update `../../2026-10-20_review_copilot.md`: mark M1 and A5 progress, refresh the metrics
   table (functions > 50 lines: 25 → target ≤ 10).
 
 ## 5. Order, effort and dependencies

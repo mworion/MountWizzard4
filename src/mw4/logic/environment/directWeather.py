@@ -31,9 +31,9 @@ class DirectWeather:
         self.enabled: bool = False
 
     def startCommunication(self) -> None:
-        self.app.dReg["mount"].signals.settingDone.connect(self.updateData)
+        self.app.dReg.mount.signals.settingDone.connect(self.updateData)
         self.enabled = True
-        self.app.dReg["directWeather"].stat = False
+        self.app.dReg.directWeather.stat = False
 
     def stopCommunication(self) -> None:
         with warnings.catch_warnings():
@@ -43,7 +43,7 @@ class DirectWeather:
                 category=RuntimeWarning,
             )
             with contextlib.suppress(RuntimeError):
-                self.app.dReg["mount"].signals.settingDone.disconnect(self.updateData)
+                self.app.dReg.mount.signals.settingDone.disconnect(self.updateData)
         self.signals.deviceDisconnected.emit("DirectWeather")
 
     def updateData(self, sett: Setting) -> None:
@@ -64,7 +64,7 @@ class DirectWeather:
             self.signals.deviceConnected.emit(self.config.deviceName)
             self.running = True
 
-        self.app.dReg["directWeather"].stat = isValid
+        self.app.dReg.directWeather.stat = isValid
         self.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"] = value1
         self.data["WEATHER_PARAMETERS.WEATHER_PRESSURE"] = value2
         self.data["WEATHER_PARAMETERS.WEATHER_DEWPOINT"] = value3

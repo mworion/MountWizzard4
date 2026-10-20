@@ -72,7 +72,7 @@ def app(qapp):
 def test_init_config(app):
     """initConfig() sets up the location from config and custom logging level."""
     app.initConfig()
-    assert app.dReg["mount"].obsSite.location is not None
+    assert app.dReg.mount.obsSite.location is not None
 
 
 @pytest.mark.parametrize(
@@ -292,7 +292,7 @@ def test_init_withoutTestMode(qapp):
 def test_storeConfig_noLocation(app):
     app.config.pop("topoLat", None)
     with mock.patch.object(
-        type(app.dReg["mount"]), "location", new_callable=mock.PropertyMock, return_value=None
+        type(app.dReg.mount), "location", new_callable=mock.PropertyMock, return_value=None
     ):
         app.storeConfig()
     assert "topoLat" not in app.config

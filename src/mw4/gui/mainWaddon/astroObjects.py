@@ -45,7 +45,7 @@ class AstroObjects:
         self.objects: dict = {}
         self.tempDir: Path = self.app.mwGlob["tempDir"]
         self.dataDir: Path = self.app.mwGlob["dataDir"]
-        self.loader = self.app.dReg["mount"].obsSite.loader
+        self.loader = self.app.dReg.mount.obsSite.loader
         self.dbProc = DataWriter(self.app)
         self.buildSourceListDropdown()
         self.dbProcFuncs = {
@@ -136,7 +136,7 @@ class AstroObjects:
             )
             return
         self.dbProcFuncs[self.objectText](objects, dataFilePath=self.tempDir)
-        url = self.app.dReg["mount"].instance.config.hostAddress
+        url = self.app.dReg.mount.instance.config.hostAddress
         self.runUploadPopup(url)
 
     def progGUI(self, text: str) -> None:

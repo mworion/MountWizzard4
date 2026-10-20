@@ -34,7 +34,7 @@ class SeeingWeather:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = SeeingWeatherSignals()
-        self.location = self.app.dReg["mount"].location
+        self.location = self.app.dReg.mount.location
         self.b: str = ""
         self.framework: str = ""
         self.run: dict[str, Any] = {"seeing": self}
@@ -97,7 +97,7 @@ class SeeingWeather:
         filePath = self.app.mwGlob["dataDir"] / fileName
         if not filePath.is_file():
             return True
-        ageData = self.app.dReg["mount"].obsSite.loader.days_old(fileName)
+        ageData = self.app.dReg.mount.obsSite.loader.days_old(fileName)
         return not ageData < hours / 24
 
     def getSeeingData(self, url: Path) -> None:

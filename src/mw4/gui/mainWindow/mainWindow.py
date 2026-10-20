@@ -58,11 +58,11 @@ class MainWindow(MWidget):
                 "tab": self.ui.toolsTabWidget,
             },
         }
-        self.app.dReg["mount"].signals.pointDone.connect(self.updateStatusGUI)
+        self.app.dReg.mount.signals.pointDone.connect(self.updateStatusGUI)
         self.app.signals.ui.remoteCommand.connect(self.remoteCommand)
-        self.app.dReg["plateSolve"].signals.message.connect(self.updatePlateSolveStatus)
-        self.app.dReg["dome"].signals.message.connect(self.updateDomeStatus)
-        self.app.dReg["camera"].signals.message.connect(self.updateCameraStatus)
+        self.app.dReg.plateSolve.signals.message.connect(self.updatePlateSolveStatus)
+        self.app.dReg.dome.signals.message.connect(self.updateDomeStatus)
+        self.app.dReg.camera.signals.message.connect(self.updateCameraStatus)
         self.ui.saveConfigQuit.clicked.connect(self.quitSave)
         self.ui.loadFrom.clicked.connect(self.loadProfileGUI)
         self.ui.saveConfigAs.clicked.connect(self.saveProfileAs)
@@ -169,7 +169,7 @@ class MainWindow(MWidget):
         self.show()
 
     def smartFunctionGui(self) -> None:
-        isMountReady = bool(self.app.dReg["mount"].stat)
+        isMountReady = bool(self.app.dReg.mount.stat)
         isModelingReady = all(
             bool(self.app.dReg[x].stat) for x in ["mount", "camera", "plateSolve"]
         )
@@ -214,7 +214,7 @@ class MainWindow(MWidget):
 
     def setEnvironDeviceStats(self) -> None:
         isManual = self.ui.refracManual.isChecked()
-        if self.app.dReg["mount"].setting.statusRefraction != 1:
+        if self.app.dReg.mount.setting.statusRefraction != 1:
             self.app.dReg.setStat("refraction", None)
             self.ui.refractionConnected.setText("Refraction")
         elif isManual:
@@ -270,8 +270,8 @@ class MainWindow(MWidget):
         self.ui.statusOnlineGroup.setTitle(t)
 
     def updateTwilightAndDisk(self) -> None:
-        f = dark_twilight_day(self.app.ephemeris, self.app.dReg["mount"].location)
-        self.twilightText = TWILIGHTS[int(f(self.app.dReg["mount"].obsSite.ts.now()))]
+        f = dark_twilight_day(self.app.ephemeris, self.app.dReg.mount.location)
+        self.twilightText = TWILIGHTS[int(f(self.app.dReg.mount.obsSite.ts.now()))]
         diskUsage = shutil.disk_usage(self.app.mwGlob["workDir"])
         self.diskFreePct = int(diskUsage[2] / diskUsage[0] * 100)
 
@@ -284,7 +284,7 @@ class MainWindow(MWidget):
 
     def updateStatusGUI(self, obs: ObsSite) -> None:
         self.ui.mountText.setText(obs.statusText())
-        obsSite = self.app.dReg["mount"].obsSite
+        obsSite = self.app.dReg.mount.obsSite
         statusFlags = (
             (self.ui.tracking, obsSite.isTracking),
             (self.ui.park, obsSite.isParked),

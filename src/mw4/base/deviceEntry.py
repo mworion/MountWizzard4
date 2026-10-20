@@ -6,89 +6,69 @@ from typing import Any
 
 
 @dataclass
-class DeviceEntry:
+class DeviceEntry[T]:
     name: str
-    instance: Any
+    instance: T
     deviceType: str | None
     isConfigurable: bool
     stat: bool | None = field(default=None)
 
-    @property
-    def signals(self) -> Any:
+    def requireInstance(self) -> Any:
         if self.instance is None:
             raise AttributeError(f"Device '{self.name}' instance is None")
-        return self.instance.signals
+        return self.instance
+
+    @property
+    def signals(self) -> Any:
+        return self.requireInstance().signals
 
     @property
     def data(self) -> Any:
-        if self.instance is None:
-            raise AttributeError(f"Device '{self.name}' instance is None")
-        return self.instance.data
+        return self.requireInstance().data
 
     @property
     def run(self) -> Any:
-        if self.instance is None:
-            raise AttributeError(f"Device '{self.name}' instance is None")
-        return self.instance.run
+        return self.requireInstance().run
 
     @property
     def framework(self) -> Any:
-        if self.instance is None:
-            raise AttributeError(f"Device '{self.name}' instance is None")
-        return self.instance.framework
+        return self.requireInstance().framework
 
     @property
     def obsSite(self) -> Any:
-        if self.instance is None:
-            raise AttributeError(f"Device '{self.name}' instance is None")
-        return self.instance.obsSite
+        return self.requireInstance().obsSite
 
     @property
     def setting(self) -> Any:
-        if self.instance is None:
-            raise AttributeError(f"Device '{self.name}' instance is None")
-        return self.instance.setting
+        return self.requireInstance().setting
 
     @property
     def location(self) -> Any:
-        if self.instance is None:
-            raise AttributeError(f"Device '{self.name}' instance is None")
-        return self.instance.obsSite.location
+        return self.requireInstance().obsSite.location
 
     @property
     def timeJD(self) -> Any:
-        if self.instance is None:
-            raise AttributeError(f"Device '{self.name}' instance is None")
-        return self.instance.obsSite.timeJD
+        return self.requireInstance().obsSite.timeJD
 
     @property
     def model(self) -> Any:
-        if self.instance is None:
-            raise AttributeError(f"Device '{self.name}' instance is None")
-        return self.instance.model
+        return self.requireInstance().model
 
     @property
     def geometry(self) -> Any:
-        if self.instance is None:
-            raise AttributeError(f"Device '{self.name}' instance is None")
-        return self.instance.geometry
+        return self.requireInstance().geometry
 
     @property
     def firmware(self) -> Any:
-        if self.instance is None:
-            raise AttributeError(f"Device '{self.name}' instance is None")
-        return self.instance.firmware
+        return self.requireInstance().firmware
 
     @property
     def satellite(self) -> Any:
-        if self.instance is None:
-            raise AttributeError(f"Device '{self.name}' instance is None")
-        return self.instance.satellite
+        return self.requireInstance().satellite
 
     @property
     def config(self) -> Any:
-        if self.instance is None:
-            raise AttributeError(f"Device '{self.name}' instance is None")
-        if not self.instance.framework:
+        instance = self.requireInstance()
+        if not instance.framework:
             raise AttributeError(f"Device '{self.name}' instance.framework is None")
-        return self.instance.run[self.instance.framework].config
+        return instance.run[instance.framework].config

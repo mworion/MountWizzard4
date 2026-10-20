@@ -196,7 +196,7 @@ class Dome:
             self.log.debug("First overshoot disabled: [%s]", az)
             return az
 
-        direction = self.app.dReg["mount"].obsSite.AzDirection
+        direction = self.app.dReg.mount.obsSite.AzDirection
         if direction is None:
             self.log.info("Overshoot discarded no direction: [%s]", az)
             return az
@@ -224,7 +224,7 @@ class Dome:
         return self.lastFinalAz
 
     def slewDome(self, altitude: float = 0, azimuth: float = 0, follow: bool = False) -> float:
-        mount = self.app.dReg["mount"].instance
+        mount = self.app.dReg.mount.instance
         if follow:
             func = mount.calcTransformationMatricesActual
         else:

@@ -22,10 +22,10 @@ class SimulatorPointer:
             node["entity"].setEnabled(isVisible)
 
     def updatePositions(self) -> None:
-        if not self.app.dReg["mount"].stat:
+        if not self.app.dReg.mount.stat:
             return
 
-        mount = self.app.dReg["mount"].instance
+        mount = self.app.dReg.mount.instance
         _, _, intersect, _, _ = mount.calcTransformationMatricesActual()
 
         if intersect is None:

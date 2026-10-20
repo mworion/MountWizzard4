@@ -204,13 +204,13 @@ def test_setHidIcons_connectedWithFeatureDisabled(function):
     """Test setHidIcons when connected but feature disabled (status=1)."""
     with mock.patch.object(function, "setHidIcon") as mock_setHidIcon:
         # Set connected status
-        function.app.dReg["hidController"].stat = True
+        function.app.dReg.hidController.stat = True
         # Set one config flag to False (feature disabled)
-        function.app.dReg["hidController"].instance.config.moveAltAz = False
-        function.app.dReg["hidController"].instance.config.moveRaDec = True
-        function.app.dReg["hidController"].instance.config.tracking = True
-        function.app.dReg["hidController"].instance.config.parkStop = True
-        function.app.dReg["hidController"].instance.config.dome = True
+        function.app.dReg.hidController.instance.config.moveAltAz = False
+        function.app.dReg.hidController.instance.config.moveRaDec = True
+        function.app.dReg.hidController.instance.config.tracking = True
+        function.app.dReg.hidController.instance.config.parkStop = True
+        function.app.dReg.hidController.instance.config.dome = True
 
         function.setHidIcons()
 

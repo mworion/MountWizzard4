@@ -66,7 +66,7 @@ def solveResult(key: str, success: bool = True, message: str = "Ok") -> dict:
 
 def test_setupAndResetSignals(function):
     function.config = replace(function.config, modelTiming=ModelTiming.PROGRESSIVE)
-    exposed = function.app.dReg["camera"].signals.exposed
+    exposed = function.app.dReg.camera.signals.exposed
     with mock.patch.object(function, "startSlew") as mockSlew:
         function.setupSignals()
         try:
@@ -414,7 +414,7 @@ def test_exposeImage_1(function):
 
 def test_startNewPlateSolve_1(function):
     function.modelBuildData = [{"imagePath": "test"}]
-    with mock.patch.object(function.app.dReg["plateSolve"].instance, "solve"):
+    with mock.patch.object(function.app.dReg.plateSolve.instance, "solve"):
         function.startNewPlateSolve(Path("image-000.fits"))
 
 

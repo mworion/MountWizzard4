@@ -31,7 +31,7 @@ def test_init_connects_mountConnected_to_startKeypad(keypad_window):
         mock.patch.object(keypad_window, "clearDisplay"),
         mock.patch.object(keypad_window, "writeTextRow"),
     ):
-        keypad_window.app.dReg["mount"].signals.mountIsUp.emit(True)
+        keypad_window.app.dReg.mount.signals.mountIsUp.emit(True)
         mock_start_worker.assert_called()
 
 
@@ -259,8 +259,8 @@ def test_startKeypad_creates_worker(keypad_window):
         assert args[1] == keypad_window.threadPool
         assert args[2] == keypad_window.keypad.runnerWebsocket
         assert args[3] == (
-            keypad_window.app.dReg["mount"].instance.config.hostAddress,
-            keypad_window.app.dReg["mount"].instance.config.port,
+            keypad_window.app.dReg.mount.instance.config.hostAddress,
+            keypad_window.app.dReg.mount.instance.config.port,
         )
 
 

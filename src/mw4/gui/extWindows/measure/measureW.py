@@ -78,8 +78,8 @@ class MeasureWindow(MWidget):
         self.drawMeasure()
 
     def setTitle(self) -> None:
-        if self.app.dReg["measure"].instance.framework == "csv":
-            imagePath = self.app.dReg["measure"].run["csv"].csvFilename
+        if self.app.dReg.measure.instance.framework == "csv":
+            imagePath = self.app.dReg.measure.run["csv"].csvFilename
             title = f"Measuring:   {imagePath.stem}"
         else:
             title = "Measuring"
@@ -119,7 +119,7 @@ class MeasureWindow(MWidget):
         if newPlot:
             self.constructPlotItem(plotItem, chart, x)
 
-        data = self.app.dReg["measure"].data
+        data = self.app.dReg.measure.data
         for plot in chart["lineItems"]:
             if plot not in data:
                 continue
@@ -194,7 +194,7 @@ class MeasureWindow(MWidget):
                 plotItem.enableAutoRange(x=True, y=True)
 
     def drawMeasure(self) -> None:
-        data = self.app.dReg["measure"].data
+        data = self.app.dReg.measure.data
         if len(data.get("time", [])) < 5:
             return
         if not self.drawLock.tryLock():

@@ -55,7 +55,7 @@ class IERSTime(TabAddon):
             self.msg.emit(2, "IERS", "Data error", "Data could not be exported - stopping")
             return
         dataTypes = ["finalsdata", "leapsec"]
-        url = self.app.dReg["mount"].instance.config.hostAddress
+        url = self.app.dReg.mount.instance.config.hostAddress
         self.msg.emit(0, "IERS", "Uploading", "Upload to mount running")
         suc = UploadPopup.upload(self.mainW, url, dataTypes, self.tempDir)
         if suc:

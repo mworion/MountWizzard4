@@ -56,22 +56,22 @@ class ModelData(QObject):
         self.startSlew.connect(self.startNewSlew, Qt.ConnectionType.QueuedConnection)
 
     def setupSignals(self) -> None:
-        self.app.dReg["camera"].signals.exposed.connect(self.setImageExposed)
-        self.app.dReg["camera"].signals.downloaded.connect(self.setImageDownloaded)
-        self.app.dReg["camera"].signals.saved.connect(self.setImageSaved)
-        self.app.dReg["mount"].signals.slewed.connect(self.setMountSlewed)
-        self.app.dReg["dome"].signals.slewed.connect(self.setDomeSlewed)
-        self.app.dReg["camera"].signals.saved.connect(self.startNewPlateSolve)
-        self.app.dReg["plateSolve"].signals.result.connect(self.collectPlateSolveResult)
+        self.app.dReg.camera.signals.exposed.connect(self.setImageExposed)
+        self.app.dReg.camera.signals.downloaded.connect(self.setImageDownloaded)
+        self.app.dReg.camera.signals.saved.connect(self.setImageSaved)
+        self.app.dReg.mount.signals.slewed.connect(self.setMountSlewed)
+        self.app.dReg.dome.signals.slewed.connect(self.setDomeSlewed)
+        self.app.dReg.camera.signals.saved.connect(self.startNewPlateSolve)
+        self.app.dReg.plateSolve.signals.result.connect(self.collectPlateSolveResult)
 
     def resetSignals(self) -> None:
-        self.app.dReg["camera"].signals.exposed.disconnect(self.setImageExposed)
-        self.app.dReg["camera"].signals.downloaded.disconnect(self.setImageDownloaded)
-        self.app.dReg["camera"].signals.saved.disconnect(self.setImageSaved)
-        self.app.dReg["mount"].signals.slewed.disconnect(self.setMountSlewed)
-        self.app.dReg["dome"].signals.slewed.disconnect(self.setDomeSlewed)
-        self.app.dReg["camera"].signals.saved.disconnect(self.startNewPlateSolve)
-        self.app.dReg["plateSolve"].signals.result.disconnect(self.collectPlateSolveResult)
+        self.app.dReg.camera.signals.exposed.disconnect(self.setImageExposed)
+        self.app.dReg.camera.signals.downloaded.disconnect(self.setImageDownloaded)
+        self.app.dReg.camera.signals.saved.disconnect(self.setImageSaved)
+        self.app.dReg.mount.signals.slewed.disconnect(self.setMountSlewed)
+        self.app.dReg.dome.signals.slewed.disconnect(self.setDomeSlewed)
+        self.app.dReg.camera.signals.saved.disconnect(self.startNewPlateSolve)
+        self.app.dReg.plateSolve.signals.result.disconnect(self.collectPlateSolveResult)
 
     def setImageExposed(self) -> None:
         if self.config.modelTiming == ModelTiming.PROGRESSIVE:
@@ -92,7 +92,7 @@ class ModelData(QObject):
 
     def setMountSlewed(self) -> None:
         self.mountSlewed = True
-        if not self.app.dReg["dome"].stat:
+        if not self.app.dReg.dome.stat:
             self.domeSlewed = True
         self.startExposureAfterSlew()
 
@@ -105,8 +105,8 @@ class ModelData(QObject):
         self.modelRunKey = nextKey or ""
         if self.cancelBatch or self.endBatch or nextKey is None:
             return
-        mount = self.app.dReg["mount"]
-        dome = self.app.dReg["dome"]
+        mount = self.app.dReg.mount
+        dome = self.app.dReg.dome
         point = self.modelBuildData[nextKey]
         altitude = point["altitude"]
         azimuth = point["azimuth"]
@@ -120,7 +120,7 @@ class ModelData(QObject):
                 "message": "Slew not possible - limits ?",
                 "imagePath": point["imagePath"],
             }
-            self.app.dReg["plateSolve"].signals.result.emit(result)
+            self.app.dReg.plateSolve.signals.result.emit(result)
             self.startSlew.emit()
             t = f"{'Slew limits ':15s}: [{nextKey}]"
             self.log.debug(t)
@@ -155,7 +155,7 @@ class ModelData(QObject):
 
     def addMountDataToModelBuildData(self) -> None:
         item = self.modelBuildData[self.modelRunKey]
-        obs = self.app.dReg["mount"].obsSite
+        obs = self.app.dReg.mount.obsSite
         t = f"{'Add mount data':15s}: [{self.modelRunKey}], Ra: [{obs.raJNow}], "
         t += f"Dec: [{obs.decJNow}], Jd: [{obs.timeJD}]"
         self.log.debug(t)
@@ -186,18 +186,18 @@ class ModelData(QObject):
     def exposeImage(self) -> None:
         self.addMountDataToModelBuildData()
         item = self.modelBuildData[self.modelRunKey]
-        cam = self.app.dReg["camera"].instance
+        cam = self.app.dReg.camera.instance
         imagePath = item["imagePath"]
         exposureTime = item["exposureTime"] = cam.exposureTime1
         binning = item["binning"] = cam.binning1
         t = f"{'Start exposure':15s}: [{self.modelRunKey}], ExpTime: [{exposureTime:3.0f}]"
         self.log.debug(t)
-        self.app.dReg["camera"].instance.expose(imagePath, exposureTime, binning)
+        self.app.dReg.camera.instance.expose(imagePath, exposureTime, binning)
         self.statusExpose.emit([imagePath.stem, exposureTime, binning])
 
     def startNewPlateSolve(self, imagePath: Path) -> None:
         self.log.debug("Start solve    : [%s]", imagePath.stem)
-        self.app.dReg["plateSolve"].instance.solve(imagePath)
+        self.app.dReg.plateSolve.instance.solve(imagePath)
 
     def sendModelProgress(self) -> None:
         donePoints = sum(1 for key in self.modelBuildData if self.modelBuildData[key]["processed"])
@@ -242,13 +242,13 @@ class ModelData(QObject):
             modelItem["imagePath"] = imagePath
             modelItem["altitude"] = Angle(degrees=point[0])
             modelItem["azimuth"] = Angle(degrees=point[1])
-            modelItem["exposureTime"] = self.app.dReg["camera"].instance.exposureTime
-            modelItem["binning"] = self.app.dReg["camera"].instance.binning
-            modelItem["subFrame"] = self.app.dReg["camera"].instance.subFrame
-            modelItem["fastReadout"] = self.app.dReg["camera"].instance.fastReadout
+            modelItem["exposureTime"] = self.app.dReg.camera.instance.exposureTime
+            modelItem["binning"] = self.app.dReg.camera.instance.binning
+            modelItem["subFrame"] = self.app.dReg.camera.instance.subFrame
+            modelItem["fastReadout"] = self.app.dReg.camera.instance.fastReadout
             modelItem["name"] = self.modelName
             modelItem["plateSolveApp"] = self.config.plateSolveApp
-            modelItem["focalLength"] = self.app.dReg["camera"].instance.focalLength
+            modelItem["focalLength"] = self.app.dReg.camera.instance.focalLength
             modelItem["countSequence"] = index
             modelItem["message"] = ""
             modelItem["success"] = False

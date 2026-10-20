@@ -73,19 +73,19 @@ class MountMove(TabAddon):
         return {
             "max": {
                 "button": self.ui.slewSpeedMax,
-                "func": self.app.dReg["mount"].setting.setSlewSpeedMax,
+                "func": self.app.dReg.mount.setting.setSlewSpeedMax,
             },
             "high": {
                 "button": self.ui.slewSpeedHigh,
-                "func": self.app.dReg["mount"].setting.setSlewSpeedHigh,
+                "func": self.app.dReg.mount.setting.setSlewSpeedHigh,
             },
             "med": {
                 "button": self.ui.slewSpeedMed,
-                "func": self.app.dReg["mount"].setting.setSlewSpeedMed,
+                "func": self.app.dReg.mount.setting.setSlewSpeedMed,
             },
             "low": {
                 "button": self.ui.slewSpeedLow,
-                "func": self.app.dReg["mount"].setting.setSlewSpeedLow,
+                "func": self.app.dReg.mount.setting.setSlewSpeedLow,
             },
         }
 
@@ -141,9 +141,9 @@ class MountMove(TabAddon):
         clickable(self.ui.moveCoordinateDec).connect(self.setDEC)
         self.ui.moveCoordinateAlt.textEdited.connect(self.setAlt)
         self.ui.moveCoordinateAz.textEdited.connect(self.setAz)
-        self.app.dReg["mount"].signals.slewed.connect(self.moveAltAzDefault)
-        self.app.dReg["hidController"].signals.hidDirection.connect(self.moveAltAzHid)
-        self.app.dReg["hidController"].signals.hidSR.connect(self.moveRaDecHid)
+        self.app.dReg.mount.signals.slewed.connect(self.moveAltAzDefault)
+        self.app.dReg.hidController.signals.hidDirection.connect(self.moveAltAzHid)
+        self.app.dReg.hidController.signals.hidSR.connect(self.moveRaDecHid)
 
     def initConfig(self) -> None:
         config = self.app.config.get("WindowMain", {})
@@ -175,7 +175,7 @@ class MountMove(TabAddon):
             self.ui.moveStepSizeAltAz.addItem(step_size.displayText)
 
     def stopMoveAll(self) -> None:
-        self.app.dReg["mount"].obsSite.stopMoveAll()
+        self.app.dReg.mount.obsSite.stopMoveAll()
         for key in self.setButtons:
             changeStyleDynamic(self.setButtons[key]["buttonRaDec"], "run", "false")
             changeStyleDynamic(self.setButtons[key]["buttonAltAz"], "run", "false")
@@ -222,19 +222,19 @@ class MountMove(TabAddon):
         if coord == [0, 0]:
             self.stopMoveAll()
         if coord[0] == 1:
-            self.app.dReg["mount"].obsSite.moveNorth()
+            self.app.dReg.mount.obsSite.moveNorth()
         elif coord[0] == -1:
-            self.app.dReg["mount"].obsSite.moveSouth()
+            self.app.dReg.mount.obsSite.moveSouth()
         elif coord[0] == 0:
-            self.app.dReg["mount"].obsSite.stopMoveNorth()
-            self.app.dReg["mount"].obsSite.stopMoveSouth()
+            self.app.dReg.mount.obsSite.stopMoveNorth()
+            self.app.dReg.mount.obsSite.stopMoveSouth()
         if coord[1] == 1:
-            self.app.dReg["mount"].obsSite.moveEast()
+            self.app.dReg.mount.obsSite.moveEast()
         elif coord[1] == -1:
-            self.app.dReg["mount"].obsSite.moveWest()
+            self.app.dReg.mount.obsSite.moveWest()
         elif coord[1] == 0:
-            self.app.dReg["mount"].obsSite.stopMoveEast()
-            self.app.dReg["mount"].obsSite.stopMoveWest()
+            self.app.dReg.mount.obsSite.stopMoveEast()
+            self.app.dReg.mount.obsSite.stopMoveWest()
         self.moveDuration()
 
     def moveRaDecHid(self, decVal: int, raVal: int) -> None:
@@ -271,7 +271,7 @@ class MountMove(TabAddon):
         stepSizeText = self.ui.moveStepSizeAltAz.currentText()
         step = next(s.valueDegrees for s in StepSize if s.displayText == stepSizeText)
         coord = self.setButtons[direction]["coord"]
-        obs = self.app.dReg["mount"].obsSite
+        obs = self.app.dReg.mount.obsSite
         targetAlt = Angle(degrees=obs.Alt.degrees + coord[0] * step)
         targetAz = Angle(degrees=(obs.Az.degrees + coord[1] * step) % 360)
         self.slewInterface.slewTargetAltAz(targetAlt, targetAz)
@@ -290,7 +290,7 @@ class MountMove(TabAddon):
         self.moveAltAz(direction)
 
     def checkRaDecInputs(self) -> None:
-        canSlew = self.app.dReg["mount"].obsSite.setTargetRaDec(self.targetRa, self.targetDec)
+        canSlew = self.app.dReg.mount.obsSite.setTargetRaDec(self.targetRa, self.targetDec)
         self.ui.moveRaDecAbsolute.setEnabled(canSlew)
 
     def setRA(self) -> None:
@@ -324,7 +324,7 @@ class MountMove(TabAddon):
         self.checkRaDecInputs()
 
     def checkAltAzInputs(self) -> None:
-        canSlew = self.app.dReg["mount"].obsSite.setTargetAltAz(self.targetAlt, self.targetAz)
+        canSlew = self.app.dReg.mount.obsSite.setTargetAltAz(self.targetAlt, self.targetAz)
         self.ui.moveAltAzAbsolute.setEnabled(canSlew)
 
     def setAlt(self) -> None:

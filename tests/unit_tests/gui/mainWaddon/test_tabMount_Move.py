@@ -493,3 +493,20 @@ def test_moveRaDecAbsolute_4(function):
     function.ui.moveCoordinateDec.setText("30 30")
     with mock.patch.object(function.slewInterface, "slewTargetRaDec"):
         function.moveRaDecAbsolute()
+
+
+def test_createSlewSpeeds(function):
+    assert set(function.createSlewSpeeds()) == {"max", "high", "med", "low"}
+
+
+def test_createSetButtons(function):
+    assert set(function.createSetButtons()) == {"N", "NE", "E", "SE", "S", "SW", "W", "NW"}
+    assert function.directionByVector[(1, 0)] == "N"
+    assert function.directionByVector[(-1, -1)] == "SW"
+
+
+def test_setupSignals(function):
+    with mock.patch.object(function, "stopPressed") as method:
+        function.setupSignals()
+        function.ui.stopMoveAll.click()
+    method.assert_called()

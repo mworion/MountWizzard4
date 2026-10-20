@@ -1,7 +1,6 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
-import numpy as np
 import pyqtgraph as pg
 from astropy.io import fits
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, getTabIndex, guiSetText
@@ -15,6 +14,11 @@ from mw4.logic.photometry.photometry_analysis import (
     computeTiltSquareView,
     computeTiltTriangleView,
     tiltHint,
+)
+from mw4.logic.photometry.tiltGeometry import (
+    TRIANGLE_LINKS,
+    TriangleGeometry,
+    calcTriangleGeometry,
 )
 from PySide6.QtCore import QRectF
 from PySide6.QtGui import QFont
@@ -225,41 +229,49 @@ class ImageTabs:
         tab.setTabEnabled(getTabIndex(tab, "TiltSquare"), True)
         return True
 
+    def addTextItem(self, plotItem: Any, text: str, x: float, y: float) -> None:
+        textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.parent.M_PRIM)
+        textItem.setText(text)
+        textItem.setFont(self.fontText)
+        textItem.setZValue(10)
+        textItem.setPos(x, y)
+        plotItem.addItem(textItem)
+
+    def addLineItem(self, plotItem: Any, line: tuple[float, ...], pen: Any) -> None:
+        lineItem = pg.QtWidgets.QGraphicsLineItem()
+        lineItem.setLine(*line)
+        lineItem.setPen(pen)
+        plotItem.addItem(lineItem)
+
+    def drawTriangleGeometry(self, plotItem: Any, geometry: TriangleGeometry, view: Any) -> None:
+        for ring in geometry.rings:
+            ellipseItem = pg.QtWidgets.QGraphicsEllipseItem()
+            ellipseItem.setRect(*ring)
+            ellipseItem.setPen(self.pen)
+            plotItem.addItem(ellipseItem)
+
+        self.addTextItem(plotItem, f"{self.photometry.hfrInner:1.2f}", geometry.cx, geometry.cy)
+        for i, separator in enumerate(geometry.separators):
+            self.addLineItem(plotItem, separator, self.pen)
+            posX, posY = geometry.textPositions[i]
+            self.addTextItem(plotItem, f"{view.segData[i]:1.2f}", posX, posY)
+
+        points = view.points
+        for a, b in TRIANGLE_LINKS:
+            line = (points[a][0], points[a][1], points[b][0], points[b][1])
+            self.addLineItem(plotItem, line, self.penPink)
+
     def showTiltTriangle(self) -> None:
-        segHFR = self.photometry.hfrSegTriangle
         w = self.photometry.w
         h = self.photometry.h
-        r = min([h, w]) / 2
-        cx = w / 2
-        cy = h / 2
-        r25 = 0.25 * r
-        r62 = 0.625 * r
-
         plotItem = self.ui.tiltTriangle.p[0]
         self.clearImageTab(self.ui.tiltTriangle)
         self.ui.tiltTriangle.setImage(self.photometry.image)
         self.ui.tiltTriangle.barItem.setLevels(self.ui.image.barItem.levels())
 
-        # draw rings on image
-        for rad in [r, r25]:
-            ellipseItem = pg.QtWidgets.QGraphicsEllipseItem()
-            ellipseItem.setRect(cx - rad, cy - rad, 2 * rad, 2 * rad)
-            ellipseItem.setPen(self.pen)
-            plotItem.addItem(ellipseItem)
-
-        # add inner value
-        text = f"{self.photometry.hfrInner:1.2f}"
-        textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.parent.M_PRIM)
-        textItem.setText(text)
-        textItem.setFont(self.fontText)
-        textItem.setZValue(10)
-        textItem.setPos(cx, cy)
-        plotItem.addItem(textItem)
-
-        # add ring values
         offsetTiltAngle = self.ui.offsetTiltAngle.value()
         view = computeTiltTriangleView(
-            segHFR,
+            self.photometry.hfrSegTriangle,
             offsetTiltAngle,
             w,
             h,
@@ -267,43 +279,8 @@ class ImageTabs:
             self.photometry.hfrInner,
             self.photometry.hfrOuter,
         )
-
-        for i, angle in enumerate(range(0, 360, 120)):
-            angleSep = np.radians(angle + offsetTiltAngle + 210)
-            angleText = np.radians(angle + offsetTiltAngle + 270)
-            posX1 = cx + r25 * np.cos(angleSep)
-            posX2 = cx + r * np.cos(angleSep)
-            posY1 = cy + r25 * np.sin(angleSep)
-            posY2 = cy + r * np.sin(angleSep)
-            lineItem = pg.QtWidgets.QGraphicsLineItem()
-            lineItem.setLine(posX1, posY1, posX2, posY2)
-            lineItem.setPen(self.pen)
-            plotItem.addItem(lineItem)
-
-            text = f"{view.segData[i]:1.2f}"
-            textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.parent.M_PRIM)
-            textItem.setFont(self.fontText)
-            textItem.setZValue(10)
-            textItem.setText(text)
-            posX = cx + r62 * np.cos(angleText)
-            posY = cy + r62 * np.sin(angleText)
-            textItem.setPos(posX, posY)
-            plotItem.addItem(textItem)
-
-        points = view.points
-
-        # draw vectors
-        links = [[0, 1], [0, 2], [0, 3], [1, 2], [2, 3], [3, 1]]
-        for link in links:
-            lineItem = pg.QtWidgets.QGraphicsLineItem()
-            lineItem.setPen(self.penPink)
-            lineItem.setLine(
-                points[link[0]][0],
-                points[link[0]][1],
-                points[link[1]][0],
-                points[link[1]][1],
-            )
-            plotItem.addItem(lineItem)
+        geometry = calcTriangleGeometry(w, h, offsetTiltAngle)
+        self.drawTriangleGeometry(plotItem, geometry, view)
 
         hint = tiltHint(view.tiltPercent, self.TILT)
         self.ui.textTriangleTiltHFR.setText(

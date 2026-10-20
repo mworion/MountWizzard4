@@ -173,10 +173,6 @@ ignore = ["N999"]  # camelCase module names are the project convention
 # worker boundary: nothing may escape into the pool thread (busy flag release)
 "src/mw4/base/tpool.py" = ["BLE001"]
 # known oversized functions (see review M1); remove entries when split up
-"src/mw4/gui/extWindows/image/imageTabs.py" = ["PLR0915"]
-"src/mw4/gui/extWindows/simulator/materials.py" = ["PLR0915"]
-"src/mw4/gui/mainWaddon/tabImage_Stats.py" = ["PLR0915"]
-"src/mw4/gui/mainWaddon/tabMount_Sett.py" = ["PLR0915"]
 "src/mw4/gui/utilities/nativeQt/qtFileDialog.py" = ["PLR0915"]
 "src/mw4/gui/utilities/nativeQt/qtInputDialog.py" = ["PLR0915"]
 "src/mw4/logic/databaseProcessing/dataWriter.py" = ["PLR0915"]

@@ -5,6 +5,8 @@ from mw4.gui.styles.styles import Styles
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.QtGui import QColor
 
+RGBA = tuple[int, ...]
+
 
 class Materials(Styles):
     """
@@ -14,141 +16,100 @@ class Materials(Styles):
 
     def __init__(self) -> None:
         super().__init__()
+        self.createMetalRoughMaterials()
+        self.createDiffuseSpecularMaterials()
+        self.createPhongAlphaMaterials()
+        self.createPhongMaterials()
 
-        self.mountBlack = Qt3DExtras.QMetalRoughMaterial()
-        self.mountBlack.setBaseColor(QColor(127, 127, 127))
-        self.mountBlack.setMetalness(0.8)
-        self.mountBlack.setRoughness(0.5)
+    @staticmethod
+    def createMetalRough(
+        baseColor: QColor, metalness: float, roughness: float
+    ) -> Qt3DExtras.QMetalRoughMaterial:
+        material = Qt3DExtras.QMetalRoughMaterial()
+        material.setBaseColor(baseColor)
+        material.setMetalness(metalness)
+        material.setRoughness(roughness)
+        return material
 
-        self.aluminiumGrey = Qt3DExtras.QMetalRoughMaterial()
-        self.aluminiumGrey.setBaseColor(QColor(164, 164, 192))
-        self.aluminiumGrey.setMetalness(0.3)
-        self.aluminiumGrey.setRoughness(0.5)
+    @staticmethod
+    def createDiffuseSpecular(
+        ambient: RGBA,
+        specular: RGBA,
+        diffuse: RGBA,
+        alphaBlending: bool = False,
+        shininess: float | None = None,
+    ) -> Qt3DExtras.QDiffuseSpecularMaterial:
+        material = Qt3DExtras.QDiffuseSpecularMaterial()
+        material.setAmbient(QColor(*ambient))
+        material.setSpecular(QColor(*specular))
+        material.setDiffuse(QColor(*diffuse))
+        material.setAlphaBlendingEnabled(alphaBlending)
+        if shininess is not None:
+            material.setShininess(shininess)
+        return material
 
-        self.environ = Qt3DExtras.QMetalRoughMaterial()
-        self.environ.setBaseColor(self.M_PRIM2)
-        self.environ.setMetalness(0.5)
-        self.environ.setRoughness(0.5)
+    def createPhongAlpha(
+        self,
+        ambient: list[int],
+        diffuse: list[int] | None = None,
+        specular: list[int] | None = None,
+        alpha: float = 1,
+        shininess: float = 64,
+    ) -> Qt3DExtras.QPhongAlphaMaterial:
+        """diffuse and specular default to the ambient color."""
+        material = Qt3DExtras.QPhongAlphaMaterial()
+        material.setAmbient(self.rgb2hex(ambient))
+        material.setDiffuse(self.rgb2hex(diffuse or ambient))
+        material.setSpecular(self.rgb2hex(specular or ambient))
+        material.setAlpha(alpha)
+        material.setShininess(shininess)
+        return material
 
-        self.stainless = Qt3DExtras.QMetalRoughMaterial()
-        self.stainless.setBaseColor(QColor(255, 255, 255))
-        self.stainless.setMetalness(0.9)
-        self.stainless.setRoughness(0.8)
+    def createPhong(
+        self, color: list[int], shininess: float | None = None
+    ) -> Qt3DExtras.QPhongMaterial:
+        material = Qt3DExtras.QPhongMaterial()
+        material.setAmbient(self.rgb2hex(color))
+        material.setDiffuse(self.rgb2hex(color))
+        material.setSpecular(self.rgb2hex(color))
+        if shininess is not None:
+            material.setShininess(shininess)
+        return material
 
-        self.domeColumn = Qt3DExtras.QMetalRoughMaterial()
-        self.domeColumn.setBaseColor(QColor(150, 90, 50))
-        self.domeColumn.setMetalness(0)
-        self.domeColumn.setRoughness(1)
+    def createMetalRoughMaterials(self) -> None:
+        self.mountBlack = self.createMetalRough(QColor(127, 127, 127), 0.8, 0.5)
+        self.aluminiumGrey = self.createMetalRough(QColor(164, 164, 192), 0.3, 0.5)
+        self.environ = self.createMetalRough(self.M_PRIM2, 0.5, 0.5)
+        self.stainless = self.createMetalRough(QColor(255, 255, 255), 0.9, 0.8)
+        self.domeColumn = self.createMetalRough(QColor(150, 90, 50), 0, 1)
 
-        self.aluCCD = Qt3DExtras.QDiffuseSpecularMaterial()
-        self.aluCCD.setAmbient(QColor(32, 32, 92))
-        self.aluCCD.setSpecular(QColor(64, 64, 255))
-        self.aluCCD.setDiffuse(QColor(32, 32, 92, 255))
-        self.aluCCD.setAlphaBlendingEnabled(False)
+    def createDiffuseSpecularMaterials(self) -> None:
+        self.aluCCD = self.createDiffuseSpecular((32, 32, 92), (64, 64, 255), (32, 32, 92, 255))
+        self.aluRed = self.createDiffuseSpecular(
+            (128, 32, 32), (255, 255, 255), (128, 32, 32, 255), shininess=200
+        )
+        self.aluKnobs = self.createDiffuseSpecular(
+            (128, 128, 128), (255, 255, 255), (64, 64, 64, 255), shininess=64
+        )
+        self.white = self.createDiffuseSpecular(
+            (224, 224, 224), (224, 224, 224), (224, 224, 224, 255), shininess=128
+        )
+        self.glass = self.createDiffuseSpecular(
+            (0, 0, 112), (0, 0, 112), (128, 128, 192, 64), alphaBlending=True, shininess=128
+        )
 
-        self.aluRed = Qt3DExtras.QDiffuseSpecularMaterial()
-        self.aluRed.setAmbient(QColor(128, 32, 32))
-        self.aluRed.setSpecular(QColor(255, 255, 255))
-        self.aluRed.setDiffuse(QColor(128, 32, 32, 255))
-        self.aluRed.setAlphaBlendingEnabled(False)
-        self.aluRed.setShininess(200)
+    def createPhongAlphaMaterials(self) -> None:
+        self.domeSphere = self.createPhongAlpha(self.M_PRIM2)
+        self.domeSlit = self.createPhongAlpha(self.M_PRIM3)
+        self.domeDoor = self.createPhongAlpha(self.M_PRIM3)
+        self.walls = self.createPhongAlpha(self.M_SEC1)
+        self.horizon = self.createPhongAlpha(self.M_PRIM4, self.M_YELLOW, self.M_YELLOW, alpha=0.35)
 
-        self.aluKnobs = Qt3DExtras.QDiffuseSpecularMaterial()
-        self.aluKnobs.setAmbient(QColor(128, 128, 128))
-        self.aluKnobs.setSpecular(QColor(255, 255, 255))
-        self.aluKnobs.setDiffuse(QColor(64, 64, 64, 255))
-        self.aluKnobs.setShininess(64)
-        self.aluKnobs.setAlphaBlendingEnabled(False)
-
-        self.white = Qt3DExtras.QDiffuseSpecularMaterial()
-        self.white.setAmbient(QColor(224, 224, 224))
-        self.white.setSpecular(QColor(224, 224, 224))
-        self.white.setDiffuse(QColor(224, 224, 224, 255))
-        self.white.setAlphaBlendingEnabled(False)
-        self.white.setShininess(128)
-
-        self.glass = Qt3DExtras.QDiffuseSpecularMaterial()
-        self.glass.setAmbient(QColor(0, 0, 112))
-        self.glass.setSpecular(QColor(0, 0, 112))
-        self.glass.setDiffuse(QColor(128, 128, 192, 64))
-        self.glass.setAlphaBlendingEnabled(True)
-        self.glass.setShininess(128)
-
-        """
-        self.stainless = Qt3DExtras.QDiffuseSpecularMaterial()
-        self.stainless.setAmbient(QColor(192, 192, 192))
-        self.stainless.setDiffuse(QColor(128, 128, 128))
-        self.stainless.setSpecular(QColor(255, 255, 255, 255))
-        self.stainless.setAlphaBlendingEnabled(False)
-        self.stainless.setShininess(255)
-        """
-
-        self.domeSphere = Qt3DExtras.QPhongAlphaMaterial()
-        self.domeSphere.setAmbient(self.rgb2hex(self.M_PRIM2))
-        self.domeSphere.setDiffuse(self.rgb2hex(self.M_PRIM2))
-        self.domeSphere.setSpecular(self.rgb2hex(self.M_PRIM2))
-        self.domeSphere.setShininess(64)
-        self.domeSphere.setAlpha(1)
-
-        self.domeSlit = Qt3DExtras.QPhongAlphaMaterial()
-        self.domeSlit.setAmbient(self.rgb2hex(self.M_PRIM3))
-        self.domeSlit.setDiffuse(self.rgb2hex(self.M_PRIM3))
-        self.domeSlit.setSpecular(self.rgb2hex(self.M_PRIM3))
-        self.domeSlit.setShininess(64)
-        self.domeSlit.setAlpha(1)
-
-        self.domeDoor = Qt3DExtras.QPhongAlphaMaterial()
-        self.domeDoor.setAmbient(self.rgb2hex(self.M_PRIM3))
-        self.domeDoor.setDiffuse(self.rgb2hex(self.M_PRIM3))
-        self.domeDoor.setSpecular(self.rgb2hex(self.M_PRIM3))
-        self.domeDoor.setShininess(64)
-        self.domeDoor.setAlpha(1)
-
-        self.pointsRed = Qt3DExtras.QPhongMaterial()
-        self.pointsRed.setAmbient(self.rgb2hex(self.M_RED))
-        self.pointsRed.setDiffuse(self.rgb2hex(self.M_RED))
-        self.pointsRed.setSpecular(self.rgb2hex(self.M_RED))
-        self.pointsRed.setShininess(64)
-
-        self.pointsGreen = Qt3DExtras.QPhongMaterial()
-        self.pointsGreen.setAmbient(self.rgb2hex(self.M_GREEN))
-        self.pointsGreen.setDiffuse(self.rgb2hex(self.M_GREEN))
-        self.pointsGreen.setSpecular(self.rgb2hex(self.M_GREEN))
-        self.pointsGreen.setShininess(64)
-
-        self.points = Qt3DExtras.QPhongMaterial()
-        self.points.setAmbient(self.rgb2hex(self.M_TER))
-        self.points.setDiffuse(self.rgb2hex(self.M_TER))
+    def createPhongMaterials(self) -> None:
+        self.pointsRed = self.createPhong(self.M_RED, 64)
+        self.pointsGreen = self.createPhong(self.M_GREEN, 64)
+        self.points = self.createPhong(self.M_TER)
         self.points.setSpecular(128)
-
-        self.lines = Qt3DExtras.QPhongMaterial()
-        self.lines.setAmbient(self.rgb2hex(self.M_GRAY))
-        self.lines.setDiffuse(self.rgb2hex(self.M_GRAY))
-        self.lines.setSpecular(self.rgb2hex(self.M_GRAY))
-        self.lines.setShininess(0)
-
-        self.pointer = Qt3DExtras.QPhongMaterial()
-        self.pointer.setAmbient(self.rgb2hex(self.M_PINK1))
-        self.pointer.setDiffuse(self.rgb2hex(self.M_PINK1))
-        self.pointer.setSpecular(self.rgb2hex(self.M_PINK1))
-        self.pointer.setShininess(255)
-
-        self.laser = Qt3DExtras.QPhongMaterial()
-        self.laser.setAmbient(self.rgb2hex(self.M_YELLOW))
-        self.laser.setDiffuse(self.rgb2hex(self.M_YELLOW))
-        self.laser.setSpecular(self.rgb2hex(self.M_YELLOW))
-        self.laser.setShininess(255)
-
-        self.walls = Qt3DExtras.QPhongAlphaMaterial()
-        self.walls.setAmbient(self.rgb2hex(self.M_SEC1))
-        self.walls.setDiffuse(self.rgb2hex(self.M_SEC1))
-        self.walls.setSpecular(self.rgb2hex(self.M_SEC1))
-        self.walls.setAlpha(1)
-        self.walls.setShininess(64)
-
-        self.horizon = Qt3DExtras.QPhongAlphaMaterial()
-        self.horizon.setAmbient(self.rgb2hex(self.M_PRIM4))
-        self.horizon.setDiffuse(self.rgb2hex(self.M_YELLOW))
-        self.horizon.setSpecular(self.rgb2hex(self.M_YELLOW))
-        self.horizon.setAlpha(0.35)
-        self.horizon.setShininess(64)
+        self.lines = self.createPhong(self.M_GRAY, 0)
+        self.pointer = self.createPhong(self.M_PINK1, 255)
+        self.laser = self.createPhong(self.M_YELLOW, 255)

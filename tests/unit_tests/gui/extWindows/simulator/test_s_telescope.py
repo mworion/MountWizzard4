@@ -117,3 +117,50 @@ def test_updateRotation_3(function):
     function.app.mount.obsSite.angularPosDEC = Angle(degrees=10)
     with mock.patch.object(function.parent, "entityModel", {}):
         function.updateRotation()
+
+
+def test_createMountBase(function):
+    model = function.createMountBase()
+    assert list(model) == ["mountRoot", "mountBase", "mountKnobs", "lat", "mountRa", "ra"]
+
+
+def test_createDeclinationAxis(function):
+    model = function.createDeclinationAxis()
+    assert list(model) == [
+        "mountDec",
+        "mountDecKnobs",
+        "mountDecWeights",
+        "dec",
+        "mountHead",
+        "mountHeadKnobs",
+    ]
+
+
+def test_createOta(function):
+    model = function.createOta()
+    assert next(iter(model)) == "gem"
+    assert list(model)[-1] == "otaFocusTop"
+
+
+def test_create_assemblesAllParts(function):
+    function.app.mount.obsSite.location.latitude = Angle(degrees=10)
+    with (
+        mock.patch.object(function, "updatePositions"),
+        mock.patch.object(function, "updateRotation"),
+        mock.patch("mw4.gui.extWindows.simulator.telescope.linkModel") as linkModel,
+    ):
+        function.create()
+    model = linkModel.call_args[0][0]
+    assert len(model) == 21
+    assert "rot" not in model["mountBase"] or model["mountBase"]["rot"] != [0, 0, 180]
+
+
+def test_create_southernHemisphereRotatesBase(function):
+    function.app.mount.obsSite.location.latitude = Angle(degrees=-10)
+    with (
+        mock.patch.object(function, "updatePositions"),
+        mock.patch.object(function, "updateRotation"),
+        mock.patch("mw4.gui.extWindows.simulator.telescope.linkModel") as linkModel,
+    ):
+        function.create()
+    assert linkModel.call_args[0][0]["mountBase"]["rot"] == [0, 0, 180]

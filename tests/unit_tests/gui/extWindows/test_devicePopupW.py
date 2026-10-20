@@ -449,3 +449,22 @@ def test_discoverDevices_sgpro_devices_found(function):
         function.discoverDevices("sgpro", QWidget())
 
     assert function.framework == "sgpro"
+
+
+def test_createFramework2gui(function):
+    assert function.createFramework2gui().keys() == function.framework2gui.keys()
+
+
+def test_createPlatesolvers(function):
+    assert set(function.createPlatesolvers()) == {"astrometry", "astap", "watney"}
+
+
+def test_createDiscovers(function):
+    assert set(function.createDiscovers()) == {"indi", "alpaca", "sgpro", "hid"}
+
+
+def test_setupSignals(function):
+    with mock.patch.object(function, "close") as method:
+        function.setupSignals()
+        function.ui.cancel.click()
+    method.assert_called()

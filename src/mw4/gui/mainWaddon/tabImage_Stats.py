@@ -1,10 +1,10 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
-import numpy as np
 import webbrowser
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import guiSetText
+from mw4.logic.photometry.imageStats import calcImageStats
 from range_key_dict import RangeKeyDict
 from typing import TYPE_CHECKING
 
@@ -90,64 +90,28 @@ class ImageStats(TabAddon):
         pixelX = data.get("CCD_INFO.CCD_MAX_X", 0)
         pixelY = data.get("CCD_INFO.CCD_MAX_Y", 0)
         rotation = data.get("CCD_ROTATION.CCD_ROTATION_VALUE", 0)
+        stats = calcImageStats(focalLength, aperture, pixelSizeX, pixelSizeY, pixelX, pixelY)
+        self.fovHint = stats.fovHint
 
-        if focalLength and pixelSizeX and pixelSizeY:
-            resolutionX = pixelSizeX / focalLength * 206.265
-            resolutionY = pixelSizeY / focalLength * 206.265
-        else:
-            resolutionX = None
-            resolutionY = None
-
-        speed = focalLength / aperture if aperture else None
-
-        if aperture:
-            dawes = 116 / aperture
-            rayleigh = 138 / aperture
-            magLimit = 7.7 + (5 * np.log10(aperture / 10))
-        else:
-            dawes = None
-            rayleigh = None
-            magLimit = None
-
-        if focalLength and pixelSizeY and pixelSizeY and pixelX and pixelY:
-            FOVX = pixelSizeX / focalLength * 206.265 * pixelX / 3600
-            FOVY = pixelSizeY / focalLength * 206.265 * pixelY / 3600
-            self.fovHint = np.sqrt(FOVX * FOVX + FOVY * FOVY)
-        else:
-            FOVX = None
-            FOVY = None
-            self.fovHint = 0
-
-        if pixelSizeX and speed:
-            focusCCD = speed * pixelSizeX
-            focusRed = 4.88 * speed * speed * 0.650
-            focusGreen = 4.88 * speed * speed * 0.510
-            focusBlue = 4.88 * speed * speed * 0.475
-        else:
-            focusRed = None
-            focusGreen = None
-            focusBlue = None
-            focusCCD = None
-
-        guiSetText(self.ui.speed, "2.1f", speed)
+        guiSetText(self.ui.speed, "2.1f", stats.speed)
         guiSetText(self.ui.pixelSizeX, "2.2f", pixelSizeX)
         guiSetText(self.ui.pixelSizeY, "2.2f", pixelSizeY)
         guiSetText(self.ui.pixelX, "5.0f", pixelX)
         guiSetText(self.ui.pixelY, "5.0f", pixelY)
         guiSetText(self.ui.rotation, "3.1f", rotation)
-        guiSetText(self.ui.resolutionX, "2.2f", resolutionX)
-        guiSetText(self.ui.resolutionY, "2.2f", resolutionY)
-        guiSetText(self.ui.dawes, "2.2f", dawes)
-        guiSetText(self.ui.rayleigh, "2.2f", rayleigh)
-        guiSetText(self.ui.magLimit, "2.2f", magLimit)
-        guiSetText(self.ui.FOVX, "2.2f", FOVX)
-        guiSetText(self.ui.FOVY, "2.2f", FOVY)
+        guiSetText(self.ui.resolutionX, "2.2f", stats.resolutionX)
+        guiSetText(self.ui.resolutionY, "2.2f", stats.resolutionY)
+        guiSetText(self.ui.dawes, "2.2f", stats.dawes)
+        guiSetText(self.ui.rayleigh, "2.2f", stats.rayleigh)
+        guiSetText(self.ui.magLimit, "2.2f", stats.magLimit)
+        guiSetText(self.ui.FOVX, "2.2f", stats.fovX)
+        guiSetText(self.ui.FOVY, "2.2f", stats.fovY)
         guiSetText(self.ui.focalLengthStats, "3.0f", focalLength)
         guiSetText(self.ui.apertureStats, "3.0f", aperture)
-        guiSetText(self.ui.focusRed, "3.0f", focusRed)
-        guiSetText(self.ui.focusGreen, "3.0f", focusGreen)
-        guiSetText(self.ui.focusBlue, "3.0f", focusBlue)
-        guiSetText(self.ui.focusCCD, "3.0f", focusCCD)
+        guiSetText(self.ui.focusRed, "3.0f", stats.focusRed)
+        guiSetText(self.ui.focusGreen, "3.0f", stats.focusGreen)
+        guiSetText(self.ui.focusBlue, "3.0f", stats.focusBlue)
+        guiSetText(self.ui.focusCCD, "3.0f", stats.focusCCD)
 
         watneyText = self.WATNEY.get(self.fovHint, "Out of Range")
         astapText = self.ASTAP.get(self.fovHint, "Out of Range")

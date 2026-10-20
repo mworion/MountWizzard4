@@ -91,9 +91,8 @@ class SimulatorTelescope:
         if node:
             node["trans"].setRotationZ(-angDEC.degrees)
 
-    def create(self) -> bool:
-        lat = self.app.dReg["mount"].obsSite.location.latitude.degrees
-        model = {
+    def createMountBase(self) -> dict[str, dict[str, Any]]:
+        return {
             "mountRoot": {
                 "parent": "ref_fusion_m",
             },
@@ -123,6 +122,10 @@ class SimulatorTelescope:
                 "parent": "mountRa",
                 "trans": [0, 0, 190],
             },
+        }
+
+    def createDeclinationAxis(self) -> dict[str, dict[str, Any]]:
+        return {
             "mountDec": {
                 "parent": "ra",
                 "source": "mount-dec.stl",
@@ -157,6 +160,10 @@ class SimulatorTelescope:
                 "trans": [-159, 0, -190],
                 "mat": Materials().aluKnobs,
             },
+        }
+
+    def createOta(self) -> dict[str, dict[str, Any]]:
+        return {
             "gem": {
                 "parent": "mountHead",
                 "source": ["cuboid", 100, 60, 10],
@@ -205,6 +212,14 @@ class SimulatorTelescope:
                 "source": "ota-focus-top.stl",
                 "mat": Materials().white,
             },
+        }
+
+    def create(self) -> bool:
+        lat = self.app.dReg["mount"].obsSite.location.latitude.degrees
+        model = {
+            **self.createMountBase(),
+            **self.createDeclinationAxis(),
+            **self.createOta(),
         }
         if lat < 0:
             model["mountBase"]["rot"] = [0, 0, 180]

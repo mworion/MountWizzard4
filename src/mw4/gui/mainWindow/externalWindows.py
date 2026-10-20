@@ -24,7 +24,11 @@ class ExternalWindows:
         self.mainW = mainW
         self.app = mainW.app
 
-        self.uiWindows: dict[str, dict[str, Any]] = {
+        self.uiWindows: dict[str, dict[str, Any]] = self.createWindowTable()
+        self.setupSignals()
+
+    def createWindowTable(self) -> dict[str, dict[str, Any]]:
+        return {
             "showMessageW": {
                 "button": self.mainW.ui.openMessageW,
                 "classObj": None,
@@ -111,6 +115,7 @@ class ExternalWindows:
             },
         }
 
+    def setupSignals(self) -> None:
         for window in self.uiWindows:
             self.uiWindows[window]["button"].clicked.connect(partial(self.toggleWindow, window))
         self.app.timeMgr.update1s.connect(self.updateWindowsStats)

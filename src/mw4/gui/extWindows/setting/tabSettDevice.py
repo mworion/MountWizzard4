@@ -18,7 +18,12 @@ class SettDevice(QObject):
         self.ui = parentW.ui
         self.signalsToName: dict[int, str] = {}
 
-        self.deviceUi: dict[str, Any] = {
+        self.deviceUi: dict[str, Any] = self.createDeviceTable()
+        self.setupSignals()
+        self.setupDeviceGui()
+
+    def createDeviceTable(self) -> dict[str, Any]:
+        return {
             "camera": {
                 "uiDropDown": self.ui.cameraDevice,
                 "uiSetup": self.ui.cameraSetup,
@@ -97,6 +102,7 @@ class SettDevice(QObject):
             },
         }
 
+    def setupSignals(self) -> None:
         for entry in self.app.dReg.configurable():
             self.deviceUi[entry.name]["uiDropDown"].activated.connect(
                 partial(self.dispatchDriverDropdown, entry.name)
@@ -111,8 +117,6 @@ class SettDevice(QObject):
                 self.signalsToName[id(sig)] = entry.name
                 sig.deviceConnected.connect(self.deviceConnected)
                 sig.deviceDisconnected.connect(self.deviceDisconnected)
-
-        self.setupDeviceGui()
 
     def setupIcons(self) -> None:
         for driver in self.deviceUi:

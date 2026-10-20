@@ -16,13 +16,38 @@ from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.setting import Setting
 from skyfield.api import Angle, wgs84
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, ClassVar
 
 if TYPE_CHECKING:
     from mw4.gui.mainWindow.mainWindow import MainWindow
 
 
 class MountSett(TabAddon):
+    TRACKING_BUTTONS: ClassVar = (
+        "followSat",
+        "setLunarTracking",
+        "setSiderealTracking",
+        "setSolarTracking",
+    )
+    SETTING_TEXT_FIELDS: ClassVar = (
+        ("statusUnattendedFlip", "s", "statusUnattendedFlip"),
+        ("statusDualAxisTracking", "s", "statusDualAxisTracking"),
+        ("statusRefraction", "s", "statusRefraction"),
+        ("statusWOL", "s", "wakeOnLan"),
+        ("statusAPO", "s", "autoPowerOn"),
+        ("slewRate", "2.0f", "slewRate"),
+        ("timeToFlip", "3.0f", "timeToFlip"),
+        ("refractionTemp", "+4.1f", "refractionTemp"),
+        ("refractionTemp1", "+4.1f", "refractionTemp"),
+        ("refractionPress", "6.1f", "refractionPress"),
+        ("refractionPress1", "6.1f", "refractionPress"),
+        ("meridianLimitTrack", "3.0f", "meridianLimitTrack"),
+        ("meridianLimitSlew", "3.0f", "meridianLimitSlew"),
+        ("horizonLimitLow", "3.0f", "horizonLimitLow"),
+        ("horizonLimitHigh", "3.0f", "horizonLimitHigh"),
+        ("settleTimeMount", "3.0f", "settleTime"),
+    )
+
     def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
@@ -87,92 +112,52 @@ class MountSett(TabAddon):
         guiSetText(self.ui.pierside, "s", obs.pierside)
         guiSetText(self.ui.timeSidereal, "HSTR", obs.timeSidereal)
 
-    def updateSettingGUI(self, sett: Setting) -> None:
+    def updateExpireGui(self, expireText: str | None) -> None:
         ui = self.ui.UTCExpire
-        guiSetText(ui, "s", sett.UTCExpire)
-        if sett.UTCExpire is not None:
-            now = datetime.datetime.now(datetime.UTC)
-            expire = datetime.datetime.strptime(sett.UTCExpire, "%Y-%m-%d").replace(
-                tzinfo=datetime.UTC
-            )
-            deltaYellow = datetime.timedelta(days=30)
-            if now > expire:
-                changeStyleDynamic(ui, "color", "red")
-            elif now > expire - deltaYellow:
-                changeStyleDynamic(ui, "color", "yellow")
-            else:
-                changeStyleDynamic(ui, "color", "")
+        guiSetText(ui, "s", expireText)
+        if expireText is None:
+            return
+        now = datetime.datetime.now(datetime.UTC)
+        expire = datetime.datetime.strptime(expireText, "%Y-%m-%d").replace(tzinfo=datetime.UTC)
+        if now > expire:
+            changeStyleDynamic(ui, "color", "red")
+        elif now > expire - datetime.timedelta(days=30):
+            changeStyleDynamic(ui, "color", "yellow")
+        else:
+            changeStyleDynamic(ui, "color", "")
 
-        ui = self.ui.statusUnattendedFlip
-        guiSetText(ui, "s", sett.statusUnattendedFlip)
+    def activeTrackingMode(self, sett: Setting) -> str | None:
+        obsSite = self.app.dReg["mount"].obsSite
+        if obsSite.status is None:
+            return None
+        if obsSite.isFollowingSatellite:
+            return "followSat"
+        if sett.checkRateLunar():
+            return "setLunarTracking"
+        if sett.checkRateSidereal():
+            return "setSiderealTracking"
+        if sett.checkRateSolar():
+            return "setSolarTracking"
+        return "unchanged"
 
-        ui = self.ui.statusDualAxisTracking
-        guiSetText(ui, "s", sett.statusDualAxisTracking)
+    def updateTrackingGui(self, sett: Setting) -> None:
+        mode = self.activeTrackingMode(sett)
+        if mode == "unchanged":
+            return
+        for name in self.TRACKING_BUTTONS:
+            changeStyleDynamic(getattr(self.ui, name), "run", "true" if name == mode else "false")
 
-        ui = self.ui.statusRefraction
-        guiSetText(ui, "s", sett.statusRefraction)
+    def updateSettingGUI(self, sett: Setting) -> None:
+        self.updateExpireGui(sett.UTCExpire)
+        for uiName, fmt, attribute in self.SETTING_TEXT_FIELDS:
+            guiSetText(getattr(self.ui, uiName), fmt, getattr(sett, attribute))
 
-        ui = self.ui.statusGPSSynced
-        t = ["OFF", "ON", "PPS"]
-        guiSetText(ui, "s", t[sett.gpsSynced])
-
-        ui = self.ui.statusWOL
-        guiSetText(ui, "s", sett.wakeOnLan)
-
-        ui = self.ui.statusAPO
-        guiSetText(ui, "s", sett.autoPowerOn)
-
-        ui = self.ui.statusWebInterface
-        val = "ON" if sett.webInterfaceStat else "OFF"
-        guiSetText(ui, "s", val)
-
+        guiSetText(self.ui.statusGPSSynced, "s", ["OFF", "ON", "PPS"][sett.gpsSynced])
+        guiSetText(self.ui.statusWebInterface, "s", "ON" if sett.webInterfaceStat else "OFF")
         if sett.typeConnection is not None:
-            text = self.typeConnectionTexts[sett.typeConnection]
-            self.ui.mountTypeConnection.setText(text)
-
-        guiSetText(self.ui.slewRate, "2.0f", sett.slewRate)
-        guiSetText(self.ui.timeToFlip, "3.0f", sett.timeToFlip)
+            self.ui.mountTypeConnection.setText(self.typeConnectionTexts[sett.typeConnection])
         guiSetText(self.ui.timeToMeridian, "3.0f", sett.timeToMeridian())
-        guiSetText(self.ui.refractionTemp, "+4.1f", sett.refractionTemp)
-        guiSetText(self.ui.refractionTemp1, "+4.1f", sett.refractionTemp)
-        guiSetText(self.ui.refractionPress, "6.1f", sett.refractionPress)
-        guiSetText(self.ui.refractionPress1, "6.1f", sett.refractionPress)
-        guiSetText(self.ui.meridianLimitTrack, "3.0f", sett.meridianLimitTrack)
-        guiSetText(self.ui.meridianLimitSlew, "3.0f", sett.meridianLimitSlew)
-        guiSetText(self.ui.horizonLimitLow, "3.0f", sett.horizonLimitLow)
-        guiSetText(self.ui.horizonLimitHigh, "3.0f", sett.horizonLimitHigh)
-        guiSetText(self.ui.settleTimeMount, "3.0f", sett.settleTime)
-
-        # todo: this might be a little bit too slow
-        if self.app.dReg["mount"].obsSite.status is None:
-            changeStyleDynamic(self.ui.followSat, "run", "false")
-            changeStyleDynamic(self.ui.setLunarTracking, "run", "false")
-            changeStyleDynamic(self.ui.setSiderealTracking, "run", "false")
-            changeStyleDynamic(self.ui.setSolarTracking, "run", "false")
-
-        elif self.app.dReg["mount"].obsSite.isFollowingSatellite:
-            changeStyleDynamic(self.ui.followSat, "run", "true")
-            changeStyleDynamic(self.ui.setLunarTracking, "run", "false")
-            changeStyleDynamic(self.ui.setSiderealTracking, "run", "false")
-            changeStyleDynamic(self.ui.setSolarTracking, "run", "false")
-
-        elif sett.checkRateLunar():
-            changeStyleDynamic(self.ui.followSat, "run", "false")
-            changeStyleDynamic(self.ui.setLunarTracking, "run", "true")
-            changeStyleDynamic(self.ui.setSiderealTracking, "run", "false")
-            changeStyleDynamic(self.ui.setSolarTracking, "run", "false")
-
-        elif sett.checkRateSidereal():
-            changeStyleDynamic(self.ui.followSat, "run", "false")
-            changeStyleDynamic(self.ui.setLunarTracking, "run", "false")
-            changeStyleDynamic(self.ui.setSiderealTracking, "run", "true")
-            changeStyleDynamic(self.ui.setSolarTracking, "run", "false")
-
-        elif sett.checkRateSolar():
-            changeStyleDynamic(self.ui.followSat, "run", "false")
-            changeStyleDynamic(self.ui.setLunarTracking, "run", "false")
-            changeStyleDynamic(self.ui.setSiderealTracking, "run", "false")
-            changeStyleDynamic(self.ui.setSolarTracking, "run", "true")
+        self.updateTrackingGui(sett)
 
     def updateLocGUI(self, obs: ObsSite) -> None:
         if obs is None:

@@ -2,298 +2,126 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 from mw4.gui.styles.styles import Styles
+from typing import Any
+
+PlotDef = dict[str, Any]
 
 
-def dataPlots() -> dict[str, dict]:
+def lineItem(name: str, pen: str) -> PlotDef:
+    return {"plotItemRef": None, "name": name, "pen": pen}
+
+
+def chart(
+    label: str,
+    lineItems: dict[str, PlotDef],
+    valueRange: tuple[float, float, bool] | None = None,
+) -> PlotDef:
+    template: PlotDef = {"legendRef": None, "label": label}
+    if valueRange is not None:
+        template["range"] = valueRange
+    return {"template": template, "lineItems": lineItems}
+
+
+def weatherItems(parameter: str, styles: Styles, withDirect: bool = True) -> dict[str, PlotDef]:
+    """Line items of the four sensor weather devices and optionally the direct one."""
+    sensorPens = (styles.M_GREEN, styles.M_RED, styles.M_PINK, styles.M_YELLOW)
+    items = {
+        f"sensor{i}Weather-{parameter}": lineItem(f"Sensor {i}", pen)
+        for i, pen in enumerate(sensorPens, start=1)
+    }
+    if withDirect:
+        items[f"directWeather-{parameter}"] = lineItem("Direct", styles.M_PRIM)
+    return items
+
+
+def dataPlots() -> dict[str, PlotDef]:
+    styles = Styles()
+    weather = "WEATHER_PARAMETERS.WEATHER_"
     return {
         "No chart": {},
-        "Axis Stability": {
-            "template": {"legendRef": None, "label": "Delta angle [arcsec]"},
-            "lineItems": {
-                "mount-deltaRaJNow": {
-                    "plotItemRef": None,
-                    "name": "RA",
-                    "pen": Styles().M_GREEN,
-                },
-                "mount-deltaDecJNow": {
-                    "plotItemRef": None,
-                    "name": "DEC",
-                    "pen": Styles().M_RED,
-                },
+        "Axis Stability": chart(
+            "Delta angle [arcsec]",
+            {
+                "mount-deltaRaJNow": lineItem("RA", styles.M_GREEN),
+                "mount-deltaDecJNow": lineItem("DEC", styles.M_RED),
             },
-        },
-        "Angular Tracking": {
-            "template": {"legendRef": None, "label": "Angle error [arcsec]"},
-            "lineItems": {
-                "mount-errorAngularPosRA": {
-                    "plotItemRef": None,
-                    "name": "RA counter",
-                    "pen": Styles().M_GREEN,
-                },
-                "mount-errorAngularPosDEC": {
-                    "plotItemRef": None,
-                    "name": "DEC counter",
-                    "pen": Styles().M_RED,
-                },
+        ),
+        "Angular Tracking": chart(
+            "Angle error [arcsec]",
+            {
+                "mount-errorAngularPosRA": lineItem("RA counter", styles.M_GREEN),
+                "mount-errorAngularPosDEC": lineItem("DEC counter", styles.M_RED),
             },
-        },
-        "Temperature": {
-            "template": {
-                "range": (-20, 40, False),
-                "legendRef": None,
-                "label": "Temperature [°C]",
+        ),
+        "Temperature": chart(
+            "Temperature [°C]",
+            weatherItems(f"{weather}TEMPERATURE", styles),
+            (-20, 40, False),
+        ),
+        "Camera Temperature": chart(
+            "Camera Temperature [°C]",
+            {
+                "camera-CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE": lineItem("Camera", styles.M_PINK),
             },
-            "lineItems": {
-                "sensor1Weather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE": {
-                    "plotItemRef": None,
-                    "name": "Sensor 1",
-                    "pen": Styles().M_GREEN,
-                },
-                "sensor2Weather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE": {
-                    "plotItemRef": None,
-                    "name": "Sensor 2",
-                    "pen": Styles().M_RED,
-                },
-                "sensor3Weather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE": {
-                    "plotItemRef": None,
-                    "name": "Sensor 3",
-                    "pen": Styles().M_PINK,
-                },
-                "sensor4Weather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE": {
-                    "plotItemRef": None,
-                    "name": "Sensor 4",
-                    "pen": Styles().M_YELLOW,
-                },
-                "directWeather-WEATHER_PARAMETERS.WEATHER_TEMPERATURE": {
-                    "plotItemRef": None,
-                    "name": "Direct",
-                    "pen": Styles().M_PRIM,
-                },
+            (-20, 20, False),
+        ),
+        "Camera Cooler Power": chart(
+            "Camera Cooler Power [%]",
+            {
+                "camera-CCD_COOLER_POWER.CCD_COOLER_VALUE": lineItem("CoolerPower", styles.M_PINK),
             },
-        },
-        "Camera Temperature": {
-            "template": {
-                "range": (-20, 20, False),
-                "legendRef": None,
-                "label": "Camera Temperature [°C]",
+            (-5, 105, True),
+        ),
+        "Dew Temperature": chart(
+            "Dew Temperature [°C]",
+            weatherItems(f"{weather}DEWPOINT", styles),
+            (-20, 40, False),
+        ),
+        "Pressure": chart(
+            "Pressure [hPa]",
+            weatherItems(f"{weather}PRESSURE", styles),
+            (900, 1050, False),
+        ),
+        "Humidity": chart(
+            "Humidity [%]",
+            weatherItems(f"{weather}HUMIDITY", styles),
+            (-5, 105, True),
+        ),
+        "Sky Quality": chart(
+            "Sky Quality [mpas]",
+            weatherItems("SKY_QUALITY.SKY_BRIGHTNESS", styles, withDirect=False),
+            (10, 22.5, False),
+        ),
+        "Voltage": chart(
+            "Supply Voltage [V]",
+            {"power-powVolt": lineItem("Main Sensor", styles.M_YELLOW)},
+            (8, 15, False),
+        ),
+        "Current": chart(
+            "Current [A]",
+            {
+                "power-powCurr": lineItem("Sum", styles.M_CYAN1),
+                "power-powCurr1": lineItem("Current 1", styles.M_GREEN),
+                "power-powCurr2": lineItem("Current 2", styles.M_PINK),
+                "power-powCurr3": lineItem("Current 3", styles.M_RED),
+                "power-powCurr4": lineItem("Current 4", styles.M_YELLOW),
             },
-            "lineItems": {
-                "camera-CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE": {
-                    "plotItemRef": None,
-                    "name": "Camera",
-                    "pen": Styles().M_PINK,
-                },
+            (0, 5, False),
+        ),
+        "Time Diff Comp-Mount": chart(
+            "Time Difference [ms]",
+            {"mount-timeDiff": lineItem("MountControl", styles.M_YELLOW)},
+        ),
+        "RTT Comp-Mount": chart(
+            "Round Trip Time [ms]",
+            {"mount-rtt": lineItem("MountControl", styles.M_YELLOW)},
+        ),
+        "Focus Position": chart(
+            "Focus Position [units]",
+            {
+                "focuser-ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION": lineItem(
+                    "MountControl", styles.M_YELLOW
+                ),
             },
-        },
-        "Camera Cooler Power": {
-            "template": {
-                "range": (-5, 105, True),
-                "legendRef": None,
-                "label": "Camera Cooler Power [%]",
-            },
-            "lineItems": {
-                "camera-CCD_COOLER_POWER.CCD_COOLER_VALUE": {
-                    "plotItemRef": None,
-                    "name": "CoolerPower",
-                    "pen": Styles().M_PINK,
-                },
-            },
-        },
-        "Dew Temperature": {
-            "template": {
-                "range": (-20, 40, False),
-                "legendRef": None,
-                "label": "Dew Temperature [°C]",
-            },
-            "lineItems": {
-                "sensor1Weather-WEATHER_PARAMETERS.WEATHER_DEWPOINT": {
-                    "plotItemRef": None,
-                    "name": "Sensor 1",
-                    "pen": Styles().M_GREEN,
-                },
-                "sensor2Weather-WEATHER_PARAMETERS.WEATHER_DEWPOINT": {
-                    "plotItemRef": None,
-                    "name": "Sensor 2",
-                    "pen": Styles().M_RED,
-                },
-                "sensor3Weather-WEATHER_PARAMETERS.WEATHER_DEWPOINT": {
-                    "plotItemRef": None,
-                    "name": "Sensor 3",
-                    "pen": Styles().M_PINK,
-                },
-                "sensor4Weather-WEATHER_PARAMETERS.WEATHER_DEWPOINT": {
-                    "plotItemRef": None,
-                    "name": "Sensor 4",
-                    "pen": Styles().M_YELLOW,
-                },
-                "directWeather-WEATHER_PARAMETERS.WEATHER_DEWPOINT": {
-                    "plotItemRef": None,
-                    "name": "Direct",
-                    "pen": Styles().M_PRIM,
-                },
-            },
-        },
-        "Pressure": {
-            "template": {
-                "range": (900, 1050, False),
-                "legendRef": None,
-                "label": "Pressure [hPa]",
-            },
-            "lineItems": {
-                "sensor1Weather-WEATHER_PARAMETERS.WEATHER_PRESSURE": {
-                    "plotItemRef": None,
-                    "name": "Sensor 1",
-                    "pen": Styles().M_GREEN,
-                },
-                "sensor2Weather-WEATHER_PARAMETERS.WEATHER_PRESSURE": {
-                    "plotItemRef": None,
-                    "name": "Sensor 2",
-                    "pen": Styles().M_RED,
-                },
-                "sensor3Weather-WEATHER_PARAMETERS.WEATHER_PRESSURE": {
-                    "plotItemRef": None,
-                    "name": "Sensor 3",
-                    "pen": Styles().M_PINK,
-                },
-                "sensor4Weather-WEATHER_PARAMETERS.WEATHER_PRESSURE": {
-                    "plotItemRef": None,
-                    "name": "Sensor 4",
-                    "pen": Styles().M_YELLOW,
-                },
-                "directWeather-WEATHER_PARAMETERS.WEATHER_PRESSURE": {
-                    "plotItemRef": None,
-                    "name": "Direct",
-                    "pen": Styles().M_PRIM,
-                },
-            },
-        },
-        "Humidity": {
-            "template": {"range": (-5, 105, True), "legendRef": None, "label": "Humidity [%]"},
-            "lineItems": {
-                "sensor1Weather-WEATHER_PARAMETERS.WEATHER_HUMIDITY": {
-                    "plotItemRef": None,
-                    "name": "Sensor 1",
-                    "pen": Styles().M_GREEN,
-                },
-                "sensor2Weather-WEATHER_PARAMETERS.WEATHER_HUMIDITY": {
-                    "plotItemRef": None,
-                    "name": "Sensor 2",
-                    "pen": Styles().M_RED,
-                },
-                "sensor3Weather-WEATHER_PARAMETERS.WEATHER_HUMIDITY": {
-                    "plotItemRef": None,
-                    "name": "Sensor 3",
-                    "pen": Styles().M_PINK,
-                },
-                "sensor4Weather-WEATHER_PARAMETERS.WEATHER_HUMIDITY": {
-                    "plotItemRef": None,
-                    "name": "Sensor 4",
-                    "pen": Styles().M_YELLOW,
-                },
-                "directWeather-WEATHER_PARAMETERS.WEATHER_HUMIDITY": {
-                    "plotItemRef": None,
-                    "name": "Direct",
-                    "pen": Styles().M_PRIM,
-                },
-            },
-        },
-        "Sky Quality": {
-            "template": {
-                "range": (10, 22.5, False),
-                "legendRef": None,
-                "label": "Sky Quality [mpas]",
-            },
-            "lineItems": {
-                "sensor1Weather-SKY_QUALITY.SKY_BRIGHTNESS": {
-                    "plotItemRef": None,
-                    "name": "Sensor 1",
-                    "pen": Styles().M_GREEN,
-                },
-                "sensor2Weather-SKY_QUALITY.SKY_BRIGHTNESS": {
-                    "plotItemRef": None,
-                    "name": "Sensor 2",
-                    "pen": Styles().M_RED,
-                },
-                "sensor3Weather-SKY_QUALITY.SKY_BRIGHTNESS": {
-                    "plotItemRef": None,
-                    "name": "Sensor 3",
-                    "pen": Styles().M_PINK,
-                },
-                "sensor4Weather-SKY_QUALITY.SKY_BRIGHTNESS": {
-                    "plotItemRef": None,
-                    "name": "Sensor 4",
-                    "pen": Styles().M_YELLOW,
-                },
-            },
-        },
-        "Voltage": {
-            "template": {
-                "range": (8, 15, False),
-                "legendRef": None,
-                "label": "Supply Voltage [V]",
-            },
-            "lineItems": {
-                "power-powVolt": {
-                    "plotItemRef": None,
-                    "name": "Main Sensor",
-                    "pen": Styles().M_YELLOW,
-                },
-            },
-        },
-        "Current": {
-            "template": {"range": (0, 5, False), "legendRef": None, "label": "Current [A]"},
-            "lineItems": {
-                "power-powCurr": {"plotItemRef": None, "name": "Sum", "pen": Styles().M_CYAN1},
-                "power-powCurr1": {
-                    "plotItemRef": None,
-                    "name": "Current 1",
-                    "pen": Styles().M_GREEN,
-                },
-                "power-powCurr2": {
-                    "plotItemRef": None,
-                    "name": "Current 2",
-                    "pen": Styles().M_PINK,
-                },
-                "power-powCurr3": {
-                    "plotItemRef": None,
-                    "name": "Current 3",
-                    "pen": Styles().M_RED,
-                },
-                "power-powCurr4": {
-                    "plotItemRef": None,
-                    "name": "Current 4",
-                    "pen": Styles().M_YELLOW,
-                },
-            },
-        },
-        "Time Diff Comp-Mount": {
-            "template": {"legendRef": None, "label": "Time Difference [ms]"},
-            "lineItems": {
-                "mount-timeDiff": {
-                    "plotItemRef": None,
-                    "name": "MountControl",
-                    "pen": Styles().M_YELLOW,
-                },
-            },
-        },
-        "RTT Comp-Mount": {
-            "template": {"legendRef": None, "label": "Round Trip Time [ms]"},
-            "lineItems": {
-                "mount-rtt": {
-                    "plotItemRef": None,
-                    "name": "MountControl",
-                    "pen": Styles().M_YELLOW,
-                },
-            },
-        },
-        "Focus Position": {
-            "template": {"legendRef": None, "label": "Focus Position [units]"},
-            "lineItems": {
-                "focuser-ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION": {
-                    "plotItemRef": None,
-                    "name": "MountControl",
-                    "pen": Styles().M_YELLOW,
-                }
-            },
-        },
+        ),
     }

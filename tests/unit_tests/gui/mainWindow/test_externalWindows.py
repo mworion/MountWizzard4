@@ -146,3 +146,9 @@ def test_closeExtendedWindows_2(function):
     function.uiWindows = {"showMessageW": {"classObj": None, "button": QPushButton()}}
     function.closeExtendedWindows()
     function.uiWindows = test
+
+
+def test_createWindowTable(function):
+    table = function.createWindowTable()
+    assert table.keys() == function.uiWindows.keys()
+    assert all(entry["classObj"] is None for entry in table.values())

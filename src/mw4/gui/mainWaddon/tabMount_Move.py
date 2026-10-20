@@ -57,7 +57,20 @@ class MountMove(TabAddon):
         self.durationTimer: QTimer | None = None
         self.countdownRemaining: int = 0
 
-        self.slewSpeeds: dict[str, dict[str, QWidget | Callable]] = {
+        self.slewSpeeds: dict[str, dict[str, QWidget | Callable]] = self.createSlewSpeeds()
+        self.setButtons: dict[str, dict[str, Any]] = self.createSetButtons()
+        self.directionByVector: dict[tuple[int, int], str] = {
+            (v["coord"][0], v["coord"][1]): k for k, v in self.setButtons.items()
+        }
+        self.targetAlt: Angle = Angle(degrees=0)
+        self.targetAz: Angle = Angle(degrees=0)
+        self.targetRa: Angle = Angle(hours=0)
+        self.targetDec: Angle = Angle(degrees=0)
+        self.setupSignals()
+        self.setupGuiMount()
+
+    def createSlewSpeeds(self) -> dict[str, dict[str, QWidget | Callable]]:
+        return {
             "max": {
                 "button": self.ui.slewSpeedMax,
                 "func": self.app.dReg["mount"].setting.setSlewSpeedMax,
@@ -76,7 +89,8 @@ class MountMove(TabAddon):
             },
         }
 
-        self.setButtons: dict[str, dict[str, Any]] = {
+    def createSetButtons(self) -> dict[str, dict[str, Any]]:
+        return {
             "N": {
                 "buttonRaDec": self.ui.moveNorth,
                 "buttonAltAz": self.ui.moveNorthAltAz,
@@ -119,16 +133,7 @@ class MountMove(TabAddon):
             },
         }
 
-        # Build reverse-lookup dictionary for direction vectors
-        self.directionByVector: dict[tuple[int, int], str] = {}
-        for k, v in self.setButtons.items():
-            coord_tuple = (v["coord"][0], v["coord"][1])
-            self.directionByVector[coord_tuple] = k
-
-        self.targetAlt: Angle = Angle(degrees=0)
-        self.targetAz: Angle = Angle(degrees=0)
-        self.targetRa: Angle = Angle(hours=0)
-        self.targetDec: Angle = Angle(degrees=0)
+    def setupSignals(self) -> None:
         self.ui.stopMoveAll.clicked.connect(self.stopPressed)
         self.ui.moveAltAzAbsolute.clicked.connect(self.moveAltAzAbsolute)
         self.ui.moveRaDecAbsolute.clicked.connect(self.moveRaDecAbsolute)
@@ -139,7 +144,6 @@ class MountMove(TabAddon):
         self.app.dReg["mount"].signals.slewed.connect(self.moveAltAzDefault)
         self.app.dReg["hidController"].signals.hidDirection.connect(self.moveAltAzHid)
         self.app.dReg["hidController"].signals.hidSR.connect(self.moveRaDecHid)
-        self.setupGuiMount()
 
     def initConfig(self) -> None:
         config = self.app.config.get("WindowMain", {})

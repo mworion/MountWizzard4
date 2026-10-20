@@ -353,3 +353,19 @@ def test_clearSourceGui_1(function):
     assert function.ui.pressure1.text() == ""
     assert function.ui.dewPoint1.text() == ""
     assert function.ui.humidity1.text() == ""
+
+
+def test_createRefractionSources(function):
+    sources = function.createRefractionSources()
+    assert sources.keys() == function.refractionSources.keys()
+
+
+def test_createEnvFields(function):
+    assert "temperature" in function.createEnvFields()
+
+
+def test_setupSignals(function):
+    with mock.patch.object(function, "setRefractionUpdateType") as method:
+        function.setupSignals()
+        function.ui.refracManual.click()
+    method.assert_called()

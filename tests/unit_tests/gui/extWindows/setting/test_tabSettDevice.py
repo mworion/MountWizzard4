@@ -396,3 +396,7 @@ def test_init_skipsEntriesWithoutSignals(function):
     finally:
         realEntry.instance = origInstance
     assert window.signalsToName == {}
+
+
+def test_createDeviceTable(function):
+    assert function.createDeviceTable().keys() == function.deviceUi.keys()

@@ -38,7 +38,13 @@ class DevicePopup(MWidget):
         self.ui.iconPixmap.setPixmap(pixmap)
         self.returnValues: dict[str, Any] = {"close": "cancel"}
         self.loop: QEventLoop | None = None
-        self.framework2gui = {
+        self.framework2gui = self.createFramework2gui()
+        self.platesolvers = self.createPlatesolvers()
+        self.discovers = self.createDiscovers()
+        self.setupSignals()
+
+    def createFramework2gui(self) -> dict[str, dict[str, Any]]:
+        return {
             "indi": {
                 "hostAddress": self.ui.indiHostAddress,
                 "port": self.ui.indiPort,
@@ -101,7 +107,8 @@ class DevicePopup(MWidget):
             },
         }
 
-        self.platesolvers = {
+    def createPlatesolvers(self) -> dict[str, dict[str, Any]]:
+        return {
             "astrometry": {
                 "appPath": self.ui.astrometryAppPath,
                 "indexPath": self.ui.astrometryIndexPath,
@@ -122,7 +129,8 @@ class DevicePopup(MWidget):
             },
         }
 
-        self.discovers: dict[str, dict[str, Any]] = {
+    def createDiscovers(self) -> dict[str, dict[str, Any]]:
+        return {
             "indi": {
                 "deviceList": self.ui.indiDeviceList,
                 "hostaddress": self.ui.indiHostAddress,
@@ -151,6 +159,7 @@ class DevicePopup(MWidget):
             },
         }
 
+    def setupSignals(self) -> None:
         self.ui.cancel.clicked.connect(self.close)
         self.ui.ok.clicked.connect(self.storeConfig)
         for framework in self.discovers:

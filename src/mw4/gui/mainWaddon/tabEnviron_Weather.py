@@ -35,7 +35,12 @@ class EnvironWeather(TabAddon):
         self.pressLast: float = 0
         self.refractionEnabled: bool = True
 
-        self.refractionSources = {
+        self.refractionSources = self.createRefractionSources()
+        self.envFields = self.createEnvFields()
+        self.setupSignals()
+
+    def createRefractionSources(self) -> dict[str, RefractionEntry]:
+        return {
             "sensor1Weather": RefractionEntry(
                 group=self.ui.sensor1Group,
                 data=self.app.dReg["sensor1Weather"].data,
@@ -68,6 +73,7 @@ class EnvironWeather(TabAddon):
             ),
         }
 
+    def setupSignals(self) -> None:
         for source in self.refractionSources:
             self.refractionSources[source].signals.deviceDisconnected.connect(
                 partial(self.clearSourceGui, source)
@@ -77,7 +83,21 @@ class EnvironWeather(TabAddon):
                 partial(self.selectRefractionSource, source)
             )
 
-        self.envFields = {
+        # weather functions
+        self.app.dReg["mount"].signals.settingDone.connect(self.updateSourceGui)
+        self.app.dReg["mount"].signals.settingDone.connect(self.updateRefractionUpdateType)
+        self.ui.refracManual.clicked.connect(self.setRefractionUpdateType)
+        self.ui.refracCont.clicked.connect(self.setRefractionUpdateType)
+        self.ui.refracNoTrack.clicked.connect(self.setRefractionUpdateType)
+
+        # cyclic functions
+        self.app.timeMgr.update1s.connect(self.smartEnvironGui)
+        self.app.timeMgr.update1s.connect(self.updateSourceGui)
+        self.app.timeMgr.update1s.connect(self.updateFilterRefractionParameters)
+        self.app.timeMgr.update1s.connect(self.updateRefractionParameters)
+
+    def createEnvFields(self) -> dict[str, dict[str, str]]:
+        return {
             "temperature": {
                 "valueKey": "WEATHER_PARAMETERS.WEATHER_TEMPERATURE",
                 "format": "4.1f",
@@ -107,19 +127,6 @@ class EnvironWeather(TabAddon):
                 "format": "4.1f",
             },
         }
-
-        # weather functions
-        self.app.dReg["mount"].signals.settingDone.connect(self.updateSourceGui)
-        self.app.dReg["mount"].signals.settingDone.connect(self.updateRefractionUpdateType)
-        self.ui.refracManual.clicked.connect(self.setRefractionUpdateType)
-        self.ui.refracCont.clicked.connect(self.setRefractionUpdateType)
-        self.ui.refracNoTrack.clicked.connect(self.setRefractionUpdateType)
-
-        # cyclic functions
-        self.app.timeMgr.update1s.connect(self.smartEnvironGui)
-        self.app.timeMgr.update1s.connect(self.updateSourceGui)
-        self.app.timeMgr.update1s.connect(self.updateFilterRefractionParameters)
-        self.app.timeMgr.update1s.connect(self.updateRefractionParameters)
 
     def initConfig(self) -> None:
         config = self.app.config["WindowMain"]

@@ -77,7 +77,7 @@ Ordered by risk (lowest first); WPs are independent unless noted.
   parent, transform) using the mocked entity approach already used in
   `tests/unit_tests/gui/extWindows/simulator`.
 
-### WP 3 – Native Qt dialogs (medium risk)
+### WP 3 – Native Qt dialogs (medium risk) — ✅ done 2026-10-20
 
 - Split `__init__` into `createLayout`, `createButtons`, `createList`, `connectSignals`.
 - `qtInputDialog.__init__` (12 params): introduce a keyword-only parameter dataclass

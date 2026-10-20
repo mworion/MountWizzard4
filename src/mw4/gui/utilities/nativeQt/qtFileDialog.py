@@ -60,6 +60,16 @@ class MWFileDialog(MWidget):
         self.setMaximumSize(600, 800)
         self.model = QFileSystemModel(self)
         self.model.setRootPath("")
+        self.createTree()
+        self.createControls(filterSet)
+        self.createButtons(acceptMode)
+        self.createLayout()
+        self.setCurrentDir(self.currentDir)
+        self.tree.selectionModel().selectionChanged.connect(self.onSelectionChanged)
+        self.onFilterChanged(self.filterCombo.currentText())
+        self.centerOnParent(parent)
+
+    def createTree(self) -> None:
         self.tree = QTreeView()
         self.tree.setModel(self.model)
         self.tree.setSelectionMode(
@@ -79,6 +89,7 @@ class MWFileDialog(MWidget):
         header.setSectionResizeMode(1, QHeaderView.ResizeMode.Interactive)
         header.setSectionResizeMode(2, QHeaderView.ResizeMode.Interactive)
 
+    def createControls(self, filterSet: str) -> None:
         self.upButton = QPushButton()
         self.wIcon(self.upButton, "arrow-up0")
         self.upButton.setToolTip("Parent directory")
@@ -94,6 +105,7 @@ class MWFileDialog(MWidget):
             self.filterCombo.addItem("All files (*)")
         self.filterCombo.currentTextChanged.connect(self.onFilterChanged)
 
+    def createButtons(self, acceptMode: QFileDialog.AcceptMode) -> None:
         acceptText = "Open" if acceptMode == QFileDialog.AcceptMode.AcceptOpen else "Save"
         if self.fileMode == QFileDialog.FileMode.Directory:
             acceptText = "Choose"
@@ -105,6 +117,7 @@ class MWFileDialog(MWidget):
         self.btnCancel.setMinimumSize(80, 25)
         self.btnCancel.clicked.connect(self.onReject)
 
+    def createLayout(self) -> None:
         topRow = QHBoxLayout()
         topRow.addWidget(self.upButton)
         topRow.addWidget(self.pathEdit, 1)
@@ -129,15 +142,13 @@ class MWFileDialog(MWidget):
         contentLayout.addLayout(filterRow)
         contentLayout.addLayout(buttonRow)
 
-        self.setCurrentDir(self.currentDir)
-        self.tree.selectionModel().selectionChanged.connect(self.onSelectionChanged)
-        self.onFilterChanged(self.filterCombo.currentText())
-
-        if parent is not None:
-            self.move(
-                parent.x() + max(0, (parent.width() - self.width()) // 2),
-                parent.y() + max(0, (parent.height() - self.height()) // 2),
-            )
+    def centerOnParent(self, parent: QWidget | None) -> None:
+        if parent is None:
+            return
+        self.move(
+            parent.x() + max(0, (parent.width() - self.width()) // 2),
+            parent.y() + max(0, (parent.height() - self.height()) // 2),
+        )
 
     def setCurrentDir(self, folder: Path) -> None:
         if not folder.exists() or not folder.is_dir():

@@ -1,6 +1,7 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
+from dataclasses import dataclass, field
 from mw4.gui.utilities.qtMain import MWidget
 from PySide6.QtCore import QEventLoop, Qt
 from PySide6.QtGui import QCloseEvent
@@ -18,84 +19,82 @@ from PySide6.QtWidgets import (
 from typing import Any
 
 
+@dataclass(kw_only=True)
+class InputDialogOptions:
+    title: str = "Input"
+    label: str = "Enter value:"
+    actualValue: str | float | None = None
+    inputMode: str = "text"
+    minValue: float = 0
+    maxValue: float = 2147483647
+    step: int = 1
+    decimals: int = 1
+    items: list[str] = field(default_factory=list)
+    currentIndex: int = 0
+
+
 class MWInputDialog(MWidget):
     Accepted = 1
     Rejected = 0
 
-    def __init__(
-        self,
-        parent: QWidget | None = None,
-        title: str = "Input",
-        label: str = "Enter value:",
-        actualValue: str | float | None = None,
-        inputMode: str = "text",
-        minValue: float = 0,
-        maxValue: float = 2147483647,
-        step: int = 1,
-        decimals: int = 1,
-        items: list[str] | None = None,
-        currentIndex: int = 0,
-    ) -> None:
+    def __init__(self, options: InputDialogOptions, parent: QWidget | None = None) -> None:
         super().__init__()
-        self.inputMode = inputMode
+        self.options = options
+        self.inputMode = options.inputMode
+        self.items = options.items
         self.resultCode: int = self.Rejected
         self.inputValue: str = ""
         self.eventLoop = QEventLoop()
-        self.minValue = minValue
-        self.maxValue = maxValue
-        self.step = step
-        self.decimals = decimals
-        self.items = items if items is not None else []
-        self.currentIndex = currentIndex
-        self.setWindowTitle(title)
+        self.setWindowTitle(options.title)
         self.setFixedSize(350, 150)
-
-        labelWidget = QLabel(label)
-        labelWidget.setAlignment(Qt.AlignmentFlag.AlignLeft)
-
-        # Parse actualValue based on input mode
-        parsedValue: int | float | str = ""
-        if self.inputMode == "int":
-            try:
-                parsedValue = int(float(str(actualValue))) if actualValue is not None else 0
-            except (ValueError, TypeError):
-                parsedValue = 0
-        elif self.inputMode == "double":
-            try:
-                parsedValue = float(actualValue) if actualValue is not None else 0.0
-            except (ValueError, TypeError):
-                parsedValue = 0.0
-        elif self.inputMode == "item":
-            parsedValue = str(actualValue) if actualValue else ""
-        else:
-            parsedValue = str(actualValue) if actualValue else ""
-
-        if self.inputMode == "int":
-            self.inputWidget: Any = QSpinBox()
-            self.inputWidget.setMinimum(int(self.minValue))
-            self.inputWidget.setMaximum(int(self.maxValue))
-            self.inputWidget.setSingleStep(self.step)
-            self.inputWidget.setValue(int(parsedValue))
-            self.inputWidget.returnPressed.connect(self.onAccept)
-        elif self.inputMode == "double":
-            self.inputWidget = QDoubleSpinBox()
-            self.inputWidget.setMinimum(float(self.minValue))
-            self.inputWidget.setMaximum(float(self.maxValue))
-            self.inputWidget.setDecimals(self.decimals)
-            self.inputWidget.setSingleStep(1.0)
-            self.inputWidget.setValue(float(parsedValue))
-            self.inputWidget.returnPressed.connect(self.onAccept)
-        elif self.inputMode == "item":
-            self.inputWidget = QComboBox()
-            self.inputWidget.addItems(self.items)
-            self.inputWidget.setCurrentIndex(self.currentIndex)
-        else:
-            self.inputWidget = QLineEdit()
-            self.inputWidget.setText(str(parsedValue))
-            self.inputWidget.returnPressed.connect(self.onAccept)
-
-        self.inputWidget.setMinimumHeight(25)
+        self.inputWidget: Any = self.createInputWidget(options)
         self.inputEdit = self.inputWidget
+        self.createLayout(options.label)
+        self.centerOnParent(parent)
+
+    @staticmethod
+    def parseValue(inputMode: str, actualValue: str | float | None) -> int | float | str:
+        if inputMode == "int":
+            try:
+                return int(float(str(actualValue))) if actualValue is not None else 0
+            except (ValueError, TypeError):
+                return 0
+        if inputMode == "double":
+            try:
+                return float(actualValue) if actualValue is not None else 0.0
+            except (ValueError, TypeError):
+                return 0.0
+        return str(actualValue) if actualValue else ""
+
+    def createInputWidget(self, options: InputDialogOptions) -> Any:
+        value = self.parseValue(options.inputMode, options.actualValue)
+        if options.inputMode == "int":
+            widget: Any = QSpinBox()
+            widget.setMinimum(int(options.minValue))
+            widget.setMaximum(int(options.maxValue))
+            widget.setSingleStep(options.step)
+            widget.setValue(int(value))
+            widget.returnPressed.connect(self.onAccept)
+        elif options.inputMode == "double":
+            widget = QDoubleSpinBox()
+            widget.setMinimum(float(options.minValue))
+            widget.setMaximum(float(options.maxValue))
+            widget.setDecimals(options.decimals)
+            widget.setSingleStep(1.0)
+            widget.setValue(float(value))
+            widget.returnPressed.connect(self.onAccept)
+        elif options.inputMode == "item":
+            widget = QComboBox()
+            widget.addItems(options.items)
+            widget.setCurrentIndex(options.currentIndex)
+        else:
+            widget = QLineEdit()
+            widget.setText(str(value))
+            widget.returnPressed.connect(self.onAccept)
+        widget.setMinimumHeight(25)
+        return widget
+
+    def createButtons(self) -> QHBoxLayout:
         buttonRow = QHBoxLayout()
         buttonRow.addStretch(1)
         self.btnOk = QPushButton("OK")
@@ -105,21 +104,26 @@ class MWInputDialog(MWidget):
         self.btnCancel = QPushButton("Cancel")
         self.btnCancel.setMinimumSize(80, 25)
         self.btnCancel.clicked.connect(self.onReject)
-
         buttonRow.addWidget(self.btnOk)
         buttonRow.addWidget(self.btnCancel)
+        return buttonRow
 
+    def createLayout(self, label: str) -> None:
+        labelWidget = QLabel(label)
+        labelWidget.setAlignment(Qt.AlignmentFlag.AlignLeft)
         contentLayout = QVBoxLayout(self.ws)
         contentLayout.setContentsMargins(12, 12, 12, 12)
         contentLayout.addWidget(labelWidget)
         contentLayout.addWidget(self.inputWidget, 1)
-        contentLayout.addLayout(buttonRow)
+        contentLayout.addLayout(self.createButtons())
 
-        if parent is not None:
-            self.move(
-                parent.x() + max(0, (parent.width() - self.width()) // 2),
-                parent.y() + max(0, (parent.height() - self.height()) // 2),
-            )
+    def centerOnParent(self, parent: QWidget | None) -> None:
+        if parent is None:
+            return
+        self.move(
+            parent.x() + max(0, (parent.width() - self.width()) // 2),
+            parent.y() + max(0, (parent.height() - self.height()) // 2),
+        )
 
     def onAccept(self) -> None:
         if self.inputMode in ("int", "double"):
@@ -185,11 +189,13 @@ class MWInputDialog(MWidget):
         actualValue: str = "",
     ) -> tuple[str, bool]:
         dlg = cls(
+            InputDialogOptions(
+                title=title,
+                label=label,
+                actualValue=actualValue,
+                inputMode="text",
+            ),
             parent=parent,
-            title=title,
-            label=label,
-            actualValue=actualValue,
-            inputMode="text",
         )
         dlg.exec()
         return dlg.getValue(), dlg.wasAccepted()
@@ -206,14 +212,16 @@ class MWInputDialog(MWidget):
         step: int = 1,
     ) -> tuple[int, bool]:
         dlg = cls(
+            InputDialogOptions(
+                title=title,
+                label=label,
+                actualValue=actualValue,
+                inputMode="int",
+                minValue=minValue,
+                maxValue=maxValue,
+                step=step,
+            ),
             parent=parent,
-            title=title,
-            label=label,
-            actualValue=actualValue,
-            inputMode="int",
-            minValue=minValue,
-            maxValue=maxValue,
-            step=step,
         )
         dlg.exec()
         if dlg.wasAccepted():
@@ -235,14 +243,16 @@ class MWInputDialog(MWidget):
         decimals: int = 1,
     ) -> tuple[float, bool]:
         dlg = cls(
+            InputDialogOptions(
+                title=title,
+                label=label,
+                actualValue=actualValue,
+                inputMode="double",
+                minValue=minValue,
+                maxValue=maxValue,
+                decimals=decimals,
+            ),
             parent=parent,
-            title=title,
-            label=label,
-            actualValue=actualValue,
-            inputMode="double",
-            minValue=minValue,
-            maxValue=maxValue,
-            decimals=decimals,
         )
         dlg.exec()
         if dlg.wasAccepted():
@@ -262,12 +272,14 @@ class MWInputDialog(MWidget):
         currentIndex: int = 0,
     ) -> tuple[str, bool]:
         dlg = cls(
+            InputDialogOptions(
+                title=title,
+                label=label,
+                inputMode="item",
+                items=items,
+                currentIndex=currentIndex,
+            ),
             parent=parent,
-            title=title,
-            label=label,
-            inputMode="item",
-            items=items,
-            currentIndex=currentIndex,
         )
         dlg.exec()
         return dlg.getValue(), dlg.wasAccepted()

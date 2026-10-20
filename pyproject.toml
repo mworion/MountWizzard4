@@ -172,9 +172,6 @@ ignore = ["N999"]  # camelCase module names are the project convention
 "src/mw4/base/alpacaAscomCommon.py" = ["BLE001"]
 # worker boundary: nothing may escape into the pool thread (busy flag release)
 "src/mw4/base/tpool.py" = ["BLE001"]
-# known oversized functions (see review M1); remove entries when split up
-"src/mw4/gui/utilities/nativeQt/qtFileDialog.py" = ["PLR0915"]
-"src/mw4/gui/utilities/nativeQt/qtInputDialog.py" = ["PLR0915"]
 
 [tool.ruff.lint.isort]
 no-sections = true

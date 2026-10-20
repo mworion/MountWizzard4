@@ -545,3 +545,24 @@ def test_classMethodGetExistingDirectoryEmpty(qapp, tmp_path):
             folder=tmp_path,
         )
         assert result == Path()
+
+
+def test_centerOnParent_noParent(qapp):
+    d = MWFileDialog()
+    pos = d.pos()
+    d.centerOnParent(None)
+    assert d.pos() == pos
+    d.close()
+
+
+def test_createButtons_acceptTexts(qapp):
+    d = MWFileDialog(acceptMode=QFileDialog.AcceptMode.AcceptSave)
+    assert d.btnAccept.text() == "Save"
+    d.close()
+
+
+def test_createControls_defaultFilter(qapp):
+    d = MWFileDialog(filterSet=" ;; ")
+    assert d.filterCombo.count() == 1
+    assert d.filterCombo.itemText(0) == "All files (*)"
+    d.close()

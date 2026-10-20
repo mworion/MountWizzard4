@@ -3,7 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import contextlib
 import pytest
-from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
+from mw4.gui.utilities.nativeQt.qtInputDialog import InputDialogOptions, MWInputDialog
 from PySide6.QtWidgets import QApplication, QWidget
 from unittest import mock
 
@@ -13,10 +13,8 @@ def dlg(qapp):
     parent = QWidget()
     parent.resize(400, 400)
     d = MWInputDialog(
+        InputDialogOptions(title="Test Input", label="Enter text:", actualValue="default"),
         parent=parent,
-        title="Test Input",
-        label="Enter text:",
-        actualValue="default",
     )
     yield d
     with contextlib.suppress(RuntimeError):
@@ -25,7 +23,7 @@ def dlg(qapp):
 
 
 def test_initTextMode(qapp):
-    d = MWInputDialog(title="title", label="label", inputMode="text")
+    d = MWInputDialog(InputDialogOptions(title="title", label="label", inputMode="text"))
     assert d.inputMode == "text"
     assert d.resultCode == MWInputDialog.Rejected
     assert d.btnOk.text() == "OK"
@@ -34,25 +32,25 @@ def test_initTextMode(qapp):
 
 
 def test_initIntMode(qapp):
-    d = MWInputDialog(title="title", label="label", inputMode="int")
+    d = MWInputDialog(InputDialogOptions(title="title", label="label", inputMode="int"))
     assert d.inputMode == "int"
     d.close()
 
 
 def test_initDoubleMode(qapp):
-    d = MWInputDialog(title="title", label="label", inputMode="double")
+    d = MWInputDialog(InputDialogOptions(title="title", label="label", inputMode="double"))
     assert d.inputMode == "double"
     d.close()
 
 
 def test_initWithDefaultValue(qapp):
-    d = MWInputDialog(title="title", label="label", actualValue="test value")
+    d = MWInputDialog(InputDialogOptions(title="title", label="label", actualValue="test value"))
     assert d.inputEdit.text() == "test value"
     d.close()
 
 
 def test_initEmptyDefaultValue(qapp):
-    d = MWInputDialog(title="title", label="label")
+    d = MWInputDialog(InputDialogOptions(title="title", label="label"))
     assert d.inputEdit.text() == ""
     d.close()
 
@@ -61,7 +59,7 @@ def test_initParentCenters(qapp):
     parent = QWidget()
     parent.resize(800, 600)
     parent.move(100, 100)
-    d = MWInputDialog(parent=parent, title="title", label="label")
+    d = MWInputDialog(InputDialogOptions(title="title", label="label"), parent=parent)
     assert d.x() >= 100
     assert d.y() >= 100
     d.close()
@@ -75,10 +73,7 @@ def test_validateInputText(dlg):
 
 def test_validateInputInt(qapp):
     d = MWInputDialog(
-        title="title",
-        label="label",
-        inputMode="int",
-        minValue=-2147483647,
+        InputDialogOptions(title="title", label="label", inputMode="int", minValue=-2147483647)
     )
     # QSpinBox enforces validation automatically, so validateInput
     # returns True for non-empty strings
@@ -94,11 +89,7 @@ def test_validateInputInt(qapp):
 
 def test_validateInputIntWithMinMax(qapp):
     d = MWInputDialog(
-        title="title",
-        label="label",
-        inputMode="int",
-        minValue=0,
-        maxValue=100,
+        InputDialogOptions(title="title", label="label", inputMode="int", minValue=0, maxValue=100)
     )
     # QSpinBox enforces validation automatically
     assert d.validateInput("50") is True
@@ -111,10 +102,7 @@ def test_validateInputIntWithMinMax(qapp):
 
 def test_validateInputDouble(qapp):
     d = MWInputDialog(
-        title="title",
-        label="label",
-        inputMode="double",
-        minValue=-2147483647.0,
+        InputDialogOptions(title="title", label="label", inputMode="double", minValue=-2147483647.0)
     )
     # QDoubleSpinBox enforces validation automatically
     assert d.validateInput("123.45") is True
@@ -128,11 +116,9 @@ def test_validateInputDouble(qapp):
 
 def test_validateInputDoubleWithMinMax(qapp):
     d = MWInputDialog(
-        title="title",
-        label="label",
-        inputMode="double",
-        minValue=0.0,
-        maxValue=100.0,
+        InputDialogOptions(
+            title="title", label="label", inputMode="double", minValue=0.0, maxValue=100.0
+        )
     )
     # QDoubleSpinBox enforces validation automatically
     assert d.validateInput("50.5") is True
@@ -161,7 +147,7 @@ def test_onAcceptEmptyText(dlg):
 
 
 def test_onAcceptInvalidInt(qapp):
-    d = MWInputDialog(title="title", label="label", inputMode="int")
+    d = MWInputDialog(InputDialogOptions(title="title", label="label", inputMode="int"))
     d.inputWidget.setValue(999)
     d.onAccept()
     assert d.resultCode == MWInputDialog.Accepted
@@ -169,7 +155,7 @@ def test_onAcceptInvalidInt(qapp):
 
 
 def test_onAcceptValidInt(qapp):
-    d = MWInputDialog(title="title", label="label", inputMode="int")
+    d = MWInputDialog(InputDialogOptions(title="title", label="label", inputMode="int"))
     d.inputWidget.setValue(42)
     with mock.patch.object(d, "close"):
         d.onAccept()
@@ -179,7 +165,7 @@ def test_onAcceptValidInt(qapp):
 
 
 def test_onAcceptInvalidDouble(qapp):
-    d = MWInputDialog(title="title", label="label", inputMode="double")
+    d = MWInputDialog(InputDialogOptions(title="title", label="label", inputMode="double"))
     d.inputWidget.setValue(999.0)
     d.onAccept()
     assert d.resultCode == MWInputDialog.Accepted
@@ -188,10 +174,7 @@ def test_onAcceptInvalidDouble(qapp):
 
 def test_onAcceptValidDouble(qapp):
     d = MWInputDialog(
-        title="title",
-        label="label",
-        inputMode="double",
-        decimals=5,
+        InputDialogOptions(title="title", label="label", inputMode="double", decimals=5)
     )
     d.inputWidget.setValue(3.14159)
     with mock.patch.object(d, "close"):
@@ -274,7 +257,7 @@ def test_cancelButtonMinimumSize(dlg):
 
 def test_classMethodGetText(qapp):
     # Test the getText class method behavior
-    dlg = MWInputDialog(title="Test", label="Enter:")
+    dlg = MWInputDialog(InputDialogOptions(title="Test", label="Enter:"))
     dlg.inputValue = "test input"
     dlg.resultCode = MWInputDialog.Accepted
     assert dlg.wasAccepted() is True
@@ -338,11 +321,10 @@ def test_classMethodGetDoubleInvalid(qapp):
 
 def test_directInstantiationText(qapp):
     dlg = MWInputDialog(
+        InputDialogOptions(
+            title="Text Input", label="Enter some text:", actualValue="initial", inputMode="text"
+        ),
         parent=None,
-        title="Text Input",
-        label="Enter some text:",
-        actualValue="initial",
-        inputMode="text",
     )
     assert dlg.inputMode == "text"
     assert dlg.inputEdit.text() == "initial"
@@ -351,11 +333,10 @@ def test_directInstantiationText(qapp):
 
 def test_directInstantiationInt(qapp):
     dlg = MWInputDialog(
+        InputDialogOptions(
+            title="Integer Input", label="Enter a number:", actualValue="100", inputMode="int"
+        ),
         parent=None,
-        title="Integer Input",
-        label="Enter a number:",
-        actualValue="100",
-        inputMode="int",
     )
     assert dlg.inputMode == "int"
     assert dlg.inputWidget.value() == 100
@@ -364,12 +345,14 @@ def test_directInstantiationInt(qapp):
 
 def test_directInstantiationDouble(qapp):
     dlg = MWInputDialog(
+        InputDialogOptions(
+            title="Double Input",
+            label="Enter a decimal:",
+            actualValue="2.71828",
+            inputMode="double",
+            decimals=5,
+        ),
         parent=None,
-        title="Double Input",
-        label="Enter a decimal:",
-        actualValue="2.71828",
-        inputMode="double",
-        decimals=5,
     )
     assert dlg.inputMode == "double"
     assert dlg.inputWidget.value() == pytest.approx(2.71828)
@@ -377,7 +360,9 @@ def test_directInstantiationDouble(qapp):
 
 
 def test_intMinMaxValid(qapp):
-    d = MWInputDialog(title="title", label="label", inputMode="int", minValue=10, maxValue=50)
+    d = MWInputDialog(
+        InputDialogOptions(title="title", label="label", inputMode="int", minValue=10, maxValue=50)
+    )
     d.inputWidget.setValue(30)
     with mock.patch.object(d, "close"):
         d.onAccept()
@@ -386,14 +371,18 @@ def test_intMinMaxValid(qapp):
 
 
 def test_intMinMaxTooLow(qapp):
-    d = MWInputDialog(title="title", label="label", inputMode="int", minValue=10, maxValue=50)
+    d = MWInputDialog(
+        InputDialogOptions(title="title", label="label", inputMode="int", minValue=10, maxValue=50)
+    )
     d.inputWidget.setValue(5)
     assert d.inputWidget.value() == 10
     d.close()
 
 
 def test_intMinMaxTooHigh(qapp):
-    d = MWInputDialog(title="title", label="label", inputMode="int", minValue=10, maxValue=50)
+    d = MWInputDialog(
+        InputDialogOptions(title="title", label="label", inputMode="int", minValue=10, maxValue=50)
+    )
     d.inputWidget.setValue(100)
     assert d.inputWidget.value() == 50
     d.close()
@@ -401,11 +390,9 @@ def test_intMinMaxTooHigh(qapp):
 
 def test_doubleMinMaxValid(qapp):
     d = MWInputDialog(
-        title="title",
-        label="label",
-        inputMode="double",
-        minValue=0.0,
-        maxValue=100.0,
+        InputDialogOptions(
+            title="title", label="label", inputMode="double", minValue=0.0, maxValue=100.0
+        )
     )
     d.inputWidget.setValue(50.5)
     with mock.patch.object(d, "close"):
@@ -416,11 +403,9 @@ def test_doubleMinMaxValid(qapp):
 
 def test_doubleMinMaxTooLow(qapp):
     d = MWInputDialog(
-        title="title",
-        label="label",
-        inputMode="double",
-        minValue=0.0,
-        maxValue=100.0,
+        InputDialogOptions(
+            title="title", label="label", inputMode="double", minValue=0.0, maxValue=100.0
+        )
     )
     d.inputWidget.setValue(-5.5)
     assert d.inputWidget.value() == pytest.approx(0.0)
@@ -429,11 +414,9 @@ def test_doubleMinMaxTooLow(qapp):
 
 def test_doubleMinMaxTooHigh(qapp):
     d = MWInputDialog(
-        title="title",
-        label="label",
-        inputMode="double",
-        minValue=0.0,
-        maxValue=100.0,
+        InputDialogOptions(
+            title="title", label="label", inputMode="double", minValue=0.0, maxValue=100.0
+        )
     )
     d.inputWidget.setValue(150.5)
     assert d.inputWidget.value() == pytest.approx(100.0)
@@ -528,7 +511,7 @@ def test_classMethodGetDoubleOutOfRange(qapp):
 def test_textModeUsesQLineEdit(qapp):
     from PySide6.QtWidgets import QLineEdit
 
-    d = MWInputDialog(inputMode="text", title="title", label="label")
+    d = MWInputDialog(InputDialogOptions(inputMode="text", title="title", label="label"))
     assert isinstance(d.inputWidget, QLineEdit)
     d.close()
 
@@ -536,7 +519,7 @@ def test_textModeUsesQLineEdit(qapp):
 def test_intModeUsesQSpinBox(qapp):
     from PySide6.QtWidgets import QSpinBox
 
-    d = MWInputDialog(inputMode="int", title="title", label="label")
+    d = MWInputDialog(InputDialogOptions(inputMode="int", title="title", label="label"))
     assert isinstance(d.inputWidget, QSpinBox)
     d.close()
 
@@ -544,25 +527,25 @@ def test_intModeUsesQSpinBox(qapp):
 def test_doubleModeUsesQDoubleSpinBox(qapp):
     from PySide6.QtWidgets import QDoubleSpinBox
 
-    d = MWInputDialog(inputMode="double", title="title", label="label")
+    d = MWInputDialog(InputDialogOptions(inputMode="double", title="title", label="label"))
     assert isinstance(d.inputWidget, QDoubleSpinBox)
     d.close()
 
 
 def test_textWidgetMinimumHeight(qapp):
-    d = MWInputDialog(inputMode="text", title="title", label="label")
+    d = MWInputDialog(InputDialogOptions(inputMode="text", title="title", label="label"))
     assert d.inputWidget.minimumHeight() == 25
     d.close()
 
 
 def test_intWidgetMinimumHeight(qapp):
-    d = MWInputDialog(inputMode="int", title="title", label="label")
+    d = MWInputDialog(InputDialogOptions(inputMode="int", title="title", label="label"))
     assert d.inputWidget.minimumHeight() == 25
     d.close()
 
 
 def test_doubleWidgetMinimumHeight(qapp):
-    d = MWInputDialog(inputMode="double", title="title", label="label")
+    d = MWInputDialog(InputDialogOptions(inputMode="double", title="title", label="label"))
     assert d.inputWidget.minimumHeight() == 25
     d.close()
 
@@ -570,15 +553,13 @@ def test_doubleWidgetMinimumHeight(qapp):
 def test_initItemMode(qapp):
     items = ["Item 1", "Item 2", "Item 3"]
     d = MWInputDialog(
-        title="title",
-        label="label",
-        inputMode="item",
-        items=items,
-        currentIndex=1,
+        InputDialogOptions(
+            title="title", label="label", inputMode="item", items=items, currentIndex=1
+        )
     )
     assert d.inputMode == "item"
     assert d.items == items
-    assert d.currentIndex == 1
+    assert d.options.currentIndex == 1
     d.close()
 
 
@@ -587,12 +568,14 @@ def test_directInstantiationItem(qapp):
 
     items = ["Option A", "Option B", "Option C"]
     dlg = MWInputDialog(
+        InputDialogOptions(
+            title="Item Input",
+            label="Choose an item:",
+            inputMode="item",
+            items=items,
+            currentIndex=0,
+        ),
         parent=None,
-        title="Item Input",
-        label="Choose an item:",
-        inputMode="item",
-        items=items,
-        currentIndex=0,
     )
     assert dlg.inputMode == "item"
     assert isinstance(dlg.inputWidget, QComboBox)
@@ -605,10 +588,7 @@ def test_itemModeUsesQComboBox(qapp):
     from PySide6.QtWidgets import QComboBox
 
     d = MWInputDialog(
-        inputMode="item",
-        title="title",
-        label="label",
-        items=["a", "b"],
+        InputDialogOptions(inputMode="item", title="title", label="label", items=["a", "b"])
     )
     assert isinstance(d.inputWidget, QComboBox)
     d.close()
@@ -616,10 +596,7 @@ def test_itemModeUsesQComboBox(qapp):
 
 def test_itemWidgetMinimumHeight(qapp):
     d = MWInputDialog(
-        inputMode="item",
-        title="title",
-        label="label",
-        items=["a", "b"],
+        InputDialogOptions(inputMode="item", title="title", label="label", items=["a", "b"])
     )
     assert d.inputWidget.minimumHeight() == 25
     d.close()
@@ -628,11 +605,9 @@ def test_itemWidgetMinimumHeight(qapp):
 def test_onAcceptValidItem(qapp):
     items = ["Apple", "Banana", "Cherry"]
     d = MWInputDialog(
-        title="title",
-        label="label",
-        inputMode="item",
-        items=items,
-        currentIndex=1,
+        InputDialogOptions(
+            title="title", label="label", inputMode="item", items=items, currentIndex=1
+        )
     )
     with mock.patch.object(d, "close"):
         d.onAccept()
@@ -643,10 +618,9 @@ def test_onAcceptValidItem(qapp):
 
 def test_validateInputItem(qapp):
     d = MWInputDialog(
-        title="title",
-        label="label",
-        inputMode="item",
-        items=["Item 1", "Item 2"],
+        InputDialogOptions(
+            title="title", label="label", inputMode="item", items=["Item 1", "Item 2"]
+        )
     )
     assert d.validateInput("Item 1") is True
     assert d.validateInput("Item 2") is True
@@ -693,11 +667,9 @@ def test_classMethodGetItemRejected(qapp):
 def test_itemWithDifferentCurrentIndex(qapp):
     items = ["First", "Second", "Third", "Fourth"]
     d = MWInputDialog(
-        title="title",
-        label="label",
-        inputMode="item",
-        items=items,
-        currentIndex=2,
+        InputDialogOptions(
+            title="title", label="label", inputMode="item", items=items, currentIndex=2
+        )
     )
     assert d.inputWidget.currentIndex() == 2
     assert d.inputWidget.currentText() == "Third"
@@ -705,12 +677,7 @@ def test_itemWithDifferentCurrentIndex(qapp):
 
 
 def test_itemWithEmptyList(qapp):
-    d = MWInputDialog(
-        title="title",
-        label="label",
-        inputMode="item",
-        items=[],
-    )
+    d = MWInputDialog(InputDialogOptions(title="title", label="label", inputMode="item", items=[]))
     assert d.inputWidget.count() == 0
     d.close()
 
@@ -718,11 +685,9 @@ def test_itemWithEmptyList(qapp):
 def test_itemMultipleAccepts(qapp):
     items = ["A", "B", "C"]
     d = MWInputDialog(
-        title="title",
-        label="label",
-        inputMode="item",
-        items=items,
-        currentIndex=0,
+        InputDialogOptions(
+            title="title", label="label", inputMode="item", items=items, currentIndex=0
+        )
     )
     # First accept
     with mock.patch.object(d, "close"):
@@ -760,10 +725,9 @@ def test_getItemDefaultCurrentIndex(qapp):
 
 def test_initIntModeWithInvalidValue(qapp):
     d = MWInputDialog(
-        title="title",
-        label="label",
-        inputMode="int",
-        actualValue="not_a_number",
+        InputDialogOptions(
+            title="title", label="label", inputMode="int", actualValue="not_a_number"
+        )
     )
     # Should default to 0 due to exception handling
     assert d.inputWidget.value() == 0
@@ -772,10 +736,9 @@ def test_initIntModeWithInvalidValue(qapp):
 
 def test_initDoubleModeWithInvalidValue(qapp):
     d = MWInputDialog(
-        title="title",
-        label="label",
-        inputMode="double",
-        actualValue="not_a_number",
+        InputDialogOptions(
+            title="title", label="label", inputMode="double", actualValue="not_a_number"
+        )
     )
     # Should default to 0.0 due to exception handling
     assert d.inputWidget.value() == 0.0
@@ -802,3 +765,48 @@ def test_classMethodGetDoubleWithInvalidValue(qapp):
         value, accepted = MWInputDialog.getDouble(None, "title", "label")
         assert value == 0.0
         assert accepted is False
+
+
+def test_inputDialogOptions_defaults():
+    options = InputDialogOptions()
+    assert options.inputMode == "text"
+    assert options.items == []
+    assert InputDialogOptions().items is not options.items
+
+
+def test_inputDialogOptions_keywordOnly():
+    with pytest.raises(TypeError):
+        InputDialogOptions("title")
+
+
+@pytest.mark.parametrize(
+    "mode, value, expected",
+    [
+        ("int", None, 0),
+        ("int", "12.7", 12),
+        ("int", "abc", 0),
+        ("double", None, 0.0),
+        ("double", "2.5", 2.5),
+        ("double", "abc", 0.0),
+        ("item", "a", "a"),
+        ("text", None, ""),
+        ("text", "x", "x"),
+    ],
+)
+def test_parseValue(mode, value, expected):
+    assert MWInputDialog.parseValue(mode, value) == expected
+
+
+def test_createButtons(qapp):
+    d = MWInputDialog(InputDialogOptions())
+    layout = d.createButtons()
+    assert layout.count() == 3
+    d.close()
+
+
+def test_centerOnParent_noParent(qapp):
+    d = MWInputDialog(InputDialogOptions())
+    pos = d.pos()
+    d.centerOnParent(None)
+    assert d.pos() == pos
+    d.close()

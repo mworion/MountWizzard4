@@ -93,7 +93,7 @@ class Comet(TabAddon):
             try:
                 comets = json.load(inFile)
             except json.JSONDecodeError as e:
-                self.mainW.log.error(f"Error {e} loading from {self.comets.dest}")
+                self.mainW.log.error("Error %s loading from %s", e, self.comets.dest)
                 os.remove(self.comets.dest)
                 comets = []
 

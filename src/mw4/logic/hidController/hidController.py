@@ -96,7 +96,7 @@ class HidController:
         try:
             data = self.hidControllerDevice.read(64)
         except OSError as e:
-            self.log.warning(f"HidController error {e}")
+            self.log.warning("HidController error %s", e)
             return False, []
         return True, data
 
@@ -128,9 +128,9 @@ class HidController:
             self.hidControllerDevice.set_nonblocking(True)
         except OSError as e:
             self.hidControllerDevice = None
-            self.log.warning(f"Failed to open HID device: {e}")
+            self.log.warning("Failed to open HID device: %s", e)
             return False
-        self.log.debug(f"HidController: [{self.config.deviceName} {vendorId}:{productId}]")
+        self.log.debug("HidController: [%s %s:%s]", self.config.deviceName, vendorId, productId)
         return True
 
     def handleDeviceConnect(self) -> None:

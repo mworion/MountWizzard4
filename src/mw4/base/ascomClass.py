@@ -32,9 +32,9 @@ class AscomClass(AlpacaAscomCommon):
         CoInitialize()
         try:
             self.device = client.dynamic.Dispatch(self.config.deviceName)
-            self.log.debug(f"[{self.config.deviceName}] Dispatching")
+            self.log.debug("[%s] Dispatching", self.config.deviceName)
         except (AttributeError, OSError) as e:
-            self.log.error(f"[{self.config.deviceName}] Dispatch error: [{e}]")
+            self.log.error("[%s] Dispatch error: [%s]", self.config.deviceName, e)
             return
         else:
             self.runnerCommunicationLoop()
@@ -77,7 +77,7 @@ class AscomClass(AlpacaAscomCommon):
                 creationflags=0x08000000,  # CREATE_NO_WINDOW
             ).strip()
         except subprocess.CalledProcessError as e:
-            cls.log.critical(f"ASCOM Chooser subprocess error: {e}")
+            cls.log.critical("ASCOM Chooser subprocess error: %s", e)
             return deviceName
-        cls.log.debug(f"ASCOM Chooser result: [{result}]")
+        cls.log.debug("ASCOM Chooser result: [%s]", result)
         return result if result else deviceName

@@ -378,3 +378,21 @@ def test_gameControllerEntryInDeviceUi(function) -> None:
     entry = function.deviceUi["hidController"]
     assert entry["uiDropDown"] is not None
     assert entry["uiSetup"] is not None
+
+
+def test_init_skipsEntriesWithoutSignals(function):
+    class NoSigInstance:
+        pass
+
+    realEntry = function.app.dReg["telescope"]
+    origInstance = realEntry.instance
+    realEntry.instance = NoSigInstance()
+    try:
+        with (
+            mock.patch.object(function.app.dReg, "configurable", return_value=[realEntry]),
+            mock.patch.object(SettDevice, "setupDeviceGui"),
+        ):
+            window = SettDevice(function.parentW)
+    finally:
+        realEntry.instance = origInstance
+    assert window.signalsToName == {}

@@ -62,7 +62,9 @@ class SGProClass(DriverData):
                     timeout=self.SGPRO_TIMEOUT,
                 )
         except (requests.RequestException, OSError) as e:
-            self.log.debug(f"[{self.config.deviceName}] method [{valueProp}] not implemented: {e}")
+            self.log.debug(
+                "[%s] method [%s] not implemented: %s", self.config.deviceName, valueProp, e
+            )
             return {}
 
         if response.status_code != 200:
@@ -70,7 +72,7 @@ class SGProClass(DriverData):
             self.log.warning(t)
             return {}
         if self.loggingTrace:
-            self.log.debug(f"[Trace] Response: [{response.json()}]")
+            self.log.debug("[Trace] Response: [%s]", response.json())
         return response.json()
 
     def createDevice(self) -> bool:
@@ -86,7 +88,7 @@ class SGProClass(DriverData):
 
     def discoverDevices(self, deviceType: str) -> list:
         discoverList = self.enumerateDevices(deviceType)
-        self.log.debug(f"[Type: {deviceType}: {discoverList}]")
+        self.log.debug("[Type: %s: %s]", deviceType, discoverList)
         return discoverList
 
     def pollDeviceStatus(self) -> None:
@@ -123,12 +125,12 @@ class SGProClass(DriverData):
         for retry in range(5):
             suc = self.createDevice()
             if suc:
-                self.log.debug(f"[{self.config.deviceName}] connected, [{retry}] retries")
+                self.log.debug("[%s] connected, [%s] retries", self.config.deviceName, retry)
                 break
             if self.stopEvent.wait(0.2):
                 break
         else:
-            self.log.debug(f"[{self.config.deviceName}] not connected, [{retry}] retries")
+            self.log.debug("[%s] not connected, [%s] retries", self.config.deviceName, retry)
             suc = False
         if not suc:
             self.msg.emit(2, self.PROTOCOL_NAME, "Connect error", self.config.deviceName)
@@ -149,7 +151,7 @@ class SGProClass(DriverData):
             if cmd.cmdType == "call":
                 self.callDeviceMethod(cmd.valueProp, **cmd.kwargs)
             else:
-                self.log.warning(f"[{self.config.deviceName}] unknown cmdType: [{cmd.cmdType}]")
+                self.log.warning("[%s] unknown cmdType: [%s]", self.config.deviceName, cmd.cmdType)
 
     def handleDeviceConnect(self) -> None:
         if not self.connectDevice():

@@ -225,6 +225,13 @@ def test_smartTabGui_with_default_state(mainWindow):
     mainWindow.smartTabGui()
 
 
+def test_smartTabGui_without_change(mainWindow):
+    mainWindow.smartTabGui()
+    with mock.patch.object(mainWindow.ui.mainTabWidget, "setStyleSheet") as m:
+        mainWindow.smartTabGui()
+        m.assert_not_called()
+
+
 def test_smartTabGui_with_power_enabled(mainWindow):
     """Test smartTabGui with power device enabled."""
     mainWindow.app.dReg.d["power"].stat = True
@@ -591,6 +598,29 @@ def test_updateStatusGUI_satellite_tracking_starts(mainWindow):
         ):
             mainWindow.updateStatusGUI(MockOB)
             assert mainWindow.satStatus
+
+
+def test_updateStatusGUI_satellite_tracking_already_set(mainWindow):
+    class MockOB:
+        @staticmethod
+        def statusText():
+            return "test"
+
+    mainWindow.satStatus = True
+    obsSite = mainWindow.app.dReg["mount"].obsSite
+    with (
+        mock.patch.object(mainWindow.app, "playSound") as mSound,
+        mock.patch("mw4.gui.mainWindow.mainWindow.changeStyleDynamic"),
+        mock.patch.object(
+            obsSite.__class__,
+            "isFollowingSatellite",
+            new_callable=mock.PropertyMock,
+            return_value=True,
+        ),
+    ):
+        mainWindow.updateStatusGUI(MockOB)
+        mSound.emit.assert_not_called()
+        assert mainWindow.satStatus
 
 
 def test_saveProfileBase_with_empty_path(mainWindow):

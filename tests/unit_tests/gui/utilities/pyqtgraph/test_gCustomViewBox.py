@@ -645,6 +645,68 @@ def test_CustomViewBox_mouseClickEvent_5():
         vb.mouseClickEvent(EV())
 
 
+def test_CustomViewBox_mouseDragEvent_dragging():
+    class EV:
+        @staticmethod
+        def button():
+            return Qt.MouseButton.LeftButton
+
+        @staticmethod
+        def accept():
+            return 1
+
+        @staticmethod
+        def isStart():
+            return False
+
+        @staticmethod
+        def isFinish():
+            return False
+
+        @staticmethod
+        def scenePos():
+            return QPointF(0, 0)
+
+    vb = CustomViewBox()
+    vb.plotDataItem = pg.PlotDataItem(x=[0, 1, 2], y=[0, 1, 2], symbol="o")
+    vb.dragPoint = mock.MagicMock()
+    vb.dragPoint.index.return_value = 1
+    vb.dragOffset = QPointF(0, 0)
+    with (
+        mock.patch.object(vb, "mapSceneToView", return_value=QPointF(0, 0)),
+        mock.patch.object(vb, "checkLimits", return_value=([0, 1, 2], [0, 1, 2])),
+        mock.patch.object(vb, "updateData") as mUpdate,
+    ):
+        vb.mouseDragEvent(EV())
+        mUpdate.assert_called_once()
+
+
+def test_CustomViewBox_mouseClickEvent_8():
+    class EV:
+        @staticmethod
+        def button():
+            return Qt.MouseButton.LeftButton
+
+        @staticmethod
+        def accept():
+            return 1
+
+        @staticmethod
+        def scenePos():
+            return QPointF(0, 0)
+
+    vb = CustomViewBox()
+    vb.plotDataItem = pg.PlotDataItem(x=[0, 0, 0], y=[0, 0, 0], symbol="o")
+    with (
+        mock.patch.object(vb, "mapSceneToView", return_value=QPointF(0, 0)),
+        mock.patch.object(vb, "getCurveIndex", return_value=None),
+        mock.patch.object(vb, "getNearestPointIndex", return_value=None),
+        mock.patch.object(vb, "addUpdate") as mAdd,
+    ):
+        vb.mouseClickEvent(EV())
+        mAdd.assert_not_called()
+
+
 def test_CustomViewBox_mouseClickEvent_6():
     class EV:
         @staticmethod

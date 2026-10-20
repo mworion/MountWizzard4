@@ -135,7 +135,7 @@ class UploadPopup(MWidget):
         returnValues = requests.get(self.generateURLStatus(), timeout=self.TIMEOUT_UPLOAD)
         self.returnValues["successMount"] = True
         if returnValues.status_code != 200:
-            self.log.debug(f"Error status: {returnValues.status_code}")
+            self.log.debug("Error status: %s", returnValues.status_code)
             self.pollStatusRunState = False
             self.returnValues["successMount"] = False
         return returnValues.text.strip("\n").split("\n")
@@ -158,7 +158,7 @@ class UploadPopup(MWidget):
                     self.dataNames[dataType]["file"],
                     fh.read(),
                 )
-        self.log.debug(f"Data: {list(files.keys())}")
+        self.log.debug("Data: %s", list(files.keys()))
         return files
 
     def generateURL(self) -> str:

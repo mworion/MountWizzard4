@@ -214,3 +214,17 @@ def test_formatLonToText():
 
 def test_convertToDMS_zero():
     assert convertToDMS(Angle(degrees=0)) == "+00:00:00"
+
+
+def test_convertDecToAngle_degreesOnly():
+    assert math.isclose(convertDecToAngle("12Deg").degrees, 12, abs_tol=0.000001)
+    assert math.isclose(convertDecToAngle("-12").degrees, -12, abs_tol=0.000001)
+
+
+def test_convertDecToAngle_noSeconds():
+    assert math.isclose(convertDecToAngle("12 30").degrees, 12.5, abs_tol=0.000001)
+
+
+def test_convertRaToAngle_partialSexagesimal():
+    assert math.isclose(convertRaToAngle("12H").hours, 12, abs_tol=0.000001)
+    assert math.isclose(convertRaToAngle("12H 30").hours, 12.5, abs_tol=0.000001)

@@ -178,7 +178,7 @@ class AnalyseWindow(MWidget):
             with open(loadFilePath) as infile:
                 modelJSON = json.load(infile)
         except json.JSONDecodeError as e:
-            self.log.warning(f"Cannot load model file: {[loadFilePath]}, error: {e}")
+            self.log.warning("Cannot load model file: %s, error: %s", [loadFilePath], e)
             return
 
         self.writeGui(modelJSON, loadFilePath)

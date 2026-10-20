@@ -189,7 +189,7 @@ class BuildPoint:
             try:
                 value = [[p["altitude"], p["azimuth"]] for p in json.load(handle)]
             except json.JSONDecodeError as e:
-                self.log.info(f"Cannot Model load: {fullFileName}, error: {e}")
+                self.log.info("Cannot Model load: %s, error: %s", fullFileName, e)
                 value = []
         return value
 
@@ -198,7 +198,7 @@ class BuildPoint:
             try:
                 value = json.load(f)
             except json.JSONDecodeError as e:
-                self.log.info(f"Cannot BPTS load: {fullFileName}, error: {e}")
+                self.log.info("Cannot BPTS load: %s, error: %s", fullFileName, e)
                 value = []
         return value
 
@@ -210,7 +210,7 @@ class BuildPoint:
                 reader = csv.reader(csvFile, delimiter=dialect.delimiter)
                 value = [[int(row[0]), int(row[1])] for row in reader]
             except (csv.Error, ValueError) as e:
-                self.log.info(f"Cannot CSV load: {fullFileName}, error: {e}")
+                self.log.info("Cannot CSV load: %s, error: %s", fullFileName, e)
                 value = []
         return value
 
@@ -248,10 +248,9 @@ class BuildPoint:
         if not fullFileName.is_file():
             return False
 
-        value = None
         if fullFileName.suffix == ".csv":
             value = self.loadCSV(fullFileName)
-        elif fullFileName.suffix in [".hpts", ".txt"]:
+        else:
             value = self.loadBPTS(fullFileName)
 
         self.horizonP = value

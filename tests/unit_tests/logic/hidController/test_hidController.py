@@ -764,3 +764,27 @@ def test_runnerCommunicationLoop_callsDisconnect(hc):
     assert disconnected_signals[0] == "Test Device"
     # Verify device was closed
     mock_device.close.assert_called_once()
+
+
+def test_setupDevice_skipsOtherDevices(hc):
+    hc.config.deviceName = "Pro Controller"
+    hid_devices = [
+        {"product_string": "Other", "vendor_id": 5, "product_id": 6},
+        {"product_string": "Pro Controller", "vendor_id": 1, "product_id": 2},
+    ]
+    mock_device = MagicMock()
+    with (
+        mock.patch.object(hid, "enumerate", return_value=hid_devices),
+        mock.patch.object(hid, "device", return_value=mock_device),
+    ):
+        result = hc.setupDevice()
+    assert result is True
+    mock_device.open.assert_called_once_with(1, 2)
+
+
+def test_handleDeviceDisconnect_noDevice(hc):
+    hc.hidControllerDevice = None
+    hc.deviceConnected = True
+    hc.config.deviceName = "Pro Controller"
+    hc.handleDeviceDisconnect()
+    assert hc.deviceConnected is False

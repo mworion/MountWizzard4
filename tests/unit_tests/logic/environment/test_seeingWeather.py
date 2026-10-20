@@ -226,3 +226,11 @@ def test_pollSeeingData_5(function):
         mock.patch.object(function, "getSeeingData"),
     ):
         function.pollSeeingData()
+
+
+def test_sendStatus_3(function):
+    function.running = True
+    with mock.patch.object(function, "processSeeingData") as process:
+        function.sendStatus(True)
+        process.assert_called_once()
+    assert function.running

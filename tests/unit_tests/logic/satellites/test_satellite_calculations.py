@@ -462,3 +462,13 @@ def test_calcSatPasses_1(function):
         ),
     ):
         calcSatPasses(satellite, obsSite, setting)
+
+
+def test_collectAllOrbits_5(function):
+    ts = function.mount.obsSite.ts
+    now = ts.tt_jd(2459215.4)
+    times = [ts.tt_jd(2459215.5), ts.tt_jd(2459215.6)]
+    events = [0, 3]
+    with mock.patch.object(function.mount.obsSite.ts, "now", return_value=now):
+        satOrbits = collectAllOrbits(times, events, function.mount.obsSite)
+        assert satOrbits == [{"rise": times[0]}]

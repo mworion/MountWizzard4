@@ -203,9 +203,9 @@ class MountDevice(QObject):
         )
 
     def resultGetFW(self) -> None:
-        self.log.info(f"Product : {self.firmware.product}")
-        self.log.info(f"Firmware: {self.firmware.vString}")
-        self.log.info(f"Hardware: {self.firmware.hardware}")
+        self.log.info("Product : %s", self.firmware.product)
+        self.log.info("Firmware: %s", self.firmware.vString)
+        self.log.info("Hardware: %s", self.firmware.hardware)
         self.geometry.initializeGeometry(self.firmware.product)
         self.signals.firmwareDone.emit(self.firmware)
 

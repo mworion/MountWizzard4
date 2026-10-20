@@ -328,3 +328,26 @@ def test_abort_with_process(function):
     function.process = fake
     function.abort()
     assert fake.killed
+
+
+def test_prepareResult_4(function):
+    solve = {
+        "raJ2000S": 1,
+        "decJ2000S": 1,
+    }
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(mw4.logic.plateSolve.plateSolve, "getImageHeader"),
+        mock.patch.object(
+            mw4.logic.plateSolve.plateSolve, "getSolutionFromWCSHeader", return_value=solve
+        ),
+        mock.patch.object(
+            mw4.logic.plateSolve.plateSolve, "updateImageFileHeaderWithSolution"
+        ) as updateHeader,
+        mock.patch.object(mw4.logic.plateSolve.plateSolve, "J2000ToJNow", return_value=(1, 1)),
+    ):
+        result = function.prepareResult(
+            True, "test", Path("tests/work/image/m51.fit"), Path("test"), False
+        )
+        assert result["success"]
+        updateHeader.assert_not_called()

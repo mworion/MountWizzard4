@@ -33,7 +33,7 @@ authors = [
 ]
 requires-python = ">=3.12,<3.15"
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
+    "Development Status :: 4 - Beta",
     "Environment :: MacOS X",
     "Environment :: Other Environment",
     "Programming Language :: Python :: 3.12",
@@ -88,11 +88,7 @@ dependencies = [
 
 [project.scripts]
 mw4 = "mw4.cli:run"
-MW4 = "mw4.cli:run"
-mw = "mw4.cli:run"
-MW = "mw4.cli:run"
 mountwizzard4 = "mw4.cli:run"
-MountWizzard4 = "mw4.cli:run"
 
 [project.urls]
 Documentation = "https://mworion.github.io/MountWizzard4"
@@ -138,11 +134,13 @@ markers = [
 ]
 
 [tool.coverage.run]
+branch = true
 source = ["src/mw4/"]
 omit = ["src/mw4/gui/widgets/**/*.py"]
 plugins = ["coverage_conditional_plugin"]
 
 [tool.coverage.report]
+fail_under = 100
 exclude_also = [
     "if __name__ == .__main__.:",
     "if TYPE_CHECKING:",
@@ -164,7 +162,8 @@ exclude = ["src/mw4/gui/widgets/*"]
 
 [tool.ruff.lint]
 extend-select = [
-    "E", "T2", "UP", "I", "C", "LOG", "W", "SIM", "A", "RUF", "B", "BLE"
+    "E", "T2", "UP", "I", "C", "LOG", "W", "SIM", "A", "RUF", "B", "BLE",
+    "G004", "S113", "PLR0915"
 ]
 ignore = ["N999"]  # camelCase module names are the project convention
 
@@ -173,6 +172,14 @@ ignore = ["N999"]  # camelCase module names are the project convention
 "src/mw4/base/alpacaAscomCommon.py" = ["BLE001"]
 # worker boundary: nothing may escape into the pool thread (busy flag release)
 "src/mw4/base/tpool.py" = ["BLE001"]
+# known oversized functions (see review M1); remove entries when split up
+"src/mw4/gui/extWindows/image/imageTabs.py" = ["PLR0915"]
+"src/mw4/gui/extWindows/simulator/materials.py" = ["PLR0915"]
+"src/mw4/gui/mainWaddon/tabImage_Stats.py" = ["PLR0915"]
+"src/mw4/gui/mainWaddon/tabMount_Sett.py" = ["PLR0915"]
+"src/mw4/gui/utilities/nativeQt/qtFileDialog.py" = ["PLR0915"]
+"src/mw4/gui/utilities/nativeQt/qtInputDialog.py" = ["PLR0915"]
+"src/mw4/logic/databaseProcessing/dataWriter.py" = ["PLR0915"]
 
 [tool.ruff.lint.isort]
 no-sections = true

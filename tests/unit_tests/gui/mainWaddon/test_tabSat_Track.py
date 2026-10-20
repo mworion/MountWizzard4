@@ -511,6 +511,23 @@ def test_selectStartEnd_6(function):
     assert e == 2459215.7
 
 
+def test_selectStartEnd_9(function):
+    function.app.dReg.d["mount"].stat = True
+    ts = function.app.mount.obsSite.ts
+    function.satOrbits = [{"rise": ts.tt_jd(2459215.5), "settle": ts.tt_jd(2459215.7)}]
+    function.ui.satBeforeFlip.setChecked(True)
+    function.ui.satAfterFlip.setChecked(False)
+    s, e = function.selectStartEnd()
+    assert s == 2459215.5
+    assert e == 2459215.7
+
+    function.ui.satBeforeFlip.setChecked(False)
+    function.ui.satAfterFlip.setChecked(True)
+    s, e = function.selectStartEnd()
+    assert s == 2459215.5
+    assert e == 2459215.7
+
+
 def test_selectStartEnd_7(function):
     function.app.dReg.d["mount"].stat = True
     ts = function.app.mount.obsSite.ts

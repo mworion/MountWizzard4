@@ -613,3 +613,14 @@ class TestCommandP:
         conn = Connection(makeParent())
         assert isinstance(conn.COMMAND_P, frozenset)
         assert frozenset({":RC", ":Rc", ":RG", ":Suaf"}) == conn.COMMAND_P
+
+
+class TestReceiveDataPartial:
+    """Tests for receiveData with responses split over several reads."""
+
+    def test_receiveData_partialChunks(self):
+        client = makeClient()
+        client.readAll.side_effect = [QByteArray(b"a#"), QByteArray(b"b#")]
+        conn = Connection(makeParent())
+        val = conn.receiveData(client=client, numberOfChunks=2, minBytes=0)
+        assert val == (True, ["a", "b"])

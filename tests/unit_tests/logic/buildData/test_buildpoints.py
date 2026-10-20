@@ -1128,3 +1128,12 @@ def test_sortActualPierside_preserves_coordinates(function):
     sorted_coords = [[p[0], p[1]] for p in function.buildP]
     # Coordinates should be preserved, just reordered
     assert len(original_coords) == len(sorted_coords)
+
+
+def test_loadBuildP_unknownSuffix(function):
+    function.buildPFile = ""
+    fileName = Path("tests/work/config/test.xyz")
+    fileName.write_text("")
+    suc = function.loadBuildP(fileName)
+    assert suc
+    assert function.buildP == []

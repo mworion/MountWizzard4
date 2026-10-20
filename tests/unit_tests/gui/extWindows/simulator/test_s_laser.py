@@ -74,3 +74,27 @@ def test_create_1(function):
         mock.patch.object(function, "showEnable"),
     ):
         function.create()
+
+
+def test_showEnable_2(function):
+    with mock.patch.object(function.parent, "entityModel", {}):
+        function.showEnable()
+
+
+def test_updatePositions_4(function):
+    function.app.dReg.d["mount"].stat = True
+    with (
+        mock.patch.object(function.parent, "entityModel", {}),
+        mock.patch.object(
+            function.app.mount,
+            "calcTransformationMatricesActual",
+            return_value=(
+                0,
+                0,
+                np.array([1, 1, 1]),
+                np.array([1.0, 1.0, 1.0]),
+                np.array([1.0, 1.0, 1.0]),
+            ),
+        ),
+    ):
+        function.updatePositions()

@@ -83,6 +83,18 @@ def test_commandRaw_1(function):
         function.commandRaw()
 
 
+def test_commandRaw_3(function):
+    with (
+        mock.patch("mw4.gui.mainWaddon.tabMount_Command.Connection") as mock_connection,
+    ):
+        mock_instance = mock.MagicMock()
+        mock_instance.communicateRaw.return_value = (False, True, "")
+        mock_connection.return_value = mock_instance
+        function.commandRaw()
+
+        assert "Command OK" not in function.ui.commandStatus.toPlainText()
+
+
 def test_commandRaw_2(function):
     with (
         mock.patch("mw4.gui.mainWaddon.tabMount_Command.Connection") as mock_connection,

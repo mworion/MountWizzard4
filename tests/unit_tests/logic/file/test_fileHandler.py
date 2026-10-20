@@ -215,3 +215,29 @@ def test_loadImage_2(function):
     with mock.patch.object(function.threadPool, "start"):
         function.loadImage(imageFileName)
         function.workerLoadImage.release()
+
+
+def test_cleanImageFormat_2(function):
+    function.image = np.random.rand(100, 100) + 1
+    function.flipV = True
+    function.flipH = False
+    function.cleanImageFormat()
+    assert function.image.dtype == np.dtype("uint8")
+
+
+def test_workerLoadImage_4(function):
+    function.header = {
+        "CTYPE1": "DEF",
+        "CTYPE2": "DEF",
+        "NAXIS": 2,
+        "NAXIS1": 100,
+        "NAXIS2": 200,
+    }
+    imageFileName = Path("tests/work/image/m51.png")
+    with (
+        mock.patch.object(function, "checkValidImageFormat", return_value=True),
+        mock.patch.object(function, "cleanImageFormat"),
+        mock.patch.object(function, "debayerImage") as debayer,
+    ):
+        function.runnerLoadImage(imageFileName)
+        debayer.assert_not_called()

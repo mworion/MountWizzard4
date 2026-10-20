@@ -183,3 +183,48 @@ def test_showTabBackgroundRMS(function):
     function.photometry = FileHandler(function.parent)
     function.photometry.backgroundRMS = np.random.rand(100, 100) + 1
     function.showBackgroundRMS()
+
+
+def test_showTabHFR_2(function):
+    function.ui.isoLayer.setChecked(False)
+    function.photometry = Photometry(function.parent, np.zeros((1, 1)))
+    function.photometry.hfr = np.array(np.random.rand(100, 100) + 1)
+    function.photometry.hfrPercentile = 0
+    function.photometry.hfrMedian = 0
+    with mock.patch.object(function.ui.hfr, "addIsoBasic") as addIsoBasic:
+        function.showHFR()
+        addIsoBasic.assert_not_called()
+
+
+def test_showTabRoundness_2(function):
+    function.ui.isoLayer.setChecked(False)
+    function.photometry = FileHandler(function.parent)
+    function.photometry.roundnessMin = 1
+    function.photometry.roundnessMax = 10
+    function.photometry.roundnessPercentile = 10
+    function.photometry.roundnessGrid = np.random.rand(100, 100) + 1
+    with mock.patch.object(function.ui.roundness, "addIsoBasic") as addIsoBasic:
+        function.showRoundness()
+        addIsoBasic.assert_not_called()
+
+
+def test_showTabImageSources_2(function):
+    function.photometry = FileHandler(function.parent)
+    function.imageSourceRange = None
+    function.photometry.xCoord = np.linspace(0, 50, 20)
+    function.photometry.yCoord = np.linspace(50, 100, 20)
+    function.photometry.theta = np.random.rand(20) + 10
+    function.photometry.aAxis = np.random.rand(20) + 10
+    function.photometry.bAxis = np.random.rand(20) + 10
+    function.photometry.image = np.array(np.random.rand(100, 100) + 1)
+    function.photometry.hfr = np.random.rand(20) + 10.0
+    function.ui.showValues.setChecked(False)
+    with (
+        mock.patch.object(
+            function.ui.imageSource,
+            "addEllipse",
+            return_value=pg.QtWidgets.QGraphicsEllipseItem(),
+        ),
+        mock.patch.object(function.ui.tabImage, "setTabEnabled"),
+    ):
+        function.showImageSources()

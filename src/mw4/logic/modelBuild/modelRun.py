@@ -135,7 +135,7 @@ class ModelData(QObject):
         self.log.debug(t)
 
     def buildProgModel(self) -> None:
-        self.log.debug(f"{'Build progmodel':15s}: Len: [{len(self.modelBuildData)}]")
+        self.log.debug("Build progmodel: Len: [%s]", len(self.modelBuildData))
         self.modelProgData = []
         for key in self.modelBuildData:
             mPoint = self.modelBuildData[key]
@@ -196,7 +196,7 @@ class ModelData(QObject):
         self.statusExpose.emit([imagePath.stem, exposureTime, binning])
 
     def startNewPlateSolve(self, imagePath: Path) -> None:
-        self.log.debug(f"{'Start solve':15s}: [{imagePath.stem}]")
+        self.log.debug("Start solve    : [%s]", imagePath.stem)
         self.app.dReg["plateSolve"].instance.solve(imagePath)
 
     def sendModelProgress(self) -> None:
@@ -234,7 +234,7 @@ class ModelData(QObject):
         self.modelBuildData.clear()
         self.modelRunList.clear()
         self.retries = 0
-        self.log.debug(f"{'Prepare model':15s}: Len: [{len(self.modelInputData)}]")
+        self.log.debug("Prepare model  : Len: [%s]", len(self.modelInputData))
         for index, point in enumerate(self.modelInputData):
             self.pointStatus.emit(index, BuildPoint.UNPROCESSED)
             modelItem = {}
@@ -263,7 +263,7 @@ class ModelData(QObject):
             for key in self.modelRunList
         )
         t = "retry needed" if retryNeeded else "no retry needed"
-        self.log.debug(f"{'Check retry':15s}: Status: [{t}]")
+        self.log.debug("Check retry    : Status: [%s]", t)
         return retryNeeded
 
     def checkModelFinished(self) -> bool:
@@ -271,7 +271,7 @@ class ModelData(QObject):
 
     def generateRunIterator(self) -> None:
         nextList = []
-        self.log.debug(f"{'Run retries':15s}: Count: [{self.config.numberRetries:1.0f}]")
+        self.log.debug("Run retries    : Count: [%1.0f]", self.config.numberRetries)
         for key in self.modelRunList:
             if self.modelBuildData[key]["success"]:
                 continue
@@ -313,15 +313,15 @@ class ModelData(QObject):
         self.timerExposure.stop()
         self.resetSignals()
         if self.cancelBatch:
-            self.log.info(f"{'Cancel model':15s}: by user")
+            self.log.info("Cancel model   : by user")
             self.finished.emit(True)
             return
         self.buildProgModel()
         modelSize = len(self.modelProgData)
         if modelSize < 3:
-            self.log.warning(f"Only {modelSize} points available")
+            self.log.warning("Only %s points available", modelSize)
             self.modelProgData = []
-        self.log.debug(f"{'Finish model':15s}: len: [{modelSize}]")
+        self.log.debug("Finish model   : len: [%s]", modelSize)
         self.finished.emit(False)
 
     def stopRun(self) -> None:
@@ -347,7 +347,7 @@ class ModelData(QObject):
             self.finished.emit(False)
             return
 
-        self.log.debug(f"{'Start model':15s}")
+        self.log.debug("Start model    ")
         self.runTime = time.time()
         self.setupSignals()
         self.prepareModelBuildData()

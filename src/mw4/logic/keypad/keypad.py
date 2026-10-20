@@ -229,7 +229,6 @@ class KeyPad:
             self.signals.clearCursor.emit()
         elif value[0] == 11 or value[0] == 12:
             pass
-            # print('select 12')
 
     def checkDispatch(self, value: list[int]) -> None:
         if value[0] == 0:

@@ -119,3 +119,18 @@ def test_checkAvailabilityIndex_2(function):
     with mock.patch.object(Path, "glob", return_value=["test"]):
         suc = function.checkAvailabilityIndex(Path("test"))
         assert suc
+
+
+def test_solve_3(function):
+    function.config.appPath = "/usr/bin"
+    with (
+        mock.patch.object(function.parent, "runSolverBin", return_value=(True, "")) as runBin,
+        mock.patch.object(function.parent, "prepareResult"),
+        mock.patch.object(
+            mw4.logic.plateSolve.astrometry,
+            "getHintFromImageFile",
+            return_value=(Angle(hours=1), Angle(degrees=1), 1),
+        ),
+    ):
+        function.solve(Path("tests/work/image/m51.fit"), True)
+        assert "--no-fits2fits" not in runBin.call_args[0][0]

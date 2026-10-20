@@ -155,6 +155,23 @@ def test_stopHid_1(function):
         function.stopHid(8)
 
 
+def test_hidOtherValues(function):
+    with (
+        mock.patch.object(function, "changeTracking") as mTracking,
+        mock.patch.object(function, "changePark") as mPark,
+        mock.patch.object(function, "flipMount") as mFlip,
+        mock.patch.object(function, "stop") as mStop,
+    ):
+        function.changeTrackingHid(0)
+        function.changeParkHid(0)
+        function.flipMountHid(0)
+        function.stopHid(0)
+        mTracking.assert_not_called()
+        mPark.assert_not_called()
+        mFlip.assert_not_called()
+        mStop.assert_not_called()
+
+
 def test_stop_1(function):
     with mock.patch.object(function.app.mount.obsSite, "stop", return_value=True):
         function.stop()

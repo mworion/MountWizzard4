@@ -191,3 +191,19 @@ def test_create_3(function):
     ):
         suc = function.create()
         assert suc
+
+
+def test_showEnable_2(function):
+    function.parent.entityModel = {}
+    function.showEnable()
+
+
+def test_updatePositions_4(function):
+    function.app.dReg.d["mount"].instance.obsSite.haJNow = Angle(hours=10)
+    function.parent.entityModel = {}
+    with mock.patch.object(
+        function.app.dReg.d["mount"].instance,
+        "calcTransformationMatricesActual",
+        return_value=(0, 0, None, np.array([1.0, 1.0, 1.0]), np.array([1.0, 1.0, 1.0])),
+    ):
+        function.updatePositions()

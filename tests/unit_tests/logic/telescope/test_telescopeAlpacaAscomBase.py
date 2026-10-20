@@ -46,3 +46,28 @@ def test_getInitialConfig(function):
         attrs = [c.args[0] for c in m.call_args_list]
         assert "ApertureDiameter" in attrs
         assert "FocalLength" in attrs
+
+
+def test_getInitialConfig_noProps(function):
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+        mock.patch.object(function, "getDeviceProp", return_value=None),
+    ):
+        function.data.clear()
+        function.getInitialConfig()
+        assert function.data == {}
+
+
+def test_getInitialConfig_onlyAperture(function):
+    with (
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+        mock.patch.object(
+            function,
+            "getDeviceProp",
+            side_effect=lambda x: 0.1 if x == "ApertureDiameter" else None,
+        ),
+    ):
+        function.data.clear()
+        function.getInitialConfig()
+        assert function.data["TELESCOPE_INFO.TELESCOPE_APERTURE"] == 100
+        assert "TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH" not in function.data

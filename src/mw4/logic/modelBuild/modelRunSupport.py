@@ -89,7 +89,7 @@ def buildSaveData(
 
 
 def saveModelFile(modelPath: Path, saveData: list[dict[str, Any]]) -> None:
-    log.debug(f"{'Save model':15s}: Len: [{len(saveData)}]")
+    log.debug("Save model     : Len: [%s]", len(saveData))
     with open(modelPath, "w") as outfile:
         json.dump(saveData, outfile, sort_keys=True, indent=4)
 
@@ -174,7 +174,7 @@ def compareFile(
             fileModel = json.load(inFile)
             fileModelData = generateFileModelData(fileModel)
         except json.JSONDecodeError as e:
-            log.warning(f"{'Cannot load':15s}: model file [{[inFile]}], error: {e}")
+            log.warning("Cannot load    : model file [%s], error: %s", [inFile], e)
         else:
             pointsIn, pointsOut = findKeysSourceInDest(fileModelData, mountModelData)
 

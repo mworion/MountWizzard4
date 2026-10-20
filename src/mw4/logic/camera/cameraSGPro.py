@@ -37,7 +37,7 @@ class CameraSGPro(SGProClass):
             if (text in self.data.get("Device.Message", "")) == present:
                 break
             if time.monotonic() > deadline:
-                self.log.warning(f"[{self.config.deviceName}] timeout waiting for [{text}]")
+                self.log.warning("[%s] timeout waiting for [%s]", self.config.deviceName, text)
                 self.msg.emit(2, self.PROTOCOL_NAME, "Timeout", f"Waiting for [{text}]")
                 return False
             if tick is not None:
@@ -83,13 +83,13 @@ class CameraSGPro(SGProClass):
             "Path": str(self.parent.imagePath),
         }
         suc, response = self.captureImage(params=params)
-        self.log.debug(f"Capture: [{self.parent.imagePath}]")
+        self.log.debug("Capture: [%s]", self.parent.imagePath)
         if not suc:
-            self.log.debug(f"No capture image. {response}")
+            self.log.debug("No capture image. %s", response)
             return ""
         receipt = response.get("Receipt", "")
         if not receipt:
-            self.log.debug(f"No receipt received. {response}")
+            self.log.debug("No receipt received. %s", response)
             return ""
         if not self.waitForMessage("integrating", True, self.START_TIMEOUT):
             return ""

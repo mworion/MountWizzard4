@@ -4,7 +4,7 @@
 import gc
 import pytest
 from mw4.gui.utilities.qtCustomWindow import CustomTitleBar
-from PySide6.QtCore import QPoint, Qt
+from PySide6.QtCore import QPoint, Qt, QTimer
 from PySide6.QtGui import QMouseEvent
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication, QToolButton, QWidget
@@ -186,6 +186,23 @@ def test_mouse_press_event_1(function):
     with mock.patch.object(parent.windowHandle(), "startSystemMove"):
         titleBar.mousePressEvent(mouseEvent)
     parent.close()
+
+
+def test_mouse_press_event_3(function):
+    """Test mouse press event with left button but no window handle."""
+    parent = QWidget()
+    titleBar = CustomTitleBar(parent)
+
+    mouseEvent = QMouseEvent(
+        QMouseEvent.Type.MouseButtonPress,
+        QPoint(20, 15),
+        Qt.MouseButton.LeftButton,
+        Qt.MouseButtons(Qt.MouseButton.LeftButton),
+        Qt.KeyboardModifiers(),
+    )
+    with mock.patch.object(QTimer, "singleShot") as m:
+        titleBar.mousePressEvent(mouseEvent)
+        m.assert_not_called()
 
 
 def test_mouse_press_event_2(function):

@@ -134,5 +134,5 @@ class MountWizzard4(QObject):
         self.statusOperationRunning = status
 
     def writeMessageQueue(self, prio: int, source: str, mType: str, message: str) -> None:
-        self.log.debug(f"Message window : [{source} - {mType} - {message}]")
+        self.log.debug("Message window : [%s - %s - %s]", source, mType, message)
         self.messageQueue.put((prio, source, mType, message))

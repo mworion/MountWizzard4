@@ -107,3 +107,12 @@ def test_create_1(function):
         mock.patch.object(function, "updateSize"),
     ):
         function.create()
+
+
+def test_updateAzimuth_2(function):
+    function.updateAzimuth(180.0)
+
+
+def test_updateShutter_2(function):
+    function.app.dReg.d["dome"].instance.data = {"DOME_SHUTTER.SHUTTER_OPEN": True}
+    function.updateShutter()

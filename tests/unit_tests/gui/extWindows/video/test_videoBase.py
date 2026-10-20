@@ -204,3 +204,23 @@ def test_authPopup_2(function):
         function.authPopup()
         assert function.user == "test1"
         assert function.password == "test1"
+
+
+def test_workerVideoStream_5(function):
+    state = {"calls": 0}
+
+    def grabSideEffect():
+        state["calls"] += 1
+        function.runningCounter = 1
+        if state["calls"] > 1:
+            function.running = False
+        return True
+
+    capture = mock.MagicMock()
+    capture.isOpened.return_value = True
+    capture.grab.side_effect = grabSideEffect
+    function.running = True
+    function.capture = capture
+    with mock.patch.object(function, "sendImage") as sendImage:
+        function.runnerVideo("test", 2)
+        sendImage.assert_not_called()

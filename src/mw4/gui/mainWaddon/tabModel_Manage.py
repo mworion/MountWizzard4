@@ -222,7 +222,9 @@ class ModelManage(TabAddon):
             with open(self.fittedModelPath) as actFile:
                 actModel = convertFloatToAngle(json.load(actFile))
         except json.JSONDecodeError as e:
-            self.mainW.log.warning(f"Cannot load model file: {[self.fittedModelPath]}, error: {e}")
+            self.mainW.log.warning(
+                "Cannot load model file: %s, error: %s", [self.fittedModelPath], e
+            )
             return
 
         newModel = []

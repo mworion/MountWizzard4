@@ -93,6 +93,13 @@ def test_updateTelescopeParametersToGui_1(function):
     function.updateTelescopeParametersToGui()
 
 
+def test_updateTelescopeParametersToGui_2(function):
+    function.app.dReg.d["telescope"].instance.data["TELESCOPE_INFO.TELESCOPE_FOCAL_LENGTH"] = None
+    function.app.dReg.d["telescope"].instance.data["TELESCOPE_INFO.TELESCOPE_APERTURE"] = None
+
+    function.updateTelescopeParametersToGui()
+
+
 def test_updateTelescopeParametersToGuiCyclic_1(function):
     function.ui.automaticTelescope.setChecked(False)
     function.updateTelescopeParametersToGuiCyclic()

@@ -534,3 +534,30 @@ def test_resultProgTrajectory_signal(function):
 def test_waitTimeFlip_setter_rejects_negative(function):
     with pytest.raises(ValueError):
         function.waitTimeFlip = -1
+
+
+def test_resultCyclePointing_6(function):
+    received = []
+    function.signals.alert.connect(lambda: received.append(1))
+    function.obsSite.status = 1
+    function.statusAlert = True
+    function.resultCyclePointing(True)
+    function.signals.alert.disconnect()
+    assert received == []
+    assert function.statusAlert
+
+
+def test_resultCyclePointing_7(function):
+    received = []
+    function.signals.pointDone.connect(received.append)
+    function.resultCyclePointing(False)
+    function.signals.pointDone.disconnect()
+    assert received == []
+
+
+def test_resultCycleSetting_2(function):
+    received = []
+    function.signals.settingDone.connect(received.append)
+    function.resultCycleSetting(False)
+    function.signals.settingDone.disconnect()
+    assert received == []

@@ -11,7 +11,7 @@ from unittest import mock
 from unittest.mock import MagicMock
 
 
-def buildApp(qapp, arguments=""):
+def buildApp(qapp, arguments="", test=1):
     mwGlob = {
         "configDir": Path("tests/work/config"),
         "dataDir": Path("tests/work/data"),
@@ -57,7 +57,7 @@ def buildApp(qapp, arguments=""):
         mock.patch("mw4.mainApp.MainWindow") as mock_main_window,
     ):
         mock_main_window.return_value = MagicMock()
-        app_instance = MountWizzard4(mwGlob, qapp, 1, arguments)
+        app_instance = MountWizzard4(mwGlob, qapp, test, arguments)
     app_instance.update1s = MagicMock(emit=mock_emit)
     return app_instance
 
@@ -281,3 +281,19 @@ def test_init_withoutArguments(qapp, monkeypatch):
     messages = readMessages(appInstance)
     assert not [m for m in messages if m[2] == "Arguments"]
     appInstance.timeMgr.stop()
+
+
+def test_init_withoutTestMode(qapp):
+    appInstance = buildApp(qapp, test=0)
+    assert appInstance.mainW is not None
+    appInstance.timeMgr.stop()
+
+
+def test_storeConfig_noLocation(app):
+    app.config.pop("topoLat", None)
+    with mock.patch.object(
+        type(app.dReg["mount"]), "location", new_callable=mock.PropertyMock, return_value=None
+    ):
+        app.storeConfig()
+    assert "topoLat" not in app.config
+    assert "unitTimeUTC" in app.config

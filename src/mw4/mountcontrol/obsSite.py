@@ -114,11 +114,11 @@ class ObsSite(ObsSiteCommands):
             return
 
         if not isinstance(value, list | tuple):
-            self.log.info(f"Malformed value: {value}")
+            self.log.info("Malformed value: %s", value)
             return
 
         if len(value) != 3:
-            self.log.info(f"Malformed value: {value}")
+            self.log.info("Malformed value: %s", value)
             return
 
         lat, lon, elev = value
@@ -202,7 +202,7 @@ class ObsSite(ObsSiteCommands):
             value = value.capitalize()
             self._pierside = value
         else:
-            self.log.info(f"Malformed value: {value}")
+            self.log.info("Malformed value: %s", value)
 
     @property
     def piersideTarget(self) -> str:
@@ -212,7 +212,7 @@ class ObsSite(ObsSiteCommands):
     def piersideTarget(self, value: str) -> None:
         pierside = validatePierside(value)
         if pierside is None:
-            self.log.info(f"Malformed value: {value}")
+            self.log.info("Malformed value: %s", value)
         else:
             self._piersideTarget = pierside
 

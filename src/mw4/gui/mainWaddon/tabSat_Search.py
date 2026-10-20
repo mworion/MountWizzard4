@@ -128,7 +128,7 @@ class SatSearch(SatData):
             try:
                 omm_records = json.load(f)
             except json.JSONDecodeError as e:
-                self.mainW.log.error(f"Failed to load OMM file: {e}")
+                self.mainW.log.error("Failed to load OMM file: %s", e)
                 self.msg.emit(2, "Satellite", "Error", f"Loading: {self.satellites.dest}")
                 return
         for record in omm_records:
@@ -232,7 +232,7 @@ class SatSearch(SatData):
         # pyrefly: ignore[missing-attribute]
         msg = sat.at(tEnd).message
         if msg:
-            self.mainW.log.warning(f"{sat.name} caused SGP4: [{msg}]")
+            self.mainW.log.warning("%s caused SGP4: [%s]", sat.name, msg)
             return False
         return True
 
@@ -274,7 +274,7 @@ class SatSearch(SatData):
                 self.signals.setSatListRowHidden.emit(row, not show)
             self.signals.setSatGroupTitle.emit("Filter - processed - 100%", False)
         except (ArithmeticError, AttributeError, IndexError, TypeError, ValueError) as e:
-            self.log.warning(f"Error on processing list satellite [{name}]: {e}")
+            self.log.warning("Error on processing list satellite [%s]: %s", name, e)
 
     def calcSatList(
         self, snapshot: list[tuple[int, str, EarthSatellite, bool]], generation: int

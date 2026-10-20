@@ -48,7 +48,7 @@ class MountTimeConn:
                 port=self.parent.config.wolPort,
             )
         except (OSError, ValueError) as e:
-            self.log.warning(f"Boot mount failed: {e}")
+            self.log.warning("Boot mount failed: %s", e)
             return False
         return True
 
@@ -128,11 +128,11 @@ class MountTimeConn:
             return
         if abs(delta) > 2 * 999:
             if not self.absolutAdjustClock():
-                self.log.warning(f"Clock absolute sync failed with {delta} ms")
+                self.log.warning("Clock absolute sync failed with %s ms", delta)
         else:
             delta = max(min(delta, 999), -999)
             if not self.deltaAdjustClock(delta):
-                self.log.warning(f"Clock delta sync failed with {delta} ms")
+                self.log.warning("Clock delta sync failed with %s ms", delta)
 
     def runnerPollSyncClock(self) -> None:
         conn = Connection(self.parent)

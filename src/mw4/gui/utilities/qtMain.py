@@ -140,7 +140,7 @@ class MWidget(QMainWindow, Styles):
         timeTag = timeTrigger.strftime("%Y-%m-%d-%H-%M-%S")
         path = window.app.mwGlob["logDir"]
         fullFileName = f"{path}/{timeTag}-{name}.png"
-        window.log.info(f"Screenshot: [{fullFileName}]")
+        window.log.info("Screenshot: [%s]", fullFileName)
         window.grab().save(fullFileName)
 
     def saveAllWindowsAsPNG(self, window: "MWidget") -> None:

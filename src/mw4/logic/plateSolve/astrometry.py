@@ -73,7 +73,7 @@ class Astrometry:
         runnable = [Path(self.config.appPath) / "image2xy", "-O", "-o", tempPath, imagePath]
         suc, msg = self.parent.runSolverBin(runnable)
         if not suc:
-            self.log.warning(f"IMAGE2XY error in [{imagePath}]")
+            self.log.warning("IMAGE2XY error in [%s]", imagePath)
             return {"success": False, "message": "image2xy failed"}
 
         raHint, decHint, scaleHint = getHintFromImageFile(imagePath)

@@ -156,8 +156,8 @@ class MainWindow(MWidget):
         self.externalWindows.closeExtendedWindows()
         if not self.threadPool.waitForDone(10000):
             self.log.warning(
-                f"Thread pool did not finish on close, "
-                f"active threads: [{self.threadPool.activeThreadCount()}]"
+                "Thread pool did not finish on close, active threads: [%s]",
+                self.threadPool.activeThreadCount(),
             )
         super().closeEvent(event)
 
@@ -305,8 +305,8 @@ class MainWindow(MWidget):
         self.externalWindows.closeExtendedWindows()
         if not self.threadPool.waitForDone(10000):
             self.log.warning(
-                f"Thread pool did not finish on profile switch, "
-                f"active threads: [{self.threadPool.activeThreadCount()}]"
+                "Thread pool did not finish on profile switch, active threads: [%s]",
+                self.threadPool.activeThreadCount(),
             )
         self.app.config = config
         self.app.initConfig()

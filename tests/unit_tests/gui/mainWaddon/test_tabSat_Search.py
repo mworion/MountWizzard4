@@ -250,7 +250,7 @@ def test_runnerCalcSatList_handles_exception(function: SatSearch) -> None:
         function.runnerCalcSatList(snapshot, 1, True, 0, 10)
         assert mock_sgp4.called  # verify we got to this point
         assert mock_calc.called  # verify calcSat was called
-        assert "test_sat" in mock_warning.call_args[0][0]
+        assert "test_sat" in mock_warning.call_args[0][1]
 
 
 def test_updateListSats_3(function: SatSearch) -> None:
@@ -258,6 +258,13 @@ def test_updateListSats_3(function: SatSearch) -> None:
     with mock.patch.object(function.signals, "setSatListItem") as mock_signal:
         function.updateListSats(0, param, [], False, 5.5, 2)
         assert mock_signal.emit.called
+
+
+def test_updateListSats_5(function: SatSearch) -> None:
+    param = [1, 2, 3, 4]
+    with mock.patch.object(function.signals, "setSatListItem") as mock_signal:
+        function.updateListSats(0, param, [], False, 5.5, None)
+        assert mock_signal.emit.call_count == 4
 
 
 def test_updateListSats_4(function: SatSearch) -> None:

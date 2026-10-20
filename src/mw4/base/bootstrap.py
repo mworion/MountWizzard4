@@ -76,18 +76,18 @@ def setupWorkDirs(workDir: Path) -> MwGlob:
 
 def writeSystemInfo(mwGlob: MwGlob) -> None:
     log.info("-" * 80)
-    log.info(f"[SYS] mountwizzard4    : {version('mountwizzard4')}")
-    log.info(f"[SYS] platform         : {platform.system()}")
-    log.info(f"[SYS] sys.executable   : {sys.executable}")
-    log.info(f"[SYS] actual workdir   : {mwGlob['workDir']}")
-    log.info(f"[SYS] machine          : {platform.machine()}")
-    log.info(f"[SYS] cpu              : {platform.processor()}")
-    log.info(f"[SYS] release          : {platform.release()}")
-    log.info(f"[SYS] python           : {platform.python_version()}")
-    log.info(f"[SYS] python runtime   : {platform.architecture()[0]}")
+    log.info("[SYS] mountwizzard4    : %s", version("mountwizzard4"))
+    log.info("[SYS] platform         : %s", platform.system())
+    log.info("[SYS] sys.executable   : %s", sys.executable)
+    log.info("[SYS] actual workdir   : %s", mwGlob["workDir"])
+    log.info("[SYS] machine          : %s", platform.machine())
+    log.info("[SYS] cpu              : %s", platform.processor())
+    log.info("[SYS] release          : %s", platform.release())
+    log.info("[SYS] python           : %s", platform.python_version())
+    log.info("[SYS] python runtime   : %s", platform.architecture()[0])
     # pyrefly: ignore[missing-attribute]
-    log.info(f"[SYS] PySide6 / Qt     : {PySide6.QtCore.__version__} / {qVersion()}")
-    log.info(f"[SYS] node / hostname  : {platform.node()} / {socket.gethostname()}")
+    log.info("[SYS] PySide6 / Qt     : %s / %s", PySide6.QtCore.__version__, qVersion())
+    log.info("[SYS] node / hostname  : %s / %s", platform.node(), socket.gethostname())
     log.info("-" * 80)
 
 

@@ -69,7 +69,7 @@ class PlateSolve:
                 rCode = int(process.returncode)
 
         except (OSError, RuntimeError) as e:
-            self.log.critical(f"Error: {e} happened")
+            self.log.critical("Error: %s happened", e)
             return False, f"Exception {e} during process run"
 
         finally:
@@ -77,9 +77,9 @@ class PlateSolve:
 
         delta = time.time() - timeStart
         stdoutText = stdout.decode(errors="replace")
-        self.log.debug(f"{'Solve Runtime':15s}: [{delta:2.2f}s]")
+        self.log.debug("Solve Runtime  : [%2.2fs]", delta)
         for line in stdoutText.splitlines():
-            self.log.debug(f"{'Solver output':15s}: [{line}]")
+            self.log.debug("Solver output  : [%s]", line)
         suc = rCode == 0
         msg = self.run[self.framework].returnCodes.get(rCode, "Unknown code")
         return suc, msg
@@ -89,11 +89,11 @@ class PlateSolve:
     ) -> dict[str, Any]:
         result: dict[str, Any] = {"success": False, "message": msg, "imagePath": imagePath}
         if not suc:
-            self.log.warning(f"{'Error':15s}: [{imagePath.stem}], message: {msg}")
+            self.log.warning("Error          : [%s], message: %s", imagePath.stem, msg)
             return result
 
         if not wcsPath.is_file():
-            self.log.warning(f"{'Warning':15s}: Solve files for [{wcsPath.stem}] missing")
+            self.log.warning("Warning        : Solve files for [%s] missing", wcsPath.stem)
             result["message"] = "Solve failed, no WCS file"
             return result
 
@@ -110,7 +110,7 @@ class PlateSolve:
         result["raJNowS"], result["decJNowS"] = J2000ToJNow(
             result["raJ2000S"], result["decJ2000S"], timeJD
         )
-        self.log.debug(f"{'Solve result':15s}: [{imagePath.stem:10s}], [{result}]")
+        self.log.debug("Solve result   : [%-10s], [%s]", imagePath.stem, result)
         return result
 
     def processSolveQueue(self, imagePath: Path, updateHeader: bool = False) -> None:

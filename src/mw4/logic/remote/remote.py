@@ -58,7 +58,7 @@ class Remote:
         self.clientConnection.disconnected.connect(self.removeConnection)
         self.clientConnection.errorOccurred.connect(self.handleError)
         connection = self.clientConnection.peerAddress().toString()
-        self.log.info(f"Connection to MountWizzard from {connection}")
+        self.log.info("Connection to MountWizzard from %s", connection)
 
     def receiveMessage(self) -> bool:
         if self.clientConnection.bytesAvailable() == 0:
@@ -75,19 +75,19 @@ class Remote:
         command = command.replace("\n", "")
         command = command.replace("\r", "")
 
-        self.log.debug(f"Command {command} from {connection} received")
+        self.log.debug("Command %s from %s received", command, connection)
         if command in validCommands:
             self.app.remoteCommand.emit(command)
         else:
-            self.log.warning(f"Unknown command {command} from {connection} received")
+            self.log.warning("Unknown command %s from %s received", command, connection)
 
         return True
 
     def removeConnection(self) -> None:
         connection = self.clientConnection.peerAddress().toString()
         self.clientConnection.close()
-        self.log.debug(f"Connection from {connection} closed")
+        self.log.debug("Connection from %s closed", connection)
 
     def handleError(self, socketError: QAbstractSocket.SocketError) -> None:
         connection = self.clientConnection.peerAddress().toString()
-        self.log.critical(f"Connection from {connection} failed, error: {socketError}")
+        self.log.critical("Connection from %s failed, error: %s", connection, socketError)

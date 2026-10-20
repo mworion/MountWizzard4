@@ -109,7 +109,7 @@ class VideoWindowBase(MWidget):
             return
 
         source = sources[sourceIndex]
-        self.log.info(f"Video started: source [{source}]")
+        self.log.info("Video started: source [%s]", source)
         changeStyleDynamic(self.ui.videoStart, "run", "true")
         changeStyleDynamic(self.ui.videoStop, "run", "false")
         self.running = True

@@ -241,3 +241,35 @@ def test_ggetLight_2(qtbot):
     entity.addComponent(mat)
     val = getLight(entity)
     assert isinstance(val, Qt3DRender.QSpotLight)
+
+
+def test_getMaterial_3(qtbot):
+    entity = Qt3DCore.QEntity()
+    entity.addComponent(Qt3DCore.QTransform())
+    assert getMaterial(entity) is None
+
+
+def test_getMaterial_4(qtbot):
+    assert getMaterial(Qt3DCore.QEntity()) is None
+
+
+def test_getLight_3(qtbot):
+    entity = Qt3DCore.QEntity()
+    entity.addComponent(Qt3DCore.QTransform())
+    assert getLight(entity) is None
+
+
+def test_getLight_4(qtbot):
+    assert getLight(Qt3DCore.QEntity()) is None
+
+
+def test_getMaterial_5(qtbot):
+    entity = mock.MagicMock()
+    entity.components.return_value = [Qt3DCore.QTransform()]
+    assert getMaterial(entity) is None
+
+
+def test_getLight_5(qtbot):
+    entity = mock.MagicMock()
+    entity.components.return_value = [Qt3DCore.QTransform()]
+    assert getLight(entity) is None

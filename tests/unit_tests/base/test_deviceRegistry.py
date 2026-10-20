@@ -733,3 +733,12 @@ def test_deviceDisconnectedWithUnknownSender(registry: DeviceRegistry) -> None:
 
     # Verify msg.emit was not called
     registry.app.msg.emit.assert_not_called()
+
+
+def test_addDevicesSkipsSignalsForInstanceWithoutSignals() -> None:
+    app = App()
+    dReg = DeviceRegistry(app, mount=app.mount)
+    with patch("mw4.base.deviceRegistry.MeasureData", lambda app: object()):
+        dReg.addDevices(app)
+    assert id(dReg.d["mount"].signals) in dReg.signalsToName
+    assert "measure" not in dReg.signalsToName.values()

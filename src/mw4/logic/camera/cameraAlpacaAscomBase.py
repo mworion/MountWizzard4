@@ -44,7 +44,7 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
         self.getAndStoreDeviceProp("Offsets", "CCD_OFFSET.OFFSET_LIST")
         self.getAndStoreDeviceProp("StartX", "CCD_FRAME.X")
         self.getAndStoreDeviceProp("StartY", "CCD_FRAME.Y")
-        self.log.debug(f"Initial data: {self.data}")
+        self.log.debug("Initial data: %s", self.data)
 
     def setExposureState(self) -> None:
         if not self.parent.exposing:

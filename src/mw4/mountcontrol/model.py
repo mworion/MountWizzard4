@@ -58,7 +58,7 @@ class Model:
     def delStar(self, value: int) -> None:
         value = valueToInt(value)
         if not (0 <= value < len(self._starList)):
-            self.log.warning(f"invalid value: {value}")
+            self.log.warning("invalid value: %s", value)
             return
         self._starList.pop(value)
 
@@ -85,7 +85,7 @@ class Model:
 
     def addName(self, value: str) -> None:
         if not isinstance(value, str):
-            self.log.warning(f"malformed value: {value}")
+            self.log.warning("malformed value: %s", value)
             return
         self._nameList.append(value)
 
@@ -139,7 +139,7 @@ class Model:
             return False
         starFields = [starData.split(",") for starData in response]
         if any(len(fields) != 4 for fields in starFields):
-            self.log.warning(f"Malformed star data: [{response}]")
+            self.log.warning("Malformed star data: [%s]", response)
             return False
         for number, (ra, dec, err, angle) in enumerate(starFields):
             ra = stringToAngle(ra, preference="hours")

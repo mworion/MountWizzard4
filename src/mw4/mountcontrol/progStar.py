@@ -25,6 +25,6 @@ class ProgStar:
         pierside = validatePierside(value)
         if pierside is None:
             self._pierside = "E"
-            self.log.warning(f"Malformed value: {value}")
+            self.log.warning("Malformed value: %s", value)
         else:
             self._pierside = pierside

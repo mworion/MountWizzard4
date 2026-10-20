@@ -83,7 +83,7 @@ class AstroObjects:
 
     def runDownloadPopup(self, url: str, unzip: bool, entry: str, fileName: str) -> None:
         self.msg.emit(1, self.objectText.capitalize(), "Download", f"{entry}")
-        self.log.info(f"Using data for {self.objectText}  {url}, {unzip}, {fileName}")
+        self.log.info("Using data for %s  %s, %s, %s", self.objectText, url, unzip, fileName)
         if DownloadPopup.download(self.window, url, self.dest, unzip):
             self.msg.emit(1, self.objectText.capitalize(), "Source download", "Successful")
             self.procSourceData()
@@ -110,7 +110,7 @@ class AstroObjects:
 
         if self.checkFileAgeOK(self.dest):
             self.procSourceData()
-            self.log.info(f"Using local source data for {self.objectText}")
+            self.log.info("Using local source data for %s", self.objectText)
             return
         if not self.app.isOnline:
             self.msg.emit(2, self.objectText.capitalize(), "Download", "Offline mode active")
@@ -120,7 +120,7 @@ class AstroObjects:
         self.runDownloadPopup(url, unzip, entry, fileName)
 
     def runUploadPopup(self, url: str) -> None:
-        self.log.info(f"Using data for upload: {self.objectText}  {url}")
+        self.log.info("Using data for upload: %s  %s", self.objectText, url)
         if UploadPopup.upload(self.window, url, [self.objectText], self.tempDir):
             self.msg.emit(1, self.objectText.capitalize(), "Mount upload", "Successful")
         else:

@@ -62,9 +62,9 @@ class AlpacaAscomCommon(DriverData):
         name = self.config.deviceName
         if self.isNotImplemented(e) and valueProp not in self.NEVER_BLOCKED:
             self.propertyExceptions.add(valueProp)
-            self.log.debug(f"[{name}] {kind} [{valueProp}] not implemented: {e}")
+            self.log.debug("[%s] %s [%s] not implemented: %s", name, kind, valueProp, e)
             return
-        self.log.debug(f"[{name}] {kind} [{valueProp}] error: [{type(e).__name__}] {e}")
+        self.log.debug("[%s] %s [%s] error: [%s] %s", name, kind, valueProp, type(e).__name__, e)
 
     def getDeviceProp(self, valueProp: str) -> Any:
         if valueProp in self.propertyExceptions:
@@ -73,7 +73,7 @@ class AlpacaAscomCommon(DriverData):
             returnVal = getattr(self.device, valueProp)
             if self.loggingTrace and "ImageArray" not in valueProp:
                 self.log.debug(
-                    f"[Trace][Get] [{self.config.deviceName}] [{valueProp}] [{returnVal}]"
+                    "[Trace][Get] [%s] [%s] [%s]", self.config.deviceName, valueProp, returnVal
                 )
             return returnVal
         except Exception as e:
@@ -86,7 +86,9 @@ class AlpacaAscomCommon(DriverData):
         try:
             setattr(self.device, valueProp, value)
             if self.loggingTrace:
-                self.log.debug(f"[Trace][Set] [{self.config.deviceName}] [{valueProp}] [{value}]")
+                self.log.debug(
+                    "[Trace][Set] [%s] [%s] [%s]", self.config.deviceName, valueProp, value
+                )
         except Exception as e:
             self.handleDeviceError("property", valueProp, e)
 
@@ -135,18 +137,18 @@ class AlpacaAscomCommon(DriverData):
             elif cmd.cmdType == "set":
                 self.setDeviceProp(cmd.valueProp, cmd.value)
             else:
-                self.log.warning(f"[{self.config.deviceName}] unknown cmdType: [{cmd.cmdType}]")
+                self.log.warning("[%s] unknown cmdType: [%s]", self.config.deviceName, cmd.cmdType)
 
     def connectDevice(self) -> bool:
         for retry in range(5):
             self.setDeviceProp("Connected", True)
             suc = self.getDeviceProp("Connected")
             if suc:
-                self.log.debug(f"[{self.config.deviceName}] connected, [{retry}] retries")
+                self.log.debug("[%s] connected, [%s] retries", self.config.deviceName, retry)
                 break
             self.connectEvent.wait(timeout=0.5)
         else:
-            self.log.debug(f"[{self.config.deviceName}] not connected, [{retry}] retries")
+            self.log.debug("[%s] not connected, [%s] retries", self.config.deviceName, retry)
             suc = False
         return suc
 

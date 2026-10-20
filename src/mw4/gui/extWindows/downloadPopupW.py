@@ -117,7 +117,7 @@ class DownloadPopup(MWidget):
             return False
         except (requests.RequestException, OSError) as e:
             self.msg.emit(2, "Download", "Error", f"{url}")
-            self.log.warning(f"General error [{url}], {e}")
+            self.log.warning("General error [%s], %s", url, e)
             return False
 
         if not unzip:
@@ -127,7 +127,7 @@ class DownloadPopup(MWidget):
             self.unzipFile(downloadDest, dest)
         except (OSError, gzip.BadGzipFile) as e:
             self.msg.emit(2, "Download", "Unzip", f"{url}")
-            self.log.warning(f"Error in unzip [{url}], {e}")
+            self.log.warning("Error in unzip [%s], %s", url, e)
             return False
         return True
 

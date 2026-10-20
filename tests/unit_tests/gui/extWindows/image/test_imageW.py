@@ -534,3 +534,21 @@ def test_setButtonExposingStatusEnabled_notExposing(function):
     assert function.ui.expose.isEnabled()
     assert function.ui.load.isEnabled()
     assert not function.ui.abortExpose.isEnabled()
+
+
+def test_solveDone_4(function):
+    function.ui.embedData.setChecked(False)
+    result = {
+        "success": True,
+        "raJ2000S": Angle(hours=10),
+        "decJ2000S": Angle(degrees=20),
+        "angleS": Angle(degrees=30),
+        "scaleS": 1,
+        "errorRMS_S": 3,
+        "flippedS": False,
+        "imagePath": "test",
+        "message": "test",
+    }
+    with mock.patch.object(function, "showCurrent") as showCurrent:
+        function.solveDone(result=result)
+        showCurrent.assert_not_called()

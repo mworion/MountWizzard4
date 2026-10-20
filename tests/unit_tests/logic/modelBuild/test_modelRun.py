@@ -923,3 +923,51 @@ def test_runModel_flowWithRetry(function, qtbot):
     assert passes == [keys, ["image-001"]]
     assert all(function.modelBuildData[key]["success"] for key in keys)
     assert function.retries == 1
+
+
+def test_setImageExposed_otherTiming(function):
+    function.config = replace(function.config, modelTiming=ModelTiming.NORMAL)
+    with mock.patch.object(function, "startSlew") as mockSlew:
+        function.setImageExposed()
+        mockSlew.emit.assert_not_called()
+
+
+def test_setImageDownloaded_otherTiming(function):
+    function.config = replace(function.config, modelTiming=ModelTiming.PROGRESSIVE)
+    with mock.patch.object(function, "startSlew") as mockSlew:
+        function.setImageDownloaded()
+        mockSlew.emit.assert_not_called()
+
+
+def test_setImageSaved_otherTiming(function):
+    function.config = replace(function.config, modelTiming=ModelTiming.PROGRESSIVE)
+    with mock.patch.object(function, "startSlew") as mockSlew:
+        function.setImageSaved()
+        mockSlew.emit.assert_not_called()
+
+
+def test_startNewSlew_noDome(function):
+    function.cancelBatch = False
+    function.endBatch = False
+    function.app.dReg.d["dome"].stat = False
+    function.modelRunIterator = iter(["im-00"])
+    function.modelBuildData = {
+        "im-00": {
+            "altitude": Angle(degrees=0),
+            "azimuth": Angle(degrees=0),
+            "success": True,
+            "imagePath": Path("test"),
+        },
+    }
+    with (
+        mock.patch.object(
+            function.app.dReg.d["mount"].instance.obsSite,
+            "setTargetAltAz",
+            return_value=True,
+        ),
+        mock.patch.object(function.app.dReg.d["dome"].instance, "slewDome") as mockDome,
+        mock.patch.object(function.app.dReg.d["mount"].instance.obsSite, "startSlewing"),
+    ):
+        function.startNewSlew()
+        mockDome.assert_not_called()
+        assert function.slewPending

@@ -1,6 +1,7 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
+import numpy as np
 import pytest
 from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 from PySide6.Qt3DCore import Qt3DCore
@@ -53,3 +54,21 @@ def test_create_1(function):
         mock.patch.object(function, "showEnable"),
     ):
         function.create()
+
+
+def test_showEnable_2(function):
+    with mock.patch.object(function.parent, "entityModel", {}):
+        function.showEnable()
+
+
+def test_updatePositions_4(function):
+    function.app.dReg.d["mount"].stat = True
+    with (
+        mock.patch.object(function.parent, "entityModel", {}),
+        mock.patch.object(
+            function.app.mount,
+            "calcTransformationMatricesActual",
+            return_value=(0, 0, np.array([1.0, 1.0, 1.0]), None, None),
+        ),
+    ):
+        function.updatePositions()

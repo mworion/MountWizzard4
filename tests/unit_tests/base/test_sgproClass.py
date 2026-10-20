@@ -727,3 +727,23 @@ def test_processCommandQueue_queue_empty_during_iteration(function):
     ):
         mock_get.side_effect = queue.Empty()
         function.processCommandQueue()
+
+
+def test_runnerCommunicationLoop_connected_state_lost_on_poll(function):
+    function.stopEvent.clear()
+    function.deviceConnected = True
+    function.UPDATE_RATE = 0.25
+
+    def lostConnection() -> None:
+        function.deviceConnected = False
+
+    with (
+        mock.patch.object(function, "pollDeviceStatus", side_effect=lostConnection),
+        mock.patch.object(function, "pollData") as mock_poll_data,
+        mock.patch.object(function, "processCommandQueue") as mock_process,
+        mock.patch.object(function.stopEvent, "wait", side_effect=KeyboardInterrupt()),
+    ):
+        with contextlib.suppress(KeyboardInterrupt):
+            function.runnerCommunicationLoop()
+        mock_poll_data.assert_not_called()
+        mock_process.assert_not_called()

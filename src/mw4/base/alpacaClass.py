@@ -50,17 +50,17 @@ class AlpacaClass(AlpacaAscomCommon):
     def createAlpacaDevice(self, deviceType: str) -> bool:
         deviceClass = self.DEVICE_TYPE_MAP.get(deviceType)
         if deviceClass is None:
-            self.log.warning(f"Unknown device type: [{deviceType}]")
+            self.log.warning("Unknown device type: [%s]", deviceType)
             return False
 
         address = f"{self.config.hostAddress}:{self.config.port}"
         try:
             self.device = deviceClass(address, self.config.number, self.config.protocol)
         except (OSError, RuntimeError, TypeError, ValueError, AttributeError) as e:
-            self.log.error(f"Create device exception: [{e}]")
+            self.log.error("Create device exception: [%s]", e)
             return False
 
-        self.log.debug(f"Created device at [{address}]")
+        self.log.debug("Created device at [%s]", address)
         return True
 
     def startCommunication(self) -> None:
@@ -82,7 +82,7 @@ class AlpacaClass(AlpacaAscomCommon):
                 return 0
             return max(versions)
         except (OSError, ValueError, KeyError, AlpacaRequestException) as e:
-            self.log.error(f"Discover API exception: [{e}]")
+            self.log.error("Discover API exception: [%s]", e)
             return 0
 
     def discoverAlpacaDevices(self, hostaddress: str, port: int) -> list:
@@ -90,7 +90,7 @@ class AlpacaClass(AlpacaAscomCommon):
         try:
             return alpacaMgmt.configureddevices(address)
         except (OSError, ValueError, KeyError, AlpacaRequestException) as e:
-            self.log.error(f"Search devices exception: [{e}]")
+            self.log.error("Search devices exception: [%s]", e)
             return []
 
     def discoverDevices(self, deviceType: str, hostaddress: str, port: int) -> list:
@@ -100,5 +100,5 @@ class AlpacaClass(AlpacaAscomCommon):
 
         temp = [x for x in devices if x["DeviceType"].lower() == deviceType]
         discoverList = [f"{x['DeviceName']}:{deviceType}:{x['DeviceNumber']}" for x in temp]
-        self.log.debug(f"Discovered [{deviceType}] devices at [{discoverList}]")
+        self.log.debug("Discovered [%s] devices at [%s]", deviceType, discoverList)
         return discoverList

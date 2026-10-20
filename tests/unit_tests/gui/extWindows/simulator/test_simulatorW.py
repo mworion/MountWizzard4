@@ -164,3 +164,23 @@ def test_createScene_1(function):
         mock.patch.object(function.buildPoints, "create"),
     ):
         function.createScene()
+
+
+def test_findFrameGraphNode_5(function):
+    from unittest.mock import MagicMock
+
+    child1 = MagicMock()
+    child1.childNodes.return_value = []
+    child2 = 5
+    node = MagicMock()
+    node.childNodes.return_value = [child1, child2]
+    result = function.findFrameGraphNode(node, int)
+    assert result == 5
+
+
+def test_setupRenderSortPolicy_3(function):
+    from PySide6.Qt3DRender import Qt3DRender
+
+    frustum = Qt3DRender.QFrustumCulling()
+    with mock.patch.object(function, "findFrameGraphNode", side_effect=[frustum, None]):
+        function.setupRenderSortPolicy()

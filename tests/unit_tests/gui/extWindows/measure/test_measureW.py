@@ -359,3 +359,43 @@ def test_drawMeasure_realData(function):
         function.drawMeasure()
     if function.drawLock.tryLock():
         function.drawLock.unlock()
+
+
+def test_constructPlotItem_noRange(function):
+    plotItem = pg.PlotItem()
+    chart = {"template": {"label": "test", "legendRef": None}, "lineItems": {}}
+    function.constructPlotItem(plotItem, chart, [1.0, 2.0])
+    assert chart["template"]["legendRef"] is not None
+
+
+def test_plotting_noNewPlotExistingItem(function):
+    plotItem = mock.MagicMock()
+    plotItem.getAxis.return_value.labelText = "test"
+    existing = mock.MagicMock()
+    chart = {
+        "template": {"label": "test", "legendRef": mock.MagicMock()},
+        "lineItems": {"a": {"plotItemRef": existing}},
+    }
+    x = np.arange(10)
+    with (
+        mock.patch.object(function, "constructPlotItem") as construct,
+        mock.patch.dict(function.app.dReg["measure"].data, {"a": np.arange(10)}),
+    ):
+        function.plotting(plotItem, chart, x)
+    construct.assert_not_called()
+    existing.setData.assert_called_once()
+
+
+def test_plotting_newItemWithoutLegend(function):
+    plotItem = mock.MagicMock()
+    chart = {
+        "template": {"label": "test", "legendRef": None},
+        "lineItems": {"a": {"plotItemRef": None}},
+    }
+    x = np.arange(10)
+    with (
+        mock.patch.object(function, "constructPlotItem"),
+        mock.patch.dict(function.app.dReg["measure"].data, {"a": np.arange(10)}),
+    ):
+        function.plotting(plotItem, chart, x)
+    assert chart["lineItems"]["a"]["plotItemRef"] is plotItem.plot.return_value

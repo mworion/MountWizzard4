@@ -383,6 +383,13 @@ def test_rebuildPoints_1(function):
         function.rebuildPoints()
 
 
+def test_rebuildPoints_2(function):
+    function.lastGenerator = "none"
+    with mock.patch.object(function, "processPoints") as m:
+        function.rebuildPoints()
+        m.assert_called_once()
+
+
 def test_processPoints(function):
     with (
         mock.patch.object(function, "autoDeletePoints"),

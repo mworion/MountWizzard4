@@ -62,7 +62,7 @@ class ObsSiteCommands:
         infoSplit = response[3].split(",")
         angularSplit = response[4].split(",")
         if len(infoSplit) < 8 or len(angularSplit) < 5:
-            self.log.warning(f"Wrong number of fields: [{response}]")
+            self.log.warning("Wrong number of fields: [%s]", response)
             return False
         self.timeSidereal = response[0]
         self.ut1_utc = response[1].replace("L", "")
@@ -100,7 +100,7 @@ class ObsSiteCommands:
             "keep": ":MS#" if self.status == MountStatus.TRACKING else ":MA#",
         }
         if slewType not in slewTypes:
-            self.log.warning(f"Unknown slew type: [{slewType}]")
+            self.log.warning("Unknown slew type: [%s]", slewType)
             return False
 
         self.flipped = self.piersideTarget != self.pierside
@@ -108,11 +108,11 @@ class ObsSiteCommands:
 
     def parseSetTargetResponse(self, response: list) -> bool:
         if len(response) != 4 or len(response[0]) < 3:
-            self.log.debug(f"Missing return values: [{response}]")
+            self.log.debug("Missing return values: [%s]", response)
             return False
         result = response[0][0:2]
         if result.count("0") > 0:
-            self.log.debug(f"Coordinates could not be set: [{response}]")
+            self.log.debug("Coordinates could not be set: [%s]", response)
             return False
         pierCode = valueToInt(response[0][2])
         # the mount codes the target pierside as 2 (west) and 3 (east)
@@ -248,7 +248,7 @@ class ObsSiteCommands:
         if not suc:
             return False
         if len(response) < 2:
-            self.log.debug(f"Missing return values: [{response}]")
+            self.log.debug("Missing return values: [%s]", response)
             return False
         return response[1].startswith("Coord")
 

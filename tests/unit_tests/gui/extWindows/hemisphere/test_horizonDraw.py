@@ -287,3 +287,14 @@ def test_drawView_3(function):
 def test_drawView_empty_list(function):
     function.app.buildPoint.horizonP = []
     function.drawView()
+
+
+def test_addActualPosition_3(function):
+    function.app.mount.obsSite.Alt = Angle(degrees=10)
+    function.app.mount.obsSite.Az = Angle(degrees=20)
+    with (
+        mock.patch.object(CustomViewBox, "getNearestPointIndex", return_value=None),
+        mock.patch.object(CustomViewBox, "addUpdate") as addUpdate,
+    ):
+        function.addActualPosition()
+        addUpdate.assert_not_called()

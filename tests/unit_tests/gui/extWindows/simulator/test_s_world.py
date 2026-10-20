@@ -33,3 +33,8 @@ def test_updatePositions_2(function):
 def test_create_1(function):
     with mock.patch.object(function, "updatePositions"):
         function.create()
+
+
+def test_updatePositions_3(function):
+    with mock.patch.object(function.parent, "entityModel", {}):
+        function.updatePositions()

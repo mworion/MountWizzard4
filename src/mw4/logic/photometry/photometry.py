@@ -205,7 +205,11 @@ class Photometry:
         self.elongation = sources.elongation
         self.runCalcs()
         self.log.info(
-            f"Raw:{counts.raw}, Select:{counts.select}, SN:{counts.signalNoise}, HFR:{counts.hfr}"
+            "Raw:%s, Select:%s, SN:%s, HFR:%s",
+            counts.raw,
+            counts.select,
+            counts.signalNoise,
+            counts.hfr,
         )
 
     def processPhotometry(self, image: np.ndarray, snTarget: int) -> None:

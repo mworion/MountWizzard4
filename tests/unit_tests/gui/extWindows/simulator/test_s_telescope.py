@@ -104,3 +104,16 @@ def test_create_2(function):
         mock.patch.object(function, "updateRotation"),
     ):
         function.create()
+
+
+def test_updatePositions_3(function):
+    function.app.dReg.d["mount"].stat = True
+    with mock.patch.object(function.parent, "entityModel", {}):
+        function.updatePositions()
+
+
+def test_updateRotation_3(function):
+    function.app.mount.obsSite.angularPosRA = Angle(degrees=10)
+    function.app.mount.obsSite.angularPosDEC = Angle(degrees=10)
+    with mock.patch.object(function.parent, "entityModel", {}):
+        function.updateRotation()

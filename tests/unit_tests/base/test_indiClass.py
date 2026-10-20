@@ -609,3 +609,27 @@ def test_discoverDevices_driverMatchingType(function, monkeypatch):
         result = function.discoverDevices("dome", "localhost", 7624)
 
     assert result == ["TestDome"]
+
+
+def test_discoverDevices_driverNotMatchingType(function, monkeypatch):
+    monkeypatch.setattr(IndiClass, "MAX_SEARCH", 1)
+    snapshot_value = mock.MagicMock()
+    snapshot_value.get.return_value = None
+    item = mock.MagicMock()
+    item.devicename = "TestDome"
+    item.snapshot = {"TestDome": snapshot_value}
+
+    with (
+        mock.patch("mw4.base.indiClass.Worker"),
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch("mw4.base.indiClass.Queue") as mock_queue_cls,
+    ):
+        mock_txQ = mock.MagicMock()
+        mock_rxQ = mock.MagicMock()
+        mock_queue_cls.side_effect = [mock_txQ, mock_rxQ]
+        mock_rxQ.get.side_effect = [item, queue.Empty()]
+
+        result = function.discoverDevices("dome", "localhost", 7624)
+
+    assert result == []
+    mock_rxQ.task_done.assert_called_once()

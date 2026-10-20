@@ -86,3 +86,14 @@ def test_writeMessage_1(function):
 def test_writeMessage_2(function):
     function.app.messageQueue.put((0, "test", "test", "test"))
     function.writeMessage()
+
+
+def test_updateListColors_noItem(function):
+    function.ui.messageTable.setRowCount(0)
+    function.ui.messageTable.setRowCount(1)
+    function.updateListColors()
+
+
+def test_writeMessage_noSource(function):
+    function.app.messageQueue.put((0, "", "test", "test"))
+    function.writeMessage()

@@ -42,7 +42,7 @@ class Firmware:
         try:
             self.vString = response[1]
         except InvalidVersion:
-            self.log.warning(f"Invalid firmware version: [{response}]")
+            self.log.warning("Invalid firmware version: [%s]", response)
             return False
         self.date = response[0]
         self.product = response[2]

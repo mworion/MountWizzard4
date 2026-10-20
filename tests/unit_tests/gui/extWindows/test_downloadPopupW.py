@@ -265,3 +265,21 @@ def test_download_2(function):
     with mock.patch.object(DownloadPopup, "exec", return_value=False):
         result = DownloadPopup.download(function.parentW, "http://localhost", Path())
         assert not result
+
+
+def test_getFileFromUrl_4(function):
+    class Response:
+        headers: ClassVar = {}
+        text = "test"
+        status_code = 200
+
+        @staticmethod
+        def iter_content(_):
+            return [b""]
+
+    with (
+        mock.patch.object(requests, "get", return_value=Response()),
+        mock.patch.object(builtins, "open"),
+    ):
+        suc = function.getFileFromUrl("http://localhost", Path("tests/work/temp/test.txt"))
+        assert suc

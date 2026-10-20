@@ -282,7 +282,7 @@ class Connection:
         commandSet = commandString.split("#")[:-1]
         for command in commandSet:
             if not self.validCommand(command):
-                self.log.warning(f"[{self.id}] unknown commands: {commandString}")
+                self.log.warning("[%s] unknown commands: %s", self.id, commandString)
                 return False
         return True
 
@@ -320,17 +320,17 @@ class Connection:
             client.abort()
             client.close()
         except (OSError, RuntimeError) as e:
-            self.log.warning(f"Error    [{self.id}]: [{e}] closing socket client")
+            self.log.warning("Error    [%s]: [%s] closing socket client", self.id, e)
 
     def buildClient(self) -> QTcpSocket | None:
         if not self.host:
-            self.log.info(f"No host  [{self.id}]")
+            self.log.info("No host  [%s]", self.id)
             return None
         if not isinstance(self.host, tuple):
-            self.log.info(f"Host     [{self.id}]: host entry malformed [{self.host}]")
+            self.log.info("Host     [%s]: host entry malformed [%s]", self.id, self.host)
             return None
         if len(self.host) != 2 or self.host[0] is None or self.host[1] is None:
-            self.log.info(f"Host     [{self.id}]: host entry malformed [{self.host}]")
+            self.log.info("Host     [%s]: host entry malformed [%s]", self.id, self.host)
             return None
         if not self.parent.mountIsUp:
             return None
@@ -341,11 +341,11 @@ class Connection:
             client.connectToHost(self.host[0], int(self.host[1]))
             if not client.waitForConnected(self.SOCKET_TIMEOUT * 1000):
                 self.closeClientHard(client)
-                self.log.debug(f"Timeout  [{self.id}]: socket timeout in build client")
+                self.log.debug("Timeout  [%s]: socket timeout in build client", self.id)
                 return None
         except (OSError, RuntimeError, TypeError, ValueError) as e:
             self.closeClientHard(client)
-            self.log.warning(f"Error    [{self.id}]: socket general: [{e}] in build client")
+            self.log.warning("Error    [%s]: socket general: [%s] in build client", self.id, e)
             return None
         else:
             return client
@@ -353,16 +353,16 @@ class Connection:
     def sendData(self, client: QTcpSocket, commandString: str) -> bool:
         try:
             if self.loggingTrace:
-                self.log.debug(f"[Trace] Sending  [{self.id}]: [{commandString}]")
+                self.log.debug("[Trace] Sending  [%s]: [%s]", self.id, commandString)
             client.write(commandString.encode())
             if not client.waitForBytesWritten(self.SOCKET_TIMEOUT * 1000):
                 self.closeClientHard(client)
                 if self.loggingTrace:
-                    self.log.debug(f"[Trace] Timeout  [{self.id}]: socket timeout in send data")
+                    self.log.debug("[Trace] Timeout  [%s]: socket timeout in send data", self.id)
                 return False
         except (OSError, RuntimeError) as e:
             self.closeClientHard(client)
-            self.log.warning(f"Error    [{self.id}]: socket error: [{e}] in send data")
+            self.log.warning("Error    [%s]: socket error: [%s] in send data", self.id, e)
             return False
         else:
             return True
@@ -377,14 +377,13 @@ class Connection:
         commands which give a response without a delimiter. this is bad, but status.
         """
         responseBytes = bytearray()
-        receiving = True
         chunkRaw = b""
         try:
-            while receiving:
+            while True:
                 if not client.waitForReadyRead(self.SOCKET_TIMEOUT * 1000):
                     if self.loggingTrace:
                         self.log.debug(
-                            f"[Trace] Timeout  [{self.id}]: socket timeout in receive data"
+                            "[Trace] Timeout  [%s]: socket timeout in receive data", self.id
                         )
                     return False, []
                 chunkRaw = client.readAll().data()
@@ -397,13 +396,13 @@ class Connection:
                     break
 
         except (OSError, RuntimeError) as e:
-            self.log.warning(f"Error    [{self.id}]: error: [{e}], received: [{chunkRaw}]")
+            self.log.warning("Error    [%s]: error: [%s], received: [%s]", self.id, e, chunkRaw)
             return False, []
         else:
             text = responseBytes.replace(b"\xdf", b"*").decode("ASCII", errors="replace")
             response = text.rstrip("#").split("#")
             if self.loggingTrace:
-                self.log.debug(f"[Trace] Response [{self.id}]: [{response}]")
+                self.log.debug("[Trace] Response [%s]: [%s]", self.id, response)
             return True, response
 
     def communicate(
@@ -443,19 +442,19 @@ class Connection:
             if not client.waitForReadyRead(self.SOCKET_TIMEOUT * 1000):
                 if self.loggingTrace:
                     self.log.debug(
-                        f"[Trace] Timeout  [{self.id}]: socket timeout in communicate raw"
+                        "[Trace] Timeout  [%s]: socket timeout in communicate raw", self.id
                     )
                 self.closeClientHard(client)
                 return sucSend, False, "Timeout"
             raw = bytes(client.readAll().data()).replace(b"\xdf", b"*")
             val = raw.decode("ASCII", errors="replace")
         except (OSError, RuntimeError) as e:
-            self.log.warning(f"Error    [{self.id}]: socket error: [{e}] in communicate raw")
+            self.log.warning("Error    [%s]: socket error: [%s] in communicate raw", self.id, e)
             val = f"Error: {e}"
             sucRec = False
         else:
             if self.loggingTrace:
-                self.log.debug(f"[Trace] Response [{self.id}]:  [{val}] in communicate raw")
+                self.log.debug("[Trace] Response [%s]:  [%s] in communicate raw", self.id, val)
             sucRec = True
 
         self.closeClientHard(client)

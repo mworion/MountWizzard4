@@ -250,6 +250,38 @@ def test_moveRaDec_zero_coord(function):
         function.setButtons = original_setButtons
 
 
+def test_moveRaDec_unknown_coord(function):
+    original_setButtons = function.setButtons
+    try:
+        function.setButtons = {
+            **function.setButtons,
+            "ODD": {
+                "buttonRaDec": mock.MagicMock(),
+                "buttonAltAz": mock.MagicMock(),
+                "coord": [2, 2],
+            },
+        }
+        with (
+            mock.patch.object(function, "moveDuration"),
+            mock.patch("mw4.gui.mainWaddon.tabMount_Move.changeStyleDynamic"),
+        ):
+            function.moveRaDec("ODD")
+            function.moveDuration.assert_called_once()
+    finally:
+        function.setButtons = original_setButtons
+
+
+def test_onDurationTick_3(function):
+    function.countdownRemaining = 0
+    function.durationTimer = None
+    with (
+        mock.patch.object(function, "stopMoveAll") as m,
+        mock.patch.object(function.ui.stopMoveAll, "setText"),
+    ):
+        function.onDurationTick()
+        m.assert_called_once()
+
+
 def test_convertDirection_1(function):
     assert function.convertDirection([1, 0]) == "N"
 

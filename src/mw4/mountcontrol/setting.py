@@ -146,7 +146,7 @@ class Setting:
             self.log.warning("wrong number of chunks")
             return False
         if not self.validateSetting(response):
-            self.log.warning(f"malformed setting response: [{response}]")
+            self.log.warning("malformed setting response: [%s]", response)
             return False
 
         self.slewRate = valueToFloat(response[0])

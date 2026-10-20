@@ -603,3 +603,20 @@ def test_dome_ascom_in_run():
     if platform.system() == "Windows":
         assert "ascom" in function.run
         assert function.run["ascom"] is not None
+
+
+def test_stopCommunication_4(function):
+    function.framework = "indi"
+    function.domeStarted = False
+    with mock.patch.object(function.run["indi"], "stopCommunication"):
+        function.stopCommunication()
+        assert not function.domeStarted
+
+
+def test_checkSlewingDome_5(function):
+    function.isSlewing = True
+    function.data["Slewing"] = True
+    with mock.patch.object(function.settlingWait, "start") as start:
+        function.checkSlewingDome()
+        start.assert_not_called()
+    assert function.isSlewing

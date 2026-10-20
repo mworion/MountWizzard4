@@ -74,6 +74,33 @@ def test_updateOffset_5(function):
     function.updateOffset()
 
 
+def test_updateOffset_6(function):
+    function.app.dReg.d["camera"].instance.data["CCD_OFFSET.OFFSET"] = 1
+    function.app.dReg.d["camera"].instance.data["CCD_OFFSET.OFFSET_LIST"] = ["7"]
+    function.updateOffset()
+
+    assert function.ui.offsetCam.text() == "7"
+
+
+def test_updateGain_6(function):
+    function.app.dReg.d["camera"].instance.data["CCD_GAIN.GAIN"] = 1
+    function.app.dReg.d["camera"].instance.data["CCD_GAIN.GAIN_LIST"] = ["7"]
+    function.updateGain()
+
+    assert function.ui.gainCam.text() == "7"
+
+
+def test_updateImagingParam_noMaxBin(function):
+    function.app.dReg.d["camera"].instance.data["CCD_BINNING.HOR_BIN_MAX"] = 0
+    function.updateImagingParam()
+
+
+def test_updateShutterStatGui_4(function):
+    function.app.dReg.d["dome"].instance.data["DOME_SHUTTER.SHUTTER_OPEN"] = None
+    function.app.dReg.d["dome"].instance.data["Status.Shutter"] = ""
+    function.updateShutterStatGui()
+
+
 def test_updateGain_1(function):
     function.app.dReg.d["camera"].instance.data["CCD_GAIN.GAIN"] = None
     function.app.dReg.d["camera"].instance.data["CCD_GAIN.GAIN_LIST"] = None

@@ -1375,3 +1375,15 @@ def test_parseSetting_malformed(function):
     response = buildValidResponse()
     response[11] = "E"
     assert not function.parseSetting(response, 27)
+
+
+def test_Setting_poll_oldFirmware(function):
+    with (
+        mock.patch.object(function.parent.firmware, "checkNewer", return_value=False),
+        mock.patch("mw4.mountcontrol.setting.Connection") as mConn,
+    ):
+        mConn.return_value.communicate.return_value = False, [], 0
+        suc = function.pollSetting()
+        assert not suc
+        command = mConn.return_value.communicate.call_args[0][0]
+        assert ":GAPO#" not in command

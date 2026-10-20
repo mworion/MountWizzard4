@@ -78,3 +78,8 @@ def test_create_3(function):
     with mock.patch.object(function, "showEnable"):
         function.create()
     assert "horizonRoot" in function.parent.entityModel
+
+
+def test_showEnable_2(function):
+    function.parent.entityModel = {}
+    function.showEnable()

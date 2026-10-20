@@ -374,3 +374,18 @@ def test_buildGraphics_updates_graphics_buffer(keypad_window):
     arr = np.zeros([64, 128, 4], dtype=np.uint8)
     keypad_window.buildGraphics(arr, 0, 0)
     # Verify graphics buffer is updated
+
+
+def test_keyPressEvent_inactive_other_event_type(keypad_window):
+    class MockKeyEvent:
+        @staticmethod
+        def key():
+            return 0
+
+        @staticmethod
+        def type():
+            return 7
+
+    keypad_window.inputActive = False
+    with mock.patch.object(MWidget, "keyPressEvent"):
+        keypad_window.keyPressEvent(MockKeyEvent())  # type: ignore

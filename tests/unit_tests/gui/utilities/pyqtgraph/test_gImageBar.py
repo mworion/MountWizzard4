@@ -35,6 +35,15 @@ def test_ImageBar_setImage_2():
     assert suc
 
 
+def test_ImageBar_setImage_4():
+    function = ImageBar()
+    img = np.zeros((100, 100))
+    with mock.patch.object(function.barItem, "setLevels") as m:
+        suc = function.setImage(img)
+        assert suc
+        m.assert_not_called()
+
+
 def test_ImageBar_setImage_3():
     function = ImageBar()
     img = np.random.rand(100, 100)
@@ -46,6 +55,13 @@ def test_ImageBar_showCrosshair():
     function = ImageBar()
     function.lx = mock.MagicMock()
     function.ly = mock.MagicMock()
+    function.showCrosshair(True)
+
+
+def test_ImageBar_showCrosshair_noLines():
+    function = ImageBar()
+    function.lx = None
+    function.ly = None
     function.showCrosshair(True)
 
 

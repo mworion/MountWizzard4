@@ -500,3 +500,15 @@ def test_drawModelText_with_existing_text_items(function):
     function.modelPointsText = [fakeTextItem]
     with mock.patch.object(function.ui.hemisphere.p[0], "removeItem"):
         function.drawModelText()
+
+
+def test_setPointerVisibility_2(function):
+    with mock.patch.object(function.ui.hemisphere, "findItemByName", return_value=None):
+        function.setPointerVisibility()
+
+
+def test_setOperationMode_3(function):
+    function.ui.normalModeHem.setChecked(True)
+    with mock.patch.object(function, "drawModelPoints") as drawModelPoints:
+        function.setOperationMode()
+        drawModelPoints.assert_not_called()

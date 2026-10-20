@@ -146,7 +146,7 @@ class FileHandler:
         bayerPattern = str(self.header.get("BAYERPAT", "")).strip()
         if bayerPattern:
             self.debayerImage(bayerPattern)
-            self.log.debug(f"Image has bayer pattern: {bayerPattern}")
+            self.log.debug("Image has bayer pattern: %s", bayerPattern)
 
         self.wcs = wcs.WCS(self.header)
         self.hasCelestial = self.wcs.has_celestial

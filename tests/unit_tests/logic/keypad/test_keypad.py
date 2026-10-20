@@ -422,3 +422,25 @@ def test_closeWebsocket_with_no_connection(keypad):
     keypad.ws = None
     keypad.closeWebsocket()
     # Should not raise exception
+
+
+def test_dispText_skips_zero_chars(keypad):
+    received = []
+    keypad.signals.textRow.connect(lambda row, text: received.append((row, text)))
+    keypad.dispText([1, 1, 1, 2, 0, 88])
+    keypad.signals.textRow.disconnect()
+    assert len(received) == 1
+    assert received[0][1][1] == "X"
+
+
+def test_checkDispatch_with_other_message_type(keypad):
+    with mock.patch.object(keypad, "dispatch") as mock_disp:
+        keypad.checkDispatch([1, 100, 110, 120])
+        mock_disp.assert_not_called()
+
+
+def test_on_data_ignores_bytes_outside_frame_and_bad_checksum(keypad):
+    data = [7, 2, 10, 20, 99, 3]
+    with mock.patch.object(keypad, "checkDispatch") as mock_disp:
+        keypad.on_data(mock.Mock(), data, 0, False)  # type: ignore
+        mock_disp.assert_not_called()

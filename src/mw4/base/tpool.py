@@ -2,14 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import logging
-import sys
 import threading
 import time
+import traceback
 from collections.abc import Callable
-from pathlib import Path
 from PySide6.QtCore import QObject, QRunnable, QThreadPool, Signal, SignalInstance, Slot
-from types import TracebackType
-from typing import Any, cast
+from typing import Any
 
 # runs longer than this (seconds) are logged as slow
 SLOW_WORKER_THRESHOLD = 5.0
@@ -83,37 +81,17 @@ class Worker(QRunnable):
         self.resultMethod = resultMethod
         self.finishedMethod = finishedMethod
 
-    def formatTbFrame(self, tb: TracebackType) -> str:
-        """Build a formatted string for a single traceback frame."""
-        file = Path(tb.tb_frame.f_code.co_filename).name
-        line = tb.tb_lineno
-        fnName = getattr(self.fn, "__name__", repr(self.fn))
-        eStr = f"fn: [{fnName}], file: [{file}], line: {line} "
-        return eStr
-
     @Slot()
     def run(self) -> None:
         try:
             result = self.fn(*self.args, **self.kwargs)
 
-        except (OSError, ValueError, RuntimeError, TypeError, AttributeError, KeyError) as e:
-            # as we want to send a clear message to the log file
-            tb = cast(TracebackType, sys.exc_info()[2])
-
-            # moving toward the end of the trace; collect frames then join once
-            parts = [f"{e} {self.formatTbFrame(tb)}"]
-            while tb.tb_next is not None:
-                tb = tb.tb_next
-                parts.append(self.formatTbFrame(tb))
-            parts.append(f" - excType: [{type(e)}], excValue: [{e}]")
-            eStr = "".join(parts)
-            self.log.critical(eStr)
-            self.signals.error.emit(eStr)
         except Exception as e:
-            # any unexpected exception must not escape into the pool thread and
-            # must still release the busy flag through the finally block below
-            eStr = f"Unhandled worker exception: [{type(e)}], [{e}]"
-            self.log.critical(eStr)
+            # no exception may escape into the pool thread; the busy flag is
+            # still released through the finally block below
+            fnName = getattr(self.fn, "__name__", repr(self.fn))
+            eStr = f"Worker exception in [{fnName}]: [{type(e).__name__}], [{e}]"
+            self.log.critical("%s\n%s", eStr, traceback.format_exc())
             self.signals.error.emit(eStr)
         else:
             self.signals.result.emit(result)
@@ -123,7 +101,7 @@ class Worker(QRunnable):
             duration = self.release()
             if duration is not None and duration > SLOW_WORKER_THRESHOLD:
                 fnName = getattr(self.fn, "__name__", repr(self.fn))
-                self.log.warning(f"Worker {fnName} finished after {duration:.1f}s (slow)")
+                self.log.warning("Worker %s finished after %.1fs (slow)", fnName, duration)
             self.signals.finished.emit()
 
 
@@ -160,7 +138,7 @@ def startWorker(
         )
     if not worker.tryAcquire():
         fnName = getattr(target, "__name__", repr(target))
-        log.debug(f"Worker {fnName} busy, skipped (running for {worker.elapsed():.1f}s)")
+        log.debug("Worker %s busy, skipped (running for %.1fs)", fnName, worker.elapsed())
         return worker
     if reuse:
         # a reused worker gets the arguments and callbacks of this call; this is

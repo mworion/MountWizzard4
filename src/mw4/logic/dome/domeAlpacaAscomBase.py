@@ -16,7 +16,7 @@ class DomeAlpacaAscomBase(AlpacaAscomCommon):
         self.getAndStoreDeviceProp("CanSetAltitude", "CanSetAltitude")
         self.getAndStoreDeviceProp("CanSetAzimuth", "CanSetAzimuth")
         self.getAndStoreDeviceProp("CanSetShutter", "CanSetShutter")
-        self.log.debug(f"Initial data: {self.data}")
+        self.log.debug("Initial data: %s", self.data)
 
     def pollData(self) -> None:
         self.getAndStoreDeviceProp("Azimuth", "ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION")

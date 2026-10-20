@@ -186,10 +186,10 @@ class Geometry:
 
     def initializeGeometry(self, mountType: str) -> None:
         if mountType not in self.geometryData:
-            self.log.warning(f"[{mountType}] not in database")
+            self.log.warning("[%s] not in database", mountType)
             return
 
-        self.log.info(f"Using [{mountType}] geometry")
+        self.log.info("Using [%s] geometry", mountType)
         vars(self).update(self.geometryData[mountType])
         self.loadParametersFromConfig()
 
@@ -379,7 +379,7 @@ class Geometry:
         q = np.dot(PB, PB) - self.domeParam("radius") ** 2
 
         if self.loggingTrace:
-            self.log.debug(f"[Trace] Geometry calc p:[{p}], q:[{q}]")
+            self.log.debug("[Trace] Geometry calc p:[%s], q:[%s]", p, q)
 
         # there should be always a reasonable solution
         if (p * p / 4 - q) < 0:
@@ -437,6 +437,6 @@ class Geometry:
         self.transVector = [P[:-1] for P in vectors]
 
         if self.loggingTrace:
-            self.log.debug(f"[Trace] az:{azDome}, alt:{altDome}")
+            self.log.debug("[Trace] az:%s, alt:%s", azDome, altDome)
 
         return altDome, azDome, intersect, PB, PD

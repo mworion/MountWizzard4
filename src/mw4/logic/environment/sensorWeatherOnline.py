@@ -60,14 +60,14 @@ class SensorWeatherOnline:
     def processOpenWeatherMapData(self) -> None:
         dataFile = self.app.mwGlob["dataDir"] / "openweathermap.data"
         if not dataFile.is_file():
-            self.log.info(f"{dataFile} not available")
+            self.log.info("%s not available", dataFile)
             return
 
         with open(dataFile) as f:
             try:
                 data = json.load(f)
             except json.JSONDecodeError as e:
-                self.log.warning(f"Cannot load data file, error: {e}")
+                self.log.warning("Cannot load data file, error: %s", e)
                 return
 
         if "main" in data:
@@ -98,14 +98,14 @@ class SensorWeatherOnline:
     def runnerGetOpenWeatherMapData(self, url: str) -> bool:
         try:
             data = requests.get(url, timeout=30)
-            self.log.debug(f"Weather url: [{url}] response code: [{data.status_code}]")
+            self.log.debug("Weather url: [%s] response code: [%s]", url, data.status_code)
         except (requests.RequestException, OSError) as e:
-            self.log.critical(f"[{url}] general exception: [{e}]")
+            self.log.critical("[%s] general exception: [%s]", url, e)
             return False
         if data.status_code != 200:
-            self.log.warning(f"[{url}] status is not 200")
+            self.log.warning("[%s] status is not 200", url)
             return False
-        self.log.debug(f"Data: [{data}]")
+        self.log.debug("Data: [%s]", data)
         with open(self.app.mwGlob["dataDir"] / "openweathermap.data", "w+") as f:
             json.dump(data.json(), f, indent=4)
         return True

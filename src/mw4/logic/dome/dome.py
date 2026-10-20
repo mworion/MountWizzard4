@@ -165,7 +165,7 @@ class Dome:
         A, B, C = self.calcTargetRectanglePoints(azimuth)
         M = np.array([x, y])
         slewNeeded = not self.targetInDomeShutter(A, B, C, M)
-        self.log.debug(f"Slew needed: [{slewNeeded}]")
+        self.log.debug("Slew needed: [%s]", slewNeeded)
         return slewNeeded
 
     def calcSlewTarget(
@@ -180,7 +180,7 @@ class Dome:
 
         alt, az, intersect, _, _ = func()
         if alt is None or az is None or intersect is None:
-            self.log.info(f"Geometry error, alt:{altitude}, az:{azimuth}")
+            self.log.info("Geometry error, alt:%s, az:%s", altitude, azimuth)
             return altitude, azimuth, None, None
 
         return alt.degrees, az.degrees, intersect[0], intersect[1]
@@ -193,12 +193,12 @@ class Dome:
         if self.avoidFirstSlewOvershoot:
             self.avoidFirstSlewOvershoot = False
             self.lastFinalAz = None
-            self.log.debug(f"First overshoot disabled: [{az}]")
+            self.log.debug("First overshoot disabled: [%s]", az)
             return az
 
         direction = self.app.dReg["mount"].obsSite.AzDirection
         if direction is None:
-            self.log.info(f"Overshoot discarded no direction: [{az}]")
+            self.log.info("Overshoot discarded no direction: [%s]", az)
             return az
 
         y = max(self.clearOpening / 2 - self.openingHysteresis, 0)
@@ -210,7 +210,7 @@ class Dome:
 
         if self.lastFinalAz is None:
             self.lastFinalAz = finalAz
-            self.log.debug(f"First overshoot value: [{finalAz}]")
+            self.log.debug("First overshoot value: [%s]", finalAz)
             return finalAz
 
         delta = diffModulusAbs(self.lastFinalAz, finalAz, 360)
@@ -220,7 +220,7 @@ class Dome:
         else:
             self.log.debug("Use old overshoot value")
 
-        self.log.debug(f"Overshoot value: [{self.lastFinalAz}]")
+        self.log.debug("Overshoot value: [%s]", self.lastFinalAz)
         return self.lastFinalAz
 
     def slewDome(self, altitude: float = 0, azimuth: float = 0, follow: bool = False) -> float:

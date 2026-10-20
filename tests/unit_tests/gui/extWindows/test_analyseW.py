@@ -261,3 +261,22 @@ def test_drawAll_1(function):
         mock.patch.object(function, "linkViewsDec"),
     ):
         function.drawAll()
+
+
+def test_loadModel_3(function):
+    with (
+        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("test.test")),
+        mock.patch.object(Path, "is_file", return_value=False),
+        mock.patch.object(function, "processModel") as processModel,
+    ):
+        function.loadModel()
+        processModel.assert_not_called()
+
+
+def test_showAnalyse_2(function):
+    with (
+        mock.patch.object(function, "processModel") as processModel,
+        mock.patch.object(Path, "is_file", return_value=False),
+    ):
+        function.showAnalyse(Path("test.test"))
+        processModel.assert_not_called()

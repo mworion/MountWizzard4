@@ -106,7 +106,7 @@ class ImageManage(TabAddon):
         offsetList = self.app.dReg["camera"].data.get("CCD_OFFSET.OFFSET_LIST", None)
         if offsetList and actValue:
             offsetList = list(offsetList)
-            self.mainW.log.debug(f"Index: [{actValue}], List: [{offsetList}]")
+            self.mainW.log.debug("Index: [%s], List: [%s]", actValue, offsetList)
             if actValue > len(offsetList):
                 actValue = len(offsetList)
             elif actValue < 0:
@@ -120,7 +120,7 @@ class ImageManage(TabAddon):
         gainList = self.app.dReg["camera"].data.get("CCD_GAIN.GAIN_LIST", False)
         if gainList and actValue:
             gainList = list(gainList)
-            self.mainW.log.debug(f"Index: [{actValue}], List: [{gainList}]")
+            self.mainW.log.debug("Index: [%s], List: [%s]", actValue, gainList)
             if actValue > len(gainList):
                 actValue = len(gainList)
             elif actValue < 0:
@@ -309,7 +309,7 @@ class ImageManage(TabAddon):
         value, ok = MWInputDialog.getItem(
             self.mainW, "Set filter", "Filter Name: ", availNames, actValue - 1
         )
-        self.mainW.log.debug(f"FilterSelected: [{value}], FilterList: [{availNames}]")
+        self.mainW.log.debug("FilterSelected: [%s], FilterList: [%s]", value, availNames)
         if not ok:
             return
         isAlpaca = "FILTER_NAME.FILTER_SLOT_NAME_0" in data

@@ -62,3 +62,17 @@ def test_updateData_3(function):
     function.running = False
     function.updateData(Sett())
     assert function.running
+
+
+def test_updateData_4(function):
+    class Sett:
+        weatherTemperature = 10
+        weatherPressure = 900
+        weatherHumidity = 50
+        weatherDewPoint = 10
+        weatherAge = 10
+
+    function.enabled = True
+    function.running = True
+    function.updateData(Sett())
+    assert function.running

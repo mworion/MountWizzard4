@@ -5,6 +5,7 @@
 import logging
 import os
 import pytest
+import runpy
 from mw4.base import loggerMW
 from mw4.base.loggerMW import LoggerWriter, setupLogging
 from pathlib import Path
@@ -174,3 +175,9 @@ def test_setTrace_disable():
     app.getActiveDrivers.return_value = drivers
     loggerMW.setTrace(app, enable=False)
     # No assertions - function does nothing
+
+
+def test_set_defaults_already_present():
+    original = logging.Logger._set_defaults
+    runpy.run_path(loggerMW.__file__)
+    assert logging.Logger._set_defaults is original

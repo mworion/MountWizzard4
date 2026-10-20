@@ -46,6 +46,17 @@ def test_setupRangeLimits_no_limits():
         assert not mockLimits.called
 
 
+def test_setupRangeLimits_none_range():
+    p = NormalScatter()
+    with mock.patch.object(p.p[0], "setLimits") as mockLimits:
+        p.setupRangeLimits(
+            np.array([0, 1]),
+            np.array([0, 1]),
+            {"range": {"xMin": None, "xMax": None, "yMin": None, "yMax": None}},
+        )
+        assert not mockLimits.called
+
+
 def test_setupRangeLimits_custom_range():
     p = NormalScatter()
     p.setupRangeLimits(

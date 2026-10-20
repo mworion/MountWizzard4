@@ -176,6 +176,19 @@ def test_clickable_5():
     QTest.mouseMove(widget, pos=QPoint(0, 0))
 
 
+def test_clickable_6():
+    widget = QLineEdit()
+    clickable(widget=widget)
+    clickable(widget=widget)
+    assert len(widget.clickFilters) == 2
+
+
+def test_clickable_7():
+    widget = QLineEdit()
+    clickable(widget=widget)
+    QTest.mouseRelease(widget, Qt.MouseButton.LeftButton, pos=QPoint(-50, -50))
+
+
 def test_img2pixmap_1(function):
     img = img2pixmap(os.getcwd() + "/tests/testData/altitude.png")
     assert isinstance(img, QPixmap)

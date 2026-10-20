@@ -158,3 +158,15 @@ def test_pollBoltwoodData_3(function):
         function.pollBoltwoodData()
         assert function.deviceConnected
         assert function.enabled
+
+
+def test_pollBoltwoodData_4(function):
+    function.deviceConnected = True
+    function.enabled = True
+    received = []
+    function.signals.deviceConnected.connect(received.append)
+    with mock.patch.object(function, "processBoltwoodData", return_value=True):
+        function.pollBoltwoodData()
+    function.signals.deviceConnected.disconnect(received.append)
+    assert received == []
+    assert function.deviceConnected

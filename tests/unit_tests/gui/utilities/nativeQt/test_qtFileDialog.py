@@ -156,6 +156,31 @@ def test_onSelectionChangedDirectoryMode(qapp, tmp_path):
     QApplication.processEvents()
 
 
+def test_onSelectionChangedSkipsMismatchedType(qapp, tmp_path):
+    (tmp_path / "sub").mkdir(exist_ok=True)
+    (tmp_path / "f.txt").write_text("f")
+    d = MWFileDialog(folder=tmp_path, fileMode=QFileDialog.FileMode.Directory)
+    sm = d.tree.selectionModel()
+    sm.select(
+        d.model.index(str(tmp_path / "f.txt")),
+        sm.SelectionFlag.Select | sm.SelectionFlag.Rows,
+    )
+    d.onSelectionChanged()
+    assert d.fileNameEdit.text() == ""
+    d.close()
+
+    d = MWFileDialog(folder=tmp_path, fileMode=QFileDialog.FileMode.ExistingFiles)
+    sm = d.tree.selectionModel()
+    sm.select(
+        d.model.index(str(tmp_path / "sub")),
+        sm.SelectionFlag.Select | sm.SelectionFlag.Rows,
+    )
+    d.onSelectionChanged()
+    assert d.fileNameEdit.text() == ""
+    d.close()
+    QApplication.processEvents()
+
+
 def test_onDoubleClickedDir(dlg):
     tmp_path = dlg._tmp_path
     idx = dlg.model.index(str(tmp_path / "sub"))

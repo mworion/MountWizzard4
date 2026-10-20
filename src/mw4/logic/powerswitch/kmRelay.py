@@ -74,7 +74,7 @@ class KMRelay:
         status = result.status_code
         url = result.url
         elapsed = result.elapsed
-        self.log.debug(f"Result: {url}, {reason}, {status}, {elapsed}, {text}")
+        self.log.debug("Result: %s, %s, %s, %s, %s", url, reason, status, elapsed, text)
 
     def getRelay(self, url: str, debug: bool = False) -> Any:
         auth = requests.auth.HTTPBasicAuth(self.config.user, self.config.password)
@@ -83,7 +83,7 @@ class KMRelay:
             result = requests.get(url, auth=auth, timeout=self.TIMEOUT)
         except (requests.RequestException, OSError) as e:
             result = None
-            self.log.critical(f"Error in request: {e}")
+            self.log.critical("Error in request: %s", e)
         if debug:
             self.debugOutput(result=result)
         return result
@@ -136,7 +136,7 @@ class KMRelay:
             return byteOff
 
     def runnerPulse(self, relayNumber: int) -> None:
-        self.log.debug(f"Pulse relay:{relayNumber}")
+        self.log.debug("Pulse relay:%s", relayNumber)
         byteOn = self.getByte(relayNumber=relayNumber, state=True)
         byteOff = self.getByte(relayNumber=relayNumber, state=False)
         value1 = self.getRelay(f"/FFE0{byteOn:02X}")
@@ -145,7 +145,7 @@ class KMRelay:
         value2 = self.getRelay(f"/FFE0{byteOff:02X}")
 
         if value1 is None or value2 is None or value1.reason != "OK" or value2.reason != "OK":
-            self.log.warning(f"Relay:{relayNumber}")
+            self.log.warning("Relay:%s", relayNumber)
             return
 
     def pulse(self, relayNumber: int) -> bool:
@@ -158,16 +158,16 @@ class KMRelay:
         return True
 
     def switch(self, relayNumber: int) -> bool:
-        self.log.debug(f"Switch relay:{relayNumber}")
+        self.log.debug("Switch relay:%s", relayNumber)
         value = self.getRelay(f"/relays.cgi?relay={relayNumber + 1:1d}")
         if value is None or value.reason != "OK":
-            self.log.warning(f"Relay:{relayNumber}")
+            self.log.warning("Relay:%s", relayNumber)
             return False
         return True
 
     def set(self, relayNumber: int, value: bool) -> None:
-        self.log.debug(f"Set relay:{relayNumber}")
+        self.log.debug("Set relay:%s", relayNumber)
         byteOn = self.getByte(relayNumber=relayNumber, state=value)
         response = self.getRelay(f"/FFE0{byteOn:02X}")
         if response is None or response.reason != "OK":
-            self.log.warning(f"Relay:{relayNumber}")
+            self.log.warning("Relay:%s", relayNumber)

@@ -141,7 +141,11 @@ Rule: extract only if the function does not touch `self.ui`/`self.app`; otherwis
 Candidate list is confirmed by an AST/grep scan per tab *before* starting each sub-step
 (`self.ui` free methods).
 
-### WP 8 – Enforcement and cleanup (last)
+### WP 8 – Enforcement and cleanup (last) ✅ done 2026-10-20
+
+All `PLR0915` ignores removed; review updated (functions > 50 lines: 25 → 16, largest 293 → 91).
+Target ≤ 10 not reached; the rest is a decision for the deferred statement budget.
+
 
 - Remove the 7 `PLR0915` entries from `pyproject.toml` as each WP lands.
 - Statement budget: **decision deferred.** Only the 7 explicit `PLR0915` ignores are

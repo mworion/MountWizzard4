@@ -142,7 +142,7 @@ class App(QObject):
         self.uiWindows = {}
         self.mainW = MainW()
         self.dReg = DeviceRegistry(self, mount=self.mount)
-        self.dReg.addDevices(self)
+        self.dReg.addDevices()
         self.buildPoint = BuildPoint(self)
         self.isOnline = False
         # Add onlineWeather to drivers for tests

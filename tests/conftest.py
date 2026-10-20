@@ -16,7 +16,7 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 
 
 def setupWorkerSandbox(workerId: str) -> Path:
-    """Build an isolated working directory for one pytest-xdist worker.
+    """Build an isolated working directory for one pytest process or xdist worker.
 
     Tests address files relative to the repository root (``tests/work/...``,
     ``tests/testData/...``). Every worker gets a sandbox that mirrors the root
@@ -39,9 +39,7 @@ def pytest_configure(config):
     """Configure Qt settings before running tests."""
     os.environ["QT_QPA_PLATFORM"] = "offscreen"
     os.environ["QT_DEBUG_PLUGINS"] = "0"
-    workerId = os.environ.get("PYTEST_XDIST_WORKER")
-    if not workerId:
-        return
+    workerId = os.environ.get("PYTEST_XDIST_WORKER", "main")
     if str(ROOT_DIR) not in sys.path:
         sys.path.insert(0, str(ROOT_DIR))
     config.workerSandbox = setupWorkerSandbox(workerId)
@@ -49,7 +47,7 @@ def pytest_configure(config):
 
 
 def pytest_unconfigure(config):
-    """Leave and remove the pytest-xdist worker sandbox."""
+    """Leave and remove the test sandbox."""
     sandbox = getattr(config, "workerSandbox", None)
     if sandbox is None:
         return

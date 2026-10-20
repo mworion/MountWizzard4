@@ -55,7 +55,7 @@ class MountWizzard4(QObject):
             self.signals.ui.msg.emit(1, "System", "Arguments", f"[{arguments}]")
         self.timeMgr = TimeManager(app=self)
         self.dReg: DeviceRegistry = DeviceRegistry(self)
-        self.dReg.addDevices(self)
+        self.dReg.addDevices()
         self.audioMgr = AudioManager(app=self)
         self.initConfig()
         self.buildPoint = BuildPoint(self)

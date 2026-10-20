@@ -18,7 +18,7 @@ def registry() -> DeviceRegistry:
     try:
         app = App()
         dReg = DeviceRegistry(app, mount=app.mount)
-        dReg.addDevices(app)
+        dReg.addDevices()
         return dReg
     except (
         RuntimeError,
@@ -229,7 +229,7 @@ def test_initPhase2AllDevicesExist() -> None:
     try:
         app = App()
         dReg = DeviceRegistry(app, mount=app.mount)
-        dReg.addDevices(app)
+        dReg.addDevices()
         assert "mount" in dReg.d
         assert "camera" in dReg.d
         assert "dome" in dReg.d
@@ -251,7 +251,7 @@ def test_initPhase2MountAccessibleDuringAddDevices() -> None:
     app = App()
     dReg = DeviceRegistry(app, mount=app.mount)
     assert dReg["mount"].instance is app.mount
-    dReg.addDevices(app)
+    dReg.addDevices()
     assert dReg["mount"].instance is app.mount
 
 
@@ -314,7 +314,7 @@ def test_initConnectsStartStopDeviceSignals(registry: DeviceRegistry) -> None:
     # Test that when signals are emitted, registry handles them
     app = App()
     dReg = DeviceRegistry(app, mount=app.mount)
-    dReg.addDevices(app)
+    dReg.addDevices()
 
     # The connections should be established without errors
     # Verify startDevice and stopDevice are connected
@@ -742,7 +742,7 @@ def test_addDevicesSkipsSignalsForInstanceWithoutSignals() -> None:
     app = App()
     dReg = DeviceRegistry(app, mount=app.mount)
     with patch("mw4.base.deviceRegistry.MeasureData", lambda app: object()):
-        dReg.addDevices(app)
+        dReg.addDevices()
     assert id(dReg.d["mount"].signals) in dReg.signalsToName
     assert "measure" not in dReg.signalsToName.values()
 

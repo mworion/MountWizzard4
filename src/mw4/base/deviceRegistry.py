@@ -45,7 +45,7 @@ class DeviceRegistry(QObject):
             ),
         }
 
-    def addDevices(self, app: AppProtocol) -> None:
+    def addDevices(self) -> None:
         deviceSpec: list[tuple[str, Any, str | None, bool]] = [
             ("camera", Camera, "camera", True),
             ("cover", Cover, "covercalibrator", True),
@@ -59,7 +59,6 @@ class DeviceRegistry(QObject):
             ("plateSolve", PlateSolve, "plateSolve", True),
             ("power", PegasusUPB, "switch", True),
             ("relay", KMRelay, None, True),
-            ("refraction", lambda _app: None, None, False),
             ("remote", Remote, None, True),
             ("seeingWeather", SeeingWeather, "observingconditions", True),
             ("sensor1Weather", SensorWeather, "observingconditions", True),
@@ -71,10 +70,16 @@ class DeviceRegistry(QObject):
         for name, factory, deviceType, isConfigurable in deviceSpec:
             self.d[name] = DeviceEntry(
                 name=name,
-                instance=factory(app),
+                instance=factory(self.app),
                 deviceType=deviceType,
                 isConfigurable=isConfigurable,
             )
+        self.d["refraction"] = DeviceEntry(
+            name="refraction",
+            instance=None,
+            deviceType=None,
+            isConfigurable=False,
+        )
         for entry in self.realDrivers():
             if hasattr(self.d[entry.name].instance, "signals"):
                 sig = self.d[entry.name].signals
@@ -261,15 +266,14 @@ class DeviceRegistry(QObject):
         self.d[name].stat = value
 
     def collectConfigFromSingleDevice(self, device: str) -> dict[str, dict[str, Any]]:
-        cfgDevice: dict[str, Any] = {"framework": self.d[device].framework}
-        for framework in self.d[device].run:
-            cfgFramework: dict[str, Any] = {}
-            if not hasattr(self.d[device].run[framework], "config"):
+        entry = self.d[device]
+        cfgDevice: dict[str, Any] = {"framework": entry.framework}
+        for framework, driver in entry.run.items():
+            if not hasattr(driver, "config"):
                 continue
-            for field in fields(self.d[device].run[framework].config):
-                value = getattr(self.d[device].run[framework].config, field.name)
-                cfgFramework[field.name] = value
-            cfgDevice[framework] = cfgFramework
+            cfgDevice[framework] = {
+                field.name: getattr(driver.config, field.name) for field in fields(driver.config)
+            }
         return cfgDevice
 
     def collectConfigFromAllDevices(self) -> dict[str, dict[str, dict[str, Any]]]:
@@ -279,17 +283,14 @@ class DeviceRegistry(QObject):
         return cfgSetting
 
     def writeConfigToSingleDevice(self, device: str, cfg: dict[str, dict[str, Any]]) -> None:
-        self.d[device].instance.framework = cfg.get("framework", "")
-        for framework in self.d[device].run:
-            if not hasattr(self.d[device].run[framework], "config"):
+        entry = self.d[device]
+        entry.instance.framework = cfg.get("framework", "")
+        for framework, driver in entry.run.items():
+            if not hasattr(driver, "config") or framework not in cfg:
                 continue
-            if framework not in cfg:
-                continue
-            for field in fields(self.d[device].run[framework].config):
-                if field.name not in cfg[framework]:
-                    continue
-                value = cfg[framework][field.name]
-                setattr(self.d[device].run[framework].config, field.name, value)
+            for field in fields(driver.config):
+                if field.name in cfg[framework]:
+                    setattr(driver.config, field.name, cfg[framework][field.name])
 
     def writeConfigToAllDevices(self, cfg: dict[str, dict[str, dict[str, Any]]]) -> None:
         for entry in self.configurable():

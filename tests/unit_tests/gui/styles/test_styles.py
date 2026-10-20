@@ -2,10 +2,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 
-import platform
+import hashlib
+import json
 import pytest
-from mw4.gui.styles.styles import Styles
-from unittest import mock
+import re
+from importlib.resources import files
+from mw4.gui.styles.colors import colors
+from mw4.gui.styles.images import images
+from mw4.gui.styles.styles import Styles, loadTemplate
+from pathlib import Path
+from tests.unit_tests.unitTestAddOns.platformStub import patchPlatform
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -44,13 +50,13 @@ def test_property(function):
 
 
 def test_mw4Style_1(function):
-    with mock.patch.object(platform, "system", return_value="Darwin"):
+    with patchPlatform("Darwin"):
         ret = function.mw4Style
         assert ret.startswith("\n")
 
 
 def test_mw4Style_2(function):
-    with mock.patch.object(platform, "system", return_value="Windows"):
+    with patchPlatform("Windows"):
         ret = function.mw4Style
         assert ret.startswith("\n")
 
@@ -58,7 +64,7 @@ def test_mw4Style_2(function):
 def test_mw4Style_nonDarwin_nocache(function):
     function.cachedStyle = None
     function.cachedColorSet = None
-    with mock.patch.object(platform, "system", return_value="Linux"):
+    with patchPlatform("Linux"):
         ret = function.mw4Style
         assert ret.startswith("\n")
 
@@ -197,3 +203,44 @@ def test_mw4Style_cache_invalidation(function):
     assert style0_first == style0_second
     # But different from colorSet 1
     assert style0_first != style1
+
+
+@pytest.mark.parametrize("name", ["mac", "nonMac", "basic"])
+def test_loadTemplate(name):
+    template = loadTemplate(name)
+    assert isinstance(template, str)
+    assert template.strip()
+
+
+def test_styleTemplate_pickedPerPlatform(function):
+    with patchPlatform("Darwin"):
+        mac = function.styleTemplate()
+    with patchPlatform("Linux"):
+        nonMac = function.styleTemplate()
+    with patchPlatform("Windows"):
+        windows = function.styleTemplate()
+    assert mac == loadTemplate("mac") + loadTemplate("basic")
+    assert nonMac == loadTemplate("nonMac") + loadTemplate("basic")
+    assert windows == nonMac
+
+
+@pytest.mark.parametrize("name", ["mac", "nonMac", "basic"])
+def test_templateKeysAreKnown(name):
+    for key in re.findall(r"\$([\w-]+)\$", loadTemplate(name)):
+        assert key in colors or key in images, key
+
+
+def test_renderedStyleMatchesGolden(function):
+    golden = json.loads(Path("tests/testData/styleGolden.json").read_text())
+    iconDir = str(files("mw4").joinpath("assets/icon"))
+    for key, digest in golden.items():
+        platformName, colorSet, transparency = key.split("-")
+        system = "Darwin" if platformName == "mac" else "Linux"
+        function.colorSet = int(colorSet)
+        function.transparency = float(transparency)
+        with patchPlatform(system):
+            rendered = function.renderStyle(function.styleTemplate())
+        rendered = rendered.replace(iconDir, "<ICON>")
+        assert hashlib.sha256(rendered.encode()).hexdigest() == digest, key
+    function.colorSet = 0
+    function.transparency = 1.0

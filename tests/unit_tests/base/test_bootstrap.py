@@ -3,11 +3,11 @@
 # Copyright (c) 2019-2026 mworion
 import glob
 import os
-import platform
 import pytest
 import socket
 import sys
 import traceback
+from mw4.base import platformInfo
 from mw4.base.bootstrap import (
     configureEnvironment,
     exceptHook,
@@ -17,6 +17,7 @@ from mw4.base.bootstrap import (
     writeSystemInfo,
 )
 from pathlib import Path
+from tests.unit_tests.unitTestAddOns.platformStub import patchPlatform
 from unittest import mock
 
 
@@ -40,7 +41,7 @@ def test_configure_environment():
         configureEnvironment()
 
 
-@pytest.mark.skipif(platform.system() != "Linux", reason="Linux needed")
+@pytest.mark.skipif(not platformInfo.IS_LINUX, reason="Linux needed")
 def test_linux_qt_platform_defaults_to_xcb_when_unset():
     import importlib
     import mw4.base.bootstrap as bootstrapModule
@@ -58,7 +59,7 @@ def test_linux_qt_platform_defaults_to_xcb_when_unset():
         importlib.reload(bootstrapModule)
 
 
-@pytest.mark.skipif(platform.system() != "Linux", reason="Linux needed")
+@pytest.mark.skipif(not platformInfo.IS_LINUX, reason="Linux needed")
 def test_linux_qt_platform_preserved_when_already_set():
     import importlib
     import mw4.base.bootstrap as bootstrapModule
@@ -149,12 +150,12 @@ def test_extract_data_files_copy():
     mock_copy.assert_called()
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_minimize_start_terminal():
     minimizeStartTerminal()
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_minimize_start_terminal_with_mock():
     """Test minimizeStartTerminal with mocked ctypes."""
     with mock.patch("ctypes.windll.user32.ShowWindow") as mock_show_window:
@@ -162,12 +163,14 @@ def test_minimize_start_terminal_with_mock():
         mock_show_window.assert_called_once()
 
 
-@mock.patch("mw4.base.bootstrap.platform.system", return_value="Windows")
-def test_minimize_start_terminal_non_windows(mock_platform):
+def test_minimize_start_terminal_non_windows():
     """Test minimizeStartTerminal when platform reports Windows."""
     mock_ctypes = mock.MagicMock()
     mock_ctypes.windll.user32.ShowWindow = mock.MagicMock()
     mock_ctypes.windll.kernel32.GetConsoleWindow = mock.MagicMock(return_value=12345)
-    with mock.patch.dict("sys.modules", {"ctypes": mock_ctypes}):
+    with (
+        patchPlatform("Windows"),
+        mock.patch.dict("sys.modules", {"ctypes": mock_ctypes}),
+    ):
         minimizeStartTerminal()
         mock_ctypes.windll.user32.ShowWindow.assert_called_once()

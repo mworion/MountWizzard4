@@ -1,0 +1,33 @@
+
+    QWidget {
+        font-family: Arial;
+        font-weight: normal;
+        font-size: 10pt;
+    }
+    QLabel[title='true'] {
+        font-size: 15pt;
+        font-weight: bold;
+    }
+    QWidget[large] {
+        font-family: Arial;
+        font-weight: demibold;
+        font-size: 22pt;
+    }
+    QGroupBox {
+        font-family: Arial;
+        font-weight: demibold;
+        font-size: 8pt;
+    }
+    QGroupBox[large] {
+        font-weight: bold;
+        font-size: 10pt;
+    }
+    QToolTip {
+        font-size: 10pt;
+    }
+    QLineEdit[keypad]{
+        font-family: Courier New;
+        font-weight: bold;
+        font-size: 19pt;
+    }
+    

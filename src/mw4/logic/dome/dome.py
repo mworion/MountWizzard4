@@ -3,9 +3,9 @@
 # Copyright (c) 2019-2026 mworion
 import logging
 import numpy as np
-import platform
 import PySide6
 from collections.abc import Callable
+from mw4.base import platformInfo
 from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
 from mw4.base.transform import diffModulusAbs
@@ -13,7 +13,7 @@ from mw4.logic.dome.domeAlpaca import DomeAlpaca
 from mw4.logic.dome.domeIndi import DomeIndi
 from typing import Any
 
-if platform.system() == "Windows":
+if platformInfo.IS_WINDOWS:
     from mw4.logic.dome.domeAscom import DomeAscom
 
 
@@ -32,8 +32,12 @@ class Dome:
             "indi": DomeIndi(self),
             "alpaca": DomeAlpaca(self),
         }
-        if platform.system() == "Windows":
-            self.run["ascom"] = DomeAscom(self)
+        platformInfo.registerWindowsBackends(
+            self.run,
+            {
+                "ascom": lambda: DomeAscom(self),
+            },
+        )
 
         self.isSlewing: bool = False
         self.domeStarted: bool = False

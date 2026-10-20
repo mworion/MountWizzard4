@@ -1,9 +1,9 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
-import platform
 import pylnk3
 from importlib.resources import as_file, files
+from mw4.base import platformInfo
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtHelpers import svg2pixmap
 from pathlib import Path
@@ -38,11 +38,11 @@ class SettGui:
         self.ui.colorSet.currentIndexChanged.connect(self.updateColorSet)
         self.ui.transparency.valueChanged.connect(self.updateColorSet)
         self.ui.writeLinuxConfig.clicked.connect(self.runLinuxConfig)
-        self.ui.writeLinuxConfig.setEnabled(platform.system() == "Linux")
+        self.ui.writeLinuxConfig.setEnabled(platformInfo.IS_LINUX)
         self.ui.writeWindowsConfig.clicked.connect(self.runWindowsConfig)
-        self.ui.writeWindowsConfig.setEnabled(platform.system() == "Windows")
+        self.ui.writeWindowsConfig.setEnabled(platformInfo.IS_WINDOWS)
         self.ui.writeMacOsConfig.clicked.connect(self.runMacOsConfig)
-        self.ui.writeMacOsConfig.setEnabled(platform.system() == "Darwin")
+        self.ui.writeMacOsConfig.setEnabled(platformInfo.IS_MAC)
 
     def storeConfig(self) -> None:
         config = {

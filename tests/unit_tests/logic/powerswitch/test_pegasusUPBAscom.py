@@ -1,15 +1,15 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
-import platform
 import pytest
+from mw4.base import platformInfo
 from mw4.base.signalsDevices import Signals
 from mw4.logic.powerswitch.pegasusUPBAscom import PegasusUPBAscom
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from typing import ClassVar
 from unittest import mock
 
-if platform.system() != "Windows":
+if not platformInfo.IS_WINDOWS:
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 

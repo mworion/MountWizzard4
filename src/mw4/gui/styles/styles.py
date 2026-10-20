@@ -2,21 +2,23 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import numpy as np
-import platform
 import pyqtgraph as pg
+from functools import cache
 from importlib.resources import as_file, files
+from mw4.base import platformInfo
 from mw4.gui.styles.colors import colors
 from mw4.gui.styles.images import images
-from mw4.gui.styles.styleSheets import BASIC_STYLE, MAC_STYLE, NON_MAC_STYLE
 from PySide6.QtGui import QIcon
 from typing import Any, ClassVar
 
 
+@cache
+def loadTemplate(name: str) -> str:
+    return files("mw4").joinpath(f"assets/styles/{name}.qss").read_text(encoding="utf-8")
+
+
 class Styles:
     COLOR_MAPS_STRINGS: ClassVar = ["CET-L2", "plasma", "cividis", "magma", "CET-D1A"]
-    STYLE = (
-        MAC_STYLE + BASIC_STYLE if platform.system() == "Darwin" else NON_MAC_STYLE + BASIC_STYLE
-    )
 
     colorSet: int = 0
     cachedColorSet: int = 0
@@ -42,10 +44,15 @@ class Styles:
             or self.cachedColorSet != self.colorSet
             or self.cachedTransparency != self.transparency
         ):
-            self.cachedStyle = self.renderStyle(self.STYLE)
+            self.cachedStyle = self.renderStyle(self.styleTemplate())
             self.cachedColorSet = self.colorSet
             self.cachedTransparency = self.transparency
         return self.cachedStyle
+
+    @staticmethod
+    def styleTemplate() -> str:
+        platformStyle = "mac" if platformInfo.IS_MAC else "nonMac"
+        return loadTemplate(platformStyle) + loadTemplate("basic")
 
     @property
     def colorMapStyle(self) -> list[Any]:
@@ -93,9 +100,7 @@ class Styles:
             keyExt = images[key][self.colorSet]
             with as_file(files("mw4").joinpath(f"assets/icon/{keyExt}.svg")) as imageFile:
                 temp = (
-                    str(imageFile).replace("\\", "/")
-                    if platform.system() == "Windows"
-                    else str(imageFile)
+                    str(imageFile).replace("\\", "/") if platformInfo.IS_WINDOWS else str(imageFile)
                 )
                 line = line.replace(f"${key}$", temp)
         return line

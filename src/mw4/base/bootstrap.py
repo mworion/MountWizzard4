@@ -17,6 +17,7 @@ from astropy.utils.exceptions import AstropyDeprecationWarning
 from astropy.wcs import FITSFixedWarning
 from importlib.metadata import version
 from importlib.resources import as_file, files
+from mw4.base import platformInfo
 from mw4.base.loggerMW import setupLogging
 from pathlib import Path
 from PySide6.QtCore import qVersion
@@ -36,7 +37,7 @@ class MwGlob(TypedDict):
 
 log: logging.Logger = logging.getLogger("MW4")
 warnings.filterwarnings("ignore", message="astropy.samp", category=AstropyDeprecationWarning)
-os.environ.setdefault("QT_QPA_PLATFORM", "xcb") if platform.system() == "Linux" else None
+os.environ.setdefault("QT_QPA_PLATFORM", "xcb") if platformInfo.IS_LINUX else None
 
 
 def configureEnvironment() -> None:
@@ -77,7 +78,7 @@ def setupWorkDirs(workDir: Path) -> MwGlob:
 def writeSystemInfo(mwGlob: MwGlob) -> None:
     log.info("-" * 80)
     log.info("[SYS] mountwizzard4    : %s", version("mountwizzard4"))
-    log.info("[SYS] platform         : %s", platform.system())
+    log.info("[SYS] platform         : %s", platformInfo.SYSTEM)
     log.info("[SYS] sys.executable   : %s", sys.executable)
     log.info("[SYS] actual workdir   : %s", mwGlob["workDir"])
     log.info("[SYS] machine          : %s", platform.machine())
@@ -103,7 +104,7 @@ def extractDataFiles(mwGlob: MwGlob) -> None:
 
 
 def minimizeStartTerminal() -> None:
-    if platform.system() == "Windows":
+    if platformInfo.IS_WINDOWS:
         import ctypes
 
         # pyrefly: ignore[missing-attribute]

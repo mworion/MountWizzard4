@@ -3,8 +3,8 @@
 # Copyright (c) 2019-2026 mworion
 
 import numpy as np
-import platform
 import pytest
+from mw4.base import platformInfo
 from mw4.logic.dome.dome import Dome
 from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
@@ -586,7 +586,7 @@ def test_abortSlew_3(function):
         function.abortSlew()
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_domeAscom_import():
     import importlib
 
@@ -594,13 +594,13 @@ def test_domeAscom_import():
     assert spec is not None
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_dome_ascom_in_run():
     from mw4.logic.dome.dome import Dome
     from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
     function = Dome(app=App())
-    if platform.system() == "Windows":
+    if platformInfo.IS_WINDOWS:
         assert "ascom" in function.run
         assert function.run["ascom"] is not None
 

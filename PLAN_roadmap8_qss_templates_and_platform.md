@@ -1,7 +1,7 @@
 # Plan – Roadmap item 8: QSS templates (M5) and central platform handling (P8)
 
 Source: `2026-10-20_review_copilot.md`, findings **M5** and **P8**, roadmap *Medium* item 8.
-Status: **plan only, nothing implemented yet.** The two parts are independent; they can be done
+Status: **implemented.** Decisions: 7.1 shared Windows back-end registration helper only (no factory); 7.2 templates in `src/mw4/assets/styles/`; 7.3 constants read at import; 7.4 both parts in one go. Golden-hash test guards the rendered output; `TID251` bans `platform.system` outside `base/platformInfo.py`.
 in either order and shipped separately (WP 8.A = styles, WP 8.B = platform).
 
 ## 1. Problem (measured)

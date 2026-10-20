@@ -1,8 +1,8 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
-import platform
 import pytest
+from mw4.base import platformInfo
 from mw4.logic.environment.sensorWeather import SensorWeather
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
@@ -51,7 +51,7 @@ def test_stopCommunication_2(function):
         function.stopCommunication()
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_sensorWeatherAscom_import():
     import importlib
 
@@ -59,12 +59,12 @@ def test_sensorWeatherAscom_import():
     assert spec is not None
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_sensorWeather_ascom_in_run():
     from mw4.logic.environment.sensorWeather import SensorWeather
     from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
     function = SensorWeather(app=App())
-    if platform.system() == "Windows":
+    if platformInfo.IS_WINDOWS:
         assert "ascom" in function.run
         assert function.run["ascom"] is not None

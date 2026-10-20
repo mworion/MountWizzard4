@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from tests.unit_tests.unitTestAddOns.platformStub import patchPlatform
 from typing import ClassVar
 from unittest import mock
 
@@ -301,24 +302,22 @@ def test_setPositionWindow_2(function):
     function.setPositionWindow(config)
 
 
-@mock.patch("mw4.gui.utilities.qtMain.platform.system", return_value="Linux")
-def test_positionWindow_linux_maximized(mock_platform, function):
+def test_positionWindow_linux_maximized(function):
     """Test setPositionWindow on Linux with maximized window dimensions."""
     max_height = function.maximumHeight()
     max_width = function.maximumWidth()
     config = {"height": max_height, "width": max_width}
-    function.setPositionWindow(config)
-    mock_platform.assert_called()
+    with patchPlatform("Linux"):
+        function.setPositionWindow(config)
 
 
-@mock.patch("mw4.gui.utilities.qtMain.platform.system", return_value="Darwin")
-def test_positionWindow_macos_maximized(mock_platform, function):
+def test_positionWindow_macos_maximized(function):
     """Test setPositionWindow on macOS with maximized window dimensions."""
     max_height = function.maximumHeight()
     max_width = function.maximumWidth()
     config = {"height": max_height, "width": max_width}
-    function.setPositionWindow(config)
-    mock_platform.assert_called()
+    with patchPlatform("Darwin"):
+        function.setPositionWindow(config)
 
 
 def test_getPositionWindow_1(function):

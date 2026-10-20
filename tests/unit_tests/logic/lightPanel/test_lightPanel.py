@@ -1,8 +1,8 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
-import platform
 import pytest
+from mw4.base import platformInfo
 from mw4.logic.lightPanel.lightPanel import LightPanel
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
@@ -87,7 +87,7 @@ def test_lightIntensity_3(function):
         function.lightIntensity(0)
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_lightPanelAscom_import():
     import importlib
 
@@ -95,12 +95,12 @@ def test_lightPanelAscom_import():
     assert spec is not None
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_lightPanel_ascom_in_run():
     from mw4.logic.lightPanel.lightPanel import LightPanel
     from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
     function = LightPanel(app=App())
-    if platform.system() == "Windows":
+    if platformInfo.IS_WINDOWS:
         assert "ascom" in function.run
         assert function.run["ascom"] is not None

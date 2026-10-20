@@ -5,12 +5,12 @@
 import builtins
 import glob
 import os
-import platform
 import pytest
 from mw4.logic.plateSolve.astap import ASTAP
 from mw4.logic.plateSolve.plateSolve import PlateSolve
 from pathlib import Path
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from tests.unit_tests.unitTestAddOns.platformStub import patchPlatform
 from unittest import mock
 
 
@@ -28,7 +28,7 @@ def function(tmp_path_factory):
 
 
 def test_setDefaultPath_1(function):
-    with mock.patch.object(platform, "system", return_value="Darwin"):
+    with patchPlatform("Darwin"):
         function.config.appPath = function.setDefaultAppPath()
         assert function.config.appPath == "/Applications/ASTAP.app/Contents/MacOS"
 
@@ -57,7 +57,7 @@ def test_checkAvailabilityProgram_2(function):
 def test_checkAvailabilityIndex_1(function):
     with (
         mock.patch.object(builtins, "any", return_value=True),
-        mock.patch.object(platform, "system", return_value="Linux"),
+        patchPlatform("Linux"),
     ):
         suc = function.checkAvailabilityIndex(Path("test"))
         assert suc
@@ -66,7 +66,7 @@ def test_checkAvailabilityIndex_1(function):
 def test_checkAvailabilityIndex_2(function):
     with (
         mock.patch.object(builtins, "any", return_value=True),
-        mock.patch.object(platform, "system", return_value="Darwin"),
+        patchPlatform("Darwin"),
     ):
         suc = function.checkAvailabilityIndex(Path("test"))
         assert suc
@@ -75,7 +75,7 @@ def test_checkAvailabilityIndex_2(function):
 def test_checkAvailabilityIndex_3(function):
     with (
         mock.patch.object(builtins, "any", return_value=True),
-        mock.patch.object(platform, "system", return_value="Windows"),
+        patchPlatform("Windows"),
     ):
         suc = function.checkAvailabilityIndex(Path("test"))
         assert suc

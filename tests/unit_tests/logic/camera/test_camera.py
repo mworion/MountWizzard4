@@ -4,11 +4,12 @@
 import importlib
 import mw4.logic
 import mw4.logic.camera.camera as cameraModule
-import platform
 import pytest
 from astropy.io import fits
+from mw4.base import platformInfo
 from mw4.logic.camera.camera import Camera
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from tests.unit_tests.unitTestAddOns.platformStub import patchPlatform
 from unittest import mock
 
 
@@ -243,7 +244,7 @@ def test_writeImageFitsHeader_1(function) -> None:
         function.writeImageFitsHeader()
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_cameraAscom_import() -> None:
     import importlib
 
@@ -251,13 +252,13 @@ def test_cameraAscom_import() -> None:
     assert spec is not None
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_camera_sgpro_in_run(function) -> None:
     assert "sgpro" in function.run
     assert function.run["sgpro"] is not None
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_camera_ascom_in_run() -> None:
     function = Camera(app=App())
     assert "ascom" in function.run
@@ -265,7 +266,7 @@ def test_camera_ascom_in_run() -> None:
 
 
 def test_camera_nonWindows_run() -> None:
-    with mock.patch("platform.system", return_value="Linux"):
+    with patchPlatform("Linux"):
         function = Camera(app=App())
         assert "indi" in function.run
         assert "alpaca" in function.run
@@ -274,7 +275,7 @@ def test_camera_nonWindows_run() -> None:
 
 
 def test_camera_nonWindows_import() -> None:
-    with mock.patch("platform.system", return_value="Linux"):
+    with patchPlatform("Linux"):
         importlib.reload(cameraModule)
         assert hasattr(cameraModule, "Camera")
         assert hasattr(cameraModule, "CameraIndi")

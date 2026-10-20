@@ -7,6 +7,7 @@ from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QCheckBox, QComboBox, QPushButton
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from tests.unit_tests.unitTestAddOns.platformStub import patchPlatform
 from unittest import mock
 
 
@@ -165,8 +166,7 @@ def test_initConfig_connects_writeLinuxConfig(settGui):
 def test_initConfig_writeLinuxConfig_enabled_on_linux(settGui):
     """Test writeLinuxConfig button enabled on Linux."""
     settGui.app.config["SettingGui"] = {}
-    with mock.patch("platform.system") as mock_platform:
-        mock_platform.return_value = "Linux"
+    with patchPlatform("Linux"):
         settGui.initConfig()
         assert settGui.ui.writeLinuxConfig.isEnabled() is True
 
@@ -174,8 +174,7 @@ def test_initConfig_writeLinuxConfig_enabled_on_linux(settGui):
 def test_initConfig_writeLinuxConfig_disabled_on_non_linux(settGui):
     """Test writeLinuxConfig button disabled on non-Linux."""
     settGui.app.config["SettingGui"] = {}
-    with mock.patch("platform.system") as mock_platform:
-        mock_platform.return_value = "Darwin"
+    with patchPlatform("Darwin"):
         settGui.initConfig()
         assert settGui.ui.writeLinuxConfig.isEnabled() is False
 
@@ -249,8 +248,7 @@ def test_storeConfig_saves_dpi(settGui):
 def test_initConfig_writeWindowsConfig_enabled_on_windows(settGui):
     """Test writeWindowsConfig button enabled on Windows."""
     settGui.app.config["SettingGui"] = {}
-    with mock.patch("platform.system") as mock_platform:
-        mock_platform.return_value = "Windows"
+    with patchPlatform("Windows"):
         settGui.initConfig()
         assert settGui.ui.writeWindowsConfig.isEnabled() is True
 
@@ -258,8 +256,7 @@ def test_initConfig_writeWindowsConfig_enabled_on_windows(settGui):
 def test_initConfig_writeWindowsConfig_disabled_on_non_windows(settGui):
     """Test writeWindowsConfig button disabled on non-Windows."""
     settGui.app.config["SettingGui"] = {}
-    with mock.patch("platform.system") as mock_platform:
-        mock_platform.return_value = "Darwin"
+    with patchPlatform("Darwin"):
         settGui.initConfig()
         assert settGui.ui.writeWindowsConfig.isEnabled() is False
 
@@ -267,8 +264,7 @@ def test_initConfig_writeWindowsConfig_disabled_on_non_windows(settGui):
 def test_initConfig_writeMacOsConfig_enabled_on_darwin(settGui):
     """Test writeMacOsConfig button enabled on Darwin."""
     settGui.app.config["SettingGui"] = {}
-    with mock.patch("platform.system") as mock_platform:
-        mock_platform.return_value = "Darwin"
+    with patchPlatform("Darwin"):
         settGui.initConfig()
         assert settGui.ui.writeMacOsConfig.isEnabled() is True
 
@@ -276,8 +272,7 @@ def test_initConfig_writeMacOsConfig_enabled_on_darwin(settGui):
 def test_initConfig_writeMacOsConfig_disabled_on_non_darwin(settGui):
     """Test writeMacOsConfig button disabled on non-Darwin."""
     settGui.app.config["SettingGui"] = {}
-    with mock.patch("platform.system") as mock_platform:
-        mock_platform.return_value = "Linux"
+    with patchPlatform("Linux"):
         settGui.initConfig()
         assert settGui.ui.writeMacOsConfig.isEnabled() is False
 

@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 
-import platform
 import pytest
+from mw4.base import platformInfo
 from mw4.logic.cover.cover import Cover
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
@@ -88,7 +88,7 @@ def test_haltCover_3(function):
         function.haltCover()
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_coverAscom_import():
     import importlib
 
@@ -96,12 +96,12 @@ def test_coverAscom_import():
     assert spec is not None
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_cover_ascom_in_run():
     from mw4.logic.cover.cover import Cover
     from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
     function = Cover(app=App())
-    if platform.system() == "Windows":
+    if platformInfo.IS_WINDOWS:
         assert "ascom" in function.run
         assert function.run["ascom"] is not None

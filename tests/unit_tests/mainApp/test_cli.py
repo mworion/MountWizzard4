@@ -5,6 +5,7 @@ import argparse
 import os
 import sys
 from mw4 import cli
+from mw4.base import platformInfo
 from unittest.mock import patch
 
 
@@ -50,10 +51,9 @@ def test_readOptions_returnsNamespace(monkeypatch):
 
 
 @patch("mw4.cli.main")
-@patch("platform.system")
-def test_app_on_windows_sets_environment_variables(mock_platform, mock_main, monkeypatch):
+def test_app_on_windows_sets_environment_variables(mock_main, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli", "--dpi", "120", "--scale", "1.5"])
-    mock_platform.return_value = "Windows"
+    monkeypatch.setattr(platformInfo, "IS_WINDOWS", True)
 
     monkeypatch.delenv("QT_SCALE_FACTOR", raising=False)
     monkeypatch.delenv("QT_FONT_DPI", raising=False)
@@ -66,10 +66,9 @@ def test_app_on_windows_sets_environment_variables(mock_platform, mock_main, mon
 
 
 @patch("mw4.cli.main")
-@patch("platform.system")
-def test_app_on_linux_does_not_set_environment_variables(mock_platform, mock_main, monkeypatch):
+def test_app_on_linux_does_not_set_environment_variables(mock_main, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli", "--dpi", "120", "--scale", "1.5"])
-    mock_platform.return_value = "Linux"
+    monkeypatch.setattr(platformInfo, "IS_WINDOWS", False)
 
     monkeypatch.delenv("QT_SCALE_FACTOR", raising=False)
     monkeypatch.delenv("QT_FONT_DPI", raising=False)
@@ -82,10 +81,9 @@ def test_app_on_linux_does_not_set_environment_variables(mock_platform, mock_mai
 
 
 @patch("mw4.cli.main")
-@patch("platform.system")
-def test_app_on_darwin_does_not_set_environment_variables(mock_platform, mock_main, monkeypatch):
+def test_app_on_darwin_does_not_set_environment_variables(mock_main, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli"])
-    mock_platform.return_value = "Darwin"
+    monkeypatch.setattr(platformInfo, "IS_WINDOWS", False)
 
     cli.run()
 
@@ -93,10 +91,9 @@ def test_app_on_darwin_does_not_set_environment_variables(mock_platform, mock_ma
 
 
 @patch("mw4.cli.main")
-@patch("platform.system")
-def test_app_with_float_formatting(mock_platform, mock_main, monkeypatch):
+def test_app_with_float_formatting(mock_main, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli", "--dpi", "96.7", "--scale", "1.25"])
-    mock_platform.return_value = "Windows"
+    monkeypatch.setattr(platformInfo, "IS_WINDOWS", True)
 
     monkeypatch.delenv("QT_SCALE_FACTOR", raising=False)
     monkeypatch.delenv("QT_FONT_DPI", raising=False)
@@ -108,10 +105,9 @@ def test_app_with_float_formatting(mock_platform, mock_main, monkeypatch):
 
 
 @patch("mw4.cli.main")
-@patch("platform.system")
-def test_app_calls_main_function(mock_platform, mock_main, monkeypatch):
+def test_app_calls_main_function(mock_main, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli"])
-    mock_platform.return_value = "Linux"
+    monkeypatch.setattr(platformInfo, "IS_WINDOWS", False)
 
     cli.run()
 
@@ -125,10 +121,9 @@ def test_formatOptions(monkeypatch):
 
 
 @patch("mw4.cli.main")
-@patch("platform.system")
-def test_app_passesParsedOptions(mock_platform, mock_main, monkeypatch):
+def test_app_passesParsedOptions(mock_main, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["mw4.cli", "--dpi", "120", "-t", "1"])
-    mock_platform.return_value = "Linux"
+    monkeypatch.setattr(platformInfo, "IS_WINDOWS", False)
 
     cli.run()
 

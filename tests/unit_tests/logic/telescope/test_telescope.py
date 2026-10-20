@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 
-import platform
 import pytest
+from mw4.base import platformInfo
 from mw4.logic.telescope.telescope import Telescope
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
@@ -52,7 +52,7 @@ def test_stopCommunication_2(function):
         function.stopCommunication()
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_telescopeAscom_import():
     import importlib
 
@@ -60,12 +60,12 @@ def test_telescopeAscom_import():
     assert spec is not None
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_telescope_ascom_in_run():
     from mw4.logic.telescope.telescope import Telescope
     from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
     function = Telescope(app=App())
-    if platform.system() == "Windows":
+    if platformInfo.IS_WINDOWS:
         assert "ascom" in function.run
         assert function.run["ascom"] is not None

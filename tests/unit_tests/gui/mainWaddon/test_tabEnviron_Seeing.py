@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 
-import platform
 import pytest
 import shutil
 import webbrowser
@@ -11,6 +10,7 @@ from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QTableWidgetItem
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from tests.unit_tests.unitTestAddOns.platformStub import patchPlatform
 from unittest import mock
 
 HOURLY = {
@@ -207,12 +207,12 @@ def test_enableSeeingEntries_1(function):
 
 
 def test_prepareSeeingTable_1(function):
-    with mock.patch.object(platform, "system", return_value="Darwin"):
+    with patchPlatform("Darwin"):
         function.prepareSeeingTable()
 
 
 def test_prepareSeeingTable_2(function):
-    with mock.patch.object(platform, "system", return_value="Windows"):
+    with patchPlatform("Windows"):
         function.prepareSeeingTable()
 
 

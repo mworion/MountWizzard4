@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import logging
-import platform
 from astropy.io import fits
+from mw4.base import platformInfo
 from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
 from mw4.logic.camera.cameraAlpaca import CameraAlpaca
@@ -13,7 +13,7 @@ from mw4.logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
 from pathlib import Path
 from typing import Any
 
-if platform.system() == "Windows":
+if platformInfo.IS_WINDOWS:
     from mw4.logic.camera.cameraAscom import CameraAscom
 
 
@@ -52,9 +52,13 @@ class Camera:
             "indi": CameraIndi(self),
             "alpaca": CameraAlpaca(self),
         }
-        if platform.system() == "Windows":
-            self.run["sgpro"] = CameraSGPro(self)
-            self.run["ascom"] = CameraAscom(self)
+        platformInfo.registerWindowsBackends(
+            self.run,
+            {
+                "sgpro": lambda: CameraSGPro(self),
+                "ascom": lambda: CameraAscom(self),
+            },
+        )
 
     @property
     def binning(self) -> int:

@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import logging
-import platform
 from dataclasses import dataclass, field
+from mw4.base import platformInfo
 from pathlib import Path
 from typing import Any, ClassVar
 
@@ -68,10 +68,10 @@ class ASTAP:
         self.process: Any = None
 
     def setDefaultAppPath(self) -> str:
-        return self.apps[platform.system()]["appPath"]
+        return self.apps[platformInfo.SYSTEM]["appPath"]
 
     def setDefaultIndexPath(self) -> str:
-        return self.apps[platform.system()]["indexPath"]
+        return self.apps[platformInfo.SYSTEM]["indexPath"]
 
     def setDefaultBinPath(self) -> Path:
         return Path(self.config.appPath) / self.GUI
@@ -97,7 +97,7 @@ class ASTAP:
 
     def checkAvailabilityProgram(self, appPath: str) -> bool:
         self.config.appPath = appPath
-        extension = ".exe" if platform.system() == "Windows" else ""
+        extension = platformInfo.EXE_SUFFIX
         bin1 = Path(self.config.appPath) / (self.CLI + extension)
         bin2 = Path(self.config.appPath) / (self.GUI + extension)
         has_file = bin1.is_file() or bin2.is_file()

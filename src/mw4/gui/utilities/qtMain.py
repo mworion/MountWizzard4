@@ -3,7 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import datetime
 import logging
-import platform
+from mw4.base import platformInfo
 from mw4.base.appProtocol import AppProtocol
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtCustomWindow import CustomTitleBar
@@ -171,7 +171,7 @@ class MWidget(QMainWindow, Styles):
         height = config.get("height", self.minimumHeight())
         width = config.get("width", self.minimumWidth())
         if height == self.maximumHeight() and width == self.maximumWidth():
-            if platform.system() not in ["Linux", "Windows"]:
+            if platformInfo.IS_MAC:
                 self.setWindowState(Qt.WindowState.WindowMaximized)
             else:
                 self.setWindowState(Qt.WindowState.WindowNoState)

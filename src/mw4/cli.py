@@ -3,7 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import argparse
 import os
-import platform
+from mw4.base import platformInfo
 from mw4.loader import main
 
 
@@ -43,7 +43,7 @@ def formatOptions(options: argparse.Namespace) -> str:
 
 def run() -> None:
     options = readOptions()
-    if platform.system() == "Windows":
+    if platformInfo.IS_WINDOWS:
         os.environ["QT_SCALE_FACTOR"] = f"{options.scale:2.1f}"
         os.environ["QT_FONT_DPI"] = f"{options.dpi:2.0f}"
     main(options.test, formatOptions(options))

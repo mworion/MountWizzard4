@@ -5,6 +5,7 @@
 
 import sys
 from mw4.base import bootstrap
+from tests.unit_tests.unitTestAddOns.platformStub import patchPlatform
 from unittest import mock
 
 
@@ -29,7 +30,7 @@ def test_namesImportable():
 
 def test_minimizeStartTerminalNonWindows():
     """minimizeStartTerminal is a no-op on non-Windows platforms."""
-    with mock.patch("platform.system", return_value="Linux"):
+    with patchPlatform("Linux"):
         bootstrap.minimizeStartTerminal()  # must not raise
 
 
@@ -37,7 +38,7 @@ def test_minimizeStartTerminalOnWindows():
     """The Windows code path in minimizeStartTerminal calls ShowWindow."""
     mockCtypes = mock.MagicMock()
     with (
-        mock.patch("platform.system", return_value="Windows"),
+        patchPlatform("Windows"),
         mock.patch.dict(sys.modules, {"ctypes": mockCtypes}),
     ):
         bootstrap.minimizeStartTerminal()

@@ -147,7 +147,7 @@ exclude_also = [
 ]
 
 [tool.coverage.coverage_conditional_plugin.rules]
-'if platform\.system\(\) == "Windows":' = "platform_system != 'Windows'"
+'if platformInfo\.IS_WINDOWS:' = "platform_system != 'Windows'"
 
 [tool.coverage.coverage_conditional_plugin.omit]
 "platform_system != 'Windows'" = [
@@ -163,7 +163,7 @@ exclude = ["src/mw4/gui/widgets/*"]
 [tool.ruff.lint]
 extend-select = [
     "E", "T2", "UP", "I", "C", "LOG", "W", "SIM", "A", "RUF", "B", "BLE",
-    "G004", "S113", "PLR0915"
+    "G004", "S113", "PLR0915", "TID251"
 ]
 ignore = ["N999"]  # camelCase module names are the project convention
 
@@ -172,6 +172,11 @@ ignore = ["N999"]  # camelCase module names are the project convention
 "src/mw4/base/alpacaAscomCommon.py" = ["BLE001"]
 # worker boundary: nothing may escape into the pool thread (busy flag release)
 "src/mw4/base/tpool.py" = ["BLE001"]
+# the only module allowed to ask the operating system
+"src/mw4/base/platformInfo.py" = ["TID251"]
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"platform.system".msg = "Use the constants in mw4.base.platformInfo instead."
 
 [tool.ruff.lint.isort]
 no-sections = true

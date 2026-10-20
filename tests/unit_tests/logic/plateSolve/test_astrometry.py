@@ -4,13 +4,13 @@
 import glob
 import mw4.logic
 import os
-import platform
 import pytest
 from mw4.logic.plateSolve.astrometry import Astrometry
 from mw4.logic.plateSolve.plateSolve import PlateSolve
 from pathlib import Path
 from skyfield.units import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from tests.unit_tests.unitTestAddOns.platformStub import patchPlatform
 from unittest import mock
 
 
@@ -28,19 +28,19 @@ def function(tmp_path_factory):
 
 
 def test_setDefaultPath_1(function):
-    with mock.patch.object(platform, "system", return_value="Darwin"):
+    with patchPlatform("Darwin"):
         function.config.appPath = function.setDefaultAppPath()
         assert function.config.appPath == "/Applications/KStars.app/Contents/MacOS/astrometry/bin"
 
 
 def test_setDefaultPath_2(function):
-    with mock.patch.object(platform, "system", return_value="Linux"):
+    with patchPlatform("Linux"):
         function.config.appPath = function.setDefaultAppPath()
         assert function.config.appPath == "/usr/bin"
 
 
 def test_setDefaultPath_3(function):
-    with mock.patch.object(platform, "system", return_value="Windows"):
+    with patchPlatform("Windows"):
         function.config.appPath = function.setDefaultAppPath()
         assert function.config.appPath == ""
 
@@ -76,7 +76,7 @@ def test_solve_2(function):
 def test_checkAvailabilityProgram_1(function):
     with (
         mock.patch.object(Path, "is_file", return_value=True),
-        mock.patch.object(platform, "system", return_value="Linux"),
+        patchPlatform("Linux"),
     ):
         suc = function.checkAvailabilityProgram(Path("test"))
         assert suc
@@ -85,7 +85,7 @@ def test_checkAvailabilityProgram_1(function):
 def test_checkAvailabilityProgram_2(function):
     with (
         mock.patch.object(Path, "is_file", return_value=True),
-        mock.patch.object(platform, "system", return_value="Darwin"),
+        patchPlatform("Darwin"),
     ):
         suc = function.checkAvailabilityProgram(Path("test"))
         assert suc
@@ -94,7 +94,7 @@ def test_checkAvailabilityProgram_2(function):
 def test_checkAvailabilityProgram_3(function):
     with (
         mock.patch.object(Path, "is_file", return_value=True),
-        mock.patch.object(platform, "system", return_value="Windows"),
+        patchPlatform("Windows"),
     ):
         suc = function.checkAvailabilityProgram(Path("test"))
         assert not suc
@@ -103,7 +103,7 @@ def test_checkAvailabilityProgram_3(function):
 def test_checkAvailabilityProgram_4(function):
     with (
         mock.patch.object(Path, "is_file", return_value=True),
-        mock.patch.object(platform, "system", return_value="test"),
+        patchPlatform("test"),
     ):
         suc = function.checkAvailabilityProgram(Path("test"))
         assert not suc

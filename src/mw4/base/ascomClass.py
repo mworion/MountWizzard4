@@ -2,15 +2,15 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import json
-import platform
 import subprocess
 import sys
 from dataclasses import dataclass, field
+from mw4.base import platformInfo
 from mw4.base.alpacaAscomCommon import AlpacaAscomCommon
 from mw4.base.tpool import Worker, startWorker
 from typing import Any
 
-if platform.system() == "Windows":
+if platformInfo.IS_WINDOWS:
     from pythoncom import CoInitialize, CoUninitialize
     from win32com import client
 

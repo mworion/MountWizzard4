@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 
-import platform
 import pytest
+from mw4.base import platformInfo
 from mw4.logic.focuser.focuser import Focuser
 from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
@@ -64,7 +64,7 @@ def test_halt_2(function):
         function.halt()
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_focuserAscom_import():
     import importlib
 
@@ -72,12 +72,12 @@ def test_focuserAscom_import():
     assert spec is not None
 
 
-@pytest.mark.skipif(platform.system() != "Windows", reason="Windows needed")
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
 def test_focuser_ascom_in_run():
     from mw4.logic.focuser.focuser import Focuser
     from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
     function = Focuser(app=App())
-    if platform.system() == "Windows":
+    if platformInfo.IS_WINDOWS:
         assert "ascom" in function.run
         assert function.run["ascom"] is not None

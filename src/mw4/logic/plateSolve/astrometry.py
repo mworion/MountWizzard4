@@ -3,8 +3,8 @@
 # Copyright (c) 2019-2026 mworion
 import logging
 import os
-import platform
 from dataclasses import dataclass, field
+from mw4.base import platformInfo
 from mw4.logic.fits.fitsFunction import getHintFromImageFile
 from mw4.mountcontrol.convertGui import convertToDMS, convertToHMS
 from pathlib import Path
@@ -53,10 +53,10 @@ class Astrometry:
         self.saveConfigFile()
 
     def setDefaultAppPath(self) -> str:
-        return self.apps[platform.system()]["appPath"]
+        return self.apps[platformInfo.SYSTEM]["appPath"]
 
     def setDefaultIndexPath(self) -> str:
-        return self.apps[platform.system()]["indexPath"]
+        return self.apps[platformInfo.SYSTEM]["indexPath"]
 
     def saveConfigFile(self) -> None:
         cfgFile = self.tempDir / "astrometry.cfg"
@@ -125,7 +125,7 @@ class Astrometry:
 
     def checkAvailabilityProgram(self, appPath: str) -> bool:
         self.config.appPath = appPath
-        if platform.system() == "Darwin" or platform.system() == "Linux":
+        if platformInfo.IS_MAC or platformInfo.IS_LINUX:
             program = Path(self.config.appPath) / "solve-field"
         else:
             return False

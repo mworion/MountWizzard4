@@ -2,12 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import contextlib
-import platform
 import pytest
 import queue
 import subprocess
 import threading
 import time
+from mw4.base import platformInfo
 from mw4.base.alpacaAscomCommon import CommandItem
 from mw4.base.ascomClass import AscomClass
 from mw4.base.signalsDevices import Signals
@@ -15,7 +15,7 @@ from pathlib import Path
 from PySide6.QtCore import QThreadPool
 from unittest import mock
 
-if platform.system() != "Windows":
+if not platformInfo.IS_WINDOWS:
     pytest.skip("skipping windows-only tests", allow_module_level=True)
 
 

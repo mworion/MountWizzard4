@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import logging
-import platform
 from dataclasses import dataclass, field
+from mw4.base import platformInfo
 from pathlib import Path
 from typing import Any, ClassVar
 
@@ -79,9 +79,9 @@ class Watney:
 
     def checkAvailabilityProgram(self, appPath: str) -> bool:
         self.config.appPath = appPath
-        if platform.system() == "Darwin" or platform.system() == "Linux":
+        if platformInfo.IS_MAC or platformInfo.IS_LINUX:
             program = Path(self.config.appPath) / "watney-solve"
-        elif platform.system() == "Windows":
+        elif platformInfo.IS_WINDOWS:
             program = Path(self.config.appPath) / "watney-solve.exe"
         else:
             return False

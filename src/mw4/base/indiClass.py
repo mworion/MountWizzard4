@@ -32,7 +32,7 @@ class IndiClass:
     def __init__(self, parent: Any) -> None:
         self.parent: Any = parent
         self.app: AppProtocol = parent.app
-        self.msg: Any = parent.app.msg
+        self.msg: Any = parent.app.signals.ui.msg
         self.data: dict = parent.data
         self.signals: Any = parent.signals
         self.config = DeviceConfigIndi()

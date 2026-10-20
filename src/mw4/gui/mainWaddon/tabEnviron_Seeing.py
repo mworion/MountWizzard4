@@ -50,16 +50,16 @@ class EnvironSeeing(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
-        self.msg = mainW.app.msg
+        self.msg = mainW.app.signals.ui.msg
         self.ui = mainW.ui
         self.seeingEnabled: bool = False
 
         signals = self.app.dReg["seeingWeather"].signals
         signals.deviceDisconnected.connect(self.clearSeeingEntries)
-        self.app.timebaseChanged.connect(self.updateSeeingEntries)
+        self.app.signals.system.timebaseChanged.connect(self.updateSeeingEntries)
         self.app.dReg["seeingWeather"].signals.update.connect(self.prepareSeeingTable)
         clickable(self.ui.seeingIcon).connect(self.openWeb)
-        self.app.colorChange.connect(self.updateSeeingEntries)
+        self.app.signals.ui.colorChange.connect(self.updateSeeingEntries)
 
     def setupIcons(self) -> None:
         pixmap = svg2pixmap("assets/icon/meteoblue.svg", [18, 70, 125, 0])

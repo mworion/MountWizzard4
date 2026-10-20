@@ -31,7 +31,7 @@ class AstroObjects:
         self.window = window
         self.app = window.app
         self.threadPool = window.app.threadPool
-        self.msg = window.app.msg
+        self.msg = window.app.signals.ui.msg
         self.signals = AstroObjectSignals()
         self.dest: Path = Path()
         self.dataValid: bool = False

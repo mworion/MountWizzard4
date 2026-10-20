@@ -186,7 +186,7 @@ class DeviceRegistry(QObject):
             return
         deviceName = _args[0] if _args else ""
         self.setStat(name, True)
-        self.app.msg.emit(0, "Driver", "Device connected", f"{deviceName}::{name}")
+        self.app.signals.ui.msg.emit(0, "Driver", "Device connected", f"{deviceName}::{name}")
 
     def deviceDisconnected(self, *_args: Any) -> None:
         name = self.signalsToName.get(id(self.sender()))
@@ -194,4 +194,4 @@ class DeviceRegistry(QObject):
             return
         deviceName = _args[0] if _args else ""
         self.setStat(name, False)
-        self.app.msg.emit(0, "Driver", "Device disconnected", f"{deviceName}::{name}")
+        self.app.signals.ui.msg.emit(0, "Driver", "Device disconnected", f"{deviceName}::{name}")

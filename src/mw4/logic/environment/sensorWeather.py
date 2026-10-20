@@ -3,7 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import logging
 import platform
-from mw4.base.appProtocol import AppProtocol
+from mw4.base.appProtocol import HasThreadPool
 from mw4.base.signalsDevices import Signals
 from mw4.logic.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
 from mw4.logic.environment.sensorWeatherBoltwood import SensorWeatherBoltwood
@@ -19,7 +19,7 @@ class SensorWeather:
     log = logging.getLogger("MW4")
     DEVICE_TYPE: str = "observingconditions"
 
-    def __init__(self, app: AppProtocol) -> None:
+    def __init__(self, app: HasThreadPool) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()

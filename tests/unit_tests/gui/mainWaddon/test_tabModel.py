@@ -123,7 +123,7 @@ def test_pointSignals_1(function):
 
 def test_pointSignals_2(function, qtbot):
     tab = Model(function.mainW)
-    with qtbot.waitSignal(tab.app.updatePointMarker, timeout=1000):
+    with qtbot.waitSignal(tab.app.signals.hemisphere.updatePointMarker, timeout=1000):
         tab.modelData.pointMarkersChanged.emit()
 
 
@@ -377,7 +377,7 @@ def test_getModelTiming_3(function):
 def test_runBatch_1(function):
     with (
         mock.patch.object(function, "checkModelRunConditions", return_value=False),
-        mock.patch.object(function.app, "operationRunning") as mockOp,
+        mock.patch.object(function.app.signals.ui, "operationRunning") as mockOp,
     ):
         function.runBatch()
     mockOp.emit.assert_not_called()
@@ -387,7 +387,7 @@ def test_runBatch_2(function):
     with (
         mock.patch.object(function, "checkModelRunConditions", return_value=True),
         mock.patch.object(function, "checkMountTimeSync", return_value=False),
-        mock.patch.object(function.app, "operationRunning") as mockOp,
+        mock.patch.object(function.app.signals.ui, "operationRunning") as mockOp,
     ):
         function.runBatch()
     mockOp.emit.assert_not_called()
@@ -399,7 +399,7 @@ def test_runBatch_3(function):
         mock.patch.object(function, "checkModelRunConditions", return_value=True),
         mock.patch.object(function, "checkMountTimeSync", return_value=True),
         mock.patch.object(function, "clearAlignAndBackup", return_value=False),
-        mock.patch.object(function.app, "operationRunning") as mockOp,
+        mock.patch.object(function.app.signals.ui, "operationRunning") as mockOp,
     ):
         function.runBatch()
     assert mockOp.emit.call_args_list[-1][0][0] == OperationStatus.IDLE
@@ -460,8 +460,8 @@ def test_finishBatch_1(function):
         mock.patch.object(function, "programModelToMount") as mockProgram,
         mock.patch.object(function.app.dReg["mount"].obsSite, "park") as mockPark,
         mock.patch.object(function, "msg") as mockMsg,
-        mock.patch.object(function.app, "playSound") as mockSound,
-        mock.patch.object(function.app, "operationRunning") as mockOp,
+        mock.patch.object(function.app.signals.ui, "playSound") as mockSound,
+        mock.patch.object(function.app.signals.ui, "operationRunning") as mockOp,
     ):
         function.finishBatch(True)
     mockProgram.assert_not_called()
@@ -477,8 +477,8 @@ def test_finishBatch_2(function):
         mock.patch.object(function, "programModelToMount") as mockProgram,
         mock.patch.object(function.app.dReg["mount"].obsSite, "park") as mockPark,
         mock.patch.object(function, "msg") as mockMsg,
-        mock.patch.object(function.app, "playSound") as mockSound,
-        mock.patch.object(function.app, "operationRunning") as mockOp,
+        mock.patch.object(function.app.signals.ui, "playSound") as mockSound,
+        mock.patch.object(function.app.signals.ui, "operationRunning") as mockOp,
     ):
         function.finishBatch(False)
     mockProgram.assert_called_once()
@@ -494,8 +494,8 @@ def test_finishBatch_3(function):
     with (
         mock.patch.object(function, "programModelToMount") as mockProgram,
         mock.patch.object(function.app.dReg["mount"].obsSite, "park") as mockPark,
-        mock.patch.object(function.app, "playSound") as mockSound,
-        mock.patch.object(function.app, "operationRunning") as mockOp,
+        mock.patch.object(function.app.signals.ui, "playSound") as mockSound,
+        mock.patch.object(function.app.signals.ui, "operationRunning") as mockOp,
     ):
         function.finishBatch(False)
     mockProgram.assert_called_once()
@@ -509,8 +509,8 @@ def test_finishBatch_connectedToModelData(function):
     function.modelData.finished.connect(function.finishBatch)
     with (
         mock.patch.object(function, "programModelToMount") as mockProgram,
-        mock.patch.object(function.app, "playSound") as mockSound,
-        mock.patch.object(function.app, "operationRunning") as mockOp,
+        mock.patch.object(function.app.signals.ui, "playSound") as mockSound,
+        mock.patch.object(function.app.signals.ui, "operationRunning") as mockOp,
     ):
         function.modelData.finished.emit(False)
     mockProgram.assert_called_once()
@@ -564,7 +564,7 @@ def test_runFileModel_4(function):
         mock.patch.object(
             function, "setupFilenamesAndDirectories", return_value=Path("m-test1-add")
         ),
-        mock.patch.object(function.app, "operationRunning") as mockOp,
+        mock.patch.object(function.app.signals.ui, "operationRunning") as mockOp,
     ):
         function.runFileModel()
     assert mockOp.emit.call_args_list[-1][0][0] == OperationStatus.IDLE

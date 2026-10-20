@@ -64,7 +64,7 @@ def test_showImagesPhotometry(qtbot, qapp):
     imageW.ui.photometryGroup.setChecked(True)
     imageW.ui.timeTagImage.setChecked(False)
 
-    app.showImage.emit(Path("tests/work/image/star1.fits"))
+    app.signals.ui.showImage.emit(Path("tests/work/image/star1.fits"))
     qtbot.wait(3000)
 
     TAB = [1, 4]

@@ -22,7 +22,7 @@ class SlewInterface:
             geoStat = "Geometry corrected" if delta else "Equal mount"
             text = f"{geoStat}"
             text += f", az: {azimuthT.degrees:3.1f} delta: {delta:3.1f}"
-            self.app.msg.emit(0, "Tools", "Slewing dome", text)
+            self.app.signals.ui.msg.emit(0, "Tools", "Slewing dome", text)
 
         suc = self.app.dReg["mount"].obsSite.startSlewing(slewType=slewType)
         if suc:

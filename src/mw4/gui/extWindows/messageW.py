@@ -82,7 +82,7 @@ class MessageWindow(MWidget):
         self.ui.clear.clicked.connect(self.clearMessageTable)
         self.clearMessageTable()
         self.app.timeMgr.update1s.connect(self.writeMessage)
-        self.app.colorChange.connect(self.colorChange)
+        self.app.signals.ui.colorChange.connect(self.colorChange)
         self.show()
 
     def writeMessage(self) -> None:

@@ -13,7 +13,7 @@ class Mount(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
-        self.msg = mainW.app.msg
+        self.msg = mainW.app.signals.ui.msg
         self.ui = mainW.ui
 
         self.app.dReg["hidController"].signals.hidABXY.connect(self.changeParkHid)
@@ -22,7 +22,7 @@ class Mount(TabAddon):
         self.app.dReg["hidController"].signals.hidABXY.connect(self.flipMountHid)
         self.app.dReg["hidController"].signals.deviceConnected.connect(self.setHidIcons)
         self.app.dReg["hidController"].signals.deviceDisconnected.connect(self.setHidIcons)
-        self.app.hidModeChanged.connect(self.setHidIcons)
+        self.app.signals.system.hidModeChanged.connect(self.setHidIcons)
         self.ui.flipMount.clicked.connect(self.flipMount)
         self.ui.tracking.clicked.connect(self.changeTracking)
         self.ui.setLunarTracking.clicked.connect(self.setLunarTracking)

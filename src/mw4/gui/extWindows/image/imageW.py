@@ -45,7 +45,7 @@ class ImageWindow(MWidget):
     def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__()
         self.app = app
-        self.msg = app.msg
+        self.msg = app.signals.ui.msg
         self.threadPool = app.threadPool
         self.ui = image_ui.Ui_ImageDialog()
         self.ui.setupUi(self.ws)
@@ -126,9 +126,9 @@ class ImageWindow(MWidget):
         self.ui.syncModelToImage.clicked.connect(self.syncModelToImage)
         self.ui.image.barItem.sigLevelsChangeFinished.connect(self.copyLevels)
         self.app.timeMgr.update1s.connect(self.updateWindowsStats)
-        self.app.colorChange.connect(self.colorChange)
-        self.app.showImage.connect(self.showImage)
-        self.app.operationRunning.connect(self.operationMode)
+        self.app.signals.ui.colorChange.connect(self.colorChange)
+        self.app.signals.ui.showImage.connect(self.showImage)
+        self.app.signals.ui.operationRunning.connect(self.operationMode)
         self.fileHandler.signals.imageLoaded.connect(self.processPhotometry)
         self.photometry.signals.photometryFinished.connect(self.resultPhotometry)
         self.signals.solveImage.connect(self.solveImage)
@@ -209,7 +209,7 @@ class ImageWindow(MWidget):
         self.folder = self.imageFileName.parents[0]
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(self.imageFileName)
-        self.app.showImage.emit(self.imageFileName)
+        self.app.signals.ui.showImage.emit(self.imageFileName)
 
     def copyLevels(self) -> None:
         level = self.ui.image.barItem.levels()
@@ -269,7 +269,7 @@ class ImageWindow(MWidget):
     def resetImage(self) -> None:
         self.app.dReg["camera"].signals.saved.disconnect(self.exposeImageDone)
         self.isExposing = False
-        self.app.operationRunning.emit(OperationStatus.IDLE)
+        self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)
 
     def exposeImageDone(self, imagePath: Path) -> None:
         self.msg.emit(0, "Image", "Exposing finished", imagePath.stem)
@@ -287,7 +287,7 @@ class ImageWindow(MWidget):
             self.app.dReg["camera"].instance.binning1,
         ):
             return
-        self.app.operationRunning.emit(OperationStatus.EXPOSE_1)
+        self.app.signals.ui.operationRunning.emit(OperationStatus.EXPOSE_1)
         self.isExposing = True
         self.app.dReg["camera"].signals.saved.connect(self.exposeImageDone)
 
@@ -304,7 +304,7 @@ class ImageWindow(MWidget):
 
         if not result["success"]:
             self.msg.emit(2, "Image", "Solving error", result.get("message"))
-            self.app.operationRunning.emit(OperationStatus.IDLE)
+            self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)
             return
 
         text = f"RA: {convertToHMS(result['raJ2000S'])} "
@@ -322,13 +322,13 @@ class ImageWindow(MWidget):
 
         if self.ui.embedData.isChecked():
             self.showCurrent()
-        self.app.operationRunning.emit(OperationStatus.IDLE)
+        self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)
 
     def solveImage(self, imagePath: Path) -> None:
         if not imagePath.is_file():
             return
 
-        self.app.operationRunning.emit(OperationStatus.SOLVE)
+        self.app.signals.ui.operationRunning.emit(OperationStatus.SOLVE)
         self.app.dReg["plateSolve"].signals.result.connect(self.solveDone)
         self.app.dReg["plateSolve"].instance.solve(imagePath, self.ui.embedData.isChecked())
         self.isSolving = True
@@ -339,7 +339,7 @@ class ImageWindow(MWidget):
 
     def abortSolve(self) -> None:
         self.app.dReg["plateSolve"].instance.abort()
-        self.app.operationRunning.emit(OperationStatus.IDLE)
+        self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)
 
     def slewDirect(self, ra: Angle, dec: Angle) -> None:
         if not self.app.dReg["mount"].stat:
@@ -368,7 +368,7 @@ class ImageWindow(MWidget):
             return
 
         ra, dec = getCoordinatesFromHeader(getImageHeader(self.imageFileName))
-        self.app.operationRunning.emit(OperationStatus.MODEL_SYNC)
+        self.app.signals.ui.operationRunning.emit(OperationStatus.MODEL_SYNC)
         obs = self.app.dReg["mount"].obsSite
         raJNow, decJNow = J2000ToJNow(ra, dec, obs.timeJD)
         obs.setTargetRaDec(raJNow, decJNow)
@@ -379,4 +379,4 @@ class ImageWindow(MWidget):
         else:
             t = "No sync, match failed because coordinates to far off for model"
             self.msg.emit(2, "Model", "Run error", t)
-        self.app.operationRunning.emit(OperationStatus.IDLE)
+        self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)

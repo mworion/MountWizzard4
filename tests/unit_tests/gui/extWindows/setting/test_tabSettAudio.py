@@ -174,7 +174,7 @@ def test_updateConfig_with_any_index(settAudio):
 
 def test_testSound_emits_playSound_signal(settAudio):
     """Test testSound emits playSound signal with sound name."""
-    with mock.patch.object(settAudio.app, "playSound") as mock_signal:
+    with mock.patch.object(settAudio.app.signals.ui, "playSound") as mock_signal:
         mock_signal.emit = mock.MagicMock()
         settAudio.testSound("MountSlew")
         assert mock_signal.emit.called
@@ -190,7 +190,7 @@ def test_testSound_with_different_sounds(settAudio):
         "ImageSaved",
     ]
     for sound in sounds_to_test:
-        with mock.patch.object(settAudio.app, "playSound") as mock_signal:
+        with mock.patch.object(settAudio.app.signals.ui, "playSound") as mock_signal:
             mock_signal.emit = mock.MagicMock()
             settAudio.testSound(sound)
             assert mock_signal.emit.called

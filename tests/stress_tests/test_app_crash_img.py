@@ -63,7 +63,7 @@ def test_showImages(qtbot, qapp):
     qtbot.waitExposed(imageW, timeout=1000)
 
     for i in range(50):
-        app.showImage.emit(f"tests/work/image/star{i % 3 + 1}.fits")
+        app.signals.ui.showImage.emit(f"tests/work/image/star{i % 3 + 1}.fits")
         QTest.qWait(500)
 
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):
@@ -84,7 +84,7 @@ def test_showImagesPhotometry(qtbot, qapp):
     imageW.ui.photometryGroup.setChecked(True)
 
     for i in range(50):
-        app.showImage.emit(f"tests/work/image/star{i % 3 + 1}.fits")
+        app.signals.ui.showImage.emit(f"tests/work/image/star{i % 3 + 1}.fits")
         QTest.qWait(1000)
 
     with qtbot.waitSignal(app.timeMgr.update10s, timeout=15000, raising=True):

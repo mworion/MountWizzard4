@@ -20,7 +20,7 @@ class DownloadPopup(MWidget):
 
     def __init__(self, parentWidget: MWidget, url: str, dest: Path, unzip: bool = False) -> None:
         super().__init__()
-        self.msg = parentWidget.app.msg
+        self.msg = parentWidget.app.signals.ui.msg
         self.threadPool = parentWidget.app.threadPool
         self.workerDownloadFile: Worker | None = None
         self.loop: QEventLoop | None = None

@@ -10,7 +10,7 @@ class SettAudio:
     def __init__(self, parentW: Any) -> None:
         self.parentW = parentW
         self.app = parentW.app
-        self.msg = parentW.app.msg
+        self.msg = parentW.app.signals.ui.msg
         self.ui = parentW.ui
         self.guiAudioList: dict = {}
         self.audioConfig = {
@@ -46,7 +46,7 @@ class SettAudio:
         self.storeConfig()
 
     def testSound(self, soundOption: str) -> None:
-        self.app.playSound.emit(soundOption)
+        self.app.signals.ui.playSound.emit(soundOption)
 
     def setupAudio(self) -> None:
         for sound, uiKey in self.audioConfig.items():

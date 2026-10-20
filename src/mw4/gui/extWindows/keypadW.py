@@ -29,7 +29,7 @@ class KeypadWindow(MWidget):
     def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__()
         self.app = app
-        self.msg = app.msg
+        self.msg = app.signals.ui.msg
         self.threadPool = app.threadPool
         self.ui = keypad_ui.Ui_KeypadDialog()
         self.ui.setupUi(self.ws)
@@ -106,7 +106,7 @@ class KeypadWindow(MWidget):
         super().keyPressEvent(keyEvent)
 
     def showWindow(self) -> None:
-        self.app.colorChange.connect(self.colorChange)
+        self.app.signals.ui.colorChange.connect(self.colorChange)
         self.signals.textRow.connect(self.writeTextRow)
         self.signals.cursorPos.connect(self.setCursorPos)
         self.signals.imgChunk.connect(self.buildGraphics)

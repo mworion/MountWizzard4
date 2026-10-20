@@ -107,16 +107,16 @@ def test_satisfiesAppProtocol(app):
 
 
 def test_msgSignalIsTyped(app, qtbot):
-    with qtbot.waitSignal(app.msg) as blocker:
-        app.msg.emit(1, "System", "Test", "text")
+    with qtbot.waitSignal(app.signals.ui.msg) as blocker:
+        app.signals.ui.msg.emit(1, "System", "Test", "text")
     assert blocker.args == [1, "System", "Test", "text"]
     assert [type(arg) for arg in blocker.args] == [int, str, str, str]
 
 
 def test_pathSignalPassesThrough(app, qtbot):
     path = Path("image.fits")
-    with qtbot.waitSignal(app.showImage) as blocker:
-        app.showImage.emit(path)
+    with qtbot.waitSignal(app.signals.ui.showImage) as blocker:
+        app.signals.ui.showImage.emit(path)
     assert blocker.args[0] is path
 
 
@@ -227,7 +227,7 @@ def test_writeMessageQueue(app):
 def test_msg_signal_connects_to_writeMessageQueue(app):
     """msg signal is connected to writeMessageQueue method."""
     initial_size = app.messageQueue.qsize()
-    app.msg.emit(1, "source", "type", "message")
+    app.signals.ui.msg.emit(1, "source", "type", "message")
     assert app.messageQueue.qsize() == initial_size + 1
     while app.messageQueue.qsize() > 1:
         app.messageQueue.get()

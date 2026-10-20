@@ -38,9 +38,9 @@ class SimulatorDome:
         node = self.parent.entityModel.get("domeRoot")
         if node:
             node["entity"].setEnabled(show)
-            self.app.updateDomeSettings.connect(self.updateSize)
+            self.app.signals.model.updateDomeSettings.connect(self.updateSize)
         else:
-            self.app.updateDomeSettings.disconnect(self.updateSize)
+            self.app.signals.model.updateDomeSettings.disconnect(self.updateSize)
 
     def updateSize(self) -> None:
         """

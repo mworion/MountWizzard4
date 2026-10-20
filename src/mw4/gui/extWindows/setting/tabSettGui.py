@@ -14,7 +14,7 @@ class SettGui:
     def __init__(self, parentW: Any) -> None:
         self.parentW = parentW
         self.app = parentW.app
-        self.msg = parentW.app.msg
+        self.msg = parentW.app.signals.ui.msg
         self.ui = parentW.ui
 
     def initConfig(self) -> None:
@@ -58,7 +58,7 @@ class SettGui:
         cfg.moveRaDec = self.ui.hidRaDec.isChecked()
         cfg.parkStop = self.ui.hidParkStop.isChecked()
         cfg.tracking = self.ui.hidTracking.isChecked()
-        self.app.hidModeChanged.emit()
+        self.app.signals.system.hidModeChanged.emit()
 
     def setupIcons(self) -> None:
         pixmap = svg2pixmap("assets/icon/controllerNew.svg", self.parentW.M_PRIM)
@@ -69,7 +69,7 @@ class SettGui:
         Styles.transparency = self.ui.transparency.value()
         self.parentW.setStyleSheet(self.parentW.mw4Style)
         self.setupIcons()
-        self.app.colorChange.emit()
+        self.app.signals.ui.colorChange.emit()
 
     def writeLinuxDesktopData(self) -> None:
         localPathApplications = Path.home() / ".local/share/applications/MountWizzard4.desktop"

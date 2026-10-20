@@ -36,9 +36,9 @@ class SatelliteHorizonWindow(MWidget):
             self.pens.append(pg.mkPen(color=color, width=2, style=Qt.PenStyle.DotLine))
         self.penLocation = pg.mkPen(color=self.M_RED)
         self.brushLocation = pg.mkBrush(color=self.M_YELLOW)
-        self.app.showSatellite.connect(self.drawSatellite)
-        self.app.updateSatellite.connect(self.updatePositions)
-        self.app.redrawHorizon.connect(self.drawHorizon)
+        self.app.signals.model.showSatellite.connect(self.drawSatellite)
+        self.app.signals.model.updateSatellite.connect(self.updatePositions)
+        self.app.signals.hemisphere.redrawHorizon.connect(self.drawHorizon)
         self.app.dReg["mount"].signals.mountIsUp.connect(self.setPointerVisibility)
 
     def initConfig(self) -> None:
@@ -52,24 +52,24 @@ class SatelliteHorizonWindow(MWidget):
 
     def closeEvent(self, event: QCloseEvent) -> None:
         self.storeConfig()
-        self.app.showSatellite.disconnect(self.drawSatellite)
-        self.app.updateSatellite.disconnect(self.updatePositions)
-        self.app.redrawHorizon.disconnect(self.drawHorizon)
+        self.app.signals.model.showSatellite.disconnect(self.drawSatellite)
+        self.app.signals.model.updateSatellite.disconnect(self.updatePositions)
+        self.app.signals.hemisphere.redrawHorizon.disconnect(self.drawHorizon)
         self.app.dReg["mount"].signals.mountIsUp.disconnect(self.setPointerVisibility)
         self.app.dReg["mount"].signals.pointDone.disconnect(self.updatePointerAltAz)
-        self.app.colorChange.disconnect(self.colorChange)
+        self.app.signals.ui.colorChange.disconnect(self.colorChange)
         super().closeEvent(event)
 
     def showWindow(self) -> None:
         self.app.dReg["mount"].signals.pointDone.connect(self.updatePointerAltAz)
-        self.app.colorChange.connect(self.colorChange)
-        self.app.sendSatelliteData.emit([], [])
+        self.app.signals.ui.colorChange.connect(self.colorChange)
+        self.app.signals.model.sendSatelliteData.emit([], [])
         self.show()
 
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
         self.ui.satHorizon.colorChange()
-        self.app.sendSatelliteData.emit([], [])
+        self.app.signals.model.sendSatelliteData.emit([], [])
 
     def setPointerVisibility(self, status) -> None:
         if not status:

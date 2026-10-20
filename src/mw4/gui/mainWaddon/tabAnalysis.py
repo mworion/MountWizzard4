@@ -13,18 +13,18 @@ class Analysis:
     def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
-        self.msg = mainW.app.msg
+        self.msg = mainW.app.signals.ui.msg
         self.ui = mainW.ui
 
         self.ui.analysisProgress.setValue(0)
-        self.app.operationRunning.emit(OperationStatus.IDLE)
+        self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)
         self.imageDirAnalysis = ""
         self.analysisName = ""
         self.analysisRunning = False
 
         self.ui.runFlexure.clicked.connect(self.runFlexure)
         self.ui.cancelAnalysis.clicked.connect(self.cancelAnalysis)
-        self.app.operationRunning.connect(self.setAnalysisOperationMode)
+        self.app.signals.ui.operationRunning.connect(self.setAnalysisOperationMode)
 
     def initConfig(self) -> None:
         config = self.app.config["WindowMain"]
@@ -83,8 +83,8 @@ class Analysis:
         self.ui.analysisPoints.setText("-")
         self.ui.analysisProgress.setValue(0)
 
-        self.app.playSound.emit("RunFinished")
-        self.app.operationRunning.emit(OperationStatus.IDLE)
+        self.app.signals.ui.playSound.emit("RunFinished")
+        self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)
 
     def cancelAnalysis(self) -> None:
         self.restoreAnalysisDefaultContextAndGuiStatus()

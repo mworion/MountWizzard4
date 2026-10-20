@@ -6,7 +6,7 @@ import re
 import requests
 import threading
 from dataclasses import dataclass, field
-from mw4.base.appProtocol import AppProtocol
+from mw4.base.appProtocol import HasThreadPool
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker, startWorker
 from PySide6.QtCore import QTimer, Signal
@@ -34,7 +34,7 @@ class KMRelay:
     TIMEOUT = 0.5
     PULSEWIDTH = 0.5
 
-    def __init__(self, app: AppProtocol) -> None:
+    def __init__(self, app: HasThreadPool) -> None:
         super().__init__()
         self.app = app
         self.signals = RelaySignals()

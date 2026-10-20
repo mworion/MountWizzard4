@@ -41,7 +41,7 @@ def test_storeConfig_2(function):
 
 
 def test_closeEvent_1(function):
-    function.app.colorChange.connect(function.colorChange)
+    function.app.signals.ui.colorChange.connect(function.colorChange)
     with mock.patch.object(function, "show"), mock.patch.object(MWidget, "closeEvent"):
         function.closeEvent(QCloseEvent)
 

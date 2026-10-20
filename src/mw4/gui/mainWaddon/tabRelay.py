@@ -13,7 +13,7 @@ class Relay(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
-        self.msg = mainW.app.msg
+        self.msg = mainW.app.signals.ui.msg
         self.ui = mainW.ui
         self.relayButtons = [
             self.ui.relayButton0,
@@ -26,7 +26,7 @@ class Relay(TabAddon):
             self.ui.relayButton7,
         ]
         self.app.dReg["relay"].signals.statusReady.connect(self.updateRelayGui)
-        self.app.relayChanged.connect(self.updateRelayButtonText)
+        self.app.signals.system.relayChanged.connect(self.updateRelayButtonText)
 
     def updateRelayButtonText(self) -> None:
         config = self.app.config.get("SettingRelay", {})

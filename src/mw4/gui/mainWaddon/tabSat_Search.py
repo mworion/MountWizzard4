@@ -42,7 +42,7 @@ class SatSearch(SatData):
         self.mainW = mainW
         self.app = mainW.app
         self.threadPool = mainW.app.threadPool
-        self.msg = mainW.app.msg
+        self.msg = mainW.app.signals.ui.msg
         self.ui = mainW.ui
         self.signals = SatSearchSignals()
         self.calcGeneration: int = 0

@@ -14,7 +14,7 @@ class SettDevice(QObject):
         super().__init__()
         self.parentW = parentW
         self.app = parentW.app
-        self.msg = parentW.app.msg
+        self.msg = parentW.app.signals.ui.msg
         self.ui = parentW.ui
         self.signalsToName: dict[int, str] = {}
 

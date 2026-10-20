@@ -10,7 +10,7 @@ class SettPark:
     def __init__(self, parentW: Any) -> None:
         self.parentW = parentW
         self.app = parentW.app
-        self.msg = parentW.app.msg
+        self.msg = parentW.app.signals.ui.msg
         self.ui = parentW.ui
         self.parkTexts: list = []
         self.parkAlt: list = []
@@ -32,7 +32,7 @@ class SettPark:
         for i in range(10):
             self.parkTexts[i].textChanged.connect(self.storeConfig)
             self.parkSaveButtons[i].clicked.connect(partial(self.saveActualPosition, i))
-        self.app.parkChanged.emit()
+        self.app.signals.system.parkChanged.emit()
 
     def storeConfig(self) -> None:
         config: dict[str, Any] = {}
@@ -41,7 +41,7 @@ class SettPark:
             config[f"ParkAlt{i:1d}"] = self.parkAlt[i].value()
             config[f"ParkAz{i:1d}"] = self.parkAz[i].value()
         self.app.config["SettingPark"] = config
-        self.app.parkChanged.emit()
+        self.app.signals.system.parkChanged.emit()
 
     def setupIcons(self) -> None:
         for i in range(10):

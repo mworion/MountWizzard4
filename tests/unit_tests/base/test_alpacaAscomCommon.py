@@ -25,7 +25,7 @@ class Parent:
         self.deviceType = "test"
         self.signals = Signals()
         self.app = mock.MagicMock()
-        self.app.msg = mock.MagicMock()
+        self.app.signals.ui.msg = mock.MagicMock()
         self.app.threadPool = QThreadPool()
         self.app.mwGlob = {"tempDir": Path("/tmp")}
 

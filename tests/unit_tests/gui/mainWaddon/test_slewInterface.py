@@ -12,7 +12,7 @@ from unittest import mock
 def function(qapp):
     class Parent:
         app = App()
-        msg = app.msg
+        msg = app.signals.ui.msg
 
     func = SlewInterface(Parent())
     yield func

@@ -22,7 +22,7 @@ class DevicePopup(MWidget):
     def __init__(self, parentWidget, device: str) -> None:
         super().__init__()
         self.app = parentWidget.app
-        self.msg = parentWidget.app.msg
+        self.msg = parentWidget.app.signals.ui.msg
         self.device: str = device
         self.framework: str = self.app.dReg[device].framework
         self.ui = Ui_DevicePopup()

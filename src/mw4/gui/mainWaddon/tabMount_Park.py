@@ -14,14 +14,14 @@ class Park(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
-        self.msg = mainW.app.msg
+        self.msg = mainW.app.signals.ui.msg
         self.ui = mainW.ui
         self.parkButtons: list = []
         for i in range(10):
             self.parkButtons.append(getattr(self.ui, f"parkButton{i:1d}"))
             self.parkButtons[i].setEnabled(False)
             self.parkButtons[i].clicked.connect(partial(self.slewToPark, i))
-        self.app.parkChanged.connect(self.updateParkButtonText)
+        self.app.signals.system.parkChanged.connect(self.updateParkButtonText)
 
     def initConfig(self) -> None:
         config = self.app.config.get("MountPark", {})

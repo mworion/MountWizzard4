@@ -10,7 +10,7 @@ class SettDome:
     def __init__(self, parentW: Any) -> None:
         self.parentW = parentW
         self.app = parentW.app
-        self.msg = parentW.app.msg
+        self.msg = parentW.app.signals.ui.msg
         self.ui = parentW.ui
 
         self.valueConfigWidgets = [
@@ -94,7 +94,7 @@ class SettDome:
         config["useDynamicFollowing"] = self.ui.useDynamicFollowing.isChecked()
         config["settleTime"] = self.ui.settleTimeDome.value()
         self.ui.domeOpeningHysteresis.setMaximum(self.ui.domeClearOpening.value() / 2.1)
-        self.app.updateDomeSettings.emit()
+        self.app.signals.model.updateDomeSettings.emit()
 
     def setupIcons(self) -> None:
         is10Micron = self.ui.use10micronDef.isChecked()

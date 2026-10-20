@@ -9,7 +9,7 @@ class SettRelay:
     def __init__(self, parentW: Any) -> None:
         self.parentW = parentW
         self.app = parentW.app
-        self.msg = parentW.app.msg
+        self.msg = parentW.app.signals.ui.msg
         self.ui = parentW.ui
         self.relayDropDowns: list = []
         self.relayButtonTexts: list = []
@@ -25,7 +25,7 @@ class SettRelay:
             self.relayDropDowns[i].setCurrentIndex(config.get(f"Action{i:1d}", 0))
             self.relayButtonTexts[i].textChanged.connect(self.storeConfig)
             self.relayDropDowns[i].currentIndexChanged.connect(self.storeConfig)
-        self.app.relayChanged.emit()
+        self.app.signals.system.relayChanged.emit()
 
     def storeConfig(self) -> None:
         config: dict[str, Any] = {}
@@ -33,7 +33,7 @@ class SettRelay:
             config[f"RelayText{i:1d}"] = self.relayButtonTexts[i].text()
             config[f"Action{i:1d}"] = self.relayDropDowns[i].currentIndex()
         self.app.config["SettingRelay"] = config
-        self.app.relayChanged.emit()
+        self.app.signals.system.relayChanged.emit()
 
     def setupRelayGui(self) -> None:
         for dropDown in self.relayDropDowns:

@@ -25,8 +25,8 @@ class SimulatorBuildPoints:
         self.parent.ui.showBuildPoints.checkStateChanged.connect(self.showEnable)
         self.parent.ui.showNumbers.checkStateChanged.connect(self.create)
         self.parent.ui.showSlewPath.checkStateChanged.connect(self.create)
-        self.app.updatePointMarker.connect(self.create)
-        self.app.drawBuildPoints.connect(self.create)
+        self.app.signals.hemisphere.updatePointMarker.connect(self.create)
+        self.app.signals.hemisphere.drawBuildPoints.connect(self.create)
 
     def showEnable(self) -> None:
         isVisible = self.parent.ui.showBuildPoints.isChecked()

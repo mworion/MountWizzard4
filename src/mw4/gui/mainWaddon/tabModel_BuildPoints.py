@@ -16,7 +16,7 @@ class BuildPoints(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
-        self.msg = mainW.app.msg
+        self.msg = mainW.app.signals.ui.msg
         self.ui = mainW.ui
         self.lastGenerator: str = "none"
         self.sortedGenerators: dict = {
@@ -59,9 +59,9 @@ class BuildPoints(TabAddon):
         self.ui.autoDeleteMeridian.clicked.connect(self.rebuildPoints)
         self.ui.autoDeleteHorizon.clicked.connect(self.rebuildPoints)
         self.ui.useSafetyMargin.clicked.connect(self.rebuildPoints)
-        self.app.buildPointsChanged.connect(self.buildPointsChanged)
+        self.app.signals.hemisphere.buildPointsChanged.connect(self.buildPointsChanged)
         self.ui.generateQuery.editingFinished.connect(self.querySimbad)
-        self.app.onlineModeChanged.connect(self.setupDsoGui)
+        self.app.signals.system.onlineModeChanged.connect(self.setupDsoGui)
 
     def initConfig(self) -> None:
         config = self.app.config["WindowMain"]
@@ -301,8 +301,8 @@ class BuildPoints(TabAddon):
 
     def clearBuildP(self) -> None:
         self.app.buildPoint.clearBuildP()
-        self.app.drawBuildPoints.emit()
-        self.app.redrawHemisphere.emit()
+        self.app.signals.hemisphere.drawBuildPoints.emit()
+        self.app.signals.hemisphere.redrawHemisphere.emit()
 
     def autoDeletePoints(self) -> None:
         if self.ui.autoDeleteHorizon.isChecked():
@@ -329,8 +329,8 @@ class BuildPoints(TabAddon):
     def processPoints(self) -> None:
         self.autoDeletePoints()
         self.autoSortPoints()
-        self.app.redrawHemisphere.emit()
-        self.app.drawBuildPoints.emit()
+        self.app.signals.hemisphere.redrawHemisphere.emit()
+        self.app.signals.hemisphere.drawBuildPoints.emit()
 
     def rebuildPoints(self) -> None:
         if self.lastGenerator in self.sortedGenerators:

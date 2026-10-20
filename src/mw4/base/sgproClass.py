@@ -37,7 +37,7 @@ class SGProClass(DriverData):
         self.parent = parent
         self.app: AppProtocol = parent.app
         self.data: dict = parent.data
-        self.msg: Any = parent.app.msg
+        self.msg: Any = parent.app.signals.ui.msg
         self.signals: Any = parent.signals
         self.threadPool: QThreadPool = parent.app.threadPool
         self.deviceConnected: bool = False

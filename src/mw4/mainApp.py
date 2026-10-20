@@ -3,6 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import logging
 from importlib.metadata import version
+from mw4.base.appSignals import AppSignals
 from mw4.base.audioManager import AudioManager
 from mw4.base.bootstrap import MwGlob
 from mw4.base.deviceRegistry import DeviceRegistry
@@ -12,44 +13,15 @@ from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.logic.buildData.buildpoints import BuildPoint
 from mw4.logic.buildData.hipparcos import Hipparcos
 from mw4.logic.profiles.profile import loadProfileStart
-from pathlib import Path
-from PySide6.QtCore import QObject, QThreadPool, Signal
+from PySide6.QtCore import QObject, QThreadPool
 from PySide6.QtWidgets import QApplication
 from queue import Queue
-from skyfield.api import EarthSatellite, wgs84
-from skyfield.timelib import Time
-from skyfield.toposlib import GeographicPosition
+from skyfield.api import wgs84
 
 
 class MountWizzard4(QObject):
     __version__ = version("mountwizzard4")
     log = logging.getLogger("MW4")
-
-    # --- UI signals ---
-    msg = Signal(int, str, str, str)
-    colorChange = Signal()
-    playSound = Signal(str)
-    showImage = Signal(Path)
-    showAnalyse = Signal(Path)
-    timebaseChanged = Signal()
-    onlineModeChanged = Signal()
-    hidModeChanged = Signal()
-    relayChanged = Signal()
-    parkChanged = Signal()
-    redrawHemisphere = Signal()
-    redrawHorizon = Signal()
-    updatePointMarker = Signal()
-    drawBuildPoints = Signal()
-    buildPointsChanged = Signal()
-    drawHorizonPoints = Signal()
-    operationRunning = Signal(int)
-    updateDomeSettings = Signal()
-    remoteCommand = Signal(str)
-    refreshModel = Signal()
-    refreshName = Signal()
-    sendSatelliteData = Signal(object, object)
-    updateSatellite = Signal(Time, GeographicPosition)
-    showSatellite = Signal(EarthSatellite, object, object, object, str)
 
     MAX_THREAD_COUNT: int = 30  # allows concurrent device polling + model workers
 
@@ -70,16 +42,17 @@ class MountWizzard4(QObject):
         self.isOnline: bool = False
         self.statusOperationRunning: int = 0
         self.messageQueue: Queue = Queue()
-        self.msg.connect(self.writeMessageQueue)
+        self.signals = AppSignals()
+        self.signals.ui.msg.connect(self.writeMessageQueue)
         self.config = loadProfileStart(self.mwGlob["configDir"])
         # Push initial lifecycle messages into the message queue.
         profile = self.config.get("profileName", "-")
         workDir = self.mwGlob["workDir"]
-        self.msg.emit(1, "System", "Lifecycle", "MountWizzard4 started...")
-        self.msg.emit(1, "System", "Workdir", f"[{workDir}]")
-        self.msg.emit(1, "System", "Profile", f"[{profile}]")
+        self.signals.ui.msg.emit(1, "System", "Lifecycle", "MountWizzard4 started...")
+        self.signals.ui.msg.emit(1, "System", "Workdir", f"[{workDir}]")
+        self.signals.ui.msg.emit(1, "System", "Profile", f"[{profile}]")
         if arguments:
-            self.msg.emit(1, "System", "Arguments", f"[{arguments}]")
+            self.signals.ui.msg.emit(1, "System", "Arguments", f"[{arguments}]")
         self.timeMgr = TimeManager(app=self)
         self.dReg: DeviceRegistry = DeviceRegistry(self)
         self.dReg.addDevices(self)
@@ -93,7 +66,7 @@ class MountWizzard4(QObject):
         self.mainW.showWindow()
         self.dReg.startDevices()
         self.timeMgr.start()
-        self.operationRunning.connect(self.storeStatusOperationRunning)
+        self.signals.ui.operationRunning.connect(self.storeStatusOperationRunning)
 
         if test:
             self.timeMgr.update10s.connect(self.mainW.close)

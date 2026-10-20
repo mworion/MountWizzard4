@@ -579,7 +579,7 @@ def test_updateStatusGUI_satellite_tracking_starts(mainWindow):
     """Test updateStatusGUI when satellite tracking starts (lines 323-324)."""
     mainWindow.satStatus = False
     with (
-        mock.patch.object(mainWindow.app, "playSound"),
+        mock.patch.object(mainWindow.app.signals.ui, "playSound"),
         mock.patch("mw4.gui.mainWindow.mainWindow.changeStyleDynamic"),
     ):
 
@@ -609,7 +609,7 @@ def test_updateStatusGUI_satellite_tracking_already_set(mainWindow):
     mainWindow.satStatus = True
     obsSite = mainWindow.app.dReg["mount"].obsSite
     with (
-        mock.patch.object(mainWindow.app, "playSound") as mSound,
+        mock.patch.object(mainWindow.app.signals.ui, "playSound") as mSound,
         mock.patch("mw4.gui.mainWindow.mainWindow.changeStyleDynamic"),
         mock.patch.object(
             obsSite.__class__,

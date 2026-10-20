@@ -53,7 +53,7 @@ class MountDevice(QObject):
         self.run: dict[str, Any] = {"10micron": self}
         self.framework: str = "10micron"
         self.threadPool = app.threadPool
-        self.updateDomeSettings = app.updateDomeSettings
+        self.updateDomeSettings = app.signals.model.updateDomeSettings
         self.domeConfig: dict[str, Any] = app.config.setdefault("SettingDome", {})
         self.pathToData: Path = app.mwGlob["dataDir"]
         self.verbose: bool = verbose
@@ -130,8 +130,8 @@ class MountDevice(QObject):
             self.obsSite.setHighPrecision()
             self.getFW()
             self.getLocation()
-            self.app.refreshModel.emit()
-            self.app.refreshName.emit()
+            self.app.signals.model.refreshModel.emit()
+            self.app.signals.model.refreshName.emit()
             self.getTLE()
             self.signals.deviceConnected.emit("mount")
         elif not status and self.mountIsUp:

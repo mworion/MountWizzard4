@@ -99,7 +99,7 @@ class SimulatorWindow(MWidget):
         self.ui.topWestView.clicked.connect(self.topWestView)
         self.ui.eastView.clicked.connect(self.eastView)
         self.ui.westView.clicked.connect(self.westView)
-        self.app.colorChange.connect(self.colorChange)
+        self.app.signals.ui.colorChange.connect(self.colorChange)
         self.camera.positionChanged.connect(self.limitPositionZ)
         self.app.dReg["mount"].signals.pointDone.connect(self.buildPoints.updatePositions)
         self.app.dReg["mount"].signals.pointDone.connect(self.laser.updatePositions)

@@ -88,10 +88,10 @@ class Almanac(TabAddon):
         self.colors: dict[QWidget, list[int]] = {}
         self.workerCalcTwilightDataPlot: Worker | None = None
         self.app.timeMgr.update30m.connect(self.showMoonPhase)
-        self.app.colorChange.connect(self.updateColorSet)
-        self.app.timebaseChanged.connect(self.showTwilightDataList)
-        self.app.timebaseChanged.connect(self.showTwilightDataPlot)
-        self.app.timebaseChanged.connect(self.showMoonPhase)
+        self.app.signals.ui.colorChange.connect(self.updateColorSet)
+        self.app.signals.system.timebaseChanged.connect(self.showTwilightDataList)
+        self.app.signals.system.timebaseChanged.connect(self.showTwilightDataPlot)
+        self.app.signals.system.timebaseChanged.connect(self.showMoonPhase)
 
     def initConfig(self) -> None:
         self.updateColorSet()

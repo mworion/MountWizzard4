@@ -26,7 +26,7 @@ class Model(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
-        self.msg = mainW.app.msg
+        self.msg = mainW.app.signals.ui.msg
         self.ui = mainW.ui
         self.modelDoneConnected: bool = False
         self.modelData = ModelData(self.app)
@@ -36,7 +36,7 @@ class Model(TabAddon):
         self.ui.cancelModel.clicked.connect(self.cancelBatch)
         self.ui.endModel.clicked.connect(self.endBatch)
         self.ui.dataModel.clicked.connect(self.runFileModel)
-        self.app.operationRunning.connect(self.setModelOperationMode)
+        self.app.signals.ui.operationRunning.connect(self.setModelOperationMode)
         self.ui.waitTimeMountFlip.valueChanged.connect(self.setWaitTimeFlip)
         self.modelData.statusSolve.connect(self.showStatusSolve)
         self.modelData.statusExpose.connect(self.showStatusExposure)
@@ -45,7 +45,7 @@ class Model(TabAddon):
         self.modelData.progress.connect(self.showProgress)
         self.modelData.finished.connect(self.finishBatch)
         self.modelData.pointStatus.connect(self.setPointStatus)
-        self.modelData.pointMarkersChanged.connect(self.app.updatePointMarker)
+        self.modelData.pointMarkersChanged.connect(self.app.signals.hemisphere.updatePointMarker)
 
     def initConfig(self) -> None:
         config = self.app.config["WindowMain"]
@@ -159,7 +159,7 @@ class Model(TabAddon):
         if not self.modelDoneConnected:
             self.app.dReg["mount"].signals.getModelDone.connect(self.programModelToMountFinish)
             self.modelDoneConnected = True
-        self.app.refreshModel.emit()
+        self.app.signals.model.refreshModel.emit()
 
     def checkMountTimeSync(self) -> bool:
         if self.app.dReg["mount"].config.syncTimeNone:
@@ -273,9 +273,9 @@ class Model(TabAddon):
         self.modelData.resetBatchFlags()
         if not self.checkModelRunConditions() or not self.checkMountTimeSync():
             return
-        self.app.operationRunning.emit(OperationStatus.MODEL_BATCH)
+        self.app.signals.ui.operationRunning.emit(OperationStatus.MODEL_BATCH)
         if not self.clearAlignAndBackup(self.startBatch):
-            self.app.operationRunning.emit(OperationStatus.IDLE)
+            self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)
 
     def startBatch(self) -> None:
         config = self.setupBatchData()
@@ -291,8 +291,8 @@ class Model(TabAddon):
             if self.ui.parkMountAfterModel.isChecked():
                 self.msg.emit(1, "Model", "Run", "Park mount after model build")
                 self.app.dReg["mount"].obsSite.park()
-        self.app.playSound.emit("RunFinished")
-        self.app.operationRunning.emit(OperationStatus.IDLE)
+        self.app.signals.ui.playSound.emit("RunFinished")
+        self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)
 
     def runFileModel(self) -> None:
         self.msg.emit(1, "Model", "Run", "Model from file")
@@ -310,9 +310,9 @@ class Model(TabAddon):
             self.msg.emit(1, "Model", "Run", "Model from file cancelled - no files selected")
             return
 
-        self.app.operationRunning.emit(OperationStatus.MODEL_FILE)
+        self.app.signals.ui.operationRunning.emit(OperationStatus.MODEL_FILE)
         if not self.clearAlignAndBackup(partial(self.programFileModel, modelFilesPath)):
-            self.app.operationRunning.emit(OperationStatus.IDLE)
+            self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)
 
     def programFileModel(self, modelFilesPath: list[Path]) -> None:
         message = self.modelData.loadFromFiles(modelFilesPath)
@@ -320,5 +320,5 @@ class Model(TabAddon):
             self.programModelToMount()
         else:
             self.msg.emit(3, "Model", "Run error", message)
-        self.app.playSound.emit("RunFinished")
-        self.app.operationRunning.emit(OperationStatus.IDLE)
+        self.app.signals.ui.playSound.emit("RunFinished")
+        self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)

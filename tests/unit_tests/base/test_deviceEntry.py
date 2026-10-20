@@ -13,7 +13,7 @@ def registry() -> DeviceRegistry:
     """Minimal registry for testing without full App initialization."""
     app = mock.MagicMock()
     app.mwGlob = {"tempDir": Path("/tmp")}
-    app.msg = mock.MagicMock()
+    app.signals.ui.msg = mock.MagicMock()
     app.threadPool = QThreadPool()
     app.threadPool.activeThreadCount = mock.MagicMock(return_value=0)
     dReg = DeviceRegistry(app, mount=mock.MagicMock())

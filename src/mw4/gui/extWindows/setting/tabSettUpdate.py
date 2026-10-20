@@ -13,7 +13,7 @@ class SettUpdate:
     def __init__(self, parentW: Any) -> None:
         self.parentW = parentW
         self.app = parentW.app
-        self.msg = parentW.app.msg
+        self.msg = parentW.app.signals.ui.msg
         self.ui = parentW.ui
         self.ui.loglevelInfo.clicked.connect(self.setLoggingLevel)
         self.ui.loglevelDebug.clicked.connect(self.setLoggingLevel)
@@ -21,7 +21,7 @@ class SettUpdate:
         self.ui.isOnline.clicked.connect(self.setOnlineMode)
         self.ui.isOnline.clicked.connect(self.storeConfig)
         self.ui.ageDatabases.valueChanged.connect(self.storeConfig)
-        self.app.onlineModeChanged.connect(self.setupIERS)
+        self.app.signals.system.onlineModeChanged.connect(self.setupIERS)
         self.ui.unitTimeUTC.clicked.connect(self.setTimeBaseUTC)
         self.ui.unitTimeLocal.clicked.connect(self.setTimeBaseLocal)
 
@@ -63,7 +63,7 @@ class SettUpdate:
         elif self.app.isOnline and not isOnline:
             self.msg.emit(0, "System", "Online", "Online mode deactivated")
         self.app.isOnline = isOnline
-        self.app.onlineModeChanged.emit()
+        self.app.signals.system.onlineModeChanged.emit()
 
     def setLoggingLevel(self) -> None:
         if self.ui.loglevelInfo.isChecked():
@@ -75,8 +75,8 @@ class SettUpdate:
 
     def setTimeBaseUTC(self) -> None:
         self.app.timeMgr.unitTimeUTC = True
-        self.app.timebaseChanged.emit()
+        self.app.signals.system.timebaseChanged.emit()
 
     def setTimeBaseLocal(self) -> None:
         self.app.timeMgr.unitTimeUTC = False
-        self.app.timebaseChanged.emit()
+        self.app.signals.system.timebaseChanged.emit()

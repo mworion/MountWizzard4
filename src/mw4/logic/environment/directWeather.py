@@ -5,7 +5,7 @@ import contextlib
 import logging
 import warnings
 from dataclasses import dataclass, field
-from mw4.base.appProtocol import AppProtocol
+from mw4.base.appProtocol import HasDevices
 from mw4.base.signalsDevices import Signals
 from mw4.mountcontrol.setting import Setting
 from typing import Any
@@ -20,7 +20,7 @@ class DirectWeather:
     DEVICE_TYPE = "observingconditions"
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: AppProtocol) -> None:
+    def __init__(self, app: HasDevices) -> None:
         self.app = app
         self.signals = Signals()
         self.framework: str = "directWeather"

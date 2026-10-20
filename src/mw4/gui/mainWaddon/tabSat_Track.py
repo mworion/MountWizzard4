@@ -28,7 +28,7 @@ class SatTrack(SatData):
         self.mainW = mainW
         self.app = mainW.app
         self.threadPool = mainW.app.threadPool
-        self.msg = mainW.app.msg
+        self.msg = mainW.app.signals.ui.msg
         self.ui = mainW.ui
         self.satellite: EarthSatellite | None = None
         self.satellitesRawTLE = {}
@@ -69,7 +69,7 @@ class SatTrack(SatData):
 
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
-        self.app.sendSatelliteData.connect(self.signalSatelliteData)
+        self.app.signals.model.sendSatelliteData.connect(self.signalSatelliteData)
         self.ui.satAfterFlip.clicked.connect(self.showSatPasses)
         self.ui.satBeforeFlip.clicked.connect(self.showSatPasses)
         self.ui.avoidHorizon.clicked.connect(self.showSatPasses)
@@ -90,7 +90,7 @@ class SatTrack(SatData):
         self.ui.satAfterFlip.setChecked(config.get("satAfterFlip", True))
         self.ui.avoidHorizon.setChecked(config.get("avoidHorizon", False))
         self.ui.trackingReplay.setChecked(config.get("trackingReplay", False))
-        self.app.timebaseChanged.connect(self.changeUnitTimeUTC)
+        self.app.signals.system.timebaseChanged.connect(self.changeUnitTimeUTC)
 
     def storeConfig(self) -> None:
         config = self.app.config["WindowMain"]
@@ -124,7 +124,7 @@ class SatTrack(SatData):
             return
 
         name = self.satellite.name
-        self.app.showSatellite.emit(self.satellite, self.satOrbits, alt, az, name)
+        self.app.signals.model.showSatellite.emit(self.satellite, self.satOrbits, alt, az, name)
 
     def clearTrackingParameters(self) -> None:
         self.ui.satTrajectoryStart.setText("-")
@@ -283,7 +283,7 @@ class SatTrack(SatData):
 
         now = self.app.dReg["mount"].obsSite.ts.now()
         location = self.app.dReg["mount"].obsSite.location
-        self.app.updateSatellite.emit(now, location)
+        self.app.signals.model.updateSatellite.emit(now, location)
 
     def selectStartEnd(self) -> tuple[float, float]:
         return selectStartEnd(

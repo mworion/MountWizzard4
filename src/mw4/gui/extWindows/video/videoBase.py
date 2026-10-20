@@ -21,7 +21,7 @@ class VideoWindowBase(MWidget):
     def __init__(self, app: AppProtocol) -> None:
         super().__init__()
         self.app = app
-        self.msg = app.msg
+        self.msg = app.signals.ui.msg
         self.threadPool = app.threadPool
         self.ui = video_ui.Ui_VideoDialog()
         self.ui.setupUi(self.ws)
@@ -49,7 +49,7 @@ class VideoWindowBase(MWidget):
         self.ui.videoSource.currentIndexChanged.connect(self.stopVideo)
         self.ui.frameRate.currentIndexChanged.connect(self.restartVideo)
         self.ui.authPopup.clicked.connect(self.authPopup)
-        self.app.colorChange.connect(self.colorChange)
+        self.app.signals.ui.colorChange.connect(self.colorChange)
         self.app.timeMgr.update0_1s.connect(self.count)
         changeStyleDynamic(self.ui.videoStop, "run", "true")
         self.checkAuth()

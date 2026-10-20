@@ -16,7 +16,7 @@ class SettMount:
     def __init__(self, parentW: Any) -> None:
         self.parentW = parentW
         self.app = parentW.app
-        self.msg = parentW.app.msg
+        self.msg = parentW.app.signals.ui.msg
         self.ui = parentW.ui
 
         self.ui.mountOn.clicked.connect(self.mountBoot)

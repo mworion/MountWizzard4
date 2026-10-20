@@ -3,7 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import logging
 from dataclasses import dataclass, field
-from mw4.base.appProtocol import AppProtocol
+from mw4.base.appProtocol import HasMessaging
 from mw4.base.signalsDevices import Signals
 from PySide6.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer
 from typing import Any
@@ -18,7 +18,7 @@ class Remote:
     DEVICE_TYPE = "misc"
     log = logging.getLogger("MW4")
 
-    def __init__(self, app: AppProtocol) -> None:
+    def __init__(self, app: HasMessaging) -> None:
         self.signals = Signals()
         self.app = app
         self.data: dict[str, Any] = {}
@@ -77,7 +77,7 @@ class Remote:
 
         self.log.debug("Command %s from %s received", command, connection)
         if command in validCommands:
-            self.app.remoteCommand.emit(command)
+            self.app.signals.ui.remoteCommand.emit(command)
         else:
             self.log.warning("Unknown command %s from %s received", command, connection)
 

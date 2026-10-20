@@ -49,7 +49,7 @@ class HorizonDraw(MWidget):
         self.ui.terrainAlpha.valueChanged.connect(self.drawTab)
         self.ui.normalModeHor.clicked.connect(self.setOperationMode)
         self.ui.editModeHor.clicked.connect(self.setOperationMode)
-        self.app.redrawHorizon.connect(self.drawTab)
+        self.app.signals.hemisphere.redrawHorizon.connect(self.drawTab)
         self.app.dReg["mount"].signals.pointDone.connect(self.drawPointer)
         self.app.dReg["mount"].signals.settingDone.connect(self.drawTab)
         self.ui.showMountLimits.clicked.connect(self.drawTab)
@@ -118,7 +118,7 @@ class HorizonDraw(MWidget):
         self.app.buildPoint.loadHorizonP(loadFilePath)
         self.ui.horizonMaskFileName.setText(loadFilePath.stem)
         self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{loadFilePath.stem}] loaded")
-        self.app.redrawHorizon.emit()
+        self.app.signals.hemisphere.redrawHorizon.emit()
 
     def saveHorizonMask(self) -> None:
         fileName = self.ui.horizonMaskFileName.text()
@@ -131,7 +131,7 @@ class HorizonDraw(MWidget):
             self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{fileName}] saved")
         else:
             self.msg.emit(2, "Hemisphere", "Horizon", f"Mask [{fileName}] cannot no be saved")
-        self.app.redrawHorizon.emit()
+        self.app.signals.hemisphere.redrawHorizon.emit()
 
     def saveHorizonMaskAs(self) -> None:
         folder = self.app.mwGlob["configDir"]
@@ -147,11 +147,11 @@ class HorizonDraw(MWidget):
             self.msg.emit(
                 2, "Hemisphere", "Horizon", f"Mask [{saveFilePath.stem}] cannot no be saved"
             )
-        self.app.redrawHorizon.emit()
+        self.app.signals.hemisphere.redrawHorizon.emit()
 
     def setOperationMode(self) -> None:
         self.ui.addPositionToHorizon.setEnabled(self.ui.editModeHor.isChecked())
-        self.app.redrawHorizon.emit()
+        self.app.signals.hemisphere.redrawHorizon.emit()
 
     def updateDataHorizonPoints(self, x: list, y: list) -> None:
         hp = [[y, x] for y, x in zip(y, x, strict=True)]
@@ -164,7 +164,7 @@ class HorizonDraw(MWidget):
     def clearHorizonMask(self) -> None:
         self.app.buildPoint.horizonP = []
         self.ui.horizonMaskFileName.setText("")
-        self.app.redrawHorizon.emit()
+        self.app.signals.hemisphere.redrawHorizon.emit()
 
     def addActualPosition(self) -> None:
         vb = self.ui.horizon.p[0].getViewBox()

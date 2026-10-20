@@ -41,8 +41,8 @@ class AnalyseWindow(MWidget):
 
         self.wIcon(self.ui.load, "load")
         self.ui.load.clicked.connect(self.loadModel)
-        self.app.colorChange.connect(self.colorChange)
-        self.app.redrawHorizon.connect(self.drawHorizon)
+        self.app.signals.ui.colorChange.connect(self.colorChange)
+        self.app.signals.hemisphere.redrawHorizon.connect(self.drawHorizon)
 
         self.charts = [
             self.drawRaRawErrors,
@@ -82,7 +82,7 @@ class AnalyseWindow(MWidget):
 
     def showWindow(self) -> None:
         self.show()
-        self.app.showAnalyse.connect(self.showAnalyse)
+        self.app.signals.ui.showAnalyse.connect(self.showAnalyse)
         self.ui.showHorizon.clicked.connect(self.drawAll)
         self.ui.showISO.clicked.connect(self.drawAll)
         self.ui.linkViews.clicked.connect(self.drawAll)

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import numpy as np
-from mw4.base.appProtocol import AppProtocol
+from mw4.base.appProtocol import HasDevices
 from mw4.gui.extWindows.simulator.materials import Materials
 from mw4.gui.extWindows.simulator.tools import linkModel
 from PySide6.QtGui import QVector3D
@@ -11,7 +11,7 @@ from typing import Any
 
 
 class SimulatorLaser:
-    def __init__(self, parent: Any, app: AppProtocol) -> None:
+    def __init__(self, parent: Any, app: HasDevices) -> None:
         super().__init__()
         self.parent = parent
         self.app = app

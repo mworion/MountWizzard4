@@ -5,7 +5,7 @@ import hid
 import logging
 import threading
 from dataclasses import dataclass, field
-from mw4.base.appProtocol import AppProtocol
+from mw4.base.appProtocol import HasThreadPool
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker, startWorker
 from PySide6.QtCore import Signal
@@ -35,7 +35,7 @@ class HidController:
     log = logging.getLogger("MW4")
     UPDATE_RATE: float = 0.05
 
-    def __init__(self, app: AppProtocol) -> None:
+    def __init__(self, app: HasThreadPool) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = HidControllerSignals()

@@ -28,7 +28,7 @@ class MainWindow(MWidget):
     def __init__(self, app: AppProtocol) -> None:
         super().__init__()
         self.app = app
-        self.msg = app.msg
+        self.msg = app.signals.ui.msg
         self.threadPool = app.threadPool
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self.ws)
@@ -59,7 +59,7 @@ class MainWindow(MWidget):
             },
         }
         self.app.dReg["mount"].signals.pointDone.connect(self.updateStatusGUI)
-        self.app.remoteCommand.connect(self.remoteCommand)
+        self.app.signals.ui.remoteCommand.connect(self.remoteCommand)
         self.app.dReg["plateSolve"].signals.message.connect(self.updatePlateSolveStatus)
         self.app.dReg["dome"].signals.message.connect(self.updateDomeStatus)
         self.app.dReg["camera"].signals.message.connect(self.updateCameraStatus)
@@ -74,7 +74,7 @@ class MainWindow(MWidget):
         self.app.timeMgr.update1s.connect(self.updateDeviceStats)
         self.app.timeMgr.update1s.connect(self.updateTime)
         self.app.timeMgr.update30s.connect(self.updateTwilightAndDisk)
-        self.app.colorChange.connect(self.updateColorSet)
+        self.app.signals.ui.colorChange.connect(self.updateColorSet)
         self.twilightText: str = ""
         self.diskFreePct: int = 0
         self.tabs = [
@@ -294,7 +294,7 @@ class MainWindow(MWidget):
             changeStyleDynamic(widget, "run", isActive)
 
         if obsSite.isFollowingSatellite and not self.satStatus:
-            self.app.playSound.emit("SatStartTracking")
+            self.app.signals.ui.playSound.emit("SatStartTracking")
             self.satStatus = True
         elif not obsSite.isFollowingSatellite:
             self.satStatus = False

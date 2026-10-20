@@ -35,7 +35,7 @@ class SettingWindow(MWidget):
         self.tabSettAudio = SettAudio(self)
         self.tabSettRelay = SettRelay(self)
         self.tabSettPark = SettPark(self)
-        self.app.colorChange.connect(self.colorChange)
+        self.app.signals.ui.colorChange.connect(self.colorChange)
         self.setupIcons()
 
     def initConfig(self) -> None:

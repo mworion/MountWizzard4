@@ -49,7 +49,7 @@ def prepareFunctionState(function):
                 function.mSetUI[setName].currentIndexChanged.disconnect()
 
         for signal, slot in (
-            (function.app.colorChange, function.colorChange),
+            (function.app.signals.ui.colorChange, function.colorChange),
             (function.app.timeMgr.update1s, function.drawMeasure),
             (function.app.timeMgr.update1s, function.setTitle),
         ):

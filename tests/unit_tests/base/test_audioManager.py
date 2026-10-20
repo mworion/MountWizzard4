@@ -20,7 +20,7 @@ def audioManager(qapp):
 
 def test_init_connects_signal_to_playSound(audioManager):
     """Test __init__ connects playSound signal to method."""
-    assert audioManager.app.playSound is not None
+    assert audioManager.app.signals.ui.playSound is not None
 
 
 def test_init_sound_is_none(qapp):
@@ -30,7 +30,7 @@ def test_init_sound_is_none(qapp):
 
 def test_init_connects_playSound_signal(audioManager):
     """Test __init__ connects playSound signal."""
-    assert audioManager.app.playSound is not None
+    assert audioManager.app.signals.ui.playSound is not None
 
 
 def test_audio_sounds_constant_defined():

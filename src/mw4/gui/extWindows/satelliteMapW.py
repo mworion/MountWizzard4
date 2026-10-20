@@ -38,8 +38,8 @@ class SatelliteMapWindow(MWidget):
             self.pens.append(pg.mkPen(color=color, width=2, style=Qt.PenStyle.DotLine))
         self.penLocation = pg.mkPen(color=self.M_RED)
         self.brushLocation = pg.mkBrush(color=self.M_YELLOW)
-        self.app.showSatellite.connect(self.drawSatellite)
-        self.app.updateSatellite.connect(self.updatePositions)
+        self.app.signals.model.showSatellite.connect(self.drawSatellite)
+        self.app.signals.model.updateSatellite.connect(self.updatePositions)
 
     def initConfig(self) -> None:
         self.world: dict = self.loadMap()
@@ -53,19 +53,19 @@ class SatelliteMapWindow(MWidget):
 
     def closeEvent(self, event: QCloseEvent) -> None:
         self.storeConfig()
-        self.app.showSatellite.disconnect(self.drawSatellite)
-        self.app.updateSatellite.disconnect(self.updatePositions)
+        self.app.signals.model.showSatellite.disconnect(self.drawSatellite)
+        self.app.signals.model.updateSatellite.disconnect(self.updatePositions)
         super().closeEvent(event)
 
     def showWindow(self) -> None:
-        self.app.colorChange.connect(self.colorChange)
-        self.app.sendSatelliteData.emit([], [])
+        self.app.signals.ui.colorChange.connect(self.colorChange)
+        self.app.signals.model.sendSatelliteData.emit([], [])
         self.show()
 
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
         self.ui.satEarth.colorChange()
-        self.app.sendSatelliteData.emit([], [])
+        self.app.signals.model.sendSatelliteData.emit([], [])
 
     @staticmethod
     def loadMap() -> dict:

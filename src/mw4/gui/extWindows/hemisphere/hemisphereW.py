@@ -33,7 +33,7 @@ class HemisphereWindow(MWidget):
     def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__()
         self.app = app
-        self.msg = app.msg
+        self.msg = app.signals.ui.msg
         self.ui = hemisphere_ui.Ui_HemisphereDialog()
         self.ui.setupUi(self.ws)
         self.setNoFocus(self)
@@ -90,7 +90,7 @@ class HemisphereWindow(MWidget):
         super().closeEvent(event)
 
     def showWindow(self) -> None:
-        self.app.colorChange.connect(self.colorChange)
+        self.app.signals.ui.colorChange.connect(self.colorChange)
         self.hemisphereDraw.drawTab()
         self.horizonDraw.drawTab()
         self.setIcons()

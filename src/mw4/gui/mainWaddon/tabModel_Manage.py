@@ -26,7 +26,7 @@ class ModelManage(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
-        self.msg = mainW.app.msg
+        self.msg = mainW.app.signals.ui.msg
         self.ui = mainW.ui
         self.runningOptimize = False
         self.fittedModelPath = Path()
@@ -55,9 +55,9 @@ class ModelManage(TabAddon):
 
         for slot in modelShowSlots:
             self.ui.targetRMS.valueChanged.connect(slot)
-        self.app.colorChange.connect(self.updateColorSet)
-        self.app.refreshModel.connect(self.refreshModel)
-        self.app.refreshName.connect(self.refreshName)
+        self.app.signals.ui.colorChange.connect(self.updateColorSet)
+        self.app.signals.model.refreshModel.connect(self.refreshModel)
+        self.app.signals.model.refreshName.connect(self.refreshName)
 
     def initConfig(self) -> None:
         config = self.app.config["WindowMain"]
@@ -379,7 +379,7 @@ class ModelManage(TabAddon):
     def sendAnalyseFileName(self) -> None:
         if not self.fittedModelPath.is_file():
             return
-        self.app.showAnalyse.emit(self.fittedModelPath)
+        self.app.signals.ui.showAnalyse.emit(self.fittedModelPath)
 
     def pointClicked(self, scatterPlotItem, points, event) -> None:
         if event.double() or event.button() != Qt.MouseButton.LeftButton:

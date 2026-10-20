@@ -3,15 +3,14 @@
 # Copyright (c) 2019-2026 mworion
 # Re-export all stubs so that existing test imports remain unchanged.
 from functools import cache
+from mw4.base.appSignals import AppSignals
 from mw4.base.deviceRegistry import DeviceEntry, DeviceRegistry
 from mw4.base.timeManager import TimeManager
 from mw4.logic.buildData.buildpoints import BuildPoint
 from pathlib import Path
-from PySide6.QtCore import QObject, QThreadPool, Signal
+from PySide6.QtCore import QObject, QThreadPool
 from queue import Queue
-from skyfield.api import EarthSatellite, load_file
-from skyfield.timelib import Time
-from skyfield.toposlib import GeographicPosition
+from skyfield.api import load_file
 from tests.unit_tests.unitTestAddOns.deviceStubs import (  # noqa: F401
     CSV,
     Camera,
@@ -79,33 +78,10 @@ def loadEphemeris():
 class App(QObject):
     __version__ = "test"
     MAX_THREAD_COUNT = 30
-    sendSatelliteData = Signal(object, object)
-    updateSatellite = Signal(Time, GeographicPosition)
-    showSatellite = Signal(EarthSatellite, object, object, object, str)
-    updateDomeSettings = Signal()
-    drawHorizonPoints = Signal()
-    drawBuildPoints = Signal()
-    redrawHemisphere = Signal()
-    refreshModel = Signal()
-    refreshName = Signal()
-    redrawHorizon = Signal()
-    showAnalyse = Signal(Path)
-    showImage = Signal(Path)
-    updatePointMarker = Signal()
-    operationRunning = Signal(int)
-    colorChange = Signal()
-    buildPointsChanged = Signal()
-    playSound = Signal(str)
-    msg = Signal(int, str, str, str)
-    remoteCommand = Signal(str)
-    onlineModeChanged = Signal()
-    timebaseChanged = Signal()
-    relayChanged = Signal()
-    parkChanged = Signal()
-    hidModeChanged = Signal()
 
     def __init__(self):
         super().__init__()
+        self.signals = AppSignals()
         self.timeMgr = TimeManager(app=self)
         self.config = {
             "WindowMain": {},

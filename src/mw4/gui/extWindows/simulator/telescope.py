@@ -13,7 +13,7 @@ class SimulatorTelescope:
         super().__init__()
         self.parent = parent
         self.app = app
-        self.app.updateDomeSettings.connect(self.updatePositions)
+        self.app.signals.model.updateDomeSettings.connect(self.updatePositions)
 
     def updatePositions(self) -> None:
         """

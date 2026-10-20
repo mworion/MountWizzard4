@@ -24,7 +24,7 @@ class AudioManager:
     def __init__(self, app: AppProtocol) -> None:
         self.app = app
         self.sound: QSoundEffect | None = None
-        self.app.playSound.connect(self.playSound)
+        self.app.signals.ui.playSound.connect(self.playSound)
         self.app.dReg["mount"].signals.alert.connect(lambda: self.playSound("MountAlert"))
         self.app.dReg["dome"].signals.slewed.connect(lambda: self.playSound("DomeSlew"))
         self.app.dReg["mount"].signals.slewed.connect(lambda: self.playSound("MountSlew"))

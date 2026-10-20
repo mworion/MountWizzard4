@@ -241,16 +241,16 @@ def test_setupRelayGui_items_text(settRelay):
 def test_initConfig_emits_signal(settRelay):
     """Test initConfig emits relayChanged signal."""
     settRelay.app.config = {"SettingRelay": {}}
-    with mock.patch.object(settRelay.app, "relayChanged"):
+    with mock.patch.object(settRelay.app.signals.system, "relayChanged"):
         settRelay.initConfig()
-        settRelay.app.relayChanged.emit.assert_called()
+        settRelay.app.signals.system.relayChanged.emit.assert_called()
 
 
 def test_storeConfig_emits_signal(settRelay):
     """Test storeConfig emits relayChanged signal."""
-    with mock.patch.object(settRelay.app, "relayChanged"):
+    with mock.patch.object(settRelay.app.signals.system, "relayChanged"):
         settRelay.storeConfig()
-        settRelay.app.relayChanged.emit.assert_called()
+        settRelay.app.signals.system.relayChanged.emit.assert_called()
 
 
 def test_relayButtonText_elements_exist(settRelay):

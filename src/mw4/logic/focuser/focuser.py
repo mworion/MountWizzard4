@@ -3,7 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import logging
 import platform
-from mw4.base.appProtocol import AppProtocol
+from mw4.base.appProtocol import HasThreadPool
 from mw4.base.signalsDevices import Signals
 from mw4.logic.focuser.focuserAlpaca import FocuserAlpaca
 from mw4.logic.focuser.focuserIndi import FocuserIndi
@@ -17,7 +17,7 @@ class Focuser:
     log = logging.getLogger("MW4")
     DEVICE_TYPE: str = "focuser"
 
-    def __init__(self, app: AppProtocol) -> None:
+    def __init__(self, app: HasThreadPool) -> None:
         self.app = app
         self.threadPool = app.threadPool
         self.signals = Signals()

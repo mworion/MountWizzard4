@@ -323,7 +323,7 @@ def test_deviceConnectedEmitsMessage(registry: DeviceRegistry) -> None:
     from unittest.mock import MagicMock
 
     # Mock the msg signal to capture emission
-    registry.app.msg = MagicMock()
+    registry.app.signals.ui.msg = MagicMock()
 
     # Mock sender to return a specific signal object
     mock_sender = MagicMock()
@@ -334,7 +334,7 @@ def test_deviceConnectedEmitsMessage(registry: DeviceRegistry) -> None:
         registry.deviceConnected("INDI::camera")
 
     # Verify the signal was emitted with correct parameters
-    registry.app.msg.emit.assert_called_once_with(
+    registry.app.signals.ui.msg.emit.assert_called_once_with(
         0, "Driver", "Device connected", "INDI::camera::camera"
     )
     # Verify stat was set to True
@@ -346,7 +346,7 @@ def test_deviceDisconnectedEmitsMessage(registry: DeviceRegistry) -> None:
     from unittest.mock import MagicMock
 
     # Mock the msg signal to capture emission
-    registry.app.msg = MagicMock()
+    registry.app.signals.ui.msg = MagicMock()
 
     # Mock sender to return a specific signal object
     mock_sender = MagicMock()
@@ -357,7 +357,7 @@ def test_deviceDisconnectedEmitsMessage(registry: DeviceRegistry) -> None:
         registry.deviceDisconnected("INDI::dome")
 
     # Verify the signal was emitted with correct parameters
-    registry.app.msg.emit.assert_called_once_with(
+    registry.app.signals.ui.msg.emit.assert_called_once_with(
         0, "Driver", "Device disconnected", "INDI::dome::dome"
     )
     # Verify stat was set to False
@@ -369,7 +369,7 @@ def test_deviceConnectedUpdatesStatBeforeMessage(registry: DeviceRegistry) -> No
     from unittest.mock import MagicMock
 
     # Set up recording of method calls
-    registry.app.msg = MagicMock()
+    registry.app.signals.ui.msg = MagicMock()
 
     # Mock sender to return a specific signal object
     mock_sender = MagicMock()
@@ -382,7 +382,7 @@ def test_deviceConnectedUpdatesStatBeforeMessage(registry: DeviceRegistry) -> No
     # Verify stat was updated
     assert registry.d["camera"].stat is True
     # Verify message was emitted
-    assert registry.app.msg.emit.called
+    assert registry.app.signals.ui.msg.emit.called
 
 
 def test_deviceDisconnectedUpdatesStatBeforeMessage(registry: DeviceRegistry) -> None:
@@ -391,7 +391,7 @@ def test_deviceDisconnectedUpdatesStatBeforeMessage(registry: DeviceRegistry) ->
 
     # First set stat to True
     registry.setStat("camera", True)
-    registry.app.msg = MagicMock()
+    registry.app.signals.ui.msg = MagicMock()
 
     # Mock sender to return a specific signal object
     mock_sender = MagicMock()
@@ -404,7 +404,7 @@ def test_deviceDisconnectedUpdatesStatBeforeMessage(registry: DeviceRegistry) ->
     # Verify stat was updated
     assert registry.d["camera"].stat is False
     # Verify message was emitted
-    assert registry.app.msg.emit.called
+    assert registry.app.signals.ui.msg.emit.called
 
 
 # ------------------------------------------------------------------
@@ -711,7 +711,7 @@ def test_startDevicesIteratesConfigurable(registry: DeviceRegistry) -> None:
 
 def test_deviceConnectedWithUnknownSender(registry: DeviceRegistry) -> None:
     """Test deviceConnected returns early when sender is not in signalsToName."""
-    registry.app.msg = MagicMock()
+    registry.app.signals.ui.msg = MagicMock()
     unknown_sender = MagicMock()
     # Don't add to signalsToName
 
@@ -719,12 +719,12 @@ def test_deviceConnectedWithUnknownSender(registry: DeviceRegistry) -> None:
         registry.deviceConnected("test_device")
 
     # Verify msg.emit was not called
-    registry.app.msg.emit.assert_not_called()
+    registry.app.signals.ui.msg.emit.assert_not_called()
 
 
 def test_deviceDisconnectedWithUnknownSender(registry: DeviceRegistry) -> None:
     """Test deviceDisconnected returns early when sender is not in signalsToName."""
-    registry.app.msg = MagicMock()
+    registry.app.signals.ui.msg = MagicMock()
     unknown_sender = MagicMock()
     # Don't add to signalsToName
 
@@ -732,7 +732,7 @@ def test_deviceDisconnectedWithUnknownSender(registry: DeviceRegistry) -> None:
         registry.deviceDisconnected("test_device")
 
     # Verify msg.emit was not called
-    registry.app.msg.emit.assert_not_called()
+    registry.app.signals.ui.msg.emit.assert_not_called()
 
 
 def test_addDevicesSkipsSignalsForInstanceWithoutSignals() -> None:

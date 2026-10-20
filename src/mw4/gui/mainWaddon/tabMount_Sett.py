@@ -51,7 +51,7 @@ class MountSett(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
         self.mainW = mainW
         self.app = mainW.app
-        self.msg = mainW.app.msg
+        self.msg = mainW.app.signals.ui.msg
         self.ui = mainW.ui
         self.typeConnectionTexts = ["RS-232", "GPS/RS-232", "LAN", "WiFi"]
 

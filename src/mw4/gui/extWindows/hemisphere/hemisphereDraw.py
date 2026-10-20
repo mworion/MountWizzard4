@@ -36,10 +36,10 @@ class HemisphereDraw(MWidget):
         self.app.dReg["dome"].signals.azimuth.connect(self.setDomeAzimuth)
         self.app.dReg["dome"].signals.deviceDisconnected.connect(self.drawDome)
         self.app.dReg["mount"].signals.getModelDone.connect(self.drawTab)
-        self.app.updatePointMarker.connect(self.setupModel)
-        self.app.redrawHemisphere.connect(self.drawTab)
-        self.app.redrawHorizon.connect(self.drawHorizon)
-        self.app.operationRunning.connect(self.enableOperationModeChange)
+        self.app.signals.hemisphere.updatePointMarker.connect(self.setupModel)
+        self.app.signals.hemisphere.redrawHemisphere.connect(self.drawTab)
+        self.app.signals.hemisphere.redrawHorizon.connect(self.drawHorizon)
+        self.app.signals.ui.operationRunning.connect(self.enableOperationModeChange)
         self.app.timeMgr.update3s.connect(self.drawAlignmentStars)
         self.ui.showSlewPath.clicked.connect(self.drawTab)
         self.ui.showHorizon.clicked.connect(self.drawTab)
@@ -63,10 +63,10 @@ class HemisphereDraw(MWidget):
         self.app.dReg["mount"].signals.getModelDone.disconnect(self.drawTab)
         self.app.dReg["dome"].signals.azimuth.disconnect(self.setDomeAzimuth)
         self.app.dReg["dome"].signals.deviceDisconnected.disconnect(self.drawDome)
-        self.app.updatePointMarker.disconnect(self.setupModel)
-        self.app.redrawHemisphere.disconnect(self.drawTab)
-        self.app.redrawHorizon.disconnect(self.drawHorizon)
-        self.app.operationRunning.disconnect(self.enableOperationModeChange)
+        self.app.signals.hemisphere.updatePointMarker.disconnect(self.setupModel)
+        self.app.signals.hemisphere.redrawHemisphere.disconnect(self.drawTab)
+        self.app.signals.hemisphere.redrawHorizon.disconnect(self.drawHorizon)
+        self.app.signals.ui.operationRunning.disconnect(self.enableOperationModeChange)
         self.app.timeMgr.update3s.disconnect(self.drawAlignmentStars)
 
     def setPointerVisibility(self) -> None:
@@ -92,7 +92,7 @@ class HemisphereDraw(MWidget):
         elif self.ui.alignmentModeHem.isChecked():
             self.ui.showAlignStar.setChecked(True)
             self.app.buildPoint.clearBuildP()
-        self.app.redrawHemisphere.emit()
+        self.app.signals.hemisphere.redrawHemisphere.emit()
 
     def prepareView(self) -> None:
         plotItem = self.ui.hemisphere.p[0]
@@ -255,7 +255,7 @@ class HemisphereDraw(MWidget):
         self.app.buildPoint.buildP = bp
         self.drawModelPoints()
         self.drawModelText()
-        self.app.buildPointsChanged.emit()
+        self.app.signals.hemisphere.buildPointsChanged.emit()
 
     def setupModel(self) -> None:
         for i, plotItem in enumerate(self.ui.hemisphere.p):

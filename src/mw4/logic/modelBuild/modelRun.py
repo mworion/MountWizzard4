@@ -4,7 +4,7 @@
 import logging
 import time
 from collections.abc import Iterator
-from mw4.base.appProtocol import AppProtocol
+from mw4.base.appProtocol import HasDevices
 from mw4.base.transform import JNowToJ2000
 from mw4.logic.buildData.buildpoints import BuildPoint
 from mw4.logic.modelBuild.modelRunSupport import loadModelsFromFile
@@ -30,7 +30,7 @@ class ModelData(QObject):
     startSlew = Signal()
     finished = Signal(bool)
 
-    def __init__(self, app: AppProtocol) -> None:
+    def __init__(self, app: HasDevices) -> None:
         super().__init__()
         self.app = app
         self.cancelBatch: bool = False

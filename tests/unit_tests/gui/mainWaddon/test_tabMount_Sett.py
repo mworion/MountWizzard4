@@ -871,7 +871,7 @@ def test_init(function):
     window = MountSett(mainW)
     assert window.mainW is mainW
     assert window.app is mainW.app
-    assert window.msg is mainW.app.msg
+    assert window.msg is mainW.app.signals.ui.msg
     assert window.ui is mainW.ui
 
 

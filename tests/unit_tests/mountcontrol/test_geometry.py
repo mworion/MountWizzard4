@@ -855,7 +855,7 @@ def test_loadParametersFromConfig_2(function):
 def test_updateDomeSettings_signal_connected(function):
     function.geometry.cfg["offGEM"] = 999.0
     function.geometry.offGEM = 0.0
-    function.geometry.parent.app.updateDomeSettings.emit()
+    function.geometry.parent.app.signals.model.updateDomeSettings.emit()
     assert function.geometry.offGEM == 999.0
 
 

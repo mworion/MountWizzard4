@@ -3,6 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import mw4.gui
 import mw4.gui.utilities.qtMain
+import numpy as np
 import pytest
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.tabSat_Track import SatTrack
@@ -562,42 +563,6 @@ def test_selectStartEnd_8(function):
     assert e == 2459215.7
 
 
-def test_filterHorizonForward_1(function):
-    alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
-    az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    function.app.data.horizonP = [[40, 0], [40, 360]]
-    with mock.patch.object(function.app.buildPoint, "isAboveHorizon", return_value=False):
-        alt, az, delay = function.filterHorizonForward(alt, az)
-        assert delay == 10
-
-
-def test_filterHorizonForward_2(function):
-    alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
-    az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    function.app.data.horizonP = [[40, 0], [40, 360]]
-    with mock.patch.object(function.app.data, "isAboveHorizon", return_value=True):
-        alt, az, delay = function.filterHorizonForward(alt, az)
-        assert delay == 0
-
-
-def test_filterHorizonReverse_1(function):
-    alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
-    az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    function.app.data.horizonP = [[40, 0], [40, 360]]
-    with mock.patch.object(function.app.buildPoint, "isAboveHorizon", return_value=False):
-        alt, az, delay = function.filterHorizonReverse(alt, az)
-        assert delay == 10
-
-
-def test_filterHorizonReverse_2(function):
-    alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
-    az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    function.app.data.horizonP = [[40, 0], [40, 360]]
-    with mock.patch.object(function.app.data, "isAboveHorizon", return_value=True):
-        alt, az, delay = function.filterHorizonReverse(alt, az)
-        assert delay == 0
-
-
 def test_filterHorizon_1(function):
     function.ui.avoidHorizon.setChecked(False)
     start = 100 / 86400
@@ -610,17 +575,15 @@ def test_filterHorizon_1(function):
 
 def test_filterHorizon_2(function):
     function.ui.avoidHorizon.setChecked(True)
-    start = 0
-    end = 0
-    alt = [5, 6, 7, 45, 46, 47, 48, 7, 6, 5]
-    az = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    with (
-        mock.patch.object(function, "filterHorizonForward", return_value=([], [], 1)),
-        mock.patch.object(function, "filterHorizonReverse", return_value=([], [], 1)),
+    alt = np.array([5, 45, 46, 5])
+    az = np.array([10, 20, 30, 40])
+    with mock.patch.object(
+        function.app.buildPoint, "isAboveHorizon", side_effect=lambda p: p[0] > 40
     ):
-        start, end, alt, az = function.filterHorizon(start, end, alt, az)
-        assert start == 1 / 86400
-        assert end == -1 / 86400
+        start, end, alt, az = function.filterHorizon(0, 0, alt, az)
+    assert start == 1 / 86400
+    assert end == -1 / 86400
+    assert list(alt) == [45, 46]
 
 
 def test_startProg_1(function):

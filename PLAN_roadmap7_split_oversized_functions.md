@@ -121,7 +121,12 @@ into a **pure function in `logic`** and a thin GUI method:
 - Tests: parametrised tests for old-style (`Number` present) and new-style designations
   using existing test data; IO test with `tmp_path`.
 
-### WP 7 – Tab extraction (A5), incremental (medium/high effort)
+### WP 7 – Tab extraction (A5), incremental (medium/high effort) ✅ done 2026-10-20
+
+Result: `tabSat_Track` calculations moved to `logic/satellites/trackCalculations.py`
+(parameterised, tab keeps thin delegates). `tabModel_Manage`, `tabImage_Manage`, `tabMount_Sett`
+scanned: remaining long methods are UI/worker wiring, nothing cleanly extractable.
+
 
 Scope limited to what is cheap and clearly separable; each tab is its own sub-step:
 

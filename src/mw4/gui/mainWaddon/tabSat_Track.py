@@ -6,6 +6,11 @@ from mw4.base.tpool import Worker, startWorker
 from mw4.gui.mainWaddon.satData import SatData
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, positionCursorInTable
 from mw4.logic.satellites.satellite_calculations import calcSatPasses
+from mw4.logic.satellites.trackCalculations import (
+    calcTrajectoryData,
+    filterHorizon,
+    selectStartEnd,
+)
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.tleParams import TLEParams
 from PySide6.QtWidgets import QLineEdit
@@ -130,23 +135,18 @@ class SatTrack(SatData):
         self.ui.startSatelliteTracking.setText("Start satellite tracking")
         changeStyleDynamic(self.ui.startSatelliteTracking, "run", "false")
 
-    def calcTrajectoryData(self, start: int, end: int) -> tuple[np.ndarray, np.ndarray]:
-        duration = min(end - start, 900 / 86400)
-        if duration < 1 / 86400:
-            return np.array([]), np.array([])
-
+    def calcTrajectoryData(self, start: float, end: float) -> tuple[np.ndarray, np.ndarray]:
         m = self.app.dReg["mount"].instance
-        temp = m.setting.refractionTemp
-        press = m.setting.refractionPress
-        timeSeries = start + np.arange(0, duration, 1 / 86400)
-        timeVec = m.obsSite.ts.tt_jd(timeSeries)
-
-        earth = self.app.ephemeris["earth"]
-        ssb_sat = earth + self.satellite
-        ssb_loc = earth + m.obsSite.location
-        topocentric = ssb_loc.at(timeVec).observe(ssb_sat).apparent()
-        alt, az, _ = topocentric.altaz(pressure_mbar=press, temperature_C=temp)
-        return alt.degrees, az.degrees
+        return calcTrajectoryData(
+            start,
+            end,
+            self.satellite,
+            self.app.ephemeris["earth"],
+            m.obsSite.location,
+            m.obsSite.ts,
+            m.setting.refractionTemp,
+            m.setting.refractionPress,
+        )
 
     def calcTrajectoryAndShow(self) -> None:
         useInternal = self.ui.useInternalSatCalc.isChecked()
@@ -285,68 +285,17 @@ class SatTrack(SatData):
         location = self.app.dReg["mount"].obsSite.location
         self.app.updateSatellite.emit(now, location)
 
-    def selectStartEnd(self) -> tuple[int, int]:
-        if not self.satOrbits:
-            return 0, 0
-        if "rise" not in self.satOrbits[0]:
-            return 0, 0
-        if "settle" not in self.satOrbits[0]:
-            return 0, 0
-
-        isBefore = self.ui.satBeforeFlip.isChecked()
-        isAfter = self.ui.satAfterFlip.isChecked()
-        start = self.satOrbits[0]["rise"].tt
-        end = self.satOrbits[0]["settle"].tt
-
-        if isBefore and isAfter:
-            pass
-        elif isBefore and not isAfter:
-            if "flipLate" in self.satOrbits[0]:
-                end = self.satOrbits[0]["flipLate"].tt
-        elif not isBefore and isAfter:
-            if "flipEarly" in self.satOrbits[0]:
-                start = self.satOrbits[0]["flipEarly"].tt
-        else:
-            return 0, 0
-
-        return start, end
-
-    def filterHorizonForward(
-        self, alt: np.ndarray, az: np.ndarray
-    ) -> tuple[np.ndarray, np.ndarray, int]:
-        timeDelayStart = 0
-        for altitude, azimuth in zip(alt, az, strict=True):
-            if self.app.buildPoint.isAboveHorizon([altitude, azimuth]):
-                break
-            timeDelayStart += 1
-            alt = np.delete(alt, 0)
-            az = np.delete(az, 0)
-        return alt, az, timeDelayStart
-
-    def filterHorizonReverse(
-        self, alt: np.ndarray, az: np.ndarray
-    ) -> tuple[np.ndarray, np.ndarray, int]:
-        timeDelayEnd = 0
-        for altitude, azimuth in reversed(list(zip(alt, az, strict=True))):
-            if self.app.buildPoint.isAboveHorizon([altitude, azimuth]):
-                break
-            timeDelayEnd += 1
-            alt = np.delete(alt, -1)
-            az = np.delete(az, -1)
-        return alt, az, timeDelayEnd
+    def selectStartEnd(self) -> tuple[float, float]:
+        return selectStartEnd(
+            self.satOrbits, self.ui.satBeforeFlip.isChecked(), self.ui.satAfterFlip.isChecked()
+        )
 
     def filterHorizon(
         self, start: float, end: float, alt: np.ndarray, az: np.ndarray
     ) -> tuple[float, float, np.ndarray, np.ndarray]:
         if not self.ui.avoidHorizon.isChecked():
             return start, end, alt, az
-
-        alt, az, timeDelayStart = self.filterHorizonForward(alt, az)
-        alt, az, timeDelayEnd = self.filterHorizonReverse(alt, az)
-        start += timeDelayStart / 86400
-        end -= timeDelayEnd / 86400
-
-        return start, end, alt, az
+        return filterHorizon(start, end, alt, az, self.app.buildPoint.isAboveHorizon)
 
     def startProg(self) -> None:
         self.clearTrackingParameters()

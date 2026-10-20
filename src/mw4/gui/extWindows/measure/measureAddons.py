@@ -7,7 +7,7 @@ from typing import Any
 PlotDef = dict[str, Any]
 
 
-def lineItem(name: str, pen: str) -> PlotDef:
+def lineItem(name: str, pen: list[int]) -> PlotDef:
     return {"plotItemRef": None, "name": name, "pen": pen}
 
 

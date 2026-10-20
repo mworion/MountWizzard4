@@ -79,7 +79,7 @@ class Materials(Styles):
     def createMetalRoughMaterials(self) -> None:
         self.mountBlack = self.createMetalRough(QColor(127, 127, 127), 0.8, 0.5)
         self.aluminiumGrey = self.createMetalRough(QColor(164, 164, 192), 0.3, 0.5)
-        self.environ = self.createMetalRough(self.M_PRIM2, 0.5, 0.5)
+        self.environ = self.createMetalRough(QColor(*self.M_PRIM2), 0.5, 0.5)
         self.stainless = self.createMetalRough(QColor(255, 255, 255), 0.9, 0.8)
         self.domeColumn = self.createMetalRough(QColor(150, 90, 50), 0, 1)
 

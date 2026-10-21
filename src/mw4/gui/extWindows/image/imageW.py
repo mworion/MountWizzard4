@@ -272,7 +272,7 @@ class ImageWindow(MWidget):
         self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)
 
     def exposeImageDone(self, imagePath: Path) -> None:
-        self.msg.emit(0, "Image", "Exposing finished", imagePath.stem)
+        self.msg.emit(0, "Image", "Downloaded", imagePath.stem)
         self.imageFileName = imagePath
         if self.ui.autoSolve.isChecked():
             self.signals.solveImage.emit(imagePath)

@@ -5,13 +5,12 @@ import pytest
 from mw4.logic.drivers.lightPanel.lightPanel import LightPanel
 from mw4.logic.drivers.lightPanel.lightPanelIndi import LightPanelIndi
 from queue import Queue
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        cover = LightPanel(App())
+        cover = LightPanel(makeApp())
         func = LightPanelIndi(parent=cover)
         func.config.deviceName = "test_cover"
     except (

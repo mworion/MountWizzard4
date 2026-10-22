@@ -5,13 +5,12 @@ import pytest
 from mw4.logic.drivers.cover.cover import Cover
 from mw4.logic.drivers.cover.coverIndi import CoverIndi
 from queue import Queue
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        cover = Cover(App())
+        cover = Cover(makeApp())
         func = CoverIndi(parent=cover)
         func.config.deviceName = "test_cover"
     except (

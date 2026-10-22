@@ -5,14 +5,13 @@
 import pytest
 from mw4.base import platformInfo
 from mw4.logic.drivers.powerswitch.pegasusUPB import PegasusUPB
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        func = PegasusUPB(app=App())
+        func = PegasusUPB(app=makeApp())
     except (
         RuntimeError,
         ImportError,
@@ -46,20 +45,6 @@ def test_properties(function):
 # ---------------------------------------------------------------------------
 # startCommunication / stopCommunication
 # ---------------------------------------------------------------------------
-
-
-def test_startCommunication(function):
-    """startCommunication() delegates to the active framework adapter."""
-    function.framework = "indi"
-    with mock.patch.object(function.run["indi"], "startCommunication", return_value=True):
-        function.startCommunication()
-
-
-def test_stopCommunication(function):
-    """stopCommunication() delegates to the active framework adapter."""
-    function.framework = "indi"
-    with mock.patch.object(function.run["indi"], "stopCommunication", return_value=True):
-        function.stopCommunication()
 
 
 # ---------------------------------------------------------------------------
@@ -151,11 +136,10 @@ def test_pegasusUPBAscom_import():
 
 
 @pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
-def test_pegasusUPB_ascom_in_run():
+def test_pegasusUPB_ascom_in_run(makeApp):
     from mw4.logic.drivers.powerswitch.pegasusUPB import PegasusUPB
-    from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
-    function = PegasusUPB(app=App())
+    function = PegasusUPB(app=makeApp())
     if platformInfo.IS_WINDOWS:
         assert "ascom" in function.run
         assert function.run["ascom"] is not None

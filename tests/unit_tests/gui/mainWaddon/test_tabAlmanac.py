@@ -10,15 +10,14 @@ from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtGui import QPixmap
 from skyfield.api import wgs84
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def almanac(qapp):
+def almanac(qapp, makeApp):
     """Setup Almanac fixture for testing."""
     mainW = MWidget()
-    mainW.app = App()
+    mainW.app = makeApp()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     # Mock timeMgr methods

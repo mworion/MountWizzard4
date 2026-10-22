@@ -10,14 +10,13 @@ from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from PySide6.QtCore import QPointF
 from PySide6.QtWidgets import QApplication
 from skyfield.api import Angle, wgs84
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     shutil.copy("tests/testData/terrain.jpg", "tests/work/config/terrain.jpg")
-    func = HemisphereDraw(parentWindow=HemisphereWindow(app=App(), title="Hemisphere"))
+    func = HemisphereDraw(parentWindow=HemisphereWindow(app=makeApp(), title="Hemisphere"))
     yield func
     QApplication.processEvents()
     gc.collect()

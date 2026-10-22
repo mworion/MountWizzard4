@@ -12,13 +12,12 @@ from mw4.logic.drivers.camera.camera import Camera
 from mw4.logic.drivers.camera.cameraAlpacaAscomBase import CameraAlpacaAscomBase
 from mw4.logic.drivers.camera.cameraAscom import CameraAscom
 from mw4.logic.drivers.frameworks.ascomClass import AscomClass
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        camera = Camera(App())
+        camera = Camera(makeApp())
         camera.exposureTime = 1
         camera.binning = 1
         camera.focalLength = 1

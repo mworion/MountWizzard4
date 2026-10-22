@@ -8,7 +8,6 @@ import skyfield.api
 from mw4.mountcontrol import obsSite
 from mw4.mountcontrol.model import Model, ModelStar, ProgStar
 from skyfield.api import Angle, Star, wgs84
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
@@ -330,32 +329,32 @@ def test_AlignStar_coord2():
     assert math.isclose(alignStar.coord.dec.dms()[2], 0, abs_tol=1e-6)
 
 
-def test_AlignStar_number():
-    obsSite = App().mount.obsSite
+def test_AlignStar_number(makeApp):
+    obsSite = makeApp().mount.obsSite
     obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
     alignStar = ModelStar()
     alignStar.number = 6
     assert alignStar.number == 6
 
 
-def test_AlignStar_errorAngle():
-    obsSite = App().mount.obsSite
+def test_AlignStar_errorAngle(makeApp):
+    obsSite = makeApp().mount.obsSite
     obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
     alignStar = ModelStar()
     alignStar.errorAngle = Angle(degrees=50)
     assert alignStar.errorAngle.degrees == 50
 
 
-def test_AlignStar_errorRMS():
-    obsSite = App().mount.obsSite
+def test_AlignStar_errorRMS(makeApp):
+    obsSite = makeApp().mount.obsSite
     obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
     alignStar = ModelStar()
     alignStar.errorRMS = 6
     assert alignStar.errorRMS == 6
 
 
-def test_AlignStar_error_DEC_RA():
-    obsSite = App().mount.obsSite
+def test_AlignStar_error_DEC_RA(makeApp):
+    obsSite = makeApp().mount.obsSite
     obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
     alignStar = ModelStar()
     alignStar.errorRMS = 6
@@ -587,8 +586,8 @@ def test_Model_parseNumberStars_not_ok3():
     assert not suc
 
 
-def test_Model_parseStars_ok():
-    obsSite = App().mount.obsSite
+def test_Model_parseStars_ok(makeApp):
+    obsSite = makeApp().mount.obsSite
     obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 
     model = Model(parent=makeParent())
@@ -610,8 +609,8 @@ def test_Model_parseStars_ok():
     assert len(model.starList) == 11
 
 
-def test_Model_parseStars_malformedFields():
-    obsSite = App().mount.obsSite
+def test_Model_parseStars_malformedFields(makeApp):
+    obsSite = makeApp().mount.obsSite
     obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 
     model = Model(parent=makeParent())
@@ -624,8 +623,8 @@ def test_Model_parseStars_malformedFields():
     assert len(model.starList) == 0
 
 
-def test_Model_parseStars_not_ok1():
-    obsSite = App().mount.obsSite
+def test_Model_parseStars_not_ok1(makeApp):
+    obsSite = makeApp().mount.obsSite
     obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 
     model = Model(parent=makeParent())
@@ -697,8 +696,8 @@ def test_getStars_1():
         assert not suc
 
 
-def test_getStars_2():
-    obsSite = App().mount.obsSite
+def test_getStars_2(makeApp):
+    obsSite = makeApp().mount.obsSite
     obsSite.location = wgs84.latlon(latitude_degrees=0, longitude_degrees=0, elevation_m=0)
 
     model = Model(parent=makeParent())
@@ -949,8 +948,8 @@ def gatherData(number):
     return build
 
 
-def test_parseNumberNames_chunk_mismatch():
-    model = Model(App().mount)
+def test_parseNumberNames_chunk_mismatch(makeApp):
+    model = Model(makeApp().mount)
     suc = model.parseNumberNames(["1"], 2)
     assert not suc
 

@@ -13,17 +13,16 @@ from mw4.mountcontrol.tleParams import TLEParams
 from PySide6.QtWidgets import QComboBox, QGroupBox, QTableWidget, QTableWidgetItem
 from sgp4.exporter import export_tle
 from skyfield.api import Angle, EarthSatellite
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     def test():
         return
 
     mainW = MWidget()
-    mainW.app = App()
+    mainW.app = makeApp()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     window = SatTrack(mainW)

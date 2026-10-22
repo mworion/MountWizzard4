@@ -1,0 +1,790 @@
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
+import pytest
+import re
+from dataclasses import dataclass, field
+from mw4.deviceRegistry import DeviceEntry, DeviceRegistry
+from pathlib import Path
+from typing import get_args, get_overloads, get_type_hints
+from unittest import mock
+from unittest.mock import MagicMock, patch
+
+
+@pytest.fixture()
+def registry(makeApp) -> DeviceRegistry:
+    """Registry fixture with full app and devices populated."""
+    try:
+        app = makeApp()
+        dReg = DeviceRegistry(app, mount=app.mount)
+        dReg.addDevices()
+        return dReg
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
+        pytest.skip(f"Registry initialization failed: {e}")
+
+
+def test_deviceEntrySignalsPropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError):
+        _ = entry.signals
+
+
+def test_deviceEntryDataPropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError):
+        _ = entry.data
+
+
+def test_deviceEntryObsSitePropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError):
+        _ = entry.obsSite
+
+
+def test_deviceEntrySettingPropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError):
+        _ = entry.setting
+
+
+def test_deviceEntryLocationPropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError):
+        _ = entry.location
+
+
+def test_deviceEntryTimeJDPropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError):
+        _ = entry.timeJD
+
+
+def test_deviceEntryModelPropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError):
+        _ = entry.model
+
+
+def test_deviceEntryGeometryPropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError):
+        _ = entry.geometry
+
+
+def test_deviceEntryFirmwarePropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError):
+        _ = entry.firmware
+
+
+def test_deviceEntrySatellitePropertyRaisesWhenInstanceNone() -> None:
+    entry = DeviceEntry(name="refraction", instance=None, deviceType=None, isConfigurable=False)
+    with pytest.raises(AttributeError):
+        _ = entry.satellite
+
+
+# ------------------------------------------------------------------
+# DeviceRegistry — population
+# ------------------------------------------------------------------
+def test_initiallyNotEmpty(registry: DeviceRegistry) -> None:
+    assert "camera" in registry.d
+    assert "dome" in registry.d
+    assert "mount" in registry.d
+
+
+def test_driversHaveRequiredFields(registry: DeviceRegistry) -> None:
+    for name, entry in registry.d.items():
+        assert isinstance(entry, DeviceEntry)
+        assert entry.name == name
+        assert hasattr(entry, "instance")
+        assert hasattr(entry, "deviceType")
+        assert hasattr(entry, "stat")
+        assert hasattr(entry, "isConfigurable")
+
+
+def test_cameraDriverExists(registry: DeviceRegistry) -> None:
+    assert "camera" in registry.d
+    entry = registry.d["camera"]
+    assert entry.instance is not None
+    assert entry.deviceType == "camera"
+    assert entry.isConfigurable is True
+
+
+def test_domeDriverExists(registry: DeviceRegistry) -> None:
+    assert "dome" in registry.d
+    entry = registry.d["dome"]
+    assert entry.instance is not None
+    assert entry.deviceType == "dome"
+    assert entry.isConfigurable is True
+
+
+def test_mountDriverExists(registry: DeviceRegistry) -> None:
+    assert "mount" in registry.d
+    entry = registry.d["mount"]
+    assert entry.instance is not None
+    assert entry.isConfigurable is False
+
+
+def test_refractionIsNotConfigurable(registry: DeviceRegistry) -> None:
+    entry = registry.d["refraction"]
+    assert entry.instance is None
+    assert entry.isConfigurable is False
+
+
+# ------------------------------------------------------------------
+# DeviceRegistry — mapping protocol
+# ------------------------------------------------------------------
+def test_registryGetItem(registry: DeviceRegistry) -> None:
+    entry = registry["camera"]
+    assert isinstance(entry, DeviceEntry)
+    assert entry.name == "camera"
+
+
+def test_registryContains(registry: DeviceRegistry) -> None:
+    assert "camera" in registry
+    assert "nonexistent" not in registry
+
+
+def test_registryIter(registry: DeviceRegistry) -> None:
+    names = list(registry)
+    assert "camera" in names
+    assert "mount" in names
+    assert "refraction" in names
+
+
+# ------------------------------------------------------------------
+# DeviceRegistry — configurable() iterator
+# ------------------------------------------------------------------
+def test_configurableExcludesMount(registry: DeviceRegistry) -> None:
+    names = [e.name for e in registry.configurable()]
+    assert "mount" not in names
+
+
+def test_configurableExcludesRefraction(registry: DeviceRegistry) -> None:
+    names = [e.name for e in registry.configurable()]
+    assert "refraction" not in names
+
+
+def test_configurableIncludesCamera(registry: DeviceRegistry) -> None:
+    names = [e.name for e in registry.configurable()]
+    assert "camera" in names
+
+
+def test_configurableAllHaveInstance(registry: DeviceRegistry) -> None:
+    for entry in registry.configurable():
+        assert entry.instance is not None
+
+
+# ------------------------------------------------------------------
+# DeviceRegistry — setStat()
+# ------------------------------------------------------------------
+def test_setStatTrue(registry: DeviceRegistry) -> None:
+    registry.setStat("camera", True)
+    assert registry.d["camera"].stat is True
+
+
+def test_setStatFalse(registry: DeviceRegistry) -> None:
+    registry.setStat("mount", False)
+    assert registry.d["mount"].stat is False
+
+
+def test_setStatNone(registry: DeviceRegistry) -> None:
+    registry.setStat("refraction", None)
+    assert registry.d["refraction"].stat is None
+
+
+# ------------------------------------------------------------------
+# DeviceRegistry — two-phase initialization pattern
+# ------------------------------------------------------------------
+def test_initPhase1OnlyMountExists(makeApp) -> None:
+    """After __init__, only mount device exists."""
+    try:
+        app = makeApp()
+        dReg = DeviceRegistry(app, mount=app.mount)
+        assert "mount" in dReg.d
+        assert "camera" not in dReg.d
+        assert "dome" not in dReg.d
+        assert len(dReg.d) == 1
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
+        pytest.skip(f"App initialization failed: {e}")
+
+
+def test_initPhase2AllDevicesExist(makeApp) -> None:
+    """After addDevices(), all devices exist."""
+    try:
+        app = makeApp()
+        dReg = DeviceRegistry(app, mount=app.mount)
+        dReg.addDevices()
+        assert "mount" in dReg.d
+        assert "camera" in dReg.d
+        assert "dome" in dReg.d
+        assert "refraction" in dReg.d
+        assert len(dReg.d) > 1
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
+        pytest.skip(f"App initialization failed: {e}")
+
+
+def test_initPhase2MountAccessibleDuringAddDevices(makeApp) -> None:
+    """Injected mount is kept before and after addDevices()."""
+    app = makeApp()
+    dReg = DeviceRegistry(app, mount=app.mount)
+    assert dReg["mount"].instance is app.mount
+    dReg.addDevices()
+    assert dReg["mount"].instance is app.mount
+
+
+def test_initProductionCreatesNewMount(makeApp) -> None:
+    """Without an injected mount, __init__ creates a MountDevice, no write-back."""
+    from mw4.mountcontrol.mount import MountDevice
+
+    app = makeApp()
+    stubMount = app.mount
+    dReg = DeviceRegistry(app)
+    assert isinstance(dReg["mount"].instance, MountDevice)
+    assert app.mount is stubMount
+
+
+def test_initInjectedMount(makeApp) -> None:
+    """An injected mount is used as instance, the app is not modified."""
+    app = makeApp()
+    stubMount = app.mount
+    sentinel = object()
+    dReg = DeviceRegistry(app, mount=sentinel)
+    assert dReg["mount"].instance is sentinel
+    assert app.mount is stubMount
+
+
+def test_initIgnoresAppMountAttribute(makeApp) -> None:
+    """A mount attribute on the app is not picked up by the registry."""
+    from mw4.mountcontrol.mount import MountDevice
+
+    app = makeApp()
+    app.mount = MagicMock()
+    dReg = DeviceRegistry(app)
+    assert dReg["mount"].instance is not app.mount
+    assert isinstance(dReg["mount"].instance, MountDevice)
+
+
+# ------------------------------------------------------------------
+# DeviceRegistry — signal connections
+# ------------------------------------------------------------------
+def test_initConnectsStopDevicesSignal(registry: DeviceRegistry, makeApp) -> None:
+    """Test that stopDevices signal is connected during initialization."""
+    # Create new app and registry to test connections
+    try:
+        app = makeApp()
+        dReg = DeviceRegistry(app, mount=app.mount)
+        # If no exception, signals are properly connected
+        assert dReg.app is app
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
+        pytest.skip(f"Signal connection test failed: {e}")
+
+
+def test_initConnectsStartStopDeviceSignals(registry: DeviceRegistry, makeApp) -> None:
+    """Test that device-specific start/stop signals are connected."""
+    # Test that when signals are emitted, registry handles them
+    app = makeApp()
+    dReg = DeviceRegistry(app, mount=app.mount)
+    dReg.addDevices()
+
+    # The connections should be established without errors
+    # Verify startDevice and stopDevice are connected
+    assert dReg.app is app
+
+
+def test_deviceConnectedEmitsMessage(registry: DeviceRegistry) -> None:
+    """Test that deviceConnected emits message signal."""
+    from unittest.mock import MagicMock
+
+    # Mock the msg signal to capture emission
+    registry.app.signals.ui.msg = MagicMock()
+
+    # Mock sender to return a specific signal object
+    mock_sender = MagicMock()
+    registry.signalsToName[id(mock_sender)] = "camera"
+
+    with mock.patch.object(registry, "sender", return_value=mock_sender):
+        # Call deviceConnected with the device name as parameter
+        registry.deviceConnected("INDI::camera")
+
+    # Verify the signal was emitted with correct parameters
+    registry.app.signals.ui.msg.emit.assert_called_once_with(
+        0, "Driver", "Device connected", "INDI::camera::camera"
+    )
+    # Verify stat was set to True
+    assert registry.d["camera"].stat is True
+
+
+def test_deviceDisconnectedEmitsMessage(registry: DeviceRegistry) -> None:
+    """Test that deviceDisconnected emits message signal."""
+    from unittest.mock import MagicMock
+
+    # Mock the msg signal to capture emission
+    registry.app.signals.ui.msg = MagicMock()
+
+    # Mock sender to return a specific signal object
+    mock_sender = MagicMock()
+    registry.signalsToName[id(mock_sender)] = "dome"
+
+    with mock.patch.object(registry, "sender", return_value=mock_sender):
+        # Call deviceDisconnected with the device name as parameter
+        registry.deviceDisconnected("INDI::dome")
+
+    # Verify the signal was emitted with correct parameters
+    registry.app.signals.ui.msg.emit.assert_called_once_with(
+        0, "Driver", "Device disconnected", "INDI::dome::dome"
+    )
+    # Verify stat was set to False
+    assert registry.d["dome"].stat is False
+
+
+def test_deviceConnectedUpdatesStatBeforeMessage(registry: DeviceRegistry) -> None:
+    """Test that deviceConnected sets stat to True before emitting message."""
+    from unittest.mock import MagicMock
+
+    # Set up recording of method calls
+    registry.app.signals.ui.msg = MagicMock()
+
+    # Mock sender to return a specific signal object
+    mock_sender = MagicMock()
+    registry.signalsToName[id(mock_sender)] = "camera"
+
+    with mock.patch.object(registry, "sender", return_value=mock_sender):
+        # Call deviceConnected
+        registry.deviceConnected("TestCamera")
+
+    # Verify stat was updated
+    assert registry.d["camera"].stat is True
+    # Verify message was emitted
+    assert registry.app.signals.ui.msg.emit.called
+
+
+def test_deviceDisconnectedUpdatesStatBeforeMessage(registry: DeviceRegistry) -> None:
+    """Test that deviceDisconnected sets stat to False before emitting message."""
+    from unittest.mock import MagicMock
+
+    # First set stat to True
+    registry.setStat("camera", True)
+    registry.app.signals.ui.msg = MagicMock()
+
+    # Mock sender to return a specific signal object
+    mock_sender = MagicMock()
+    registry.signalsToName[id(mock_sender)] = "camera"
+
+    with mock.patch.object(registry, "sender", return_value=mock_sender):
+        # Call deviceDisconnected
+        registry.deviceDisconnected("TestCamera")
+
+    # Verify stat was updated
+    assert registry.d["camera"].stat is False
+    # Verify message was emitted
+    assert registry.app.signals.ui.msg.emit.called
+
+
+# ------------------------------------------------------------------
+# DeviceRegistry — config management
+# ------------------------------------------------------------------
+def test_collectConfigFromSingleDeviceWithoutConfig(registry: DeviceRegistry) -> None:
+    """Test collectConfigFromSingleDevice when device has no config attribute."""
+    from unittest.mock import MagicMock
+
+    # Mock a device without config attribute
+    mock_device = MagicMock()
+    mock_device.framework = "indi"
+    mock_device.run = {"indi": MagicMock(spec=[])}  # No config attribute
+    registry.d["camera"].instance = mock_device
+
+    result = registry.collectConfigFromSingleDevice("camera")
+    assert "framework" in result
+    assert result["framework"] == "indi"
+
+
+def test_writeConfigToSingleDeviceWithMissingFrameworkConfig(
+    registry: DeviceRegistry,
+) -> None:
+    """Test writeConfigToSingleDevice with config missing framework."""
+    cfgDevice = {"framework": "indi"}
+    # Should not raise error even though alpaca framework not in config
+    registry.writeConfigToSingleDevice("camera", cfgDevice)
+    assert registry.d["camera"].instance.framework == "indi"
+
+
+def test_writeConfigToAllDevicesSkipsUnknownDevices(registry: DeviceRegistry) -> None:
+    """Test writeConfigToAllDevices skips devices not in config."""
+    cfgSetting = {"nonexistent": {"framework": "indi"}}
+    # Should not raise error for nonexistent device in config
+    registry.writeConfigToAllDevices(cfgSetting)
+
+
+def test_stopDeviceWithoutFramework(registry: DeviceRegistry) -> None:
+    """Test stopDevice returns early when framework is empty."""
+    registry.d["camera"].instance.framework = ""
+    registry.setStat("camera", True)
+    registry.stopDevice("camera")
+    # Should return early and not clear data since framework is empty
+    assert registry.d["camera"].instance.framework == ""
+
+
+def test_stopDeviceWithoutDeviceName(registry: DeviceRegistry) -> None:
+    """Test stopDevice returns early when deviceName is empty."""
+    from unittest.mock import MagicMock
+
+    registry.d["camera"].instance.framework = "indi"
+    mock_config = MagicMock()
+    mock_config.deviceName = ""
+    registry.d["camera"].run["indi"].config = mock_config
+    old_data_id = id(registry.d["camera"].data)
+    registry.stopDevice("camera")
+    # Should return early and not clear data
+    assert id(registry.d["camera"].data) == old_data_id
+
+
+def test_startDeviceWithoutFramework(registry: DeviceRegistry) -> None:
+    """Test startDevice returns early when framework is empty."""
+    registry.d["camera"].instance.framework = ""
+    registry.startDevice("camera")
+    # Should return early without setting stat
+    assert registry.d["camera"].stat is None
+
+
+def test_startDeviceWithoutDeviceName(registry: DeviceRegistry) -> None:
+    """Test startDevice returns early when deviceName is empty."""
+    from unittest.mock import MagicMock
+
+    registry.d["camera"].instance.framework = "indi"
+    registry.d["camera"].run["camera"] = registry.d["camera"].run["indi"]
+    mock_config = MagicMock()
+    mock_config.deviceName = ""
+    registry.d["camera"].run["indi"].config = mock_config
+    registry.startDevice("camera")
+    # Should return early without setting stat
+    assert registry.d["camera"].stat is None
+
+
+# ------------------------------------------------------------------
+# Additional deviceRegistry tests for complete coverage
+# ------------------------------------------------------------------
+def test_writeConfigToSingleDeviceWithConfigFields(registry: DeviceRegistry) -> None:
+    """Test writeConfigToSingleDevice actually sets config fields."""
+    from dataclasses import dataclass, field
+    from unittest.mock import MagicMock
+
+    # Create a mock config object with fields
+    @dataclass
+    class MockConfig:
+        testField: str = field(default="default")
+
+    # Setup mock device with config
+    mock_device = MagicMock()
+    mock_device.framework = "indi"
+    mock_device.run = {"indi": MagicMock()}
+    mock_device.run["indi"].config = MockConfig()
+    registry.d["camera"].instance = mock_device
+
+    cfgDevice = {
+        "framework": "indi",
+        "indi": {"testField": "new_value"},
+    }
+    registry.writeConfigToSingleDevice("camera", cfgDevice)
+    # Verify config field was set
+    assert registry.d["camera"].instance.run["indi"].config.testField == "new_value"
+
+
+def test_stopDeviceActuallyStopping(registry: DeviceRegistry) -> None:
+    """Test stopDevice calls stopCommunication when framework and deviceName are set."""
+    from unittest.mock import MagicMock
+
+    registry.d["camera"].instance.framework = "indi"
+    mock_config = MagicMock()
+    mock_config.deviceName = "test_camera"
+    registry.d["camera"].run["indi"].config = mock_config
+
+    # Mock instance methods and data
+    registry.d["camera"].instance.stopCommunication = MagicMock()
+    registry.d["camera"].instance.data = {"test": "data"}
+
+    registry.stopDevice("camera")
+    # Verify stopCommunication was called
+    registry.d["camera"].instance.stopCommunication.assert_called_once()
+    # Verify data was cleared
+    assert registry.d["camera"].instance.data == {}
+    # Verify stat was set to None
+    assert registry.d["camera"].stat is None
+
+
+def test_startDeviceActuallyStarting(registry: DeviceRegistry) -> None:
+    """Test startDevice calls startCommunication when framework and deviceName are set."""
+    from unittest.mock import MagicMock
+
+    registry.d["camera"].instance.framework = "indi"
+    mock_config = MagicMock()
+    mock_config.deviceName = "test_camera"
+    registry.d["camera"].run["indi"].config = mock_config
+    registry.d["camera"].run["camera"] = registry.d["camera"].run["indi"]
+
+    # Mock instance methods
+    registry.d["camera"].instance.startCommunication = MagicMock()
+
+    registry.startDevice("camera")
+    # Verify startCommunication was called
+    registry.d["camera"].instance.startCommunication.assert_called_once()
+    # Verify stat was set to False
+    assert registry.d["camera"].stat is False
+
+
+def test_writeConfigToAllDevicesCallsWriteConfigToSingleDevice(
+    registry: DeviceRegistry,
+) -> None:
+    """Test writeConfigToAllDevices calls writeConfigToSingleDevice for known devices."""
+    from unittest.mock import patch
+
+    cfgSetting = {"camera": {"framework": "indi"}}
+    with patch.object(registry, "writeConfigToSingleDevice") as mock_write_config:
+        registry.writeConfigToAllDevices(cfgSetting)
+        # Verify writeConfigToSingleDevice was called with camera device
+        mock_write_config.assert_called_once()
+        call_args = mock_write_config.call_args
+        assert call_args[0][0] == "camera"
+        assert call_args[0][1] == cfgSetting["camera"]
+
+
+def test_writeConfigToSingleDeviceSkipsFrameworkWithoutConfig(
+    registry: DeviceRegistry,
+) -> None:
+    """Test writeConfigToSingleDevice skips frameworks that don't have config."""
+    from dataclasses import dataclass, field
+    from unittest.mock import MagicMock
+
+    @dataclass
+    class MockConfig:
+        testField: str = field(default="value")
+
+    # Create a device with one framework that has config and one that doesn't
+    mock_device = MagicMock()
+    mock_device.framework = "indi"
+    mock_device.run = {
+        "indi": MagicMock(config=MockConfig()),  # Has config
+        "alpaca": MagicMock(spec=[]),  # No config attribute
+    }
+    registry.d["camera"].instance = mock_device
+
+    cfgDevice = {
+        "framework": "indi",
+        "indi": {"testField": "value"},
+        "alpaca": {"testField": "value"},  # This should be skipped
+    }
+    registry.writeConfigToSingleDevice("camera", cfgDevice)
+    # Should not raise error - alpaca framework without config should be skipped
+
+
+def test_writeConfigToSingleDeviceSkipsMissingConfigField(
+    registry: DeviceRegistry,
+) -> None:
+    """Test writeConfigToSingleDevice skips fields not in config dict."""
+    from dataclasses import dataclass, field
+
+    @dataclass
+    class MockConfig:
+        field1: str = field(default="default")
+        field2: str = field(default="default")
+
+    mock_device = registry.d["camera"].instance
+    mock_device.framework = "indi"
+    mock_device.run["indi"].config = MockConfig()
+
+    # Only provide field1 in config, not field2
+    cfgDevice = {"framework": "indi", "indi": {"field1": "new_value"}}
+    registry.writeConfigToSingleDevice("camera", cfgDevice)
+    # Verify field1 was set, field2 remained default
+    assert mock_device.run["indi"].config.field1 == "new_value"
+    assert mock_device.run["indi"].config.field2 == "default"
+
+
+def test_collectConfigFromSingleDeviceWithFields(registry: DeviceRegistry) -> None:
+    """Test collectConfigFromSingleDevice collects fields from config."""
+
+    @dataclass
+    class MockConfig:
+        testField1: str = field(default="value1")
+        testField2: str = field(default="value2")
+
+    mock_device = registry.d["camera"].instance
+    mock_device.framework = "indi"
+    mock_device.run["indi"] = MagicMock()
+    mock_device.run["indi"].config = MockConfig()
+
+    result = registry.collectConfigFromSingleDevice("camera")
+    assert "framework" in result
+    assert result["framework"] == "indi"
+    assert "indi" in result
+    assert result["indi"]["testField1"] == "value1"
+    assert result["indi"]["testField2"] == "value2"
+
+
+def test_collectConfigFromAllDevices(registry: DeviceRegistry) -> None:
+    """Test collectConfigFromAllDevices collects config from all devices."""
+
+    @dataclass
+    class MockConfig:
+        testField: str = field(default="test_value")
+
+    # Setup mock device
+    mock_device = registry.d["camera"].instance
+    mock_device.framework = "indi"
+    mock_device.run["indi"] = MagicMock()
+    mock_device.run["indi"].config = MockConfig()
+
+    result = registry.collectConfigFromAllDevices()
+    assert isinstance(result, dict)
+    assert "camera" in result
+
+
+def test_initConfig(registry: DeviceRegistry) -> None:
+    """Test initConfig calls writeConfigToAllDevices and writeConfigToSingleDevice."""
+    with (
+        patch.object(registry, "writeConfigToAllDevices") as mock_write_all,
+        patch.object(registry, "writeConfigToSingleDevice") as mock_write_single,
+    ):
+        registry.app.config["SettingDevice"] = {}
+        registry.app.config["SettingDeviceMount"] = {}
+        registry.initConfig()
+        mock_write_all.assert_called_once_with({})
+        mock_write_single.assert_called_once_with("mount", {})
+
+
+def test_storeConfig(registry: DeviceRegistry) -> None:
+    """Test storeConfig saves collected config to app.config."""
+
+    @dataclass
+    class MockConfig:
+        testField: str = field(default="test_value")
+
+    mock_device = registry.d["camera"].instance
+    mock_device.framework = "indi"
+    mock_device.run["indi"] = MagicMock()
+    mock_device.run["indi"].config = MockConfig()
+
+    registry.storeConfig()
+    assert "SettingDevice" in registry.app.config
+    assert isinstance(registry.app.config["SettingDevice"], dict)
+
+
+def test_stopDevicesIteratesConfigurable(registry: DeviceRegistry) -> None:
+    """Test stopDevices calls stopDevice for all configurable devices."""
+    with patch.object(registry, "stopDevice") as mock_stop:
+        registry.stopDevices()
+        assert mock_stop.called
+
+
+def test_startDevicesIteratesConfigurable(registry: DeviceRegistry) -> None:
+    """Test startDevices calls startDevice for all configurable devices."""
+    with patch.object(registry, "startDevice") as mock_start:
+        registry.startDevices()
+        assert mock_start.called
+
+
+def test_deviceConnectedWithUnknownSender(registry: DeviceRegistry) -> None:
+    """Test deviceConnected returns early when sender is not in signalsToName."""
+    registry.app.signals.ui.msg = MagicMock()
+    unknown_sender = MagicMock()
+    # Don't add to signalsToName
+
+    with mock.patch.object(registry, "sender", return_value=unknown_sender):
+        registry.deviceConnected("test_device")
+
+    # Verify msg.emit was not called
+    registry.app.signals.ui.msg.emit.assert_not_called()
+
+
+def test_deviceDisconnectedWithUnknownSender(registry: DeviceRegistry) -> None:
+    """Test deviceDisconnected returns early when sender is not in signalsToName."""
+    registry.app.signals.ui.msg = MagicMock()
+    unknown_sender = MagicMock()
+    # Don't add to signalsToName
+
+    with mock.patch.object(registry, "sender", return_value=unknown_sender):
+        registry.deviceDisconnected("test_device")
+
+    # Verify msg.emit was not called
+    registry.app.signals.ui.msg.emit.assert_not_called()
+
+
+def test_addDevicesSkipsSignalsForInstanceWithoutSignals(makeApp) -> None:
+    app = makeApp()
+    dReg = DeviceRegistry(app, mount=app.mount)
+    with patch("mw4.deviceRegistry.MeasureData", lambda app: object()):
+        dReg.addDevices()
+    assert id(dReg.d["mount"].signals) in dReg.signalsToName
+    assert "measure" not in dReg.signalsToName.values()
+
+
+# ------------------------------------------------------------------
+# Typed access
+# ------------------------------------------------------------------
+def typedNames(registry: DeviceRegistry) -> set[str]:
+    return set(registry.d)
+
+
+def test_typedAttributeIsSameObjectAsDictEntry(registry: DeviceRegistry) -> None:
+    for name in typedNames(registry):
+        assert getattr(registry, name) is registry.d[name]
+        assert registry[name] is registry.d[name]
+
+
+def test_typedAttributeFollowsReplacedEntry(registry: DeviceRegistry) -> None:
+    entry = DeviceEntry(name="camera", instance=None, deviceType=None, isConfigurable=False)
+    registry.d["camera"] = entry
+    assert registry.camera is entry
+
+
+def test_typedAttributesMatchSpecAndOverloads(registry: DeviceRegistry) -> None:
+    properties = {
+        name
+        for name, value in vars(DeviceRegistry).items()
+        if isinstance(value, property) and name in registry.d
+    }
+    assert properties == typedNames(registry)
+    literals = {
+        arg
+        for overload in get_overloads(DeviceRegistry.__getitem__)
+        for arg in get_args(get_type_hints(overload)["name"])
+    }
+    assert literals == typedNames(registry)
+
+
+def test_noLiteralLookupsInSource() -> None:
+    pattern = re.compile(r"dReg\[\s*[\"']\w+[\"']\s*\]")
+    offenders = [
+        str(path)
+        for path in Path("src/mw4").rglob("*.py")
+        if "widgets" not in path.parts and pattern.search(path.read_text())
+    ]
+    assert not offenders

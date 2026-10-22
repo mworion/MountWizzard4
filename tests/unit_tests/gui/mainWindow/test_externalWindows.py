@@ -7,15 +7,14 @@ from mw4.gui.mainWindow.externalWindows import ExternalWindows
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtCore import QObject, Signal
 from PySide6.QtWidgets import QPushButton, QWidget
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     packageConfig.isAvailable = True
     window = QWidget()
-    window.app = App()
+    window.app = makeApp()
     window.ui = Ui_MainWindow()
     window.ui.setupUi(window)
 

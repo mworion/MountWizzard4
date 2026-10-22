@@ -9,11 +9,40 @@ from mw4.logic.controllers.satellites.trackCalculations import (
     filterHorizon,
     formatSatPass,
     reduceTrajectory,
+    satStatusText,
     selectStartEnd,
+    shouldDomeFollow,
     trimBelowHorizon,
 )
 from skyfield.api import EarthSatellite, load, wgs84
 from types import SimpleNamespace
+
+
+@pytest.mark.parametrize(
+    "status, expected",
+    [
+        ("V", "is slewing to transit start"),
+        ("P", "is waiting for satellite"),
+        ("S", "is catching satellite"),
+        ("T", "is tracking satellite"),
+        ("X", ""),
+    ],
+)
+def test_satStatusText(status, expected):
+    assert satStatusText(status) == expected
+
+
+@pytest.mark.parametrize(
+    "status, follow, dome, expected",
+    [
+        (10, True, True, True),
+        (1, True, True, False),
+        (10, False, True, False),
+        (10, True, False, False),
+    ],
+)
+def test_shouldDomeFollow(status, follow, dome, expected):
+    assert shouldDomeFollow(status, follow, dome) is expected
 
 
 def jd(value):

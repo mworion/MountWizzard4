@@ -7,21 +7,18 @@ import shutil
 from astropy.io import fits
 from mw4.logic.file.fileHandler import FileHandler, FileHandlerSignals
 from pathlib import Path
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 from xisf import XISF
 
 
 class Parent:
-    try:
-        app = App()
-    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
-        app = mock.MagicMock()
+    def __init__(self, app):
+        self.app = app
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
-    func = FileHandler(Parent(), Path())
+def function(qapp, makeApp):
+    func = FileHandler(Parent(makeApp()), Path())
     yield func
 
 

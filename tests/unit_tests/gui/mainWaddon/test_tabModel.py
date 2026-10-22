@@ -16,14 +16,13 @@ from mw4.logic.controllers.model.modelRun import ModelData
 from mw4.logic.controllers.model.modelTypes import ModelRunConfig, ModelTiming
 from pathlib import Path
 from skyfield.api import Angle
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     mainW = MWidget()
-    mainW.app = App()
+    mainW.app = makeApp()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     mainW.ui.plateSolveDevice = mock.MagicMock()
@@ -71,14 +70,14 @@ def test_shutdown_modelRunning(function):
     function.app.statusOperationRunning = OperationStatus.IDLE
 
 
-def test_pauseBatch_2(function):
-    function.modelData = ModelData(App)
+def test_pauseBatch_2(function, makeApp):
+    function.modelData = ModelData(makeApp())
     function.pauseBatch()
     assert function.modelData.pauseBatch
 
 
-def test_endBatch_2(function):
-    function.modelData = ModelData(App)
+def test_endBatch_2(function, makeApp):
+    function.modelData = ModelData(makeApp())
     function.endBatch()
     assert function.modelData.endBatch
 
@@ -127,8 +126,8 @@ def test_pointSignals_2(function, qtbot):
         tab.modelData.pointMarkersChanged.emit()
 
 
-def test_programModelToMountFinish_1(function):
-    function.modelData = ModelData(App)
+def test_programModelToMountFinish_1(function, makeApp):
+    function.modelData = ModelData(makeApp())
     function.modelData.modelName = "Test"
     function.app.mount.signals.getModelDone.connect(function.programModelToMountFinish)
     with (
@@ -140,8 +139,8 @@ def test_programModelToMountFinish_1(function):
     assert not function.modelDoneConnected
 
 
-def test_programModelToMountFinish_2(function):
-    function.modelData = ModelData(App)
+def test_programModelToMountFinish_2(function, makeApp):
+    function.modelData = ModelData(makeApp())
     function.modelData.modelName = "Test"
     function.app.mount.signals.getModelDone.connect(function.programModelToMountFinish)
     with (
@@ -154,8 +153,8 @@ def test_programModelToMountFinish_2(function):
     assert mockMsg.emit.call_args_list[-1][0][0] == 2
 
 
-def test_programModelToMount_1(function):
-    function.modelData = ModelData(App)
+def test_programModelToMount_1(function, makeApp):
+    function.modelData = ModelData(makeApp())
     function.modelData.modelName = "Test"
     function.modelData.modelProgData = []
     with mock.patch.object(
@@ -164,8 +163,8 @@ def test_programModelToMount_1(function):
         function.programModelToMount()
 
 
-def test_programModelToMount_2(function):
-    function.modelData = ModelData(App)
+def test_programModelToMount_2(function, makeApp):
+    function.modelData = ModelData(makeApp())
     function.modelData.modelName = "Test"
     function.modelData.modelProgData = [1, 2, 3]
     with mock.patch.object(
@@ -174,8 +173,8 @@ def test_programModelToMount_2(function):
         function.programModelToMount()
 
 
-def test_programModelToMount_3(function):
-    function.modelData = ModelData(App)
+def test_programModelToMount_3(function, makeApp):
+    function.modelData = ModelData(makeApp())
     function.modelData.modelName = "Test"
 
     function.modelData.modelProgData = [1, 2, 3]
@@ -343,8 +342,8 @@ def test_setupModelInputData_1(function):
     function.setupModelInputData()
 
 
-def test_setupBatchData_1(function):
-    function.modelData = ModelData(App)
+def test_setupBatchData_1(function, makeApp):
+    function.modelData = ModelData(makeApp())
     function.ui.numberBuildRetries.setValue(2)
     function.ui.retriesReverse.setChecked(True)
     function.ui.waitTimeExposure.setValue(3)
@@ -523,8 +522,8 @@ def test_runFileModel_1(function):
         function.runFileModel()
 
 
-def test_runFileModel_2(function):
-    function.modelData = ModelData(App)
+def test_runFileModel_2(function, makeApp):
+    function.modelData = ModelData(makeApp())
     with (
         mock.patch.object(MWFileDialog, "getOpenFileNames", return_value=[Path("test.model")]),
         mock.patch.object(function, "clearAlignAndBackup", return_value=True) as mockClear,
@@ -539,8 +538,8 @@ def test_runFileModel_2(function):
     mockProgram.assert_called_once_with([Path("test.model")])
 
 
-def test_runFileModel_3(function):
-    function.modelData = ModelData(App)
+def test_runFileModel_3(function, makeApp):
+    function.modelData = ModelData(makeApp())
     function.modelData.modelName = "Test"
     files = [Path("test1.model"), Path("test2.model")]
     with (
@@ -554,8 +553,8 @@ def test_runFileModel_3(function):
     assert function.modelData.modelName == "m-test1-add"
 
 
-def test_runFileModel_4(function):
-    function.modelData = ModelData(App)
+def test_runFileModel_4(function, makeApp):
+    function.modelData = ModelData(makeApp())
     function.modelData.modelName = "Test"
     files = [Path("test1.model"), Path("test2.model")]
     with (
@@ -570,8 +569,8 @@ def test_runFileModel_4(function):
     assert mockOp.emit.call_args_list[-1][0][0] == OperationStatus.IDLE
 
 
-def test_programFileModel_1(function):
-    function.modelData = ModelData(App)
+def test_programFileModel_1(function, makeApp):
+    function.modelData = ModelData(makeApp())
     function.modelData.modelBuildData = {"point-000": {"success": True}}
     with (
         mock.patch.object(function.modelData, "loadFromFiles", return_value="") as mockLoad,
@@ -582,8 +581,8 @@ def test_programFileModel_1(function):
     mockProgram.assert_called_once()
 
 
-def test_programFileModel_2(function):
-    function.modelData = ModelData(App)
+def test_programFileModel_2(function, makeApp):
+    function.modelData = ModelData(makeApp())
     function.modelData.modelBuildData = {}
     with (
         mock.patch.object(function.modelData, "loadFromFiles", return_value="Error"),

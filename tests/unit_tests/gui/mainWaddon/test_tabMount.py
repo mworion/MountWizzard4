@@ -6,18 +6,17 @@ import pytest
 from mw4.gui.mainWaddon.tabMount import Mount
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     class TestAddOns:
         def __init__(self):
             self.addons = {"MountSett": mock.Mock()}
 
     mainW = MWidget()
-    mainW.app = App()
+    mainW.app = makeApp()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     mainW.mainWindowAddons = TestAddOns()

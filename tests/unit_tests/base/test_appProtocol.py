@@ -17,13 +17,12 @@ from mw4.base.appProtocol import (
 from mw4.base.appSignals import AppSignals
 from mw4.mainApp import MountWizzard4
 from PySide6.QtCore import QObject, SignalInstance
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def app(qapp):
-    testApp = App()
+def app(qapp, makeApp):
+    testApp = makeApp()
     yield testApp
     testApp.shutdown()
 

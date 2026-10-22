@@ -7,14 +7,13 @@ from mw4.gui.extWindows.keypadW import KeypadWindow
 from mw4.gui.utilities.qtMain import MWidget
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def keypad_window(qapp):
+def keypad_window(qapp, makeApp):
     """Create a KeypadWindow instance for testing."""
-    window = KeypadWindow(app=App(), title="Keypad")
+    window = KeypadWindow(app=makeApp(), title="Keypad")
     with mock.patch.object(window, "show"):
         yield window
         QApplication.processEvents()

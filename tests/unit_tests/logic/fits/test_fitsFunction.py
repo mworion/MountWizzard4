@@ -22,7 +22,7 @@ from mw4.logic.fits.fitsFunction import (
     writeSolutionToHeader,
 )
 from skyfield.units import Angle
-from tests.unit_tests.unitTestAddOns.baseTestApp import App, Camera
+from tests.unit_tests.unitTestAddOns.baseTestApp import Camera
 from unittest import mock
 
 
@@ -267,13 +267,13 @@ def test_calcAngleScaleFromWCSHeader_2() -> None:
     assert not mirrored
 
 
-def test_writeHeaderCamera() -> None:
+def test_writeHeaderCamera(makeApp) -> None:
     hdu = fits.PrimaryHDU(data=np.array([]))
     header = hdu.header
     camera = Camera()
     camera.data["CCD_INFO.CCD_PIXEL_SIZE_X"] = 3
     camera.data["CCD_INFO.CCD_PIXEL_SIZE_Y"] = 3
-    app = App()
+    app = makeApp()
     obsSite = app.mount.obsSite
     result = writeHeaderCamera(header, camera, obsSite)
     assert result["OBJECT"] == "SKY_OBJECT"
@@ -296,14 +296,14 @@ def test_writeHeaderCamera() -> None:
     assert result["CCD-TEMP"] == 0
 
 
-def test_writeHeaderCamera_withoutFocalLength() -> None:
+def test_writeHeaderCamera_withoutFocalLength(makeApp) -> None:
     hdu = fits.PrimaryHDU(data=np.array([]))
     header = hdu.header
     camera = Camera()
     camera.data["CCD_INFO.CCD_PIXEL_SIZE_X"] = 3
     camera.data["CCD_INFO.CCD_PIXEL_SIZE_Y"] = 3
     camera.focalLength = 0
-    app = App()
+    app = makeApp()
     obsSite = app.mount.obsSite
 
     with mock.patch.object(mw4.logic.fits.fitsFunction.log, "warning") as warningMock:
@@ -313,10 +313,10 @@ def test_writeHeaderCamera_withoutFocalLength() -> None:
     assert result["SCALE"] == 0
 
 
-def test_writeHeaderPointing() -> None:
+def test_writeHeaderPointing(makeApp) -> None:
     hdu = fits.PrimaryHDU(data=np.array([]))
     header = hdu.header
-    app = App()
+    app = makeApp()
     obsSite = app.mount.obsSite
     result = writeHeaderPointing(header, obsSite)
     assert result["RA"] == pytest.approx(359.72275429697004)

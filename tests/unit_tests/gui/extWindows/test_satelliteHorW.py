@@ -9,14 +9,13 @@ from mw4.gui.utilities.qtMain import MWidget
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication
 from skyfield.api import Angle, EarthSatellite
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     with mock.patch.object(pickle, "load"):
-        func = SatelliteHorizonWindow(app=App(), title="Satellite Horizon")
+        func = SatelliteHorizonWindow(app=makeApp(), title="Satellite Horizon")
         yield func
         QApplication.processEvents()
 

@@ -10,13 +10,12 @@ from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtMain import MWidget
 from PySide6.QtGui import QCloseEvent, QPixmap
 from PySide6.QtWidgets import QApplication
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
-    func = VideoWindowBase(app=App())
+def function(qapp, makeApp):
+    func = VideoWindowBase(app=makeApp())
     yield func
     QApplication.processEvents()
 

@@ -7,13 +7,12 @@ from mw4.gui.extWindows.messageW import MessageWindow
 from mw4.gui.utilities.qtMain import MWidget
 from PySide6.QtGui import QCloseEvent, QFont
 from PySide6.QtWidgets import QApplication
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
-    func = MessageWindow(app=App(), title="Message")
+def function(qapp, makeApp):
+    func = MessageWindow(app=makeApp(), title="Message")
     yield func
     QApplication.processEvents()
     gc.collect()

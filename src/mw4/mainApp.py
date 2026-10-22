@@ -6,9 +6,9 @@ from importlib.metadata import version
 from mw4.base.appSignals import AppSignals
 from mw4.base.audioManager import AudioManager
 from mw4.base.bootstrap import MwGlob
-from mw4.base.deviceRegistry import DeviceRegistry
 from mw4.base.loggerMW import setCustomLoggingLevel
 from mw4.base.timeManager import TimeManager
+from mw4.deviceRegistry import DeviceRegistry
 from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.logic.controllers.model.buildpoints import BuildPoint
 from mw4.logic.controllers.model.hipparcos import Hipparcos

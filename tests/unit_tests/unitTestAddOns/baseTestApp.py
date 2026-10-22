@@ -4,8 +4,8 @@
 # Re-export all stubs so that existing test imports remain unchanged.
 from functools import cache
 from mw4.base.appSignals import AppSignals
-from mw4.base.deviceRegistry import DeviceEntry, DeviceRegistry
 from mw4.base.timeManager import TimeManager
+from mw4.deviceRegistry import DeviceEntry, DeviceRegistry
 from mw4.logic.controllers.model.buildpoints import BuildPoint
 from pathlib import Path
 from PySide6.QtCore import QObject, QThreadPool

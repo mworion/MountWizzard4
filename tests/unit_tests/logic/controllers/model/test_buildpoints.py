@@ -11,14 +11,13 @@ import skyfield.api
 from mw4.logic.controllers.model.buildpoints import BuildPoint, HaDecToAltAz
 from pathlib import Path
 from skyfield.api import Angle, wgs84
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     cleanBuildPointFiles()
-    func = BuildPoint(app=App())
+    func = BuildPoint(app=makeApp())
     yield func
 
 

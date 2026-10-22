@@ -6,7 +6,6 @@ from mw4.gui.mainWaddon.tabAlmanac import Almanac
 from mw4.gui.mainWindow.mainWindowAddons import MainWindowAddons
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
@@ -28,9 +27,9 @@ class MockAddon:
 
 
 @pytest.fixture(autouse=True, scope="module")
-def window(qapp):
+def window(qapp, makeApp):
     mainW = MWidget()
-    mainW.app = App()
+    mainW.app = makeApp()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     # Avoid the heavy full-year twilight worker started by the Almanac addon

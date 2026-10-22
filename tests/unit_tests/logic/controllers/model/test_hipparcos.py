@@ -4,13 +4,12 @@
 
 import pytest
 from mw4.logic.controllers.model.hipparcos import Hipparcos
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        func = Hipparcos(app=App())
+        func = Hipparcos(app=makeApp())
     except (
         RuntimeError,
         ImportError,

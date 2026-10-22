@@ -4,14 +4,13 @@
 import contextlib
 import pytest
 from mw4.base.audioManager import AUDIO_SOUNDS, AudioManager
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def audioManager(qapp):
+def audioManager(qapp, makeApp):
     """Setup AudioManager fixture for testing."""
-    app = App()
+    app = makeApp()
     manager = AudioManager(app)
     yield manager
     with contextlib.suppress(AttributeError, RuntimeError):
@@ -23,9 +22,9 @@ def test_init_connects_signal_to_playSound(audioManager):
     assert audioManager.app.signals.ui.playSound is not None
 
 
-def test_init_sound_is_none(qapp):
+def test_init_sound_is_none(qapp, makeApp):
     """Test __init__ initializes sound to None."""
-    assert AudioManager(App()).sound is None
+    assert AudioManager(makeApp()).sound is None
 
 
 def test_init_connects_playSound_signal(audioManager):

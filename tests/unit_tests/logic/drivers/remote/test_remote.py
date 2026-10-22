@@ -6,14 +6,13 @@ from mw4.logic.drivers.remote.remote import Remote
 from PySide6 import QtNetwork
 from PySide6.QtCore import QByteArray, QObject, Signal
 from PySide6.QtNetwork import QAbstractSocket, QHostAddress, QTcpSocket
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        func = Remote(app=App())
+        func = Remote(app=makeApp())
     except (
         RuntimeError,
         ImportError,

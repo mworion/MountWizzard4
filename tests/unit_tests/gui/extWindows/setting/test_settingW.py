@@ -8,14 +8,13 @@ from mw4.gui.extWindows.setting.settingW import SettingWindow
 from mw4.gui.utilities.qtMain import MWidget
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def settingWindow(qapp):
+def settingWindow(qapp, makeApp):
     """Setup SettingWindow fixture for testing."""
-    app = App()
+    app = makeApp()
 
     # Only return devices that have UI elements in setupUiDriver
     validDevices = [

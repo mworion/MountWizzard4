@@ -9,14 +9,13 @@ import shutil
 from mw4.logic.databaseProcessing.dataWriter import DataWriter
 from pathlib import Path
 from skyfield.api import EarthSatellite
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     cleanEarthRotationFiles()
-    window = DataWriter(app=App())
+    window = DataWriter(app=makeApp())
     yield window
 
 

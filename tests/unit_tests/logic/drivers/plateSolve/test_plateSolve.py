@@ -11,19 +11,18 @@ import subprocess
 from contextlib import suppress
 from mw4.logic.drivers.plateSolve.plateSolve import PlateSolve
 from pathlib import Path
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
         files = glob.glob("tests/work/image/*.fit*")
         for f in files:
             os.remove(f)
         shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
         shutil.copy("tests/testData/astrometry.cfg", "tests/work/temp/astrometry.cfg")
-        func = PlateSolve(app=App())
+        func = PlateSolve(app=makeApp())
     except (
         RuntimeError,
         ImportError,

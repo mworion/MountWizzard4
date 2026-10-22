@@ -5,7 +5,6 @@ import pytest
 from mw4.base import platformInfo
 from mw4.base.signalsDevices import Signals
 from mw4.logic.drivers.lightPanel.lightPanelAscom import LightPanelAscom
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from typing import ClassVar
 from unittest import mock
 
@@ -14,10 +13,9 @@ if not platformInfo.IS_WINDOWS:
 
 
 class Parent:
-    try:
-        app = App()
-    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
-        app = mock.MagicMock()
+    def __init__(self, app):
+        self.app = app
+
     data: ClassVar = {}
     signals = Signals()
     deviceType = ""
@@ -25,8 +23,8 @@ class Parent:
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
-    func = LightPanelAscom(parent=Parent())
+def function(makeApp):
+    func = LightPanelAscom(parent=Parent(makeApp()))
     func.device = mock.MagicMock()
     func.device.Brightness = 100
     func.device.MaxBrightness = 255

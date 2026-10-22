@@ -4,16 +4,14 @@
 import pytest
 from mw4.base.signalsDevices import Signals
 from mw4.logic.drivers.focuser.focuserAlpaca import FocuserAlpaca
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from typing import ClassVar
 from unittest import mock
 
 
 class Parent:
-    try:
-        app = App()
-    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
-        app = mock.MagicMock()
+    def __init__(self, app):
+        self.app = app
+
     data: ClassVar = {}
     DEVICE_TYPE = "focuser"
     deviceType = ""
@@ -22,9 +20,9 @@ class Parent:
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        func = FocuserAlpaca(parent=Parent())
+        func = FocuserAlpaca(parent=Parent(makeApp()))
         func.device = mock.MagicMock()
     except (
         RuntimeError,

@@ -4,14 +4,13 @@
 import pytest
 from mw4.gui.mainWaddon.tabTools_IERSTime import IERSTime
 from pathlib import Path
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     mainW = mock.MagicMock()
-    mainW.app = App()
+    mainW.app = makeApp()
     mainW.ui.iersSource.currentText.return_value = "Datacenter from IERS"
 
     patcher_dl = mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.DownloadPopup")

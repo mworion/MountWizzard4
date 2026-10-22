@@ -6,14 +6,13 @@ from mw4.logic.drivers.camera.camera import Camera
 from mw4.logic.drivers.camera.cameraSGPro import CameraSGPro
 from mw4.logic.drivers.frameworks.sgproClass import SGProClass
 from pathlib import Path
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function() -> None:
+def function(makeApp) -> None:
     try:
-        app = App()
+        app = makeApp()
         camera = Camera(app)
         camera.exposureTime = 1
         camera.binning = 1

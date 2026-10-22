@@ -5,14 +5,13 @@
 import pytest
 from mw4.base import platformInfo
 from mw4.logic.drivers.focuser.focuser import Focuser
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        func = Focuser(app=App())
+        func = Focuser(app=makeApp())
     except (
         RuntimeError,
         ImportError,
@@ -40,18 +39,6 @@ def test_properties_2(function):
     assert function.loadConfig
 
 
-def test_startCommunication_2(function):
-    function.framework = "indi"
-    with mock.patch.object(function.run["indi"], "startCommunication", return_value=True):
-        function.startCommunication()
-
-
-def test_stopCommunication_2(function):
-    function.framework = "indi"
-    with mock.patch.object(function.run["indi"], "stopCommunication", return_value=True):
-        function.stopCommunication()
-
-
 def test_move_2(function):
     function.framework = "indi"
     with mock.patch.object(function.run["indi"], "move", return_value=True):
@@ -73,11 +60,10 @@ def test_focuserAscom_import():
 
 
 @pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
-def test_focuser_ascom_in_run():
+def test_focuser_ascom_in_run(makeApp):
     from mw4.logic.drivers.focuser.focuser import Focuser
-    from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
-    function = Focuser(app=App())
+    function = Focuser(app=makeApp())
     if platformInfo.IS_WINDOWS:
         assert "ascom" in function.run
         assert function.run["ascom"] is not None

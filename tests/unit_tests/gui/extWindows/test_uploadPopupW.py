@@ -9,14 +9,13 @@ from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
 from PySide6.QtCore import QEventLoop
 from PySide6.QtWidgets import QApplication
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     widget = MWidget()
-    widget.app = App()
+    widget.app = makeApp()
     window = UploadPopup(widget, "http://localhost", [], Path())
     window.parentW = widget
     yield window

@@ -5,14 +5,13 @@ import pytest
 from mw4.logic.drivers.camera.camera import Camera
 from mw4.logic.drivers.camera.cameraAlpaca import CameraAlpaca
 from mw4.logic.drivers.frameworks.alpacaClass import AlpacaClass
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        app = App()
+        app = makeApp()
         camera = Camera(app)
         camera.exposureTime = 1
         camera.binning = 1

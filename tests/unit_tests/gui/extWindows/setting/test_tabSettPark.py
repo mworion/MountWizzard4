@@ -7,7 +7,6 @@ from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QDoubleSpinBox, QLineEdit
 from skyfield.api import Angle
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
@@ -33,10 +32,10 @@ def createMockButton():
 
 
 @pytest.fixture(autouse=True, scope="module")
-def settPark(qapp):
+def settPark(qapp, makeApp):
     """Setup SettPark fixture for testing."""
     parentW = MWidget()
-    parentW.app = App()
+    parentW.app = makeApp()
     parentW.ui = Ui_MainWindow()
     parentW.ui.setupUi(parentW)
 

@@ -6,13 +6,12 @@ import pytest
 from mw4.logic.drivers.focuser.focuser import Focuser
 from mw4.logic.drivers.focuser.focuserIndi import FocuserIndi
 from queue import Queue
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        focuser = Focuser(App())
+        focuser = Focuser(makeApp())
         func = FocuserIndi(parent=focuser)
         func.config.deviceName = "test_focuser"
     except (

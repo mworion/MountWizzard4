@@ -5,14 +5,13 @@
 import pytest
 from mw4.base import platformInfo
 from mw4.logic.drivers.cover.cover import Cover
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        func = Cover(app=App())
+        func = Cover(app=makeApp())
     except (
         RuntimeError,
         ImportError,
@@ -38,18 +37,6 @@ def test_properties_2(function):
     function.loadConfig = True
     function.framework = "indi"
     assert function.loadConfig
-
-
-def test_startCommunication_2(function):
-    function.framework = "indi"
-    with mock.patch.object(function.run["indi"], "startCommunication", return_value=True):
-        function.startCommunication()
-
-
-def test_stopCommunication_2(function):
-    function.framework = "indi"
-    with mock.patch.object(function.run["indi"], "stopCommunication", return_value=True):
-        function.stopCommunication()
 
 
 def test_closeCover_2(function):
@@ -97,11 +84,10 @@ def test_coverAscom_import():
 
 
 @pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
-def test_cover_ascom_in_run():
+def test_cover_ascom_in_run(makeApp):
     from mw4.logic.drivers.cover.cover import Cover
-    from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
-    function = Cover(app=App())
+    function = Cover(app=makeApp())
     if platformInfo.IS_WINDOWS:
         assert "ascom" in function.run
         assert function.run["ascom"] is not None

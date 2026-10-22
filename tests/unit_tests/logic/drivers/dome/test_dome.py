@@ -7,14 +7,13 @@ import pytest
 from mw4.base import platformInfo
 from mw4.logic.drivers.dome.dome import Dome
 from skyfield.api import Angle
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        func = Dome(app=App())
+        func = Dome(app=makeApp())
         yield func
     except (
         RuntimeError,
@@ -595,11 +594,10 @@ def test_domeAscom_import():
 
 
 @pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
-def test_dome_ascom_in_run():
+def test_dome_ascom_in_run(makeApp):
     from mw4.logic.drivers.dome.dome import Dome
-    from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
-    function = Dome(app=App())
+    function = Dome(app=makeApp())
     if platformInfo.IS_WINDOWS:
         assert "ascom" in function.run
         assert function.run["ascom"] is not None

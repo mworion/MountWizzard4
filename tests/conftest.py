@@ -106,9 +106,12 @@ def pytest_sessionfinish(session, exitstatus):
         gc.collect()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="session")
 def makeApp():
-    """Factory fixture: ``makeApp(isOnline=True, dReg__mount=stub)`` returns a test App."""
+    """Factory fixture: ``makeApp(isOnline=True, dReg__mount=stub)`` returns a test App.
+
+    The factory is stateless, so session scope lets module-scoped fixtures use it.
+    """
     from tests.unit_tests.unitTestAddOns.baseTestApp import makeApp as factory
 
     return factory

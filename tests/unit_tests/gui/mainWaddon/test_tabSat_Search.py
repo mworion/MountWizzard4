@@ -14,20 +14,19 @@ from mw4.gui.widgets.main_ui import Ui_MainWindow
 from pathlib import Path
 from PySide6.QtWidgets import QTableWidgetItem
 from skyfield.api import EarthSatellite
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from typing import ClassVar
 from unittest import mock
 
 
 @pytest.fixture(scope="module")
-def function(qapp: object) -> SatSearch:
+def function(qapp: object, makeApp) -> SatSearch:
     """Create SatSearch instance with mocked dependencies for testing."""
 
     class Test:
         objects: ClassVar = {}
 
     mainW = MWidget()
-    mainW.app = App()
+    mainW.app = makeApp()
     mainW.satellites = Test()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)

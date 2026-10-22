@@ -5,14 +5,13 @@ import pytest
 from mw4.mountcontrol.geometry import Geometry
 from mw4.mountcontrol.mount import MountDevice
 from skyfield.api import Angle, wgs84
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     m = MountDevice(
-        app=App(),
+        app=makeApp(),
         verbose=True,
     )
     m.obsSite.location = wgs84.latlon(latitude_degrees=90, longitude_degrees=11, elevation_m=500)
@@ -828,8 +827,8 @@ def test_init_uses_domeConfig_of_parent(function):
     assert function.domeConfig is function.app.config["SettingDome"]
 
 
-def test_init_creates_settingDome_config():
-    app = App()
+def test_init_creates_settingDome_config(makeApp):
+    app = makeApp()
     del app.config["SettingDome"]
     m = MountDevice(app=app)
     assert app.config["SettingDome"] == {}

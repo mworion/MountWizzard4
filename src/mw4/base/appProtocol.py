@@ -8,8 +8,8 @@ from typing import TYPE_CHECKING, Any, Protocol, runtime_checkable
 if TYPE_CHECKING:
     from mw4.base.appSignals import AppSignals
     from mw4.base.bootstrap import MwGlob
-    from mw4.base.deviceRegistry import DeviceRegistry
     from mw4.base.timeManager import TimeManager
+    from mw4.deviceRegistry import DeviceRegistry
     from mw4.gui.mainWindow.mainWindow import MainWindow
     from mw4.logic.controllers.model.buildpoints import BuildPoint
     from mw4.logic.controllers.model.hipparcos import Hipparcos

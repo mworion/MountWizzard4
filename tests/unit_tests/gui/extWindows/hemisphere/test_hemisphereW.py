@@ -13,13 +13,12 @@ from pathlib import Path
 from PySide6.QtCore import QPointF
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
-    func = HemisphereWindow(app=App(), title="Hemisphere")
+def function(qapp, makeApp):
+    func = HemisphereWindow(app=makeApp(), title="Hemisphere")
     yield func
     QApplication.processEvents()
     gc.collect()

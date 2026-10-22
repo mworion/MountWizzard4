@@ -8,6 +8,24 @@ from typing import Any
 SECONDS_PER_DAY = 86400
 # the mount accepts at most 900 s of trajectory data
 MAX_TRAJECTORY_SECONDS = 900
+# mount status while a satellite is followed
+STATUS_SATELLITE_TRACKING = 10
+TLESCK = {
+    "V": "is slewing to transit start",
+    "P": "is waiting for satellite",
+    "S": "is catching satellite",
+    "T": "is tracking satellite",
+}
+
+
+def satStatusText(statusSat: str) -> str:
+    """returns the display text for the satellite tracking status letter."""
+    return TLESCK.get(statusSat, "")
+
+
+def shouldDomeFollow(status: int | None, followEnabled: bool, domeOnline: bool) -> bool:
+    """the dome follows only while the mount tracks a satellite and the user wants it."""
+    return status == STATUS_SATELLITE_TRACKING and followEnabled and domeOnline
 
 
 def selectStartEnd(

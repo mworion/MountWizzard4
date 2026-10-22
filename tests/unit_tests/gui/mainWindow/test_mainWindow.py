@@ -4,7 +4,7 @@
 import mw4.gui.utilities.qtMain
 import pytest
 import shutil
-from mw4.base.deviceRegistry import DeviceEntry
+from mw4.deviceRegistry import DeviceEntry
 from mw4.gui.mainWaddon.tabAlmanac import Almanac
 from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
@@ -12,17 +12,16 @@ from pathlib import Path
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QWidget
 from skyfield.api import wgs84
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def mainWindow(qapp):
+def mainWindow(qapp, makeApp):
     """Setup MainWindow fixture for testing."""
     # Avoid the heavy full-year twilight worker started by the Almanac addon
     # during construction; it is covered in the Almanac tests.
     with mock.patch.object(Almanac, "showTwilightDataPlot"):
-        window = MainWindow(app=App())
+        window = MainWindow(app=makeApp())
     yield window
     window.app.timeMgr.stop()
     window.app.threadPool.waitForDone(10000)

@@ -8,14 +8,13 @@ from mw4.logic.drivers.hidController.hidController import (
     HidController,
     HidControllerSignals,
 )
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 from unittest.mock import MagicMock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def hc(qapp):
-    app = App()
+def hc(qapp, makeApp):
+    app = makeApp()
     instance = HidController(app)
     yield instance
     app.threadPool.waitForDone(1000)

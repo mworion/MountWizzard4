@@ -142,6 +142,7 @@ def test_mw(c):
     printMW("testing mountwizzard4")
     runMW(c, "ruff format src tests")
     runMW(c, "ruff check src tests")
+    runMW(c, "lint-imports")
     runMW(c, "pytest tests/unit_tests")
     printMW("testing mountwizzard finished\n")
 

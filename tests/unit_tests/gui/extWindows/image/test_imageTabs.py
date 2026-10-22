@@ -14,14 +14,13 @@ from mw4.logic.controllers.imageWindow.photometry import Photometry
 from mw4.logic.file.fileHandler import FileHandler
 from PySide6.QtCore import QRectF
 from PySide6.QtWidgets import QApplication
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     CustomViewBox._previousGeometry = None
-    parent = ImageWindow(app=App(), title="Image")
+    parent = ImageWindow(app=makeApp(), title="Image")
     func = ImageTabs(parent)
     yield func
     QApplication.processEvents()

@@ -22,13 +22,12 @@ from mw4.logic.controllers.satellites.satellite_calculations import (
 )
 from skyfield.api import Angle, EarthSatellite, wgs84
 from skyfield.timelib import Time
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
-    yield App()
+def function(makeApp):
+    yield makeApp()
 
 
 def test_findSunlit(function):

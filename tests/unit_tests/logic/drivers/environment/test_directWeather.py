@@ -3,13 +3,12 @@
 # Copyright (c) 2019-2026 mworion
 import pytest
 from mw4.logic.drivers.environment.directWeather import DirectWeather
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        func = DirectWeather(app=App())
+        func = DirectWeather(app=makeApp())
     except (
         RuntimeError,
         ImportError,

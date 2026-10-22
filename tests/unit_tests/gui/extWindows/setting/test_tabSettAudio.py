@@ -6,15 +6,14 @@ from mw4.gui.extWindows.setting.tabSettAudio import SettAudio
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QComboBox, QDoubleSpinBox, QGroupBox
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def settAudio(qapp):
+def settAudio(qapp, makeApp):
     """Setup SettAudio fixture for testing."""
     parentW = MWidget()
-    parentW.app = App()
+    parentW.app = makeApp()
     parentW.ui = Ui_MainWindow()
     parentW.ui.setupUi(parentW)
 

@@ -6,25 +6,23 @@ from mw4.base.signalsDevices import Signals
 from mw4.logic.drivers.dome.domeIndi import DomeIndi
 from mw4.logic.drivers.frameworks.indiClass import IndiClass
 from queue import Queue
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from typing import ClassVar
 from unittest import mock
 
 
 class Parent:
-    try:
-        app = App()
-    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
-        app = mock.MagicMock()
+    def __init__(self, app):
+        self.app = app
+
     data: ClassVar = {}
     signals = Signals()
     loadConfig = True
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        func = DomeIndi(parent=Parent())
+        func = DomeIndi(parent=Parent(makeApp()))
         func.config.deviceName = "test_dome"
         yield func
     except (

@@ -9,7 +9,6 @@ from mw4.gui.mainWaddon.tabEnviron_Seeing import EnvironSeeing
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QTableWidgetItem
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from tests.unit_tests.unitTestAddOns.platformStub import patchPlatform
 from unittest import mock
 
@@ -36,11 +35,11 @@ META = {"last_model_update": "2022-01-01"}
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     shutil.copy("tests/testData/meteoblue.data", "tests/work/data/meteoblue.data")
 
     mainW = MWidget()
-    mainW.app = App()
+    mainW.app = makeApp()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     # Mock timeMgr methods

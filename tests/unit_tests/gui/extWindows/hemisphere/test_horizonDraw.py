@@ -16,14 +16,13 @@ from pathlib import Path
 from PySide6.QtCore import QPointF
 from PySide6.QtWidgets import QApplication
 from skyfield.api import Angle
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     shutil.copy("tests/testData/terrain.jpg", "tests/work/config/terrain.jpg")
-    func = HorizonDraw(parentWindow=HemisphereWindow(app=App(), title="Hemisphere"))
+    func = HorizonDraw(parentWindow=HemisphereWindow(app=makeApp(), title="Hemisphere"))
     yield func
     QApplication.processEvents()
     gc.collect()

@@ -3,12 +3,11 @@
 # Copyright (c) 2019-2026 mworion
 import numpy as np
 import pytest
-from mw4.base.deviceRegistry import DeviceEntry
+from mw4.deviceRegistry import DeviceEntry
 from mw4.logic.drivers.measure.measure import MeasureData
 from mw4.logic.drivers.measure.measureCSV import MeasureDataCSV
 from mw4.logic.drivers.measure.measureRaw import MeasureDataRaw
 from PySide6.QtCore import QMutex
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
@@ -18,8 +17,8 @@ class Data:
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
-    func = MeasureData(app=App())
+def function(makeApp):
+    func = MeasureData(app=makeApp())
     func.mutexMeasure = QMutex()
     yield func
 
@@ -174,8 +173,8 @@ def test_collectDataDevices_noneClass(function):
 
 
 @pytest.fixture(scope="module")
-def measureDataRaw():
-    app = App()
+def measureDataRaw(makeApp):
+    app = makeApp()
     parent = MeasureData(app=app)
     data = {}
     raw = MeasureDataRaw(app=app, parent=parent, data=data)
@@ -213,8 +212,8 @@ def test_measureDataRawMeasureTask(measureDataRaw):
 
 
 @pytest.fixture(scope="module")
-def measureDataCSV():
-    app = App()
+def measureDataCSV(makeApp):
+    app = makeApp()
     parent = MeasureData(app=app)
     data = {}
     csv = MeasureDataCSV(app=app, parent=parent, data=data)

@@ -14,18 +14,17 @@ from PySide6.QtWidgets import (
     QTableWidget,
     QTableWidgetItem,
 )
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     class TestUI:
         isOnline = QCheckBox()
         ageDatabases = QSpinBox()
 
     class Test:
-        app = App()
+        app = makeApp()
         ui = TestUI()
 
         @staticmethod
@@ -78,7 +77,7 @@ def function(qapp):
         uiSourceGroup=QGroupBox(),
         processSource=test,
     )
-    function.window.app = App()
+    function.window.app = makeApp()
     function.window.threadPool = QThreadPool()
     yield function
 
@@ -115,13 +114,13 @@ def test_setupSourceUpdate_1(function):
         function.uiSourceList = original_list
 
 
-def test_init_connects_start3s(qapp):
+def test_init_connects_start3s(qapp, makeApp):
     class TestUI:
         isOnline = QCheckBox()
         ageDatabases = QSpinBox()
 
     class Test:
-        app = App()
+        app = makeApp()
         ui = TestUI()
 
     def test():

@@ -7,15 +7,12 @@ import numpy as np
 import pytest
 from mw4.logic.controllers.imageWindow.photometry import Photometry, PhotometrySignals
 from mw4.logic.controllers.imageWindow.photometry_analysis import GridGeometry
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 class Parent:
-    try:
-        app = App()
-    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
-        app = mock.MagicMock()
+    def __init__(self, app):
+        self.app = app
 
 
 def makeGeom(h=200, w=200, fc=3):
@@ -26,8 +23,8 @@ def makeGeom(h=200, w=200, fc=3):
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
-    func = Photometry(Parent(), np.zeros((1, 1)))
+def function(qapp, makeApp):
+    func = Photometry(Parent(makeApp()), np.zeros((1, 1)))
     yield func
 
 

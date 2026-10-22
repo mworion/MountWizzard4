@@ -4,6 +4,9 @@ Scope: `src/mw4` (excluding generated `gui/widgets`), tests, tooling, repo hygie
 Revision: `3ec18a381`, version `4.0.0b36`. Re-run after roadmap items 1–8 and the test-layout
 alignment (2026-10-20, second pass).
 Method: static inspection and metrics (ruff, pyrefly, AST scan, grep counts, coverage run).
+Update 2026-10-22: A4 (layering contracts), A5 (tab controllers), M3 (`DeviceFacade`) and M4 (driver layout) done; the
+suite now has 5226 passed / 38 skipped at 100 % line and branch coverage, `pyrefly` 0 errors,
+`lint-imports` 7 contracts kept. Figures below are from the 2026-10-20 run unless stated.
 The full unit suite **was** re-run: 5108 passed, 38 skipped, 100 % line and branch coverage
 (18365 statements, 3666 branches); `ruff check src` clean, `pyrefly check` 0 errors.
 
@@ -19,11 +22,11 @@ surface, raw-dict configuration spread over the whole code base, GUI/logic separ
 good but not clean (Qt leaks into logic), and a handful of oversized functions and
 data-as-code files.
 
-| Area            | Rating | Comment |
+| Area            | Rating | Comment (re-rated 2026-10-22; was Architecture B, Maintainability B) |
 |-----------------|--------|---------|
-| Architecture    | B      | Clear layers, protocol-based app contract; god-object `app`, string-keyed registry |
+| Architecture    | A-     | Layers enforced by import-linter, role protocols, typed registry, controllers; raw-dict configuration remains (A3) |
 | Pythonic style  | B+     | Modern 3.12 typing, dataclasses, generators; some `hasattr`/dict plumbing |
-| Maintainability | B      | Consistent conventions; large `gui` tree, config coupling, 3 near-duplicate patterns |
+| Maintainability | A-     | Consistent conventions, shared `DeviceFacade`, tab controllers; ~12 long functions and docstring quality remain |
 | Quality         | A-     | ruff clean, pyrefly 0 errors, 100 % coverage, few broad excepts (all justified) |
 | Testability     | A-     | 5.1k tests, strict 1:1 test-per-module layout (verified); heavy Qt/app stubbing, stress tests not in CI scope |
 | Readability     | B+     | camelCase consistent, short methods; a few outliers |
@@ -50,8 +53,8 @@ data-as-code files.
 | f-string in `log.*(...)` | 173 → **0** (done, enforced by `G004`) |
 | Functions > 50 lines (excl. data file) | 16 (was 25; largest 91 L, was 293 L) |
 | Files | largest `alignstars.py` 830 lines (data constant); QSS now in `assets/styles/*.qss`, `gui/styles/styles.py` 150 lines |
-| Largest tabs | `tabMount_Sett.py` 504 L, `tabImage_Manage.py` 477 L, `tabSat_Track.py` 436 L |
-| Repository | `.git` 1.4 GB, 1071 tracked files, 149 in `gists/`, 0 in `work/`/`log/` |
+| Largest tabs | `tabImage_Manage.py` 430 L, `tabSat_Track.py` 373 L, `tabMount_Sett.py` 301 L (was 504 / 477 / 436) |
+| Repository | `.git` 1.2 GB (2026-10-22; 1.4 GB on 2026-10-20), 908 tracked files in `HEAD`, `gists/`, `work/`, `log/` untracked |
 
 ## 3. Strengths
 
@@ -86,8 +89,8 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 | A1 | H | ✅ **Done 2026-10-20 (WP 6.1–6.6)**: 8 role protocols in `base/appProtocol.py`, `AppProtocol` is their composition, signals grouped in `base/appSignals.py` (`app.signals.ui/.hemisphere/.model/.system`). **`app` is a god object.** `AppProtocol` exposes ~35 members including 25 signals; 842 `self.app.` uses in the GUI. Every tab/device implicitly depends on everything. | Split the Protocol into narrow role protocols (`HasConfig`, `HasThreadPool`, `HasDevices`, `HasMessaging`, `HasSignals`) and type each consumer with the smallest one. Group the 25 signals into 3–4 sub-objects (`app.signals.hemisphere`, `.model`, `.satellite`, `.ui`), mirroring the already existing `MountSignals`. |
 | A2 | H | ✅ **Done 2026-10-20 (WP 5.1–5.6): typed `dReg.<device>` properties + `Literal` overloads.** **Stringly-typed device access**: 521 × `dReg["camera"]` etc. A typo is a runtime `KeyError`, no IDE completion, no typing of the returned instance (`DeviceEntry.instance` is effectively `Any`). | Expose typed attributes (`dReg.camera: Camera`, `dReg.dome: Dome`) or a `Literal[...]` key with `@overload` on `__getitem__`. Keep the dict internally for iteration. |
 | A3 | H | **Configuration is an untyped nested dict** (`app.config[...]`, 438 accesses), each tab reads/writes its own keys in `initConfig`/`storeConfig`. Schema, defaults and migration are implicit and scattered. | Introduce per-component `@dataclass` config objects (already the case for device `run[framework].config`, see `collectConfigFromSingleDevice`) with `from_dict`/`to_dict` and defaults in one place. Add a schema/version field and a single migration hook. |
-| A4 | M | (◐ re-check 2026-10-20: `logic`/`mountcontrol` no longer import `gui`; only the type-only import in `base/appProtocol.py` remains; `audioManager` still uses `app.mainW`; 22 `logic` + 8 `mountcontrol` files import PySide6) **Layer leakage.** `logic` (15 files) and `mountcontrol` (4) import PySide6 – acceptable for `Signal`/`QThreadPool`, but `base/audioManager.py` reaches into `app.mainW` (a GUI object) and `logic` imports 1 GUI module. The stated "clear separation business logic vs GUI" is therefore only approximate. | Limit Qt in `logic` to `QObject`/`Signal`; pass a parent/handle into `AudioManager` instead of `app.mainW`; remove the `logic → gui` import (move shared item to `base`). Consider a small import-linter contract (`gui → logic → base`, never the reverse). |
-| A5 | M | (◐ partly done: image stats, tilt geometry and satellite track calculations moved to `logic/`; other tabs have only UI wiring left) **Inheritance/mixin for GUI composition.** Tabs are mixins plus `TabAddon`; several tabs (e.g. `tabMount_Sett.py` 504 L, `tabImage_Manage.py` 477 L, `tabSat_Track.py` 436 L) hold UI wiring, state and calculations together. | Keep widget wiring in the tab, move calculations/state transitions into plain classes in `logic` (testable without Qt). Prefer composition (tab owns a controller) over adding further mixins. |
+| A4 | M | ✅ **Done 2026-10-22 (plan A4):** `deviceRegistry` (composition root) moved out of `base`; `lint-imports` enforces `gui > logic > mountcontrol > base`, controllers ↛ drivers, independent controller areas, Qt-free foundations/controllers (2 documented QObject workers); ruff `TID251` bans `QtWidgets`/`QtGui`/`QtCharts` outside `gui`. Earlier: (◐ re-check 2026-10-20: `logic`/`mountcontrol` no longer import `gui`; only the type-only import in `base/appProtocol.py` remains; `audioManager` still uses `app.mainW`; 22 `logic` + 8 `mountcontrol` files import PySide6) **Layer leakage.** `logic` (15 files) and `mountcontrol` (4) import PySide6 – acceptable for `Signal`/`QThreadPool`, but `base/audioManager.py` reaches into `app.mainW` (a GUI object) and `logic` imports 1 GUI module. The stated "clear separation business logic vs GUI" is therefore only approximate. | Limit Qt in `logic` to `QObject`/`Signal`; pass a parent/handle into `AudioManager` instead of `app.mainW`; remove the `logic → gui` import (move shared item to `base`). Consider a small import-linter contract (`gui → logic → base`, never the reverse). |
+| A5 | M | ✅ **Done 2026-10-22 (plan A5, phases 1–3):** controllers in `logic/controllers/{mount,image,satellites}`, tabs own a controller; tabs now 301 / 430 / 373 L (`tabMount_Sett` / `tabImage_Manage` / `tabSat_Track`). Earlier: (◐ partly done: image stats, tilt geometry and satellite track calculations moved to `logic/`; other tabs have only UI wiring left) **Inheritance/mixin for GUI composition.** Tabs are mixins plus `TabAddon`; several tabs (e.g. `tabMount_Sett.py` 504 L, `tabImage_Manage.py` 477 L, `tabSat_Track.py` 436 L) hold UI wiring, state and calculations together. | Keep widget wiring in the tab, move calculations/state transitions into plain classes in `logic` (testable without Qt). Prefer composition (tab owns a controller) over adding further mixins. |
 | A6 | M | **Tab → tab decoupling** is largely honoured (only `TabAddon` is imported across tabs), but communication goes through the global `app` signals (`refreshModel`, `redrawHemisphere`, …). That is loose coupling in code, tight coupling in behaviour (any tab can fire any global signal). | Document ownership of each global signal (emitter vs. listeners); see A1 for grouping. |
 | A7 | L | `MountWizzard4.__init__` has strict ordering requirements (`dReg` → `audioMgr` → `initConfig` → `buildPoint` → `mainW`) but this is encoded only by line order. | Split into small `setup*` steps with docstrings stating dependencies, or a tiny builder. |
 
@@ -110,8 +113,8 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 |---|-----|---------|----------------|
 | M1 | H | **Oversized functions** (✅ roadmap 7: all `PLR0915` ignores removed, largest function 293 → 91 L, 25 → 16 over 50 L; remaining are mostly data tables, global statement budget still open): `measureAddons.dataPlots` 293 L, `devicePopupW.__init__` 154 L, `simulator/materials.__init__` 140 L, `simulator/telescope.create` 122 L, `tabSettDevice.__init__` 103 L, native-Qt dialog constructors 98–99 L. 25 functions > 50 lines in total. (mccabe ≤ 10 passes because they are linear, not branchy.) | Split into builder helpers (`createPlotAxes`, `createMaterial`, …); table-drive repetitive widget creation. Add a ruff `PLR0915` (too-many-statements) budget to prevent regrowth. |
 | M2 | M | **Long parameter lists** in a few places: `qtInputDialog.__init__` 12 args, `tabSat_Search.calcSat` 9, `updateListSats` 8, `astroObjects.__init__` 8. | Use dataclass parameter objects or keyword-only args (`*,`). |
-| M3 | M | **Duplicated framework wrappers.** Per device there is `deviceIndi`, `deviceAlpaca`, `deviceSGPro`, `deviceAscom` plus shared `*Class.py` in `base`. This is a good pattern but likely contains copy-paste across devices (camera/focuser/dome/filter/cover). | Run a duplication scan (e.g. `pylint --enable=duplicate-code` or `jscpd`) and extract common bases/mixins for connect/disconnect/poll/error handling. |
-| M4 | M | `base/` mixes infrastructure (`tpool`, `loggerMW`, `bootstrap`) with domain-ish helpers (`transform`, `timeManager`, `ascomClass`, `sgproClass`, `indiClass`). | Move driver-protocol classes to `logic/drivers/` (or `base/drivers/`) to keep `base` dependency-free. |
+| M3 | M | ✅ **Done 2026-10-22 (plan M3).** The framework back-ends were already DRY (`*AlpacaAscomBase` + 9-line shells); the copy-paste sat in the nine device facades. They now share `logic/drivers/frameworks/deviceFacade.py` (`DeviceFacade[AppT]`: signals, back-end table, start/stop), −321 net source lines. Deliberately kept as they are (own signals, custom start/stop or fixed framework): `Measure`, `PlateSolve`, `Remote`, `KMRelay`, `SeeingWeather`, `DirectWeather`, `HidController`, `Keypad`. **Duplicated framework wrappers.** Per device there is `deviceIndi`, `deviceAlpaca`, `deviceSGPro`, `deviceAscom` plus shared `*Class.py` in `base`. This is a good pattern but likely contains copy-paste across devices (camera/focuser/dome/filter/cover). | Run a duplication scan (e.g. `pylint --enable=duplicate-code` or `jscpd`) and extract common bases/mixins for connect/disconnect/poll/error handling. |
+| M4 | M | ✅ **Done:** driver framework classes live in `logic/drivers/frameworks/`, device packages under `logic/drivers/`, GUI-independent logic under `logic/controllers/<GUI area>/`; `base/` keeps infrastructure. `base/` mixes infrastructure (`tpool`, `loggerMW`, `bootstrap`) with domain-ish helpers (`transform`, `timeManager`, `ascomClass`, `sgproClass`, `indiClass`). | Move driver-protocol classes to `logic/drivers/` (or `base/drivers/`) to keep `base` dependency-free. |
 | M5 | M | ✅ **Done 2026-10-20 (WP 8).** QSS moved to `assets/styles/{basic,mac,nonMac}.qss` templates with placeholders, rendered by `gui/styles/styles.py`; a golden-file test (`tests/testData/styleGolden.json`) guards the output. Styles: `gui/styles/styleSheets.py` is 691 lines of Python-embedded QSS. | Move to `.qss` templates with placeholders; makes theming testable and diffable. |
 | M6 | M | ✅ **Done 2026-10-20; signals now declared once in `AppSignals` (A1)** (contract test `test_concreteAppProvidesAllProtocolMembers`). `AppProtocol` is kept manually in sync with `MountWizzard4` (signals declared twice). `drawHorizonPoints` exists only on the concrete class but nothing consumes it, so its absence from the Protocol is intended. | Longer term: derive the signal list from one place (see A1). |
 | M7 | L | Docstring style/language quality varies (e.g. typos in `alignstars` docstring: "assdataets", lower-case sentence starts, mixed numpy/rst). | Pick one style (Google or NumPy) and let ruff `D`-rules (limited subset) check public APIs. |
@@ -131,7 +134,7 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 
 | # | Pri | Finding | Recommendation |
 |---|-----|---------|----------------|
-| T1 | H | 100 % line coverage is excellent, but with `app` as a god object each test must stub a large surface (the stub `App`). Test cost grows with the surface (see A1). | Narrow protocols (A1) shrink fixtures. Offer a `makeApp(**overrides)` factory with sensible defaults in `tests/conftest.py`. |
+| T1 | H | ✅ **Done 2026-10-22 (plan T1):** all unit tests build their stub app via the session-scoped `makeApp` fixture; `test_noDirectAppImport` prevents regressions; 14 per-device start/stop delegation tests duplicating `test_deviceFacade.py` removed. Earlier: 100 % line coverage is excellent, but with `app` as a god object each test must stub a large surface (the stub `App`). Test cost grows with the surface (see A1). | Narrow protocols (A1) shrink fixtures. Offer a `makeApp(**overrides)` factory with sensible defaults in `tests/conftest.py`. |
 | T2 | M | ✅ **Done 2026-10-20** (branch coverage enabled, `fail_under = 100`, all branch gaps closed – 4987 tests, 100 % line and branch coverage). Remaining: consider mutation testing (`mutmut`) on `mountcontrol` and `logic/modelBuild` where calculations matter. | – |
 | T3 | M | `tests/stress_tests` (crash, subprocess, loader-cycle tests) are not part of `tests/unit_tests`; it is unclear whether CI runs them. | Mark them `@pytest.mark.slow/integration` and run in a nightly job, or document why they are manual. |
 | T4 | M | Tests mock heavily with `unittest.mock`; risk of tests verifying mocks instead of behaviour for GUI tabs. | Prefer fakes (in-memory device back-ends) over `MagicMock` for devices; keep `pytest-qt` signal-based assertions (`qtbot.waitSignal`). |
@@ -154,7 +157,7 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 
 | # | Pri | Finding | Recommendation |
 |---|-----|---------|----------------|
-| H1 | H | (◐ re-check 2026-10-20: `work/` and `log/` are no longer tracked, 149 files in `gists/` remain) `.git` is **1.4 GB**; large binaries (ephemeris `de440_mw4.bsp`, finals data, assets 16 MB) historically committed. | Move runtime dirs (`work/`, `log/`) out of version control (`.gitignore`), keep `gists/` in a separate repo or docs. Consider `git lfs` or download-on-first-start for big data; run `git filter-repo` only with maintainer agreement. |
+| H1 | H | (◐ re-check 2026-10-22: `gists/`, `work/` and `log/` are no longer tracked; `.git` is 1.2 GB, almost all of it old history, mainly the generated `mw4/resource/resources.py`; `HEAD` still has 70 MB test images and duplicated runtime data, see `plan_H1_repository_slimming.md`) `.git` is **1.4 GB**; large binaries (ephemeris `de440_mw4.bsp`, finals data, assets 16 MB) historically committed. | Move runtime dirs (`work/`, `log/`) out of version control (`.gitignore`), keep `gists/` in a separate repo or docs. Consider `git lfs` or download-on-first-start for big data; run `git filter-repo` only with maintainer agreement. |
 | H2 | M | `.idea/` and `.coverage` present in the working tree. (re-check 2026-10-20: `.coverage` is ignored, `.idea/` is still untracked and **not** in `.gitignore`.) | Add `.idea/` to `.gitignore`. |
 | H3 | M | Exact pins on core scientific packages (`numpy==2.5.4`, `astropy==8.0.2`, `pyside6==6.12.0`, `photutils==3.1.1`) – good for reproducibility, but libraries consumers of the PyPI package get over-constrained. | Fine for an application. Keep Renovate/Dependabot to bump regularly; document the pin policy. |
 | H4 | L | ✅ **Done 2026-10-20.** Console scripts reduced to `mw4` and `mountwizzard4`. | – |
@@ -171,7 +174,7 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 4. ✅ Branch coverage enabled and brought back to 100 % (T2); dead comment removed (R3);
    classifier and script aliases fixed (H4/H5); `Worker.run` simplified (Q1).
 
-Next up: the **Strategic** items below (9–12). Open decision: lowering the global
+Next up: the open **Strategic** items below (9 and 11; 10 and 12 are done). Open decision: lowering the global
 `PLR0915` budget from 50. A condensed list of everything still open is in
 `2026-10-20_review_copilot_open.md`.
 
@@ -186,9 +189,9 @@ Next up: the **Strategic** items below (9–12). Open decision: lowering the glo
 
 **Strategic**
 9. Typed, versioned configuration dataclasses with migration (A3).
-10. Duplication analysis of device back-ends and extraction of shared bases (M3).
-11. Repository slimming and data-asset policy (H1).
-12. Import-linter contracts for layering (A4) in CI.
+10. ✅ Done 2026-10-22: duplication analysis of device back-ends and shared `DeviceFacade` base (M3).
+11. Repository slimming and data-asset policy (H1) – planned in `plan_H1_repository_slimming.md`.
+12. ✅ Done 2026-10-22: import-linter contracts (7) for layering and Qt boundaries in CI; `deviceRegistry` moved to `mw4/deviceRegistry.py` (A4).
 
 ## 6. Conclusion
 

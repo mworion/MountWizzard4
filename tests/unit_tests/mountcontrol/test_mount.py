@@ -6,14 +6,13 @@ from mw4.mountcontrol.mount import MountDevice
 from mw4.mountcontrol.mountSignals import MountSignals
 from PySide6.QtCore import QThreadPool
 from skyfield.api import Angle, wgs84
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     m = MountDevice(
-        app=App(),
+        app=makeApp(),
         verbose=False,
     )
     m.config.MAC = "00:00:00:00:00:00"

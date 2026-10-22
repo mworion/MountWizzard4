@@ -11,41 +11,40 @@ from PySide6.QtWidgets import (
     QPushButton,
     QWidget,
 )
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from tests.unit_tests.unitTestAddOns.platformStub import patchPlatform
 from typing import ClassVar
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     window = MWidget()
-    window.app = App()
+    window.app = makeApp()
     window.ui = Ui_MainWindow()
     window.ui.setupUi(window)
     yield window
     QCoreApplication.processEvents()
 
 
-def test_saveWindowAsPNG(function):
+def test_saveWindowAsPNG(function, makeApp):
     class Save:
         @staticmethod
         def save(a):
             return
 
     window = QWidget()
-    window.app = App()
+    window.app = makeApp()
     window.log = logging.getLogger("MW4")
     with mock.patch.object(QWidget, "grab", return_value=Save()):
         function.saveWindowAsPNG(window)
 
 
-def test_saveAllWindowsAsPNG_1(function):
+def test_saveAllWindowsAsPNG_1(function, makeApp):
     class ExternalWindows:
         uiWindows: ClassVar = {"test1": {"classObj": None}, "test2": {"classObj": 1}}
 
     window = QWidget()
-    window.app = App()
+    window.app = makeApp()
     window.app.mainW.externalWindows = ExternalWindows()
 
     with mock.patch.object(function, "saveWindowAsPNG"):

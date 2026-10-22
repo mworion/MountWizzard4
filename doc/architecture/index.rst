@@ -12,3 +12,5 @@ technical base as clean as possible.
 
 .. include:: calculations.rst
 
+
+.. include:: layering.rst

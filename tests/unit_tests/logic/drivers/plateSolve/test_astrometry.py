@@ -9,18 +9,17 @@ from mw4.logic.drivers.plateSolve.astrometry import Astrometry
 from mw4.logic.drivers.plateSolve.plateSolve import PlateSolve
 from pathlib import Path
 from skyfield.units import Angle
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from tests.unit_tests.unitTestAddOns.platformStub import patchPlatform
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(tmp_path_factory):
+def function(tmp_path_factory, makeApp):
     files = glob.glob("tests/work/image/*.fit*")
     for f in files:
         os.remove(f)
 
-    app = App()
+    app = makeApp()
     app.mwGlob["tempDir"] = tmp_path_factory.mktemp("solverTemp")
     parent = PlateSolve(app=app)
     func = Astrometry(parent=parent)

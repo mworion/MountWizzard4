@@ -4,14 +4,13 @@
 import pytest
 from mw4.gui.mainWaddon.slewInterface import SlewInterface
 from skyfield.api import Angle
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     class Parent:
-        app = App()
+        app = makeApp()
         msg = app.signals.ui.msg
 
     func = SlewInterface(Parent())

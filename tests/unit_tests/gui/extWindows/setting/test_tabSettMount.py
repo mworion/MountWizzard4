@@ -7,16 +7,15 @@ import wakeonlan
 from mw4.gui.extWindows.setting.tabSettMount import SettMount
 from mw4.gui.widgets.setting_ui import Ui_SettingDialog
 from PySide6.QtWidgets import QApplication, QWidget
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from typing import Any
 from unittest import mock
 
 
 @pytest.fixture()
-def settMount(qapp: Any) -> SettMount:
+def settMount(qapp: Any, makeApp) -> SettMount:
     """Create a SettMount instance with mocked parent window."""
     mainW = QWidget()
-    mainW.app = App()
+    mainW.app = makeApp()
     mainW.ui = Ui_SettingDialog()
     mainW.ui.setupUi(mainW)
     mainW.wIcon = mock.MagicMock()

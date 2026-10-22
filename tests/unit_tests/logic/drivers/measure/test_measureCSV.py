@@ -5,13 +5,12 @@ import PySide6
 import pytest
 from mw4.logic.drivers.measure.measureCSV import MeasureDataCSV
 from pathlib import Path
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from typing import ClassVar
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     class Test1:
         CYCLE_UPDATE_TASK: ClassVar = 1000
         data: ClassVar = {}
@@ -25,7 +24,7 @@ def function():
             return True
 
     with mock.patch.object(PySide6.QtCore.QTimer, "start"):
-        func = MeasureDataCSV(app=App(), parent=Test1())
+        func = MeasureDataCSV(app=makeApp(), parent=Test1())
         yield func
 
 

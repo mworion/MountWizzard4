@@ -107,13 +107,66 @@ dev = [
 
 [tool.importlinter]
 root_package = "mw4"
+include_external_packages = true
 exclude_type_checking_imports = true
 
 [[tool.importlinter.contracts]]
-name = "Lower layers do not import gui"
+name = "Layers: gui > logic > mountcontrol > base"
+type = "layers"
+layers = ["mw4.gui", "mw4.logic", "mw4.mountcontrol", "mw4.base"]
+
+[[tool.importlinter.contracts]]
+name = "Controllers do not import drivers"
 type = "forbidden"
-source_modules = ["mw4.base", "mw4.logic", "mw4.mountcontrol"]
-forbidden_modules = ["mw4.gui"]
+source_modules = ["mw4.logic.controllers"]
+forbidden_modules = ["mw4.logic.drivers"]
+
+[[tool.importlinter.contracts]]
+name = "Drivers do not import controllers"
+type = "forbidden"
+source_modules = ["mw4.logic.drivers"]
+forbidden_modules = ["mw4.logic.controllers"]
+
+[[tool.importlinter.contracts]]
+name = "Controller areas are independent"
+type = "independence"
+modules = [
+    "mw4.logic.controllers.image",
+    "mw4.logic.controllers.imageWindow",
+    "mw4.logic.controllers.model",
+    "mw4.logic.controllers.mount",
+    "mw4.logic.controllers.satellites",
+]
+
+[[tool.importlinter.contracts]]
+name = "Foundations do not import drivers or controllers"
+type = "forbidden"
+source_modules = [
+    "mw4.logic.fits",
+    "mw4.logic.profiles",
+    "mw4.logic.file",
+    "mw4.logic.databaseProcessing",
+]
+forbidden_modules = ["mw4.logic.drivers", "mw4.logic.controllers"]
+
+[[tool.importlinter.contracts]]
+name = "Foundations are Qt free"
+type = "forbidden"
+source_modules = ["mw4.logic.fits", "mw4.logic.profiles", "mw4.logic.databaseProcessing"]
+forbidden_modules = ["PySide6"]
+allow_indirect_imports = true
+
+[[tool.importlinter.contracts]]
+name = "Controllers are Qt free except workers"
+type = "forbidden"
+source_modules = ["mw4.logic.controllers"]
+forbidden_modules = ["PySide6"]
+allow_indirect_imports = true
+ignore_imports = [
+    # QObject workers with signals, not GUI code
+    "mw4.logic.controllers.imageWindow.photometry -> PySide6",
+    "mw4.logic.controllers.model.modelRun -> PySide6",
+]
 
 [tool.pytest.ini_options]
 minversion = "9.0"
@@ -174,9 +227,17 @@ ignore = ["N999"]  # camelCase module names are the project convention
 "src/mw4/base/tpool.py" = ["BLE001"]
 # the only module allowed to ask the operating system
 "src/mw4/base/platformInfo.py" = ["TID251"]
+# Qt widgets / gui types are allowed in the gui, the application entry points and tests
+"src/mw4/gui/**" = ["TID251"]
+"src/mw4/mainApp.py" = ["TID251"]
+"src/mw4/loader.py" = ["TID251"]
+"tests/**" = ["TID251"]
 
 [tool.ruff.lint.flake8-tidy-imports.banned-api]
 "platform.system".msg = "Use the constants in mw4.base.platformInfo instead."
+"PySide6.QtWidgets".msg = "Widgets belong in mw4.gui."
+"PySide6.QtGui".msg = "GUI types belong in mw4.gui."
+"PySide6.QtCharts".msg = "Charts belong in mw4.gui."
 
 [tool.ruff.lint.isort]
 no-sections = true

@@ -4,7 +4,6 @@
 import pytest
 from mw4.mountcontrol.mount import MountDevice
 from mw4.mountcontrol.mountContext import MountContext
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 EXPECTED = {
     "config",
@@ -21,8 +20,8 @@ EXPECTED = {
 
 
 @pytest.fixture(scope="module")
-def mountDevice():
-    return MountDevice(app=App())
+def mountDevice(makeApp):
+    return MountDevice(app=makeApp())
 
 
 def test_mountContext_members():

@@ -1,42 +1,30 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
-import logging
 import numpy as np
 import PySide6
 from collections.abc import Callable
 from mw4.base import platformInfo
 from mw4.base.appProtocol import AppProtocol
-from mw4.base.signalsDevices import Signals
 from mw4.base.transform import diffModulusAbs
 from mw4.logic.drivers.dome.domeAlpaca import DomeAlpaca
 from mw4.logic.drivers.dome.domeIndi import DomeIndi
-from typing import Any
+from mw4.logic.drivers.frameworks.deviceFacade import DeviceFacade
 
 if platformInfo.IS_WINDOWS:
     from mw4.logic.drivers.dome.domeAscom import DomeAscom
 
 
-class Dome:
-    log = logging.getLogger("MW4")
-    DEVICE_TYPE: str = "dome"
+class Dome(DeviceFacade[AppProtocol]):
+    DEVICE_TYPE = "dome"
 
     def __init__(self, app: AppProtocol) -> None:
-        self.app = app
-        self.threadPool = app.threadPool
-        self.signals = Signals()
-        self.data: dict[str, Any] = {"Slewing": False}
+        super().__init__(app)
+        self.data = {"Slewing": False}
         self.cfg = app.config["SettingDome"]
-        self.framework: str = ""
-        self.run: dict[str, Any] = {
-            "indi": DomeIndi(self),
-            "alpaca": DomeAlpaca(self),
-        }
-        platformInfo.registerWindowsBackends(
-            self.run,
-            {
-                "ascom": lambda: DomeAscom(self),
-            },
+        self.buildBackends(
+            {"indi": DomeIndi, "alpaca": DomeAlpaca},
+            {"ascom": lambda: DomeAscom(self)},
         )
 
         self.isSlewing: bool = False

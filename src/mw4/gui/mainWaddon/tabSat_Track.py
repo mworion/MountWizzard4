@@ -11,14 +11,17 @@ from mw4.logic.controllers.satellites.trackCalculations import (
     dataAgeColor,
     filterHorizon,
     formatSatPass,
-    reduceTrajectory,
+    satStatusText,
     selectStartEnd,
+    shouldDomeFollow,
 )
+from mw4.logic.controllers.satellites.trackControl import SatelliteTrackController
+from mw4.logic.controllers.satellites.trackProgram import prepareTrajectory
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.tleParams import TLEParams
 from PySide6.QtWidgets import QLineEdit
 from sgp4.exporter import export_tle
-from skyfield.api import Angle, EarthSatellite
+from skyfield.api import EarthSatellite
 from typing import TYPE_CHECKING, cast
 
 if TYPE_CHECKING:
@@ -38,6 +41,9 @@ class SatTrack(SatData):
         self.nextSatPass = [None, None, None]
         self.lastMeridianLimit = None
         self.workerPasses: Worker | None = None
+        self.controller = SatelliteTrackController(
+            self.app.dReg.mount, self.app.dReg.dome, self.msg.emit
+        )
 
         self.passUI: dict[int, dict[str, QLineEdit]] = {
             0: {
@@ -274,26 +280,25 @@ class SatTrack(SatData):
         t = "for simulation" if isReplay else ""
         self.msg.emit(1, "TLE", "Program", f"Satellite track data {t}")
         self.msg.emit(1, "", "", "This takes some time, please wait...")
-        start, end = self.selectStartEnd()
-        if not start or not end:
+        result = prepareTrajectory(
+            select=self.selectStartEnd,
+            calc=self.calcTrajectoryData,
+            horizon=self.filterHorizon,
+        )
+        if result.reason == "noPass":
             return
-        alt, az = self.calcTrajectoryData(start, end)
-        start, end, alt, az = self.filterHorizon(start, end, alt, az)
-
-        if len(alt) == 0:
+        if result.reason == "noData":
             text = "No track data (white), please revise settings"
             self.msg.emit(2, "TLE", "Program error", text)
             return
-
-        alt, az = reduceTrajectory(alt, az)
-        alt = Angle(degrees=alt)
-        az = Angle(degrees=az)
 
         changeStyleDynamic(self.ui.progTrajectory, "run", "true")
         changeStyleDynamic(self.ui.satTrackGroup, "run", "true")
         self.ui.satTrackGroup.setTitle("Calculating")
         self.ui.progTrajectory.setEnabled(False)
-        self.app.dReg.mount.instance.progTrajectory(start, alt, az, replay=isReplay)
+        self.app.dReg.mount.instance.progTrajectory(
+            result.start, result.alt, result.az, replay=isReplay
+        )
 
     def changeUnitTimeUTC(self) -> None:
         self.showSatPasses()
@@ -329,40 +334,13 @@ class SatTrack(SatData):
         self.msg.emit(1, "TLE", "Program", "Satellite track data ready!")
 
     def startTrack(self) -> None:
-        if not self.app.dReg.mount.stat:
-            self.msg.emit(2, "TLE", "Program", "Mount is not online")
-            return
-
-        if self.app.dReg.mount.obsSite.isParked:
-            suc = self.app.dReg.mount.obsSite.unpark()
-            if suc:
-                self.msg.emit(0, "TLE", "Command", "Mount unparked")
-            else:
-                self.msg.emit(2, "TLE", "Command error", "Cannot unpark mount")
-
-        self.app.dReg.dome.instance.avoidFirstOvershoot()
-        suc, message = self.app.dReg.mount.satellite.slewTLE()
-        if not suc:
-            self.msg.emit(2, "TLE", "Command error", f"{message}")
-            return
-
-        changeStyleDynamic(self.ui.startSatelliteTracking, "run", "true")
-        self.msg.emit(0, "TLE", "Command ", f"{message}")
-        self.app.dReg.mount.satellite.setTrackingOffsets()
+        if self.controller.start():
+            changeStyleDynamic(self.ui.startSatelliteTracking, "run", "true")
 
     def stopTrack(self) -> None:
-        if not self.app.dReg.mount.stat:
-            self.msg.emit(2, "TLE", "Command", "Mount is not online")
-            return
-
-        suc = self.app.dReg.mount.obsSite.startTracking()
-        if not suc:
-            self.msg.emit(2, "TLE", "Command", "Cannot stop tracking")
-            return
-
-        self.ui.startSatelliteTracking.setText("Start satellite tracking")
-        changeStyleDynamic(self.ui.startSatelliteTracking, "run", "false")
-        self.msg.emit(0, "TLE", "Command", "Stopped tracking")
+        if self.controller.stop():
+            self.ui.startSatelliteTracking.setText("Start satellite tracking")
+            changeStyleDynamic(self.ui.startSatelliteTracking, "run", "false")
 
     def toggleTrackingOffset(self, obs: ObsSite) -> None:
         if not self.app.dReg.mount.firmware.checkNewer("3"):
@@ -374,24 +352,13 @@ class SatTrack(SatData):
             self.ui.satOffGroup.setEnabled(False)
 
     def followMount(self, obs: ObsSite) -> None:
-        TLESCK = {
-            "V": "is slewing to transit start",
-            "P": "is waiting for satellite",
-            "S": "is catching satellite",
-            "T": "is tracking satellite",
-        }
-
-        status = obs.status
-        if status != 10:
-            return
-        if not self.ui.domeAutoFollowSat.isChecked():
-            return
-        if not self.app.dReg.dome.stat:
+        follow = shouldDomeFollow(
+            obs.status, self.ui.domeAutoFollowSat.isChecked(), bool(self.app.dReg.dome.stat)
+        )
+        if not follow:
             return
 
-        stat = obs.statusSat
-        statText = TLESCK.get(stat, "")
-        self.ui.startSatelliteTracking.setText(statText)
+        self.ui.startSatelliteTracking.setText(satStatusText(obs.statusSat))
 
         azimuth = cast(float, obs.Az.degrees)
         altitude = cast(float, obs.Alt.degrees)

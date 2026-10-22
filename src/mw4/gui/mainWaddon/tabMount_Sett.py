@@ -2,10 +2,18 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import datetime
+from collections.abc import Callable
 from mw4.base import transform
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
+from mw4.logic.controllers.mount.locationCalculations import buildLocation
+from mw4.logic.controllers.mount.mountSettings import (
+    SWITCHES,
+    VALUES,
+    MountSettingsController,
+    SettingSpec,
+)
 from mw4.logic.controllers.mount.trackingMode import activeTrackingMode
 from mw4.mountcontrol.convertGui import (
     convertLatToAngle,
@@ -16,8 +24,8 @@ from mw4.mountcontrol.convertGui import (
 from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.setting import Setting
-from skyfield.api import Angle, wgs84
-from typing import TYPE_CHECKING, ClassVar
+from skyfield.api import Angle
+from typing import TYPE_CHECKING, Any, ClassVar, cast
 
 if TYPE_CHECKING:
     from mw4.gui.mainWindow.mainWindow import MainWindow
@@ -55,6 +63,7 @@ class MountSett(TabAddon):
         self.msg = mainW.app.signals.ui.msg
         self.ui = mainW.ui
         self.typeConnectionTexts = ["RS-232", "GPS/RS-232", "LAN", "WiFi"]
+        self.controller = MountSettingsController(self.app.dReg.mount.setting, self.msg.emit)
 
         ms = self.app.dReg.mount.signals
         ms.locationDone.connect(self.updateLocGUI)
@@ -159,110 +168,25 @@ class MountSett(TabAddon):
         self.ui.siteElevation.setText(str(location.elevation.m))
 
     def setMeridianLimitTrack(self) -> bool:
-        sett = self.app.dReg.mount.setting
-        actValue = 0 if not sett.meridianLimitTrack else int(sett.meridianLimitTrack)
-        from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
-
-        value, ok = MWInputDialog.getInt(
-            self.mainW, "Set Meridian Limit Track", "Value (1-30):", actValue, 1, 30, 1
-        )
-        if not ok:
-            return False
-        if sett.setMeridianLimitTrack(value):
-            self.msg.emit(0, "Mount", "Setting", f"Meridian Lim Track: [{value}]")
-            return True
-        else:
-            self.msg.emit(2, "Mount", "Setting", "Meridian Limit Track cannot be set")
-            return False
+        return self.askAndApplyValue(VALUES["meridianTrack"])
 
     def setMeridianLimitSlew(self) -> bool:
-        sett = self.app.dReg.mount.setting
-        actValue = 0 if not sett.meridianLimitSlew else int(sett.meridianLimitSlew)
-        value, ok = MWInputDialog.getInt(
-            self.mainW, "Set Meridian Limit Slew", "Value (0-30):", actValue, 0, 30, 1
-        )
-        if not ok:
-            return False
-        if sett.setMeridianLimitSlew(value):
-            self.msg.emit(0, "Mount", "Setting", f"Meridian Lim Slew: [{value}]")
-            return True
-        else:
-            self.msg.emit(2, "Mount", "Setting", "Meridian Limit Slew cannot be set")
-            return False
+        return self.askAndApplyValue(VALUES["meridianSlew"])
 
     def setHorizonLimitHigh(self) -> bool:
-        sett = self.app.dReg.mount.setting
-        actValue = 0 if sett.horizonLimitHigh is None else int(sett.horizonLimitHigh)
-        value, ok = MWInputDialog.getInt(
-            self.mainW, "Set Horizon Limit High", "Value (0-90):", actValue, 0, 90, 1
-        )
-        if not ok:
-            return False
-        if sett.setHorizonLimitHigh(value):
-            self.msg.emit(0, "Mount", "Setting", f"Horizon Limit High: [{value}]")
-            return True
-        else:
-            self.msg.emit(2, "Mount", "Setting", "Horizon Limit High cannot be set")
-            return False
+        return self.askAndApplyValue(VALUES["horizonHigh"])
 
     def setHorizonLimitLow(self) -> bool:
-        sett = self.app.dReg.mount.setting
-        actValue = 0 if sett.horizonLimitLow is None else int(sett.horizonLimitLow)
-        value, ok = MWInputDialog.getInt(
-            self.mainW,
-            "Set Horizon Limit Low",
-            "Value (-5 - 90):",
-            actValue,
-            -5,
-            90,
-            1,
-        )
-        if not ok:
-            return False
-        if sett.setHorizonLimitLow(value):
-            self.msg.emit(0, "Mount", "Setting", f"Horizon Limit Low: [{value}]")
-            return True
-        else:
-            self.msg.emit(2, "Mount", "Setting", "Horizon Limit Low cannot be set")
-            return False
+        return self.askAndApplyValue(VALUES["horizonLow"])
 
     def setSlewRate(self) -> bool:
-        sett = self.app.dReg.mount.setting
-        actValue = 0 if sett.slewRate is None else int(sett.slewRate)
-        minRate = 0 if sett.slewRateMin is None else int(sett.slewRateMin)
-        maxRate = 0 if sett.slewRateMax is None else int(sett.slewRateMax)
-        value, ok = MWInputDialog.getInt(
-            self.mainW,
-            "Set Slew Rate",
-            f"Value ({minRate}...{maxRate}):",
-            actValue,
-            minRate,
-            maxRate,
-            1,
-        )
-        if not ok:
-            return False
-        if sett.setSlewRate(value):
-            self.msg.emit(0, "Mount", "Setting", f"Slew Rate: [{value}]")
-            return True
-        else:
-            self.msg.emit(2, "Mount", "Setting", "Slew Rate cannot be set")
-            return False
+        return self.askAndApplyValue(VALUES["slewRate"])
 
     def setLocationValues(
         self, lat: Angle | None = None, lon: Angle | None = None, elev: float | None = None
     ) -> None:
         obs = self.app.dReg.mount.obsSite
-        loc = obs.location
-        lat = loc.latitude if lat is None else lat
-        lon = loc.longitude if lon is None else lon
-        elev = loc.elevation.m if elev is None else elev
-
-        topo = wgs84.latlon(
-            longitude_degrees=lon.degrees,
-            latitude_degrees=lat.degrees,
-            elevation_m=elev,
-        )
+        topo, text = buildLocation(obs.location, lat, lon, elev)
         if self.app.dReg.mount.stat:
             obs.setLocation(topo)
             self.app.dReg.mount.instance.getLocation()
@@ -270,10 +194,7 @@ class MountSett(TabAddon):
             obs.location = topo
             self.updateLocGUI(self.app.dReg.mount.obsSite)
             self.app.dReg.mount.signals.locationDone.emit(self.app.dReg.mount.obsSite)
-
-        t = f"Location set to:     [{lat.degrees:3.2f} deg, "
-        t += f"{lon.degrees:3.2f} deg, {elev:4.1f} m]"
-        self.msg.emit(0, "Mount", "Setting", t)
+        self.msg.emit(0, "Mount", "Setting", text)
 
     def setLongitude(self) -> None:
         value, ok = MWInputDialog.getText(
@@ -315,168 +236,56 @@ class MountSett(TabAddon):
         self.setLocationValues(elev=value)
         return True
 
-    def setUnattendedFlip(self) -> bool:
-        sett = self.app.dReg.mount.setting
+    def askAndApplySwitch(self, spec: SettingSpec) -> bool:
         value, ok = MWInputDialog.getItem(
             self.mainW,
-            "Set Unattended Flip",
+            spec.title,
             "Value: On / Off",
             ["ON", "OFF"],
-            0,
+            self.controller.switchIndex(spec),
         )
         if not ok:
             return False
-        suc = sett.setUnattendedFlip(value == "ON")
-        if suc:
-            self.msg.emit(0, "Mount", "Setting", f"Unattended flip: [{value}]")
-        else:
-            self.msg.emit(2, "Mount", "Setting", "Unattended flip cannot be set")
-        return suc
+        return self.controller.applySwitch(spec, value)
+
+    def askAndApplyValue(self, spec: SettingSpec) -> bool:
+        actValue = self.controller.currentValue(spec)
+        minVal, maxVal, prompt = self.controller.valueRange(spec)
+        dialog = cast(
+            "Callable[..., tuple[Any, bool]]",
+            MWInputDialog.getInt if spec.isInt else MWInputDialog.getDouble,
+        )
+        value, ok = dialog(self.mainW, spec.title, prompt, actValue, minVal, maxVal, spec.step)
+        if not ok:
+            return False
+        return self.controller.applyValue(spec, value)
+
+    def setUnattendedFlip(self) -> bool:
+        return self.askAndApplySwitch(SWITCHES["unattendedFlip"])
 
     def setWebinterface(self) -> bool:
-        sett = self.app.dReg.mount.setting
-        value, ok = MWInputDialog.getItem(
-            self.mainW,
-            "Set Web Interface",
-            "Value: On / Off",
-            ["ON", "OFF"],
-            0,
-        )
-        if not ok:
-            return False
-        suc = sett.setWebInterface(value == "ON")
-        if suc:
-            self.msg.emit(0, "Mount", "Setting", f"Web Interface: [{value}]")
-        else:
-            self.msg.emit(2, "Mount", "Setting", "Web Interface cannot be set")
-        return suc
+        return self.askAndApplySwitch(SWITCHES["webInterface"])
 
     def setDualAxisTracking(self) -> bool:
-        sett = self.app.dReg.mount.setting
-        value, ok = MWInputDialog.getItem(
-            self.mainW,
-            "Set Dual Axis Tracking",
-            "Value: On / Off",
-            ["ON", "OFF"],
-            0,
-        )
-        if not ok:
-            return False
-        suc = sett.setDualAxisTracking(value == "ON")
-        if suc:
-            self.msg.emit(0, "Mount", "Setting", f"DualAxis tracking: [{value}]")
-        else:
-            self.msg.emit(2, "Mount", "Setting", "DualAxis tracking cannot be set")
-        return suc
+        return self.askAndApplySwitch(SWITCHES["dualAxisTracking"])
 
     def setWOL(self) -> bool:
-        sett = self.app.dReg.mount.setting
-        act = 0 if sett.wakeOnLan == "ON" else 1
-        value, ok = MWInputDialog.getItem(
-            self.mainW, "Set Wake On Lan", "Value: On / Off", ["ON", "OFF"], act
-        )
-        if not ok:
-            return False
-        suc = sett.setWOL(value == "ON")
-        if suc:
-            self.msg.emit(0, "Mount", "Setting", f"Wake On Lan: [{value}]")
-        else:
-            self.msg.emit(2, "Mount", "Setting", "Wake On Lan cannot be set")
-        return suc
+        return self.askAndApplySwitch(SWITCHES["wol"])
 
     def setAPO(self) -> bool:
-        sett = self.app.dReg.mount.setting
-        act = 0 if sett.autoPowerOn else 1
-        value, ok = MWInputDialog.getItem(
-            self.mainW, "Set Auto Power On", "Value: On / Off", ["ON", "OFF"], act
-        )
-        if not ok:
-            return False
-        suc = sett.setAutoPower(value == "ON")
-        if suc:
-            self.msg.emit(0, "Mount", "Setting", f"AutoPowerOn: [{value}]")
-        else:
-            self.msg.emit(2, "Mount", "Setting", "AutoPowerOn cannot be set")
-        return suc
-
-    def setRefractionTemp(self) -> bool:
-        sett = self.app.dReg.mount.setting
-        actValue = 0 if sett.refractionTemp is None else sett.refractionTemp
-        minVal = -40
-        maxVal = 75
-        value, ok = MWInputDialog.getDouble(
-            self.mainW,
-            "Set Refraction Temperature",
-            f"Value ({minVal}...{maxVal}):",
-            actValue,
-            minVal,
-            maxVal,
-            1,
-        )
-        if not ok:
-            return False
-        if sett.setRefractionTemp(value):
-            self.msg.emit(0, "Mount", "Setting", f"Refraction Temp: [{value}]")
-            return True
-        else:
-            self.msg.emit(2, "Mount", "Setting", "Refraction Temp cannot be set")
-            return False
-
-    def setRefractionPress(self) -> bool:
-        sett = self.app.dReg.mount.setting
-        actValue = 0 if sett.refractionPress is None else sett.refractionPress
-        minVal = 500
-        maxVal = 1300
-        value, ok = MWInputDialog.getDouble(
-            self.mainW,
-            "Set Refraction Pressure",
-            f"Value ({minVal}...{maxVal}):",
-            actValue,
-            minVal,
-            maxVal,
-            1,
-        )
-        if not ok:
-            return False
-        if sett.setRefractionPress(value):
-            self.msg.emit(0, "Mount", "Setting", f"Refraction Press: [{value}]")
-            return True
-        else:
-            self.msg.emit(2, "Mount", "Setting", "Refraction Press cannot be set")
-            return False
+        return self.askAndApplySwitch(SWITCHES["apo"])
 
     def setRefraction(self) -> bool:
-        sett = self.app.dReg.mount.setting
-        value, ok = MWInputDialog.getItem(
-            self.mainW,
-            "Set Refraction Correction",
-            "Value: On / Off",
-            ["ON", "OFF"],
-            0,
-        )
-        if not ok:
-            return False
-        suc = sett.setRefraction(value == "ON")
-        if suc:
-            self.msg.emit(0, "Mount", "Setting", f"Refraction corr: [{value}]")
-        else:
-            self.msg.emit(2, "Mount", "Setting", "Refraction correction cannot be set")
-        return suc
+        return self.askAndApplySwitch(SWITCHES["refraction"])
+
+    def setRefractionTemp(self) -> bool:
+        return self.askAndApplyValue(VALUES["refractionTemp"])
+
+    def setRefractionPress(self) -> bool:
+        return self.askAndApplyValue(VALUES["refractionPress"])
 
     def setSettleTimeMount(self) -> bool:
-        sett = self.app.dReg.mount.setting
-        actValue = 0 if sett.settleTime is None else int(sett.settleTime)
-        value, ok = MWInputDialog.getInt(
-            self.mainW, "Set Settle Time", "Value (0-999):", actValue, 0, 999, 1
-        )
-        if not ok:
-            return False
-        if sett.setSettleTime(value):
-            self.msg.emit(0, "Mount", "Setting", f"Settle Time: [{value}]")
-            return True
-        else:
-            self.msg.emit(2, "Mount", "Setting", "Settle Time cannot be set")
-            return False
+        return self.askAndApplyValue(VALUES["settleTime"])
 
     def showTimeDiff(self) -> None:
         delta = self.app.dReg.mount.instance.mountTimeConn.timeDiff * 1000

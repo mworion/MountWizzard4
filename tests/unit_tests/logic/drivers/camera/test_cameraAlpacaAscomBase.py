@@ -6,14 +6,13 @@ import time
 from astropy.io import fits
 from mw4.logic.drivers.camera.camera import Camera
 from mw4.logic.drivers.camera.cameraAlpacaAscomBase import CameraAlpacaAscomBase
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        camera = Camera(App())
+        camera = Camera(makeApp())
         camera.exposureTime = 1
         camera.binning = 1
         camera.focalLength = 1

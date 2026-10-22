@@ -19,12 +19,11 @@ from mw4.mountcontrol.modelStar import ModelStar
 from pathlib import Path
 from PySide6.QtCore import Qt
 from skyfield.api import Angle, Star
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     files = glob.glob("tests/work/model/*.model")
     for f in files:
         os.remove(f)
@@ -33,7 +32,7 @@ def function(qapp):
     shutil.copy("tests/testData/test-opt.model", "tests/work/model/test-opt.model")
 
     mainW = MWidget()
-    mainW.app = App()
+    mainW.app = makeApp()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     window = ModelManage(mainW)

@@ -4,7 +4,13 @@
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
-from mw4.logic.controllers.image.cameraCalculations import filterSlotRange, pickListEntry
+from mw4.logic.controllers.image.cameraCalculations import (
+    cameraCapabilities,
+    describeRange,
+    filterSlotRange,
+    optimalBinning,
+    pickListEntry,
+)
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -93,14 +99,11 @@ class ImageManage(TabAddon):
         self.mainW.wIcon(self.ui.coverUnpark, "exit-up")
 
     def checkEnableCameraUI(self) -> None:
-        coolerTemp = "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE" in self.app.dReg.camera.data
-        gainCam = "CCD_GAIN.GAIN" in self.app.dReg.camera.data
-        offsetCam = "CCD_OFFSET.OFFSET" in self.app.dReg.camera.data
-        pixelX = "CCD_INFO.CCD_MAX_X" in self.app.dReg.camera.data
-        self.ui.GroupCooler.setEnabled(coolerTemp)
-        self.ui.GroupGain.setEnabled(gainCam)
-        self.ui.GroupOffset.setEnabled(offsetCam)
-        self.ui.GroupControlledCamera.setEnabled(pixelX)
+        caps = cameraCapabilities(self.app.dReg.camera.data)
+        self.ui.GroupCooler.setEnabled(caps.hasCooler)
+        self.ui.GroupGain.setEnabled(caps.hasGain)
+        self.ui.GroupOffset.setEnabled(caps.hasOffset)
+        self.ui.GroupControlledCamera.setEnabled(caps.hasSensor)
 
     def updateOffset(self) -> None:
         actValue = self.app.dReg.camera.data.get("CCD_OFFSET.OFFSET", None)
@@ -161,10 +164,6 @@ class ImageManage(TabAddon):
         pixelX = camera.data.get("CCD_INFO.CCD_MAX_X", 0)
         pixelY = camera.data.get("CCD_INFO.CCD_MAX_Y", 0)
 
-        optimalBinningX = int(pixelX / 1750)
-        optimalBinningY = int(pixelY / 1750)
-        optimalBinning = max(1, min(optimalBinningX, optimalBinningY))
-
         if maxBinX and maxBinY:
             maxBin = min(maxBinX, maxBinY)
             self.ui.binning1.setMaximum(maxBin)
@@ -177,7 +176,7 @@ class ImageManage(TabAddon):
         camera.subFrame = int(self.ui.subFrame.value())
         camera.fastDownload = True
         camera.focalLength = focalLength
-        guiSetText(self.ui.optimalBinning, "1.0f", optimalBinning)
+        guiSetText(self.ui.optimalBinning, "1.0f", optimalBinning(pixelX, pixelY))
 
     def setCoolerTemp(self) -> None:
         canSetCCDTemp = self.app.dReg.camera.data.get("CAN_SET_CCD_TEMPERATURE", False)
@@ -195,70 +194,39 @@ class ImageManage(TabAddon):
         if ok:
             self.app.dReg.camera.instance.sendCoolerTemp(temperature=value)
 
-    def setOffset(self) -> None:
-        actValue = self.app.dReg.camera.data.get("CCD_OFFSET.OFFSET", None)
+    def askRange(self, title: str, entryText: str, prefix: str) -> int | None:
+        data = self.app.dReg.camera.data
+        actValue = data.get(prefix, None)
         if actValue is None:
-            return
+            return None
 
         actValue = int(actValue)
-        offsetList = self.app.dReg.camera.data.get("CCD_OFFSET.OFFSET_LIST")
-        offsetMin = self.app.dReg.camera.data.get("CCD_OFFSET.OFFSET_MIN")
-        offsetMax = self.app.dReg.camera.data.get("CCD_OFFSET.OFFSET_MAX")
-        if offsetList is not None:
-            offsetList = list(offsetList)
-            value, ok = MWInputDialog.getItem(
-                self.mainW, "Set offset", "Offset entry: ", offsetList, actValue
-            )
-            value = offsetList.index(value)
-
-        elif offsetMin is not None and offsetMax is not None:
-            offsetMin = int(offsetMin)
-            offsetMax = int(offsetMax)
+        spec = describeRange(data, prefix)
+        if spec.kind == "list":
+            value, ok = MWInputDialog.getItem(self.mainW, title, entryText, spec.values, actValue)
+            value = spec.values.index(value)
+        elif spec.kind == "range":
             value, ok = MWInputDialog.getInt(
                 self.mainW,
-                "Set offset",
-                f"Values ({offsetMin:4}..{offsetMax:4}):",
+                title,
+                f"Values ({spec.minVal:4}..{spec.maxVal:4}):",
                 actValue,
-                offsetMin,
-                offsetMax,
-                int((offsetMax - offsetMin) / 20),
+                spec.minVal,
+                spec.maxVal,
+                spec.step,
             )
         else:
-            value, ok = MWInputDialog.getInt(self.mainW, "Set offset", "Values:", actValue)
-        if ok:
+            value, ok = MWInputDialog.getInt(self.mainW, title, "Values:", actValue)
+        return value if ok else None
+
+    def setOffset(self) -> None:
+        value = self.askRange("Set offset", "Offset entry: ", "CCD_OFFSET.OFFSET")
+        if value is not None:
             self.app.dReg.camera.instance.sendOffset(offset=value)
 
     def setGain(self) -> None:
-        actValue = self.app.dReg.camera.data.get("CCD_GAIN.GAIN", None)
-        if actValue is None:
-            return
-        actValue = int(actValue)
-        gainList = self.app.dReg.camera.data.get("CCD_GAIN.GAIN_LIST")
-        gainMin = self.app.dReg.camera.data.get("CCD_GAIN.GAIN_MIN")
-        gainMax = self.app.dReg.camera.data.get("CCD_GAIN.GAIN_MAX")
-        if gainList is not None:
-            gainList = list(gainList)
-            value, ok = MWInputDialog.getItem(
-                self.mainW, "Set gain", "Gain entry: ", gainList, actValue
-            )
-            value = gainList.index(value)
-
-        elif gainMin is not None and gainMax is not None:
-            gainMin = int(gainMin)
-            gainMax = int(gainMax)
-            value, ok = MWInputDialog.getInt(
-                self.mainW,
-                "Set gain",
-                f"Values ({gainMin:4}..{gainMax:4}):",
-                actValue,
-                gainMin,
-                gainMax,
-                int((gainMax - gainMin) / 20),
-            )
-        else:
-            value, ok = MWInputDialog.getInt(self.mainW, "Set gain", "Values:", actValue)
-
-        if ok:
+        value = self.askRange("Set gain", "Gain entry: ", "CCD_GAIN.GAIN")
+        if value is not None:
             self.app.dReg.camera.instance.sendGain(gain=value)
 
     def setFilterNumber(self) -> None:

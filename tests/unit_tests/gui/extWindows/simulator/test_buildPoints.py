@@ -8,13 +8,12 @@ from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.QtWidgets import QApplication
 from skyfield.api import Angle
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
-    func = SimulatorWindow(app=App(), title="Simulator")
+def function(qapp, makeApp):
+    func = SimulatorWindow(app=makeApp(), title="Simulator")
     func.app.buildPoint.buildP = []
     with mock.patch.object(func, "show"):
         yield func.buildPoints

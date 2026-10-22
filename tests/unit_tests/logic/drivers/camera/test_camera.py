@@ -8,15 +8,14 @@ import pytest
 from astropy.io import fits
 from mw4.base import platformInfo
 from mw4.logic.drivers.camera.camera import Camera
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from tests.unit_tests.unitTestAddOns.platformStub import patchPlatform
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function() -> None:
+def function(makeApp) -> None:
     try:
-        func = Camera(app=App())
+        func = Camera(app=makeApp())
         yield func
     except (
         RuntimeError,
@@ -259,15 +258,15 @@ def test_camera_sgpro_in_run(function) -> None:
 
 
 @pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
-def test_camera_ascom_in_run() -> None:
-    function = Camera(app=App())
+def test_camera_ascom_in_run(makeApp) -> None:
+    function = Camera(app=makeApp())
     assert "ascom" in function.run
     assert function.run["ascom"] is not None
 
 
-def test_camera_nonWindows_run() -> None:
+def test_camera_nonWindows_run(makeApp) -> None:
     with patchPlatform("Linux"):
-        function = Camera(app=App())
+        function = Camera(app=makeApp())
         assert "indi" in function.run
         assert "alpaca" in function.run
         assert "sgpro" not in function.run

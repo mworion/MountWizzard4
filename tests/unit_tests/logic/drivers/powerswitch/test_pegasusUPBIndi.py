@@ -7,14 +7,13 @@ from mw4.logic.drivers.frameworks.indiClass import IndiClass
 from mw4.logic.drivers.powerswitch.pegasusUPB import PegasusUPB
 from mw4.logic.drivers.powerswitch.pegasusUPBIndi import PegasusUPBIndi
 from queue import Queue
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        upb = PegasusUPB(App())
+        upb = PegasusUPB(makeApp())
         func = PegasusUPBIndi(parent=upb)
         func.config.deviceName = "test_upb"
     except (

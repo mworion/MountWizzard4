@@ -1,31 +1,25 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
-import logging
 from astropy.io import fits
 from mw4.base import platformInfo
 from mw4.base.appProtocol import AppProtocol
-from mw4.base.signalsDevices import Signals
 from mw4.logic.drivers.camera.cameraAlpaca import CameraAlpaca
 from mw4.logic.drivers.camera.cameraIndi import CameraIndi
 from mw4.logic.drivers.camera.cameraSGPro import CameraSGPro
+from mw4.logic.drivers.frameworks.deviceFacade import DeviceFacade
 from mw4.logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
 from pathlib import Path
-from typing import Any
 
 if platformInfo.IS_WINDOWS:
     from mw4.logic.drivers.camera.cameraAscom import CameraAscom
 
 
-class Camera:
-    log = logging.getLogger("MW4")
-    DEVICE_TYPE: str = "camera"
+class Camera(DeviceFacade[AppProtocol]):
+    DEVICE_TYPE = "camera"
 
     def __init__(self, app: AppProtocol) -> None:
-        self.app = app
-        self.threadPool = app.threadPool
-        self.signals = Signals()
-        self.data: dict[str, Any] = {}
+        super().__init__(app)
         self.exposing: bool = False
         self.fastReadout: bool = False
         self.fastDownload: bool = False
@@ -36,7 +30,6 @@ class Camera:
         self.binning1: int = 1
         self.binningN: int = 1
         self.focalLength: float = 1
-        self.framework: str = ""
         self._binning: int = 1
         self._subFrame: int = 100
         self.posX: int = 0
@@ -48,16 +41,9 @@ class Camera:
         self.widthASCOM: int = 100
         self.heightASCOM: int = 100
 
-        self.run: dict[str, Any] = {
-            "indi": CameraIndi(self),
-            "alpaca": CameraAlpaca(self),
-        }
-        platformInfo.registerWindowsBackends(
-            self.run,
-            {
-                "sgpro": lambda: CameraSGPro(self),
-                "ascom": lambda: CameraAscom(self),
-            },
+        self.buildBackends(
+            {"indi": CameraIndi, "alpaca": CameraAlpaca},
+            {"sgpro": lambda: CameraSGPro(self), "ascom": lambda: CameraAscom(self)},
         )
 
     @property

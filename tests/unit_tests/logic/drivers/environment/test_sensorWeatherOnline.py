@@ -8,16 +8,14 @@ import shutil
 from mw4.base.signalsDevices import Signals
 from mw4.logic.drivers.environment.sensorWeatherOnline import SensorWeatherOnline
 from pathlib import Path
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from typing import ClassVar
 from unittest import mock
 
 
 class Parent:
-    try:
-        app = App()
-    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
-        app = mock.MagicMock()
+    def __init__(self, app):
+        self.app = app
+
     data: ClassVar = {}
     deviceType = ""
     signals = Signals()
@@ -25,7 +23,7 @@ class Parent:
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     class Test1:
         status_code = 200
 
@@ -35,7 +33,7 @@ def function():
 
     shutil.copy("tests/testData/openweathermap.data", "tests/work/data/openweathermap.data")
     with mock.patch.object(requests, "get", return_value=Test1()):
-        func = SensorWeatherOnline(parent=Parent())
+        func = SensorWeatherOnline(parent=Parent(makeApp()))
         yield func
 
 

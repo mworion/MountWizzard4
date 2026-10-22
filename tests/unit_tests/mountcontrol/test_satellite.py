@@ -4,12 +4,11 @@
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.satellite import Satellite
 from skyfield.api import Angle, load
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
-def test_parseGetTLE_1():
-    sat = Satellite(App().mount)
+def test_parseGetTLE_1(makeApp):
+    sat = Satellite(makeApp().mount)
     t0 = "NOAA 8 [-]              "
     t1 = "1 13923U 83022A   19185.92877216 -.00000021  00000-0  89876-5 0  9996"
     t2 = "2 13923  98.5823 170.9975 0016143 125.4216 234.8476 14.28676129888407"
@@ -25,8 +24,8 @@ def test_parseGetTLE_1():
     assert sat.tleParams.l2 == t2
 
 
-def test_parseGetTLE_2():
-    sat = Satellite(App().mount)
+def test_parseGetTLE_2(makeApp):
+    sat = Satellite(makeApp().mount)
     response = ["76129888407$0A"]
 
     suc = sat.parseGetTLE(response, 1)
@@ -38,8 +37,8 @@ def test_parseGetTLE_2():
     assert sat.tleParams.l2 == ""
 
 
-def test_parseGetTLE_3():
-    sat = Satellite(App().mount)
+def test_parseGetTLE_3(makeApp):
+    sat = Satellite(makeApp().mount)
     response = ["76129888407$0A", ["hj"]]
 
     suc = sat.parseGetTLE(response, 2)
@@ -51,8 +50,8 @@ def test_parseGetTLE_3():
     assert sat.tleParams.l2 == ""
 
 
-def test_getTLE_1():
-    sat = Satellite(App().mount)
+def test_getTLE_1(makeApp):
+    sat = Satellite(makeApp().mount)
     t0 = "NOAA 8 [-]              "
     t1 = "1 13923U 83022A   19185.92877216 -.00000021  00000-0  89876-5 0  9996"
     t2 = "2 13923  98.5823 170.9975 0016143 125.4216 234.8476 14.28676129888407"
@@ -66,8 +65,8 @@ def test_getTLE_1():
         assert not suc
 
 
-def test_getTLE_2():
-    sat = Satellite(App().mount)
+def test_getTLE_2(makeApp):
+    sat = Satellite(makeApp().mount)
     t0 = "NOAA 8 [-]              "
     t1 = "1 13923U 83022A   19185.92877216 -.00000021  00000-0  89876-5 0  9996"
     t2 = "2 13923  98.5823 170.9975 0016143 125.4216 234.8476 14.28676129888407"
@@ -81,8 +80,8 @@ def test_getTLE_2():
         assert suc
 
 
-def test_getTLE_3():
-    sat = Satellite(App().mount)
+def test_getTLE_3(makeApp):
+    sat = Satellite(makeApp().mount)
     t0 = "NOAA 8 [-]              "
     t1 = "1 13923U 83022A   19185.92877216 -.00000021  00000-0  89876-5 0  9996"
     t2 = "2 13923  98.5823 170.9975 0016143 125.4216 234.8476 14.28676129888407"
@@ -96,8 +95,8 @@ def test_getTLE_3():
         assert not suc
 
 
-def test_getTLE_4():
-    sat = Satellite(App().mount)
+def test_getTLE_4(makeApp):
+    sat = Satellite(makeApp().mount)
 
     with mock.patch("mw4.mountcontrol.satellite.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, "E", 1
@@ -106,8 +105,8 @@ def test_getTLE_4():
         assert not suc
 
 
-def test_getTLE_5():
-    sat = Satellite(App().mount)
+def test_getTLE_5(makeApp):
+    sat = Satellite(makeApp().mount)
 
     with mock.patch("mw4.mountcontrol.satellite.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, ["V", "V"], 2
@@ -116,8 +115,8 @@ def test_getTLE_5():
         assert not suc
 
 
-def test_setTLE_4():
-    sat = Satellite(App().mount)
+def test_setTLE_4(makeApp):
+    sat = Satellite(makeApp().mount)
     t0 = "NOAA 8 [-]              "
     t1 = "1 13923U 83022A   19185.92877216 -.00000021  00000-0  89876-5 0  9996"
     t2 = "2 13923  98.5823 170.9975 0016143 125.4216 234.8476 14.28676129888407"
@@ -129,8 +128,8 @@ def test_setTLE_4():
         assert suc
 
 
-def test_setTLE_5():
-    sat = Satellite(App().mount)
+def test_setTLE_5(makeApp):
+    sat = Satellite(makeApp().mount)
     t0 = "NOAA 8 [-]              "
     t1 = "1 13923U 83022A   19185.92877216 -.00000021  00000-0  89876-5 0  9996"
     t2 = "2 13923  98.5823 170.9975 0016143 125.4216 234.8476 14.28676129888407x"
@@ -142,8 +141,8 @@ def test_setTLE_5():
         assert not suc
 
 
-def test_setTLE_6():
-    sat = Satellite(App().mount)
+def test_setTLE_6(makeApp):
+    sat = Satellite(makeApp().mount)
     t0 = "NOAA 8 [-]              "
     t1 = "1 13923U 83022A   19185.92877216 -.00000021  00000-0  89876-5 0  9996x"
     t2 = "2 13923  98.5823 170.9975 0016143 125.4216 234.8476 14.28676129888407"
@@ -155,8 +154,8 @@ def test_setTLE_6():
         assert not suc
 
 
-def test_setTLE_7():
-    sat = Satellite(App().mount)
+def test_setTLE_7(makeApp):
+    sat = Satellite(makeApp().mount)
     t0 = "NOAA 8 [-]              "
     t1 = "1 13923U 83022A   19185.92877216 -.00000021  00000-0  89876-5 0  9996"
     t2 = "2 13923  98.5823 170.9975 0016143 125.4216 234.8476 14.28676129888407"
@@ -168,40 +167,40 @@ def test_setTLE_7():
         assert not suc
 
 
-def test_parseCalcTLE_1():
-    sat = Satellite(App().mount)
+def test_parseCalcTLE_1(makeApp):
+    sat = Satellite(makeApp().mount)
     response = ""
 
     suc = sat.parseCalcTLE(response)
     assert not suc
 
 
-def test_parseCalcTLE_2():
-    sat = Satellite(App().mount)
+def test_parseCalcTLE_2(makeApp):
+    sat = Satellite(makeApp().mount)
     response = ""
 
     suc = sat.parseCalcTLE(response)
     assert not suc
 
 
-def test_parseCalcTLE_3():
-    sat = Satellite(App().mount)
+def test_parseCalcTLE_3(makeApp):
+    sat = Satellite(makeApp().mount)
     response = []
 
     suc = sat.parseCalcTLE(response)
     assert not suc
 
 
-def test_parseCalcTLE_4():
-    sat = Satellite(App().mount)
+def test_parseCalcTLE_4(makeApp):
+    sat = Satellite(makeApp().mount)
     response = ["E", "E", "E"]
 
     suc = sat.parseCalcTLE(response)
     assert not suc
 
 
-def test_parseCalcTLE_5():
-    sat = Satellite(App().mount)
+def test_parseCalcTLE_5(makeApp):
+    sat = Satellite(makeApp().mount)
     s0 = ""
     s1 = ""
     s2 = ""
@@ -211,8 +210,8 @@ def test_parseCalcTLE_5():
     assert not suc
 
 
-def test_parseCalcTLE_6():
-    sat = Satellite(App().mount)
+def test_parseCalcTLE_6(makeApp):
+    sat = Satellite(makeApp().mount)
     s0 = "+23.12334,123.1234"
     s1 = "12.12345,+12.1234"
     s2 = "F"
@@ -222,8 +221,8 @@ def test_parseCalcTLE_6():
     assert suc
 
 
-def test_parseCalcTLE_7():
-    sat = Satellite(App().mount)
+def test_parseCalcTLE_7(makeApp):
+    sat = Satellite(makeApp().mount)
     s0 = "+23.12334,123.1234"
     s1 = "12.12345,+12.1234"
     s2 = "12345678.1, 12345678.2, F"
@@ -233,8 +232,8 @@ def test_parseCalcTLE_7():
     assert suc
 
 
-def test_parseCalcTLE_8():
-    sat = Satellite(App().mount)
+def test_parseCalcTLE_8(makeApp):
+    sat = Satellite(makeApp().mount)
     s0 = "E"
     s1 = ""
     s2 = ""
@@ -244,8 +243,8 @@ def test_parseCalcTLE_8():
     assert not suc
 
 
-def test_parseCalcTLE_9():
-    sat = Satellite(App().mount)
+def test_parseCalcTLE_9(makeApp):
+    sat = Satellite(makeApp().mount)
     s0 = ""
     s1 = "E"
     s2 = ""
@@ -255,8 +254,8 @@ def test_parseCalcTLE_9():
     assert not suc
 
 
-def test_parseCalcTLE_10():
-    sat = Satellite(App().mount)
+def test_parseCalcTLE_10(makeApp):
+    sat = Satellite(makeApp().mount)
     s0 = ""
     s1 = ""
     s2 = "E"
@@ -266,8 +265,8 @@ def test_parseCalcTLE_10():
     assert not suc
 
 
-def test_parseCalcTLE_11():
-    sat = Satellite(App().mount)
+def test_parseCalcTLE_11(makeApp):
+    sat = Satellite(makeApp().mount)
     s0 = ""
     s1 = ""
     s2 = ""
@@ -277,8 +276,8 @@ def test_parseCalcTLE_11():
     assert not suc
 
 
-def test_parseCalcTLE_12():
-    sat = Satellite(App().mount)
+def test_parseCalcTLE_12(makeApp):
+    sat = Satellite(makeApp().mount)
     s0 = "+23.12334,123.1234"
     s1 = "12.12345"
     s2 = "N"
@@ -288,8 +287,8 @@ def test_parseCalcTLE_12():
     assert not suc
 
 
-def test_parseCalcTLE_13():
-    sat = Satellite(App().mount)
+def test_parseCalcTLE_13(makeApp):
+    sat = Satellite(makeApp().mount)
     s0 = "+23.12334,123.1234"
     s1 = "12.12345,+12.1234"
     s2 = "F,s"
@@ -299,8 +298,8 @@ def test_parseCalcTLE_13():
     assert not suc
 
 
-def test_calcTLE_0():
-    sat = Satellite(App().mount)
+def test_calcTLE_0(makeApp):
+    sat = Satellite(makeApp().mount)
     ts = load.timescale()
     ts.tt_jd(1234567.8)
 
@@ -311,8 +310,8 @@ def test_calcTLE_0():
         assert not suc
 
 
-def test_calcTLE_1():
-    sat = Satellite(App().mount)
+def test_calcTLE_1(makeApp):
+    sat = Satellite(makeApp().mount)
     ts = load.timescale()
     julD = ts.tt_jd(1234567.8)
 
@@ -323,8 +322,8 @@ def test_calcTLE_1():
         assert not suc
 
 
-def test_calcTLE_2():
-    sat = Satellite(App().mount)
+def test_calcTLE_2(makeApp):
+    sat = Satellite(makeApp().mount)
 
     with mock.patch("mw4.mountcontrol.satellite.Connection") as mConn:
         mConn.return_value.communicate.return_value = False, "V", 1
@@ -333,8 +332,8 @@ def test_calcTLE_2():
         assert not suc
 
 
-def test_calcTLE_3():
-    sat = Satellite(App().mount)
+def test_calcTLE_3(makeApp):
+    sat = Satellite(makeApp().mount)
 
     with mock.patch("mw4.mountcontrol.satellite.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, "V", 1
@@ -343,8 +342,8 @@ def test_calcTLE_3():
         assert not suc
 
 
-def test_calcTLE_4():
-    sat = Satellite(App().mount)
+def test_calcTLE_4(makeApp):
+    sat = Satellite(makeApp().mount)
     s0 = "+23.12334,123.1234"
     s1 = "12.12345,+12.1234"
     response = [s0, s1]
@@ -356,8 +355,8 @@ def test_calcTLE_4():
         assert not suc
 
 
-def test_calcTLE_5():
-    sat = Satellite(App().mount)
+def test_calcTLE_5(makeApp):
+    sat = Satellite(makeApp().mount)
     s0 = "+23.12334,123.1234"
     s1 = "12.12345,+12.1234"
     s2 = "12345678.1, 12345678.2, F"
@@ -370,8 +369,8 @@ def test_calcTLE_5():
         assert suc
 
 
-def test_calcTLE_7():
-    sat = Satellite(App().mount)
+def test_calcTLE_7(makeApp):
+    sat = Satellite(makeApp().mount)
     s0 = "+23.12334,123.1234"
     s1 = "12.12345,+12.1234"
     s2 = "12345678.1, 12345678.2, F"
@@ -384,8 +383,8 @@ def test_calcTLE_7():
         assert not suc
 
 
-def test_slewTLE_1():
-    sat = Satellite(App().mount)
+def test_slewTLE_1(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch("mw4.mountcontrol.satellite.Connection") as mConn:
         mConn.return_value.communicate.return_value = False, "E", 1
 
@@ -393,8 +392,8 @@ def test_slewTLE_1():
         assert not suc
 
 
-def test_slewTLE_2():
-    sat = Satellite(App().mount)
+def test_slewTLE_2(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch("mw4.mountcontrol.satellite.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, "X", 1
 
@@ -403,8 +402,8 @@ def test_slewTLE_2():
         assert mes == "Error"
 
 
-def test_slewTLE_3():
-    sat = Satellite(App().mount)
+def test_slewTLE_3(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch("mw4.mountcontrol.satellite.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, "V", 1
 
@@ -413,8 +412,8 @@ def test_slewTLE_3():
         assert mes == "Slewing to start and track"
 
 
-def test_slewTLE_4():
-    sat = Satellite(App().mount)
+def test_slewTLE_4(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch("mw4.mountcontrol.satellite.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, "V", 2
 
@@ -422,24 +421,24 @@ def test_slewTLE_4():
         assert not suc
 
 
-def test_parseStatTLE_1():
-    sat = Satellite(App().mount)
+def test_parseStatTLE_1(makeApp):
+    sat = Satellite(makeApp().mount)
     response = ""
 
     suc = sat.parseStatTLE(response)
     assert not suc
 
 
-def test_parseStatTLE_2():
-    sat = Satellite(App().mount)
+def test_parseStatTLE_2(makeApp):
+    sat = Satellite(makeApp().mount)
     response = ""
 
     suc = sat.parseStatTLE(response)
     assert not suc
 
 
-def test_parseStatTLE_3():
-    sat = Satellite(App().mount)
+def test_parseStatTLE_3(makeApp):
+    sat = Satellite(makeApp().mount)
     response = [""]
 
     suc = sat.parseStatTLE(response)
@@ -447,8 +446,8 @@ def test_parseStatTLE_3():
     assert sat.tleParams.message == ""
 
 
-def test_parseStatTLE_4():
-    sat = Satellite(App().mount)
+def test_parseStatTLE_4(makeApp):
+    sat = Satellite(makeApp().mount)
     response = ["X"]
 
     suc = sat.parseStatTLE(response)
@@ -456,8 +455,8 @@ def test_parseStatTLE_4():
     assert sat.tleParams.message == "Error"
 
 
-def test_parseStatTLE_5():
-    sat = Satellite(App().mount)
+def test_parseStatTLE_5(makeApp):
+    sat = Satellite(makeApp().mount)
     response = ["V"]
 
     suc = sat.parseStatTLE(response)
@@ -465,20 +464,20 @@ def test_parseStatTLE_5():
     assert sat.tleParams.message == "Slewing to the start of the transit"
 
 
-def test_parseStatTLE_6():
-    sat = Satellite(App().mount)
+def test_parseStatTLE_6(makeApp):
+    sat = Satellite(makeApp().mount)
     response = ["V", "E"]
 
     suc = sat.parseStatTLE(response)
     assert not suc
 
 
-def test_statTLE_1():
+def test_statTLE_1(makeApp):
     class Parent:
         obsSite = None
         host = None
 
-    sat = Satellite(App().mount)
+    sat = Satellite(makeApp().mount)
 
     with mock.patch("mw4.mountcontrol.satellite.Connection") as mConn:
         mConn.return_value.communicate.return_value = False, "E", 1
@@ -487,8 +486,8 @@ def test_statTLE_1():
         assert not suc
 
 
-def test_statTLE_2():
-    sat = Satellite(App().mount)
+def test_statTLE_2(makeApp):
+    sat = Satellite(makeApp().mount)
 
     with mock.patch("mw4.mountcontrol.satellite.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, "E", 1
@@ -497,19 +496,19 @@ def test_statTLE_2():
         assert suc
 
 
-def test_startProgTrajectory_6():
+def test_startProgTrajectory_6(makeApp):
     ts = load.timescale()
     julD = ts.tt_jd(12345678)
 
-    sat = Satellite(App().mount)
+    sat = Satellite(makeApp().mount)
     val = (True, ["V"], 1)
     with mock.patch.object(Connection, "communicate", return_value=val):
         suc = sat.startProgTrajectory(julD=julD)
         assert suc
 
 
-def test_progTrajectoryData_3():
-    sat = Satellite(App().mount)
+def test_progTrajectoryData_3(makeApp):
+    sat = Satellite(makeApp().mount)
     val = (False, ["1", "2"], 1)
     alt = Angle(degrees=[10, 20, 30])
     az = Angle(degrees=[40, 50, 60])
@@ -518,8 +517,8 @@ def test_progTrajectoryData_3():
         assert not suc
 
 
-def test_progTrajectoryData_4():
-    sat = Satellite(App().mount)
+def test_progTrajectoryData_4(makeApp):
+    sat = Satellite(makeApp().mount)
     val = (True, ["1", "2"], 1)
     alt = Angle(degrees=[10, 20, 30])
     az = Angle(degrees=[40, 50, 60])
@@ -528,8 +527,8 @@ def test_progTrajectoryData_4():
         assert not suc
 
 
-def test_progTrajectoryData_5():
-    sat = Satellite(App().mount)
+def test_progTrajectoryData_5(makeApp):
+    sat = Satellite(makeApp().mount)
     val = (True, ["1", "2"], 2)
     alt = Angle(degrees=[10, 20, 30])
     az = Angle(degrees=[40, 50, 60])
@@ -538,8 +537,8 @@ def test_progTrajectoryData_5():
         assert not suc
 
 
-def test_progTrajectoryData_6():
-    sat = Satellite(App().mount)
+def test_progTrajectoryData_6(makeApp):
+    sat = Satellite(makeApp().mount)
     val = (True, ["1", "2", "E"], 3)
     alt = Angle(degrees=[10, 20, 30])
     az = Angle(degrees=[40, 50, 60])
@@ -548,8 +547,8 @@ def test_progTrajectoryData_6():
         assert not suc
 
 
-def test_progTrajectoryData_7():
-    sat = Satellite(App().mount)
+def test_progTrajectoryData_7(makeApp):
+    sat = Satellite(makeApp().mount)
     val = (True, ["1", "2", "3"], 3)
     alt = Angle(degrees=[10, 20, 30])
     az = Angle(degrees=[40, 50, 60])
@@ -558,189 +557,189 @@ def test_progTrajectoryData_7():
         assert suc
 
 
-def test_preCalcTrajectory_1():
-    sat = Satellite(App().mount)
+def test_preCalcTrajectory_1(makeApp):
+    sat = Satellite(makeApp().mount)
     val = (False, ["V"], 1)
     with mock.patch.object(Connection, "communicate", return_value=val):
         suc = sat.preCalcTrajectory()
         assert not suc
 
 
-def test_preCalcTrajectory_2():
-    sat = Satellite(App().mount)
+def test_preCalcTrajectory_2(makeApp):
+    sat = Satellite(makeApp().mount)
     val = (False, ["V"], 1)
     with mock.patch.object(Connection, "communicate", return_value=val):
         suc = sat.preCalcTrajectory(replay=True)
         assert not suc
 
 
-def test_preCalcTrajectory_3():
-    sat = Satellite(App().mount)
+def test_preCalcTrajectory_3(makeApp):
+    sat = Satellite(makeApp().mount)
     val = (True, ["V"], 2)
     with mock.patch.object(Connection, "communicate", return_value=val):
         suc = sat.preCalcTrajectory()
         assert not suc
 
 
-def test_preCalcTrajectory_4():
-    sat = Satellite(App().mount)
+def test_preCalcTrajectory_4(makeApp):
+    sat = Satellite(makeApp().mount)
     val = (True, ["V", "V"], 2)
     with mock.patch.object(Connection, "communicate", return_value=val):
         suc = sat.preCalcTrajectory()
         assert not suc
 
 
-def test_preCalcTrajectory_5():
-    sat = Satellite(App().mount)
+def test_preCalcTrajectory_5(makeApp):
+    sat = Satellite(makeApp().mount)
     val = (True, ["E"], 1)
     with mock.patch.object(Connection, "communicate", return_value=val):
         suc = sat.preCalcTrajectory()
         assert not suc
 
 
-def test_preCalcTrajectory_6():
-    sat = Satellite(App().mount)
+def test_preCalcTrajectory_6(makeApp):
+    sat = Satellite(makeApp().mount)
     val = (True, ["10, 10, F, F"], 1)
     with mock.patch.object(Connection, "communicate", return_value=val):
         suc = sat.preCalcTrajectory()
         assert not suc
 
 
-def test_preCalcTrajectory_7():
-    sat = Satellite(App().mount)
+def test_preCalcTrajectory_7(makeApp):
+    sat = Satellite(makeApp().mount)
     val = (True, ["10, 10, F"], 1)
     with mock.patch.object(Connection, "communicate", return_value=val):
         suc = sat.preCalcTrajectory()
         assert suc
 
 
-def test_getTrackingOffsets_1():
-    sat = Satellite(App().mount)
+def test_getTrackingOffsets_1(makeApp):
+    sat = Satellite(makeApp().mount)
     suc = sat.getTrackingOffsets()
     assert not suc
 
 
-def test_getTrackingOffsets_2():
-    sat = Satellite(App().mount)
+def test_getTrackingOffsets_2(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(True, [1, 2, 3], 1)):
         suc = sat.getTrackingOffsets()
         assert not suc
 
 
-def test_getTrackingOffsets_3():
-    sat = Satellite(App().mount)
+def test_getTrackingOffsets_3(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(True, [1, 2, 3], 3)):
         suc = sat.getTrackingOffsets()
         assert not suc
 
 
-def test_getTrackingOffsets_4():
-    sat = Satellite(App().mount)
+def test_getTrackingOffsets_4(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(True, [1, 2, 3, 4], 4)):
         suc = sat.getTrackingOffsets()
         assert suc
 
 
-def test_setTrackingOffsets_1():
-    sat = Satellite(App().mount)
+def test_setTrackingOffsets_1(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(False, [1, 2, 3, 4], 4)):
         suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
         assert not suc
 
 
-def test_setTrackingOffsets_2():
-    sat = Satellite(App().mount)
+def test_setTrackingOffsets_2(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(True, [1, 2, 3, 4], 1)):
         suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
         assert not suc
 
 
-def test_setTrackingOffsets_3():
-    sat = Satellite(App().mount)
+def test_setTrackingOffsets_3(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(True, ["E", 2, 3], 3)):
         suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
         assert not suc
 
 
-def test_setTrackingOffsets_4():
-    sat = Satellite(App().mount)
+def test_setTrackingOffsets_4(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(True, ["E", 2, 3, 4], 4)):
         suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
         assert not suc
 
 
-def test_setTrackingOffsets_5():
-    sat = Satellite(App().mount)
+def test_setTrackingOffsets_5(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(True, [1, 2, 3, 4], 4)):
         suc = sat.setTrackingOffsets(RA=1, DEC=1, DECcorr=1, Time=1)
         assert suc
 
 
-def test_setTrackingFirst():
-    sat = Satellite(App().mount)
+def test_setTrackingFirst(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):
         suc = sat.setTrackingFirst(first=Angle(degrees=1))
         assert suc
 
 
-def test_setTrackingSecond():
-    sat = Satellite(App().mount)
+def test_setTrackingSecond(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):
         suc = sat.setTrackingSecond(second=Angle(degrees=1))
         assert suc
 
 
-def test_setTrackingFirstCorr():
-    sat = Satellite(App().mount)
+def test_setTrackingFirstCorr(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):
         suc = sat.setTrackingFirstCorr(firstCorr=Angle(degrees=1))
         assert suc
 
 
-def test_setTrackingTime():
-    sat = Satellite(App().mount)
+def test_setTrackingTime(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):
         suc = sat.setTrackingTime(time=1)
         assert suc
 
 
-def test_addTrackingFirst():
-    sat = Satellite(App().mount)
+def test_addTrackingFirst(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):
         suc = sat.addTrackingFirst(first=Angle(degrees=1))
         assert suc
 
 
-def test_addTrackingSecond():
-    sat = Satellite(App().mount)
+def test_addTrackingSecond(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):
         suc = sat.addTrackingSecond(second=Angle(degrees=1))
         assert suc
 
 
-def test_addTrackingFirstCorr():
-    sat = Satellite(App().mount)
+def test_addTrackingFirstCorr(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):
         suc = sat.addTrackingFirstCorr(firstCorr=Angle(degrees=1))
         assert suc
 
 
-def test_addTrackingTime():
-    sat = Satellite(App().mount)
+def test_addTrackingTime(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(True, ["E"], 1)):
         suc = sat.addTrackingTime(time=1)
         assert suc
 
 
-def test_clearTrackingOffsets():
-    sat = Satellite(App().mount)
+def test_clearTrackingOffsets(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate", return_value=(True, ["V"], 1)):
         suc = sat.clearTrackingOffsets()
         assert suc
 
 
-def test_addTrajectoryPoint_length_mismatch():
-    sat = Satellite(App().mount)
+def test_addTrajectoryPoint_length_mismatch(makeApp):
+    sat = Satellite(makeApp().mount)
     az = Angle(degrees=[1, 2, 3])
     alt = Angle(degrees=[1, 2])
     with mock.patch.object(Connection, "communicate") as mComm:
@@ -749,8 +748,8 @@ def test_addTrajectoryPoint_length_mismatch():
         mComm.assert_not_called()
 
 
-def test_setTrackingOffsets_no_values():
-    sat = Satellite(App().mount)
+def test_setTrackingOffsets_no_values(makeApp):
+    sat = Satellite(makeApp().mount)
     with mock.patch.object(Connection, "communicate") as mComm:
         suc = sat.setTrackingOffsets()
         assert not suc

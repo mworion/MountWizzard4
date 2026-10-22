@@ -6,14 +6,13 @@ import pytest
 from mw4.gui.mainWaddon.tabRelay import Relay
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QWidget
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     mainW = QWidget()
-    mainW.app = App()
+    mainW.app = makeApp()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     mainW.wIcon = mock.MagicMock()

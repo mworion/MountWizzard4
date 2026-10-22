@@ -5,13 +5,12 @@ import pytest
 from mw4.logic.drivers.environment.sensorWeather import SensorWeather
 from mw4.logic.drivers.environment.sensorWeatherIndi import SensorWeatherIndi
 from queue import Queue
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        weather = SensorWeather(App())
+        weather = SensorWeather(makeApp())
         func = SensorWeatherIndi(parent=weather)
     except (
         RuntimeError,

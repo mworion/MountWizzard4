@@ -2,25 +2,25 @@
 
 Condensed from `2026-10-20_review_copilot.md` (second pass, revision `3ec18a381`, version
 `4.0.0b36`). Only findings and roadmap items that are **not yet done** are listed.
-Done items (A1, A2, P2, P4, P5, P8, M2, M5, M6, M8, Q1, T3, T6, T8, H2, H4, H5, roadmap 1–8 and the first
-round of A4, A5, M1, P1, T1) are omitted.
+Done items (A1, A2, A4, A5, P2, P4, P5, P8, M2, M3, M4, M5, M6, M8, Q1, T3, T6, T8, H2, H4, H5, roadmap 1–8
+and the first round of M1, P1, T1) are omitted.
 
-State at re-run: 5108 tests passed / 38 skipped, 100 % line and branch coverage,
-`ruff check src` clean, `pyrefly` 0 errors (54 suppressed, 28 warnings hidden).
+State at re-run: 5213 tests passed / 38 skipped, 100 % line and branch coverage,
+`ruff check src` clean, `pyrefly` 0 errors, `lint-imports` 7 contracts kept.
 
 Priority: **H** high, **M** medium, **L** low. ◐ = partly done.
 
 ## 1. Summary of what remains
 
-The structural weaknesses are now concentrated in three areas: **untyped configuration**
-(A3), **duplication / layering of the driver code** (M3, M4, A4) and **repository weight**
-(H1). Everything else is incremental cleanup.
+The structural weaknesses are now concentrated in two areas: **untyped configuration**
+(A3) and **repository weight** (H1). Layering (A4) is done and enforced in CI. Everything else is
+incremental cleanup.
 
 | Area            | Rating | Remaining weakness |
 |-----------------|--------|--------------------|
-| Architecture    | B+     | raw-dict config, `app.mainW` in `base`, big GUI tabs |
+| Architecture    | A-     | raw-dict config (A3) |
 | Pythonic style  | B+     | `hasattr`/dict plumbing, `dict[str, Any]` carriers |
-| Maintainability | B+     | back-end duplication, `base` mixes infra and drivers |
+| Maintainability | A-     | long functions, docstring quality |
 | Quality         | A-     | no shared HTTP helper, thread-safety rule undocumented |
 | Testability     | A-     | god-object stubbing, stress tests not in CI, `tests/work` pollution |
 | Readability     | B+     | class-level loggers, docstring quality |
@@ -31,8 +31,6 @@ The structural weaknesses are now concentrated in three areas: **untyped configu
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
 | A3 | H | Configuration is an untyped nested dict (438 `config[…]`/`.get` accesses); schema, defaults and migration are implicit. | Per-component `@dataclass` configs with `from_dict`/`to_dict`, defaults in one place, a schema version and one migration hook. |
-| A4 | L | ◐ `AudioManager` is decoupled from `app.mainW`; import-linter contract (`base`/`logic`/`mountcontrol` ↛ `gui`) runs in the ubuntu lint job. Remaining: 22 `logic` + 8 `mountcontrol` files import PySide6; `base` ↔ `logic` is circular. | Limit Qt in `logic` to `QObject`/`Signal`; extend the contract with `base ↛ logic`. |
-| A5 | M | ◐ Pass-text, age-colour, trajectory, list-pick, filter-range and tracking-mode logic extracted. Tabs are still large (`tabMount_Sett.py` ~490 L, `tabImage_Manage.py` ~460 L, `tabSat_Track.py` ~400 L), mostly dialog/GUI code. | Move remaining calculations/state transitions into plain `logic/controllers/<GUI area>/` classes (see `plan_A5_tab_logic_extraction.md`); prefer composition (tab owns a controller). |
 | A6 | M | Global signals give loose coupling in code but tight coupling in behaviour. | Document emitter/listener ownership per signal group in `base/appSignals.py`. |
 | A7 | L | `MountWizzard4.__init__` ordering is encoded only by line order. | Split into `setup*` steps with docstrings stating dependencies. |
 
@@ -48,8 +46,6 @@ The structural weaknesses are now concentrated in three areas: **untyped configu
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
 | M1 | L | ◐ `createWindowTable`, `createDeviceTable`, `showTiltSquare` reworked. ~12 functions > 50 lines remain (largest `measureAddons.dataPlots` 91 L, purely declarative; `createFramework2gui` 63 L, `extractSources` 61 L, `astrometry.solve` 57 L). | Builder helpers where it helps; decide on a lower global `PLR0915` budget. |
-| M3 | M | Likely copy-paste across `deviceIndi/Alpaca/SGPro/Ascom` wrappers. | Run a duplication scan; extract common bases/mixins. |
-| M4 | M | `base/` mixes infrastructure with driver-protocol classes (`ascomClass`, `sgproClass`, `indiClass`, …). | ✅ Done: driver classes now in `logic/drivers/frameworks/`; `measure`/`keypad` in `logic/drivers/`. |
 | M7 | L | Docstring style and language quality vary. | One style, limited ruff `D` rules for public APIs. |
 
 ### Quality and robustness
@@ -63,7 +59,6 @@ The structural weaknesses are now concentrated in three areas: **untyped configu
 ### Testability
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
-| T1 | M | ◐ `makeApp(**overrides)` fixture exists (`tests/conftest.py`). Remaining: tests still build `App()` directly. | Migrate tests gradually; use narrow protocols (A1). |
 | T2 | – | Remaining idea: mutation testing (`mutmut`) on `mountcontrol` and `logic/modelBuild`. | Optional. |
 | T4 | M | Heavy `unittest.mock` use for GUI tabs. | In-memory fakes for devices; `qtbot.waitSignal`. |
 | T5 | M | Windows-only code validated only on the Windows workflow. | Contract tests against a fake `win32com`. |
@@ -81,18 +76,18 @@ The structural weaknesses are now concentrated in three areas: **untyped configu
 ### Repository hygiene
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
-| H1 | H | ◐ `.git` is 1.4 GB; `work/`, `log/` untracked now, 149 files in `gists/` still tracked; large binaries in history. | Move `gists/` out; `git lfs` or download-on-first-start for big data; `git filter-repo` only with maintainer agreement. |
+| H1 | H | ◐ `.git` is 1.2 GB (measured 2026-10-22), almost all of it history (generated `mw4/resource/resources.py` ×hundreds, `support/`, `whl/`, `hip_main.dat`); `gists/`, `work/`, `log/` are no longer tracked (`gists/` should go into `.gitignore`). In `HEAD`: 4 test images × 17.5 MB, runtime data duplicated in `tests/testData` (6.5 MB). | See `plan_H1_repository_slimming.md`: `.gitignore` + large-file CI check, deduplicate test data, crop/compress test images, data-asset policy, partial/shallow clones; `git filter-repo` only with maintainer agreement. |
 | H3 | M | Exact pins on core packages. | Fine for an application; keep Renovate/Dependabot, document the pin policy. |
 
 ## 3. Remaining roadmap
 
 **Follow-ups (first round of items 5–8 is done)**
 1. Repair `tests/stress_tests` (they fail with `AttributeError` on the UI layer) so the nightly job is green.
-2. A5/M1 – continue tab logic extraction and the remaining ~12 long functions.
-3. T1 – migrate tests to `makeApp`; extend the import-linter contract (`base ↛ logic`).
+2. M1 – the remaining ~12 long functions. Optional: same controller pattern for
+   `tabModel_Manage.py`, `tabAlmanac.py`, `tabModel_BuildPoints.py` (A5 follow-up); the
+   `update*Gui` tri-state button logic in `tabImage_Manage.py` could move to `logic` as well.
 
 **Strategic**
-4. A3 – typed, versioned configuration dataclasses with migration.
-5. M3 – duplication analysis of device back-ends (M4 done).
-6. H1 – repository slimming and data-asset policy.
-7. Q3 – shared HTTP helper; R2 – module-level loggers.
+3. A3 – typed, versioned configuration dataclasses with migration.
+4. H1 – repository slimming and data-asset policy.
+5. Q3 – shared HTTP helper; R2 – module-level loggers.

@@ -7,14 +7,13 @@ from mw4.logic.drivers.camera.cameraIndi import CameraIndi
 from mw4.logic.drivers.frameworks.indiClass import IndiClass
 from pathlib import Path
 from queue import Queue
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        camera = Camera(App())
+        camera = Camera(makeApp())
         camera.exposureTime = 1
         camera.focalLength = 1
         func = CameraIndi(parent=camera)

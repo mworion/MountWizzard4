@@ -110,6 +110,11 @@ def test_myFunction(app):
 - Python 3.12 language features should be used (minimum of `requires-python`).
 - There is a clear separation between business logic in `src/mw4/logic` and
   the GUI in `src/mw4/gui`.
+- Layering is enforced by `uv run lint-imports` (contracts in `pyproject.toml`):
+  `gui → logic → mountcontrol → base`; `logic/controllers` never import `logic/drivers`
+  (and the reverse); controllers and foundations (`fits`, `profiles`, `databaseProcessing`)
+  stay free of Qt except `QObject` workers. `QtWidgets`/`QtGui` outside `gui` are rejected
+  by ruff (`TID251`). `mw4/deviceRegistry.py` is the composition root.
 - For the GUI, PySide6 is used.
 - All longer-running calculations must be separated into workers of the main
   threadPool.

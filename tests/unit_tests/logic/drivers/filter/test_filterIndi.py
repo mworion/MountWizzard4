@@ -6,13 +6,12 @@ import pytest
 from mw4.logic.drivers.filter.filter import Filter
 from mw4.logic.drivers.filter.filterIndi import FilterIndi
 from queue import Queue
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        filt = Filter(App())
+        filt = Filter(makeApp())
         func = FilterIndi(parent=filt)
         func.config.deviceName = "test_filter"
     except (

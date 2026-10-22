@@ -14,17 +14,16 @@ from pathlib import Path
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication
 from skyfield.api import Angle
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     with (
         mock.patch.object(ImageTabs, "setCrosshair"),
         mock.patch.object(ImageTabs, "colorChange"),
     ):
-        func = ImageWindow(App(), title="Image")
+        func = ImageWindow(makeApp(), title="Image")
         yield func
         QApplication.processEvents()
 

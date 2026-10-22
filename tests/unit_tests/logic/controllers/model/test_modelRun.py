@@ -10,14 +10,13 @@ from mw4.logic.controllers.model.modelRun import ModelData
 from mw4.logic.controllers.model.modelTypes import ModelRunConfig, ModelTiming
 from pathlib import Path
 from skyfield.api import Angle
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     try:
-        function = ModelData(App())
+        function = ModelData(makeApp())
     except (
         RuntimeError,
         ImportError,
@@ -282,7 +281,7 @@ def test_buildProgModel_1(function):
     function.buildProgModel()
 
 
-def test_buildProgModel_2(function):
+def test_buildProgModel_2(function, makeApp):
     model = {
         "im-01": {
             "altitude": 44.556745182012854,
@@ -310,13 +309,13 @@ def test_buildProgModel_2(function):
         },
     }
 
-    function.modelData = ModelData(App())
+    function.modelData = ModelData(makeApp())
     function.modelBuildData = model
     function.buildProgModel()
     assert function.modelProgData[0].sCoord.dec.degrees == 64.3246
 
 
-def test_buildProgModel_3(function):
+def test_buildProgModel_3(function, makeApp):
     model = {
         "im-01": {
             "altitude": 44.556745182012854,
@@ -344,7 +343,7 @@ def test_buildProgModel_3(function):
         },
     }
 
-    function.modelData = ModelData(App())
+    function.modelData = ModelData(makeApp())
     function.modelBuildData = model
     function.buildProgModel()
 

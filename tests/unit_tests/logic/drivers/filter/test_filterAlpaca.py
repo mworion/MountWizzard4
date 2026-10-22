@@ -5,16 +5,14 @@
 import pytest
 from mw4.base.signalsDevices import Signals
 from mw4.logic.drivers.filter.filterAlpaca import FilterAlpaca
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from typing import ClassVar
 from unittest import mock
 
 
 class Parent:
-    try:
-        app = App()
-    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
-        app = mock.MagicMock()
+    def __init__(self, app):
+        self.app = app
+
     data: ClassVar = {}
     DEVICE_TYPE = "filterwheel"
     signals = Signals()
@@ -22,9 +20,9 @@ class Parent:
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     try:
-        func = FilterAlpaca(parent=Parent())
+        func = FilterAlpaca(parent=Parent(makeApp()))
         func.device = mock.MagicMock()
     except (
         RuntimeError,

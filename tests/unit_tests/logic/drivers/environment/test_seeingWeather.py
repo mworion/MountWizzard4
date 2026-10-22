@@ -7,12 +7,11 @@ import requests
 import shutil
 from mw4.logic.drivers.environment.seeingWeather import SeeingWeather
 from pathlib import Path
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
+def function(makeApp):
     class Test1:
         status_code = 200
 
@@ -23,7 +22,7 @@ def function():
     shutil.copy("tests/testData/meteoblue.data", "tests/work/data/meteoblue.data")
 
     with mock.patch.object(requests, "get", return_value=Test1()):
-        func = SeeingWeather(app=App())
+        func = SeeingWeather(app=makeApp())
         yield func
 
 

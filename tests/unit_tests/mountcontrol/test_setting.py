@@ -4,13 +4,12 @@
 import pytest
 from mw4.mountcontrol.setting import Setting
 from packaging.version import Version
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
-    yield Setting(App().mount)
+def function(makeApp):
+    yield Setting(makeApp().mount)
 
 
 #
@@ -317,8 +316,8 @@ def test_Setting_parse_ok_1(function):
     assert suc
 
 
-def test_Setting_parse_ok_2(function):
-    mount = App().mount
+def test_Setting_parse_ok_2(function, makeApp):
+    mount = makeApp().mount
     mount.firmware.vString = Version("2.16.00")
     sett = Setting(mount)
     response = [
@@ -677,8 +676,8 @@ def test_Setting_poll_not_ok2(function):
 #
 
 
-def test_Setting_setDualAxisTracking_ok(function):
-    setting = Setting(App().mount)
+def test_Setting_setDualAxisTracking_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, response, 1
@@ -686,8 +685,8 @@ def test_Setting_setDualAxisTracking_ok(function):
         assert suc
 
 
-def test_Setting_setWOL_ok(function):
-    setting = Setting(App().mount)
+def test_Setting_setWOL_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -703,8 +702,8 @@ def test_Setting_setWOL_ok(function):
 #
 
 
-def test_Setting_setMeridianLimitTrack_ok(function):
-    setting = Setting(App().mount)
+def test_Setting_setMeridianLimitTrack_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -713,8 +712,8 @@ def test_Setting_setMeridianLimitTrack_ok(function):
         assert suc
 
 
-def test_Setting_setMeridianLimitTrack_not_ok1(function):
-    setting = Setting(App().mount)
+def test_Setting_setMeridianLimitTrack_not_ok1(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["0"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -723,8 +722,8 @@ def test_Setting_setMeridianLimitTrack_not_ok1(function):
         assert not suc
 
 
-def test_Setting_setMeridianLimitTrack_not_ok2(function):
-    setting = Setting(App().mount)
+def test_Setting_setMeridianLimitTrack_not_ok2(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -740,8 +739,8 @@ def test_Setting_setMeridianLimitTrack_not_ok2(function):
 #
 
 
-def test_Setting_setMeridianLimitSlew_ok(function):
-    setting = Setting(App().mount)
+def test_Setting_setMeridianLimitSlew_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -750,8 +749,8 @@ def test_Setting_setMeridianLimitSlew_ok(function):
         assert suc
 
 
-def test_Setting_setMeridianLimitSlew_not_ok1(function):
-    setting = Setting(App().mount)
+def test_Setting_setMeridianLimitSlew_not_ok1(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["0"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -760,8 +759,8 @@ def test_Setting_setMeridianLimitSlew_not_ok1(function):
         assert not suc
 
 
-def test_Setting_setMeridianLimitSlew_not_ok2(function):
-    setting = Setting(App().mount)
+def test_Setting_setMeridianLimitSlew_not_ok2(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -777,8 +776,8 @@ def test_Setting_setMeridianLimitSlew_not_ok2(function):
 #
 
 
-def test_Setting_setHorizonLimitLow_ok(function):
-    setting = Setting(App().mount)
+def test_Setting_setHorizonLimitLow_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -787,8 +786,8 @@ def test_Setting_setHorizonLimitLow_ok(function):
         assert suc
 
 
-def test_Setting_setHorizonLimitLow_not_ok3(function):
-    setting = Setting(App().mount)
+def test_Setting_setHorizonLimitLow_not_ok3(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -797,8 +796,8 @@ def test_Setting_setHorizonLimitLow_not_ok3(function):
         assert not suc
 
 
-def test_Setting_setHorizonLimitLow_not_ok4(function):
-    setting = Setting(App().mount)
+def test_Setting_setHorizonLimitLow_not_ok4(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -814,8 +813,8 @@ def test_Setting_setHorizonLimitLow_not_ok4(function):
 #
 
 
-def test_Setting_setHorizonLimitHigh_ok(function):
-    setting = Setting(App().mount)
+def test_Setting_setHorizonLimitHigh_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -824,8 +823,8 @@ def test_Setting_setHorizonLimitHigh_ok(function):
         assert suc
 
 
-def test_Setting_setHorizonLimitHigh_not_ok3(function):
-    setting = Setting(App().mount)
+def test_Setting_setHorizonLimitHigh_not_ok3(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -834,8 +833,8 @@ def test_Setting_setHorizonLimitHigh_not_ok3(function):
         assert not suc
 
 
-def test_Setting_setHorizonLimitHigh_not_ok4(function):
-    setting = Setting(App().mount)
+def test_Setting_setHorizonLimitHigh_not_ok4(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -851,8 +850,8 @@ def test_Setting_setHorizonLimitHigh_not_ok4(function):
 #
 
 
-def test_Setting_setRefractionTemp_ok(function):
-    setting = Setting(App().mount)
+def test_Setting_setRefractionTemp_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -861,8 +860,8 @@ def test_Setting_setRefractionTemp_ok(function):
         assert suc
 
 
-def test_Setting_setRefractionTemp_not_ok3(function):
-    setting = Setting(App().mount)
+def test_Setting_setRefractionTemp_not_ok3(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -871,8 +870,8 @@ def test_Setting_setRefractionTemp_not_ok3(function):
         assert not suc
 
 
-def test_Setting_setRefractionTemp_not_ok4(function):
-    setting = Setting(App().mount)
+def test_Setting_setRefractionTemp_not_ok4(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -888,8 +887,8 @@ def test_Setting_setRefractionTemp_not_ok4(function):
 #
 
 
-def test_Setting_setRefractionPress_ok(function):
-    setting = Setting(App().mount)
+def test_Setting_setRefractionPress_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -898,8 +897,8 @@ def test_Setting_setRefractionPress_ok(function):
         assert suc
 
 
-def test_Setting_setRefractionPress_not_ok3(function):
-    setting = Setting(App().mount)
+def test_Setting_setRefractionPress_not_ok3(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -908,8 +907,8 @@ def test_Setting_setRefractionPress_not_ok3(function):
         assert not suc
 
 
-def test_Setting_setRefractionPress_not_ok4(function):
-    setting = Setting(App().mount)
+def test_Setting_setRefractionPress_not_ok4(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -925,8 +924,8 @@ def test_Setting_setRefractionPress_not_ok4(function):
 #
 
 
-def test_Setting_setRefraction_ok(function):
-    setting = Setting(App().mount)
+def test_Setting_setRefraction_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -942,8 +941,8 @@ def test_Setting_setRefraction_ok(function):
 #
 
 
-def test_Setting_setRefractionParam_ok(function):
-    setting = Setting(App().mount)
+def test_Setting_setRefractionParam_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["11"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -951,8 +950,8 @@ def test_Setting_setRefractionParam_ok(function):
         setting.setRefractionParam(temperature=5, pressure=800)
 
 
-def test_Setting_setRefractionParam_not_ok4(function):
-    setting = Setting(App().mount)
+def test_Setting_setRefractionParam_not_ok4(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["11"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -961,8 +960,8 @@ def test_Setting_setRefractionParam_not_ok4(function):
         assert not suc
 
 
-def test_Setting_setRefractionParam_not_ok5(function):
-    setting = Setting(App().mount)
+def test_Setting_setRefractionParam_not_ok5(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["11"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -971,8 +970,8 @@ def test_Setting_setRefractionParam_not_ok5(function):
         assert not suc
 
 
-def test_Setting_setRefractionParam_not_ok6(function):
-    setting = Setting(App().mount)
+def test_Setting_setRefractionParam_not_ok6(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["11"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -981,8 +980,8 @@ def test_Setting_setRefractionParam_not_ok6(function):
         assert not suc
 
 
-def test_Setting_setRefractionParam_not_ok7(function):
-    setting = Setting(App().mount)
+def test_Setting_setRefractionParam_not_ok7(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["11"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -998,8 +997,8 @@ def test_Setting_setRefractionParam_not_ok7(function):
 #
 
 
-def test_Setting_setSlewRate_ok(function):
-    setting = Setting(App().mount)
+def test_Setting_setSlewRate_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["10"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1008,8 +1007,8 @@ def test_Setting_setSlewRate_ok(function):
         assert suc
 
 
-def test_Setting_setSlewRate_not_ok3(function):
-    setting = Setting(App().mount)
+def test_Setting_setSlewRate_not_ok3(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1018,8 +1017,8 @@ def test_Setting_setSlewRate_not_ok3(function):
         assert not suc
 
 
-def test_Setting_setSlewRate_not_ok4(function):
-    setting = Setting(App().mount)
+def test_Setting_setSlewRate_not_ok4(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1028,8 +1027,8 @@ def test_Setting_setSlewRate_not_ok4(function):
         assert not suc
 
 
-def test_setSlewSpeedMax_1(function):
-    setting = Setting(App().mount)
+def test_setSlewSpeedMax_1(function, makeApp):
+    setting = Setting(makeApp().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, response, 1
@@ -1037,8 +1036,8 @@ def test_setSlewSpeedMax_1(function):
         assert suc
 
 
-def test_setSlewSpeedMax_2(function):
-    setting = Setting(App().mount)
+def test_setSlewSpeedMax_2(function, makeApp):
+    setting = Setting(makeApp().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = False, response, 1
@@ -1046,8 +1045,8 @@ def test_setSlewSpeedMax_2(function):
         assert not suc
 
 
-def test_setSlewSpeedHigh_1(function):
-    setting = Setting(App().mount)
+def test_setSlewSpeedHigh_1(function, makeApp):
+    setting = Setting(makeApp().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, response, 1
@@ -1055,8 +1054,8 @@ def test_setSlewSpeedHigh_1(function):
         assert suc
 
 
-def test_setSlewSpeedHigh_2(function):
-    setting = Setting(App().mount)
+def test_setSlewSpeedHigh_2(function, makeApp):
+    setting = Setting(makeApp().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = False, response, 1
@@ -1064,8 +1063,8 @@ def test_setSlewSpeedHigh_2(function):
         assert not suc
 
 
-def test_setSlewSpeedMed_1(function):
-    setting = Setting(App().mount)
+def test_setSlewSpeedMed_1(function, makeApp):
+    setting = Setting(makeApp().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, response, 1
@@ -1073,8 +1072,8 @@ def test_setSlewSpeedMed_1(function):
         assert suc
 
 
-def test_setSlewSpeedMed_2(function):
-    setting = Setting(App().mount)
+def test_setSlewSpeedMed_2(function, makeApp):
+    setting = Setting(makeApp().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = False, response, 1
@@ -1082,8 +1081,8 @@ def test_setSlewSpeedMed_2(function):
         assert not suc
 
 
-def test_setSlewSpeedLow_1(function):
-    setting = Setting(App().mount)
+def test_setSlewSpeedLow_1(function, makeApp):
+    setting = Setting(makeApp().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, response, 1
@@ -1091,8 +1090,8 @@ def test_setSlewSpeedLow_1(function):
         assert suc
 
 
-def test_setSlewSpeedLow_2(function):
-    setting = Setting(App().mount)
+def test_setSlewSpeedLow_2(function, makeApp):
+    setting = Setting(makeApp().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = False, response, 1
@@ -1107,8 +1106,8 @@ def test_setSlewSpeedLow_2(function):
 #
 
 
-def test_ObsSite_setUnattendedFlip_ok(function):
-    setting = Setting(App().mount)
+def test_ObsSite_setUnattendedFlip_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1117,8 +1116,8 @@ def test_ObsSite_setUnattendedFlip_ok(function):
         assert suc
 
 
-def test_ObsSite_setUnattendedFlip_not_ok1(function):
-    setting = Setting(App().mount)
+def test_ObsSite_setUnattendedFlip_not_ok1(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1134,8 +1133,8 @@ def test_ObsSite_setUnattendedFlip_not_ok1(function):
 #
 
 
-def test_setDirectWeatherUpdateType_3(function):
-    setting = Setting(App().mount)
+def test_setDirectWeatherUpdateType_3(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1144,8 +1143,8 @@ def test_setDirectWeatherUpdateType_3(function):
         assert suc
 
 
-def test_setDirectWeatherUpdateType_4(function):
-    setting = Setting(App().mount)
+def test_setDirectWeatherUpdateType_4(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1154,8 +1153,8 @@ def test_setDirectWeatherUpdateType_4(function):
         assert not suc
 
 
-def test_setDirectWeatherUpdateType_5(function):
-    setting = Setting(App().mount)
+def test_setDirectWeatherUpdateType_5(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1171,8 +1170,8 @@ def test_setDirectWeatherUpdateType_5(function):
 #
 
 
-def test_ObsSite_setLunarTracking_ok(function):
-    setting = Setting(App().mount)
+def test_ObsSite_setLunarTracking_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, response, 0
@@ -1180,8 +1179,8 @@ def test_ObsSite_setLunarTracking_ok(function):
         assert suc
 
 
-def test_ObsSite_setLunarTracking_not_ok1(function):
-    setting = Setting(App().mount)
+def test_ObsSite_setLunarTracking_not_ok1(function, makeApp):
+    setting = Setting(makeApp().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = False, response, 0
@@ -1196,8 +1195,8 @@ def test_ObsSite_setLunarTracking_not_ok1(function):
 #
 
 
-def test_ObsSite_setSiderealTracking_ok(function):
-    setting = Setting(App().mount)
+def test_ObsSite_setSiderealTracking_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, response, 0
@@ -1205,8 +1204,8 @@ def test_ObsSite_setSiderealTracking_ok(function):
         assert suc
 
 
-def test_ObsSite_setSiderealTracking_not_ok1(function):
-    setting = Setting(App().mount)
+def test_ObsSite_setSiderealTracking_not_ok1(function, makeApp):
+    setting = Setting(makeApp().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = False, response, 0
@@ -1221,8 +1220,8 @@ def test_ObsSite_setSiderealTracking_not_ok1(function):
 #
 
 
-def test_ObsSite_setSolarTracking_ok(function):
-    setting = Setting(App().mount)
+def test_ObsSite_setSolarTracking_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = True, response, 0
@@ -1230,8 +1229,8 @@ def test_ObsSite_setSolarTracking_ok(function):
         assert suc
 
 
-def test_ObsSite_setSolarTracking_not_ok1(function):
-    setting = Setting(App().mount)
+def test_ObsSite_setSolarTracking_not_ok1(function, makeApp):
+    setting = Setting(makeApp().mount)
     response = []
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
         mConn.return_value.communicate.return_value = False, response, 0
@@ -1239,46 +1238,46 @@ def test_ObsSite_setSolarTracking_not_ok1(function):
         assert not suc
 
 
-def test_Checking_trackingRate1(function):
-    setting = Setting(App().mount)
+def test_Checking_trackingRate1(function, makeApp):
+    setting = Setting(makeApp().mount)
     setting.trackingRate = 62.4
     assert setting.checkRateLunar()
     assert not setting.checkRateSidereal()
     assert not setting.checkRateSolar()
 
 
-def test_Checking_trackingRate2(function):
-    setting = Setting(App().mount)
+def test_Checking_trackingRate2(function, makeApp):
+    setting = Setting(makeApp().mount)
     setting.trackingRate = 60.2
     assert not setting.checkRateLunar()
     assert setting.checkRateSidereal()
     assert not setting.checkRateSolar()
 
 
-def test_Checking_trackingRate3(function):
-    setting = Setting(App().mount)
+def test_Checking_trackingRate3(function, makeApp):
+    setting = Setting(makeApp().mount)
     setting.trackingRate = 60.3
     assert not setting.checkRateLunar()
     assert not setting.checkRateSidereal()
     assert setting.checkRateSolar()
 
 
-def test_Checking_trackingRate4(function):
-    setting = Setting(App().mount)
+def test_Checking_trackingRate4(function, makeApp):
+    setting = Setting(makeApp().mount)
     setting.trackingRate = 6
     assert not setting.checkRateLunar()
     assert not setting.checkRateSidereal()
     assert not setting.checkRateSolar()
 
 
-def test_ObsSite_trackingRate(function):
-    setting = Setting(App().mount)
+def test_ObsSite_trackingRate(function, makeApp):
+    setting = Setting(makeApp().mount)
     setting.trackingRate = 67
     assert setting.trackingRate == 67
 
 
-def test_setWebInterface_ok(function):
-    setting = Setting(App().mount)
+def test_setWebInterface_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1287,8 +1286,8 @@ def test_setWebInterface_ok(function):
         assert suc
 
 
-def test_setSettleTime_ok(function):
-    setting = Setting(App().mount)
+def test_setSettleTime_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
@@ -1297,8 +1296,8 @@ def test_setSettleTime_ok(function):
         assert suc
 
 
-def test_setAutoPower_ok(function):
-    setting = Setting(App().mount)
+def test_setAutoPower_ok(function, makeApp):
+    setting = Setting(makeApp().mount)
 
     response = ["1"]
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:

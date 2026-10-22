@@ -9,14 +9,13 @@ from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.widgets.main_ui import Ui_MainWindow
 from PySide6.QtWidgets import QWidget
 from skyfield.api import Angle, wgs84
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     mainW = QWidget()
-    mainW.app = App()
+    mainW.app = makeApp()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     mainW.app.dReg.mount.instance.workerCycleClock = None
@@ -862,9 +861,9 @@ def test_showOffset_4(function):
     function.showTimeDiff()
 
 
-def test_init(function):
+def test_init(function, makeApp):
     mainW = QWidget()
-    mainW.app = App()
+    mainW.app = makeApp()
     mainW.ui = Ui_MainWindow()
     mainW.ui.setupUi(mainW)
     mainW.app.dReg.mount.instance.workerCycleClock = None

@@ -15,13 +15,12 @@ from pathlib import Path
 from PySide6.QtCore import QEventLoop
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication, QWidget
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 from unittest import mock
 
 
 class Parent:
-    def __init__(self):
-        self.app = App()
+    def __init__(self, makeApp):
+        self.app = makeApp()
         self.data = {}
         self.signals = Signals()
         self.deviceType = "telescope"
@@ -29,9 +28,9 @@ class Parent:
 
 
 @pytest.fixture(autouse=False, scope="module")
-def function(qapp):
+def function(qapp, makeApp):
     widget = MWidget()
-    widget.app = App()
+    widget.app = makeApp()
     window = DevicePopup(widget, device="telescope")
     window.log = logging.getLogger()
     yield window
@@ -41,8 +40,8 @@ def function(qapp):
 
 
 @pytest.fixture(autouse=True)
-def prepareFunctionState(function):
-    function.app = App()
+def prepareFunctionState(function, makeApp):
+    function.app = makeApp()
     function.device = "telescope"
     function.framework = "indi"
     function.returnValues = {"close": "cancel"}
@@ -412,9 +411,9 @@ def test_exec_2(function):
         mock_loop.exec.assert_called_once()
 
 
-def test_configure_1(function):
+def test_configure_1(function, makeApp):
     parent = MWidget()
-    parent.app = App()
+    parent.app = makeApp()
 
     def mock_exec_ok(self: DevicePopup) -> bool:
         self.returnValues["close"] = "ok"
@@ -425,9 +424,9 @@ def test_configure_1(function):
         assert rv["close"] == "ok"
 
 
-def test_configure_2(function):
+def test_configure_2(function, makeApp):
     parent = MWidget()
-    parent.app = App()
+    parent.app = makeApp()
     with mock.patch.object(DevicePopup, "exec", return_value=False):
         rv = DevicePopup.configure(parent, "telescope")
         assert rv["close"] == "cancel"

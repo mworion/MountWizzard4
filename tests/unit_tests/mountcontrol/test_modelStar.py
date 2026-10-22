@@ -5,12 +5,11 @@
 import pytest
 from mw4.mountcontrol.model import ModelStar
 from skyfield.api import Angle, Star
-from tests.unit_tests.unitTestAddOns.baseTestApp import App
 
 
 @pytest.fixture(autouse=True, scope="module")
-def function():
-    App()
+def function(makeApp):
+    makeApp()
     modelStar = ModelStar()
     yield modelStar
 

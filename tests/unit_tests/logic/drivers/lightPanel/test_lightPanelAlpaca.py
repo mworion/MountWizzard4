@@ -1,0 +1,105 @@
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
+import pytest
+from mw4.base.signalsDevices import Signals
+from mw4.logic.drivers.lightPanel.lightPanelAlpaca import LightPanelAlpaca
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from typing import ClassVar
+from unittest import mock
+
+
+class Parent:
+    try:
+        app = App()
+    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
+        app = mock.MagicMock()
+    data: ClassVar = {}
+    DEVICE_TYPE = "covercalibrator"
+    deviceType = ""
+    signals = Signals()
+    loadConfig = True
+
+
+@pytest.fixture(autouse=True, scope="module")
+def function():
+    try:
+        func = LightPanelAlpaca(parent=Parent())
+        func.device = mock.MagicMock()
+        func.deviceName = "test_light"
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
+        pytest.skip(f"Fixture initialization failed: {e}")
+    yield func
+
+
+def test_pollData_1(function):
+    with mock.patch.object(function, "getAndStoreDeviceProp") as m:
+        function.pollData()
+        assert m.call_count == 2
+        attrs = [c.args[0] for c in m.call_args_list]
+        assert "Brightness" in attrs
+        assert "MaxBrightness" in attrs
+
+
+def test_pollData_2(function):
+    function.data["FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"] = 100
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
+        function.pollData()
+    assert function.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] == 1
+
+
+def test_lightOn_1(function):
+    function.app.dReg.d["lightPanel"].instance.data = {
+        "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX": 254
+    }
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.lightOn()
+    item = function.commandQueue.get_nowait()
+    assert item.valueProp == "CalibratorOn"
+    assert item.kwargs == {"BrightnessVal": 127}
+
+
+def test_lightOff_1(function):
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.lightOff()
+    item = function.commandQueue.get_nowait()
+    assert item.valueProp == "CalibratorOff"
+
+
+def test_lightIntensity_1(function):
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.lightIntensity(100.5)
+    item = function.commandQueue.get_nowait()
+    assert item.valueProp == "CalibratorOn"
+    assert item.kwargs == {"BrightnessVal": 100.5}
+
+
+def test_startCommunication_1(function):
+    """Test that startCommunication returns early when device creation fails."""
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=False),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
+        function.startCommunication()
+        m_start.assert_not_called()
+
+
+def test_startCommunication_2(function):
+    """Test that startCommunication starts the worker thread when device creation succeeds."""
+    with (
+        mock.patch.object(function, "createAlpacaDevice", return_value=True),
+        mock.patch.object(function.threadPool, "start") as m_start,
+    ):
+        function.startCommunication()
+        m_start.assert_called_once()
+        function.workerCommunicationLoop.release()

@@ -1,0 +1,622 @@
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
+
+import numpy as np
+import pytest
+from mw4.base import platformInfo
+from mw4.logic.drivers.dome.dome import Dome
+from skyfield.api import Angle
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
+
+
+@pytest.fixture(autouse=True, scope="module")
+def function():
+    try:
+        func = Dome(app=App())
+        yield func
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
+        pytest.skip(f"Dome initialization failed: {e}")
+
+
+def test_properties_1(function):
+    function.framework = "indi"
+    assert function.framework == "indi"
+
+
+def test_properties_2(function):
+    function.framework = "alpaca"
+    assert function.framework == "alpaca"
+
+
+def test_startCommunication_2(function):
+    function.framework = "indi"
+    function.domeStarted = False
+    with mock.patch.object(function.run["indi"], "startCommunication", return_value=False):
+        function.startCommunication()
+        assert function.domeStarted
+
+
+def test_startCommunication_3(function):
+    function.framework = "indi"
+    function.domeStarted = False
+    with mock.patch.object(function.run["indi"], "startCommunication", return_value=True):
+        function.startCommunication()
+        assert function.domeStarted
+
+
+def test_stopCommunication_2(function):
+    function.framework = "indi"
+    function.domeStarted = True
+    function.app.timeMgr.update1s.connect(function.checkSlewingDome)
+    with mock.patch.object(function.run["indi"], "startCommunication", return_value=True):
+        function.stopCommunication()
+        assert not function.domeStarted
+
+
+def test_stopCommunication_3(function):
+    function.framework = "indi"
+    function.domeStarted = True
+    function.app.timeMgr.update1s.connect(function.checkSlewingDome)
+    with mock.patch.object(function.run["indi"], "startCommunication", return_value=False):
+        function.stopCommunication()
+        assert not function.domeStarted
+
+
+def test_waitSettlingAndEmit(function):
+    function.waitSettlingAndEmit()
+
+
+def test_checkSlewingDome_1(function):
+    function.data["Slewing"] = False
+    with mock.patch.object(function.settlingWait, "start"):
+        function.checkSlewingDome()
+
+
+def test_checkSlewingDome_2(function):
+    function.isSlewing = True
+    function.data["Slewing"] = False
+    with mock.patch.object(function.settlingWait, "start"):
+        function.checkSlewingDome()
+
+
+def test_checkSlewingDome_3(function):
+    function.data["Slewing"] = True
+    with mock.patch.object(function.settlingWait, "start"):
+        function.checkSlewingDome()
+
+
+def test_checkSlewingDome_4(function):
+    function.counterStartSlewing = 0
+    function.isSlewing = False
+    function.data["Slewing"] = False
+    with mock.patch.object(function.settlingWait, "start"):
+        function.checkSlewingDome()
+
+
+def test_checkTargetConditions_1(function):
+    function.openingHysteresis = None
+    function.clearanceZenith = None
+    function.overshoot = None
+    function.radius = None
+    function.clearOpening = None
+    suc = function.checkTargetConditions()
+    assert not suc
+
+
+def test_checkTargetConditions_2(function):
+    function.overshoot = None
+    function.openingHysteresis = 0.1
+    function.clearanceZenith = None
+    function.radius = None
+    function.clearOpening = None
+    suc = function.checkTargetConditions()
+    assert not suc
+
+
+def test_checkTargetConditions_3(function):
+    function.overshoot = None
+    function.openingHysteresis = 0.1
+    function.clearanceZenith = 0.2
+    function.radius = None
+    function.clearOpening = None
+    suc = function.checkTargetConditions()
+    assert not suc
+
+
+def test_checkTargetConditions_4(function):
+    function.overshoot = 0
+    function.openingHysteresis = 0.1
+    function.clearanceZenith = 0.2
+    function.radius = None
+    function.clearOpening = None
+    suc = function.checkTargetConditions()
+    assert not suc
+
+
+def test_checkTargetConditions_5(function):
+    function.overshoot = 0
+    function.openingHysteresis = 0.1
+    function.clearanceZenith = 0.2
+    function.radius = 1.5
+    function.clearOpening = None
+    suc = function.checkTargetConditions()
+    assert not suc
+
+
+def test_checkTargetConditions_6(function):
+    function.overshoot = 0
+    function.openingHysteresis = 0.5
+    function.clearanceZenith = 0.2
+    function.radius = 1.5
+    function.clearOpening = 0.8
+    suc = function.checkTargetConditions()
+    assert not suc
+
+
+def test_checkTargetConditions_7(function):
+    function.overshoot = 0
+    function.openingHysteresis = 0.1
+    function.clearanceZenith = 0.2
+    function.radius = 1.5
+    function.clearOpening = 0.8
+    suc = function.checkTargetConditions()
+    assert suc
+
+
+def test_calcTargetRectanglePoints_1(function):
+    function.openingHysteresis = 0.1
+    function.clearanceZenith = 0.2
+    function.radius = 10
+    function.clearOpening = 1.2
+    a, b, c = function.calcTargetRectanglePoints(0)
+    assert a[0] == -0.1
+    assert a[1] == 0.5
+    assert b[0] == 10
+    assert b[1] == 0.5
+    assert c[0] == 10
+    assert c[1] == -0.5
+
+
+def test_calcTargetRectanglePoints_2(function):
+    function.openingHysteresis = 0.1
+    function.clearanceZenith = 0.2
+    function.radius = 10
+    function.clearOpening = 1.2
+    a, b, c = function.calcTargetRectanglePoints(90)
+    assert round(a[0], 5) == 0.5
+    assert round(a[1], 5) == 0.1
+    assert round(b[0], 5) == 0.5
+    assert round(b[1], 5) == -10
+    assert round(c[0], 5) == -0.5
+    assert round(c[1], 5) == -10
+
+
+def test_targetInDomeShutter_1(function):
+    A = np.array([0, 0])
+    B = np.array([0, 3])
+    C = np.array([4, 3])
+    M = np.array([2, 1])
+    suc = function.targetInDomeShutter(A, B, C, M)
+    assert suc
+
+
+def test_targetInDomeShutter_2(function):
+    A = np.array([0, 0])
+    B = np.array([0, 3])
+    C = np.array([4, 3])
+    M = np.array([5, 4])
+    suc = function.targetInDomeShutter(A, B, C, M)
+    assert not suc
+
+
+def test_targetInDomeShutter_3(function):
+    A = np.array([0, 0])
+    B = np.array([0, 3])
+    C = np.array([4, 3])
+    M = np.array([2, 3])
+    suc = function.targetInDomeShutter(A, B, C, M)
+    assert suc
+
+
+def test_targetInDomeShutter_4(function):
+    A = np.array([2, 0])
+    B = np.array([0, 2])
+    C = np.array([3, 5])
+    M = np.array([0, 0])
+    suc = function.targetInDomeShutter(A, B, C, M)
+    assert not suc
+
+
+def test_targetInDomeShutter_5(function):
+    A = np.array([2, 0])
+    B = np.array([0, 2])
+    C = np.array([3, 5])
+    M = np.array([2, 2])
+    suc = function.targetInDomeShutter(A, B, C, M)
+    assert suc
+
+
+def test_checkSlewNeeded_1(function):
+    with mock.patch.object(function, "checkTargetConditions", return_value=False):
+        suc = function.checkSlewNeeded(0, 0)
+        assert suc
+
+
+def test_checkSlewNeeded_2(function):
+    with (
+        mock.patch.object(function, "checkTargetConditions", return_value=True),
+        mock.patch.object(function, "calcTargetRectanglePoints", return_value=(0, 1, 2)),
+        mock.patch.object(function, "targetInDomeShutter", return_value=False),
+    ):
+        suc = function.checkSlewNeeded(0, 0)
+        assert suc
+
+
+def test_checkSlewNeeded_3(function):
+    with (
+        mock.patch.object(function, "checkTargetConditions", return_value=True),
+        mock.patch.object(function, "calcTargetRectanglePoints", return_value=(0, 1, 2)),
+        mock.patch.object(function, "targetInDomeShutter", return_value=True),
+    ):
+        suc = function.checkSlewNeeded(0, 0)
+        assert not suc
+
+
+def test_checkSlewNeeded_4(function):
+    function.data["ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION"] = 0
+    function.openingHysteresis = 0.0
+    function.clearanceZenith = 0.3
+    function.radius = 1.5
+    function.clearOpening = 0.8
+    with mock.patch.object(function, "checkTargetConditions", return_value=True):
+        suc = function.checkSlewNeeded(0, 0)
+        assert not suc
+
+
+def test_calcSlewTarget_1(function):
+    def func():
+        return None, Angle(degrees=10), [5, 10, 0], None, None
+
+    azimuth = 20
+    altitude = 20
+    function.useGeometry = False
+    alt, az, x, y = function.calcSlewTarget(altitude, azimuth, func)
+    assert alt == 20
+    assert az == 20
+    assert x is None
+    assert y is None
+
+
+def test_calcSlewTarget_2(function):
+    def func():
+        return None, Angle(degrees=10), [5, 10, 0], None, None
+
+    azimuth = 20
+    altitude = 20
+    function.useGeometry = True
+
+    alt, az, x, y = function.calcSlewTarget(altitude, azimuth, func)
+    assert alt == 20
+    assert az == 20
+    assert x is None
+    assert y is None
+
+
+def test_calcSlewTarget_geometryErrorNoIntersect(function):
+    def func():
+        return None, None, None, None, None
+
+    function.useGeometry = True
+    alt, az, x, y = function.calcSlewTarget(20, 30, func)
+    assert (alt, az, x, y) == (20, 30, None, None)
+
+
+def test_slewDome_geometryErrorSlewsWithoutCheck(function):
+    function.framework = "indi"
+    function.useGeometry = True
+    function.useDynamicFollowing = True
+    mount = function.app.dReg.mount.instance
+    with (
+        mock.patch.object(
+            mount,
+            "calcTransformationMatricesTarget",
+            return_value=(None, None, None, None, None),
+        ),
+        mock.patch.object(function, "checkSlewNeeded") as checkSlew,
+        mock.patch.object(function, "calcOvershoot", return_value=30),
+        mock.patch.object(function.run["indi"], "slewToAltAz") as slew,
+    ):
+        function.slewDome(altitude=20, azimuth=30)
+    checkSlew.assert_not_called()
+    slew.assert_called_once_with(azimuth=30, altitude=20)
+
+
+def test_calcSlewTarget_3(function):
+    def func():
+        return Angle(degrees=10), Angle(degrees=10), [5, 10, 0], None, None
+
+    azimuth = 20
+    altitude = 20
+    function.useGeometry = True
+
+    alt, az, x, y = function.calcSlewTarget(altitude, azimuth, func)
+    assert alt == 10
+    assert az == 10
+    assert x == 5
+    assert y == 10
+
+
+def test_calcOvershoot_1(function):
+    function.overshoot = False
+    val = function.calcOvershoot(100)
+    assert val == 100
+    assert function.lastFinalAz is None
+
+
+def test_calcOvershoot_2(function):
+    function.overshoot = True
+    function.avoidFirstSlewOvershoot = True
+    val = function.calcOvershoot(100)
+    assert val == 100
+    assert not function.avoidFirstSlewOvershoot
+    assert function.lastFinalAz is None
+
+
+def test_calcOvershoot_3(function):
+    function.clearOpening = 0.8
+    function.openingHysteresis = 0.2
+    function.radius = 1.5
+    function.avoidFirstSlewOvershoot = False
+    function.overshoot = True
+    function.app.dReg.mount.obsSite.AzDirection = None
+    val = function.calcOvershoot(100)
+    assert val == 100
+
+
+def test_calcOvershoot_4(function):
+    function.clearOpening = 0.8
+    function.openingHysteresis = 0.2
+    function.radius = 1.5
+    function.avoidFirstSlewOvershoot = False
+    function.overshoot = True
+    function.lastFinalAz = None
+    function.app.dReg.mount.obsSite.AzDirection = 1
+    val = function.calcOvershoot(100)
+    assert round(val, 3) == 107.595
+
+
+def test_calcOvershoot_5(function):
+    function.clearOpening = 0.8
+    function.openingHysteresis = 0.2
+    function.radius = 1.5
+    function.avoidFirstSlewOvershoot = False
+    function.overshoot = True
+    function.lastFinalAz = 10
+    function.app.dReg.mount.obsSite.AzDirection = 1
+    val = function.calcOvershoot(100)
+    assert round(val, 3) == 107.595
+
+
+def test_calcOvershoot_6(function):
+    function.clearOpening = 0.8
+    function.openingHysteresis = 0.2
+    function.radius = 1.5
+    function.avoidFirstSlewOvershoot = False
+    function.app.dReg.mount.obsSite.AzDirection = 1
+    function.overshoot = True
+    function.lastFinalAz = 10
+    val = function.calcOvershoot(30)
+    assert round(val, 3) == 37.595
+
+
+def test_calcOvershoot_7(function):
+    function.clearOpening = 0.8
+    function.openingHysteresis = 0.2
+    function.radius = 1.5
+    function.avoidFirstSlewOvershoot = False
+    function.app.dReg.mount.obsSite.AzDirection = -1
+    function.overshoot = True
+    function.lastFinalAz = 10
+    val = function.calcOvershoot(30)
+    assert round(val, 3) == 22.405
+
+
+def test_calcOvershoot_8(function):
+    function.clearOpening = 0.8
+    function.openingHysteresis = 0.2
+    function.radius = 1.5
+    function.avoidFirstSlewOvershoot = False
+    function.app.dReg.mount.obsSite.AzDirection = -1
+    function.overshoot = True
+    function.lastFinalAz = 10
+    val = function.calcOvershoot(15)
+    assert round(val, 3) == 10
+
+
+def test_slewDome_2(function):
+    function.data = {"AZ": 1}
+    function.framework = "indi"
+    function.overshoot = None
+    function.avoidFirstSlewOvershoot = True
+    function.lastFinalAz = None
+    val = (10, 10, None, None)
+    with (
+        mock.patch.object(function, "calcSlewTarget", return_value=val),
+        mock.patch.object(function.run["indi"], "slewToAltAz", return_value=val),
+    ):
+        delta = function.slewDome(0, 0, False)
+        assert delta == -10
+
+
+def test_slewDome_3(function):
+    function.data = {"AZ": 1}
+    function.framework = "indi"
+    function.useDynamicFollowing = True
+    val = (10, 10, 0, 0)
+    with (
+        mock.patch.object(function, "calcSlewTarget", return_value=val),
+        mock.patch.object(function.run["indi"], "slewToAltAz", return_value=val),
+        mock.patch.object(function, "checkSlewNeeded", return_value=False),
+    ):
+        delta = function.slewDome(0, 0, False)
+        assert delta == -10
+
+
+def test_slewDome_4(function):
+    function.data = {"AZ": 1}
+    function.framework = "indi"
+    function.useDynamicFollowing = True
+    val = (10, 10, 0, 0)
+    with (
+        mock.patch.object(function, "calcSlewTarget", return_value=val),
+        mock.patch.object(function.run["indi"], "slewToAltAz", return_value=val),
+        mock.patch.object(function, "checkSlewNeeded", return_value=False),
+    ):
+        delta = function.slewDome(0, 0, True)
+        assert delta == -10
+
+
+def test_avoidFirstOvershoot(function):
+    function.avoidFirstSlewOvershoot = False
+    function.avoidFirstOvershoot()
+    assert function.avoidFirstSlewOvershoot
+
+
+def test_openShutter_1(function):
+    function.data = {}
+    function.openShutter()
+
+
+def test_openShutter_2(function):
+    function.data = {"AZ": 1}
+    function.framework = "indi"
+    with mock.patch.object(function.run["indi"], "openShutter", return_value=False):
+        function.openShutter()
+
+
+def test_openShutter_3(function):
+    function.data = {"AZ": 1}
+    function.framework = "indi"
+    with mock.patch.object(function.run["indi"], "openShutter", return_value=True):
+        function.openShutter()
+
+
+def test_closeShutter_1(function):
+    function.data = {}
+    function.closeShutter()
+
+
+def test_closeShutter_2(function):
+    function.data = {"AZ": 1}
+    function.framework = "indi"
+    with mock.patch.object(function.run["indi"], "closeShutter", return_value=False):
+        function.closeShutter()
+
+
+def test_closeShutter_3(function):
+    function.data = {"AZ": 1}
+    function.framework = "indi"
+    with mock.patch.object(function.run["indi"], "closeShutter", return_value=True):
+        function.closeShutter()
+
+
+def test_slewCW_1(function):
+    function.data = {}
+    function.slewCW()
+
+
+def test_slewCW_2(function):
+    function.data = {"AZ": 1}
+    function.framework = "indi"
+    with mock.patch.object(function.run["indi"], "slewCW", return_value=False):
+        function.slewCW()
+
+
+def test_slewCW_3(function):
+    function.data = {"AZ": 1}
+    function.framework = "indi"
+    with mock.patch.object(function.run["indi"], "slewCW", return_value=True):
+        function.slewCW()
+
+
+def test_slewCCW_1(function):
+    function.data = {}
+    function.slewCCW()
+
+
+def test_slewCCW_2(function):
+    function.data = {"AZ": 1}
+    function.framework = "indi"
+    with mock.patch.object(function.run["indi"], "slewCCW", return_value=False):
+        function.slewCCW()
+
+
+def test_slewCCW_3(function):
+    function.data = {"AZ": 1}
+    function.framework = "indi"
+    with mock.patch.object(function.run["indi"], "slewCCW", return_value=True):
+        function.slewCCW()
+
+
+def test_abortSlew_1(function):
+    function.data = {}
+    function.abortSlew()
+
+
+def test_abortSlew_2(function):
+    function.data = {"AZ": 1}
+    function.framework = "indi"
+    with mock.patch.object(function.run["indi"], "abortSlew", return_value=False):
+        function.abortSlew()
+
+
+def test_abortSlew_3(function):
+    function.data = {"AZ": 1}
+    function.framework = "indi"
+    with mock.patch.object(function.run["indi"], "abortSlew", return_value=True):
+        function.abortSlew()
+
+
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
+def test_domeAscom_import():
+    import importlib
+
+    spec = importlib.util.find_spec("mw4.logic.drivers.dome.domeAscom")
+    assert spec is not None
+
+
+@pytest.mark.skipif(not platformInfo.IS_WINDOWS, reason="Windows needed")
+def test_dome_ascom_in_run():
+    from mw4.logic.drivers.dome.dome import Dome
+    from tests.unit_tests.unitTestAddOns.baseTestApp import App
+
+    function = Dome(app=App())
+    if platformInfo.IS_WINDOWS:
+        assert "ascom" in function.run
+        assert function.run["ascom"] is not None
+
+
+def test_stopCommunication_4(function):
+    function.framework = "indi"
+    function.domeStarted = False
+    with mock.patch.object(function.run["indi"], "stopCommunication"):
+        function.stopCommunication()
+        assert not function.domeStarted
+
+
+def test_checkSlewingDome_5(function):
+    function.isSlewing = True
+    function.data["Slewing"] = True
+    with mock.patch.object(function.settlingWait, "start") as start:
+        function.checkSlewingDome()
+        start.assert_not_called()
+    assert function.isSlewing

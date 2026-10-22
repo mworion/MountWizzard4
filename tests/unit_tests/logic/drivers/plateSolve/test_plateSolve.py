@@ -1,0 +1,361 @@
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
+import glob
+import mw4.logic.drivers.plateSolve.plateSolve
+import os
+import pytest
+import queue
+import shutil
+import subprocess
+from contextlib import suppress
+from mw4.logic.drivers.plateSolve.plateSolve import PlateSolve
+from pathlib import Path
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
+
+
+@pytest.fixture(autouse=True, scope="module")
+def function():
+    try:
+        files = glob.glob("tests/work/image/*.fit*")
+        for f in files:
+            os.remove(f)
+        shutil.copy("tests/testData/m51.fit", "tests/work/image/m51.fit")
+        shutil.copy("tests/testData/astrometry.cfg", "tests/work/temp/astrometry.cfg")
+        func = PlateSolve(app=App())
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
+        pytest.skip(f"Fixture initialization failed: {e}")
+    yield func
+
+
+@pytest.fixture
+def mocked_queueGet(monkeypatch, function):
+
+    def mock_get(*args, **kwargs):
+        function.solveLoopRunning = False
+        raise RuntimeError("Mocked to stop loop")
+
+    monkeypatch.setattr(function.solveQueue, "get", mock_get)
+
+
+@pytest.fixture
+def mocked_processSolveQueue(monkeypatch, function):
+    def test(a, b, c):
+        function.solveLoopRunning = False
+
+    monkeypatch.setattr(
+        "mw4.logic.drivers.plateSolve.plateSolve.PlateSolve.processSolveQueue", test
+    )
+
+
+def test_properties_1(function):
+    function.framework = "test"
+
+    function.host = ("localhost", 7624)
+    function.apiKey = "test"
+    function.indexPath = "test"
+    function.deviceName = "test"
+    function.timeout = 30
+    function.searchRadius = 20
+    assert function.host == ("localhost", 7624)
+    assert function.apiKey == "test"
+    assert function.indexPath == "test"
+    assert function.deviceName == "test"
+    assert function.timeout == 30
+    assert function.searchRadius == 20
+
+
+def test_properties_2(function):
+    function.framework = "astap"
+
+    function.host = ("localhost", 7624)
+    function.apiKey = "test"
+    function.indexPath = "test"
+    function.deviceName = "test"
+    function.timeout = 30
+    function.searchRadius = 20
+    assert function.host == ("localhost", 7624)
+    assert function.apiKey == "test"
+    assert function.indexPath == "test"
+    assert function.deviceName == "test"
+    assert function.timeout == 30
+    assert function.searchRadius == 20
+
+
+def test_init_1(function):
+    assert "watney" in function.run
+    assert "astrometry" in function.run
+    assert "astap" in function.run
+
+
+def makeProcess() -> mock.MagicMock:
+    proc = mock.MagicMock()
+    proc.__enter__.return_value = proc
+    return proc
+
+
+def test_runSolverBin_1(function):
+    mock_proc = makeProcess()
+    mock_proc.returncode = 1
+    mock_proc.communicate.return_value = (b"output", b"")
+
+    function.framework = "astap"
+    with mock.patch.object(subprocess, "Popen", return_value=mock_proc):
+        suc, ret = function.runSolverBin(["test", "test", "test", "test"])
+        assert ret == "No solution"
+        assert not suc
+    assert function.process is None
+    mock_proc.__exit__.assert_called_once()
+
+
+def test_runSolverBin_2(function):
+    function.framework = "astap"
+    mock_proc = makeProcess()
+    mock_proc.communicate.side_effect = OSError("Test error")
+    with mock.patch.object(subprocess, "Popen", return_value=mock_proc):
+        suc, ret = function.runSolverBin(["test", "test", "test", "test"])
+        assert not suc
+        assert "Exception" in ret
+    assert function.process is None
+
+
+def test_runSolverBin_3(function):
+    function.framework = "astap"
+    mock_proc = makeProcess()
+    mock_proc.communicate.side_effect = [
+        subprocess.TimeoutExpired("run", 1),
+        (b"", b""),
+    ]
+    with mock.patch.object(subprocess, "Popen", return_value=mock_proc):
+        suc, ret = function.runSolverBin(["test", "test", "test", "test"])
+    assert not suc
+    assert ret == "Timeout expired"
+    mock_proc.kill.assert_called_once()
+    assert function.process is None
+
+
+def test_runSolverBin_popenFails(function):
+    function.framework = "astap"
+    with mock.patch.object(subprocess, "Popen", side_effect=OSError("not found")):
+        suc, ret = function.runSolverBin(["test"])
+    assert not suc
+    assert "not found" in ret
+    assert function.process is None
+
+
+def test_runSolverBin_nonUtf8Output(function):
+    function.framework = "astap"
+    mock_proc = makeProcess()
+    mock_proc.returncode = 0
+    mock_proc.communicate.return_value = (b"solved \xe4\xf6\xfc\x81", b"")
+    with mock.patch.object(subprocess, "Popen", return_value=mock_proc):
+        suc, _ = function.runSolverBin(["test"])
+    assert suc
+
+
+def test_runSolverBin_processSetWhileRunning(function):
+    function.framework = "astap"
+    mock_proc = makeProcess()
+    mock_proc.returncode = 0
+    seen = []
+
+    def communicate(timeout=None):
+        seen.append(function.process)
+        return b"", b""
+
+    mock_proc.communicate.side_effect = communicate
+    with mock.patch.object(subprocess, "Popen", return_value=mock_proc):
+        function.runSolverBin(["test"])
+    assert seen == [mock_proc]
+    assert function.process is None
+
+
+def test_prepareResult_1(function):
+    result = function.prepareResult(
+        False, "test", Path("tests/work/image/m51.fit"), Path("test"), False
+    )
+    assert not result["success"]
+
+
+def test_prepareResult_2(function):
+    with mock.patch.object(Path, "is_file", return_value=False):
+        result = function.prepareResult(
+            True, "test", Path("tests/work/image/m51.fit"), Path("test"), False
+        )
+        assert not result["success"]
+        assert result["message"] == "Solve failed, no WCS file"
+
+
+def test_prepareResult_3(function):
+    solve = {
+        "raJ2000S": 1,
+        "decJ2000S": 1,
+    }
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(mw4.logic.drivers.plateSolve.plateSolve, "getImageHeader"),
+        mock.patch.object(
+            mw4.logic.drivers.plateSolve.plateSolve, "getSolutionFromWCSHeader", return_value=solve
+        ),
+        mock.patch.object(
+            mw4.logic.drivers.plateSolve.plateSolve, "updateImageFileHeaderWithSolution"
+        ),
+        mock.patch.object(
+            mw4.logic.drivers.plateSolve.plateSolve, "J2000ToJNow", return_value=(1, 1)
+        ),
+    ):
+        result = function.prepareResult(
+            True, "test", Path("tests/work/image/m51.fit"), Path("test"), True
+        )
+        assert result["success"]
+        assert result["message"] == "Solved"
+
+
+def test_processSolveQueue_1(function):
+    with mock.patch.object(Path, "is_file", return_value=False):
+        function.processSolveQueue(Path("tests/work/image/m51.fit"), False)
+
+
+def test_processSolveQueue_2(function):
+    function.framework = "astap"
+    function.run["astap"].timeout = function.run["astap"].config.timeout
+    function.run["astap"].searchRadius = function.run["astap"].config.searchRadius
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(function.run["astap"], "solve"),
+    ):
+        function.processSolveQueue(Path("tests/work/image/m51.fit"), False)
+
+
+def test_workerSolveLoop_1(function, mocked_queueGet):
+    with function.solveQueue.mutex:
+        function.solveQueue.queue.clear()
+    function.solveLoopRunning = True
+    with suppress(Exception):
+        function.runnerSolveLoop()
+
+
+def test_workerSolveLoop_2(function, mocked_processSolveQueue):
+    function.solveLoopRunning = True
+    function.solveQueue.put(("tests/work/image/m51.fit", False))
+    with suppress(Exception):
+        function.runnerSolveLoop()
+
+
+def test_workerSolveLoop_empty_queue(function, monkeypatch):
+    function.solveLoopRunning = True
+
+    def mock_get(*args, **kwargs):
+        function.solveLoopRunning = False
+        raise queue.Empty()
+
+    monkeypatch.setattr(function.solveQueue, "get", mock_get)
+    function.runnerSolveLoop()
+
+
+def test_startSolveLoop_1(function):
+    function.solveLoopRunning = False
+    with mock.patch("mw4.logic.drivers.plateSolve.plateSolve.startWorker") as mockStart:
+        function.startSolveLoop()
+    assert function.solveLoopRunning
+    mockStart.assert_called_once()
+
+
+def test_startSolveLoop_2(function):
+    function.solveLoopRunning = True
+    with mock.patch("mw4.logic.drivers.plateSolve.plateSolve.startWorker") as mockStart:
+        function.startSolveLoop()
+    assert function.solveLoopRunning
+    mockStart.assert_not_called()
+
+
+def test_checkAvailabilityProgram_1(function):
+    function.framework = "astap"
+    with mock.patch.object(function.run["astap"], "checkAvailabilityProgram", return_value=True):
+        assert function.checkAvailabilityProgram("astap")
+
+
+def test_checkAvailabilityIndex_1(function):
+    function.framework = "astap"
+    with mock.patch.object(function.run["astap"], "checkAvailabilityIndex", return_value=True):
+        assert function.checkAvailabilityIndex("astap")
+
+
+def test_startCommunication_1(function):
+    function.framework = "astap"
+    with (
+        mock.patch.object(function, "checkAvailabilityProgram", return_value=True),
+        mock.patch.object(function, "checkAvailabilityIndex", return_value=True),
+    ):
+        function.startCommunication()
+
+
+def test_startCommunication_2(function):
+    function.framework = "astap"
+    with (
+        mock.patch.object(function, "checkAvailabilityProgram", return_value=False),
+        mock.patch.object(function, "checkAvailabilityIndex", return_value=True),
+    ):
+        function.startCommunication()
+
+
+def test_stopCommunication(function):
+    function.framework = "astrometry"
+    function.stopCommunication()
+
+
+def test_solve_1(function):
+    function.framework = "astap"
+    file = "tests/work/image/m51.fit"
+    function.solve(imagePath=file)
+
+
+def test_abort_no_process(function):
+    function.process = None
+    function.abort()
+
+
+def test_abort_with_process(function):
+    class FakeProcess:
+        killed = False
+
+        def kill(self):
+            self.killed = True
+
+    fake = FakeProcess()
+    function.process = fake
+    function.abort()
+    assert fake.killed
+
+
+def test_prepareResult_4(function):
+    solve = {
+        "raJ2000S": 1,
+        "decJ2000S": 1,
+    }
+    with (
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(mw4.logic.drivers.plateSolve.plateSolve, "getImageHeader"),
+        mock.patch.object(
+            mw4.logic.drivers.plateSolve.plateSolve, "getSolutionFromWCSHeader", return_value=solve
+        ),
+        mock.patch.object(
+            mw4.logic.drivers.plateSolve.plateSolve, "updateImageFileHeaderWithSolution"
+        ) as updateHeader,
+        mock.patch.object(
+            mw4.logic.drivers.plateSolve.plateSolve, "J2000ToJNow", return_value=(1, 1)
+        ),
+    ):
+        result = function.prepareResult(
+            True, "test", Path("tests/work/image/m51.fit"), Path("test"), False
+        )
+        assert result["success"]
+        updateHeader.assert_not_called()

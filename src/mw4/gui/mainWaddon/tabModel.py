@@ -9,9 +9,9 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
-from mw4.logic.modelBuild.modelRun import ModelData
-from mw4.logic.modelBuild.modelRunSupport import buildSaveData, saveModelFile
-from mw4.logic.modelBuild.modelTypes import ModelRunConfig, ModelTiming
+from mw4.logic.controllers.model.modelRun import ModelData
+from mw4.logic.controllers.model.modelRunSupport import buildSaveData, saveModelFile
+from mw4.logic.controllers.model.modelTypes import ModelRunConfig, ModelTiming
 from pathlib import Path
 from PySide6.QtCore import QTimer
 from typing import TYPE_CHECKING, Any

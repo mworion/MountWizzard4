@@ -1,0 +1,30 @@
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
+from mw4.logic.drivers.frameworks.alpacaAscomCommon import AlpacaAscomCommon
+from typing import Any
+
+
+class FilterAlpacaAscomBase(AlpacaAscomCommon):
+    def __init__(self, parent: Any) -> None:
+        super().__init__(parent=parent)
+
+    def getInitialConfig(self) -> None:
+        super().getInitialConfig()
+        names = self.getDeviceProp("Names")
+        if names is None:
+            return
+
+        for i, name in enumerate(names):
+            if name is None:
+                continue
+            self.storePropertyToData(name, f"FILTER_NAME.FILTER_SLOT_NAME_{i:1.0f}")
+
+    def pollData(self) -> None:
+        position = self.getDeviceProp("Position")
+        if position == -1 or position is None:
+            return
+        self.storePropertyToData(position, "FILTER_SLOT.FILTER_SLOT_VALUE")
+
+    def sendFilterNumber(self, filterNumber: int = 0) -> None:
+        self.setDevicePropQueued("Position", filterNumber)

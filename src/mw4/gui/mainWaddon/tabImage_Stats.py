@@ -4,7 +4,7 @@
 import webbrowser
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import guiSetText
-from mw4.logic.photometry.imageStats import calcImageStats
+from mw4.logic.controllers.imageWindow.imageStats import calcImageStats
 from range_key_dict import RangeKeyDict
 from typing import TYPE_CHECKING
 

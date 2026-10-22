@@ -1,0 +1,54 @@
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
+import pytest
+from mw4.base import platformInfo
+from unittest import mock
+
+if not platformInfo.IS_WINDOWS:
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
+
+from mw4.logic.drivers.camera.camera import Camera
+from mw4.logic.drivers.camera.cameraAlpacaAscomBase import CameraAlpacaAscomBase
+from mw4.logic.drivers.camera.cameraAscom import CameraAscom
+from mw4.logic.drivers.frameworks.ascomClass import AscomClass
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
+
+
+@pytest.fixture(autouse=True, scope="module")
+def function():
+    try:
+        camera = Camera(App())
+        camera.exposureTime = 1
+        camera.binning = 1
+        camera.focalLength = 1
+        camera.posXASCOM = 0
+        camera.posYASCOM = 0
+        camera.widthASCOM = 100
+        camera.heightASCOM = 100
+        camera.fastReadout = False
+        camera.imagePath = "/tmp/test.fits"
+        func = CameraAscom(camera)
+        func.device = mock.MagicMock()
+        yield func
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
+        pytest.skip(f"Camera/CameraAscom initialization failed: {e}")
+
+
+def test_cameraAscom_inheritsFromBase(function):
+    assert isinstance(function, CameraAlpacaAscomBase)
+
+
+def test_cameraAscom_inheritsFromAscomClass(function):
+    assert isinstance(function, AscomClass)
+
+
+def test_cameraAscom_instantiation(function):
+    assert function is not None

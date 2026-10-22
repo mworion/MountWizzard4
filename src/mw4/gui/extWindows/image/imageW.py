@@ -13,9 +13,9 @@ from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, getTabIndex
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import image_ui
+from mw4.logic.controllers.imageWindow.photometry import Photometry
 from mw4.logic.file.fileHandler import FileHandler
 from mw4.logic.fits.fitsFunction import getCoordinatesFromHeader, getImageHeader
-from mw4.logic.photometry.photometry import Photometry
 from mw4.mountcontrol.convertGui import convertToDMS, convertToHMS
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent

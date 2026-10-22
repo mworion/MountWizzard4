@@ -222,8 +222,8 @@ def test_audio_manager_with_all_sound_types(audioManager):
                 audioManager.playSound(sound)
 
 
-def test_playSound_creates_sound_with_app_context(audioManager):
-    """Test playSound creates QSoundEffect with app context."""
+def test_playSound_creates_sound_with_manager_as_parent(audioManager):
+    """Test playSound creates QSoundEffect with manager as parent."""
     audioManager.app.config["SettingAudio"] = {"MountSlew": 1, "PlaySound": True}
     with mock.patch("mw4.base.audioManager.as_file") as mock_as_file:
         mock_file_path = mock.MagicMock()
@@ -234,7 +234,7 @@ def test_playSound_creates_sound_with_app_context(audioManager):
             mock_sound_instance = mock.MagicMock()
             mock_sound_effect.return_value = mock_sound_instance
             audioManager.playSound("MountSlew")
-            mock_sound_effect.assert_called_once_with(audioManager.app.mainW)
+            mock_sound_effect.assert_called_once_with(audioManager)
 
 
 def test_audio_sounds_dict_structure():

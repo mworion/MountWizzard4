@@ -6,6 +6,7 @@ from mw4.base import transform
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
+from mw4.logic.controllers.mount.trackingMode import activeTrackingMode
 from mw4.mountcontrol.convertGui import (
     convertLatToAngle,
     convertLonToAngle,
@@ -126,22 +127,9 @@ class MountSett(TabAddon):
         else:
             changeStyleDynamic(ui, "color", "")
 
-    def activeTrackingMode(self, sett: Setting) -> str | None:
-        obsSite = self.app.dReg.mount.obsSite
-        if obsSite.status is None:
-            return None
-        if obsSite.isFollowingSatellite:
-            return "followSat"
-        if sett.checkRateLunar():
-            return "setLunarTracking"
-        if sett.checkRateSidereal():
-            return "setSiderealTracking"
-        if sett.checkRateSolar():
-            return "setSolarTracking"
-        return "unchanged"
-
     def updateTrackingGui(self, sett: Setting) -> None:
-        mode = self.activeTrackingMode(sett)
+        obsSite = self.app.dReg.mount.obsSite
+        mode = activeTrackingMode(obsSite.status, obsSite.isFollowingSatellite, sett)
         if mode == "unchanged":
             return
         for name in self.TRACKING_BUTTONS:

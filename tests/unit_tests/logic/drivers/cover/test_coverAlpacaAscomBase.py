@@ -1,0 +1,109 @@
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
+import pytest
+from mw4.base.signalsDevices import Signals
+from mw4.logic.drivers.cover.coverAlpaca import CoverAlpaca
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from typing import ClassVar
+from unittest import mock
+
+
+class Parent:
+    try:
+        app = App()
+    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
+        app = mock.MagicMock()
+    data: ClassVar = {}
+    DEVICE_TYPE = "cover"
+    deviceType = ""
+    signals = Signals()
+    loadConfig = True
+
+
+@pytest.fixture(autouse=True, scope="module")
+def function():
+    try:
+        func = CoverAlpaca(parent=Parent())
+        func.device = mock.MagicMock()
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
+        pytest.skip(f"Fixture initialization failed: {e}")
+    yield func
+
+
+def test_coverstates(function):
+    assert function.COVERSTATES == [
+        "NotPresent",
+        "Closed",
+        "Moving",
+        "Open",
+        "Unknown",
+        "Error",
+    ]
+
+
+def test_pollData_stateNone(function):
+    with mock.patch.object(function, "getDeviceProp", return_value=None):
+        function.pollData()
+
+
+def test_pollData_stateClosed(function):
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=1),
+        mock.patch.object(function, "storePropertyToData") as m,
+    ):
+        function.pollData()
+        m.assert_called_once_with("Closed", "Status.Cover")
+
+
+def test_pollData_stateOpen(function):
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=3),
+        mock.patch.object(function, "storePropertyToData") as m,
+    ):
+        function.pollData()
+        m.assert_called_once_with("Open", "Status.Cover")
+
+
+def test_pollData_stateMoving(function):
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=2),
+        mock.patch.object(function, "storePropertyToData") as m,
+    ):
+        function.pollData()
+        m.assert_called_once_with("Moving", "Status.Cover")
+        assert function.data["CAP_PARK.PARK"] is None
+
+
+def test_closeCover(function):
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.closeCover()
+    assert not function.commandQueue.empty()
+    item = function.commandQueue.get_nowait()
+    assert item.valueProp == "CloseCover"
+
+
+def test_openCover(function):
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.openCover()
+    assert not function.commandQueue.empty()
+    item = function.commandQueue.get_nowait()
+    assert item.valueProp == "OpenCover"
+
+
+def test_haltCover(function):
+    while not function.commandQueue.empty():
+        function.commandQueue.get_nowait()
+    function.haltCover()
+    assert not function.commandQueue.empty()
+    item = function.commandQueue.get_nowait()
+    assert item.valueProp == "HaltCover"

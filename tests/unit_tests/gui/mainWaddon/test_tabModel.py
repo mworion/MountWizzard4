@@ -12,8 +12,8 @@ from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.logic.modelBuild.modelRun import ModelData
-from mw4.logic.modelBuild.modelTypes import ModelRunConfig, ModelTiming
+from mw4.logic.controllers.model.modelRun import ModelData
+from mw4.logic.controllers.model.modelTypes import ModelRunConfig, ModelTiming
 from pathlib import Path
 from skyfield.api import Angle
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

@@ -1,0 +1,286 @@
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
+import logging
+import numpy as np
+import PySide6
+from collections.abc import Callable
+from mw4.base import platformInfo
+from mw4.base.appProtocol import AppProtocol
+from mw4.base.signalsDevices import Signals
+from mw4.base.transform import diffModulusAbs
+from mw4.logic.drivers.dome.domeAlpaca import DomeAlpaca
+from mw4.logic.drivers.dome.domeIndi import DomeIndi
+from typing import Any
+
+if platformInfo.IS_WINDOWS:
+    from mw4.logic.drivers.dome.domeAscom import DomeAscom
+
+
+class Dome:
+    log = logging.getLogger("MW4")
+    DEVICE_TYPE: str = "dome"
+
+    def __init__(self, app: AppProtocol) -> None:
+        self.app = app
+        self.threadPool = app.threadPool
+        self.signals = Signals()
+        self.data: dict[str, Any] = {"Slewing": False}
+        self.cfg = app.config["SettingDome"]
+        self.framework: str = ""
+        self.run: dict[str, Any] = {
+            "indi": DomeIndi(self),
+            "alpaca": DomeAlpaca(self),
+        }
+        platformInfo.registerWindowsBackends(
+            self.run,
+            {
+                "ascom": lambda: DomeAscom(self),
+            },
+        )
+
+        self.isSlewing: bool = False
+        self.domeStarted: bool = False
+        self.lastFinalAz: float | None = None
+        self.avoidFirstSlewOvershoot: bool = True
+        self.counterStartSlewing: int = -1
+        self.settlingWait = PySide6.QtCore.QTimer()
+        self.settlingWait.setSingleShot(True)
+        self.settlingWait.timeout.connect(self.waitSettlingAndEmit)
+
+        self.overshoot: bool | None = None
+        self.openingHysteresis: float | None = None
+        self.clearanceZenith: float | None = None
+        self.radius: float | None = None
+        self.clearOpening: float | None = None
+        self.useGeometry: bool | None = None
+        self.useDynamicFollowing: bool | None = None
+        self.loadConfig: bool | None = None
+        self.settlingTime: float | None = None
+
+    def startCommunication(self) -> None:
+        self.run[self.framework].startCommunication()
+        self.app.timeMgr.update1s.connect(self.checkSlewingDome)
+        self.domeStarted = True
+
+    def stopCommunication(self) -> None:
+        self.signals.message.emit("")
+        self.run[self.framework].stopCommunication()
+        if self.domeStarted:
+            self.app.timeMgr.update1s.disconnect(self.checkSlewingDome)
+            self.domeStarted = False
+
+    def waitSettlingAndEmit(self) -> None:
+        self.signals.slewed.emit("")
+        self.signals.message.emit("")
+
+    def checkSlewingDome(self) -> None:
+        if self.isSlewing:
+            self.signals.message.emit("slewing")
+            self.counterStartSlewing = -1
+            if not self.data.get("Slewing"):
+                self.isSlewing = False
+                self.signals.message.emit("wait settle")
+                self.settlingWait.start(int(self.cfg["settleTime"] * 1000))
+
+        else:
+            if self.data.get("Slewing"):
+                self.log.debug("Slewing start by signal")
+                self.isSlewing = True
+
+            else:
+                if self.counterStartSlewing == 0:
+                    self.log.debug("Slewing start by counter")
+                    self.isSlewing = True
+                self.counterStartSlewing -= 1
+
+    def checkTargetConditions(self) -> bool:
+        if self.openingHysteresis is None:
+            self.log.debug("No opening hysteresis")
+            return False
+        if self.clearanceZenith is None:
+            self.log.debug("No clearance zenith")
+            return False
+        if self.overshoot is None:
+            self.log.debug("No overshoot")
+            return False
+        if self.radius is None:
+            self.log.debug("No radius")
+            return False
+        if self.clearOpening is None:
+            self.log.debug("No clear opening")
+            return False
+
+        BC = self.clearOpening - 2 * self.openingHysteresis
+        if BC < 0:
+            self.log.warning("Resulting opening to small")
+            return False
+        return True
+
+    def calcTargetRectanglePoints(self, azimuth: float) -> tuple:
+        azRad = np.radians(-azimuth)
+        sinAz = np.sin(azRad)
+        cosAz = np.cos(azRad)
+        rot = np.array([[cosAz, -sinAz], [sinAz, cosAz]])
+
+        A = np.array(
+            [
+                -self.clearanceZenith + self.openingHysteresis,
+                self.clearOpening / 2 - self.openingHysteresis,
+            ]
+        )
+        B = np.array([self.radius, self.clearOpening / 2 - self.openingHysteresis])
+        C = np.array([self.radius, -self.clearOpening / 2 + self.openingHysteresis])
+
+        A = np.dot(rot, A)
+        B = np.dot(rot, B)
+        C = np.dot(rot, C)
+
+        return A, B, C
+
+    @staticmethod
+    def targetInDomeShutter(A: np.ndarray, B: np.ndarray, C: np.ndarray, M: np.ndarray) -> bool:
+        """
+        Based on the maths presented on:
+            https://stackoverflow.com/questions/2752725/
+            finding-whether-a-point-lies-inside-a-rectangle-or-not
+        :param A: Rectangle point A
+        :param B: Rectangle point B in clockwise
+        :param C: Rectangle point C in clockwise
+        :param M: Point to be checked
+        :return:
+        """
+        checkAB = 0 <= np.dot(B - A, M - A) <= np.dot(B - A, B - A)
+        checkBC = 0 <= np.dot(C - B, M - B) <= np.dot(C - B, C - B)
+        result = checkAB and checkBC
+        return result
+
+    def checkSlewNeeded(self, x: float, y: float) -> bool:
+        """
+        :param x:
+        :param y:
+        :return:
+        """
+        if not self.checkTargetConditions():
+            self.log.info("Target conditions not met, slewing anyway")
+            return True
+
+        azimuth = self.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION", 0)
+        A, B, C = self.calcTargetRectanglePoints(azimuth)
+        M = np.array([x, y])
+        slewNeeded = not self.targetInDomeShutter(A, B, C, M)
+        self.log.debug("Slew needed: [%s]", slewNeeded)
+        return slewNeeded
+
+    def calcSlewTarget(
+        self, altitude: float, azimuth: float, func: Callable
+    ) -> tuple[float, float, float | None, float | None]:
+        """
+        x and y are the intersection with the dome shutter plane. They are None
+        without geometry or on a geometry error, checkSlewNeeded needs both.
+        """
+        if not self.useGeometry:
+            return altitude, azimuth, None, None
+
+        alt, az, intersect, _, _ = func()
+        if alt is None or az is None or intersect is None:
+            self.log.info("Geometry error, alt:%s, az:%s", altitude, azimuth)
+            return altitude, azimuth, None, None
+
+        return alt.degrees, az.degrees, intersect[0], intersect[1]
+
+    def calcOvershoot(self, az: float) -> float:
+        if not self.overshoot:
+            self.lastFinalAz = None
+            return az
+
+        if self.avoidFirstSlewOvershoot:
+            self.avoidFirstSlewOvershoot = False
+            self.lastFinalAz = None
+            self.log.debug("First overshoot disabled: [%s]", az)
+            return az
+
+        direction = self.app.dReg.mount.obsSite.AzDirection
+        if direction is None:
+            self.log.info("Overshoot discarded no direction: [%s]", az)
+            return az
+
+        y = max(self.clearOpening / 2 - self.openingHysteresis, 0)
+        x = self.radius
+        maxOvershootAzimuth = abs(np.degrees(np.arctan2(y, x)))
+
+        deltaAz = maxOvershootAzimuth * direction
+        finalAz = (az + deltaAz + 360) % 360
+
+        if self.lastFinalAz is None:
+            self.lastFinalAz = finalAz
+            self.log.debug("First overshoot value: [%s]", finalAz)
+            return finalAz
+
+        delta = diffModulusAbs(self.lastFinalAz, finalAz, 360)
+        if delta > maxOvershootAzimuth / 2:
+            self.lastFinalAz = finalAz
+            self.log.debug("New overshoot value")
+        else:
+            self.log.debug("Use old overshoot value")
+
+        self.log.debug("Overshoot value: [%s]", self.lastFinalAz)
+        return self.lastFinalAz
+
+    def slewDome(self, altitude: float = 0, azimuth: float = 0, follow: bool = False) -> float:
+        mount = self.app.dReg.mount.instance
+        if follow:
+            func = mount.calcTransformationMatricesActual
+        else:
+            func = mount.calcTransformationMatricesTarget
+
+        alt, az, x, y = self.calcSlewTarget(altitude, azimuth, func)
+
+        if self.useDynamicFollowing and x is not None and y is not None:
+            doSlew = self.checkSlewNeeded(x, y)
+        else:
+            doSlew = True
+
+        if doSlew:
+            self.counterStartSlewing = 3
+            az = self.calcOvershoot(az)
+            self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
+            self.signals.message.emit("slewing")
+        else:
+            self.signals.slewed.emit("")
+        delta = azimuth - az
+
+        return delta
+
+    def avoidFirstOvershoot(self) -> None:
+        self.avoidFirstSlewOvershoot = True
+
+    def openShutter(self) -> None:
+        if not self.data:
+            self.log.error("No data dict available")
+            return
+        self.run[self.framework].openShutter()
+
+    def closeShutter(self) -> None:
+        if not self.data:
+            self.log.error("No data dict available")
+            return
+        self.run[self.framework].closeShutter()
+
+    def slewCW(self) -> None:
+        if not self.data:
+            self.log.error("No data dict available")
+            return
+        self.run[self.framework].slewCW()
+
+    def slewCCW(self) -> None:
+        if not self.data:
+            self.log.error("No data dict available")
+            return
+        self.run[self.framework].slewCCW()
+
+    def abortSlew(self) -> None:
+        if not self.data:
+            self.log.error("No data dict available")
+            return
+        self.run[self.framework].abortSlew()

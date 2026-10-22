@@ -2,7 +2,8 @@
 
 Condensed from `2026-10-20_review_copilot.md` (second pass, revision `3ec18a381`, version
 `4.0.0b36`). Only findings and roadmap items that are **not yet done** are listed.
-Done items (A1, A2, P4, P5, P8, M5, M6, Q1, T2, T8, H4, H5, roadmap 1–8) are omitted.
+Done items (A1, A2, P2, P4, P5, P8, M2, M5, M6, M8, Q1, T3, T6, T8, H2, H4, H5, roadmap 1–8 and the first
+round of A4, A5, M1, P1, T1) are omitted.
 
 State at re-run: 5108 tests passed / 38 skipped, 100 % line and branch coverage,
 `ruff check src` clean, `pyrefly` 0 errors (54 suppressed, 28 warnings hidden).
@@ -30,16 +31,15 @@ The structural weaknesses are now concentrated in three areas: **untyped configu
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
 | A3 | H | Configuration is an untyped nested dict (438 `config[…]`/`.get` accesses); schema, defaults and migration are implicit. | Per-component `@dataclass` configs with `from_dict`/`to_dict`, defaults in one place, a schema version and one migration hook. |
-| A4 | M | ◐ `logic`/`mountcontrol` no longer import `gui`. Remaining: `base/audioManager.py` uses `app.mainW`; 22 `logic` + 8 `mountcontrol` files import PySide6. | Pass a parent/handle into `AudioManager`; limit Qt in `logic` to `QObject`/`Signal`; add an import-linter contract (`gui → logic → base`) in CI. |
-| A5 | M | ◐ Calculations were extracted, but big tabs remain: `tabMount_Sett.py` 504 L, `tabImage_Manage.py` 477 L, `tabSat_Track.py` 436 L. | Move remaining calculations/state transitions into plain `logic` classes; prefer composition (tab owns a controller). |
+| A4 | L | ◐ `AudioManager` is decoupled from `app.mainW`; import-linter contract (`base`/`logic`/`mountcontrol` ↛ `gui`) runs in the ubuntu lint job. Remaining: 22 `logic` + 8 `mountcontrol` files import PySide6; `base` ↔ `logic` is circular. | Limit Qt in `logic` to `QObject`/`Signal`; extend the contract with `base ↛ logic`. |
+| A5 | M | ◐ Pass-text, age-colour, trajectory, list-pick, filter-range and tracking-mode logic extracted. Tabs are still large (`tabMount_Sett.py` ~490 L, `tabImage_Manage.py` ~460 L, `tabSat_Track.py` ~400 L), mostly dialog/GUI code. | Move remaining calculations/state transitions into plain `logic/controllers/<GUI area>/` classes (see `plan_A5_tab_logic_extraction.md`); prefer composition (tab owns a controller). |
 | A6 | M | Global signals give loose coupling in code but tight coupling in behaviour. | Document emitter/listener ownership per signal group in `base/appSignals.py`. |
 | A7 | L | `MountWizzard4.__init__` ordering is encoded only by line order. | Split into `setup*` steps with docstrings stating dependencies. |
 
 ### Pythonic style
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
-| P1 | M | 50 × `hasattr`/`getattr` (e.g. `deviceRegistry.py` lines 79, 267, 284). | Runtime-checkable protocol (`HasSignals`, `HasConfig`) or default attributes. |
-| P2 | M | Repeated `self.d[device].run[framework].config` chains in `collectConfigFromSingleDevice`. | Local variables, `dataclasses.asdict`. |
+| P1 | L | ◐ `HasSignals`/`HasDriverConfig` (`base/driverProtocol.py`) replace the `hasattr` checks in `deviceRegistry`, `tabSettDevice`, `devicePopupW`. Remaining `getattr` calls are mostly dynamic UI-name lookups. | Review the rest case by case. |
 | P3 | M | `dict[str, Any]` carriers (`Camera.data`, `run`, `config`). | `TypedDict`/dataclasses; `run: dict[str, FrameworkDriver]`. |
 | P6 | L | Magic-value instance attributes, underscore attributes with property wrappers. | Small dataclasses (`SubFrame`, `Binning`). |
 | P7 | L | 3 × `type: ignore`, 54 pyrefly suppressions, 28 hidden warnings, `mountcontrol` relaxations. | Tighten per file over time. |
@@ -47,12 +47,10 @@ The structural weaknesses are now concentrated in three areas: **untyped configu
 ### Maintainability
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
-| M1 | M | ◐ 16 functions > 50 lines (largest `measureAddons.dataPlots` 91 L, `createWindowTable` 87 L, `createDeviceTable` 79 L, `showTiltSquare` 76 L). | Builder helpers / table-driven widget creation; decide on a lower global `PLR0915` budget. |
-| M2 | M | Two functions with 8 parameters (`calcTrajectoryData`, `tabSat_Search.calcSat`). | Parameter objects or keyword-only args. |
+| M1 | L | ◐ `createWindowTable`, `createDeviceTable`, `showTiltSquare` reworked. ~12 functions > 50 lines remain (largest `measureAddons.dataPlots` 91 L, purely declarative; `createFramework2gui` 63 L, `extractSources` 61 L, `astrometry.solve` 57 L). | Builder helpers where it helps; decide on a lower global `PLR0915` budget. |
 | M3 | M | Likely copy-paste across `deviceIndi/Alpaca/SGPro/Ascom` wrappers. | Run a duplication scan; extract common bases/mixins. |
-| M4 | M | `base/` mixes infrastructure with driver-protocol classes (`ascomClass`, `sgproClass`, `indiClass`, …). | Move to `logic/drivers/`. |
+| M4 | M | `base/` mixes infrastructure with driver-protocol classes (`ascomClass`, `sgproClass`, `indiClass`, …). | ✅ Done: driver classes now in `logic/drivers/frameworks/`; `measure`/`keypad` in `logic/drivers/`. |
 | M7 | L | Docstring style and language quality vary. | One style, limited ruff `D` rules for public APIs. |
-| M8 | L | `DeviceRegistry.addDevices(app)` has a redundant parameter; placeholder `refraction` lambda entry. | Remove parameter; model "no instance" explicitly. |
 
 ### Quality and robustness
 | # | Pri | Open point | Recommendation |
@@ -65,14 +63,11 @@ The structural weaknesses are now concentrated in three areas: **untyped configu
 ### Testability
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
-| T1 | H | Each test stubs a large `app` surface; no `makeApp(**overrides)` factory in `tests/conftest.py`. | Narrow protocols are available (A1), add the factory. |
+| T1 | M | ◐ `makeApp(**overrides)` fixture exists (`tests/conftest.py`). Remaining: tests still build `App()` directly. | Migrate tests gradually; use narrow protocols (A1). |
 | T2 | – | Remaining idea: mutation testing (`mutmut`) on `mountcontrol` and `logic/modelBuild`. | Optional. |
-| T3 | M | `tests/stress_tests` are not run by CI and carry no markers. | Mark `slow`/`integration`, nightly job or documented as manual. |
 | T4 | M | Heavy `unittest.mock` use for GUI tabs. | In-memory fakes for devices; `qtbot.waitSignal`. |
 | T5 | M | Windows-only code validated only on the Windows workflow. | Contract tests against a fake `win32com`. |
-| T6 | L | Test runs modify/delete tracked files in `tests/work/` (`config/profile`, `build.hpts`, `m51.fit`); `.gitignore` covers only `/work/`. | Generate into `tmp_path` or ignore/untrack generated files. |
 | T7 | L | No property-based tests. | `hypothesis` round-trips for `base/transform.py`, `mountcontrol/geometry.py`, `convert.py`. |
-| T8 | L | Mapping is 1:1 today but not enforced. | Meta-test or CI script that fails on a module without `test_<module>.py`. |
 
 ### Readability
 | # | Pri | Open point | Recommendation |
@@ -87,25 +82,17 @@ The structural weaknesses are now concentrated in three areas: **untyped configu
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
 | H1 | H | ◐ `.git` is 1.4 GB; `work/`, `log/` untracked now, 149 files in `gists/` still tracked; large binaries in history. | Move `gists/` out; `git lfs` or download-on-first-start for big data; `git filter-repo` only with maintainer agreement. |
-| H2 | M | `.idea/` is untracked but not in `.gitignore`. | Add `.idea/` to `.gitignore`. |
 | H3 | M | Exact pins on core packages. | Fine for an application; keep Renovate/Dependabot, document the pin policy. |
 
 ## 3. Remaining roadmap
 
-**Quick wins (≤ 1 day each)**
-1. H2 – add `.idea/` to `.gitignore`; T6 – stop tests polluting `tests/work/`.
-2. T8 – CI/meta check for the test-per-module mapping.
-3. T3 – markers and nightly run for `tests/stress_tests`.
-4. P2, M8 – small `DeviceRegistry` cleanups.
-
-**Medium (1–2 weeks)**
-5. A4 – `AudioManager` without `app.mainW`, import-linter contract in CI.
-6. A5 – further tab logic extraction (three tabs > 430 L).
-7. M1/M2 – remaining 16 long functions and the two 8-parameter functions.
-8. T1 – `makeApp(**overrides)` test factory; P1 – `HasSignals`/`HasConfig` protocols.
+**Follow-ups (first round of items 5–8 is done)**
+1. Repair `tests/stress_tests` (they fail with `AttributeError` on the UI layer) so the nightly job is green.
+2. A5/M1 – continue tab logic extraction and the remaining ~12 long functions.
+3. T1 – migrate tests to `makeApp`; extend the import-linter contract (`base ↛ logic`).
 
 **Strategic**
-9. A3 – typed, versioned configuration dataclasses with migration.
-10. M3/M4 – duplication analysis of device back-ends, move driver classes out of `base`.
-11. H1 – repository slimming and data-asset policy.
-12. Q3 – shared HTTP helper; R2 – module-level loggers.
+4. A3 – typed, versioned configuration dataclasses with migration.
+5. M3 – duplication analysis of device back-ends (M4 done).
+6. H1 – repository slimming and data-asset policy.
+7. Q3 – shared HTTP helper; R2 – module-level loggers.

@@ -10,8 +10,8 @@ from astropy.io import fits
 from mw4.gui.extWindows.image.imageTabs import ImageTabs
 from mw4.gui.extWindows.image.imageW import ImageWindow
 from mw4.gui.utilities.pyqtgraph.gCustomViewBox import CustomViewBox
+from mw4.logic.controllers.imageWindow.photometry import Photometry
 from mw4.logic.file.fileHandler import FileHandler
-from mw4.logic.photometry.photometry import Photometry
 from PySide6.QtCore import QRectF
 from PySide6.QtWidgets import QApplication
 from tests.unit_tests.unitTestAddOns.baseTestApp import App

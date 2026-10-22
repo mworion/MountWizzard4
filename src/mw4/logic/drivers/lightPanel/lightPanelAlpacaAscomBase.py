@@ -1,0 +1,37 @@
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
+from mw4.logic.drivers.frameworks.alpacaAscomCommon import AlpacaAscomCommon
+from typing import Any
+
+
+class LightPanelAlpacaAscomBase(AlpacaAscomCommon):
+    def __init__(self, parent: Any) -> None:
+        super().__init__(parent=parent)
+
+    def pollData(self) -> None:
+        self.getAndStoreDeviceProp(
+            "Brightness",
+            "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE",
+        )
+        self.getAndStoreDeviceProp(
+            "MaxBrightness",
+            "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX",
+        )
+        if self.data.get("FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE"):
+            self.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = 1
+        else:
+            self.data["FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON"] = 0
+
+    def lightOn(self) -> None:
+        maxBrightness = self.app.dReg.lightPanel.data.get(
+            "FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_MAX", 255
+        )
+        brightness = int(maxBrightness / 2)
+        self.callDeviceMethodQueued("CalibratorOn", BrightnessVal=brightness)
+
+    def lightOff(self) -> None:
+        self.callDeviceMethodQueued("CalibratorOff")
+
+    def lightIntensity(self, value: int) -> None:
+        self.callDeviceMethodQueued("CalibratorOn", BrightnessVal=value)

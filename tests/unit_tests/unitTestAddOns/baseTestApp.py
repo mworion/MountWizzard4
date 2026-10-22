@@ -6,7 +6,7 @@ from functools import cache
 from mw4.base.appSignals import AppSignals
 from mw4.base.deviceRegistry import DeviceEntry, DeviceRegistry
 from mw4.base.timeManager import TimeManager
-from mw4.logic.buildData.buildpoints import BuildPoint
+from mw4.logic.controllers.model.buildpoints import BuildPoint
 from pathlib import Path
 from PySide6.QtCore import QObject, QThreadPool
 from queue import Queue
@@ -187,3 +187,19 @@ class App(QObject):
         self.timeMgr.stop()
         self.threadPool.clear()
         self.threadPool.waitForDone()
+
+
+def makeApp(**overrides):
+    """Build a test App; every keyword replaces the attribute of the same name.
+
+    Dotted keys are passed with a double underscore, e.g.
+    ``makeApp(mount__host="x")`` sets ``app.mount.host``.
+    """
+    app = App()
+    for key, value in overrides.items():
+        *path, attribute = key.split("__")
+        target = app
+        for name in path:
+            target = getattr(target, name)
+        setattr(target, attribute, value)
+    return app

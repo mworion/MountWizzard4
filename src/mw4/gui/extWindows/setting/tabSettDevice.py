@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 from functools import partial
+from mw4.base.driverProtocol import HasSignals
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, findIndexValue
 from PySide6.QtCore import QObject
@@ -23,83 +24,34 @@ class SettDevice(QObject):
         self.setupDeviceGui()
 
     def createDeviceTable(self) -> dict[str, Any]:
+        # (device, ui name prefix of the drop down, has a setup button)
+        deviceSpec = [
+            ("camera", "camera", True),
+            ("cover", "cover", True),
+            ("directWeather", "directWeather", False),
+            ("dome", "dome", True),
+            ("filter", "filter", True),
+            ("focuser", "focuser", True),
+            ("hidController", "hid", True),
+            ("lightPanel", "lightPanel", True),
+            ("measure", "measure", False),
+            ("plateSolve", "plateSolve", True),
+            ("power", "power", True),
+            ("relay", "relay", True),
+            ("remote", "remote", False),
+            ("seeingWeather", "seeingWeather", True),
+            ("sensor1Weather", "sensor1Weather", True),
+            ("sensor2Weather", "sensor2Weather", True),
+            ("sensor3Weather", "sensor3Weather", True),
+            ("sensor4Weather", "sensor4Weather", True),
+            ("telescope", "telescope", True),
+        ]
         return {
-            "camera": {
-                "uiDropDown": self.ui.cameraDevice,
-                "uiSetup": self.ui.cameraSetup,
-            },
-            "cover": {
-                "uiDropDown": self.ui.coverDevice,
-                "uiSetup": self.ui.coverSetup,
-            },
-            "directWeather": {
-                "uiDropDown": self.ui.directWeatherDevice,
-                "uiSetup": None,
-            },
-            "dome": {
-                "uiDropDown": self.ui.domeDevice,
-                "uiSetup": self.ui.domeSetup,
-            },
-            "filter": {
-                "uiDropDown": self.ui.filterDevice,
-                "uiSetup": self.ui.filterSetup,
-            },
-            "focuser": {
-                "uiDropDown": self.ui.focuserDevice,
-                "uiSetup": self.ui.focuserSetup,
-            },
-            "hidController": {
-                "uiDropDown": self.ui.hidDevice,
-                "uiSetup": self.ui.hidSetup,
-            },
-            "lightPanel": {
-                "uiDropDown": self.ui.lightPanelDevice,
-                "uiSetup": self.ui.lightPanelSetup,
-            },
-            "measure": {
-                "uiDropDown": self.ui.measureDevice,
-                "uiSetup": None,
-            },
-            "plateSolve": {
-                "uiDropDown": self.ui.plateSolveDevice,
-                "uiSetup": self.ui.plateSolveSetup,
-            },
-            "power": {
-                "uiDropDown": self.ui.powerDevice,
-                "uiSetup": self.ui.powerSetup,
-            },
-            "relay": {
-                "uiDropDown": self.ui.relayDevice,
-                "uiSetup": self.ui.relaySetup,
-            },
-            "remote": {
-                "uiDropDown": self.ui.remoteDevice,
-                "uiSetup": None,
-            },
-            "seeingWeather": {
-                "uiDropDown": self.ui.seeingWeatherDevice,
-                "uiSetup": self.ui.seeingWeatherSetup,
-            },
-            "sensor1Weather": {
-                "uiDropDown": self.ui.sensor1WeatherDevice,
-                "uiSetup": self.ui.sensor1WeatherSetup,
-            },
-            "sensor2Weather": {
-                "uiDropDown": self.ui.sensor2WeatherDevice,
-                "uiSetup": self.ui.sensor2WeatherSetup,
-            },
-            "sensor3Weather": {
-                "uiDropDown": self.ui.sensor3WeatherDevice,
-                "uiSetup": self.ui.sensor3WeatherSetup,
-            },
-            "sensor4Weather": {
-                "uiDropDown": self.ui.sensor4WeatherDevice,
-                "uiSetup": self.ui.sensor4WeatherSetup,
-            },
-            "telescope": {
-                "uiDropDown": self.ui.telescopeDevice,
-                "uiSetup": self.ui.telescopeSetup,
-            },
+            device: {
+                "uiDropDown": getattr(self.ui, f"{prefix}Device"),
+                "uiSetup": getattr(self.ui, f"{prefix}Setup") if hasSetup else None,
+            }
+            for device, prefix, hasSetup in deviceSpec
         }
 
     def setupSignals(self) -> None:
@@ -112,7 +64,7 @@ class SettDevice(QObject):
                 ui = self.deviceUi[entry.name]["uiSetup"]
                 ui.clicked.connect(partial(self.callPopup, entry.name))
 
-            if hasattr(self.app.dReg[entry.name].instance, "signals"):
+            if isinstance(self.app.dReg[entry.name].instance, HasSignals):
                 sig = self.app.dReg[entry.name].signals
                 self.signalsToName[id(sig)] = entry.name
                 sig.deviceConnected.connect(self.deviceConnected)
@@ -126,7 +78,7 @@ class SettDevice(QObject):
 
     def closeEvent(self) -> None:
         for entry in self.app.dReg.configurable():
-            if not hasattr(self.app.dReg[entry.name].instance, "signals"):
+            if not isinstance(self.app.dReg[entry.name].instance, HasSignals):
                 continue
             signals = self.app.dReg[entry.name].signals
             if id(signals) not in self.signalsToName:

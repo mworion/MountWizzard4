@@ -1,0 +1,63 @@
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
+import pytest
+from mw4.logic.drivers.cover.cover import Cover
+from mw4.logic.drivers.cover.coverIndi import CoverIndi
+from queue import Queue
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
+
+
+@pytest.fixture(autouse=True, scope="module")
+def function():
+    try:
+        cover = Cover(App())
+        func = CoverIndi(parent=cover)
+        func.config.deviceName = "test_cover"
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
+        pytest.skip(f"Fixture initialization failed: {e}")
+    yield func
+    func.app.threadPool.waitForDone(5000)
+
+
+# ---------------------------------------------------------------------------
+# closeCover
+# ---------------------------------------------------------------------------
+
+
+def test_closeCover(function):
+    """closeCover() puts one CAP_PARK/PARK command into txQ."""
+    function.txQ = Queue()
+    function.closeCover()
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_cover", "CAP_PARK", {"PARK": "On"})
+
+
+# ---------------------------------------------------------------------------
+# openCover
+# ---------------------------------------------------------------------------
+
+
+def test_openCover(function):
+    """openCover() puts one CAP_PARK/UNPARK command into txQ."""
+    function.txQ = Queue()
+    function.openCover()
+    assert function.txQ.qsize() == 1
+    assert function.txQ.get() == ("test_cover", "CAP_PARK", {"UNPARK": "On"})
+
+
+# ---------------------------------------------------------------------------
+# haltCover
+# ---------------------------------------------------------------------------
+
+
+def test_haltCover(function):
+    """haltCover() is a no-op (pass)."""
+    function.haltCover()  # must not raise

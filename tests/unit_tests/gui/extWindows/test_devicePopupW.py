@@ -4,13 +4,13 @@
 import gc
 import logging
 import pytest
-from mw4.base.ascomClass import AscomClass
-from mw4.base.indiClass import IndiClass
-from mw4.base.sgproClass import SGProClass
 from mw4.base.signalsDevices import Signals
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
+from mw4.logic.drivers.frameworks.ascomClass import AscomClass
+from mw4.logic.drivers.frameworks.indiClass import IndiClass
+from mw4.logic.drivers.frameworks.sgproClass import SGProClass
 from pathlib import Path
 from PySide6.QtCore import QEventLoop
 from PySide6.QtGui import QCloseEvent
@@ -173,7 +173,7 @@ def test_discoverDevices_2(function):
 
 def test_discoverDevices_hid_empty(function):
     """Test discoverDevices for hid framework with no devices found."""
-    from mw4.logic.hidController.hidController import HidController
+    from mw4.logic.drivers.hidController.hidController import HidController
 
     function.device = "hidController"
     with mock.patch.object(HidController, "discoverDevices", return_value=[]):
@@ -183,7 +183,7 @@ def test_discoverDevices_hid_empty(function):
 
 def test_discoverDevices_hid_devices_found(function):
     """Test discoverDevices for hid framework with devices found."""
-    from mw4.logic.hidController.hidController import HidController
+    from mw4.logic.drivers.hidController.hidController import HidController
 
     function.device = "hidController"
 

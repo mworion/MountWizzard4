@@ -9,14 +9,14 @@ from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.satData import SatData
 from mw4.gui.utilities.nativeQt.qtCustomTableWidgetItem import QCustomTableWidgetItem
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
-from mw4.logic.databaseProcessing.sourceURL import satSourceURLs
-from mw4.logic.satellites.satellite_calculations import (
+from mw4.logic.controllers.satellites.satellite_calculations import (
     calcAppMag,
     checkTwilight,
     findRangeRate,
     findSatUp,
     findSunlit,
 )
+from mw4.logic.databaseProcessing.sourceURL import satSourceURLs
 from PySide6.QtCore import QObject, Qt, Signal
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 from skyfield.api import EarthSatellite, Time
@@ -206,6 +206,7 @@ class SatSearch(SatData):
         self,
         sat: EarthSatellite,
         row: int,
+        *,
         loc: GeographicPosition,
         timeNow: Time,
         timeNext: Time,
@@ -265,7 +266,14 @@ class SatSearch(SatData):
                 if not self.satOkSGP4(sat, timeNext):
                     continue
                 isSunlit, twilight = self.calcSat(
-                    sat, row, loc, timeNow, timeNext, altMin, eph, generation
+                    sat,
+                    row,
+                    loc=loc,
+                    timeNow=timeNow,
+                    timeNext=timeNext,
+                    altMin=altMin,
+                    eph=eph,
+                    generation=generation,
                 )
                 show = True
                 if checkIsSunlit:

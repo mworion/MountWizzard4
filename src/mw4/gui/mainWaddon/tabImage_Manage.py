@@ -4,6 +4,7 @@
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
+from mw4.logic.controllers.image.cameraCalculations import filterSlotRange, pickListEntry
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -107,11 +108,7 @@ class ImageManage(TabAddon):
         if offsetList and actValue:
             offsetList = list(offsetList)
             self.mainW.log.debug("Index: [%s], List: [%s]", actValue, offsetList)
-            if actValue > len(offsetList):
-                actValue = len(offsetList)
-            elif actValue < 0:
-                actValue = 0
-            guiSetText(self.ui.offsetCam, "s", offsetList[actValue - 1])
+            guiSetText(self.ui.offsetCam, "s", pickListEntry(actValue, offsetList))
         else:
             guiSetText(self.ui.offsetCam, "3.0f", actValue)
 
@@ -121,11 +118,7 @@ class ImageManage(TabAddon):
         if gainList and actValue:
             gainList = list(gainList)
             self.mainW.log.debug("Index: [%s], List: [%s]", actValue, gainList)
-            if actValue > len(gainList):
-                actValue = len(gainList)
-            elif actValue < 0:
-                actValue = 0
-            guiSetText(self.ui.gainCam, "s", gainList[actValue - 1])
+            guiSetText(self.ui.gainCam, "s", pickListEntry(actValue, gainList))
         else:
             guiSetText(self.ui.gainCam, "3.0f", actValue)
 
@@ -275,15 +268,7 @@ class ImageManage(TabAddon):
             return
         actValue = int(actValue)
 
-        availNames = [data[key] for key in data if "FILTER_NAME.FILTER_SLOT_NAME_" in key]
-        numberFilter = len(availNames)
-        isAlpaca = "FILTER_NAME.FILTER_SLOT_NAME_0" in data
-        if isAlpaca:
-            start = 0
-            end = numberFilter - 1
-        else:
-            start = 1
-            end = numberFilter
+        start, end = filterSlotRange(data)
 
         value, ok = MWInputDialog.getInt(
             self.mainW,

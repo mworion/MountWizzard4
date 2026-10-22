@@ -1,0 +1,94 @@
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
+import pytest
+from mw4.base import platformInfo
+from mw4.base.signalsDevices import Signals
+from mw4.logic.drivers.powerswitch.pegasusUPBAscom import PegasusUPBAscom
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from typing import ClassVar
+from unittest import mock
+
+if not platformInfo.IS_WINDOWS:
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
+
+
+class Parent:
+    try:
+        app = App()
+    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
+        app = mock.MagicMock()
+    data: ClassVar = {}
+    deviceType = ""
+    signals = Signals()
+    loadConfig = True
+
+
+@pytest.fixture(autouse=True, scope="module")
+def function():
+    func = PegasusUPBAscom(parent=Parent())
+    func.device = mock.MagicMock()
+    yield func
+
+
+def test_pollData_UPB(function):
+    function.data["MaxSwitch"] = 15
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
+        function.pollData()
+    assert function.data["FIRMWARE_INFO.VERSION"] == "1.4"
+
+
+def test_pollData_UPBv2(function):
+    function.data["MaxSwitch"] = 21
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
+        function.pollData()
+    assert function.data["FIRMWARE_INFO.VERSION"] == "2.1"
+
+
+def test_togglePowerPort(function):
+    function.data["MaxSwitch"] = 15
+    function.data["POWER_CONTROL.POWER_CONTROL_1"] = True
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.togglePowerPort("1")
+    m.assert_called_once_with("SetSwitch", Id=0, State=False)
+
+
+def test_toggleHubUSB(function):
+    function.toggleHubUSB()
+
+
+def test_togglePortUSB_UPB(function):
+    function.device.MaxSwitch = 15
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.togglePortUSB("1")
+    m.assert_not_called()
+
+
+def test_togglePortUSB_UPBv2(function):
+    function.device.MaxSwitch = 21
+    function.data["USB_PORT_CONTROL.PORT_1"] = True
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.togglePortUSB("1")
+    m.assert_called_once_with("SetSwitch", Id=7, State=False)
+
+
+def test_sendDew_UPB(function):
+    function.device.MaxSwitch = 15
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.sendDew("A", 50.0)
+    m.assert_not_called()
+
+
+def test_sendDew_UPBv2(function):
+    function.device.MaxSwitch = 21
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.sendDew("A", 50.0)
+    m.assert_called_once_with("SetSwitchValue", Id=4, Value=127)
+
+
+def test_sendAdjustableOutput(function):
+    function.sendAdjustableOutput(1.0)
+
+
+def test_reboot(function):
+    function.reboot()

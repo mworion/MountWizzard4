@@ -3,7 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 from importlib.resources import as_file, files
 from mw4.base.appProtocol import AppProtocol
-from PySide6.QtCore import QUrl
+from PySide6.QtCore import QObject, QUrl
 from PySide6.QtMultimedia import QSoundEffect
 
 AUDIO_SOUNDS: dict[str, str] = {
@@ -20,8 +20,9 @@ AUDIO_SOUNDS: dict[str, str] = {
 }
 
 
-class AudioManager:
+class AudioManager(QObject):
     def __init__(self, app: AppProtocol) -> None:
+        super().__init__()
         self.app = app
         self.sound: QSoundEffect | None = None
         self.app.signals.ui.playSound.connect(self.playSound)
@@ -46,7 +47,7 @@ class AudioManager:
             return
         waveName = list(AUDIO_SOUNDS.values())[soundOptionIndex]
         with as_file(files("mw4").joinpath(f"assets/sound/{waveName}")) as waveFile:
-            self.sound = QSoundEffect(self.app.mainW)
+            self.sound = QSoundEffect(self)
             self.sound.setSource(QUrl.fromLocalFile(waveFile))
             self.sound.setVolume(self.linearToVolumePower(volume))
             self.sound.play()

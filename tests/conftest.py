@@ -3,6 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import gc
 import os
+import pytest
 import shutil
 import sys
 import tempfile
@@ -103,3 +104,11 @@ def pytest_sessionfinish(session, exitstatus):
         gc.collect()
         gc.collect()
         gc.collect()
+
+
+@pytest.fixture()
+def makeApp():
+    """Factory fixture: ``makeApp(isOnline=True, dReg__mount=stub)`` returns a test App."""
+    from tests.unit_tests.unitTestAddOns.baseTestApp import makeApp as factory
+
+    return factory

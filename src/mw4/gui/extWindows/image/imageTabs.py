@@ -4,21 +4,21 @@
 import pyqtgraph as pg
 from astropy.io import fits
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, getTabIndex, guiSetText
+from mw4.logic.controllers.imageWindow.photometry_analysis import (
+    computeTiltSquareView,
+    computeTiltTriangleView,
+    tiltHint,
+)
+from mw4.logic.controllers.imageWindow.tiltGeometry import (
+    TRIANGLE_LINKS,
+    TriangleGeometry,
+    calcTriangleGeometry,
+)
 from mw4.logic.fits.fitsFunction import (
     getCoordinatesFromHeader,
     getExposureFromHeader,
     getScaleFromHeader,
     getSQMFromHeader,
-)
-from mw4.logic.photometry.photometry_analysis import (
-    computeTiltSquareView,
-    computeTiltTriangleView,
-    tiltHint,
-)
-from mw4.logic.photometry.tiltGeometry import (
-    TRIANGLE_LINKS,
-    TriangleGeometry,
-    calcTriangleGeometry,
 )
 from PySide6.QtCore import QRectF
 from PySide6.QtGui import QFont
@@ -152,16 +152,7 @@ class ImageTabs:
         tab = self.ui.tabImage
         tab.setTabEnabled(getTabIndex(tab, "HFR"), True)
 
-    def showTiltSquare(self) -> bool:
-        segHFR = self.photometry.hfrSegSquare
-        w = self.photometry.w
-        h = self.photometry.h
-        plotItem = self.ui.tiltSquare.p[0]
-        self.clearImageTab(self.ui.tiltSquare)
-        self.ui.tiltSquare.setImage(self.photometry.image)
-        self.ui.tiltSquare.barItem.setLevels(self.ui.image.barItem.levels())
-
-        # draw lines on image
+    def drawTiltGrid(self, plotItem: Any, w: float, h: float) -> None:
         for i in range(1, 3):
             posX = i * w / 3
             lineItem = pg.QtWidgets.QGraphicsLineItem()
@@ -175,18 +166,35 @@ class ImageTabs:
             lineItem.setLine(0, posY, w, posY)
             plotItem.addItem(lineItem)
 
-        # write values in boxes
+    def writeTiltValues(self, plotItem: Any, segHFR: Any, w: float, h: float) -> None:
         for ix in range(3):
             for iy in range(3):
-                text = f"{segHFR[ix][iy]:1.2f}"
                 textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.parent.M_PRIM)
-                textItem.setText(text)
+                textItem.setText(f"{segHFR[ix][iy]:1.2f}")
                 textItem.setFont(self.fontText)
-                posX = ix * w / 3 + w / 6
-                posY = iy * h / 3 + h / 6
-                textItem.setPos(posX, posY)
+                textItem.setPos(ix * w / 3 + w / 6, iy * h / 3 + h / 6)
                 textItem.setZValue(10)
                 plotItem.addItem(textItem)
+
+    def drawTiltVectors(self, plotItem: Any, points: Any) -> None:
+        links = [[0, 1], [1, 2], [2, 4], [4, 7], [7, 6], [6, 5], [5, 3], [3, 0], [0, 7], [2, 5]]
+        for start, end in links:
+            lineItem = pg.QtWidgets.QGraphicsLineItem()
+            lineItem.setPen(self.penPink)
+            lineItem.setLine(points[start][0], points[start][1], points[end][0], points[end][1])
+            plotItem.addItem(lineItem)
+
+    def showTiltSquare(self) -> bool:
+        segHFR = self.photometry.hfrSegSquare
+        w = self.photometry.w
+        h = self.photometry.h
+        plotItem = self.ui.tiltSquare.p[0]
+        self.clearImageTab(self.ui.tiltSquare)
+        self.ui.tiltSquare.setImage(self.photometry.image)
+        self.ui.tiltSquare.barItem.setLevels(self.ui.image.barItem.levels())
+
+        self.drawTiltGrid(plotItem, w, h)
+        self.writeTiltValues(plotItem, segHFR, w, h)
 
         # calc extreme hfr values
         # arrays upper left to lower right
@@ -195,29 +203,7 @@ class ImageTabs:
         )
         points = view.points
 
-        # draw vectors
-        links = [
-            [0, 1],
-            [1, 2],
-            [2, 4],
-            [4, 7],
-            [7, 6],
-            [6, 5],
-            [5, 3],
-            [3, 0],
-            [0, 7],
-            [2, 5],
-        ]
-        for link in links:
-            lineItem = pg.QtWidgets.QGraphicsLineItem()
-            lineItem.setPen(self.penPink)
-            lineItem.setLine(
-                points[link[0]][0],
-                points[link[0]][1],
-                points[link[1]][0],
-                points[link[1]][1],
-            )
-            plotItem.addItem(lineItem)
+        self.drawTiltVectors(plotItem, points)
 
         hint = tiltHint(view.tiltPercent, self.TILT)
         self.ui.textSquareTiltHFR.setText(f"{view.tiltDiff:1.2f} ({view.tiltPercent:1.0f}%) {hint}")

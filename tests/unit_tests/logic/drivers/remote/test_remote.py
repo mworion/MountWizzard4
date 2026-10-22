@@ -1,0 +1,172 @@
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
+import pytest
+from mw4.logic.drivers.remote.remote import Remote
+from PySide6 import QtNetwork
+from PySide6.QtCore import QByteArray, QObject, Signal
+from PySide6.QtNetwork import QAbstractSocket, QHostAddress, QTcpSocket
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from unittest import mock
+
+
+@pytest.fixture(autouse=True, scope="module")
+def function():
+    try:
+        func = Remote(app=App())
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
+        pytest.skip(f"Fixture initialization failed: {e}")
+    yield func
+
+
+def test_startCommunication_1(function):
+    with mock.patch.object(QtNetwork.QTcpServer, "listen", return_value=True):
+        suc = function.startCommunication()
+        assert suc
+
+
+def test_startCommunication_2(function):
+    with mock.patch.object(QtNetwork.QTcpServer, "listen", return_value=False):
+        suc = function.startCommunication()
+        assert not suc
+
+
+def test_stopCommunication_1(function):
+    function.tcpServer = QtNetwork.QTcpServer()
+    with (
+        mock.patch.object(function.tcpServer, "isListening", return_value=True),
+        mock.patch.object(function.tcpServer, "close", return_value=True),
+    ):
+        function.stopCommunication()
+
+
+def test_stopCommunication_2(function):
+    function.tcpServer = None
+    function.stopCommunication()
+
+
+def test_addConnection_1(function):
+    function.tcpServer = None
+    function.addConnection()
+
+
+def test_addConnection_2(function):
+    function.tcpServer = QtNetwork.QTcpServer()
+    with mock.patch.object(function.tcpServer, "nextPendingConnection", return_value=0):
+        function.addConnection()
+
+
+def test_addConnection_3(function):
+    class Test(QObject):
+        nextBlockSize = 0
+        readyRead = Signal()
+        disconnected = Signal()
+        errorOccurred = Signal()
+
+        @staticmethod
+        def peerAddress():
+            return Test()
+
+        @staticmethod
+        def toString():
+            return "Test"
+
+    function.tcpServer = QtNetwork.QTcpServer()
+    with mock.patch.object(function.tcpServer, "nextPendingConnection", return_value=Test()):
+        function.addConnection()
+
+
+def test_receiveMessage_1(function):
+    class Test(QTcpSocket):
+        @staticmethod
+        def bytesAvailable(**kwargs):
+            return 0
+
+    function.clientConnection = Test()
+    suc = function.receiveMessage()
+    assert not suc
+
+
+def test_receiveMessage_2(function):
+    class Test(QTcpSocket):
+        @staticmethod
+        def bytesAvailable(**kwargs):
+            return 1
+
+        @staticmethod
+        def peerAddress(**kwargs):
+            return QHostAddress()
+
+        @staticmethod
+        def toString():
+            return "Test"
+
+        @staticmethod
+        def read(a, **kwargs):
+            return QByteArray(b"Test")
+
+    function.clientConnection = Test()
+    suc = function.receiveMessage()
+    assert suc
+
+
+def test_receiveMessage_3(function):
+    class Test(QTcpSocket):
+        @staticmethod
+        def bytesAvailable(**kwargs):
+            return 1
+
+        @staticmethod
+        def peerAddress(**kwargs):
+            return QHostAddress()
+
+        @staticmethod
+        def toString():
+            return "Test"
+
+        @staticmethod
+        def read(a, **kwargs):
+            return QByteArray(b"shutdown")
+
+    function.clientConnection = Test()
+    suc = function.receiveMessage()
+    assert suc
+
+
+def test_removeConnection_1(function):
+    class Test(QTcpSocket):
+        @staticmethod
+        def peerAddress(**kwargs):
+            return Test()
+
+        @staticmethod
+        def toString():
+            return "Test"
+
+        @staticmethod
+        def close(**kwargs):
+            return
+
+    function.clientConnection = Test()
+    function.removeConnection()
+
+
+def test_handleError_1(function):
+    class Test(QTcpSocket):
+        @staticmethod
+        def peerAddress(**kwargs):
+            return Test()
+
+        @staticmethod
+        def toString():
+            return "Test"
+
+    function.clientConnection = Test()
+    function.handleError(QAbstractSocket.SocketError(0))

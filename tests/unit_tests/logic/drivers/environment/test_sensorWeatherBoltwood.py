@@ -1,0 +1,172 @@
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
+import pytest
+import shutil
+from mw4.base.signalsDevices import Signals
+from mw4.logic.drivers.environment.sensorWeatherBoltwood import SensorWeatherBoltwood
+from pathlib import Path
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from typing import ClassVar
+from unittest import mock
+
+
+class Parent:
+    try:
+        app = App()
+    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
+        app = mock.MagicMock()
+    data: ClassVar = {}
+    deviceType = ""
+    signals = Signals()
+    loadConfig = True
+
+
+@pytest.fixture(autouse=True, scope="module")
+def function():
+    try:
+        shutil.copy("tests/testData/boltwood_test.txt", "tests/work/data/boltwood_test.txt")
+
+        func = SensorWeatherBoltwood(parent=Parent())
+        yield func
+    except (
+        RuntimeError,
+        ImportError,
+        AttributeError,
+        ConnectionError,
+        OSError,
+        ValueError,
+    ) as e:
+        pytest.skip(f"SensorWeatherBoltwood initialization failed: {e}")
+
+
+def test_startCommunication_1(function):
+    function.enabled = False
+    function.startCommunication()
+    assert function.enabled  # as there is no real device
+
+
+def test_stopCommunication_1(function):
+    function.data = {"test": 1}
+    function.enabled = True
+    function.deviceConnected = True
+    function.stopCommunication()
+    assert not function.deviceConnected
+    assert not function.enabled
+    assert function.data == {}
+
+
+def test_convertKnots2Kmh_1(function):
+    speedKmh = function.convertKnots2Kmh(10)
+    assert round(speedKmh, 3) == 18.52
+
+
+def test_convertKnots2Kmh_2(function):
+    speedKmh = function.convertKnots2Kmh(0)
+    assert round(speedKmh, 3) == 0.0
+
+
+def test_convertMph2Kmh_1(function):
+    speedKmh = function.convertMph2Kmh(10)
+    assert round(speedKmh, 3) == 16.093
+
+
+def test_convertMph2Kmh_2(function):
+    speedKmh = function.convertMph2Kmh(0)
+    assert round(speedKmh, 3) == 0.0
+
+
+def test_convertFtoC_1(function):
+    tempC = function.convertFtoC(32)
+    assert tempC == 0.0
+
+
+def test_convertFtoC_2(function):
+    tempC = function.convertFtoC(212)
+    assert tempC == 100.0
+
+
+def test_parseAndWriteBoltwoodData_1(function):
+    rawData = (
+        "2018-01-17 14:51:45.00 F M 35.9   78.1  78     10      45  56.1"
+        "   000 0 0 00020 043117.61927 1 1 1 3 0 0"
+    )
+    assert function.parseAndWriteBoltwoodData(rawData)
+    assert round(function.data["SKY_QUALITY.SKY_BRIGHTNESS"], 3) == 2.167
+    assert round(function.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"], 3) == 25.611
+    assert round(function.data["WEATHER_PARAMETERS.WEATHER_HUMIDITY"], 3) == 45.0
+    assert round(function.data["WEATHER_PARAMETERS.WEATHER_DEWPOINT"], 3) == 13.389
+    assert round(function.data["WEATHER_PARAMETERS.WIND_SPEED"], 3) == 16.093
+
+
+def test_parseAndWriteBoltwoodData_2(function):
+    rawData = (
+        "2018-01-17 14:51:45.00 C K 35.9   78.1  78     10      45  56.1"
+        "   000 0 0 00020 043117.61927 1 1 1 3 0 0"
+    )
+    assert function.parseAndWriteBoltwoodData(rawData)
+    assert round(function.data["SKY_QUALITY.SKY_BRIGHTNESS"], 3) == 35.9
+    assert round(function.data["WEATHER_PARAMETERS.WEATHER_TEMPERATURE"], 3) == 78.1
+    assert round(function.data["WEATHER_PARAMETERS.WEATHER_HUMIDITY"], 3) == 45.0
+    assert round(function.data["WEATHER_PARAMETERS.WEATHER_DEWPOINT"], 3) == 56.1
+    assert round(function.data["WEATHER_PARAMETERS.WIND_SPEED"], 3) == 18.52
+
+
+def test_parseAndWriteBoltwoodData_3(function):
+    rawData = "2018-01-17 14:51:45.00"
+    assert not function.parseAndWriteBoltwoodData(rawData)
+
+
+def test_processBoltwoodData_1(function):
+    with mock.patch.object(Path, "is_file", return_value=False):
+        assert not function.processBoltwoodData(Path())
+
+
+def test_processBoltwoodData_2(function):
+    filePath = Path("tests/work/data/boltwood_test.txt")
+    with mock.patch.object(function, "parseAndWriteBoltwoodData", return_value=False):
+        assert not function.processBoltwoodData(filePath)
+
+
+def test_processBoltwoodData_3(function):
+    filePath = Path("tests/work/data/boltwood_test.txt")
+    with mock.patch.object(function, "parseAndWriteBoltwoodData", return_value=True):
+        assert function.processBoltwoodData(filePath)
+
+
+def test_pollBoltwoodData_1(function):
+    function.enabled = False
+    function.deviceConnected = False
+    function.pollBoltwoodData()
+
+
+def test_pollBoltwoodData_2(function):
+    function.deviceConnected = True
+    function.enabled = True
+    function.filePath = "tests/work/assets/boltwood_testwrong.txt"
+    with mock.patch.object(function, "processBoltwoodData", return_value=False):
+        function.pollBoltwoodData()
+        assert not function.deviceConnected
+        assert not function.enabled
+
+
+def test_pollBoltwoodData_3(function):
+    function.deviceConnected = False
+    function.enabled = True
+    function.filePath = "tests/work/assets/boltwood_testwrong.txt"
+    with mock.patch.object(function, "processBoltwoodData", return_value=True):
+        function.pollBoltwoodData()
+        assert function.deviceConnected
+        assert function.enabled
+
+
+def test_pollBoltwoodData_4(function):
+    function.deviceConnected = True
+    function.enabled = True
+    received = []
+    function.signals.deviceConnected.connect(received.append)
+    with mock.patch.object(function, "processBoltwoodData", return_value=True):
+        function.pollBoltwoodData()
+    function.signals.deviceConnected.disconnect(received.append)
+    assert received == []
+    assert function.deviceConnected

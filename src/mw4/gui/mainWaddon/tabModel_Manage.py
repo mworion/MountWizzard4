@@ -7,7 +7,7 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
-from mw4.logic.modelBuild.modelRunSupport import (
+from mw4.logic.controllers.model.modelRunSupport import (
     convertAngleToFloat,
     convertFloatToAngle,
     findFittingModel,

@@ -7,7 +7,7 @@ from mw4.base.appProtocol import AppProtocol
 from mw4.base.tpool import Worker, startWorker
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import keypad_ui
-from mw4.logic.keypad.keypad import KeyPad
+from mw4.logic.drivers.keypad.keypad import KeyPad
 from PySide6.QtCore import QObject, Signal
 from PySide6.QtGui import QCloseEvent, QPixmap
 from qimage2ndarray import array2qimage

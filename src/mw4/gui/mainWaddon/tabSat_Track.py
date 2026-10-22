@@ -5,10 +5,13 @@ import numpy as np
 from mw4.base.tpool import Worker, startWorker
 from mw4.gui.mainWaddon.satData import SatData
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, positionCursorInTable
-from mw4.logic.satellites.satellite_calculations import calcSatPasses
-from mw4.logic.satellites.trackCalculations import (
+from mw4.logic.controllers.satellites.satellite_calculations import calcSatPasses
+from mw4.logic.controllers.satellites.trackCalculations import (
     calcTrajectoryData,
+    dataAgeColor,
     filterHorizon,
+    formatSatPass,
+    reduceTrajectory,
     selectStartEnd,
 )
 from mw4.mountcontrol.obsSite import ObsSite
@@ -140,12 +143,12 @@ class SatTrack(SatData):
         return calcTrajectoryData(
             start,
             end,
-            self.satellite,
-            self.app.ephemeris["earth"],
-            m.obsSite.location,
-            m.obsSite.ts,
-            m.setting.refractionTemp,
-            m.setting.refractionPress,
+            satellite=self.satellite,
+            earth=self.app.ephemeris["earth"],
+            location=m.obsSite.location,
+            ts=m.obsSite.ts,
+            temperature=m.setting.refractionTemp,
+            pressure=m.setting.refractionPress,
         )
 
     def calcTrajectoryAndShow(self) -> None:
@@ -167,37 +170,10 @@ class SatTrack(SatData):
             self.passUI[i]["flip"].setText("-")
             self.passUI[i]["date"].setText("-")
 
-        fString = "%H:%M:%S"
-        fStringDate = "%d %b"
         for i, satOrbit in enumerate(self.satOrbits):
-            riseT = satOrbit.get("rise", None)
-            if riseT is not None:
-                riseStr = self.app.timeMgr.convertTime(riseT, fString)
-                dateStr = self.app.timeMgr.convertTime(riseT, fStringDate)
-            else:
-                riseStr = "unknown"
-                dateStr = "---"
-            culminateT = satOrbit.get("culminate", None)
-            if culminateT is not None:
-                culminateStr = self.app.timeMgr.convertTime(culminateT, fString)
-            else:
-                culminateStr = "unknown"
-            settleT = satOrbit.get("settle", None)
-            if settleT is not None:
-                settleStr = self.app.timeMgr.convertTime(settleT, fString)
-            else:
-                settleStr = "unknown"
-            flipT = satOrbit.get("flip", None)
-            if flipT is not None:
-                flipStr = self.app.timeMgr.convertTime(flipT, fString)
-            else:
-                flipStr = "no flip"
-
-            self.passUI[i]["rise"].setText(riseStr)
-            self.passUI[i]["culminate"].setText(culminateStr)
-            self.passUI[i]["settle"].setText(settleStr)
-            self.passUI[i]["flip"].setText(flipStr)
-            self.passUI[i]["date"].setText(dateStr)
+            texts = formatSatPass(satOrbit, self.app.timeMgr.convertTime)
+            for key, text in texts.items():
+                self.passUI[i][key].setText(text)
 
     def runnerShowSatPasses(self) -> None:
         if not self.satellite:
@@ -241,12 +217,7 @@ class SatTrack(SatData):
         days = now - self.satellite.epoch
         self.ui.satelliteDataAge.setText(f"{days:2.2f}")
 
-        if days > 10:
-            changeStyleDynamic(self.ui.satelliteDataAge, "color", "red")
-        elif 3 < days < 10:
-            changeStyleDynamic(self.ui.satelliteDataAge, "color", "yellow")
-        else:
-            changeStyleDynamic(self.ui.satelliteDataAge, "color", "")
+        changeStyleDynamic(self.ui.satelliteDataAge, "color", dataAgeColor(days))
 
     def programSatToMount(self, satName: str) -> None:
         satellite = self.app.dReg.mount.satellite
@@ -314,10 +285,9 @@ class SatTrack(SatData):
             self.msg.emit(2, "TLE", "Program error", text)
             return
 
-        factor = int(len(alt) / 900)
-        factor = max(factor, 1)
-        alt = Angle(degrees=np.array_split(alt, factor)[0])
-        az = Angle(degrees=np.array_split(az, factor)[0])
+        alt, az = reduceTrajectory(alt, az)
+        alt = Angle(degrees=alt)
+        az = Angle(degrees=az)
 
         changeStyleDynamic(self.ui.progTrajectory, "run", "true")
         changeStyleDynamic(self.ui.satTrackGroup, "run", "true")

@@ -6,22 +6,23 @@ from collections.abc import Iterator
 from dataclasses import fields
 from mw4.base.appProtocol import AppProtocol
 from mw4.base.deviceEntry import DeviceEntry
-from mw4.logic.camera.camera import Camera
-from mw4.logic.cover.cover import Cover
-from mw4.logic.dome.dome import Dome
-from mw4.logic.environment.directWeather import DirectWeather
-from mw4.logic.environment.seeingWeather import SeeingWeather
-from mw4.logic.environment.sensorWeather import SensorWeather
-from mw4.logic.filter.filter import Filter
-from mw4.logic.focuser.focuser import Focuser
-from mw4.logic.hidController.hidController import HidController
-from mw4.logic.lightPanel.lightPanel import LightPanel
-from mw4.logic.measure.measure import MeasureData
-from mw4.logic.plateSolve.plateSolve import PlateSolve
-from mw4.logic.powerswitch.kmRelay import KMRelay
-from mw4.logic.powerswitch.pegasusUPB import PegasusUPB
-from mw4.logic.remote.remote import Remote
-from mw4.logic.telescope.telescope import Telescope
+from mw4.base.driverProtocol import HasDriverConfig, HasSignals
+from mw4.logic.drivers.camera.camera import Camera
+from mw4.logic.drivers.cover.cover import Cover
+from mw4.logic.drivers.dome.dome import Dome
+from mw4.logic.drivers.environment.directWeather import DirectWeather
+from mw4.logic.drivers.environment.seeingWeather import SeeingWeather
+from mw4.logic.drivers.environment.sensorWeather import SensorWeather
+from mw4.logic.drivers.filter.filter import Filter
+from mw4.logic.drivers.focuser.focuser import Focuser
+from mw4.logic.drivers.hidController.hidController import HidController
+from mw4.logic.drivers.lightPanel.lightPanel import LightPanel
+from mw4.logic.drivers.measure.measure import MeasureData
+from mw4.logic.drivers.plateSolve.plateSolve import PlateSolve
+from mw4.logic.drivers.powerswitch.kmRelay import KMRelay
+from mw4.logic.drivers.powerswitch.pegasusUPB import PegasusUPB
+from mw4.logic.drivers.remote.remote import Remote
+from mw4.logic.drivers.telescope.telescope import Telescope
 from mw4.mountcontrol.mount import MountDevice
 from PySide6.QtCore import QObject
 from typing import Any, Literal, overload
@@ -81,7 +82,7 @@ class DeviceRegistry(QObject):
             isConfigurable=False,
         )
         for entry in self.realDrivers():
-            if hasattr(self.d[entry.name].instance, "signals"):
+            if isinstance(self.d[entry.name].instance, HasSignals):
                 sig = self.d[entry.name].signals
                 self.signalsToName[id(sig)] = entry.name
                 sig.deviceConnected.connect(self.deviceConnected)
@@ -269,7 +270,7 @@ class DeviceRegistry(QObject):
         entry = self.d[device]
         cfgDevice: dict[str, Any] = {"framework": entry.framework}
         for framework, driver in entry.run.items():
-            if not hasattr(driver, "config"):
+            if not isinstance(driver, HasDriverConfig):
                 continue
             cfgDevice[framework] = {
                 field.name: getattr(driver.config, field.name) for field in fields(driver.config)
@@ -286,7 +287,7 @@ class DeviceRegistry(QObject):
         entry = self.d[device]
         entry.instance.framework = cfg.get("framework", "")
         for framework, driver in entry.run.items():
-            if not hasattr(driver, "config") or framework not in cfg:
+            if not isinstance(driver, HasDriverConfig) or framework not in cfg:
                 continue
             for field in fields(driver.config):
                 if field.name in cfg[framework]:

@@ -1,0 +1,106 @@
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
+import pytest
+from mw4.base import platformInfo
+from mw4.base.signalsDevices import Signals
+from mw4.logic.drivers.dome.domeAscom import DomeAscom
+from tests.unit_tests.unitTestAddOns.baseTestApp import App
+from typing import ClassVar
+from unittest import mock
+
+if not platformInfo.IS_WINDOWS:
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
+
+
+class Parent:
+    try:
+        app = App()
+    except (RuntimeError, ImportError, AttributeError, ConnectionError, OSError, ValueError):
+        app = mock.MagicMock()
+    data: ClassVar = {}
+    deviceType = ""
+    signals = Signals()
+    loadConfig = True
+
+
+@pytest.fixture(autouse=True, scope="module")
+def function():
+    func = DomeAscom(parent=Parent())
+    func.device = mock.MagicMock()
+    func.device.Azimuth = 100
+    func.device.Slewing = False
+    yield func
+
+
+def test_getInitialConfig_1(function):
+    with mock.patch.object(function, "getAndStoreDeviceProp"):
+        function.getInitialConfig()
+
+
+def test_pollData_shutterOpen(function):
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=0),
+        mock.patch.object(function, "storePropertyToData"),
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+    ):
+        function.pollData()
+
+
+def test_pollData_shutterClosed(function):
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=1),
+        mock.patch.object(function, "storePropertyToData"),
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+    ):
+        function.pollData()
+
+
+def test_pollData_shutterOther(function):
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=2),
+        mock.patch.object(function, "storePropertyToData"),
+        mock.patch.object(function, "getAndStoreDeviceProp"),
+    ):
+        function.pollData()
+
+
+def test_slewToAltAz(function):
+    function.data["CanSetAzimuth"] = True
+    function.data["CanSetAltitude"] = True
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.slewToAltAz(30.0, 180.0)
+    assert m.call_count == 2
+    calls = {c[0][0]: c[1] for c in m.call_args_list}
+    assert "SlewToAzimuth" in calls
+    assert calls["SlewToAzimuth"] == {"Azimuth": 180.0}
+    assert "SlewToAltitude" in calls
+    assert calls["SlewToAltitude"] == {"Altitude": 30.0}
+
+
+def test_openShutter(function):
+    function.data["CanSetShutter"] = True
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.openShutter()
+    m.assert_called_once_with("OpenShutter")
+
+
+def test_closeShutter(function):
+    function.data["CanSetShutter"] = True
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.closeShutter()
+    m.assert_called_once_with("CloseShutter")
+
+
+def test_slewCW(function):
+    with mock.patch.object(function, "callDeviceMethodQueued") as m:
+        function.slewCW()
+    m.assert_called_once()
+
+
+def test_slewCCW(function):
+    function.slewCCW()
+
+
+def test_abortSlew(function):
+    function.abortSlew()

@@ -1,0 +1,604 @@
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
+import contextlib
+import pytest
+import queue
+import subprocess
+import threading
+import time
+from mw4.base import platformInfo
+from mw4.base.signalsDevices import Signals
+from mw4.logic.drivers.frameworks.alpacaAscomCommon import CommandItem
+from mw4.logic.drivers.frameworks.ascomClass import AscomClass
+from pathlib import Path
+from PySide6.QtCore import QThreadPool
+from unittest import mock
+
+if not platformInfo.IS_WINDOWS:
+    pytest.skip("skipping windows-only tests", allow_module_level=True)
+
+
+class Parent:
+    def __init__(self) -> None:
+        self.data: dict = {}
+        self.deviceType = ""
+        self.signals = Signals()
+        self.app = mock.MagicMock()
+        self.app.signals.ui.msg = mock.MagicMock()
+        self.app.threadPool = QThreadPool()
+        self.app.mwGlob = {"tempDir": Path("/tmp")}
+
+
+@pytest.fixture(autouse=True)
+def function():
+    func = AscomClass(parent=Parent())
+    func.signals = Signals()
+    func.device = mock.MagicMock()
+    func.stopEvent.clear()
+    func.propertyExceptions.clear()
+    func.deviceConnected = False
+    yield func
+
+
+def test_init(function):
+    assert isinstance(function.commandQueue, queue.Queue)
+    assert isinstance(function.stopEvent, threading.Event)
+    assert function.workerRunnerCoreLoop is None
+    assert isinstance(function.propertyExceptions, set)
+    assert len(function.propertyExceptions) == 0
+
+
+def test_getAscomProperty_success(function):
+    function.device.Connected = True
+    val = function.getDeviceProp("Connected")
+    assert val is True
+
+
+def test_getAscomProperty_exception(function):
+    function.device = None
+    val = function.getDeviceProp("Connected")
+    assert val is None
+
+
+def test_getAscomProperty_imageArray(function):
+    function.device.ImageArray = [[1, 2], [3, 4]]
+    val = function.getDeviceProp("ImageArray")
+    assert val is not None
+
+
+def test_getAscomProperty_propertyException(function):
+    function.propertyExceptions.add("Connected")
+    val = function.getDeviceProp("Connected")
+    assert val is None
+
+
+def test_setAscomProperty_success(function):
+    function.setDeviceProp("Connected", True)
+
+
+def test_setAscomProperty_exception(function):
+    function.device = None
+    function.setDeviceProp("Connected", True)
+
+
+def test_setAscomProperty_propertyException(function):
+    function.propertyExceptions.add("Connected")
+    function.setDeviceProp("Connected", True)
+
+
+def test_getAndStoreAscomProperty(function):
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=42),
+        mock.patch.object(function, "storePropertyToData") as m,
+    ):
+        function.getAndStoreDeviceProp("Name", "KEY")
+        m.assert_called_once_with(42, "KEY")
+
+
+def test_callAscomMethod_success(function):
+    function.device.Halt = mock.MagicMock(return_value=99)
+    result = function.callDeviceMethod("Halt")
+    assert result == 99
+
+
+def test_callAscomMethod_exception(function):
+    function.device = None
+    result = function.callDeviceMethod("Halt")
+    assert result is None
+
+
+def test_callAscomMethod_kwargs(function):
+    function.device.Move = mock.MagicMock()
+    function.callDeviceMethod("Move", Position=100)
+    function.device.Move.assert_called_once_with(Position=100)
+
+
+def test_callAscomMethod_noKwargs(function):
+    function.device.OpenShutter = mock.MagicMock()
+    function.callDeviceMethod("OpenShutter")
+    function.device.OpenShutter.assert_called_once_with()
+
+
+def test_callAscomMethod_propertyException(function):
+    function.propertyExceptions.add("Halt")
+    result = function.callDeviceMethod("Halt")
+    assert result is None
+
+
+def test_setAscomPropertyQueued(function):
+    function.setDevicePropQueued("Gain", 42)
+    cmd = function.commandQueue.get_nowait()
+    assert cmd.cmdType == "set"
+    assert cmd.valueProp == "Gain"
+    assert cmd.value == 42
+
+
+def test_callAscomMethodQueued(function):
+    function.callDeviceMethodQueued("Halt", SwitchIndex=0)
+    cmd = function.commandQueue.get_nowait()
+    assert cmd.cmdType == "call"
+    assert cmd.valueProp == "Halt"
+    assert cmd.kwargs == {"SwitchIndex": 0}
+
+
+def test_callAscomMethodQueued_noKwargs(function):
+    function.callDeviceMethodQueued("OpenShutter")
+    cmd = function.commandQueue.get_nowait()
+    assert cmd.cmdType == "call"
+    assert cmd.valueProp == "OpenShutter"
+    assert cmd.kwargs == {}
+
+
+def test_processCommandQueue_empty(function):
+    function.processCommandQueue()
+
+
+def test_processCommandQueue_call(function):
+    function.commandQueue.put(CommandItem(cmdType="call", valueProp="OpenShutter"))
+    with mock.patch.object(function, "callDeviceMethod") as m:
+        function.processCommandQueue()
+        m.assert_called_once_with("OpenShutter")
+
+
+def test_processCommandQueue_callWithKwargs(function):
+    function.commandQueue.put(
+        CommandItem(
+            cmdType="call",
+            valueProp="Move",
+            kwargs={"Position": 100},
+        )
+    )
+    with mock.patch.object(function, "callDeviceMethod") as m:
+        function.processCommandQueue()
+        m.assert_called_once_with("Move", Position=100)
+
+
+def test_processCommandQueue_set(function):
+    function.commandQueue.put(CommandItem(cmdType="set", valueProp="Gain", value=10))
+    with mock.patch.object(function, "setDeviceProp") as m:
+        function.processCommandQueue()
+        m.assert_called_once_with("Gain", 10)
+
+
+def test_processCommandQueue_unknownType(function):
+    function.commandQueue.put(CommandItem(cmdType="unknown", valueProp="X"))
+    function.processCommandQueue()
+
+
+def test_processCommandQueue_callException(function):
+    function.device = None
+    function.commandQueue.put(CommandItem(cmdType="call", valueProp="Halt"))
+    function.processCommandQueue()
+
+
+def test_processCommandQueue_queueEmpty(function):
+    with (
+        mock.patch.object(function.commandQueue, "empty", return_value=False),
+        mock.patch.object(function.commandQueue, "get_nowait", side_effect=queue.Empty),
+    ):
+        function.processCommandQueue()
+
+
+def test_connectDevice_allFail(function):
+    with (
+        mock.patch.object(time, "sleep"),
+        mock.patch.object(function, "setDeviceProp"),
+        mock.patch.object(function, "getDeviceProp", return_value=False),
+    ):
+        result = function.connectDevice()
+    assert not result
+    assert not function.deviceConnected
+
+
+def test_connectDevice_firstSuccess(function):
+    with (
+        mock.patch.object(function, "setDeviceProp"),
+        mock.patch.object(function, "getDeviceProp", return_value=True),
+    ):
+        result = function.connectDevice()
+    assert result
+
+
+def test_connectDevice_retriesThenSuccess(function):
+    responses = [False, False, True]
+    with (
+        mock.patch.object(time, "sleep"),
+        mock.patch.object(function, "setDeviceProp"),
+        mock.patch.object(function, "getDeviceProp", side_effect=responses),
+    ):
+        result = function.connectDevice()
+    assert result
+
+
+def test_getInitialConfig(function):
+    with mock.patch.object(function, "getAndStoreDeviceProp") as m:
+        function.getInitialConfig()
+        assert m.call_count == 3
+
+
+def test_pollData(function):
+    function.pollData()
+
+
+def test_handleDeviceConnect_fail(function):
+    with mock.patch.object(function, "connectDevice", return_value=False):
+        function.handleDeviceConnect()
+    assert not function.deviceConnected
+
+
+def test_handleDeviceConnect_success(function):
+    with (
+        mock.patch.object(function, "connectDevice", return_value=True),
+        mock.patch.object(function, "getInitialConfig") as m,
+    ):
+        function.handleDeviceConnect()
+    assert function.deviceConnected
+    m.assert_called_once()
+
+
+def test_handleDeviceDisconnect(function):
+    function.deviceConnected = True
+    function.handleDeviceDisconnect()
+    assert not function.deviceConnected
+
+
+def test_runnerCoreLoop_dispatchError(function):
+    with (
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.CoInitialize") as ci,
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.CoUninitialize") as cu,
+        mock.patch(
+            "mw4.logic.drivers.frameworks.ascomClass.client.dynamic.Dispatch",
+            side_effect=OSError("fail"),
+        ),
+    ):
+        function.runnerCoreLoop()
+    ci.assert_called_once()
+    cu.assert_called_once()
+    assert function.device is None
+
+
+def test_runnerCoreLoop_success(function):
+    with (
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.CoInitialize") as ci,
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.CoUninitialize") as cu,
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.client.dynamic.Dispatch"),
+        mock.patch.object(function, "runnerCommunicationLoop") as m,
+    ):
+        function.runnerCoreLoop()
+    ci.assert_called_once()
+    m.assert_called_once()
+    cu.assert_called_once()
+
+
+def test_runnerCoreLoop_cleanup(function):
+    with (
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.CoInitialize"),
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.CoUninitialize") as cu,
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.client.dynamic.Dispatch"),
+        mock.patch.object(function, "runnerCommunicationLoop"),
+        mock.patch.object(function, "setDeviceProp") as ms,
+    ):
+        function.runnerCoreLoop()
+    ms.assert_called_with("Connected", False)
+    assert function.device is None
+    cu.assert_called_once()
+
+
+def test_runnerCommunicationLoop_stopImmediately(function):
+    function.stopEvent.set()
+    with mock.patch.object(function, "handleDeviceConnect") as m:
+        function.runnerCommunicationLoop()
+    m.assert_not_called()
+
+
+def test_runnerCommunicationLoop_connectBranch(function):
+    call_count = 0
+
+    def fake_connect() -> None:
+        nonlocal call_count
+        call_count += 1
+        function.stopEvent.set()
+
+    function.deviceConnected = False
+    with (
+        mock.patch.object(function, "handleDeviceConnect", side_effect=fake_connect),
+        mock.patch.object(function, "getDeviceProp", return_value=True),
+    ):
+        function.runnerCommunicationLoop()
+    assert call_count == 1
+
+
+def test_runnerCommunicationLoop_disconnectBranch(function):
+    call_count = 0
+
+    def fake_disconnect() -> None:
+        nonlocal call_count
+        call_count += 1
+        function.stopEvent.set()
+
+    function.deviceConnected = True
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=False),
+        mock.patch.object(function, "handleDeviceDisconnect", side_effect=fake_disconnect),
+    ):
+        function.runnerCommunicationLoop()
+    assert call_count == 1
+
+
+def test_runnerCommunicationLoop_pollCycle(function):
+    call_count = 0
+
+    def fake_poll() -> None:
+        nonlocal call_count
+        call_count += 1
+        function.stopEvent.set()
+
+    function.deviceConnected = True
+    with (
+        mock.patch.object(function, "getDeviceProp", return_value=True),
+        mock.patch.object(function, "pollData", side_effect=fake_poll),
+        mock.patch.object(function, "processCommandQueue") as mq,
+    ):
+        function.runnerCommunicationLoop()
+    assert call_count == 1
+    mq.assert_called_once()
+
+
+def test_runnerCommunicationLoop_pollException(function):
+    call_count = 0
+
+    def fake_poll() -> None:
+        nonlocal call_count
+        call_count += 1
+        function.stopEvent.set()
+        raise RuntimeError("boom")
+
+    function.deviceConnected = True
+    with (
+        pytest.raises(RuntimeError),
+        mock.patch.object(function, "getDeviceProp", return_value=True),
+        mock.patch.object(function, "pollData", side_effect=fake_poll),
+        mock.patch.object(function, "processCommandQueue"),
+    ):
+        function.runnerCommunicationLoop()
+    assert call_count == 1
+
+
+def test_startCommunication_noDevice(function):
+    function.deviceName = ""
+    with mock.patch.object(function.threadPool, "start") as m:
+        function.startCommunication()
+    m.assert_not_called()
+
+
+def test_startCommunication_success(function):
+    function.config.deviceName = "test.driver"
+    with mock.patch.object(function.threadPool, "start") as m:
+        function.startCommunication()
+    m.assert_called_once()
+    assert not function.stopEvent.is_set()
+
+
+def test_stopCommunication(function):
+    function.deviceConnected = True
+    function.deviceName = "test"
+    function.stopCommunication()
+    assert function.stopEvent.is_set()
+    assert not function.deviceConnected
+
+
+def test_selectAscomDriver_success():
+    with mock.patch("subprocess.check_output", return_value="ASCOM.Test.Telescope"):
+        result = AscomClass.selectAscomDriver("old", "Telescope")
+    assert result == "ASCOM.Test.Telescope"
+
+
+def test_selectAscomDriver_error():
+    with mock.patch(
+        "subprocess.check_output",
+        side_effect=subprocess.CalledProcessError(1, "cmd"),
+    ):
+        result = AscomClass.selectAscomDriver("original", "Telescope")
+    assert result == "original"
+
+
+def test_selectAscomDriver_empty():
+    with mock.patch("subprocess.check_output", return_value="  "):
+        result = AscomClass.selectAscomDriver("fallback", "Telescope")
+    assert result == "fallback"
+
+
+def test_selectAscomDriver_uses_json_payload():
+    """SEC-1: deviceName and deviceType must be passed as a JSON payload, not
+    interpolated into the script string."""
+    import json as _json
+
+    with mock.patch("subprocess.check_output", return_value="result") as m:
+        AscomClass.selectAscomDriver("MyDevice", "Camera")
+
+    args, _ = m.call_args
+    cmd_list = args[0]
+    # script is cmd_list[2]; JSON payload is cmd_list[3]
+    script = cmd_list[2]
+    payload_str = cmd_list[3]
+
+    # The device name / type must NOT appear literally in the script string
+    assert "MyDevice" not in script
+    assert "Camera" not in script
+
+    # The payload must be valid JSON containing the correct keys
+    payload = _json.loads(payload_str)
+    assert payload["deviceName"] == "MyDevice"
+    assert payload["deviceType"] == "Camera"
+
+
+def test_selectAscomDriver_injection_safe():
+    """SEC-1: A malicious deviceName with Python-injection characters must be
+    transmitted safely through the JSON payload, not break the script."""
+    import json as _json
+
+    malicious = "'; import os; os.system('rm -rf /')#"
+    with mock.patch("subprocess.check_output", return_value="") as m:
+        AscomClass.selectAscomDriver(malicious, "Telescope")
+
+    args, _ = m.call_args
+    cmd_list = args[0]
+    script = cmd_list[2]
+    payload_str = cmd_list[3]
+
+    # Injection string must not appear raw in the script
+    assert malicious not in script
+    # But it must survive round-tripping through JSON
+    payload = _json.loads(payload_str)
+    assert payload["deviceName"] == malicious
+
+
+def test_runnerCoreLoop_dispatchAttributeError(function):
+    """Test AttributeError handling in runnerCoreLoop"""
+    with (
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.CoInitialize") as ci,
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.CoUninitialize") as cu,
+        mock.patch(
+            "mw4.logic.drivers.frameworks.ascomClass.client.dynamic.Dispatch",
+            side_effect=AttributeError("dispatch failed"),
+        ),
+    ):
+        function.runnerCoreLoop()
+    ci.assert_called_once()
+    cu.assert_called_once()
+    assert function.device is None
+
+
+def test_runnerCoreLoop_dispatchOSError(function):
+    """Test OSError handling in runnerCoreLoop"""
+    with (
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.CoInitialize") as ci,
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.CoUninitialize") as cu,
+        mock.patch(
+            "mw4.logic.drivers.frameworks.ascomClass.client.dynamic.Dispatch",
+            side_effect=OSError("dispatch system error"),
+        ),
+    ):
+        function.runnerCoreLoop()
+    ci.assert_called_once()
+    cu.assert_called_once()
+    assert function.device is None
+
+
+def test_runnerCoreLoop_device_cleanup_when_none(function):
+    """Test that cleanup happens correctly when device becomes None"""
+    function.device = None
+    with (
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.CoInitialize"),
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.CoUninitialize") as cu,
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.client.dynamic.Dispatch"),
+        mock.patch.object(function, "runnerCommunicationLoop"),
+    ):
+        function.runnerCoreLoop()
+    cu.assert_called_once()
+
+
+def test_startCommunication_clears_state(function):
+    """Test that startCommunication properly clears state"""
+    function.deviceConnected = True
+    function.data["test"] = "value"
+    function.propertyExceptions.add("test")
+    function.config.deviceName = "test.driver"
+
+    with mock.patch.object(function.threadPool, "start"):
+        function.startCommunication()
+
+    assert function.deviceConnected is False
+    assert len(function.data) == 0
+    assert len(function.propertyExceptions) == 0
+    assert not function.stopEvent.is_set()
+
+
+def test_selectAscomDriver_with_whitespace():
+    """Test selectAscomDriver with whitespace in output"""
+    with mock.patch("subprocess.check_output", return_value="  \n\t  "):
+        result = AscomClass.selectAscomDriver("fallback", "Telescope")
+    assert result == "fallback"
+
+
+def test_selectAscomDriver_returns_trimmed_output():
+    """Test selectAscomDriver trims output correctly"""
+    with mock.patch("subprocess.check_output", return_value="\n  ASCOM.Test.Telescope  \n"):
+        result = AscomClass.selectAscomDriver("old", "Telescope")
+    assert result == "ASCOM.Test.Telescope"
+
+
+def test_runnerCoreLoop_exception_in_finally(function):
+    """Test that finally block executes even with exception"""
+    function.device = mock.MagicMock()
+    with (
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.CoInitialize"),
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.CoUninitialize") as cu,
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.client.dynamic.Dispatch"),
+        mock.patch.object(
+            function, "runnerCommunicationLoop", side_effect=RuntimeError("loop error")
+        ),
+        contextlib.suppress(RuntimeError),
+    ):
+        function.runnerCoreLoop()
+    cu.assert_called_once()
+    assert function.device is None
+
+
+def test_startCommunication_multiple_calls(function):
+    """Test multiple startCommunication calls"""
+    function.config.deviceName = "test.driver"
+    with mock.patch.object(function.threadPool, "start") as m:
+        function.startCommunication()
+        if function.workerRunnerCoreLoop:
+            function.workerRunnerCoreLoop.release()
+        function.startCommunication()
+    assert m.call_count == 2
+
+
+def test_selectAscomDriver_subprocess_failure_with_return_empty_string():
+    """Test subprocess returning empty string with CalledProcessError"""
+    with mock.patch(
+        "subprocess.check_output",
+        side_effect=subprocess.CalledProcessError(1, "cmd"),
+    ):
+        result = AscomClass.selectAscomDriver("original", "Telescope")
+    assert result == "original"
+
+
+def test_selectAscomDriver_json_payload_format():
+    """Test that JSON payload has correct structure"""
+    import json as _json
+
+    with mock.patch("subprocess.check_output", return_value="ASCOM.Test") as m:
+        AscomClass.selectAscomDriver("TestDevice", "Focuser")
+
+    args, _ = m.call_args
+    cmd_list = args[0]
+    payload_str = cmd_list[3]
+    payload = _json.loads(payload_str)
+
+    assert isinstance(payload, dict)
+    assert "deviceName" in payload
+    assert "deviceType" in payload

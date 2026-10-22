@@ -11,8 +11,8 @@ if TYPE_CHECKING:
     from mw4.base.deviceRegistry import DeviceRegistry
     from mw4.base.timeManager import TimeManager
     from mw4.gui.mainWindow.mainWindow import MainWindow
-    from mw4.logic.buildData.buildpoints import BuildPoint
-    from mw4.logic.buildData.hipparcos import Hipparcos
+    from mw4.logic.controllers.model.buildpoints import BuildPoint
+    from mw4.logic.controllers.model.hipparcos import Hipparcos
     from PySide6.QtCore import QThreadPool
     from queue import Queue
     from skyfield.jpllib import SpiceKernel

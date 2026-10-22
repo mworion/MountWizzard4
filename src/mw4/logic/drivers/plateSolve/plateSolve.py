@@ -1,0 +1,173 @@
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
+import logging
+import queue
+import subprocess
+import time
+from mw4.base.appProtocol import AppProtocol
+from mw4.base.signalsDevices import Signals
+from mw4.base.tpool import Worker, startWorker
+from mw4.base.transform import J2000ToJNow
+from mw4.logic.drivers.plateSolve.astap import ASTAP
+from mw4.logic.drivers.plateSolve.astrometry import Astrometry
+from mw4.logic.drivers.plateSolve.watney import Watney
+from mw4.logic.fits.fitsFunction import (
+    getImageHeader,
+    getSolutionFromWCSHeader,
+    updateImageFileHeaderWithSolution,
+)
+from pathlib import Path
+from typing import Any
+
+
+class PlateSolve:
+    """
+    Keyword definitions could be found under
+        https://fits.gsfc.nasa.gov/fits_dictionary.html
+    """
+
+    DEVICE_TYPE = "misc"
+    log = logging.getLogger("MW4")
+
+    def __init__(self, app: AppProtocol) -> None:
+        self.app = app
+        self.threadPool = app.threadPool
+        self.signals = Signals()
+        self.solveQueue: queue.Queue = queue.Queue()
+        self.solveLoopRunning: bool = False
+        self.workerSolveLoop: Worker | None = Worker(self.runnerSolveLoop)
+        self.process: subprocess.Popen | None = None
+        self.data: dict[str, Any] = {}
+        self.framework: str = ""
+        self.run: dict = {
+            "astrometry": Astrometry(self),
+            "astap": ASTAP(self),
+            "watney": Watney(self),
+        }
+        self.signals.deviceConnected.connect(self.startSolveLoop)
+
+    def runSolverBin(self, runnable: list[Any]) -> tuple[bool, str]:
+        timeStart = time.time()
+        timeout = self.run[self.framework].config.timeout
+        try:
+            # the context manager closes the pipes and reaps the process in any
+            # case; self.process is only a reference for abort()
+            with subprocess.Popen(
+                args=runnable,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            ) as process:
+                self.process = process
+                try:
+                    stdout, _ = process.communicate(timeout=timeout)
+                except subprocess.TimeoutExpired as e:
+                    self.log.critical(e)
+                    process.kill()
+                    process.communicate()
+                    return False, "Timeout expired"
+                rCode = int(process.returncode)
+
+        except (OSError, RuntimeError) as e:
+            self.log.critical("Error: %s happened", e)
+            return False, f"Exception {e} during process run"
+
+        finally:
+            self.process = None
+
+        delta = time.time() - timeStart
+        stdoutText = stdout.decode(errors="replace")
+        self.log.debug("Solve Runtime  : [%2.2fs]", delta)
+        for line in stdoutText.splitlines():
+            self.log.debug("Solver output  : [%s]", line)
+        suc = rCode == 0
+        msg = self.run[self.framework].returnCodes.get(rCode, "Unknown code")
+        return suc, msg
+
+    def prepareResult(
+        self, suc: bool, msg: str, imagePath: Path, wcsPath: Path, update: bool
+    ) -> dict[str, Any]:
+        result: dict[str, Any] = {"success": False, "message": msg, "imagePath": imagePath}
+        if not suc:
+            self.log.warning("Error          : [%s], message: %s", imagePath.stem, msg)
+            return result
+
+        if not wcsPath.is_file():
+            self.log.warning("Warning        : Solve files for [%s] missing", wcsPath.stem)
+            result["message"] = "Solve failed, no WCS file"
+            return result
+
+        wcsHeader = getImageHeader(wcsPath)
+        imageHeader = getImageHeader(imagePath)
+        solution = getSolutionFromWCSHeader(wcsHeader, imageHeader)
+        if update:
+            updateImageFileHeaderWithSolution(imagePath, solution)
+
+        result["success"] = True
+        result["message"] = "Solved"
+        result.update(solution)
+        timeJD = self.app.dReg.mount.obsSite.timeJD
+        result["raJNowS"], result["decJNowS"] = J2000ToJNow(
+            result["raJ2000S"], result["decJ2000S"], timeJD
+        )
+        self.log.debug("Solve result   : [%-10s], [%s]", imagePath.stem, result)
+        return result
+
+    def processSolveQueue(self, imagePath: Path, updateHeader: bool = False) -> None:
+        if not imagePath.is_file():
+            result = {"success": False, "message": f"{imagePath} not found"}
+        else:
+            self.signals.message.emit("solving")
+            t = f"{'Solver start':15s}: [{imagePath.stem}] with [{self.framework}], "
+            t += f"timeout: [{self.run[self.framework].config.timeout}], "
+            t += f"radius: [{self.run[self.framework].config.searchRadius}], "
+            self.log.debug(t)
+            result = self.run[self.framework].solve(imagePath=imagePath, updateHeader=updateHeader)
+        self.signals.message.emit("")
+        self.signals.result.emit(result)
+
+    def runnerSolveLoop(self) -> None:
+        while self.solveLoopRunning:
+            try:
+                imagePath, updateHeader = self.solveQueue.get(timeout=0.5)
+            except queue.Empty:
+                continue
+            self.processSolveQueue(imagePath, updateHeader)
+            self.solveQueue.task_done()
+
+    def startSolveLoop(self) -> None:
+        if self.solveLoopRunning:
+            return
+        self.solveLoopRunning = True
+        self.workerSolveLoop = startWorker(
+            self.workerSolveLoop, self.threadPool, self.runnerSolveLoop
+        )
+
+    def checkAvailabilityProgram(self, framework: str) -> bool:
+        appPath = self.run[framework].config.appPath
+        return self.run[framework].checkAvailabilityProgram(appPath)
+
+    def checkAvailabilityIndex(self, framework: str) -> bool:
+        indexPath = self.run[framework].config.indexPath
+        return self.run[framework].checkAvailabilityIndex(indexPath)
+
+    def startCommunication(self) -> None:
+        sucProgram = self.checkAvailabilityProgram(self.framework)
+        sucIndex = self.checkAvailabilityIndex(self.framework)
+        if not sucProgram or not sucIndex:
+            return
+        self.signals.deviceConnected.emit(self.run[self.framework].config.deviceName)
+
+    def stopCommunication(self) -> None:
+        self.solveLoopRunning = False
+        self.signals.deviceDisconnected.emit(self.run[self.framework].config.deviceName)
+
+    def solve(self, imagePath: Path, updateHeader: bool = False) -> None:
+        data = (imagePath, updateHeader)
+        self.solveQueue.put(data)
+
+    def abort(self) -> None:
+        # local copy: the solver thread may reset self.process at any time
+        process = self.process
+        if process:
+            process.kill()

@@ -28,91 +28,31 @@ class ExternalWindows:
         self.setupSignals()
 
     def createWindowTable(self) -> dict[str, dict[str, Any]]:
+        ui = self.mainW.ui
+        windowSpec: list[tuple[str, Any, str, type]] = [
+            ("showMessageW", ui.openMessageW, "MessageDialog", MessageWindow),
+            ("showHemisphereW", ui.openHemisphereW, "HemisphereDialog", HemisphereWindow),
+            ("showImageW", ui.openImageW, "ImageDialog", ImageWindow),
+            ("showMeasureW", ui.openMeasureW, "MeasureDialog", MeasureWindow),
+            ("showSatelliteMapW", ui.openSatelliteMapW, "SatelliteMapDialog", SatelliteMapWindow),
+            (
+                "showSatelliteHorizonW",
+                ui.openSatelliteHorizonW,
+                "SatelliteHorizonDialog",
+                SatelliteHorizonWindow,
+            ),
+            ("showAnalyseW", ui.openAnalyseW, "AnalyseDialog", AnalyseWindow),
+            ("showVideoW1", ui.openV1, "Video1", VideoWindow),
+            ("showVideoW2", ui.openV2, "Video2", VideoWindow),
+            ("showVideoW3", ui.openV3, "Video3", VideoWindow),
+            ("showVideoW4", ui.openV4, "Video4", VideoWindow),
+            ("showKeypadW", ui.openKeypadW, "KeypadDialog", KeypadWindow),
+            ("showSimulatorW", ui.mountConnected, "SimulatorDialog", SimulatorWindow),
+            ("showSettingW", ui.setting, "SettingDialog", SettingWindow),
+        ]
         return {
-            "showMessageW": {
-                "button": self.mainW.ui.openMessageW,
-                "classObj": None,
-                "name": "MessageDialog",
-                "class": MessageWindow,
-            },
-            "showHemisphereW": {
-                "button": self.mainW.ui.openHemisphereW,
-                "classObj": None,
-                "name": "HemisphereDialog",
-                "class": HemisphereWindow,
-            },
-            "showImageW": {
-                "button": self.mainW.ui.openImageW,
-                "classObj": None,
-                "name": "ImageDialog",
-                "class": ImageWindow,
-            },
-            "showMeasureW": {
-                "button": self.mainW.ui.openMeasureW,
-                "classObj": None,
-                "name": "MeasureDialog",
-                "class": MeasureWindow,
-            },
-            "showSatelliteMapW": {
-                "button": self.mainW.ui.openSatelliteMapW,
-                "classObj": None,
-                "name": "SatelliteMapDialog",
-                "class": SatelliteMapWindow,
-            },
-            "showSatelliteHorizonW": {
-                "button": self.mainW.ui.openSatelliteHorizonW,
-                "classObj": None,
-                "name": "SatelliteHorizonDialog",
-                "class": SatelliteHorizonWindow,
-            },
-            "showAnalyseW": {
-                "button": self.mainW.ui.openAnalyseW,
-                "classObj": None,
-                "name": "AnalyseDialog",
-                "class": AnalyseWindow,
-            },
-            "showVideoW1": {
-                "button": self.mainW.ui.openV1,
-                "classObj": None,
-                "name": "Video1",
-                "class": VideoWindow,
-            },
-            "showVideoW2": {
-                "button": self.mainW.ui.openV2,
-                "classObj": None,
-                "name": "Video2",
-                "class": VideoWindow,
-            },
-            "showVideoW3": {
-                "button": self.mainW.ui.openV3,
-                "classObj": None,
-                "name": "Video3",
-                "class": VideoWindow,
-            },
-            "showVideoW4": {
-                "button": self.mainW.ui.openV4,
-                "classObj": None,
-                "name": "Video4",
-                "class": VideoWindow,
-            },
-            "showKeypadW": {
-                "button": self.mainW.ui.openKeypadW,
-                "classObj": None,
-                "name": "KeypadDialog",
-                "class": KeypadWindow,
-            },
-            "showSimulatorW": {
-                "button": self.mainW.ui.mountConnected,
-                "classObj": None,
-                "name": "SimulatorDialog",
-                "class": SimulatorWindow,
-            },
-            "showSettingW": {
-                "button": self.mainW.ui.setting,
-                "classObj": None,
-                "name": "SettingDialog",
-                "class": SettingWindow,
-            },
+            key: {"button": button, "classObj": None, "name": name, "class": windowClass}
+            for key, button, name, windowClass in windowSpec
         }
 
     def setupSignals(self) -> None:

@@ -318,7 +318,9 @@ def test_calcSat_1(function: SatSearch) -> None:
         mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "checkTwilight"),
         mock.patch.object(function, "updateListSats"),
     ):
-        result = function.calcSat(sat, 0, 0, 0, 0, 0, 0, 0)
+        result = function.calcSat(
+            sat, 0, loc=0, timeNow=0, timeNext=0, altMin=0, eph=0, generation=0
+        )
         assert isinstance(result, tuple)
         assert len(result) == 2
 
@@ -341,7 +343,9 @@ def test_calcSat_2(function: SatSearch) -> None:
         mock.patch.object(mw4.gui.mainWaddon.tabSat_Search, "calcAppMag", return_value=0),
         mock.patch.object(function, "updateListSats"),
     ):
-        result = function.calcSat(sat, 0, 0, 0, 0, 0, 0, 0)
+        result = function.calcSat(
+            sat, 0, loc=0, timeNow=0, timeNext=0, altMin=0, eph=0, generation=0
+        )
         assert isinstance(result, tuple)
         assert result[0] is True
 
@@ -360,7 +364,9 @@ def test_calcSat_3(function: SatSearch) -> None:
         ),
         mock.patch.object(function, "updateListSats"),
     ):
-        result = function.calcSat(sat, 0, 0, 0, 0, 0, 0, 0)
+        result = function.calcSat(
+            sat, 0, loc=0, timeNow=0, timeNext=0, altMin=0, eph=0, generation=0
+        )
         assert isinstance(result, tuple)
         assert result == (False, 5)
 

@@ -53,6 +53,7 @@ jobs:
           uv run ruff format --check src tests
           uv run ruff check src tests
           uv run pyrefly check
+          uv run lint-imports
         
   run_tests_ubuntu_0:
     needs: build_package

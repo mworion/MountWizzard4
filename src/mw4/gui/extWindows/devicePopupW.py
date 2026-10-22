@@ -3,15 +3,16 @@
 # Copyright (c) 2019-2026 mworion
 from dataclasses import fields
 from functools import partial
-from mw4.base.alpacaClass import AlpacaClass
-from mw4.base.ascomClass import AscomClass
-from mw4.base.indiClass import IndiClass
-from mw4.base.sgproClass import SGProClass
+from mw4.base.driverProtocol import HasDriverConfig
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, getTabIndex, svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.devicePopup_ui import Ui_DevicePopup
-from mw4.logic.hidController.hidController import HidController
+from mw4.logic.drivers.frameworks.alpacaClass import AlpacaClass
+from mw4.logic.drivers.frameworks.ascomClass import AscomClass
+from mw4.logic.drivers.frameworks.indiClass import IndiClass
+from mw4.logic.drivers.frameworks.sgproClass import SGProClass
+from mw4.logic.drivers.hidController.hidController import HidController
 from pathlib import Path
 from PySide6.QtCore import QEventLoop, Qt
 from PySide6.QtWidgets import QCheckBox, QComboBox, QDoubleSpinBox, QLineEdit, QListView
@@ -185,7 +186,7 @@ class DevicePopup(MWidget):
 
     def frameworksWithConfig(self) -> list[str]:
         run = self.app.dReg[self.device].run
-        return [fw for fw in run if hasattr(run[fw], "config")]
+        return [fw for fw in run if isinstance(run[fw], HasDriverConfig)]
 
     def frameworkConfig(self, framework: str) -> Any:
         return self.app.dReg[self.device].run[framework].config

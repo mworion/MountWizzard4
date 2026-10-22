@@ -13,14 +13,14 @@ package-data = ["data/**/*.*"]
 
 [project]
 name = "mountwizzard4"
-version = "4.0.0b36"
+version = "4.0.0b37"
 license = "Apache-2.0"
 description = "Tool for managing 10_micron mounts"
 readme = "README.rst"
 authors = [
     {name = "Michael Wuertenberger", email = "michael@wuertenberger.org"}
 ]
-requires-python = ">=3.12,<3.15"
+requires-python = ">=3.12,<3.16"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Environment :: MacOS X",
@@ -28,6 +28,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: Implementation",
     "Operating System :: MacOS :: MacOS X",
@@ -96,9 +97,9 @@ dev = [
     "pytest-xvfb==3.1.1",
     "pytest-env==1.8.1",
     "invoke==2.2.1",
-    "ruff==0.17.1",
+    "ruff==0.17.2",
     "pyrefly==1.4.0",
-    "coverage==7.16.2",
+    "coverage==7.17.0",
     "scipy-stubs==1.18.1.1",
     "fabric==3.2.3",
     "coverage-conditional-plugin==0.9.0",

@@ -57,14 +57,14 @@ def test_defaultConfig():
 
 def test_loadProfile_1():
     config = defaultConfig()
-    config["WindowMain"] = {}
-    config["WindowMain"]["resetTabOrder"] = True
-    config["WindowMain"]["orderMain"] = {
+    config["WindowKeypad"] = {}
+    config["WindowKeypad"]["resetTabOrder"] = True
+    config["WindowKeypad"]["orderMain"] = {
         "00": "Environ",
         "index": 0,
     }
     with open("tests/work/config/config.yaml", "w") as outfile:
-        yaml.dump(config, outfile)
+        yaml.dump(config.toDict(), outfile)
 
     with mock.patch.object(yaml, "safe_load", return_value={}):
         val = loadConfig(Path("tests/work/config/config.yaml"))
@@ -73,33 +73,33 @@ def test_loadProfile_1():
 
 def test_loadProfile_2():
     config = defaultConfig()
-    config["WindowMain"] = {}
-    config["WindowMain"]["resetTabOrder"] = True
-    config["WindowMain"]["orderMain"] = {
+    config["WindowKeypad"] = {}
+    config["WindowKeypad"]["resetTabOrder"] = True
+    config["WindowKeypad"]["orderMain"] = {
         "00": "Environ",
         "index": 0,
     }
     with open("tests/work/config/config.yaml", "w") as outfile:
-        yaml.dump(config, outfile)
+        yaml.dump(config.toDict(), outfile)
 
     val = loadConfig(Path("tests/work/config/config.yaml"))
-    assert "orderMain" in val["WindowMain"]
+    assert "orderMain" in val["WindowKeypad"]
 
 
 def test_loadProfile_3():
     config = defaultConfig()
-    config["WindowMain"] = {}
-    config["WindowMain"]["resetTabOrder"] = True
-    config["WindowMain"]["orderMain"] = {
+    config["WindowKeypad"] = {}
+    config["WindowKeypad"]["resetTabOrder"] = True
+    config["WindowKeypad"]["orderMain"] = {
         "00": "Environ",
         "index": 0,
     }
     config["version"] = "0.0"
     with open("tests/work/config/config.yaml", "w") as outfile:
-        yaml.dump(config, outfile)
+        yaml.dump(config.toDict(), outfile)
 
     val = loadConfig(Path("tests/work/config/config.yaml"))
-    assert "WindowMain" not in val
+    assert "WindowKeypad" not in val
 
 
 def test_loadProfileStart_1():
@@ -112,12 +112,12 @@ def test_loadProfileStart_2():
         outfile.write("test")
 
     config = defaultConfig()
-    config["WindowMain"] = {}
+    config["WindowKeypad"] = {}
     with open("tests/work/config/config.yaml", "w") as outfile:
-        yaml.dump(config, outfile)
+        yaml.dump(config.toDict(), outfile)
 
     val = loadProfileStart(Path("tests/work/config"))
-    assert val == {"profileName": "config", "version": "5.0"}
+    assert val == defaultConfig()
 
 
 def test_loadProfileStart_3():
@@ -125,15 +125,13 @@ def test_loadProfileStart_3():
         outfile.write("config")
 
     config = defaultConfig()
-    config["WindowMain"] = {}
+    config["WindowKeypad"] = {}
     with open("tests/work/config/config.yaml", "w") as outfile:
-        yaml.dump(config, outfile)
+        yaml.dump(config.toDict(), outfile)
 
-    with mock.patch.object(
-        mw4.logic.profiles.profile, "loadConfig", return_value={"profileName": "config"}
-    ):
+    with mock.patch.object(mw4.logic.profiles.profile, "loadConfig", return_value=defaultConfig()):
         val = loadProfileStart(Path("tests/work/config"))
-    assert val == {"profileName": "config"}
+    assert val == defaultConfig()
 
 
 def test_saveProfile_1():
@@ -185,3 +183,21 @@ def test_saveProfile_5():
     with open("tests/work/config/profile") as infile:
         name = infile.readline().strip()
     assert name == "new"
+
+
+def test_loadProfile_notDict():
+    with open("tests/work/config/config.yaml", "w") as outfile:
+        outfile.write("- a\n- b\n")
+    val = loadConfig(Path("tests/work/config/config.yaml"))
+    assert val == defaultConfig()
+
+
+def test_saveLoad_roundTrip():
+    config = defaultConfig()
+    config["WindowKeypad"] = {"winPosX": 3}
+    config.SettingGui.dpi = 120.0
+    saveConfig(Path("tests/work/config/rt.yaml"), config)
+    val = loadConfig(Path("tests/work/config/rt.yaml"))
+    assert val["WindowKeypad"] == {"winPosX": 3}
+    assert val.SettingGui.dpi == 120.0
+    assert val.profileName == "rt"

@@ -5,6 +5,7 @@ import pytest
 import shutil
 import sys
 from mw4.base.appProtocol import AppProtocol
+from mw4.logic.profiles.config import ProfileConfig
 from mw4.mainApp import MountWizzard4
 from pathlib import Path
 from unittest import mock
@@ -50,7 +51,7 @@ def buildApp(qapp, arguments="", test=1):
     }
 
     def loadProfileStart_mock(config_dir):
-        return default_config
+        return ProfileConfig.fromDict(default_config)
 
     with (
         mock.patch("mw4.mainApp.loadProfileStart", side_effect=loadProfileStart_mock),
@@ -96,7 +97,8 @@ def test_storeConfig_logLevelRoundTrip(app):
     app.config["SettingUpdate"] = {"loglevelInfo": True, "isOnline": True}
     app.storeConfig()
     assert "loglevel" not in app.config
-    assert app.config["SettingUpdate"] == {"loglevelInfo": True, "isOnline": True}
+    assert app.config.SettingUpdate.loglevelInfo is True
+    assert app.config.SettingUpdate.isOnline is True
     with mock.patch("mw4.mainApp.setCustomLoggingLevel") as setLevel:
         app.initConfig()
     setLevel.assert_called_once_with(app, "INFO")
@@ -122,7 +124,7 @@ def test_pathSignalPassesThrough(app, qtbot):
 
 def test_store_config(app):
     app.storeConfig()
-    assert "topoLat" in app.config
+    assert isinstance(app.config.topoLat, float)
 
 
 def test_store_status_operation_running(app):
@@ -290,10 +292,10 @@ def test_init_withoutTestMode(qapp):
 
 
 def test_storeConfig_noLocation(app):
-    app.config.pop("topoLat", None)
+    app.config.topoLat = 12.0
     with mock.patch.object(
         type(app.dReg.mount), "location", new_callable=mock.PropertyMock, return_value=None
     ):
         app.storeConfig()
-    assert "topoLat" not in app.config
-    assert "unitTimeUTC" in app.config
+    assert app.config.topoLat == 12.0
+    assert app.config.unitTimeUTC is True

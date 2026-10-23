@@ -3,35 +3,37 @@
 # Copyright (c) 2019-2026 mworion
 import logging
 import yaml
+from mw4.logic.profiles.config import ProfileConfig
+from mw4.logic.profiles.migration import migrateConfig
 from pathlib import Path
 from typing import Any
 
 log: logging.Logger = logging.getLogger("MW4")
-profileVersion = "5.0"
 
 
-def defaultConfig() -> dict[str, Any]:
-    config = {"profileName": "config", "version": profileVersion}
-    return config
+def defaultConfig() -> ProfileConfig:
+    return ProfileConfig()
 
 
-def loadConfig(loadConfigPath: Path) -> dict[str, Any]:
+def loadConfig(loadConfigPath: Path) -> ProfileConfig:
     try:
         with open(loadConfigPath, encoding="utf-8") as configFile:
             config = yaml.safe_load(configFile)
     except (OSError, yaml.YAMLError):
         return defaultConfig()
 
-    if not config:
+    if not config or not isinstance(config, dict):
+        return defaultConfig()
+
+    config = migrateConfig(config)
+    if config is None:
         return defaultConfig()
 
     config["profileName"] = loadConfigPath.stem
-    if config.get("version", "") != profileVersion:
-        return defaultConfig()
-    return config
+    return ProfileConfig.fromDict(config)
 
 
-def loadProfileStart(configDir: Path) -> dict[str, Any]:
+def loadProfileStart(configDir: Path) -> ProfileConfig:
     config = defaultConfig()
     profilePath = configDir / "profile"
     if not profilePath.exists():
@@ -46,10 +48,14 @@ def loadProfileStart(configDir: Path) -> dict[str, Any]:
     return config
 
 
-def saveConfig(saveProfilePath: Path, config: dict[str, Any]) -> None:
+def saveConfig(saveProfilePath: Path, config: ProfileConfig | dict[str, Any]) -> None:
     with open(saveProfilePath.parent / "profile", "w", encoding="utf-8") as profile:
         profile.writelines(saveProfilePath.stem)
 
     file = saveProfilePath.parent / (saveProfilePath.stem + ".yaml")
     with open(file, "w", encoding="utf-8") as outfile:
-        yaml.dump(config, outfile, default_flow_style=False)
+        yaml.dump(
+            config.toDict() if isinstance(config, ProfileConfig) else config,
+            outfile,
+            default_flow_style=False,
+        )

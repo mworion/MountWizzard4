@@ -74,22 +74,23 @@ class MountWizzard4(QObject):
     def initConfig(self) -> None:
         self.log.debug("Initializing configuration main application")
         self.dReg.initConfig()
-        cfgSetting = self.config.get("SettingUpdate", {})
+        cfgSetting = self.config.SettingUpdate
         # the settings tab owns the log level (loglevelInfo / Debug / Trace)
-        if cfgSetting.get("loglevelInfo", False):
+        if cfgSetting.loglevelInfo:
             level = "INFO"
-        elif cfgSetting.get("loglevelTrace", False):
+        elif cfgSetting.loglevelTrace:
             level = "TRACE"
         else:
             level = "DEBUG"
         setCustomLoggingLevel(self, level)
-        self.isOnline = cfgSetting.get("isOnline", False)
-        lat = self.config.get("topoLat", 51.47)
-        lon = self.config.get("topoLon", 0)
-        elev = self.config.get("topoElev", 46)
-        topo = wgs84.latlon(longitude_degrees=lon, latitude_degrees=lat, elevation_m=elev)
+        self.isOnline = cfgSetting.isOnline
+        topo = wgs84.latlon(
+            longitude_degrees=self.config.topoLon,
+            latitude_degrees=self.config.topoLat,
+            elevation_m=self.config.topoElev,
+        )
         self.dReg.mount.obsSite.location = topo
-        self.timeMgr.unitTimeUTC = self.config.get("unitTimeUTC", True)
+        self.timeMgr.unitTimeUTC = self.config.unitTimeUTC
 
     def storeConfig(self) -> None:
         self.log.debug("Storing configuration main application")
@@ -98,10 +99,10 @@ class MountWizzard4(QObject):
         self.dReg.storeConfig()
         location = self.dReg.mount.location
         if location is not None:
-            self.config["topoLat"] = float(location.latitude.degrees)
-            self.config["topoLon"] = float(location.longitude.degrees)
-            self.config["topoElev"] = float(location.elevation.m)
-        self.config["unitTimeUTC"] = self.timeMgr.unitTimeUTC
+            self.config.topoLat = float(location.latitude.degrees)
+            self.config.topoLon = float(location.longitude.degrees)
+            self.config.topoElev = float(location.elevation.m)
+        self.config.unitTimeUTC = self.timeMgr.unitTimeUTC
 
     def storeStatusOperationRunning(self, status: int) -> None:
         self.statusOperationRunning = status

@@ -35,6 +35,8 @@ class Worker(QRunnable):
         self.busyLock = threading.Lock()
         self.locked = False
         self.startTime: float | None = None
+        # number of start attempts rejected while the lock was held
+        self.overruns = 0
         self.fn = fn
         self.args = args
         self.kwargs = kwargs
@@ -59,6 +61,7 @@ class Worker(QRunnable):
             return None
         duration = self.elapsed()
         self.startTime = None
+        self.overruns = 0
         self.locked = False
         self.busyLock.release()
         return duration
@@ -103,10 +106,17 @@ class Worker(QRunnable):
         finally:
             # only releases when this run acquired the flag via startWorker; a
             # directly started worker never acquired it
+            overruns = self.overruns
             duration = self.release()
-            if duration is not None and duration > SLOW_WORKER_THRESHOLD:
+            # warn only if the run was slow and a start was skipped meanwhile
+            if duration is not None and duration > SLOW_WORKER_THRESHOLD and overruns > 0:
                 fnName = fnNameOf(self.fn)
-                self.log.warning("Worker %s finished after %.1fs (slow)", fnName, duration)
+                self.log.warning(
+                    "Worker %s finished after %.1fs (slow), %d start(s) skipped",
+                    fnName,
+                    duration,
+                    overruns,
+                )
             self.signals.finished.emit()
 
 
@@ -142,6 +152,7 @@ def startWorker(
             target, *args, resultMethod=resultMethod, finishedMethod=finishedMethod, **kwargs
         )
     if not worker.tryAcquire():
+        worker.overruns += 1
         fnName = fnNameOf(target)
         log.debug("Worker %s busy, skipped (running for %.1fs)", fnName, worker.elapsed())
         return worker

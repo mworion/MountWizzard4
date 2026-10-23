@@ -329,11 +329,33 @@ def test_worker_run_logsSlowRun(caplog):
 
     a = tpool.Worker(targetFunc)
     a.tryAcquire()
+    a.overruns = 2
     a.startTime -= 10
     with caplog.at_level("WARNING"):
         a.run()
     assert "Worker targetFunc finished after" in caplog.text
-    assert "(slow)" in caplog.text
+    assert "(slow), 2 start(s) skipped" in caplog.text
+    assert a.overruns == 0
+
+
+def test_worker_run_noLogOnSlowRunWithoutOverrun(caplog):
+    a = tpool.Worker(lambda: None)
+    a.tryAcquire()
+    a.startTime -= 10
+    with caplog.at_level("WARNING"):
+        a.run()
+    assert "slow" not in caplog.text
+
+
+def test_startWorker_countsOverruns():
+    pool = mock.Mock()
+    worker = tpool.setupWorker(lambda: None)
+    worker.tryAcquire()
+    tpool.startWorker(worker, pool, lambda: None)
+    tpool.startWorker(worker, pool, lambda: None)
+    assert worker.overruns == 2
+    worker.release()
+    assert worker.overruns == 0
 
 
 def test_worker_run_noLogOnFastRun(caplog):

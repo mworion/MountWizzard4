@@ -18,7 +18,7 @@ class DeviceConfigMount:
     syncTimeCont: bool = field(default=False)
     syncTimeNotTrack: bool = field(default=False)
     wolAutomatic: bool = field(default=False)
-    wolAddress: str = field(default="255.255.255.255")
+    wolBroadcast: str = field(default="255.255.255.255")
     wolPort: int = field(default=9)
 
 
@@ -68,14 +68,6 @@ class MountTimeConn:
     def __init__(self):
         self.timeDiff: float = 0.0
         self.rtt: float = 0.0
-
-    @staticmethod
-    def bootMount():
-        return True
-
-    @staticmethod
-    def shutdown():
-        return True
 
 
 class MountModel:

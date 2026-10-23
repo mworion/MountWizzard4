@@ -2,8 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import logging
-import wakeonlan
-from mw4.base.ethernet import checkFormatMAC
+from mw4.base.ethernet import checkFormatMAC, sendWakeOnLan
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
 from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.setting import Setting
@@ -30,22 +29,24 @@ class SettMount:
     def initConfig(self) -> None:
         self.app.dReg.mount.instance.getFW()
         config = self.app.config.get("SettingRack", {})
-        self.ui.rackCompMAC.setText(config.get("rackCompMAC", "00:00:00:00:00"))
-        self.ui.rackCompWolAddress.setText(config.get("rackCompWolAddress", "255.255.255.255"))
+        self.ui.rackCompWolMAC.setText(config.get("rackCompWolMAC", "00:00:00:00:00"))
+        self.ui.rackCompWolHostAddress.setText(config.get("rackCompWolHost", ""))
+        self.ui.rackCompWolBroadcast.setText(config.get("rackCompWolBroadcast", "255.255.255.255"))
         self.ui.rackCompWolPort.setText(config.get("rackCompWolPort", "9"))
 
         self.ui.hostAddress.setText(self.app.dReg.mount.instance.config.hostAddress)
         self.ui.port3492.setChecked(self.app.dReg.mount.instance.config.port == 3492)
         self.ui.MAC.setText(self.app.dReg.mount.instance.config.MAC)
-        self.ui.wolAddress.setText(self.app.dReg.mount.instance.config.wolAddress)
+        self.ui.wolBroadcast.setText(self.app.dReg.mount.instance.config.wolBroadcast)
         self.ui.wolPort.setText(str(self.app.dReg.mount.instance.config.wolPort))
+
         self.ui.wolAutomatic.setChecked(self.app.dReg.mount.instance.config.wolAutomatic)
         self.ui.syncTimeNone.setChecked(self.app.dReg.mount.instance.config.syncTimeNone)
         self.ui.syncTimeCont.setChecked(self.app.dReg.mount.instance.config.syncTimeCont)
         self.ui.syncTimeNotTrack.setChecked(self.app.dReg.mount.instance.config.syncTimeNotTrack)
         self.ui.hostAddress.textChanged.connect(self.storeConfig)
         self.ui.MAC.textChanged.connect(self.storeConfig)
-        self.ui.wolAddress.textChanged.connect(self.storeConfig)
+        self.ui.wolBroadcast.textChanged.connect(self.storeConfig)
         self.ui.wolPort.textChanged.connect(self.storeConfig)
         self.ui.wolAutomatic.clicked.connect(self.storeConfig)
         self.ui.port3492.clicked.connect(self.storeConfig)
@@ -56,8 +57,9 @@ class SettMount:
 
     def storeConfig(self) -> None:
         config = {
-            "rackCompMAC": self.ui.rackCompMAC.text(),
-            "rackCompWolAddress": self.ui.rackCompWolAddress.text(),
+            "rackCompWolMAC": self.ui.rackCompWolMAC.text(),
+            "rackCompWolHost": self.ui.rackCompWolHostAddress.text(),
+            "rackCompWolBroadcast": self.ui.rackCompWolBroadcast.text(),
             "rackCompWolPort": self.ui.rackCompWolPort.text(),
         }
         self.app.config["SettingRack"] = config
@@ -67,7 +69,7 @@ class SettMount:
         self.app.dReg.mount.instance.config.hostAddress = host
         self.app.dReg.mount.instance.config.port = port
         self.app.dReg.mount.instance.config.MAC = self.ui.MAC.text()
-        self.app.dReg.mount.instance.config.wolAddress = self.ui.wolAddress.text()
+        self.app.dReg.mount.instance.config.wolBroadcast = self.ui.wolBroadcast.text()
         value = int(self.ui.wolPort.text()) if self.ui.wolPort.text().isnumeric() else 9
         self.app.dReg.mount.instance.config.wolPort = value
         self.app.dReg.mount.instance.config.wolAutomatic = self.ui.wolAutomatic.isChecked()
@@ -89,26 +91,39 @@ class SettMount:
         self.ui.GroupWOL.setEnabled(self.app.dReg.mount.firmware.isHW2012())
 
     def mountBoot(self) -> None:
-        if self.app.dReg.mount.instance.mountTimeConn.bootMount():
-            self.msg.emit(0, "Mount", "Command", "Sent boot command to mount")
-        else:
+        config = self.app.dReg.mount.instance.config
+        self.log.debug("MAC: [%s], [%s]:[%s]", config.MAC, config.wolBroadcast, config.wolPort)
+        try:
+            sendWakeOnLan(config.MAC, config.wolBroadcast, config.wolPort, config.hostAddress)
+        except (OSError, ValueError) as e:
+            self.log.warning("Boot mount failed: %s", e)
             self.msg.emit(2, "Mount", "Command", "Mount cannot be booted")
+            return
+        self.msg.emit(0, "Mount", "Command", "Sent boot command to mount")
 
     def mountShutdown(self) -> None:
         self.app.dReg.setStat("mount", False)
-        if self.app.dReg.mount.instance.mountTimeConn.shutdown():
+        if self.app.dReg.mount.instance.obsSite.shutdown():
+            # the signal drives MountDevice.startupMountData, which resets
+            # mountIsUp and emits deviceDisconnected
+            self.app.dReg.mount.instance.signals.mountIsUp.emit(False)
             self.msg.emit(0, "Mount", "Command", "Shutting mount down")
         else:
             self.msg.emit(2, "Mount", "Command", "Mount cannot be shutdown")
 
     def bootRackComp(self) -> None:
-        MAC = checkFormatMAC(self.ui.rackCompMAC.text())
-        Host = self.ui.rackCompWolAddress.text()
-        Port = int(self.ui.rackCompWolPort.text())
-        t = f"MAC: [{MAC}], [{Host}]:[{Port}]"
-        self.log.debug(t)
+        MAC = checkFormatMAC(self.ui.rackCompWolMAC.text())
+        broadcast = self.ui.rackCompWolBroadcast.text()
+        port = int(self.ui.rackCompWolPort.text())
+        host = self.ui.rackCompWolHostAddress.text()
+        self.log.debug("MAC: [%s], [%s]:[%s]", MAC, broadcast, port)
         if MAC:
-            wakeonlan.wake(MAC, host=Host, port=Port)
+            try:
+                sendWakeOnLan(MAC, broadcast, port, host)
+            except (OSError, ValueError) as e:
+                self.log.warning("Boot rack computer failed: %s", e)
+                self.msg.emit(2, "Rack", "Command", "Rack computer cannot be booted")
+                return
             self.msg.emit(0, "Rack", "Command", "Sent boot command to rack computer")
         else:
             self.msg.emit(2, "Rack", "Command", "Rack computer cannot be booted")

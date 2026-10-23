@@ -99,7 +99,7 @@
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -1330,7 +1330,7 @@
          </font>
         </property>
         <property name="text">
-         <string>IP Address</string>
+         <string>Host Address</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_mountMAC">
@@ -1583,7 +1583,7 @@
           </font>
          </property>
          <property name="text">
-          <string>WOL broadcast address</string>
+          <string>WOL broadcast</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="wolPort">
@@ -1697,7 +1697,7 @@
           <string>On</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="wolAddress">
+        <widget class="QLineEdit" name="wolBroadcast">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -1794,9 +1794,9 @@
        <property name="geometry">
         <rect>
          <x>420</x>
-         <y>265</y>
+         <y>245</y>
          <width>366</width>
-         <height>111</height>
+         <height>131</height>
         </rect>
        </property>
        <property name="title">
@@ -1809,7 +1809,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>25</y>
+          <y>55</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -1831,7 +1831,7 @@
           <x>300</x>
           <y>25</y>
           <width>56</width>
-          <height>71</height>
+          <height>106</height>
          </rect>
         </property>
         <property name="minimumSize">
@@ -1847,11 +1847,11 @@
          <string>WOL</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="rackCompMAC">
+       <widget class="QLineEdit" name="rackCompWolMAC">
         <property name="geometry">
          <rect>
-          <x>165</x>
-          <y>25</y>
+          <x>135</x>
+          <y>55</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -1872,11 +1872,11 @@
          <bool>false</bool>
         </property>
        </widget>
-       <widget class="QLineEdit" name="rackCompWolAddress">
+       <widget class="QLineEdit" name="rackCompWolBroadcast">
         <property name="geometry">
          <rect>
-          <x>165</x>
-          <y>50</y>
+          <x>135</x>
+          <y>80</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -1926,7 +1926,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>50</y>
+          <y>80</y>
           <width>151</width>
           <height>21</height>
          </rect>
@@ -1939,14 +1939,14 @@
          </font>
         </property>
         <property name="text">
-         <string>WOL broadcast address</string>
+         <string>WOL broadcast</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="rackCompWolPort">
         <property name="geometry">
          <rect>
-          <x>165</x>
-          <y>75</y>
+          <x>135</x>
+          <y>105</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -1996,7 +1996,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>75</y>
+          <y>105</y>
           <width>151</width>
           <height>21</height>
          </rect>
@@ -2010,6 +2010,51 @@
         </property>
         <property name="text">
          <string>WOL broadcast port</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_260">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>30</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Host Address</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="rackCompWolHostAddress">
+        <property name="geometry">
+         <rect>
+          <x>135</x>
+          <y>30</y>
+          <width>146</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>25</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;mac address of the computer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>00:00:00:00:00:00</string>
+        </property>
+        <property name="frame">
+         <bool>false</bool>
         </property>
        </widget>
       </widget>
@@ -2368,7 +2413,7 @@
        <property name="geometry">
         <rect>
          <x>420</x>
-         <y>145</y>
+         <y>135</y>
          <width>366</width>
          <height>86</height>
         </rect>
@@ -7550,7 +7595,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <tabstop>port3490</tabstop>
   <tabstop>port3492</tabstop>
   <tabstop>MAC</tabstop>
-  <tabstop>wolAddress</tabstop>
+  <tabstop>wolBroadcast</tabstop>
   <tabstop>wolPort</tabstop>
   <tabstop>wolAutomatic</tabstop>
   <tabstop>mountOn</tabstop>
@@ -7558,8 +7603,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <tabstop>syncTimeNone</tabstop>
   <tabstop>syncTimeCont</tabstop>
   <tabstop>syncTimeNotTrack</tabstop>
-  <tabstop>rackCompMAC</tabstop>
-  <tabstop>rackCompWolAddress</tabstop>
+  <tabstop>rackCompWolMAC</tabstop>
+  <tabstop>rackCompWolBroadcast</tabstop>
   <tabstop>rackCompWolPort</tabstop>
   <tabstop>bootRackComp</tabstop>
   <tabstop>domeNorthOffset</tabstop>

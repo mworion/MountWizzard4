@@ -111,11 +111,8 @@ def test_startupMountData_4(function):
 
 def test_startupMountData_5(function):
     function.mountIsUp = True
-    with (
-        mock.patch.object(function.obsSite, "shutdown", return_value=True),
-        mock.patch.object(function.signals, "deviceDisconnected") as mockSignal,
-    ):
-        assert function.mountTimeConn.shutdown()
+    with mock.patch.object(function.signals, "deviceDisconnected") as mockSignal:
+        function.signals.mountIsUp.emit(False)
         mockSignal.emit.assert_called_once_with("mount")
     assert not function.mountIsUp
 

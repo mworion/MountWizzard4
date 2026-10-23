@@ -39,34 +39,34 @@ def test_initConfigLoadsDefaults(settMount: SettMount) -> None:
     settMount.app.config["SettingMount"] = {}
     with mock.patch.object(settMount.app.dReg.mount.instance, "getFW"):
         settMount.initConfig()
-    assert settMount.ui.rackCompMAC.text() == "00:00:00:00:00"
-    assert settMount.ui.rackCompWolAddress.text() == "255.255.255.255"
+    assert settMount.ui.rackCompWolMAC.text() == "00:00:00:00:00"
+    assert settMount.ui.rackCompWolBroadcast.text() == "255.255.255.255"
     assert settMount.ui.rackCompWolPort.text() == "9"
 
 
 def test_initConfigLoadsFromConfig(settMount: SettMount) -> None:
     """Test initConfig loads configuration from app.config."""
     settMount.app.config["SettingRack"] = {
-        "rackCompMAC": "AA:BB:CC:DD:EE:FF",
-        "rackCompWolAddress": "192.168.1.255",
+        "rackCompWolMAC": "AA:BB:CC:DD:EE:FF",
+        "rackCompWolBroadcast": "192.168.1.255",
         "rackCompWolPort": "7",
     }
     with mock.patch.object(settMount.app.dReg.mount.instance, "getFW"):
         settMount.initConfig()
-    assert settMount.ui.rackCompMAC.text() == "AA:BB:CC:DD:EE:FF"
-    assert settMount.ui.rackCompWolAddress.text() == "192.168.1.255"
+    assert settMount.ui.rackCompWolMAC.text() == "AA:BB:CC:DD:EE:FF"
+    assert settMount.ui.rackCompWolBroadcast.text() == "192.168.1.255"
     assert settMount.ui.rackCompWolPort.text() == "7"
 
 
 def test_storeConfig(settMount: SettMount) -> None:
     """Test storeConfig saves configuration to app.config."""
     settMount.app.config["SettingRack"] = {}
-    settMount.ui.rackCompMAC.setText("AA:BB:CC:DD:EE:FF")
-    settMount.ui.rackCompWolAddress.setText("192.168.1.255")
+    settMount.ui.rackCompWolMAC.setText("AA:BB:CC:DD:EE:FF")
+    settMount.ui.rackCompWolBroadcast.setText("192.168.1.255")
     settMount.ui.rackCompWolPort.setText("7")
     settMount.ui.hostAddress.setText("192.168.1.100")
     settMount.ui.MAC.setText("11:22:33:44:55:66")
-    settMount.ui.wolAddress.setText("192.168.1.1")
+    settMount.ui.wolBroadcast.setText("192.168.1.1")
     settMount.ui.wolPort.setText("9000")
     settMount.ui.wolAutomatic.setChecked(True)
     settMount.ui.port3492.setChecked(True)
@@ -74,12 +74,12 @@ def test_storeConfig(settMount: SettMount) -> None:
     settMount.storeConfig()
 
     config = settMount.app.config["SettingRack"]
-    assert config["rackCompMAC"] == "AA:BB:CC:DD:EE:FF"
-    assert config["rackCompWolAddress"] == "192.168.1.255"
+    assert config["rackCompWolMAC"] == "AA:BB:CC:DD:EE:FF"
+    assert config["rackCompWolBroadcast"] == "192.168.1.255"
     assert config["rackCompWolPort"] == "7"
     assert settMount.app.dReg.mount.instance.config.hostAddress == "192.168.1.100"
     assert settMount.app.dReg.mount.instance.config.MAC == "11:22:33:44:55:66"
-    assert settMount.app.dReg.mount.instance.config.wolAddress == "192.168.1.1"
+    assert settMount.app.dReg.mount.instance.config.wolBroadcast == "192.168.1.1"
     assert settMount.app.dReg.mount.instance.config.wolPort == 9000
     assert settMount.app.dReg.mount.instance.config.wolAutomatic is True
     assert settMount.app.dReg.mount.instance.config.port == 3492
@@ -120,50 +120,10 @@ def test_setMountCapabilitiesWithoutHW2012(settMount: SettMount) -> None:
         settMount.app.dReg.mount.instance.firmware = original_firmware
 
 
-def test_mountBootSuccess(settMount: SettMount) -> None:
-    """Test mountBoot with successful boot command."""
-    settMount.msg = mock.MagicMock()
-    with mock.patch.object(
-        settMount.app.dReg.mount.instance.mountTimeConn, "bootMount", return_value=True
-    ):
-        settMount.mountBoot()
-    settMount.msg.emit.assert_called_with(0, "Mount", "Command", "Sent boot command to mount")
-
-
-def test_mountBootFailure(settMount: SettMount) -> None:
-    """Test mountBoot with failed boot command."""
-    settMount.msg = mock.MagicMock()
-    with mock.patch.object(
-        settMount.app.dReg.mount.instance.mountTimeConn, "bootMount", return_value=False
-    ):
-        settMount.mountBoot()
-    settMount.msg.emit.assert_called_with(2, "Mount", "Command", "Mount cannot be booted")
-
-
-def test_mountShutdownSuccess(settMount: SettMount) -> None:
-    """Test mountShutdown with successful shutdown command."""
-    settMount.msg = mock.MagicMock()
-    with mock.patch.object(
-        settMount.app.dReg.mount.instance.mountTimeConn, "shutdown", return_value=True
-    ):
-        settMount.mountShutdown()
-    settMount.msg.emit.assert_called_with(0, "Mount", "Command", "Shutting mount down")
-
-
-def test_mountShutdownFailure(settMount: SettMount) -> None:
-    """Test mountShutdown with failed shutdown command."""
-    settMount.msg = mock.MagicMock()
-    with mock.patch.object(
-        settMount.app.dReg.mount.instance.mountTimeConn, "shutdown", return_value=False
-    ):
-        settMount.mountShutdown()
-    settMount.msg.emit.assert_called_with(2, "Mount", "Command", "Mount cannot be shutdown")
-
-
 def test_bootRackCompWithValidMAC(settMount: SettMount) -> None:
     """Test bootRackComp with valid MAC address."""
     settMount.msg = mock.MagicMock()
-    settMount.ui.rackCompMAC.setText("AA:BB:CC:DD:EE:FF")
+    settMount.ui.rackCompWolMAC.setText("AA:BB:CC:DD:EE:FF")
     with (
         mock.patch.object(
             mw4.gui.extWindows.setting.tabSettMount,
@@ -182,7 +142,7 @@ def test_bootRackCompWithValidMAC(settMount: SettMount) -> None:
 def test_bootRackCompWithInvalidMAC(settMount: SettMount) -> None:
     """Test bootRackComp with invalid MAC address."""
     settMount.msg = mock.MagicMock()
-    settMount.ui.rackCompMAC.setText("invalid")
+    settMount.ui.rackCompWolMAC.setText("invalid")
     with mock.patch.object(
         mw4.gui.extWindows.setting.tabSettMount, "checkFormatMAC", return_value=False
     ):
@@ -193,8 +153,8 @@ def test_bootRackCompWithInvalidMAC(settMount: SettMount) -> None:
 def test_bootRackCompParametersPassed(settMount: SettMount) -> None:
     """Test bootRackComp passes correct parameters to wakeonlan.wake."""
     settMount.msg = mock.MagicMock()
-    settMount.ui.rackCompMAC.setText("AA:BB:CC:DD:EE:FF")
-    settMount.ui.rackCompWolAddress.setText("192.168.1.255")
+    settMount.ui.rackCompWolMAC.setText("AA:BB:CC:DD:EE:FF")
+    settMount.ui.rackCompWolBroadcast.setText("192.168.1.255")
     settMount.ui.rackCompWolPort.setText("7")
     with (
         mock.patch.object(
@@ -211,8 +171,8 @@ def test_bootRackCompParametersPassed(settMount: SettMount) -> None:
 def test_bootRackCompDebugLog(settMount: SettMount) -> None:
     """Test bootRackComp logs debug message with parameters."""
     settMount.msg = mock.MagicMock()
-    settMount.ui.rackCompMAC.setText("AA:BB:CC:DD:EE:FF")
-    settMount.ui.rackCompWolAddress.setText("192.168.1.255")
+    settMount.ui.rackCompWolMAC.setText("AA:BB:CC:DD:EE:FF")
+    settMount.ui.rackCompWolBroadcast.setText("192.168.1.255")
     settMount.ui.rackCompWolPort.setText("9")
     with (
         mock.patch.object(
@@ -224,19 +184,16 @@ def test_bootRackCompDebugLog(settMount: SettMount) -> None:
         mock.patch.object(settMount.log, "debug") as mock_debug,
     ):
         settMount.bootRackComp()
-    mock_debug.assert_called_once()
-    debug_msg = mock_debug.call_args[0][0]
-    assert "MAC:" in debug_msg
-    assert "AA:BB:CC:DD:EE:FF" in debug_msg
-    assert "192.168.1.255" in debug_msg
-    assert "9" in debug_msg
+    mock_debug.assert_called_once_with(
+        "MAC: [%s], [%s]:[%s]", "AA:BB:CC:DD:EE:FF", "192.168.1.255", 9
+    )
 
 
 def test_bootRackCompPortConversion(settMount: SettMount) -> None:
     """Test bootRackComp converts port string to integer."""
     settMount.msg = mock.MagicMock()
-    settMount.ui.rackCompMAC.setText("AA:BB:CC:DD:EE:FF")
-    settMount.ui.rackCompWolAddress.setText("192.168.1.255")
+    settMount.ui.rackCompWolMAC.setText("AA:BB:CC:DD:EE:FF")
+    settMount.ui.rackCompWolBroadcast.setText("192.168.1.255")
     settMount.ui.rackCompWolPort.setText("12345")
     with (
         mock.patch.object(
@@ -255,7 +212,7 @@ def test_bootRackCompPortConversion(settMount: SettMount) -> None:
 def test_bootRackCompMessageSeveritySuccess(settMount: SettMount) -> None:
     """Test bootRackComp emits success message with severity 0."""
     settMount.msg = mock.MagicMock()
-    settMount.ui.rackCompMAC.setText("AA:BB:CC:DD:EE:FF")
+    settMount.ui.rackCompWolMAC.setText("AA:BB:CC:DD:EE:FF")
     with (
         mock.patch.object(
             mw4.gui.extWindows.setting.tabSettMount,
@@ -272,7 +229,7 @@ def test_bootRackCompMessageSeveritySuccess(settMount: SettMount) -> None:
 def test_bootRackCompMessageSeverityFailure(settMount: SettMount) -> None:
     """Test bootRackComp emits error message with severity 2 on invalid MAC."""
     settMount.msg = mock.MagicMock()
-    settMount.ui.rackCompMAC.setText("invalid")
+    settMount.ui.rackCompWolMAC.setText("invalid")
     with mock.patch.object(
         mw4.gui.extWindows.setting.tabSettMount, "checkFormatMAC", return_value=False
     ):
@@ -345,7 +302,7 @@ def test_closeEvent(settMount: SettMount) -> None:
 
 
 def test_storeConfigKeepsSectionOnError(settMount: SettMount) -> None:
-    sentinel = {"rackCompMAC": "keep"}
+    sentinel = {"rackCompWolMAC": "keep"}
     settMount.app.config["SettingRack"] = sentinel
     widget = settMount.ui.rackCompWolPort
     with (
@@ -354,3 +311,75 @@ def test_storeConfigKeepsSectionOnError(settMount: SettMount) -> None:
     ):
         settMount.storeConfig()
     assert settMount.app.config["SettingRack"] is sentinel
+
+
+def test_bootRackCompWakeFails(settMount: SettMount) -> None:
+    settMount.msg = mock.MagicMock()
+    settMount.ui.rackCompWolMAC.setText("AA:BB:CC:DD:EE:FF")
+    with (
+        mock.patch.object(
+            mw4.gui.extWindows.setting.tabSettMount,
+            "sendWakeOnLan",
+            side_effect=OSError("fail"),
+        ),
+    ):
+        settMount.bootRackComp()
+    settMount.msg.emit.assert_called_with(2, "Rack", "Command", "Rack computer cannot be booted")
+
+
+def test_mountBootSuccess(settMount: SettMount) -> None:
+    """Test mountBoot with successful boot command."""
+    settMount.msg = mock.MagicMock()
+    config = settMount.app.dReg.mount.instance.config
+    config.MAC = "00:00:00:00:00:00"
+    config.wolBroadcast = "255.255.255.255"
+    config.wolPort = 9
+    with (
+        mock.patch.object(mw4.gui.extWindows.setting.tabSettMount, "sendWakeOnLan") as mockSend,
+        mock.patch.object(settMount.log, "debug") as mockDebug,
+    ):
+        settMount.mountBoot()
+    mockSend.assert_called_once_with("00:00:00:00:00:00", "255.255.255.255", 9, config.hostAddress)
+    assert "MAC:" in mockDebug.call_args[0][0]
+    settMount.msg.emit.assert_called_with(0, "Mount", "Command", "Sent boot command to mount")
+
+
+@pytest.mark.parametrize("error", [OSError("fail"), ValueError("bad mac")])
+def test_mountBootFailure(settMount: SettMount, error: Exception) -> None:
+    """Test mountBoot with failed boot command."""
+    settMount.msg = mock.MagicMock()
+    with (
+        mock.patch.object(
+            mw4.gui.extWindows.setting.tabSettMount, "sendWakeOnLan", side_effect=error
+        ),
+        mock.patch.object(settMount.log, "warning") as mockWarning,
+    ):
+        settMount.mountBoot()
+    mockWarning.assert_called_once()
+    settMount.msg.emit.assert_called_with(2, "Mount", "Command", "Mount cannot be booted")
+
+
+def test_mountShutdownSuccess(settMount: SettMount) -> None:
+    """Test mountShutdown with successful shutdown command."""
+    settMount.msg = mock.MagicMock()
+    instance = settMount.app.dReg.mount.instance
+    with (
+        mock.patch.object(instance.obsSite, "shutdown", return_value=True, create=True),
+        mock.patch.object(instance.signals, "mountIsUp") as mockSignal,
+    ):
+        settMount.mountShutdown()
+    mockSignal.emit.assert_called_once_with(False)
+    settMount.msg.emit.assert_called_with(0, "Mount", "Command", "Shutting mount down")
+
+
+def test_mountShutdownFailure(settMount: SettMount) -> None:
+    """Test mountShutdown with failed shutdown command."""
+    settMount.msg = mock.MagicMock()
+    instance = settMount.app.dReg.mount.instance
+    with (
+        mock.patch.object(instance.obsSite, "shutdown", return_value=False, create=True),
+        mock.patch.object(instance.signals, "mountIsUp") as mockSignal,
+    ):
+        settMount.mountShutdown()
+    mockSignal.emit.assert_not_called()
+    settMount.msg.emit.assert_called_with(2, "Mount", "Command", "Mount cannot be shutdown")

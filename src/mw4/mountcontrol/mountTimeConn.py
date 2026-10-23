@@ -4,7 +4,6 @@
 import logging
 import numpy as np
 import socket
-import wakeonlan
 from datetime import UTC, datetime
 from mw4.base.tpool import Worker, startWorker
 from mw4.mountcontrol.connection import Connection
@@ -36,29 +35,6 @@ class MountTimeConn:
     @property
     def timeDiff(self) -> float:
         return float(np.mean(self._timeDiff))
-
-    def bootMount(self) -> bool:
-        t = f"MAC: [{self.parent.config.MAC}], "
-        t += f"[{self.parent.config.wolAddress}]:[{self.parent.config.wolPort}]"
-        self.log.debug(t)
-        try:
-            wakeonlan.wake(
-                self.parent.config.MAC,
-                host=self.parent.config.wolAddress,
-                port=self.parent.config.wolPort,
-            )
-        except (OSError, ValueError) as e:
-            self.log.warning("Boot mount failed: %s", e)
-            return False
-        return True
-
-    def shutdown(self) -> bool:
-        suc = self.parent.obsSite.shutdown()
-        if suc:
-            # the signal drives MountDevice.startupMountData, which resets
-            # mountIsUp and emits deviceDisconnected
-            self.parent.signals.mountIsUp.emit(False)
-        return suc
 
     def setMountStatusOff(self, logText: str) -> None:
         self.parent.mountIsUp = False

@@ -4,7 +4,7 @@
 import logging
 from dateutil.tz import tzlocal
 from mw4.base.appProtocol import AppProtocol
-from PySide6.QtCore import QObject, QTimer, Signal
+from PySide6.QtCore import QObject, QTimer, Signal, SignalInstance
 from skyfield.api import Time
 from typing import cast
 
@@ -50,6 +50,18 @@ class TimeManager(QObject):
         self.timer.setSingleShot(False)
         self.timer.timeout.connect(self.onTick)
         self.unitTimeUTC: bool = True
+        self.signalByName: dict[str, SignalInstance] = {
+            "update0_1s": self.update0_1s,
+            "update0_5s": self.update0_5s,
+            "update1s": self.update1s,
+            "update3s": self.update3s,
+            "update10s": self.update10s,
+            "update30s": self.update30s,
+            "update3m": self.update3m,
+            "update30m": self.update30m,
+            "start1s": self.start1s,
+            "start3s": self.start3s,
+        }
 
     def start(self) -> None:
         self.log.debug("Starting TimeManager")
@@ -71,12 +83,12 @@ class TimeManager(QObject):
     def emitCyclic(self) -> None:
         for interval, signalName in CYCLIC_SCHEDULE:
             if self.counter % interval == 0:
-                getattr(self, signalName).emit()
+                self.signalByName[signalName].emit()
 
     def emitStart(self) -> None:
         for tick, signalName in START_SCHEDULE:
             if self.counter == tick:
-                getattr(self, signalName).emit()
+                self.signalByName[signalName].emit()
 
     def timeZoneString(self) -> str:
         if self.unitTimeUTC:

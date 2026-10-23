@@ -2,7 +2,7 @@
 
 Condensed from `2026-10-20_review_copilot.md` (second pass, revision `3ec18a381`, version
 `4.0.0b36`). Only findings and roadmap items that are **not yet done** are listed.
-Done items (A1, A2, A4, A5, P2, P4, P5, P8, M2, M3, M4, M5, M6, M8, Q1, T3, T6, T8, H2, H4, H5, roadmap 1–8
+Done items (A1, A2, A4, A5, A6, P1, P2, P4, P5, P8, M2, M3, M4, M5, M6, M8, Q1, T3, T6, T8, H2, H4, H5, roadmap 1–8
 and the first round of M1, P1, T1) are omitted.
 
 State at re-run: 5213 tests passed / 38 skipped, 100 % line and branch coverage,
@@ -31,13 +31,11 @@ incremental cleanup.
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
 | A3 | H | Configuration is an untyped nested dict (438 `config[…]`/`.get` accesses); schema, defaults and migration are implicit. | Per-component `@dataclass` configs with `from_dict`/`to_dict`, defaults in one place, a schema version and one migration hook. |
-| A6 | M | Global signals give loose coupling in code but tight coupling in behaviour. | Document emitter/listener ownership per signal group in `base/appSignals.py`. |
 | A7 | L | `MountWizzard4.__init__` ordering is encoded only by line order. | Split into `setup*` steps with docstrings stating dependencies. |
 
 ### Pythonic style
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
-| P1 | L | ◐ `HasSignals`/`HasDriverConfig` (`base/driverProtocol.py`) replace the `hasattr` checks in `deviceRegistry`, `tabSettDevice`, `devicePopupW`. Remaining `getattr` calls are mostly dynamic UI-name lookups. | Review the rest case by case. |
 | P3 | M | `dict[str, Any]` carriers (`Camera.data`, `run`, `config`). | `TypedDict`/dataclasses; `run: dict[str, FrameworkDriver]`. |
 | P6 | L | Magic-value instance attributes, underscore attributes with property wrappers. | Small dataclasses (`SubFrame`, `Binning`). |
 | P7 | L | 3 × `type: ignore`, 54 pyrefly suppressions, 28 hidden warnings, `mountcontrol` relaxations. | Tighten per file over time. |

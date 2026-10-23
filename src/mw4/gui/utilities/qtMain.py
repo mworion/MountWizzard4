@@ -124,8 +124,7 @@ class MWidget(QMainWindow, Styles):
         self.setCursor(shape)
 
     def setWindowTitle(self, title: str) -> None:
-        if hasattr(self, "titleBar"):
-            self.titleBar.title.setText(title)
+        self.titleBar.title.setText(title)
 
     @staticmethod
     def setNoFocus(ui) -> None:

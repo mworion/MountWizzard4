@@ -11,6 +11,7 @@ from mw4.base.appProtocol import AppProtocol
 from pathlib import Path
 from typing import Any
 
+# compatibility shim: only older logging versions lack Logger._set_defaults
 if not hasattr(logging.Logger, "_set_defaults"):
     # noinspection PyUnusedLocal
     def _set_defaults(self, *args: Any, **kwargs: Any) -> None:

@@ -7,6 +7,7 @@ from mw4.logic.controllers.mount.mountSettings import (
     VALUES,
     MountSettingsController,
 )
+from mw4.mountcontrol.setting import Setting
 from types import SimpleNamespace
 from unittest import mock
 
@@ -97,3 +98,11 @@ def test_switchIndex(key, value, expected):
     spec = SWITCHES[key]
     controller, _, _ = makeController(wakeOnLan=value, autoPowerOn=value)
     assert controller.switchIndex(spec) == expected
+
+
+@pytest.mark.parametrize("spec", [*SWITCHES.values(), *VALUES.values()])
+def test_specNamesExistOnSetting(makeApp, spec):
+    setting = Setting(makeApp().mount)
+    for name in (spec.attribute, spec.minAttribute, spec.maxAttribute):
+        assert not name or hasattr(setting, name)
+    assert callable(getattr(setting, spec.setterName))

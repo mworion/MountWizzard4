@@ -189,17 +189,7 @@ def test_send_cyclic(app):
             "update30m": mock.MagicMock(),
         }
 
-        # Replace signal emitters with mocks
-        with (
-            mock.patch.object(app.timeMgr, "update0_1s", mock_signals["update0_1s"]),
-            mock.patch.object(app.timeMgr, "update0_5s", mock_signals["update0_5s"]),
-            mock.patch.object(app.timeMgr, "update1s", mock_signals["update1s"]),
-            mock.patch.object(app.timeMgr, "update3s", mock_signals["update3s"]),
-            mock.patch.object(app.timeMgr, "update10s", mock_signals["update10s"]),
-            mock.patch.object(app.timeMgr, "update30s", mock_signals["update30s"]),
-            mock.patch.object(app.timeMgr, "update3m", mock_signals["update3m"]),
-            mock.patch.object(app.timeMgr, "update30m", mock_signals["update30m"]),
-        ):
+        with mock.patch.dict(app.timeMgr.signalByName, mock_signals):
             app.timeMgr.emitCyclic()
 
         # Verify expected signals were emitted

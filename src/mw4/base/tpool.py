@@ -13,6 +13,11 @@ from typing import Any
 SLOW_WORKER_THRESHOLD = 5.0
 
 
+def fnNameOf(fn: Callable[..., Any]) -> str:
+    """Readable name for logging; partials and callables lack __name__."""
+    return getattr(fn, "__name__", repr(fn))
+
+
 class WorkerSignals(QObject):
     finished = Signal()
     error = Signal(str)
@@ -89,7 +94,7 @@ class Worker(QRunnable):
         except Exception as e:
             # no exception may escape into the pool thread; the busy flag is
             # still released through the finally block below
-            fnName = getattr(self.fn, "__name__", repr(self.fn))
+            fnName = fnNameOf(self.fn)
             eStr = f"Worker exception in [{fnName}]: [{type(e).__name__}], [{e}]"
             self.log.critical("%s\n%s", eStr, traceback.format_exc())
             self.signals.error.emit(eStr)
@@ -100,7 +105,7 @@ class Worker(QRunnable):
             # directly started worker never acquired it
             duration = self.release()
             if duration is not None and duration > SLOW_WORKER_THRESHOLD:
-                fnName = getattr(self.fn, "__name__", repr(self.fn))
+                fnName = fnNameOf(self.fn)
                 self.log.warning("Worker %s finished after %.1fs (slow)", fnName, duration)
             self.signals.finished.emit()
 
@@ -137,7 +142,7 @@ def startWorker(
             target, *args, resultMethod=resultMethod, finishedMethod=finishedMethod, **kwargs
         )
     if not worker.tryAcquire():
-        fnName = getattr(target, "__name__", repr(target))
+        fnName = fnNameOf(target)
         log.debug("Worker %s busy, skipped (running for %.1fs)", fnName, worker.elapsed())
         return worker
     if reuse:

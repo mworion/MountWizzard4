@@ -17,7 +17,7 @@ from mw4.gui.utilities.qtHelpers import (
     svg2icon,
     svg2pixmap,
 )
-from PySide6.QtCore import QPoint, Qt
+from PySide6.QtCore import QObject, QPoint, Qt
 from PySide6.QtGui import QColor, QIcon, QPixmap
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import (
@@ -180,7 +180,10 @@ def test_clickable_6():
     widget = QLineEdit()
     clickable(widget=widget)
     clickable(widget=widget)
-    assert len(widget.clickFilters) == 2
+    filters = [
+        c for c in widget.findChildren(QObject) if type(c).__name__ == "MouseClickEventFilter"
+    ]
+    assert len(filters) == 2
 
 
 def test_clickable_7():

@@ -337,13 +337,6 @@ def test_setWindowTitle_1(function):
     assert function.titleBar.title.text() == "Test Window"
 
 
-def test_setWindowTitle_2(function):
-    window = MWidget()
-    del window.titleBar
-    window.setWindowTitle("Test Window")
-    assert not hasattr(window, "titleBar")
-
-
 def test_setNoFocus_1(function):
     """Test setNoFocus sets NoFocus policy on all children."""
     parent_widget = QWidget()

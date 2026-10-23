@@ -89,7 +89,7 @@ class PlotBase(pg.GraphicsLayoutWidget, Styles):
     @staticmethod
     def findItemByName(plotItem: pg.PlotItem, name: str) -> Any:
         for item in plotItem.items:
-            if hasattr(item, "nameStr") and item.nameStr == name:
+            if getattr(item, "nameStr", None) == name:
                 return item
         return None
 

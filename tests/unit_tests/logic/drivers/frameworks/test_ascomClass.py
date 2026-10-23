@@ -305,6 +305,23 @@ def test_runnerCoreLoop_cleanup(function):
     cu.assert_called_once()
 
 
+def test_runnerCoreLoop_noDeviceCleanup(function):
+    with (
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.CoInitialize"),
+        mock.patch("mw4.logic.drivers.frameworks.ascomClass.CoUninitialize") as cu,
+        mock.patch(
+            "mw4.logic.drivers.frameworks.ascomClass.client.dynamic.Dispatch",
+            return_value=None,
+        ),
+        mock.patch.object(function, "runnerCommunicationLoop"),
+        mock.patch.object(function, "setDeviceProp") as setDeviceProp,
+    ):
+        function.runnerCoreLoop()
+    setDeviceProp.assert_not_called()
+    assert function.device is None
+    cu.assert_called_once()
+
+
 def test_runnerCommunicationLoop_stopImmediately(function):
     function.stopEvent.set()
     with mock.patch.object(function, "handleDeviceConnect") as m:
@@ -362,7 +379,7 @@ def test_runnerCommunicationLoop_pollCycle(function):
     ):
         function.runnerCommunicationLoop()
     assert call_count == 1
-    mq.assert_called_once()
+    assert mq.call_count == 2
 
 
 def test_runnerCommunicationLoop_pollException(function):

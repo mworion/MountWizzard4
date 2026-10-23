@@ -75,7 +75,6 @@ class SatTrack(SatData):
         self.app.dReg.mount.signals.pointDone.connect(self.followMount)
         self.app.dReg.mount.signals.pointDone.connect(self.toggleTrackingOffset)
         self.app.dReg.mount.signals.firmwareDone.connect(self.enableGuiFunctions)
-        self.app.dReg.mount.signals.settingDone.connect(self.showSatPasses)
 
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)
@@ -89,7 +88,7 @@ class SatTrack(SatData):
         self.ui.listSats.itemDoubleClicked.connect(self.chooseSatellite)
         trackingOffsetWidgets = [self.ui.satOffTime, self.ui.satOffRa, self.ui.satOffDec]
         for widget in trackingOffsetWidgets:
-            widget.valueChanged.connect(self.setTrackingOffsets)
+            widget.editingFinished.connect(self.setTrackingOffsets)
         self.app.timeMgr.update1s.connect(self.updateOrbit)
 
     def initConfig(self) -> None:

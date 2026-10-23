@@ -99,7 +99,7 @@
       <enum>QTabWidget::TabShape::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -1809,7 +1809,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>55</y>
+          <y>50</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -1829,7 +1829,7 @@
         <property name="geometry">
          <rect>
           <x>300</x>
-          <y>30</y>
+          <y>25</y>
           <width>56</width>
           <height>101</height>
          </rect>
@@ -1851,7 +1851,7 @@
         <property name="geometry">
          <rect>
           <x>135</x>
-          <y>55</y>
+          <y>50</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -1876,7 +1876,7 @@
         <property name="geometry">
          <rect>
           <x>135</x>
-          <y>80</y>
+          <y>75</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -1926,7 +1926,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>80</y>
+          <y>75</y>
           <width>151</width>
           <height>21</height>
          </rect>
@@ -1946,7 +1946,7 @@
         <property name="geometry">
          <rect>
           <x>135</x>
-          <y>105</y>
+          <y>100</y>
           <width>121</width>
           <height>21</height>
          </rect>
@@ -1996,7 +1996,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>105</y>
+          <y>100</y>
           <width>151</width>
           <height>21</height>
          </rect>
@@ -2016,7 +2016,7 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>30</y>
+          <y>25</y>
           <width>101</width>
           <height>21</height>
          </rect>
@@ -2036,7 +2036,7 @@
         <property name="geometry">
          <rect>
           <x>135</x>
-          <y>30</y>
+          <y>25</y>
           <width>146</width>
           <height>21</height>
          </rect>

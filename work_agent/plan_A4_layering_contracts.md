@@ -1,6 +1,6 @@
 # Plan A4 / roadmap 12 – layering contracts (import-linter) in CI
 
-Source: `../2026-10-20_review_copilot_open.md`, finding A4; roadmap item 12.
+Source: `2026-10-20_review_copilot_open.md`, finding A4; roadmap item 12.
 Status: **implemented 2026-10-22** (7 contracts, `deviceRegistry` moved, ruff TID251, docs; `test_deviceEntry.py` stays in `tests/unit_tests/base` because `base/deviceEntry.py` still exists).
 
 ## Findings (measured 2026-10-22 with probe configs, not committed)
@@ -186,7 +186,7 @@ narrow ignore only where unavoidable. Known gap: attribute access like
   `uv run pyrefly check` → clean.
 - `uv run pytest tests/unit_tests -n auto` → 5226 passed, 100 % line and branch coverage;
   `test_testMapping.py` green after the test move.
-- Update `../2026-10-20_review_copilot_open.md` (A4 done, roadmap items 3 and 12) and
+- Update `2026-10-20_review_copilot_open.md` (A4 done, roadmap items 3 and 12) and
   `2026-10-20_review_copilot.md`; the "22 `logic` + 8 `mountcontrol` files import PySide6"
   note becomes "QtCore/QtNetwork/QtMultimedia only, enforced".
 

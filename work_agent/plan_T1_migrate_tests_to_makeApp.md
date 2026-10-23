@@ -1,6 +1,6 @@
 # Plan T1 – migrate unit tests to `makeApp`
 
-Source: `../2026-10-20_review_copilot_open.md`, item T1 (roadmap follow-up 3).
+Source: `2026-10-20_review_copilot_open.md`, item T1 (roadmap follow-up 3).
 
 ## Goal
 
@@ -60,7 +60,7 @@ Tests obtain their stub application through the `makeApp(**overrides)` factory
    `../tests/unit_tests` outside `baseTestApp.py` and `test_makeApp.py`.
 5. **Optional** (roadmap note): trim per-device facade tests that duplicate
    `test_deviceFacade.py`. Only after step 3 is complete.
-6. **Close out**: update `../2026-10-20_review_copilot_open.md`
+6. **Close out**: update `2026-10-20_review_copilot_open.md`
    (T1 done, remove roadmap item 3) and the changelog if required.
 
 ## Verification

@@ -34,11 +34,8 @@ def weatherItems(parameter: str, styles: Styles, withDirect: bool = True) -> dic
     return items
 
 
-def dataPlots() -> dict[str, PlotDef]:
-    styles = Styles()
-    weather = "WEATHER_PARAMETERS.WEATHER_"
+def mountPlots(styles: Styles) -> dict[str, PlotDef]:
     return {
-        "No chart": {},
         "Axis Stability": chart(
             "Delta angle [arcsec]",
             {
@@ -53,6 +50,12 @@ def dataPlots() -> dict[str, PlotDef]:
                 "mount-errorAngularPosDEC": lineItem("DEC counter", styles.M_RED),
             },
         ),
+    }
+
+
+def environmentPlots(styles: Styles) -> dict[str, PlotDef]:
+    weather = "WEATHER_PARAMETERS.WEATHER_"
+    return {
         "Temperature": chart(
             "Temperature [°C]",
             weatherItems(f"{weather}TEMPERATURE", styles),
@@ -92,6 +95,11 @@ def dataPlots() -> dict[str, PlotDef]:
             weatherItems("SKY_QUALITY.SKY_BRIGHTNESS", styles, withDirect=False),
             (10, 22.5, False),
         ),
+    }
+
+
+def devicePlots(styles: Styles) -> dict[str, PlotDef]:
+    return {
         "Voltage": chart(
             "Supply Voltage [V]",
             {"power-powVolt": lineItem("Main Sensor", styles.M_YELLOW)},
@@ -124,4 +132,14 @@ def dataPlots() -> dict[str, PlotDef]:
                 ),
             },
         ),
+    }
+
+
+def dataPlots() -> dict[str, PlotDef]:
+    styles = Styles()
+    return {
+        "No chart": {},
+        **mountPlots(styles),
+        **environmentPlots(styles),
+        **devicePlots(styles),
     }

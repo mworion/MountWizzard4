@@ -1,6 +1,6 @@
 # MountWizzard4 – Code Review (2026-10-20)
 
-Scope: `src/mw4` (excluding generated `gui/widgets`), tests, tooling, repo hygiene.
+Scope: `../src/mw4` (excluding generated `gui/widgets`), tests, tooling, repo hygiene.
 Revision: `3ec18a381`, version `4.0.0b36`. Re-run after roadmap items 1–8 and the test-layout
 alignment (2026-10-20, second pass).
 Method: static inspection and metrics (ruff, pyrefly, AST scan, grep counts, coverage run).
@@ -35,7 +35,7 @@ data-as-code files.
 
 | Metric | Value |
 |--------|-------|
-| Python modules in `src/mw4` | 216 (excl. `__init__`, widgets) |
+| Python modules in `../src/mw4` | 216 (excl. `__init__`, widgets) |
 | LOC `gui` / `logic` / `mountcontrol` / `base` | 15.2k (excl. generated widgets) / 7.9k / 3.5k / 2.1k |
 | Test files / tests | 216 / 5108 passed + 38 skipped (strict 1:1 `src/mw4/x/y.py` → `tests/unit_tests/x/test_y.py`, verified by script: 0 modules without a test) |
 | `ruff check src` | clean (E, T2, UP, I, C, LOG, W, SIM, A, RUF, B, BLE; mccabe ≤ 10) |
@@ -54,7 +54,7 @@ data-as-code files.
 | Functions > 50 lines (excl. data file) | 16 (was 25; largest 91 L, was 293 L) |
 | Files | largest `alignstars.py` 830 lines (data constant); QSS now in `assets/styles/*.qss`, `gui/styles/styles.py` 150 lines |
 | Largest tabs | `tabImage_Manage.py` 430 L, `tabSat_Track.py` 373 L, `tabMount_Sett.py` 301 L (was 504 / 477 / 436) |
-| Repository | `.git` 1.2 GB (2026-10-22; 1.4 GB on 2026-10-20), 908 tracked files in `HEAD`, `gists/`, `work/`, `log/` untracked |
+| Repository | `.git` 1.2 GB (2026-10-22; 1.4 GB on 2026-10-20), 908 tracked files in `HEAD`, `gists/`, `../work`, `log/` untracked |
 
 ## 3. Strengths
 
@@ -71,7 +71,7 @@ data-as-code files.
 5. **Lifecycle contract for tabs** – `TabAddon` replaces `hasattr` dispatch with no-op hooks
    (`initConfig`, `storeConfig`, `setupIcons`, `updateColorSet`, `shutdown`).
 6. **Tooling discipline** – ruff with a sensible rule set and complexity cap, pyrefly with
-   per-path relaxations, `uv.lock`, pinned numeric stack, coverage with a conditional plugin
+   per-path relaxations, `../uv.lock`, pinned numeric stack, coverage with a conditional plugin
    for Windows-only code, per-OS CI workflows, markers for test categories.
 7. **Quality gates met** – no leftover `print`, `TODO`, `# noqa`, no leading-underscore
    functions (only 2 `def _x` hits, and attribute-level `_binning`/`_subFrame`).
@@ -115,7 +115,7 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 | M2 | M | **Long parameter lists** in a few places: `qtInputDialog.__init__` 12 args, `tabSat_Search.calcSat` 9, `updateListSats` 8, `astroObjects.__init__` 8. | Use dataclass parameter objects or keyword-only args (`*,`). |
 | M3 | M | ✅ **Done 2026-10-22 (plan M3).** The framework back-ends were already DRY (`*AlpacaAscomBase` + 9-line shells); the copy-paste sat in the nine device facades. They now share `logic/drivers/frameworks/deviceFacade.py` (`DeviceFacade[AppT]`: signals, back-end table, start/stop), −321 net source lines. Deliberately kept as they are (own signals, custom start/stop or fixed framework): `Measure`, `PlateSolve`, `Remote`, `KMRelay`, `SeeingWeather`, `DirectWeather`, `HidController`, `Keypad`. **Duplicated framework wrappers.** Per device there is `deviceIndi`, `deviceAlpaca`, `deviceSGPro`, `deviceAscom` plus shared `*Class.py` in `base`. This is a good pattern but likely contains copy-paste across devices (camera/focuser/dome/filter/cover). | Run a duplication scan (e.g. `pylint --enable=duplicate-code` or `jscpd`) and extract common bases/mixins for connect/disconnect/poll/error handling. |
 | M4 | M | ✅ **Done:** driver framework classes live in `logic/drivers/frameworks/`, device packages under `logic/drivers/`, GUI-independent logic under `logic/controllers/<GUI area>/`; `base/` keeps infrastructure. `base/` mixes infrastructure (`tpool`, `loggerMW`, `bootstrap`) with domain-ish helpers (`transform`, `timeManager`, `ascomClass`, `sgproClass`, `indiClass`). | Move driver-protocol classes to `logic/drivers/` (or `base/drivers/`) to keep `base` dependency-free. |
-| M5 | M | ✅ **Done 2026-10-20 (WP 8).** QSS moved to `assets/styles/{basic,mac,nonMac}.qss` templates with placeholders, rendered by `gui/styles/styles.py`; a golden-file test (`tests/testData/styleGolden.json`) guards the output. Styles: `gui/styles/styleSheets.py` is 691 lines of Python-embedded QSS. | Move to `.qss` templates with placeholders; makes theming testable and diffable. |
+| M5 | M | ✅ **Done 2026-10-20 (WP 8).** QSS moved to `assets/styles/{basic,mac,nonMac}.qss` templates with placeholders, rendered by `gui/styles/styles.py`; a golden-file test (`../tests/testData/styleGolden.json`) guards the output. Styles: `gui/styles/styleSheets.py` is 691 lines of Python-embedded QSS. | Move to `.qss` templates with placeholders; makes theming testable and diffable. |
 | M6 | M | ✅ **Done 2026-10-20; signals now declared once in `AppSignals` (A1)** (contract test `test_concreteAppProvidesAllProtocolMembers`). `AppProtocol` is kept manually in sync with `MountWizzard4` (signals declared twice). `drawHorizonPoints` exists only on the concrete class but nothing consumes it, so its absence from the Protocol is intended. | Longer term: derive the signal list from one place (see A1). |
 | M7 | L | Docstring style/language quality varies (e.g. typos in `alignstars` docstring: "assdataets", lower-case sentence starts, mixed numpy/rst). | Pick one style (Google or NumPy) and let ruff `D`-rules (limited subset) check public APIs. |
 | M8 | L | `DeviceRegistry.addDevices(app)` takes `app` although `self.app` already exists; `("refraction", lambda _app: None, None, False)` is a placeholder device entry. | Remove the redundant parameter; model "no instance" explicitly rather than with a lambda returning `None`. |
@@ -134,13 +134,13 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 
 | # | Pri | Finding | Recommendation |
 |---|-----|---------|----------------|
-| T1 | H | ✅ **Done 2026-10-22 (plan T1):** all unit tests build their stub app via the session-scoped `makeApp` fixture; `test_noDirectAppImport` prevents regressions; 14 per-device start/stop delegation tests duplicating `test_deviceFacade.py` removed. Earlier: 100 % line coverage is excellent, but with `app` as a god object each test must stub a large surface (the stub `App`). Test cost grows with the surface (see A1). | Narrow protocols (A1) shrink fixtures. Offer a `makeApp(**overrides)` factory with sensible defaults in `tests/conftest.py`. |
+| T1 | H | ✅ **Done 2026-10-22 (plan T1):** all unit tests build their stub app via the session-scoped `makeApp` fixture; `test_noDirectAppImport` prevents regressions; 14 per-device start/stop delegation tests duplicating `test_deviceFacade.py` removed. Earlier: 100 % line coverage is excellent, but with `app` as a god object each test must stub a large surface (the stub `App`). Test cost grows with the surface (see A1). | Narrow protocols (A1) shrink fixtures. Offer a `makeApp(**overrides)` factory with sensible defaults in `../tests/conftest.py`. |
 | T2 | M | ✅ **Done 2026-10-20** (branch coverage enabled, `fail_under = 100`, all branch gaps closed – 4987 tests, 100 % line and branch coverage). Remaining: consider mutation testing (`mutmut`) on `mountcontrol` and `logic/modelBuild` where calculations matter. | – |
-| T3 | M | `tests/stress_tests` (crash, subprocess, loader-cycle tests) are not part of `tests/unit_tests`; it is unclear whether CI runs them. | Mark them `@pytest.mark.slow/integration` and run in a nightly job, or document why they are manual. |
+| T3 | M | `../tests/stress_tests` (crash, subprocess, loader-cycle tests) are not part of `tests/unit_tests`; it is unclear whether CI runs them. | Mark them `@pytest.mark.slow/integration` and run in a nightly job, or document why they are manual. |
 | T4 | M | Tests mock heavily with `unittest.mock`; risk of tests verifying mocks instead of behaviour for GUI tabs. | Prefer fakes (in-memory device back-ends) over `MagicMock` for devices; keep `pytest-qt` signal-based assertions (`qtbot.waitSignal`). |
 | T5 | M | Windows-only code is excluded from non-Windows coverage via conditional plugin – good – but is only validated on the Windows workflow. | Keep Windows CI mandatory; add contract tests for ASCOM/COM wrappers against a fake `win32com` so logic is checked on every OS. |
-| T6 | L | (re-check 2026-10-20: still open – after a test run, tracked files under `tests/work/` show as deleted/untracked, e.g. `config/profile`, `build.hpts`, `m51.fit`; `.gitignore` only covers `/work/`) Test data, `tests/work/*` generated assets show up as untracked files in `git status`. | Ensure `tests/work` is in `.gitignore` or generated into `tmp_path`. |
-| T8 | L | ✅ **Done 2026-10-20.** Test layout aligned 1:1 with `src/mw4`: 19 modules lacked a matching test file. 18 were misnamed/misplaced and were renamed with `git mv` (`mainApp/test_*` → `tests/unit_tests/test_*`, `test_s_*` → `test_*` in `simulator/`, `test_driverData` → `test_driverDataClass`, `test_boltwoodWeather` → `test_sensorWeatherBoltwood`, `test_fitsFunctions` → `test_fitsFunction`, `test_qCustomTableWidgetItem` → `test_qtCustomTableWidgetItem`); `test_loader_func.py` (it tested `bootstrap`) was merged into `base/test_bootstrap.py`. `base/appSignals.py` had no test and got `base/test_appSignals.py` (100 %). | Keep the mapping enforced, e.g. a small meta-test or CI script that fails when a module has no `test_<module>.py`. |
+| T6 | L | (re-check 2026-10-20: still open – after a test run, tracked files under `../tests/work` show as deleted/untracked, e.g. `config/profile`, `build.hpts`, `m51.fit`; `.gitignore` only covers `/work/`) Test data, `tests/work/*` generated assets show up as untracked files in `git status`. | Ensure `../tests/work` is in `.gitignore` or generated into `tmp_path`. |
+| T8 | L | ✅ **Done 2026-10-20.** Test layout aligned 1:1 with `../src/mw4`: 19 modules lacked a matching test file. 18 were misnamed/misplaced and were renamed with `git mv` (`mainApp/test_*` → `tests/unit_tests/test_*`, `test_s_*` → `test_*` in `simulator/`, `test_driverData` → `test_driverDataClass`, `test_boltwoodWeather` → `test_sensorWeatherBoltwood`, `test_fitsFunctions` → `test_fitsFunction`, `test_qCustomTableWidgetItem` → `test_qtCustomTableWidgetItem`); `test_loader_func.py` (it tested `bootstrap`) was merged into `base/test_bootstrap.py`. `base/appSignals.py` had no test and got `base/test_appSignals.py` (100 %). | Keep the mapping enforced, e.g. a small meta-test or CI script that fails when a module has no `test_<module>.py`. |
 | T7 | L | Property-based tests (`hypothesis`) would fit transformations in `base/transform.py` and `mountcontrol/geometry.py` / `convert.py`. | Add for round-trip conversions (hms/dms parsing, coordinate transforms). |
 
 ### 4.6 Readability
@@ -151,14 +151,14 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 | R2 | M | Module-level `log = logging.getLogger("MW4")` as a *class attribute* in 60 classes. | One logger per module (`logging.getLogger(__name__)`) is idiomatic and gives per-module filtering; current single-name logger loses origin unless the formatter prints `%(module)s`. |
 | R3 | L | ✅ Partly done 2026-10-20: commented-out code in `keypad.py` removed. Several long section banners remain. | Optional cleanup of banners. |
 | R4 | L | Mixed English quality in docstrings and a few comments. | Light proof-reading pass. |
-| R5 | L | Header banner in `pyproject.toml` (ASCII art) and per-file headers are noise-free, but the file header in modules differs from the project banner. | Cosmetic. |
+| R5 | L | Header banner in `../pyproject.toml` (ASCII art) and per-file headers are noise-free, but the file header in modules differs from the project banner. | Cosmetic. |
 
 ### 4.7 Repository hygiene and delivery
 
 | # | Pri | Finding | Recommendation |
 |---|-----|---------|----------------|
-| H1 | H | (◐ re-check 2026-10-22: `gists/`, `work/` and `log/` are no longer tracked; `.git` is 1.2 GB, almost all of it old history, mainly the generated `mw4/resource/resources.py`; `HEAD` still has 70 MB test images and duplicated runtime data, see `plan_H1_repository_slimming.md`) `.git` is **1.4 GB**; large binaries (ephemeris `de440_mw4.bsp`, finals data, assets 16 MB) historically committed. | Move runtime dirs (`work/`, `log/`) out of version control (`.gitignore`), keep `gists/` in a separate repo or docs. Consider `git lfs` or download-on-first-start for big data; run `git filter-repo` only with maintainer agreement. |
-| H2 | M | `.idea/` and `.coverage` present in the working tree. (re-check 2026-10-20: `.coverage` is ignored, `.idea/` is still untracked and **not** in `.gitignore`.) | Add `.idea/` to `.gitignore`. |
+| H1 | H | (◐ re-check 2026-10-22: `gists/`, `../work` and `log/` are no longer tracked; `.git` is 1.2 GB, almost all of it old history, mainly the generated `mw4/resource/resources.py`; `HEAD` still has 70 MB test images and duplicated runtime data, see `work_agent/plan_H1_repository_slimming.md`; **Decision 2026-10-23: no history rewrite (`git filter-repo`) – rejected due to broken hashes/forks/PRs/tags; history stays as is.**) `.git` is **1.4 GB**; large binaries (ephemeris `de440_mw4.bsp`, finals data, assets 16 MB) historically committed. | Move runtime dirs (`../work`, `log/`) out of version control (`.gitignore`), keep `gists/` in a separate repo or docs. Consider `git lfs` or download-on-first-start for big data; `git filter-repo` history rewrite is rejected (decision 2026-10-23). |
+| H2 | M | `../.idea` and `.coverage` present in the working tree. (re-check 2026-10-20: `.coverage` is ignored, `.idea/` is still untracked and **not** in `.gitignore`.) | Add `../.idea` to `.gitignore`. |
 | H3 | M | Exact pins on core scientific packages (`numpy==2.5.4`, `astropy==8.0.2`, `pyside6==6.12.0`, `photutils==3.1.1`) – good for reproducibility, but libraries consumers of the PyPI package get over-constrained. | Fine for an application. Keep Renovate/Dependabot to bump regularly; document the pin policy. |
 | H4 | L | ✅ **Done 2026-10-20.** Console scripts reduced to `mw4` and `mountwizzard4`. | – |
 | H5 | L | ✅ **Done 2026-10-20.** Classifier changed to `Development Status :: 4 - Beta`. | – |

@@ -76,6 +76,11 @@ class Astrometry:
             self.log.warning("IMAGE2XY error in [%s]", imagePath)
             return {"success": False, "message": "image2xy failed"}
 
+        runnable = self.buildSolveCommand(imagePath, tempPath, configPath)
+        suc, msg = self.parent.runSolverBin(runnable)
+        return self.parent.prepareResult(suc, msg, imagePath, wcsPath, updateHeader)
+
+    def buildSolveCommand(self, imagePath: Path, tempPath: Path, configPath: Path) -> list[Any]:
         raHint, decHint, scaleHint = getHintFromImageFile(imagePath)
         searchRatio = 1.1
         ra = convertToHMS(raHint)
@@ -120,8 +125,7 @@ class Astrometry:
         if "Astrometry.app" in self.config.appPath:
             options.append("--no-fits2fits")
         runnable.extend(options)
-        suc, msg = self.parent.runSolverBin(runnable)
-        return self.parent.prepareResult(suc, msg, imagePath, wcsPath, updateHeader)
+        return runnable
 
     def checkAvailabilityProgram(self, appPath: str) -> bool:
         self.config.appPath = appPath

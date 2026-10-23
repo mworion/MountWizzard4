@@ -118,20 +118,10 @@ class Almanac(TabAddon):
         self.ui.twilight.colorChange()
         self.plotAll()
 
-    def plotTwilightData(self, result: tuple) -> None:
-        ts, t, e = result
-        xMin = int(t[0].tt) + 1
-        xMax = int(t[-1].tt) - 1
-        xNow = (xMax - xMin) / 2 + xMin
-
-        xTicks = np.arange(xMin, xMax, (xMax - xMin) / 9)
-        xLabels = ts.tt_jd(xTicks).utc_strftime("%d%b")
-        xLabels[0] = ""
-        xTicks = [(x, y) for x, y in zip(xTicks, xLabels, strict=True)]
+    def setupTwilightAxes(
+        self, plotItem: Any, xMin: int, xMax: int, xTicks: list[tuple[float, str]]
+    ) -> None:
         yTicks = [(x, y) for x, y in zip(self.Y_TICKS, self.Y_LABELS, strict=True)]
-        pen = pg.mkPen(color="transparent")
-        penLine = pg.mkPen(color=self.mainW.rgb2hex(self.mainW.M_PINK), width=2)
-        plotItem = self.ui.twilight.p[0]
         plotItem.getViewBox().setMouseMode(pg.ViewBox.RectMode)
         plotItem.setXRange(0, 360)
         plotItem.setYRange(0, 90)
@@ -143,6 +133,21 @@ class Almanac(TabAddon):
         plotItem.setLimits(xMin=xMin, xMax=xMax, yMin=0, yMax=24)
         plotItem.setYRange(0, 24)
         plotItem.setXRange(xMin, xMax)
+
+    def plotTwilightData(self, result: tuple) -> None:
+        ts, t, e = result
+        xMin = int(t[0].tt) + 1
+        xMax = int(t[-1].tt) - 1
+        xNow = (xMax - xMin) / 2 + xMin
+
+        xTicks = np.arange(xMin, xMax, (xMax - xMin) / 9)
+        xLabels = ts.tt_jd(xTicks).utc_strftime("%d%b")
+        xLabels[0] = ""
+        xTicks = [(x, y) for x, y in zip(xTicks, xLabels, strict=True)]
+        plotItem = self.ui.twilight.p[0]
+        self.setupTwilightAxes(plotItem, xMin, xMax, xTicks)
+        penLine = pg.mkPen(color=self.mainW.rgb2hex(self.mainW.M_PINK), width=2)
+        pen = pg.mkPen(color="transparent")
         brushes: list[QBrush] = []
         for color in self.colors.values():
             colorHex = self.mainW.rgb2hex(color)
@@ -247,6 +252,23 @@ class Almanac(TabAddon):
             self.twilightEvents[:MAX_TWILIGHT_ROWS],
         )
 
+    def calcMoonRiseSet(self) -> tuple[Any, Any]:
+        ephemeris = self.app.ephemeris
+        obsSite = self.app.dReg.mount.obsSite
+        t0 = obsSite.ts.tt_jd(int(obsSite.timeJD.tt))
+        t1 = obsSite.ts.tt_jd(int(obsSite.timeJD.tt) + MOON_RISE_DAYS)
+        f = almanac.risings_and_settings(ephemeris, ephemeris["moon"], obsSite.location)
+        moonTimes, moonEvents = almanac.find_discrete(t0, t1, f)
+        return moonTimes[0:MOON_RISE_MAX], moonEvents[0:MOON_RISE_MAX]
+
+    def calcMoonNodes(self) -> tuple[Any, Any]:
+        obsSite = self.app.dReg.mount.obsSite
+        t0 = obsSite.ts.tt_jd(int(obsSite.timeJD.tt))
+        t1 = obsSite.ts.tt_jd(int(obsSite.timeJD.tt) + MOON_NODE_DAYS)
+        f = almanac.moon_nodes(self.app.ephemeris)
+        nodeTimes, nodeEvents = almanac.find_discrete(t0, t1, f)
+        return nodeTimes[0:MOON_NODE_MAX], nodeEvents[0:MOON_NODE_MAX]
+
     def calcMoonPhase(self) -> MoonPhaseData:
         ephemeris = self.app.ephemeris
         sun = ephemeris["sun"]
@@ -254,7 +276,6 @@ class Almanac(TabAddon):
         earth = ephemeris["earth"]
         now = self.app.dReg.mount.obsSite.ts.now()
         loc = self.app.dReg.mount.obsSite.location
-        ts = self.app.dReg.mount.obsSite.ts
         timeJD = self.app.dReg.mount.obsSite.timeJD
         e = earth.at(timeJD)
 
@@ -273,22 +294,8 @@ class Almanac(TabAddon):
         sunApparent = locObserver.observe(sun).apparent()
         moonAngle = position_angle_of(moonApparent.altaz(), sunApparent.altaz())
 
-        # calc rise and set times
-        t0 = ts.tt_jd(int(timeJD.tt))
-        t1 = ts.tt_jd(int(timeJD.tt) + MOON_RISE_DAYS)
-
-        f = almanac.risings_and_settings(ephemeris, ephemeris["moon"], loc)
-        moonTimes, moonEvents = almanac.find_discrete(t0, t1, f)
-        moonTimes = moonTimes[0:MOON_RISE_MAX]
-        moonEvents = moonEvents[0:MOON_RISE_MAX]
-
-        # calc nodes
-        t0 = ts.tt_jd(int(timeJD.tt))
-        t1 = ts.tt_jd(int(timeJD.tt) + MOON_NODE_DAYS)
-        f = almanac.moon_nodes(ephemeris)
-        nodeTimes, nodeEvents = almanac.find_discrete(t0, t1, f)
-        nodeTimes = nodeTimes[0:MOON_NODE_MAX]
-        nodeEvents = nodeEvents[0:MOON_NODE_MAX]
+        moonTimes, moonEvents = self.calcMoonRiseSet()
+        nodeTimes, nodeEvents = self.calcMoonNodes()
 
         return MoonPhaseData(
             illumination=mpIllumination,

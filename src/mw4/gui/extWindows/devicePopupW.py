@@ -44,6 +44,15 @@ class DevicePopup(MWidget):
         self.discovers = self.createDiscovers()
         self.setupSignals()
 
+    def createSolverGui(self, name: str) -> dict[str, Any]:
+        return {
+            "deviceName": getattr(self.ui, f"{name}DeviceList"),
+            "searchRadius": getattr(self.ui, f"{name}SearchRadius"),
+            "timeout": getattr(self.ui, f"{name}Timeout"),
+            "appPath": getattr(self.ui, f"{name}AppPath"),
+            "indexPath": getattr(self.ui, f"{name}IndexPath"),
+        }
+
     def createFramework2gui(self) -> dict[str, dict[str, Any]]:
         return {
             "indi": {
@@ -63,33 +72,11 @@ class DevicePopup(MWidget):
                 "port": self.ui.sgproPort,
                 "deviceName": self.ui.sgproDeviceList,
             },
-            "ascom": {
-                "deviceName": self.ui.ascomDevice,
-            },
-            "boltwood": {
-                "filePath": self.ui.boltwoodPath,
-            },
-            "astrometry": {
-                "deviceName": self.ui.astrometryDeviceList,
-                "searchRadius": self.ui.astrometrySearchRadius,
-                "timeout": self.ui.astrometryTimeout,
-                "appPath": self.ui.astrometryAppPath,
-                "indexPath": self.ui.astrometryIndexPath,
-            },
-            "astap": {
-                "deviceName": self.ui.astapDeviceList,
-                "searchRadius": self.ui.astapSearchRadius,
-                "timeout": self.ui.astapTimeout,
-                "appPath": self.ui.astapAppPath,
-                "indexPath": self.ui.astapIndexPath,
-            },
-            "watney": {
-                "deviceName": self.ui.watneyDeviceList,
-                "searchRadius": self.ui.watneySearchRadius,
-                "timeout": self.ui.watneyTimeout,
-                "appPath": self.ui.watneyAppPath,
-                "indexPath": self.ui.watneyIndexPath,
-            },
+            "ascom": {"deviceName": self.ui.ascomDevice},
+            "boltwood": {"filePath": self.ui.boltwoodPath},
+            "astrometry": self.createSolverGui("astrometry"),
+            "astap": self.createSolverGui("astap"),
+            "watney": self.createSolverGui("watney"),
             "online": {
                 "apiKey": self.ui.onlineWeatherApiKey,
                 "hostAddress": self.ui.onlineWeatherHostAddress,
@@ -103,9 +90,7 @@ class DevicePopup(MWidget):
                 "user": self.ui.relayUser,
                 "password": self.ui.relayPassword,
             },
-            "hid": {
-                "deviceName": self.ui.hidDeviceList,
-            },
+            "hid": {"deviceName": self.ui.hidDeviceList},
         }
 
     def createPlatesolvers(self) -> dict[str, dict[str, Any]]:

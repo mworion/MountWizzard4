@@ -221,6 +221,9 @@ extend-select = [
 ]
 ignore = ["N999"]  # camelCase module names are the project convention
 
+[tool.ruff.lint.pylint]
+max-statements = 40
+
 [tool.ruff.lint.per-file-ignores]
 # driver boundary: alpyca / COM can raise anything; handleDeviceError classifies it
 "src/mw4/logic/drivers/frameworks/alpacaAscomCommon.py" = ["BLE001"]
@@ -228,6 +231,10 @@ ignore = ["N999"]  # camelCase module names are the project convention
 "src/mw4/base/tpool.py" = ["BLE001"]
 # the only module allowed to ask the operating system
 "src/mw4/base/platformInfo.py" = ["TID251"]
+# declarative: dialog widget setup, attribute lists, field-by-field response parser
+"src/mw4/gui/utilities/nativeQt/qtMessageDialog.py" = ["PLR0915"]
+"src/mw4/logic/controllers/imageWindow/photometry.py" = ["PLR0915"]
+"src/mw4/mountcontrol/setting.py" = ["PLR0915"]
 # Qt widgets / gui types are allowed in the gui, the application entry points and tests
 "src/mw4/gui/**" = ["TID251"]
 "src/mw4/mainApp.py" = ["TID251"]

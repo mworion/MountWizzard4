@@ -1,6 +1,6 @@
 # Plan A5 – move remaining logic out of the big main-window tabs
 
-Source: `../2026-10-20_review_copilot_open.md`, finding A5 (first round already done:
+Source: `2026-10-20_review_copilot_open.md`, finding A5 (first round already done:
 `formatSatPass`, `dataAgeColor`, `reduceTrajectory`, `pickListEntry`, `filterSlotRange`,
 `activeTrackingMode`).
 
@@ -161,7 +161,7 @@ Steps:
 ## Phase 4 – consolidation
 
 1. Re-measure: `wc -l` of the three tabs, `ruff check` (PLR0915), `lint-imports`, `pyrefly`.
-2. Update `../2026-10-20_review_copilot_open.md` (A5, roadmap) with the new numbers.
+2. Update `2026-10-20_review_copilot_open.md` (A5, roadmap) with the new numbers.
 3. Optional follow-up (not part of A5): `tabModel_Manage.py` (404 L), `tabAlmanac.py`
    (391 L), `tabModel_BuildPoints.py` (372 L) with the same pattern.
 

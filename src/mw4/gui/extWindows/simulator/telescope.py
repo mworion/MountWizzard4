@@ -38,7 +38,9 @@ class SimulatorTelescope:
         node = self.parent.entityModel.get("lat")
         if node:
             node["trans"].setRotationY(-abs(latitude))
+        self.updateOtaPositions()
 
+    def updateOtaPositions(self) -> None:
         offPlateOTA = self.app.dReg.mount.geometry.offPlateOTA * 1000
         cfg = self.app.config["SettingDome"]
         lat = -cfg.get("offLAT", 0) * 1000
@@ -46,9 +48,6 @@ class SimulatorTelescope:
         node = self.parent.entityModel.get("gem")
         if node:
             node["mesh"].setYExtent(abs(lat) + 80)
-
-        node = self.parent.entityModel.get("gem")
-        if node:
             node["trans"].setTranslation(QVector3D(159.0, lat / 2, 338.5))
 
         node = self.parent.entityModel.get("gemCorr")

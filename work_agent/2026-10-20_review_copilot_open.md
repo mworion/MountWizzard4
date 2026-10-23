@@ -22,7 +22,7 @@ incremental cleanup.
 | Pythonic style  | B+     | `hasattr`/dict plumbing, `dict[str, Any]` carriers |
 | Maintainability | A-     | long functions, docstring quality |
 | Quality         | A-     | no shared HTTP helper, thread-safety rule undocumented |
-| Testability     | A-     | god-object stubbing, stress tests not in CI, `tests/work` pollution |
+| Testability     | A-     | god-object stubbing, stress tests not in CI, `../tests/work` pollution |
 | Readability     | B+     | class-level loggers, docstring quality |
 
 ## 2. Open findings
@@ -76,13 +76,13 @@ incremental cleanup.
 ### Repository hygiene
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
-| H1 | H | ◐ `.git` is 1.2 GB (measured 2026-10-22), almost all of it history (generated `mw4/resource/resources.py` ×hundreds, `support/`, `whl/`, `hip_main.dat`); `gists/`, `work/`, `log/` are no longer tracked (`gists/` should go into `.gitignore`). In `HEAD`: 4 test images × 17.5 MB, runtime data duplicated in `tests/testData` (6.5 MB). | See `plan_H1_repository_slimming.md`: `.gitignore` + large-file CI check, deduplicate test data, crop/compress test images, data-asset policy, partial/shallow clones; `git filter-repo` only with maintainer agreement. |
+| H1 | H | ◐ **Decision 2026-10-23: no history rewrite (`git filter-repo`) – rejected due to broken hashes/forks/PRs/tags; history stays as is.** `.git` is 1.2 GB (measured 2026-10-22), almost all of it history (generated `mw4/resource/resources.py` ×hundreds, `support/`, `whl/`, `hip_main.dat`); `gists/`, `../work`, `log/` are no longer tracked (`gists/` should go into `.gitignore`). In `HEAD`: 4 test images × 17.5 MB, runtime data duplicated in `tests/testData` (6.5 MB). | See `plan_H1_repository_slimming.md`: `.gitignore` + large-file CI check, deduplicate test data, crop/compress test images, data-asset policy, partial/shallow clones; no `git filter-repo` (rejected 2026-10-23). |
 | H3 | M | Exact pins on core packages. | Fine for an application; keep Renovate/Dependabot, document the pin policy. |
 
 ## 3. Remaining roadmap
 
 **Follow-ups (first round of items 5–8 is done)**
-1. Repair `tests/stress_tests` (they fail with `AttributeError` on the UI layer) so the nightly job is green.
+1. Repair `../tests/stress_tests` (they fail with `AttributeError` on the UI layer) so the nightly job is green.
 2. M1 – the remaining ~12 long functions. Optional: same controller pattern for
    `tabModel_Manage.py`, `tabAlmanac.py`, `tabModel_BuildPoints.py` (A5 follow-up); the
    `update*Gui` tri-state button logic in `tabImage_Manage.py` could move to `logic` as well.

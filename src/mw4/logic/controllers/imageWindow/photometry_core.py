@@ -15,6 +15,7 @@ from astropy.stats import SigmaClip
 from dataclasses import dataclass
 from photutils.background import Background2D, MeanBackground, StdBackgroundRMS
 from photutils.segmentation import SourceCatalog, detect_sources
+from typing import Any
 
 
 class Background:
@@ -79,6 +80,28 @@ def estimateBackground(image: np.ndarray) -> Background:
     return Background(image)
 
 
+def measureCatalog(imageSub: np.ndarray, backRMS: np.ndarray, segments: Any) -> list[np.ndarray]:
+    """Measure the detected segments, returning one array per source property.
+
+    Order: x, y, semimajor, semiminor, theta, hfr, elongation, flux, flux error.
+    """
+    catalog = SourceCatalog(imageSub, segments, error=backRMS)
+    # 8.1: SourceCatalog replaces kron_radius/sum_ellipse/sum_circle/flux_radius
+    flux = np.asarray(catalog.kron_flux, dtype=float)
+    fluxErr = np.asarray(catalog.kron_flux_err, dtype=float)
+    hfr = np.asarray(catalog.flux_radius(0.5).value, dtype=float)
+    elongation = np.asarray(catalog.elongation, dtype=float)
+    xCoord = np.asarray(catalog.x_centroid, dtype=float)
+    yCoord = np.asarray(catalog.y_centroid, dtype=float)
+    # pyrefly: ignore[missing-attribute]
+    aAxis = np.asarray(catalog.semimajor_axis.value, dtype=float)
+    # pyrefly: ignore[missing-attribute]
+    bAxis = np.asarray(catalog.semiminor_axis.value, dtype=float)
+    # pyrefly: ignore[missing-attribute]
+    theta = np.asarray(catalog.orientation.to(u.rad).value, dtype=float)
+    return [xCoord, yCoord, aAxis, bAxis, theta, hfr, elongation, flux, fluxErr]
+
+
 def extractSources(
     imageSub: np.ndarray,
     backRMS: np.ndarray,
@@ -94,23 +117,9 @@ def extractSources(
     if segments is None:
         return None
 
-    catalog = SourceCatalog(imageSub, segments, error=backRMS)
-    # 8.1: SourceCatalog replaces kron_radius/sum_ellipse/sum_circle/flux_radius
-    flux = np.asarray(catalog.kron_flux, dtype=float)
-    fluxErr = np.asarray(catalog.kron_flux_err, dtype=float)
-    hfr = np.asarray(catalog.flux_radius(0.5).value, dtype=float)
-    elongation = np.asarray(catalog.elongation, dtype=float)
-    xCoord = np.asarray(catalog.x_centroid, dtype=float)
-    yCoord = np.asarray(catalog.y_centroid, dtype=float)
-    # pyrefly: ignore[missing-attribute]
-    aAxis = np.asarray(catalog.semimajor_axis.value, dtype=float)
-    # pyrefly: ignore[missing-attribute]
-    bAxis = np.asarray(catalog.semiminor_axis.value, dtype=float)
-    # pyrefly: ignore[missing-attribute]
-    theta = np.asarray(catalog.orientation.to(u.rad).value, dtype=float)
-    raw = len(hfr)
-
-    columns = [xCoord, yCoord, aAxis, bAxis, theta, hfr, elongation, flux, fluxErr]
+    columns = measureCatalog(imageSub, backRMS, segments)
+    raw = len(columns[5])
+    aAxis, bAxis = columns[2], columns[3]
 
     # 8.4: n_pixels covers the lower size bound, only an upper cut remains
     r = np.sqrt(aAxis * aAxis + bAxis * bAxis)

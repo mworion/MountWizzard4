@@ -1,6 +1,6 @@
 # Plan M3 – remove copy-paste from the device facades
 
-Source: `../2026-10-20_review_copilot_open.md`, finding M3.
+Source: `2026-10-20_review_copilot_open.md`, finding M3.
 Status: **implemented** (all nine facades migrated; the "possible result" below is the
 approach taken, with PEP 695 generics `DeviceFacade[AppT: HasThreadPool]` so camera and dome
 keep their `AppProtocol` typing). Closed: `Measure`, `PlateSolve`, `Remote`, `KMRelay`,
@@ -59,7 +59,7 @@ Facades only declare their back-ends and their device specific methods.
    Keep one `*_ascom_in_run` test per device only where `test_testMapping` or windows
    coverage needs it.
 5. Verify: `ruff`, `pyrefly`, `lint-imports`, full unit run with 100 % coverage.
-6. Mark M3 done in `../2026-10-20_review_copilot_open.md`.
+6. Mark M3 done in `2026-10-20_review_copilot_open.md`.
 
 ## Risks
 

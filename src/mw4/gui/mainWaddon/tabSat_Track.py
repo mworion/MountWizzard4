@@ -75,6 +75,7 @@ class SatTrack(SatData):
         self.app.dReg.mount.signals.pointDone.connect(self.followMount)
         self.app.dReg.mount.signals.pointDone.connect(self.toggleTrackingOffset)
         self.app.dReg.mount.signals.firmwareDone.connect(self.enableGuiFunctions)
+        self.app.dReg.mount.signals.settingDone.connect(self.showSatPasses)
 
         self.ui.startSatelliteTracking.clicked.connect(self.startTrack)
         self.ui.stopSatelliteTracking.clicked.connect(self.stopTrack)

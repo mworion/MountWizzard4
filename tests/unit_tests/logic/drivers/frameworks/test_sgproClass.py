@@ -161,9 +161,7 @@ def test_requestProperty_osError(function):
 def test_requestProperty_unexpectedPropagates(function):
     """An unexpected exception type is no longer swallowed."""
     with (
-        mock.patch(
-            "requests.get", side_effect=ZeroDivisionError
-        ),
+        mock.patch("requests.get", side_effect=ZeroDivisionError),
         pytest.raises(ZeroDivisionError),
     ):
         function.requestProperty("testProp")

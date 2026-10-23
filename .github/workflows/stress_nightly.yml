@@ -1,0 +1,28 @@
+name: stress_nightly
+concurrency:
+  group: "${{ github.ref }}-${{ github.workflow }}"
+  cancel-in-progress: true
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  run_stress_tests:
+    runs-on: ubuntu-24.04
+    env:
+      QT_QPA_PLATFORM: offscreen
+
+    steps:
+      - uses: actions/checkout@v6
+      - name: install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1 libxkbcommon-x11-0 libpulse0
+      - name: install package
+        uses: ./.github/actions/setup_test
+      - name: running_stress_tests
+        run: |
+          # 
+          # uv run pytest tests/stress_tests -m "slow and integration"

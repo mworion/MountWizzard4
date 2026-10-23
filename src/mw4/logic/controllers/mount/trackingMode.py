@@ -5,7 +5,7 @@ from mw4.mountcontrol.setting import Setting
 
 
 def activeTrackingMode(status: int | None, isFollowingSatellite: bool, sett: Setting) -> str | None:
-    """names the button of the active tracking mode, None if the mount state is unknown."""
+    """Names the button of the active tracking mode, None if the mount state is unknown."""
     if status is None:
         return None
     if isFollowingSatellite:

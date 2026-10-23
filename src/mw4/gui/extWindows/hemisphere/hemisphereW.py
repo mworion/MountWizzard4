@@ -15,7 +15,7 @@ from PySide6.QtGui import QCloseEvent
 
 class HemisphereWindow(MWidget):
     """
-    the hemisphere window class handles all interaction with model points
+    The hemisphere window class handles all interaction with model points
     show / edit etc. the z orders are aligned as follows:
 
     on the static plane we have (and set to the z order)

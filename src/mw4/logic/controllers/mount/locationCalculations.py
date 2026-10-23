@@ -12,7 +12,7 @@ def buildLocation(
     elev: float | None = None,
 ) -> tuple[GeographicPosition, str]:
     """
-    builds a new position from the given parts; missing parts are taken from the current
+    Builds a new position from the given parts; missing parts are taken from the current
     location. returns the position and the log text.
     """
     lat = current.latitude if lat is None else lat

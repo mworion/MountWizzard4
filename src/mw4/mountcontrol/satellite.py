@@ -126,7 +126,7 @@ class Satellite:
 
     def calcTLE(self, julD: float, duration: int = 1440) -> bool:
         """
-        transformation UTC <-> TT time system needed
+        Transformation UTC <-> TT time system needed
         """
         if not 0 < duration < 1441:
             return False
@@ -167,7 +167,7 @@ class Satellite:
 
     def startProgTrajectory(self, julD: float) -> bool:
         """
-        transformation UTC <-> TT time system needed at the beginning
+        Transformation UTC <-> TT time system needed at the beginning
         """
         julD -= self.obsSite.UTC2TT
 

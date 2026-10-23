@@ -79,7 +79,7 @@ def calcAppMag(
     tEv: float | Time,
 ) -> float:
     """
-    solution base on the work from:
+    Solution base on the work from:
     https://astronomy.stackexchange.com/questions/28744
         /calculating-the-apparent-magnitude-of-a-satellite/28765#28765
     https://astronomy.stackexchange.com/q/28744/7982

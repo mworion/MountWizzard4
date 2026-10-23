@@ -26,9 +26,7 @@ def function(makeApp):
     func.app.threadPool.waitForDone(5000)
 
 
-# ---------------------------------------------------------------------------
 # lightOn
-# ---------------------------------------------------------------------------
 
 
 def test_lightOn(function):
@@ -39,9 +37,7 @@ def test_lightOn(function):
     assert function.txQ.get() == ("test_cover", "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_ON": "On"})
 
 
-# ---------------------------------------------------------------------------
 # lightOff
-# ---------------------------------------------------------------------------
 
 
 def test_lightOff(function):
@@ -52,9 +48,7 @@ def test_lightOff(function):
     assert function.txQ.get() == ("test_cover", "FLAT_LIGHT_CONTROL", {"FLAT_LIGHT_OFF": "On"})
 
 
-# ---------------------------------------------------------------------------
 # lightIntensity
-# ---------------------------------------------------------------------------
 
 
 def test_lightIntensity(function):

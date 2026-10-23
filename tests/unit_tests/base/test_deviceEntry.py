@@ -21,9 +21,7 @@ def registry() -> DeviceRegistry:
     return dReg
 
 
-# ------------------------------------------------------------------
 # DeviceEntry — attribute access
-# ------------------------------------------------------------------
 def test_deviceEntryAttributes() -> None:
     entry = DeviceEntry(name="test", instance=object(), deviceType="camera", isConfigurable=True)
     assert entry.name == "test"
@@ -32,9 +30,7 @@ def test_deviceEntryAttributes() -> None:
     assert entry.stat is None
 
 
-# ------------------------------------------------------------------
 # DeviceEntry — convenience properties for instance attributes
-# ------------------------------------------------------------------
 def test_deviceEntrySignalsProperty() -> None:
     class MockInstance:
         def __init__(self):
@@ -263,9 +259,7 @@ def test_deviceEntryConfigPropertyWhenFrameworkIsEmptyString() -> None:
         _ = entry.config
 
 
-# ------------------------------------------------------------------
 # DeviceEntry — error handling for None instance
-# ------------------------------------------------------------------
 def test_deviceEntryNoneInstanceSignalsProperty() -> None:
     entry = DeviceEntry(name="test", instance=None, deviceType="camera", isConfigurable=True)
     with pytest.raises(AttributeError, match="Device 'test' instance is None"):
@@ -332,9 +326,7 @@ def test_deviceEntryNoneInstanceConfigProperty() -> None:
         _ = entry.config
 
 
-# ------------------------------------------------------------------
 # DeviceEntry — multiple properties on same entry
-# ------------------------------------------------------------------
 def test_deviceEntryMultipleProperties() -> None:
     """Test accessing multiple properties on the same entry."""
 
@@ -379,9 +371,7 @@ def test_deviceEntryMultipleProperties() -> None:
     assert entry.satellite == "SatelliteW"
 
 
-# ------------------------------------------------------------------
 # DeviceEntry — stat field variations
-# ------------------------------------------------------------------
 def test_deviceEntryStatFieldNone() -> None:
     entry = DeviceEntry(
         name="test", instance=object(), deviceType="camera", isConfigurable=True, stat=None

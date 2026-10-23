@@ -31,9 +31,7 @@ def function(makeApp):
         pytest.skip(f"Camera/CameraIndi initialization failed: {e}")
 
 
-# ---------------------------------------------------------------------------
 # setUpdateConfig
-# ---------------------------------------------------------------------------
 
 
 def test_setUpdateConfig(function):
@@ -54,9 +52,7 @@ def test_setUpdateConfig(function):
     assert function.txQ.get() == ("test_device", "TELESCOPE_TYPE", {"TELESCOPE_PRIMARY": "On"})
 
 
-# ---------------------------------------------------------------------------
 # setExposureState
-# ---------------------------------------------------------------------------
 
 
 def test_setExposureState_not_exposing(function):
@@ -213,9 +209,7 @@ def test_setExposureState_unknown_state(function):
     function.parent.exposing = False
 
 
-# ---------------------------------------------------------------------------
 # setCanTemperature
-# ---------------------------------------------------------------------------
 
 
 def test_setCanTemperature_absent(function):
@@ -232,9 +226,7 @@ def test_setCanTemperature_present(function):
     assert function.data["CAN_SET_CCD_TEMPERATURE"] is True
 
 
-# ---------------------------------------------------------------------------
 # addGainLimits
-# ---------------------------------------------------------------------------
 
 
 def test_addGainLimits_absent(function):
@@ -262,9 +254,7 @@ def test_addGainLimits_without_min_max(function):
     assert function.data["CCD_GAIN.GAIN_MAX"] == 1
 
 
-# ---------------------------------------------------------------------------
 # addOffsetLimits
-# ---------------------------------------------------------------------------
 
 
 def test_addOffsetLimits_absent(function):
@@ -292,9 +282,7 @@ def test_addOffsetLimits_without_min_max(function):
     assert function.data["CCD_OFFSET.OFFSET_MAX"] == 1
 
 
-# ---------------------------------------------------------------------------
 # writeImageXisfHeader
-# ---------------------------------------------------------------------------
 
 
 def test_writeImageXisfHeader(function):
@@ -334,9 +322,7 @@ def test_writeImageXisfHeader(function):
         )
 
 
-# ---------------------------------------------------------------------------
 # saveImageBLOB
-# ---------------------------------------------------------------------------
 
 
 def test_saveImageBLOB_absent(function):
@@ -434,9 +420,7 @@ def test_saveImageBLOB_xisf(function):
     function.signals.message.disconnect(msg_slot)
 
 
-# ---------------------------------------------------------------------------
 # writeVectorsToData
-# ---------------------------------------------------------------------------
 
 
 def test_writeVectorsToData(function):
@@ -460,9 +444,7 @@ def test_writeVectorsToData(function):
         mock_blob.assert_called_once_with(item, vectors)
 
 
-# ---------------------------------------------------------------------------
 # sendDownloadMode
-# ---------------------------------------------------------------------------
 
 
 def test_sendDownloadMode(function):
@@ -474,9 +456,7 @@ def test_sendDownloadMode(function):
     assert function.txQ.get() == ("test_cam", "CCD_COMPRESSION", {"INDI_DISABLED": "On"})
 
 
-# ---------------------------------------------------------------------------
 # expose
-# ---------------------------------------------------------------------------
 
 
 def test_expose(function):
@@ -502,9 +482,7 @@ def test_expose(function):
     assert function.txQ.get() == ("test_cam", "CCD_EXPOSURE", {"CCD_EXPOSURE_VALUE": 3.0})
 
 
-# ---------------------------------------------------------------------------
 # abort
-# ---------------------------------------------------------------------------
 
 
 def test_abort(function):
@@ -515,9 +493,7 @@ def test_abort(function):
     assert function.txQ.get() == ("test_cam", "CCD_ABORT_EXPOSURE", {"ABORT": "On"})
 
 
-# ---------------------------------------------------------------------------
 # sendCoolerSwitch
-# ---------------------------------------------------------------------------
 
 
 def test_sendCoolerSwitch_off(function):
@@ -544,9 +520,7 @@ def test_sendCoolerSwitch_on(function):
     )
 
 
-# ---------------------------------------------------------------------------
 # sendCoolerTemp
-# ---------------------------------------------------------------------------
 
 
 def test_sendCoolerTemp(function):
@@ -561,9 +535,7 @@ def test_sendCoolerTemp(function):
     )
 
 
-# ---------------------------------------------------------------------------
 # sendOffset
-# ---------------------------------------------------------------------------
 
 
 def test_sendOffset(function):
@@ -574,9 +546,7 @@ def test_sendOffset(function):
     assert function.txQ.get() == ("test_cam", "CCD_OFFSET", {"OFFSET": 50})
 
 
-# ---------------------------------------------------------------------------
 # sendGain
-# ---------------------------------------------------------------------------
 
 
 def test_sendGain(function):

@@ -6,7 +6,7 @@ from typing import Any
 
 
 class SatelliteTrackController:
-    """mount state transitions for satellite tracking, without any GUI dependency."""
+    """Mount state transitions for satellite tracking, without any GUI dependency."""
 
     def __init__(self, mount: Any, dome: Any, notify: Callable[[int, str, str, str], Any]) -> None:
         self.mount = mount
@@ -14,7 +14,7 @@ class SatelliteTrackController:
         self.notify = notify
 
     def start(self) -> bool:
-        """unparks the mount if needed, slews to the TLE start and sets the offsets."""
+        """Unparks the mount if needed, slews to the TLE start and sets the offsets."""
         if not self.mount.stat:
             self.notify(2, "TLE", "Program", "Mount is not online")
             return False
@@ -37,7 +37,7 @@ class SatelliteTrackController:
         return True
 
     def stop(self) -> bool:
-        """stops the satellite tracking by returning the mount to normal tracking."""
+        """Stops the satellite tracking by returning the mount to normal tracking."""
         if not self.mount.stat:
             self.notify(2, "TLE", "Command", "Mount is not online")
             return False

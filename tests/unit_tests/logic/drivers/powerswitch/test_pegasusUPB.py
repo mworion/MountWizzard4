@@ -24,9 +24,7 @@ def function(makeApp):
     yield func
 
 
-# ---------------------------------------------------------------------------
 # properties
-# ---------------------------------------------------------------------------
 
 
 def test_properties(function):
@@ -42,14 +40,10 @@ def test_properties(function):
     assert function.loadConfig
 
 
-# ---------------------------------------------------------------------------
 # startCommunication / stopCommunication
-# ---------------------------------------------------------------------------
 
 
-# ---------------------------------------------------------------------------
 # togglePowerPort
-# ---------------------------------------------------------------------------
 
 
 def test_togglePowerPort(function):
@@ -68,9 +62,7 @@ def test_toggleHubUSB(function):
         mock_toggle.assert_called_once()
 
 
-# ---------------------------------------------------------------------------
 # togglePortUSB
-# ---------------------------------------------------------------------------
 
 
 def test_togglePortUSB(function):
@@ -89,9 +81,7 @@ def test_sendDew(function):
         mock_send.assert_called_once_with(port="1", value=100)
 
 
-# ---------------------------------------------------------------------------
 # sendAdjustableOutput
-# ---------------------------------------------------------------------------
 
 
 def test_sendAdjustableOutput_returns_false(function):
@@ -108,9 +98,7 @@ def test_sendAdjustableOutput_returns_true(function):
         function.sendAdjustableOutput(1)
 
 
-# ---------------------------------------------------------------------------
 # reboot
-# ---------------------------------------------------------------------------
 
 
 def test_reboot_returns_false(function):

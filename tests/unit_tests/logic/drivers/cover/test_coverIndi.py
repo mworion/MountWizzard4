@@ -26,9 +26,7 @@ def function(makeApp):
     func.app.threadPool.waitForDone(5000)
 
 
-# ---------------------------------------------------------------------------
 # closeCover
-# ---------------------------------------------------------------------------
 
 
 def test_closeCover(function):
@@ -39,9 +37,7 @@ def test_closeCover(function):
     assert function.txQ.get() == ("test_cover", "CAP_PARK", {"PARK": "On"})
 
 
-# ---------------------------------------------------------------------------
 # openCover
-# ---------------------------------------------------------------------------
 
 
 def test_openCover(function):
@@ -52,9 +48,7 @@ def test_openCover(function):
     assert function.txQ.get() == ("test_cover", "CAP_PARK", {"UNPARK": "On"})
 
 
-# ---------------------------------------------------------------------------
 # haltCover
-# ---------------------------------------------------------------------------
 
 
 def test_haltCover(function):

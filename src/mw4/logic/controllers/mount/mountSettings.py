@@ -8,7 +8,7 @@ from typing import Any
 
 @dataclass(frozen=True)
 class SettingSpec:
-    """describes one mount setting: dialog texts, bounds and the setter to call."""
+    """Describes one mount setting: dialog texts, bounds and the setter to call."""
 
     title: str
     label: str
@@ -140,21 +140,21 @@ VALUES: dict[str, SettingSpec] = {
 
 
 class MountSettingsController:
-    """applies mount settings and reports the result, without any GUI dependency."""
+    """Applies mount settings and reports the result, without any GUI dependency."""
 
     def __init__(self, setting: Any, notify: Callable[[int, str, str, str], Any]) -> None:
         self.setting = setting
         self.notify = notify
 
     def currentValue(self, spec: SettingSpec) -> float:
-        """returns the actual setting value, 0 if the mount did not report one."""
+        """Returns the actual setting value, 0 if the mount did not report one."""
         value = getattr(self.setting, spec.attribute)
         if value is None:
             return 0
         return int(value) if spec.isInt else value
 
     def valueRange(self, spec: SettingSpec) -> tuple[float, float, str]:
-        """returns minimum, maximum and the dialog prompt for a value setting."""
+        """Returns minimum, maximum and the dialog prompt for a value setting."""
         if not spec.minAttribute:
             return spec.minVal, spec.maxVal, spec.prompt
         minVal = getattr(self.setting, spec.minAttribute)
@@ -164,19 +164,19 @@ class MountSettingsController:
         return minVal, maxVal, f"Value ({minVal}...{maxVal}):"
 
     def switchIndex(self, spec: SettingSpec) -> int:
-        """returns the preselected index of the ON / OFF list."""
+        """Returns the preselected index of the ON / OFF list."""
         if not spec.attribute:
             return 0
         return 0 if getattr(self.setting, spec.attribute) == "ON" else 1
 
     def applySwitch(self, spec: SettingSpec, value: str) -> bool:
-        """sets a switch setting; value is the dialog text ON or OFF."""
+        """Sets a switch setting; value is the dialog text ON or OFF."""
         suc = getattr(self.setting, spec.setterName)(value == "ON")
         self.report(spec, suc, value)
         return suc
 
     def applyValue(self, spec: SettingSpec, value: float) -> bool:
-        """sets a numeric setting."""
+        """Sets a numeric setting."""
         suc = getattr(self.setting, spec.setterName)(value)
         self.report(spec, suc, value)
         return suc

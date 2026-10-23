@@ -371,7 +371,7 @@ class Connection:
         self, client: QTcpSocket, numberOfChunks: int, minBytes: int
     ) -> tuple[bool, list[str]]:
         """
-        receive Data waits on the give socket client for a number of chunks to
+        Receive Data waits on the give socket client for a number of chunks to
         be received or a minimum set of bytes received. the chunks are delimited
         with #. the min bytes are necessary because the mount computer has
         commands which give a response without a delimiter. this is bad, but status.

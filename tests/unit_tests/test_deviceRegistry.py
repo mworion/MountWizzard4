@@ -90,9 +90,7 @@ def test_deviceEntrySatellitePropertyRaisesWhenInstanceNone() -> None:
         _ = entry.satellite
 
 
-# ------------------------------------------------------------------
 # DeviceRegistry — population
-# ------------------------------------------------------------------
 def test_initiallyNotEmpty(registry: DeviceRegistry) -> None:
     assert "camera" in registry.d
     assert "dome" in registry.d
@@ -138,9 +136,7 @@ def test_refractionIsNotConfigurable(registry: DeviceRegistry) -> None:
     assert entry.isConfigurable is False
 
 
-# ------------------------------------------------------------------
 # DeviceRegistry — mapping protocol
-# ------------------------------------------------------------------
 def test_registryGetItem(registry: DeviceRegistry) -> None:
     entry = registry["camera"]
     assert isinstance(entry, DeviceEntry)
@@ -159,9 +155,7 @@ def test_registryIter(registry: DeviceRegistry) -> None:
     assert "refraction" in names
 
 
-# ------------------------------------------------------------------
 # DeviceRegistry — configurable() iterator
-# ------------------------------------------------------------------
 def test_configurableExcludesMount(registry: DeviceRegistry) -> None:
     names = [e.name for e in registry.configurable()]
     assert "mount" not in names
@@ -182,9 +176,7 @@ def test_configurableAllHaveInstance(registry: DeviceRegistry) -> None:
         assert entry.instance is not None
 
 
-# ------------------------------------------------------------------
 # DeviceRegistry — setStat()
-# ------------------------------------------------------------------
 def test_setStatTrue(registry: DeviceRegistry) -> None:
     registry.setStat("camera", True)
     assert registry.d["camera"].stat is True
@@ -200,9 +192,7 @@ def test_setStatNone(registry: DeviceRegistry) -> None:
     assert registry.d["refraction"].stat is None
 
 
-# ------------------------------------------------------------------
 # DeviceRegistry — two-phase initialization pattern
-# ------------------------------------------------------------------
 def test_initPhase1OnlyMountExists(makeApp) -> None:
     """After __init__, only mount device exists."""
     try:
@@ -286,9 +276,7 @@ def test_initIgnoresAppMountAttribute(makeApp) -> None:
     assert isinstance(dReg["mount"].instance, MountDevice)
 
 
-# ------------------------------------------------------------------
 # DeviceRegistry — signal connections
-# ------------------------------------------------------------------
 def test_initConnectsStopDevicesSignal(registry: DeviceRegistry, makeApp) -> None:
     """Test that stopDevices signal is connected during initialization."""
     # Create new app and registry to test connections
@@ -409,9 +397,7 @@ def test_deviceDisconnectedUpdatesStatBeforeMessage(registry: DeviceRegistry) ->
     assert registry.app.signals.ui.msg.emit.called
 
 
-# ------------------------------------------------------------------
 # DeviceRegistry — config management
-# ------------------------------------------------------------------
 def test_collectConfigFromSingleDeviceWithoutConfig(registry: DeviceRegistry) -> None:
     """Test collectConfigFromSingleDevice when device has no config attribute."""
     from unittest.mock import MagicMock
@@ -489,9 +475,7 @@ def test_startDeviceWithoutDeviceName(registry: DeviceRegistry) -> None:
     assert registry.d["camera"].stat is None
 
 
-# ------------------------------------------------------------------
 # Additional deviceRegistry tests for complete coverage
-# ------------------------------------------------------------------
 def test_writeConfigToSingleDeviceWithConfigFields(registry: DeviceRegistry) -> None:
     """Test writeConfigToSingleDevice actually sets config fields."""
     from dataclasses import dataclass, field
@@ -746,9 +730,7 @@ def test_addDevicesSkipsSignalsForInstanceWithoutSignals(makeApp) -> None:
     assert "measure" not in dReg.signalsToName.values()
 
 
-# ------------------------------------------------------------------
 # Typed access
-# ------------------------------------------------------------------
 def typedNames(registry: DeviceRegistry) -> set[str]:
     return set(registry.d)
 

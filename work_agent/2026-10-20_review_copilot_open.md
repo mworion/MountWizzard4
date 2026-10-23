@@ -2,10 +2,10 @@
 
 Condensed from `2026-10-20_review_copilot.md` (second pass, revision `3ec18a381`, version
 `4.0.0b36`). Only findings and roadmap items that are **not yet done** are listed.
-Done items (A1, A2, A4, A5, A6, P1, P2, P4, P5, P8, M2, M3, M4, M5, M6, M8, Q1, T3, T6, T8, H2, H4, H5, roadmap 1–8
-and the first round of M1, P1, T1) are omitted.
+Done items (A1, A2, A4, A5, A6, P1, P2, P4, P5, R3, R4, R5, P8, M2, M3, M4, M5, M6, M8, Q1, T3, T6, T8, H2, H4, H5, roadmap 1–8
+and the first round of M1, T1) are omitted.
 
-State at re-run: 5213 tests passed / 38 skipped, 100 % line and branch coverage,
+State at re-run (2026-10-23): 5275 tests passed / 38 skipped, 100 % line and branch coverage,
 `ruff check src` clean, `pyrefly` 0 errors, `lint-imports` 7 contracts kept.
 
 Priority: **H** high, **M** medium, **L** low. ◐ = partly done.
@@ -19,11 +19,11 @@ incremental cleanup.
 | Area            | Rating | Remaining weakness |
 |-----------------|--------|--------------------|
 | Architecture    | A-     | raw-dict config (A3) |
-| Pythonic style  | B+     | `hasattr`/dict plumbing, `dict[str, Any]` carriers |
+| Pythonic style  | A-     | `data` carriers stay `dict[str, Any]` by design; type suppressions (P7) |
 | Maintainability | A-     | long functions, docstring quality |
 | Quality         | A-     | thread-safety rule undocumented (Q5) |
 | Testability     | A-     | god-object stubbing, stress tests not in CI, `../tests/work` pollution |
-| Readability     | B+     | docstring quality, long banners |
+| Readability     | A-     | docstring style (M7), camelCase not enforced (R1) |
 
 ## 2. Open findings
 
@@ -65,9 +65,6 @@ incremental cleanup.
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
 | R1 | M | camelCase is a deliberate deviation; no tool enforces it. | Pre-commit grep for `snake_case` defs if drift appears. |
-| R3 | L | Long section banners remain. | Optional cleanup. |
-| R4 | L | Mixed English in docstrings/comments. | Proof-reading pass. |
-| R5 | L | Module header differs from the project banner. | Cosmetic. |
 
 ### Repository hygiene
 | # | Pri | Open point | Recommendation |

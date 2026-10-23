@@ -88,9 +88,7 @@ class DeviceRegistry(QObject):
                 sig.deviceConnected.connect(self.deviceConnected)
                 sig.deviceDisconnected.connect(self.deviceDisconnected)
 
-    # ------------------------------------------------------------------
     # Typed access, backed by self.d so replaced entries never drift
-    # ------------------------------------------------------------------
     @property
     def mount(self) -> DeviceEntry[MountDevice]:
         return self.d["mount"]
@@ -175,9 +173,7 @@ class DeviceRegistry(QObject):
     def telescope(self) -> DeviceEntry[Telescope]:
         return self.d["telescope"]
 
-    # ------------------------------------------------------------------
     # Mapping protocol — keeps membership tests and dynamic key lookups working
-    # ------------------------------------------------------------------
     def __iter__(self) -> Iterator[str]:
         return iter(self.d)
 

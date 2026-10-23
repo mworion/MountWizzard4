@@ -25,9 +25,7 @@ def function(makeApp):
     func.app.threadPool.waitForDone(5000)
 
 
-# ---------------------------------------------------------------------------
 # setUpdateConfig
-# ---------------------------------------------------------------------------
 
 
 @pytest.mark.skip(reason="setUpdateConfig method has been removed from SensorWeatherIndi")

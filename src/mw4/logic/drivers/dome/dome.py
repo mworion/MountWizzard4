@@ -165,7 +165,7 @@ class Dome(DeviceFacade[AppProtocol, DomeDriver]):
         self, altitude: float, azimuth: float, func: Callable
     ) -> tuple[float, float, float | None, float | None]:
         """
-        x and y are the intersection with the dome shutter plane. They are None
+        X and y are the intersection with the dome shutter plane. They are None
         without geometry or on a geometry error, checkSlewNeeded needs both.
         """
         if not self.useGeometry:

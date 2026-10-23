@@ -31,7 +31,7 @@ class DataWriter:
     @staticmethod
     def writeCometMPC(datas: list[dict[str, Any]], dataFilePath: Path) -> None:
         """
-        data format of json and file description in
+        Data format of json and file description in
         https://minorplanetcenter.net/Extended_Files/Extended_MPCORB_Data_Format_Manual.pdf
         """
         dest = dataFilePath / "comets.mpc"
@@ -80,7 +80,7 @@ class DataWriter:
     @staticmethod
     def convertDatePacked(value: float) -> str:
         """
-        conversion is described on
+        Conversion is described on
         https://www.minorplanetcenter.net/iau/info/PackedDates.html
         """
         value = int(value)
@@ -112,7 +112,7 @@ class DataWriter:
 
     def generateDesignationPacked(self, designation: str) -> str:
         """
-        description of conversion in
+        Description of conversion in
         https://minorplanetcenter.net//iau/info/PackedDes.html
         """
         if not designation:
@@ -136,7 +136,7 @@ class DataWriter:
 
     def generateDatePacked(self, month: str, day: str) -> str:
         """
-        conversion is described on
+        Conversion is described on
         https://www.minorplanetcenter.net/iau/info/PackedDates.html
         """
         dateChar1 = self.convertDatePacked(month)
@@ -146,7 +146,7 @@ class DataWriter:
 
     def generateEpochPacked(self, epoch: float) -> str:
         """
-        conversion is described on
+        Conversion is described on
         https://www.minorplanetcenter.net/iau/info/PackedDates.html
         """
         if not epoch:
@@ -193,7 +193,7 @@ class DataWriter:
 
     def formatAsteroidRecord(self, data: dict[str, Any]) -> str:
         """
-        data format of json and file description in
+        Data format of json and file description in
         https://minorplanetcenter.net/Extended_Files/Extended_MPCORB_Data_Format_Manual.pdf
         we have a mix of new and old style designation to manage. the old style seem to
         have the key 'Number' in json, new style not.
@@ -235,7 +235,7 @@ class DataWriter:
     @staticmethod
     def writeSatelliteTLE(datas: list[Any], dataFilePath: Path) -> None:
         """
-        data format of TLE and file description in
+        Data format of TLE and file description in
         """
         dest = dataFilePath / "satellites.tle"
         with open(dest, "w") as f:

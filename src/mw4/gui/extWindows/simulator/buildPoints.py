@@ -104,7 +104,7 @@ class SimulatorBuildPoints:
         status: int,
     ) -> tuple:
         """
-        the point is located in a distance of radius meters from the ota axis
+        The point is located in a distance of radius meters from the ota axis
         and positioned in azimuth and altitude correctly. its representation
         is a small ball mesh.
         """
@@ -134,7 +134,7 @@ class SimulatorBuildPoints:
         faceIn: bool = False,
     ) -> tuple:
         """
-        the annotation - basically the number of the point - is positioned
+        The annotation - basically the number of the point - is positioned
         relative to the build point in its local coordinate system. to face the
         text to the viewer (azimuth), the text is first rotated to be upright
         and secondly to turn is fac according to the altitude of the viewer.

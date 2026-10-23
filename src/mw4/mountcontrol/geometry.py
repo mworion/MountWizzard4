@@ -301,7 +301,7 @@ class Geometry:
         Transformations T4..T7 from the latitude compensation to the center of
         the scope. All angles are in degrees.
         """
-        # next is the translation fom the rotation axis of the lat compensation
+        # next is the translation from the rotation axis of the lat compensation
         # of the mount to the GEM point of the mount. GEM means the crossing of
         # the ra and dec axis of the german equatorial mount basically there
         # should be a translation in x/z plane up and forward (to north)
@@ -371,7 +371,7 @@ class Geometry:
         if you have g: v = v0 + t * t_Dir and hem: x^2 + y^2 + z^2 = r^2
         with v0 = PB and t_Dir = PD you get t1 and t2 from p-q formula as
         t1 = -p/2 + sqr (p^2/4 - q), t2 = -p/2 - sqr (p^2/4 - q)
-        for the right point whe have to choose the one, which crosses the
+        for the right point we have to choose the one, which crosses the
         hemisphere above the scope point as we normally are looking upward.
         and we have to use scalar product on a cartesian system.
         """

@@ -11,7 +11,7 @@ from typing import Any, ClassVar
 
 
 class DeviceFacade[AppT: HasThreadPool, DriverT: FrameworkDriver]:
-    """common part of all device facades: back-end table, signals, start and stop."""
+    """Common part of all device facades: back-end table, signals, start and stop."""
 
     log = logging.getLogger("MW4")
     DEVICE_TYPE: ClassVar[str] = ""
@@ -29,7 +29,7 @@ class DeviceFacade[AppT: HasThreadPool, DriverT: FrameworkDriver]:
         backends: dict[str, Callable[[Any], DriverT]],
         windowsBackends: dict[str, Callable[[], DriverT]] | None = None,
     ) -> None:
-        """creates the back-ends; Windows-only ones are given as factories."""
+        """Creates the back-ends; Windows-only ones are given as factories."""
         self.run = {name: backend(self) for name, backend in backends.items()}
         platformInfo.registerWindowsBackends(self.run, windowsBackends or {})
 

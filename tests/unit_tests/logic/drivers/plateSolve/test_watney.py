@@ -51,9 +51,7 @@ def test_solve_2(function):
         assert res["success"]
 
 
-# ------------------------------------------------------------------
 # Watney — blind mode (searchRadius == 180)
-# ------------------------------------------------------------------
 def test_solveBlindMode(function) -> None:
     """Test solve() with blind mode (searchRadius == 180) to cover lines 70-71."""
     # Set searchRadius to 180 to trigger isBlind = True

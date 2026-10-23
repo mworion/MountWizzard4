@@ -28,7 +28,7 @@ START_SCHEDULE: list[tuple[int, str]] = [
 class TimeManager(QObject):
     log = logging.getLogger("MW4")
 
-    # --- Cyclic update signals (emitted every 100ms tick) ---
+    # Cyclic update signals (emitted every 100ms tick)
     update0_1s = Signal()
     update0_5s = Signal()
     update1s = Signal()
@@ -37,7 +37,7 @@ class TimeManager(QObject):
     update30s = Signal()
     update3m = Signal()
     update30m = Signal()
-    # --- Startup signals (emitted once after 1s) ---
+    # Startup signals (emitted once after 1s)
     start1s = Signal()
     start3s = Signal()
 

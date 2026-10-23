@@ -641,12 +641,12 @@ def test_discoverDevices_empty_result(function):
 
 
 def test_getInitialConfig_override(function):
-    """Test that getInitialConfig is overrideable."""
+    """Test that getInitialConfig is overridable."""
     function.getInitialConfig()
 
 
 def test_pollData_override(function):
-    """Test that pollData is overrideable."""
+    """Test that pollData is overridable."""
     function.pollData()
 
 

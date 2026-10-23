@@ -291,9 +291,7 @@ def test_pollOpenWeatherMapData_5(function):
         function.pollOpenWeatherMapData()
 
 
-# ------------------------------------------------------------------
 # SensorWeatherOnline — pollOpenWeatherMapData with location extraction
-# ------------------------------------------------------------------
 def test_pollOpenWeatherMapDataExtractsLocationLatLon(function) -> None:
     """Test that pollOpenWeatherMapData extracts latitude/longitude from location."""
     # Note: The actual implementation has a bug (uses Path instead of str for URL)

@@ -236,9 +236,7 @@ def test_getActiveDrivers(app):
     assert "camera" in app.dReg.d
 
 
-# ---------------------------------------------------------------------------
 # __main__.py — entry-point guard
-# ---------------------------------------------------------------------------
 
 
 def test_main_module_entry_point():

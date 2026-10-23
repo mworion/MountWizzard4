@@ -1,23 +1,9 @@
-############################################################
-#
-#       #   #  #   #   #    #
-#      ##  ##  #  ##  #    #
-#     # # # #  # # # #    #  #
-#    #  ##  #  ##  ##    ######
-#   #   #   #  #   #       #
-#
-# Python-based Tool for interaction with the 10_micron mounts
-# GUI with PyQT5 for python
-#
-# written in python3, (c) 2019-2021 by mworion
-#
-# License APL2.0
-#
-###########################################################
+# MountWizzard4 - Python-based tool for interacting with 10micron mounts
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2019-2026 mworion
 import numpy as np
 import shapefile
 
-# ---------------------------------------------------------------------------
 # Output format: worldmap.npz  (numpy compressed)
 #
 #   x        float64[N]  – all shoreline x-coordinates (longitude), concatenated
@@ -30,7 +16,6 @@ import shapefile
 #       x_seg = x[offset:offset + length]
 #       y_seg = y[offset:offset + length]
 #       offset += length
-# ---------------------------------------------------------------------------
 
 shapeFile = "ne_50m_land.shp"
 shape = shapefile.Reader(shapeFile)

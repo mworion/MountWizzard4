@@ -12,7 +12,7 @@ from typing import Literal
 @dataclass(frozen=True)
 class TrajectoryResult:
     """
-    result of the trajectory preparation. reason is empty on success, "noPass" if no start /
+    Result of the trajectory preparation. reason is empty on success, "noPass" if no start /
     end could be selected and "noData" if no trajectory points are left.
     """
 
@@ -36,7 +36,7 @@ def prepareTrajectory(
     ],
 ) -> TrajectoryResult:
     """
-    selects the pass, calculates the trajectory, removes the parts below the horizon and
+    Selects the pass, calculates the trajectory, removes the parts below the horizon and
     reduces it to the point count the mount accepts.
     """
     start, end = select()

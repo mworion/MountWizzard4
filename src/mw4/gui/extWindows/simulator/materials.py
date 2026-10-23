@@ -10,7 +10,7 @@ RGBA = tuple[int, ...]
 
 class Materials(Styles):
     """
-    class Materials defines all used materials for the loaded stl models or the
+    Class Materials defines all used materials for the loaded stl models or the
     meshed build programmatically inside the simulator
     """
 
@@ -56,7 +56,7 @@ class Materials(Styles):
         alpha: float = 1,
         shininess: float = 64,
     ) -> Qt3DExtras.QPhongAlphaMaterial:
-        """diffuse and specular default to the ambient color."""
+        """Diffuse and specular default to the ambient color."""
         material = Qt3DExtras.QPhongAlphaMaterial()
         material.setAmbient(self.rgb2hex(ambient))
         material.setDiffuse(self.rgb2hex(diffuse or ambient))

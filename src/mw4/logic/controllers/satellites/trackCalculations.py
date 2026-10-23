@@ -19,12 +19,12 @@ TLESCK = {
 
 
 def satStatusText(statusSat: str) -> str:
-    """returns the display text for the satellite tracking status letter."""
+    """Returns the display text for the satellite tracking status letter."""
     return TLESCK.get(statusSat, "")
 
 
 def shouldDomeFollow(status: int | None, followEnabled: bool, domeOnline: bool) -> bool:
-    """the dome follows only while the mount tracks a satellite and the user wants it."""
+    """The dome follows only while the mount tracks a satellite and the user wants it."""
     return status == STATUS_SATELLITE_TRACKING and followEnabled and domeOnline
 
 
@@ -32,7 +32,7 @@ def selectStartEnd(
     satOrbits: list[dict[str, Any]], isBefore: bool, isAfter: bool
 ) -> tuple[float, float]:
     """
-    selects the start and end of a satellite pass in terrestrial time (jd) depending on
+    Selects the start and end of a satellite pass in terrestrial time (jd) depending on
     the choice for before and / or after the meridian flip.
     """
     if not satOrbits:
@@ -80,7 +80,7 @@ def trimBelowHorizon(
     alt: np.ndarray, az: np.ndarray, isAboveHorizon: Callable[[list[float]], bool], fromEnd: bool
 ) -> tuple[np.ndarray, np.ndarray, int]:
     """
-    removes points below the horizon from the start (or the end) until the first point
+    Removes points below the horizon from the start (or the end) until the first point
     above the horizon is found. returns the shortened arrays and the count of removed points.
     """
     pairs = list(zip(alt, az, strict=True))
@@ -115,7 +115,7 @@ def formatSatPass(
     satOrbit: dict[str, Any], convertTime: Callable[[Any, str], str]
 ) -> dict[str, str]:
     """
-    builds the display texts of one satellite pass. convertTime formats a time object
+    Builds the display texts of one satellite pass. convertTime formats a time object
     with a strftime format string (time zone handling stays with the caller).
     """
     fString = "%H:%M:%S"
@@ -134,7 +134,7 @@ def formatSatPass(
 
 
 def dataAgeColor(days: float) -> str:
-    """returns the style color for the age of satellite data in days."""
+    """Returns the style color for the age of satellite data in days."""
     if days > 10:
         return "red"
     if 3 < days < 10:
@@ -143,6 +143,6 @@ def dataAgeColor(days: float) -> str:
 
 
 def reduceTrajectory(alt: np.ndarray, az: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-    """limits the trajectory to the point count the mount accepts."""
+    """Limits the trajectory to the point count the mount accepts."""
     factor = max(int(len(alt) / MAX_TRAJECTORY_SECONDS), 1)
     return np.array_split(alt, factor)[0], np.array_split(az, factor)[0]

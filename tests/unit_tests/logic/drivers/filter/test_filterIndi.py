@@ -27,9 +27,7 @@ def function(makeApp):
     func.app.threadPool.waitForDone(5000)
 
 
-# ---------------------------------------------------------------------------
 # sendFilterNumber
-# ---------------------------------------------------------------------------
 
 
 def test_sendFilterNumber_default(function):

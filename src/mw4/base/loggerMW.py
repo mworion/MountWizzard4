@@ -22,7 +22,7 @@ if not hasattr(logging.Logger, "_set_defaults"):
 
 class LoggerWriter:
     """
-    taken from:
+    Taken from:
     https://stackoverflow.com/questions/19425736/
     how-to-redirect-stdout-and-stderr-to-logger-in-python
     """

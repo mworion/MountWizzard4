@@ -36,9 +36,7 @@ def function(makeApp):
         pytest.skip(f"DomeIndi initialization failed: {e}")
 
 
-# ---------------------------------------------------------------------------
 # __init__
-# ---------------------------------------------------------------------------
 
 
 def test_init_lastAzimuth(function):
@@ -46,9 +44,7 @@ def test_init_lastAzimuth(function):
     assert function.lastAzimuth is None
 
 
-# ---------------------------------------------------------------------------
 # sendDomePosition
-# ---------------------------------------------------------------------------
 
 
 def test_sendDomePosition_absent(function):
@@ -103,9 +99,7 @@ def test_sendDomePosition_ok(function):
     function.signals.azimuth.disconnect(slot)
 
 
-# ---------------------------------------------------------------------------
 # addShutterStatus
-# ---------------------------------------------------------------------------
 
 
 def test_addShutterStatus_absent(function):
@@ -139,9 +133,7 @@ def test_addShutterStatus_ok(function):
     assert function.data["Shutter.Status"] == "-"
 
 
-# ---------------------------------------------------------------------------
 # writeVectorsToData
-# ---------------------------------------------------------------------------
 
 
 def test_writeVectorsToData(function):
@@ -159,9 +151,7 @@ def test_writeVectorsToData(function):
         mock_shut.assert_called_once_with(vectors)
 
 
-# ---------------------------------------------------------------------------
 # slewToAltAz
-# ---------------------------------------------------------------------------
 
 
 def test_slewToAltAz(function):
@@ -176,9 +166,7 @@ def test_slewToAltAz(function):
     )
 
 
-# ---------------------------------------------------------------------------
 # openShutter
-# ---------------------------------------------------------------------------
 
 
 def test_openShutter(function):
@@ -189,9 +177,7 @@ def test_openShutter(function):
     assert function.txQ.get() == ("test_dome", "DOME_SHUTTER", {"SHUTTER_OPEN": "On"})
 
 
-# ---------------------------------------------------------------------------
 # closeShutter
-# ---------------------------------------------------------------------------
 
 
 def test_closeShutter(function):
@@ -202,9 +188,7 @@ def test_closeShutter(function):
     assert function.txQ.get() == ("test_dome", "DOME_SHUTTER", {"SHUTTER_CLOSE": "On"})
 
 
-# ---------------------------------------------------------------------------
 # slewCW
-# ---------------------------------------------------------------------------
 
 
 def test_slewCW(function):
@@ -215,9 +199,7 @@ def test_slewCW(function):
     assert function.txQ.get() == ("test_dome", "DOME_MOTION", {"DOME_CW": "On"})
 
 
-# ---------------------------------------------------------------------------
 # slewCCW
-# ---------------------------------------------------------------------------
 
 
 def test_slewCCW(function):
@@ -228,9 +210,7 @@ def test_slewCCW(function):
     assert function.txQ.get() == ("test_dome", "DOME_MOTION", {"DOME_CCW": "On"})
 
 
-# ---------------------------------------------------------------------------
 # abortSlew
-# ---------------------------------------------------------------------------
 
 
 def test_abortSlew(function):

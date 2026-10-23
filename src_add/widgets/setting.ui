@@ -1829,9 +1829,9 @@
         <property name="geometry">
          <rect>
           <x>300</x>
-          <y>25</y>
+          <y>30</y>
           <width>56</width>
-          <height>106</height>
+          <height>101</height>
          </rect>
         </property>
         <property name="minimumSize">

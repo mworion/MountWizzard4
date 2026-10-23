@@ -437,7 +437,7 @@ class Ui_SettingDialog(object):
         self.label_259.setFont(font1)
         self.bootRackComp = QPushButton(self.GroupRigComputer)
         self.bootRackComp.setObjectName(u"bootRackComp")
-        self.bootRackComp.setGeometry(QRect(300, 25, 56, 106))
+        self.bootRackComp.setGeometry(QRect(300, 30, 56, 101))
         self.bootRackComp.setMinimumSize(QSize(0, 21))
         self.rackCompWolMAC = QLineEdit(self.GroupRigComputer)
         self.rackCompWolMAC.setObjectName(u"rackCompWolMAC")

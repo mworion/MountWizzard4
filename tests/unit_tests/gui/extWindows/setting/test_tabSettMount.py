@@ -41,6 +41,7 @@ def test_initConfigLoadsDefaults(settMount: SettMount) -> None:
         settMount.initConfig()
     assert settMount.ui.rackCompWolMAC.text() == "00:00:00:00:00"
     assert settMount.ui.rackCompWolBroadcast.text() == "255.255.255.255"
+    assert settMount.ui.rackCompWolHostAddress.text() == ""
     assert settMount.ui.rackCompWolPort.text() == "9"
 
 
@@ -383,3 +384,14 @@ def test_mountShutdownFailure(settMount: SettMount) -> None:
         settMount.mountShutdown()
     mockSignal.emit.assert_not_called()
     settMount.msg.emit.assert_called_with(2, "Mount", "Command", "Mount cannot be shutdown")
+
+
+def test_bootRackCompPassesHostAddress(settMount: SettMount) -> None:
+    settMount.msg = mock.MagicMock()
+    settMount.ui.rackCompWolMAC.setText("AA:BB:CC:DD:EE:FF")
+    settMount.ui.rackCompWolBroadcast.setText("255.255.255.255")
+    settMount.ui.rackCompWolHostAddress.setText("192.168.1.50")
+    settMount.ui.rackCompWolPort.setText("9")
+    with mock.patch.object(mw4.gui.extWindows.setting.tabSettMount, "sendWakeOnLan") as mockSend:
+        settMount.bootRackComp()
+    mockSend.assert_called_once_with("AA:BB:CC:DD:EE:FF", "255.255.255.255", 9, "192.168.1.50")

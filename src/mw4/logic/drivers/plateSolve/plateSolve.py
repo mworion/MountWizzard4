@@ -9,6 +9,7 @@ from mw4.base.appProtocol import AppProtocol
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker, startWorker
 from mw4.base.transform import J2000ToJNow
+from mw4.logic.drivers.frameworks.driverProtocols import PlateSolveDriver
 from mw4.logic.drivers.plateSolve.astap import ASTAP
 from mw4.logic.drivers.plateSolve.astrometry import Astrometry
 from mw4.logic.drivers.plateSolve.watney import Watney
@@ -40,7 +41,7 @@ class PlateSolve:
         self.process: subprocess.Popen | None = None
         self.data: dict[str, Any] = {}
         self.framework: str = ""
-        self.run: dict = {
+        self.run: dict[str, PlateSolveDriver] = {
             "astrometry": Astrometry(self),
             "astap": ASTAP(self),
             "watney": Watney(self),

@@ -3,6 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import time
 from collections.abc import Callable
+from mw4.base.cameraKeys import CCD_BINNING_HOR_BIN
 from mw4.base.tpool import Worker, startWorker
 from mw4.logic.drivers.frameworks.sgproClass import SGProClass
 from pathlib import Path
@@ -71,7 +72,7 @@ class CameraSGPro(SGProClass):
 
     def getInitialConfig(self) -> None:
         super().getInitialConfig()
-        self.storePropertyToData(1, "CCD_BINNING.HOR_BIN")
+        self.storePropertyToData(1, CCD_BINNING_HOR_BIN)
 
     def sendDownloadMode(self) -> None:
         pass

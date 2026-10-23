@@ -2,6 +2,13 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import webbrowser
+from mw4.base.cameraKeys import (
+    CCD_INFO_CCD_MAX_X,
+    CCD_INFO_CCD_MAX_Y,
+    CCD_INFO_CCD_PIXEL_SIZE_X,
+    CCD_INFO_CCD_PIXEL_SIZE_Y,
+    CCD_ROTATION_CCD_ROTATION_VALUE,
+)
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import guiSetText
 from mw4.logic.controllers.imageWindow.imageStats import calcImageStats
@@ -85,11 +92,11 @@ class ImageStats(TabAddon):
         focalLength = self.ui.focalLength.value()
         aperture = self.ui.aperture.value()
         data = self.app.dReg.camera.instance.data
-        pixelSizeX = data.get("CCD_INFO.CCD_PIXEL_SIZE_X", 0)
-        pixelSizeY = data.get("CCD_INFO.CCD_PIXEL_SIZE_Y", 0)
-        pixelX = data.get("CCD_INFO.CCD_MAX_X", 0)
-        pixelY = data.get("CCD_INFO.CCD_MAX_Y", 0)
-        rotation = data.get("CCD_ROTATION.CCD_ROTATION_VALUE", 0)
+        pixelSizeX = data.get(CCD_INFO_CCD_PIXEL_SIZE_X, 0)
+        pixelSizeY = data.get(CCD_INFO_CCD_PIXEL_SIZE_Y, 0)
+        pixelX = data.get(CCD_INFO_CCD_MAX_X, 0)
+        pixelY = data.get(CCD_INFO_CCD_MAX_Y, 0)
+        rotation = data.get(CCD_ROTATION_CCD_ROTATION_VALUE, 0)
         stats = calcImageStats(focalLength, aperture, pixelSizeX, pixelSizeY, pixelX, pixelY)
         self.fovHint = stats.fovHint
 

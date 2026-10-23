@@ -16,3 +16,14 @@ class HasDriverConfig(Protocol):
     """A framework driver that carries a configuration dataclass."""
 
     config: Any
+
+
+@runtime_checkable
+class FrameworkDriver(Protocol):
+    """What every back-end in a device's run table offers."""
+
+    config: Any
+
+    def startCommunication(self) -> Any: ...
+
+    def stopCommunication(self) -> Any: ...

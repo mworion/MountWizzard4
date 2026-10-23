@@ -6,6 +6,7 @@ import logging
 from dataclasses import dataclass, field
 from importlib.resources import as_file, files
 from mw4.base.appProtocol import AppProtocol
+from mw4.base.driverProtocol import FrameworkDriver
 from mw4.base.httpClient import safeRequest
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker, startWorker
@@ -37,7 +38,7 @@ class SeeingWeather:
         self.location = self.app.dReg.mount.location
         self.b: str = ""
         self.framework: str = ""
-        self.run: dict[str, Any] = {"seeing": self}
+        self.run: dict[str, FrameworkDriver] = {"seeing": self}
         self.data: dict[str, Any] = {}
         self.config = DeviceConfigSeeingWeather()
         self.workerGetSeeingData: Worker | None = None

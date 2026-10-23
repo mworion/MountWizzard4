@@ -2,6 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 from dataclasses import dataclass, field
+from mw4.base.cameraKeys import (
+    CCD_GAIN_GAIN,
+    CCD_INFO_CCD_MAX_X,
+    CCD_OFFSET_OFFSET,
+    CCD_TEMPERATURE_CCD_TEMPERATURE_VALUE,
+)
 from typing import Any, Literal
 
 
@@ -41,10 +47,10 @@ class CameraCapabilities:
 def cameraCapabilities(data: dict[str, Any]) -> CameraCapabilities:
     """derives which camera function groups are available from the driver data."""
     return CameraCapabilities(
-        hasCooler="CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE" in data,
-        hasGain="CCD_GAIN.GAIN" in data,
-        hasOffset="CCD_OFFSET.OFFSET" in data,
-        hasSensor="CCD_INFO.CCD_MAX_X" in data,
+        hasCooler=CCD_TEMPERATURE_CCD_TEMPERATURE_VALUE in data,
+        hasGain=CCD_GAIN_GAIN in data,
+        hasOffset=CCD_OFFSET_OFFSET in data,
+        hasSensor=CCD_INFO_CCD_MAX_X in data,
     )
 
 

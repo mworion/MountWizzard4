@@ -4,6 +4,11 @@
 import logging
 import numpy as np
 from astropy.io import fits
+from mw4.base.cameraKeys import (
+    CCD_INFO_CCD_PIXEL_SIZE_X,
+    CCD_INFO_CCD_PIXEL_SIZE_Y,
+    CCD_TEMPERATURE_CCD_TEMPERATURE_VALUE,
+)
 from mw4.base.transform import JNowToJ2000
 from mw4.mountcontrol.convert import valueToAngle, valueToFloat
 from mw4.mountcontrol.convertGui import (
@@ -120,10 +125,10 @@ def writeHeaderCamera(header: fits.Header, camera: Any, obsSite: ObsSite) -> fit
     header.append(("SITELAT", formatLatToText(obsSite.location.latitude)))
     header.append(("SITELON", formatLonToText(obsSite.location.longitude)))
     header.append(("SITEELEV", obsSite.location.elevation.m))
-    header.append(("PIXSIZE1", data.get("CCD_INFO.CCD_PIXEL_SIZE_X", 1) * camera.binning))
-    header.append(("PIXSIZE2", data.get("CCD_INFO.CCD_PIXEL_SIZE_Y", 1) * camera.binning))
-    header.append(("XPIXSZ", data.get("CCD_INFO.CCD_PIXEL_SIZE_X", 1) * camera.binning))
-    header.append(("YPIXSZ", data.get("CCD_INFO.CCD_PIXEL_SIZE_Y", 1) * camera.binning))
+    header.append(("PIXSIZE1", data.get(CCD_INFO_CCD_PIXEL_SIZE_X, 1) * camera.binning))
+    header.append(("PIXSIZE2", data.get(CCD_INFO_CCD_PIXEL_SIZE_Y, 1) * camera.binning))
+    header.append(("XPIXSZ", data.get(CCD_INFO_CCD_PIXEL_SIZE_X, 1) * camera.binning))
+    header.append(("YPIXSZ", data.get(CCD_INFO_CCD_PIXEL_SIZE_Y, 1) * camera.binning))
     header.append(("XBINNING", camera.binning, "MW4 same binning x/y"))
     header.append(("YBINNING", camera.binning, "MW4 same binning x/y"))
     if camera.focalLength:
@@ -132,9 +137,9 @@ def writeHeaderCamera(header: fits.Header, camera: Any, obsSite: ObsSite) -> fit
         scale = 0
         log.warning("camera.focalLength not set")
     header.append(("FOCALLEN", camera.focalLength, "Data from driver / manual input"))
-    header.append(("SCALE", data.get("CCD_INFO.CCD_PIXEL_SIZE_X", 1) * scale))
+    header.append(("SCALE", data.get(CCD_INFO_CCD_PIXEL_SIZE_X, 1) * scale))
     header.append(("EXPTIME", camera.exposureTime))
-    header.append(("CCD-TEMP", data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", 0)))
+    header.append(("CCD-TEMP", data.get(CCD_TEMPERATURE_CCD_TEMPERATURE_VALUE, 0)))
     return header
 
 

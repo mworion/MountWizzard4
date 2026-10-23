@@ -10,12 +10,13 @@ from mw4.base.transform import diffModulusAbs
 from mw4.logic.drivers.dome.domeAlpaca import DomeAlpaca
 from mw4.logic.drivers.dome.domeIndi import DomeIndi
 from mw4.logic.drivers.frameworks.deviceFacade import DeviceFacade
+from mw4.logic.drivers.frameworks.driverProtocols import DomeDriver
 
 if platformInfo.IS_WINDOWS:
     from mw4.logic.drivers.dome.domeAscom import DomeAscom
 
 
-class Dome(DeviceFacade[AppProtocol]):
+class Dome(DeviceFacade[AppProtocol, DomeDriver]):
     DEVICE_TYPE = "dome"
 
     def __init__(self, app: AppProtocol) -> None:

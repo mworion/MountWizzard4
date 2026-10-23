@@ -3,12 +3,13 @@
 # Copyright (c) 2019-2026 mworion
 from mw4.base.appProtocol import HasThreadPool
 from mw4.logic.drivers.frameworks.deviceFacade import DeviceFacade
+from mw4.logic.drivers.frameworks.driverProtocols import PowerSwitchDriver
 from mw4.logic.drivers.powerswitch.pegasusUPBAlpaca import PegasusUPBAlpaca
 from mw4.logic.drivers.powerswitch.pegasusUPBAscom import PegasusUPBAscom
 from mw4.logic.drivers.powerswitch.pegasusUPBIndi import PegasusUPBIndi
 
 
-class PegasusUPB(DeviceFacade):
+class PegasusUPB(DeviceFacade[HasThreadPool, PowerSwitchDriver]):
     DEVICE_TYPE = "switch"
 
     def __init__(self, app: HasThreadPool) -> None:

@@ -4,6 +4,34 @@
 import numpy as np
 import time
 from astropy.io import fits
+from mw4.base.cameraKeys import (
+    CAN_ABORT,
+    CAN_FAST,
+    CAN_GET_COOLER_POWER,
+    CAN_SET_CCD_TEMPERATURE,
+    CCD_BINNING_HOR_BIN,
+    CCD_BINNING_HOR_BIN_MAX,
+    CCD_BINNING_VERT_BIN,
+    CCD_BINNING_VERT_BIN_MAX,
+    CCD_COOLER_COOLER_ON,
+    CCD_COOLER_POWER_CCD_COOLER_VALUE,
+    CCD_FRAME_X,
+    CCD_FRAME_Y,
+    CCD_GAIN_GAIN,
+    CCD_GAIN_GAIN_LIST,
+    CCD_GAIN_GAIN_MAX,
+    CCD_GAIN_GAIN_MIN,
+    CCD_INFO_CCD_MAX_X,
+    CCD_INFO_CCD_MAX_Y,
+    CCD_INFO_CCD_PIXEL_SIZE_X,
+    CCD_INFO_CCD_PIXEL_SIZE_Y,
+    CCD_OFFSET_OFFSET,
+    CCD_OFFSET_OFFSET_LIST,
+    CCD_OFFSET_OFFSET_MAX,
+    CCD_OFFSET_OFFSET_MIN,
+    CCD_TEMPERATURE_CCD_TEMPERATURE_VALUE,
+    READOUT_QUALITY_QUALITY_LOW,
+)
 from mw4.logic.drivers.frameworks.alpacaAscomCommon import AlpacaAscomCommon
 from typing import Any, ClassVar
 
@@ -26,24 +54,24 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
 
     def getInitialConfig(self) -> None:
         super().getInitialConfig()
-        self.getAndStoreDeviceProp("CameraXSize", "CCD_INFO.CCD_MAX_X")
-        self.getAndStoreDeviceProp("CameraYSize", "CCD_INFO.CCD_MAX_Y")
-        self.getAndStoreDeviceProp("CanFastReadout", "CAN_FAST")
-        self.getAndStoreDeviceProp("CanAbortExposure", "CAN_ABORT")
-        self.getAndStoreDeviceProp("CanSetCCDTemperature", "CAN_SET_CCD_TEMPERATURE")
-        self.getAndStoreDeviceProp("CanGetCoolerPower", "CAN_GET_COOLER_POWER")
-        self.getAndStoreDeviceProp("PixelSizeX", "CCD_INFO.CCD_PIXEL_SIZE_X")
-        self.getAndStoreDeviceProp("PixelSizeY", "CCD_INFO.CCD_PIXEL_SIZE_Y")
-        self.getAndStoreDeviceProp("MaxBinX", "CCD_BINNING.HOR_BIN_MAX")
-        self.getAndStoreDeviceProp("MaxBinY", "CCD_BINNING.VERT_BIN_MAX")
-        self.getAndStoreDeviceProp("GainMax", "CCD_GAIN.GAIN_MAX")
-        self.getAndStoreDeviceProp("GainMin", "CCD_GAIN.GAIN_MIN")
-        self.getAndStoreDeviceProp("Gains", "CCD_GAIN.GAIN_LIST")
-        self.getAndStoreDeviceProp("OffsetMax", "CCD_OFFSET.OFFSET_MAX")
-        self.getAndStoreDeviceProp("OffsetMin", "CCD_OFFSET.OFFSET_MIN")
-        self.getAndStoreDeviceProp("Offsets", "CCD_OFFSET.OFFSET_LIST")
-        self.getAndStoreDeviceProp("StartX", "CCD_FRAME.X")
-        self.getAndStoreDeviceProp("StartY", "CCD_FRAME.Y")
+        self.getAndStoreDeviceProp("CameraXSize", CCD_INFO_CCD_MAX_X)
+        self.getAndStoreDeviceProp("CameraYSize", CCD_INFO_CCD_MAX_Y)
+        self.getAndStoreDeviceProp("CanFastReadout", CAN_FAST)
+        self.getAndStoreDeviceProp("CanAbortExposure", CAN_ABORT)
+        self.getAndStoreDeviceProp("CanSetCCDTemperature", CAN_SET_CCD_TEMPERATURE)
+        self.getAndStoreDeviceProp("CanGetCoolerPower", CAN_GET_COOLER_POWER)
+        self.getAndStoreDeviceProp("PixelSizeX", CCD_INFO_CCD_PIXEL_SIZE_X)
+        self.getAndStoreDeviceProp("PixelSizeY", CCD_INFO_CCD_PIXEL_SIZE_Y)
+        self.getAndStoreDeviceProp("MaxBinX", CCD_BINNING_HOR_BIN_MAX)
+        self.getAndStoreDeviceProp("MaxBinY", CCD_BINNING_VERT_BIN_MAX)
+        self.getAndStoreDeviceProp("GainMax", CCD_GAIN_GAIN_MAX)
+        self.getAndStoreDeviceProp("GainMin", CCD_GAIN_GAIN_MIN)
+        self.getAndStoreDeviceProp("Gains", CCD_GAIN_GAIN_LIST)
+        self.getAndStoreDeviceProp("OffsetMax", CCD_OFFSET_OFFSET_MAX)
+        self.getAndStoreDeviceProp("OffsetMin", CCD_OFFSET_OFFSET_MIN)
+        self.getAndStoreDeviceProp("Offsets", CCD_OFFSET_OFFSET_LIST)
+        self.getAndStoreDeviceProp("StartX", CCD_FRAME_X)
+        self.getAndStoreDeviceProp("StartY", CCD_FRAME_Y)
         self.log.debug("Initial data: %s", self.data)
 
     def setExposureState(self) -> None:
@@ -78,17 +106,17 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
 
     def pollData(self) -> None:
         self.setExposureState()
-        self.getAndStoreDeviceProp("BinX", "CCD_BINNING.HOR_BIN")
-        self.getAndStoreDeviceProp("BinY", "CCD_BINNING.VERT_BIN")
-        self.getAndStoreDeviceProp("Gain", "CCD_GAIN.GAIN")
-        self.getAndStoreDeviceProp("Offset", "CCD_OFFSET.OFFSET")
-        self.getAndStoreDeviceProp("FastReadout", "READOUT_QUALITY.QUALITY_LOW")
-        self.getAndStoreDeviceProp("CCDTemperature", "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE")
-        self.getAndStoreDeviceProp("CoolerOn", "CCD_COOLER.COOLER_ON")
-        self.getAndStoreDeviceProp("CoolerPower", "CCD_COOLER_POWER.CCD_COOLER_VALUE")
+        self.getAndStoreDeviceProp("BinX", CCD_BINNING_HOR_BIN)
+        self.getAndStoreDeviceProp("BinY", CCD_BINNING_VERT_BIN)
+        self.getAndStoreDeviceProp("Gain", CCD_GAIN_GAIN)
+        self.getAndStoreDeviceProp("Offset", CCD_OFFSET_OFFSET)
+        self.getAndStoreDeviceProp("FastReadout", READOUT_QUALITY_QUALITY_LOW)
+        self.getAndStoreDeviceProp("CCDTemperature", CCD_TEMPERATURE_CCD_TEMPERATURE_VALUE)
+        self.getAndStoreDeviceProp("CoolerOn", CCD_COOLER_COOLER_ON)
+        self.getAndStoreDeviceProp("CoolerPower", CCD_COOLER_POWER_CCD_COOLER_VALUE)
 
     def sendDownloadMode(self) -> None:
-        if self.data.get("CAN_FAST", False):
+        if self.data.get(CAN_FAST, False):
             self.setDevicePropQueued("FastReadout", self.parent.fastReadout)
 
     def expose(self) -> None:
@@ -107,7 +135,7 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
         )
 
     def abort(self) -> bool:
-        if self.data.get("CAN_ABORT", False):
+        if self.data.get(CAN_ABORT, False):
             self.callDeviceMethodQueued("AbortExposure")
             return True
         return False
@@ -116,7 +144,7 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
         self.setDevicePropQueued("CoolerOn", coolerOn)
 
     def sendCoolerTemp(self, temperature: float = 0) -> None:
-        if self.data.get("CAN_SET_CCD_TEMPERATURE", False):
+        if self.data.get(CAN_SET_CCD_TEMPERATURE, False):
             self.setDevicePropQueued("SetCCDTemperature", temperature)
 
     def sendOffset(self, offset: int = 0) -> None:

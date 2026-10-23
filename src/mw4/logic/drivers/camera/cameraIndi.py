@@ -2,6 +2,13 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 from indipyclient.queclient import EventItem
+from mw4.base.cameraKeys import (
+    CAN_SET_CCD_TEMPERATURE,
+    CCD_GAIN_GAIN_MAX,
+    CCD_GAIN_GAIN_MIN,
+    CCD_OFFSET_OFFSET_MAX,
+    CCD_OFFSET_OFFSET_MIN,
+)
 from mw4.logic.drivers.frameworks.indiClass import IndiClass
 from pathlib import Path
 from typing import Any
@@ -52,21 +59,21 @@ class CameraIndi(IndiClass):
 
     def setCanTemperature(self, vectors: dict) -> None:
         if vectors.get("CCD_TEMPERATURE"):
-            self.data["CAN_SET_CCD_TEMPERATURE"] = True
+            self.data[CAN_SET_CCD_TEMPERATURE] = True
 
     def addGainLimits(self, vectors: dict) -> None:
         gain = vectors.get("CCD_GAIN", {})
         if not gain:
             return
-        self.data["CCD_GAIN.GAIN_MIN"] = gain["members"]["GAIN"].get("min", 0)
-        self.data["CCD_GAIN.GAIN_MAX"] = gain["members"]["GAIN"].get("max", 1)
+        self.data[CCD_GAIN_GAIN_MIN] = gain["members"]["GAIN"].get("min", 0)
+        self.data[CCD_GAIN_GAIN_MAX] = gain["members"]["GAIN"].get("max", 1)
 
     def addOffsetLimits(self, vectors: dict) -> None:
         offset = vectors.get("CCD_OFFSET", {})
         if not offset:
             return
-        self.data["CCD_OFFSET.OFFSET_MIN"] = offset["members"]["OFFSET"].get("min", 0)
-        self.data["CCD_OFFSET.OFFSET_MAX"] = offset["members"]["OFFSET"].get("max", 1)
+        self.data[CCD_OFFSET_OFFSET_MIN] = offset["members"]["OFFSET"].get("min", 0)
+        self.data[CCD_OFFSET_OFFSET_MAX] = offset["members"]["OFFSET"].get("max", 1)
 
     def writeImageXisfHeader(self) -> None:
         xisf = XISF(self.parent.imagePath)

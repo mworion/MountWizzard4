@@ -6,6 +6,7 @@ import logging
 import warnings
 from dataclasses import dataclass, field
 from mw4.base.appProtocol import HasDevices
+from mw4.base.driverProtocol import FrameworkDriver
 from mw4.base.signalsDevices import Signals
 from mw4.mountcontrol.setting import Setting
 from typing import Any
@@ -24,7 +25,7 @@ class DirectWeather:
         self.app = app
         self.signals = Signals()
         self.framework: str = "directWeather"
-        self.run: dict[str, Any] = {"directWeather": self}
+        self.run: dict[str, FrameworkDriver] = {"directWeather": self}
         self.data: dict[str, Any] = {}
         self.config = DeviceConfigDirectWeather()
         self.running: bool = False

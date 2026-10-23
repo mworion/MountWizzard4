@@ -8,14 +8,16 @@ from typing import Any
 
 log: logging.Logger = logging.getLogger("MW4")
 profileVersion = "5.0"
+# single place to replace by a typed configuration (review A3)
+ProfileConfig = dict[str, Any]
 
 
-def defaultConfig() -> dict[str, Any]:
+def defaultConfig() -> ProfileConfig:
     config = {"profileName": "config", "version": profileVersion}
     return config
 
 
-def loadConfig(loadConfigPath: Path) -> dict[str, Any]:
+def loadConfig(loadConfigPath: Path) -> ProfileConfig:
     try:
         with open(loadConfigPath, encoding="utf-8") as configFile:
             config = yaml.safe_load(configFile)
@@ -31,7 +33,7 @@ def loadConfig(loadConfigPath: Path) -> dict[str, Any]:
     return config
 
 
-def loadProfileStart(configDir: Path) -> dict[str, Any]:
+def loadProfileStart(configDir: Path) -> ProfileConfig:
     config = defaultConfig()
     profilePath = configDir / "profile"
     if not profilePath.exists():
@@ -46,7 +48,7 @@ def loadProfileStart(configDir: Path) -> dict[str, Any]:
     return config
 
 
-def saveConfig(saveProfilePath: Path, config: dict[str, Any]) -> None:
+def saveConfig(saveProfilePath: Path, config: ProfileConfig) -> None:
     with open(saveProfilePath.parent / "profile", "w", encoding="utf-8") as profile:
         profile.writelines(saveProfilePath.stem)
 

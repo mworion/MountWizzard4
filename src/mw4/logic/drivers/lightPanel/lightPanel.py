@@ -4,6 +4,7 @@
 from mw4.base import platformInfo
 from mw4.base.appProtocol import AppProtocol
 from mw4.logic.drivers.frameworks.deviceFacade import DeviceFacade
+from mw4.logic.drivers.frameworks.driverProtocols import LightPanelDriver
 from mw4.logic.drivers.lightPanel.lightPanelAlpaca import LightPanelAlpaca
 from mw4.logic.drivers.lightPanel.lightPanelIndi import LightPanelIndi
 
@@ -11,7 +12,7 @@ if platformInfo.IS_WINDOWS:
     from mw4.logic.drivers.lightPanel.lightPanelAscom import LightPanelAscom
 
 
-class LightPanel(DeviceFacade):
+class LightPanel(DeviceFacade[AppProtocol, LightPanelDriver]):
     DEVICE_TYPE = "covercalibrator"
 
     def __init__(self, app: AppProtocol) -> None:

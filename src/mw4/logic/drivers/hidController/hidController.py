@@ -6,6 +6,7 @@ import logging
 import threading
 from dataclasses import dataclass, field
 from mw4.base.appProtocol import HasThreadPool
+from mw4.base.driverProtocol import FrameworkDriver
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker, startWorker
 from PySide6.QtCore import Signal
@@ -43,7 +44,7 @@ class HidController:
         self.hidControllerDevice: Any = None
         self.data: dict[str, Any] = {}
         self.framework: str = "hid"
-        self.run: dict[str, Any] = {"hid": self}
+        self.run: dict[str, FrameworkDriver] = {"hid": self}
         self.config = DeviceConfigHidController()
         self.workerCommunicationLoop: Worker | None = None
         self.stopEvent: threading.Event = threading.Event()

@@ -4,6 +4,7 @@
 import logging
 import numpy as np
 from mw4.base.appProtocol import AppProtocol
+from mw4.base.driverProtocol import FrameworkDriver
 from mw4.base.signalsDevices import Signals
 from mw4.logic.drivers.measure.measureAddOns import measure
 from mw4.logic.drivers.measure.measureCSV import MeasureDataCSV
@@ -27,7 +28,7 @@ class MeasureData:
         self.mutexMeasure: QMutex = QMutex()
         self.measuredDevices: dict[str, Any] = {}
         self.framework: str = ""
-        self.run: dict[str, Any] = {
+        self.run: dict[str, FrameworkDriver] = {
             "raw": MeasureDataRaw(self.app, self, self.data),
             "csv": MeasureDataCSV(self.app, self, self.data),
         }

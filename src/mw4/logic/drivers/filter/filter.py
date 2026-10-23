@@ -6,12 +6,13 @@ from mw4.base.appProtocol import HasThreadPool
 from mw4.logic.drivers.filter.filterAlpaca import FilterAlpaca
 from mw4.logic.drivers.filter.filterIndi import FilterIndi
 from mw4.logic.drivers.frameworks.deviceFacade import DeviceFacade
+from mw4.logic.drivers.frameworks.driverProtocols import FilterDriver
 
 if platformInfo.IS_WINDOWS:
     from mw4.logic.drivers.filter.filterAscom import FilterAscom
 
 
-class Filter(DeviceFacade):
+class Filter(DeviceFacade[HasThreadPool, FilterDriver]):
     DEVICE_TYPE = "filterwheel"
 
     def __init__(self, app: HasThreadPool) -> None:

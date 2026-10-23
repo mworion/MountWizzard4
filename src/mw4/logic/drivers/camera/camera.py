@@ -4,10 +4,12 @@
 from astropy.io import fits
 from mw4.base import platformInfo
 from mw4.base.appProtocol import AppProtocol
+from mw4.base.cameraKeys import CCD_BINNING_HOR_BIN, CCD_INFO_CCD_MAX_X, CCD_INFO_CCD_MAX_Y
 from mw4.logic.drivers.camera.cameraAlpaca import CameraAlpaca
 from mw4.logic.drivers.camera.cameraIndi import CameraIndi
 from mw4.logic.drivers.camera.cameraSGPro import CameraSGPro
 from mw4.logic.drivers.frameworks.deviceFacade import DeviceFacade
+from mw4.logic.drivers.frameworks.driverProtocols import CameraDriver
 from mw4.logic.fits.fitsFunction import writeHeaderCamera, writeHeaderPointing
 from pathlib import Path
 
@@ -15,7 +17,7 @@ if platformInfo.IS_WINDOWS:
     from mw4.logic.drivers.camera.cameraAscom import CameraAscom
 
 
-class Camera(DeviceFacade[AppProtocol]):
+class Camera(DeviceFacade[AppProtocol, CameraDriver]):
     DEVICE_TYPE = "camera"
 
     def __init__(self, app: AppProtocol) -> None:
@@ -53,7 +55,7 @@ class Camera(DeviceFacade[AppProtocol]):
     @binning.setter
     def binning(self, value: int) -> None:
         value = int(value)
-        if (1 <= value <= 4) and "CCD_BINNING.HOR_BIN" in self.data:
+        if (1 <= value <= 4) and CCD_BINNING_HOR_BIN in self.data:
             self._binning = value
         else:
             self._binning = 1
@@ -65,8 +67,8 @@ class Camera(DeviceFacade[AppProtocol]):
 
     @subFrame.setter
     def subFrame(self, value: int) -> None:
-        maxX = int(self.data.get("CCD_INFO.CCD_MAX_X", 0))
-        maxY = int(self.data.get("CCD_INFO.CCD_MAX_Y", 0))
+        maxX = int(self.data.get(CCD_INFO_CCD_MAX_X, 0))
+        maxY = int(self.data.get(CCD_INFO_CCD_MAX_Y, 0))
         if 10 <= value < 100:
             self._subFrame = value
             self.width = int(maxX * self._subFrame / 100)

@@ -6,12 +6,13 @@ from mw4.base.appProtocol import HasThreadPool
 from mw4.logic.drivers.focuser.focuserAlpaca import FocuserAlpaca
 from mw4.logic.drivers.focuser.focuserIndi import FocuserIndi
 from mw4.logic.drivers.frameworks.deviceFacade import DeviceFacade
+from mw4.logic.drivers.frameworks.driverProtocols import FocuserDriver
 
 if platformInfo.IS_WINDOWS:
     from mw4.logic.drivers.focuser.focuserAscom import FocuserAscom
 
 
-class Focuser(DeviceFacade):
+class Focuser(DeviceFacade[HasThreadPool, FocuserDriver]):
     DEVICE_TYPE = "focuser"
 
     def __init__(self, app: HasThreadPool) -> None:

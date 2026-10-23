@@ -3,7 +3,6 @@
 # Copyright (c) 2019-2026 mworion
 import platform
 from collections.abc import Callable
-from typing import Any
 
 # The only place in mw4 that asks the operating system. All other modules use
 # these constants, accessed as ``platformInfo.IS_WINDOWS`` so tests can patch them.
@@ -14,7 +13,7 @@ IS_LINUX: bool = SYSTEM == "Linux"
 EXE_SUFFIX: str = ".exe" if IS_WINDOWS else ""
 
 
-def registerWindowsBackends(run: dict[str, Any], factories: dict[str, Callable[[], Any]]) -> None:
+def registerWindowsBackends[T](run: dict[str, T], factories: dict[str, Callable[[], T]]) -> None:
     """Add Windows-only back-ends (ASCOM, SGPro) to a device's run table. The
     factories are callables, because the back-end classes only exist on Windows.
     """

@@ -7,6 +7,7 @@ import requests
 import threading
 from dataclasses import dataclass, field
 from mw4.base.appProtocol import HasThreadPool
+from mw4.base.driverProtocol import FrameworkDriver
 from mw4.base.httpClient import safeRequest
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker, startWorker
@@ -42,7 +43,7 @@ class KMRelay:
         self.framework: str = ""
         self.data: dict[str, Any] = {}
         self.config = DeviceConfigKMRelay()
-        self.run: dict[str, Any] = {"relay": self}
+        self.run: dict[str, FrameworkDriver] = {"relay": self}
         self.status: list[int] = [0] * 8
         self.deviceConnected: bool = False
         self.timerTask = QTimer()

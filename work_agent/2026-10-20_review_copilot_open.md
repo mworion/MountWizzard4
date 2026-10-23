@@ -36,7 +36,7 @@ incremental cleanup.
 ### Pythonic style
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
-| P3 | M | `dict[str, Any]` carriers (`Camera.data`, `run`, `config`). | `TypedDict`/dataclasses; `run: dict[str, FrameworkDriver]`. |
+| P3 | L | ◐ `run` typed (`FrameworkDriver` + per-family protocols); `ProfileConfig` alias for A3; camera `data` keys are constants (`base/cameraKeys.py`). `data` stays `dict[str, Any]` by design (dynamic keys). Open: key constants for other device families, record dicts (`SolveResult`, model points). | Optional, see `plan_P3_typed_carriers.md`. |
 | P6 | L | Magic-value instance attributes, underscore attributes with property wrappers. | Small dataclasses (`SubFrame`, `Binning`). |
 | P7 | L | 3 × `type: ignore`, 54 pyrefly suppressions, 28 hidden warnings, `mountcontrol` relaxations. | Tighten per file over time. |
 

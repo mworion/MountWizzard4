@@ -5,11 +5,12 @@ import logging
 from collections.abc import Callable
 from mw4.base import platformInfo
 from mw4.base.appProtocol import HasThreadPool
+from mw4.base.driverProtocol import FrameworkDriver
 from mw4.base.signalsDevices import Signals
 from typing import Any, ClassVar
 
 
-class DeviceFacade[AppT: HasThreadPool]:
+class DeviceFacade[AppT: HasThreadPool, DriverT: FrameworkDriver]:
     """common part of all device facades: back-end table, signals, start and stop."""
 
     log = logging.getLogger("MW4")
@@ -21,12 +22,12 @@ class DeviceFacade[AppT: HasThreadPool]:
         self.signals = Signals()
         self.data: dict[str, Any] = {}
         self.framework: str = ""
-        self.run: dict[str, Any] = {}
+        self.run: dict[str, DriverT] = {}
 
     def buildBackends(
         self,
-        backends: dict[str, Callable[[Any], Any]],
-        windowsBackends: dict[str, Callable[[], Any]] | None = None,
+        backends: dict[str, Callable[[Any], DriverT]],
+        windowsBackends: dict[str, Callable[[], DriverT]] | None = None,
     ) -> None:
         """creates the back-ends; Windows-only ones are given as factories."""
         self.run = {name: backend(self) for name, backend in backends.items()}

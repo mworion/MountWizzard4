@@ -17,7 +17,7 @@ from mw4.gui.utilities.qtHelpers import (
 )
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.logic.profiles.profile import loadConfig, saveConfig
+from mw4.logic.profiles.profile import ProfileConfig, loadConfig, saveConfig
 from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
@@ -299,7 +299,7 @@ class MainWindow(MWidget):
         elif not obsSite.isFollowingSatellite:
             self.satStatus = False
 
-    def switchProfile(self, config: dict) -> None:
+    def switchProfile(self, config: ProfileConfig) -> None:
         self.app.timeMgr.stop()
         self.app.dReg.stopDevices()
         self.externalWindows.closeExtendedWindows()

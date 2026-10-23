@@ -1,6 +1,10 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
+from mw4.base.cameraKeys import (
+    CCD_COOLER_POWER_CCD_COOLER_VALUE,
+    CCD_TEMPERATURE_CCD_TEMPERATURE_VALUE,
+)
 
 measure: dict[str, list[str]] = {
     "mount": [
@@ -55,8 +59,8 @@ measure: dict[str, list[str]] = {
         "WEATHER_PARAMETERS.WEATHER_HUMIDITY",
     ],
     "camera": [
-        "CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE",
-        "CCD_COOLER_POWER.CCD_COOLER_VALUE",
+        CCD_TEMPERATURE_CCD_TEMPERATURE_VALUE,
+        CCD_COOLER_POWER_CCD_COOLER_VALUE,
     ],
     "filter": [
         "FILTER_SLOT.FILTER_SLOT_VALUE",

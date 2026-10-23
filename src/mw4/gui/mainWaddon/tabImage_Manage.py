@@ -1,6 +1,19 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
+from mw4.base.cameraKeys import (
+    CAN_SET_CCD_TEMPERATURE,
+    CCD_BINNING_HOR_BIN_MAX,
+    CCD_COOLER_COOLER_ON,
+    CCD_COOLER_POWER_CCD_COOLER_VALUE,
+    CCD_GAIN_GAIN,
+    CCD_GAIN_GAIN_LIST,
+    CCD_INFO_CCD_MAX_X,
+    CCD_INFO_CCD_MAX_Y,
+    CCD_OFFSET_OFFSET,
+    CCD_OFFSET_OFFSET_LIST,
+    CCD_TEMPERATURE_CCD_TEMPERATURE_VALUE,
+)
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
@@ -115,8 +128,8 @@ class ImageManage(TabAddon):
         self.ui.GroupControlledCamera.setEnabled(caps.hasSensor)
 
     def updateOffset(self) -> None:
-        actValue = self.app.dReg.camera.data.get("CCD_OFFSET.OFFSET", None)
-        offsetList = self.app.dReg.camera.data.get("CCD_OFFSET.OFFSET_LIST", None)
+        actValue = self.app.dReg.camera.data.get(CCD_OFFSET_OFFSET, None)
+        offsetList = self.app.dReg.camera.data.get(CCD_OFFSET_OFFSET_LIST, None)
         if offsetList and actValue:
             offsetList = list(offsetList)
             self.mainW.log.debug("Index: [%s], List: [%s]", actValue, offsetList)
@@ -125,8 +138,8 @@ class ImageManage(TabAddon):
             guiSetText(self.ui.offsetCam, "3.0f", actValue)
 
     def updateGain(self) -> None:
-        actValue = self.app.dReg.camera.data.get("CCD_GAIN.GAIN", False)
-        gainList = self.app.dReg.camera.data.get("CCD_GAIN.GAIN_LIST", False)
+        actValue = self.app.dReg.camera.data.get(CCD_GAIN_GAIN, False)
+        gainList = self.app.dReg.camera.data.get(CCD_GAIN_GAIN_LIST, False)
         if gainList and actValue:
             gainList = list(gainList)
             self.mainW.log.debug("Index: [%s], List: [%s]", actValue, gainList)
@@ -135,9 +148,9 @@ class ImageManage(TabAddon):
             guiSetText(self.ui.gainCam, "3.0f", actValue)
 
     def updateCooler(self) -> None:
-        coolerTemp = self.app.dReg.camera.data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", 0)
-        coolerPower = self.app.dReg.camera.data.get("CCD_COOLER_POWER.CCD_COOLER_VALUE", 0)
-        coolerOn = self.app.dReg.camera.data.get("CCD_COOLER.COOLER_ON", False)
+        coolerTemp = self.app.dReg.camera.data.get(CCD_TEMPERATURE_CCD_TEMPERATURE_VALUE, 0)
+        coolerPower = self.app.dReg.camera.data.get(CCD_COOLER_POWER_CCD_COOLER_VALUE, 0)
+        coolerOn = self.app.dReg.camera.data.get(CCD_COOLER_COOLER_ON, False)
         guiSetText(self.ui.coolerTemp, "3.1f", coolerTemp)
         guiSetText(self.ui.coolerPower, "3.1f", coolerPower)
         self.setRunPair((self.ui.coolerOn, self.ui.coolerOff), (coolerOn, not coolerOn))
@@ -163,10 +176,10 @@ class ImageManage(TabAddon):
         camera = self.app.dReg.camera.instance
 
         focalLength = self.ui.focalLength.value()
-        maxBinX = camera.data.get("CCD_BINNING.HOR_BIN_MAX", 9)
-        maxBinY = camera.data.get("CCD_BINNING.HOR_BIN_MAX", 9)
-        pixelX = camera.data.get("CCD_INFO.CCD_MAX_X", 0)
-        pixelY = camera.data.get("CCD_INFO.CCD_MAX_Y", 0)
+        maxBinX = camera.data.get(CCD_BINNING_HOR_BIN_MAX, 9)
+        maxBinY = camera.data.get(CCD_BINNING_HOR_BIN_MAX, 9)
+        pixelX = camera.data.get(CCD_INFO_CCD_MAX_X, 0)
+        pixelY = camera.data.get(CCD_INFO_CCD_MAX_Y, 0)
 
         if maxBinX and maxBinY:
             maxBin = min(maxBinX, maxBinY)
@@ -183,11 +196,11 @@ class ImageManage(TabAddon):
         guiSetText(self.ui.optimalBinning, "1.0f", optimalBinning(pixelX, pixelY))
 
     def setCoolerTemp(self) -> None:
-        canSetCCDTemp = self.app.dReg.camera.data.get("CAN_SET_CCD_TEMPERATURE", False)
+        canSetCCDTemp = self.app.dReg.camera.data.get(CAN_SET_CCD_TEMPERATURE, False)
         if not canSetCCDTemp:
             return
 
-        actValue = self.app.dReg.camera.data.get("CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE", None)
+        actValue = self.app.dReg.camera.data.get(CCD_TEMPERATURE_CCD_TEMPERATURE_VALUE, None)
         if actValue is None:
             return
 
@@ -224,12 +237,12 @@ class ImageManage(TabAddon):
         return value if ok else None
 
     def setOffset(self) -> None:
-        value = self.askRange("Set offset", "Offset entry: ", "CCD_OFFSET.OFFSET")
+        value = self.askRange("Set offset", "Offset entry: ", CCD_OFFSET_OFFSET)
         if value is not None:
             self.app.dReg.camera.instance.sendOffset(offset=value)
 
     def setGain(self) -> None:
-        value = self.askRange("Set gain", "Gain entry: ", "CCD_GAIN.GAIN")
+        value = self.askRange("Set gain", "Gain entry: ", CCD_GAIN_GAIN)
         if value is not None:
             self.app.dReg.camera.instance.sendGain(gain=value)
 

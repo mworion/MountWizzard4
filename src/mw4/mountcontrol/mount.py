@@ -4,6 +4,7 @@
 import logging
 from dataclasses import dataclass, field
 from mw4.base.appProtocol import AppProtocol
+from mw4.base.driverProtocol import FrameworkDriver
 from mw4.base.tpool import Worker, startWorker
 from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.geometry import Geometry, TransformResult
@@ -50,7 +51,7 @@ class MountDevice(QObject):
         self._waitTimeFlip = 0
         self.app = app
         self.config = DeviceConfigMount()
-        self.run: dict[str, Any] = {"10micron": self}
+        self.run: dict[str, FrameworkDriver] = {"10micron": self}
         self.framework: str = "10micron"
         self.threadPool = app.threadPool
         self.updateDomeSettings = app.signals.model.updateDomeSettings

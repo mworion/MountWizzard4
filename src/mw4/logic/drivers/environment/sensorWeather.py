@@ -3,6 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 from mw4.base import platformInfo
 from mw4.base.appProtocol import HasThreadPool
+from mw4.base.driverProtocol import FrameworkDriver
 from mw4.logic.drivers.environment.sensorWeatherAlpaca import SensorWeatherAlpaca
 from mw4.logic.drivers.environment.sensorWeatherBoltwood import SensorWeatherBoltwood
 from mw4.logic.drivers.environment.sensorWeatherIndi import SensorWeatherIndi
@@ -13,7 +14,7 @@ if platformInfo.IS_WINDOWS:
     from mw4.logic.drivers.environment.sensorWeatherAscom import SensorWeatherAscom
 
 
-class SensorWeather(DeviceFacade):
+class SensorWeather(DeviceFacade[HasThreadPool, FrameworkDriver]):
     DEVICE_TYPE = "observingconditions"
 
     def __init__(self, app: HasThreadPool) -> None:

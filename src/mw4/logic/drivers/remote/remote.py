@@ -4,6 +4,7 @@
 import logging
 from dataclasses import dataclass, field
 from mw4.base.appProtocol import HasMessaging
+from mw4.base.driverProtocol import FrameworkDriver
 from mw4.base.signalsDevices import Signals
 from PySide6.QtNetwork import QAbstractSocket, QHostAddress, QTcpServer
 from typing import Any
@@ -24,7 +25,7 @@ class Remote:
         self.data: dict[str, Any] = {}
         self.config = DeviceConfigRemote()
         self.framework: str = ""
-        self.run: dict[str, Any] = {"tcp": self}
+        self.run: dict[str, FrameworkDriver] = {"tcp": self}
         self.clientConnection: Any = None
         self.tcpServer: QTcpServer | None = None
 

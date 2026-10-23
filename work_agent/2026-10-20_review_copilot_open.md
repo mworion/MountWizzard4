@@ -21,9 +21,9 @@ incremental cleanup.
 | Architecture    | A-     | raw-dict config (A3) |
 | Pythonic style  | B+     | `hasattr`/dict plumbing, `dict[str, Any]` carriers |
 | Maintainability | A-     | long functions, docstring quality |
-| Quality         | A-     | no shared HTTP helper, thread-safety rule undocumented |
+| Quality         | A-     | thread-safety rule undocumented (Q5) |
 | Testability     | A-     | god-object stubbing, stress tests not in CI, `../tests/work` pollution |
-| Readability     | B+     | class-level loggers, docstring quality |
+| Readability     | B+     | docstring quality, long banners |
 
 ## 2. Open findings
 
@@ -45,14 +45,13 @@ incremental cleanup.
 ### Maintainability
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
-| M1 | L | ◐ `createWindowTable`, `createDeviceTable`, `showTiltSquare` reworked. ~12 functions > 50 lines remain (largest `measureAddons.dataPlots` 91 L, purely declarative; `createFramework2gui` 63 L, `extractSources` 61 L, `astrometry.solve` 57 L). | Builder helpers where it helps; decide on a lower global `PLR0915` budget. |
+| M1 | L | ◐ Reduced to 6 functions > 50 lines (2026-10-23): `qtMessageDialog.__init__` 65 L, `mainWindow.__init__` 61 L, `tabSat_Track.__init__` 61 L, `geometry.calcAxisTransforms` 55 L, `simulator/dome.create` 54 L, `simulator/telescope.createOta` 51 L; mostly declarative builders. A5 follow-up controllers (almanac, model) exist. | Optional: `calcAxisTransforms` split; decide on a lower global `PLR0915` budget. |
 | M7 | L | Docstring style and language quality vary. | One style, limited ruff `D` rules for public APIs. |
 
 ### Quality and robustness
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
 | Q2 | M | Keep a regression test per classification branch of `handleDeviceError`. | – |
-| Q3 | M | ◐ `S113` enforced, all `requests` calls have a timeout. No shared helper, retry or error-to-signal policy. | One HTTP helper with default timeout and shared error handling. |
 | Q4 | L | `ascomClass.py` composes a Python snippet string for a subprocess. | Security review: never include user-controlled input (Windows only). |
 | Q5 | L | Workers and GUI thread both mutate shared state. | Document "workers return data via signals" and test it. |
 
@@ -68,7 +67,6 @@ incremental cleanup.
 | # | Pri | Open point | Recommendation |
 |---|-----|-----------|----------------|
 | R1 | M | camelCase is a deliberate deviation; no tool enforces it. | Pre-commit grep for `snake_case` defs if drift appears. |
-| R2 | M | 56 classes with a class-level `log = logging.getLogger("MW4")`. | Module-level `logging.getLogger(__name__)` or print `%(module)s`. |
 | R3 | L | Long section banners remain. | Optional cleanup. |
 | R4 | L | Mixed English in docstrings/comments. | Proof-reading pass. |
 | R5 | L | Module header differs from the project banner. | Cosmetic. |
@@ -83,11 +81,8 @@ incremental cleanup.
 
 **Follow-ups (first round of items 5–8 is done)**
 1. Repair `../tests/stress_tests` (they fail with `AttributeError` on the UI layer) so the nightly job is green.
-2. M1 – the remaining ~12 long functions. Optional: same controller pattern for
-   `tabModel_Manage.py`, `tabAlmanac.py`, `tabModel_BuildPoints.py` (A5 follow-up); the
-   `update*Gui` tri-state button logic in `tabImage_Manage.py` could move to `logic` as well.
 
 **Strategic**
-3. A3 – typed, versioned configuration dataclasses with migration.
-4. H1 – repository slimming and data-asset policy.
-5. Q3 – shared HTTP helper; R2 – module-level loggers.
+2. A3 – typed, versioned configuration dataclasses with migration.
+3. H1 – repository slimming and data-asset policy.
+

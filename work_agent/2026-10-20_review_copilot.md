@@ -22,14 +22,14 @@ surface, raw-dict configuration spread over the whole code base, GUI/logic separ
 good but not clean (Qt leaks into logic), and a handful of oversized functions and
 data-as-code files.
 
-| Area            | Rating | Comment (re-rated 2026-10-22; was Architecture B, Maintainability B) |
+| Area            | Rating | Comment (re-rated 2026-10-23; was Architecture B, Maintainability B) |
 |-----------------|--------|---------|
 | Architecture    | A-     | Layers enforced by import-linter, role protocols, typed registry, controllers; raw-dict configuration remains (A3) |
 | Pythonic style  | B+     | Modern 3.12 typing, dataclasses, generators; some `hasattr`/dict plumbing |
 | Maintainability | A-     | Consistent conventions, shared `DeviceFacade`, tab controllers; ~12 long functions and docstring quality remain |
-| Quality         | A-     | ruff clean, pyrefly 0 errors, 100 % coverage, few broad excepts (all justified) |
+| Quality         | A-     | ruff clean, pyrefly 0 errors, 100 % coverage, few broad excepts (all justified), shared HTTP helper (Q3); thread-safety rule undocumented (Q5) |
 | Testability     | A-     | 5.1k tests, strict 1:1 test-per-module layout (verified); heavy Qt/app stubbing, stress tests not in CI scope |
-| Readability     | B+     | camelCase consistent, short methods; a few outliers |
+| Readability     | B+     | camelCase consistent, short methods; a few outliers; origin visible in log format (R2 closed) |
 
 ## 2. Key figures
 
@@ -111,7 +111,7 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 
 | # | Pri | Finding | Recommendation |
 |---|-----|---------|----------------|
-| M1 | H | **Oversized functions** (✅ roadmap 7: all `PLR0915` ignores removed, largest function 293 → 91 L, 25 → 16 over 50 L; remaining are mostly data tables, global statement budget still open): `measureAddons.dataPlots` 293 L, `devicePopupW.__init__` 154 L, `simulator/materials.__init__` 140 L, `simulator/telescope.create` 122 L, `tabSettDevice.__init__` 103 L, native-Qt dialog constructors 98–99 L. 25 functions > 50 lines in total. (mccabe ≤ 10 passes because they are linear, not branchy.) | Split into builder helpers (`createPlotAxes`, `createMaterial`, …); table-drive repetitive widget creation. Add a ruff `PLR0915` (too-many-statements) budget to prevent regrowth. |
+| M1 | H | ✅ **Largely done 2026-10-23:** 6 functions > 50 L remain (largest 65 L, mostly declarative builders); A5 follow-up controllers for almanac/model exist. Earlier: **Oversized functions** (✅ roadmap 7: all `PLR0915` ignores removed, largest function 293 → 91 L, 25 → 16 over 50 L; remaining are mostly data tables, global statement budget still open): `measureAddons.dataPlots` 293 L, `devicePopupW.__init__` 154 L, `simulator/materials.__init__` 140 L, `simulator/telescope.create` 122 L, `tabSettDevice.__init__` 103 L, native-Qt dialog constructors 98–99 L. 25 functions > 50 lines in total. (mccabe ≤ 10 passes because they are linear, not branchy.) | Split into builder helpers (`createPlotAxes`, `createMaterial`, …); table-drive repetitive widget creation. Add a ruff `PLR0915` (too-many-statements) budget to prevent regrowth. |
 | M2 | M | **Long parameter lists** in a few places: `qtInputDialog.__init__` 12 args, `tabSat_Search.calcSat` 9, `updateListSats` 8, `astroObjects.__init__` 8. | Use dataclass parameter objects or keyword-only args (`*,`). |
 | M3 | M | ✅ **Done 2026-10-22 (plan M3).** The framework back-ends were already DRY (`*AlpacaAscomBase` + 9-line shells); the copy-paste sat in the nine device facades. They now share `logic/drivers/frameworks/deviceFacade.py` (`DeviceFacade[AppT]`: signals, back-end table, start/stop), −321 net source lines. Deliberately kept as they are (own signals, custom start/stop or fixed framework): `Measure`, `PlateSolve`, `Remote`, `KMRelay`, `SeeingWeather`, `DirectWeather`, `HidController`, `Keypad`. **Duplicated framework wrappers.** Per device there is `deviceIndi`, `deviceAlpaca`, `deviceSGPro`, `deviceAscom` plus shared `*Class.py` in `base`. This is a good pattern but likely contains copy-paste across devices (camera/focuser/dome/filter/cover). | Run a duplication scan (e.g. `pylint --enable=duplicate-code` or `jscpd`) and extract common bases/mixins for connect/disconnect/poll/error handling. |
 | M4 | M | ✅ **Done:** driver framework classes live in `logic/drivers/frameworks/`, device packages under `logic/drivers/`, GUI-independent logic under `logic/controllers/<GUI area>/`; `base/` keeps infrastructure. `base/` mixes infrastructure (`tpool`, `loggerMW`, `bootstrap`) with domain-ish helpers (`transform`, `timeManager`, `ascomClass`, `sgproClass`, `indiClass`). | Move driver-protocol classes to `logic/drivers/` (or `base/drivers/`) to keep `base` dependency-free. |
@@ -126,7 +126,7 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 |---|-----|---------|----------------|
 | Q1 | M | ✅ **Done 2026-10-20.** `Worker.run` now has one `except Exception` branch that logs the full `traceback.format_exc()` and emits a short error string; the manual `tb_next` walk and `formatTbFrame` are gone. | – |
 | Q2 | M | Broad excepts in `alpacaAscomCommon` (3) are justified by the driver boundary and documented in `per-file-ignores` – good. Keep a regression test per classification branch of `handleDeviceError`. | – |
-| Q3 | M | (◐ re-check 2026-10-20: `S113` is enforced and every `requests` call has a `timeout`; no shared helper or retry policy yet) Network/IO paths (`requests`, `websocket-client`, `astroquery`, mount TCP in `mountcontrol/connection.py`, 462 L) – verify consistent timeouts, retries and error-to-signal mapping. | Introduce one `base/ethernet.py`-style helper for HTTP with default timeout and shared error handling; forbid bare `requests.get` without `timeout=` via ruff `S113`. |
+| Q3 | M | ✅ **Done 2026-10-23:** `base/httpClient.py` (`request` with default timeout and retry on connection errors/timeouts, `safeRequest` logs and returns `None`); all `requests` calls in `src` use it. Earlier: (◐ re-check 2026-10-20: `S113` is enforced and every `requests` call has a `timeout`; no shared helper or retry policy yet) Network/IO paths (`requests`, `websocket-client`, `astroquery`, mount TCP in `mountcontrol/connection.py`, 462 L) – verify consistent timeouts, retries and error-to-signal mapping. | Introduce one `base/ethernet.py`-style helper for HTTP with default timeout and shared error handling; forbid bare `requests.get` without `timeout=` via ruff `S113`. |
 | Q4 | L | `ascomClass.py` builds a Python snippet as a string (`"print(result if result else '', end='')"`) for execution via a subprocess. | Fine as a pragmatic COM isolation; make sure the string composition never includes user-controlled input (security review recommended, Windows only). |
 | Q5 | L | Thread-safety relies on `QThreadPool` max 30 and a busy lock; shared mutable state (`Camera.data`, `app.config`) is mutated from workers and GUI thread. | Document the rule "workers return data via signals, GUI thread mutates state" and test it. |
 
@@ -148,7 +148,7 @@ Priority: **H** high value, **M** medium, **L** low / cosmetic.
 | # | Pri | Finding | Recommendation |
 |---|-----|---------|----------------|
 | R1 | M | Consistent camelCase (a deliberate, documented deviation from PEP 8; `N999` ignored). Reasonable for a Qt code base, but ruff `N`-rules cannot help enforce it. | Keep; add a tiny custom check or pre-commit grep for `snake_case` defs if drift appears. |
-| R2 | M | Module-level `log = logging.getLogger("MW4")` as a *class attribute* in 60 classes. | One logger per module (`logging.getLogger(__name__)`) is idiomatic and gives per-module filtering; current single-name logger loses origin unless the formatter prints `%(module)s`. |
+| R2 | M | ✅ **Closed 2026-10-23, no change:** the log format already prints file name and line number (`%(filename)20.20s`/`%(lineno)4s`), so the origin is not lost; migrating would break `setCustomLoggingLevel` on the `"MW4"` logger. Earlier: Module-level `log = logging.getLogger("MW4")` as a *class attribute* in 60 classes. | One logger per module (`logging.getLogger(__name__)`) is idiomatic and gives per-module filtering; current single-name logger loses origin unless the formatter prints `%(module)s`. |
 | R3 | L | ✅ Partly done 2026-10-20: commented-out code in `keypad.py` removed. Several long section banners remain. | Optional cleanup of banners. |
 | R4 | L | Mixed English quality in docstrings and a few comments. | Light proof-reading pass. |
 | R5 | L | Header banner in `../pyproject.toml` (ASCII art) and per-file headers are noise-free, but the file header in modules differs from the project banner. | Cosmetic. |

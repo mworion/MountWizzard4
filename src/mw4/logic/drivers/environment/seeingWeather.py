@@ -3,10 +3,10 @@
 # Copyright (c) 2019-2026 mworion
 import json
 import logging
-import requests
 from dataclasses import dataclass, field
 from importlib.resources import as_file, files
 from mw4.base.appProtocol import AppProtocol
+from mw4.base.httpClient import safeRequest
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker, startWorker
 from pathlib import Path
@@ -69,12 +69,10 @@ class SeeingWeather:
         self.signals.update.emit()
 
     def runnerGetSeeingData(self, url: Path) -> bool:
-        try:
-            data = requests.get(str(url), timeout=30)
-            self.log.debug("Seeing url: [%s] response code: [%s]", url, data.status_code)
-        except (requests.RequestException, OSError) as e:
-            self.log.critical("[%s] general exception: [%s]", url, e)
+        data = safeRequest("get", str(url), timeout=30)
+        if data is None:
             return False
+        self.log.debug("Seeing url: [%s] response code: [%s]", url, data.status_code)
         if data.status_code != 200:
             self.log.warning("[%s] status is not 200", url)
             return False

@@ -4,6 +4,7 @@
 import gzip
 import requests
 import shutil
+from mw4.base.httpClient import request
 from mw4.base.tpool import Worker, startWorker
 from mw4.gui.utilities.qtHelpers import svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
@@ -84,7 +85,7 @@ class DownloadPopup(MWidget):
         self.ui.statusText.setText(statusText)
 
     def getFileFromUrl(self, url: str, dest: Path) -> bool:
-        r = requests.get(url, stream=True, timeout=self.TIMEOUT_SOURCE)
+        r = request("get", url, stream=True, timeout=self.TIMEOUT_SOURCE)
         totalSizeBytes = int(r.headers.get("content-length", 1))
         if r.status_code != 200:
             return False

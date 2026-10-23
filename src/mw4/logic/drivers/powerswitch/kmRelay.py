@@ -7,6 +7,7 @@ import requests
 import threading
 from dataclasses import dataclass, field
 from mw4.base.appProtocol import HasThreadPool
+from mw4.base.httpClient import safeRequest
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker, startWorker
 from PySide6.QtCore import QTimer, Signal
@@ -79,11 +80,7 @@ class KMRelay:
     def getRelay(self, url: str, debug: bool = False) -> Any:
         auth = requests.auth.HTTPBasicAuth(self.config.user, self.config.password)
         url = f"http://{self.config.hostAddress}:80{url}"
-        try:
-            result = requests.get(url, auth=auth, timeout=self.TIMEOUT)
-        except (requests.RequestException, OSError) as e:
-            result = None
-            self.log.critical("Error in request: %s", e)
+        result = safeRequest("get", url, auth=auth, timeout=self.TIMEOUT)
         if debug:
             self.debugOutput(result=result)
         return result

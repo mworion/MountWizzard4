@@ -1,7 +1,7 @@
 # Plan M1 – remaining long functions (roadmap item 2)
 
 Source: `2026-10-20_review_copilot_open.md`, finding M1, roadmap item 2.
-Status: **plan only – nothing of this is executed.**
+Status: **done 2026-10-23** (steps 1–5); 6 functions > 50 L remain, mostly declarative builders.
 
 ## Scope
 

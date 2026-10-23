@@ -2,10 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import queue
-import requests
 import threading
 from dataclasses import dataclass, field
 from mw4.base.appProtocol import AppProtocol
+from mw4.base.httpClient import safeRequest
 from mw4.base.tpool import Worker, startWorker
 from mw4.logic.drivers.frameworks.driverDataClass import DriverData
 from PySide6.QtCore import QThreadPool
@@ -49,22 +49,18 @@ class SGProClass(DriverData):
 
     def requestProperty(self, valueProp: str, params: dict | None = None) -> dict:
         url = f"http://{self.config.hostAddress}:{self.config.port}"
-        try:
-            if params:
-                response = requests.post(
-                    f"{url}/{valueProp}?format=json",
-                    json=params,
-                    timeout=self.SGPRO_TIMEOUT,
-                )
-            else:
-                response = requests.get(
-                    f"{url}/{valueProp}?format=json",
-                    timeout=self.SGPRO_TIMEOUT,
-                )
-        except (requests.RequestException, OSError) as e:
-            self.log.debug(
-                "[%s] method [%s] not implemented: %s", self.config.deviceName, valueProp, e
+        if params:
+            response = safeRequest(
+                "post",
+                f"{url}/{valueProp}?format=json",
+                json=params,
+                timeout=self.SGPRO_TIMEOUT,
             )
+        else:
+            response = safeRequest(
+                "get", f"{url}/{valueProp}?format=json", timeout=self.SGPRO_TIMEOUT
+            )
+        if response is None:
             return {}
 
         if response.status_code != 200:

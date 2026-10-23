@@ -1,7 +1,7 @@
 # Plan Q3 + R2 – shared HTTP helper and module-level loggers (roadmap item 5)
 
 Source: `2026-10-20_review_copilot_open.md`, findings Q3 and R2.
-Status: **plan only – nothing of this is executed.**
+Status: **Part A (Q3) done 2026-10-23; Part B (R2) closed without change** (log format already shows file/line).
 The two parts are independent; each can be delivered as its own change.
 
 ---

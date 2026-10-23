@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import re
-import requests
+from mw4.base.httpClient import request
 from mw4.base.tpool import Worker, startWorker
 from mw4.gui.utilities.qtHelpers import svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
@@ -132,7 +132,7 @@ class UploadPopup(MWidget):
         return f"http://{self.url!s}/bin/uploadst"
 
     def getStatus(self) -> list[str]:
-        returnValues = requests.get(self.generateURLStatus(), timeout=self.TIMEOUT_UPLOAD)
+        returnValues = request("get", self.generateURLStatus(), timeout=self.TIMEOUT_UPLOAD)
         self.returnValues["successMount"] = True
         if returnValues.status_code != 200:
             self.log.debug("Error status: %s", returnValues.status_code)
@@ -165,14 +165,14 @@ class UploadPopup(MWidget):
         return f"http://{self.url!s}/bin/upload"
 
     def deleteHostData(self) -> bool:
-        returnValues = requests.delete(self.generateURL(), timeout=10)  # SEC-4
+        returnValues = request("delete", self.generateURL())
         if returnValues.status_code in [200, 204]:
             return True
         self.msg.emit(2, "Upload", "Error", f"Deleting File: {returnValues.status_code}")
         return False
 
     def postHostData(self, files: dict) -> bool:
-        returnValues = requests.post(self.generateURL(), files=files, timeout=10)  # SEC-4
+        returnValues = request("post", self.generateURL(), files=files)
         if returnValues.status_code == 202:
             return True
         self.msg.emit(2, "Upload", "Error", f"Data: {returnValues.status_code}")

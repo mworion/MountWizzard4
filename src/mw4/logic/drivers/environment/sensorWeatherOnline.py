@@ -4,8 +4,8 @@
 import json
 import logging
 import numpy as np
-import requests
 from dataclasses import dataclass, field
+from mw4.base.httpClient import safeRequest
 from mw4.base.tpool import Worker, startWorker
 from pathlib import Path
 from typing import Any
@@ -96,12 +96,10 @@ class SensorWeatherOnline:
             self.data["WEATHER_PARAMETERS.RainVol"] = 0
 
     def runnerGetOpenWeatherMapData(self, url: str) -> bool:
-        try:
-            data = requests.get(url, timeout=30)
-            self.log.debug("Weather url: [%s] response code: [%s]", url, data.status_code)
-        except (requests.RequestException, OSError) as e:
-            self.log.critical("[%s] general exception: [%s]", url, e)
+        data = safeRequest("get", url, timeout=30)
+        if data is None:
             return False
+        self.log.debug("Weather url: [%s] response code: [%s]", url, data.status_code)
         if data.status_code != 200:
             self.log.warning("[%s] status is not 200", url)
             return False

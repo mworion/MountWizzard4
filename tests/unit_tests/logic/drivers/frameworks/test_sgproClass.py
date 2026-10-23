@@ -102,7 +102,7 @@ def test_requestProperty_get_success(function):
     function.config.hostAddress = "localhost"
     function.config.port = 59590
     response_data = {"Success": True, "Data": "test"}
-    with mock.patch("mw4.logic.drivers.frameworks.sgproClass.requests.get") as mock_get:
+    with mock.patch("requests.get") as mock_get:
         mock_response = mock.MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = response_data
@@ -118,7 +118,7 @@ def test_requestProperty_post_with_params(function):
     function.config.port = 59590
     response_data = {"Success": True}
     params = {"param1": "value1"}
-    with mock.patch("mw4.logic.drivers.frameworks.sgproClass.requests.post") as mock_post:
+    with mock.patch("requests.post") as mock_post:
         mock_response = mock.MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = response_data
@@ -134,7 +134,7 @@ def test_requestProperty_timeout_exception(function):
     """Test timeout exception handling."""
     function.config.hostAddress = "localhost"
     function.config.port = 59590
-    with mock.patch("mw4.logic.drivers.frameworks.sgproClass.requests.get") as mock_get:
+    with mock.patch("requests.get") as mock_get:
         mock_get.side_effect = requests.exceptions.Timeout("Timeout")
         result = function.requestProperty("testProp")
         assert result == {}
@@ -144,7 +144,7 @@ def test_requestProperty_connection_error(function):
     """Test connection error handling."""
     function.config.hostAddress = "localhost"
     function.config.port = 59590
-    with mock.patch("mw4.logic.drivers.frameworks.sgproClass.requests.get") as mock_get:
+    with mock.patch("requests.get") as mock_get:
         mock_get.side_effect = requests.exceptions.ConnectionError("Connection refused")
         result = function.requestProperty("testProp")
         assert result == {}
@@ -152,7 +152,7 @@ def test_requestProperty_connection_error(function):
 
 def test_requestProperty_osError(function):
     """A plain socket error is handled like a request error."""
-    with mock.patch("mw4.logic.drivers.frameworks.sgproClass.requests.post") as mock_post:
+    with mock.patch("requests.post") as mock_post:
         mock_post.side_effect = OSError("socket")
         result = function.requestProperty("testProp", params={"a": 1})
         assert result == {}
@@ -162,7 +162,7 @@ def test_requestProperty_unexpectedPropagates(function):
     """An unexpected exception type is no longer swallowed."""
     with (
         mock.patch(
-            "mw4.logic.drivers.frameworks.sgproClass.requests.get", side_effect=ZeroDivisionError
+            "requests.get", side_effect=ZeroDivisionError
         ),
         pytest.raises(ZeroDivisionError),
     ):
@@ -173,7 +173,7 @@ def test_requestProperty_invalid_status_code(function):
     """Test handling of invalid HTTP status code."""
     function.config.hostAddress = "localhost"
     function.config.port = 59590
-    with mock.patch("mw4.logic.drivers.frameworks.sgproClass.requests.get") as mock_get:
+    with mock.patch("requests.get") as mock_get:
         mock_response = mock.MagicMock()
         mock_response.status_code = 500
         mock_get.return_value = mock_response
@@ -187,7 +187,7 @@ def test_requestProperty_logging_trace(function):
     function.config.port = 59590
     function.loggingTrace = True
     response_data = {"Success": True}
-    with mock.patch("mw4.logic.drivers.frameworks.sgproClass.requests.get") as mock_get:
+    with mock.patch("requests.get") as mock_get:
         mock_response = mock.MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = response_data
@@ -668,7 +668,7 @@ def test_requestProperty_url_construction(function):
     """Test correct URL construction for requestProperty."""
     function.config.hostAddress = "192.168.1.1"
     function.config.port = 8080
-    with mock.patch("mw4.logic.drivers.frameworks.sgproClass.requests.get") as mock_get:
+    with mock.patch("requests.get") as mock_get:
         mock_response = mock.MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {}

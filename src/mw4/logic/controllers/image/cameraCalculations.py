@@ -65,3 +65,43 @@ def filterSlotRange(data: dict[str, Any]) -> tuple[int, int]:
     if "FILTER_NAME.FILTER_SLOT_NAME_0" in data:
         return 0, numberFilter - 1
     return 1, numberFilter
+
+
+def switchPairState(value: Any) -> tuple[bool, bool]:
+    """returns the run state of an (on, off) button pair for a truthy / None / falsy value."""
+    if value:
+        return True, False
+    if value is None:
+        return False, False
+    return False, True
+
+
+def strictPairState(value: Any) -> tuple[bool, bool]:
+    """returns the run state of an (open, close) button pair, only True / False count."""
+    if value is True:
+        return True, False
+    if value is False:
+        return False, True
+    return False, False
+
+
+def filterNames(data: dict[str, Any]) -> list[str]:
+    """returns the filter names in the order of the device data."""
+    return [data[key] for key in data if "FILTER_NAME.FILTER_SLOT_NAME_" in key]
+
+
+def filterNumberForName(data: dict[str, Any], name: str) -> int:
+    """returns the slot number of a filter name; alpaca counts slots from 0, indi from 1."""
+    index = filterNames(data).index(name)
+    return index if "FILTER_NAME.FILTER_SLOT_NAME_0" in data else index + 1
+
+
+DomeTurn = Literal["ccw", "cw", "abort"]
+DomeShutter = Literal["open", "close"]
+
+
+def hidDomeAction(turnVal: int, openVal: int) -> tuple[DomeTurn, DomeShutter | None]:
+    """maps the hid controller values (0..255) to a dome turn and shutter action."""
+    turn: DomeTurn = "ccw" if turnVal < 64 else "cw" if turnVal > 192 else "abort"
+    shutter: DomeShutter | None = "open" if openVal < 64 else "close" if openVal > 192 else None
+    return turn, shutter

@@ -83,4 +83,17 @@ Inventory (13 functions > 50 lines):
 
 Budget: `max-statements = 40` in `[tool.ruff.lint.pylint]`; per-file `PLR0915` ignores for
 `qtMessageDialog.py`, `photometry.py`, `setting.py` (declarative / field-by-field parser).
-Step 5 (optional A5 follow-up) not done.
+
+
+## Result step 5 (2026-10-23)
+
+| Tab | Moved to `logic/controllers` |
+|-----|------------------------------|
+| `tabModel_Manage` | `model/modelManage.py`: `deleteWorstStar`, `isTargetReached`, `starCount`, `writeOptimizedModel`; `runTargetRMS`/`runSingleRMS` share `runOptimizeStep` |
+| `tabAlmanac` | new area `almanac/almanacCalculations.py`: twilight, moon phase / rise-set / nodes, `MoonPhaseData`, `phasesText`; added to the import-linter independence contract |
+| `tabModel_BuildPoints` | `model/buildpointsSupport.py`: `generateUntilTarget` (DSO and spiral loops), `querySimbad` |
+| `tabImage_Manage` | `image/cameraCalculations.py`: `switchPairState`, `strictPairState`, `filterNames`, `filterNumberForName`, `hidDomeAction`; tab keeps `setRunPair` |
+
+Notes: message texts for deleting the worst star during optimization are now identical for
+overall and single mode ("Point: n, RMS of x arcsec deleted."). `tests/**` is exempt from
+`PLR0915` (fixtures).

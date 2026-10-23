@@ -132,6 +132,7 @@ forbidden_modules = ["mw4.logic.controllers"]
 name = "Controller areas are independent"
 type = "independence"
 modules = [
+    "mw4.logic.controllers.almanac",
     "mw4.logic.controllers.image",
     "mw4.logic.controllers.imageWindow",
     "mw4.logic.controllers.model",
@@ -239,7 +240,7 @@ max-statements = 40
 "src/mw4/gui/**" = ["TID251"]
 "src/mw4/mainApp.py" = ["TID251"]
 "src/mw4/loader.py" = ["TID251"]
-"tests/**" = ["TID251"]
+"tests/**" = ["TID251", "PLR0915"]
 
 [tool.ruff.lint.flake8-tidy-imports.banned-api]
 "platform.system".msg = "Use the constants in mw4.base.platformInfo instead."

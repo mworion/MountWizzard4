@@ -3,20 +3,23 @@
 # Copyright (c) 2019-2026 mworion
 import numpy as np
 import pyqtgraph as pg
-from dataclasses import dataclass
 from dateutil.tz import tzlocal
 from importlib.resources import as_file, files
 from mw4.base.tpool import Worker, startWorker
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, setPixmapAlpha
+from mw4.logic.controllers.almanac.almanacCalculations import (
+    MoonPhaseData,
+    calcMoonPhase,
+    calcTwilightData,
+    phasesText,
+)
 from PySide6.QtCore import QPointF, Qt
 from PySide6.QtGui import QBrush, QColor, QPainter, QPen, QPixmap
 from PySide6.QtWidgets import QWidget
-from range_key_dict import RangeKeyDict
 from skyfield import almanac
 from skyfield.timelib import Timescale
 from skyfield.toposlib import GeographicPosition
-from skyfield.trigonometry import position_angle_of
 from typing import TYPE_CHECKING, Any, ClassVar
 
 if TYPE_CHECKING:
@@ -24,38 +27,9 @@ if TYPE_CHECKING:
 
 TWILIGHT_PLOT_DAYS: int = 91
 MAX_TWILIGHT_ROWS: int = 8
-MOON_RISE_DAYS: int = 2
-MOON_RISE_MAX: int = 3
-MOON_NODE_DAYS: int = 29
-MOON_NODE_MAX: int = 2
-
-
-@dataclass
-class MoonPhaseData:
-    illumination: float
-    degree: float
-    percent: float
-    angle: Any
-    moonTimes: Any
-    moonEvents: Any
-    nodeTimes: Any
-    nodeEvents: Any
 
 
 class Almanac(TabAddon):
-    phasesText = RangeKeyDict(
-        {
-            (0, 1): "New moon",
-            (1, 23): "Waxing crescent",
-            (23, 27): "First quarter",
-            (27, 48): "Waxing gibbous",
-            (48, 52): "Full moon",
-            (52, 73): "Waning gibbous",
-            (73, 77): "Third quarter",
-            (77, 99): "Waning crescent",
-            (99, 100): "New moon ",
-        }
-    )
     Y_TICKS: ClassVar = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24]
 
     Y_LABELS: ClassVar = [
@@ -205,14 +179,9 @@ class Almanac(TabAddon):
 
     def calcTwilightData(
         self, ts: Timescale, location: GeographicPosition, tWinL: int, tWinH: int
-    ) -> tuple[list, list]:
+    ) -> tuple[Any, Any]:
         timeJD = self.app.dReg.mount.obsSite.timeJD
-        t0 = ts.tt_jd(int(timeJD.tt) - tWinL)
-        t1 = ts.tt_jd(int(timeJD.tt) + tWinH + 1)
-
-        f = almanac.dark_twilight_day(self.app.ephemeris, location)
-        twilightTime, twilightEvents = almanac.find_discrete(t0, t1, f)
-        return twilightTime, twilightEvents
+        return calcTwilightData(self.app.ephemeris, ts, timeJD, location, tWinL, tWinH)
 
     def runnerCalcTwilightDataPlot(
         self, ts: Timescale, location: GeographicPosition, timeWindow: int
@@ -252,61 +221,9 @@ class Almanac(TabAddon):
             self.twilightEvents[:MAX_TWILIGHT_ROWS],
         )
 
-    def calcMoonRiseSet(self) -> tuple[Any, Any]:
-        ephemeris = self.app.ephemeris
-        obsSite = self.app.dReg.mount.obsSite
-        t0 = obsSite.ts.tt_jd(int(obsSite.timeJD.tt))
-        t1 = obsSite.ts.tt_jd(int(obsSite.timeJD.tt) + MOON_RISE_DAYS)
-        f = almanac.risings_and_settings(ephemeris, ephemeris["moon"], obsSite.location)
-        moonTimes, moonEvents = almanac.find_discrete(t0, t1, f)
-        return moonTimes[0:MOON_RISE_MAX], moonEvents[0:MOON_RISE_MAX]
-
-    def calcMoonNodes(self) -> tuple[Any, Any]:
-        obsSite = self.app.dReg.mount.obsSite
-        t0 = obsSite.ts.tt_jd(int(obsSite.timeJD.tt))
-        t1 = obsSite.ts.tt_jd(int(obsSite.timeJD.tt) + MOON_NODE_DAYS)
-        f = almanac.moon_nodes(self.app.ephemeris)
-        nodeTimes, nodeEvents = almanac.find_discrete(t0, t1, f)
-        return nodeTimes[0:MOON_NODE_MAX], nodeEvents[0:MOON_NODE_MAX]
-
     def calcMoonPhase(self) -> MoonPhaseData:
-        ephemeris = self.app.ephemeris
-        sun = ephemeris["sun"]
-        moon = ephemeris["moon"]
-        earth = ephemeris["earth"]
-        now = self.app.dReg.mount.obsSite.ts.now()
-        loc = self.app.dReg.mount.obsSite.location
-        timeJD = self.app.dReg.mount.obsSite.timeJD
-        e = earth.at(timeJD)
-
-        # calc phases for obstruction
-        # pyrefly: ignore[missing-attribute]
-        _, sunLon, _ = e.observe(sun).apparent().ecliptic_latlon()
-        # pyrefly: ignore[missing-attribute]
-        _, moonLon, _ = e.observe(moon).apparent().ecliptic_latlon()
-
-        mpIllumination = almanac.fraction_illuminated(ephemeris, "moon", now)
-        mpDegree = (moonLon.degrees - sunLon.degrees) % 360.0
-        mpPercent = mpDegree / 360 * 100
-
-        locObserver = (loc + earth).at(timeJD)
-        moonApparent = locObserver.observe(moon).apparent()
-        sunApparent = locObserver.observe(sun).apparent()
-        moonAngle = position_angle_of(moonApparent.altaz(), sunApparent.altaz())
-
-        moonTimes, moonEvents = self.calcMoonRiseSet()
-        nodeTimes, nodeEvents = self.calcMoonNodes()
-
-        return MoonPhaseData(
-            illumination=mpIllumination,
-            degree=mpDegree,
-            percent=mpPercent,
-            angle=moonAngle,
-            moonTimes=moonTimes,
-            moonEvents=moonEvents,
-            nodeTimes=nodeTimes,
-            nodeEvents=nodeEvents,
-        )
+        obsSite = self.app.dReg.mount.obsSite
+        return calcMoonPhase(self.app.ephemeris, obsSite.ts, obsSite.timeJD, obsSite.location)
 
     def generateMoonMask(self, pixmap: QPixmap, mpDegree: float) -> QPixmap:
         colCover = QColor(*self.mainW.M_BACK)
@@ -351,7 +268,7 @@ class Almanac(TabAddon):
         self.ui.moonPhaseIllumination.setText(f"{data.illumination * 100:3.1f}")
         self.ui.moonPhasePercent.setText(f"{data.percent:3.0f}")
         self.ui.moonPhaseDegree.setText(f"{data.degree:3.0f}")
-        self.ui.moonPhaseText.setText(self.phasesText[data.percent])
+        self.ui.moonPhaseText.setText(phasesText[data.percent])
 
     def showMoonRiseSet(self, data: MoonPhaseData) -> None:
         self.renderEventList(

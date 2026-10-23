@@ -3,7 +3,6 @@
 # Copyright (c) 2019-2026 mworion
 
 import glob
-import json
 import mw4.gui
 import mw4.gui.mainWaddon.tabModel_Manage
 import os
@@ -305,28 +304,13 @@ def test_deleteName_4(function):
 
 def test_writeBuildModelOptimized_0(function):
     function.fittedModelPath = Path("tests/work/model/test-opt.model")
-    function.writeBuildModelOptimized([])
-
-
-def test_writeBuildModelOptimized_1(function):
-    function.fittedModelPath = Path("tests/work/model/test-opt.model")
     with mock.patch.object(
-        json,
-        "load",
-        return_value=[{"errorIndex": 1}, {"errorIndex": 3}],
-        side_effect=json.JSONDecodeError("test", "test", 0),
+        mw4.gui.mainWaddon.tabModel_Manage,
+        "writeOptimizedModel",
+        return_value=Path("new.model"),
     ):
         function.writeBuildModelOptimized([1])
-
-
-def test_writeBuildModelOptimized_2(function):
-    function.fittedModelPath = Path("tests/work/model/test-opt.model")
-    with (
-        mock.patch.object(mw4.gui.mainWaddon.tabModel_Manage, "writeRetrofitData"),
-        mock.patch.object(json, "load", return_value=[{"errorIndex": 1}, {"errorIndex": 3}]),
-        mock.patch.object(json, "dump"),
-    ):
-        function.writeBuildModelOptimized([1])
+    assert function.fittedModelPath == Path("new.model")
 
 
 def test_clearRefreshModel_1(function):

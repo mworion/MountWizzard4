@@ -7,11 +7,16 @@ from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetTex
 from mw4.logic.controllers.image.cameraCalculations import (
     cameraCapabilities,
     describeRange,
+    filterNames,
+    filterNumberForName,
     filterSlotRange,
+    hidDomeAction,
     optimalBinning,
     pickListEntry,
+    strictPairState,
+    switchPairState,
 )
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from mw4.gui.mainWindow.mainWindow import MainWindow
@@ -98,6 +103,10 @@ class ImageManage(TabAddon):
         self.mainW.wIcon(self.ui.coverPark, "exit-down")
         self.mainW.wIcon(self.ui.coverUnpark, "exit-up")
 
+    def setRunPair(self, buttons: tuple[Any, Any], state: tuple[bool, bool]) -> None:
+        for button, running in zip(buttons, state, strict=True):
+            changeStyleDynamic(button, "run", "true" if running else "false")
+
     def checkEnableCameraUI(self) -> None:
         caps = cameraCapabilities(self.app.dReg.camera.data)
         self.ui.GroupCooler.setEnabled(caps.hasCooler)
@@ -131,12 +140,7 @@ class ImageManage(TabAddon):
         coolerOn = self.app.dReg.camera.data.get("CCD_COOLER.COOLER_ON", False)
         guiSetText(self.ui.coolerTemp, "3.1f", coolerTemp)
         guiSetText(self.ui.coolerPower, "3.1f", coolerPower)
-        if coolerOn:
-            changeStyleDynamic(self.ui.coolerOn, "run", "true")
-            changeStyleDynamic(self.ui.coolerOff, "run", "false")
-        else:
-            changeStyleDynamic(self.ui.coolerOn, "run", "false")
-            changeStyleDynamic(self.ui.coolerOff, "run", "true")
+        self.setRunPair((self.ui.coolerOn, self.ui.coolerOff), (coolerOn, not coolerOn))
 
     def updateFilter(self) -> None:
         filterNumber = self.app.dReg.filter.data.get("FILTER_SLOT.FILTER_SLOT_VALUE", 1)
@@ -257,7 +261,7 @@ class ImageManage(TabAddon):
             return
         actValue = int(actValue)
 
-        availNames = [data[key] for key in data if "FILTER_NAME.FILTER_SLOT_NAME_" in key]
+        availNames = filterNames(data)
 
         value, ok = MWInputDialog.getItem(
             self.mainW, "Set filter", "Filter Name: ", availNames, actValue - 1
@@ -265,8 +269,7 @@ class ImageManage(TabAddon):
         self.mainW.log.debug("FilterSelected: [%s], FilterList: [%s]", value, availNames)
         if not ok:
             return
-        isAlpaca = "FILTER_NAME.FILTER_SLOT_NAME_0" in data
-        number = availNames.index(value) if isAlpaca else availNames.index(value) + 1
+        number = filterNumberForName(data, value)
         self.app.dReg.filter.instance.sendFilterNumber(filterNumber=number)
 
     def setCoolerOn(self) -> None:
@@ -277,30 +280,14 @@ class ImageManage(TabAddon):
 
     def updateCoverStatGui(self) -> None:
         value = self.app.dReg.cover.data.get("CAP_PARK.PARK", None)
-        if value:
-            changeStyleDynamic(self.ui.coverPark, "run", "true")
-            changeStyleDynamic(self.ui.coverUnpark, "run", "false")
-        elif value is None:
-            changeStyleDynamic(self.ui.coverPark, "run", "false")
-            changeStyleDynamic(self.ui.coverUnpark, "run", "false")
-        else:
-            changeStyleDynamic(self.ui.coverPark, "run", "false")
-            changeStyleDynamic(self.ui.coverUnpark, "run", "true")
+        self.setRunPair((self.ui.coverPark, self.ui.coverUnpark), switchPairState(value))
 
         value = self.app.dReg.cover.data.get("Status.Cover", "-")
         self.ui.coverStatusText.setText(value)
 
     def updateLightPanelGui(self) -> None:
         value = self.app.dReg.lightPanel.data.get("FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON", None)
-        if value:
-            changeStyleDynamic(self.ui.lightPanelOn, "run", "true")
-            changeStyleDynamic(self.ui.lightPanelOff, "run", "false")
-        elif value is None:
-            changeStyleDynamic(self.ui.lightPanelOn, "run", "false")
-            changeStyleDynamic(self.ui.lightPanelOff, "run", "false")
-        else:
-            changeStyleDynamic(self.ui.lightPanelOn, "run", "false")
-            changeStyleDynamic(self.ui.lightPanelOff, "run", "true")
+        self.setRunPair((self.ui.lightPanelOn, self.ui.lightPanelOff), switchPairState(value))
 
         value = self.app.dReg.lightPanel.data.get("FLAT_LIGHT_INTENSITY.FLAT_LIGHT_INTENSITY_VALUE")
         guiSetText(self.ui.lightPanelIntensity, "3.0f", value)
@@ -358,31 +345,15 @@ class ImageManage(TabAddon):
 
     def updateDomeGui(self) -> None:
         value = self.app.dReg.dome.data.get("DOME_MOTION.DOME_CW", None)
-        if value:
-            changeStyleDynamic(self.ui.domeSlewCW, "run", "true")
-        else:
-            changeStyleDynamic(self.ui.domeSlewCW, "run", "false")
-
-        value = self.app.dReg.dome.data.get("DOME_MOTION.DOME_CCW", None)
-        if value:
-            changeStyleDynamic(self.ui.domeSlewCCW, "run", "true")
-        else:
-            changeStyleDynamic(self.ui.domeSlewCCW, "run", "false")
+        ccw = self.app.dReg.dome.data.get("DOME_MOTION.DOME_CCW", None)
+        self.setRunPair((self.ui.domeSlewCW, self.ui.domeSlewCCW), (bool(value), bool(ccw)))
 
         value = self.app.dReg.dome.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION")
         guiSetText(self.ui.domeAzimuth, "3.0f", value)
 
     def updateShutterStatGui(self) -> None:
         value = self.app.dReg.dome.instance.data.get("DOME_SHUTTER.SHUTTER_OPEN", None)
-        if value is True:
-            changeStyleDynamic(self.ui.domeOpenShutter, "run", "true")
-            changeStyleDynamic(self.ui.domeCloseShutter, "run", "false")
-        elif value is False:
-            changeStyleDynamic(self.ui.domeOpenShutter, "run", "false")
-            changeStyleDynamic(self.ui.domeCloseShutter, "run", "true")
-        else:
-            changeStyleDynamic(self.ui.domeOpenShutter, "run", "false")
-            changeStyleDynamic(self.ui.domeCloseShutter, "run", "false")
+        self.setRunPair((self.ui.domeOpenShutter, self.ui.domeCloseShutter), strictPairState(value))
 
         value = self.app.dReg.dome.instance.data.get("Status.Shutter", None)
         if value:
@@ -417,14 +388,15 @@ class ImageManage(TabAddon):
         if not self.app.dReg.dome.stat:
             return
 
-        if turnVal < 64:
+        turn, shutter = hidDomeAction(turnVal, openVal)
+        if turn == "ccw":
             self.domeSlewCCW()
-        elif turnVal > 192:
+        elif turn == "cw":
             self.domeSlewCW()
         else:
             self.domeAbortSlew()
 
-        if openVal < 64:
+        if shutter == "open":
             self.domeOpenShutter()
-        elif openVal > 192:
+        elif shutter == "close":
             self.domeCloseShutter()

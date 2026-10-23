@@ -7,9 +7,14 @@ from mw4.logic.controllers.image.cameraCalculations import (
     RangeSpec,
     cameraCapabilities,
     describeRange,
+    filterNames,
+    filterNumberForName,
     filterSlotRange,
+    hidDomeAction,
     optimalBinning,
     pickListEntry,
+    strictPairState,
+    switchPairState,
 )
 
 
@@ -81,3 +86,45 @@ def test_cameraCapabilities_flag(key, flag):
 )
 def test_optimalBinning(pixelX, pixelY, expected):
     assert optimalBinning(pixelX, pixelY) == expected
+
+
+@pytest.mark.parametrize(
+    "value, expected", [(1, (True, False)), (None, (False, False)), (0, (False, True))]
+)
+def test_switchPairState(value, expected):
+    assert switchPairState(value) == expected
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    [(True, (True, False)), (False, (False, True)), (None, (False, False)), (1, (False, False))],
+)
+def test_strictPairState(value, expected):
+    assert strictPairState(value) == expected
+
+
+def test_filterNames():
+    data = {"A": 1, "FILTER_NAME.FILTER_SLOT_NAME_1": "L", "FILTER_NAME.FILTER_SLOT_NAME_2": "R"}
+    assert filterNames(data) == ["L", "R"]
+
+
+def test_filterNumberForName_indi():
+    data = {"FILTER_NAME.FILTER_SLOT_NAME_1": "L", "FILTER_NAME.FILTER_SLOT_NAME_2": "R"}
+    assert filterNumberForName(data, "R") == 2
+
+
+def test_filterNumberForName_alpaca():
+    data = {"FILTER_NAME.FILTER_SLOT_NAME_0": "L", "FILTER_NAME.FILTER_SLOT_NAME_1": "R"}
+    assert filterNumberForName(data, "R") == 1
+
+
+@pytest.mark.parametrize(
+    "turnVal, openVal, expected",
+    [
+        (10, 10, ("ccw", "open")),
+        (250, 250, ("cw", "close")),
+        (128, 128, ("abort", None)),
+    ],
+)
+def test_hidDomeAction(turnVal, openVal, expected):
+    assert hidDomeAction(turnVal, openVal) == expected

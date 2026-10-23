@@ -1,18 +1,18 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
-import json
 import numpy as np
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
-from mw4.logic.controllers.model.modelRunSupport import (
-    convertAngleToFloat,
-    convertFloatToAngle,
-    findFittingModel,
-    writeRetrofitData,
+from mw4.logic.controllers.model.modelManage import (
+    deleteWorstStar,
+    isTargetReached,
+    starCount,
+    writeOptimizedModel,
 )
+from mw4.logic.controllers.model.modelRunSupport import findFittingModel
 from mw4.mountcontrol.model import Model
 from pathlib import Path
 from PySide6.QtCore import Qt
@@ -212,32 +212,13 @@ class ModelManage(TabAddon):
         self.msg.emit(0, "Model", "Manage", f"Model deleted: [{modelName}]")
         self.refreshName()
 
-    def writeBuildModelOptimized(self, pointsOut) -> None:
-        if not pointsOut or self.fittedModelPath.is_dir():
-            return
-        newName = self.fittedModelPath.stem.replace("-opt", "") + "-opt"
-        newPath = self.app.mwGlob["modelDir"] / (newName + ".model")
-
-        try:
-            with open(self.fittedModelPath) as actFile:
-                actModel = convertFloatToAngle(json.load(actFile))
-        except json.JSONDecodeError as e:
-            self.mainW.log.warning(
-                "Cannot load model file: %s, error: %s", [self.fittedModelPath], e
-            )
-            return
-
-        newModel = []
-        for element in actModel:
-            if element["errorIndex"] in pointsOut:
-                continue
-            newModel.append(element)
-
-        newModel = writeRetrofitData(self.app.dReg.mount.model, newModel)
-        newModel = convertAngleToFloat(newModel)
-        with open(newPath, "w+") as newFile:
-            json.dump(newModel, newFile, sort_keys=True, indent=4)
-        self.fittedModelPath = newPath
+    def writeBuildModelOptimized(self, pointsOut: list[int]) -> None:
+        self.fittedModelPath = writeOptimizedModel(
+            self.fittedModelPath,
+            self.app.mwGlob["modelDir"],
+            pointsOut,
+            self.app.dReg.mount.model,
+        )
 
     def clearRefreshModel(self) -> None:
         changeStyleDynamic(self.ui.refreshModel, "run", "false")
@@ -281,15 +262,11 @@ class ModelManage(TabAddon):
         model = self.app.dReg.mount.model
         if not model.numberStars:
             return
-
-        wStar = max(model.starList, key=lambda x: x.errorRMS)
-        error = wStar.errorRMS
-        if not model.deletePoint(wStar.number):
+        result = deleteWorstStar(model)
+        if not result.success:
             self.msg.emit(2, "Model", "Manage error", "Worst point cannot be deleted")
             return
-        text = f"Point: {wStar.number + 1:3.0f}, RMS of {error:5.1f}"
-        text += " arcsec deleted."
-        self.msg.emit(0, "Model", "Manage", text)
+        self.msg.emit(0, "Model", "Manage", result.text())
         self.refreshModel()
 
     def finishOptimize(self) -> None:
@@ -307,55 +284,32 @@ class ModelManage(TabAddon):
         self.msg.emit(0, "Model", "Manage", "Optimizing done")
         self.refreshModel()
 
-    def runTargetRMS(self) -> None:
+    def runOptimizeStep(self, overall: bool) -> None:
         mount = self.app.dReg.mount.instance
-        if mount.model.errorRMS < self.ui.targetRMS.value():
+        if isTargetReached(mount.model, self.ui.targetRMS.value(), overall):
             self.runningOptimize = False
-        numberStars = 0 if mount.model.numberStars is None else mount.model.numberStars
 
-        if self.runningOptimize and numberStars > 1:
-            wStar = max(mount.model.starList, key=lambda x: x.errorRMS)
-            if not mount.model.deletePoint(wStar.number):
+        if self.runningOptimize and starCount(mount.model) > 1:
+            result = deleteWorstStar(mount.model)
+            if not result.success:
                 self.runningOptimize = False
                 self.msg.emit(
                     2,
                     "Model",
                     "Manage error",
-                    f"Star [{wStar.number + 1:3.0f}] cannot be deleted",
+                    f"Point [{result.number + 1:3.0f}] cannot be deleted",
                 )
             else:
-                text = f"Point: {wStar.number + 1:3.0f}: "
-                text += f"RMS of {wStar.errorRMS:5.1f} arcsec deleted."
-                self.msg.emit(0, "Model", "Manage", text)
+                self.msg.emit(0, "Model", "Manage", result.text())
             mount.getModel()
         else:
             self.finishOptimize()
+
+    def runTargetRMS(self) -> None:
+        self.runOptimizeStep(True)
 
     def runSingleRMS(self) -> None:
-        mount = self.app.dReg.mount.instance
-        if all(star.errorRMS < self.ui.targetRMS.value() for star in mount.model.starList):
-            self.runningOptimize = False
-        numberStars = 0 if mount.model.numberStars is None else mount.model.numberStars
-
-        if self.runningOptimize and numberStars > 1:
-            wStar = max(mount.model.starList, key=lambda x: x.errorRMS)
-
-            suc = mount.model.deletePoint(wStar.number)
-            if not suc:
-                self.runningOptimize = False
-                self.msg.emit(
-                    2,
-                    "Model",
-                    "Manage error",
-                    f"Point [{wStar.number + 1:3.0f}] cannot be deleted",
-                )
-            else:
-                text = f"Point: {wStar.number + 1:3.0f}, RMS of {wStar.errorRMS:5.1f}"
-                text += " arcsec deleted."
-                self.msg.emit(0, "Model", "Manage", text)
-            mount.getModel()
-        else:
-            self.finishOptimize()
+        self.runOptimizeStep(False)
 
     def runOptimize(self) -> None:
         self.msg.emit(1, "Model", "Manage", "Start optimizing model")

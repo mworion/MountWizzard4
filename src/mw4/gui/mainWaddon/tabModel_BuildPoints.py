@@ -1,10 +1,10 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
-from astroquery.simbad import Simbad
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
+from mw4.logic.controllers.model.buildpointsSupport import generateUntilTarget, querySimbad
 from skyfield.api import Angle
 from typing import TYPE_CHECKING
 
@@ -194,19 +194,17 @@ class BuildPoints(TabAddon):
         changeStyleDynamic(self.ui.genBuildDSO, "run", "true")
         numberTarget = int(self.ui.numberDSOPoints.value())
         keep = self.ui.keepGeneratedPoints.isChecked()
-        numberPoints = 0
-        numberFiltered = 0
-        iteration = 20
-        while numberFiltered < numberTarget:
-            numberPoints = numberPoints + numberTarget - numberFiltered
-            iteration -= 1
-            if iteration <= 0:
-                break
+
+        def generate(numberPoints: int) -> None:
             self.app.buildPoint.generateDSOPath(ha, dec, timeJD, location, numberPoints, keep)
-            self.autoDeletePoints()
-            numberFiltered = len(self.app.buildPoint.buildP)
-            if numberFiltered == 0:
-                break
+
+        generateUntilTarget(
+            generate,
+            self.autoDeletePoints,
+            lambda: len(self.app.buildPoint.buildP),
+            numberTarget,
+            stopWhenEmpty=True,
+        )
 
         if self.ui.ditherBuildPoints.isChecked():
             self.app.buildPoint.ditherPoints()
@@ -219,17 +217,14 @@ class BuildPoints(TabAddon):
         self.lastGenerator = "spiral"
         numberTarget = int(self.ui.numberSpiral.value())
         changeStyleDynamic(self.ui.genBuildSpiral, "run", "true")
-        numberPoints = 0
-        numberFilter = 0
-        iteration = 20
-        while numberFilter < numberTarget:
-            numberPoints = numberPoints + numberTarget - numberFilter
-            iteration -= 1
-            if iteration <= 0:
-                break
-            self.app.buildPoint.generateGoldenSpiral(numberPoints=numberPoints)
-            self.autoDeletePoints()
-            numberFilter = len(self.app.buildPoint.buildP)
+        generateUntilTarget(
+            lambda numberPoints: self.app.buildPoint.generateGoldenSpiral(
+                numberPoints=numberPoints
+            ),
+            self.autoDeletePoints,
+            lambda: len(self.app.buildPoint.buildP),
+            numberTarget,
+        )
         self.processPoints()
         changeStyleDynamic(self.ui.genBuildSpiral, "run", "false")
 
@@ -361,12 +356,11 @@ class BuildPoints(TabAddon):
             self.msg.emit(2, "Model", "Buildpoints", "No query data given")
             return
 
-        result = Simbad.query_object(ident)
-        if not result:
+        result = querySimbad(ident)
+        if result is None:
             self.msg.emit(2, "Model", "Buildpoints", f"Nox response from SIMBAD for {ident}")
             return
 
-        self.simbadRa = Angle(degrees=float(result["ra"]))
+        self.simbadRa, self.simbadDec = result
         self.ui.generateRa.setText(f"{self.simbadRa.degrees:.6f}")
-        self.simbadDec = Angle(degrees=float(result["dec"]))
         self.ui.generateDec.setText(f"{self.simbadDec.degrees:.6f}")

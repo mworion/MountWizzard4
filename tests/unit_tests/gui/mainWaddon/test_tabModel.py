@@ -329,6 +329,8 @@ def test_showStatusSolve_2(function):
     status = {
         "imagePath": Path("test"),
         "success": True,
+        "raJ2000S": Angle(degrees=2.5),
+        "decJ2000S": Angle(degrees=1.5),
         "angleS": Angle(degrees=2.5),
         "errorRMS_S": 1,
         "scaleS": 1.25,

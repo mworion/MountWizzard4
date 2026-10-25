@@ -374,7 +374,7 @@ def test_waitForMessage_timeout(function) -> None:
     ):
         suc = function.waitForMessage("integrating", True, 10)
     assert not suc
-    function.msg.emit.assert_called_once_with(2, "SGPro", "Timeout", "Waiting for [integrating]")
+    function.msg.emit.assert_called_once_with(2, "SGPro", "Timeout", "Waiting for integrating")
 
 
 def test_waitForMessage_stopped(function) -> None:

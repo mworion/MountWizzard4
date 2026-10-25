@@ -259,7 +259,7 @@ def readMessages(appInstance):
 def test_init_withArguments(qapp):
     appInstance = buildApp(qapp, "dpi=120.0, scale=1.5, test=0")
     messages = readMessages(appInstance)
-    assert (1, "System", "Arguments", "[dpi=120.0, scale=1.5, test=0]") in messages
+    assert (1, "System", "Arguments", "dpi=120.0, scale=1.5, test=0") in messages
     appInstance.timeMgr.stop()
 
 

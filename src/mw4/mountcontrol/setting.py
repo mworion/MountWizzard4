@@ -162,7 +162,6 @@ class Setting:
         return True
 
     def hasChanged(self) -> bool:
-        print("changed:", self.changed)
         return bool(self.changed)
 
     def parseValues(self, response: list) -> None:

@@ -50,7 +50,7 @@ worker thread. So `Setting` only *detects* and *returns* the change; the
   `self.app.dReg.mount.signals.settingChanged.connect(...)`.
 
 ### 5. Tests (module scope, 100 % coverage)
-- `tests/unit_tests/mountcontrol/test_setting.py`
+- `../tests/unit_tests/mountcontrol/test_setting.py`
   - first parse -> `changed` non-empty (or empty when `initialized` logic used)
   - second parse with identical response -> `changed == set()`
   - parse with one chunk modified -> `changed == {"expectedField"}`
@@ -58,7 +58,7 @@ worker thread. So `Setting` only *detects* and *returns* the change; the
   - failed parse (wrong chunks / malformed) -> `changed` untouched
   - both firmware paths (< and >= 3.2.5)
   - `hasChanged` true/false
-- `tests/unit_tests/mountcontrol/test_mount.py`
+- `../tests/unit_tests/mountcontrol/test_mount.py`
   - `resultCycleSetting(True)` with changes -> both signals emitted
   - without changes -> only `settingDone`
   - `result=False` -> no signal

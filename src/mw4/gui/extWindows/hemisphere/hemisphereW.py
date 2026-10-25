@@ -201,12 +201,12 @@ class HemisphereWindow(MWidget):
         track = self.app.dReg.mount.setting.meridianLimitTrack
         mSlew = pg.QtWidgets.QGraphicsRectItem(180 - slew, 0, 2 * slew, 90)
         mSlew.setPen(pg.mkPen(color=self.rgb2hex(self.M_YELLOW1)))
-        mSlew.setBrush(pg.mkBrush(color=self.rgb2hex(self.M_YELLOW)))
+        mSlew.setBrush(pg.mkBrush(color=self.rgb2hex(self.M_YELLOW) + "80"))
         mSlew.setZValue(10)
         plotItem.addItem(mSlew)
         mTrack = pg.QtWidgets.QGraphicsRectItem(180 - track, 0, 2 * track, 90)
         mTrack.setPen(pg.mkPen(color=self.rgb2hex(self.M_YELLOW1)))
-        mTrack.setBrush(pg.mkBrush(color=self.rgb2hex(self.M_YELLOW)))
+        mTrack.setBrush(pg.mkBrush(color=self.rgb2hex(self.M_YELLOW) + "80"))
         mTrack.setZValue(20)
         plotItem.addItem(mTrack)
 
@@ -215,12 +215,12 @@ class HemisphereWindow(MWidget):
         low = self.app.dReg.mount.setting.horizonLimitLow
         hLow = pg.QtWidgets.QGraphicsRectItem(0, high, 360, 90 - high)
         hLow.setPen(pg.mkPen(color=self.rgb2hex(self.M_RED1)))
-        hLow.setBrush(pg.mkBrush(color=self.rgb2hex(self.M_RED)))
+        hLow.setBrush(pg.mkBrush(color=self.rgb2hex(self.M_RED) + "80"))
         hLow.setZValue(0)
         plotItem.addItem(hLow)
         hHigh = pg.QtWidgets.QGraphicsRectItem(0, 0, 360, low)
         hHigh.setPen(pg.mkPen(color=self.rgb2hex(self.M_RED1)))
-        hHigh.setBrush(pg.mkBrush(color=self.rgb2hex(self.M_RED)))
+        hHigh.setBrush(pg.mkBrush(color=self.rgb2hex(self.M_RED) + "80"))
         hHigh.setZValue(0)
         plotItem.addItem(hHigh)
 

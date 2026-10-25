@@ -74,14 +74,17 @@ class ModelData(QObject):
         self.app.dReg.plateSolve.signals.result.disconnect(self.collectPlateSolveResult)
 
     def setImageExposed(self) -> None:
+        self.log.debug("Image exposed  : [%s]", self.modelRunKey)
         if self.config.modelTiming == ModelTiming.PROGRESSIVE:
             self.startSlew.emit()
 
     def setImageDownloaded(self) -> None:
+        self.log.debug("Image downloaded: [%s]", self.modelRunKey)
         if self.config.modelTiming == ModelTiming.NORMAL:
             self.startSlew.emit()
 
     def setImageSaved(self) -> None:
+        self.log.debug("Image saved    : [%s]", self.modelRunKey)
         if self.config.modelTiming == ModelTiming.CONSERVATIVE:
             self.startSlew.emit()
 
@@ -196,7 +199,7 @@ class ModelData(QObject):
         self.statusExpose.emit([imagePath.stem, exposureTime, binning])
 
     def startNewPlateSolve(self, imagePath: Path) -> None:
-        self.log.debug("Start solve    : [%s]", imagePath.stem)
+        self.log.debug("Start solve    : %s", imagePath.stem)
         self.app.dReg.plateSolve.instance.solve(imagePath)
 
     def sendModelProgress(self) -> None:
@@ -221,7 +224,7 @@ class ModelData(QObject):
         status = BuildPoint.SOLVED if result["success"] else BuildPoint.FAILED
         self.pointStatus.emit(item["countSequence"], status)
         item.update(result)
-        t = f"{'Collect solve':15s}: [{key}], [{item['message']}], [{item}]"
+        t = f"{'Collect solve':15s}: {key}, {item['message']}, {item}"
         self.pointMarkersChanged.emit()
         item["processed"] = True
         self.sendModelProgress()
@@ -234,7 +237,7 @@ class ModelData(QObject):
         self.modelBuildData.clear()
         self.modelRunList.clear()
         self.retries = 0
-        self.log.debug("Prepare model  : Len: [%s]", len(self.modelInputData))
+        self.log.debug("Prepare model  : Len: %s", len(self.modelInputData))
         for index, point in enumerate(self.modelInputData):
             self.pointStatus.emit(index, BuildPoint.UNPROCESSED)
             modelItem = {}
@@ -321,7 +324,7 @@ class ModelData(QObject):
         if modelSize < 3:
             self.log.warning("Only %s points available", modelSize)
             self.modelProgData = []
-        self.log.debug("Finish model   : len: [%s]", modelSize)
+        self.log.debug("Finish model   : Len: %s", modelSize)
         self.finished.emit(False)
 
     def stopRun(self) -> None:

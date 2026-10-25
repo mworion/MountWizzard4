@@ -78,9 +78,9 @@ class PlateSolve:
 
         delta = time.time() - timeStart
         stdoutText = stdout.decode(errors="replace")
-        self.log.debug("Solve Runtime  : [%2.2fs]", delta)
+        self.log.debug("Solve Runtime  : %2.2fs", delta)
         for line in stdoutText.splitlines():
-            self.log.debug("Solver output  : [%s]", line)
+            self.log.debug("Solver output  : %s", line)
         suc = rCode == 0
         msg = self.run[self.framework].returnCodes.get(rCode, "Unknown code")
         return suc, msg
@@ -90,11 +90,11 @@ class PlateSolve:
     ) -> dict[str, Any]:
         result: dict[str, Any] = {"success": False, "message": msg, "imagePath": imagePath}
         if not suc:
-            self.log.warning("Error          : [%s], message: %s", imagePath.stem, msg)
+            self.log.warning("Error          : %s, message: %s", imagePath.stem, msg)
             return result
 
         if not wcsPath.is_file():
-            self.log.warning("Warning        : Solve files for [%s] missing", wcsPath.stem)
+            self.log.warning("Warning        : Solve files for %s missing", wcsPath.stem)
             result["message"] = "Solve failed, no WCS file"
             return result
 
@@ -111,7 +111,7 @@ class PlateSolve:
         result["raJNowS"], result["decJNowS"] = J2000ToJNow(
             result["raJ2000S"], result["decJ2000S"], timeJD
         )
-        self.log.debug("Solve result   : [%-10s], [%s]", imagePath.stem, result)
+        self.log.debug("Solve result   : %-10s, %s", imagePath.stem, result)
         return result
 
     def processSolveQueue(self, imagePath: Path, updateHeader: bool = False) -> None:
@@ -119,9 +119,9 @@ class PlateSolve:
             result = {"success": False, "message": f"{imagePath} not found"}
         else:
             self.signals.message.emit("solving")
-            t = f"{'Solver start':15s}: [{imagePath.stem}] with [{self.framework}], "
-            t += f"timeout: [{self.run[self.framework].config.timeout}], "
-            t += f"radius: [{self.run[self.framework].config.searchRadius}], "
+            t = f"{'Solver start':15s}: {imagePath.stem} with {self.framework}, "
+            t += f"timeout: {self.run[self.framework].config.timeout}, "
+            t += f"radius: {self.run[self.framework].config.searchRadius}, "
             self.log.debug(t)
             result = self.run[self.framework].solve(imagePath=imagePath, updateHeader=updateHeader)
         self.signals.message.emit("")

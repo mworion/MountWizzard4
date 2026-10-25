@@ -118,7 +118,7 @@ class PlateSolve:
         if not imagePath.is_file():
             result = {"success": False, "message": f"{imagePath} not found"}
         else:
-            self.signals.message.emit("solving")
+            self.signals.message.emit("solve")
             t = f"{'Solver start':15s}: {imagePath.stem} with {self.framework}, "
             t += f"timeout: {self.run[self.framework].config.timeout}, "
             t += f"radius: {self.run[self.framework].config.searchRadius}, "

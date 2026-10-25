@@ -44,7 +44,7 @@ class CameraIndi(IndiClass):
             self.exposing = True
         if state == "Busy" and value == 0 and self.exposing:
             self.signals.exposed.emit(self.parent.imagePath)
-            self.signals.message.emit("downloading")
+            self.signals.message.emit("download")
             self.exposing = False
         if state in ["Alert"]:
             self.signals.exposed.emit(Path())
@@ -105,7 +105,7 @@ class CameraIndi(IndiClass):
         filename = blob["members"]["CCD1"]["filename"]
         if not filename:
             return
-        self.signals.message.emit("saving")
+        self.signals.message.emit("save")
         blobFile = self.app.mwGlob["tempDir"] / filename
         blobformat = blob["members"]["CCD1"]["blobformat"]
         self.parent.imagePath = self.parent.imagePath.with_suffix(blobformat)

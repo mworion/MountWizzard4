@@ -65,7 +65,7 @@ class Dome(DeviceFacade[AppProtocol, DomeDriver]):
 
     def checkSlewingDome(self) -> None:
         if self.isSlewing:
-            self.signals.message.emit("slewing")
+            self.signals.message.emit("slew")
             self.counterStartSlewing = -1
             if not self.data.get("Slewing"):
                 self.isSlewing = False
@@ -234,7 +234,7 @@ class Dome(DeviceFacade[AppProtocol, DomeDriver]):
             self.counterStartSlewing = 3
             az = self.calcOvershoot(az)
             self.run[self.framework].slewToAltAz(azimuth=az, altitude=alt)
-            self.signals.message.emit("slewing")
+            self.signals.message.emit("slew")
         else:
             self.signals.slewed.emit("")
         delta = azimuth - az

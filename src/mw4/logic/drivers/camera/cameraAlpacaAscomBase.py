@@ -51,6 +51,7 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
         self.parent = parent
         self.startTimeExposure: float = 0
         self.exposing: bool = False
+        self.downloading: bool = False
 
     def getInitialConfig(self) -> None:
         super().getInitialConfig()
@@ -78,30 +79,30 @@ class CameraAlpacaAscomBase(AlpacaAscomCommon):
         if not self.parent.exposing:
             return
         state = self.getDeviceProp("CameraState")
-        if state == 0 and not self.exposing:
-            return
-        if state == 2 and not self.exposing:
+        if state == 2:
             self.exposing = True
-        if state != 2 and not self.exposing:
-            return
-        if state == 2 and self.exposing:
             timeLeft = max(self.parent.exposureTime - time.time() + self.startTimeExposure, 0)
             text = f"expose {timeLeft:3.0f} s"
             self.signals.message.emit(text)
-        if state != 2 and self.exposing:
+        if not self.exposing:
+            return
+        if state == 4 and not self.downloading:
+            self.downloading = True
             self.signals.exposed.emit(self.parent.imagePath)
             self.signals.message.emit("download")
-            self.exposing = False
         if not self.getDeviceProp("ImageReady"):
             return
+        if not self.downloading:
+            self.signals.exposed.emit(self.parent.imagePath)
+        self.signals.downloaded.emit(self.parent.imagePath)
         data = self.getDeviceProp("ImageArray")
         data = np.array(data, dtype=np.uint16).transpose()
-        self.signals.downloaded.emit(self.parent.imagePath)
-        self.signals.message.emit("saving")
+        self.signals.message.emit("save")
         hdu = fits.PrimaryHDU(data=data)
         hdu.writeto(self.parent.imagePath, overwrite=True)
         self.parent.writeImageFitsHeader()
         self.parent.exposeFinished()
+        self.downloading = False
         self.exposing = False
 
     def pollData(self) -> None:

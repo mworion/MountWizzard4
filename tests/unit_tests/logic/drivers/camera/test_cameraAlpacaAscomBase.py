@@ -52,8 +52,10 @@ def test_cameraAlpacaAscomBase_initAttributes(function):
     assert hasattr(fresh, "parent")
     assert hasattr(fresh, "startTimeExposure")
     assert hasattr(fresh, "exposing")
+    assert hasattr(fresh, "downloading")
     assert fresh.startTimeExposure == 0
     assert fresh.exposing is False
+    assert fresh.downloading is False
 
 
 def test_getInitialConfig(function):
@@ -170,23 +172,38 @@ def test_setExposureState_state2Exposing(function):
     function.parent.exposing = False
 
 
-def test_setExposureState_stateNot2Exposing(function):
-    # state != 2, self.exposing = True -> emits exposed+download,
-    # ImageReady=False -> returns
+def test_setExposureState_downloadCompletesOnLaterPoll(function):
     function.parent.exposing = True
     function.exposing = True
+    function.downloading = False
+    fakeImage = [[1, 2], [3, 4]]
     exposedSlot = mock.MagicMock()
+    downloadedSlot = mock.MagicMock()
     msgSlot = mock.MagicMock()
     function.signals.exposed.connect(exposedSlot)
+    function.signals.downloaded.connect(downloadedSlot)
     function.signals.message.connect(msgSlot)
-    with mock.patch.object(function, "getDeviceProp", side_effect=[0, False]):
+    with (
+        mock.patch.object(
+            function,
+            "getDeviceProp",
+            side_effect=[4, False, 4, True, fakeImage],
+        ),
+        mock.patch.object(function.parent, "writeImageFitsHeader"),
+        mock.patch.object(function.parent, "exposeFinished") as mf,
+        mock.patch.object(fits.PrimaryHDU, "writeto"),
+    ):
+        function.setExposureState()
         function.setExposureState()
     function.signals.exposed.disconnect(exposedSlot)
+    function.signals.downloaded.disconnect(downloadedSlot)
     function.signals.message.disconnect(msgSlot)
     assert function.exposing is False
+    assert function.downloading is False
     exposedSlot.assert_called_once_with(function.parent.imagePath)
-    msgSlot.assert_called_once_with("download")
-    function.exposing = False
+    downloadedSlot.assert_called_once_with(function.parent.imagePath)
+    assert [c[0][0] for c in msgSlot.call_args_list] == ["download", "save"]
+    mf.assert_called_once()
     function.parent.exposing = False
 
 
@@ -241,7 +258,7 @@ def test_setExposureState_imageReadySignals(function):
     assert function.exposing is False
     exposedSlot.assert_called_once_with(function.parent.imagePath)
     downloadedSlot.assert_called_once_with(function.parent.imagePath)
-    assert [c[0][0] for c in msgSlot.call_args_list] == ["download", "saving"]
+    assert [c[0][0] for c in msgSlot.call_args_list] == ["save"]
     mw.assert_called_once()
     mh.assert_called_once()
     mf.assert_called_once()

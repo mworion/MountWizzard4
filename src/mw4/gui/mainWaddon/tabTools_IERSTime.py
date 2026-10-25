@@ -69,7 +69,7 @@ class IERSTime(TabAddon):
 
         sourceKey = self.ui.iersSource.currentText()
         urlMain = self.iersSourceURLs[sourceKey]
-        self.msg.emit(1, "IERS", "Download", f"Source: [{sourceKey}, {urlMain}]")
+        self.msg.emit(1, "IERS", "Download", f"Source: {sourceKey}, {urlMain}")
 
         source = "finals2000A.all"
         url = urlMain + source
@@ -78,12 +78,12 @@ class IERSTime(TabAddon):
             self.msg.emit(2, "IERS", "Download", "Download failed")
             return
 
-        self.msg.emit(0, "IERS", "Download", "Received [finals2000A.all]")
+        self.msg.emit(0, "IERS", "Download", "Received finals2000A.all")
         source = "finals.data"
         url = urlMain + source
         dest = self.app.mwGlob["dataDir"] / source
         if DownloadPopup.download(self.mainW, url=url, dest=dest):
-            self.msg.emit(0, "IERS", "Download", "Received [finals.data]")
+            self.msg.emit(0, "IERS", "Download", "Received finals.data")
             self.msg.emit(1, "IERS", "Download", "Downloaded complete")
         else:
             self.msg.emit(2, "IERS", "Download", "Download failed")

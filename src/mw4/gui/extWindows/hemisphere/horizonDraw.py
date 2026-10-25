@@ -98,7 +98,7 @@ class HorizonDraw(MWidget):
         self.ui.terrainFileName.setText(loadFilePath.name)
         self.ui.showTerrain.setChecked(True)
         self.loadTerrainImage(loadFilePath)
-        self.msg.emit(0, "Hemisphere", "Terrain", f"Mask [{loadFilePath.name}] loaded")
+        self.msg.emit(0, "Hemisphere", "Terrain", f"Mask {loadFilePath.name} loaded")
         self.parentWindow.redrawAll()
 
     def clearTerrainFile(self) -> None:
@@ -117,7 +117,7 @@ class HorizonDraw(MWidget):
 
         self.app.buildPoint.loadHorizonP(loadFilePath)
         self.ui.horizonMaskFileName.setText(loadFilePath.stem)
-        self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{loadFilePath.stem}] loaded")
+        self.msg.emit(0, "Hemisphere", "Horizon", f"Mask {loadFilePath.stem} loaded")
         self.app.signals.hemisphere.redrawHorizon.emit()
 
     def saveHorizonMask(self) -> None:
@@ -128,9 +128,9 @@ class HorizonDraw(MWidget):
 
         suc = self.app.buildPoint.saveHorizonP(fileName)
         if suc:
-            self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{fileName}] saved")
+            self.msg.emit(0, "Hemisphere", "Horizon", f"Mask {fileName} saved")
         else:
-            self.msg.emit(2, "Hemisphere", "Horizon", f"Mask [{fileName}] cannot no be saved")
+            self.msg.emit(2, "Hemisphere", "Horizon", f"Mask {fileName} cannot no be saved")
         self.app.signals.hemisphere.redrawHorizon.emit()
 
     def saveHorizonMaskAs(self) -> None:
@@ -142,7 +142,7 @@ class HorizonDraw(MWidget):
             return
         if self.app.buildPoint.saveHorizonP(saveFilePath.stem):
             self.ui.horizonMaskFileName.setText(saveFilePath.stem)
-            self.msg.emit(0, "Hemisphere", "Horizon", f"Mask [{saveFilePath.stem}] saved")
+            self.msg.emit(0, "Hemisphere", "Horizon", f"Mask {saveFilePath.stem} saved")
         else:
             self.msg.emit(
                 2, "Hemisphere", "Horizon", f"Mask [{saveFilePath.stem}] cannot no be saved"

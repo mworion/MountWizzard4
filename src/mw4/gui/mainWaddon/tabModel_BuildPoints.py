@@ -263,7 +263,7 @@ class BuildPoints(TabAddon):
         suc = self.app.buildPoint.loadBuildP(fullFileName)
         if suc:
             self.ui.buildPFileName.setText(fullFileName.stem)
-            self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fullFileName.name}] loaded")
+            self.msg.emit(0, "Model", "Buildpoints", f"Build file {fullFileName.name} loaded")
         else:
             self.msg.emit(
                 2,
@@ -280,7 +280,7 @@ class BuildPoints(TabAddon):
             return
 
         self.app.buildPoint.saveBuildP(fileName)
-        self.msg.emit(0, "Model", "Buildpoints", f"Build file [{fileName}] saved")
+        self.msg.emit(0, "Model", "Buildpoints", f"Build file {fileName} saved")
 
     def saveBuildFileAs(self) -> None:
         folder = self.app.mwGlob["configDir"]
@@ -292,7 +292,7 @@ class BuildPoints(TabAddon):
 
         self.app.buildPoint.saveBuildP(saveFilePath.stem)
         self.ui.buildPFileName.setText(saveFilePath.stem)
-        self.msg.emit(0, "Model", "Buildpoints", f"Build file [{saveFilePath.stem}] saved")
+        self.msg.emit(0, "Model", "Buildpoints", f"Build file {saveFilePath.stem} saved")
 
     def clearBuildP(self) -> None:
         self.app.buildPoint.clearBuildP()

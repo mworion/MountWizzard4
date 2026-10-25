@@ -178,9 +178,9 @@ class ModelManage(TabAddon):
             return
         modelName = self.ui.nameList.currentItem().text()
         if not self.app.dReg.mount.model.loadName(modelName):
-            self.msg.emit(2, "Model", "Manage error", f"Model load failed: [{modelName}]")
+            self.msg.emit(2, "Model", "Manage error", f"Model load failed: {modelName}")
             return
-        self.msg.emit(0, "Model", "Manage", f"Model loaded: [{modelName}]")
+        self.msg.emit(0, "Model", "Manage", f"Model loaded: {modelName}")
         self.refreshModel()
 
     def saveName(self) -> None:
@@ -190,9 +190,9 @@ class ModelManage(TabAddon):
             return
 
         if not self.app.dReg.mount.model.storeName(modelName):
-            self.msg.emit(2, "Model", "Manage error", f"Model cannot be saved [{modelName}]")
+            self.msg.emit(2, "Model", "Manage error", f"Model cannot be saved {modelName}")
             return
-        self.msg.emit(0, "Model", "Manage", f"Model saved: [{modelName}]")
+        self.msg.emit(0, "Model", "Manage", f"Model saved: {modelName}")
         self.refreshName()
 
     def deleteName(self) -> None:
@@ -202,14 +202,14 @@ class ModelManage(TabAddon):
 
         modelName = self.ui.nameList.currentItem().text()
         if not MWMessageDialog.question(
-            self.mainW, "Delete model", f"Delete model [{modelName}] from database?"
+            self.mainW, "Delete model", f"Delete model {modelName} from database?"
         ):
             return
 
         if not self.app.dReg.mount.model.deleteName(modelName):
-            self.msg.emit(2, "Model", "Manage error", f"Model cannot be deleted [{modelName}]")
+            self.msg.emit(2, "Model", "Manage error", f"Model cannot be deleted {modelName}")
             return
-        self.msg.emit(0, "Model", "Manage", f"Model deleted: [{modelName}]")
+        self.msg.emit(0, "Model", "Manage", f"Model deleted: {modelName}")
         self.refreshName()
 
     def writeBuildModelOptimized(self, pointsOut: list[int]) -> None:
@@ -233,7 +233,7 @@ class ModelManage(TabAddon):
         )
         self.writeBuildModelOptimized(pointsOut)
         if self.fittedModelPath.is_file():
-            self.msg.emit(0, "Model", "Manage", f"{'Found:':12s} [{self.fittedModelPath.stem}]")
+            self.msg.emit(0, "Model", "Manage", f"{'Found:':12s} {self.fittedModelPath.stem}")
             self.ui.originalModel.setText(self.fittedModelPath.stem)
 
         else:

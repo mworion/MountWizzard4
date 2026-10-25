@@ -75,7 +75,7 @@ class VideoWindowBase(MWidget):
         try:
             self.capture.open(source)
             if not self.capture.isOpened():
-                self.msg.emit(2, "Video", "Camera", f"[{source}] not available")
+                self.msg.emit(2, "Video", "Camera", f"{source} not available")
                 self.running = False
                 return
         except cv2.error as e:

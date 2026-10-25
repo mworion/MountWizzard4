@@ -206,12 +206,12 @@ class SatTrack(SatData):
             self.ui.satelliteDataAge.setText("-----")
             self.ui.satelliteEpoch.setText("-----")
             self.ui.satelliteName.setText(f"{satName}...not found...")
-            self.msg.emit(2, "Satellite", "Data", f"[{satName}] not found in database")
+            self.msg.emit(2, "Satellite", "Data", f"{satName} not found in database")
             return
 
         positionCursorInTable(self.ui.listSats, satName)
         self.satellite = self.satellites.objects[satName]
-        self.msg.emit(0, "Satellite", "Data", f"{'Actual Sat:':12s} [{satName}]")
+        self.msg.emit(0, "Satellite", "Data", f"{'Actual Sat:':12s} {satName}")
 
         self.ui.satelliteName.setText(self.satellite.name)
         self.ui.satelliteNumber.setText(f"{self.satellite.model.satnum:5d}")
@@ -227,7 +227,7 @@ class SatTrack(SatData):
 
     def programSatToMount(self, satName: str) -> None:
         satellite = self.app.dReg.mount.satellite
-        self.msg.emit(0, "TLE", "Program", f"Upload satellite: [{satName}]")
+        self.msg.emit(0, "TLE", "Program", f"Upload satellite: {satName}")
         line1, line2 = export_tle(self.satellites.objects[satName].model)
         suc = satellite.setTLE(line0=satName, line1=line1, line2=line2)
         if not suc:

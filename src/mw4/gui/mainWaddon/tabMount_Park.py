@@ -52,12 +52,12 @@ class Park(TabAddon):
         azValue = Angle(degrees=config.get(f"ParkAz{index:1d}"))
         parkTextValue = config.get(f"ParkText{index:1d}")
         if not self.app.dReg.mount.obsSite.setTargetAltAz(altValue, azValue):
-            self.msg.emit(2, "Mount", "Command error", f"Cannot slew to [{parkTextValue}]")
+            self.msg.emit(2, "Mount", "Command error", f"Cannot slew to {parkTextValue}")
             return
         if not self.app.dReg.mount.obsSite.startSlewing(slewType="notrack"):
-            self.msg.emit(2, "Mount", "Command error", f"Cannot slew to [{parkTextValue}]")
+            self.msg.emit(2, "Mount", "Command error", f"Cannot slew to {parkTextValue}")
             return
-        self.msg.emit(0, "Mount", "Command", f"Slew to [{parkTextValue}]")
+        self.msg.emit(0, "Mount", "Command", f"Slew to {parkTextValue}")
         if not self.ui.parkMountAfterSlew.isChecked():
             return
         self.app.dReg.mount.signals.slewed.connect(self.parkAtPos)

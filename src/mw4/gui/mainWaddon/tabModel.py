@@ -155,7 +155,7 @@ class Model(TabAddon):
         if not self.app.dReg.mount.model.programModelFromStarList(self.modelData.modelProgData):
             self.msg.emit(3, "Model", "Run error", f"{'Program':12s} Failed - error")
             return
-        self.msg.emit(1, "Model", "Program", f"[{self.modelData.modelName}] with success")
+        self.msg.emit(1, "Model", "Program", f"{self.modelData.modelName} with success")
         if not self.modelDoneConnected:
             self.app.dReg.mount.signals.getModelDone.connect(self.programModelToMountFinish)
             self.modelDoneConnected = True
@@ -225,25 +225,27 @@ class Model(TabAddon):
         self.ui.numberPoints.setText(f"{progressData['count']} / {progressData['number']}")
 
     def showStatusExposure(self, statusData: list) -> None:
-        t = f"[{statusData[0]}], ExpTime: [{statusData[1]}s], Binning: [{statusData[2]:.0f}] "
-        self.msg.emit(0, "Model", "Exposure", t)
+        t = f"{statusData[0]}, ExpTime: {statusData[1]}s, Binning: {statusData[2]:.0f} "
+        self.msg.emit(0, "Model", "Expose", t)
 
     def showStatusSlew(self, statusData: list) -> None:
-        t = f"[{statusData[0]}], Alt: [{statusData[1]:3.2f}], Az: [{statusData[2]:3.2f}]"
-        self.msg.emit(0, "Model", "Slewing", t)
+        t = f"{statusData[0]}, ALT: {statusData[1]:3.2f}, AZ: {statusData[2]:3.2f}"
+        self.msg.emit(0, "Model", "Slew", t)
 
     def showStatusRetry(self, statusData: int) -> None:
-        t = f"Retry run # [{statusData:02d}] for model run"
+        t = f"Retry run # {statusData:02d} for model run"
         self.msg.emit(1, "Model", "Retry start", t)
 
     def showStatusSolve(self, item: dict) -> None:
         if item["success"]:
-            t = f"[{item['imagePath'].stem}], Error: [{item['errorRMS_S']:.2f}]"
-            t += f", Angle: [{item['angleS'].degrees:.2f}], Scale: [{item['scaleS']:.2f}]"
-            self.msg.emit(0, "Model", "Solving result", t)
+            t = f"{item['imagePath'].stem}, RA: {item['raJ2000S'].degrees:.3f}"
+            t += f", DEC: {item['decJ2000S'].degrees:.3f}"
+            t += f", Error: {item['errorRMS_S']:.1f}"
+            t += f", Scale: {item['scaleS']:.2f}"
+            self.msg.emit(0, "Model", "Solve result", t)
         else:
-            t = f"[{item['imagePath'].stem}], {item['message']}"
-            self.msg.emit(2, "Model", "Solving error", t)
+            t = f"{item['imagePath'].stem}, {item['message']}"
+            self.msg.emit(2, "Model", "Solve error", t)
 
     def setupModelInputData(self) -> None:
         self.modelData.modelInputData = []
@@ -279,7 +281,7 @@ class Model(TabAddon):
 
     def startBatch(self) -> None:
         config = self.setupBatchData()
-        self.msg.emit(1, "Model", "Run", f"[{self.modelData.modelName}]")
+        self.msg.emit(1, "Model", "Run", f"{self.modelData.modelName}")
         self.setupModelInputData()
         self.modelData.runModel(config)
 

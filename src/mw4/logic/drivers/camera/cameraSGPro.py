@@ -39,7 +39,7 @@ class CameraSGPro(SGProClass):
                 break
             if time.monotonic() > deadline:
                 self.log.warning("[%s] timeout waiting for [%s]", self.config.deviceName, text)
-                self.msg.emit(2, self.PROTOCOL_NAME, "Timeout", f"Waiting for [{text}]")
+                self.msg.emit(2, self.PROTOCOL_NAME, "Timeout", f"Waiting for {text}")
                 return False
             if tick is not None:
                 tick()

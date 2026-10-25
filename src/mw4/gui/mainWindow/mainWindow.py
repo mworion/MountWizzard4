@@ -333,7 +333,7 @@ class MainWindow(MWidget):
         self.storeConfig()
         saveConfig(saveProfilePath, self.app.config)
         self.ui.profileName.setText(saveProfilePath.stem)
-        self.msg.emit(1, "System", "Profile", f"Saved to [{saveProfilePath.stem}]")
+        self.msg.emit(1, "System", "Profile", f"Saved to {saveProfilePath.stem}")
 
     def saveProfileAs(self) -> None:
         folder = self.app.mwGlob["configDir"]

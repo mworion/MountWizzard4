@@ -39,6 +39,7 @@ def test_storeConfig_1(function):
 
 
 def test_closeEvent_1(function):
+    function.app.dReg.mount.signals.settingChanged.connect(function.redrawAll)
     with (
         mock.patch.object(function, "storeConfig"),
         mock.patch.object(function.hemisphereDraw, "closeTab"),

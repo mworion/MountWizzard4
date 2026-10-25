@@ -79,7 +79,7 @@ class ModelData(QObject):
             self.startSlew.emit()
 
     def setImageDownloaded(self, imagePath: Path) -> None:
-        self.log.debug(f"{'Image downloaded':15s}: {imagePath.stem}")
+        self.log.debug("%-15s: %s", "Image downloaded", imagePath.stem)
         if self.config.modelTiming == ModelTiming.NORMAL:
             self.startSlew.emit()
 

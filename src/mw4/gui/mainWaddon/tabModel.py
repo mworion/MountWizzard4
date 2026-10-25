@@ -137,7 +137,7 @@ class Model(TabAddon):
     def programModelToMountFinish(self) -> None:
         self.app.dReg.mount.signals.getModelDone.disconnect(self.programModelToMountFinish)
         self.modelDoneConnected = False
-        self.msg.emit(1, "Model", "Writing model", f"[{self.modelData.modelName}]")
+        self.msg.emit(1, "Model", "Writing model", f"{self.modelData.modelName}")
         mount = self.app.dReg.mount
         saveData = buildSaveData(self.modelData.modelBuildData, self.getSaveMeta(), mount.model)
         if saveData is None:

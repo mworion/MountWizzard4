@@ -74,7 +74,7 @@ class ModelData(QObject):
         self.app.dReg.plateSolve.signals.result.disconnect(self.collectPlateSolveResult)
 
     def setImageExposed(self, imagePath: Path) -> None:
-        self.log.debug(f"{'Image exposed':15s}: {imagePath.stem}")
+        self.log.debug("%-15s: %s", "Image exposed", imagePath.stem)
         if self.config.modelTiming == ModelTiming.PROGRESSIVE:
             self.startSlew.emit()
 
@@ -84,7 +84,7 @@ class ModelData(QObject):
             self.startSlew.emit()
 
     def setImageSaved(self, imagePath: Path) -> None:
-        self.log.debug(f"{'Image saved':15s}: {imagePath.stem}")
+        self.log.debug("%-15s: %s", "Image saved", imagePath.stem)
         if self.config.modelTiming == ModelTiming.CONSERVATIVE:
             self.startSlew.emit()
 

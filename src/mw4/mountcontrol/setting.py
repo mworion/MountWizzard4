@@ -19,10 +19,17 @@ class Setting:
         "H": "homing present",
         "h": "no homing",
     }
+    WATCHED_FIELDS: ClassVar[tuple[str, ...]] = (
+        "meridianLimitTrack",
+        "meridianLimitSlew",
+        "horizonLimitHigh",
+        "horizonLimitLow",
+    )
     log = logging.getLogger("MW4")
 
     def __init__(self, parent: MountContext) -> None:
         self.parent = parent
+        self.changed: set[str] = set()
         self.slewRate: float = 0
         self.slewRateMin: float = 0
         self.slewRateMax: float = 99
@@ -149,6 +156,16 @@ class Setting:
             self.log.warning("malformed setting response: [%s]", response)
             return False
 
+        before = {name: getattr(self, name) for name in self.WATCHED_FIELDS}
+        self.parseValues(response)
+        self.changed = {name for name, value in before.items() if getattr(self, name) != value}
+        return True
+
+    def hasChanged(self) -> bool:
+        print("changed:", self.changed)
+        return bool(self.changed)
+
+    def parseValues(self, response: list) -> None:
         self.slewRate = valueToFloat(response[0])
         self.slewRateMin = valueToFloat(response[1])
         self.slewRateMax = valueToFloat(response[2])
@@ -181,7 +198,7 @@ class Setting:
         self.settleTime = valueToFloat(response[23])
         if not self.parent.firmware.checkNewer("3.2.5"):
             self.gpsSynced = valueToInt(response[13])
-            return True
+            return
         self.autoPowerOn = response[24]
         config = response[25].split(",")
         self.configEquatorial = self.CONFIG.get(config[0], "Unknown")
@@ -189,7 +206,6 @@ class Setting:
         self.configHemisphere = self.CONFIG.get(config[2], "Unknown")
         self.configHoming = self.CONFIG.get(config[3], "Unknown")
         self.gpsSynced = valueToInt(response[26])
-        return True
 
     def pollSetting(self) -> bool:
         conn = Connection(self.parent)

@@ -14,6 +14,7 @@ from PySide6.QtCore import Signal
 class MountSignals(Signals):
     pointDone = Signal(ObsSite)
     settingDone = Signal(Setting)
+    settingChanged = Signal(Setting)
     getModelDone = Signal(Model)
     namesDone = Signal(Model)
     firmwareDone = Signal(Firmware)

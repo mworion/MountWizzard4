@@ -1386,3 +1386,56 @@ def test_Setting_poll_oldFirmware(function):
         assert not suc
         command = mConn.return_value.communicate.call_args[0][0]
         assert ":GAPO#" not in command
+
+
+def getResponse() -> list[str]:
+    return [
+        "15", "1", "20", "0426", "05", "+010.0", "0950.0", "60.2", "+033.0",
+        "101+90*", "+00*", "E,2018-08-11", "1", "0", "00:00:00:00:00:00", "N",
+        "0", "987.0,0100", "+20,5", "90.4", "-13,5", "60.2", "1", "00005.000",
+        "1", "A,G,N,H", "1",
+    ]  # fmt: skip
+
+
+def test_parseSetting_changed_1(makeApp):
+    sett = Setting(makeApp().mount)
+    assert sett.parseSetting(getResponse(), 27)
+    assert sett.hasChanged()
+    assert sett.changed == {"meridianLimitTrack", "meridianLimitSlew"}
+
+
+def test_parseSetting_changed_2(makeApp):
+    sett = Setting(makeApp().mount)
+    sett.parseSetting(getResponse(), 27)
+    assert sett.parseSetting(getResponse(), 27)
+    assert not sett.hasChanged()
+
+
+def test_parseSetting_changed_3(makeApp):
+    sett = Setting(makeApp().mount)
+    sett.parseSetting(getResponse(), 27)
+    response = getResponse()
+    response[4] = "07"
+    response[5] = "+012.0"
+    assert sett.parseSetting(response, 27)
+    assert sett.hasChanged()
+    assert sett.changed == {"meridianLimitTrack", "meridianLimitSlew"}
+
+
+def test_parseSetting_changed_4(makeApp):
+    sett = Setting(makeApp().mount)
+    sett.parseSetting(getResponse(), 27)
+    response = getResponse()
+    response[6] = "0900.0"
+    assert sett.parseSetting(response, 27)
+    assert not sett.hasChanged()
+
+
+def test_parseSetting_changed_5(makeApp):
+    sett = Setting(makeApp().mount)
+    sett.parseSetting(getResponse(), 27)
+    response = getResponse()
+    response[4] = "07"
+    sett.parseSetting(response, 27)
+    assert not sett.parseSetting(response[:5], 5)
+    assert sett.hasChanged()

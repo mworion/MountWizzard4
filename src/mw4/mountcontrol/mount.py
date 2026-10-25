@@ -169,6 +169,8 @@ class MountDevice(QObject):
     def resultCycleSetting(self, result: bool) -> None:
         if result:
             self.signals.settingDone.emit(self.setting)
+            if self.setting.hasChanged():
+                self.signals.settingChanged.emit(self.setting)
 
     def cycleSetting(self) -> None:
         self.workerCycleSetting = startWorker(

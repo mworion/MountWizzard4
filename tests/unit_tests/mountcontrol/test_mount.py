@@ -557,3 +557,22 @@ def test_resultCycleSetting_2(function):
     function.resultCycleSetting(False)
     function.signals.settingDone.disconnect()
     assert received == []
+
+
+def test_resultCycleSetting_changed(function):
+    function.setting.changed = {"timeToFlip"}
+    received = []
+    function.signals.settingChanged.connect(received.append)
+    function.resultCycleSetting(True)
+    function.signals.settingChanged.disconnect()
+    function.setting.changed = set()
+    assert received == [function.setting]
+
+
+def test_resultCycleSetting_unchanged(function):
+    function.setting.changed = set()
+    received = []
+    function.signals.settingChanged.connect(received.append)
+    function.resultCycleSetting(True)
+    function.signals.settingChanged.disconnect()
+    assert received == []

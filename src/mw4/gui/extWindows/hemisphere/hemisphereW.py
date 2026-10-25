@@ -84,6 +84,7 @@ class HemisphereWindow(MWidget):
     def closeEvent(self, event: QCloseEvent) -> None:
         self.ui.normalModeHem.setChecked(True)
         self.ui.normalModeHor.setChecked(True)
+        self.app.dReg.mount.signals.settingChanged.disconnect(self.redrawAll)
         self.storeConfig()
         self.hemisphereDraw.closeTab()
         self.horizonDraw.closeTab()
@@ -91,6 +92,7 @@ class HemisphereWindow(MWidget):
 
     def showWindow(self) -> None:
         self.app.signals.ui.colorChange.connect(self.colorChange)
+        self.app.dReg.mount.signals.settingChanged.connect(self.redrawAll)
         self.hemisphereDraw.drawTab()
         self.horizonDraw.drawTab()
         self.setIcons()

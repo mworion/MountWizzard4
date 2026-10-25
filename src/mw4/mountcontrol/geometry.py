@@ -186,10 +186,10 @@ class Geometry:
 
     def initializeGeometry(self, mountType: str) -> None:
         if mountType not in self.geometryData:
-            self.log.warning("[%s] not in database", mountType)
+            self.log.warning("%s not in database", mountType)
             return
 
-        self.log.info("Using [%s] geometry", mountType)
+        self.log.info("Using %s geometry", mountType)
         vars(self).update(self.geometryData[mountType])
         self.loadParametersFromConfig()
 

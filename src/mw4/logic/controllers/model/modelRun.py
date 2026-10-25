@@ -74,17 +74,17 @@ class ModelData(QObject):
         self.app.dReg.plateSolve.signals.result.disconnect(self.collectPlateSolveResult)
 
     def setImageExposed(self) -> None:
-        self.log.debug("Image exposed  : [%s]", self.modelRunKey)
+        self.log.debug("Image exposed  : %s", self.modelRunKey)
         if self.config.modelTiming == ModelTiming.PROGRESSIVE:
             self.startSlew.emit()
 
     def setImageDownloaded(self) -> None:
-        self.log.debug("Image downloaded: [%s]", self.modelRunKey)
+        self.log.debug("Image downloaded: %s", self.modelRunKey)
         if self.config.modelTiming == ModelTiming.NORMAL:
             self.startSlew.emit()
 
     def setImageSaved(self) -> None:
-        self.log.debug("Image saved    : [%s]", self.modelRunKey)
+        self.log.debug("Image saved    : %s", self.modelRunKey)
         if self.config.modelTiming == ModelTiming.CONSERVATIVE:
             self.startSlew.emit()
 
@@ -133,12 +133,12 @@ class ModelData(QObject):
         if dome.stat:
             dome.instance.slewDome(azimuth=azimuth.degrees)
         mount.obsSite.startSlewing()
-        t = f"{'Start slew':15s}: [{nextKey}], "
-        t += f" Alt: [{altitude.degrees:03.0f}], Az: [{azimuth.degrees:03.0f}]"
+        t = f"{'Start slew':15s}: {nextKey}, "
+        t += f" ALT: {altitude.degrees:03.0f}, AZ: {azimuth.degrees:03.0f}"
         self.log.debug(t)
 
     def buildProgModel(self) -> None:
-        self.log.debug("Build progmodel: Len: [%s]", len(self.modelBuildData))
+        self.log.debug("Build progmodel: Len: %s", len(self.modelBuildData))
         self.modelProgData = []
         for key in self.modelBuildData:
             mPoint = self.modelBuildData[key]
@@ -159,8 +159,8 @@ class ModelData(QObject):
     def addMountDataToModelBuildData(self) -> None:
         item = self.modelBuildData[self.modelRunKey]
         obs = self.app.dReg.mount.obsSite
-        t = f"{'Add mount data':15s}: [{self.modelRunKey}], Ra: [{obs.raJNow}], "
-        t += f"Dec: [{obs.decJNow}], Jd: [{obs.timeJD}]"
+        t = f"{'Add mount data':15s}: {self.modelRunKey}, RA: {obs.raJNow}, "
+        t += f"DEC: {obs.decJNow}, Jd: {obs.timeJD}"
         self.log.debug(t)
         item["raJNowM"] = obs.raJNow
         item["decJNowM"] = obs.decJNow
@@ -193,7 +193,7 @@ class ModelData(QObject):
         imagePath = item["imagePath"]
         exposureTime = item["exposureTime"] = cam.exposureTime1
         binning = item["binning"] = cam.binning1
-        t = f"{'Start exposure':15s}: [{self.modelRunKey}], ExpTime: [{exposureTime:3.0f}]"
+        t = f"{'Start exposure':15s}: {self.modelRunKey}, ExpTime: {exposureTime:3.0f}"
         self.log.debug(t)
         self.app.dReg.camera.instance.expose(imagePath, exposureTime, binning)
         self.statusExpose.emit([imagePath.stem, exposureTime, binning])
@@ -266,7 +266,7 @@ class ModelData(QObject):
             for key in self.modelRunList
         )
         t = "retry needed" if retryNeeded else "no retry needed"
-        self.log.debug("Check retry    : Status: [%s]", t)
+        self.log.debug("Check retry    : Status: %s", t)
         return retryNeeded
 
     def checkModelFinished(self) -> bool:
@@ -274,7 +274,7 @@ class ModelData(QObject):
 
     def generateRunIterator(self) -> None:
         nextList = []
-        self.log.debug("Run retries    : Count: [%1.0f]", self.config.numberRetries)
+        self.log.debug("Run retries    : Count: %1.0f", self.config.numberRetries)
         for key in self.modelRunList:
             if self.modelBuildData[key]["success"]:
                 continue

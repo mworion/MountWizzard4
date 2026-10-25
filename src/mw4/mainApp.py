@@ -49,10 +49,10 @@ class MountWizzard4(QObject):
         profile = self.config.get("profileName", "-")
         workDir = self.mwGlob["workDir"]
         self.signals.ui.msg.emit(1, "System", "Lifecycle", "MountWizzard4 started...")
-        self.signals.ui.msg.emit(1, "System", "Workdir", f"[{workDir}]")
-        self.signals.ui.msg.emit(1, "System", "Profile", f"[{profile}]")
+        self.signals.ui.msg.emit(1, "System", "Workdir", f"{workDir}")
+        self.signals.ui.msg.emit(1, "System", "Profile", f"{profile}")
         if arguments:
-            self.signals.ui.msg.emit(1, "System", "Arguments", f"[{arguments}]")
+            self.signals.ui.msg.emit(1, "System", "Arguments", f"{arguments}")
         self.timeMgr = TimeManager(app=self)
         self.dReg: DeviceRegistry = DeviceRegistry(self)
         self.dReg.addDevices()

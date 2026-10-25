@@ -233,7 +233,7 @@ class ModelManage(TabAddon):
         )
         self.writeBuildModelOptimized(pointsOut)
         if self.fittedModelPath.is_file():
-            self.msg.emit(0, "Model", "Manage", f"{'Found:':12s} {self.fittedModelPath.stem}")
+            self.msg.emit(0, "Model", "Manage", f"Found: {self.fittedModelPath.stem}")
             self.ui.originalModel.setText(self.fittedModelPath.stem)
 
         else:

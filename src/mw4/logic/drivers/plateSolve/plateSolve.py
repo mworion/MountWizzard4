@@ -111,7 +111,7 @@ class PlateSolve:
         result["raJNowS"], result["decJNowS"] = J2000ToJNow(
             result["raJ2000S"], result["decJ2000S"], timeJD
         )
-        self.log.debug("Solve result   : %-10s, %s", imagePath.stem, result)
+        self.log.debug("Solve result   : %s, %s", imagePath.stem, result)
         return result
 
     def processSolveQueue(self, imagePath: Path, updateHeader: bool = False) -> None:

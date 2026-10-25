@@ -74,17 +74,17 @@ class ModelData(QObject):
         self.app.dReg.plateSolve.signals.result.disconnect(self.collectPlateSolveResult)
 
     def setImageExposed(self, imagePath: Path) -> None:
-        self.log.debug("{Image exposed:15s}: %s", imagePath.stem)
+        self.log.debug(f"{'Image exposed':15s}: {imagePath.stem}")
         if self.config.modelTiming == ModelTiming.PROGRESSIVE:
             self.startSlew.emit()
 
     def setImageDownloaded(self, imagePath: Path) -> None:
-        self.log.debug("{Image downloaded:15s}: %s", imagePath.stem)
+        self.log.debug(f"{'Image downloaded':15s}: {imagePath.stem}")
         if self.config.modelTiming == ModelTiming.NORMAL:
             self.startSlew.emit()
 
     def setImageSaved(self, imagePath: Path) -> None:
-        self.log.debug("{Image saved:15s}: %s", imagePath.stem)
+        self.log.debug(f"{'Image saved':15s}: {imagePath.stem}")
         if self.config.modelTiming == ModelTiming.CONSERVATIVE:
             self.startSlew.emit()
 
@@ -134,7 +134,7 @@ class ModelData(QObject):
             dome.instance.slewDome(azimuth=azimuth.degrees)
         mount.obsSite.startSlewing()
         t = f"{'Start slew':15s}: {nextKey}, "
-        t += f" ALT: {altitude.degrees:03.0f}, AZ: {azimuth.degrees:03.0f}"
+        t += f"ALT: {altitude.degrees:03.0f}, AZ: {azimuth.degrees:03.0f}"
         self.log.debug(t)
 
     def buildProgModel(self) -> None:

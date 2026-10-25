@@ -46,9 +46,6 @@ class CameraIndi(IndiClass):
             self.signals.exposed.emit(self.parent.imagePath)
             self.signals.message.emit("downloading")
             self.exposing = False
-        if state == "Ok" and value == 0 and self.exposing:
-            self.signals.downloaded.emit(self.parent.imagePath)
-            self.signals.message.emit("")
         if state in ["Alert"]:
             self.signals.exposed.emit(Path())
             self.signals.downloaded.emit(Path())
@@ -113,6 +110,7 @@ class CameraIndi(IndiClass):
         blobformat = blob["members"]["CCD1"]["blobformat"]
         self.parent.imagePath = self.parent.imagePath.with_suffix(blobformat)
         blobFile.replace(self.parent.imagePath)
+        self.signals.downloaded.emit(self.parent.imagePath)
         if blobformat == ".xisf":
             self.writeImageXisfHeader()
         else:

@@ -143,7 +143,7 @@ def test_setExposureState_busy_value_zero(function):
 
 
 def test_setExposureState_ok_value_zero(function):
-    """State 'Ok' and value == 0, self.exposing=True → downloaded signal + empty message."""
+    """State 'Ok' and value == 0, self.exposing=True → no signal, download is signaled by BLOB."""
     function.parent.exposing = True
     function.exposing = True
     vectors = {
@@ -157,8 +157,8 @@ def test_setExposureState_ok_value_zero(function):
     function.signals.downloaded.connect(dl_slot)
     function.signals.message.connect(msg_slot)
     function.setExposureState(vectors)
-    dl_slot.assert_called_once_with(function.parent.imagePath)
-    msg_slot.assert_called_once_with("")
+    dl_slot.assert_not_called()
+    msg_slot.assert_not_called()
     function.signals.downloaded.disconnect(dl_slot)
     function.signals.message.disconnect(msg_slot)
     function.exposing = False
@@ -375,7 +375,9 @@ def test_saveImageBLOB_fits(function):
     function.parent.imagePath = Path("tests/work/temp/capture.fits")
     function.exposing = True
     msg_slot = mock.MagicMock()
+    dl_slot = mock.MagicMock()
     function.signals.message.connect(msg_slot)
+    function.signals.downloaded.connect(dl_slot)
     with (
         mock.patch.object(function.parent, "writeImageFitsHeader") as mock_fits,
         mock.patch.object(function.parent, "exposeFinished") as mock_fin,
@@ -384,10 +386,12 @@ def test_saveImageBLOB_fits(function):
         assert function.parent.imagePath == Path("tests/work/temp/capture.fits")
         mock_blob_file.replace.assert_called_once_with(function.parent.imagePath)
         msg_slot.assert_called_once_with("saving")
+        dl_slot.assert_called_once_with(function.parent.imagePath)
         mock_fits.assert_called_once()
         mock_fin.assert_called_once()
         assert function.exposing is False
     function.signals.message.disconnect(msg_slot)
+    function.signals.downloaded.disconnect(dl_slot)
 
 
 def test_saveImageBLOB_xisf(function):
@@ -405,7 +409,9 @@ def test_saveImageBLOB_xisf(function):
     function.parent.imagePath = Path("tests/work/temp/capture.fits")
     function.exposing = True
     msg_slot = mock.MagicMock()
+    dl_slot = mock.MagicMock()
     function.signals.message.connect(msg_slot)
+    function.signals.downloaded.connect(dl_slot)
     with (
         mock.patch.object(function, "writeImageXisfHeader") as mock_xisf,
         mock.patch.object(function.parent, "exposeFinished") as mock_fin,
@@ -414,10 +420,12 @@ def test_saveImageBLOB_xisf(function):
         assert function.parent.imagePath == Path("tests/work/temp/capture.xisf")
         mock_blob_file.replace.assert_called_once_with(function.parent.imagePath)
         msg_slot.assert_called_once_with("saving")
+        dl_slot.assert_called_once_with(function.parent.imagePath)
         mock_xisf.assert_called_once()
         mock_fin.assert_called_once()
         assert function.exposing is False
     function.signals.message.disconnect(msg_slot)
+    function.signals.downloaded.disconnect(dl_slot)
 
 
 # writeVectorsToData

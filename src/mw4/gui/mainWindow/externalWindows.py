@@ -92,7 +92,7 @@ class ExternalWindows:
         for window in self.uiWindows:
             if not self.app.config.get(window, False):
                 continue
-            self.log.debug("Building window: %s", window)
+            self.log.debug("Build window    : %s", window)
             self.buildWindow(window)
 
     def toggleWindow(self, windowName) -> None:
@@ -105,5 +105,5 @@ class ExternalWindows:
         for window in self.uiWindows:
             if not self.uiWindows[window]["classObj"]:
                 continue
-            self.log.debug("Closing window: %s", window)
+            self.log.debug("Close window    : %s", window)
             self.uiWindows[window]["classObj"].close()

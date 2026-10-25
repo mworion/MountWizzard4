@@ -144,8 +144,8 @@ class Camera(DeviceFacade[AppProtocol, CameraDriver]):
             # pyrefly: ignore[missing-attribute]
             header = writeHeaderCamera(HDU[0].header, self, self.app.dReg.mount.obsSite)
             header = writeHeaderPointing(header, self.app.dReg.mount.obsSite)
-            t = f"FITS header written: RA: [{header['RA']}], DEC: [{header['DEC']}]"
-            t += f", FOCALLEN: [{header['FOCALLEN']}], SCALE: [{header['SCALE']}]"
+            t = f"{'FITS header':15s}: RA: {header['RA']}, DEC: {header['DEC']}"
+            t += f", FOCALLEN: {header['FOCALLEN']}, SCALE: {header['SCALE']}"
             self.log.debug(t)
             # pyrefly: ignore[missing-attribute]
             HDU[0].header = header

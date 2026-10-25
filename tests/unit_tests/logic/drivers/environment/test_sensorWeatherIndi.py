@@ -28,4 +28,3 @@ def function(makeApp):
 
 def test_init_1(function):
     assert function.signals is function.parent.signals
-

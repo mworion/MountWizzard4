@@ -89,20 +89,23 @@ def test_startSlew_isQueued(function, qtbot):
 
 def test_setImageExposed(function):
     function.config = replace(function.config, modelTiming=ModelTiming.PROGRESSIVE)
-    with mock.patch.object(function, "startNewSlew"):
-        function.setImageExposed()
+    with mock.patch.object(function, "startSlew") as mockSlew:
+        function.setImageExposed(Path("image.xisf"))
+        mockSlew.emit.assert_called_once()
 
 
 def test_setImageDownloaded(function):
     function.config = replace(function.config, modelTiming=ModelTiming.NORMAL)
-    with mock.patch.object(function, "startNewSlew"):
-        function.setImageDownloaded()
+    with mock.patch.object(function, "startSlew") as mockSlew:
+        function.setImageDownloaded(Path("image.xisf"))
+        mockSlew.emit.assert_called_once()
 
 
 def test_setImageSaved(function):
     function.config = replace(function.config, modelTiming=ModelTiming.CONSERVATIVE)
-    with mock.patch.object(function, "startNewSlew"):
-        function.setImageSaved()
+    with mock.patch.object(function, "startSlew") as mockSlew:
+        function.setImageSaved(Path("image.xisf"))
+        mockSlew.emit.assert_called_once()
 
 
 def test_startExposureAfterSlew_1(function):
@@ -927,21 +930,21 @@ def test_runModel_flowWithRetry(function, qtbot):
 def test_setImageExposed_otherTiming(function):
     function.config = replace(function.config, modelTiming=ModelTiming.NORMAL)
     with mock.patch.object(function, "startSlew") as mockSlew:
-        function.setImageExposed()
+        function.setImageExposed(Path("image.xisf"))
         mockSlew.emit.assert_not_called()
 
 
 def test_setImageDownloaded_otherTiming(function):
     function.config = replace(function.config, modelTiming=ModelTiming.PROGRESSIVE)
     with mock.patch.object(function, "startSlew") as mockSlew:
-        function.setImageDownloaded()
+        function.setImageDownloaded(Path("image.xisf"))
         mockSlew.emit.assert_not_called()
 
 
 def test_setImageSaved_otherTiming(function):
     function.config = replace(function.config, modelTiming=ModelTiming.PROGRESSIVE)
     with mock.patch.object(function, "startSlew") as mockSlew:
-        function.setImageSaved()
+        function.setImageSaved(Path("image.xisf"))
         mockSlew.emit.assert_not_called()
 
 

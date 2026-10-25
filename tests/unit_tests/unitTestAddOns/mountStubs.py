@@ -293,6 +293,7 @@ class MountSetting:
 class MountSignals(QObject):
     locationDone = Signal(object)
     settingDone = Signal(object)
+    settingChanged = Signal(object)
     pointDone = Signal(object)
     mountIsUp = Signal(object)
     firmwareDone = Signal(object)

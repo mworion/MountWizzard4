@@ -238,7 +238,7 @@ class Model(TabAddon):
 
     def showStatusSolve(self, item: dict) -> None:
         if item["success"]:
-            t = f"{item['imagePath'].stem}, RA: {item['raJ2000S'].degrees:.3f}"
+            t = f"{item['imagePath'].stem}, RA: {item['raJ2000S'].hours:.3f}"
             t += f", DEC: {item['decJ2000S'].degrees:.3f}"
             t += f", Error: {item['errorRMS_S']:.1f}"
             t += f", Scale: {item['scaleS']:.2f}"

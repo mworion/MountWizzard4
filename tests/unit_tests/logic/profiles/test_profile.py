@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import glob
+import json
 import mw4.logic.profiles
 import os
 import pytest
@@ -9,7 +10,9 @@ import yaml
 from mw4.logic.profiles.profile import (
     defaultConfig,
     loadConfig,
+    loadLegacyConfig,
     loadProfileStart,
+    loadYamlConfig,
     saveConfig,
 )
 from pathlib import Path
@@ -36,7 +39,7 @@ def cleanConfigFiles():
 
 
 def test_loadProfile_osError():
-    val = loadConfig(Path("tests/work/config/nonexistent_file.yaml"))
+    val = loadConfig(Path("tests/work/config/nonexistent_file.yaml"), None)
     assert val == defaultConfig()
 
 
@@ -45,8 +48,53 @@ def test_loadProfile_yamlError():
         mock.patch("builtins.open", mock.mock_open(read_data="data")),
         mock.patch.object(yaml, "safe_load", side_effect=yaml.YAMLError),
     ):
-        val = loadConfig(Path("tests/work/config/config.yaml"))
+        val = loadConfig(Path("tests/work/config/config.yaml"), None)
     assert val == defaultConfig()
+
+
+def test_loadYamlConfig_osError():
+    assert loadYamlConfig(Path("tests/work/config/nonexistent_file.yaml")) == {}
+
+
+def test_loadLegacyConfig_osError():
+    val = loadLegacyConfig(Path("tests/work/config/nonexistent_file.cfg"), None)
+    assert val == {}
+
+
+def test_loadLegacyConfig_jsonError():
+    with open("tests/work/config/bad.cfg", "w") as outfile:
+        outfile.write("no json")
+    assert loadLegacyConfig(Path("tests/work/config/bad.cfg"), None) == {}
+    os.remove("tests/work/config/bad.cfg")
+
+
+def test_loadLegacyConfig_wrongVersion():
+    with open("tests/work/config/old.cfg", "w") as outfile:
+        json.dump({"version": "3.0"}, outfile)
+    with mock.patch.object(mw4.logic.profiles.profile, "deviceSchemaFromRegistry", return_value={}):
+        val = loadLegacyConfig(Path("tests/work/config/old.cfg"), None)
+    os.remove("tests/work/config/old.cfg")
+    assert val == {}
+
+
+def test_loadLegacyConfig_valid():
+    with open("tests/work/config/old.cfg", "w") as outfile:
+        json.dump({"version": "4.1", "profileName": "x"}, outfile)
+    with mock.patch.object(mw4.logic.profiles.profile, "deviceSchemaFromRegistry", return_value={}):
+        val = loadLegacyConfig(Path("tests/work/config/old.cfg"), None)
+    os.remove("tests/work/config/old.cfg")
+    assert val["version"] == "5.0"
+    assert val["profileName"] == "old"
+
+
+def test_loadConfig_legacy():
+    with mock.patch.object(
+        mw4.logic.profiles.profile,
+        "loadLegacyConfig",
+        return_value={"version": "5.0"},
+    ):
+        val = loadConfig(Path("tests/work/config/old.cfg"), None)
+    assert val == {"version": "5.0", "profileName": "old"}
 
 
 def test_defaultConfig():
@@ -67,7 +115,7 @@ def test_loadProfile_1():
         yaml.dump(config, outfile)
 
     with mock.patch.object(yaml, "safe_load", return_value={}):
-        val = loadConfig(Path("tests/work/config/config.yaml"))
+        val = loadConfig(Path("tests/work/config/config.yaml"), None)
         assert val == defaultConfig()
 
 
@@ -82,7 +130,7 @@ def test_loadProfile_2():
     with open("tests/work/config/config.yaml", "w") as outfile:
         yaml.dump(config, outfile)
 
-    val = loadConfig(Path("tests/work/config/config.yaml"))
+    val = loadConfig(Path("tests/work/config/config.yaml"), None)
     assert "orderMain" in val["WindowMain"]
 
 
@@ -98,7 +146,7 @@ def test_loadProfile_3():
     with open("tests/work/config/config.yaml", "w") as outfile:
         yaml.dump(config, outfile)
 
-    val = loadConfig(Path("tests/work/config/config.yaml"))
+    val = loadConfig(Path("tests/work/config/config.yaml"), None)
     assert "WindowMain" not in val
 
 
@@ -130,7 +178,7 @@ def test_loadProfileStart_3():
         yaml.dump(config, outfile)
 
     with mock.patch.object(
-        mw4.logic.profiles.profile, "loadConfig", return_value={"profileName": "config"}
+        mw4.logic.profiles.profile, "loadYamlConfig", return_value={"profileName": "config"}
     ):
         val = loadProfileStart(Path("tests/work/config"))
     assert val == {"profileName": "config"}

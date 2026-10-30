@@ -317,11 +317,11 @@ class MainWindow(MWidget):
     def loadProfileGUI(self) -> None:
         folder = self.app.mwGlob["configDir"]
         loadProfilePath = MWFileDialog.getOpenFileName(
-            self, "Open config file", folder, "Config files (*.yaml)"
+            self, "Open config file", folder, "Config files (*.yaml);; Legacy files (*.cfg)"
         )
         if not loadProfilePath.is_file():
             return
-        config = loadConfig(loadProfilePath)
+        config = loadConfig(loadProfilePath, self.app.dReg)
         self.switchProfile(config)
         self.ui.profileName.setText(loadProfilePath.stem)
         self.saveProfile()

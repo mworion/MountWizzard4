@@ -1,8 +1,11 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
+import json
 import logging
 import yaml
+from mw4.deviceRegistry import DeviceRegistry
+from mw4.logic.profiles.legacyImport import deviceSchemaFromRegistry, migrateLegacyConfig
 from pathlib import Path
 from typing import Any
 
@@ -17,12 +20,36 @@ def defaultConfig() -> ProfileConfig:
     return config
 
 
-def loadConfig(loadConfigPath: Path) -> ProfileConfig:
+def loadYamlConfig(loadConfigPath: Path) -> ProfileConfig:
     try:
         with open(loadConfigPath, encoding="utf-8") as configFile:
             config = yaml.safe_load(configFile)
     except (OSError, yaml.YAMLError):
-        return defaultConfig()
+        config = {}
+    return config
+
+
+def loadLegacyConfig(loadConfigPath: Path, dReg: DeviceRegistry) -> ProfileConfig:
+    try:
+        with open(loadConfigPath, encoding="utf-8") as configFile:
+            config = json.load(configFile)
+    except (OSError, UnicodeError, json.JSONDecodeError):
+        return {}
+
+    deviceSchema = deviceSchemaFromRegistry(dReg)
+    try:
+        migration = migrateLegacyConfig(config, deviceSchema)
+    except ValueError:
+        return {}
+    migration.config["profileName"] = loadConfigPath.stem
+    return migration.config
+
+
+def loadConfig(loadConfigPath: Path, dReg) -> ProfileConfig:
+    if loadConfigPath.suffix == ".yaml":
+        config = loadYamlConfig(loadConfigPath)
+    else:
+        config = loadLegacyConfig(loadConfigPath, dReg)
 
     if not config:
         return defaultConfig()
@@ -44,7 +71,7 @@ def loadProfileStart(configDir: Path) -> ProfileConfig:
     if not configPath.exists():
         return config
 
-    config = loadConfig(configPath)
+    config = loadYamlConfig(configPath)
     return config
 
 

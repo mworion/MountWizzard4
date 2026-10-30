@@ -6,7 +6,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field, fields, is_dataclass
 from mw4.deviceRegistry import DeviceRegistry
-from pathlib import Path
 from typing import Any
 
 SOURCE_PROFILE_VERSION = "4.1"
@@ -198,17 +197,6 @@ class MigrationData:
     mapped: list[tuple[str, str]] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
     notes: list[str] = field(default_factory=list)
-
-
-@dataclass
-class ImportResult:
-    source: Path
-    target: Path | None
-    status: str
-    mapped: int = 0
-    warnings: list[str] = field(default_factory=list)
-    notes: list[str] = field(default_factory=list)
-    error: str = ""
 
 
 def _getPath(data: dict[str, Any], path: str, default: Any = None) -> Any:

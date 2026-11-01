@@ -245,6 +245,73 @@ def test_send_with_active_websocket(keypad):
         mock_send.assert_called_once()
 
 
+@pytest.mark.parametrize(
+    ("action", "keyCode", "message"),
+    [
+        (6, 82, [2, 6, 82, 86, 3]),
+        (5, 82, [2, 5, 82, 85, 3]),
+        (6, 0, [2, 6, 0, 14, 3]),
+        (5, 0, [2, 5, 0, 17, 3]),
+    ],
+)
+def test_sendKeyCodeMessage_string(
+    keypad: KeyPad, action: int, keyCode: int, message: list[int]
+) -> None:
+    with mock.patch.object(keypad, "send") as mockSend:
+        keypad.sendKeyCodeMessage("button", {"button": keyCode}, action)
+        mockSend.assert_called_once_with(message)
+
+
+@pytest.mark.parametrize(
+    ("action", "message"),
+    [(6, [2, 6, 82, 86, 3]), (5, [2, 5, 82, 85, 3])],
+)
+def test_sendKeyCodeMessage_integer(keypad: KeyPad, action: int, message: list[int]) -> None:
+    with mock.patch.object(keypad, "send") as mockSend:
+        keypad.sendKeyCodeMessage(48, {48: 82}, action)
+        mockSend.assert_called_once_with(message)
+
+
+def test_sendKeyCodeMessage_unknownString(keypad: KeyPad) -> None:
+    with (
+        mock.patch.object(keypad, "calcChecksum") as mockChecksum,
+        mock.patch.object(keypad, "send") as mockSend,
+    ):
+        keypad.sendKeyCodeMessage("unknown", {"button": 82}, 6)
+        mockChecksum.assert_not_called()
+        mockSend.assert_not_called()
+
+
+def test_sendKeyCodeMessage_unknownInteger(keypad: KeyPad) -> None:
+    with (
+        mock.patch.object(keypad, "calcChecksum") as mockChecksum,
+        mock.patch.object(keypad, "send") as mockSend,
+    ):
+        keypad.sendKeyCodeMessage(0, {48: 82}, 5)
+        mockChecksum.assert_not_called()
+        mockSend.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    ("action", "message"),
+    [(6, [2, 6, 82, 86, 3]), (5, [2, 5, 82, 85, 3])],
+)
+def test_sendMouseMessage(keypad: KeyPad, action: int, message: list[int]) -> None:
+    with mock.patch.object(keypad, "send") as mockSend:
+        keypad.sendMouseMessage("key_0", action)
+        mockSend.assert_called_once_with(message)
+
+
+@pytest.mark.parametrize(
+    ("action", "message"),
+    [(6, [2, 6, 82, 86, 3]), (5, [2, 5, 82, 85, 3])],
+)
+def test_sendKeyMessage(keypad: KeyPad, action: int, message: list[int]) -> None:
+    with mock.patch.object(keypad, "send") as mockSend:
+        keypad.sendKeyMessage(48, action)
+        mockSend.assert_called_once_with(message)
+
+
 # Tests for mousePressed method
 
 
@@ -252,7 +319,7 @@ def test_mousePressed_valid_button(keypad):
     """Test mousePressed with valid button key."""
     with mock.patch.object(keypad, "send") as mock_send:
         keypad.mousePressed("key_0")
-        mock_send.assert_called_once()
+        mock_send.assert_called_once_with([2, 6, 82, 86, 3])
 
 
 def test_mousePressed_invalid_button(keypad):
@@ -269,7 +336,7 @@ def test_mouseReleased_valid_button(keypad):
     """Test mouseReleased with valid button key."""
     with mock.patch.object(keypad, "send") as mock_send:
         keypad.mouseReleased("key_0")
-        mock_send.assert_called_once()
+        mock_send.assert_called_once_with([2, 5, 82, 85, 3])
 
 
 def test_mouseReleased_invalid_button(keypad):
@@ -286,7 +353,7 @@ def test_keyDown_valid_key_code(keypad):
     """Test keyDown with valid key code."""
     with mock.patch.object(keypad, "send") as mock_send:
         keypad.keyDown(48)
-        mock_send.assert_called_once()
+        mock_send.assert_called_once_with([2, 6, 82, 86, 3])
 
 
 def test_keyDown_invalid_key_code(keypad):
@@ -303,7 +370,7 @@ def test_keyUp_valid_key_code(keypad):
     """Test keyUp with valid key code."""
     with mock.patch.object(keypad, "send") as mock_send:
         keypad.keyUp(48)
-        mock_send.assert_called_once()
+        mock_send.assert_called_once_with([2, 5, 82, 85, 3])
 
 
 def test_keyUp_invalid_key_code(keypad):
@@ -334,7 +401,10 @@ def test_keyPressed_mapped_character(keypad):
     """Test keyPressed with valid mapped character."""
     with mock.patch.object(keypad, "send") as mock_send:
         keypad.keyPressed(54)  # ASCII code for '6'
-        assert mock_send.call_count == 2  # keyDown and keyUp messages
+        assert mock_send.call_args_list == [
+            mock.call([2, 6, 38, 34, 3]),
+            mock.call([2, 5, 38, 33, 3]),
+        ]
 
 
 # Tests for on_data method

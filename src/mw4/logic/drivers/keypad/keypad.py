@@ -4,7 +4,10 @@
 import logging
 import numpy as np
 import websocket
-from typing import Any, ClassVar
+from collections.abc import Mapping
+from typing import Any, ClassVar, TypeVar
+
+KeyType = TypeVar("KeyType", int, str)
 
 
 class KeyPad:
@@ -247,62 +250,41 @@ class KeyPad:
             return
         self.ws.send(bytes(message), websocket.ABNF.OPCODE_BINARY)
 
-    def mousePressed(self, key: str) -> None:
-        keyUsed = self.buttonCodes.get(key, None)
+    def sendKeyCodeMessage(self, key: KeyType, keyCodes: Mapping[KeyType, int], action: int) -> None:
+        keyUsed = keyCodes.get(key, None)
         if keyUsed is None:
             return
 
-        message = [2, 6, keyUsed]
+        message = [2, action, keyUsed]
         message = [*message, self.calcChecksum(message)]
         message = [*message, 3]
         self.send(message)
+
+    def sendMouseMessage(self, key: str, action: int) -> None:
+        self.sendKeyCodeMessage(key, self.buttonCodes, action)
+
+    def mousePressed(self, key: str) -> None:
+        self.sendMouseMessage(key, 6)
 
     def mouseReleased(self, key: str) -> None:
-        keyUsed = self.buttonCodes.get(key, None)
-        if keyUsed is None:
-            return
+        self.sendMouseMessage(key, 5)
 
-        message = [2, 5, keyUsed]
-        message = [*message, self.calcChecksum(message)]
-        message = [*message, 3]
-        self.send(message)
+    def sendKeyMessage(self, key: int, action: int) -> None:
+        self.sendKeyCodeMessage(key, self.keyCodesA, action)
 
     def keyDown(self, key: int) -> None:
-        keyUsed = self.keyCodesA.get(key, None)
-        if keyUsed is None:
-            return
-
-        message = [2, 6, keyUsed]
-        message = [*message, self.calcChecksum(message)]
-        message = [*message, 3]
-        self.send(message)
+        self.sendKeyMessage(key, 6)
 
     def keyUp(self, key: int) -> None:
-        keyUsed = self.keyCodesA.get(key, None)
-        if keyUsed is None:
-            return
-
-        message = [2, 5, keyUsed]
-        message = [*message, self.calcChecksum(message)]
-        message = [*message, 3]
-        self.send(message)
+        self.sendKeyMessage(key, 5)
 
     def keyPressed(self, key: int) -> None:
         if key > 255:
             return
 
-        keyUsed = self.keyCodesB.get(chr(key), None)
-        if keyUsed is None:
-            return
-
-        message = [2, 6, keyUsed]
-        message = [*message, self.calcChecksum(message)]
-        message = [*message, 3]
-        self.send(message)
-        message = [2, 5, keyUsed]
-        message = [*message, self.calcChecksum(message)]
-        message = [*message, 3]
-        self.send(message)
+        key = chr(key)
+        self.sendKeyCodeMessage(key, self.keyCodesB, 6)
+        self.sendKeyCodeMessage(key, self.keyCodesB, 5)
 
     def on_data(self, _ws: websocket.WebSocketApp, data: list, _typeOpcode: int, _cont: bool) -> None:
         result = []

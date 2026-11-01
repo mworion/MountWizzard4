@@ -97,7 +97,6 @@ class KeyPad:
         ")": 90,
         '"': 91,
         "'": 93,
-        # '"': 95, is in the javascript, but duplicate
         "/": 97,
         "|": 99,
         "\\": 100,
@@ -305,7 +304,7 @@ class KeyPad:
         message = [*message, 3]
         self.send(message)
 
-    def on_data(self, ws: websocket.WebSocketApp, data: list, typeOpcode: int, cont: bool) -> None:
+    def on_data(self, _ws: websocket.WebSocketApp, data: list, _typeOpcode: int, _cont: bool) -> None:
         result = []
         started = False
         for i in range(len(data)):
@@ -322,7 +321,7 @@ class KeyPad:
                         result.append(data[i])
 
     def on_close(
-        self, ws: websocket.WebSocketApp, close_status_code: int | None, close_msg: str | None
+        self, _ws: websocket.WebSocketApp, _close_status_code: int | None, close_msg: str | None
     ) -> None:
         self.ws = None
         self.log.debug("Keypad websocket closed: %s", close_msg)

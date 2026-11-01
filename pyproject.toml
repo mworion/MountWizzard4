@@ -89,14 +89,14 @@ Forum = "https://forum.10micron.cloud/"
 
 [dependency-groups]
 dev = [
-    "pytest==9.1.1",
+    "pytest==9.2.0",
     "pytest-qt==4.5.0",
     "pytest-cov==7.1.0",
     "pytest-xdist==3.8.0",
     "pytest-xvfb==3.1.1",
-    "pytest-env==1.8.1",
+    "pytest-env==1.8.4",
     "invoke==2.2.1",
-    "ruff==0.17.2",
+    "ruff==0.17.3",
     "pyrefly==1.4.0",
     "coverage==7.17.0",
     "scipy-stubs==1.18.1.1",

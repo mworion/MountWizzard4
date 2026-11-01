@@ -26,7 +26,6 @@ class MessageWindow(MWidget):
         self.setNoFocus(self)
         self.setWindowTitle("Message")
         self.setMinimumSize(self.FULL_WIDTH, self.HALF_HEIGHT)
-        self.setMaximumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.messFont: QFont | None = None
         self.messColor: list = []
         self.setupMessage()

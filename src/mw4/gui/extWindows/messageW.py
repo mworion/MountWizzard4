@@ -84,33 +84,21 @@ class MessageWindow(MWidget):
         self.app.signals.ui.colorChange.connect(self.colorChange)
         self.show()
 
+    def setMessageTableItem(self, row: int, column: int, text: str, prio: int) -> None:
+        item = QTableWidgetItem(text)
+        item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
+        item.setForeground(self.messColor[prio])
+        self.ui.messageTable.setItem(row, column, item)
+
     def writeMessage(self) -> None:
         while not self.app.messageQueue.empty():
             prio, source, mType, message = self.app.messageQueue.get()
-
             row = self.ui.messageTable.rowCount()
             self.ui.messageTable.insertRow(row)
             timePrefix = time.strftime("%H:%M:%S", time.localtime())
-
             if source:
-                item = QTableWidgetItem(f"{timePrefix}")
-                item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-                item.setForeground(self.messColor[prio])
-                self.ui.messageTable.setItem(row, 0, item)
-
-            item = QTableWidgetItem(f"{source}")
-            item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-            item.setForeground(self.messColor[prio])
-            self.ui.messageTable.setItem(row, 1, item)
-
-            item = QTableWidgetItem(f"{mType}")
-            item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-            item.setForeground(self.messColor[prio])
-            self.ui.messageTable.setItem(row, 2, item)
-
-            item = QTableWidgetItem(f"{message}")
-            item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-            item.setForeground(self.messColor[prio])
-            self.ui.messageTable.setItem(row, 3, item)
-
+                self.setMessageTableItem(row, 0, timePrefix, prio)
+            self.setMessageTableItem(row, 1, f"{source}", prio)
+            self.setMessageTableItem(row, 2, f"{mType}", prio)
+            self.setMessageTableItem(row, 3, f"{message}", prio)
             self.ui.messageTable.scrollToBottom()

@@ -89,7 +89,6 @@ class Ui_MessageDialog(object):
         self.messageTable.setShowGrid(False)
         self.messageTable.setGridStyle(Qt.PenStyle.DotLine)
         self.messageTable.setSortingEnabled(False)
-        self.messageTable.setWordWrap(True)
         self.messageTable.setCornerButtonEnabled(False)
         self.messageTable.setColumnCount(0)
         self.messageTable.horizontalHeader().setCascadingSectionResizes(True)

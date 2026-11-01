@@ -85,6 +85,7 @@ class Ui_MessageDialog(object):
         self.messageTable.setAlternatingRowColors(False)
         self.messageTable.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
         self.messageTable.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.messageTable.setTextElideMode(Qt.TextElideMode.ElideNone)
         self.messageTable.setShowGrid(False)
         self.messageTable.setGridStyle(Qt.PenStyle.DotLine)
         self.messageTable.setSortingEnabled(False)

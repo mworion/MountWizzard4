@@ -397,8 +397,7 @@ class LegacyMigrator:
             self.mapped.append((f"driversData.{oldDevice}.framework", targetPath))
         else:
             self.warnings.append(
-                f"{oldDevice}: active framework {activeFramework!r} has no direct "
-                "v5 target and was left disabled"
+                f"{oldDevice}: framework {activeFramework!r} has no v5 target - disabled"
             )
 
     def copyDevice(

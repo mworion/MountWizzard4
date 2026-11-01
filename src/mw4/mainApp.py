@@ -48,7 +48,7 @@ class MountWizzard4(QObject):
         # Push initial lifecycle messages into the message queue.
         profile = self.config.get("profileName", "-")
         workDir = self.mwGlob["workDir"]
-        self.signals.ui.msg.emit(1, "System", "Lifecycle", "MountWizzard4 started...")
+        self.signals.ui.msg.emit(1, "System", "Lifecycle", "MountWizzard4 started successfully")
         self.signals.ui.msg.emit(1, "System", "Workdir", f"{workDir}")
         self.signals.ui.msg.emit(1, "System", "Profile", f"{profile}")
         if arguments:

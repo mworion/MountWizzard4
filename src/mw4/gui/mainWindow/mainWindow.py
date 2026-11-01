@@ -327,9 +327,9 @@ class MainWindow(MWidget):
         self.saveProfile()
         self.msg.emit(1, "System", "Profile", f"{loadProfilePath.stem} loaded")
         for note in notes:
-            self.msg.emit(0, "System", "Profile", f"{loadProfilePath.stem}: {note}")
+            self.msg.emit(0, "System", "Profile", f"{note}")
         for warn in warning:
-            self.msg.emit(2, "System", "Profile", f"{loadProfilePath.stem}: {warn}")
+            self.msg.emit(2, "System", "Profile", f"{warn}")
 
     def saveProfileBase(self, saveProfilePath: Path) -> None:
         if not saveProfilePath.stem:

@@ -97,21 +97,21 @@ class MessageWindow(MWidget):
                 item = QTableWidgetItem(f"{timePrefix}")
                 item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
                 item.setForeground(self.messColor[prio])
-                self.ui.messageTable.setItem(row, self.TEXT_NORMAL, item)
+                self.ui.messageTable.setItem(row, 0, item)
 
             item = QTableWidgetItem(f"{source}")
             item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             item.setForeground(self.messColor[prio])
-            self.ui.messageTable.setItem(row, self.TEXT_HIGHLIGHT, item)
+            self.ui.messageTable.setItem(row, 1, item)
 
             item = QTableWidgetItem(f"{mType}")
             item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             item.setForeground(self.messColor[prio])
-            self.ui.messageTable.setItem(row, self.TEXT_WARNING, item)
+            self.ui.messageTable.setItem(row, 2, item)
 
             item = QTableWidgetItem(f"{message}")
             item.setTextAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
             item.setForeground(self.messColor[prio])
-            self.ui.messageTable.setItem(row, self.TEXT_ERROR, item)
+            self.ui.messageTable.setItem(row, 3, item)
 
             self.ui.messageTable.scrollToBottom()

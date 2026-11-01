@@ -107,7 +107,7 @@ class AnalyseWindow(MWidget):
             plot.colorChange()
         self.drawAll()
 
-    def writeGui(self, data: list, loadFilePath: Path) -> None:
+    def writeGui(self, data: list[dict[str, Any]], loadFilePath: Path) -> None:
         d = data[0]
         de = data[-1]
 
@@ -137,7 +137,7 @@ class AnalyseWindow(MWidget):
         values: Iterable[Any], fill: float = 0.0, dtype: DTypeLike = np.float32
     ) -> np.ndarray:
 
-        def _clean(v: Any) -> float:
+        def cleanValue(v: Any) -> float:
             if v is None:
                 return float(fill)
             try:
@@ -148,9 +148,9 @@ class AnalyseWindow(MWidget):
                 return float(fill)
             return f
 
-        return np.array([_clean(v) for v in values], dtype=dtype)
+        return np.array([cleanValue(v) for v in values], dtype=dtype)
 
-    def generateDataSets(self, modelJSON: dict) -> None:
+    def generateDataSets(self, modelJSON: list[dict[str, Any]]) -> None:
         model = {}
         for key in modelJSON[0]:
             model[key] = []

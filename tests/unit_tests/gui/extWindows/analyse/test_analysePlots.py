@@ -2,14 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import gc
-import json
 import numpy as np
 import pytest
-from mw4.gui.extWindows.analyseW import AnalyseWindow
-from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
-from mw4.gui.utilities.qtMain import MWidget
-from pathlib import Path
-from PySide6.QtGui import QCloseEvent
+from mw4.gui.extWindows.analyse.analyseW import AnalyseWindow
 from PySide6.QtWidgets import QApplication
 from unittest import mock
 
@@ -21,101 +16,6 @@ def function(qapp, makeApp):
     QApplication.processEvents()
     gc.collect()
     QApplication.processEvents()
-
-
-def test_initConfig_1(function):
-    function.initConfig()
-
-
-def test_storeConfig_1(function):
-    if "WindowAnalyse" in function.app.config:
-        del function.app.config["WindowAnalyse"]
-
-    function.storeConfig()
-
-
-def test_storeConfig_2(function):
-    function.app.config["WindowAnalyse"] = {}
-
-    function.storeConfig()
-
-
-def test_closeEvent_1(function):
-    with mock.patch.object(function, "show"), mock.patch.object(MWidget, "closeEvent"):
-        function.showWindow()
-        function.closeEvent(QCloseEvent)
-
-
-def test_showWindow(function):
-    with mock.patch.object(function, "show"):
-        function.showWindow()
-
-
-def test_colorChange(function):
-    with mock.patch.object(function, "drawAll"):
-        function.colorChange()
-
-
-def test_writeGui_1(function):
-    function.writeGui([{"a": 1}], Path("test"))
-
-
-def test_list_to_array_replaces_none_and_nan(function):
-    src = [1.5, None, 3, float("nan"), "4.2", "x"]
-    arr = function.list2array(src, fill=0.0, dtype=np.float32)
-    expected = np.array([1.5, 0.0, 3.0, 0.0, 4.2, 0.0], dtype=np.float32)
-    for i, _item in enumerate(src):
-        assert expected[i] == arr[i]
-
-
-def test_generateDataSets(function):
-    with open("tests/testData/test.model") as infile:
-        modelJSON = json.load(infile)
-
-    function.generateDataSets(modelJSON)
-    assert function.latitude == 48.1
-
-
-def test_processModel_1(function):
-    with (
-        mock.patch.object(function, "writeGui"),
-        mock.patch.object(function, "generateDataSets"),
-        mock.patch.object(function, "drawAll"),
-    ):
-        function.processModel(Path("tests/testData/test.model"))
-
-
-def test_processModel_2(function):
-    with mock.patch.object(
-        json, "load", return_value={}, side_effect=json.JSONDecodeError("test", "test", 0)
-    ):
-        function.processModel(Path("tests/testData/test.model"))
-
-
-def test_loadModel_1(function):
-    with (
-        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("test.test")),
-        mock.patch.object(Path, "is_file", return_value=True),
-        mock.patch.object(function, "processModel"),
-    ):
-        function.loadModel()
-
-
-def test_loadModel_2(function):
-    with (
-        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("test.test")),
-        mock.patch.object(Path, "is_file", return_value=True),
-        mock.patch.object(function, "processModel"),
-    ):
-        function.loadModel()
-
-
-def test_showAnalyse_1(function):
-    with (
-        mock.patch.object(function, "processModel"),
-        mock.patch.object(Path, "is_file", return_value=True),
-    ):
-        function.showAnalyse(Path("test.test"))
 
 
 def test_draw_raRawErrors(function):
@@ -178,6 +78,15 @@ def test_draw_decRawErrorsRef(function):
     function.drawDecRawErrorsRef()
 
 
+def test_drawDecRef_flipsEastPierErrors(function):
+    function.angularPosDEC = np.array([1, 2])
+    function.pierside = ["W", "E"]
+    with mock.patch.object(function.ui.decErrorsRef, "plot") as plot:
+        function.drawDecRef(function.ui.decErrorsRef, np.array([3, 4]))
+
+    assert plot.call_args.args[1] == [3, -4]
+
+
 def test_draw_scaleImage(function):
     function.errorIndex = np.array([0, 1, 2])
     function.scaleS = np.array([0, 0, 0])
@@ -190,6 +99,33 @@ def test_draw_errorAscending(function):
     function.errorIndex = np.array([0, 0, 0])
     function.pierside = ["E", "W", "E"]
     function.drawErrorAscending()
+
+
+def test_draw_errorAscendingKeepsPointsAligned(function):
+    function.errorRMS = np.array([0.3, 0.1, 0.2])
+    function.errorIndex = np.array([4, 1, 7])
+    function.pierside = ["E", "W", "E"]
+    with mock.patch.object(function.ui.errorAscending, "plot") as plot:
+        function.drawErrorAscending()
+
+    args = plot.call_args.args
+    kwargs = plot.call_args.kwargs
+    assert args[0] == [1, 7, 4]
+    assert args[1] == [0.1, 0.2, 0.3]
+    assert kwargs["data"] == ["W", "E", "E"]
+    assert kwargs["color"] == [
+        function.M_GREEN,
+        function.M_YELLOW,
+        function.M_YELLOW,
+    ]
+
+
+def test_drawAltAzErrorChart(function):
+    function.ui.showISO.setChecked(True)
+    with mock.patch.object(function.ui.raRawErrors, "plot") as plot:
+        function.drawAltAzErrorChart(function.ui.raRawErrors, np.array([1, 2]))
+
+    assert plot.call_args.kwargs["isoLevels"] == 20
 
 
 def test_draw_modelPositions_1(function):
@@ -246,36 +182,3 @@ def test_linkViewsDec_1(function):
 def test_linkViewsDec_2(function):
     function.ui.linkViews.setChecked(False)
     function.linkViewsDec()
-
-
-def test_drawAll_1(function):
-    def test():
-        pass
-
-    function.errorIndex = np.array([])
-    function.charts = [test]
-    with (
-        mock.patch.object(function, "linkViewsAltAz"),
-        mock.patch.object(function, "linkViewsRa"),
-        mock.patch.object(function, "linkViewsDec"),
-    ):
-        function.drawAll()
-
-
-def test_loadModel_3(function):
-    with (
-        mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("test.test")),
-        mock.patch.object(Path, "is_file", return_value=False),
-        mock.patch.object(function, "processModel") as processModel,
-    ):
-        function.loadModel()
-        processModel.assert_not_called()
-
-
-def test_showAnalyse_2(function):
-    with (
-        mock.patch.object(function, "processModel") as processModel,
-        mock.patch.object(Path, "is_file", return_value=False),
-    ):
-        function.showAnalyse(Path("test.test"))
-        processModel.assert_not_called()

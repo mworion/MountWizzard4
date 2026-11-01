@@ -3,7 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import logging
 from functools import partial
-from mw4.gui.extWindows.analyseW import AnalyseWindow
+from mw4.gui.extWindows.analyse.analyseW import AnalyseWindow
 from mw4.gui.extWindows.hemisphere.hemisphereW import HemisphereWindow
 from mw4.gui.extWindows.image.imageW import ImageWindow
 from mw4.gui.extWindows.keypadW import KeypadWindow

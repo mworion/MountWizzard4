@@ -33,7 +33,6 @@ class MountWizzard4(QObject):
         arguments: str = "",
     ) -> None:
         super().__init__()
-        # Set up global references, thread pool, flags, and profile.
         self.mwGlob = mwGlob
         self.application = application
         self.threadPool = QThreadPool()
@@ -75,7 +74,6 @@ class MountWizzard4(QObject):
         self.log.debug("Initializing configuration main application")
         self.dReg.initConfig()
         cfgSetting = self.config.get("SettingUpdate", {})
-        # the settings tab owns the log level (loglevelInfo / Debug / Trace)
         if cfgSetting.get("loglevelInfo", False):
             level = "INFO"
         elif cfgSetting.get("loglevelTrace", False):
@@ -93,7 +91,6 @@ class MountWizzard4(QObject):
 
     def storeConfig(self) -> None:
         self.log.debug("Storing configuration main application")
-        # the log level is stored by the settings tab; remove the old key
         self.config.pop("loglevel", None)
         self.dReg.storeConfig()
         location = self.dReg.mount.location

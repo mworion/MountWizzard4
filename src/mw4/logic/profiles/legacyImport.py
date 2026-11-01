@@ -107,7 +107,7 @@ WINDOW_MAIN_RENAMED = (
 MOUNT_MAPPING = (
     ("mainW.mountHost", "hostAddress", None),
     ("mainW.mountMAC", "MAC", None),
-    ("mainW.mountWolBroadcast", "wolAddress", None),
+    ("mainW.mountWolAddress", "wolBroadcast", None),
     ("mainW.mountWolPort", "wolPort", int),
     ("mainW.automaticWOL", "wolAutomatic", bool),
     ("mainW.syncTimeCont", "syncTimeCont", bool),

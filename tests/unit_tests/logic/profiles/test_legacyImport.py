@@ -14,7 +14,7 @@ def schema():
             "10micron": {
                 "hostAddress",
                 "MAC",
-                "wolAddress",
+                "wolBroadcast",
                 "wolPort",
                 "wolAutomatic",
                 "syncTimeCont",
@@ -46,6 +46,7 @@ def legacy(name="Old"):
         "mainW": {
             "mountHost": "10.0.0.50",
             "mountMAC": "00:11:22:33:44:55",
+            "mountWolAddress": "255.255.255.255",
             "port3492": True,
             "focalLength": 2563,
             "posText0": "Park East",
@@ -84,6 +85,7 @@ def test_sparse_migration():
     assert cfg["SettingPark"]["ParkText0"] == "Park East"
     assert cfg["WindowMain"]["buildPFileName"] == "DCRP3"
     assert cfg["WindowHemisphere"]["horizonMaskFileName"] == "DCRP-Meassured"
+    assert cfg["SettingDeviceMount"]["10micron"]["wolBroadcast"] == "255.255.255.255"
 
 
 def test_deviceSchemaFromRegistry():

@@ -1,13 +1,17 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
+from __future__ import annotations
+
 import json
 import logging
 import yaml
-from mw4.deviceRegistry import DeviceRegistry
 from mw4.logic.profiles.legacyImport import deviceSchemaFromRegistry, migrateLegacyConfig
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from mw4.deviceRegistry import DeviceRegistry
 
 log: logging.Logger = logging.getLogger("MW4")
 profileVersion = "5.0"

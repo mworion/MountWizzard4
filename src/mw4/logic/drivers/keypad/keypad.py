@@ -246,7 +246,7 @@ class KeyPad:
     def send(self, message: list[int]) -> None:
         if self.ws is None:
             return
-        self.ws.send(message, websocket.ABNF.OPCODE_BINARY)
+        self.ws.send(bytes(message), websocket.ABNF.OPCODE_BINARY)
 
     def mousePressed(self, key: str) -> None:
         keyUsed = self.buttonCodes.get(key, None)

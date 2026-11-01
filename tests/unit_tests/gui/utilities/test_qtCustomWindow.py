@@ -4,8 +4,8 @@
 import gc
 import pytest
 from mw4.gui.utilities.qtCustomWindow import CustomTitleBar
-from PySide6.QtCore import QPoint, Qt, QTimer
-from PySide6.QtGui import QMouseEvent
+from PySide6.QtCore import QPointF, Qt, QTimer
+from PySide6.QtGui import QMouseEvent, QPointingDevice
 from PySide6.QtTest import QTest
 from PySide6.QtWidgets import QApplication, QToolButton, QWidget
 from unittest import mock
@@ -178,10 +178,12 @@ def test_mouse_press_event_1(function):
 
     mouseEvent = QMouseEvent(
         QMouseEvent.Type.MouseButtonPress,
-        QPoint(20, 15),
+        QPointF(20, 15),
+        QPointF(20, 15),
         Qt.MouseButton.LeftButton,
         Qt.MouseButtons(Qt.MouseButton.LeftButton),
         Qt.KeyboardModifiers(),
+        QPointingDevice.primaryPointingDevice(),
     )
     with mock.patch.object(parent.windowHandle(), "startSystemMove"):
         titleBar.mousePressEvent(mouseEvent)
@@ -195,10 +197,12 @@ def test_mouse_press_event_3(function):
 
     mouseEvent = QMouseEvent(
         QMouseEvent.Type.MouseButtonPress,
-        QPoint(20, 15),
+        QPointF(20, 15),
+        QPointF(20, 15),
         Qt.MouseButton.LeftButton,
         Qt.MouseButtons(Qt.MouseButton.LeftButton),
         Qt.KeyboardModifiers(),
+        QPointingDevice.primaryPointingDevice(),
     )
     with mock.patch.object(QTimer, "singleShot") as m:
         titleBar.mousePressEvent(mouseEvent)
@@ -213,10 +217,12 @@ def test_mouse_press_event_2(function):
 
     mouseEvent = QMouseEvent(
         QMouseEvent.Type.MouseButtonPress,
-        QPoint(20, 15),
+        QPointF(20, 15),
+        QPointF(20, 15),
         Qt.MouseButton.RightButton,
         Qt.MouseButtons(Qt.MouseButton.RightButton),
         Qt.KeyboardModifiers(),
+        QPointingDevice.primaryPointingDevice(),
     )
     titleBar.mousePressEvent(mouseEvent)
 

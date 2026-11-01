@@ -69,6 +69,7 @@ def setupLogging() -> None:
         " %(message)s",
         handlers=[logHandler],
         datefmt="%Y-%m-%d %H:%M:%S",
+        force=True,
     )
     logging.getLogger("PySide6").setLevel(logging.WARNING)
     logging.getLogger("requests").setLevel(logging.WARNING)

@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import pytest
+from collections.abc import Iterator
 from mw4.logic.controllers.almanac.almanacCalculations import (
     MOON_NODE_MAX,
     MOON_RISE_MAX,
@@ -18,11 +19,12 @@ from skyfield.jpllib import SpiceKernel
 
 
 @pytest.fixture(scope="module")
-def sky() -> tuple:
+def sky() -> Iterator[tuple]:
     ephemeris = SpiceKernel(str(Path("tests/testData/de440_mw4.bsp")))
     ts = load.timescale()
     location = wgs84.latlon(latitude_degrees=20, longitude_degrees=10, elevation_m=500)
-    return ephemeris, ts, ts.tt_jd(2460000.5), location
+    yield ephemeris, ts, ts.tt_jd(2460000.5), location
+    ephemeris.close()
 
 
 def test_phasesText() -> None:

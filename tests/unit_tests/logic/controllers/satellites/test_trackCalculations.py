@@ -15,6 +15,7 @@ from mw4.logic.controllers.satellites.trackCalculations import (
     trimBelowHorizon,
 )
 from skyfield.api import EarthSatellite, load, wgs84
+from tests.unit_tests.unitTestAddOns.baseTestApp import loadEphemeris
 from types import SimpleNamespace
 
 
@@ -136,7 +137,7 @@ def test_calcTrajectoryData():
         "2 13923  98.6122  63.2579 0016304  96.9736 263.3301 14.28696485924954",
     ]
     satellite = EarthSatellite(tle[0], tle[1], name="NOAA 8", ts=ts)
-    earth = load("tests/testData/de440_mw4.bsp")["earth"]
+    earth = loadEphemeris()["earth"]
     start = 2459215.0
     alt, az = calcTrajectoryData(
         start,

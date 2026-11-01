@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import gc
+import logging
 import os
 import pytest
 import shutil
@@ -115,3 +116,14 @@ def makeApp():
     from tests.unit_tests.unitTestAddOns.baseTestApp import makeApp as factory
 
     return factory
+
+
+@pytest.fixture(autouse=True)
+def closeLogFileHandlers():
+    """Close file handlers a test added to the root logger (setupLogging)."""
+    before = set(logging.getLogger().handlers)
+    yield
+    for handler in set(logging.getLogger().handlers) - before:
+        if isinstance(handler, logging.FileHandler):
+            logging.getLogger().removeHandler(handler)
+            handler.close()

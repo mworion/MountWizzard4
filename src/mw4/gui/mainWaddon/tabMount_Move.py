@@ -211,7 +211,7 @@ class MountMove(TabAddon):
 
     def convertDirection(self, directionVector: list[int]) -> str:
         """Convert a direction vector to a direction string."""
-        return self.directionByVector.get(tuple(directionVector), "STOP")  # type: ignore
+        return self.directionByVector.get((directionVector[0], directionVector[1]), "STOP")
 
     def moveRaDec(self, direction: str) -> None:
         uiList = self.setButtons

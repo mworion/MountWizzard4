@@ -53,18 +53,18 @@ def test_loadProfile_yamlError():
 
 
 def test_loadYamlConfig_osError():
-    assert loadYamlConfig(Path("tests/work/config/nonexistent_file.yaml")) == {}
+    assert loadYamlConfig(Path("tests/work/config/nonexistent_file.yaml")) == ({}, [], [])
 
 
 def test_loadLegacyConfig_osError():
     val = loadLegacyConfig(Path("tests/work/config/nonexistent_file.cfg"), None)
-    assert val == {}
+    assert val == ({}, [], [])
 
 
 def test_loadLegacyConfig_jsonError():
     with open("tests/work/config/bad.cfg", "w") as outfile:
         outfile.write("no json")
-    assert loadLegacyConfig(Path("tests/work/config/bad.cfg"), None) == {}
+    assert loadLegacyConfig(Path("tests/work/config/bad.cfg"), None) == ({}, [], [])
     os.remove("tests/work/config/bad.cfg")
 
 
@@ -74,15 +74,17 @@ def test_loadLegacyConfig_wrongVersion():
     with mock.patch.object(mw4.logic.profiles.profile, "deviceSchemaFromRegistry", return_value={}):
         val = loadLegacyConfig(Path("tests/work/config/old.cfg"), None)
     os.remove("tests/work/config/old.cfg")
-    assert val == {}
+    assert val == ({}, [], [])
 
 
 def test_loadLegacyConfig_valid():
     with open("tests/work/config/old.cfg", "w") as outfile:
         json.dump({"version": "4.1", "profileName": "x"}, outfile)
     with mock.patch.object(mw4.logic.profiles.profile, "deviceSchemaFromRegistry", return_value={}):
-        val = loadLegacyConfig(Path("tests/work/config/old.cfg"), None)
+        val, warnings, notes = loadLegacyConfig(Path("tests/work/config/old.cfg"), None)
     os.remove("tests/work/config/old.cfg")
+    assert isinstance(warnings, list)
+    assert isinstance(notes, list)
     assert val["version"] == "5.0"
     assert val["profileName"] == "old"
 
@@ -91,20 +93,22 @@ def test_loadConfig_legacy():
     with mock.patch.object(
         mw4.logic.profiles.profile,
         "loadLegacyConfig",
-        return_value={"version": "5.0"},
+        return_value=({"version": "5.0"}, ["w"], ["n"]),
     ):
         val = loadConfig(Path("tests/work/config/old.cfg"), None)
-    assert val == {"version": "5.0", "profileName": "old"}
+    assert val == ({"version": "5.0", "profileName": "old"}, ["w"], ["n"])
 
 
 def test_defaultConfig():
-    val = defaultConfig()
+    val, warnings, notes = defaultConfig()
+    assert warnings == []
+    assert notes == []
     assert val["profileName"] == "config"
     assert val["version"] == "5.0"
 
 
 def test_loadProfile_1():
-    config = defaultConfig()
+    config, _, _ = defaultConfig()
     config["WindowMain"] = {}
     config["WindowMain"]["resetTabOrder"] = True
     config["WindowMain"]["orderMain"] = {
@@ -120,7 +124,7 @@ def test_loadProfile_1():
 
 
 def test_loadProfile_2():
-    config = defaultConfig()
+    config, _, _ = defaultConfig()
     config["WindowMain"] = {}
     config["WindowMain"]["resetTabOrder"] = True
     config["WindowMain"]["orderMain"] = {
@@ -130,12 +134,12 @@ def test_loadProfile_2():
     with open("tests/work/config/config.yaml", "w") as outfile:
         yaml.dump(config, outfile)
 
-    val = loadConfig(Path("tests/work/config/config.yaml"), None)
+    val, _, _ = loadConfig(Path("tests/work/config/config.yaml"), None)
     assert "orderMain" in val["WindowMain"]
 
 
 def test_loadProfile_3():
-    config = defaultConfig()
+    config, _, _ = defaultConfig()
     config["WindowMain"] = {}
     config["WindowMain"]["resetTabOrder"] = True
     config["WindowMain"]["orderMain"] = {
@@ -146,7 +150,7 @@ def test_loadProfile_3():
     with open("tests/work/config/config.yaml", "w") as outfile:
         yaml.dump(config, outfile)
 
-    val = loadConfig(Path("tests/work/config/config.yaml"), None)
+    val, _, _ = loadConfig(Path("tests/work/config/config.yaml"), None)
     assert "WindowMain" not in val
 
 
@@ -159,29 +163,31 @@ def test_loadProfileStart_2():
     with open("tests/work/config/profile", "w") as outfile:
         outfile.write("test")
 
-    config = defaultConfig()
+    config, _, _ = defaultConfig()
     config["WindowMain"] = {}
     with open("tests/work/config/config.yaml", "w") as outfile:
         yaml.dump(config, outfile)
 
     val = loadProfileStart(Path("tests/work/config"))
-    assert val == {"profileName": "config", "version": "5.0"}
+    assert val == ({"profileName": "config", "version": "5.0"}, [], [])
 
 
 def test_loadProfileStart_3():
     with open("tests/work/config/profile", "w") as outfile:
         outfile.write("config")
 
-    config = defaultConfig()
+    config, _, _ = defaultConfig()
     config["WindowMain"] = {}
     with open("tests/work/config/config.yaml", "w") as outfile:
         yaml.dump(config, outfile)
 
     with mock.patch.object(
-        mw4.logic.profiles.profile, "loadYamlConfig", return_value={"profileName": "config"}
+        mw4.logic.profiles.profile,
+        "loadYamlConfig",
+        return_value=({"profileName": "config"}, [], []),
     ):
         val = loadProfileStart(Path("tests/work/config"))
-    assert val == {"profileName": "config"}
+    assert val == ({"profileName": "config"}, [], [])
 
 
 def test_saveProfile_1():
@@ -218,7 +224,7 @@ def test_saveProfile_3():
 
 
 def test_saveProfile_4():
-    saveConfig(Path("tests/work/config/config.yaml"), defaultConfig())
+    saveConfig(Path("tests/work/config/config.yaml"), defaultConfig()[0])
     assert os.path.isfile("tests/work/config/config.yaml")
     assert os.path.isfile("tests/work/config/profile")
     with open("tests/work/config/profile") as infile:
@@ -227,7 +233,7 @@ def test_saveProfile_4():
 
 
 def test_saveProfile_5():
-    saveConfig(Path("tests/work/config/new.yaml"), defaultConfig())
+    saveConfig(Path("tests/work/config/new.yaml"), defaultConfig()[0])
     assert os.path.isfile("tests/work/config/new.yaml")
     assert os.path.isfile("tests/work/config/profile")
     with open("tests/work/config/profile") as infile:

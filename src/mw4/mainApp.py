@@ -44,7 +44,7 @@ class MountWizzard4(QObject):
         self.messageQueue: Queue = Queue()
         self.signals = AppSignals()
         self.signals.ui.msg.connect(self.writeMessageQueue)
-        self.config = loadProfileStart(self.mwGlob["configDir"])
+        self.config, _, _ = loadProfileStart(self.mwGlob["configDir"])
         # Push initial lifecycle messages into the message queue.
         profile = self.config.get("profileName", "-")
         workDir = self.mwGlob["workDir"]

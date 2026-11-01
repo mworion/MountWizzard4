@@ -16,12 +16,12 @@ if TYPE_CHECKING:
 log: logging.Logger = logging.getLogger("MW4")
 profileVersion = "5.0"
 # single place to replace by a typed configuration (review A3)
-ProfileConfig = dict[str, Any]
+ProfileConfig = tuple[dict[str, Any], list[str], list[str]]
 
 
 def defaultConfig() -> ProfileConfig:
     config = {"profileName": "config", "version": profileVersion}
-    return config
+    return config, [], []
 
 
 def loadYamlConfig(loadConfigPath: Path) -> ProfileConfig:
@@ -30,7 +30,7 @@ def loadYamlConfig(loadConfigPath: Path) -> ProfileConfig:
             config = yaml.safe_load(configFile)
     except (OSError, yaml.YAMLError):
         config = {}
-    return config
+    return config, [], []
 
 
 def loadLegacyConfig(loadConfigPath: Path, dReg: DeviceRegistry) -> ProfileConfig:
@@ -38,22 +38,22 @@ def loadLegacyConfig(loadConfigPath: Path, dReg: DeviceRegistry) -> ProfileConfi
         with open(loadConfigPath, encoding="utf-8") as configFile:
             config = json.load(configFile)
     except (OSError, UnicodeError, json.JSONDecodeError):
-        return {}
+        return {}, [], []
 
     deviceSchema = deviceSchemaFromRegistry(dReg)
     try:
         migration = migrateLegacyConfig(config, deviceSchema)
     except ValueError:
-        return {}
+        return {}, [], []
     migration.config["profileName"] = loadConfigPath.stem
-    return migration.config
+    return migration.config, migration.warnings, migration.notes
 
 
 def loadConfig(loadConfigPath: Path, dReg) -> ProfileConfig:
     if loadConfigPath.suffix == ".yaml":
-        config = loadYamlConfig(loadConfigPath)
+        config, warning, notes = loadYamlConfig(loadConfigPath)
     else:
-        config = loadLegacyConfig(loadConfigPath, dReg)
+        config, warning, notes = loadLegacyConfig(loadConfigPath, dReg)
 
     if not config:
         return defaultConfig()
@@ -61,7 +61,7 @@ def loadConfig(loadConfigPath: Path, dReg) -> ProfileConfig:
     config["profileName"] = loadConfigPath.stem
     if config.get("version", "") != profileVersion:
         return defaultConfig()
-    return config
+    return config, warning, notes
 
 
 def loadProfileStart(configDir: Path) -> ProfileConfig:
@@ -79,7 +79,7 @@ def loadProfileStart(configDir: Path) -> ProfileConfig:
     return config
 
 
-def saveConfig(saveProfilePath: Path, config: ProfileConfig) -> None:
+def saveConfig(saveProfilePath: Path, config: dict) -> None:
     with open(saveProfilePath.parent / "profile", "w", encoding="utf-8") as profile:
         profile.writelines(saveProfilePath.stem)
 

@@ -452,14 +452,21 @@ def test_loadProfileGUI_invalid_file(mainWindow):
 
 def test_loadProfileGUI_valid_config(mainWindow):
     """Test loadProfileGUI with valid configuration."""
+    received = []
     with (
         mock.patch.object(MWFileDialog, "getOpenFileName", return_value=Path("test.cfg")),
         mock.patch.object(Path, "is_file", return_value=True),
-        mock.patch.object(mw4.gui.mainWindow.mainWindow, "loadConfig", return_value={"test": 1}),
+        mock.patch.object(
+            mw4.gui.mainWindow.mainWindow,
+            "loadConfig",
+            return_value=({"test": 1}, ["warn"], ["note"]),
+        ),
         mock.patch.object(mainWindow, "switchProfile"),
         mock.patch.object(mainWindow, "saveProfile"),
     ):
+        mainWindow.msg.connect(lambda *args: received.append(args))
         mainWindow.loadProfileGUI()
+    assert len(received) == 3
 
 
 def test_saveProfileAs_valid_config(mainWindow):

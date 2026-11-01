@@ -50,7 +50,7 @@ def buildApp(qapp, arguments="", test=1):
     }
 
     def loadProfileStart_mock(config_dir):
-        return default_config
+        return default_config, [], []
 
     with (
         mock.patch("mw4.mainApp.loadProfileStart", side_effect=loadProfileStart_mock),

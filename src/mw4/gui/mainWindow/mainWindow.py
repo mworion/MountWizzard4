@@ -17,7 +17,7 @@ from mw4.gui.utilities.qtHelpers import (
 )
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from mw4.logic.profiles.profile import ProfileConfig, loadConfig, saveConfig
+from mw4.logic.profiles.profile import loadConfig, saveConfig
 from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
@@ -299,7 +299,7 @@ class MainWindow(MWidget):
         elif not obsSite.isFollowingSatellite:
             self.satStatus = False
 
-    def switchProfile(self, config: ProfileConfig) -> None:
+    def switchProfile(self, config: dict) -> None:
         self.app.timeMgr.stop()
         self.app.dReg.stopDevices()
         self.externalWindows.closeExtendedWindows()
@@ -321,11 +321,15 @@ class MainWindow(MWidget):
         )
         if not loadProfilePath.is_file():
             return
-        config = loadConfig(loadProfilePath, self.app.dReg)
+        config, warning, notes = loadConfig(loadProfilePath, self.app.dReg)
         self.switchProfile(config)
         self.ui.profileName.setText(loadProfilePath.stem)
         self.saveProfile()
         self.msg.emit(1, "System", "Profile", f"{loadProfilePath.stem} loaded")
+        for note in notes:
+            self.msg.emit(0, "System", "Profile", f"{loadProfilePath.stem}: {note}")
+        for warn in warning:
+            self.msg.emit(2, "System", "Profile", f"{loadProfilePath.stem}: {warn}")
 
     def saveProfileBase(self, saveProfilePath: Path) -> None:
         if not saveProfilePath.stem:

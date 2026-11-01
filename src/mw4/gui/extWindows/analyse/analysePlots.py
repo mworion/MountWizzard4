@@ -2,11 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import numpy as np
+from mw4.gui.extWindows.analyse.analyseData import AnalyseDataMixin
 from typing import Any
 
 
-class AnalysePlotsMixin:
-    def pierColors(self, pierside: list[str]) -> list[str]:
+class AnalysePlotsMixin(AnalyseDataMixin):
+    def pierColors(self, pierside: list[str]) -> list[list[list[int]]]:
         return [self.M_GREEN if p == "W" else self.M_YELLOW for p in pierside]
 
     def drawAltAzErrorChart(self, plot: Any, errors: np.ndarray) -> None:

@@ -3,16 +3,14 @@
 # Copyright (c) 2019-2026 mworion
 from collections.abc import Callable
 from mw4.base.appProtocol import AppProtocol
-from mw4.gui.extWindows.analyse.analyseData import AnalyseDataMixin
 from mw4.gui.extWindows.analyse.analysePlots import AnalysePlotsMixin
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
-from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import analyse_ui
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
 
 
-class AnalyseWindow(AnalyseDataMixin, AnalysePlotsMixin, MWidget):
+class AnalyseWindow(AnalysePlotsMixin):
     def __init__(self, app: AppProtocol, title: str) -> None:
         super().__init__()
         self.app = app

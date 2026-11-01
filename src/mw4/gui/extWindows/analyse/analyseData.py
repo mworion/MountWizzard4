@@ -3,7 +3,10 @@
 # Copyright (c) 2019-2026 mworion
 import json
 import numpy as np
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
+from mw4.base.appProtocol import AppProtocol
+from mw4.gui.utilities.qtMain import MWidget
+from mw4.gui.widgets import analyse_ui
 from numpy.typing import DTypeLike
 from pathlib import Path
 from typing import Any
@@ -26,23 +29,42 @@ MODEL_DATA_KEYS = (
 )
 
 
-class AnalyseDataMixin:
+class AnalyseDataMixin(MWidget):
+    app: AppProtocol
+    ui: analyse_ui.Ui_AnalyseDialog
+    latitude: float
+    pierside: list[str]
+    countSequence: np.ndarray
+    errorIndex: np.ndarray
+    scaleS: np.ndarray
+    altitude: np.ndarray
+    azimuth: np.ndarray
+    errorAngle: np.ndarray
+    errorRMS: np.ndarray
+    errorRA_S: np.ndarray
+    errorDEC_S: np.ndarray
+    errorRA: np.ndarray
+    errorDEC: np.ndarray
+    angularPosRA: np.ndarray
+    angularPosDEC: np.ndarray
+    drawAll: Callable[[], None]
+
     def initData(self) -> None:
-        self.latitude: float = 0
-        self.pierside: list[str] = []
-        self.countSequence: np.ndarray = np.array([])
-        self.errorIndex: np.ndarray = np.array([])
-        self.scaleS: np.ndarray = np.array([])
-        self.altitude: np.ndarray = np.array([])
-        self.azimuth: np.ndarray = np.array([])
-        self.errorAngle: np.ndarray = np.array([])
-        self.errorRMS: np.ndarray = np.array([])
-        self.errorRA_S: np.ndarray = np.array([])
-        self.errorDEC_S: np.ndarray = np.array([])
-        self.errorRA: np.ndarray = np.array([])
-        self.errorDEC: np.ndarray = np.array([])
-        self.angularPosRA: np.ndarray = np.array([])
-        self.angularPosDEC: np.ndarray = np.array([])
+        self.latitude = 0
+        self.pierside = []
+        self.countSequence = np.array([])
+        self.errorIndex = np.array([])
+        self.scaleS = np.array([])
+        self.altitude = np.array([])
+        self.azimuth = np.array([])
+        self.errorAngle = np.array([])
+        self.errorRMS = np.array([])
+        self.errorRA_S = np.array([])
+        self.errorDEC_S = np.array([])
+        self.errorRA = np.array([])
+        self.errorDEC = np.array([])
+        self.angularPosRA = np.array([])
+        self.angularPosDEC = np.array([])
 
     def writeGui(self, data: list[dict[str, Any]], loadFilePath: Path) -> None:
         d = data[0]
@@ -112,7 +134,7 @@ class AnalyseDataMixin:
             for index in range(len(modelJSON)):
                 model[key].append(modelJSON[index][key])
 
-        self.latitude = modelJSON[0].get("latitude")
+        self.latitude = modelJSON[0]["latitude"]
         self.pierside = model["pierside"]
         self.countSequence = self.list2array(model["countSequence"], dtype=np.int64)
         self.errorIndex = self.list2array(model["errorIndex"], dtype=np.int64) - 1

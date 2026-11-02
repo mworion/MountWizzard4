@@ -165,8 +165,8 @@ class KeyPad:
         self.signals.mouseReleased.connect(self.mouseReleased)
 
     @staticmethod
-    def expand7to8(value: list[int], fill: bool = False) -> list:
-        result = []
+    def expand7to8(value: list[int], fill: bool = False) -> list[int]:
+        result: list[int] = []
         n = 0
         o = 0
         for v in value:
@@ -250,7 +250,9 @@ class KeyPad:
             return
         self.ws.send(bytes(message), websocket.ABNF.OPCODE_BINARY)
 
-    def sendKeyCodeMessage(self, key: KeyType, keyCodes: Mapping[KeyType, int], action: int) -> None:
+    def sendKeyCodeMessage(
+        self, key: KeyType, keyCodes: Mapping[KeyType, int], action: int
+    ) -> None:
         keyUsed = keyCodes.get(key, None)
         if keyUsed is None:
             return
@@ -282,12 +284,14 @@ class KeyPad:
         if key > 255:
             return
 
-        key = chr(key)
-        self.sendKeyCodeMessage(key, self.keyCodesB, 6)
-        self.sendKeyCodeMessage(key, self.keyCodesB, 5)
+        keyChar = chr(key)
+        self.sendKeyCodeMessage(keyChar, self.keyCodesB, 6)
+        self.sendKeyCodeMessage(keyChar, self.keyCodesB, 5)
 
-    def on_data(self, _ws: websocket.WebSocketApp, data: list, _typeOpcode: int, _cont: bool) -> None:
-        result = []
+    def on_data(
+        self, _ws: websocket.WebSocketApp, data: bytes, _typeOpcode: int, _cont: bool
+    ) -> None:
+        result: list[int] = []
         started = False
         for i in range(len(data)):
             if data[i] == 2:
@@ -308,7 +312,7 @@ class KeyPad:
         self.ws = None
         self.log.debug("Keypad websocket closed: %s", close_msg)
 
-    def runnerWebsocket(self, host: tuple) -> None:
+    def runnerWebsocket(self, host: tuple[str, int]) -> None:
         ipaddress = host[0]
         websocket.setdefaulttimeout(3)
         self.ws = websocket.WebSocketApp(

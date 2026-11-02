@@ -109,6 +109,127 @@ are true for this step as well. Combining model data from different mechanical
 setups lead into an invalid model. Rebuilding a model from old data when
 mechanical changes were made result also in an incorrect model.
 
+Local analysis of saved models
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Loading a model in the analysis window automatically starts a local least-squares
+reconstruction in the application's thread pool. It neither contacts the mount nor
+changes the model file. Existing charts continue to show the recorded values;
+the new reconstruction is exposed as typed data for later GUI presentation.
+
+The window's ``analysisResult`` contains both supported candidates, their named
+coefficients, per-point contributions and residual comparisons. ``primary`` refers
+to the candidate selected by the file's authoritative ``modelTerms``: 22 always
+means separate west/east models, even if the shared candidate matches the recorded
+RMS more closely. ``setupComparison`` flags that disagreement. Candidates within
+0.05 arcsec of each other in absolute distance from the recorded RMS are
+inconclusive. This comparison does not reproduce the firmware's internal model
+selection rule and does not simply choose the lowest fitted RMS.
+
+Numerical conventions
+"""""""""""""""""""""
+Reconstruction uses the saved JNow mount/solved coordinate pairs and local sidereal
+time, without repeating epoch conversions or refraction. It reproduces the model
+programming protocol's rounding first: both RA values to 0.1 seconds of time,
+both declinations to 0.1 arcseconds, and sidereal time to 0.01 seconds of time.
+The existing sexagesimal rounding helper is reused, including RA wrap at 24 hours.
+RA and sidereal time are in hours, declination and latitude in degrees.
+RA differences wrap to [-12, 12) hours.
+Observations are ``(east, north)`` tangent-plane differences in arcseconds:
+``east = (solvedRA - mountRA) * 54000 * cos(solvedDec)`` and
+``north = (solvedDec - mountDec) * 3600``. Positive hour angle is westward, so an
+HA correction has the opposite sign in the east component.
+
+The local candidate basis has eleven named terms. With ``h`` the solved hour
+angle, ``d`` the solved declination, ``l`` the site latitude (all in radians), and
+``s = +1`` for west pier side or ``-1`` for east, its unit-coefficient vectors are:
+
+.. list-table::
+    :header-rows: 1
+
+    * - Term
+      - East component
+      - North component
+    * - IH
+      - -cos(d)
+      - 0
+    * - ID
+      - 0
+      - 1
+    * - CH
+      - -s
+      - 0
+    * - NP
+      - -s sin(d)
+      - 0
+    * - MA
+      - cos(h) sin(d)
+      - sin(h)
+    * - ME
+      - -sin(h) sin(d)
+      - cos(h)
+    * - TF
+      - -cos(l) sin(h)
+      - cos(l) cos(h) sin(d) - sin(l) cos(d)
+    * - HCES
+      - -sin(h) cos(d)
+      - 0
+    * - HCEC
+      - -cos(h) cos(d)
+      - 0
+    * - DCES
+      - 0
+      - sin(d)
+    * - DCEC
+      - 0
+      - cos(d)
+
+The split candidate uses the same basis with independent coefficients per pier
+side. A float64 SVD least-squares solve uses a relative singular-value cutoff of
+``1e-10`` as a numerical rank check, not as the firmware's term-selection
+threshold. Rank-deficient candidates are explicitly unavailable rather than
+assigned misleading individual coefficients. FO and DAF are not approximated by
+duplicate declination terms; the firmware's exact operational subset remains
+unverified.
+
+For each point, the residual follows the mount's recorded position-angle
+convention: total fitted correction minus observation. This direction was
+checked against the saved per-point mount results; it is the negative of the
+usual observation-minus-fit least-squares residual.
+The sky RMS is ``sqrt(sum(eastResidual**2 + northResidual**2) / pointCount)``,
+without degrees-of-freedom scaling. Recorded ``errorRA``/``errorDEC`` are compared
+as arcsecond sky components: although the legacy producer wraps them in ``Angle``
+objects, their numeric values originate from the mount's arcsecond error
+magnitude. They are never used as fit inputs.
+
+RMS comparisons allow 0.05 arcsec (half the recorded 0.1 arcsec step) plus
+``1e-9`` for numerical roundoff. Per-component comparisons additionally allow
+``recordedMagnitude * sin(0.5 degrees)`` for integer-degree position-angle
+quantization. These are explicit local precision assumptions, not an allowance
+for algorithmic differences. Excluding invalid or duplicate observations makes
+the overall mount comparison unavailable, since the fitted samples then differ.
+
+.. warning::
+    This is a local TPoint-style reconstruction, not a verified copy of the mount
+    optimizer. Its exact term subset, pier-side transformations, refinement and
+    coordinate conventions have not been established for every firmware version.
+    Numerical agreement does not prove that the coefficients are the firmware's
+    internal coefficients. The existing firmware 2.16.11 reference file agrees
+    in overall RMS and all 57 available per-point comparisons after reproducing
+    protocol rounding. This alone does not establish equivalence for other
+    models or firmware versions.
+
+Polar/ortho acquisition corrections are assumed already applied. Fitted MA/ME/NP
+terms describe residual corrections only. The recorded ``modelPolarError`` and
+``modelOrthoError`` remain separate degree-valued summaries: the saved JSON does
+not contain the coarse alignment matrices needed to reconstruct them. Legacy
+producers also convert unavailable protocol values to zero, so a recorded zero
+does not establish that the corresponding alignment error was measured.
+
+``analysisStatus`` distinguishes idle, running, ready and failed work;
+``analysisError`` retains unexpected worker errors. Invalid points, insufficient
+samples and unsupported metadata remain explicit in the typed result. A ready
+result is not a declaration of successful agreement with the mount.
+
 Fast Align
 ^^^^^^^^^^
 There is a way to adjust an existing model to a certain sphere position. If you
@@ -121,4 +242,3 @@ the sky as well without knowing if this shift really fits there.
 .. note::   Fast align is a step to adjust quickly a reasonable model to an
             actual pointing position. This action is not a model build process!
             You most probably loose the pointing accuracy of you model!
-

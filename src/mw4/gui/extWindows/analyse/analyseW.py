@@ -62,6 +62,7 @@ class AnalyseWindow(AnalysePlotsMixin):
         config["linkViews"] = self.ui.linkViews.isChecked()
 
     def closeEvent(self, event: QCloseEvent) -> None:
+        self.invalidateAnalysis()
         self.storeConfig()
         self.ui.showISO.setChecked(False)
         super().closeEvent(event)

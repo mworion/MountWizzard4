@@ -18,7 +18,6 @@ def analysisResult() -> ModelAnalysis:
     shared = AnalysisFit(11, (), (), 11, 1, 0.1, 0.2, -0.1, "mismatch", ())
     split = replace(shared, termCount=22, rank=22)
     return ModelAnalysis(
-        "test.model",
         "test",
         22,
         0.2,

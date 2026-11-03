@@ -199,5 +199,5 @@ def test_processModelOrchestratesLoad(function: AnalyseWindow) -> None:
         mock.call.loadModel(path),
         mock.call.writeGui(records, path),
         mock.call.drawAll(),
-        mock.call.startModelAnalysis(records, str(path)),
+        mock.call.startModelAnalysis(records),
     ]

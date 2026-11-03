@@ -77,7 +77,6 @@ class AnalysisFit:
 
 @dataclass(frozen=True)
 class ModelAnalysis:
-    source: str
     firmware: str
     recordedTerms: int | None
     recordedRms: float | None

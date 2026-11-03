@@ -48,7 +48,7 @@ class AnalyseModel(QObject):
         self.analysisRevision = 0
         self.activeAnalysisRevision = 0
         self.workerRebuildModel: Worker | None = None
-        self.pendingAnalysis: tuple[int, str, list[dict[str, Any]]] | None = None
+        self.pendingAnalysis: tuple[int, list[dict[str, Any]]] | None = None
 
     def invalidateAnalysis(self) -> None:
         self.analysisRevision += 1
@@ -57,15 +57,15 @@ class AnalyseModel(QObject):
         self.pendingAnalysis = None
         self.analysisStatus = "idle"
 
-    def startModelAnalysis(self, records: list[dict[str, Any]], source: str) -> None:
-        self.pendingAnalysis = (self.analysisRevision, source, deepcopy(records))
+    def startModelAnalysis(self, records: list[dict[str, Any]]) -> None:
+        self.pendingAnalysis = (self.analysisRevision, deepcopy(records))
         self.startPendingAnalysis()
 
     @staticmethod
     def runnerRebuildModel(
-        revision: int, source: str, records: list[dict[str, Any]]
+        revision: int, records: list[dict[str, Any]]
     ) -> tuple[int, ModelAnalysis]:
-        return revision, rebuildModel(records, source)
+        return revision, rebuildModel(records)
 
     @Slot()
     def startPendingAnalysis(self) -> None:
@@ -73,7 +73,7 @@ class AnalyseModel(QObject):
             return
         if self.analysisWorkerActive:
             return
-        revision, source, records = self.pendingAnalysis
+        revision, records = self.pendingAnalysis
         self.pendingAnalysis = None
         self.activeAnalysisRevision = revision
         self.analysisStatus = "running"
@@ -86,7 +86,6 @@ class AnalyseModel(QObject):
             self.app.threadPool,
             self.runnerRebuildModel,
             revision,
-            source,
             records,
             resultMethod=self.receiveModelAnalysis,
             finishedMethod=self.finishModelAnalysis,
@@ -448,7 +447,7 @@ def deriveAlignmentFeedback(
     )
 
 
-def rebuildModel(records: list[dict[str, Any]], source: str) -> ModelAnalysis:
+def rebuildModel(records: list[dict[str, Any]]) -> ModelAnalysis:
     points = observationPoints(records)
     recordedTerms = consistentMetadata(records, "modelTerms")
     terms = int(recordedTerms) if recordedTerms in (11, 22) else None
@@ -477,7 +476,6 @@ def rebuildModel(records: list[dict[str, Any]], source: str) -> ModelAnalysis:
     if len({str(record.get("firmware", "")) for record in records}) > 1:
         diagnostics.append("Inconsistent firmware metadata.")
     return ModelAnalysis(
-        source,
         str(records[0].get("firmware", "")) if records else "",
         terms,
         recordedRms,

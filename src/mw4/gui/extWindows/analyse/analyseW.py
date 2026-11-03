@@ -120,4 +120,4 @@ class AnalyseWindow(MWidget):
 
         self.writeGui(modelJSON, loadFilePath)
         self.drawAll()
-        self.analyseModel.startModelAnalysis(modelJSON, str(loadFilePath))
+        self.analyseModel.startModelAnalysis(modelJSON)

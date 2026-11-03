@@ -60,11 +60,10 @@ def test_startSnapshotsRecords(function: AnalyseWindow) -> None:
     model.invalidateAnalysis()
     records = [{"latitude": 48.1}]
     with mock.patch.object(model, "startPendingAnalysis") as start:
-        model.startModelAnalysis(records, "snapshot")
+        model.startModelAnalysis(records)
     start.assert_called_once()
-    revision, source, snapshot = model.pendingAnalysis
+    revision, snapshot = model.pendingAnalysis
     assert revision == model.analysisRevision
-    assert source == "snapshot"
     assert snapshot == records
     records[0]["latitude"] = 0
     assert snapshot[0]["latitude"] == 48.1
@@ -194,7 +193,7 @@ def test_observationWrapping(syntheticRecords: list[dict[str, Any]]) -> None:
 
 
 def test_splitRecoveryAndContributions(syntheticRecords: list[dict[str, Any]]) -> None:
-    result = rebuildModel(syntheticRecords, "synthetic.model")
+    result = rebuildModel(syntheticRecords)
     fit = result.primary
     assert fit is not None
     assert fit.rank == fit.termCount == 22
@@ -231,7 +230,7 @@ def test_sharedRecovery(syntheticRecords: list[dict[str, Any]]) -> None:
         record["raJNowM"] = record["raJNowS"] + 7.5 / 54000
         record["decJNowM"] = record["decJNowS"] - 2 / 3600
         record["modelTerms"] = 11
-    result = rebuildModel(records, "shared")
+    result = rebuildModel(records)
     assert result.primary.termCount == 11
     assert result.primary.rms < 1e-7
     assert result.setupComparison == "inconclusive"
@@ -240,14 +239,14 @@ def test_sharedRecovery(syntheticRecords: list[dict[str, Any]]) -> None:
 
 
 def test_mountTruthAndAlternativeDisagreement(syntheticRecords: list[dict[str, Any]]) -> None:
-    first = rebuildModel(syntheticRecords, "split")
+    first = rebuildModel(syntheticRecords)
     sharedRms = first.candidates[0].rms
     records = [record | {"modelErrorRMS": sharedRms} for record in syntheticRecords]
-    alternative = rebuildModel(records, "alternative")
+    alternative = rebuildModel(records)
     assert alternative.primary.termCount == alternative.recordedTerms == 22
     assert alternative.betterMatchingTerms == 11
     assert alternative.setupComparison == "disagreement"
-    changed = rebuildModel([record | {"modelTerms": 11} for record in records], "changed")
+    changed = rebuildModel([record | {"modelTerms": 11} for record in records])
     assert changed.primary.termCount == 11
     assert changed.setupComparison == "consistent"
     for old, new in zip(alternative.candidates, changed.candidates, strict=True):
@@ -258,7 +257,7 @@ def test_mountTruthAndAlternativeDisagreement(syntheticRecords: list[dict[str, A
 
 
 def test_comparisonBoundary(syntheticRecords: list[dict[str, Any]]) -> None:
-    fit = rebuildModel(syntheticRecords, "boundary").candidates[0]
+    fit = rebuildModel(syntheticRecords).candidates[0]
     candidates = (
         replace(fit, rmsDifference=0),
         replace(fit, termCount=22, rmsDifference=RMS_TOLERANCE),
@@ -270,18 +269,18 @@ def test_comparisonBoundary(syntheticRecords: list[dict[str, Any]]) -> None:
 
 def test_rankDeficiency(syntheticRecords: list[dict[str, Any]]) -> None:
     records = [record for record in syntheticRecords if record["pierside"] == "W"]
-    fit = rebuildModel(records, "one-side").primary
+    fit = rebuildModel(records).primary
     assert fit.rms is None
     assert fit.rank == 11
     assert "Rank-deficient" in fit.diagnostics[0]
-    empty = rebuildModel([], "empty")
+    empty = rebuildModel([])
     assert empty.primary is None
     assert all(fit.rms is None for fit in empty.candidates)
 
 
 def test_solverFailure(syntheticRecords: list[dict[str, Any]]) -> None:
     with mock.patch("numpy.linalg.lstsq", side_effect=np.linalg.LinAlgError("failure")):
-        result = rebuildModel(syntheticRecords, "solver")
+        result = rebuildModel(syntheticRecords)
     assert all("SVD failed" in fit.diagnostics[0] for fit in result.candidates)
 
 
@@ -290,7 +289,7 @@ def test_unavailableMetadata(syntheticRecords: list[dict[str, Any]], value: Any)
     records = [
         record | {"modelTerms": value, "modelErrorRMS": value} for record in syntheticRecords
     ]
-    result = rebuildModel(records, "unavailable")
+    result = rebuildModel(records)
     assert result.primary is None
     assert result.recordedRms is None
     assert result.setupComparison == "inconclusive"
@@ -303,7 +302,7 @@ def test_exclusionsAndInconsistentMetadata(syntheticRecords: list[dict[str, Any]
     records[0]["errorRA"] = None
     records.append(records[1].copy())
     records.append(records[2] | {"success": False})
-    result = rebuildModel(records, "duplicate")
+    result = rebuildModel(records)
     assert result.primary.points[-2].exclusion == "Duplicate observation"
     assert result.primary.points[-1].residual is None
     assert result.primary.points[0].comparison == "unavailable"
@@ -314,7 +313,7 @@ def test_exclusionsAndInconsistentMetadata(syntheticRecords: list[dict[str, Any]
 
 def test_savedMountFixture() -> None:
     records = json.loads(Path("tests/testData/test.model").read_text())
-    result = rebuildModel(records, "test.model")
+    result = rebuildModel(records)
     assert result.primary.termCount == 22
     assert result.firmware == "2.16.11"
     assert result.primary.rank == 22
@@ -353,7 +352,8 @@ def test_automaticRebuild(function: AnalyseWindow, qtbot: Any) -> None:
         function.processModel(Path("tests/testData/test1.model"))
     qtbot.waitUntil(lambda: function.analyseModel.analysisResult is not None)
     assert function.analyseModel.workerRebuildModel is firstWorker
-    assert function.analyseModel.analysisResult.source.endswith("test1.model")
+    assert function.analyseModel.activeAnalysisRevision == function.analyseModel.analysisRevision
+    assert function.analyseModel.analysisResult.primary.termCount == 22
 
 
 def test_queuedLoadsAndStaleResults(
@@ -363,10 +363,10 @@ def test_queuedLoadsAndStaleResults(
 ) -> None:
     entered, release = threading.Event(), threading.Event()
 
-    def blockedRunner(records: list[dict[str, Any]], source: str) -> Any:
+    def blockedRunner(records: list[dict[str, Any]]) -> Any:
         entered.set()
         assert release.wait(5)
-        return rebuildModel(records, source)
+        return rebuildModel(records)
 
     function.app.threadPool.waitForDone()
     QApplication.processEvents()
@@ -376,18 +376,20 @@ def test_queuedLoadsAndStaleResults(
         "mw4.gui.extWindows.analyse.analyseModel.rebuildModel",
         side_effect=blockedRunner,
     ):
-        function.analyseModel.startModelAnalysis(syntheticRecords, "old")
+        function.analyseModel.startModelAnalysis(syntheticRecords)
         assert entered.wait(5)
         function.analyseModel.invalidateAnalysis()
-        function.analyseModel.startModelAnalysis(syntheticRecords, "superseded")
+        function.analyseModel.startModelAnalysis(syntheticRecords)
         function.analyseModel.invalidateAnalysis()
-        function.analyseModel.startModelAnalysis(syntheticRecords, "new")
+        latestRecords = [record | {"firmware": "latest"} for record in syntheticRecords]
+        function.analyseModel.startModelAnalysis(latestRecords)
         assert function.analyseModel.pendingAnalysis is not None
         release.set()
         qtbot.waitUntil(lambda: function.analyseModel.analysisResult is not None)
-    assert function.analyseModel.analysisResult.source == "new"
+    assert function.analyseModel.analysisResult.firmware == "latest"
+    assert function.analyseModel.activeAnalysisRevision == function.analyseModel.analysisRevision
     function.analyseModel.invalidateAnalysis()
-    function.analyseModel.receiveModelAnalysis((revision, rebuildModel(syntheticRecords, "stale")))
+    function.analyseModel.receiveModelAnalysis((revision, rebuildModel(syntheticRecords)))
     assert function.analyseModel.analysisResult is None
 
 
@@ -399,7 +401,7 @@ def test_workerFailureAndInvalidation(function: AnalyseWindow, qtbot: Any) -> No
         "mw4.gui.extWindows.analyse.analyseModel.rebuildModel",
         side_effect=ValueError("test failure"),
     ):
-        function.analyseModel.startModelAnalysis([], "error")
+        function.analyseModel.startModelAnalysis([])
         qtbot.waitUntil(lambda: function.analyseModel.analysisStatus == "failed")
     assert function.analyseModel.analysisResult is None
     assert "test failure" in function.analyseModel.analysisError
@@ -421,20 +423,20 @@ def test_undeliveredFailureDoesNotFailNewLoad(
         "mw4.gui.extWindows.analyse.analyseModel.rebuildModel",
         side_effect=ValueError("old failure"),
     ):
-        function.analyseModel.startModelAnalysis(syntheticRecords, "old failure")
+        function.analyseModel.startModelAnalysis(syntheticRecords)
         function.app.threadPool.waitForDone()
     assert function.analyseModel.analysisWorkerActive
     function.analyseModel.invalidateAnalysis()
-    function.analyseModel.startModelAnalysis(syntheticRecords, "latest")
+    function.analyseModel.startModelAnalysis(syntheticRecords)
     assert function.analyseModel.pendingAnalysis is not None
     qtbot.waitUntil(lambda: function.analyseModel.analysisResult is not None)
-    assert function.analyseModel.analysisResult.source == "latest"
+    assert function.analyseModel.activeAnalysisRevision == function.analyseModel.analysisRevision
     assert function.analyseModel.analysisError is None
     assert function.analyseModel.analysisStatus == "ready"
 
 
 def test_fileReadFailureClearsAnalysis(function: AnalyseWindow) -> None:
-    function.analyseModel.analysisResult = rebuildModel([], "old")
+    function.analyseModel.analysisResult = rebuildModel([])
     with mock.patch("builtins.open", side_effect=PermissionError("cannot read")):
         function.processModel(Path("unreadable.model"))
     assert function.analyseModel.analysisResult is None
@@ -505,12 +507,12 @@ def test_receiveUnavailableAndDisagreement(
     function: AnalyseWindow,
     syntheticRecords: list[dict[str, Any]],
 ) -> None:
-    unavailable = rebuildModel([], "empty")
+    unavailable = rebuildModel([])
     function.analyseModel.receiveModelAnalysis(
         (function.analyseModel.analysisRevision, unavailable)
     )
     assert function.analyseModel.analysisResult == unavailable
-    result = rebuildModel(syntheticRecords, "disagreement")
+    result = rebuildModel(syntheticRecords)
     result = replace(result, setupComparison="disagreement", betterMatchingTerms=11)
     with mock.patch.object(function.log, "warning") as warning:
         function.analyseModel.receiveModelAnalysis((function.analyseModel.analysisRevision, result))
@@ -623,13 +625,12 @@ def test_alignmentToleranceBoundary(tolerance: float, sign: int) -> None:
 
 
 def test_rebuildAlignmentMetadataIndependence(syntheticRecords: list[dict[str, Any]]) -> None:
-    first = rebuildModel(syntheticRecords, "first")
+    first = rebuildModel(syntheticRecords)
     changed = rebuildModel(
         [
             record | {"modelPolarError": 1.0, "modelOrthoError": -0.01}
             for record in syntheticRecords
         ],
-        "changed",
     )
     for originalFit, changedFit in zip(first.candidates, changed.candidates, strict=True):
         assert changedFit.terms == originalFit.terms
@@ -644,7 +645,7 @@ def test_rebuildAlignmentMetadataIndependence(syntheticRecords: list[dict[str, A
     inconsistent = deepcopy(syntheticRecords)
     inconsistent[0]["modelPolarError"] = float("nan")
     inconsistent[0]["modelOrthoError"] = None
-    result = rebuildModel(inconsistent, "inconsistent")
+    result = rebuildModel(inconsistent)
     assert result.recordedPolar is None
     assert result.recordedOrtho is None
     assert result.candidates[0].polarComparison.comparison == "unavailable"

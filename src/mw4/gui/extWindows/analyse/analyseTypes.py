@@ -39,6 +39,26 @@ class AnalysisPoint:
 
 
 @dataclass(frozen=True)
+class AlignmentErrors:
+    pierside: str
+    polarError: float
+    orthoError: float
+    unit: str = "degrees"
+    mapping: str = "Local linear basis: hypot(MA, ME) / 3600 and signed NP / 3600."
+
+
+@dataclass(frozen=True)
+class AlignmentComparison:
+    calculated: float | None
+    recorded: float | None
+    difference: float | None
+    tolerance: float
+    comparison: Comparison
+    diagnostic: str | None
+    unit: str = "degrees"
+
+
+@dataclass(frozen=True)
 class AnalysisFit:
     termCount: int
     terms: tuple[AnalysisTerm, ...]
@@ -50,6 +70,9 @@ class AnalysisFit:
     rmsDifference: float | None
     rmsComparison: Comparison
     diagnostics: tuple[str, ...]
+    alignmentErrors: tuple[AlignmentErrors, ...] = ()
+    polarComparison: AlignmentComparison | None = None
+    orthoComparison: AlignmentComparison | None = None
 
 
 @dataclass(frozen=True)

@@ -116,7 +116,24 @@ reconstruction in the application's thread pool. It neither contacts the mount n
 changes the model file. Existing charts continue to show the recorded values;
 the new reconstruction is exposed as typed data for later GUI presentation.
 
-The window's ``analysisResult`` contains both supported candidates, their named
+The window owns a plain ``AnalyseData`` object as ``analyseData``. It holds the
+plot datasets and handles file reading, dataset generation and array conversion
+without Qt, application or window references. Numerical reconstruction and
+comparison functions live separately in ``analyseModel.py``.
+``AnalyseWindow`` handles metadata display and redraw calls. It owns an
+``AnalyseModel`` component as ``analyseModel`` and only requests analysis start
+or invalidation. The component owns the runner, pending-load snapshots, revision
+guards, results, errors and worker lifecycle. It is a QObject parented to the
+window so result callbacks run on the GUI thread. Each existing tab has
+its own composed plot component and module: ``GeneralPlots`` in
+``generalPlots.py``, ``AltAzPlots`` in ``altAzPlots.py`` and ``RaDecPlots`` in
+``raDecPlots.py``. The window delegates redraws and palette changes to these
+components, which read the same controller without depending on each other.
+Shared pier-side coloring and view-linking utilities live in ``plotHelpers.py``.
+Model records are trusted as written by the application; there is no separate
+schema-validation pass. File access and JSON parsing errors are still logged.
+
+``window.analyseModel.analysisResult`` contains both supported candidates, their named
 coefficients, per-point contributions and residual comparisons. ``primary`` refers
 to the candidate selected by the file's authoritative ``modelTerms``: 22 always
 means separate west/east models, even if the shared candidate matches the recorded
@@ -219,11 +236,37 @@ the overall mount comparison unavailable, since the fitted samples then differ.
     models or firmware versions.
 
 Polar/ortho acquisition corrections are assumed already applied. Fitted MA/ME/NP
-terms describe residual corrections only. The recorded ``modelPolarError`` and
-``modelOrthoError`` remain separate degree-valued summaries: the saved JSON does
-not contain the coarse alignment matrices needed to reconstruct them. Legacy
-producers also convert unavailable protocol values to zero, so a recorded zero
-does not establish that the corresponding alignment error was measured.
+terms describe residual corrections, but their resulting model feedback is part
+of this analysis. The separate physical alignment procedures are not performed.
+Each candidate's ``alignmentErrors`` contains degree-valued errors derived from
+its fitted coefficients: ``polarError = hypot(MA, ME) / 3600`` and
+``orthoError = NP / 3600``. The polar value is a nonnegative magnitude; the ortho
+value preserves the NP sign. These formulas describe the documented local linear
+basis, not a verified mapping for every mount firmware.
+
+The shared candidate exposes one ``shared`` result. Its ``polarComparison`` and
+``orthoComparison`` retain the calculated value, recorded ``modelPolarError`` or
+``modelOrthoError``, signed calculated-minus-recorded difference, tolerance and
+match/mismatch/unavailable status. Tolerances are 0.00005 degrees for polar error
+and 0.005 degrees for ortho error, plus ``1e-12`` degrees for floating-point
+roundoff, corresponding to half the reported 0.0001/0.01 degree steps. These
+precision assumptions do not establish firmware equivalence.
+
+For the split 22-term candidate, errors are calculated separately for ``W`` and
+``E``. The mount's rule for combining those parameters into one feedback value
+is unresolved. No average is invented, and neither side is compared as if it
+were the combined result. Both mount-level comparisons explicitly remain
+unavailable, retaining the recorded feedback and explaining the unresolved
+mapping. In particular, a file specifying 22 terms keeps this split candidate
+as ``primary``; the shared candidate's feedback cannot replace it.
+
+Missing or inconsistent recorded feedback, unavailable fits and excluded samples
+also produce explicit unavailable comparisons while retaining any derived errors.
+Negative recorded polar magnitudes are invalid. Legacy producers convert
+unavailable protocol values to zero, so recorded zero cannot establish a measured
+alignment error and is explicitly ambiguous rather than reported as a match.
+The absence of coarse calibration matrices is not itself a reason to exclude
+model-derived feedback.
 
 ``analysisStatus`` distinguishes idle, running, ready and failed work;
 ``analysisError`` retains unexpected worker errors. Invalid points, insufficient

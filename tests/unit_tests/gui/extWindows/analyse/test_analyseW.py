@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import gc
+import json
 import numpy as np
 import pytest
 from mw4.gui.extWindows.analyse.analyseW import AnalyseWindow
@@ -10,6 +11,7 @@ from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication
+from pytestqt.qtbot import QtBot
 from unittest import mock
 
 
@@ -116,14 +118,86 @@ def test_showAnalyse_2(function):
 
 
 def test_drawAll_1(function):
-    def test():
-        pass
-
-    function.errorIndex = np.array([])
-    function.charts = [test]
     with (
-        mock.patch.object(function, "linkViewsAltAz"),
-        mock.patch.object(function, "linkViewsRa"),
-        mock.patch.object(function, "linkViewsDec"),
+        mock.patch.object(function.generalPlots, "drawTab") as general,
+        mock.patch.object(function.altAzPlots, "drawTab") as altAz,
+        mock.patch.object(function.raDecPlots, "drawTab") as raDec,
     ):
         function.drawAll()
+    general.assert_called_once()
+    altAz.assert_called_once()
+    raDec.assert_called_once()
+
+
+def test_composition(function: AnalyseWindow) -> None:
+    assert AnalyseWindow.__bases__ == (MWidget,)
+    assert not hasattr(function.analyseData, "parentWindow")
+    assert not hasattr(function.analyseData, "ui")
+    assert not hasattr(function.analyseData, "processModel")
+    for tab in function.tabs:
+        assert tab.data is function.analyseData
+        assert tab.ui is function.ui
+    assert len({id(plot) for tab in function.tabs for plot in tab.plots}) == 12
+
+
+def test_horizonSignal(function: AnalyseWindow) -> None:
+    function.ui.showHorizon.setChecked(True)
+    with mock.patch.object(function.ui.raErrors, "drawHorizon") as drawHorizon:
+        function.app.signals.hemisphere.redrawHorizon.emit()
+    drawHorizon.assert_called_once_with(function.app.buildPoint.horizonP)
+
+
+def test_closeInvalidatesAnalysis(function: AnalyseWindow) -> None:
+    with (
+        mock.patch.object(function.analyseModel, "invalidateAnalysis") as invalidate,
+        mock.patch.object(function, "storeConfig"),
+        mock.patch.object(MWidget, "closeEvent"),
+    ):
+        function.closeEvent(QCloseEvent())
+    invalidate.assert_called_once()
+    assert not function.ui.showISO.isChecked()
+
+
+def test_loadRedrawsAllTabs(function: AnalyseWindow, qtbot: QtBot) -> None:
+    function.showAnalyse(Path("tests/testData/test.model"))
+    data = function.analyseData
+    qtbot.waitUntil(
+        lambda: (
+            function.analyseModel.analysisResult is not None
+            and not function.analyseModel.analysisWorkerActive
+        )
+    )
+    assert function.analyseModel.analysisResult.primary.termCount == 22
+    assert function.titleBar.title.text().endswith("test")
+    assert function.analyseModel.workerRebuildModel.signals.thread() == function.thread()
+    np.testing.assert_array_equal(function.ui.scaleImage.scatterItem.getData()[0], data.errorIndex)
+    np.testing.assert_array_equal(function.ui.raRawErrors.scatterItem.getData()[0], data.azimuth)
+    np.testing.assert_array_equal(
+        function.ui.raRawErrorsRef.scatterItem.getData()[0], data.angularPosRA
+    )
+    with mock.patch.object(function, "storeConfig"), mock.patch.object(MWidget, "closeEvent"):
+        function.closeEvent(QCloseEvent())
+    assert function.analyseModel.analysisResult is None
+    assert function.analyseModel.analysisStatus == "idle"
+
+
+def test_processModelOrchestratesLoad(function: AnalyseWindow) -> None:
+    path = Path("tests/testData/test.model")
+    records = json.loads(path.read_text())
+    calls = mock.Mock()
+    with (
+        mock.patch.object(function.analyseData, "loadModel", calls.loadModel),
+        mock.patch.object(function, "writeGui", calls.writeGui),
+        mock.patch.object(function, "drawAll", calls.drawAll),
+        mock.patch.object(function.analyseModel, "startModelAnalysis", calls.startModelAnalysis),
+        mock.patch.object(function.analyseModel, "invalidateAnalysis", calls.invalidateAnalysis),
+    ):
+        calls.loadModel.return_value = records
+        function.processModel(path)
+    assert calls.mock_calls == [
+        mock.call.invalidateAnalysis(),
+        mock.call.loadModel(path),
+        mock.call.writeGui(records, path),
+        mock.call.drawAll(),
+        mock.call.startModelAnalysis(records, str(path)),
+    ]

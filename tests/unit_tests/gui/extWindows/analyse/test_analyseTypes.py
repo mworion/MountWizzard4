@@ -4,6 +4,8 @@
 import pytest
 from dataclasses import FrozenInstanceError, replace
 from mw4.gui.extWindows.analyse.analyseTypes import (
+    AlignmentComparison,
+    AlignmentErrors,
     AnalysisFit,
     AnalysisPoint,
     AnalysisTerm,
@@ -50,3 +52,11 @@ def test_resultUnitsAndUnavailablePoint(analysisResult: ModelAnalysis) -> None:
     assert point.comparison == "unavailable"
     assert point.residual is None
     assert point.contributions == ()
+    errors = AlignmentErrors("W", 0.1, -0.02)
+    assert errors.unit == "degrees"
+    assert "signed NP" in errors.mapping
+    comparison = AlignmentComparison(0.1, 0.1, 0, 0.00005, "match", None)
+    assert comparison.unit == "degrees"
+    assert analysisResult.primary.alignmentErrors == ()
+    assert analysisResult.primary.polarComparison is None
+    assert analysisResult.primary.orthoComparison is None

@@ -150,7 +150,7 @@ def test_horizonSignal(function: AnalyseWindow) -> None:
 
 def test_closeInvalidatesAnalysis(function: AnalyseWindow) -> None:
     with (
-        mock.patch.object(function.analyseModel, "invalidateAnalysis") as invalidate,
+        mock.patch.object(function.analyseController, "invalidateAnalysis") as invalidate,
         mock.patch.object(function, "storeConfig"),
         mock.patch.object(MWidget, "closeEvent"),
     ):
@@ -164,13 +164,13 @@ def test_loadRedrawsAllTabs(function: AnalyseWindow, qtbot: QtBot) -> None:
     data = function.analyseData
     qtbot.waitUntil(
         lambda: (
-            function.analyseModel.analysisResult is not None
-            and not function.analyseModel.analysisWorkerActive
+            function.analyseController.analysisResult is not None
+            and not function.analyseController.analysisWorkerActive
         )
     )
-    assert function.analyseModel.analysisResult.primary.termCount == 22
+    assert function.analyseController.analysisResult.primary.termCount == 22
     assert function.titleBar.title.text().endswith("test")
-    assert function.analyseModel.workerRebuildModel.signals.thread() == function.thread()
+    assert function.analyseController.workerRebuildModel.signals.thread() == function.thread()
     np.testing.assert_array_equal(function.ui.scaleImage.scatterItem.getData()[0], data.errorIndex)
     np.testing.assert_array_equal(function.ui.raRawErrors.scatterItem.getData()[0], data.azimuth)
     np.testing.assert_array_equal(
@@ -178,8 +178,8 @@ def test_loadRedrawsAllTabs(function: AnalyseWindow, qtbot: QtBot) -> None:
     )
     with mock.patch.object(function, "storeConfig"), mock.patch.object(MWidget, "closeEvent"):
         function.closeEvent(QCloseEvent())
-    assert function.analyseModel.analysisResult is None
-    assert function.analyseModel.analysisStatus == "idle"
+    assert function.analyseController.analysisResult is None
+    assert function.analyseController.analysisStatus == "idle"
 
 
 def test_processModelOrchestratesLoad(function: AnalyseWindow) -> None:
@@ -190,8 +190,12 @@ def test_processModelOrchestratesLoad(function: AnalyseWindow) -> None:
         mock.patch.object(function.analyseData, "loadModel", calls.loadModel),
         mock.patch.object(function, "writeGui", calls.writeGui),
         mock.patch.object(function, "drawAll", calls.drawAll),
-        mock.patch.object(function.analyseModel, "startModelAnalysis", calls.startModelAnalysis),
-        mock.patch.object(function.analyseModel, "invalidateAnalysis", calls.invalidateAnalysis),
+        mock.patch.object(
+            function.analyseController, "startModelAnalysis", calls.startModelAnalysis
+        ),
+        mock.patch.object(
+            function.analyseController, "invalidateAnalysis", calls.invalidateAnalysis
+        ),
     ):
         calls.loadModel.return_value = records
         function.processModel(path)
@@ -217,15 +221,15 @@ def test_unloadedEvents(qapp: QApplication, makeApp) -> None:
     window.ui.linkViews.click()
     window.drawAll()
     assert window.analyseData.errorIndex.size == 0
-    assert window.analyseModel.analysisStatus == "idle"
+    assert window.analyseController.analysisStatus == "idle"
 
 
 def test_processModelFailure(function: AnalyseWindow) -> None:
     with (
         mock.patch.object(function.analyseData, "loadModel", return_value=None),
         mock.patch.object(function, "writeGui") as writeGui,
-        mock.patch.object(function.analyseModel, "invalidateAnalysis") as invalidate,
-        mock.patch.object(function.analyseModel, "startModelAnalysis") as start,
+        mock.patch.object(function.analyseController, "invalidateAnalysis") as invalidate,
+        mock.patch.object(function.analyseController, "startModelAnalysis") as start,
     ):
         function.processModel(Path("missing.model"))
     invalidate.assert_called_once()
@@ -236,5 +240,5 @@ def test_processModelFailure(function: AnalyseWindow) -> None:
 def test_readFailureClearsAnalysis(function: AnalyseWindow) -> None:
     with mock.patch("builtins.open", side_effect=PermissionError("cannot read")):
         function.processModel(Path("unreadable.model"))
-    assert function.analyseModel.analysisResult is None
-    assert function.analyseModel.analysisStatus == "idle"
+    assert function.analyseController.analysisResult is None
+    assert function.analyseController.analysisStatus == "idle"

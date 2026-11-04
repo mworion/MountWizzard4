@@ -67,6 +67,24 @@ def test_setupRangeLimits_custom_range():
     assert p.defRange == {"xMin": 0, "xMax": 2, "yMin": 0, "yMax": 2}
 
 
+@pytest.mark.filterwarnings("error::RuntimeWarning")
+@pytest.mark.parametrize("dtype", ["float32", "float64", "int32"])
+@pytest.mark.parametrize("customRange", [False, True])
+def test_setupRangeLimits_numpyBounds(dtype: str, customRange: bool) -> None:
+    plot = NormalScatter()
+    x = np.array([1, 3], dtype=dtype)
+    y = np.array([2, 5], dtype=dtype)
+    bounds = {"xMin": x[0], "xMax": x[1], "yMin": y[0], "yMax": y[1]}
+    kwargs = {"range": bounds} if customRange else {}
+    plot.setupRangeLimits(x, y, kwargs)
+    limits = plot.p[0].getViewBox().state["limits"]
+    assert limits["xLimits"] == [1.0, 3.0]
+    assert limits["yLimits"] == [2.0, 5.0]
+    assert limits["xRange"] == [0.5, 2.0]
+    assert limits["yRange"] == [0.75, 3.0]
+    assert all(type(value) is float for values in limits.values() for value in values)
+
+
 def test_computeZColorMap():
     p = NormalScatter()
     z = np.array([1.0, 2.0, 3.0])

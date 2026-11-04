@@ -5,7 +5,7 @@ import json
 import logging
 import numpy as np
 from collections.abc import Iterable
-from numpy.typing import DTypeLike
+from numpy.typing import DTypeLike, NDArray
 from pathlib import Path
 from typing import Any
 
@@ -54,6 +54,20 @@ class AnalyseData:
             return None
         self.generateDataSets(modelJSON)
         return modelJSON
+
+    def ascendingErrors(self) -> tuple[list[int], list[float], list[str]]:
+        points = sorted(
+            zip(self.errorRMS, self.errorIndex, self.pierside, strict=True),
+            key=lambda point: point[0],
+        )
+        return (
+            [int(point[1]) for point in points],
+            [float(point[0]) for point in points],
+            [point[2] for point in points],
+        )
+
+    def declinationErrors(self, errors: NDArray[np.float32]) -> list[float]:
+        return [float(x if p == "W" else -x) for x, p in zip(errors, self.pierside, strict=True)]
 
     def generateDataSets(self, modelJSON: list[dict[str, Any]]) -> None:
         self.latitude = modelJSON[0]["latitude"]

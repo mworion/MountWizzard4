@@ -4,7 +4,7 @@
 import json
 import numpy as np
 import pytest
-from mw4.gui.extWindows.analyse.analyseData import AnalyseData
+from mw4.logic.controllers.analyse.analyseData import AnalyseData
 from pathlib import Path
 from unittest import mock
 
@@ -91,3 +91,31 @@ def test_generateDataSets(function: AnalyseData) -> None:
             expected -= 1
         np.testing.assert_array_equal(getattr(function, name), expected)
         assert getattr(function, name).dtype == dtype
+
+
+def test_ascendingErrors() -> None:
+    data = AnalyseData()
+    data.errorRMS = np.array([0.3, 0.1, 0.1])
+    data.errorIndex = np.array([4, 7, 1])
+    data.pierside = ["E", "W", "E"]
+    assert data.ascendingErrors() == ([7, 1, 4], [0.1, 0.1, 0.3], ["W", "E", "E"])
+    data.pierside = ["W"]
+    with pytest.raises(ValueError, match="zip"):
+        data.ascendingErrors()
+
+
+def test_declinationErrors() -> None:
+    data = AnalyseData()
+    data.pierside = ["W", "E"]
+    errors = np.array([3, -4], dtype=np.float32)
+    assert data.declinationErrors(errors) == [3, 4]
+    np.testing.assert_array_equal(errors, [3, -4])
+    data.pierside = ["W"]
+    with pytest.raises(ValueError, match="zip"):
+        data.declinationErrors(errors)
+
+
+def test_emptyPreparedData() -> None:
+    data = AnalyseData()
+    assert data.ascendingErrors() == ([], [], [])
+    assert data.declinationErrors(np.array([], dtype=np.float32)) == []

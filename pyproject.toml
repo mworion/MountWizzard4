@@ -131,6 +131,7 @@ forbidden_modules = ["mw4.logic.controllers"]
 name = "Controller areas are independent"
 type = "independence"
 modules = [
+    "mw4.logic.controllers.analyse",
     "mw4.logic.controllers.almanac",
     "mw4.logic.controllers.image",
     "mw4.logic.controllers.imageWindow",
@@ -153,7 +154,14 @@ forbidden_modules = ["mw4.logic.drivers", "mw4.logic.controllers"]
 [[tool.importlinter.contracts]]
 name = "Foundations are Qt free"
 type = "forbidden"
-source_modules = ["mw4.logic.fits", "mw4.logic.profiles", "mw4.logic.databaseProcessing"]
+source_modules = [
+    "mw4.logic.fits",
+    "mw4.logic.profiles",
+    "mw4.logic.databaseProcessing",
+    "mw4.logic.controllers.analyse.analyseModel",
+    "mw4.logic.controllers.analyse.analyseData",
+    "mw4.logic.controllers.analyse.analyseTypes",
+]
 forbidden_modules = ["PySide6"]
 allow_indirect_imports = true
 
@@ -167,6 +175,7 @@ ignore_imports = [
     # QObject workers with signals, not GUI code
     "mw4.logic.controllers.imageWindow.photometry -> PySide6",
     "mw4.logic.controllers.model.modelRun -> PySide6",
+    "mw4.logic.controllers.analyse.analyseController -> PySide6",
 ]
 
 [tool.pytest.ini_options]
@@ -292,4 +301,3 @@ matches = "src/mw4/gui/**"
 not-callable = false
 no-matching-overload = false
 unsupported-operation = false
-

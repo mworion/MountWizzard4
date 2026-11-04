@@ -3,12 +3,15 @@
 ## Final ownership
 
 - `AnalyseWindow(MWidget)` owns UI/configuration and coordinates loading/display.
-- `AnalyseData` owns file reading, dataset generation and plot arrays.
-- `AnalyseModel(QObject)` owns reconstruction snapshots, revisions, workers,
-  results and diagnostics; numerical functions remain pure module functions.
+- `logic/controllers/analyse/AnalyseData` owns file reading, dataset generation,
+  aligned sorting, pier-side transformations and plot arrays.
+- `logic/controllers/analyse/AnalyseController(QObject)` owns snapshots, revisions,
+  workers, result publication and lifecycle handling.
+  It accepts a thread pool and optional QObject parent, with no GUI dependency.
+- `logic/controllers/analyse/analyseModel.py` owns pure numerical calculations.
 - `GeneralPlots`, `AltAzPlots`, `RaDecPlots` own independent tab drawing.
 - `plotHelpers.py` provides shared palette coloring and view linking.
-- `analyseTypes.py` defines immutable results.
+- `logic/controllers/analyse/analyseTypes.py` defines immutable results.
 
 ## Review implementation plan
 

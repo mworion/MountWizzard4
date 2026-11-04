@@ -71,7 +71,7 @@ class RaDecPlots:
         )
 
     def drawDecRef(self, plot: Any, errors: NDArray[np.float32]) -> None:
-        y = [x if p == "W" else -x for x, p in zip(errors, self.data.pierside, strict=True)]
+        y = self.data.declinationErrors(errors)
         self.drawRefChart(
             plot,
             "DEC",

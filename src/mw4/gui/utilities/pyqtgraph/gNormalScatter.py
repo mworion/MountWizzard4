@@ -26,6 +26,7 @@ class NormalScatter(PlotBase):
         if not kwargs.get("limits", True):
             return
         if xMin is not None and xMax is not None:
+            xMin, xMax = float(xMin), float(xMax)
             self.p[0].setLimits(
                 xMin=xMin,
                 xMax=xMax,
@@ -34,6 +35,7 @@ class NormalScatter(PlotBase):
             )
             self.p[0].setXRange(xMin, xMax)
         if yMin is not None and yMax is not None:
+            yMin, yMax = float(yMin), float(yMax)
             self.p[0].setLimits(
                 yMin=yMin,
                 yMax=yMax,

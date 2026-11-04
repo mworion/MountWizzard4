@@ -3,7 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import pytest
 from dataclasses import FrozenInstanceError, replace
-from mw4.gui.extWindows.analyse.analyseTypes import (
+from mw4.logic.controllers.analyse.analyseTypes import (
     AlignmentComparison,
     AnalysisFit,
     AnalysisPoint,

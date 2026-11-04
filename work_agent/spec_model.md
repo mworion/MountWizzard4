@@ -2,6 +2,12 @@
 
 ## Goal
 
+**Layering update:** calculations, file/dataset handling and immutable result
+types live in `src/mw4/logic/controllers/analyse`. Its `analyseController.py` owns Qt
+worker orchestration; `analyseW.py` and the plot components own presentation.
+This supersedes earlier instructions below to keep calculations in the GUI
+`analyseModel.py`. See `../PLAN_analysis_layer_split.md`.
+
 Add a local analysis routine that checks a mount model built from a model file
 and produces structured analysis data describing the model's corrections and
 errors. The data will be presented in a GUI in a later step; this work should

@@ -2,10 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import numpy as np
-from copy import deepcopy
 from dataclasses import replace
-from mw4.base.tpool import Worker, setupWorker, startWorker
-from mw4.gui.extWindows.analyse.analyseTypes import (
+from mw4.logic.controllers.analyse.analyseTypes import (
     AlignmentComparison,
     AlignmentState,
     AlignmentTransform,
@@ -19,11 +17,7 @@ from mw4.gui.extWindows.analyse.analyseTypes import (
     SkyVector,
 )
 from mw4.mountcontrol.convert import sexagesimalizeToInt
-from PySide6.QtCore import QObject, Slot
-from typing import TYPE_CHECKING, Any, Literal
-
-if TYPE_CHECKING:
-    from mw4.gui.extWindows.analyse.analyseW import AnalyseWindow
+from typing import Any, Literal
 
 TPOINT_TERMS = ("IH", "ID", "CH", "NP", "MA", "ME", "TF", "HCES", "HCEC", "DCES", "DCEC")
 FIT_RCOND = 1e-10
@@ -133,95 +127,6 @@ def applyAlignmentTransform(d: float, c: float, state: AlignmentState) -> Alignm
         raise ValueError("Orthogonality evaluation did not return coordinates.")
     newD, newC = reframeEquatorialAlignment(transformed.d, transformed.c, state.declinationOffset)
     return replace(transformed, d=newD, c=newC)
-
-
-class AnalyseModel(QObject):
-    def __init__(self, parentWindow: "AnalyseWindow") -> None:
-        super().__init__(parentWindow)
-        self.app = parentWindow.app
-        self.log = parentWindow.log
-        self.analysisResult: ModelAnalysis | None = None
-        self.analysisStatus: Literal["idle", "running", "ready", "failed"] = "idle"
-        self.analysisError: str | None = None
-        self.analysisWorkerActive = False
-        self.analysisRevision = 0
-        self.activeAnalysisRevision = 0
-        self.workerRebuildModel: Worker | None = None
-        self.pendingAnalysis: tuple[int, list[dict[str, Any]]] | None = None
-
-    def invalidateAnalysis(self) -> None:
-        self.analysisRevision += 1
-        self.analysisResult = None
-        self.analysisError = None
-        self.pendingAnalysis = None
-        self.analysisStatus = "idle"
-
-    def startModelAnalysis(self, records: list[dict[str, Any]]) -> None:
-        self.invalidateAnalysis()
-        self.pendingAnalysis = (self.analysisRevision, deepcopy(records))
-        self.startPendingAnalysis()
-
-    @staticmethod
-    def runnerRebuildModel(
-        revision: int, records: list[dict[str, Any]]
-    ) -> tuple[int, ModelAnalysis]:
-        return revision, rebuildModel(records)
-
-    @Slot()
-    def startPendingAnalysis(self) -> None:
-        if self.pendingAnalysis is None:
-            return
-        if self.analysisWorkerActive:
-            return
-        revision, records = self.pendingAnalysis
-        self.pendingAnalysis = None
-        self.activeAnalysisRevision = revision
-        self.analysisStatus = "running"
-        self.analysisWorkerActive = True
-        if self.workerRebuildModel is None:
-            self.workerRebuildModel = setupWorker(self.runnerRebuildModel)
-            self.workerRebuildModel.signals.error.connect(self.failModelAnalysis)
-        self.workerRebuildModel = startWorker(
-            self.workerRebuildModel,
-            self.app.threadPool,
-            self.runnerRebuildModel,
-            revision,
-            records,
-            resultMethod=self.receiveModelAnalysis,
-            finishedMethod=self.finishModelAnalysis,
-        )
-
-    @Slot()
-    def finishModelAnalysis(self) -> None:
-        self.analysisWorkerActive = False
-        self.startPendingAnalysis()
-
-    @Slot(object)
-    def receiveModelAnalysis(self, response: tuple[int, ModelAnalysis]) -> None:
-        revision, result = response
-        if revision != self.analysisRevision:
-            return
-        self.analysisResult = result
-        self.analysisStatus = "ready"
-        for diagnostic in result.diagnostics:
-            self.log.warning("Model analysis: %s", diagnostic)
-        for fit in result.candidates:
-            for diagnostic in fit.diagnostics:
-                self.log.warning("Model analysis (%s terms): %s", fit.termCount, diagnostic)
-        if result.setupComparison == "disagreement":
-            self.log.warning(
-                "Model analysis setup disagreement: recorded %s terms, closer RMS with %s terms",
-                result.recordedTerms,
-                result.betterMatchingTerms,
-            )
-        self.log.debug("Model analysis result: %s", self.analysisResult)
-
-    @Slot(str)
-    def failModelAnalysis(self, message: str) -> None:
-        if self.activeAnalysisRevision == self.analysisRevision:
-            self.analysisStatus = "failed"
-            self.analysisError = message
-            self.log.warning("Model analysis failed: %s", message)
 
 
 def finiteNumber(value: Any) -> float | None:

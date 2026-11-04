@@ -1,14 +1,12 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
-import gc
 import json
 import numpy as np
 import pytest
-import threading
 from copy import deepcopy
 from dataclasses import replace
-from mw4.gui.extWindows.analyse.analyseModel import (
+from mw4.logic.controllers.analyse.analyseModel import (
     ORTHO_TOLERANCE,
     POLAR_TOLERANCE,
     RMS_TOLERANCE,
@@ -24,51 +22,12 @@ from mw4.gui.extWindows.analyse.analyseModel import (
     programmedAngle,
     rebuildModel,
 )
-from mw4.gui.extWindows.analyse.analyseTypes import AnalysisFit, AnalysisTerm
-from mw4.gui.extWindows.analyse.analyseW import AnalyseWindow
+from mw4.logic.controllers.analyse.analyseTypes import AnalysisFit, AnalysisTerm
 from mw4.mountcontrol.convert import stringToAngle
 from mw4.mountcontrol.model import Model
 from pathlib import Path
-from PySide6.QtWidgets import QApplication
 from typing import Any
 from unittest import mock
-
-
-@pytest.fixture(autouse=True, scope="module")
-def function(qapp, makeApp):
-    func = AnalyseWindow(app=makeApp(), title="Analyse")
-    yield func
-    QApplication.processEvents()
-    gc.collect()
-    QApplication.processEvents()
-
-
-def test_modelComposition(function: AnalyseWindow) -> None:
-    model = function.analyseModel
-    assert model.parent() is function
-    assert model.thread() == function.thread()
-    assert not hasattr(function, "pendingAnalysis")
-    assert not hasattr(function, "runnerRebuildModel")
-
-
-def test_startSnapshotsRecords(function: AnalyseWindow) -> None:
-    model = function.analyseModel
-    revisionBefore = model.analysisRevision
-    model.analysisResult = rebuildModel([])
-    model.analysisError = "previous failure"
-    records = [{"latitude": 48.1}]
-    with mock.patch.object(model, "startPendingAnalysis") as start:
-        model.startModelAnalysis(records)
-    start.assert_called_once()
-    revision, snapshot = model.pendingAnalysis
-    assert revision == revisionBefore + 1
-    assert revision == model.analysisRevision
-    assert model.analysisResult is None
-    assert model.analysisError is None
-    assert snapshot == records
-    records[0]["latitude"] = 0
-    assert snapshot[0]["latitude"] == 48.1
-    model.invalidateAnalysis()
 
 
 @pytest.fixture(scope="module")
@@ -324,100 +283,6 @@ def test_savedMountFixture() -> None:
     assert any("unverified" in diagnostic for diagnostic in result.diagnostics)
 
 
-def test_automaticRebuild(function: AnalyseWindow, qtbot: Any) -> None:
-    with mock.patch.object(function, "drawAll"):
-        function.processModel(Path("tests/testData/test.model"))
-    qtbot.waitUntil(lambda: function.analyseModel.analysisResult is not None)
-    assert function.analyseModel.analysisStatus == "ready"
-    assert function.analyseModel.analysisResult.primary.termCount == 22
-    firstWorker = function.analyseModel.workerRebuildModel
-    function.app.threadPool.waitForDone()
-    QApplication.processEvents()
-    with mock.patch.object(function, "drawAll"):
-        function.processModel(Path("tests/testData/test1.model"))
-    qtbot.waitUntil(lambda: function.analyseModel.analysisResult is not None)
-    assert function.analyseModel.workerRebuildModel is firstWorker
-    assert function.analyseModel.activeAnalysisRevision == function.analyseModel.analysisRevision
-    assert function.analyseModel.analysisResult.primary.termCount == 22
-
-
-def test_queuedLoadsAndStaleResults(
-    function: AnalyseWindow,
-    syntheticRecords: list[dict[str, Any]],
-    qtbot: Any,
-) -> None:
-    entered, release = threading.Event(), threading.Event()
-
-    def blockedRunner(records: list[dict[str, Any]]) -> Any:
-        entered.set()
-        assert release.wait(5)
-        return rebuildModel(records)
-
-    function.app.threadPool.waitForDone()
-    QApplication.processEvents()
-    function.analyseModel.invalidateAnalysis()
-    revision = function.analyseModel.analysisRevision
-    with mock.patch(
-        "mw4.gui.extWindows.analyse.analyseModel.rebuildModel",
-        side_effect=blockedRunner,
-    ):
-        function.analyseModel.startModelAnalysis(syntheticRecords)
-        assert entered.wait(5)
-        function.analyseModel.startModelAnalysis(syntheticRecords)
-        latestRecords = [record | {"firmware": "latest"} for record in syntheticRecords]
-        function.analyseModel.startModelAnalysis(latestRecords)
-        assert function.analyseModel.pendingAnalysis is not None
-        release.set()
-        qtbot.waitUntil(lambda: function.analyseModel.analysisResult is not None)
-    assert function.analyseModel.analysisResult.firmware == "latest"
-    assert function.analyseModel.activeAnalysisRevision == function.analyseModel.analysisRevision
-    function.analyseModel.invalidateAnalysis()
-    function.analyseModel.receiveModelAnalysis((revision, rebuildModel(syntheticRecords)))
-    assert function.analyseModel.analysisResult is None
-
-
-def test_workerFailureAndInvalidation(function: AnalyseWindow, qtbot: Any) -> None:
-    function.app.threadPool.waitForDone()
-    QApplication.processEvents()
-    function.analyseModel.invalidateAnalysis()
-    with mock.patch(
-        "mw4.gui.extWindows.analyse.analyseModel.rebuildModel",
-        side_effect=ValueError("test failure"),
-    ):
-        function.analyseModel.startModelAnalysis([])
-        qtbot.waitUntil(lambda: function.analyseModel.analysisStatus == "failed")
-    assert function.analyseModel.analysisResult is None
-    assert "test failure" in function.analyseModel.analysisError
-    function.analyseModel.invalidateAnalysis()
-    function.analyseModel.failModelAnalysis("stale error")
-    assert function.analyseModel.analysisStatus == "idle"
-    assert function.analyseModel.analysisError is None
-
-
-def test_undeliveredFailureDoesNotFailNewLoad(
-    function: AnalyseWindow,
-    syntheticRecords: list[dict[str, Any]],
-    qtbot: Any,
-) -> None:
-    function.app.threadPool.waitForDone()
-    QApplication.processEvents()
-    function.analyseModel.invalidateAnalysis()
-    with mock.patch(
-        "mw4.gui.extWindows.analyse.analyseModel.rebuildModel",
-        side_effect=ValueError("old failure"),
-    ):
-        function.analyseModel.startModelAnalysis(syntheticRecords)
-        function.app.threadPool.waitForDone()
-    assert function.analyseModel.analysisWorkerActive
-    function.analyseModel.invalidateAnalysis()
-    function.analyseModel.startModelAnalysis(syntheticRecords)
-    assert function.analyseModel.pendingAnalysis is not None
-    qtbot.waitUntil(lambda: function.analyseModel.analysisResult is not None)
-    assert function.analyseModel.activeAnalysisRevision == function.analyseModel.analysisRevision
-    assert function.analyseModel.analysisError is None
-    assert function.analyseModel.analysisStatus == "ready"
-
-
 def test_allCoefficients(syntheticRecords: list[dict[str, Any]]) -> None:
     records = deepcopy(syntheticRecords)
     expected = np.arange(1, 12, dtype=float)
@@ -477,22 +342,6 @@ def test_programmedPrecision(value: float) -> None:
         stringToAngle(Model.formatSexagesimalSidereal(abs(value)), "hours").hours,
         abs=1e-14,
     )
-
-
-def test_receiveUnavailableAndDisagreement(
-    function: AnalyseWindow,
-    syntheticRecords: list[dict[str, Any]],
-) -> None:
-    unavailable = rebuildModel([])
-    function.analyseModel.receiveModelAnalysis(
-        (function.analyseModel.analysisRevision, unavailable)
-    )
-    assert function.analyseModel.analysisResult == unavailable
-    result = rebuildModel(syntheticRecords)
-    result = replace(result, setupComparison="disagreement", betterMatchingTerms=11)
-    with mock.patch.object(function.log, "warning") as warning:
-        function.analyseModel.receiveModelAnalysis((function.analyseModel.analysisRevision, result))
-    assert any("setup disagreement" in call.args[0] for call in warning.call_args_list)
 
 
 @pytest.fixture(scope="module")

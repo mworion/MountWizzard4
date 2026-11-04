@@ -2,6 +2,14 @@
 
 ## Objective and boundaries
 
+**Layering update:** numerical `analyseModel.py`, `analyseData.py` and
+`analyseTypes.py` now belong to `src/mw4/logic/controllers/analyse`. Its
+`analyseController.py` owns QObject/worker lifecycle; the window and plots
+contain presentation only. Numerical tests mirror the logic package; worker
+unit tests live in logic; window/worker integration tests remain under GUI.
+These paths supersede
+the earlier GUI calculation locations below. See `../PLAN_analysis_layer_split.md`.
+
 Implement `spec_model.md`: automatically rebuild and evaluate a model after
 loading its `.model` file in the analysis window. Produce a dedicated typed
 result for later GUI presentation, including TPoint coefficients, per-point
@@ -23,7 +31,7 @@ mount-ID setter map, and decodes the predicate threshold as `5 degrees`.
 The detailed migration and its implementation status are in `../update_plan.md`.
 The semantic correction is implemented; state recovery remains evidence-gated.
 
-All numerical calculations live in `../src/mw4/gui/extWindows/analyse/analyseModel.py`.
+All numerical calculations live in `../src/mw4/logic/controllers/analyse/analyseModel.py`.
 `AnalyseData` remains in `analyseData.py` for file reading and plotting datasets.
 Do not communicate with the mount, change its model, modify the input file,
 add report rendering, or edit generated widgets.
@@ -154,7 +162,7 @@ the reconstruction and its validation.
 
 ## 2. Define the typed analysis result
 
-Extend the existing `analyseTypes.py` alongside the analysis modules, containing
+Extend `../src/mw4/logic/controllers/analyse/analyseTypes.py`, containing
 typed dataclasses and status types only; keep calculations in `analyseModel.py`.
 Use camelCase field names and ordinary Python/NumPy data without widget objects.
 
@@ -298,8 +306,9 @@ without constructing a window.
 
 ## 6. Add tests and directly related documentation
 
-Extend tests under `../tests/unit_tests/gui/extWindows/analyse`, matching the
-implementation modules and using module-scoped fixtures.
+Extend numerical tests under `../tests/unit_tests/logic/controllers/analyse` and
+controller/rendering tests under `../tests/unit_tests/gui/extWindows/analyse`,
+matching the implementation modules and using module-scoped fixtures.
 
 - Verify individual basis functions against independently calculated reference
   values, including signs, units, hour-angle wrap, and pier-side transformations.
@@ -354,8 +363,8 @@ then address relevant typing, formatting, lint, and import-contract findings.
 Do not add coverage exclusions or fix unrelated existing issues.
 
 ```sh
-uv run pytest tests/unit_tests/gui/extWindows/analyse \
-  --cov=mw4.gui.extWindows.analyse --cov-report=term-missing
+uv run pytest tests/unit_tests/logic/controllers/analyse tests/unit_tests/gui/extWindows/analyse \
+  --cov=mw4.logic.controllers.analyse --cov=mw4.gui.extWindows.analyse --cov-report=term-missing
 uv run ruff format --check src tests
 uv run ruff check src tests
 uv run pyrefly check

@@ -44,13 +44,7 @@ class GeneralPlots:
     def drawErrorAscending(self) -> None:
         self.ui.errorAscending.p[0].setLabel("bottom", "Star count")
         self.ui.errorAscending.p[0].setLabel("left", "Error per Star [arcsec]")
-        points = sorted(
-            zip(self.data.errorRMS, self.data.errorIndex, self.data.pierside, strict=True),
-            key=lambda point: point[0],
-        )
-        y = [point[0] for point in points]
-        x = [point[1] for point in points]
-        pierside = [point[2] for point in points]
+        x, y, pierside = self.data.ascendingErrors()
         self.ui.errorAscending.plot(
             x,
             y,

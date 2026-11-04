@@ -5,11 +5,11 @@ import pytest
 from dataclasses import FrozenInstanceError, replace
 from mw4.gui.extWindows.analyse.analyseTypes import (
     AlignmentComparison,
-    AlignmentErrors,
     AnalysisFit,
     AnalysisPoint,
     AnalysisTerm,
     ModelAnalysis,
+    ResidualAlignmentDiagnostics,
 )
 
 
@@ -51,11 +51,19 @@ def test_resultUnitsAndUnavailablePoint(analysisResult: ModelAnalysis) -> None:
     assert point.comparison == "unavailable"
     assert point.residual is None
     assert point.contributions == ()
-    errors = AlignmentErrors("W", 0.1, -0.02)
-    assert errors.unit == "degrees"
-    assert "signed NP" in errors.mapping
+    diagnostics = ResidualAlignmentDiagnostics("W", 0.1, -0.02)
+    assert diagnostics.unit == "degrees"
+    assert diagnostics.maMeMagnitude == 0.1
+    assert diagnostics.npCoefficient == -0.02
+    assert "Local residual basis only" in diagnostics.mapping
+    assert "signed NP" in diagnostics.mapping
     comparison = AlignmentComparison(0.1, 0.1, 0, 0.00005, "match", None)
     assert comparison.unit == "degrees"
-    assert analysisResult.primary.alignmentErrors == ()
+    assert comparison.source is None
+    assert analysisResult.primary.residualAlignment == ()
     assert analysisResult.primary.polarComparison is None
     assert analysisResult.primary.orthoComparison is None
+    assert analysisResult.primary.alignmentState.geometry == "GM equatorial"
+    assert analysisResult.primary.alignmentState.pointingRotation is None
+    assert analysisResult.primary.alignmentState.polarAxisRotation is None
+    assert analysisResult.primary.alignmentState.reverseOrthogonality is None

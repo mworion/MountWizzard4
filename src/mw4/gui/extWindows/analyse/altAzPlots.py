@@ -3,6 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import numpy as np
 from mw4.gui.extWindows.analyse.plotHelpers import linkViews
+from numpy.typing import NDArray
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -35,7 +36,7 @@ class AltAzPlots:
         for plot in self.plots:
             plot.colorChange()
 
-    def drawAltAzErrorChart(self, plot: Any, errors: np.ndarray) -> None:
+    def drawAltAzErrorChart(self, plot: Any, errors: NDArray[np.float32]) -> None:
         isoLevels = 20 if self.ui.showISO.isChecked() else 0
         plot.p[0].setLabel("bottom", "Azimuth [deg]")
         plot.p[0].setLabel("left", "Altitude [deg]")

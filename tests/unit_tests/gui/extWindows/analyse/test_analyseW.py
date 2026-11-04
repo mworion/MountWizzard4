@@ -122,6 +122,7 @@ def test_drawAll_1(function):
         mock.patch.object(function.generalPlots, "drawTab") as general,
         mock.patch.object(function.altAzPlots, "drawTab") as altAz,
         mock.patch.object(function.raDecPlots, "drawTab") as raDec,
+        mock.patch.object(function.analyseData, "errorIndex", np.array([0])),
     ):
         function.drawAll()
     general.assert_called_once()
@@ -195,9 +196,45 @@ def test_processModelOrchestratesLoad(function: AnalyseWindow) -> None:
         calls.loadModel.return_value = records
         function.processModel(path)
     assert calls.mock_calls == [
-        mock.call.invalidateAnalysis(),
         mock.call.loadModel(path),
         mock.call.writeGui(records, path),
         mock.call.drawAll(),
         mock.call.startModelAnalysis(records),
     ]
+
+
+def test_writeGui(function: AnalyseWindow) -> None:
+    function.writeGui([{"astrometryApp": "ASTAP - version"}], Path("example.model"))
+    assert function.ui.solver.text() == "ASTAP"
+    assert function.titleBar.title.text().endswith("example")
+
+
+def test_unloadedEvents(qapp: QApplication, makeApp) -> None:
+    window = AnalyseWindow(makeApp(), "Analyse")
+    window.app.signals.ui.colorChange.emit()
+    window.ui.showISO.click()
+    window.ui.showHorizon.click()
+    window.ui.linkViews.click()
+    window.drawAll()
+    assert window.analyseData.errorIndex.size == 0
+    assert window.analyseModel.analysisStatus == "idle"
+
+
+def test_processModelFailure(function: AnalyseWindow) -> None:
+    with (
+        mock.patch.object(function.analyseData, "loadModel", return_value=None),
+        mock.patch.object(function, "writeGui") as writeGui,
+        mock.patch.object(function.analyseModel, "invalidateAnalysis") as invalidate,
+        mock.patch.object(function.analyseModel, "startModelAnalysis") as start,
+    ):
+        function.processModel(Path("missing.model"))
+    invalidate.assert_called_once()
+    writeGui.assert_not_called()
+    start.assert_not_called()
+
+
+def test_readFailureClearsAnalysis(function: AnalyseWindow) -> None:
+    with mock.patch("builtins.open", side_effect=PermissionError("cannot read")):
+        function.processModel(Path("unreadable.model"))
+    assert function.analyseModel.analysisResult is None
+    assert function.analyseModel.analysisStatus == "idle"

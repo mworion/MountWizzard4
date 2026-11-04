@@ -102,6 +102,4 @@ For all calculations is valid:
 
 - julian date is in UTC time system
 
-- 10micron firmware 3.0.4
-
 - skyfield version 1.39

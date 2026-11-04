@@ -49,3 +49,11 @@ def test_colorChange(function: RaDecPlots) -> None:
         function.colorChange()
     for plot in plots:
         plot.assert_called_once()
+
+
+def test_misalignedArrays(function: RaDecPlots) -> None:
+    with (
+        mock.patch.object(function.data, "pierside", ["W"]),
+        pytest.raises(ValueError, match="zip"),
+    ):
+        function.drawDecRef(function.ui.decErrorsRef, function.data.errorDEC)

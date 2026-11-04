@@ -15,11 +15,19 @@ def function() -> AnalyseData:
 
 
 def test_list2array(function: AnalyseData) -> None:
-    values = [1.5, None, 3, float("nan"), "4.2", "x", {}, 10**4000]
-    np.testing.assert_array_equal(
-        function.list2array(values),
-        np.array([1.5, 0, 3, 0, 4.2, 0, 0, 0], dtype=np.float32),
-    )
+    values = [1.5, None, 3, float("nan"), "4.2"]
+    with mock.patch.object(function.log, "warning") as warning:
+        np.testing.assert_array_equal(
+            function.list2array(values),
+            np.array([1.5, 0, 3, 0, 4.2], dtype=np.float32),
+        )
+    warning.assert_called_once()
+
+
+@pytest.mark.parametrize("value", ["x", {}, 10**4000, float("inf"), -float("inf")])
+def test_invalidPlotValue(function: AnalyseData, value: object) -> None:
+    with pytest.raises((ValueError, TypeError, OverflowError)):
+        function.list2array([value])
 
 
 def test_dataIsIndependent() -> None:
@@ -58,6 +66,7 @@ def test_loadFailure(function: AnalyseData, error: Exception) -> None:
 
 def test_generateDataSets(function: AnalyseData) -> None:
     records = json.loads(Path("tests/testData/test.model").read_text())
+    records[0]["unusedField"] = "not required in the other records"
     function.generateDataSets(records)
     assert function.latitude == records[0]["latitude"]
     assert function.pierside == [record["pierside"] for record in records]

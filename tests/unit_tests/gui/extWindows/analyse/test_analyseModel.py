@@ -43,10 +43,6 @@ def function(qapp, makeApp):
     QApplication.processEvents()
 
 
-def test_writeGui_1(function):
-    function.writeGui([{"a": 1}], Path("test"))
-
-
 def test_modelComposition(function: AnalyseWindow) -> None:
     model = function.analyseModel
     assert model.parent() is function
@@ -57,33 +53,22 @@ def test_modelComposition(function: AnalyseWindow) -> None:
 
 def test_startSnapshotsRecords(function: AnalyseWindow) -> None:
     model = function.analyseModel
-    model.invalidateAnalysis()
+    revisionBefore = model.analysisRevision
+    model.analysisResult = rebuildModel([])
+    model.analysisError = "previous failure"
     records = [{"latitude": 48.1}]
     with mock.patch.object(model, "startPendingAnalysis") as start:
         model.startModelAnalysis(records)
     start.assert_called_once()
     revision, snapshot = model.pendingAnalysis
+    assert revision == revisionBefore + 1
     assert revision == model.analysisRevision
+    assert model.analysisResult is None
+    assert model.analysisError is None
     assert snapshot == records
     records[0]["latitude"] = 0
     assert snapshot[0]["latitude"] == 48.1
     model.invalidateAnalysis()
-
-
-def test_processModel_1(function):
-    with (
-        mock.patch.object(function, "writeGui"),
-        mock.patch.object(function.analyseData, "generateDataSets"),
-        mock.patch.object(function, "drawAll"),
-    ):
-        function.processModel(Path("tests/testData/test.model"))
-
-
-def test_processModel_2(function):
-    with mock.patch.object(
-        json, "load", return_value={}, side_effect=json.JSONDecodeError("test", "test", 0)
-    ):
-        function.processModel(Path("tests/testData/test.model"))
 
 
 @pytest.fixture(scope="module")
@@ -253,7 +238,7 @@ def test_mountTruthAndAlternativeDisagreement(syntheticRecords: list[dict[str, A
         assert old.rms == new.rms
         assert old.terms == new.terms
     changedRms = replace(first.candidates[1], rmsDifference=sharedRms)
-    assert compareSetups((alternative.candidates[0], changedRms), None) == (11, "inconclusive")
+    assert compareSetups(alternative.candidates[0], changedRms, None) == (11, "inconclusive")
 
 
 def test_comparisonBoundary(syntheticRecords: list[dict[str, Any]]) -> None:
@@ -262,9 +247,9 @@ def test_comparisonBoundary(syntheticRecords: list[dict[str, Any]]) -> None:
         replace(fit, rmsDifference=0),
         replace(fit, termCount=22, rmsDifference=RMS_TOLERANCE),
     )
-    assert compareSetups(candidates, 22) == (None, "inconclusive")
+    assert compareSetups(*candidates, 22) == (None, "inconclusive")
     candidates = (candidates[0], replace(candidates[1], rmsDifference=RMS_TOLERANCE + 1e-6))
-    assert compareSetups(candidates, 22) == (11, "disagreement")
+    assert compareSetups(*candidates, 22) == (11, "disagreement")
 
 
 def test_rankDeficiency(syntheticRecords: list[dict[str, Any]]) -> None:
@@ -325,12 +310,12 @@ def test_savedMountFixture() -> None:
     assert sum(point.comparison == "unavailable" for point in result.primary.points) == 1
     assert result.primary.points[0].recordedMagnitude == 1.2
     assert result.primary.points[0].recordedPositionAngle == 274
-    assert [errors.pierside for errors in result.primary.alignmentErrors] == ["W", "E"]
+    assert [item.pierside for item in result.primary.residualAlignment] == ["W", "E"]
     assert result.primary.polarComparison.comparison == "unavailable"
-    assert "combination rule is unresolved" in result.primary.polarComparison.diagnostic
+    assert "no W/E aggregation" in result.primary.polarComparison.diagnostic
     assert result.primary.orthoComparison.recorded == 0
     assert "Recorded zero is ambiguous" in result.primary.orthoComparison.diagnostic
-    assert result.candidates[0].polarComparison.comparison == "mismatch"
+    assert result.candidates[0].polarComparison.comparison == "unavailable"
     assert not any("cannot be reconstructed" in diagnostic for diagnostic in result.diagnostics)
     np.testing.assert_allclose(
         np.asarray(result.primary.points[0].correction) - result.primary.points[0].observed,
@@ -378,9 +363,7 @@ def test_queuedLoadsAndStaleResults(
     ):
         function.analyseModel.startModelAnalysis(syntheticRecords)
         assert entered.wait(5)
-        function.analyseModel.invalidateAnalysis()
         function.analyseModel.startModelAnalysis(syntheticRecords)
-        function.analyseModel.invalidateAnalysis()
         latestRecords = [record | {"firmware": "latest"} for record in syntheticRecords]
         function.analyseModel.startModelAnalysis(latestRecords)
         assert function.analyseModel.pendingAnalysis is not None
@@ -433,13 +416,6 @@ def test_undeliveredFailureDoesNotFailNewLoad(
     assert function.analyseModel.activeAnalysisRevision == function.analyseModel.analysisRevision
     assert function.analyseModel.analysisError is None
     assert function.analyseModel.analysisStatus == "ready"
-
-
-def test_fileReadFailureClearsAnalysis(function: AnalyseWindow) -> None:
-    function.analyseModel.analysisResult = rebuildModel([])
-    with mock.patch("builtins.open", side_effect=PermissionError("cannot read")):
-        function.processModel(Path("unreadable.model"))
-    assert function.analyseModel.analysisResult is None
 
 
 def test_allCoefficients(syntheticRecords: list[dict[str, Any]]) -> None:
@@ -531,21 +507,29 @@ def alignmentFit() -> AnalysisFit:
 
 def test_sharedAlignmentFeedback(alignmentFit: AnalysisFit) -> None:
     result = deriveAlignmentFeedback(alignmentFit, 5, -2)
-    assert result.alignmentErrors[0].pierside == "shared"
-    assert result.alignmentErrors[0].polarError == 5
-    assert result.alignmentErrors[0].orthoError == -2
-    assert result.polarComparison.calculated == result.polarComparison.recorded == 5
-    assert result.orthoComparison.calculated == result.orthoComparison.recorded == -2
-    assert result.polarComparison.comparison == result.orthoComparison.comparison == "match"
-    assert result.polarComparison.difference == result.orthoComparison.difference == 0
+    assert result.residualAlignment[0].pierside == "shared"
+    assert result.residualAlignment[0].maMeMagnitude == 5
+    assert result.residualAlignment[0].npCoefficient == -2
+    assert result.polarComparison.recorded == 5
+    assert result.orthoComparison.recorded == -2
+    for comparison in (result.polarComparison, result.orthoComparison):
+        assert comparison.calculated is None
+        assert comparison.difference is None
+        assert comparison.comparison == "unavailable"
     assert result.polarComparison.tolerance == POLAR_TOLERANCE
     assert result.orthoComparison.tolerance == ORTHO_TOLERANCE
-    assert not result.diagnostics
+    assert len(result.diagnostics) == 2
+    assert result.polarComparison.source == "Polar-axis rotation third column"
+    assert result.orthoComparison.source == "Orthogonality angle (radians converted to degrees)"
+    assert "correction direction" in result.polarComparison.diagnostic
+    assert "NP/CH" in result.orthoComparison.diagnostic
     changed = deriveAlignmentFeedback(alignmentFit, 6, 2)
-    assert changed.alignmentErrors == result.alignmentErrors
-    assert changed.polarComparison.difference == -1
-    assert changed.orthoComparison.difference == -4
-    assert changed.polarComparison.comparison == changed.orthoComparison.comparison == "mismatch"
+    assert changed.residualAlignment == result.residualAlignment
+    assert changed.polarComparison.recorded == 6
+    assert changed.orthoComparison.recorded == 2
+    assert changed.polarComparison.difference is None
+    assert changed.orthoComparison.difference is None
+    assert changed.polarComparison.comparison == changed.orthoComparison.comparison == "unavailable"
 
 
 def test_splitAlignmentFeedbackPreservesSides(alignmentFit: AnalysisFit) -> None:
@@ -556,23 +540,57 @@ def test_splitAlignmentFeedbackPreservesSides(alignmentFit: AnalysisFit) -> None
     )
     result = deriveAlignmentFeedback(replace(alignmentFit, termCount=22, terms=west + east), 5, -2)
     assert [
-        (error.pierside, error.polarError, error.orthoError) for error in result.alignmentErrors
+        (item.pierside, item.maMeMagnitude, item.npCoefficient) for item in result.residualAlignment
     ] == [("W", 5, -2), ("E", 10, 4)]
     for comparison in (result.polarComparison, result.orthoComparison):
         assert comparison.calculated is None
         assert comparison.difference is None
         assert comparison.comparison == "unavailable"
-        assert "combination rule is unresolved" in comparison.diagnostic
-    assert len(result.diagnostics) == 1
+        assert "no W/E aggregation" in comparison.diagnostic
+    assert len(result.diagnostics) == 2
     assert result.polarComparison.recorded == 5
     assert result.orthoComparison.recorded == -2
+
+
+@pytest.mark.parametrize("hourAngle,declination", [(0, 0), (0.7, -0.4), (-2.1, 0.9)])
+def test_polarBasisDuplicatesRigidRotation(hourAngle: float, declination: float) -> None:
+    h, d = hourAngle, declination
+    direction = np.array([np.cos(d) * np.cos(h), np.cos(d) * np.sin(h), np.sin(d)])
+    east = np.array([np.sin(h), -np.cos(h), 0])
+    north = np.array([-np.sin(d) * np.cos(h), -np.sin(d) * np.sin(h), np.cos(d)])
+    tangent = np.array([east, north])
+    basis = pointingBasis(h, d, 0.5, "W")
+    # Infinitesimal rotations about x and -y reproduce the local MA and ME modes.
+    for axis, name in (([1, 0, 0], "MA"), ([0, -1, 0], "ME")):
+        rotationMode = tangent @ np.cross(axis, direction)
+        np.testing.assert_allclose(basis[:, TPOINT_TERMS.index(name)], rotationMode, atol=1e-15)
+    augmented = np.column_stack(
+        (basis[:, TPOINT_TERMS.index("MA")], tangent @ np.cross([1, 0, 0], direction))
+    )
+    assert np.linalg.matrix_rank(augmented) < augmented.shape[1]
+
+
+@pytest.mark.parametrize("termCount", [11, 22])
+def test_feedbackDoesNotChooseNpOrCh(alignmentFit: AnalysisFit, termCount: int) -> None:
+    terms = (*alignmentFit.terms, AnalysisTerm("CH", 3600, "model", "shared"))
+    if termCount == 22:
+        terms = tuple(replace(term, pierside=side) for side in ("W", "E") for term in terms)
+    fit = replace(alignmentFit, terms=terms, termCount=termCount)
+    for recorded in (-2, 1):
+        result = deriveAlignmentFeedback(fit, 5, recorded)
+        assert result.terms == terms
+        assert all(item.npCoefficient == -2 for item in result.residualAlignment)
+        assert result.orthoComparison.recorded == recorded
+        assert result.orthoComparison.calculated is None
+        assert result.orthoComparison.comparison == "unavailable"
+        assert "constrained state recovery" in result.orthoComparison.diagnostic
 
 
 @pytest.mark.parametrize("recorded", [None, 0])
 def test_unavailableRecordedAlignment(alignmentFit: AnalysisFit, recorded: float | None) -> None:
     result = deriveAlignmentFeedback(alignmentFit, recorded, recorded)
     for comparison in (result.polarComparison, result.orthoComparison):
-        assert comparison.calculated is not None
+        assert comparison.calculated is None
         assert comparison.recorded == recorded
         assert comparison.comparison == "unavailable"
         assert comparison.difference is None
@@ -587,8 +605,9 @@ def test_zeroDerivedAlignment(alignmentFit: AnalysisFit) -> None:
         0.00001,
         -0.001,
     )
-    assert result.alignmentErrors[0].polarError == result.alignmentErrors[0].orthoError == 0
-    assert result.polarComparison.comparison == result.orthoComparison.comparison == "match"
+    assert result.residualAlignment[0].maMeMagnitude == 0
+    assert result.residualAlignment[0].npCoefficient == 0
+    assert result.polarComparison.comparison == result.orthoComparison.comparison == "unavailable"
 
 
 def test_invalidPolarFeedback(alignmentFit: AnalysisFit) -> None:
@@ -597,21 +616,43 @@ def test_invalidPolarFeedback(alignmentFit: AnalysisFit) -> None:
     assert result.polarComparison.recorded == -5
     assert result.polarComparison.difference is None
     assert "nonnegative" in result.polarComparison.diagnostic
-    assert result.orthoComparison.comparison == "match"
+    assert result.orthoComparison.comparison == "unavailable"
+    assert "polar-axis rotation" in result.polarComparison.diagnostic
 
 
 def test_unavailableFitAlignment(alignmentFit: AnalysisFit) -> None:
     result = deriveAlignmentFeedback(replace(alignmentFit, terms=(), rms=None), 5, -2)
-    assert result.alignmentErrors == ()
+    assert result.residualAlignment == ()
     assert result.polarComparison.comparison == result.orthoComparison.comparison == "unavailable"
     assert "candidate fit is unavailable" in result.polarComparison.diagnostic
 
 
 def test_excludedSampleAlignment(alignmentFit: AnalysisFit) -> None:
     result = deriveAlignmentFeedback(alignmentFit, 5, -2, sameSample=False)
-    assert len(result.alignmentErrors) == 1
+    assert len(result.residualAlignment) == 1
     assert result.polarComparison.comparison == result.orthoComparison.comparison == "unavailable"
     assert "Excluded observations" in result.polarComparison.diagnostic
+
+
+@pytest.mark.parametrize("unavailable", [True, False])
+def test_alignmentRetainsIndependentReasons(alignmentFit: AnalysisFit, unavailable: bool) -> None:
+    terms = (
+        ()
+        if unavailable
+        else tuple(
+            replace(term, pierside=side) for side in ("W", "E") for term in alignmentFit.terms
+        )
+    )
+    result = deriveAlignmentFeedback(
+        replace(alignmentFit, terms=terms, termCount=22), -5, None, sameSample=False
+    )
+    reason = "candidate fit is unavailable" if unavailable else "no W/E aggregation"
+    assert reason in result.polarComparison.diagnostic
+    assert "Excluded observations" in result.polarComparison.diagnostic
+    assert "nonnegative" in result.polarComparison.diagnostic
+    assert reason in result.orthoComparison.diagnostic
+    assert "Excluded observations" in result.orthoComparison.diagnostic
+    assert "missing, nonfinite or inconsistent" in result.orthoComparison.diagnostic
 
 
 @pytest.mark.parametrize("tolerance", [POLAR_TOLERANCE, ORTHO_TOLERANCE])
@@ -634,7 +675,8 @@ def test_rebuildAlignmentMetadataIndependence(syntheticRecords: list[dict[str, A
     )
     for originalFit, changedFit in zip(first.candidates, changed.candidates, strict=True):
         assert changedFit.terms == originalFit.terms
-        assert changedFit.alignmentErrors == originalFit.alignmentErrors
+        assert changedFit.residualAlignment == originalFit.residualAlignment
+        assert changedFit.alignmentState == originalFit.alignmentState
         assert changedFit.polarComparison.recorded == 1
         assert changedFit.orthoComparison.recorded == -0.01
     assert changed.primary.termCount == 22

@@ -7,12 +7,15 @@ from dataclasses import replace
 from mw4.base.tpool import Worker, setupWorker, startWorker
 from mw4.gui.extWindows.analyse.analyseTypes import (
     AlignmentComparison,
-    AlignmentErrors,
+    AlignmentState,
+    AlignmentTransform,
     AnalysisFit,
     AnalysisPoint,
     AnalysisTerm,
     Comparison,
     ModelAnalysis,
+    ResidualAlignmentDiagnostics,
+    RotationMatrix,
     SkyVector,
 )
 from mw4.mountcontrol.convert import sexagesimalizeToInt
@@ -24,16 +27,112 @@ if TYPE_CHECKING:
 
 TPOINT_TERMS = ("IH", "ID", "CH", "NP", "MA", "ME", "TF", "HCES", "HCEC", "DCES", "DCEC")
 FIT_RCOND = 1e-10
+ROTATION_TOLERANCE = 1e-10
 RMS_TOLERANCE = 0.05 + 1e-9
 POLAR_TOLERANCE = 0.00005 + 1e-12
 ORTHO_TOLERANCE = 0.005 + 1e-12
 COORDINATE_KEYS = ("raJNowM", "decJNowM", "raJNowS", "decJNowS", "siderealTime", "latitude")
 ANALYSIS_LIMITATIONS = (
-    "Local 11-term TPoint basis; firmware term subset, refinement and selection are unverified.",
+    "Local 11-term TPoint basis; equivalence to the recorded model fit is unverified.",
     "Polar/ortho acquisition corrections are already applied; fitted terms are residuals only.",
-    "Polar/ortho feedback is derived in the local linear basis; firmware mapping is unverified.",
+    "Polar alignment requires an identified polar-axis orientation, not the MA/ME norm.",
+    "Orthogonality correction direction and fitted alignment state remain unverified.",
+    "GM equatorial geometry does not determine the per-point correction direction.",
+    "The saved observations do not establish a unique rotation/residual decomposition.",
     "Legacy producers convert unavailable alignment summaries to zero; recorded zero is ambiguous.",
 )
+
+
+def wrapAlignmentAngle(angle: float, lower: float) -> float:
+    """Preserve in-range endpoints; map other turns into [lower, lower + 2*pi)."""
+    if not np.isfinite(angle) or not np.isfinite(lower):
+        raise ValueError("Alignment angles must be finite.")
+    upper = lower + 2 * np.pi
+    if lower <= angle <= upper:
+        return float(angle)
+    return float((angle - lower) % (2 * np.pi) + lower)
+
+
+def alignmentUnitVector(d: float, c: float) -> np.ndarray:
+    """Explicit spherical longitude/latitude convention, not a saved RA/Dec mapping."""
+    if not np.isfinite(d) or not np.isfinite(c) or abs(c) > np.pi / 2:
+        raise ValueError("Alignment longitude must be finite and latitude within +/- pi/2.")
+    return np.array([np.cos(c) * np.cos(d), np.cos(c) * np.sin(d), np.sin(c)])
+
+
+def validateAlignmentRotation(matrix: RotationMatrix) -> np.ndarray:
+    rotation = np.asarray(matrix, dtype=np.float64)
+    if rotation.shape != (3, 3) or not np.isfinite(rotation).all():
+        raise ValueError("Alignment matrix must be a finite 3x3 rotation.")
+    if not np.allclose(
+        rotation.T @ rotation, np.eye(3), atol=ROTATION_TOLERANCE, rtol=0
+    ) or not np.isclose(np.linalg.det(rotation), 1, atol=ROTATION_TOLERANCE, rtol=0):
+        raise ValueError("Alignment matrix must be orthonormal with determinant +1.")
+    return rotation
+
+
+def applyOrthogonalityRotation(vector: np.ndarray, angle: float) -> AlignmentTransform:
+    """Apply a nonlinear orthogonality correction with an explicit signed angle."""
+    v = np.asarray(vector, dtype=np.float64)
+    if v.shape != (3,) or not np.isfinite(v).all() or not np.isfinite(angle):
+        raise ValueError("Orthogonality correction requires a finite three-vector and angle.")
+    if not np.isclose(np.linalg.norm(v), 1, atol=ROTATION_TOLERANCE, rtol=0):
+        raise ValueError("Orthogonality correction requires a unit vector.")
+    cosAngle, sinAngle = np.cos(angle), np.sin(angle)
+    if abs(cosAngle) <= np.finfo(np.float64).eps:
+        raise ValueError(
+            "Orthogonality correction is undefined at numerically singular cos(angle)."
+        )
+    x = float(v[2] / cosAngle)
+    if abs(x) > 1:
+        return AlignmentTransform(
+            float(np.arctan2(v[1], v[0])),
+            float(np.arctan2(v[2], np.hypot(v[0], v[1]))),
+            "fallback",
+            "Orthogonality domain exceeded; ordinary vector decomposition applied.",
+        )
+    c = float(np.arcsin(x))
+    s = np.sqrt(1 - x * x)
+    r0 = v[0] * s * cosAngle + v[1] * sinAngle
+    r1 = v[1] * s * cosAngle - v[0] * sinAngle
+    d = 0.0 if r0 == 0 and r1 == 0 else float(np.arctan2(r1, r0))
+    return AlignmentTransform(d, c, "applied")
+
+
+def reframeEquatorialAlignment(d: float, c: float, declinationOffset: float) -> SkyVector:
+    if not np.isfinite([d, c, declinationOffset]).all():
+        raise ValueError("GM reframe requires finite angles.")
+    return wrapAlignmentAngle(d + np.pi, -np.pi / 2), float(np.pi / 2 - c + declinationOffset)
+
+
+def applyAlignmentTransform(d: float, c: float, state: AlignmentState) -> AlignmentTransform:
+    """Apply explicit spherical inputs without estimating missing alignment state."""
+    if state.geometry != "GM equatorial":
+        return AlignmentTransform(
+            None, None, "unavailable", "Only the GM equatorial alignment geometry is supported."
+        )
+    if (
+        state.pointingRotation is None
+        or state.declinationOffset is None
+        or state.orthogonalityAngle is None
+        or state.reverseOrthogonality is None
+    ):
+        return AlignmentTransform(
+            None,
+            None,
+            "unavailable",
+            "Pointing rotation, alignment angles or per-point correction direction is missing.",
+        )
+    if not np.isfinite([state.declinationOffset, state.orthogonalityAngle]).all():
+        raise ValueError("Alignment offset and orthogonality angle must be finite.")
+    rotation = validateAlignmentRotation(state.pointingRotation)
+    vector = rotation @ alignmentUnitVector(wrapAlignmentAngle(d, -np.pi), c)
+    angle = -state.orthogonalityAngle if state.reverseOrthogonality else state.orthogonalityAngle
+    transformed = applyOrthogonalityRotation(vector, angle)
+    if transformed.d is None or transformed.c is None:
+        raise ValueError("Orthogonality evaluation did not return coordinates.")
+    newD, newC = reframeEquatorialAlignment(transformed.d, transformed.c, state.declinationOffset)
+    return replace(transformed, d=newD, c=newC)
 
 
 class AnalyseModel(QObject):
@@ -42,7 +141,7 @@ class AnalyseModel(QObject):
         self.app = parentWindow.app
         self.log = parentWindow.log
         self.analysisResult: ModelAnalysis | None = None
-        self.analysisStatus = "idle"
+        self.analysisStatus: Literal["idle", "running", "ready", "failed"] = "idle"
         self.analysisError: str | None = None
         self.analysisWorkerActive = False
         self.analysisRevision = 0
@@ -58,6 +157,7 @@ class AnalyseModel(QObject):
         self.analysisStatus = "idle"
 
     def startModelAnalysis(self, records: list[dict[str, Any]]) -> None:
+        self.invalidateAnalysis()
         self.pendingAnalysis = (self.analysisRevision, deepcopy(records))
         self.startPendingAnalysis()
 
@@ -114,6 +214,7 @@ class AnalyseModel(QObject):
                 result.recordedTerms,
                 result.betterMatchingTerms,
             )
+        self.log.debug("Model analysis result: %s", self.analysisResult)
 
     @Slot(str)
     def failModelAnalysis(self, message: str) -> None:
@@ -235,7 +336,7 @@ def termGroup(name: str) -> Literal["polar", "ortho", "model"]:
 
 
 def designMatrix(
-    records: list[dict[str, Any]], points: tuple[AnalysisPoint, ...], termCount: int
+    records: list[dict[str, Any]], points: tuple[AnalysisPoint, ...], termCount: Literal[11, 22]
 ) -> tuple[np.ndarray, np.ndarray]:
     usable = [point for point in points if point.observed is not None]
     matrix = np.zeros((2 * len(usable), termCount), dtype=np.float64)
@@ -301,7 +402,7 @@ def evaluatePoint(
 def fitCandidate(
     records: list[dict[str, Any]],
     points: tuple[AnalysisPoint, ...],
-    termCount: int,
+    termCount: Literal[11, 22],
     recordedRms: float | None,
 ) -> AnalysisFit:
     matrix, observations = designMatrix(records, points, termCount)
@@ -337,13 +438,9 @@ def fitCandidate(
     residuals = observations - matrix @ coefficients
     rms = float(np.sqrt(np.sum(residuals**2) / row))
     difference = None if recordedRms is None else rms - recordedRms
-    comparison: Comparison = (
-        "unavailable"
-        if difference is None
-        else "match"
-        if abs(difference) <= RMS_TOLERANCE
-        else "mismatch"
-    )
+    comparison: Comparison = "unavailable"
+    if difference is not None:
+        comparison = "match" if abs(difference) <= RMS_TOLERANCE else "mismatch"
     return AnalysisFit(
         termCount,
         terms,
@@ -359,8 +456,9 @@ def fitCandidate(
 
 
 def compareSetups(
-    candidates: tuple[AnalysisFit, ...], recordedTerms: int | None
+    shared: AnalysisFit, split: AnalysisFit, recordedTerms: int | None
 ) -> tuple[int | None, Literal["consistent", "disagreement", "inconclusive"]]:
+    candidates = (shared, split)
     if any(fit.rmsDifference is None for fit in candidates):
         return None, "inconclusive"
     distances = [abs(fit.rmsDifference) for fit in candidates if fit.rmsDifference is not None]
@@ -400,37 +498,55 @@ def deriveAlignmentFeedback(
     recordedOrtho: float | None,
     sameSample: bool = True,
 ) -> AnalysisFit:
-    errors = []
+    residualAlignment = []
     for scope in dict.fromkeys(term.pierside for term in fit.terms):
         coefficients = {term.name: term.coefficient for term in fit.terms if term.pierside == scope}
-        errors.append(
-            AlignmentErrors(
+        residualAlignment.append(
+            ResidualAlignmentDiagnostics(
                 scope,
                 float(np.hypot(coefficients["MA"], coefficients["ME"])) / 3600,
                 coefficients["NP"] / 3600,
             )
         )
-    unresolved = None
-    polar, ortho = None, None
-    if not errors:
-        unresolved = "Alignment feedback cannot be derived: the candidate fit is unavailable."
-    elif fit.termCount == 22:
-        unresolved = (
-            "Per-side errors are derived; the firmware's pier-side combination rule is unresolved."
+    reasons = []
+    if not residualAlignment:
+        reasons.append("Alignment feedback cannot be derived: the candidate fit is unavailable.")
+    if fit.termCount == 22:
+        reasons.append(
+            "Split residual diagnostics do not identify the polar-axis rotation or orthogonality; "
+            "no W/E aggregation is established."
         )
-    else:
-        polar, ortho = errors[0].polarError, errors[0].orthoError
     if not sameSample:
-        unresolved = "Excluded observations: fitted samples differ from the mount's."
-    polarComparison = compareAlignmentError(polar, recordedPolar, POLAR_TOLERANCE, unresolved)
+        reasons.append("Excluded observations: fitted samples differ from the mount's.")
+    polarReason = " ".join(
+        [
+            (
+                "Polar feedback unavailable: polar-axis rotation frame, correction direction "
+                "and identifiable separation from residual MA/ME are not established."
+            ),
+            *reasons,
+        ]
+    )
+    orthoReason = " ".join(
+        [
+            (
+                "Ortho feedback unavailable: per-point correction direction and constrained "
+                "state recovery are not established; the angle is not a local NP/CH coefficient."
+            ),
+            *reasons,
+        ]
+    )
+    polarComparison = compareAlignmentError(None, recordedPolar, POLAR_TOLERANCE, polarReason)
     if recordedPolar is not None and recordedPolar < 0:
         polarComparison = replace(
             polarComparison,
-            difference=None,
-            comparison="unavailable",
-            diagnostic="Recorded polar error must be a nonnegative magnitude.",
+            diagnostic=f"{polarReason} Recorded polar error must be a nonnegative magnitude.",
         )
-    orthoComparison = compareAlignmentError(ortho, recordedOrtho, ORTHO_TOLERANCE, unresolved)
+    polarComparison = replace(polarComparison, source="Polar-axis rotation third column")
+    orthoComparison = replace(
+        compareAlignmentError(None, recordedOrtho, ORTHO_TOLERANCE, orthoReason),
+        source="Orthogonality angle (radians converted to degrees)",
+    )
     diagnostics = tuple(
         dict.fromkeys(
             comparison.diagnostic
@@ -440,7 +556,7 @@ def deriveAlignmentFeedback(
     )
     return replace(
         fit,
-        alignmentErrors=tuple(errors),
+        residualAlignment=tuple(residualAlignment),
         polarComparison=polarComparison,
         orthoComparison=orthoComparison,
         diagnostics=fit.diagnostics + diagnostics,
@@ -454,10 +570,13 @@ def rebuildModel(records: list[dict[str, Any]]) -> ModelAnalysis:
     recordedRms = consistentMetadata(records, "modelErrorRMS")
     if recordedRms is not None and recordedRms < 0:
         recordedRms = None
-    candidates = tuple(fitCandidate(records, points, size, recordedRms) for size in (11, 22))
+    candidates = (
+        fitCandidate(records, points, 11, recordedRms),
+        fitCandidate(records, points, 22, recordedRms),
+    )
     recordedPolar = consistentMetadata(records, "modelPolarError")
     recordedOrtho = consistentMetadata(records, "modelOrthoError")
-    better, comparison = compareSetups(candidates, terms)
+    better, comparison = compareSetups(*candidates, terms)
     diagnostics = list(ANALYSIS_LIMITATIONS)
     if terms is None:
         diagnostics.append("Missing, inconsistent or unsupported recorded modelTerms.")

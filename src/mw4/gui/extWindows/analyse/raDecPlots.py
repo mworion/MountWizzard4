@@ -3,6 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import numpy as np
 from mw4.gui.extWindows.analyse.plotHelpers import linkViews, pierColors
+from numpy.typing import ArrayLike, NDArray
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -39,8 +40,8 @@ class RaDecPlots:
         plot: Any,
         axis: str,
         tickRange: range,
-        x: Any,
-        y: Any,
+        x: ArrayLike,
+        y: ArrayLike,
         xRange: dict[str, int],
         tip: str,
     ) -> None:
@@ -58,7 +59,7 @@ class RaDecPlots:
             tip=tip.format,
         )
 
-    def drawRaRef(self, plot: Any, errors: np.ndarray) -> None:
+    def drawRaRef(self, plot: Any, errors: NDArray[np.float32]) -> None:
         self.drawRefChart(
             plot,
             "RA",
@@ -69,9 +70,8 @@ class RaDecPlots:
             "AngularRA: {x:0.1f}\nErrorRA: {y:0.1f}\nPier: {data}",
         )
 
-    def drawDecRef(self, plot: Any, errors: np.ndarray) -> None:
-        # Lists come from a model file on disk; keep the tolerant truncation.
-        y = [x if p == "W" else -x for x, p in zip(errors, self.data.pierside, strict=False)]
+    def drawDecRef(self, plot: Any, errors: NDArray[np.float32]) -> None:
+        y = [x if p == "W" else -x for x, p in zip(errors, self.data.pierside, strict=True)]
         self.drawRefChart(
             plot,
             "DEC",

@@ -11,11 +11,9 @@ def pierColors(pierside: list[str], styles: Styles) -> list[list[int]]:
 
 def linkViews(plots: list[Any], isLinked: bool, linkY: bool) -> None:
     views = [plot.p[0].getViewBox() for plot in plots]
-    for sourceView in views:
-        for targetView in views:
-            if sourceView == targetView:
-                continue
-            sourceView.setXLink(targetView if isLinked else None)
-            if linkY:
-                sourceView.setYLink(targetView if isLinked else None)
+    for index, sourceView in enumerate(views):
+        target = views[0] if isLinked and index else None
+        sourceView.setXLink(target)
+        if linkY:
+            sourceView.setYLink(target)
         sourceView.rightMouseRange()

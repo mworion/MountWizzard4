@@ -26,14 +26,6 @@ For being fully operational, MountWizzard4 needs either:
 -   In addition an internet connection is used for some services which might be
     very helpful.
 
-It is recommended to use mount firmware 3.x or later as some of the functions
-don't work with older firmware versions. It should not be a problem using older
-versions. A HW pre2012 might also have some issues. MountWizzard4 supports also
-older firmwares from 2.x onwards, but with limited features and untested.
-
-It is recommended to use mount firmware 2.16 or later as some of the functions
-don't work with older firmware versions.
-
 Here is an overview of the functionality available in MountWizzard4:
 
 - Many settings and features of the mount can be shown and changed.

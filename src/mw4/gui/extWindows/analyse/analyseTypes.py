@@ -6,6 +6,30 @@ from typing import Literal
 
 type SkyVector = tuple[float, float]
 type Comparison = Literal["match", "mismatch", "unavailable"]
+type RotationMatrix = tuple[
+    tuple[float, float, float], tuple[float, float, float], tuple[float, float, float]
+]
+
+
+@dataclass(frozen=True)
+class AlignmentState:
+    pointingRotation: RotationMatrix | None = None
+    polarAxisRotation: RotationMatrix | None = None
+    declinationOffset: float | None = None
+    orthogonalityAngle: float | None = None
+    reverseOrthogonality: bool | None = None
+    geometry: str = "GM equatorial"
+    provenance: str = "GM-only analysis scope; per-point correction direction is not inferred."
+    unit: str = "radians"
+
+
+@dataclass(frozen=True)
+class AlignmentTransform:
+    d: float | None
+    c: float | None
+    status: Literal["applied", "fallback", "unavailable"]
+    diagnostic: str | None = None
+    unit: str = "radians"
 
 
 @dataclass(frozen=True)
@@ -39,12 +63,12 @@ class AnalysisPoint:
 
 
 @dataclass(frozen=True)
-class AlignmentErrors:
+class ResidualAlignmentDiagnostics:
     pierside: str
-    polarError: float
-    orthoError: float
+    maMeMagnitude: float
+    npCoefficient: float
     unit: str = "degrees"
-    mapping: str = "Local linear basis: hypot(MA, ME) / 3600 and signed NP / 3600."
+    mapping: str = "Local residual basis only: hypot(MA, ME) / 3600 and signed NP / 3600."
 
 
 @dataclass(frozen=True)
@@ -56,6 +80,7 @@ class AlignmentComparison:
     comparison: Comparison
     diagnostic: str | None
     unit: str = "degrees"
+    source: str | None = None
 
 
 @dataclass(frozen=True)
@@ -70,9 +95,10 @@ class AnalysisFit:
     rmsDifference: float | None
     rmsComparison: Comparison
     diagnostics: tuple[str, ...]
-    alignmentErrors: tuple[AlignmentErrors, ...] = ()
+    residualAlignment: tuple[ResidualAlignmentDiagnostics, ...] = ()
     polarComparison: AlignmentComparison | None = None
     orthoComparison: AlignmentComparison | None = None
+    alignmentState: AlignmentState = AlignmentState()
 
 
 @dataclass(frozen=True)

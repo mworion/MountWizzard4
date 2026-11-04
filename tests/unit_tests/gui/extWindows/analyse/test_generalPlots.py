@@ -72,3 +72,11 @@ def test_paletteChange(function: GeneralPlots) -> None:
         function.drawScaleImage()
     assert plot.call_args.kwargs["color"][1] == function.parentWindow.M_GREEN
     function.parentWindow.colorSet = 0
+
+
+def test_misalignedArrays(function: GeneralPlots) -> None:
+    with (
+        mock.patch.object(function.data, "pierside", ["W"]),
+        pytest.raises(ValueError, match="zip"),
+    ):
+        function.drawErrorAscending()

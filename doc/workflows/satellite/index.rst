@@ -4,10 +4,8 @@ MountWizzard4 supports the mount capability of tracking satellites. The planning
 is based on Two Line Elements (TLE), which are provided by organisations (e.g.
 http://www.celestrak.com) and deliver a set of orbital parameters for
 calculating the satellite track with regard to your location in Alt / Az
-coordinates. Since the introduction, 10micron does the calculation internally.
-Therefore it is needed to upload the satellite TLE data to the mount and let it
-calculate. Before FW 3.x this is the only possibility (using the internal
-satellite database works similar) to do tracking.
+coordinates. Select a satellite and upload its TLE data to prepare tracking,
+or select **Use internal maths** to prepare a custom track in MountWizzard4.
 
 .. note::   As the orbital elements of a satellite change over time, it is
             necessary to get most actual data for get a good tracking. Data
@@ -53,10 +51,9 @@ The selected satellite will also be shown in the **Satellite** windows:
     :align: center
     :scale: 71%
 
-After the mount has done it's calculations as well, the result will be shown in
-the **Trajectory starts** and **Trajectory ends** fields and a possible flip
-will be announced on the "Run Tracking" tab, MountWizzard4 offers now (need
-Firmware 3.x) some adjustments for centering the satellites in you imaging FOV.
+The **Trajectory starts** and **Trajectory ends** fields show the tracking
+interval. The "Run Tracking" tab indicates a possible flip and provides
+adjustments for centering the satellite in your imaging field of view.
 
 .. image:: image/sat_track.png
     :align: center
@@ -67,14 +64,9 @@ tracking** and **Stop satellite tracking** button are enabled. Once started,
 the mount will slew to the begin of the tracking path and wait for the satellite
 to rise. Selecting partial tracks and respecting constraints is not possible.
 
-Since FW 3.x the command protocol offers the programming of a custom satellite
-track. This offers the capability of takings care of avoiding flips, respect
-horizon and other constraints. The operation is different to the classic
-approach: Instead of programming TLE data to the mount, MountWizzard4 programs
-Alt / Az coordinates in a one second interval to the mount (max. 900s) which the
-mount after start tracking will follow. You could enable this feature with
-checking **Use internal maths** if the firmware is 3.x or higher. After
-enabling, additional elements will be enabled.
+Select **Use internal maths** to prepare a custom satellite track in
+MountWizzard4. This mode lets you account for flips, the horizon and other
+constraints. Selecting it enables additional tracking controls.
 
 .. image:: image/sat_new.png
     :align: center
@@ -197,4 +189,3 @@ tracking buttons are enable like in classic mode.
 .. image:: image/sat_result.png
     :align: center
     :scale: 71%
-

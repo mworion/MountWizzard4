@@ -84,38 +84,39 @@ class AnalyseWindow(MWidget):
             self.processModel(path)
 
     def drawAll(self) -> None:
+        if not self.analyseData.errorIndex.size:
+            return
         for tab in self.tabs:
             tab.drawTab()
 
     def writeGui(self, data: list[dict[str, Any]], loadFilePath: Path) -> None:
-        d = data[0]
-        de = data[-1]
+        firstRecord = data[0]
+        lastRecord = data[-1]
 
         title = f"Analyse Model     {loadFilePath.stem}"
         self.setWindowTitle(title)
-        self.ui.exposureTime.setText(f"{d.get('exposureTime', '')}")
-        self.ui.solver.setText(d.get("plateSolveApp", ""))
-        self.ui.binning.setText(f"{d.get('binning', 0):1.0f}")
-        self.ui.time.setText(d.get("julianDate", "").replace("T", "  ").replace("Z", ""))
-        self.ui.subframe.setText(f"{d.get('subFrame', 0):3.0f}")
-        self.ui.modelTerms.setText(f"{d.get('modelTerms', 0):02.0f}")
-        self.ui.modelErrorRMS.setText(f"{d.get('modelErrorRMS', 0):5.1f}")
-        self.ui.modelOrthoError.setText(f"{d.get('modelOrthoError', 0):5.0f}")
-        self.ui.modelPolarError.setText(f"{d.get('modelPolarError', 0):5.0f}")
-        self.ui.focalLength.setText(f"{d.get('focalLength', 0):4.0f}")
-        self.ui.profile.setText(f"{d.get('profile', '')}")
-        self.ui.firmware.setText(f"{d.get('firmware', '')}")
-        self.ui.totalPoints.setText(f"{d.get('lenSequence', 0)}")
-        self.ui.goodPoints.setText(f"{de.get('errorIndex', 0)}")
-        app = de.get("astrometryApp", "").split("-")[0].strip()
+        self.ui.exposureTime.setText(f"{firstRecord.get('exposureTime', '')}")
+        self.ui.binning.setText(f"{firstRecord.get('binning', 0):1.0f}")
+        self.ui.time.setText(firstRecord.get("julianDate", "").replace("T", "  ").replace("Z", ""))
+        self.ui.subframe.setText(f"{firstRecord.get('subFrame', 0):3.0f}")
+        self.ui.modelTerms.setText(f"{firstRecord.get('modelTerms', 0):02.0f}")
+        self.ui.modelErrorRMS.setText(f"{firstRecord.get('modelErrorRMS', 0):5.1f}")
+        self.ui.modelOrthoError.setText(f"{firstRecord.get('modelOrthoError', 0):5.0f}")
+        self.ui.modelPolarError.setText(f"{firstRecord.get('modelPolarError', 0):5.0f}")
+        self.ui.focalLength.setText(f"{firstRecord.get('focalLength', 0):4.0f}")
+        self.ui.profile.setText(f"{firstRecord.get('profile', '')}")
+        self.ui.firmware.setText(f"{firstRecord.get('firmware', '')}")
+        self.ui.totalPoints.setText(f"{firstRecord.get('lenSequence', 0)}")
+        self.ui.goodPoints.setText(f"{lastRecord.get('errorIndex', 0)}")
+        app = lastRecord.get("astrometryApp", "").split("-")[0].strip()
         self.ui.solver.setText(f"{app}")
-        version = d.get("version", "").removeprefix("MountWizzard4 - v")
+        version = firstRecord.get("version", "").removeprefix("MountWizzard4 - v")
         self.ui.version.setText(f"{version}")
 
     def processModel(self, loadFilePath: Path) -> None:
-        self.analyseModel.invalidateAnalysis()
         modelJSON = self.analyseData.loadModel(loadFilePath)
         if modelJSON is None:
+            self.analyseModel.invalidateAnalysis()
             return
 
         self.writeGui(modelJSON, loadFilePath)

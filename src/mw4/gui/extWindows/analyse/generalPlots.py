@@ -44,9 +44,8 @@ class GeneralPlots:
     def drawErrorAscending(self) -> None:
         self.ui.errorAscending.p[0].setLabel("bottom", "Star count")
         self.ui.errorAscending.p[0].setLabel("left", "Error per Star [arcsec]")
-        # Lists come from a model file on disk; keep the tolerant truncation.
         points = sorted(
-            zip(self.data.errorRMS, self.data.errorIndex, self.data.pierside, strict=False),
+            zip(self.data.errorRMS, self.data.errorIndex, self.data.pierside, strict=True),
             key=lambda point: point[0],
         )
         y = [point[0] for point in points]

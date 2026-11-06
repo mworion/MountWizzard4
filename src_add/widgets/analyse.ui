@@ -1663,11 +1663,6 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab">
-        <attribute name="title">
-         <string>Model Analyse</string>
-        </attribute>
-       </widget>
        <widget class="QWidget" name="AltAz">
         <attribute name="title">
          <string>Alt / Az Analyse</string>

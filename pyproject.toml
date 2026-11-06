@@ -69,7 +69,7 @@ dependencies = [
     "range-key-dict>=1.1.0,<2",
     "packaging>=26.3,<27",
     "lz4>=4.4.5,<5",
-    "xisf>=0.9.7,<0.10",
+    "xisf==1.0.1",
     "pyside6==6.12.0",
     "pyyaml>=6.0.3,<7",
     "pywin32>=312; platform_system == 'Windows'",
@@ -94,11 +94,11 @@ dev = [
     "pytest-cov==7.1.0",
     "pytest-xdist==3.8.0",
     "pytest-xvfb==3.1.1",
-    "pytest-env==1.8.4",
+    "pytest-env==1.8.5",
     "invoke==2.2.1",
-    "ruff==0.17.3",
-    "pyrefly==1.4.0",
-    "coverage==7.17.0",
+    "ruff==0.17.4",
+    "pyrefly==1.5.0.dev1",
+    "coverage==7.17.2",
     "scipy-stubs==1.18.1.1",
     "fabric==3.2.3",
     "coverage-conditional-plugin==0.9.0",
@@ -158,9 +158,7 @@ source_modules = [
     "mw4.logic.fits",
     "mw4.logic.profiles",
     "mw4.logic.databaseProcessing",
-    "mw4.logic.controllers.analyse.analyseModel",
     "mw4.logic.controllers.analyse.analyseData",
-    "mw4.logic.controllers.analyse.analyseTypes",
 ]
 forbidden_modules = ["PySide6"]
 allow_indirect_imports = true
@@ -175,7 +173,6 @@ ignore_imports = [
     # QObject workers with signals, not GUI code
     "mw4.logic.controllers.imageWindow.photometry -> PySide6",
     "mw4.logic.controllers.model.modelRun -> PySide6",
-    "mw4.logic.controllers.analyse.analyseController -> PySide6",
 ]
 
 [tool.pytest.ini_options]

@@ -581,14 +581,14 @@ class Ui_AnalyseDialog(object):
         self.tabWidget.setObjectName(u"tabWidget")
         self.tabWidget.setMinimumSize(QSize(0, 200))
         self.tabWidget.setMovable(False)
-        self.General = QWidget()
-        self.General.setObjectName(u"General")
-        self.gridLayout_2 = QGridLayout(self.General)
+        self.Overview = QWidget()
+        self.Overview.setObjectName(u"Overview")
+        self.gridLayout_2 = QGridLayout(self.Overview)
         self.gridLayout_2.setSpacing(4)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.gridLayout_2.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
         self.gridLayout_2.setContentsMargins(4, 4, 4, 4)
-        self.groupBox = QGroupBox(self.General)
+        self.groupBox = QGroupBox(self.Overview)
         self.groupBox.setObjectName(u"groupBox")
         self.groupBox.setProperty(u"large", True)
         self.horizontalLayout = QHBoxLayout(self.groupBox)
@@ -605,7 +605,7 @@ class Ui_AnalyseDialog(object):
 
         self.gridLayout_2.addWidget(self.groupBox, 0, 0, 1, 1)
 
-        self.groupBox_14 = QGroupBox(self.General)
+        self.groupBox_14 = QGroupBox(self.Overview)
         self.groupBox_14.setObjectName(u"groupBox_14")
         self.groupBox_14.setProperty(u"large", True)
         self.horizontalLayout_2 = QHBoxLayout(self.groupBox_14)
@@ -622,7 +622,7 @@ class Ui_AnalyseDialog(object):
 
         self.gridLayout_2.addWidget(self.groupBox_14, 1, 0, 1, 1)
 
-        self.groupBox_15 = QGroupBox(self.General)
+        self.groupBox_15 = QGroupBox(self.Overview)
         self.groupBox_15.setObjectName(u"groupBox_15")
         self.groupBox_15.setProperty(u"large", True)
         self.horizontalLayout_3 = QHBoxLayout(self.groupBox_15)
@@ -639,7 +639,7 @@ class Ui_AnalyseDialog(object):
 
         self.gridLayout_2.addWidget(self.groupBox_15, 0, 1, 1, 1)
 
-        self.groupBox_16 = QGroupBox(self.General)
+        self.groupBox_16 = QGroupBox(self.Overview)
         self.groupBox_16.setObjectName(u"groupBox_16")
         self.groupBox_16.setProperty(u"large", True)
         self.horizontalLayout_4 = QHBoxLayout(self.groupBox_16)
@@ -656,7 +656,7 @@ class Ui_AnalyseDialog(object):
 
         self.gridLayout_2.addWidget(self.groupBox_16, 1, 1, 1, 1)
 
-        self.tabWidget.addTab(self.General, "")
+        self.tabWidget.addTab(self.Overview, "")
         self.AltAz = QWidget()
         self.AltAz.setObjectName(u"AltAz")
         self.gridLayout_3 = QGridLayout(self.AltAz)
@@ -817,7 +817,7 @@ class Ui_AnalyseDialog(object):
 
         self.retranslateUi(AnalyseDialog)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(AnalyseDialog)
@@ -937,7 +937,7 @@ class Ui_AnalyseDialog(object):
 #if QT_CONFIG(tooltip)
         self.scaleImage.setToolTip("")
 #endif // QT_CONFIG(tooltip)
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.General), QCoreApplication.translate("AnalyseDialog", u"General Analyse", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.Overview), QCoreApplication.translate("AnalyseDialog", u"Overview", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("AnalyseDialog", u"RA Raw Error (PlateSolve Result, w/o Model)", None))
 #if QT_CONFIG(tooltip)
         self.raRawErrors.setToolTip("")

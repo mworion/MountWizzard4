@@ -11,7 +11,6 @@ from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QApplication
-from pytestqt.qtbot import QtBot
 from unittest import mock
 
 
@@ -148,29 +147,20 @@ def test_horizonSignal(function: AnalyseWindow) -> None:
     drawHorizon.assert_called_once_with(function.app.buildPoint.horizonP)
 
 
-def test_closeInvalidatesAnalysis(function: AnalyseWindow) -> None:
+def test_closeResetsISO(function: AnalyseWindow) -> None:
     with (
-        mock.patch.object(function.analyseController, "invalidateAnalysis") as invalidate,
-        mock.patch.object(function, "storeConfig"),
+        mock.patch.object(function, "storeConfig") as storeConfig,
         mock.patch.object(MWidget, "closeEvent"),
     ):
         function.closeEvent(QCloseEvent())
-    invalidate.assert_called_once()
+    storeConfig.assert_called_once()
     assert not function.ui.showISO.isChecked()
 
 
-def test_loadRedrawsAllTabs(function: AnalyseWindow, qtbot: QtBot) -> None:
+def test_loadRedrawsAllTabs(function: AnalyseWindow) -> None:
     function.showAnalyse(Path("tests/testData/test.model"))
     data = function.analyseData
-    qtbot.waitUntil(
-        lambda: (
-            function.analyseController.analysisResult is not None
-            and not function.analyseController.analysisWorkerActive
-        )
-    )
-    assert function.analyseController.analysisResult.primary.termCount == 22
     assert function.titleBar.title.text().endswith("test")
-    assert function.analyseController.workerRebuildModel.signals.thread() == function.thread()
     np.testing.assert_array_equal(function.ui.scaleImage.scatterItem.getData()[0], data.errorIndex)
     np.testing.assert_array_equal(function.ui.raRawErrors.scatterItem.getData()[0], data.azimuth)
     np.testing.assert_array_equal(
@@ -178,8 +168,7 @@ def test_loadRedrawsAllTabs(function: AnalyseWindow, qtbot: QtBot) -> None:
     )
     with mock.patch.object(function, "storeConfig"), mock.patch.object(MWidget, "closeEvent"):
         function.closeEvent(QCloseEvent())
-    assert function.analyseController.analysisResult is None
-    assert function.analyseController.analysisStatus == "idle"
+    assert not function.ui.showISO.isChecked()
 
 
 def test_processModelOrchestratesLoad(function: AnalyseWindow) -> None:
@@ -190,12 +179,6 @@ def test_processModelOrchestratesLoad(function: AnalyseWindow) -> None:
         mock.patch.object(function.analyseData, "loadModel", calls.loadModel),
         mock.patch.object(function, "writeGui", calls.writeGui),
         mock.patch.object(function, "drawAll", calls.drawAll),
-        mock.patch.object(
-            function.analyseController, "startModelAnalysis", calls.startModelAnalysis
-        ),
-        mock.patch.object(
-            function.analyseController, "invalidateAnalysis", calls.invalidateAnalysis
-        ),
     ):
         calls.loadModel.return_value = records
         function.processModel(path)
@@ -203,7 +186,6 @@ def test_processModelOrchestratesLoad(function: AnalyseWindow) -> None:
         mock.call.loadModel(path),
         mock.call.writeGui(records, path),
         mock.call.drawAll(),
-        mock.call.startModelAnalysis(records),
     ]
 
 
@@ -221,24 +203,25 @@ def test_unloadedEvents(qapp: QApplication, makeApp) -> None:
     window.ui.linkViews.click()
     window.drawAll()
     assert window.analyseData.errorIndex.size == 0
-    assert window.analyseController.analysisStatus == "idle"
 
 
 def test_processModelFailure(function: AnalyseWindow) -> None:
     with (
         mock.patch.object(function.analyseData, "loadModel", return_value=None),
         mock.patch.object(function, "writeGui") as writeGui,
-        mock.patch.object(function.analyseController, "invalidateAnalysis") as invalidate,
-        mock.patch.object(function.analyseController, "startModelAnalysis") as start,
+        mock.patch.object(function, "drawAll") as drawAll,
     ):
         function.processModel(Path("missing.model"))
-    invalidate.assert_called_once()
     writeGui.assert_not_called()
-    start.assert_not_called()
+    drawAll.assert_not_called()
 
 
-def test_readFailureClearsAnalysis(function: AnalyseWindow) -> None:
-    with mock.patch("builtins.open", side_effect=PermissionError("cannot read")):
+def test_readFailureDoesNotUpdateGui(function: AnalyseWindow) -> None:
+    with (
+        mock.patch("builtins.open", side_effect=PermissionError("cannot read")),
+        mock.patch.object(function, "writeGui") as writeGui,
+        mock.patch.object(function, "drawAll") as drawAll,
+    ):
         function.processModel(Path("unreadable.model"))
-    assert function.analyseController.analysisResult is None
-    assert function.analyseController.analysisStatus == "idle"
+    writeGui.assert_not_called()
+    drawAll.assert_not_called()

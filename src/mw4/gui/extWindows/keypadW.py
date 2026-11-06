@@ -8,7 +8,7 @@ from mw4.base.tpool import Worker, startWorker
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import keypad_ui
 from mw4.logic.drivers.keypad.keypad import KeyPad
-from PySide6.QtCore import QObject, Signal
+from PySide6.QtCore import QObject, Signal, Slot
 from PySide6.QtGui import QCloseEvent, QPixmap
 from qimage2ndarray import array2qimage
 
@@ -119,6 +119,7 @@ class KeypadWindow(MWidget):
         self.titleBar.windowFixed = True
         self.startKeypad()
 
+    @Slot()
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
         self.clearGraphics()
@@ -128,6 +129,7 @@ class KeypadWindow(MWidget):
             self.buttons[button].pressed.connect(partial(self.buttonPressed, button))
             self.buttons[button].released.connect(partial(self.buttonReleased, button))
 
+    @Slot()
     def startKeypad(self) -> None:
         if self.keypad.ws is not None:
             return
@@ -150,6 +152,7 @@ class KeypadWindow(MWidget):
     def buttonReleased(self, button: str) -> None:
         self.signals.mouseReleased.emit(button)
 
+    @Slot(int, str)
     def writeTextRow(self, row: int, text: str) -> None:
         if not -1 < row < 5:
             return
@@ -169,10 +172,12 @@ class KeypadWindow(MWidget):
         self.clearCursor()
         self.inputActive = False
 
+    @Slot()
     def clearCursor(self) -> None:
         self.inputActive = False
         self.ui.cursor.setVisible(False)
 
+    @Slot(int, int)
     def setCursorPos(self, row: int, col: int) -> None:
         self.inputActive = True
         x = self.rows[row].x()
@@ -181,6 +186,7 @@ class KeypadWindow(MWidget):
         self.ui.cursor.setVisible(True)
         self.ui.cursor.move(x + 16 * col, y + height)
 
+    @Slot()
     def drawGraphics(self) -> None:
         color = self.M_PRIMa
         back = [0, 0, 0, 0]
@@ -194,6 +200,7 @@ class KeypadWindow(MWidget):
         pixmap = QPixmap().fromImage(image).scaled(256, 128)
         self.ui.graphics.setPixmap(pixmap)
 
+    @Slot(object, int, int)
     def buildGraphics(self, imgArr: np.ndarray, yPos: int, xPos: int) -> None:
         dy, dx, _ = imgArr.shape
         self.graphics[yPos : yPos + dy, xPos : xPos + dx] = imgArr

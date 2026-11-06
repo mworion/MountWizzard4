@@ -5,7 +5,7 @@ import faulthandler
 import logging
 import os
 import platform
-import PySide6
+import PySide6.QtCore
 import shutil
 import socket
 import sys

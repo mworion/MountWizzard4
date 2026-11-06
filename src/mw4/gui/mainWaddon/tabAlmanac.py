@@ -14,7 +14,7 @@ from mw4.logic.controllers.almanac.almanacCalculations import (
     calcTwilightData,
     phasesText,
 )
-from PySide6.QtCore import QPointF, Qt
+from PySide6.QtCore import QPointF, Qt, Slot
 from PySide6.QtGui import QBrush, QColor, QPainter, QPen, QPixmap
 from PySide6.QtWidgets import QWidget
 from skyfield import almanac
@@ -49,6 +49,7 @@ class Almanac(TabAddon):
     ]
 
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.threadPool = mainW.app.threadPool
@@ -108,6 +109,7 @@ class Almanac(TabAddon):
         plotItem.setYRange(0, 24)
         plotItem.setXRange(xMin, xMax)
 
+    @Slot(object)
     def plotTwilightData(self, result: tuple) -> None:
         ts, t, e = result
         xMin = int(t[0].tt) + 1
@@ -307,6 +309,7 @@ class Almanac(TabAddon):
         pm = setPixmapAlpha(pm, self.mainW.transparency)
         self.ui.moonPic.setPixmap(pm)
 
+    @Slot()
     def showMoonPhase(self) -> None:
         data = self.calcMoonPhase()
         self.showMoonNumbers(data)

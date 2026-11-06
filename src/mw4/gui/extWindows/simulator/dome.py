@@ -4,23 +4,36 @@
 from mw4.base.appProtocol import AppProtocol
 from mw4.gui.extWindows.simulator.materials import Materials
 from mw4.gui.extWindows.simulator.tools import linkModel
+from PySide6.QtCore import QObject, Slot
 from PySide6.QtGui import QVector3D
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 
 
-class SimulatorDome:
-    def __init__(self, parent: Any, app: AppProtocol) -> None:
-        super().__init__()
-        self.parent = parent
+class SimulatorDome(QObject):
+    def __init__(self, parent: "SimulatorWindow", app: AppProtocol) -> None:
+        super().__init__(parent)
+        self.parentWindow = parent
         self.app = app
-        self.app.dReg.dome.signals.deviceConnected.connect(lambda: self.showEnable(True))
-        self.app.dReg.dome.signals.deviceDisconnected.connect(lambda: self.showEnable(False))
+        self.app.dReg.dome.signals.deviceConnected.connect(self.domeConnected)
+        self.app.dReg.dome.signals.deviceDisconnected.connect(self.domeDisconnected)
         self.app.dReg.dome.signals.azimuth.connect(self.updateAzimuth)
         self.app.timeMgr.update1s.connect(self.updateShutter)
-        self.parent.ui.domeTransparent.checkStateChanged.connect(self.setTransparency)
+        self.parentWindow.ui.domeTransparent.checkStateChanged.connect(self.setTransparency)
 
+    @Slot(str)
+    def domeConnected(self, deviceName: str) -> None:
+        self.showEnable(True)
+
+    @Slot(str)
+    def domeDisconnected(self, deviceName: str) -> None:
+        self.showEnable(False)
+
+    @Slot()
     def setTransparency(self) -> None:
-        showTransparent = self.parent.ui.domeTransparent.isChecked()
+        showTransparent = self.parentWindow.ui.domeTransparent.isChecked()
         alpha = 0.5 if showTransparent else 1
         for node in [
             "domeWall",
@@ -30,18 +43,19 @@ class SimulatorDome:
             "domeDoor1",
             "domeDoor2",
         ]:
-            nodeM = self.parent.entityModel.get(node)
+            nodeM = self.parentWindow.entityModel.get(node)
             if nodeM:
                 nodeM["material"].setAlpha(alpha)
 
     def showEnable(self, show: bool) -> None:
-        node = self.parent.entityModel.get("domeRoot")
+        node = self.parentWindow.entityModel.get("domeRoot")
         if node:
             node["entity"].setEnabled(show)
             self.app.signals.model.updateDomeSettings.connect(self.updateSize)
         else:
             self.app.signals.model.updateDomeSettings.disconnect(self.updateSize)
 
+    @Slot()
     def updateSize(self) -> None:
         """
         updateSettings resize parts depending on the setting made in the dome tab.
@@ -54,18 +68,20 @@ class SimulatorDome:
         corrZ = -(scale - 1) * 800
 
         for node in ["domeFloor", "domeWall"]:
-            nodeT = self.parent.entityModel[node]["trans"]
+            nodeT = self.parentWindow.entityModel[node]["trans"]
             nodeT.setScale3D(QVector3D(scale, scale, 1))
 
-        nodeT = self.parent.entityModel["domeSphere"]["trans"]
+        nodeT = self.parentWindow.entityModel["domeSphere"]["trans"]
         nodeT.setScale3D(QVector3D(scale, scale, scale))
         nodeT.setTranslation(QVector3D(0, 0, corrZ))
 
+    @Slot(object)
     def updateAzimuth(self, azimuth: float) -> None:
-        node = self.parent.entityModel.get("domeSphere")
+        node = self.parentWindow.entityModel.get("domeSphere")
         if node:
             node["trans"].setRotationZ(-azimuth)
 
+    @Slot()
     def updateShutter(self) -> None:
         if "DOME_SHUTTER.SHUTTER_OPEN" not in self.app.dReg.dome.data:
             return
@@ -79,17 +95,17 @@ class SimulatorDome:
         shiftShutter = width / 2 / scale if isOpen else 0
 
         for nodeItem in ["domeSlit1", "domeSlit2"]:
-            node = self.parent.entityModel.get(nodeItem)
+            node = self.parentWindow.entityModel.get(nodeItem)
             if node:
                 node["trans"].setScale3D(QVector3D(1, scaleSlit, 1))
 
         for nodeItem in ["domeDoor1"]:
-            node = self.parent.entityModel.get(nodeItem)
+            node = self.parentWindow.entityModel.get(nodeItem)
             if node:
                 node["trans"].setTranslation(QVector3D(0, shiftShutter, 0))
 
         for nodeItem in ["domeDoor2"]:
-            node = self.parent.entityModel.get(nodeItem)
+            node = self.parentWindow.entityModel.get(nodeItem)
             if node:
                 node["trans"].setTranslation(QVector3D(0, -shiftShutter, 0))
 
@@ -142,7 +158,7 @@ class SimulatorDome:
                 "mat": Materials().walls,
             },
         }
-        linkModel(model, self.parent.entityModel)
+        linkModel(model, self.parentWindow.entityModel)
         self.showEnable(self.app.dReg.dome.stat is True)
         self.updateAzimuth(0)
         self.updateShutter()

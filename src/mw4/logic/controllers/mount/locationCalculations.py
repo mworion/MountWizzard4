@@ -23,6 +23,6 @@ def buildLocation(
         latitude_degrees=lat.degrees,
         elevation_m=elev,
     )
-    text = f"Location set to:     [{lat.degrees:3.2f} deg, "
-    text += f"{lon.degrees:3.2f} deg, {elev:4.1f} m]"
+    text = f"Location set to:     [{float(lat.degrees):3.2f} deg, "
+    text += f"{float(lon.degrees):3.2f} deg, {elev:4.1f} m]"
     return topo, text

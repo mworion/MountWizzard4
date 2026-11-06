@@ -3,11 +3,13 @@
 # Copyright (c) 2019-2026 mworion
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtHelpers import img2pixmap, setPixmapAlpha
+from PySide6.QtCore import QObject, Slot
 from typing import Any
 
 
-class SettDome:
+class SettDome(QObject):
     def __init__(self, parentW: Any) -> None:
+        super().__init__(parentW)
         self.parentW = parentW
         self.app = parentW.app
         self.msg = parentW.app.signals.ui.msg
@@ -76,6 +78,7 @@ class SettDome:
         self.ui.useDynamicFollowing.setChecked(config.get("useDynamicFollowing", False))
         self.ui.settleTimeDome.setValue(config.get("settleTime", 0))
 
+    @Slot()
     def storeConfig(self) -> None:
         config = self.app.config["SettingDome"]
         config["radius"] = self.ui.domeRadius.value()

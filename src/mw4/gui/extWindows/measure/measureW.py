@@ -9,7 +9,7 @@ from mw4.gui.extWindows.measure.measureAddons import dataPlots
 from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import measure_ui
-from PySide6.QtCore import QMutex
+from PySide6.QtCore import QMutex, Slot
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QListView
 
@@ -69,6 +69,7 @@ class MeasureWindow(MWidget):
         self.storeConfig()
         super().closeEvent(event)
 
+    @Slot()
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
         self.ui.measure.colorChange()
@@ -77,6 +78,7 @@ class MeasureWindow(MWidget):
             self.resetPlotItem(plotItem, values)
         self.drawMeasure()
 
+    @Slot()
     def setTitle(self) -> None:
         if self.app.dReg.measure.instance.framework == "csv":
             imagePath = self.app.dReg.measure.run["csv"].csvFilename
@@ -193,6 +195,7 @@ class MeasureWindow(MWidget):
                 plotItem.autoRange()
                 plotItem.enableAutoRange(x=True, y=True)
 
+    @Slot()
     def drawMeasure(self) -> None:
         data = self.app.dReg.measure.data
         if len(data.get("time", [])) < 5:

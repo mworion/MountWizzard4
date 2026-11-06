@@ -15,7 +15,7 @@ from mw4.mountcontrol.convertGui import (
     formatDstrToText,
     formatHstrToText,
 )
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, Slot
 from PySide6.QtWidgets import QWidget
 from skyfield.api import Angle
 from typing import TYPE_CHECKING, Any
@@ -48,6 +48,7 @@ class StepSize(Enum):
 
 class MountMove(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.signals.ui.msg
@@ -180,6 +181,7 @@ class MountMove(TabAddon):
             changeStyleDynamic(self.setButtons[key]["buttonRaDec"], "run", "false")
             changeStyleDynamic(self.setButtons[key]["buttonAltAz"], "run", "false")
 
+    @Slot()
     def onDurationTick(self) -> None:
         if self.countdownRemaining > 0:
             self.ui.stopMoveAll.setText(f"{self.countdownRemaining / 10:.1f}s")
@@ -197,7 +199,7 @@ class MountMove(TabAddon):
     def startDurationTimer(self) -> None:
         if self.durationTimer is not None:
             self.durationTimer.stop()
-        self.durationTimer = QTimer()
+        self.durationTimer = QTimer(self)
         self.durationTimer.setInterval(100)
         self.durationTimer.timeout.connect(self.onDurationTick)
         value = int(self.ui.moveDuration.currentText().lstrip("Duration").rstrip("s"))
@@ -237,6 +239,7 @@ class MountMove(TabAddon):
             self.app.dReg.mount.obsSite.stopMoveWest()
         self.moveDuration()
 
+    @Slot(int, int)
     def moveRaDecHid(self, decVal: int, raVal: int) -> None:
         dirRa = 0
         dirDec = 0
@@ -262,6 +265,7 @@ class MountMove(TabAddon):
     def setSlewSpeed(self, speed: str) -> None:
         self.slewSpeeds[speed]["func"]()
 
+    @Slot()
     def moveAltAzDefault(self) -> None:
         for key in self.setButtons:
             changeStyleDynamic(self.setButtons[key]["buttonAltAz"], "run", "false")
@@ -276,6 +280,7 @@ class MountMove(TabAddon):
         targetAz = Angle(degrees=(obs.Az.degrees + coord[1] * step) % 360)
         self.slewInterface.slewTargetAltAz(targetAlt, targetAz)
 
+    @Slot(int)
     def moveAltAzHid(self, value: int) -> None:
         if value == 0b00000000:
             direction = "N"

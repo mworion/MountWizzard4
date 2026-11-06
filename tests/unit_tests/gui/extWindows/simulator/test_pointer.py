@@ -18,7 +18,7 @@ def function(qapp, makeApp):
 
 
 def test_showEnable_1(function):
-    function.parent.entityModel["pointer"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["pointer"] = {"entity": Qt3DCore.QEntity()}
     function.showEnable()
 
 
@@ -56,14 +56,14 @@ def test_create_1(function):
 
 
 def test_showEnable_2(function):
-    with mock.patch.object(function.parent, "entityModel", {}):
+    with mock.patch.object(function.parentWindow, "entityModel", {}):
         function.showEnable()
 
 
 def test_updatePositions_4(function):
     function.app.dReg.d["mount"].stat = True
     with (
-        mock.patch.object(function.parent, "entityModel", {}),
+        mock.patch.object(function.parentWindow, "entityModel", {}),
         mock.patch.object(
             function.app.mount,
             "calcTransformationMatricesActual",

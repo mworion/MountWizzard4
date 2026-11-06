@@ -6,7 +6,7 @@ import time
 from mw4.base.appProtocol import AppProtocol
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import message_ui
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QBrush, QCloseEvent, QFont
 from PySide6.QtWidgets import QTableWidgetItem
 
@@ -44,6 +44,7 @@ class MessageWindow(MWidget):
         self.storeConfig()
         super().closeEvent(event)
 
+    @Slot()
     def clearMessageTable(self) -> None:
         mesTab = self.ui.messageTable
         mesTab.setRowCount(0)
@@ -72,6 +73,7 @@ class MessageWindow(MWidget):
                 if item is not None:
                     item.setForeground(self.messColor[0])
 
+    @Slot()
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
         self.setupMessage()
@@ -90,6 +92,7 @@ class MessageWindow(MWidget):
         item.setForeground(self.messColor[prio])
         self.ui.messageTable.setItem(row, column, item)
 
+    @Slot()
     def writeMessage(self) -> None:
         while not self.app.messageQueue.empty():
             prio, source, mType, message = self.app.messageQueue.get()

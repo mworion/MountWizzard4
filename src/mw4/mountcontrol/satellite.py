@@ -219,7 +219,7 @@ class Satellite:
         else:
             return False
 
-        self.trajectoryParams.flip = bool(flip == "F")
+        self.trajectoryParams.flip = flip == "F"
         self.trajectoryParams.jdStart = valueToFloat(start)
         self.trajectoryParams.jdEnd = valueToFloat(end)
         return True

@@ -9,7 +9,7 @@ from mw4.gui.extWindows.hemisphere.hemisphereDraw import HemisphereDraw
 from mw4.gui.extWindows.hemisphere.horizonDraw import HorizonDraw
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import hemisphere_ui
-from PySide6.QtCore import QPointF, Qt
+from PySide6.QtCore import QPointF, Qt, Slot
 from PySide6.QtGui import QCloseEvent
 
 
@@ -117,6 +117,7 @@ class HemisphereWindow(MWidget):
             self.ui.altitude.setText("")
             self.unsetCursor()
 
+    @Slot()
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
         self.ui.hemisphere.colorChange()
@@ -130,10 +131,10 @@ class HemisphereWindow(MWidget):
         plotItem.clear()
         plotItem.showAxes(True, showValues=True)
         plotItem.getViewBox().setMouseMode(pg.ViewBox.PanMode)
-        xTicks = [(x, f"{x:0.0f}") for x in np.arange(30, 331, 30)]
+        xTicks = [(x, f"{float(x):0.0f}") for x in np.arange(30, 331, 30)]
         plotItem.getAxis("bottom").setTicks([xTicks])
         plotItem.getAxis("top").setTicks([xTicks])
-        yTicks = [(x, f"{x:0.0f}") for x in np.arange(10, 90, 10)]
+        yTicks = [(x, f"{float(x):0.0f}") for x in np.arange(10, 90, 10)]
         plotItem.getAxis("left").setTicks([yTicks])
         plotItem.getAxis("right").setTicks([yTicks])
         plotItem.setLabel("bottom", "Azimuth [deg]")
@@ -224,6 +225,7 @@ class HemisphereWindow(MWidget):
         hHigh.setZValue(0)
         plotItem.addItem(hHigh)
 
+    @Slot()
     def redrawAll(self) -> None:
         self.hemisphereDraw.drawTab()
         self.horizonDraw.drawTab()

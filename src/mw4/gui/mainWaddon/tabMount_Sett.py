@@ -24,6 +24,7 @@ from mw4.mountcontrol.convertGui import (
 from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.setting import Setting
+from PySide6.QtCore import Slot
 from skyfield.api import Angle
 from typing import TYPE_CHECKING, Any, ClassVar, cast
 
@@ -58,6 +59,7 @@ class MountSett(TabAddon):
     )
 
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.signals.ui.msg
@@ -90,6 +92,7 @@ class MountSett(TabAddon):
         self.app.dReg.mount.signals.firmwareDone.connect(self.setWOLorAPO)
         self.updateLocGUI(self.app.dReg.mount.obsSite)
 
+    @Slot(object)
     def setWOLorAPO(self, fw: Firmware) -> None:
         self.ui.statusWOL.setEnabled(fw.isHW2012())
         self.ui.label_statusWOL.setEnabled(fw.isHW2012())
@@ -100,6 +103,7 @@ class MountSett(TabAddon):
         self.ui.statusAPO.setVisible(fw.isHW2024())
         self.ui.label_statusAPO.setVisible(fw.isHW2024())
 
+    @Slot(object)
     def updatePointGUI(self, obs: ObsSite) -> None:
         isJ2000 = self.ui.coordsJ2000.isChecked()
         isValid = obs.raJNow is not None
@@ -144,6 +148,7 @@ class MountSett(TabAddon):
         for name in self.TRACKING_BUTTONS:
             changeStyleDynamic(getattr(self.ui, name), "run", "true" if name == mode else "false")
 
+    @Slot(object)
     def updateSettingGUI(self, sett: Setting) -> None:
         self.updateExpireGui(sett.UTCExpire)
         for uiName, fmt, attribute in self.SETTING_TEXT_FIELDS:
@@ -156,6 +161,7 @@ class MountSett(TabAddon):
         guiSetText(self.ui.timeToMeridian, "3.0f", sett.timeToMeridian())
         self.updateTrackingGui(sett)
 
+    @Slot(object)
     def updateLocGUI(self, obs: ObsSite) -> None:
         if obs is None:
             return
@@ -287,6 +293,7 @@ class MountSett(TabAddon):
     def setSettleTimeMount(self) -> bool:
         return self.askAndApplyValue(VALUES["settleTime"])
 
+    @Slot()
     def showTimeDiff(self) -> None:
         delta = self.app.dReg.mount.instance.mountTimeConn.timeDiff * 1000
         rtt = self.app.dReg.mount.instance.mountTimeConn.rtt * 1000

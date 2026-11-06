@@ -156,4 +156,3 @@ CS Michel
 .. |DownLoadsMonth| image::
     https://static.pepy.tech/badge/mountwizzard4/month
     :target: https://pepy.tech/project/mountwizzard4
-

@@ -6,34 +6,39 @@ from mw4.base.appProtocol import HasBuildPoints
 from mw4.gui.extWindows.simulator.materials import Materials
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
+from PySide6.QtCore import QObject, Slot
 from PySide6.QtGui import QVector3D
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 
 
-class SimulatorHorizon:
+class SimulatorHorizon(QObject):
     WALL_RADIUS = 4
     WALL_SPACE = 5
 
-    def __init__(self, parent: Any, app: HasBuildPoints) -> None:
-        super().__init__()
-        self.parent = parent
+    def __init__(self, parent: "SimulatorWindow", app: HasBuildPoints) -> None:
+        super().__init__(parent)
+        self.parentWindow = parent
         self.app = app
-        self.parent.ui.showHorizon.checkStateChanged.connect(self.showEnable)
+        self.parentWindow.ui.showHorizon.checkStateChanged.connect(self.showEnable)
 
+    @Slot()
     def showEnable(self) -> None:
-        isVisible = self.parent.ui.showHorizon.isChecked()
-        node = self.parent.entityModel.get("horizonRoot")
+        isVisible = self.parentWindow.ui.showHorizon.isChecked()
+        node = self.parentWindow.entityModel.get("horizonRoot")
         if node:
             node["entity"].setEnabled(isVisible)
 
     def clear(self) -> None:
-        node = self.parent.entityModel.get("horizonRoot")
+        node = self.parentWindow.entityModel.get("horizonRoot")
         if not node:
             return
 
         node["entity"].setParent(None)
-        del self.parent.entityModel["horizonRoot"]["entity"]
-        del self.parent.entityModel["horizonRoot"]
+        del self.parentWindow.entityModel["horizonRoot"]["entity"]
+        del self.parentWindow.entityModel["horizonRoot"]
 
     def createWall(self, parentEntity, alt, az) -> Qt3DCore.QEntity:
         e1 = Qt3DCore.QEntity()
@@ -73,9 +78,9 @@ class SimulatorHorizon:
 
         self.clear()
         horizonEntity = Qt3DCore.QEntity()
-        parent = self.parent.entityModel["ref_fusion"]["entity"]
+        parent = self.parentWindow.entityModel["ref_fusion"]["entity"]
         horizonEntity.setParent(parent)
-        self.parent.entityModel["horizonRoot"] = {"entity": horizonEntity}
+        self.parentWindow.entityModel["horizonRoot"] = {"entity": horizonEntity}
 
         for alt, az in zip(horizonAlt, horizonAz, strict=True):
             self.createWall(horizonEntity, alt, az)

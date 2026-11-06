@@ -4,23 +4,29 @@
 from mw4.base.appProtocol import HasDevices
 from mw4.gui.extWindows.simulator.materials import Materials
 from mw4.gui.extWindows.simulator.tools import linkModel
+from PySide6.QtCore import QObject, Slot
 from PySide6.QtGui import QVector3D
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 
 
-class SimulatorPointer:
-    def __init__(self, parent: Any, app: HasDevices) -> None:
-        super().__init__()
-        self.parent = parent
+class SimulatorPointer(QObject):
+    def __init__(self, parent: "SimulatorWindow", app: HasDevices) -> None:
+        super().__init__(parent)
+        self.parentWindow = parent
         self.app = app
-        self.parent.ui.showPointer.checkStateChanged.connect(self.showEnable)
+        self.parentWindow.ui.showPointer.checkStateChanged.connect(self.showEnable)
 
+    @Slot()
     def showEnable(self) -> None:
-        isVisible = self.parent.ui.showPointer.isChecked()
-        node = self.parent.entityModel.get("pointerRoot")
+        isVisible = self.parentWindow.ui.showPointer.isChecked()
+        node = self.parentWindow.entityModel.get("pointerRoot")
         if node:
             node["entity"].setEnabled(isVisible)
 
+    @Slot()
     def updatePositions(self) -> None:
         if not self.app.dReg.mount.stat:
             return
@@ -34,7 +40,7 @@ class SimulatorPointer:
         intersect *= 1000
         intersect[2] += 1000
 
-        node = self.parent.entityModel.get("pointerDot")
+        node = self.parentWindow.entityModel.get("pointerDot")
         if node:
             vec = QVector3D(intersect[0], intersect[1], intersect[2])
             node["trans"].setTranslation(vec)
@@ -51,6 +57,6 @@ class SimulatorPointer:
                 "mat": Materials().pointer,
             },
         }
-        linkModel(model, self.parent.entityModel)
+        linkModel(model, self.parentWindow.entityModel)
         self.updatePositions()
         self.showEnable()

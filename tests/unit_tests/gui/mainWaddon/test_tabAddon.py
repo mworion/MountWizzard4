@@ -3,6 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import pytest
 from mw4.gui.mainWaddon.tabAddon import TabAddon
+from PySide6.QtCore import QObject
 
 
 def test_tabaddon_class_exists():
@@ -12,6 +13,13 @@ def test_tabaddon_class_exists():
 def test_tabaddon_can_instantiate():
     addon = TabAddon()
     assert addon is not None
+
+
+def test_tabaddon_can_be_owned_by_main_window_qobject():
+    parent = QObject()
+    addon = TabAddon(parent)
+    assert addon.parent() is parent
+    assert isinstance(addon, QObject)
 
 
 def test_tabaddon_instance_is_tabaddon_type():

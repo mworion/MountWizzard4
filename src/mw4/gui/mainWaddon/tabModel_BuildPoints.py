@@ -5,6 +5,7 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.logic.controllers.model.buildpointsSupport import generateUntilTarget, querySimbad
+from PySide6.QtCore import Slot
 from skyfield.api import Angle
 from typing import TYPE_CHECKING
 
@@ -13,7 +14,8 @@ if TYPE_CHECKING:
 
 
 class BuildPoints(TabAddon):
-    def __init__(self, mainW: "MainWindow") -> None:
+    def __init__(self, mainW: "MainWindow") -> None:  # noqa: PLR0915
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.signals.ui.msg
@@ -318,6 +320,7 @@ class BuildPoints(TabAddon):
         if self.ui.avoidFlip.isChecked():
             self.app.buildPoint.sortActualPierside()
 
+    @Slot()
     def buildPointsChanged(self) -> None:
         self.lastGenerator = "none"
 
@@ -332,6 +335,7 @@ class BuildPoints(TabAddon):
             self.sortedGenerators[self.lastGenerator]()
         self.processPoints()
 
+    @Slot()
     def setupDsoGui(self) -> None:
         isOnline = self.app.isOnline
         self.ui.generateQuery.setEnabled(isOnline)

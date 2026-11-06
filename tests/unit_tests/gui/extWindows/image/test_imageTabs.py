@@ -12,7 +12,7 @@ from mw4.gui.extWindows.image.imageW import ImageWindow
 from mw4.gui.utilities.pyqtgraph.gCustomViewBox import CustomViewBox
 from mw4.logic.controllers.imageWindow.photometry import Photometry
 from mw4.logic.file.fileHandler import FileHandler
-from PySide6.QtCore import QRectF
+from PySide6.QtCore import QObject, QRectF
 from PySide6.QtWidgets import QApplication
 from unittest import mock
 
@@ -30,6 +30,10 @@ def function(qapp, makeApp):
 
 def test_colorChange(function):
     function.colorChange()
+
+
+def test_imageTabs_has_image_window_as_qobject_parent(function):
+    assert QObject.parent(function) is function.imageWindow
 
 
 def test_getImageSourceRange(function):
@@ -69,7 +73,7 @@ def test_clearImageTab(function):
 
 
 def test_showTabImage_1(function):
-    function.fileHandler = FileHandler(function.parent)
+    function.fileHandler = FileHandler(function.imageWindow)
     function.fileHandler.image = np.random.rand(100, 100) + 1
     function.fileHandler.wcs = wcs.WCS()
     with (
@@ -81,14 +85,14 @@ def test_showTabImage_1(function):
 
 
 def test_showTabImage_2(function):
-    function.fileHandler = FileHandler(function.parent)
+    function.fileHandler = FileHandler(function.imageWindow)
     function.fileHandler.image = None
     function.showImage()
 
 
 def test_showTabHFR(function):
     function.ui.isoLayer.setChecked(True)
-    function.photometry = Photometry(function.parent, np.zeros((1, 1)))
+    function.photometry = Photometry(function.imageWindow, np.zeros((1, 1)))
     function.photometry.hfr = np.array(np.random.rand(100, 100) + 1)
     function.photometry.hfrPercentile = 0
     function.photometry.hfrMedian = 0
@@ -97,7 +101,7 @@ def test_showTabHFR(function):
 
 
 def test_showTabTiltSquare(function):
-    function.photometry = FileHandler(function.parent)
+    function.photometry = FileHandler(function.imageWindow)
     function.photometry.hfr = np.linspace(20, 30, 20)
     function.photometry.hfrMedian = 1
     function.photometry.hfrInner = 1
@@ -110,7 +114,7 @@ def test_showTabTiltSquare(function):
 
 
 def test_showTabTiltTriangle(function):
-    function.photometry = FileHandler(function.parent)
+    function.photometry = FileHandler(function.imageWindow)
     function.photometry.hfr = np.linspace(20, 30, 20)
     function.photometry.hfrMedian = 1
     function.photometry.hfrInner = 1
@@ -124,7 +128,7 @@ def test_showTabTiltTriangle(function):
 
 def test_showTabRoundness(function):
     function.ui.isoLayer.setChecked(True)
-    function.photometry = FileHandler(function.parent)
+    function.photometry = FileHandler(function.imageWindow)
     function.photometry.roundnessMin = 1
     function.photometry.roundnessMax = 10
     function.photometry.roundnessPercentile = 10
@@ -134,7 +138,7 @@ def test_showTabRoundness(function):
 
 
 def test_showTabAberrationInspect(function):
-    function.photometry = FileHandler(function.parent)
+    function.photometry = FileHandler(function.imageWindow)
     function.photometry.image = np.array(np.random.rand(100, 100) + 1)
     function.photometry.aberrationImage = np.array(np.random.rand(100, 100) + 1)
     function.photometry.ABERRATION_SIZE = 1
@@ -143,7 +147,7 @@ def test_showTabAberrationInspect(function):
 
 
 def test_showTabImageSources(function):
-    function.photometry = FileHandler(function.parent)
+    function.photometry = FileHandler(function.imageWindow)
     function.imageSourceRange = QRectF(1, 2, 3, 4)
     function.photometry.xCoord = np.linspace(0, 50, 20)
     function.photometry.yCoord = np.linspace(50, 100, 20)
@@ -171,7 +175,7 @@ def test_showTabImageSources(function):
 
 
 def test_showTabBackground(function):
-    function.photometry = FileHandler(function.parent)
+    function.photometry = FileHandler(function.imageWindow)
     function.photometry.backgroundMin = 0
     function.photometry.backgroundMax = 1
     function.photometry.background = np.random.rand(100, 100) + 1
@@ -179,14 +183,14 @@ def test_showTabBackground(function):
 
 
 def test_showTabBackgroundRMS(function):
-    function.photometry = FileHandler(function.parent)
+    function.photometry = FileHandler(function.imageWindow)
     function.photometry.backgroundRMS = np.random.rand(100, 100) + 1
     function.showBackgroundRMS()
 
 
 def test_showTabHFR_2(function):
     function.ui.isoLayer.setChecked(False)
-    function.photometry = Photometry(function.parent, np.zeros((1, 1)))
+    function.photometry = Photometry(function.imageWindow, np.zeros((1, 1)))
     function.photometry.hfr = np.array(np.random.rand(100, 100) + 1)
     function.photometry.hfrPercentile = 0
     function.photometry.hfrMedian = 0
@@ -197,7 +201,7 @@ def test_showTabHFR_2(function):
 
 def test_showTabRoundness_2(function):
     function.ui.isoLayer.setChecked(False)
-    function.photometry = FileHandler(function.parent)
+    function.photometry = FileHandler(function.imageWindow)
     function.photometry.roundnessMin = 1
     function.photometry.roundnessMax = 10
     function.photometry.roundnessPercentile = 10
@@ -208,7 +212,7 @@ def test_showTabRoundness_2(function):
 
 
 def test_showTabImageSources_2(function):
-    function.photometry = FileHandler(function.parent)
+    function.photometry = FileHandler(function.imageWindow)
     function.imageSourceRange = None
     function.photometry.xCoord = np.linspace(0, 50, 20)
     function.photometry.yCoord = np.linspace(50, 100, 20)

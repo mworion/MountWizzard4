@@ -11,7 +11,7 @@ from mw4.logic.controllers.model.modelRunSupport import loadModelsFromFile
 from mw4.logic.controllers.model.modelTypes import ModelRunConfig, ModelTiming
 from mw4.mountcontrol.progStar import ProgStar
 from pathlib import Path
-from PySide6.QtCore import QObject, Qt, QTimer, Signal
+from PySide6.QtCore import QObject, Qt, QTimer, Signal, Slot
 from skyfield.api import Angle, Star
 from typing import Any
 
@@ -73,16 +73,19 @@ class ModelData(QObject):
         self.app.dReg.camera.signals.saved.disconnect(self.startNewPlateSolve)
         self.app.dReg.plateSolve.signals.result.disconnect(self.collectPlateSolveResult)
 
+    @Slot(Path)
     def setImageExposed(self, imagePath: Path) -> None:
         self.log.debug("%-15s: %s", "Img exposed", imagePath.stem)
         if self.config.modelTiming == ModelTiming.PROGRESSIVE:
             self.startSlew.emit()
 
+    @Slot(Path)
     def setImageDownloaded(self, imagePath: Path) -> None:
         self.log.debug("%-15s: %s", "Img downloaded", imagePath.stem)
         if self.config.modelTiming == ModelTiming.NORMAL:
             self.startSlew.emit()
 
+    @Slot(Path)
     def setImageSaved(self, imagePath: Path) -> None:
         self.log.debug("%-15s: %s", "Img saved", imagePath.stem)
         if self.config.modelTiming == ModelTiming.CONSERVATIVE:
@@ -93,16 +96,19 @@ class ModelData(QObject):
             self.slewPending = False
             self.startNewImageExposure()
 
+    @Slot()
     def setMountSlewed(self) -> None:
         self.mountSlewed = True
         if not self.app.dReg.dome.stat:
             self.domeSlewed = True
         self.startExposureAfterSlew()
 
+    @Slot()
     def setDomeSlewed(self) -> None:
         self.domeSlewed = True
         self.startExposureAfterSlew()
 
+    @Slot()
     def startNewSlew(self) -> None:
         nextKey = next(self.modelRunIterator, None)
         self.modelRunKey = nextKey or ""
@@ -178,6 +184,7 @@ class ModelData(QObject):
             return
         self.timerExposure.start(int(self.config.waitTimeExposure * 1000))
 
+    @Slot()
     def checkPauseAndExpose(self) -> None:
         if self.cancelBatch or self.endBatch:
             return
@@ -198,6 +205,7 @@ class ModelData(QObject):
         self.app.dReg.camera.instance.expose(imagePath, exposureTime, binning)
         self.statusExpose.emit([imagePath.stem, exposureTime, binning])
 
+    @Slot(Path)
     def startNewPlateSolve(self, imagePath: Path) -> None:
         self.log.debug("Start solve    : %s", imagePath.stem)
         self.app.dReg.plateSolve.instance.solve(imagePath)
@@ -218,6 +226,7 @@ class ModelData(QObject):
         }
         self.progress.emit(progressData)
 
+    @Slot(object)
     def collectPlateSolveResult(self, result: dict[str, Any]) -> None:
         key = result["imagePath"].stem
         item = self.modelBuildData[key]

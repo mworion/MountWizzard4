@@ -17,7 +17,7 @@ from mw4.logic.controllers.satellites.satellite_calculations import (
     findSunlit,
 )
 from mw4.logic.databaseProcessing.sourceURL import satSourceURLs
-from PySide6.QtCore import QObject, Qt, Signal
+from PySide6.QtCore import QObject, Qt, Signal, Slot
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 from skyfield.api import EarthSatellite, Time
 from skyfield.toposlib import GeographicPosition
@@ -38,7 +38,7 @@ class SatSearch(SatData):
     SATFILTERS: ClassVar = ["Starlink", "Cosmos", "Iridium", "Kuiper", "Qianfan", "Hulianwang"]
 
     def __init__(self, mainW: "MainWindow") -> None:
-        super().__init__()
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.threadPool = mainW.app.threadPool
@@ -136,7 +136,6 @@ class SatSearch(SatData):
             self.satellites.objects[sat.name] = sat
 
     def processSatelliteSource(self) -> None:
-        self.ui.listSats.setRowCount(0)
         self.satellites.objects.clear()
         if self.satellites.dest.suffix == ".json":
             self.processLoadJsonOMM()
@@ -146,6 +145,7 @@ class SatSearch(SatData):
             self.msg.emit(2, "Satellite", "Error", "Unsupported file format")
             return
 
+    @Slot(int, int, object, int)
     def setListSatsEntry(
         self, row: int, col: int, entry: QTableWidgetItem, generation: int
     ) -> None:
@@ -195,9 +195,11 @@ class SatSearch(SatData):
             entry.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
             self.signals.setSatListItem.emit(row, 8, entry, generation)
 
+    @Slot(int, bool)
     def updateVisibilityRow(self, row: int, hide: bool) -> None:
         self.ui.listSats.setRowHidden(row, hide)
 
+    @Slot(str, bool)
     def updateTitleRunning(self, title: str, running: bool) -> None:
         changeStyleDynamic(self.ui.satFilterGroup, "run", "true" if running else "false")
         self.ui.satFilterGroup.setTitle(title)
@@ -312,6 +314,7 @@ class SatSearch(SatData):
                 show = show and satFilter.lower() not in name
         return show
 
+    @Slot()
     def fillSatListName(self) -> None:
         self.calcGeneration += 1
         generation = self.calcGeneration

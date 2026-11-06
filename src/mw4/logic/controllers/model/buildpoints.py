@@ -337,11 +337,6 @@ class BuildPoint:
         if numbCols % 2:
             return False
 
-        minAlt = int(minAlt)
-        maxAlt = int(maxAlt)
-        numbCols = int(numbCols)
-        numbRows = int(numbRows)
-
         stepAlt = int((maxAlt - minAlt) / (numbRows - 1))
         eastAlt = list(range(minAlt, maxAlt + 1, stepAlt))
         westAlt = list(reversed(eastAlt))
@@ -365,9 +360,7 @@ class BuildPoint:
             return False
 
         stepAz = int(360 / numberBase)
-        altBase = int(altBase)
-        azBase = int(azBase) % stepAz
-        numberBase = int(numberBase)
+        azBase = azBase % stepAz
 
         self.clearBuildP()
         for i in range(numberBase):

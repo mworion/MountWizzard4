@@ -10,6 +10,7 @@ from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import analyse_ui
 from mw4.logic.controllers.analyse.analyseData import AnalyseData
 from pathlib import Path
+from PySide6.QtCore import Slot
 from PySide6.QtGui import QCloseEvent
 from typing import Any
 
@@ -61,6 +62,7 @@ class AnalyseWindow(MWidget):
     def showWindow(self) -> None:
         self.show()
 
+    @Slot()
     def colorChange(self) -> None:
         self.wIcon(self.ui.load, "load")
         self.setStyleSheet(self.mw4Style)
@@ -76,10 +78,12 @@ class AnalyseWindow(MWidget):
         if loadFilePath.is_file():
             self.processModel(loadFilePath)
 
+    @Slot(Path)
     def showAnalyse(self, path: Path) -> None:
         if path.is_file():
             self.processModel(path)
 
+    @Slot()
     def drawAll(self) -> None:
         if not self.analyseData.errorIndex.size:
             return

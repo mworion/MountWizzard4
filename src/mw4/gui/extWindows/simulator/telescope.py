@@ -4,17 +4,22 @@
 from mw4.base.appProtocol import AppProtocol
 from mw4.gui.extWindows.simulator.materials import Materials
 from mw4.gui.extWindows.simulator.tools import linkModel
+from PySide6.QtCore import QObject, Slot
 from PySide6.QtGui import QVector3D
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 
 
-class SimulatorTelescope:
-    def __init__(self, parent: Any, app: AppProtocol) -> None:
-        super().__init__()
-        self.parent = parent
+class SimulatorTelescope(QObject):
+    def __init__(self, parent: "SimulatorWindow", app: AppProtocol) -> None:
+        super().__init__(parent)
+        self.parentWindow = parent
         self.app = app
         self.app.signals.model.updateDomeSettings.connect(self.updatePositions)
 
+    @Slot()
     def updatePositions(self) -> None:
         """
         updateSettings resize parts depending on the setting made in the dome
@@ -30,12 +35,12 @@ class SimulatorTelescope:
         east = self.app.dReg.mount.geometry.offEast * 1000
         vertical = self.app.dReg.mount.geometry.offVert * 1000
 
-        node = self.parent.entityModel.get("mountBase")
+        node = self.parentWindow.entityModel.get("mountBase")
         if node:
             node["trans"].setTranslation(QVector3D(north, -east, 1000 + vertical))
 
         latitude = self.app.dReg.mount.obsSite.location.latitude.degrees
-        node = self.parent.entityModel.get("lat")
+        node = self.parentWindow.entityModel.get("lat")
         if node:
             node["trans"].setRotationY(-abs(latitude))
         self.updateOtaPositions()
@@ -45,32 +50,33 @@ class SimulatorTelescope:
         cfg = self.app.config["SettingDome"]
         lat = -cfg.get("offLAT", 0) * 1000
 
-        node = self.parent.entityModel.get("gem")
+        node = self.parentWindow.entityModel.get("gem")
         if node:
             node["mesh"].setYExtent(abs(lat) + 80)
             node["trans"].setTranslation(QVector3D(159.0, lat / 2, 338.5))
 
-        node = self.parent.entityModel.get("gemCorr")
+        node = self.parentWindow.entityModel.get("gemCorr")
         if node:
             node["trans"].setTranslation(QVector3D(0.0, lat / 2, 0.0))
 
         scaleRad = (offPlateOTA - 25) / 55
         scaleRad = max(scaleRad, 1)
 
-        node = self.parent.entityModel.get("otaRing")
+        node = self.parentWindow.entityModel.get("otaRing")
         if node:
             node["trans"].setScale3D(QVector3D(1.0, scaleRad, scaleRad))
             node["trans"].setTranslation(QVector3D(0.0, 0.0, -10 * scaleRad + 10))
 
-        node = self.parent.entityModel.get("otaTube")
+        node = self.parentWindow.entityModel.get("otaTube")
         if node:
             node["trans"].setScale3D(QVector3D(1.0, scaleRad, scaleRad))
             node["trans"].setTranslation(QVector3D(0.0, 0.0, -10 * scaleRad + 10))
 
-        node = self.parent.entityModel.get("otaImagetrain")
+        node = self.parentWindow.entityModel.get("otaImagetrain")
         if node:
             node["trans"].setTranslation(QVector3D(0, 0, 65 * (scaleRad - 1)))
 
+    @Slot()
     def updateRotation(self) -> None:
         """
         updateMount moves ra and dec axis according to the values in the mount.
@@ -82,11 +88,11 @@ class SimulatorTelescope:
         if not (angRA and angDEC):
             return
 
-        node = self.parent.entityModel.get("ra")
+        node = self.parentWindow.entityModel.get("ra")
         if node:
             node["trans"].setRotationX(-angRA.degrees + 90)
 
-        node = self.parent.entityModel.get("dec")
+        node = self.parentWindow.entityModel.get("dec")
         if node:
             node["trans"].setRotationZ(-angDEC.degrees)
 
@@ -223,7 +229,7 @@ class SimulatorTelescope:
         if lat < 0:
             model["mountBase"]["rot"] = [0, 0, 180]
 
-        linkModel(model, self.parent.entityModel)
+        linkModel(model, self.parentWindow.entityModel)
         self.updateRotation()
         self.updatePositions()
         return True

@@ -9,6 +9,7 @@ from contextlib import ExitStack
 from mw4.base.appProtocol import AppProtocol
 from mw4.gui.extWindows.analyse.altAzPlots import AltAzPlots
 from mw4.gui.extWindows.analyse.analyseW import AnalyseWindow
+from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QApplication
 from unittest import mock
 
@@ -64,3 +65,8 @@ def test_colorChange(function: AltAzPlots) -> None:
         function.colorChange()
     for plot in plots:
         plot.assert_called_once()
+
+
+def test_parentAndReceiverRegistration(function: AltAzPlots) -> None:
+    assert isinstance(QObject.parent(function), AnalyseWindow)
+    assert function.metaObject().indexOfSlot("drawHorizon()") >= 0

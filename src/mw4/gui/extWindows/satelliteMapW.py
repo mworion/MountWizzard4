@@ -10,7 +10,7 @@ from mw4.base.appProtocol import AppProtocol
 from mw4.gui.utilities.qtGenerateSprites import makeSat
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import satelliteMap_ui
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QCloseEvent
 from skyfield.api import EarthSatellite, Timescale, wgs84
 from skyfield.toposlib import GeographicPosition
@@ -62,6 +62,7 @@ class SatelliteMapWindow(MWidget):
         self.app.signals.model.sendSatelliteData.emit([], [])
         self.show()
 
+    @Slot()
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
         self.ui.satEarth.colorChange()
@@ -86,6 +87,7 @@ class SatelliteMapWindow(MWidget):
             offset += n
         return world
 
+    @Slot(object, object)
     def updatePositions(self, now: Timescale, location: GeographicPosition) -> None:
         if self.satellite is None:
             return
@@ -114,7 +116,7 @@ class SatelliteMapWindow(MWidget):
     def prepareEarth(plotItem: pg.PlotItem) -> None:
         plotItem.showAxes(True, showValues=True)
         plotItem.getViewBox().setMouseMode(pg.ViewBox.PanMode)
-        xTicks = [(x, f"{x:0.0f}") for x in np.arange(-135, 136, 45)]
+        xTicks = [(x, f"{float(x):0.0f}") for x in np.arange(-135, 136, 45)]
         plotItem.getAxis("bottom").setTicks([xTicks])
         plotItem.getAxis("top").setTicks([xTicks])
         plotItem.setLabel("bottom", "Longitude [deg]")
@@ -229,6 +231,7 @@ class SatelliteMapWindow(MWidget):
         self.plotSatPosEarth = self.prepareEarthSatellite(plotItem, satellite)
         self.drawEarthTrajectory(plotItem, satellite)
 
+    @Slot(object, object, object, object, str)
     def drawSatellite(
         self,
         satellite: EarthSatellite,

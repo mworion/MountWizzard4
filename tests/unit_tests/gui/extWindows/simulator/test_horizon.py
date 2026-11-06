@@ -18,23 +18,23 @@ def function(qapp, makeApp):
 
 @pytest.fixture(autouse=True)
 def prepareFunctionState(function):
-    function.parent.entityModel = {}
+    function.parentWindow.entityModel = {}
     function.app.buildPoint.horizonP = None
     function.app.data.horizonP = None
 
 
 def test_showEnable_1(function):
-    function.parent.entityModel["horizonRoot"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["horizonRoot"] = {"entity": Qt3DCore.QEntity()}
     function.showEnable()
 
 
 def test_clear_1(function):
-    function.parent.entityModel = {}
+    function.parentWindow.entityModel = {}
     function.clear()
 
 
 def test_clear_2(function):
-    function.parent.entityModel["horizonRoot"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["horizonRoot"] = {"entity": Qt3DCore.QEntity()}
     function.clear()
 
 
@@ -44,13 +44,13 @@ def test_createWall_1(function):
 
 
 def test_create_1(function):
-    function.parent.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
     function.app.data.horizonP = None
     function.create()
 
 
 def test_create_2(function):
-    function.parent.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
     function.app.data.horizonP = [(0, 0), (10, 10)]
     with (
         mock.patch.object(function, "clear"),
@@ -61,8 +61,8 @@ def test_create_2(function):
 
 
 def test_create_3(function):
-    function.parent.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
-    function.parent.entityModel["horizonRoot"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["horizonRoot"] = {"entity": Qt3DCore.QEntity()}
     horizonPoints = [
         (30, 0),
         (30, 45),
@@ -76,9 +76,9 @@ def test_create_3(function):
     function.app.buildPoint.horizonP = horizonPoints
     with mock.patch.object(function, "showEnable"):
         function.create()
-    assert "horizonRoot" in function.parent.entityModel
+    assert "horizonRoot" in function.parentWindow.entityModel
 
 
 def test_showEnable_2(function):
-    function.parent.entityModel = {}
+    function.parentWindow.entityModel = {}
     function.showEnable()

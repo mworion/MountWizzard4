@@ -13,7 +13,7 @@ from mw4.logic.controllers.model.modelRun import ModelData
 from mw4.logic.controllers.model.modelRunSupport import buildSaveData, saveModelFile
 from mw4.logic.controllers.model.modelTypes import ModelRunConfig, ModelTiming
 from pathlib import Path
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, Slot
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -24,6 +24,7 @@ class Model(TabAddon):
     CLEAR_WAIT_MS = 1000
 
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.signals.ui.msg
@@ -76,6 +77,7 @@ class Model(TabAddon):
         self.mainW.wIcon(self.ui.endModel, "stop_m")
         self.mainW.wIcon(self.ui.dataModel, "choose")
 
+    @Slot()
     def setWaitTimeFlip(self) -> None:
         self.app.dReg.mount.instance.waitTimeFlip = self.ui.waitTimeMountFlip.value()
 
@@ -95,6 +97,7 @@ class Model(TabAddon):
     def endBatch(self) -> None:
         self.modelData.endRun()
 
+    @Slot(int)
     def setModelOperationMode(self, status: int) -> None:
         if status == OperationStatus.MODEL_BATCH:
             self.ui.runModelGroup.setEnabled(True)
@@ -131,9 +134,11 @@ class Model(TabAddon):
             "latitude": mount.obsSite.location.latitude.degrees,
         }
 
+    @Slot(int, int)
     def setPointStatus(self, index: int, status: int) -> None:
         self.app.buildPoint.setStatusBuildP(index, status)
 
+    @Slot()
     def programModelToMountFinish(self) -> None:
         self.app.dReg.mount.signals.getModelDone.disconnect(self.programModelToMountFinish)
         self.modelDoneConnected = False
@@ -214,6 +219,7 @@ class Model(TabAddon):
         minutes, secs = divmod(remainder, 60)
         return f"{hours:02d}:{minutes:02d}:{secs:02d}"
 
+    @Slot(object)
     def showProgress(self, progressData: dict) -> None:
         timeFinished = datetime.now().astimezone() + timedelta(
             seconds=progressData["secondsEstimated"]
@@ -224,18 +230,22 @@ class Model(TabAddon):
         self.ui.modelProgress.setValue(progressData["modelPercent"])
         self.ui.numberPoints.setText(f"{progressData['count']} / {progressData['number']}")
 
+    @Slot(object)
     def showStatusExposure(self, statusData: list) -> None:
         t = f"{statusData[0]}, ExpTime: {statusData[1]}s, Binning: {statusData[2]:.0f} "
         self.msg.emit(0, "Model", "Expose", t)
 
+    @Slot(object)
     def showStatusSlew(self, statusData: list) -> None:
         t = f"{statusData[0]}, ALT: {statusData[1]:3.2f}, AZ: {statusData[2]:3.2f}"
         self.msg.emit(0, "Model", "Slew", t)
 
+    @Slot(int)
     def showStatusRetry(self, statusData: int) -> None:
         t = f"Retry run # {statusData:02d} for model run"
         self.msg.emit(1, "Model", "Retry start", t)
 
+    @Slot(object)
     def showStatusSolve(self, item: dict) -> None:
         if item["success"]:
             t = f"{item['imagePath'].stem}, RA: {item['raJ2000S'].hours:.3f}"
@@ -285,6 +295,7 @@ class Model(TabAddon):
         self.setupModelInputData()
         self.modelData.runModel(config)
 
+    @Slot(bool)
     def finishBatch(self, cancelled: bool) -> None:
         if cancelled:
             self.msg.emit(1, "Model", "Run", "Model build cancelled by user")

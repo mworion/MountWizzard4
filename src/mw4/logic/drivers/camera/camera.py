@@ -54,7 +54,6 @@ class Camera(DeviceFacade[AppProtocol, CameraDriver]):
 
     @binning.setter
     def binning(self, value: int) -> None:
-        value = int(value)
         if (1 <= value <= 4) and CCD_BINNING_HOR_BIN in self.data:
             self._binning = value
         else:

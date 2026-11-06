@@ -240,7 +240,6 @@ max-statements = 40
 # declarative: dialog widget setup, attribute lists, field-by-field response parser
 "src/mw4/gui/utilities/nativeQt/qtMessageDialog.py" = ["PLR0915"]
 "src/mw4/logic/controllers/imageWindow/photometry.py" = ["PLR0915"]
-"src/mw4/mountcontrol/setting.py" = ["PLR0915"]
 # Qt widgets / gui types are allowed in the gui, the application entry points and tests
 "src/mw4/gui/**" = ["TID251"]
 "src/mw4/mainApp.py" = ["TID251"]
@@ -296,5 +295,6 @@ no-matching-overload = false
 matches = "src/mw4/gui/**"
 [tool.pyrefly.sub-config.errors]
 not-callable = false
+invalid-argument = false
 no-matching-overload = false
 unsupported-operation = false

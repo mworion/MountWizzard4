@@ -15,7 +15,7 @@ from mw4.logic.controllers.model.modelManage import (
 from mw4.logic.controllers.model.modelRunSupport import findFittingModel
 from mw4.mountcontrol.model import Model
 from pathlib import Path
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Slot
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -24,6 +24,7 @@ if TYPE_CHECKING:
 
 class ModelManage(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.signals.ui.msg
@@ -97,12 +98,14 @@ class ModelManage(TabAddon):
         self.showErrorAscending()
         self.showErrorDistribution()
 
+    @Slot(object)
     def setNameList(self, model: Model) -> None:
         self.ui.nameList.clear()
         for name in model.nameList:
             self.ui.nameList.addItem(name)
         self.ui.nameList.sortItems()
 
+    @Slot()
     def showModelPosition(self) -> None:
         model = self.app.dReg.mount.model
         if not model.numberStars or not model.starList:
@@ -128,6 +131,7 @@ class ModelManage(TabAddon):
         self.ui.modelPositions.plotLoc(self.app.dReg.mount.obsSite.location.latitude.degrees)
         self.ui.modelPositions.scatterItem.sigClicked.connect(self.pointClicked)
 
+    @Slot()
     def showErrorAscending(self) -> None:
         model = self.app.dReg.mount.model
         error = np.array([star.errorRMS for star in model.starList])
@@ -143,6 +147,7 @@ class ModelManage(TabAddon):
             index, y, color=self.mainW.M_GREEN, tip="ErrorRMS: {y:0.1f}".format
         )
 
+    @Slot()
     def showErrorDistribution(self) -> None:
         model = self.app.dReg.mount.model
         error = np.array([x.errorRMS for x in model.starList])
@@ -154,6 +159,7 @@ class ModelManage(TabAddon):
             errorAngle, error, color=self.mainW.M_GREEN, tip="ErrorRMS: {y:0.1f}".format
         )
 
+    @Slot()
     def clearRefreshName(self) -> None:
         changeStyleDynamic(self.ui.refreshName, "run", "false")
         changeStyleDynamic(self.ui.modelNameGroup, "run", "false")
@@ -163,6 +169,7 @@ class ModelManage(TabAddon):
         self.app.dReg.mount.instance.signals.namesDone.disconnect(self.clearRefreshName)
         self.msg.emit(0, "Model", "Manage", "Model names refreshed")
 
+    @Slot()
     def refreshName(self) -> None:
         self.app.dReg.mount.instance.signals.namesDone.connect(self.clearRefreshName)
         self.ui.deleteName.setEnabled(False)
@@ -220,6 +227,7 @@ class ModelManage(TabAddon):
             self.app.dReg.mount.model,
         )
 
+    @Slot()
     def clearRefreshModel(self) -> None:
         changeStyleDynamic(self.ui.refreshModel, "run", "false")
         changeStyleDynamic(self.ui.modelGroup, "run", "false")
@@ -240,6 +248,7 @@ class ModelManage(TabAddon):
             self.ui.originalModel.setText("No fitting model file found")
         self.sendAnalyseFileName()
 
+    @Slot()
     def refreshModel(self) -> None:
         changeStyleDynamic(self.ui.refreshModel, "run", "true")
         changeStyleDynamic(self.ui.modelGroup, "run", "true")
@@ -305,9 +314,11 @@ class ModelManage(TabAddon):
         else:
             self.finishOptimize()
 
+    @Slot()
     def runTargetRMS(self) -> None:
         self.runOptimizeStep(True)
 
+    @Slot()
     def runSingleRMS(self) -> None:
         self.runOptimizeStep(False)
 

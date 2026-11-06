@@ -24,7 +24,7 @@ from mw4.logic.drivers.powerswitch.pegasusUPB import PegasusUPB
 from mw4.logic.drivers.remote.remote import Remote
 from mw4.logic.drivers.telescope.telescope import Telescope
 from mw4.mountcontrol.mount import MountDevice
-from PySide6.QtCore import QObject
+from PySide6.QtCore import QObject, Slot
 from typing import Any, Literal, overload
 
 
@@ -331,6 +331,7 @@ class DeviceRegistry(QObject):
         for entry in self.configurable():
             self.startDevice(entry.name)
 
+    @Slot(str)
     def deviceConnected(self, *_args: Any) -> None:
         name = self.signalsToName.get(id(self.sender()))
         if name is None:
@@ -339,6 +340,7 @@ class DeviceRegistry(QObject):
         self.setStat(name, True)
         self.app.signals.ui.msg.emit(0, "Driver", "Device connected", f"{deviceName}::{name}")
 
+    @Slot(str)
     def deviceDisconnected(self, *_args: Any) -> None:
         name = self.signalsToName.get(id(self.sender()))
         if name is None:

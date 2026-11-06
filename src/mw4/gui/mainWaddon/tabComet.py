@@ -6,7 +6,7 @@ import os
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.logic.databaseProcessing.sourceURL import cometSourceURLs
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem
 from typing import TYPE_CHECKING
 
@@ -16,6 +16,7 @@ if TYPE_CHECKING:
 
 class Comet(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.ui = mainW.ui
@@ -88,7 +89,6 @@ class Comet(TabAddon):
         return name
 
     def processCometSource(self) -> None:
-        self.ui.listComets.setRowCount(0)
         with open(self.comets.dest) as inFile:
             try:
                 comets = json.load(inFile)
@@ -118,6 +118,7 @@ class Comet(TabAddon):
         finally:
             table.setUpdatesEnabled(True)
 
+    @Slot()
     def fillCometListName(self) -> None:
         table = self.ui.listComets
         alignRight = Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter

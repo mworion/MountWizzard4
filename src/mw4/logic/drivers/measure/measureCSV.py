@@ -3,7 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import csv
 import logging
-import PySide6
+import PySide6.QtCore
 from dataclasses import dataclass, field
 from mw4.base.appProtocol import AppProtocol
 from pathlib import Path

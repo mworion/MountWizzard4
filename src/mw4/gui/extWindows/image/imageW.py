@@ -18,6 +18,7 @@ from mw4.logic.file.fileHandler import FileHandler
 from mw4.logic.fits.fitsFunction import getCoordinatesFromHeader, getImageHeader
 from mw4.mountcontrol.convertGui import convertToDMS, convertToHMS
 from pathlib import Path
+from PySide6.QtCore import Slot
 from PySide6.QtGui import QCloseEvent
 from skyfield.api import Angle
 from typing import ClassVar
@@ -146,6 +147,7 @@ class ImageWindow(MWidget):
     def setupIcons(self) -> None:
         self.wIcon(self.ui.load, "load")
 
+    @Slot()
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
         self.tabs.colorChange()
@@ -164,6 +166,7 @@ class ImageWindow(MWidget):
                 continue
             self.ui.tabImage.setTabEnabled(i, False)
 
+    @Slot(int)
     def operationMode(self, status: int) -> None:
         if status == OperationStatus.MODEL_BATCH:
             self.ui.groupImageActions.setEnabled(False)
@@ -188,12 +191,14 @@ class ImageWindow(MWidget):
         self.ui.solve.setEnabled(isPlateSolve and isImage)
         self.ui.abortSolve.setEnabled(isPlateSolve and isImage and self.isSolving)
 
+    @Slot()
     def updateWindowsStats(self) -> None:
         changeStyleDynamic(self.ui.expose, "run", "true" if self.isExposing else "false")
         changeStyleDynamic(self.ui.solve, "run", "true" if self.isSolving else "false")
         self.setButtonExposingStatusEnabled()
         self.setButtonSolvingStatusEnabled()
 
+    @Slot()
     def selectImage(self) -> None:
         self.imageFileName = MWFileDialog.getOpenFileName(
             self,
@@ -211,16 +216,19 @@ class ImageWindow(MWidget):
             self.signals.solveImage.emit(self.imageFileName)
         self.app.signals.ui.showImage.emit(self.imageFileName)
 
+    @Slot()
     def copyLevels(self) -> None:
         level = self.ui.image.barItem.levels()
         for tab in self.TAB_LEVEL:
             getattr(self.ui, f"{tab}").barItem.setLevels(level)
 
+    @Slot()
     def setAspectLocked(self) -> None:
         isLocked = self.ui.aspectLocked.isChecked()
         for tab in self.TAB_ASPECT:
             getattr(self.ui, f"{tab}").p[0].setAspectLocked(isLocked)
 
+    @Slot()
     def resultPhotometry(self) -> None:
         changeStyleDynamic(self.ui.photometryGroup, "run", "false")
         if len(self.photometry.hfr) == 0:
@@ -228,6 +236,7 @@ class ImageWindow(MWidget):
         else:
             self.msg.emit(0, "Image", "Photometry", "Calculation done")
 
+    @Slot()
     def processPhotometry(self) -> None:
         isPhotometry = self.ui.photometryGroup.isChecked()
         self.clearGui()
@@ -240,6 +249,7 @@ class ImageWindow(MWidget):
         snTarget = self.ui.snTarget.currentIndex()
         self.photometry.processPhotometry(self.fileHandler.image, snTarget)
 
+    @Slot(Path)
     def showImage(self, imagePath: Path) -> None:
         if not imagePath.is_file():
             return
@@ -249,6 +259,7 @@ class ImageWindow(MWidget):
         flipV = self.ui.flipV.isChecked()
         self.fileHandler.loadImage(imagePath, flipH, flipV)
 
+    @Slot()
     def showCurrent(self) -> None:
         self.showImage(self.imageFileName)
 
@@ -271,6 +282,7 @@ class ImageWindow(MWidget):
         self.isExposing = False
         self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)
 
+    @Slot(Path)
     def exposeImageDone(self, imagePath: Path) -> None:
         self.msg.emit(0, "Image", "Downloaded", imagePath.stem)
         self.imageFileName = imagePath
@@ -281,6 +293,7 @@ class ImageWindow(MWidget):
             self.ui.expose.clicked.emit()
             return
 
+    @Slot()
     def exposeImage(self) -> None:
         if not self.exposeRaw(
             self.app.dReg.camera.instance.exposureTime1,
@@ -291,6 +304,7 @@ class ImageWindow(MWidget):
         self.isExposing = True
         self.app.dReg.camera.signals.saved.connect(self.exposeImageDone)
 
+    @Slot()
     def abortExpose(self) -> None:
         self.app.dReg.camera.instance.abort()
         self.imageFileName = self.imageFileNameOld
@@ -298,6 +312,7 @@ class ImageWindow(MWidget):
         self.resetImage()
         self.msg.emit(2, "Image", "Expose", "Exposing aborted")
 
+    @Slot(object)
     def solveDone(self, result: dict) -> None:
         self.isSolving = False
         self.app.dReg.plateSolve.signals.result.disconnect(self.solveDone)
@@ -334,9 +349,11 @@ class ImageWindow(MWidget):
         self.isSolving = True
         self.msg.emit(0, "Image", "Solving", imagePath.stem)
 
+    @Slot()
     def solveCurrent(self) -> None:
         self.signals.solveImage.emit(self.imageFileName)
 
+    @Slot()
     def abortSolve(self) -> None:
         self.app.dReg.plateSolve.instance.abort()
         self.app.signals.ui.operationRunning.emit(OperationStatus.IDLE)
@@ -355,10 +372,12 @@ class ImageWindow(MWidget):
             return
         self.slewInterface.slewTargetRaDec(ra, dec)
 
+    @Slot()
     def slewCenter(self) -> None:
         ra, dec = getCoordinatesFromHeader(self.fileHandler.header)
         self.slewDirect(ra, dec)
 
+    @Slot()
     def syncModelToImage(self) -> None:
         if not self.app.dReg.mount.stat:
             self.msg.emit(2, "Image", "Mount", "Mount is not connected")

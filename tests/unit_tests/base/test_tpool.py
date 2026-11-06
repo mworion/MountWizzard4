@@ -2,9 +2,28 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import threading
+from functools import partial
 from mw4.base import tpool
-from PySide6.QtCore import QThreadPool
+from PySide6.QtCore import QObject, QThreadPool, Slot
 from unittest import mock
+
+
+class RegisteredReceiver(QObject):
+    def __init__(self) -> None:
+        super().__init__()
+        self.received: list[tuple[int, int]] = []
+
+    @Slot(object)
+    def receive(self, workerThreadId: int) -> None:
+        self.received.append((workerThreadId, threading.get_ident()))
+
+
+class PlainReceiver:
+    def __init__(self) -> None:
+        self.received: list[tuple[int, int]] = []
+
+    def receive(self, workerThreadId: int) -> None:
+        self.received.append((workerThreadId, threading.get_ident()))
 
 
 def test_workerSignals_hasRequiredAttributes():
@@ -131,6 +150,42 @@ def test_worker_releaseFromPool():
     assert not worker.locked
     assert worker.tryAcquire()
     worker.release()
+
+
+def test_worker_pool_dispatches_registered_dynamic_and_callable_receivers(qtbot):
+    pool = QThreadPool()
+    registered = RegisteredReceiver()
+    plain = PlainReceiver()
+    received = []
+    worker = tpool.Worker(threading.get_ident)
+    worker.signals.result.connect(registered.receive)
+    worker.signals.result.connect(plain.receive)
+    worker.signals.result.connect(
+        lambda workerId: received.append((workerId, threading.get_ident()))
+    )
+    worker.signals.result.connect(
+        partial(
+            lambda values, workerId: values.append((workerId, threading.get_ident())),
+            received,
+        )
+    )
+
+    pool.start(worker)
+    qtbot.waitUntil(
+        lambda: len(registered.received) == 1 and len(plain.received) == 1 and len(received) == 2
+    )
+    assert pool.waitForDone(5000)
+    appThreadId = threading.get_ident()
+    assert registered.received[0][0] != appThreadId
+    assert plain.received[0][0] != appThreadId
+    assert all(threadId == appThreadId for _, threadId in registered.received)
+    assert all(threadId == appThreadId for _, threadId in plain.received)
+    assert all(threadId == appThreadId for _, threadId in received)
+    slotNames = [
+        bytes(registered.metaObject().method(index).methodSignature())
+        for index in range(registered.metaObject().methodCount())
+    ]
+    assert any(signature.startswith(b"receive(") for signature in slotNames)
 
 
 def test_worker_setCallbacks_rebind():
@@ -299,7 +354,7 @@ def test_startWorker_logsDebugWhenBusy(caplog):
 
     worker = tpool.setupWorker(targetFunc)
     worker.tryAcquire()
-    with caplog.at_level("DEBUG"):
+    with caplog.at_level("DEBUG", logger="MW4"):
         result = tpool.startWorker(worker, pool, targetFunc)
     assert result is worker
     assert "Worker targetFunc busy, skipped" in caplog.text
@@ -375,7 +430,7 @@ def test_startWorker_logsElapsedWhenBusy(caplog):
     worker = tpool.setupWorker(targetFunc)
     worker.tryAcquire()
     worker.startTime -= 12
-    with caplog.at_level("DEBUG"):
+    with caplog.at_level("DEBUG", logger="MW4"):
         tpool.startWorker(worker, pool, targetFunc)
     assert "busy, skipped (running for 12." in caplog.text
     worker.release()

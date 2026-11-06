@@ -6,13 +6,15 @@ from mw4.base.ethernet import checkFormatMAC, sendWakeOnLan
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
 from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.setting import Setting
+from PySide6.QtCore import QObject, Slot
 from typing import Any
 
 
-class SettMount:
+class SettMount(QObject):
     log = logging.getLogger("MW4")
 
     def __init__(self, parentW: Any) -> None:
+        super().__init__(parentW)
         self.parentW = parentW
         self.app = parentW.app
         self.msg = parentW.app.signals.ui.msg
@@ -87,7 +89,8 @@ class SettMount:
         self.parentW.wIcon(self.ui.mountOn, "power-on")
         self.parentW.wIcon(self.ui.mountOff, "power-off")
 
-    def setMountCapabilities(self, _) -> None:
+    @Slot(object)
+    def setMountCapabilities(self, firmware: Firmware) -> None:
         self.ui.GroupWOL.setEnabled(self.app.dReg.mount.firmware.isHW2012())
 
     def mountBoot(self) -> None:
@@ -128,6 +131,7 @@ class SettMount:
         else:
             self.msg.emit(2, "Rack", "Command", "Rack computer cannot be booted")
 
+    @Slot(object)
     def setMountMAC(self, sett: Setting | None = None) -> None:
         if sett is None:
             return
@@ -136,11 +140,13 @@ class SettMount:
         self.app.dReg.mount.instance.config.MAC = sett.addressLanMAC
         self.ui.MAC.setText(self.app.dReg.mount.instance.config.MAC)
 
+    @Slot(bool)
     def showMountStatus(self, status: bool) -> None:
         changeStyleDynamic(self.ui.mountOn, "run", status)
         changeStyleDynamic(self.ui.mountOff, "run", not status)
         self.ui.use10micronDef.setEnabled(status)
 
+    @Slot(object)
     def updateFwGui(self, fw: Firmware) -> None:
         guiSetText(self.ui.product, "s", fw.product)
         guiSetText(self.ui.vString, "s", fw.vString)

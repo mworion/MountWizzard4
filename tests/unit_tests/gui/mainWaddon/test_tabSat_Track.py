@@ -5,6 +5,7 @@ import mw4.gui
 import mw4.gui.utilities.qtMain
 import numpy as np
 import pytest
+from mw4.base.tpool import Worker
 from mw4.gui.mainWaddon.astroObjects import AstroObjects
 from mw4.gui.mainWaddon.tabSat_Track import SatTrack
 from mw4.gui.utilities.qtMain import MWidget
@@ -164,6 +165,7 @@ def test_workerShowSatPasses_1(function):
         mock.patch.object(mw4.gui.mainWaddon.tabSat_Track, "calcSatPasses", return_value=satOrbits),
     ):
         function.runnerShowSatPasses()
+        function.clearTrackingParameters.assert_not_called()
 
 
 def test_workerShowSatPasses_2(function):
@@ -250,6 +252,30 @@ def test_showSatPasses_1(function):
         function.showSatPasses()
         mockStart.assert_called_once()
         function.workerPasses.release()
+
+
+def test_showSatPasses_resetsGuiOnlyWhenWorkerCanStart(function):
+    function.satellite = object()
+    function.workerPasses = None
+    with (
+        mock.patch.object(function, "clearTrackingParameters") as clearGui,
+        mock.patch("mw4.gui.mainWaddon.tabSat_Track.startWorker", return_value=None),
+    ):
+        function.showSatPasses()
+    clearGui.assert_called_once()
+
+    busyWorker = Worker(lambda: None)
+    busyWorker.tryAcquire()
+    function.workerPasses = busyWorker
+    with (
+        mock.patch.object(function, "clearTrackingParameters") as clearGui,
+        mock.patch("mw4.gui.mainWaddon.tabSat_Track.startWorker", return_value=busyWorker),
+    ):
+        function.showSatPasses()
+    clearGui.assert_not_called()
+    busyWorker.release()
+    function.workerPasses = None
+    function.satellite = None
 
 
 def test_extractSatelliteData_0(function):

@@ -73,7 +73,7 @@ class ImageBar(PlotBase):
         self.p[0].addItem(ellipse)
         return ellipse
 
-    def addValueAnnotation(self, x: int, y: int, value: str) -> None:
+    def addValueAnnotation(self, x: int, y: int, value: float) -> None:
         d = 3
         posX = x + d
         posY = y + d

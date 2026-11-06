@@ -338,7 +338,7 @@ class Connection:
         client = QTcpSocket()
         client.setSocketOption(QAbstractSocket.SocketOption.LowDelayOption, 1)
         try:
-            client.connectToHost(self.host[0], int(self.host[1]))
+            client.connectToHost(self.host[0], self.host[1])
             if not client.waitForConnected(self.SOCKET_TIMEOUT * 1000):
                 self.closeClientHard(client)
                 self.log.debug("Timeout  [%s]: socket timeout in build client", self.id)

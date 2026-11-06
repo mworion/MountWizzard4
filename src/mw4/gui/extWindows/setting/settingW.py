@@ -14,7 +14,7 @@ from mw4.gui.extWindows.setting.tabSettUpdate import SettUpdate
 from mw4.gui.utilities.qtHelpers import getTabAndIndex, setTabAndIndex
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import setting_ui
-from PySide6.QtCore import QEvent
+from PySide6.QtCore import QEvent, Slot
 
 
 class SettingWindow(MWidget):
@@ -78,6 +78,7 @@ class SettingWindow(MWidget):
         self.tabSettDome.closeEvent()
         super().closeEvent(event)
 
+    @Slot()
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
         self.setupIcons()

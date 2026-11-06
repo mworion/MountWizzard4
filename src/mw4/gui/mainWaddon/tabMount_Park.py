@@ -3,6 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 from functools import partial
 from mw4.gui.mainWaddon.tabAddon import TabAddon
+from PySide6.QtCore import Slot
 from skyfield.api import Angle
 from typing import TYPE_CHECKING
 
@@ -12,6 +13,7 @@ if TYPE_CHECKING:
 
 class Park(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.signals.ui.msg
@@ -32,6 +34,7 @@ class Park(TabAddon):
         config = {"ParkMountAfterSlew": self.mainW.ui.parkMountAfterSlew.isChecked()}
         self.app.config["MountPark"] = config
 
+    @Slot()
     def updateParkButtonText(self) -> None:
         config = self.app.config.get("SettingPark", {})
         for i in range(10):
@@ -41,6 +44,7 @@ class Park(TabAddon):
             icon = "park" if bool(text) else "question"
             self.mainW.wIcon(self.parkButtons[i], icon)
 
+    @Slot()
     def parkAtPos(self) -> None:
         self.app.dReg.mount.signals.slewed.disconnect(self.parkAtPos)
         if not self.app.dReg.mount.obsSite.parkOnActualPosition():

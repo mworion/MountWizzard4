@@ -35,5 +35,5 @@ def test_create_1(function):
 
 
 def test_updatePositions_3(function):
-    with mock.patch.object(function.parent, "entityModel", {}):
+    with mock.patch.object(function.parentWindow, "entityModel", {}):
         function.updatePositions()

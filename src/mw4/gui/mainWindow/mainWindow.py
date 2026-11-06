@@ -20,6 +20,7 @@ from mw4.gui.widgets.main_ui import Ui_MainWindow
 from mw4.logic.profiles.profile import loadConfig, saveConfig
 from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path
+from PySide6.QtCore import Slot
 from PySide6.QtGui import QCloseEvent
 from skyfield.almanac import TWILIGHTS, dark_twilight_day
 
@@ -142,6 +143,7 @@ class MainWindow(MWidget):
         self.wIcon(self.ui.setting, "cogs")
         self.mainWindowAddons.setupIcons()
 
+    @Slot()
     def updateColorSet(self) -> None:
         self.setStyleSheet(self.mw4Style)
         self.setupIcons()
@@ -161,6 +163,7 @@ class MainWindow(MWidget):
             )
         super().closeEvent(event)
 
+    @Slot()
     def quitSave(self) -> None:
         self.saveProfile()
         self.close()
@@ -168,6 +171,7 @@ class MainWindow(MWidget):
     def showWindow(self) -> None:
         self.show()
 
+    @Slot()
     def smartFunctionGui(self) -> None:
         isMountReady = bool(self.app.dReg.mount.stat)
         isModelingReady = all(
@@ -188,6 +192,7 @@ class MainWindow(MWidget):
         self.ui.asteroidProgDatabaseGroup.setEnabled(isMountReady)
         self.ui.progEarthRotationData.setEnabled(isMountReady)
 
+    @Slot()
     def smartTabGui(self) -> None:
         tabChanged = False
         for key in self.smartTabs:
@@ -212,6 +217,7 @@ class MainWindow(MWidget):
             ui = self.ui.toolsTabWidget
             ui.setStyleSheet(ui.styleSheet())
 
+    @Slot()
     def setEnvironDeviceStats(self) -> None:
         isManual = self.ui.refracManual.isChecked()
         if self.app.dReg.mount.setting.statusRefraction != 1:
@@ -229,6 +235,7 @@ class MainWindow(MWidget):
             else:
                 self.app.dReg.setStat("refraction", False)
 
+    @Slot()
     def updateDeviceStats(self) -> None:
         for device, ui in self.deviceStatGui.items():
             entry = self.app.dReg[device]
@@ -242,12 +249,15 @@ class MainWindow(MWidget):
                 changeStyleDynamic(ui, "color", "red")
                 ui.setEnabled(True)
 
+    @Slot(str)
     def updatePlateSolveStatus(self, text: str) -> None:
         self.ui.plateSolveText.setText(text)
 
+    @Slot(str)
     def updateDomeStatus(self, text: str) -> None:
         self.ui.domeText.setText(text)
 
+    @Slot(str)
     def updateCameraStatus(self, text: str) -> None:
         self.ui.cameraText.setText(text)
 
@@ -258,6 +268,7 @@ class MainWindow(MWidget):
         self.ui.controller4.setEnabled(gcStatus)
         self.ui.controller5.setEnabled(gcStatus)
 
+    @Slot()
     def updateThreadAndOnlineStatus(self) -> None:
         mode = "Online" if self.app.isOnline else "Offline"
         moon = self.ui.moonPhaseIllumination.text()
@@ -269,12 +280,14 @@ class MainWindow(MWidget):
         t += f" - Threads:{activeCount:2d} / {maxCount} - Disk free: {self.diskFreePct}%"
         self.ui.statusOnlineGroup.setTitle(t)
 
+    @Slot()
     def updateTwilightAndDisk(self) -> None:
         f = dark_twilight_day(self.app.ephemeris, self.app.dReg.mount.location)
         self.twilightText = TWILIGHTS[int(f(self.app.dReg.mount.obsSite.ts.now()))]
         diskUsage = shutil.disk_usage(self.app.mwGlob["workDir"])
         self.diskFreePct = int(diskUsage[2] / diskUsage[0] * 100)
 
+    @Slot()
     def updateTime(self) -> None:
         now = datetime.now().astimezone()
         self.ui.timeComputer.setText(now.strftime("%H:%M:%S"))
@@ -282,6 +295,7 @@ class MainWindow(MWidget):
         t = f"TZ: {tzT}"
         self.ui.statusTimeGroup.setTitle(t)
 
+    @Slot(ObsSite)
     def updateStatusGUI(self, obs: ObsSite) -> None:
         self.ui.mountText.setText(obs.statusText())
         obsSite = self.app.dReg.mount.obsSite
@@ -314,6 +328,7 @@ class MainWindow(MWidget):
         self.app.dReg.startDevices()
         self.app.timeMgr.start()
 
+    @Slot()
     def loadProfileGUI(self) -> None:
         folder = self.app.mwGlob["configDir"]
         loadProfilePath = MWFileDialog.getOpenFileName(
@@ -339,6 +354,7 @@ class MainWindow(MWidget):
         self.ui.profileName.setText(saveProfilePath.stem)
         self.msg.emit(1, "System", "Profile", f"Saved to {saveProfilePath.stem}")
 
+    @Slot()
     def saveProfileAs(self) -> None:
         folder = self.app.mwGlob["configDir"]
         saveProfilePath = MWFileDialog.getSaveFileName(
@@ -346,10 +362,12 @@ class MainWindow(MWidget):
         )
         self.saveProfileBase(saveProfilePath)
 
+    @Slot()
     def saveProfile(self) -> None:
         saveProfilePath = self.app.mwGlob["configDir"] / (self.ui.profileName.text() + ".yaml")
         self.saveProfileBase(saveProfilePath)
 
+    @Slot(str)
     def remoteCommand(self, command: str) -> None:
         if command == "shutdown":
             self.quitSave()

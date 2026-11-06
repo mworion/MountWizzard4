@@ -6,42 +6,47 @@ from mw4.base.appProtocol import AppProtocol
 from mw4.gui.extWindows.simulator.materials import Materials
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
+from PySide6.QtCore import QObject, Slot
 from PySide6.QtGui import QFont, QVector3D
 from skyfield import functions
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 
 
-class SimulatorBuildPoints:
+class SimulatorBuildPoints(QObject):
     LINE_RADIUS = 0.02
     POINT_SPHERE_RADIUS = 4
     POINT_RADIUS = 0.07
     FONT_SIZE = 50
 
-    def __init__(self, parent: Any, app: AppProtocol) -> None:
-        super().__init__()
-        self.parent = parent
+    def __init__(self, parent: "SimulatorWindow", app: AppProtocol) -> None:
+        super().__init__(parent)
+        self.parentWindow = parent
         self.app = app
         self.points = []
-        self.parent.ui.showBuildPoints.checkStateChanged.connect(self.showEnable)
-        self.parent.ui.showNumbers.checkStateChanged.connect(self.create)
-        self.parent.ui.showSlewPath.checkStateChanged.connect(self.create)
+        self.parentWindow.ui.showBuildPoints.checkStateChanged.connect(self.showEnable)
+        self.parentWindow.ui.showNumbers.checkStateChanged.connect(self.create)
+        self.parentWindow.ui.showSlewPath.checkStateChanged.connect(self.create)
         self.app.signals.hemisphere.updatePointMarker.connect(self.create)
         self.app.signals.hemisphere.drawBuildPoints.connect(self.create)
 
+    @Slot()
     def showEnable(self) -> None:
-        isVisible = self.parent.ui.showBuildPoints.isChecked()
-        node = self.parent.entityModel.get("buildPoints")
+        isVisible = self.parentWindow.ui.showBuildPoints.isChecked()
+        node = self.parentWindow.entityModel.get("buildPoints")
         if node:
             node["entity"].setEnabled(isVisible)
 
     def clear(self) -> None:
-        node = self.parent.entityModel.get("buildPoints")
+        node = self.parentWindow.entityModel.get("buildPoints")
         if not node:
             return
 
         node["entity"].setParent(None)
-        del self.parent.entityModel["buildPoints"]["entity"]
-        del self.parent.entityModel["buildPoints"]
+        del self.parentWindow.entityModel["buildPoints"]["entity"]
+        del self.parentWindow.entityModel["buildPoints"]
         self.points = []
 
     def updatePositions(self) -> None:
@@ -52,7 +57,7 @@ class SimulatorBuildPoints:
         if PB is None or PD is None:
             return
         PB[2] += 1
-        node = self.parent.entityModel.get("buildPoints")
+        node = self.parentWindow.entityModel.get("buildPoints")
         if node:
             node["trans"].setTranslation(QVector3D(PB[0], PB[1], PB[2]))
 
@@ -175,8 +180,8 @@ class SimulatorBuildPoints:
         return (e1, trans1, e2, trans2, mesh2, mat2, e3, trans3)
 
     def loopCreate(self, buildPointEntity: Qt3DCore.QEntity) -> None:
-        isNumber = self.parent.ui.showNumbers.isChecked()
-        isSlewPath = self.parent.ui.showSlewPath.isChecked()
+        isNumber = self.parentWindow.ui.showNumbers.isChecked()
+        isSlewPath = self.parentWindow.ui.showSlewPath.isChecked()
 
         for index, point in enumerate(self.app.buildPoint.buildP):
             status = int(point[2])
@@ -201,6 +206,7 @@ class SimulatorBuildPoints:
             element = {"x": x, "y": y, "z": z, "a": a, "e": e, "l": line}
             self.points.append(element)
 
+    @Slot()
     def create(self) -> bool:
         """
         Create show the point in the sky if checked, in addition if
@@ -212,18 +218,17 @@ class SimulatorBuildPoints:
         """
         if len(self.app.buildPoint.buildP) == 0:
             return False
-        ref_fusion = self.parent.entityModel.get("ref_fusion")
+        ref_fusion = self.parentWindow.entityModel.get("ref_fusion")
         if not ref_fusion:
             return False
 
         self.clear()
         buildPointEntity = Qt3DCore.QEntity()
-        parent = ref_fusion.get("entity")
-        buildPointEntity.setParent(parent)
+        buildPointEntity.setParent(ref_fusion["entity"])
 
         buildPointTransform = Qt3DCore.QTransform()
         buildPointEntity.addComponent(buildPointTransform)
-        self.parent.entityModel["buildPoints"] = {
+        self.parentWindow.entityModel["buildPoints"] = {
             "entity": buildPointEntity,
             "trans": buildPointTransform,
         }

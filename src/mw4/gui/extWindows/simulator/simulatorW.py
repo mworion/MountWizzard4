@@ -18,6 +18,7 @@ from mw4.gui.widgets import simulator_ui
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.Qt3DRender import Qt3DRender
+from PySide6.QtCore import Slot
 from PySide6.QtGui import QCloseEvent, QVector3D
 from PySide6.QtWidgets import QWidget
 from typing import Any
@@ -43,7 +44,7 @@ class SimulatorWindow(MWidget):
         self.horizon = SimulatorHorizon(self, self.app)
         self.buildPoints = SimulatorBuildPoints(self, self.app)
         self.window3D = Qt3DExtras.Qt3DWindow()
-        self.entityModel = {"root": {"entity": Qt3DCore.QEntity()}}
+        self.entityModel: dict[str, dict[str, Any]] = {"root": {"entity": Qt3DCore.QEntity()}}
         self.window3D.setRootEntity(self.entityModel["root"]["entity"])
         self.entityModel["root"]["entity"].setObjectName("root")
         self.window3D.defaultFrameGraph().setClearColor("#00000000")
@@ -149,10 +150,12 @@ class SimulatorWindow(MWidget):
         if debugOverlay is not None:
             debugOverlay.setParent(sortPolicy)
 
+    @Slot()
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
         self.window3D.defaultFrameGraph().setClearColor("#00000000")
 
+    @Slot()
     def limitPositionZ(self) -> None:
         """
         Here we limit the position of the camera to the z=0 plane. This helps
@@ -164,30 +167,35 @@ class SimulatorWindow(MWidget):
         posNew = QVector3D(pos.x(), y, pos.z())
         self.camera.setPosition(posNew)
 
+    @Slot()
     def topView(self) -> None:
         changeStyleDynamic(self.ui.telescopeView, "run", "false")
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(0.001, 5.0, 0.001))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
+    @Slot()
     def topEastView(self) -> None:
         changeStyleDynamic(self.ui.telescopeView, "run", "false")
         self.camera.setViewCenter(QVector3D(0.1, 1.5, 0.1))
         self.camera.setPosition(QVector3D(5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
+    @Slot()
     def topWestView(self) -> None:
         changeStyleDynamic(self.ui.telescopeView, "run", "false")
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(-5.0, 5.0, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
+    @Slot()
     def eastView(self) -> None:
         changeStyleDynamic(self.ui.telescopeView, "run", "false")
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))
         self.camera.setPosition(QVector3D(5.0, 1.5, 0.0))
         self.camera.setUpVector(QVector3D(0.0, 1.0, 0.0))
 
+    @Slot()
     def westView(self) -> None:
         changeStyleDynamic(self.ui.telescopeView, "run", "false")
         self.camera.setViewCenter(QVector3D(0.0, 1.5, 0.0))

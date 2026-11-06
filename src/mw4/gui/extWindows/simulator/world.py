@@ -4,17 +4,22 @@
 from mw4.base.appProtocol import AppProtocol
 from mw4.gui.extWindows.simulator.materials import Materials
 from mw4.gui.extWindows.simulator.tools import linkModel
+from PySide6.QtCore import QObject, Slot
 from PySide6.QtGui import QVector3D
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 
 
-class SimulatorWorld:
-    def __init__(self, parent: Any, app: AppProtocol) -> None:
-        super().__init__()
-        self.parent = parent
+class SimulatorWorld(QObject):
+    def __init__(self, parent: "SimulatorWindow", app: AppProtocol) -> None:
+        super().__init__(parent)
+        self.parentWindow = parent
         self.app = app
         self.app.signals.model.updateDomeSettings.connect(self.updatePositions)
 
+    @Slot()
     def updatePositions(self) -> None:
         """
         :return:
@@ -26,11 +31,11 @@ class SimulatorWorld:
 
         translation = QVector3D(north, -east, 0)
         for nodeItem in ["domeColumn", "domeCompassRose", "domeCompassRoseChar"]:
-            node = self.parent.entityModel.get(nodeItem)
+            node = self.parentWindow.entityModel.get(nodeItem)
             if node:
                 node["trans"].setTranslation(translation)
 
-        node = self.parent.entityModel.get("domeColumn")
+        node = self.parentWindow.entityModel.get("domeColumn")
         if node:
             node["trans"].setScale3D(QVector3D(1, 1, scale))
 
@@ -64,5 +69,5 @@ class SimulatorWorld:
                 "mat": Materials().white,
             },
         }
-        linkModel(model, self.parent.entityModel)
+        linkModel(model, self.parentWindow.entityModel)
         self.updatePositions()

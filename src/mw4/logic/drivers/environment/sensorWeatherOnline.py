@@ -8,6 +8,7 @@ from dataclasses import dataclass, field
 from mw4.base.httpClient import safeRequest
 from mw4.base.tpool import Worker, startWorker
 from pathlib import Path
+from PySide6.QtCore import QObject, Slot
 from typing import Any
 
 
@@ -18,11 +19,12 @@ class DeviceConfigOnlineWeather:
     apiKey: str = field(default="")
 
 
-class SensorWeatherOnline:
+class SensorWeatherOnline(QObject):
     DEVICE_TYPE = "observingconditions"
     log = logging.getLogger("MW4")
 
     def __init__(self, parent: Any) -> None:
+        super().__init__()
         self.parent = parent
         self.app = parent.app
         self.data: dict[str, Any] = parent.data
@@ -108,6 +110,7 @@ class SensorWeatherOnline:
             json.dump(data.json(), f, indent=4)
         return True
 
+    @Slot(bool)
     def sendStatus(self, status: bool) -> None:
         if not status and self.running:
             self.signals.deviceDisconnected.emit(self.config.deviceName)
@@ -138,6 +141,7 @@ class SensorWeatherOnline:
             resultMethod=self.sendStatus,
         )
 
+    @Slot()
     def pollOpenWeatherMapData(self) -> None:
         if not self.config.apiKey or not self.app.isOnline:
             self.sendStatus(False)

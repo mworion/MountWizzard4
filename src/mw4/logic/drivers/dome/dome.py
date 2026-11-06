@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import numpy as np
-import PySide6
+import PySide6.QtCore
 from collections.abc import Callable
 from mw4.base import platformInfo
 from mw4.base.appProtocol import AppProtocol

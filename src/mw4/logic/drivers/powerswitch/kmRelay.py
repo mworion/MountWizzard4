@@ -4,6 +4,7 @@
 import logging
 import re
 import requests
+import requests.auth
 import threading
 from dataclasses import dataclass, field
 from mw4.base.appProtocol import HasThreadPool

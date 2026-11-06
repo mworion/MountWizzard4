@@ -8,7 +8,7 @@ import pytest
 from mw4.gui.extWindows.video.videoBase import VideoWindowBase
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtMain import MWidget
-from PySide6.QtGui import QCloseEvent, QPixmap
+from PySide6.QtGui import QCloseEvent, QImage
 from PySide6.QtWidgets import QApplication
 from unittest import mock
 
@@ -164,15 +164,30 @@ def test_restartVideo(function):
 
 
 def test_receivedImage_1(function):
-    pixmap = QPixmap(100, 100)
+    image = QImage(100, 100, QImage.Format.Format_RGB32)
     function.running = False
-    function.receivedImage(pixmap)
+    function.receivedImage(image)
 
 
 def test_receivedImage_2(function):
-    pixmap = QPixmap(100, 100)
+    image = QImage(100, 100, QImage.Format.Format_RGB32)
     function.running = True
-    function.receivedImage(pixmap)
+    function.receivedImage(image)
+
+
+def test_receivedImage_clearsOnNone(function):
+    function.running = True
+    with mock.patch.object(function.ui.video, "clear") as clear:
+        function.receivedImage(None)
+    clear.assert_called_once()
+
+
+def test_receivedImage_is_registered_qobject_slot(function):
+    methodSignatures = [
+        bytes(function.metaObject().method(index).methodSignature())
+        for index in range(function.metaObject().methodCount())
+    ]
+    assert any(signature.startswith(b"receivedImage(") for signature in methodSignatures)
 
 
 def test_checkAuth(function):

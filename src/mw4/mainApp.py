@@ -13,7 +13,7 @@ from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.logic.controllers.model.buildpoints import BuildPoint
 from mw4.logic.controllers.model.hipparcos import Hipparcos
 from mw4.logic.profiles.profile import loadProfileStart
-from PySide6.QtCore import QObject, QThreadPool
+from PySide6.QtCore import QObject, QThreadPool, Slot
 from PySide6.QtWidgets import QApplication
 from queue import Queue
 from skyfield.api import wgs84
@@ -100,9 +100,11 @@ class MountWizzard4(QObject):
             self.config["topoElev"] = float(location.elevation.m)
         self.config["unitTimeUTC"] = self.timeMgr.unitTimeUTC
 
+    @Slot(int)
     def storeStatusOperationRunning(self, status: int) -> None:
         self.statusOperationRunning = status
 
+    @Slot(int, str, str, str)
     def writeMessageQueue(self, prio: int, source: str, mType: str, message: str) -> None:
         self.log.debug("Message window : %s - %s - %s", source, mType, message)
         self.messageQueue.put((prio, source, mType, message))

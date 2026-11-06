@@ -12,6 +12,7 @@ from mw4.base.cameraKeys import (
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import guiSetText
 from mw4.logic.controllers.imageWindow.imageStats import calcImageStats
+from PySide6.QtCore import Slot
 from range_key_dict import RangeKeyDict
 from typing import TYPE_CHECKING
 
@@ -65,6 +66,7 @@ class ImageStats(TabAddon):
     )
 
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.signals.ui.msg
@@ -88,6 +90,7 @@ class ImageStats(TabAddon):
         config = self.app.config["WindowMain"]
         config["automaticTelescope"] = self.ui.automaticTelescope.isChecked()
 
+    @Slot()
     def updateImageStats(self) -> None:
         focalLength = self.ui.focalLength.value()
         aperture = self.ui.aperture.value()
@@ -157,6 +160,7 @@ class ImageStats(TabAddon):
             value = float(value)
             self.ui.aperture.setValue(value)
 
+    @Slot()
     def updateTelescopeParametersToGuiCyclic(self) -> None:
         if self.ui.automaticTelescope.isChecked():
             self.updateTelescopeParametersToGui()

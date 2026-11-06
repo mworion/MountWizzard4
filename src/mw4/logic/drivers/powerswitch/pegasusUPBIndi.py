@@ -28,7 +28,7 @@ class PegasusUPBIndi(IndiClass):
     @staticmethod
     def parseVersion(version: str) -> tuple[int, ...]:
         try:
-            return tuple(int(x) for x in str(version).split("."))
+            return tuple(int(x) for x in version.split("."))
         except ValueError:
             return (0,)
 

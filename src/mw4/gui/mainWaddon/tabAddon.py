@@ -1,7 +1,10 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
-class TabAddon:
+from PySide6.QtCore import QObject
+
+
+class TabAddon(QObject):
     """Base class for all main-window tab addons.
 
     Declares the four lifecycle hooks dispatched by
@@ -10,6 +13,9 @@ class TabAddon:
     repetitive ``hasattr`` guards previously used by the dispatcher and
     makes the contract explicit.
     """
+
+    def __init__(self, parent: QObject | None = None) -> None:
+        super().__init__(parent)
 
     def initConfig(self) -> None:
         """Load addon-specific state from ``self.app.config``."""

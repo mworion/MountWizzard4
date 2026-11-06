@@ -15,6 +15,7 @@ if TYPE_CHECKING:
 
 class MountCommand(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.signals.ui.msg

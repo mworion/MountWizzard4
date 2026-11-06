@@ -32,8 +32,8 @@ def getImageHeader(imagePath: Path) -> fits.Header:
 
 
 def getCoordinatesFromHeader(header: fits.Header) -> tuple[Angle, Angle]:
-    hasDecimal = bool("RA" in header and "DEC" in header)
-    hasSexagesimal = bool("OBJCTRA" in header and "OBJCTDEC" in header)
+    hasDecimal = "RA" in header and "DEC" in header
+    hasSexagesimal = "OBJCTRA" in header and "OBJCTDEC" in header
 
     if hasDecimal:
         ra = valueToAngle(valueToFloat(header["RA"]) * 24 / 360, preference="hours")

@@ -8,7 +8,7 @@ from mw4.base.appProtocol import AppProtocol
 from mw4.gui.utilities.qtGenerateSprites import makePointer, makeSat
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import satelliteHor_ui
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QCloseEvent
 from skyfield.api import EarthSatellite, Timescale
 from skyfield.toposlib import GeographicPosition
@@ -66,21 +66,25 @@ class SatelliteHorizonWindow(MWidget):
         self.app.signals.model.sendSatelliteData.emit([], [])
         self.show()
 
+    @Slot()
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
         self.ui.satHorizon.colorChange()
         self.app.signals.model.sendSatelliteData.emit([], [])
 
-    def setPointerVisibility(self, status) -> None:
+    @Slot(bool)
+    def setPointerVisibility(self, status: bool) -> None:
         if not status:
             self.pointerAltAz.setVisible(status)
 
+    @Slot()
     def updatePointerAltAz(self) -> None:
         alt = self.obsSite.Alt.degrees
         az = self.obsSite.Az.degrees
         self.pointerAltAz.setData(x=[az], y=[alt])
         self.pointerAltAz.setVisible(True)
 
+    @Slot(object, object)
     def updatePositions(self, now: Timescale, location: GeographicPosition) -> None:
         if not self.satellite:
             return
@@ -119,8 +123,8 @@ class SatelliteHorizonWindow(MWidget):
     def prepareHorizon(plotItem: pg.PlotItem) -> None:
         plotItem.getViewBox().setMouseMode(pg.ViewBox.PanMode)
         plotItem.showAxes(True, showValues=True)
-        xTicks = [(float(x), f"{x:0.0f}") for x in np.arange(30, 360, 30)]
-        yTicks = [(float(x), f"{x:0.0f}") for x in np.arange(10, 90, 10)]
+        xTicks = [(float(x), f"{float(x):0.0f}") for x in np.arange(30, 360, 30)]
+        yTicks = [(float(x), f"{float(x):0.0f}") for x in np.arange(10, 90, 10)]
         plotItem.getAxis("bottom").setTicks([xTicks])
         plotItem.getAxis("top").setTicks([xTicks])
         plotItem.getAxis("left").setTicks([yTicks])
@@ -194,6 +198,7 @@ class SatelliteHorizonWindow(MWidget):
             pd.setZValue(-5)
             plotItem.addItem(pd)
 
+    @Slot()
     def drawHorizon(self) -> None:
         self.ui.satHorizon.drawHorizon(self.app.buildPoint.horizonP)
 
@@ -205,6 +210,7 @@ class SatelliteHorizonWindow(MWidget):
         self.pointerAltAz = self.preparePointer(plotItem)
         self.drawHorizon()
 
+    @Slot(object, object, object, object, str)
     def drawSatellite(
         self,
         satellite: EarthSatellite,

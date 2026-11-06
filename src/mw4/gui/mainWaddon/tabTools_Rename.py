@@ -7,7 +7,7 @@ from mw4.base.tpool import Worker, startWorker
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from pathlib import Path
-from PySide6.QtCore import QObject, Signal
+from PySide6.QtCore import QObject, Signal, Slot
 from PySide6.QtWidgets import QListView
 from typing import TYPE_CHECKING, ClassVar
 
@@ -22,15 +22,16 @@ class RenameSignals(QObject):
 class Rename(TabAddon):
     HEADER_FORMATTERS: ClassVar[dict[str, Callable[[str | float], str]]] = {
         "DATE-OBS": lambda e: str(e).replace(":", "-").replace("T", "_").split(".")[0],
-        "XBINNING": lambda e: f"Bin{e:1.0f}",
-        "CCD-TEMP": lambda e: f"Temp{e:03.0f}",
+        "XBINNING": lambda e: f"Bin{float(e):1.0f}",
+        "CCD-TEMP": lambda e: f"Temp{float(e):03.0f}",
         "FRAME": str,
         "IMAGETYP": str,
         "FILTER": str,
-        "EXPTIME": lambda e: f"Exp{e:1.0f}s",
+        "EXPTIME": lambda e: f"Exp{float(e):1.0f}s",
     }
 
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.signals.ui.msg
@@ -131,9 +132,11 @@ class Rename(TabAddon):
             self.signals.progress.emit(int(100 * (i + 1) / numberFiles))
         return numberFiles
 
+    @Slot(int)
     def renameFinished(self, numberFiles: int) -> None:
         self.msg.emit(0, "Tools", "Rename", f"{numberFiles:d} images were renamed")
 
+    @Slot()
     def renameEnableGUI(self) -> None:
         self.ui.renameStart.setEnabled(True)
 

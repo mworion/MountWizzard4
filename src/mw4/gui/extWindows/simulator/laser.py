@@ -5,24 +5,30 @@ import numpy as np
 from mw4.base.appProtocol import HasDevices
 from mw4.gui.extWindows.simulator.materials import Materials
 from mw4.gui.extWindows.simulator.tools import linkModel
+from PySide6.QtCore import QObject, Slot
 from PySide6.QtGui import QVector3D
 from skyfield import functions
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mw4.gui.extWindows.simulator.simulatorW import SimulatorWindow
 
 
-class SimulatorLaser:
-    def __init__(self, parent: Any, app: HasDevices) -> None:
-        super().__init__()
-        self.parent = parent
+class SimulatorLaser(QObject):
+    def __init__(self, parent: "SimulatorWindow", app: HasDevices) -> None:
+        super().__init__(parent)
+        self.parentWindow = parent
         self.app = app
-        self.parent.ui.showLaser.checkStateChanged.connect(self.showEnable)
+        self.parentWindow.ui.showLaser.checkStateChanged.connect(self.showEnable)
 
+    @Slot()
     def showEnable(self) -> None:
-        isVisible = self.parent.ui.showLaser.isChecked()
-        node = self.parent.entityModel.get("laserRoot")
+        isVisible = self.parentWindow.ui.showLaser.isChecked()
+        node = self.parentWindow.entityModel.get("laserRoot")
         if node:
             node["entity"].setEnabled(isVisible)
 
+    @Slot()
     def updatePositions(self) -> None:
         if not self.app.dReg.mount.stat:
             return
@@ -38,15 +44,15 @@ class SimulatorLaser:
         az = np.degrees(az)
         alt = np.degrees(alt)
 
-        node = self.parent.entityModel.get("displacement")
+        node = self.parentWindow.entityModel.get("displacement")
         if node:
             node["trans"].setTranslation(QVector3D(PB[0], PB[1], PB[2]))
 
-        node = self.parent.entityModel.get("az")
+        node = self.parentWindow.entityModel.get("az")
         if node:
             node["trans"].setRotationZ(az + 90)
 
-        node = self.parent.entityModel.get("alt")
+        node = self.parentWindow.entityModel.get("alt")
         if node:
             node["trans"].setRotationX(-alt)
 
@@ -74,6 +80,6 @@ class SimulatorLaser:
                 "mat": Materials().laser,
             },
         }
-        linkModel(model, self.parent.entityModel)
+        linkModel(model, self.parentWindow.entityModel)
         self.updatePositions()
         self.showEnable()

@@ -20,12 +20,12 @@ from mw4.logic.fits.fitsFunction import (
     getScaleFromHeader,
     getSQMFromHeader,
 )
-from PySide6.QtCore import QRectF
+from PySide6.QtCore import QObject, QRectF, Slot
 from PySide6.QtGui import QFont
 from typing import Any, ClassVar
 
 
-class ImageTabs:
+class ImageTabs(QObject):
     TILT: ClassVar = {
         "none": 5,
         "almost none": 10,
@@ -36,17 +36,17 @@ class ImageTabs:
     }
 
     def __init__(self, parent: Any) -> None:
-        super().__init__()
-        self.parent = parent
+        super().__init__(parent)
+        self.imageWindow = parent
         self.ui = parent.ui
         self.msg = parent.msg
         self.fileHandler = parent.fileHandler
         self.photometry = parent.photometry
         self.threadPool = parent.threadPool
-        self.pen = pg.mkPen(color=self.parent.M_PRIM, width=2)
-        self.penPink = pg.mkPen(color=self.parent.M_PINK, width=5)
-        self.fontText = QFont(self.parent.window().font().family(), 16)
-        self.fontAnno = QFont(self.parent.window().font().family(), 10, italic=True)
+        self.pen = pg.mkPen(color=self.imageWindow.M_PRIM, width=2)
+        self.penPink = pg.mkPen(color=self.imageWindow.M_PINK, width=5)
+        self.fontText = QFont(self.imageWindow.window().font().family(), 16)
+        self.fontAnno = QFont(self.imageWindow.window().font().family(), 10, italic=True)
         self.fontText.setBold(True)
         self.imageSourceRange: QRectF = QRectF()
         self.fileHandler.signals.imageLoaded.connect(self.showImage)
@@ -75,12 +75,14 @@ class ImageTabs:
         self.ui.tiltTriangle.colorChange()
         self.ui.roundness.colorChange()
         self.ui.aberration.colorChange()
-        self.pen = pg.mkPen(color=self.parent.M_PRIM)
+        self.pen = pg.mkPen(color=self.imageWindow.M_PRIM)
 
+    @Slot()
     def getImageSourceRange(self) -> None:
         vb = self.ui.imageSource.p[0].getViewBox()
         self.imageSourceRange = vb.viewRect()
 
+    @Slot()
     def setBarColor(self) -> None:
         colorMapIndex = self.ui.color.currentIndex() + 1
         self.ui.image.setImageColorMap(colorMapIndex)
@@ -93,6 +95,7 @@ class ImageTabs:
         self.ui.roundness.setImageColorMap(colorMapIndex)
         self.ui.aberration.setImageColorMap(colorMapIndex)
 
+    @Slot()
     def setCrosshair(self) -> None:
         self.ui.image.showCrosshair(self.ui.showCrosshair.isChecked())
 
@@ -121,6 +124,7 @@ class ImageTabs:
         imageWidget.p[0].setMouseEnabled(x=False, y=False)
         imageWidget.barItem.setVisible(False)
 
+    @Slot()
     def showImage(self) -> None:
         changeStyleDynamic(self.ui.headerGroup, "run", "false")
         tab = self.ui.tabImage
@@ -141,6 +145,7 @@ class ImageTabs:
         self.setCrosshair()
         self.writeHeaderDataToGUI(self.fileHandler.header)
 
+    @Slot()
     def showHFR(self) -> None:
         self.ui.hfr.setImage(imageDisp=self.photometry.hfrGrid)
         self.ui.hfr.barItem.setLevels((self.photometry.hfrMin, self.photometry.hfrMax))
@@ -169,7 +174,7 @@ class ImageTabs:
     def writeTiltValues(self, plotItem: Any, segHFR: Any, w: float, h: float) -> None:
         for ix in range(3):
             for iy in range(3):
-                textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.parent.M_PRIM)
+                textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.imageWindow.M_PRIM)
                 textItem.setText(f"{segHFR[ix][iy]:1.2f}")
                 textItem.setFont(self.fontText)
                 textItem.setPos(ix * w / 3 + w / 6, iy * h / 3 + h / 6)
@@ -184,6 +189,7 @@ class ImageTabs:
             lineItem.setLine(points[start][0], points[start][1], points[end][0], points[end][1])
             plotItem.addItem(lineItem)
 
+    @Slot()
     def showTiltSquare(self) -> bool:
         segHFR = self.photometry.hfrSegSquare
         w = self.photometry.w
@@ -216,7 +222,7 @@ class ImageTabs:
         return True
 
     def addTextItem(self, plotItem: Any, text: str, x: float, y: float) -> None:
-        textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.parent.M_PRIM)
+        textItem = pg.TextItem(anchor=(0.5, 0.5), color=self.imageWindow.M_PRIM)
         textItem.setText(text)
         textItem.setFont(self.fontText)
         textItem.setZValue(10)
@@ -247,6 +253,7 @@ class ImageTabs:
             line = (points[a][0], points[a][1], points[b][0], points[b][1])
             self.addLineItem(plotItem, line, self.penPink)
 
+    @Slot()
     def showTiltTriangle(self) -> None:
         w = self.photometry.w
         h = self.photometry.h
@@ -279,6 +286,7 @@ class ImageTabs:
         tab = self.ui.tabImage
         tab.setTabEnabled(getTabIndex(tab, "TiltTriangle"), True)
 
+    @Slot()
     def showRoundness(self) -> None:
         self.ui.roundness.setImage(imageDisp=self.photometry.roundnessGrid)
         self.ui.roundness.p[0].showAxes(False, showValues=False)
@@ -294,6 +302,7 @@ class ImageTabs:
         tab = self.ui.tabImage
         tab.setTabEnabled(getTabIndex(tab, "Roundness"), True)
 
+    @Slot()
     def showAberrationInspect(self) -> None:
         self.ui.aberration.barItem.setVisible(False)
         self.ui.aberration.p[0].clear()
@@ -318,6 +327,7 @@ class ImageTabs:
         tab.setTabEnabled(getTabIndex(tab, "Aberration"), True)
         self.ui.aberration.p[0].getViewBox().rightMouseRange()
 
+    @Slot()
     def showImageSources(self) -> None:
         temp = self.imageSourceRange
         self.ui.imageSource.setImage(imageDisp=self.photometry.image)
@@ -336,12 +346,13 @@ class ImageTabs:
             )
             if self.ui.showValues.isChecked():
                 t = f"{photometry.hfr[i]:2.1f}"
-                item = pg.TextItem(text=t, color=self.parent.M_PRIM, anchor=(1, 1))
+                item = pg.TextItem(text=t, color=self.imageWindow.M_PRIM, anchor=(1, 1))
                 item.setFont(self.fontAnno)
                 item.setParentItem(eItem)
         tab = self.ui.tabImage
         tab.setTabEnabled(getTabIndex(tab, "Sources"), True)
 
+    @Slot()
     def showBackground(self) -> None:
         self.ui.background.setImage(imageDisp=self.photometry.background)
         self.ui.background.barItem.setLevels(
@@ -350,6 +361,7 @@ class ImageTabs:
         tab = self.ui.tabImage
         tab.setTabEnabled(getTabIndex(tab, "Back"), True)
 
+    @Slot()
     def showBackgroundRMS(self) -> None:
         self.ui.backgroundRMS.setImage(imageDisp=self.photometry.backgroundRMS)
         tab = self.ui.tabImage

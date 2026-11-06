@@ -5,6 +5,7 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.styles.styles import Styles
 from mw4.gui.utilities.qtHelpers import guiSetText, img2pixmap, setPixmapAlpha
 from mw4.mountcontrol.model import Model
+from PySide6.QtCore import Slot
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -13,6 +14,7 @@ if TYPE_CHECKING:
 
 class ModelStatus(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.signals.ui.msg
@@ -30,6 +32,7 @@ class ModelStatus(TabAddon):
         pixmap = setPixmapAlpha(pixmap, Styles.transparency)
         self.ui.picALT.setPixmap(pixmap)
 
+    @Slot(object)
     def updateAlignGUI(self, model: Model) -> None:
         guiSetText(self.ui.numberStars, "2.0f", model.numberStars)
         guiSetText(self.ui.numberStars1, "2.0f", model.numberStars)
@@ -50,6 +53,7 @@ class ModelStatus(TabAddon):
         # pyrefly: ignore[bad-argument-type]
         guiSetText(self.ui.altitudeError, "5.1f", val)
 
+    @Slot(object)
     def updateTurnKnobsGUI(self, model: Model) -> None:
         if model.azimuthTurns is not None:
             if model.azimuthTurns > 0:

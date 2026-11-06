@@ -18,7 +18,7 @@ def function(qapp, makeApp):
 
 
 def test_showEnable_1(function):
-    function.parent.entityModel["laser"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["laser"] = {"entity": Qt3DCore.QEntity()}
     function.showEnable()
 
 
@@ -39,20 +39,20 @@ def test_updatePositions_2(function):
 
 def test_updatePositions_3(function):
     function.app.dReg.d["mount"].stat = True
-    function.parent.entityModel["displacement"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["displacement"] = {"entity": Qt3DCore.QEntity()}
     t = Qt3DCore.QTransform()
-    function.parent.entityModel["displacement"]["entity"].addComponent(t)
-    function.parent.entityModel["displacement"]["trans"] = t
+    function.parentWindow.entityModel["displacement"]["entity"].addComponent(t)
+    function.parentWindow.entityModel["displacement"]["trans"] = t
 
-    function.parent.entityModel["az"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["az"] = {"entity": Qt3DCore.QEntity()}
     t = Qt3DCore.QTransform()
-    function.parent.entityModel["az"]["trans"] = t
-    function.parent.entityModel["az"]["entity"].addComponent(t)
+    function.parentWindow.entityModel["az"]["trans"] = t
+    function.parentWindow.entityModel["az"]["entity"].addComponent(t)
 
-    function.parent.entityModel["alt"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["alt"] = {"entity": Qt3DCore.QEntity()}
     t = Qt3DCore.QTransform()
-    function.parent.entityModel["alt"]["trans"] = t
-    function.parent.entityModel["alt"]["entity"].addComponent(t)
+    function.parentWindow.entityModel["alt"]["trans"] = t
+    function.parentWindow.entityModel["alt"]["entity"].addComponent(t)
     with mock.patch.object(
         function.app.mount,
         "calcTransformationMatricesActual",
@@ -76,14 +76,14 @@ def test_create_1(function):
 
 
 def test_showEnable_2(function):
-    with mock.patch.object(function.parent, "entityModel", {}):
+    with mock.patch.object(function.parentWindow, "entityModel", {}):
         function.showEnable()
 
 
 def test_updatePositions_4(function):
     function.app.dReg.d["mount"].stat = True
     with (
-        mock.patch.object(function.parent, "entityModel", {}),
+        mock.patch.object(function.parentWindow, "entityModel", {}),
         mock.patch.object(
             function.app.mount,
             "calcTransformationMatricesActual",

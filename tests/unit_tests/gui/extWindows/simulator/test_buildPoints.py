@@ -21,17 +21,17 @@ def function(qapp, makeApp):
 
 
 def test_showEnable_1(function):
-    function.parent.entityModel["buildPoints"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["buildPoints"] = {"entity": Qt3DCore.QEntity()}
     function.showEnable()
 
 
 def test_clear_1(function):
-    function.parent.entityModel = {}
+    function.parentWindow.entityModel = {}
     function.clear()
 
 
 def test_clear_2(function):
-    function.parent.entityModel["buildPoints"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["buildPoints"] = {"entity": Qt3DCore.QEntity()}
     function.clear()
 
 
@@ -55,8 +55,8 @@ def test_updatePositions_2(function):
 def test_updatePositions_3(function):
     function.app.dReg.d["mount"].instance.obsSite.haJNow = Angle(hours=10)
     function.app.dReg.d["mount"].instance.obsSite.timeSidereal = "10:10:10"
-    function.parent.entityModel["buildPoints"] = {"entity": Qt3DCore.QEntity()}
-    function.parent.entityModel["buildPoints"] = {"trans": Qt3DCore.QTransform()}
+    function.parentWindow.entityModel["buildPoints"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["buildPoints"] = {"trans": Qt3DCore.QTransform()}
     with mock.patch.object(
         function.app.dReg.d["mount"].instance,
         "calcTransformationMatricesActual",
@@ -131,10 +131,10 @@ def test_createAnnotation_3(function):
 
 def test_loopCreate_1(function):
     function.app.buildPoint.buildP = [(0, 0, 1), (10, 10, 1)]
-    function.parent.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
-    function.parent.entityModel["buildPoints"] = {"entity": Qt3DCore.QEntity()}
-    function.parent.ui.showNumbers.setChecked(True)
-    function.parent.ui.showSlewPath.setChecked(True)
+    function.parentWindow.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["buildPoints"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.ui.showNumbers.setChecked(True)
+    function.parentWindow.ui.showSlewPath.setChecked(True)
     function.points = []
     # Ensure loopCreate is called and doesn't crash
     entity_tuple = (Qt3DCore.QEntity(), None, None, None)
@@ -150,10 +150,10 @@ def test_loopCreate_1(function):
 
 def test_loopCreate_2(function):
     function.app.buildPoint.buildP = [(0, 0, 1), (10, 10, 1)]
-    function.parent.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
-    function.parent.entityModel["buildPoints"] = {"entity": Qt3DCore.QEntity()}
-    function.parent.ui.showNumbers.setChecked(False)
-    function.parent.ui.showSlewPath.setChecked(True)
+    function.parentWindow.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["buildPoints"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.ui.showNumbers.setChecked(False)
+    function.parentWindow.ui.showSlewPath.setChecked(True)
     function.points = []
     # Ensure loopCreate is called and doesn't crash
     entity_tuple = (Qt3DCore.QEntity(), None, None, None)
@@ -174,13 +174,13 @@ def test_create_1(function):
 
 def test_create_2(function):
     function.app.buildPoint.buildP = [(0, 0, 1), (10, 10, 1)]
-    function.parent.entityModel.clear()
+    function.parentWindow.entityModel.clear()
     suc = function.create()
     assert not suc
 
 
 def test_create_3(function):
-    function.parent.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
+    function.parentWindow.entityModel["ref_fusion"] = {"entity": Qt3DCore.QEntity()}
     function.app.buildPoint.buildP = [(0, 0, 1), (10, 10, 1)]
     with (
         mock.patch.object(function, "clear"),
@@ -193,13 +193,13 @@ def test_create_3(function):
 
 
 def test_showEnable_2(function):
-    function.parent.entityModel = {}
+    function.parentWindow.entityModel = {}
     function.showEnable()
 
 
 def test_updatePositions_4(function):
     function.app.dReg.d["mount"].instance.obsSite.haJNow = Angle(hours=10)
-    function.parent.entityModel = {}
+    function.parentWindow.entityModel = {}
     with mock.patch.object(
         function.app.dReg.d["mount"].instance,
         "calcTransformationMatricesActual",

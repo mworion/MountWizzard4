@@ -8,7 +8,7 @@ from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtGenerateSprites import makePointer
 from mw4.gui.utilities.qtMain import MWidget
 from pathlib import Path
-from PySide6.QtCore import QPointF
+from PySide6.QtCore import QPointF, Slot
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -61,7 +61,8 @@ class HorizonDraw(MWidget):
         self.app.dReg.mount.signals.settingDone.disconnect(self.drawTab)
         self.app.dReg.mount.signals.mountIsUp.disconnect(self.setPointerVisibility)
 
-    def setPointerVisibility(self, status) -> None:
+    @Slot(bool)
+    def setPointerVisibility(self, status: bool) -> None:
         self.pointerHor.setVisible(status)
 
     def mouseMovedHorizon(self, pos: QPointF) -> None:
@@ -198,6 +199,7 @@ class HorizonDraw(MWidget):
         self.pointerHor.setZValue(10)
         plotItem.addItem(self.pointerHor)
 
+    @Slot()
     def drawPointer(self) -> None:
         obsSite = self.app.dReg.mount.obsSite
         alt = obsSite.Alt.degrees
@@ -234,6 +236,7 @@ class HorizonDraw(MWidget):
             )
             plotItem.addItem(self.horizonPlot)
 
+    @Slot()
     def drawTab(self) -> None:
         self.prepareView()
         if self.ui.showTerrain.isChecked():

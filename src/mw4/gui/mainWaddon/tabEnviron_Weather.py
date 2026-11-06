@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from functools import partial
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, guiSetText
-from PySide6.QtCore import Signal
+from PySide6.QtCore import Signal, Slot
 from PySide6.QtWidgets import QGroupBox
 from typing import TYPE_CHECKING
 
@@ -24,6 +24,7 @@ class RefractionEntry:
 
 class EnvironWeather(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.signals.ui.msg
@@ -143,11 +144,13 @@ class EnvironWeather(TabAddon):
         config["refracNoTrack"] = self.ui.refracNoTrack.isChecked()
         config["refractionSource"] = self.refractionSource
 
+    @Slot()
     def smartEnvironGui(self) -> None:
         for source in self.refractionSources:
             stat = bool(self.app.dReg[source].stat)
             self.refractionSources[source].group.setEnabled(stat)
 
+    @Slot()
     def updateRefractionUpdateType(self) -> None:
         if self.refractionSource != "directWeather":
             return
@@ -206,6 +209,7 @@ class EnvironWeather(TabAddon):
             "sensor4Weather",
         ]
 
+    @Slot()
     def updateFilterRefractionParameters(self) -> None:
         if not self.isValidRefractionSource():
             return
@@ -229,6 +233,7 @@ class EnvironWeather(TabAddon):
         press = np.mean(self.filteredPressure)
         return temp, press
 
+    @Slot()
     def updateRefractionParameters(self) -> None:
         if not self.isValidRefractionSource():
             return
@@ -247,6 +252,7 @@ class EnvironWeather(TabAddon):
             self.tempLast = temp
             self.pressLast = press
 
+    @Slot()
     def updateSourceGui(self) -> None:
         for source in self.refractionSources:
             data = self.refractionSources[source].data

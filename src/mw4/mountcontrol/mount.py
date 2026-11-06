@@ -17,7 +17,7 @@ from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.satellite import Satellite
 from mw4.mountcontrol.setting import Setting
 from pathlib import Path
-from PySide6.QtCore import QObject, QTimer
+from PySide6.QtCore import QObject, QTimer, Slot
 from skyfield.api import Angle
 from typing import Any, Final
 
@@ -83,7 +83,7 @@ class MountDevice(QObject):
         self.statusAlert: bool = False
         self.statusSlew: bool = False
 
-        self.settlingWait = QTimer()
+        self.settlingWait = QTimer(self)
         self.settlingWait.setSingleShot(True)
         self.settlingWait.timeout.connect(self.waitAfterSettlingAndEmit)
         self.signals.mountIsUp.connect(self.startupMountData)
@@ -113,18 +113,22 @@ class MountDevice(QObject):
             raise ValueError("waitTimeFlip must be non-negative")
         self._waitTimeFlip = int(value * 1000)
 
+    @Slot()
     def resetAfterStart(self) -> None:
         self.mountData.reset()
 
+    @Slot()
     def collectData(self) -> None:
         self.mountData.collect()
 
+    @Slot()
     def waitAfterSettlingAndEmit(self) -> None:
         self.signals.slewed.emit()
 
     def stopAllMountTimers(self) -> None:
         self.settlingWait.stop()
 
+    @Slot(bool)
     def startupMountData(self, status: bool) -> None:
         if status and not self.mountIsUp:
             self.mountIsUp = True
@@ -139,6 +143,7 @@ class MountDevice(QObject):
             self.signals.deviceDisconnected.emit("mount")
             self.mountIsUp = False
 
+    @Slot(bool)
     def resultCyclePointing(self, result: bool) -> None:
         if self.obsSite.status in self.ALERT_STATUS_CODES:
             if not self.statusAlert:
@@ -157,6 +162,7 @@ class MountDevice(QObject):
         if result:
             self.signals.pointDone.emit(self.obsSite)
 
+    @Slot()
     def cyclePointing(self) -> None:
         self.workerCyclePointing = startWorker(
             self.workerCyclePointing,
@@ -166,12 +172,14 @@ class MountDevice(QObject):
             guard=lambda: self.mountIsUp,
         )
 
+    @Slot(bool)
     def resultCycleSetting(self, result: bool) -> None:
         if result:
             self.signals.settingDone.emit(self.setting)
             if self.setting.hasChanged():
                 self.signals.settingChanged.emit(self.setting)
 
+    @Slot()
     def cycleSetting(self) -> None:
         self.workerCycleSetting = startWorker(
             self.workerCycleSetting,
@@ -181,6 +189,7 @@ class MountDevice(QObject):
             guard=lambda: self.mountIsUp,
         )
 
+    @Slot()
     def resultGetModel(self) -> None:
         self.signals.getModelDone.emit(self.model)
 
@@ -193,6 +202,7 @@ class MountDevice(QObject):
             guard=lambda: self.mountIsUp,
         )
 
+    @Slot()
     def resultGetNames(self) -> None:
         self.signals.namesDone.emit(self.model)
 
@@ -205,6 +215,7 @@ class MountDevice(QObject):
             guard=lambda: self.mountIsUp,
         )
 
+    @Slot()
     def resultGetFW(self) -> None:
         self.log.info("Product : %s", self.firmware.product)
         self.log.info("Firmware: %s", self.firmware.vString)
@@ -221,6 +232,7 @@ class MountDevice(QObject):
             guard=lambda: self.mountIsUp,
         )
 
+    @Slot()
     def resultGetLocation(self) -> None:
         # the GEM offsets depend on the latitude, so recalculate them now
         self.geometry.loadParametersFromConfig()
@@ -235,6 +247,7 @@ class MountDevice(QObject):
             guard=lambda: self.mountIsUp,
         )
 
+    @Slot()
     def resultCalcTLE(self) -> None:
         self.signals.calcTLEdone.emit(self.satellite.tleParams)
 
@@ -248,6 +261,7 @@ class MountDevice(QObject):
             guard=lambda: self.mountIsUp,
         )
 
+    @Slot()
     def resultStatTLE(self) -> None:
         self.signals.statTLEdone.emit(self.satellite.tleParams)
 
@@ -260,6 +274,7 @@ class MountDevice(QObject):
             guard=lambda: self.mountIsUp,
         )
 
+    @Slot()
     def resultGetTLE(self) -> None:
         self.signals.getTLEdone.emit(self.satellite.tleParams)
 
@@ -272,6 +287,7 @@ class MountDevice(QObject):
             guard=lambda: self.mountIsUp,
         )
 
+    @Slot()
     def resultProgTrajectory(self) -> None:
         self.signals.calcTrajectoryDone.emit(self.satellite.trajectoryParams)
 

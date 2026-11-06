@@ -3,6 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import svg2pixmap
+from PySide6.QtCore import Slot
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -11,6 +12,7 @@ if TYPE_CHECKING:
 
 class Mount(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.signals.ui.msg
@@ -48,6 +50,7 @@ class Mount(TabAddon):
         pixmap = svg2pixmap("assets/icon/controller.svg", color).scaled(16, 16)
         ui.setPixmap(pixmap)
 
+    @Slot()
     def setHidIcons(self) -> None:
         base = {
             self.ui.controller1: self.app.dReg.hidController.instance.config.moveAltAz,
@@ -66,7 +69,8 @@ class Mount(TabAddon):
                 status = 0
             self.setHidIcon(ui, status)
 
-    def changeTrackingHid(self, value: bytes) -> None:
+    @Slot(int)
+    def changeTrackingHid(self, value: int) -> None:
         if value == 0b00000100:
             self.changeTracking()
 
@@ -83,7 +87,8 @@ class Mount(TabAddon):
             else:
                 self.msg.emit(2, "Mount", "Command", "Cannot start tracking")
 
-    def changeParkHid(self, value: bytes) -> None:
+    @Slot(int)
+    def changeParkHid(self, value: int) -> None:
         if value == 0b00000001:
             self.changePark()
 
@@ -118,7 +123,8 @@ class Mount(TabAddon):
         else:
             self.msg.emit(2, "Mount", "Command", "Cannot set tracking to Solar")
 
-    def flipMountHid(self, value: bytes) -> None:
+    @Slot(int)
+    def flipMountHid(self, value: int) -> None:
         if value == 0b00000010:
             self.flipMount()
 
@@ -128,7 +134,8 @@ class Mount(TabAddon):
         else:
             self.msg.emit(2, "Mount", "Command", "Cannot flip mount")
 
-    def stopHid(self, value: bytes) -> None:
+    @Slot(int)
+    def stopHid(self, value: int) -> None:
         if value == 0b00001000:
             self.stop()
 

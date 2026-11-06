@@ -6,6 +6,7 @@ from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, clickable, guiSetText
 from mw4.mountcontrol.convert import valueToFloat, valueToInt
+from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget
 from typing import TYPE_CHECKING
 
@@ -15,6 +16,7 @@ if TYPE_CHECKING:
 
 class Power(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.signals.ui.msg
@@ -57,6 +59,7 @@ class Power(TabAddon):
         # cyclic tasks
         self.app.timeMgr.update1s.connect(self.updatePowerGui)
 
+    @Slot(int)
     def setGuiVersion(self, version: int = 1) -> None:
         self.version = version
         if version == 1:
@@ -70,6 +73,7 @@ class Power(TabAddon):
             self.ui.groupHubUSB.setVisible(False)
             self.ui.groupAdjustableOutput.setVisible(True)
 
+    @Slot()
     def updatePowerGui(self) -> None:
         data = self.app.dReg.power.data
         for name, button in self.powerOnOFF.items():

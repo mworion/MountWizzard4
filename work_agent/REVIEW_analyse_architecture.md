@@ -3,7 +3,7 @@
 Layering follow-up: calculations, types and datasets have moved to
 `src/mw4/logic/controllers/analyse`, including the `AnalyseController` worker adapter.
 Historical locations and class names below refer to the reviewed baseline.
-See `../PLAN_analysis_layer_split.md` for current ownership.
+See `PLAN_analysis_layer_split.md` for current ownership.
 
 Reviewed: 2026-11-03
 

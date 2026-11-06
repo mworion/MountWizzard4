@@ -8,7 +8,7 @@ from mw4.gui.utilities.qtHelpers import svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.uploadPopup_ui import Ui_UploadPopup
 from pathlib import Path
-from PySide6.QtCore import QEventLoop, Qt, QTimer, Signal
+from PySide6.QtCore import QEventLoop, Qt, QTimer, Signal, Slot
 from typing import ClassVar
 
 
@@ -89,13 +89,16 @@ class UploadPopup(MWidget):
         self.titleBar.maxButton.setVisible(False)
         self.titleBar.windowFixed = True
 
+    @Slot(str)
     def setProgressBarColor(self, colorstr: str) -> None:
         css = "QProgressBar::chunk {background-color: " + colorstr + ";}"
         self.ui.progressBar.setStyleSheet(css)
 
+    @Slot(int)
     def setProgressBarToValue(self, progressPercent: int) -> None:
         self.ui.progressBar.setValue(progressPercent)
 
+    @Slot(str)
     def setStatusTextToValue(self, statusText: str) -> None:
         self.ui.statusText.setText(statusText)
 
@@ -199,10 +202,12 @@ class UploadPopup(MWidget):
         self.closing = True
         QTimer.singleShot(500, self.close)
 
+    @Slot()
     def finishPollStatus(self) -> None:
         self.pollFinished = True
         self.finalizeUpload()
 
+    @Slot(bool)
     def closePopup(self, result: bool) -> None:
         self.returnValues["success"] = result
         if not result:

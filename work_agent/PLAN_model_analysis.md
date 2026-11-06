@@ -8,7 +8,7 @@
 contain presentation only. Numerical tests mirror the logic package; worker
 unit tests live in logic; window/worker integration tests remain under GUI.
 These paths supersede
-the earlier GUI calculation locations below. See `../PLAN_analysis_layer_split.md`.
+the earlier GUI calculation locations below. See `PLAN_analysis_layer_split.md`.
 
 Implement `spec_model.md`: automatically rebuild and evaluate a model after
 loading its `.model` file in the analysis window. Produce a dedicated typed

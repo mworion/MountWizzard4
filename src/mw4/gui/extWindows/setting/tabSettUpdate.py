@@ -4,13 +4,15 @@
 import logging
 from astropy.utils import data, iers
 from mw4.base.loggerMW import setCustomLoggingLevel
+from PySide6.QtCore import QObject, Slot
 from typing import Any
 
 
-class SettUpdate:
+class SettUpdate(QObject):
     log = logging.getLogger("MW4")
 
     def __init__(self, parentW: Any) -> None:
+        super().__init__(parentW)
         self.parentW = parentW
         self.app = parentW.app
         self.msg = parentW.app.signals.ui.msg
@@ -46,6 +48,7 @@ class SettUpdate:
         config["loglevelTrace"] = self.ui.loglevelTrace.isChecked()
         config["ageDatabases"] = self.ui.ageDatabases.value()
 
+    @Slot()
     def setupIERS(self) -> None:
         if self.app.isOnline:
             iers.conf.auto_download = True

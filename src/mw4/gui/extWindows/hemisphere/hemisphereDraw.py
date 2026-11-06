@@ -9,7 +9,7 @@ from mw4.gui.utilities.nativeQt.qtMessageDialog import MWMessageDialog
 from mw4.gui.utilities.qtGenerateSprites import makePointer
 from mw4.gui.utilities.qtMain import MWidget
 from pyqtgraph.GraphicsScene.mouseEvents import MouseClickEvent
-from PySide6.QtCore import QPointF, Qt
+from PySide6.QtCore import QPointF, Qt, Slot
 from PySide6.QtGui import QFont
 from skyfield.api import Angle
 from typing import TYPE_CHECKING
@@ -69,6 +69,7 @@ class HemisphereDraw(MWidget):
         self.app.signals.ui.operationRunning.disconnect(self.enableOperationModeChange)
         self.app.timeMgr.update3s.disconnect(self.drawAlignmentStars)
 
+    @Slot()
     def setPointerVisibility(self) -> None:
         visible = bool(self.app.dReg.mount.stat)
         for plotItem in self.ui.hemisphere.p:
@@ -80,6 +81,7 @@ class HemisphereDraw(MWidget):
         viewBox = self.ui.hemisphere.p[0].getViewBox()
         self.parentWindow.mouseMoved(viewBox, pos)
 
+    @Slot(int)
     def enableOperationModeChange(self, status: int) -> None:
         isRunning = status != 0
         if isRunning:
@@ -125,6 +127,7 @@ class HemisphereDraw(MWidget):
             )
             plotItem.addItem(pd)
 
+    @Slot()
     def drawHorizon(self) -> None:
         p0 = self.ui.hemisphere.p[0]
         p1 = self.ui.hemisphere.p[1]
@@ -160,6 +163,7 @@ class HemisphereDraw(MWidget):
         size = 8 + int(relevance * 5)
         return color, size
 
+    @Slot()
     def drawAlignmentStars(self) -> None:
         if not self.ui.showAlignStar.isChecked():
             return
@@ -257,6 +261,7 @@ class HemisphereDraw(MWidget):
         self.drawModelText()
         self.app.signals.hemisphere.buildPointsChanged.emit()
 
+    @Slot()
     def setupModel(self) -> None:
         for i, plotItem in enumerate(self.ui.hemisphere.p):
             if self.ui.showSlewPath.isChecked():
@@ -335,10 +340,12 @@ class HemisphereDraw(MWidget):
         self.pointerDome.setVisible(False)
         plotItem.addItem(self.pointerDome)
 
+    @Slot(object)
     def setDomeAzimuth(self, azimuth: float) -> None:
         self.pointerDome.setRect(azimuth - 15, 1, 30, 88)
         self.pointerDome.setVisible(True)
 
+    @Slot()
     def drawDome(self) -> None:
         visible = bool(self.app.dReg.dome.stat)
         self.pointerDome.setVisible(visible)
@@ -413,6 +420,7 @@ class HemisphereDraw(MWidget):
         elif self.ui.normalModeHem.isChecked():
             self.slewDirect(posView)
 
+    @Slot()
     def drawTab(self) -> None:
         hasModel = bool(self.app.dReg.mount.model.numberStars)
         self.ui.alignmentModeHem.setEnabled(hasModel)

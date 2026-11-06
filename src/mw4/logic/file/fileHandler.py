@@ -81,12 +81,13 @@ class FileHandler:
     def checkValidImageFormat(self) -> bool:
         if self.image is None or self.image.size == 0:
             self.log.debug("No image data in FITS")
+            # pyrefly: ignore[attribute-assign-on-never]
             self.image = np.zeros((0, 0))
             self.header = fits.Header()
             return False
         if self.header is None:
             self.log.debug("No header data in FITS")
-            # pyrefly: ignore[bad-assignment]
+            # pyrefly: ignore[bad-assignment, attribute-assign-on-never]
             self.image = np.zeros((0, 0))
             return False
         if self.header.get("NAXIS") != 2:

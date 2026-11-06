@@ -3,6 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
+from PySide6.QtCore import Slot
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -11,6 +12,7 @@ if TYPE_CHECKING:
 
 class Relay(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.signals.ui.msg
@@ -28,6 +30,7 @@ class Relay(TabAddon):
         self.app.dReg.relay.signals.statusReady.connect(self.updateRelayGui)
         self.app.signals.system.relayChanged.connect(self.updateRelayButtonText)
 
+    @Slot()
     def updateRelayButtonText(self) -> None:
         config = self.app.config.get("SettingRelay", {})
         for i in range(8):
@@ -51,6 +54,7 @@ class Relay(TabAddon):
         if not self.doRelayAction(buttonIndex):
             self.msg.emit(2, "System", "Relay", "Action cannot be done")
 
+    @Slot()
     def updateRelayGui(self) -> None:
         # the status list is empty until the relay box has reported; truncate
         for status, button in zip(

@@ -9,8 +9,8 @@ from mw4.gui.utilities.nativeQt.qtInputDialog import MWInputDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import video_ui
-from PySide6.QtCore import QTimer, Signal
-from PySide6.QtGui import QCloseEvent, QPixmap
+from PySide6.QtCore import QTimer, Signal, Slot
+from PySide6.QtGui import QCloseEvent, QImage, QPixmap
 from PySide6.QtWidgets import QSizePolicy
 from typing import Any
 
@@ -39,6 +39,7 @@ class VideoWindowBase(MWidget):
         self.stopVideo()
         super().closeEvent(event)
 
+    @Slot()
     def colorChange(self) -> None:
         self.setStyleSheet(self.mw4Style)
 
@@ -66,8 +67,9 @@ class VideoWindowBase(MWidget):
         image = qimage2ndarray.array2qimage(frame)
         if not self.running:
             return
-        self.pixmapReady.emit(QPixmap.fromImage(image))
+        self.pixmapReady.emit(image.copy())
 
+    @Slot()
     def count(self) -> None:
         self.runningCounter += 1
 
@@ -96,6 +98,7 @@ class VideoWindowBase(MWidget):
 
         self.capture.release()
 
+    @Slot()
     def startVideo(self) -> None:
         auth = f"{self.user}:{self.password}@" if self.user and self.password else ""
         url = f"{auth}{self.ui.videoURL.text()}"
@@ -119,22 +122,29 @@ class VideoWindowBase(MWidget):
             self.workerVideo, self.threadPool, self.runnerVideo, source, frameRate
         )
 
+    @Slot()
     def stopVideo(self) -> None:
         changeStyleDynamic(self.ui.videoStart, "run", "false")
         changeStyleDynamic(self.ui.videoStop, "run", "true")
         self.pixmapReady.emit(None)
         self.running = False
 
+    @Slot()
     def restartVideo(self) -> None:
         self.stopVideo()
         QTimer.singleShot(1000, self.startVideo)
 
-    def receivedImage(self, pixmap: QPixmap) -> None:
-        if not self.running or pixmap is None:
+    @Slot(object)
+    def receivedImage(self, image: QImage | None) -> None:
+        if image is None:
             self.ui.video.clear()
             return
 
-        pixmap = pixmap.scaled(self.ui.video.width(), self.ui.video.height())
+        if not self.running:
+            self.ui.video.clear()
+            return
+
+        pixmap = QPixmap.fromImage(image).scaled(self.ui.video.width(), self.ui.video.height())
         self.ui.video.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Ignored)
         self.ui.video.setPixmap(pixmap)
 
@@ -142,6 +152,7 @@ class VideoWindowBase(MWidget):
         hasAuth = self.user != "" and self.password != ""  # nosec B105
         changeStyleDynamic(self.ui.authPopup, "run", hasAuth)
 
+    @Slot()
     def authPopup(self) -> None:
         value1, ok1 = MWInputDialog.getText(
             self,

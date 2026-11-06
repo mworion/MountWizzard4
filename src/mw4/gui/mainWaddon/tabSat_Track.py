@@ -19,6 +19,7 @@ from mw4.logic.controllers.satellites.trackControl import SatelliteTrackControll
 from mw4.logic.controllers.satellites.trackProgram import prepareTrajectory
 from mw4.mountcontrol.obsSite import ObsSite
 from mw4.mountcontrol.tleParams import TLEParams
+from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QLineEdit
 from sgp4.exporter import export_tle
 from skyfield.api import EarthSatellite
@@ -30,7 +31,7 @@ if TYPE_CHECKING:
 
 class SatTrack(SatData):
     def __init__(self, mainW: "MainWindow") -> None:
-        super().__init__()
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.threadPool = mainW.app.threadPool
@@ -119,6 +120,7 @@ class SatTrack(SatData):
         self.mainW.wIcon(self.ui.progSatSelected, "run")
         self.mainW.wIcon(self.ui.progTrajectory, "run")
 
+    @Slot()
     def enableGuiFunctions(self) -> None:
         useInternal = self.ui.useInternalSatCalc.isChecked()
         availableInternal = self.app.dReg.mount.firmware.checkNewer("3")
@@ -129,6 +131,7 @@ class SatTrack(SatData):
         self.ui.trackingReplay.setEnabled(progAvailable)
         self.ui.progTrajectory.setEnabled(progAvailable)
 
+    @Slot(object, object)
     def signalSatelliteData(self, alt: np.ndarray, az: np.ndarray) -> None:
         if not self.satellite:
             return
@@ -158,6 +161,7 @@ class SatTrack(SatData):
             pressure=m.setting.refractionPress,
         )
 
+    @Slot()
     def calcTrajectoryAndShow(self) -> None:
         useInternal = self.ui.useInternalSatCalc.isChecked()
         start, end = self.selectStartEnd()
@@ -169,6 +173,7 @@ class SatTrack(SatData):
             self.app.dReg.mount.instance.calcTLE(start)
             self.signalSatelliteData(alt=np.array([]), az=np.array([]))
 
+    @Slot()
     def updateSatPassesGui(self) -> None:
         for i in range(3):
             self.passUI[i]["rise"].setText("-")
@@ -185,14 +190,17 @@ class SatTrack(SatData):
     def runnerShowSatPasses(self) -> None:
         if not self.satellite:
             return
-        self.clearTrackingParameters()
         obsSite = self.app.dReg.mount.obsSite
         setting = self.app.dReg.mount.setting
         self.satOrbits = calcSatPasses(self.satellite, obsSite, setting)
 
+    @Slot()
     def showSatPasses(self) -> None:
         title = "Satellite passes " + self.app.timeMgr.timeZoneString()
         self.ui.satPassesGroup.setTitle(title)
+        canStart = self.workerPasses is None or not self.workerPasses.locked
+        if self.satellite and canStart:
+            self.clearTrackingParameters()
         self.workerPasses = startWorker(
             self.workerPasses,
             self.threadPool,
@@ -248,10 +256,12 @@ class SatTrack(SatData):
             self.extractSatelliteData(satName)
             self.showSatPasses()
 
+    @Slot(TLEParams)
     def getSatelliteDataFromDatabase(self, tleParams: TLEParams) -> None:
         self.extractSatelliteData(tleParams.name)
         self.showSatPasses()
 
+    @Slot()
     def updateOrbit(self) -> None:
         if self.satellite is None:
             self.ui.startSatelliteTracking.setEnabled(False)
@@ -301,10 +311,12 @@ class SatTrack(SatData):
             result.start, result.alt, result.az, replay=isReplay
         )
 
+    @Slot()
     def changeUnitTimeUTC(self) -> None:
         self.showSatPasses()
         self.updateSatelliteTrackGui(self.app.dReg.mount.satellite.tleParams)
 
+    @Slot(TLEParams)
     def updateSatelliteTrackGui(self, tleParams: TLEParams) -> None:
         title = "Satellite tracking " + self.app.timeMgr.timeZoneString()
         self.ui.satTrackGroup.setTitle(title)
@@ -326,6 +338,7 @@ class SatTrack(SatData):
         else:
             self.ui.satTrajectoryFlip.setText("NO")
 
+    @Slot(object)
     def updateInternalTrackGui(self, tleParams: TLEParams) -> None:
         self.ui.progTrajectory.setEnabled(True)
         title = "Satellite tracking " + self.app.timeMgr.timeZoneString()
@@ -343,6 +356,7 @@ class SatTrack(SatData):
             self.ui.startSatelliteTracking.setText("Start satellite tracking")
             changeStyleDynamic(self.ui.startSatelliteTracking, "run", "false")
 
+    @Slot(ObsSite)
     def toggleTrackingOffset(self, obs: ObsSite) -> None:
         if not self.app.dReg.mount.firmware.checkNewer("3"):
             return
@@ -352,6 +366,7 @@ class SatTrack(SatData):
         else:
             self.ui.satOffGroup.setEnabled(False)
 
+    @Slot(ObsSite)
     def followMount(self, obs: ObsSite) -> None:
         follow = shouldDomeFollow(
             obs.status, self.ui.domeAutoFollowSat.isChecked(), bool(self.app.dReg.dome.stat)

@@ -10,7 +10,7 @@ from mw4.gui.utilities.qtHelpers import svg2pixmap
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.downloadPopup_ui import Ui_DownloadPopup
 from pathlib import Path
-from PySide6.QtCore import QEventLoop, Qt, QTimer, Signal
+from PySide6.QtCore import QEventLoop, Qt, QTimer, Signal, Slot
 
 
 class DownloadPopup(MWidget):
@@ -74,13 +74,16 @@ class DownloadPopup(MWidget):
         dlg = cls(parentW, url, dest, unzip)
         return dlg.exec()
 
+    @Slot(str)
     def setProgressBarColor(self, color: str) -> None:
         css = "QProgressBar::chunk {background-color: " + color + ";}"
         self.ui.progressBar.setStyleSheet(css)
 
+    @Slot(int)
     def setProgressBarToValue(self, progressPercent: int) -> None:
         self.ui.progressBar.setValue(progressPercent)
 
+    @Slot(str)
     def setStatusTextToValue(self, statusText: str) -> None:
         self.ui.statusText.setText(statusText)
 
@@ -126,12 +129,13 @@ class DownloadPopup(MWidget):
 
         try:
             self.unzipFile(downloadDest, dest)
-        except (OSError, gzip.BadGzipFile) as e:
+        except OSError as e:
             self.msg.emit(2, "Download", "Unzip", f"{url}")
             self.log.warning("Error in unzip [%s], %s", url, e)
             return False
         return True
 
+    @Slot(bool)
     def closePopup(self, result: bool) -> None:
         self.signalProgress.emit(100)
         if result:

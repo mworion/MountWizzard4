@@ -29,6 +29,7 @@ from mw4.logic.controllers.image.cameraCalculations import (
     strictPairState,
     switchPairState,
 )
+from PySide6.QtCore import Slot
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -37,6 +38,7 @@ if TYPE_CHECKING:
 
 class ImageManage(TabAddon):
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.signals.ui.msg
@@ -166,6 +168,7 @@ class ImageManage(TabAddon):
         focus = self.app.dReg.focuser.data.get("ABS_FOCUS_POSITION.FOCUS_ABSOLUTE_POSITION", 0)
         guiSetText(self.ui.focuserPosition, "6.0f", focus)
 
+    @Slot()
     def updateImagingParam(self) -> None:
         self.checkEnableCameraUI()
         self.updateOffset()
@@ -291,6 +294,7 @@ class ImageManage(TabAddon):
     def setCoolerOff(self) -> None:
         self.app.dReg.camera.instance.sendCoolerSwitch(coolerOn=False)
 
+    @Slot()
     def updateCoverStatGui(self) -> None:
         value = self.app.dReg.cover.data.get("CAP_PARK.PARK", None)
         self.setRunPair((self.ui.coverPark, self.ui.coverUnpark), switchPairState(value))
@@ -298,6 +302,7 @@ class ImageManage(TabAddon):
         value = self.app.dReg.cover.data.get("Status.Cover", "-")
         self.ui.coverStatusText.setText(value)
 
+    @Slot()
     def updateLightPanelGui(self) -> None:
         value = self.app.dReg.lightPanel.data.get("FLAT_LIGHT_CONTROL.FLAT_LIGHT_ON", None)
         self.setRunPair((self.ui.lightPanelOn, self.ui.lightPanelOff), switchPairState(value))
@@ -354,8 +359,9 @@ class ImageManage(TabAddon):
         if not ok:
             return
         self.ui.lightPanelIntensity.setText(f"{value}")
-        self.app.dReg.lightPanel.instance.lightIntensity(int(value))
+        self.app.dReg.lightPanel.instance.lightIntensity(value)
 
+    @Slot()
     def updateDomeGui(self) -> None:
         value = self.app.dReg.dome.data.get("DOME_MOTION.DOME_CW", None)
         ccw = self.app.dReg.dome.data.get("DOME_MOTION.DOME_CCW", None)
@@ -364,6 +370,7 @@ class ImageManage(TabAddon):
         value = self.app.dReg.dome.data.get("ABS_DOME_POSITION.DOME_ABSOLUTE_POSITION")
         guiSetText(self.ui.domeAzimuth, "3.0f", value)
 
+    @Slot()
     def updateShutterStatGui(self) -> None:
         value = self.app.dReg.dome.instance.data.get("DOME_SHUTTER.SHUTTER_OPEN", None)
         self.setRunPair((self.ui.domeOpenShutter, self.ui.domeCloseShutter), strictPairState(value))
@@ -397,6 +404,7 @@ class ImageManage(TabAddon):
             return
         self.app.dReg.dome.instance.closeShutter()
 
+    @Slot(int, int)
     def domeMoveHid(self, turnVal: int, openVal: int) -> None:
         if not self.app.dReg.dome.stat:
             return

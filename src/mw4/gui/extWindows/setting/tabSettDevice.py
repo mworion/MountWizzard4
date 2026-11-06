@@ -5,14 +5,14 @@ from functools import partial
 from mw4.base.driverProtocol import HasSignals
 from mw4.gui.extWindows.devicePopupW import DevicePopup
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic, findIndexValue
-from PySide6.QtCore import QObject
+from PySide6.QtCore import QObject, Slot
 from PySide6.QtWidgets import QListView
 from typing import Any
 
 
 class SettDevice(QObject):
     def __init__(self, parentW: Any) -> None:
-        super().__init__()
+        super().__init__(parentW)
         self.parentW = parentW
         self.app = parentW.app
         self.msg = parentW.app.signals.ui.msg
@@ -141,12 +141,14 @@ class SettDevice(QObject):
     def applyDisconnected(self, deviceSlot: str) -> None:
         changeStyleDynamic(self.deviceUi[deviceSlot]["uiDropDown"], "active", False)
 
+    @Slot(str)
     def deviceConnected(self, *_args: Any) -> None:
         name = self.signalsToName.get(id(self.sender()))
         if name is None:
             return
         self.applyConnected(name)
 
+    @Slot(str)
     def deviceDisconnected(self, *_args: Any) -> None:
         name = self.signalsToName.get(id(self.sender()))
         if name is None:

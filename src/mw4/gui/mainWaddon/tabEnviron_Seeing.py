@@ -4,7 +4,7 @@
 import webbrowser
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.qtHelpers import clickable, svg2pixmap
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QColor, QTransform
 from PySide6.QtWidgets import QLabel, QTableWidgetItem
 from typing import TYPE_CHECKING, ClassVar
@@ -48,6 +48,7 @@ class EnvironSeeing(TabAddon):
     ]
 
     def __init__(self, mainW: "MainWindow") -> None:
+        super().__init__(mainW)
         self.mainW = mainW
         self.app = mainW.app
         self.msg = mainW.app.signals.ui.msg
@@ -134,6 +135,7 @@ class EnvironSeeing(TabAddon):
         self.ui.limitForecastDate.setText(f"{val}")
         return i
 
+    @Slot()
     def updateSeeingEntries(self) -> None:
         if "hourly" not in self.app.dReg.seeingWeather.data:
             return
@@ -162,6 +164,7 @@ class EnvironSeeing(TabAddon):
         self.ui.seeingIcon.setVisible(self.seeingEnabled)
         self.ui.seeing.setVisible(self.seeingEnabled)
 
+    @Slot()
     def prepareSeeingTable(self) -> None:
         self.seeingEnabled = True
         self.enableSeeingEntries()

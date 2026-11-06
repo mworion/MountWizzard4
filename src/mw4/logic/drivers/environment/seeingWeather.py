@@ -11,7 +11,7 @@ from mw4.base.httpClient import safeRequest
 from mw4.base.signalsDevices import Signals
 from mw4.base.tpool import Worker, startWorker
 from pathlib import Path
-from PySide6.QtCore import Signal
+from PySide6.QtCore import QObject, Signal, Slot
 from typing import Any
 
 
@@ -26,7 +26,7 @@ class SeeingWeatherSignals(Signals):
     update = Signal()
 
 
-class SeeingWeather:
+class SeeingWeather(QObject):
     DEVICE_TYPE = "observingconditions"
     log = logging.getLogger("MW4")
 
@@ -82,6 +82,7 @@ class SeeingWeather:
             json.dump(data.json(), f, indent=4)
         return True
 
+    @Slot(bool)
     def sendStatus(self, status: bool) -> None:
         if not status and self.running:
             self.signals.deviceDisconnected.emit(self.config.deviceName)
@@ -111,6 +112,7 @@ class SeeingWeather:
             resultMethod=self.sendStatus,
         )
 
+    @Slot()
     def pollSeeingData(self) -> None:
         if not self.config.apiKey or not self.b or not self.app.isOnline:
             self.sendStatus(False)

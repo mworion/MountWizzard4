@@ -419,3 +419,20 @@ def test_playSound_returns_early_when_play_sound_missing(audioManager):
     audioManager.app.config["SettingAudio"] = {"MountSlew": 1}
     audioManager.playSound("MountSlew")
     assert audioManager.sound is None
+
+
+@pytest.mark.parametrize(
+    ("method_name", "sound_name"),
+    [
+        ("playMountAlert", "MountAlert"),
+        ("playDomeSlew", "DomeSlew"),
+        ("playMountSlew", "MountSlew"),
+        ("playImageSaved", "ImageSaved"),
+        ("playImageSolved", "ImageSolved"),
+    ],
+)
+def test_play_sound_callbacks(audioManager, method_name, sound_name):
+    with mock.patch.object(audioManager, "playSound") as play_sound:
+        getattr(audioManager, method_name)()
+
+    play_sound.assert_called_once_with(sound_name)

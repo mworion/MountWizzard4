@@ -49,6 +49,20 @@ def test_showEnable_disconnect(function):
     function.showEnable(False)
 
 
+@pytest.mark.parametrize(
+    ("method_name", "device_name", "enabled"),
+    [
+        ("domeConnected", "Connected dome", True),
+        ("domeDisconnected", "Disconnected dome", False),
+    ],
+)
+def test_dome_connection_callbacks(function, method_name, device_name, enabled):
+    with mock.patch.object(function, "showEnable") as show_enable:
+        getattr(function, method_name)(device_name)
+
+    show_enable.assert_called_once_with(enabled)
+
+
 def test_updateSize_1(function):
     function.parentWindow.entityModel["domeFloor"] = {"entity": Qt3DCore.QEntity()}
     t = Qt3DCore.QTransform()

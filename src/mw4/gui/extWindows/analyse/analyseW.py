@@ -8,9 +8,9 @@ from mw4.gui.extWindows.analyse.raDecPlots import RaDecPlots
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import analyse_ui
+from mw4.logic.controllers.analyse.analyseController import AnalyseController
 from mw4.logic.controllers.analyse.analyseData import AnalyseData
 from pathlib import Path
-from PySide6.QtCore import Slot
 from PySide6.QtGui import QCloseEvent
 from typing import Any
 
@@ -25,6 +25,7 @@ class AnalyseWindow(MWidget):
         self.setWindowTitle("Analyse")
         self.setMinimumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.analyseData = AnalyseData()
+        self.analyseController = AnalyseController(self.app.threadPool, parent=self)
         self.generalPlots = GeneralPlots(self)
         self.altAzPlots = AltAzPlots(self)
         self.raDecPlots = RaDecPlots(self)
@@ -55,6 +56,7 @@ class AnalyseWindow(MWidget):
         config["linkViews"] = self.ui.linkViews.isChecked()
 
     def closeEvent(self, event: QCloseEvent) -> None:
+        self.analyseController.invalidateAnalysis()
         self.storeConfig()
         self.ui.showISO.setChecked(False)
         super().closeEvent(event)
@@ -62,7 +64,6 @@ class AnalyseWindow(MWidget):
     def showWindow(self) -> None:
         self.show()
 
-    @Slot()
     def colorChange(self) -> None:
         self.wIcon(self.ui.load, "load")
         self.setStyleSheet(self.mw4Style)
@@ -78,12 +79,10 @@ class AnalyseWindow(MWidget):
         if loadFilePath.is_file():
             self.processModel(loadFilePath)
 
-    @Slot(Path)
     def showAnalyse(self, path: Path) -> None:
         if path.is_file():
             self.processModel(path)
 
-    @Slot()
     def drawAll(self) -> None:
         if not self.analyseData.errorIndex.size:
             return
@@ -117,6 +116,9 @@ class AnalyseWindow(MWidget):
     def processModel(self, loadFilePath: Path) -> None:
         modelJSON = self.analyseData.loadModel(loadFilePath)
         if modelJSON is None:
+            self.analyseController.invalidateAnalysis()
             return
+
         self.writeGui(modelJSON, loadFilePath)
         self.drawAll()
+        self.analyseController.startModelAnalysis(modelJSON)

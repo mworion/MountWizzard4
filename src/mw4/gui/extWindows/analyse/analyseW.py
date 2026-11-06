@@ -8,7 +8,6 @@ from mw4.gui.extWindows.analyse.raDecPlots import RaDecPlots
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import analyse_ui
-from mw4.logic.controllers.analyse.analyseController import AnalyseController
 from mw4.logic.controllers.analyse.analyseData import AnalyseData
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
@@ -25,7 +24,6 @@ class AnalyseWindow(MWidget):
         self.setWindowTitle("Analyse")
         self.setMinimumSize(self.FULL_WIDTH, self.FULL_HEIGHT)
         self.analyseData = AnalyseData()
-        self.analyseController = AnalyseController(self.app.threadPool, parent=self)
         self.generalPlots = GeneralPlots(self)
         self.altAzPlots = AltAzPlots(self)
         self.raDecPlots = RaDecPlots(self)
@@ -56,7 +54,6 @@ class AnalyseWindow(MWidget):
         config["linkViews"] = self.ui.linkViews.isChecked()
 
     def closeEvent(self, event: QCloseEvent) -> None:
-        self.analyseController.invalidateAnalysis()
         self.storeConfig()
         self.ui.showISO.setChecked(False)
         super().closeEvent(event)
@@ -116,9 +113,6 @@ class AnalyseWindow(MWidget):
     def processModel(self, loadFilePath: Path) -> None:
         modelJSON = self.analyseData.loadModel(loadFilePath)
         if modelJSON is None:
-            self.analyseController.invalidateAnalysis()
             return
-
         self.writeGui(modelJSON, loadFilePath)
         self.drawAll()
-        self.analyseController.startModelAnalysis(modelJSON)

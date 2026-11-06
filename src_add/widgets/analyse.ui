@@ -1473,7 +1473,7 @@
         </size>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>1</number>
        </property>
        <property name="movable">
         <bool>false</bool>

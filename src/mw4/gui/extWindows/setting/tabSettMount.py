@@ -38,6 +38,7 @@ class SettMount(QObject):
 
         self.ui.hostAddress.setText(self.app.dReg.mount.instance.config.hostAddress)
         self.ui.port3492.setChecked(self.app.dReg.mount.instance.config.port == 3492)
+        self.ui.port3490.setChecked(self.app.dReg.mount.instance.config.port == 3490)
         self.ui.MAC.setText(self.app.dReg.mount.instance.config.MAC)
         self.ui.wolBroadcast.setText(self.app.dReg.mount.instance.config.wolBroadcast)
         self.ui.wolPort.setText(str(self.app.dReg.mount.instance.config.wolPort))

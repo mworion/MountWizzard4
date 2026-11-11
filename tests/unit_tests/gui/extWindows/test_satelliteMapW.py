@@ -179,6 +179,12 @@ def test_drawSatellite_1(function):
         function.drawSatellite(1, None, [1], [1], "")
 
 
+def test_drawSatellite_empty(function):
+    with mock.patch.object(function, "drawEarth") as drawEarth:
+        function.drawSatellite(1, [], [1], [1], "")
+        drawEarth.assert_not_called()
+
+
 def test_drawSatellite_2(function):
     with mock.patch.object(function, "drawEarth"):
         function.drawSatellite(1, [1], [1], [1], "")

@@ -243,6 +243,6 @@ class SatelliteMapWindow(MWidget):
         self.setWindowTitle(f"Satellite {name}")
         self.satellite = satellite
         self.satOrbits = satOrbits
-        if satOrbits is None or self.obsSite is None:
+        if not satOrbits or self.obsSite is None:
             return
         self.drawEarth(satellite)

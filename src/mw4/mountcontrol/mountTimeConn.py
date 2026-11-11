@@ -9,6 +9,7 @@ from mw4.base.tpool import Worker, startWorker
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat
 from mw4.mountcontrol.mountContext import MountContext
+from mw4.mountcontrol.mountLink import CYCLIC
 from mw4.mountcontrol.mountStatus import MountStatus
 from ping3 import ping
 from skyfield.timelib import Time
@@ -113,7 +114,7 @@ class MountTimeConn:
     def runnerPollSyncClock(self) -> None:
         conn = Connection(self.parent)
         commandString = ":GJD1#"
-        suc, response, _ = conn.communicate(commandString)
+        suc, response, _ = conn.communicate(commandString, priority=CYCLIC)
         if not suc:
             return
 

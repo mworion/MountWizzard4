@@ -5,6 +5,7 @@ import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat, valueToInt
 from mw4.mountcontrol.mountContext import MountContext
+from mw4.mountcontrol.mountLink import CYCLIC
 from typing import ClassVar
 
 
@@ -214,7 +215,7 @@ class Setting:
         if self.parent.firmware.checkNewer("3.2.5"):
             cs3 += ":GAPO#:GCFG#:gtgpps#"
         commandString = cs1 + cs2 + cs3
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, numberOfChunks = conn.communicate(commandString, priority=CYCLIC)
         if not suc:
             return False
         return self.parseSetting(response, numberOfChunks)

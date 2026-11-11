@@ -28,6 +28,7 @@ def makeParent():
         config = Config()
         loggingTrace = False
         obsSite = ObsSite()
+        signals = mock.MagicMock()
 
     return Parent()
 
@@ -483,7 +484,7 @@ def test_getNames_1():
     model.numberNames = 1
     with mock.patch.object(
         mw4.mountcontrol.model.Connection,
-        "communicate",
+        "communicateBulk",
         return_value=(False, ["100"], 1),
     ):
         suc = model.getNames()
@@ -495,7 +496,7 @@ def test_getNames_2():
     model.numberNames = 1
     with mock.patch.object(
         mw4.mountcontrol.model.Connection,
-        "communicate",
+        "communicateBulk",
         return_value=(True, ["100"], 1),
     ):
         suc = model.getNames()
@@ -689,7 +690,7 @@ def test_getStars_1():
     model.numberStars = 1
     with mock.patch.object(
         mw4.mountcontrol.model.Connection,
-        "communicate",
+        "communicateBulk",
         return_value=(False, ["100"], 1),
     ):
         suc = model.getStars()
@@ -704,7 +705,7 @@ def test_getStars_2(makeApp):
     model.numberStars = 1
     with mock.patch.object(
         mw4.mountcontrol.model.Connection,
-        "communicate",
+        "communicateBulk",
         return_value=(True, ["21:52:58.95,+08*56:10.1,   5.7,201"], 1),
     ):
         suc = model.getStars()
@@ -898,7 +899,7 @@ def test_Model_programAlign_ok1():
     )
     build = [aPoint]
     with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
-        mConn.return_value.communicate.return_value = True, ["1"], 1
+        mConn.return_value.communicateBulk.return_value = True, ["V"], 1
         suc = model.programModelFromStarList(build)
         assert suc
 
@@ -908,7 +909,7 @@ def test_Model_programAlign_ok2():
 
     build = gatherData(1)
     with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
-        mConn.return_value.communicate.return_value = True, ["1"], 1
+        mConn.return_value.communicateBulk.return_value = True, ["V"], 1
         suc = model.programModelFromStarList(build)
         assert suc
 
@@ -918,9 +919,9 @@ def test_Model_programAlign_ok3():
 
     build = gatherData(3)
     with mock.patch("mw4.mountcontrol.model.Connection") as mConn:
-        mConn.return_value.communicate.return_value = True, ["E"], 1
+        mConn.return_value.communicateBulk.return_value = True, ["E"], 1
         suc = model.programModelFromStarList(build)
-        assert suc
+        assert not suc
 
 
 def gatherData(number):

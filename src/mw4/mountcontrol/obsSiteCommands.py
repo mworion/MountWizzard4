@@ -5,6 +5,7 @@ import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import sexagesimalizeToInt, valueToInt
 from mw4.mountcontrol.mountContext import MountContext
+from mw4.mountcontrol.mountLink import CYCLIC
 from mw4.mountcontrol.mountStatus import MountStatus
 from skyfield.api import Angle
 from skyfield.toposlib import GeographicPosition
@@ -84,7 +85,7 @@ class ObsSiteCommands:
     def pollPointing(self) -> bool:
         conn = Connection(self.parent)
         commandString = ":GS#:GDUT#:TLESCK#:Ginfo#:GaE#"
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, numberOfChunks = conn.communicate(commandString, priority=CYCLIC)
         if not suc:
             return False
         return self.parsePointing(response, numberOfChunks)

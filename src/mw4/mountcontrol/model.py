@@ -119,7 +119,9 @@ class Model:
     def getNames(self) -> bool:
         conn = Connection(self.parent)
         commandString = "".join(f":modelnam{i:d}#" for i in range(1, self.numberNames + 1))
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, numberOfChunks = conn.communicateBulk(
+            commandString, self.parent.signals.progress
+        )
         if not suc:
             return False
 
@@ -200,7 +202,9 @@ class Model:
 
         commandString = "".join(f":getalp{i:d}#" for i in range(1, self.numberStars + 1))
         conn = Connection(self.parent)
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, numberOfChunks = conn.communicateBulk(
+            commandString, self.parent.signals.progress
+        )
         if not suc:
             return False
 
@@ -277,5 +281,5 @@ class Model:
 
         conn = Connection(self.parent)
         commandString = "".join(parts) + ":endalig#"
-        suc, _, _ = conn.communicate(commandString, responseCheck="V")
-        return suc
+        suc, response, _ = conn.communicateBulk(commandString, self.parent.signals.progress)
+        return suc and bool(response) and response[0] == "V"

@@ -9,7 +9,7 @@ from collections import deque
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from mw4.mountcontrol import timing
-from PySide6.QtCore import QObject, Signal
+from PySide6.QtCore import QObject, Signal, SignalInstance
 from PySide6.QtNetwork import QAbstractSocket, QTcpSocket
 
 
@@ -96,7 +96,7 @@ class MountLink(QObject):
         self.notBefore = time.monotonic() + timing.RECONNECT_BACKOFF_S
         return False, []
 
-    def connect(self) -> bool:
+    def openLink(self) -> bool:
         if self.isConnected():
             return True
         if time.monotonic() < self.notBefore:
@@ -125,7 +125,7 @@ class MountLink(QObject):
         if not self.helper.validCommandSet(commandString):
             return False, []
         chunks, getData, minBytes = self.helper.analyseCommand(commandString)
-        if not self.connect() or self.client is None:
+        if not self.openLink() or self.client is None:
             return False, []
         start = time.monotonic()
         self.client.write(commandString.encode())
@@ -148,7 +148,7 @@ class MountLink(QObject):
     def transactRaw(
         self, commandString: str, deadline: float = timing.COMMAND_DEADLINE_S
     ) -> tuple[bool, bool, str]:
-        if not self.connect() or self.client is None:
+        if not self.openLink() or self.client is None:
             return False, False, "Socket error"
         self.parser.reset()
         self.client.write(commandString.encode())
@@ -166,7 +166,7 @@ class MountLink(QObject):
         commandString: str,
         chunkSize: int,
         deadline: float,
-        progress: Signal | None = None,
+        progress: SignalInstance | None = None,
         between: Callable[[], None] | None = None,
     ) -> tuple[bool, list[str]]:
         """
@@ -214,7 +214,7 @@ class LinkJob:
     deadline: float = field(compare=False)
     event: threading.Event = field(compare=False, default_factory=threading.Event)
     result: tuple = field(compare=False, default=(False, [], 0))
-    progress: Signal | None = field(compare=False, default=None)
+    progress: SignalInstance | None = field(compare=False, default=None)
 
 
 LATENCY_SAMPLES = 500
@@ -249,25 +249,25 @@ class LinkWorker(QObject):
         }
         self.link: MountLink | None = None
         self.running = True
-        self.thread = threading.Thread(target=self.runnerLink, daemon=True)
-        self.thread.start()
+        self.workerThread = threading.Thread(target=self.runnerLink, daemon=True)
+        self.workerThread.start()
 
     def stop(self) -> None:
         self.running = False
-        self.thread.join(1)
+        self.workerThread.join(1)
 
     def runnerLink(self) -> None:
         self.link = MountLink(self.host, self.port)
+        link = self.link
         while self.running:
             try:
                 job = self.jobs.get(timeout=0.1)
             except queue.Empty:
                 continue
-            self.runJob(job)
-        self.link.close()
+            self.runJob(job, link)
+        link.close()
 
-    def runJob(self, job: LinkJob) -> None:
-        link = self.link
+    def runJob(self, job: LinkJob, link: MountLink) -> None:
         started = time.monotonic()
         if job.kind == "raw":
             job.result = link.transactRaw(job.command, job.deadline)
@@ -277,7 +277,7 @@ class LinkWorker(QObject):
                 timing.BULK_CHUNK_SIZE,
                 job.deadline,
                 job.progress or self.progress,
-                self.serveFast if timing.BULK_INTERLEAVE_FAST else None,
+                (lambda: self.serveFast(link)) if timing.BULK_INTERLEAVE_FAST else None,
             )
             job.result = (suc, response, 0)
         else:
@@ -287,7 +287,7 @@ class LinkWorker(QObject):
         self.finishJob(job)
         job.event.set()
 
-    def serveFast(self) -> None:
+    def serveFast(self, link: MountLink) -> None:
         """
         Runs queued fast poll jobs between two bulk chunks. All other jobs
         stay in the queue.
@@ -299,7 +299,7 @@ class LinkWorker(QObject):
             except queue.Empty:
                 break
             if job.kind == "std" and job.command in timing.FAST_POLL_COMMANDS:
-                self.runJob(job)
+                self.runJob(job, link)
             else:
                 keep.append(job)
         for job in keep:
@@ -358,7 +358,7 @@ class LinkWorker(QObject):
         command: str,
         deadline: float,
         priority: int,
-        progress: Signal | None = None,
+        progress: SignalInstance | None = None,
     ) -> tuple:
         with self.lock:
             if priority == CYCLIC and command in self.pending:

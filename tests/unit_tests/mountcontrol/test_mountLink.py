@@ -136,7 +136,7 @@ def test_sendTimeout():
     mount = FakeMount({})
     link = MountLink("127.0.0.1", mount.port)
     try:
-        assert link.connect()
+        assert link.openLink()
         with mock.patch.object(link.client, "waitForBytesWritten", return_value=False):
             assert link.transact(":Ginfo#") == (False, [])
         assert link.client is None
@@ -151,7 +151,7 @@ def test_u2SendTimeout():
         with mock.patch(
             "mw4.mountcontrol.mountLink.QTcpSocket.waitForBytesWritten", return_value=False
         ):
-            assert not link.connect()
+            assert not link.openLink()
     finally:
         mount.stop()
 
@@ -172,9 +172,9 @@ def test_transactRaw():
         assert link.transactRaw(":XX#", deadline=0.2) == (True, False, "Timeout")
         link.close()
         link.notBefore = 0.0
-        with mock.patch.object(link, "connect", return_value=False):
+        with mock.patch.object(link, "openLink", return_value=False):
             assert link.transactRaw(":GVN#") == (False, False, "Socket error")
-        assert link.connect()
+        assert link.openLink()
         with mock.patch.object(link.client, "waitForBytesWritten", return_value=False):
             assert link.transactRaw(":GVN#") == (False, False, "Send error")
     finally:
@@ -293,19 +293,19 @@ def test_worker_serveFast():
     mount = FakeMount({b":GVN#": b"3#", fast.encode(): b"1#2#"})
     worker = LinkWorker("127.0.0.1", mount.port)
     worker.running = False
-    worker.thread.join(1)
+    worker.workerThread.join(1)
     worker.link = MountLink("127.0.0.1", mount.port)
     try:
         worker.jobs.put(LinkJob(CYCLIC, 1, "std", fast, 1.0))
         worker.jobs.put(LinkJob(BULK, 2, "bulk", ":GVN#", 1.0))
-        worker.serveFast()
+        worker.serveFast(worker.link)
         assert worker.jobs.qsize() == 1
         assert worker.jobs.get_nowait().kind == "bulk"
-        worker.serveFast()
+        worker.serveFast(worker.link)
         with mock.patch.object(timing, "BULK_INTERLEAVE_FAST", False):
             bulk = LinkJob(BULK, 3, "bulk", ":GVN#:GVN#", 1.0)
             mount.replies[b":GVN#"] = b"3#"
-            worker.runJob(bulk)
+            worker.runJob(bulk, worker.link)
     finally:
         worker.link.close()
         mount.stop()

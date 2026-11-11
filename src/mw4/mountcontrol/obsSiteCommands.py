@@ -8,6 +8,7 @@ from mw4.mountcontrol.mountContext import MountContext
 from mw4.mountcontrol.mountLink import CYCLIC
 from mw4.mountcontrol.mountStatus import MountStatus
 from skyfield.api import Angle
+from skyfield.timelib import Time, Timescale
 from skyfield.toposlib import GeographicPosition
 from typing import ClassVar
 
@@ -26,6 +27,8 @@ class ObsSiteCommands:
     pierside: str
     piersideTarget: str
     flipped: bool
+    ts: Timescale
+    _timeJD: Time
 
     def sendCommand(self, commandString: str, responseCheck: str = "") -> bool:
         """Send a command to the mount and return only the success flag."""

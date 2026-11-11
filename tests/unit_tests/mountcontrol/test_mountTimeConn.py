@@ -550,3 +550,14 @@ def test_setStatus_called_with_empty_string(function):
         function.setMountStatusOff("")
         mock_log.assert_called_once_with("")
         assert function.errorCounter == 4
+
+
+def test_runnerMountUp_reemits_up_while_connected(function):
+    function.parent.mountIsUp = True
+    function.rtt_MA = np.zeros(25)
+    with (
+        mock.patch("mw4.mountcontrol.mountTimeConn.ping", return_value=0.05),
+        mock.patch.object(function.parent.signals, "mountIsUp") as mockSignal,
+    ):
+        function.runnerMountUp()
+        mockSignal.emit.assert_called_once_with(True)

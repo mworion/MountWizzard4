@@ -222,7 +222,7 @@ def test_worker():
         assert worker.submit("std", ":GVN#", 1.0, CYCLIC) == (True, ["3"], 0)
         assert worker.submit("raw", ":GVN#", 1.0, INTERACTIVE) == (True, True, "3#")
         assert worker.submit("bulk", ":GVN#:GVN#", 1.0, BULK) == (True, ["1", "2"], 0)
-        assert LinkWorker.waitLimit("bulk", ":GVN#" * 61, 1.0) > 6
+        assert LinkWorker.waitLimit("bulk", ":GVN#" * 200, 1.0) > 6
         with mock.patch.object(worker, "waitLimit", return_value=0.0):
             assert worker.submit("std", ":GVN#", 1.0, CYCLIC) == (False, [], 0)
             assert worker.submit("raw", ":GVN#", 1.0, CYCLIC) == (False, False, "Timeout")

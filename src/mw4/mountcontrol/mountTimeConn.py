@@ -58,6 +58,7 @@ class MountTimeConn:
         self.rtt_MA[0] = rttLocal
         self.rtt = np.mean(self.rtt_MA)
         if self.parent.mountIsUp:
+            self.parent.signals.mountIsUp.emit(True)
             return
         try:
             with socket.socket() as client:

@@ -10,6 +10,7 @@ from mw4.mountcontrol.mountLink import (
     BULK,
     CYCLIC,
     INTERACTIVE,
+    LinkJob,
     LinkWorker,
     MountLink,
     ReplyParser,
@@ -269,4 +270,42 @@ def test_worker_cacheAndCoalesce():
     finally:
         worker.stop()
         workers.clear()
+        mount.stop()
+
+
+def test_transactBulk_between():
+    mount = FakeMount({b":GVN#:GVN#": b"1#2#", b":GVN#": b"3#"})
+    link = MountLink("127.0.0.1", mount.port)
+    between = mock.Mock()
+    try:
+        assert link.transactBulk(":GVN#:GVN#:GVN#", 2, 1.0, None, between)[0] is True
+        assert between.call_count == 1
+        between.reset_mock()
+        assert link.transactBulk(":GVN#", 2, 1.0, None, between)[0] is True
+        assert between.call_count == 0
+    finally:
+        link.close()
+        mount.stop()
+
+
+def test_worker_serveFast():
+    fast = ":Ginfo#:GaE#"
+    mount = FakeMount({b":GVN#": b"3#", fast.encode(): b"1#2#"})
+    worker = LinkWorker("127.0.0.1", mount.port)
+    worker.running = False
+    worker.thread.join(1)
+    worker.link = MountLink("127.0.0.1", mount.port)
+    try:
+        worker.jobs.put(LinkJob(CYCLIC, 1, "std", fast, 1.0))
+        worker.jobs.put(LinkJob(BULK, 2, "bulk", ":GVN#", 1.0))
+        worker.serveFast()
+        assert worker.jobs.qsize() == 1
+        assert worker.jobs.get_nowait().kind == "bulk"
+        worker.serveFast()
+        with mock.patch.object(timing, "BULK_INTERLEAVE_FAST", False):
+            bulk = LinkJob(BULK, 3, "bulk", ":GVN#:GVN#", 1.0)
+            mount.replies[b":GVN#"] = b"3#"
+            worker.runJob(bulk)
+    finally:
+        worker.link.close()
         mount.stop()

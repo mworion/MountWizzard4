@@ -6,6 +6,7 @@ import queue
 import threading
 import time
 from collections import deque
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from mw4.mountcontrol import timing
 from PySide6.QtCore import QObject, Signal
@@ -166,11 +167,13 @@ class MountLink(QObject):
         chunkSize: int,
         deadline: float,
         progress: Signal | None = None,
+        between: Callable[[], None] | None = None,
     ) -> tuple[bool, list[str]]:
         """
         A bulk transaction sends the commands in chunks. It stops at the first
         failing chunk and never resends. progress(done, total) is emitted after
-        each successful chunk.
+        each successful chunk. between is called between two chunks and may
+        use the link for short jobs.
         """
         commands = commandString.split("#")[:-1]
         total = len(commands)
@@ -192,6 +195,8 @@ class MountLink(QObject):
             self.log.debug("Bulk chunk %d/%d", done, total)
             if progress is not None:
                 progress.emit(done, total)
+            if between is not None and done < total:
+                between()
         return True, response
 
 
@@ -242,6 +247,7 @@ class LinkWorker(QObject):
             BULK: deque(maxlen=LATENCY_SAMPLES),
             CYCLIC: deque(maxlen=LATENCY_SAMPLES),
         }
+        self.link: MountLink | None = None
         self.running = True
         self.thread = threading.Thread(target=self.runnerLink, daemon=True)
         self.thread.start()
@@ -251,30 +257,53 @@ class LinkWorker(QObject):
         self.thread.join(1)
 
     def runnerLink(self) -> None:
-        link = MountLink(self.host, self.port)
+        self.link = MountLink(self.host, self.port)
         while self.running:
             try:
                 job = self.jobs.get(timeout=0.1)
             except queue.Empty:
                 continue
-            started = time.monotonic()
-            if job.kind == "raw":
-                job.result = link.transactRaw(job.command, job.deadline)
-            elif job.kind == "bulk":
-                suc, response = link.transactBulk(
-                    job.command,
-                    timing.BULK_CHUNK_SIZE,
-                    job.deadline,
-                    job.progress or self.progress,
-                )
-                job.result = (suc, response, 0)
+            self.runJob(job)
+        self.link.close()
+
+    def runJob(self, job: LinkJob) -> None:
+        link = self.link
+        started = time.monotonic()
+        if job.kind == "raw":
+            job.result = link.transactRaw(job.command, job.deadline)
+        elif job.kind == "bulk":
+            suc, response = link.transactBulk(
+                job.command,
+                timing.BULK_CHUNK_SIZE,
+                job.deadline,
+                job.progress or self.progress,
+                self.serveFast if timing.BULK_INTERLEAVE_FAST else None,
+            )
+            job.result = (suc, response, 0)
+        else:
+            suc, response = link.transact(job.command, job.deadline)
+            job.result = (suc, response, 0)
+        self.latency[job.priority].append(time.monotonic() - started)
+        self.finishJob(job)
+        job.event.set()
+
+    def serveFast(self) -> None:
+        """
+        Runs queued fast poll jobs between two bulk chunks. All other jobs
+        stay in the queue.
+        """
+        keep: list[LinkJob] = []
+        while True:
+            try:
+                job = self.jobs.get_nowait()
+            except queue.Empty:
+                break
+            if job.kind == "std" and job.command in timing.FAST_POLL_COMMANDS:
+                self.runJob(job)
             else:
-                suc, response = link.transact(job.command, job.deadline)
-                job.result = (suc, response, 0)
-            self.latency[job.priority].append(time.monotonic() - started)
-            self.finishJob(job)
-            job.event.set()
-        link.close()
+                keep.append(job)
+        for job in keep:
+            self.jobs.put(job)
 
     def finishJob(self, job: LinkJob) -> None:
         with self.lock:

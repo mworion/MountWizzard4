@@ -60,20 +60,18 @@ class ObsSiteCommands:
         if len(response) != numberOfChunks:
             self.log.warning("Wrong number of chunks")
             return False
-        infoSplit = response[3].split(",")
-        angularSplit = response[4].split(",")
+        infoSplit = response[0].split(",")
+        angularSplit = response[1].split(",")
         if len(infoSplit) < 8 or len(angularSplit) < 5:
             self.log.warning("Wrong number of fields: [%s]", response)
             return False
-        self.timeSidereal = response[0]
-        self.ut1_utc = response[1].replace("L", "")
-        self.statusSat = response[2]
         self.raJNow = infoSplit[0]
         self.decJNow = infoSplit[1]
         self.pierside = infoSplit[2]
         self.Az = infoSplit[3]
         self.Alt = infoSplit[4]
         self.timeJD = infoSplit[5]
+        self.timeDelta = (self.ts.now() - self._timeJD) * 86400
         self.status = infoSplit[6]
         self.statusSlew = infoSplit[7] == "1"
         self.angularPosRA = angularSplit[1]
@@ -84,11 +82,27 @@ class ObsSiteCommands:
 
     def pollPointing(self) -> bool:
         conn = Connection(self.parent)
-        commandString = ":GS#:GDUT#:TLESCK#:Ginfo#:GaE#"
+        commandString = ":Ginfo#:GaE#"
         suc, response, numberOfChunks = conn.communicate(commandString, priority=CYCLIC)
         if not suc:
             return False
         return self.parsePointing(response, numberOfChunks)
+
+    def parseTimeState(self, response: list, numberOfChunks: int) -> bool:
+        if len(response) != numberOfChunks or numberOfChunks != 3:
+            self.log.warning("Wrong number of chunks")
+            return False
+        self.timeSidereal = response[0]
+        self.ut1_utc = response[1].replace("L", "")
+        self.statusSat = response[2]
+        return True
+
+    def pollTimeState(self) -> bool:
+        conn = Connection(self.parent)
+        suc, response, numberOfChunks = conn.communicate(":GS#:GDUT#:TLESCK#", priority=CYCLIC)
+        if not suc:
+            return False
+        return self.parseTimeState(response, numberOfChunks)
 
     def startSlewing(self, slewType: str = "normal") -> bool:
         slewTypes = {

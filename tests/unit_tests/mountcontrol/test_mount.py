@@ -60,11 +60,11 @@ def test_connectTimers(function):
     function.connectTimers()
     conn = function.mountTimeConn
     timeMgr.update1s.connect.assert_any_call(conn.checkMountUp)
-    timeMgr.update1s.connect.assert_any_call(conn.pollSyncClock)
+    timeMgr.update3s.connect.assert_any_call(conn.pollTimeState)
     timeMgr.update1s.connect.assert_any_call(function.collectData)
     timeMgr.update30s.connect.assert_called_once_with(conn.syncClock)
     timeMgr.update0_5s.connect.assert_called_once_with(function.cyclePointing)
-    timeMgr.update3s.connect.assert_called_once_with(function.cycleSetting)
+    timeMgr.update3s.connect.assert_any_call(function.cycleSetting)
     timeMgr.start3s.connect.assert_called_once_with(function.resetAfterStart)
 
 

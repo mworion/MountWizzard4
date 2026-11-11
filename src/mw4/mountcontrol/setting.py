@@ -214,11 +214,13 @@ class Setting:
         cs3 = ":WSG#:WSP#:WST#:WSH#:WSD#:GT#:NTGweb#:Gstm#"
         if self.parent.firmware.checkNewer("3.2.5"):
             cs3 += ":GAPO#:GCFG#:gtgpps#"
-        commandString = cs1 + cs2 + cs3
-        suc, response, numberOfChunks = conn.communicate(commandString, priority=CYCLIC)
-        if not suc:
-            return False
-        return self.parseSetting(response, numberOfChunks)
+        response: list[str] = []
+        for commandString in (cs1, cs2, cs3):
+            suc, part, _ = conn.communicate(commandString, priority=CYCLIC)
+            if not suc:
+                return False
+            response.extend(part)
+        return self.parseSetting(response, len(response))
 
     def sendCommand(self, commandString: str, responseCheck: str = "") -> bool:
         """Send a command to the mount and return only the success flag."""

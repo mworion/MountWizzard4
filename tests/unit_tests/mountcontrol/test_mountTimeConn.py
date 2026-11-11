@@ -138,6 +138,18 @@ def test_runnerMountUp_socket_success(function):
         function.parent.signals.mountIsUp.emit.assert_called_with(True)
 
 
+def test_runnerMountUp_alreadyUp_noSocketCheck(function):
+    function.parent.mountIsUp = True
+    function.rtt_MA = np.zeros(25)
+    with (
+        mock.patch("mw4.mountcontrol.mountTimeConn.ping", return_value=0.05),
+        mock.patch("socket.socket") as sock,
+    ):
+        function.runnerMountUp()
+        assert function.rtt_MA[0] == pytest.approx(0.05)
+        sock.assert_not_called()
+
+
 def test_runnerMountUp_rtt_moving_average(function):
     function.rtt_MA = np.zeros(25)
     function.rtt = 0

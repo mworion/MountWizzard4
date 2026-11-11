@@ -182,3 +182,10 @@ Via the `logging` module at DEBUG level (no overhead when off). Per transaction:
 - `:GT#`, `:Gh#`, `:Go#`, `:gtg#` stay cyclic: they change at runtime.
 - The three settings sub-batches run sequentially, so no extra phase offset is needed.
 - A link-state accessor on `LinkWorker` was not added; no caller needs it yet.
+
+## Phase 4 (done)
+- `LinkWorker` keeps a telemetry cache keyed by command string; any failed job marks it stale.
+- Duplicate cyclic polls already pending in the queue are coalesced (skipped).
+- Counters `coalesced` and `failures` are available for diagnostics.
+- Interactive priority (INTERACTIVE < BULK < CYCLIC) was already in place.
+- No consumer reads `cached()` yet; consumers of `timeSidereal`, `ut1_utc` and `statusSat` were not checked against the 3 s poll rate.

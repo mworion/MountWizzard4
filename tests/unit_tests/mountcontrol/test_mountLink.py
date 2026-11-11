@@ -230,3 +230,26 @@ def test_worker():
         worker.stop()
         workers.clear()
         mount.stop()
+
+
+def test_worker_cacheAndCoalesce():
+    mount = FakeMount({b":GVN#": b"3#"})
+    worker = getWorker("127.0.0.1", mount.port)
+    try:
+        assert worker.cached(":GVN#", 5.0) is None
+        assert worker.submit("std", ":GVN#", 1.0, CYCLIC) == (True, ["3"], 0)
+        assert worker.cached(":GVN#", 5.0) == ["3"]
+        assert worker.cached(":GVN#", -1.0) is None
+        worker.pending.add(":GVN#")
+        assert worker.submit("std", ":GVN#", 1.0, CYCLIC) == (False, [], 0)
+        assert worker.submit("raw", ":GVN#", 1.0, CYCLIC) == (False, False, "Timeout")
+        assert worker.coalesced == 2
+        worker.pending.clear()
+        assert worker.submit("std", ":XX#", 1.0, CYCLIC)[0] is False
+        assert worker.failures == 1
+        assert worker.stale
+        assert worker.cached(":GVN#", 5.0) is None
+    finally:
+        worker.stop()
+        workers.clear()
+        mount.stop()

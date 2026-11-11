@@ -228,6 +228,11 @@ class LinkWorker(QObject):
         self.jobs: queue.PriorityQueue[LinkJob] = queue.PriorityQueue()
         self.counter = 0
         self.lock = threading.Lock()
+        self.pending: set[str] = set()
+        self.cache: dict[str, tuple[float, list[str]]] = {}
+        self.stale = True
+        self.coalesced = 0
+        self.failures = 0
         self.running = True
         self.thread = threading.Thread(target=self.runnerLink, daemon=True)
         self.thread.start()
@@ -256,8 +261,31 @@ class LinkWorker(QObject):
             else:
                 suc, response = link.transact(job.command, job.deadline)
                 job.result = (suc, response, 0)
+            self.finishJob(job)
             job.event.set()
         link.close()
+
+    def finishJob(self, job: LinkJob) -> None:
+        with self.lock:
+            self.pending.discard(job.command)
+        if job.result[0] is not True:
+            self.failures += 1
+            self.stale = True
+        elif job.priority == CYCLIC:
+            self.cache[job.command] = (time.monotonic(), job.result[1])
+            self.stale = False
+
+    def cached(self, command: str, maxAge: float) -> list[str] | None:
+        """
+        Returns the latest reply of a cyclic command if it is fresh enough and
+        no failure happened since, otherwise None.
+        """
+        entry = self.cache.get(command)
+        if entry is None or self.stale:
+            return None
+        if time.monotonic() - entry[0] > maxAge:
+            return None
+        return entry[1]
 
     def submit(
         self,
@@ -268,6 +296,11 @@ class LinkWorker(QObject):
         progress: Signal | None = None,
     ) -> tuple:
         with self.lock:
+            if priority == CYCLIC and command in self.pending:
+                self.coalesced += 1
+                self.log.debug("Cyclic poll coalesced: %s", command[:40])
+                return (False, [], 0) if kind != "raw" else (False, False, "Timeout")
+            self.pending.add(command)
             self.counter += 1
             job = LinkJob(priority, self.counter, kind, command, deadline, progress=progress)
         self.jobs.put(job)

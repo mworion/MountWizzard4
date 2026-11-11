@@ -201,3 +201,7 @@ Via the `logging` module at DEBUG level (no overhead when off). Per transaction:
   over one batch). A fake mount measures software overhead only; the acceptance
   numbers (p99 < 250 ms at 2 Hz, one connection on port 3490) must be confirmed on
   a real mount using `logStats()` in debug mode.
+- Real mount (mount.uranus:3490, firmware 3.4, read-only commands): 121 cyclic polls
+  at 2 Hz, 0 failures, p50 76 ms, p95 134 ms, p99 141 ms (target < 250 ms met).
+  Bulk costs about 27 ms per command independent of chunk size (20/50/100), so
+  `BULK_CHUNK_SIZE=50` stays. The single-connection check is not confirmed.

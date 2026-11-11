@@ -189,3 +189,15 @@ Via the `logging` module at DEBUG level (no overhead when off). Per transaction:
 - Counters `coalesced` and `failures` are available for diagnostics.
 - Interactive priority (INTERACTIVE < BULK < CYCLIC) was already in place.
 - No consumer reads `cached()` yet; consumers of `timeSidereal`, `ut1_utc` and `statusSat` were not checked against the 3 s poll rate.
+
+## Phase 5 (done)
+
+- `LinkWorker` records transaction durations per priority class (last 500 samples):
+  `stats(priority)` gives count, p50, p95, p99; `logStats()` writes them with queue
+  size, coalesced and failure counters at DEBUG. `reconnects` lives in `MountLink`.
+- Chunk size measured against a fake mount (4 ms RTT + 0.5 ms/command, 600 commands):
+  10: 0.68 s, 20: 0.53 s, 30: 0.48 s, 50: 0.40 s, 100: 0.36 s, one batch: 0.32 s.
+  `BULK_CHUNK_SIZE` is set to 50 (about 12 progress steps per 600 commands, +26 %
+  over one batch). A fake mount measures software overhead only; the acceptance
+  numbers (p99 < 250 ms at 2 Hz, one connection on port 3490) must be confirmed on
+  a real mount using `logStats()` in debug mode.

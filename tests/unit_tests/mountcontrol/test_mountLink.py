@@ -232,6 +232,23 @@ def test_worker():
         mount.stop()
 
 
+def test_worker_latencyStats():
+    mount = FakeMount({b":GVN#": b"3#"})
+    worker = getWorker("127.0.0.1", mount.port)
+    try:
+        assert worker.stats(CYCLIC)["count"] == 0
+        for _ in range(3):
+            worker.submit("std", ":GVN#", 1.0, CYCLIC)
+        result = worker.stats(CYCLIC)
+        assert result["count"] == 3
+        assert 0 <= result["p50"] <= result["p95"] <= result["p99"]
+        worker.logStats()
+    finally:
+        worker.stop()
+        workers.clear()
+        mount.stop()
+
+
 def test_worker_cacheAndCoalesce():
     mount = FakeMount({b":GVN#": b"3#"})
     worker = getWorker("127.0.0.1", mount.port)

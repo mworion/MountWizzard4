@@ -5,6 +5,7 @@ import logging
 import queue
 import threading
 import time
+from collections import deque
 from dataclasses import dataclass, field
 from mw4.mountcontrol import timing
 from PySide6.QtCore import QObject, Signal
@@ -211,6 +212,9 @@ class LinkJob:
     progress: Signal | None = field(compare=False, default=None)
 
 
+LATENCY_SAMPLES = 500
+
+
 class LinkWorker(QObject):
     """
     LinkWorker owns the MountLink in a dedicated thread and serves a priority
@@ -233,6 +237,11 @@ class LinkWorker(QObject):
         self.stale = True
         self.coalesced = 0
         self.failures = 0
+        self.latency: dict[int, deque[float]] = {
+            INTERACTIVE: deque(maxlen=LATENCY_SAMPLES),
+            BULK: deque(maxlen=LATENCY_SAMPLES),
+            CYCLIC: deque(maxlen=LATENCY_SAMPLES),
+        }
         self.running = True
         self.thread = threading.Thread(target=self.runnerLink, daemon=True)
         self.thread.start()
@@ -248,6 +257,7 @@ class LinkWorker(QObject):
                 job = self.jobs.get(timeout=0.1)
             except queue.Empty:
                 continue
+            started = time.monotonic()
             if job.kind == "raw":
                 job.result = link.transactRaw(job.command, job.deadline)
             elif job.kind == "bulk":
@@ -261,6 +271,7 @@ class LinkWorker(QObject):
             else:
                 suc, response = link.transact(job.command, job.deadline)
                 job.result = (suc, response, 0)
+            self.latency[job.priority].append(time.monotonic() - started)
             self.finishJob(job)
             job.event.set()
         link.close()
@@ -274,6 +285,31 @@ class LinkWorker(QObject):
         elif job.priority == CYCLIC:
             self.cache[job.command] = (time.monotonic(), job.result[1])
             self.stale = False
+
+    def stats(self, priority: int) -> dict[str, float]:
+        """
+        Returns count and p50/p95/p99 of the transaction durations in seconds
+        for one priority class, taken from the latest samples.
+        """
+        samples = sorted(self.latency[priority])
+        if not samples:
+            return {"count": 0, "p50": 0.0, "p95": 0.0, "p99": 0.0}
+        last = len(samples) - 1
+        result = {"count": len(samples)}
+        for name, quantile in (("p50", 0.50), ("p95", 0.95), ("p99", 0.99)):
+            result[name] = samples[round(quantile * last)]
+        return result
+
+    def logStats(self) -> None:
+        for name, priority in (("cyclic", CYCLIC), ("bulk", BULK), ("interactive", INTERACTIVE)):
+            self.log.debug(
+                "Link stats %s: %s, queue %d, coalesced %d, failures %d",
+                name,
+                self.stats(priority),
+                self.jobs.qsize(),
+                self.coalesced,
+                self.failures,
+            )
 
     def cached(self, command: str, maxAge: float) -> list[str] | None:
         """

@@ -333,6 +333,15 @@ class TestFacade:
         assert suc
         assert response == ["2.20", "2.20"]
 
+    def test_communicate_trace(self, mount, caplog):
+        conn = Connection(makeParent(("127.0.0.1", mount.port), loggingTrace=True))
+        with caplog.at_level("DEBUG"):
+            conn.communicate(":GVN#")
+            conn.communicateBulk(":GVN#:GVN#")
+        assert "[Trace] Sending" in caplog.text
+        assert "[Trace] Response" in caplog.text
+        assert "2 bulk commands" in caplog.text
+
     def test_communicateBulk_fail(self):
         conn = Connection(makeParent(("127.0.0.1", 1)))
         assert not conn.communicateBulk(":GVN#")[0]

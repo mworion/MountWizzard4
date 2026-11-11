@@ -341,7 +341,11 @@ class Connection:
             return False, [], numberOfChunks
 
         worker = getWorker(*self.host)
+        if self.loggingTrace:
+            self.log.debug("[Trace] Sending  [%s]: [%s]", self.id, commandString)
         suc, response, _ = worker.submit("std", commandString, deadline, priority)
+        if self.loggingTrace:
+            self.log.debug("[Trace] Response [%s]: [%s]", self.id, response)
         if not suc:
             return False, [], numberOfChunks
         if not getData:
@@ -361,7 +365,11 @@ class Connection:
         count = commandString.count("#")
         deadline = max(timing.BATCH_DEADLINE_S, count * timing.BULK_DEADLINE_PER_COMMAND_S)
         worker = getWorker(*self.host)
+        if self.loggingTrace:
+            self.log.debug("[Trace] Sending  [%s]: [%d bulk commands]", self.id, count)
         suc, response, _ = worker.submit("bulk", commandString, deadline, BULK, progress)
+        if self.loggingTrace:
+            self.log.debug("[Trace] Response [%s]: [%d replies]", self.id, len(response))
         return suc, response, numberOfChunks
 
     def communicateRaw(self, commandString: str) -> tuple[bool, bool, str]:

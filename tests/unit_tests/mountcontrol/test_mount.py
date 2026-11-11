@@ -62,7 +62,8 @@ def test_connectTimers(function):
     timeMgr.update1s.connect.assert_any_call(conn.checkMountUp)
     timeMgr.update3s.connect.assert_any_call(conn.pollTimeState)
     timeMgr.update1s.connect.assert_any_call(function.collectData)
-    timeMgr.update30s.connect.assert_called_once_with(conn.syncClock)
+    timeMgr.update30s.connect.assert_any_call(conn.syncClock)
+    timeMgr.update30s.connect.assert_any_call(function.cycleStaticSetting)
     timeMgr.update0_5s.connect.assert_called_once_with(function.cyclePointing)
     timeMgr.update3s.connect.assert_any_call(function.cycleSetting)
     timeMgr.start3s.connect.assert_called_once_with(function.resetAfterStart)
@@ -576,3 +577,21 @@ def test_resultCycleSetting_unchanged(function):
     function.resultCycleSetting(True)
     function.signals.settingChanged.disconnect()
     assert received == []
+
+
+def test_cycleStaticSetting_1(function):
+    function.mountIsUp = False
+    with mock.patch.object(QThreadPool, "start"):
+        function.cycleStaticSetting()
+        assert function.workerCycleStaticSetting is None
+
+
+def test_cycleStaticSetting_2(function):
+    function.mountIsUp = True
+    with mock.patch.object(QThreadPool, "start"):
+        function.cycleStaticSetting()
+        assert function.workerCycleStaticSetting is not None
+    if function.workerCycleStaticSetting is not None:
+        function.workerCycleStaticSetting.release()
+        function.workerCycleStaticSetting.signals.finished.emit()
+        function.workerCycleStaticSetting = None

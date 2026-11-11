@@ -262,10 +262,7 @@ def test_Setting_parse_ok(function):
         "101+90*",
         "+00*",
         "E,2018-08-11",
-        "1",
         "0",
-        "00:00:00:00:00:00",
-        "N",
         "0",
         "987.0,0100",
         "+20,5",
@@ -278,7 +275,7 @@ def test_Setting_parse_ok(function):
         "A,G,N,H",
         "1",
     ]
-    suc = function.parseSetting(response, 27)
+    suc = function.parseSetting(response, 24)
     assert suc
 
 
@@ -296,10 +293,7 @@ def test_Setting_parse_ok_1(function):
         "101+90*",
         "+00*",
         "E,2018-08-11",
-        "1",
         "0",
-        "00:00:00:00:00:00",
-        "N",
         "0",
         "E",
         "+20,5",
@@ -312,7 +306,7 @@ def test_Setting_parse_ok_1(function):
         "A,G,N,H",
         "1",
     ]
-    suc = function.parseSetting(response, 27)
+    suc = function.parseSetting(response, 24)
     assert suc
 
 
@@ -333,10 +327,7 @@ def test_Setting_parse_ok_2(function, makeApp):
         "101+90*",
         "+00*",
         "E,2018-08-11",
-        "1",
         "0",
-        "00:00:00:00:00:00",
-        "N",
         "0",
         "E",
         "+20,5",
@@ -347,7 +338,7 @@ def test_Setting_parse_ok_2(function, makeApp):
         "00005.000",
     ]
     with mock.patch.object(mount.firmware, "checkNewer", return_value=False):
-        suc = sett.parseSetting(response, 24)
+        suc = sett.parseSetting(response, 21)
         assert suc
 
 
@@ -365,10 +356,7 @@ def test_Setting_parse_not_ok0(function):
         "101+90*",
         "+00*",
         "E,2018-08-11",
-        "1",
         "0",
-        "00:00:00:00:00:00",
-        "N",
         "0",
         "987.0,0100",
         "+20,5",
@@ -377,7 +365,7 @@ def test_Setting_parse_not_ok0(function):
         "A,G,N,H",
         "1",
     ]
-    suc = function.parseSetting(response, 27)
+    suc = function.parseSetting(response, 24)
     assert not suc
 
 
@@ -395,10 +383,7 @@ def test_Setting_parse_not_ok1(function):
         "101+90*",
         "+00*",
         "E,2018-08-11",
-        "1",
         "0",
-        "00:00:00:00:00:00",
-        "N",
         "0",
         "987.0,0100",
         "+20,5",
@@ -411,7 +396,7 @@ def test_Setting_parse_not_ok1(function):
         "A,G,N,H",
         "1",
     ]
-    suc = function.parseSetting(response, 27)
+    suc = function.parseSetting(response, 24)
     assert suc
 
 
@@ -429,10 +414,7 @@ def test_Setting_parse_not_ok2(function):
         "+90*",
         "+00*",
         "E,2018-08-11",
-        "1",
         "0",
-        "00:00:00:00:00:00",
-        "N",
         "0",
         "987.0,0100",
         "+20,5",
@@ -445,7 +427,7 @@ def test_Setting_parse_not_ok2(function):
         "A,G,N,H",
         "1",
     ]
-    suc = function.parseSetting(response, 27)
+    suc = function.parseSetting(response, 24)
     assert not suc
 
 
@@ -463,10 +445,7 @@ def test_Setting_parse_not_ok3(function):
         "101+90*",
         "+00",
         "E,2018-08-11",
-        "1",
         "0",
-        "00:00:00:00:00:00",
-        "N",
         "0",
         "987.0,0100",
         "+20,5",
@@ -480,7 +459,7 @@ def test_Setting_parse_not_ok3(function):
         "1",
     ]
 
-    suc = function.parseSetting(response, 27)
+    suc = function.parseSetting(response, 24)
     assert suc
 
 
@@ -498,10 +477,7 @@ def test_Setting_parse_not_ok4(function):
         "101+90*",
         "+00*",
         ",2018-08-11",
-        "1",
         "0",
-        "00:00:00:00:00:00",
-        "N",
         "0",
         "987.0,0100",
         "+20,5",
@@ -515,7 +491,7 @@ def test_Setting_parse_not_ok4(function):
         "1",
     ]
 
-    suc = function.parseSetting(response, 27)
+    suc = function.parseSetting(response, 24)
     assert suc
 
 
@@ -534,10 +510,7 @@ def test_Setting_poll_ok1(function):
         "101+90*",
         "+00*",
         "E,2018-08-11",
-        "1",
         "0",
-        "00:00:00:00:00:00",
-        "N",
         "0",
         "987.0,0100",
         "+20,5",
@@ -552,7 +525,7 @@ def test_Setting_poll_ok1(function):
     ]
 
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
-        mConn.return_value.communicate.return_value = True, response, 27
+        mConn.return_value.communicate.return_value = True, response, 24
         suc = function.pollSetting()
         assert suc
 
@@ -572,10 +545,7 @@ def test_Setting_poll_ok2(function):
         "101+90*",
         "+00*",
         "E,2018-08-11",
-        "1",
         "0",
-        "00:00:00:00:00:00",
-        "N",
         "0",
         "987.0,0100",
         "+20,5",
@@ -590,7 +560,7 @@ def test_Setting_poll_ok2(function):
     ]
 
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
-        mConn.return_value.communicate.return_value = True, response, 27
+        mConn.return_value.communicate.return_value = True, response, 24
         suc = function.pollSetting()
         assert suc
 
@@ -610,10 +580,7 @@ def test_Setting_poll_not_ok1(function):
         "101+90*",
         "+00*",
         "E,2018-08-11",
-        "1",
         "0",
-        "00:00:00:00:00:00",
-        "N",
         "0",
         "987.0,0100",
         "+20,5",
@@ -628,7 +595,7 @@ def test_Setting_poll_not_ok1(function):
     ]
 
     with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
-        mConn.return_value.communicate.return_value = False, response, 27
+        mConn.return_value.communicate.return_value = False, response, 24
         suc = function.pollSetting()
         assert not suc
 
@@ -648,10 +615,7 @@ def test_Setting_poll_not_ok2(function):
         "101+90*",
         "+00*",
         "E,2018-08-11",
-        "1",
         "0",
-        "00:00:00:00:00:00",
-        "N",
         "0",
         "987.0,0100",
         "+20,5",
@@ -1320,10 +1284,7 @@ def buildValidResponse() -> list[str]:
         "101+90*",
         "+00*",
         "E,2018-08-11",
-        "1",
         "0",
-        "00:00:00:00:00:00",
-        "N",
         "0",
         "987.0,0100",
         "+20,5",
@@ -1343,7 +1304,7 @@ def test_validateSetting_ok(function):
 
 
 def test_validateSetting_tooShort(function):
-    assert not function.validateSetting(buildValidResponse()[:26])
+    assert not function.validateSetting(buildValidResponse()[:23])
 
 
 def test_validateSetting_shortFlags(function):
@@ -1366,14 +1327,14 @@ def test_validateSetting_malformedUTC(function):
 
 def test_validateSetting_malformedConfig(function):
     response = buildValidResponse()
-    response[25] = "A,G"
+    response[22] = "A,G"
     assert not function.validateSetting(response)
 
 
 def test_parseSetting_malformed(function):
     response = buildValidResponse()
     response[11] = "E"
-    assert not function.parseSetting(response, 27)
+    assert not function.parseSetting(response, 24)
 
 
 def test_Setting_poll_oldFirmware(function):
@@ -1391,7 +1352,7 @@ def test_Setting_poll_oldFirmware(function):
 def getResponse() -> list[str]:
     return [
         "15", "1", "20", "0426", "05", "+010.0", "0950.0", "60.2", "+033.0",
-        "101+90*", "+00*", "E,2018-08-11", "1", "0", "00:00:00:00:00:00", "N",
+        "101+90*", "+00*", "E,2018-08-11", "0",
         "0", "987.0,0100", "+20,5", "90.4", "-13,5", "60.2", "1", "00005.000",
         "1", "A,G,N,H", "1",
     ]  # fmt: skip
@@ -1399,43 +1360,85 @@ def getResponse() -> list[str]:
 
 def test_parseSetting_changed_1(makeApp):
     sett = Setting(makeApp().mount)
-    assert sett.parseSetting(getResponse(), 27)
+    assert sett.parseSetting(getResponse(), 24)
     assert sett.hasChanged()
     assert sett.changed == {"meridianLimitTrack", "meridianLimitSlew"}
 
 
 def test_parseSetting_changed_2(makeApp):
     sett = Setting(makeApp().mount)
-    sett.parseSetting(getResponse(), 27)
-    assert sett.parseSetting(getResponse(), 27)
+    sett.parseSetting(getResponse(), 24)
+    assert sett.parseSetting(getResponse(), 24)
     assert not sett.hasChanged()
 
 
 def test_parseSetting_changed_3(makeApp):
     sett = Setting(makeApp().mount)
-    sett.parseSetting(getResponse(), 27)
+    sett.parseSetting(getResponse(), 24)
     response = getResponse()
     response[4] = "07"
     response[5] = "+012.0"
-    assert sett.parseSetting(response, 27)
+    assert sett.parseSetting(response, 24)
     assert sett.hasChanged()
     assert sett.changed == {"meridianLimitTrack", "meridianLimitSlew"}
 
 
 def test_parseSetting_changed_4(makeApp):
     sett = Setting(makeApp().mount)
-    sett.parseSetting(getResponse(), 27)
+    sett.parseSetting(getResponse(), 24)
     response = getResponse()
     response[6] = "0900.0"
-    assert sett.parseSetting(response, 27)
+    assert sett.parseSetting(response, 24)
     assert not sett.hasChanged()
 
 
 def test_parseSetting_changed_5(makeApp):
     sett = Setting(makeApp().mount)
-    sett.parseSetting(getResponse(), 27)
+    sett.parseSetting(getResponse(), 24)
     response = getResponse()
     response[4] = "07"
-    sett.parseSetting(response, 27)
+    sett.parseSetting(response, 24)
     assert not sett.parseSetting(response[:5], 5)
     assert sett.hasChanged()
+
+
+def test_pollStaticSetting_ok(function):
+    function.staticRead = False
+    with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
+        mConn.return_value.communicate.return_value = (
+            True,
+            ["1", "00:00:00:00:00:00", "1"],
+            3,
+        )
+        assert function.pollStaticSetting()
+    assert function.typeConnection == 1
+    assert function.addressLanMAC == "00:00:00:00:00:00"
+    assert function.wakeOnLan == "ON"
+    assert function.staticRead
+
+
+def test_pollStaticSetting_noSuccess(function):
+    function.staticRead = False
+    with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
+        mConn.return_value.communicate.return_value = False, [], 3
+        assert not function.pollStaticSetting()
+    assert not function.staticRead
+
+
+def test_pollStaticSetting_malformed(function):
+    function.staticRead = False
+    with mock.patch("mw4.mountcontrol.setting.Connection") as mConn:
+        mConn.return_value.communicate.return_value = True, ["1"], 3
+        assert not function.pollStaticSetting()
+    assert not function.staticRead
+
+
+def test_pollSetting_readsStaticFirst(function):
+    function.staticRead = False
+    with (
+        mock.patch.object(function, "pollStaticSetting") as mStatic,
+        mock.patch("mw4.mountcontrol.setting.Connection") as mConn,
+    ):
+        mConn.return_value.communicate.return_value = False, [], 0
+        function.pollSetting()
+    mStatic.assert_called_once()

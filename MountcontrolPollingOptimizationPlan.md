@@ -176,3 +176,9 @@ Via the `logging` module at DEBUG level (no overhead when off). Per transaction:
 - Which near-static commands may be moved to the event-driven or 30 s set.
 - Firmware versions without `:Ginfo#` extra fields: parsing tolerates trailing fields (already `>= 8`).
 - Blocking facade calls from the GUI thread must not deadlock with the link thread (calls are only allowed from workers or a timeout-bound wait).
+
+## Phase 3 leftovers (done)
+- Static settings `:GINQ#:GMAC#:GWOL#` are polled once and then every 30 s (`pollStaticSetting`, `cycleStaticSetting`).
+- `:GT#`, `:Gh#`, `:Go#`, `:gtg#` stay cyclic: they change at runtime.
+- The three settings sub-batches run sequentially, so no extra phase offset is needed.
+- A link-state accessor on `LinkWorker` was not added; no caller needs it yet.

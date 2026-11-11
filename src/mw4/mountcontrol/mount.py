@@ -71,6 +71,7 @@ class MountDevice(QObject):
         self.mountData = MountData(self.obsSite, self.mountTimeConn)
 
         self.workerCycleSetting: Worker | None = None
+        self.workerCycleStaticSetting: Worker | None = None
         self.workerCyclePointing: Worker | None = None
         self.workerGetLocation: Worker | None = None
         self.workerGetFW: Worker | None = None
@@ -99,6 +100,7 @@ class MountDevice(QObject):
         timeMgr.update30s.connect(self.mountTimeConn.syncClock)
         timeMgr.update0_5s.connect(self.cyclePointing)
         timeMgr.update3s.connect(self.cycleSetting)
+        timeMgr.update30s.connect(self.cycleStaticSetting)
         timeMgr.update3s.connect(self.mountTimeConn.pollTimeState)
         timeMgr.update1s.connect(self.collectData)
         timeMgr.start3s.connect(self.resetAfterStart)
@@ -187,6 +189,15 @@ class MountDevice(QObject):
             self.threadPool,
             self.setting.pollSetting,
             resultMethod=self.resultCycleSetting,
+            guard=lambda: self.mountIsUp,
+        )
+
+    @Slot()
+    def cycleStaticSetting(self) -> None:
+        self.workerCycleStaticSetting = startWorker(
+            self.workerCycleStaticSetting,
+            self.threadPool,
+            self.setting.pollStaticSetting,
             guard=lambda: self.mountIsUp,
         )
 

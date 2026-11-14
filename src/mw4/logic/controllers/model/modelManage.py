@@ -47,15 +47,8 @@ def isTargetReached(model: Model, targetRMS: float, overall: bool) -> bool:
 def writeOptimizedModel(
     fittedModelPath: Path, modelDir: Path, pointsOut: list[int], mountModel: Model
 ) -> Path:
-    """Write the fitted model file without the removed points as '-opt' file.
-
-    Returns the path of the new file, or the unchanged path if nothing was written.
-    """
-    if not pointsOut or fittedModelPath.is_dir():
-        return fittedModelPath
     newName = fittedModelPath.stem.replace("-opt", "") + "-opt"
     newPath = modelDir / (newName + ".model")
-
     try:
         with open(fittedModelPath) as actFile:
             actModel = convertFloatToAngle(json.load(actFile))

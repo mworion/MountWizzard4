@@ -66,13 +66,17 @@ def test_isTargetReached_single() -> None:
     assert not isTargetReached(model, 5, False)
 
 
-def test_writeOptimizedModel_noPoints() -> None:
-    path = Path("a-opt.model")
-    assert writeOptimizedModel(path, Path(), [], Model(mock.MagicMock())) == path
-
-
-def test_writeOptimizedModel_directory(tmp_path: Path) -> None:
-    assert writeOptimizedModel(tmp_path, tmp_path, [1], Model(mock.MagicMock())) == tmp_path
+def test_writeOptimizedModel_noPoints(tmp_path: Path) -> None:
+    path = tmp_path / "a.model"
+    path.write_text("[]")
+    with (
+        mock.patch.object(modelManage, "convertFloatToAngle", return_value=[]),
+        mock.patch.object(modelManage, "writeRetrofitData", side_effect=lambda m, x: x),
+        mock.patch.object(modelManage, "convertAngleToFloat", side_effect=lambda x: x),
+    ):
+        newPath = writeOptimizedModel(path, tmp_path, [], Model(mock.MagicMock()))
+    assert newPath == tmp_path / "a-opt.model"
+    assert json.loads(newPath.read_text()) == []
 
 
 def test_writeOptimizedModel_invalidJson(tmp_path: Path) -> None:

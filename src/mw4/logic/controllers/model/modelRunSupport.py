@@ -191,9 +191,8 @@ def findFittingModel(mountModel: Model, modelPath: Path) -> tuple[Path, list]:
         fileCount = len(pointsIn) + len(pointsOut)
         mountCount = len(mountModelData)
         isModel = len(pointsIn) >= 3
-        isNotLarger = fileCount <= mountCount
-        isOverlapping = mountCount - len(pointsIn) <= 3
-        if isModel and isNotLarger and isOverlapping:
+        isOverlapping = mountCount - len(pointsIn) <= 1
+        if isModel and isOverlapping:
             fittedModelPath = modelFilePath
             break
 

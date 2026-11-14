@@ -302,39 +302,87 @@ def test_deleteName_4(function):
         function.deleteName()
 
 
-def test_writeBuildModelOptimized_0(function):
-    function.fittedModelPath = Path("tests/work/model/test-opt.model")
-    with mock.patch.object(
-        mw4.gui.mainWaddon.tabModel_Manage,
-        "writeOptimizedModel",
-        return_value=Path("new.model"),
-    ):
-        function.writeBuildModelOptimized([1])
-    assert function.fittedModelPath == Path("new.model")
-
-
-def test_clearRefreshModel_1(function):
-    function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
-    with (
-        mock.patch.object(
-            mw4.gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(), [])
-        ),
-        mock.patch.object(Path, "is_file", return_value=True),
-        mock.patch.object(function, "writeBuildModelOptimized"),
-    ):
-        function.clearRefreshModel()
-
-
-def test_clearRefreshModel_2(function):
+def test_clearRefreshModel_noFittingModel(function):
     function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
     with (
         mock.patch.object(
             mw4.gui.mainWaddon.tabModel_Manage, "findFittingModel", return_value=(Path(), [])
         ),
         mock.patch.object(Path, "is_file", return_value=False),
-        mock.patch.object(function, "sendAnalyseFileName"),
+        mock.patch.object(function, "sendAnalyseFileName") as sendAnalyse,
     ):
         function.clearRefreshModel()
+    sendAnalyse.assert_not_called()
+
+
+def test_clearRefreshModel_withoutPointsToRemove(function):
+    fittedModelPath = Path("tests/work/model/test.model")
+    function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
+    with (
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabModel_Manage,
+            "findFittingModel",
+            return_value=(fittedModelPath, []),
+        ),
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabModel_Manage, "writeOptimizedModel"
+        ) as writeOptimized,
+        mock.patch.object(function, "sendAnalyseFileName") as sendAnalyse,
+    ):
+        function.clearRefreshModel()
+    writeOptimized.assert_not_called()
+    sendAnalyse.assert_called_once()
+
+
+def test_clearRefreshModel_withPointsToRemove(function):
+    fittedModelPath = Path("tests/work/model/test.model")
+    optimizedModelPath = Path("tests/work/model/test-opt.model")
+    pointsOut = [1, 2]
+    function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
+    with (
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabModel_Manage,
+            "findFittingModel",
+            return_value=(fittedModelPath, pointsOut),
+        ),
+        mock.patch.object(Path, "is_file", return_value=True),
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabModel_Manage,
+            "writeOptimizedModel",
+            return_value=optimizedModelPath,
+        ) as writeOptimized,
+        mock.patch.object(function, "sendAnalyseFileName") as sendAnalyse,
+    ):
+        function.clearRefreshModel()
+    writeOptimized.assert_called_once_with(
+        fittedModelPath, function.app.mwGlob["modelDir"], pointsOut, function.app.dReg.mount.model
+    )
+    assert function.fittedModelPath == optimizedModelPath
+    sendAnalyse.assert_called_once()
+
+
+def test_clearRefreshModel_missingOptimizedFile(function):
+    fittedModelPath = Path("tests/work/model/test.model")
+    pointsOut = [1]
+    function.app.mount.signals.getModelDone.connect(function.clearRefreshModel)
+    with (
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabModel_Manage,
+            "findFittingModel",
+            return_value=(fittedModelPath, pointsOut),
+        ),
+        mock.patch.object(Path, "is_file", side_effect=[True, False]),
+        mock.patch.object(
+            mw4.gui.mainWaddon.tabModel_Manage,
+            "writeOptimizedModel",
+            return_value=Path("missing-opt.model"),
+        ),
+        mock.patch.object(function, "sendAnalyseFileName") as sendAnalyse,
+    ):
+        function.clearRefreshModel()
+    assert function.ui.originalModel.text() == "No fitting model file found"
+    sendAnalyse.assert_not_called()
 
 
 def test_clearModel_1(function):

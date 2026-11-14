@@ -219,14 +219,6 @@ class ModelManage(TabAddon):
         self.msg.emit(0, "Model", "Manage", f"Model deleted: {modelName}")
         self.refreshName()
 
-    def writeBuildModelOptimized(self, pointsOut: list[int]) -> None:
-        self.fittedModelPath = writeOptimizedModel(
-            self.fittedModelPath,
-            self.app.mwGlob["modelDir"],
-            pointsOut,
-            self.app.dReg.mount.model,
-        )
-
     @Slot()
     def clearRefreshModel(self) -> None:
         changeStyleDynamic(self.ui.refreshModel, "run", "false")
@@ -239,14 +231,22 @@ class ModelManage(TabAddon):
         self.fittedModelPath, pointsOut = findFittingModel(
             self.app.dReg.mount.model, self.app.mwGlob["modelDir"]
         )
-        self.writeBuildModelOptimized(pointsOut)
+        if not self.fittedModelPath.is_file():
+            self.ui.originalModel.setText("No fitting model file found")
+            return
+        if pointsOut:
+            self.fittedModelPath = writeOptimizedModel(
+                self.fittedModelPath,
+                self.app.mwGlob["modelDir"],
+                pointsOut,
+                self.app.dReg.mount.model,
+            )
         if self.fittedModelPath.is_file():
             self.msg.emit(0, "Model", "Manage", f"Found: {self.fittedModelPath.stem}")
             self.ui.originalModel.setText(self.fittedModelPath.stem)
-
+            self.sendAnalyseFileName()
         else:
             self.ui.originalModel.setText("No fitting model file found")
-        self.sendAnalyseFileName()
 
     @Slot()
     def refreshModel(self) -> None:
@@ -342,8 +342,6 @@ class ModelManage(TabAddon):
         self.runningOptimize = False
 
     def sendAnalyseFileName(self) -> None:
-        if not self.fittedModelPath.is_file():
-            return
         self.app.signals.ui.showAnalyse.emit(self.fittedModelPath)
 
     def pointClicked(self, scatterPlotItem, points, event) -> None:

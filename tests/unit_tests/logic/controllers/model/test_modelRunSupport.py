@@ -333,7 +333,7 @@ def test_findFittingModel_1():
         ):
             filePath, pointsOut = findFittingModel({}, Path("tests/testData"))
         assert pointsOut == [4]
-        assert filePath == Path("tests/testData/test.model")
+        assert filePath == Path()
 
 
 def runFindFittingModel(mountCount, pointsIn, pointsOut):
@@ -362,7 +362,7 @@ def test_findFittingModel_2():
 def test_findFittingModel_3():
     filePath, pointsOut = runFindFittingModel(5, [1, 2, 3, 4, 5], [6])
     assert pointsOut == [6]
-    assert filePath == Path()
+    assert filePath == Path("tests/testData/test.model")
 
 
 def test_findFittingModel_4():
@@ -372,5 +372,5 @@ def test_findFittingModel_4():
 
 
 def test_findFittingModel_5():
-    filePath, _ = runFindFittingModel(6, [1, 2, 3], [])
+    filePath, _ = runFindFittingModel(4, [1, 2, 3], [])
     assert filePath == Path("tests/testData/test.model")

@@ -142,7 +142,8 @@ class MountLink(QObject):
                 return self.fail("receive timeout")
             self.parser.feed(self.client.readAll().data())
         duration = time.monotonic() - start
-        self.log.debug("Transaction %d commands, %.3f s", commandString.count("#"), duration)
+        if self.loggingTrace:
+            self.log.debug("[Trace] Transaction %d commands, %.3f s", commandString.count("#"), duration)
         return True, reply
 
     def transactRaw(

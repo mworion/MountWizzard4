@@ -65,7 +65,6 @@ class MountLink(QObject):
         self.client: QTcpSocket | None = None
         self.parser = ReplyParser()
         from mw4.mountcontrol.connection import Connection
-
         self.helper = Connection.__new__(Connection)
         self.helper.id = "link"
         self.helper.host = (host, port)
@@ -142,7 +141,7 @@ class MountLink(QObject):
                 return self.fail("receive timeout")
             self.parser.feed(self.client.readAll().data())
         duration = time.monotonic() - start
-        if self.loggingTrace:
+        if self.helper.loggingTrace:
             self.log.debug("[Trace] Transaction %d commands, %.3f s", commandString.count("#"), duration)
         return True, reply
 

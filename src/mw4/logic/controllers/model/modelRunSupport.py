@@ -188,7 +188,7 @@ def findFittingModel(mountModel: Model, modelPath: Path) -> tuple[Path, list]:
     pointsOut = []
     for modelFilePath in sorted(modelPath.glob("*.model"), key=lambda x: x.stem):
         pointsIn, pointsOut = compareFile(modelFilePath, mountModelData)
-        fileCount = len(pointsIn) + len(pointsOut)
+        len(pointsIn) + len(pointsOut)
         mountCount = len(mountModelData)
         isModel = len(pointsIn) >= 3
         isOverlapping = mountCount - len(pointsIn) <= 1

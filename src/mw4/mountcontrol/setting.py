@@ -5,6 +5,7 @@ import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToFloat, valueToInt
 from mw4.mountcontrol.mountContext import MountContext
+from mw4.mountcontrol.mountLink import CYCLIC
 from typing import ClassVar
 
 
@@ -30,6 +31,7 @@ class Setting:
     def __init__(self, parent: MountContext) -> None:
         self.parent = parent
         self.changed: set[str] = set()
+        self.staticRead: bool = False
         self.slewRate: float = 0
         self.slewRateMin: float = 0
         self.slewRateMax: float = 99
@@ -135,18 +137,18 @@ class Setting:
 
     def validateSetting(self, response: list[str]) -> bool:
         """
-        The response consists of 24 chunks, with firmware 3.2.5 and newer of 27.
+        The response consists of 21 chunks, with firmware 3.2.5 and newer of 24.
         Commands without a '#' terminator are merged into the next chunk, so
         some chunks carry more than one value.
         """
         newer = self.parent.firmware.checkNewer("3.2.5")
-        if len(response) < (27 if newer else 24):
+        if len(response) < (24 if newer else 21):
             return False
         if len(response[9]) < 6 or len(response[10]) < 3:
             return False
         if response[11].count(",") != 1:
             return False
-        return not (newer and len(response[25].split(",")) < 4)
+        return not (newer and len(response[22].split(",")) < 4)
 
     def parseSetting(self, response: list, numberOfChunks: int) -> bool:
         if len(response) != numberOfChunks:
@@ -182,42 +184,58 @@ class Setting:
         valid, expirationDate = response[11].split(",")
         self.UTCValid = valid == "V"
         self.UTCExpire = expirationDate
-        self.typeConnection = response[12]
-        self.addressLanMAC = response[14]
-        self.wakeOnLan = response[15]
-        self.weatherStatus = response[16]
-        w17 = response[17].split(",")
-        self.weatherAge = valueToInt(w17[1]) if len(w17) > 1 else 0
-        self.weatherPressure = valueToFloat(w17[0])
-        self.weatherTemperature = valueToFloat(response[18].split(",")[0])
-        self.weatherHumidity = valueToFloat(response[19].split(",")[0])
-        self.weatherDewPoint = valueToFloat(response[20].split(",")[0])
-        self.trackingRate = valueToFloat(response[21])
-        self.webInterfaceStat = bool(valueToInt(response[22]))
-        self.settleTime = valueToFloat(response[23])
+        self.weatherStatus = response[13]
+        w14 = response[14].split(",")
+        self.weatherAge = valueToInt(w14[1]) if len(w14) > 1 else 0
+        self.weatherPressure = valueToFloat(w14[0])
+        self.weatherTemperature = valueToFloat(response[15].split(",")[0])
+        self.weatherHumidity = valueToFloat(response[16].split(",")[0])
+        self.weatherDewPoint = valueToFloat(response[17].split(",")[0])
+        self.trackingRate = valueToFloat(response[18])
+        self.webInterfaceStat = bool(valueToInt(response[19]))
+        self.settleTime = valueToFloat(response[20])
         if not self.parent.firmware.checkNewer("3.2.5"):
-            self.gpsSynced = valueToInt(response[13])
+            self.gpsSynced = valueToInt(response[12])
             return
-        self.autoPowerOn = response[24]
-        config = response[25].split(",")
+        self.autoPowerOn = response[21]
+        config = response[22].split(",")
         self.configEquatorial = self.CONFIG.get(config[0], "Unknown")
         self.configGerman = self.CONFIG.get(config[1], "Unknown")
         self.configHemisphere = self.CONFIG.get(config[2], "Unknown")
         self.configHoming = self.CONFIG.get(config[3], "Unknown")
-        self.gpsSynced = valueToInt(response[26])
+        self.gpsSynced = valueToInt(response[23])
 
     def pollSetting(self) -> bool:
+        if not self.staticRead:
+            self.pollStaticSetting()
         conn = Connection(self.parent)
         cs1 = ":GMs#:GMsa#:GMsb#:Gmte#:Glmt#:Glms#:GRTMP#:GRPRS#:GTMP1#"
-        cs2 = ":GREF#:Guaf#:Gdat#:Gh#:Go#:GDUTV#:GINQ#:gtg#:GMAC#:GWOL#"
+        cs2 = ":GREF#:Guaf#:Gdat#:Gh#:Go#:GDUTV#:gtg#"
         cs3 = ":WSG#:WSP#:WST#:WSH#:WSD#:GT#:NTGweb#:Gstm#"
         if self.parent.firmware.checkNewer("3.2.5"):
             cs3 += ":GAPO#:GCFG#:gtgpps#"
-        commandString = cs1 + cs2 + cs3
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        response: list[str] = []
+        for commandString in (cs1, cs2, cs3):
+            suc, part, _ = conn.communicate(commandString, priority=CYCLIC)
+            if not suc:
+                return False
+            response.extend(part)
+        return self.parseSetting(response, len(response))
+
+    def pollStaticSetting(self) -> bool:
+        """Read the settings which do not change while the mount is running."""
+        conn = Connection(self.parent)
+        suc, response, numberOfChunks = conn.communicate(":GINQ#:GMAC#:GWOL#", priority=CYCLIC)
         if not suc:
             return False
-        return self.parseSetting(response, numberOfChunks)
+        if len(response) != numberOfChunks or len(response) < 3:
+            self.log.warning("malformed static setting response: [%s]", response)
+            return False
+        self.typeConnection = response[0]
+        self.addressLanMAC = response[1]
+        self.wakeOnLan = response[2]
+        self.staticRead = True
+        return True
 
     def sendCommand(self, commandString: str, responseCheck: str = "") -> bool:
         """Send a command to the mount and return only the success flag."""

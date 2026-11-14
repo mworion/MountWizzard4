@@ -3,23 +3,8 @@
 # Copyright (c) 2019-2026 mworion
 import pytest
 from mw4.mountcontrol.connection import Connection
-from PySide6.QtCore import QByteArray
-from unittest import mock
-
-
-def makeClient(
-    connected: bool = True,
-    written: bool = True,
-    readyRead: bool = True,
-    data: bytes = b"",
-) -> mock.MagicMock:
-    """Create a mocked QTcpSocket with configurable blocking-call results."""
-    client = mock.MagicMock()
-    client.waitForConnected.return_value = connected
-    client.waitForBytesWritten.return_value = written
-    client.waitForReadyRead.return_value = readyRead
-    client.readAll.return_value = QByteArray(data)
-    return client
+from mw4.mountcontrol.mountLink import workers
+from tests.unit_tests.mountcontrol.test_mountLink import FakeMount
 
 
 def makeParent(host=None, loggingTrace: bool = False) -> object:
@@ -207,169 +192,6 @@ class TestAnalyseCommand:
         assert chunksToReceive == 0
 
 
-class TestCloseClientHard:
-    """Tests for the closeClientHard method."""
-
-    def test_closeClientHard_1(self):
-        conn = Connection(makeParent())
-        conn.closeClientHard("")
-
-    def test_closeClientHard_2(self):
-        conn = Connection(makeParent(host="test"))
-        client = makeClient()
-        client.abort.side_effect = RuntimeError("deleted")
-        conn.closeClientHard(client)
-
-    def test_closeClientHard_3(self):
-        conn = Connection(makeParent(host="test"))
-        client = makeClient()
-        conn.closeClientHard(client)
-        client.abort.assert_called_once()
-        client.close.assert_called_once()
-
-
-class TestBuildClient:
-    """Tests for the buildClient method."""
-
-    def test_buildClient_noHost(self):
-        conn = Connection(makeParent(host=None))
-        client = conn.buildClient()
-        assert client is None
-
-    def test_buildClient_hostNotTuple(self):
-        conn = Connection(makeParent(host="localhost"))
-        client = conn.buildClient()
-        assert client is None
-
-    def test_buildClient_mountNotUp(self):
-        parent = makeParent(host=("localhost", 3492))
-        parent.mountIsUp = False
-        conn = Connection(parent)
-        client = conn.buildClient()
-        assert client is None
-
-    def test_buildClient_emptyHost(self):
-        conn = Connection(makeParent(host=None))
-        conn.host = None
-        client = conn.buildClient()
-        assert client is None
-
-    def test_buildClient_hostNotTuple_direct(self):
-        conn = Connection(makeParent(host=None))
-        conn.host = "not_a_tuple"
-        client = conn.buildClient()
-        assert client is None
-
-
-class TestCommunicate:
-    """Tests for the communicate method."""
-
-    def test_ok(self):
-        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
-            m_socket.return_value = makeClient(data=b"10micron GM1000HPS#")
-            conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, _chunks = conn.communicate(":GVN#")
-            m_socket.return_value.connectToHost.assert_called_with("localhost", 3492)
-            m_socket.return_value.write.assert_called_with(b":GVN#")
-        assert suc
-        assert response[0] == "10micron GM1000HPS"
-
-    def test_notok_response_check(self):
-        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
-            m_socket.return_value = makeClient(data=b"10micron GM1000HPS#")
-            conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, _chunks = conn.communicate(":GVN#", "0")
-            m_socket.return_value.connectToHost.assert_called_with("localhost", 3492)
-            m_socket.return_value.write.assert_called_with(b":GVN#")
-        assert not suc
-        assert response[0] == "10micron GM1000HPS"
-
-    def test_no_host_defined(self):
-        conn = Connection(makeParent(host=None))
-        suc, response, _chunks = conn.communicate(":GVN#")
-        assert not suc
-        assert response == []
-
-    def test_no_port_defined(self):
-        conn = Connection(makeParent(host="localhost"))
-        suc, response, _chunks = conn.communicate(":GVN#")
-        assert not suc
-        assert response == []
-
-    def test_no_response(self):
-        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
-            m_socket.return_value = makeClient(data=b"10micron GM1000HPS#")
-            conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, _chunks = conn.communicate("")
-        assert suc
-        assert response == []
-
-    def test_no_chunk(self):
-        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
-            m_socket.return_value = makeClient(data=b"")
-            conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, response, _chunks = conn.communicate("")
-        assert suc
-        assert response == []
-
-    def test_connect_timeout(self):
-        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
-            m_socket.return_value = makeClient(connected=False)
-            conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, _response, _chunks = conn.communicate(":GVN#")
-        assert not suc
-
-    def test_sendall_timeout(self):
-        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
-            m_socket.return_value = makeClient(written=False)
-            conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, _response, _chunks = conn.communicate(":GVN#")
-        assert not suc
-
-    def test_recv_timeout(self):
-        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
-            m_socket.return_value = makeClient(readyRead=False)
-            conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, _response, _chunks = conn.communicate(":GVN#")
-        assert not suc
-
-    def test_connect_socket_error(self):
-        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
-            client = makeClient()
-            client.connectToHost.side_effect = RuntimeError("deleted")
-            m_socket.return_value = client
-            conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, _response, _chunks = conn.communicate(":GVN#")
-        assert not suc
-
-    def test_sendall_exception(self):
-        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
-            client = makeClient()
-            client.write.side_effect = OSError("Test")
-            m_socket.return_value = client
-            conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, _response, _chunks = conn.communicate(":GVN#")
-        assert not suc
-
-    def test_recv_exception(self):
-        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
-            client = makeClient(data=b"10micron GM1000HPS#")
-            client.readAll.side_effect = OSError("Test")
-            m_socket.return_value = client
-            conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, _response, _chunks = conn.communicate(":GVN#")
-        assert not suc
-
-    def test_connect_exception(self):
-        with mock.patch("mw4.mountcontrol.connection.QTcpSocket") as m_socket:
-            client = makeClient()
-            client.connectToHost.side_effect = OSError("Test")
-            m_socket.return_value = client
-            conn = Connection(makeParent(host=("localhost", 3492)))
-            suc, _response, _chunks = conn.communicate(":GVN#")
-        assert not suc
-
-
 class TestCommandValidation:
     """Tests for command validation methods."""
 
@@ -429,183 +251,6 @@ class TestCommandValidation:
         assert not suc
 
 
-class TestReceiveData:
-    """Tests for the receiveData method."""
-
-    def test_receiveData_1(self):
-        client = makeClient()
-        client.readAll.side_effect = RuntimeError("deleted")
-        conn = Connection(makeParent())
-        val = conn.receiveData(client=client, numberOfChunks=0, minBytes=0)
-        assert val == (False, [])
-
-    def test_receiveData_2(self):
-        client = makeClient(data=b"")
-        conn = Connection(makeParent())
-        val = conn.receiveData(client=client, numberOfChunks=0, minBytes=0)
-        assert val == (True, [""])
-
-    def test_receiveData_3(self):
-        client = makeClient(data=b"12345")
-        conn = Connection(makeParent())
-        val = conn.receiveData(client=client, numberOfChunks=0, minBytes=5)
-        assert val == (True, ["12345"])
-
-    def test_receiveData_multipleChunks(self):
-        client = makeClient(data=b"a#b#")
-        conn = Connection(makeParent())
-        val = conn.receiveData(client=client, numberOfChunks=2, minBytes=0)
-        assert val == (True, ["a", "b"])
-
-    def test_receiveData_timeout_loggingTrace(self):
-        conn = Connection(makeParent(loggingTrace=True))
-        client = makeClient(readyRead=False)
-        val = conn.receiveData(client=client, numberOfChunks=1, minBytes=0)
-        assert val == (False, [])
-
-    def test_receiveData_success_loggingTrace(self):
-        conn = Connection(makeParent(loggingTrace=True))
-        client = makeClient(data=b"result#")
-        val = conn.receiveData(client=client, numberOfChunks=1, minBytes=0)
-        assert val == (True, ["result"])
-
-    def test_receiveData_nonAscii(self):
-        client = makeClient(data=b"12\xdf30\x80#")
-        conn = Connection(makeParent())
-        val = conn.receiveData(client=client, numberOfChunks=1, minBytes=0)
-        assert val == (True, ["12*30\ufffd"])
-
-    def test_receiveData_unexpectedException(self):
-        client = makeClient()
-        client.readAll.side_effect = AttributeError("bug")
-        conn = Connection(makeParent())
-        with pytest.raises(AttributeError):
-            conn.receiveData(client=client, numberOfChunks=0, minBytes=0)
-
-
-class TestCommunicateRaw:
-    """Tests for the communicateRaw method."""
-
-    def test_communicateRaw_0(self):
-        conn = Connection(makeParent())
-        with (
-            mock.patch.object(conn, "buildClient", return_value=None),
-            mock.patch.object(conn, "sendData", return_value=False),
-        ):
-            suc = conn.communicateRaw("test")
-            assert not suc[0]
-            assert not suc[1]
-            assert suc[2] == "Socket error"
-
-    def test_communicateRaw_1(self):
-        client = makeClient(readyRead=False)
-        conn = Connection(makeParent())
-        with (
-            mock.patch.object(conn, "buildClient", return_value=client),
-            mock.patch.object(conn, "sendData", return_value=True),
-        ):
-            suc = conn.communicateRaw("test")
-            assert suc[0]
-            assert not suc[1]
-            assert suc[2] == "Timeout"
-        client.abort.assert_called_once()
-        client.close.assert_called_once()
-
-    def test_communicateRaw_sendFailed(self):
-        client = makeClient()
-        conn = Connection(makeParent())
-        with (
-            mock.patch.object(conn, "buildClient", return_value=client),
-            mock.patch.object(conn, "sendData", return_value=False),
-        ):
-            suc = conn.communicateRaw("test")
-            assert suc == (False, False, "Send error")
-        client.waitForReadyRead.assert_not_called()
-
-    def test_communicateRaw_2(self):
-        client = makeClient()
-        client.readAll.side_effect = RuntimeError("deleted")
-        conn = Connection(makeParent())
-        with (
-            mock.patch.object(conn, "buildClient", return_value=client),
-            mock.patch.object(conn, "sendData", return_value=True),
-        ):
-            suc = conn.communicateRaw("test")
-            assert suc[0]
-            assert not suc[1]
-            assert suc[2] == "Error: deleted"
-
-    def test_communicateRaw_3(self):
-        client = makeClient(data=b"test")
-        conn = Connection(makeParent())
-        with (
-            mock.patch.object(conn, "buildClient", return_value=client),
-            mock.patch.object(conn, "sendData", return_value=True),
-        ):
-            suc = conn.communicateRaw("test")
-            assert suc[0]
-            assert suc[1]
-            assert suc[2] == "test"
-        client.abort.assert_called_once()
-        client.close.assert_called_once()
-
-    def test_communicateRaw_timeout_loggingTrace(self):
-        client = makeClient(readyRead=False)
-        conn = Connection(makeParent(loggingTrace=True))
-        with (
-            mock.patch.object(conn, "buildClient", return_value=client),
-            mock.patch.object(conn, "sendData", return_value=True),
-        ):
-            suc = conn.communicateRaw("test")
-        assert not suc[1]
-        assert suc[2] == "Timeout"
-
-    def test_communicateRaw_success_loggingTrace(self):
-        client = makeClient(data=b"response")
-        conn = Connection(makeParent(loggingTrace=True))
-        with (
-            mock.patch.object(conn, "buildClient", return_value=client),
-            mock.patch.object(conn, "sendData", return_value=True),
-        ):
-            suc = conn.communicateRaw("test")
-        assert suc[1]
-        assert suc[2] == "response"
-
-    def test_communicateRaw_nonAscii(self):
-        client = makeClient(data=b"ab\x80")
-        conn = Connection(makeParent())
-        with (
-            mock.patch.object(conn, "buildClient", return_value=client),
-            mock.patch.object(conn, "sendData", return_value=True),
-        ):
-            suc = conn.communicateRaw("test")
-        assert suc[1]
-        assert suc[2] == "ab\ufffd"
-
-
-class TestSendData:
-    """Tests for the sendData method and logging."""
-
-    def test_sendData_loggingTrace(self):
-        conn = Connection(makeParent(host=("localhost", 3492), loggingTrace=True))
-        client = makeClient()
-        suc = conn.sendData(client, ":AP#")
-        assert suc
-
-    def test_sendData_timeout_loggingTrace(self):
-        conn = Connection(makeParent(host=("localhost", 3492), loggingTrace=True))
-        client = makeClient(written=False)
-        suc = conn.sendData(client, ":AP#")
-        assert not suc
-
-    def test_sendData_exception(self):
-        conn = Connection(makeParent(host=("localhost", 3492)))
-        client = makeClient()
-        client.write.side_effect = OSError("Test")
-        suc = conn.sendData(client, ":AP#")
-        assert not suc
-
-
 class TestCommandP:
     """Tests for COMMAND_P frozenset."""
 
@@ -615,12 +260,88 @@ class TestCommandP:
         assert frozenset({":RC", ":Rc", ":RG", ":Suaf"}) == conn.COMMAND_P
 
 
-class TestReceiveDataPartial:
-    """Tests for receiveData with responses split over several reads."""
+@pytest.fixture
+def mount():
+    m = FakeMount(
+        {
+            b":GVN#": b"2.20#",
+            b":GVN#:GVN#": b"2.20#2.20#",
+            b":Q#": b"",
+            b":GVD#": b"Mar 1 2020#",
+            b":AP#": b"",
+        }
+    )
+    yield m
+    for w in list(workers.values()):
+        w.stop()
+    workers.clear()
+    m.stop()
 
-    def test_receiveData_partialChunks(self):
-        client = makeClient()
-        client.readAll.side_effect = [QByteArray(b"a#"), QByteArray(b"b#")]
-        conn = Connection(makeParent())
-        val = conn.receiveData(client=client, numberOfChunks=2, minBytes=0)
-        assert val == (True, ["a", "b"])
+
+class TestFacade:
+    def test_communicate_ok(self, mount):
+        conn = Connection(makeParent(("127.0.0.1", mount.port)))
+        suc, response, chunks = conn.communicate(":GVN#")
+        assert suc
+        assert response == ["2.20"]
+        assert chunks == 1
+
+    def test_communicate_responseCheck(self, mount):
+        conn = Connection(makeParent(("127.0.0.1", mount.port)))
+        assert conn.communicate(":GVN#", "2.20")[0]
+        assert not conn.communicate(":GVN#", "x")[0]
+
+    def test_communicate_noReply(self, mount):
+        conn = Connection(makeParent(("127.0.0.1", mount.port)))
+        assert conn.communicate(":Q#") == (True, [], 0)
+
+    def test_communicate_invalid(self, mount):
+        conn = Connection(makeParent(("127.0.0.1", mount.port)))
+        assert conn.communicate(":XXX#") == (False, [], 0)
+        assert conn.communicateBulk(":XXX#") == (False, [], 0)
+
+    def test_communicate_mountDown(self, mount):
+        parent = makeParent(("127.0.0.1", mount.port))
+        parent.mountIsUp = False
+        conn = Connection(parent)
+        assert not conn.communicate(":GVN#")[0]
+        assert conn.communicateRaw(":GVN#") == (False, False, "Socket error")
+        assert not conn.communicateBulk(":GVN#")[0]
+
+    @pytest.mark.parametrize("host", [None, "abc", ("a",), (None, 1), ("a", None)])
+    def test_communicate_badHost(self, host):
+        conn = Connection(makeParent(host))
+        assert not conn.communicate(":GVN#")[0]
+
+    @pytest.mark.parametrize("host", [None, "abc", ("a",), (None, 1), ("a", None)])
+    def test_linkReady_malformedHost(self, host):
+        conn = Connection(makeParent(("127.0.0.1", 1)))
+        conn.host = host
+        assert not conn.linkReady()
+
+    def test_communicate_failure(self):
+        conn = Connection(makeParent(("127.0.0.1", 1)))
+        assert not conn.communicate(":GVN#", deadline=0.2)[0]
+
+    def test_communicateRaw(self, mount):
+        conn = Connection(makeParent(("127.0.0.1", mount.port)))
+        assert conn.communicateRaw(":GVN#") == (True, True, "2.20#")
+
+    def test_communicateBulk(self, mount):
+        conn = Connection(makeParent(("127.0.0.1", mount.port)))
+        suc, response, _ = conn.communicateBulk(":GVN#:GVN#")
+        assert suc
+        assert response == ["2.20", "2.20"]
+
+    def test_communicate_trace(self, mount, caplog):
+        conn = Connection(makeParent(("127.0.0.1", mount.port), loggingTrace=True))
+        with caplog.at_level("DEBUG"):
+            conn.communicate(":GVN#")
+            conn.communicateBulk(":GVN#:GVN#")
+        assert "[Trace] Sending" in caplog.text
+        assert "[Trace] Response" in caplog.text
+        assert "2 bulk commands" in caplog.text
+
+    def test_communicateBulk_fail(self):
+        conn = Connection(makeParent(("127.0.0.1", 1)))
+        assert not conn.communicateBulk(":GVN#")[0]

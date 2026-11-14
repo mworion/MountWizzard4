@@ -5,6 +5,7 @@ import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.convert import valueToAngle, valueToFloat
 from mw4.mountcontrol.mountContext import MountContext
+from mw4.mountcontrol.mountLink import CYCLIC
 from mw4.mountcontrol.tleParams import TLEParams
 from mw4.mountcontrol.trajectoryParams import TrajectoryParams
 from skyfield.api import Angle
@@ -160,7 +161,7 @@ class Satellite:
 
     def statTLE(self) -> bool:
         conn = Connection(self.parent)
-        suc, response, _ = conn.communicate(":TLESCK#")
+        suc, response, _ = conn.communicate(":TLESCK#", priority=CYCLIC)
         if not suc:
             return False
         return self.parseStatTLE(response)
@@ -188,7 +189,9 @@ class Satellite:
             for azimuth, altitude in zip(azDegrees, altDegrees, strict=True)
         )
         conn = Connection(self.parent)
-        suc, response, numberOfChunks = conn.communicate(commandString)
+        suc, response, numberOfChunks = conn.communicateBulk(
+            commandString, self.parent.signals.progress
+        )
         if not suc:
             return False
 

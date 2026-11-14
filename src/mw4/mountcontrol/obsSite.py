@@ -66,6 +66,7 @@ class ObsSite(ObsSiteCommands):
         self.ts: Timescale = load.timescale(builtin=True)
         self._timeJD: Time = self.ts.now()
         self.ut1_utc: float = 0
+        self.timeDelta: float = 0
         self._timeSidereal: Angle = Angle(hours=0)
         self._raJNow: Angle = Angle(hours=0)
         self._raJNowTarget: Angle = Angle(hours=0)

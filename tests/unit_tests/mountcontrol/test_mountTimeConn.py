@@ -32,9 +32,9 @@ def function(mountContext):
     if hasattr(mountTime, "workerCycleMountUp") and mountTime.workerCycleMountUp is not None:
         mountTime.workerCycleMountUp.signals.finished.emit()
         del mountTime.workerCycleMountUp
-    if hasattr(mountTime, "workerPollSyncClock") and mountTime.workerPollSyncClock is not None:
-        mountTime.workerPollSyncClock.signals.finished.emit()
-        del mountTime.workerPollSyncClock
+    if hasattr(mountTime, "workerPollTimeState") and mountTime.workerPollTimeState is not None:
+        mountTime.workerPollTimeState.signals.finished.emit()
+        del mountTime.workerPollTimeState
     # Wait for thread pool to finish
     if hasattr(mountTime, "threadPool") and mountTime.threadPool is not None:
         mountTime.threadPool.waitForDone()
@@ -49,7 +49,7 @@ def test_mountTimeConn_init(mountContext):
     assert len(function.rtt_MA) == 25
     assert len(function._timeDiff) == 25
     assert function.workerCycleMountUp is None
-    assert function.workerPollSyncClock is None
+    assert function.workerPollTimeState is None
 
 
 def test_timeDiff_property_initial(mountContext):
@@ -136,6 +136,18 @@ def test_runnerMountUp_socket_success(function):
         assert function.rtt_MA[0] == pytest.approx(0.05)
         assert function.errorCounter == 5
         function.parent.signals.mountIsUp.emit.assert_called_with(True)
+
+
+def test_runnerMountUp_alreadyUp_noSocketCheck(function):
+    function.parent.mountIsUp = True
+    function.rtt_MA = np.zeros(25)
+    with (
+        mock.patch("mw4.mountcontrol.mountTimeConn.ping", return_value=0.05),
+        mock.patch("socket.socket") as sock,
+    ):
+        function.runnerMountUp()
+        assert function.rtt_MA[0] == pytest.approx(0.05)
+        sock.assert_not_called()
 
 
 def test_runnerMountUp_rtt_moving_average(function):
@@ -373,77 +385,65 @@ def test_syncClock_absolutAdjustClock_failure(function):
         function.log.warning.assert_called_once()
 
 
-def test_pollSyncClock_mount_not_up(function):
+def test_pollTimeState_mount_not_up(function):
     function.parent.mountIsUp = False
     with mock.patch.object(QThreadPool, "start") as start:
-        function.pollSyncClock()
+        function.pollTimeState()
         assert not start.called
 
 
-def test_pollSyncClock_locked(function):
-    worker = function.workerPollSyncClock
+def test_pollTimeState_locked(function):
+    worker = function.workerPollTimeState
     if worker is None:
         worker = tpool.setupWorker(lambda: None)
     worker.tryAcquire()
-    function.workerPollSyncClock = worker
+    function.workerPollTimeState = worker
     with mock.patch.object(QThreadPool, "start") as start:
-        result = function.pollSyncClock()
+        result = function.pollTimeState()
         assert result is None
         assert not start.called
     worker.release()
 
 
-def test_pollSyncClock_unlocked(function):
+def test_pollTimeState_unlocked(function):
     function.parent.mountIsUp = True
-    function.workerPollSyncClock = None
+    function.workerPollTimeState = None
     with mock.patch.object(QThreadPool, "start"):
-        function.pollSyncClock()
-        assert function.workerPollSyncClock is not None
-    releaseWorker(function.workerPollSyncClock)
-    function.workerPollSyncClock = None
+        function.pollTimeState()
+        assert function.workerPollTimeState is not None
+    releaseWorker(function.workerPollTimeState)
+    function.workerPollTimeState = None
 
 
-def test_pollSyncClock_communicate_failure(function):
-    function.parent.mountIsUp = True
-    with mock.patch("mw4.mountcontrol.mountTimeConn.Connection") as mock_connection:
-        mock_conn_instance = mock.Mock()
-        mock_connection.return_value = mock_conn_instance
-        mock_conn_instance.communicate.return_value = (False, "", "")
-
-        initial_timeDiff = function._timeDiff.copy()
-        function.runnerPollSyncClock()
-        np.testing.assert_array_equal(function._timeDiff, initial_timeDiff)
-
-
-def test_pollSyncClock_success(function):
-    function.parent.mountIsUp = True
-    function.rtt = 0.01
-    with mock.patch("mw4.mountcontrol.mountTimeConn.Connection") as mock_connection:
-        mock_conn_instance = mock.Mock()
-        mock_connection.return_value = mock_conn_instance
-        mock_conn_instance.communicate.return_value = (True, ["2460000.5"], "")
-
-        function.runnerPollSyncClock()
-
-        assert mock_connection.called
-        call_args = mock_conn_instance.communicate.call_args
-        assert call_args[0][0] == ":GJD1#"
-        assert function._timeDiff[0] != 0
-
-
-def test_pollSyncClock_updates_timeDiff_array(function):
-    function.parent.mountIsUp = True
+def test_updateTimeDiff(function):
+    function.parent.obsSite.timeDelta = 0.5
     function.rtt = 0.01
     function._timeDiff = np.zeros(25)
-    with mock.patch("mw4.mountcontrol.mountTimeConn.Connection") as mock_connection:
-        mock_conn_instance = mock.Mock()
-        mock_connection.return_value = mock_conn_instance
-        mock_conn_instance.communicate.return_value = (True, ["2460000.5"], "")
+    function.updateTimeDiff()
+    assert function._timeDiff[0] == pytest.approx(0.49)
 
-        initial_last_element = function._timeDiff[-1]
-        function.runnerPollSyncClock()
-        assert function._timeDiff[-1] == pytest.approx(initial_last_element)
-        assert function._timeDiff[0] != initial_last_element
+
+def test_registerPoll_success(function):
+    function.pollFailures = 2
+    function.parent.obsSite.timeDelta = 0.0
+    function.registerPoll(True)
+    assert function.pollFailures == 0
+
+
+def test_registerPoll_failure_below_limit(function):
+    function.pollFailures = 0
+    with mock.patch.object(function, "setMountStatusOff") as off:
+        function.registerPoll(False)
+        assert function.pollFailures == 1
+        assert not off.called
+
+
+def test_registerPoll_failure_limit(function):
+    function.pollFailures = function.MAX_POLL_FAILURES - 1
+    with mock.patch.object(function, "setMountStatusOff") as off:
+        function.registerPoll(False)
+        assert function.pollFailures == 0
+        assert off.called
 
 
 def test_setStatus_sets_mount_not_up(function):
@@ -550,3 +550,14 @@ def test_setStatus_called_with_empty_string(function):
         function.setMountStatusOff("")
         mock_log.assert_called_once_with("")
         assert function.errorCounter == 4
+
+
+def test_runnerMountUp_reemits_up_while_connected(function):
+    function.parent.mountIsUp = True
+    function.rtt_MA = np.zeros(25)
+    with (
+        mock.patch("mw4.mountcontrol.mountTimeConn.ping", return_value=0.05),
+        mock.patch.object(function.parent.signals, "mountIsUp") as mockSignal,
+    ):
+        function.runnerMountUp()
+        mockSignal.emit.assert_called_once_with(True)

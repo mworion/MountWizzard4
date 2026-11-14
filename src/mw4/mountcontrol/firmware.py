@@ -4,6 +4,7 @@
 import logging
 from mw4.mountcontrol.connection import Connection
 from mw4.mountcontrol.mountContext import MountContext
+from mw4.mountcontrol.mountLink import CYCLIC
 from packaging.version import InvalidVersion, Version
 
 
@@ -53,7 +54,7 @@ class Firmware:
     def poll(self) -> bool:
         conn = Connection(self.parent)
         commandString = ":GVD#:GVN#:GVP#:GVT#:GVZ#"
-        suc, response, chunks = conn.communicate(commandString)
+        suc, response, chunks = conn.communicate(commandString, priority=CYCLIC)
         if not suc:
             return False
         return self.parse(response, chunks)

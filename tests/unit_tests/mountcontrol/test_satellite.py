@@ -512,7 +512,7 @@ def test_progTrajectoryData_3(makeApp):
     val = (False, ["1", "2"], 1)
     alt = Angle(degrees=[10, 20, 30])
     az = Angle(degrees=[40, 50, 60])
-    with mock.patch.object(Connection, "communicate", return_value=val):
+    with mock.patch.object(Connection, "communicateBulk", return_value=val):
         suc = sat.addTrajectoryPoint(alt=alt, az=az)
         assert not suc
 
@@ -522,7 +522,7 @@ def test_progTrajectoryData_4(makeApp):
     val = (True, ["1", "2"], 1)
     alt = Angle(degrees=[10, 20, 30])
     az = Angle(degrees=[40, 50, 60])
-    with mock.patch.object(Connection, "communicate", return_value=val):
+    with mock.patch.object(Connection, "communicateBulk", return_value=val):
         suc = sat.addTrajectoryPoint(alt=alt, az=az)
         assert not suc
 
@@ -532,7 +532,7 @@ def test_progTrajectoryData_5(makeApp):
     val = (True, ["1", "2"], 2)
     alt = Angle(degrees=[10, 20, 30])
     az = Angle(degrees=[40, 50, 60])
-    with mock.patch.object(Connection, "communicate", return_value=val):
+    with mock.patch.object(Connection, "communicateBulk", return_value=val):
         suc = sat.addTrajectoryPoint(alt=alt, az=az)
         assert not suc
 
@@ -542,7 +542,7 @@ def test_progTrajectoryData_6(makeApp):
     val = (True, ["1", "2", "E"], 3)
     alt = Angle(degrees=[10, 20, 30])
     az = Angle(degrees=[40, 50, 60])
-    with mock.patch.object(Connection, "communicate", return_value=val):
+    with mock.patch.object(Connection, "communicateBulk", return_value=val):
         suc = sat.addTrajectoryPoint(alt=alt, az=az)
         assert not suc
 
@@ -552,7 +552,7 @@ def test_progTrajectoryData_7(makeApp):
     val = (True, ["1", "2", "3"], 3)
     alt = Angle(degrees=[10, 20, 30])
     az = Angle(degrees=[40, 50, 60])
-    with mock.patch.object(Connection, "communicate", return_value=val):
+    with mock.patch.object(Connection, "communicateBulk", return_value=val):
         suc = sat.addTrajectoryPoint(alt=alt, az=az)
         assert suc
 

@@ -3,8 +3,10 @@
 # Copyright (c) 2019-2026 mworion
 import logging
 import uuid
+from mw4.mountcontrol import timing
 from mw4.mountcontrol.mountContext import MountContext
-from PySide6.QtNetwork import QAbstractSocket, QTcpSocket
+from mw4.mountcontrol.mountLink import BULK, INTERACTIVE, getWorker
+from PySide6.QtCore import SignalInstance
 
 
 class Connection:
@@ -313,149 +315,65 @@ class Connection:
             self.log.debug(t)
         return chunksToReceive, getData, minBytes
 
-    def closeClientHard(self, client: QTcpSocket | None) -> None:
-        if not client:
-            return
-        try:
-            client.abort()
-            client.close()
-        except (OSError, RuntimeError) as e:
-            self.log.warning("Error    [%s]: [%s] closing socket client", self.id, e)
-
-    def buildClient(self) -> QTcpSocket | None:
+    def linkReady(self) -> bool:
         if not self.host:
             self.log.info("No host  [%s]", self.id)
-            return None
-        if not isinstance(self.host, tuple):
-            self.log.info("Host     [%s]: host entry malformed [%s]", self.id, self.host)
-            return None
-        if len(self.host) != 2 or self.host[0] is None or self.host[1] is None:
-            self.log.info("Host     [%s]: host entry malformed [%s]", self.id, self.host)
-            return None
-        if not self.parent.mountIsUp:
-            return None
-
-        client = QTcpSocket()
-        client.setSocketOption(QAbstractSocket.SocketOption.LowDelayOption, 1)
-        try:
-            client.connectToHost(self.host[0], self.host[1])
-            if not client.waitForConnected(self.SOCKET_TIMEOUT * 1000):
-                self.closeClientHard(client)
-                self.log.debug("Timeout  [%s]: socket timeout in build client", self.id)
-                return None
-        except (OSError, RuntimeError, TypeError, ValueError) as e:
-            self.closeClientHard(client)
-            self.log.warning("Error    [%s]: socket general: [%s] in build client", self.id, e)
-            return None
-        else:
-            return client
-
-    def sendData(self, client: QTcpSocket, commandString: str) -> bool:
-        try:
-            if self.loggingTrace:
-                self.log.debug("[Trace] Sending  [%s]: [%s]", self.id, commandString)
-            client.write(commandString.encode())
-            if not client.waitForBytesWritten(self.SOCKET_TIMEOUT * 1000):
-                self.closeClientHard(client)
-                if self.loggingTrace:
-                    self.log.debug("[Trace] Timeout  [%s]: socket timeout in send data", self.id)
-                return False
-        except (OSError, RuntimeError) as e:
-            self.closeClientHard(client)
-            self.log.warning("Error    [%s]: socket error: [%s] in send data", self.id, e)
             return False
-        else:
-            return True
-
-    def receiveData(
-        self, client: QTcpSocket, numberOfChunks: int, minBytes: int
-    ) -> tuple[bool, list[str]]:
-        """
-        Receive Data waits on the give socket client for a number of chunks to
-        be received or a minimum set of bytes received. the chunks are delimited
-        with #. the min bytes are necessary because the mount computer has
-        commands which give a response without a delimiter. this is bad, but status.
-        """
-        responseBytes = bytearray()
-        chunkRaw = b""
-        try:
-            while True:
-                if not client.waitForReadyRead(self.SOCKET_TIMEOUT * 1000):
-                    if self.loggingTrace:
-                        self.log.debug(
-                            "[Trace] Timeout  [%s]: socket timeout in receive data", self.id
-                        )
-                    return False, []
-                chunkRaw = client.readAll().data()
-                if not chunkRaw:
-                    break
-                responseBytes.extend(chunkRaw)
-                if (numberOfChunks == 0 and len(responseBytes) == minBytes) or (
-                    numberOfChunks != 0 and numberOfChunks == responseBytes.count(b"#")
-                ):
-                    break
-
-        except (OSError, RuntimeError) as e:
-            self.log.warning("Error    [%s]: error: [%s], received: [%s]", self.id, e, chunkRaw)
-            return False, []
-        else:
-            text = responseBytes.replace(b"\xdf", b"*").decode("ASCII", errors="replace")
-            response = text.rstrip("#").split("#")
-            if self.loggingTrace:
-                self.log.debug("[Trace] Response [%s]: [%s]", self.id, response)
-            return True, response
+        if not isinstance(self.host, tuple) or len(self.host) != 2:
+            self.log.info("Host     [%s]: host entry malformed [%s]", self.id, self.host)
+            return False
+        if self.host[0] is None or self.host[1] is None:
+            self.log.info("Host     [%s]: host entry malformed [%s]", self.id, self.host)
+            return False
+        return bool(self.parent.mountIsUp)
 
     def communicate(
-        self, commandString: str, responseCheck: str = ""
+        self,
+        commandString: str,
+        responseCheck: str = "",
+        priority: int = INTERACTIVE,
+        deadline: float = timing.COMMAND_DEADLINE_S,
     ) -> tuple[bool, list[str], int]:
         if not self.validCommandSet(commandString):
             return False, [], 0
-
-        client = self.buildClient()
-        numberOfChunks, getData, minBytes = self.analyseCommand(commandString)
-
-        if client is None:
+        numberOfChunks, getData, _ = self.analyseCommand(commandString)
+        if not self.linkReady():
             return False, [], numberOfChunks
-        if not self.sendData(client, commandString):
+
+        worker = getWorker(*self.host)
+        if self.loggingTrace:
+            self.log.debug("[Trace] Sending  [%s]: [%s]", self.id, commandString)
+        suc, response, _ = worker.submit("std", commandString, deadline, priority)
+        if self.loggingTrace:
+            self.log.debug("[Trace] Response [%s]: [%s]", self.id, response)
+        if not suc:
             return False, [], numberOfChunks
         if not getData:
-            self.closeClientHard(client)
             return True, [], numberOfChunks
-
-        suc, response = self.receiveData(client, numberOfChunks, minBytes)
-        self.closeClientHard(client)
-
         if responseCheck:
-            suc = suc and response[0] == responseCheck
+            suc = suc and bool(response) and response[0] == responseCheck
+        return suc, response, numberOfChunks
+
+    def communicateBulk(
+        self, commandString: str, progress: SignalInstance | None = None
+    ) -> tuple[bool, list[str], int]:
+        if not self.validCommandSet(commandString):
+            return False, [], 0
+        numberOfChunks = self.analyseCommand(commandString)[0]
+        if not self.linkReady():
+            return False, [], numberOfChunks
+        count = commandString.count("#")
+        deadline = max(timing.BATCH_DEADLINE_S, count * timing.BULK_DEADLINE_PER_COMMAND_S)
+        worker = getWorker(*self.host)
+        if self.loggingTrace:
+            self.log.debug("[Trace] Sending  [%s]: [%d bulk commands]", self.id, count)
+        suc, response, _ = worker.submit("bulk", commandString, deadline, BULK, progress)
+        if self.loggingTrace:
+            self.log.debug("[Trace] Response [%s]: [%d replies]", self.id, len(response))
         return suc, response, numberOfChunks
 
     def communicateRaw(self, commandString: str) -> tuple[bool, bool, str]:
-        client = self.buildClient()
-        if client is None:
+        if not self.linkReady():
             return False, False, "Socket error"
-
-        sucSend = self.sendData(client, commandString)
-        if not sucSend:
-            # sendData has already closed the client
-            return False, False, "Send error"
-        try:
-            if not client.waitForReadyRead(self.SOCKET_TIMEOUT * 1000):
-                if self.loggingTrace:
-                    self.log.debug(
-                        "[Trace] Timeout  [%s]: socket timeout in communicate raw", self.id
-                    )
-                self.closeClientHard(client)
-                return sucSend, False, "Timeout"
-            raw = bytes(client.readAll().data()).replace(b"\xdf", b"*")
-            val = raw.decode("ASCII", errors="replace")
-        except (OSError, RuntimeError) as e:
-            self.log.warning("Error    [%s]: socket error: [%s] in communicate raw", self.id, e)
-            val = f"Error: {e}"
-            sucRec = False
-        else:
-            if self.loggingTrace:
-                self.log.debug("[Trace] Response [%s]:  [%s] in communicate raw", self.id, val)
-            sucRec = True
-
-        self.closeClientHard(client)
-        return sucSend, sucRec, val
+        worker = getWorker(*self.host)
+        return worker.submit("raw", commandString, timing.COMMAND_DEADLINE_S, INTERACTIVE)

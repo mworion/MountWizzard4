@@ -7,7 +7,6 @@ import socket
 from datetime import UTC, datetime
 from mw4.base.tpool import Worker, startWorker
 from mw4.mountcontrol.connection import Connection
-from mw4.mountcontrol.convert import valueToFloat
 from mw4.mountcontrol.mountContext import MountContext
 from mw4.mountcontrol.mountStatus import MountStatus
 from ping3 import ping
@@ -19,6 +18,7 @@ class MountTimeConn:
     SOCKET_TIMEOUT = 0.2
     # ping3 defaults to 4s; keep ping + socket below the 1s polling cycle
     PING_TIMEOUT = 0.7
+    MAX_POLL_FAILURES = 3
 
     def __init__(self, parent: MountContext) -> None:
         self.parent = parent
@@ -30,7 +30,8 @@ class MountTimeConn:
         self.rtt_MA: np.ndarray = np.zeros(25)
         self.errorCounter: int = 5
         self.workerCycleMountUp: Worker | None = None
-        self.workerPollSyncClock: Worker | None = None
+        self.workerPollTimeState: Worker | None = None
+        self.pollFailures: int = 0
 
     @property
     def timeDiff(self) -> float:
@@ -56,6 +57,9 @@ class MountTimeConn:
         self.rtt_MA = np.roll(self.rtt_MA, 1)
         self.rtt_MA[0] = rttLocal
         self.rtt = np.mean(self.rtt_MA)
+        if self.parent.mountIsUp:
+            self.parent.signals.mountIsUp.emit(True)
+            return
         try:
             with socket.socket() as client:
                 client.settimeout(self.SOCKET_TIMEOUT)
@@ -110,24 +114,27 @@ class MountTimeConn:
             if not self.deltaAdjustClock(delta):
                 self.log.warning("Clock delta sync failed with %s ms", delta)
 
-    def runnerPollSyncClock(self) -> None:
-        conn = Connection(self.parent)
-        commandString = ":GJD1#"
-        suc, response, _ = conn.communicate(commandString)
-        if not suc:
-            return
-
+    def updateTimeDiff(self) -> None:
+        """The clock difference derives from the cyclic :Ginfo# reply."""
         self.timePC = self.ts.now()
-        timeMount = valueToFloat(response[0])
-        timeMount = self.ts.tt_jd(timeMount + self.parent.obsSite.UTC2TT)
         self._timeDiff = np.roll(self._timeDiff, 1)
-        delta = (self.timePC - timeMount) * 86400 - self.rtt
-        self._timeDiff[0] = delta
+        self._timeDiff[0] = self.parent.obsSite.timeDelta - self.rtt
 
-    def pollSyncClock(self) -> None:
-        self.workerPollSyncClock = startWorker(
-            self.workerPollSyncClock,
+    def registerPoll(self, result: bool) -> None:
+        """A mount which fails to answer the cyclic poll repeatedly is down."""
+        if result:
+            self.pollFailures = 0
+            self.updateTimeDiff()
+            return
+        self.pollFailures += 1
+        if self.pollFailures >= self.MAX_POLL_FAILURES:
+            self.pollFailures = 0
+            self.setMountStatusOff("Cyclic polling failed repeatedly")
+
+    def pollTimeState(self) -> None:
+        self.workerPollTimeState = startWorker(
+            self.workerPollTimeState,
             self.threadPool,
-            self.runnerPollSyncClock,
+            self.parent.obsSite.pollTimeState,
             guard=lambda: self.parent.mountIsUp,
         )

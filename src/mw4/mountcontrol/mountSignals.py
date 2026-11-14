@@ -23,6 +23,7 @@ class MountSignals(Signals):
     statTLEdone = Signal(TLEParams)
     getTLEdone = Signal(TLEParams)
     calcTrajectoryDone = Signal(TrajectoryParams)
+    progress = Signal(int, int)
     mountIsUp = Signal(bool)
     slewed = Signal()
     alert = Signal()

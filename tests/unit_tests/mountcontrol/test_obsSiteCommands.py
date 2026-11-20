@@ -3,6 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 
 import os
+import pytest
 from mw4.mountcontrol.obsSite import ObsSite
 from pathlib import Path
 from skyfield.api import Angle, wgs84
@@ -855,6 +856,15 @@ def test_setHighPrecision_2():
         mConn.return_value.communicate.return_value = True, response, 0
         suc = obsSite.setHighPrecision()
         assert suc
+
+
+@pytest.mark.parametrize("success", [True, False])
+def test_reloadDeltaT(success):
+    obsSite = ObsSite(parent=Parent())
+    with mock.patch("mw4.mountcontrol.obsSiteCommands.Connection") as mConn:
+        mConn.return_value.communicate.return_value = success, [], 0
+        assert obsSite.reloadDeltaT() is success
+        mConn.return_value.communicate.assert_called_once_with("#:reloadti#", responseCheck="")
 
 
 def test_setElevation_zero_sign():

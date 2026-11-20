@@ -185,6 +185,7 @@ class Connection:
                 ":modelsv0",
                 ":newalig",
                 ":newalpt",
+                ":reloadti",
                 ":shutdown",
             ],
             reverse=True,
@@ -220,6 +221,7 @@ class Connection:
                 ":Suaf",
                 ":U2",
                 ":hP",
+                ":reloadti",
             ],
             reverse=True,
         )
@@ -281,7 +283,7 @@ class Connection:
         return any(command.startswith(key) for key in self.COMMANDS)
 
     def validCommandSet(self, commandString: str) -> bool:
-        commandSet = commandString.split("#")[:-1]
+        commandSet = commandString.removeprefix("#").split("#")[:-1]
         for command in commandSet:
             if not self.validCommand(command):
                 self.log.warning("[%s] unknown commands: %s", self.id, commandString)
@@ -291,7 +293,7 @@ class Connection:
     def analyseCommand(self, commandString: str) -> tuple[int, bool, int]:
         chunksToReceive = 0
         getData = False
-        commandSet = commandString.split("#")[:-1]
+        commandSet = commandString.removeprefix("#").split("#")[:-1]
         minBytes = 0
         for command in commandSet:
             foundCOMMAND_A = False
@@ -362,7 +364,7 @@ class Connection:
         numberOfChunks = self.analyseCommand(commandString)[0]
         if not self.linkReady():
             return False, [], numberOfChunks
-        count = commandString.count("#")
+        count = commandString.removeprefix("#").count("#")
         deadline = max(timing.BATCH_DEADLINE_S, count * timing.BULK_DEADLINE_PER_COMMAND_S)
         worker = getWorker(*self.host)
         if self.loggingTrace:

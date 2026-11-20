@@ -72,6 +72,15 @@ class TestAnalyseCommand:
         assert minBytes == 0
         assert chunksToReceive == 0
 
+    def test_reloadDeltaT_noResponse(self):
+        conn = Connection(makeParent())
+        assert conn.validCommandSet(":reloadti#")
+        assert conn.analyseCommand(":reloadti#") == (0, False, 0)
+        assert conn.validCommandSet("#:reloadti#:GVN#")
+        assert conn.analyseCommand("#:reloadti#") == (0, False, 0)
+        assert conn.analyseCommand("#:reloadti#:GVN#") == (1, True, 0)
+        assert not conn.validCommandSet("##:reloadti#")
+
     def test_responses_typeB(self):
         conn = Connection(makeParent())
         command = ":FLIP#"
@@ -294,6 +303,18 @@ class TestFacade:
     def test_communicate_noReply(self, mount):
         conn = Connection(makeParent(("127.0.0.1", mount.port)))
         assert conn.communicate(":Q#") == (True, [], 0)
+
+    def test_communicate_reloadDeltaT(self, mount):
+        conn = Connection(makeParent(("127.0.0.1", mount.port)))
+        assert conn.communicate("#:reloadti#") == (True, [], 0)
+        assert conn.communicate(":GVN#") == (True, ["2.20"], 1)
+        assert b"#:reloadti#" in mount.received
+
+    def test_communicateBulk_reloadDeltaT(self, mount):
+        conn = Connection(makeParent(("127.0.0.1", mount.port)))
+        assert conn.communicateBulk("#:reloadti#") == (True, [], 0)
+        assert conn.communicate(":GVN#") == (True, ["2.20"], 1)
+        assert b"#:reloadti#" in mount.received
 
     def test_communicate_invalid(self, mount):
         conn = Connection(makeParent(("127.0.0.1", mount.port)))

@@ -156,7 +156,7 @@ Via the `logging` module at DEBUG level (no overhead when off). Per transaction:
 
 ## 5. Tests (100% coverage, module scope)
 
-- `tests/unit_tests/mountcontrol/test_connection.py`: fake `QTcpSocket`/local test server for:
+- `../tests/unit_tests/mountcontrol/test_connection.py`: fake `QTcpSocket`/local test server for:
   - framing (`#`, fixed-length, no-reply, split packets, leftover bytes);
   - deadline;
   - reconnect and backoff;

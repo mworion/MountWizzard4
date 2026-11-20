@@ -217,6 +217,15 @@ def test_transactBulk():
         mount.stop()
 
 
+def test_transactBulk_leadingDelimiter():
+    link = MountLink("127.0.0.1", 1)
+    progress = mock.Mock()
+    with mock.patch.object(link, "transact", side_effect=[(True, []), (True, ["version"])]) as send:
+        assert link.transactBulk("#:reloadti#:GVN#", 1, 1.0, progress) == (True, ["version"])
+    assert send.call_args_list == [mock.call("#:reloadti#", 1.0), mock.call(":GVN#", 1.0)]
+    assert progress.emit.call_args_list == [mock.call(1, 2), mock.call(2, 2)]
+
+
 def test_transactBulk_merge():
     mount = FakeMount({b":CM#": b"1", b":FLIP#": b"2"})
     link = MountLink("127.0.0.1", mount.port)

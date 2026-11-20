@@ -144,7 +144,9 @@ class MountLink(QObject):
         duration = time.monotonic() - start
         if self.helper.loggingTrace:
             self.log.debug(
-                "[Trace] Transaction %d commands, %.3f s", commandString.count("#"), duration
+                "[Trace] Transaction %d commands, %.3f s",
+                commandString.removeprefix("#").count("#"),
+                duration,
             )
         return True, reply
 
@@ -178,7 +180,7 @@ class MountLink(QObject):
         each successful chunk. between is called between two chunks and may
         use the link for short jobs.
         """
-        commands = commandString.split("#")[:-1]
+        commands = commandString.removeprefix("#").split("#")[:-1]
         total = len(commands)
         if total == 0 or not self.helper.validCommandSet(commandString):
             return False, []
@@ -187,7 +189,8 @@ class MountLink(QObject):
         response: list[str] = []
         for start in range(0, total, chunkSize):
             chunk = commands[start : start + chunkSize]
-            suc, reply = self.transact("#".join(chunk) + "#", deadline)
+            prefix = "#" if start == 0 and commandString.startswith("#") else ""
+            suc, reply = self.transact(prefix + "#".join(chunk) + "#", deadline)
             if not suc:
                 return False, []
             if merge and reply and response:
@@ -392,7 +395,7 @@ class LinkWorker(QObject):
     def waitLimit(kind: str, command: str, deadline: float) -> float:
         chunks = 1
         if kind == "bulk":
-            chunks = command.count("#") // timing.BULK_CHUNK_SIZE + 1
+            chunks = command.removeprefix("#").count("#") // timing.BULK_CHUNK_SIZE + 1
         return deadline * chunks * 2 + timing.CONNECT_TIMEOUT_S
 
 

@@ -272,3 +272,6 @@ class ObsSiteCommands:
 
     def setHighPrecision(self) -> bool:
         return self.sendCommand(":U2#")
+
+    def reloadDeltaT(self) -> bool:
+        return self.sendCommand("#:reloadti#")

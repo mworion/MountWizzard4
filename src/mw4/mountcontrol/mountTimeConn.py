@@ -32,33 +32,47 @@ class MountTimeConn:
         self.workerCycleMountUp: Worker | None = None
         self.workerPollTimeState: Worker | None = None
         self.pollFailures: int = 0
+        self.connectionGeneration = 0
 
     @property
     def timeDiff(self) -> float:
         return float(np.mean(self._timeDiff))
 
-    def setMountStatusOff(self, logText: str) -> None:
-        self.parent.mountIsUp = False
-        self.parent.signals.mountIsUp.emit(False)
+    def reset(self) -> None:
+        self.connectionGeneration += 1
+        self.rtt_MA.fill(0)
+        self._timeDiff.fill(0)
+        self.rtt = 0
+        self.pollFailures = 0
+        self.errorCounter = 5
+
+    def setMountStatusOff(self, logText: str, generation: int | None = None) -> None:
+        if generation is None:
+            generation = self.connectionGeneration
+        self.parent.signals.mountStatus.emit(generation, False)
         if self.errorCounter > 0:
             self.errorCounter -= 1
             self.log.info(logText)
 
     def runnerMountUp(self) -> None:
+        generation = self.connectionGeneration
         if not self.parent.config.hostAddress:
-            self.setMountStatusOff("No host address")
+            self.setMountStatusOff("No host address", generation)
             return
         rttLocal = ping(self.parent.config.hostAddress, timeout=self.PING_TIMEOUT)
+        if generation != self.connectionGeneration:
+            return
         if not rttLocal:
             self.setMountStatusOff(
-                f"No mount at [{self.parent.config.hostAddress}], error [Timeout]"
+                f"No mount at [{self.parent.config.hostAddress}], error [Timeout]",
+                generation,
             )
             return
         self.rtt_MA = np.roll(self.rtt_MA, 1)
         self.rtt_MA[0] = rttLocal
         self.rtt = np.mean(self.rtt_MA)
         if self.parent.mountIsUp:
-            self.parent.signals.mountIsUp.emit(True)
+            self.parent.signals.mountStatus.emit(generation, True)
             return
         try:
             with socket.socket() as client:
@@ -66,10 +80,17 @@ class MountTimeConn:
                 client.connect((self.parent.config.hostAddress, self.parent.config.port))
                 client.shutdown(socket.SHUT_RDWR)
         except OSError as e:
-            self.setMountStatusOff(f"No mount at [{self.parent.config.hostAddress}], error [{e}]")
+            if generation != self.connectionGeneration:
+                return
+            self.setMountStatusOff(
+                f"No mount at [{self.parent.config.hostAddress}], error [{e}]",
+                generation,
+            )
         else:
+            if generation != self.connectionGeneration:
+                return
             self.errorCounter = 5
-            self.parent.signals.mountIsUp.emit(True)
+            self.parent.signals.mountStatus.emit(generation, True)
 
     def checkMountUp(self) -> None:
         self.workerCycleMountUp = startWorker(

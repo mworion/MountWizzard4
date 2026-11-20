@@ -25,5 +25,6 @@ class MountSignals(Signals):
     calcTrajectoryDone = Signal(TrajectoryParams)
     progress = Signal(int, int)
     mountIsUp = Signal(bool)
+    mountStatus = Signal(int, bool)
     slewed = Signal()
     alert = Signal()

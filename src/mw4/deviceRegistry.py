@@ -318,6 +318,9 @@ class DeviceRegistry(QObject):
         for entry in self.configurable():
             self.stopDevice(entry.name)
 
+    def stopMountCommunication(self) -> None:
+        self.mount.instance.stopCommunication()
+
     def startDevice(self, device: str) -> None:
         if not self.d[device].framework:
             return

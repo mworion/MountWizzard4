@@ -681,6 +681,12 @@ def test_storeConfig(registry: DeviceRegistry) -> None:
     assert isinstance(registry.app.config["SettingDevice"], dict)
 
 
+def test_stopMountCommunicationDelegatesToMount(registry: DeviceRegistry) -> None:
+    with patch.object(registry.mount, "instance") as mount:
+        registry.stopMountCommunication()
+        mount.stopCommunication.assert_called_once()
+
+
 def test_stopDevicesIteratesConfigurable(registry: DeviceRegistry) -> None:
     """Test stopDevices calls stopDevice for all configurable devices."""
     with patch.object(registry, "stopDevice") as mock_stop:

@@ -11,7 +11,6 @@ from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtWidgets import QWidget
-from skyfield.api import wgs84
 from unittest import mock
 
 
@@ -414,27 +413,71 @@ def test_updateStatusGUI_displays_text(mainWindow):
 
 def test_switchProfile_switches_config(mainWindow):
     """Test switchProfile switches configuration."""
-    loc = wgs84.latlon(latitude_degrees=10, longitude_degrees=10)
+    app = mainWindow.app
+    dReg = app.dReg
+    mount = dReg.mount.instance
+    oldConfig = app.config
+    oldHost = mount.config.hostAddress
+    oldPort = mount.config.port
+    events = []
+    newConfig = {
+        "SettingDeviceMount": {
+            "framework": "10micron",
+            "10micron": {"hostAddress": "192.0.2.50", "port": 3493},
+        }
+    }
+
+    def stopMount() -> None:
+        events.append("stop-mount")
+
+    def applyConfig() -> None:
+        events.append("apply-config")
+        mount.config.hostAddress = newConfig["SettingDeviceMount"]["10micron"]["hostAddress"]
+        mount.config.port = newConfig["SettingDeviceMount"]["10micron"]["port"]
+
+    def startDevices() -> None:
+        events.append(("start-devices", mount.config.hostAddress, mount.config.port))
+
     with (
         mock.patch.object(mainWindow.externalWindows, "closeExtendedWindows"),
-        mock.patch.object(mainWindow.externalWindows, "showExtendedWindows"),
         mock.patch.object(mainWindow.threadPool, "waitForDone"),
+        mock.patch.object(dReg, "stopDevices", side_effect=lambda: events.append("stop-devices")),
+        mock.patch.object(dReg, "stopMountCommunication", side_effect=stopMount),
+        mock.patch.object(dReg, "startDevices", side_effect=startDevices),
+        mock.patch.object(app.timeMgr, "stop", side_effect=lambda: events.append("stop-timer")),
+        mock.patch.object(app.timeMgr, "start", side_effect=lambda: events.append("start-timer")),
+        mock.patch.object(app, "initConfig", side_effect=applyConfig),
         mock.patch.object(mainWindow, "initConfig"),
-        mock.patch.object(mainWindow.app, "initConfig", return_value=loc),
     ):
-        mainWindow.switchProfile({"test": 1})
+        try:
+            mainWindow.switchProfile(newConfig)
+            assert mount.config.hostAddress == "192.0.2.50"
+            assert mount.config.port == 3493
+            assert events == [
+                "stop-timer",
+                "stop-devices",
+                "stop-mount",
+                "apply-config",
+                ("start-devices", "192.0.2.50", 3493),
+                "start-timer",
+            ]
+        finally:
+            app.config = oldConfig
+            mount.config.hostAddress = oldHost
+            mount.config.port = oldPort
+            dReg.initConfig()
 
 
 def test_switchProfile_logs_on_thread_timeout(mainWindow):
     """Test switchProfile warns when the thread pool does not finish in time."""
-    loc = wgs84.latlon(latitude_degrees=10, longitude_degrees=10)
     with (
         mock.patch.object(mainWindow.externalWindows, "closeExtendedWindows"),
-        mock.patch.object(mainWindow.externalWindows, "showExtendedWindows"),
         mock.patch.object(mainWindow.threadPool, "waitForDone", return_value=False),
         mock.patch.object(mainWindow.threadPool, "activeThreadCount", return_value=2),
+        mock.patch.object(mainWindow.app.dReg, "stopMountCommunication"),
+        mock.patch.object(mainWindow.app.dReg, "startDevices"),
         mock.patch.object(mainWindow, "initConfig"),
-        mock.patch.object(mainWindow.app, "initConfig", return_value=loc),
+        mock.patch.object(mainWindow.app, "initConfig"),
         mock.patch.object(mainWindow.log, "warning") as mock_warning,
     ):
         mainWindow.switchProfile({"test": 1})

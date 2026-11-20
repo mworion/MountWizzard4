@@ -10,6 +10,7 @@ from mw4.mountcontrol.firmware import Firmware
 from mw4.mountcontrol.geometry import Geometry, TransformResult
 from mw4.mountcontrol.model import Model
 from mw4.mountcontrol.mountData import MountData
+from mw4.mountcontrol.mountLink import stopWorkers
 from mw4.mountcontrol.mountSignals import MountSignals
 from mw4.mountcontrol.mountStatus import MountStatus
 from mw4.mountcontrol.mountTimeConn import MountTimeConn
@@ -96,6 +97,7 @@ class MountDevice(QObject):
 
     def connectTimers(self) -> None:
         timeMgr = self.app.timeMgr
+        self.signals.mountStatus.connect(self.processMountStatus)
         timeMgr.update1s.connect(self.mountTimeConn.checkMountUp)
         timeMgr.update30s.connect(self.mountTimeConn.syncClock)
         timeMgr.update0_5s.connect(self.cyclePointing)
@@ -129,6 +131,23 @@ class MountDevice(QObject):
 
     def stopAllMountTimers(self) -> None:
         self.settlingWait.stop()
+
+    def stopCommunication(self) -> None:
+        self.stopAllMountTimers()
+        stopWorkers()
+        self.startupMountData(False)
+        self.mountTimeConn.reset()
+        self.mountData.data.clear()
+        self.statusAlert = False
+        self.statusSlew = False
+        self.obsSite.status = MountStatus.ERROR
+        self.obsSite.statusSlew = False
+        self.obsSite.statusSat = "E"
+
+    @Slot(int, bool)
+    def processMountStatus(self, generation: int, status: bool) -> None:
+        if generation == self.mountTimeConn.connectionGeneration:
+            self.signals.mountIsUp.emit(status)
 
     @Slot(bool)
     def startupMountData(self, status: bool) -> None:

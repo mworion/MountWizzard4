@@ -67,13 +67,70 @@ def test_timeDiff_property_type(function):
     assert isinstance(result, float)
 
 
+def test_reset_clearsConnectionState(function):
+    function.connectionGeneration = 3
+    function.rtt_MA.fill(1)
+    function._timeDiff.fill(2)
+    function.rtt = 3
+    function.pollFailures = 4
+    function.errorCounter = 0
+
+    function.reset()
+
+    assert function.connectionGeneration == 4
+    assert np.all(function.rtt_MA == 0)
+    assert np.all(function._timeDiff == 0)
+    assert function.rtt == 0
+    assert function.pollFailures == 0
+    assert function.errorCounter == 5
+
+
+def test_runnerMountUp_ignoresResultsFromPreviousConnection(function):
+    function.connectionGeneration = 3
+
+    def resetDuringPing(*_args, **_kwargs):
+        function.connectionGeneration += 1
+        return 0.05
+
+    with (
+        mock.patch("mw4.mountcontrol.mountTimeConn.ping", side_effect=resetDuringPing),
+        mock.patch.object(function.parent.signals, "mountStatus") as mock_signal,
+    ):
+        function.runnerMountUp()
+
+    mock_signal.emit.assert_not_called()
+    assert function.rtt_MA[0] == 0
+
+
+@pytest.mark.parametrize("socket_fails", [False, True])
+def test_runnerMountUp_ignoresSocketResultFromPreviousConnection(function, socket_fails):
+    function.connectionGeneration = 3
+    mockSocket = mock.MagicMock()
+    if socket_fails:
+        mockSocket.__enter__.return_value.connect.side_effect = OSError("Connection failed")
+
+    def resetDuringSocket(*_args, **_kwargs):
+        function.connectionGeneration += 1
+        return mockSocket
+
+    with (
+        mock.patch("mw4.mountcontrol.mountTimeConn.ping", return_value=0.05),
+        mock.patch("socket.socket", side_effect=resetDuringSocket),
+        mock.patch.object(function.parent.signals, "mountStatus") as mock_signal,
+    ):
+        function.runnerMountUp()
+
+    mock_signal.emit.assert_not_called()
+    assert function.parent.mountIsUp is False
+
+
 def test_runnerMountUp_no_host_address(function):
     original_address = function.parent.config.hostAddress
     function.parent.mountIsUp = True
     function.parent.config.hostAddress = ""
-    with mock.patch.object(function.parent.signals, "mountIsUp") as mock_signal:
+    with mock.patch.object(function.parent.signals, "mountStatus") as mock_signal:
         function.runnerMountUp()
-        mock_signal.emit.assert_called_once_with(False)
+        mock_signal.emit.assert_called_once_with(function.connectionGeneration, False)
     function.parent.config.hostAddress = original_address
 
 
@@ -104,7 +161,6 @@ def test_runnerMountUp_error_counter_decrements(function, ping_return, socket_fa
         with mock.patch("mw4.mountcontrol.mountTimeConn.ping", return_value=ping_return):
             function.runnerMountUp()
 
-    assert function.parent.mountIsUp is False
     assert function.errorCounter == 4
 
 
@@ -120,7 +176,7 @@ def test_runnerMountUp_ping_failed_log_and_timeout(function, ping_return):
         function.runnerMountUp()
         mockPing.assert_called_once_with(host, timeout=function.PING_TIMEOUT)
         mockInfo.assert_called_once_with(f"No mount at [{host}], error [Timeout]")
-    assert function.parent.mountIsUp is False
+    assert function.parent.mountIsUp is True
 
 
 def test_runnerMountUp_socket_success(function):
@@ -130,12 +186,14 @@ def test_runnerMountUp_socket_success(function):
     with (
         mock.patch("mw4.mountcontrol.mountTimeConn.ping", return_value=0.05),
         mock.patch("socket.socket"),
-        mock.patch.object(function.parent.signals, "mountIsUp"),
+        mock.patch.object(function.parent.signals, "mountStatus"),
     ):
         function.runnerMountUp()
         assert function.rtt_MA[0] == pytest.approx(0.05)
         assert function.errorCounter == 5
-        function.parent.signals.mountIsUp.emit.assert_called_with(True)
+        function.parent.signals.mountStatus.emit.assert_called_with(
+            function.connectionGeneration, True
+        )
 
 
 def test_runnerMountUp_alreadyUp_noSocketCheck(function):
@@ -448,20 +506,20 @@ def test_registerPoll_failure_limit(function):
 
 def test_setStatus_sets_mount_not_up(function):
     function.parent.mountIsUp = True
-    with mock.patch.object(function.parent.signals, "mountIsUp"):
+    with mock.patch.object(function.parent.signals, "mountStatus"):
         function.setMountStatusOff("Test status")
-        assert function.parent.mountIsUp is False
+        assert function.parent.mountIsUp is True
 
 
 def test_setStatus_emits_signal(function):
-    with mock.patch.object(function.parent.signals, "mountIsUp") as mock_signal:
+    with mock.patch.object(function.parent.signals, "mountStatus") as mock_signal:
         function.setMountStatusOff("Test message")
-        mock_signal.emit.assert_called_once_with(False)
+        mock_signal.emit.assert_called_once_with(function.connectionGeneration, False)
 
 
 def test_setStatus_decrements_error_counter(function):
     function.errorCounter = 5
-    with mock.patch.object(function.parent.signals, "mountIsUp"):
+    with mock.patch.object(function.parent.signals, "mountStatus"):
         function.setMountStatusOff("Test status")
         assert function.errorCounter == 4
 
@@ -470,7 +528,7 @@ def test_setStatus_logs_when_counter_positive(function):
     function.errorCounter = 5
     test_message = "Test error message"
     with (
-        mock.patch.object(function.parent.signals, "mountIsUp"),
+        mock.patch.object(function.parent.signals, "mountStatus"),
         mock.patch.object(function.log, "info") as mock_log,
     ):
         function.setMountStatusOff(test_message)
@@ -480,7 +538,7 @@ def test_setStatus_logs_when_counter_positive(function):
 def test_setStatus_no_log_when_counter_zero(function):
     function.errorCounter = 0
     with (
-        mock.patch.object(function.parent.signals, "mountIsUp"),
+        mock.patch.object(function.parent.signals, "mountStatus"),
         mock.patch.object(function.log, "info") as mock_log,
     ):
         function.setMountStatusOff("Test message")
@@ -489,7 +547,7 @@ def test_setStatus_no_log_when_counter_zero(function):
 
 def test_setStatus_no_decrement_when_counter_zero(function):
     function.errorCounter = 0
-    with mock.patch.object(function.parent.signals, "mountIsUp"):
+    with mock.patch.object(function.parent.signals, "mountStatus"):
         function.setMountStatusOff("Test status")
         assert function.errorCounter == 0
 
@@ -521,7 +579,7 @@ def test_setStatus_decrement_various_counters(function, initial_counter, expecte
 def test_setStatus_logs_different_messages(function, log_message):
     function.errorCounter = 1
     with (
-        mock.patch.object(function.parent.signals, "mountIsUp"),
+        mock.patch.object(function.parent.signals, "mountStatus"),
         mock.patch.object(function.log, "info") as mock_log,
     ):
         function.setMountStatusOff(log_message)
@@ -544,7 +602,7 @@ def test_setStatus_multiple_calls_decrements_progressively(function):
 def test_setStatus_called_with_empty_string(function):
     function.errorCounter = 5
     with (
-        mock.patch.object(function.parent.signals, "mountIsUp"),
+        mock.patch.object(function.parent.signals, "mountStatus"),
         mock.patch.object(function.log, "info") as mock_log,
     ):
         function.setMountStatusOff("")
@@ -557,7 +615,7 @@ def test_runnerMountUp_reemits_up_while_connected(function):
     function.rtt_MA = np.zeros(25)
     with (
         mock.patch("mw4.mountcontrol.mountTimeConn.ping", return_value=0.05),
-        mock.patch.object(function.parent.signals, "mountIsUp") as mockSignal,
+        mock.patch.object(function.parent.signals, "mountStatus") as mockSignal,
     ):
         function.runnerMountUp()
-        mockSignal.emit.assert_called_once_with(True)
+        mockSignal.emit.assert_called_once_with(function.connectionGeneration, True)

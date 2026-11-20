@@ -322,6 +322,7 @@ class MainWindow(MWidget):
                 "Thread pool did not finish on profile switch, active threads: [%s]",
                 self.threadPool.activeThreadCount(),
             )
+        self.app.dReg.stopMountCommunication()
         self.app.config = config
         self.app.initConfig()
         self.initConfig()

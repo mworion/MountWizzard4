@@ -15,6 +15,7 @@ from mw4.mountcontrol.mountLink import (
     MountLink,
     ReplyParser,
     getWorker,
+    stopWorkers,
     workers,
 )
 from unittest import mock
@@ -164,6 +165,19 @@ def test_closeError(caplog):
     assert "Link close error" in caplog.text
 
 
+def test_transact_traceLogging(caplog):
+    mount = FakeMount({b":GVN#": b"3#"})
+    link = MountLink("127.0.0.1", mount.port)
+    link.helper.loggingTrace = True
+    with caplog.at_level("DEBUG", logger="MW4"):
+        try:
+            assert link.transact(":GVN#") == (True, ["3"])
+        finally:
+            link.close()
+            mount.stop()
+    assert "[Trace] Transaction" in caplog.text
+
+
 def test_transactRaw():
     mount = FakeMount({b":GVN#": b"2.20\xdf#"})
     link = MountLink("127.0.0.1", mount.port)
@@ -230,6 +244,25 @@ def test_worker():
     finally:
         worker.stop()
         workers.clear()
+        mount.stop()
+
+
+def test_stopWorkers_closes_and_removes_workers():
+    mount = FakeMount({b":GVN#": b"3#"})
+    worker = getWorker("127.0.0.1", mount.port)
+    try:
+        assert worker.submit("std", ":GVN#", 1.0, INTERACTIVE) == (True, ["3"], 0)
+        assert worker.link is not None
+        assert worker.link.isConnected()
+
+        stopWorkers()
+
+        assert not workers
+        assert worker.link.client is None
+        assert not worker.workerThread.is_alive()
+        assert worker.submit("std", ":GVN#", 1.0, INTERACTIVE) == (False, [], 0)
+    finally:
+        stopWorkers()
         mount.stop()
 
 

@@ -4,6 +4,7 @@
 import pytest
 from mw4.mountcontrol.mount import MountDevice
 from mw4.mountcontrol.mountSignals import MountSignals
+from mw4.mountcontrol.mountStatus import MountStatus
 from PySide6.QtCore import QThreadPool
 from skyfield.api import Angle, wgs84
 from unittest import mock
@@ -77,6 +78,43 @@ def test_stopAllMountTimers(function):
     with mock.patch.object(function.settlingWait, "stop") as mockStop:
         function.stopAllMountTimers()
         mockStop.assert_called_once()
+
+
+def test_stopCommunication_resetsMountState(function):
+    function.mountIsUp = True
+    function.mountData.data["oldMount"] = 1.0
+    function.statusAlert = True
+    function.statusSlew = True
+    function.obsSite.statusSlew = True
+    function.obsSite.statusSat = "T"
+    with (
+        mock.patch.object(function, "stopAllMountTimers") as mockStopTimers,
+        mock.patch("mw4.mountcontrol.mount.stopWorkers") as mockStopWorkers,
+        mock.patch.object(function.mountTimeConn, "reset") as mockReset,
+        mock.patch.object(function.signals, "deviceDisconnected") as mockDisconnected,
+    ):
+        function.stopCommunication()
+
+    mockStopTimers.assert_called_once()
+    mockStopWorkers.assert_called_once()
+    mockReset.assert_called_once()
+    mockDisconnected.emit.assert_called_once_with("mount")
+    assert not function.mountIsUp
+    assert not function.mountData.data
+    assert not function.statusAlert
+    assert not function.statusSlew
+    assert function.obsSite.status == MountStatus.ERROR
+    assert not function.obsSite.statusSlew
+    assert function.obsSite.statusSat == "E"
+
+
+def test_processMountStatus_ignoresOldGeneration(function):
+    generation = function.mountTimeConn.connectionGeneration
+    with mock.patch.object(function.signals, "mountIsUp") as mockSignal:
+        function.processMountStatus(generation - 1, True)
+        mockSignal.emit.assert_not_called()
+        function.processMountStatus(generation, True)
+        mockSignal.emit.assert_called_once_with(True)
 
 
 def test_startupMountData_1(function):

@@ -335,7 +335,7 @@ class TestFacade:
 
     def test_communicate_trace(self, mount, caplog):
         conn = Connection(makeParent(("127.0.0.1", mount.port), loggingTrace=True))
-        with caplog.at_level("DEBUG"):
+        with caplog.at_level("DEBUG", logger="MW4"):
             conn.communicate(":GVN#")
             conn.communicateBulk(":GVN#:GVN#")
         assert "[Trace] Sending" in caplog.text

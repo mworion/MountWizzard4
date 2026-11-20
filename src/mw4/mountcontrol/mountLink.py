@@ -256,8 +256,17 @@ class LinkWorker(QObject):
         self.workerThread.start()
 
     def stop(self) -> None:
-        self.running = False
-        self.workerThread.join(1)
+        with self.lock:
+            self.running = False
+            while True:
+                try:
+                    job = self.jobs.get_nowait()
+                except queue.Empty:
+                    break
+                self.pending.discard(job.command)
+                job.result = (False, False, "Stopped") if job.kind == "raw" else (False, [], 0)
+                job.event.set()
+        self.workerThread.join()
 
     def runnerLink(self) -> None:
         self.link = MountLink(self.host, self.port)
@@ -364,6 +373,8 @@ class LinkWorker(QObject):
         progress: SignalInstance | None = None,
     ) -> tuple:
         with self.lock:
+            if not self.running:
+                return (False, False, "Stopped") if kind == "raw" else (False, [], 0)
             if priority == CYCLIC and command in self.pending:
                 self.coalesced += 1
                 self.log.debug("Cyclic poll coalesced: %s", command[:40])
@@ -371,7 +382,7 @@ class LinkWorker(QObject):
             self.pending.add(command)
             self.counter += 1
             job = LinkJob(priority, self.counter, kind, command, deadline, progress=progress)
-        self.jobs.put(job)
+            self.jobs.put(job)
         if not job.event.wait(self.waitLimit(kind, command, deadline)):
             self.log.debug("Link job wait expired: %s", command[:40])
             return (False, [], 0) if kind != "raw" else (False, False, "Timeout")
@@ -396,3 +407,11 @@ def getWorker(host: str, port: int) -> LinkWorker:
             worker = LinkWorker(host, port)
             workers[(host, port)] = worker
         return worker
+
+
+def stopWorkers() -> None:
+    with workersLock:
+        activeWorkers = list(workers.values())
+        workers.clear()
+        for worker in activeWorkers:
+            worker.stop()

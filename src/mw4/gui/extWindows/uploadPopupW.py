@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import re
+import time
 from mw4.base.httpClient import request
 from mw4.base.tpool import Worker, startWorker
 from mw4.gui.utilities.qtHelpers import svg2pixmap
@@ -17,6 +18,7 @@ class UploadPopup(MWidget):
     signalStatus = Signal(str)
     signalProgressBarColor = Signal(str)
     TIMEOUT_UPLOAD: ClassVar = 5
+    TIMEOUT_PROCESSING: ClassVar = 60
     dataNames: ClassVar = {
         "comet": {
             "file": "comets.mpc",
@@ -136,19 +138,23 @@ class UploadPopup(MWidget):
 
     def getStatus(self) -> list[str]:
         returnValues = request("get", self.generateURLStatus(), timeout=self.TIMEOUT_UPLOAD)
-        self.returnValues["successMount"] = True
         if returnValues.status_code != 200:
             self.log.debug("Error status: %s", returnValues.status_code)
             self.pollStatusRunState = False
             self.returnValues["successMount"] = False
+            return [""]
         return returnValues.text.strip("\n").split("\n")
 
     def runnerPollStatus(self) -> None:
         self.pollStatusRunState = True
         self.signalStatus.emit("Uploading data to mount...")
-        while self.pollStatusRunState:
+        deadline = time.monotonic() + self.TIMEOUT_PROCESSING
+        while self.pollStatusRunState and time.monotonic() < deadline:
             text = self.getStatus()
             self.sendProgressStatus(text)
+        if self.pollStatusRunState:
+            self.pollStatusRunState = False
+            self.msg.emit(2, "Upload", "Error", "Mount processing timed out")
 
     def prepareFiles(self) -> dict:
         files = {}
@@ -201,6 +207,8 @@ class UploadPopup(MWidget):
                 self.msg.emit(2, "Upload", "Error", "Uploaded but mount failed to save data")
         self.closing = True
         QTimer.singleShot(500, self.close)
+        if self.loop is not None:
+            self.loop.quit()
 
     @Slot()
     def finishPollStatus(self) -> None:
@@ -213,8 +221,21 @@ class UploadPopup(MWidget):
         if not result:
             self.pollStatusRunState = False
             self.signalProgressBarColor.emit("red")
+            self.pollFinished = True
         self.uploadFinished = True
+        if result:
+            self.workerPollStatus = startWorker(
+                self.workerPollStatus,
+                self.threadPool,
+                self.runnerPollStatus,
+                finishedMethod=self.finishPollStatus,
+            )
         self.finalizeUpload()
+
+    @Slot()
+    def finishUploadFile(self) -> None:
+        if not self.uploadFinished:
+            self.closePopup(False)
 
     def exec(self) -> bool:
         self.showWindow()
@@ -224,14 +245,8 @@ class UploadPopup(MWidget):
             self.threadPool,
             self.runnerUploadFile,
             resultMethod=self.closePopup,
-            finishedMethod=self.loop.quit,
-        )
-        self.workerPollStatus = startWorker(
-            self.workerPollStatus,
-            self.threadPool,
-            self.runnerPollStatus,
-            finishedMethod=self.finishPollStatus,
+            finishedMethod=self.finishUploadFile,
         )
         self.loop.exec()
         self.pollStatusRunState = False
-        return self.returnValues["success"]
+        return self.returnValues["success"] and self.returnValues["successMount"]

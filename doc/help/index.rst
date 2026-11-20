@@ -112,6 +112,9 @@ Data could not be fetched from internet
 You need an internet connection and set MountWizzard4 in online mode to download
 new data for upload.
 
+After the mount successfully processes an IERS upload, MountWizzard4 sends a
+command to reload its Earth rotation data. A reload failure is reported separately.
+
 Tracking satellites
 -------------------
 
@@ -128,4 +131,3 @@ trace mode could become big.
 .. image:: image/log_level.png
     :align: center
     :scale: 71%
-

@@ -168,9 +168,10 @@ def test_getStatus_2(function):
 
     function.pollStatusRunState = True
     with mock.patch.object(requests, "get", return_value=Test()):
+        function.returnValues["successMount"] = False
         function.getStatus()
         assert function.pollStatusRunState
-        assert function.returnValues["successMount"]
+        assert not function.returnValues["successMount"]
 
 
 def test_pollStatus_1(function):
@@ -344,9 +345,13 @@ def test_closePopup_2(function, mocked_timer):
     function.uploadFinished = False
     function.pollFinished = False
     function.returnValues["successMount"] = True
-    with mock.patch.object(function, "close") as mockClose:
+    with (
+        mock.patch.object(function, "close") as mockClose,
+        mock.patch("mw4.gui.extWindows.uploadPopupW.startWorker") as worker,
+    ):
         function.closePopup(True)
     mockClose.assert_not_called()
+    assert worker.call_args.args[2] == function.runnerPollStatus
 
 
 def test_closePopup_3(function, mocked_timer):
@@ -354,7 +359,10 @@ def test_closePopup_3(function, mocked_timer):
     function.uploadFinished = False
     function.pollFinished = True
     function.returnValues["successMount"] = True
-    with mock.patch.object(function, "close") as mockClose:
+    with (
+        mock.patch.object(function, "close") as mockClose,
+        mock.patch("mw4.gui.extWindows.uploadPopupW.startWorker"),
+    ):
         function.closePopup(True)
     mockClose.assert_called_once()
 
@@ -368,6 +376,7 @@ def test_exec_1(function):
         mock_loop = mock.MagicMock(spec=QEventLoop)
         mock_loop_cls.return_value = mock_loop
         function.returnValues["success"] = True
+        function.returnValues["successMount"] = True
         result = function.exec()
         assert result
         mock_loop.exec.assert_called_once()
@@ -385,6 +394,62 @@ def test_exec_2(function):
         result = function.exec()
         assert not result
         mock_loop.exec.assert_called_once()
+
+
+def test_exec_mountFailure(function):
+    with (
+        mock.patch.object(function, "showWindow"),
+        mock.patch.object(function.threadPool, "start"),
+        mock.patch("mw4.gui.extWindows.uploadPopupW.QEventLoop"),
+    ):
+        function.returnValues["success"] = True
+        function.returnValues["successMount"] = False
+        assert not function.exec()
+
+
+def test_finishUploadFile_error(function):
+    function.uploadFinished = False
+    with mock.patch.object(function, "closePopup") as close:
+        function.finishUploadFile()
+        close.assert_called_once_with(False)
+    function.uploadFinished = True
+    with mock.patch.object(function, "closePopup") as close:
+        function.finishUploadFile()
+        close.assert_not_called()
+
+
+def test_runnerPollStatus_timeout(function):
+    function.returnValues["successMount"] = False
+    with (
+        mock.patch("mw4.gui.extWindows.uploadPopupW.time.monotonic", side_effect=[0, 60]),
+        mock.patch.object(function, "msg") as msg,
+    ):
+        function.runnerPollStatus()
+    assert not function.pollStatusRunState
+    assert not function.returnValues["successMount"]
+    msg.emit.assert_called_once_with(2, "Upload", "Error", "Mount processing timed out")
+
+
+@pytest.mark.parametrize("mountSuccess", [True, False])
+def test_upload_waitsForMountProcessing(function, qtbot, mountSuccess):
+    popup = UploadPopup(function.parentW, "localhost", [], Path())
+    events = []
+
+    def upload():
+        events.append("upload")
+        return True
+
+    def status():
+        events.append("status")
+        return ["Processing", "data updated." if mountSuccess else "file failed"]
+
+    with (
+        mock.patch.object(popup, "runnerUploadFile", side_effect=upload),
+        mock.patch.object(popup, "getStatus", side_effect=status),
+    ):
+        assert popup.exec() is mountSuccess
+        assert events == ["upload", "status"]
+        qtbot.wait(600)
 
 
 def test_upload_1(function):

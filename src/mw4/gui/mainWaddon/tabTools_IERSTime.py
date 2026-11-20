@@ -1,9 +1,11 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
+from mw4.base.tpool import Worker, startWorker
 from mw4.gui.extWindows.downloadPopupW import DownloadPopup
 from mw4.gui.extWindows.uploadPopupW import UploadPopup
 from mw4.gui.mainWaddon.tabAddon import TabAddon
+from mw4.logic.controllers.mount.iersTime import reloadDeltaT
 from mw4.logic.databaseProcessing.dataWriter import DataWriter
 from pathlib import Path
 from PySide6.QtWidgets import QListView
@@ -27,6 +29,7 @@ class IERSTime(TabAddon):
         self.ui = mainW.ui
         self.tempDir: Path = self.app.mwGlob["tempDir"]
         self.databaseProcessing = DataWriter(self.app)
+        self.workerReloadDeltaT: Worker | None = None
         self.ui.progEarthRotationData.clicked.connect(self.progEarthRotationData)
         self.ui.downloadIERS.clicked.connect(self.loadTimeDataFromSourceURLs)
 
@@ -50,6 +53,9 @@ class IERSTime(TabAddon):
             self.ui.iersSource.addItem(name)
 
     def progEarthRotationData(self) -> None:
+        if self.workerReloadDeltaT is not None and self.workerReloadDeltaT.locked:
+            self.msg.emit(2, "IERS", "Reload", "Earth rotation data reload is still running")
+            return
         self.msg.emit(1, "IERS", "Program", "Earth rotation data")
         suc = self.databaseProcessing.writeEarthRotationData(self.tempDir)
         if not suc:
@@ -61,8 +67,16 @@ class IERSTime(TabAddon):
         suc = UploadPopup.upload(self.mainW, url, dataTypes, self.tempDir)
         if suc:
             self.msg.emit(1, "IERS", "Upload", "Successfully uploaded")
+            self.workerReloadDeltaT = startWorker(
+                self.workerReloadDeltaT,
+                self.app.threadPool,
+                self.runnerReloadDeltaT,
+            )
         else:
             self.msg.emit(2, "IERS", "Upload", "Upload failed")
+
+    def runnerReloadDeltaT(self) -> bool:
+        return reloadDeltaT(self.app.dReg.mount.obsSite)
 
     def loadTimeDataFromSourceURLs(self) -> None:
         if not self.app.isOnline:

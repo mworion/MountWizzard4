@@ -51,10 +51,14 @@ def test_setupIERSSourceURLsDropDown(function):
 
 def test_progEarthRotationData_1(function):
     function.app.mount.host = ("127.0.0.1", 3294)
-    with mock.patch.object(
-        function.databaseProcessing, "writeEarthRotationData", return_value=False
+    with (
+        mock.patch.object(
+            function.databaseProcessing, "writeEarthRotationData", return_value=False
+        ),
+        mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.startWorker") as worker,
     ):
         function.progEarthRotationData()
+        worker.assert_not_called()
 
 
 def test_progEarthRotationData_2(function):
@@ -62,8 +66,10 @@ def test_progEarthRotationData_2(function):
     with (
         mock.patch.object(function.databaseProcessing, "writeEarthRotationData", return_value=True),
         mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.UploadPopup.upload", return_value=True),
+        mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.startWorker", return_value=None) as worker,
     ):
         function.progEarthRotationData()
+        worker.assert_called_once_with(None, function.app.threadPool, function.runnerReloadDeltaT)
 
 
 def test_progEarthRotationData_3(function):
@@ -71,8 +77,32 @@ def test_progEarthRotationData_3(function):
     with (
         mock.patch.object(function.databaseProcessing, "writeEarthRotationData", return_value=True),
         mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.UploadPopup.upload", return_value=False),
+        mock.patch("mw4.gui.mainWaddon.tabTools_IERSTime.startWorker") as worker,
     ):
         function.progEarthRotationData()
+        worker.assert_not_called()
+
+
+def test_progEarthRotationData_reloadBusy(function):
+    with (
+        mock.patch.object(function, "workerReloadDeltaT", mock.Mock(locked=True)),
+        mock.patch.object(function.databaseProcessing, "writeEarthRotationData") as write,
+        mock.patch.object(function, "msg") as msg,
+    ):
+        function.progEarthRotationData()
+        write.assert_not_called()
+        msg.emit.assert_called_once_with(
+            2, "IERS", "Reload", "Earth rotation data reload is still running"
+        )
+
+
+@pytest.mark.parametrize("success", [True, False])
+def test_reloadDeltaT(function, success):
+    with mock.patch(
+        "mw4.gui.mainWaddon.tabTools_IERSTime.reloadDeltaT", return_value=success
+    ) as reload:
+        assert function.runnerReloadDeltaT() is success
+        reload.assert_called_once_with(function.app.dReg.mount.obsSite)
 
 
 def test_loadTimeDataFromSourceURLs_1(function):

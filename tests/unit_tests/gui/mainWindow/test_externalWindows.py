@@ -5,7 +5,7 @@ import pytest
 from mw4.base import packageConfig
 from mw4.gui.mainWindow.externalWindows import ExternalWindows
 from mw4.gui.widgets.main_ui import Ui_MainWindow
-from PySide6.QtCore import QObject, Signal
+from PySide6.QtCore import QCoreApplication, QEvent, QObject, Qt, Signal
 from PySide6.QtWidgets import QPushButton, QWidget
 from unittest import mock
 
@@ -29,6 +29,7 @@ def resetState(function):
     # Clear every window's classObj so tests don't inherit a leftover object.
     for window in function.uiWindows:
         function.uiWindows[window]["classObj"] = None
+        function.uiWindows[window]["token"] = None
     yield
 
 
@@ -52,7 +53,22 @@ def test_updateWindowsStats_2(function):
 
 
 def test_deleteWindowResource_1(function):
-    function.deleteWindowResource("showImageW")
+    token = object()
+    function.uiWindows["showImageW"]["classObj"] = object()
+    function.uiWindows["showImageW"]["token"] = token
+    function.deleteWindowResource("showImageW", token)
+    assert function.uiWindows["showImageW"]["classObj"] is None
+    assert function.uiWindows["showImageW"]["token"] is None
+
+
+def test_deleteWindowResource_stale(function):
+    token = object()
+    window = object()
+    function.uiWindows["showImageW"]["classObj"] = window
+    function.uiWindows["showImageW"]["token"] = token
+    function.deleteWindowResource("showImageW", object())
+    assert function.uiWindows["showImageW"]["classObj"] is window
+    assert function.uiWindows["showImageW"]["token"] is token
 
 
 def test_buildWindow_1(function):
@@ -77,6 +93,38 @@ def test_buildWindow_1(function):
 
     function.uiWindows["showSatelliteMapW"]["class"] = Test
     function.buildWindow("showSatelliteMapW")
+
+
+def test_replacementSurvivesDeferredDestruction(function, qapp, monkeypatch):
+    class TestWindow(QWidget):
+        def __init__(self, app, title: str) -> None:
+            super().__init__()
+            self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+
+        def initConfig(self) -> None:
+            pass
+
+        def showWindow(self) -> None:
+            self.show()
+
+    entry = function.uiWindows["showImageW"]
+    monkeypatch.setitem(entry, "class", TestWindow)
+    function.buildWindow("showImageW")
+    oldWindow = entry["classObj"]
+    function.closeExtendedWindows()
+    function.buildWindow("showImageW")
+    newWindow = entry["classObj"]
+    assert newWindow is not oldWindow
+
+    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
+    assert entry["classObj"] is newWindow
+    assert newWindow.isVisible()
+
+    function.closeExtendedWindows()
+    assert not newWindow.isVisible()
+    QCoreApplication.sendPostedEvents(None, QEvent.Type.DeferredDelete)
+    assert entry["classObj"] is None
+    assert entry["token"] is None
 
 
 def test_toggleWindow_1(function):

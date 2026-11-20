@@ -51,7 +51,13 @@ class ExternalWindows:
             ("showSettingW", ui.setting, "SettingDialog", SettingWindow),
         ]
         return {
-            key: {"button": button, "classObj": None, "name": name, "class": windowClass}
+            key: {
+                "button": button,
+                "classObj": None,
+                "token": None,
+                "name": name,
+                "class": windowClass,
+            }
             for key, button, name, windowClass in windowSpec
         }
 
@@ -75,15 +81,19 @@ class ExternalWindows:
             if self.app.config[window]:
                 self.uiWindows[window]["classObj"].storeConfig()
 
-    def deleteWindowResource(self, window: str) -> None:
-        self.uiWindows[window]["classObj"] = None
+    def deleteWindowResource(self, window: str, token: object) -> None:
+        if self.uiWindows[window]["token"] is token:
+            self.uiWindows[window]["classObj"] = None
+            self.uiWindows[window]["token"] = None
 
     def buildWindow(self, window: str) -> None:
+        token = object()
         self.uiWindows[window]["classObj"] = self.uiWindows[window]["class"](
             self.app, self.uiWindows[window]["name"]
         )
+        self.uiWindows[window]["token"] = token
         self.uiWindows[window]["classObj"].destroyed.connect(
-            partial(self.deleteWindowResource, window)
+            partial(self.deleteWindowResource, window, token)
         )
         self.uiWindows[window]["classObj"].initConfig()
         self.uiWindows[window]["classObj"].showWindow()

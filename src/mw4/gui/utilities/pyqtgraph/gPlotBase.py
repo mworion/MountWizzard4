@@ -12,6 +12,9 @@ from scipy.interpolate import griddata
 from scipy.ndimage import uniform_filter
 from typing import Any
 
+# LabelItem.sizeHint can run during GraphicsWidget.__init__ before this exists.
+setattr(pg.LabelItem, "_sizeHint", {})  # noqa: B010
+
 
 class PlotBase(pg.GraphicsLayoutWidget, Styles):
     def __init__(self, *args: Any, **kwargs: Any) -> None:

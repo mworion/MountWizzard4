@@ -19,6 +19,11 @@ def test_PlotBase():
     PlotBase()
 
 
+def test_LabelItemInitializesSizeHint():
+    labelItem = pg.LabelItem()
+    assert pg.QtCore.Qt.SizeHint.PreferredSize in labelItem._sizeHint
+
+
 def test_PlotBase_colorChange():
     p = PlotBase()
     p.addBarItem()

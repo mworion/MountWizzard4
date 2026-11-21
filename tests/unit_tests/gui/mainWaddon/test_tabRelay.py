@@ -13,9 +13,7 @@ from unittest import mock
 def function(qapp, makeApp):
     mainW = QWidget()
     mainW.app = makeApp()
-    mainW.ui = SimpleNamespace(
-        **{f"relayButton{i}": QPushButton(mainW) for i in range(8)}
-    )
+    mainW.ui = SimpleNamespace(**{f"relayButton{i}": QPushButton(mainW) for i in range(8)})
     mainW.wIcon = mock.MagicMock()
     window = Relay(mainW)
     yield window

@@ -410,7 +410,7 @@
        <number>4</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="spacing">
        <number>4</number>

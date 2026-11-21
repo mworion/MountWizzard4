@@ -48,23 +48,20 @@ If you get the version number, everything is perfect.
 Installing python and the virtual environment
 ---------------------------------------------
 There is no need to have python installed on the forehand and there no dependency
-to any python installation already present with the use of uv. Mountwizzard4 v3
-plays on python 3.8 - 3.10, so I would recommend to use the n ewest one 3.10. For
-installing, please choose a work folder for Mountwizzard4, open a terminal window
-and change directory to this work folder. the command
-
-.. code-block:: bash
-
-    uv venv -p 3.10
-
-does download the right python package (3.10) and installs a virtual environment
-in you work folder. The virtual environment is stored in a directory there called
-".venv". If you go for testing the new v4 version, please install python 3.14 with
-the command:
+to any python installation already present with the use of uv. The v4 version of
+Mountwizzard needs in minimum python 3.12, actually I would recommend using 3.14.
 
 .. code-block:: bash
 
     uv venv -p 3.14
+
+Mountwizzard4 v3 plays on python 3.8 - 3.10, so I would recommend to use the newest
+one 3.10. For installing, please choose a work folder for Mountwizzard4, open a
+terminal window and change directory to this work folder. the command
+
+.. code-block:: bash
+
+    uv venv -p 3.10
 
 The resulting virtual environment is only for this work folder and does not
 interfere with any other python installation on your system. You can have as many
@@ -215,8 +212,8 @@ Setting Qt DPI scale factor (+scale = +size, default=1)
 
 Getting this information.
 
-Integrating MountWizzard4 linux system
---------------------------------------
+Integrating MountWizzard4 on linux system
+-----------------------------------------
 If you plan to run MountWizzard4 on a linux system, you can use the
 additional files for linux in the support_install folder.
 
@@ -229,8 +226,8 @@ how to install it:
 
 https://itsfoss.gitlab.io/post/how-to-install-and-edit-desktop-files-on-linux-desktop-entries/
 
-Integrating MountWizzard4 Windows system
-----------------------------------------
+Integrating MountWizzard4 on Windows system
+-------------------------------------------
 If you plan to run MountWizzard4 on a windows system, you can use the
 additional files for windows in the support_install folder for setting up
 a link with an icon to start MountWizzard4 with a double click.

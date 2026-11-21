@@ -47,7 +47,7 @@ ASCOM, Alpaca and in addition Sequence Generator Pro and N.I.N.A. as camera devi
 
 Known limitations
 =================
-MountWizzard4 v4 does support python 3.11 - 3.14 right now. The reason for that
+MountWizzard4 v4 does support python 3.12 - 3.14 right now. The reason for that
 is the lack of precompiled packages. Some features are limited to windows as 
 they need the original 10micron updater program for execution. As python moves
 with its releases forward, also MountWizzard4 will follow.

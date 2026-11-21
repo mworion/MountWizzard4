@@ -116,6 +116,40 @@ exclude_type_checking_imports = true
 name = "Layers: gui > logic > mountcontrol > base"
 type = "layers"
 layers = ["mw4.gui", "mw4.logic", "mw4.mountcontrol", "mw4.base"]
+ignore_imports = [
+    # Composition root instantiates camera driver.
+    "mw4.base.deviceRegistry -> mw4.logic.drivers.camera.camera",
+    # Composition root instantiates cover driver.
+    "mw4.base.deviceRegistry -> mw4.logic.drivers.cover.cover",
+    # Composition root instantiates dome driver.
+    "mw4.base.deviceRegistry -> mw4.logic.drivers.dome.dome",
+    # Composition root instantiates weather drivers.
+    "mw4.base.deviceRegistry -> mw4.logic.drivers.environment.directWeather",
+    "mw4.base.deviceRegistry -> mw4.logic.drivers.environment.seeingWeather",
+    "mw4.base.deviceRegistry -> mw4.logic.drivers.environment.sensorWeather",
+    # Composition root instantiates filter driver.
+    "mw4.base.deviceRegistry -> mw4.logic.drivers.filter.filter",
+    # Composition root instantiates focuser driver.
+    "mw4.base.deviceRegistry -> mw4.logic.drivers.focuser.focuser",
+    # Composition root instantiates HID driver.
+    "mw4.base.deviceRegistry -> mw4.logic.drivers.hidController.hidController",
+    # Composition root instantiates light panel driver.
+    "mw4.base.deviceRegistry -> mw4.logic.drivers.lightPanel.lightPanel",
+    # Composition root instantiates measure driver.
+    "mw4.base.deviceRegistry -> mw4.logic.drivers.measure.measure",
+    # Composition root instantiates plate-solve driver.
+    "mw4.base.deviceRegistry -> mw4.logic.drivers.plateSolve.plateSolve",
+    # Composition root instantiates KM relay driver.
+    "mw4.base.deviceRegistry -> mw4.logic.drivers.powerswitch.kmRelay",
+    # Composition root instantiates Pegasus power driver.
+    "mw4.base.deviceRegistry -> mw4.logic.drivers.powerswitch.pegasusUPB",
+    # Composition root instantiates remote driver.
+    "mw4.base.deviceRegistry -> mw4.logic.drivers.remote.remote",
+    # Composition root instantiates telescope driver.
+    "mw4.base.deviceRegistry -> mw4.logic.drivers.telescope.telescope",
+    # Composition root instantiates the 10micron mount.
+    "mw4.base.deviceRegistry -> mw4.mountcontrol.mount",
+]
 
 [[tool.importlinter.contracts]]
 name = "Controllers do not import drivers"

@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import pytest
-from mw4.deviceRegistry import DeviceEntry, DeviceRegistry
+from mw4.base.deviceEntry import DeviceEntry
+from mw4.base.deviceRegistry import DeviceRegistry
 from pathlib import Path
 from PySide6.QtCore import QThreadPool
 from unittest import mock

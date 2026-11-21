@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from mw4.deviceRegistry import DeviceRegistry
+    from mw4.base.deviceRegistry import DeviceRegistry
 
 log: logging.Logger = logging.getLogger("MW4")
 profileVersion = "5.0"

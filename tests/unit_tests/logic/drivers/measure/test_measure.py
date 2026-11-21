@@ -3,7 +3,7 @@
 # Copyright (c) 2019-2026 mworion
 import numpy as np
 import pytest
-from mw4.deviceRegistry import DeviceEntry
+from mw4.base.deviceEntry import DeviceEntry
 from mw4.logic.drivers.measure.measure import MeasureData
 from mw4.logic.drivers.measure.measureCSV import MeasureDataCSV
 from mw4.logic.drivers.measure.measureRaw import MeasureDataRaw

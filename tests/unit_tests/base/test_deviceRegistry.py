@@ -4,7 +4,8 @@
 import pytest
 import re
 from dataclasses import dataclass, field
-from mw4.deviceRegistry import DeviceEntry, DeviceRegistry
+from mw4.base.deviceEntry import DeviceEntry
+from mw4.base.deviceRegistry import DeviceRegistry
 from pathlib import Path
 from typing import get_args, get_overloads, get_type_hints
 from unittest import mock
@@ -730,7 +731,7 @@ def test_deviceDisconnectedWithUnknownSender(registry: DeviceRegistry) -> None:
 def test_addDevicesSkipsSignalsForInstanceWithoutSignals(makeApp) -> None:
     app = makeApp()
     dReg = DeviceRegistry(app, mount=app.mount)
-    with patch("mw4.deviceRegistry.MeasureData", lambda app: object()):
+    with patch("mw4.base.deviceRegistry.MeasureData", lambda app: object()):
         dReg.addDevices()
     assert id(dReg.d["mount"].signals) in dReg.signalsToName
     assert "measure" not in dReg.signalsToName.values()

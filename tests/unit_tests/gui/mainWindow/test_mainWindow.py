@@ -4,7 +4,7 @@
 import mw4.gui.utilities.qtMain
 import pytest
 import shutil
-from mw4.deviceRegistry import DeviceEntry
+from mw4.base.deviceEntry import DeviceEntry
 from mw4.gui.mainWaddon.tabAlmanac import Almanac
 from mw4.gui.mainWindow.mainWindow import MainWindow
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog

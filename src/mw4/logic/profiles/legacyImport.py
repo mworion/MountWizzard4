@@ -8,7 +8,7 @@ from dataclasses import dataclass, field, fields, is_dataclass
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from mw4.deviceRegistry import DeviceRegistry
+    from mw4.base.deviceRegistry import DeviceRegistry
 
 SOURCE_PROFILE_VERSION = "4.1"
 TARGET_PROFILE_VERSION = "5.0"

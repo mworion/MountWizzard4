@@ -119,6 +119,13 @@ new folders:
 
 Basically that's it.
 
+Simulator rendering on macOS
+---------------------------
+MountWizzard4 defaults Qt3D to OpenGL on macOS because the Metal renderer can
+leave the simulator window blank. Other platforms keep Qt3D's default renderer.
+An explicit ``QT3D_RENDERER`` environment variable takes precedence; for example,
+``QT3D_RENDERER=rhi uv run mw4`` opts back into the RHI renderer for diagnostics.
+
 Comfort setup for MW4 users
 ---------------------------
 The first start has to be done manually with the command above. After that,

@@ -21,6 +21,7 @@ class SimulatorDome(QObject):
         self.app.dReg.dome.signals.deviceDisconnected.connect(self.domeDisconnected)
         self.app.dReg.dome.signals.azimuth.connect(self.updateAzimuth)
         self.app.timeMgr.update1s.connect(self.updateShutter)
+        self.app.signals.model.updateDomeSettings.connect(self.updateSize)
         self.parentWindow.ui.domeTransparent.checkStateChanged.connect(self.setTransparency)
 
     @Slot(str)
@@ -51,9 +52,6 @@ class SimulatorDome(QObject):
         node = self.parentWindow.entityModel.get("domeRoot")
         if node:
             node["entity"].setEnabled(show)
-            self.app.signals.model.updateDomeSettings.connect(self.updateSize)
-        else:
-            self.app.signals.model.updateDomeSettings.disconnect(self.updateSize)
 
     @Slot()
     def updateSize(self) -> None:

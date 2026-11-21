@@ -38,15 +38,30 @@ def test_showEnable_1(function):
     function.showEnable(True)
 
 
-def test_showEnable_disconnect(function):
-    """showEnable with no 'domeRoot' → disconnects updateSize (else branch, line 53)."""
-    # Ensure updateSize is connected first via the if-branch
+def test_showEnableWithoutRoot(function) -> None:
     entity = Qt3DCore.QEntity()
     function.parentWindow.entityModel["domeRoot"] = {"entity": entity}
     function.showEnable(True)
-    # Now remove domeRoot so the else-branch fires and disconnects updateSize
+    assert entity.isEnabled()
     del function.parentWindow.entityModel["domeRoot"]
     function.showEnable(False)
+
+
+def test_showEnableDoesNotDuplicateSettingsConnections(qapp, makeApp) -> None:
+    window = SimulatorWindow(app=makeApp(), title="Simulator")
+    floorTransform = window.entityModel["domeFloor"]["trans"]
+    for show in [True, False, True, False]:
+        window.dome.showEnable(show)
+        assert window.entityModel["domeRoot"]["entity"].isEnabled() is show
+
+    with mock.patch.object(floorTransform, "setScale3D") as setScale:
+        window.app.signals.model.updateDomeSettings.emit()
+
+    setScale.assert_called_once()
+    with mock.patch.object(window, "show"):
+        window.showWindow()
+    window.close()
+    QApplication.processEvents()
 
 
 @pytest.mark.parametrize(

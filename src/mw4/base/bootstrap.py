@@ -41,6 +41,9 @@ os.environ.setdefault("QT_QPA_PLATFORM", "xcb") if platformInfo.IS_LINUX else No
 
 
 def configureEnvironment() -> None:
+    if platformInfo.IS_MAC:
+        # Qt3D's Metal backend leaves the simulator scene blank.
+        os.environ.setdefault("QT3D_RENDERER", "opengl")
     faulthandler.enable()
     warnings.filterwarnings("ignore", category=RuntimeWarning)
     warnings.filterwarnings("ignore", category=FITSFixedWarning)

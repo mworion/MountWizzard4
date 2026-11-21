@@ -32,13 +32,31 @@ def module_setup_teardown():
     yield
 
 
-def test_configure_environment():
+def test_configure_environment(monkeypatch):
+    monkeypatch.delenv("QT3D_RENDERER", raising=False)
     with (
         mock.patch("mw4.base.bootstrap.faulthandler.enable"),
         mock.patch("mw4.base.bootstrap.warnings.filterwarnings"),
         mock.patch("mw4.base.bootstrap.setupLogging"),
     ):
         configureEnvironment()
+
+
+@pytest.mark.parametrize("system", ["Darwin", "Linux", "Windows"])
+@pytest.mark.parametrize("renderer", [None, "rhi", "opengl"])
+def test_configureEnvironmentRenderer(monkeypatch, system: str, renderer: str | None) -> None:
+    monkeypatch.setattr(platformInfo, "IS_MAC", system == "Darwin")
+    monkeypatch.delenv("QT3D_RENDERER", raising=False)
+    if renderer is not None:
+        monkeypatch.setenv("QT3D_RENDERER", renderer)
+    with (
+        mock.patch("mw4.base.bootstrap.faulthandler.enable"),
+        mock.patch("mw4.base.bootstrap.setupLogging"),
+    ):
+        configureEnvironment()
+
+    expected = renderer if renderer is not None else "opengl" if system == "Darwin" else None
+    assert os.environ.get("QT3D_RENDERER") == expected
 
 
 @pytest.mark.skipif(not platformInfo.IS_LINUX, reason="Linux needed")

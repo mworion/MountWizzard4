@@ -48,6 +48,55 @@ def test_closeEvent_1(function):
         function.closeEvent(QCloseEvent)
 
 
+def test_closeDisconnectsSceneUpdates(qapp, makeApp) -> None:
+    app = makeApp()
+    window = SimulatorWindow(app=app, title="Simulator")
+    with mock.patch.object(window, "show"):
+        window.showWindow()
+    connections = [
+        (app.signals.model.updateDomeSettings, window.world.updatePositions),
+        (app.signals.model.updateDomeSettings, window.telescope.updatePositions),
+        (app.signals.model.updateDomeSettings, window.dome.updateSize),
+        (app.timeMgr.update1s, window.dome.updateShutter),
+        (app.dReg.dome.signals.deviceConnected, window.dome.domeConnected),
+        (app.dReg.dome.signals.deviceDisconnected, window.dome.domeDisconnected),
+        (app.dReg.dome.signals.azimuth, window.dome.updateAzimuth),
+        (app.signals.hemisphere.updatePointMarker, window.buildPoints.create),
+        (app.signals.hemisphere.drawBuildPoints, window.buildPoints.create),
+        (app.signals.ui.colorChange, window.colorChange),
+        (app.dReg.mount.signals.pointDone, window.buildPoints.updatePositions),
+        (app.dReg.mount.signals.pointDone, window.laser.updatePositions),
+        (app.dReg.mount.signals.pointDone, window.pointer.updatePositions),
+        (app.dReg.mount.signals.pointDone, window.telescope.updateRotation),
+    ]
+    with mock.patch.object(MWidget, "closeEvent"):
+        window.closeEvent(QCloseEvent())
+        assert window.entityModel == {}
+        app.signals.model.updateDomeSettings.emit()
+        app.signals.hemisphere.updatePointMarker.emit()
+        app.signals.hemisphere.drawBuildPoints.emit()
+        app.signals.ui.colorChange.emit()
+        app.dReg.dome.signals.deviceConnected.emit("Dome")
+        app.dReg.dome.signals.deviceDisconnected.emit("Dome")
+        app.dReg.dome.signals.azimuth.emit(90.0)
+        app.timeMgr.update1s.emit()
+        app.dReg.mount.signals.pointDone.emit(None)
+        for signal, slot in connections:
+            with pytest.warns(RuntimeWarning, match="Failed to disconnect"):
+                assert not signal.disconnect(slot)
+
+    reopened = SimulatorWindow(app=app, title="Simulator")
+    with mock.patch.object(reopened, "show"):
+        reopened.showWindow()
+    floorTransform = reopened.entityModel["domeFloor"]["trans"]
+    with mock.patch.object(floorTransform, "setScale3D") as setScale:
+        app.signals.model.updateDomeSettings.emit()
+    setScale.assert_called_once()
+    reopened.close()
+    window.deleteLater()
+    QApplication.processEvents()
+
+
 def test_showWindow(function):
     with mock.patch.object(function, "show"):
         function.showWindow()

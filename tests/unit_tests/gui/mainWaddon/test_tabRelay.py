@@ -3,9 +3,9 @@
 # Copyright (c) 2019-2026 mworion
 
 import pytest
-from types import SimpleNamespace
 from mw4.gui.mainWaddon.tabRelay import Relay
 from PySide6.QtWidgets import QPushButton, QWidget
+from types import SimpleNamespace
 from unittest import mock
 
 

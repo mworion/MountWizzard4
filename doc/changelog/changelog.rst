@@ -6,7 +6,7 @@ Beta versions
 
 Version 4.x
 ^^^^^^^^^^^
-4.0.0b28
+4.0.0rc0
 
 - this is a major release !
   please try out in a separate work folder for test!
@@ -70,5 +70,5 @@ Version 4.x
 - remove: updater for MW4 (use uv installer instead)
 - remove: automatic profile conversion from x.x to 4.x (too complex)
 - remove: blending profiles as it did not work so far.
-- remove: native support for NINA (replaced by ALPACA Pluging on NINA)
+- remove: native support for NINA (replaced by ALPACA Plugin on NINA)
 - fix: typos

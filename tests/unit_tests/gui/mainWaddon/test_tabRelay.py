@@ -3,9 +3,9 @@
 # Copyright (c) 2019-2026 mworion
 
 import pytest
+from types import SimpleNamespace
 from mw4.gui.mainWaddon.tabRelay import Relay
-from mw4.gui.widgets.main_ui import Ui_MainWindow
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QPushButton, QWidget
 from unittest import mock
 
 
@@ -13,8 +13,9 @@ from unittest import mock
 def function(qapp, makeApp):
     mainW = QWidget()
     mainW.app = makeApp()
-    mainW.ui = Ui_MainWindow()
-    mainW.ui.setupUi(mainW)
+    mainW.ui = SimpleNamespace(
+        **{f"relayButton{i}": QPushButton(mainW) for i in range(8)}
+    )
     mainW.wIcon = mock.MagicMock()
     window = Relay(mainW)
     yield window

@@ -167,7 +167,7 @@ class Ui_MainWindow(object):
         self.timeGoup = QGridLayout(self.statusTimeGroup)
         self.timeGoup.setSpacing(4)
         self.timeGoup.setObjectName(u"timeGoup")
-        self.timeGoup.setContentsMargins(4, 6, 4, 0)
+        self.timeGoup.setContentsMargins(4, 6, 4, 2)
         self.openV4 = QPushButton(self.statusTimeGroup)
         self.openV4.setObjectName(u"openV4")
         sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)

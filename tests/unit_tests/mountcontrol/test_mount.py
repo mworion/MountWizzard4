@@ -132,7 +132,7 @@ def test_cycleResultRequiresCurrentConnection(function, runner, poll, finish, re
         function.mountIsUp = False
         getattr(function, finish)(response)
         function.mountIsUp = True
-        getattr(function, finish)((generation - 1, True, response[2]))
+        getattr(function, finish)((generation - 1, *response[1:]))
         callback.assert_not_called()
         getattr(function, finish)(response)
         callback.assert_called_once_with(True)
@@ -168,7 +168,7 @@ def test_stalePollCannotChangeMountValues(function, runner, finish, objectName, 
     function.mountTimeConn.connectionGeneration += 1
     getattr(function, finish)(response)
     assert getattr(target, field) == original
-    getattr(function, finish)((function.mountTimeConn.connectionGeneration, False, response[2]))
+    getattr(function, finish)((function.mountTimeConn.connectionGeneration, False, *response[2:]))
     assert getattr(target, field) == original
     if runner == "runnerCycleStaticSetting":
         getattr(function, finish)((function.mountTimeConn.connectionGeneration, True, response[2]))
@@ -216,6 +216,20 @@ def test_failedStaticReadDoesNotOverwriteNewerStaticResult(function):
     with mock.patch.object(function, "resultCycleSetting"):
         function.finishCycleSetting(response)
     assert function.setting.staticRead
+    assert function.setting.typeConnection == 3
+
+
+def test_settingPollDoesNotOverwriteNewerStaticResult(function):
+    function.mountIsUp = True
+    generation = function.mountTimeConn.connectionGeneration
+    function.staticSettingGeneration = generation
+    function.setting.staticRead = True
+    function.setting.typeConnection = 2
+    with mock.patch.object(type(function.setting), "pollSetting", return_value=True):
+        response = function.runnerCycleSetting(generation)
+    function.setting.typeConnection = 3
+    with mock.patch.object(function, "resultCycleSetting"):
+        function.finishCycleSetting(response)
     assert function.setting.typeConnection == 3
 
 

@@ -269,22 +269,22 @@ class MountDevice(QObject):
             guard=lambda: self.mountIsUp,
         )
 
-    def runnerCycleSetting(self, generation: int) -> tuple[int, bool, Setting]:
+    def runnerCycleSetting(self, generation: int) -> tuple[int, bool, Setting, bool]:
         setting = copy(self.setting)
         if self.staticSettingGeneration != generation:
             setting.staticRead = False
-        return generation, setting.pollSetting(), setting
+        readStatic = not setting.staticRead
+        return generation, setting.pollSetting(), setting, readStatic
 
     @Slot(object)
-    def finishCycleSetting(self, result: tuple[int, bool, Setting]) -> None:
-        generation, success, setting = result
+    def finishCycleSetting(self, result: tuple[int, bool, Setting, bool]) -> None:
+        generation, success, setting, readStatic = result
         if self.mountIsUp and generation == self.mountTimeConn.connectionGeneration:
             if success:
                 for name in self.SETTING_FIELDS:
-                    if (
-                        name in self.STATIC_SETTING_FIELDS
-                        and not setting.staticRead
-                        and self.staticSettingGeneration == generation
+                    if name in self.STATIC_SETTING_FIELDS and (
+                        not readStatic
+                        or (not setting.staticRead and self.staticSettingGeneration == generation)
                     ):
                         continue
                     setattr(self.setting, name, getattr(setting, name))

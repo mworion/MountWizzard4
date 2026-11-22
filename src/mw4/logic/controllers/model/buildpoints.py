@@ -38,6 +38,8 @@ class BuildPoint:
     UNPROCESSED = 0
     FAILED = 1
     SOLVED = 2
+    MAX_DSO_SAMPLES = 100_000
+    MAX_DSO_SAMPLES_PER_POINT = 100
 
     log = logging.getLogger("MW4")
 
@@ -398,7 +400,7 @@ class BuildPoint:
         ha: Angle,
         dec: Angle,
         location: GeographicPosition,
-    ) -> list[tuple[int, int, int]]:
+    ) -> list[list[float]]:
         buildP = []
         for i in range(numberPoints):
             starTime = ts.tt_jd(edgeDSO + i / numberPoints)
@@ -414,10 +416,12 @@ class BuildPoint:
         timeJD: Time,
         location: GeographicPosition,
         numberPoints: int,
-        keep: bool = False,
-    ) -> None:
-        if not keep:
-            self.clearBuildP()
+    ) -> list[list[float]] | None:
+        """Calculate a bounded, evenly sampled DSO path."""
+        if numberPoints <= 0:
+            return []
+        if numberPoints > self.MAX_DSO_SAMPLES:
+            return None
 
         star = Star(ra=ha, dec=dec)
         startTime = timeJD
@@ -429,16 +433,26 @@ class BuildPoint:
         f.step_days = 0.08
         t, y = almanac.find_discrete(startTime, endTime, f)
 
-        index = next((x for x in y if x == 1), None)
-        edgeDSO = int(ts.now().tt) - 0.5 if index is None else t[index].tt
-
-        number = numberPoints
-        buildPs = []
-        while len(buildPs) < numberPoints:
-            buildPs = self.calcPath(ts, number, edgeDSO, ha, dec, location)
-            number += 1
-        for buildP in buildPs:
-            self.addBuildP(buildP)
+        riseIndex = next((i for i, state in enumerate(y) if state == 1), None)
+        edgeDSO = int(ts.now().tt) - 0.5 if riseIndex is None else t[riseIndex].tt
+        sampleLimit = min(
+            self.MAX_DSO_SAMPLES,
+            numberPoints * self.MAX_DSO_SAMPLES_PER_POINT,
+        )
+        sampleCount = numberPoints
+        while True:
+            buildPs = self.calcPath(ts, sampleCount, edgeDSO, ha, dec, location)
+            if len(buildPs) >= numberPoints:
+                if numberPoints == 1:
+                    return [buildPs[0]]
+                lastIndex = len(buildPs) - 1
+                return [
+                    buildPs[index * lastIndex // (numberPoints - 1)]
+                    for index in range(numberPoints)
+                ]
+            if sampleCount >= sampleLimit:
+                return None
+            sampleCount = min(sampleCount * 2, sampleLimit)
 
     def generateGoldenSpiral(self, numberPoints: int) -> None:
         """

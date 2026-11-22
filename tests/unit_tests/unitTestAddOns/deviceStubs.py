@@ -526,9 +526,7 @@ class Data:
         return
 
     @staticmethod
-    def generateDSOPath(
-        ha=None, dec=None, timeJD=None, location=None, numberPoints=None, keep=None
-    ):
+    def generateDSOPath(ha=None, dec=None, timeJD=None, location=None, numberPoints=None):
         return
 
     @staticmethod

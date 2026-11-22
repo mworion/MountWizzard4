@@ -1,12 +1,19 @@
 # MountWizzard4 - Python-based tool for interacting with 10micron mounts
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
+from mw4.base.tpool import Worker, setupWorker, startWorker
 from mw4.gui.mainWaddon.tabAddon import TabAddon
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtHelpers import changeStyleDynamic
-from mw4.logic.controllers.model.buildpointsSupport import generateUntilTarget, querySimbad
+from mw4.logic.controllers.model.buildpointsSupport import (
+    MAX_ITERATIONS,
+    generateUntilTarget,
+    querySimbad,
+)
 from PySide6.QtCore import Slot
 from skyfield.api import Angle
+from skyfield.timelib import Time
+from skyfield.toposlib import GeographicPosition
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -31,6 +38,15 @@ class BuildPoints(TabAddon):
         }
         self.simbadRa: Angle = Angle(hours=0)
         self.simbadDec: Angle = Angle(degrees=0)
+        self.workerGenerateDSO: Worker = setupWorker(self.runnerGenerateDSO)
+        self.workerGenerateDSO.signals.error.connect(self.handleDSOGenerationError)
+        self.dsoGenerationParams: tuple[Angle, Angle, Time, GeographicPosition] | None = None
+        self.dsoGenerationTarget = 0
+        self.dsoGenerationSamples = 0
+        self.dsoGenerationPasses = 0
+        self.dsoGenerationKeep = False
+        self.dsoGenerationCandidates: list[list[float]] | None = None
+        self.dsoGenerationError: str | None = None
 
         self.ui.genBuildGrid.clicked.connect(self.genBuildGrid)
         self.ui.genBuildAlign3.clicked.connect(self.genBuildAlign)
@@ -177,13 +193,16 @@ class BuildPoints(TabAddon):
 
     def genBuildDSO(self) -> None:
         self.lastGenerator = "dso"
+        if self.workerGenerateDSO.locked:
+            return
+
         ha = self.app.dReg.mount.obsSite.raJNow
         dec = self.app.dReg.mount.obsSite.decJNow
         lst = self.app.dReg.mount.obsSite.timeSidereal
         timeJD = self.app.dReg.mount.obsSite.timeJD
         location = self.app.dReg.mount.obsSite.location
 
-        if any(x is None for x in [ha, dec, location, lst]):
+        if ha is None or dec is None or location is None or lst is None:
             self.msg.emit(2, "Model", "Buildpoints", "DSO Path cannot be generated - mount off")
             return
 
@@ -194,26 +213,112 @@ class BuildPoints(TabAddon):
         self.ui.numberDSOPoints.setEnabled(False)
         self.ui.genBuildDSO.setEnabled(False)
         changeStyleDynamic(self.ui.genBuildDSO, "run", "true")
-        numberTarget = int(self.ui.numberDSOPoints.value())
-        keep = self.ui.keepGeneratedPoints.isChecked()
+        self.dsoGenerationParams = (ha, dec, timeJD, location)
+        self.dsoGenerationTarget = int(self.ui.numberDSOPoints.value())
+        self.dsoGenerationSamples = 0
+        self.dsoGenerationPasses = 0
+        self.dsoGenerationKeep = self.ui.keepGeneratedPoints.isChecked()
+        self.dsoGenerationCandidates = None
+        self.dsoGenerationError = None
+        if self.dsoGenerationTarget <= 0:
+            self.finishDSOGeneration(True)
+            return
+        self.startNextDSOGeneration()
 
-        def generate(numberPoints: int) -> None:
-            self.app.buildPoint.generateDSOPath(ha, dec, timeJD, location, numberPoints, keep)
+    def runnerGenerateDSO(
+        self,
+        ha: Angle,
+        dec: Angle,
+        timeJD: Time,
+        location: GeographicPosition,
+        numberPoints: int,
+    ) -> list[list[float]] | None:
+        return self.app.buildPoint.generateDSOPath(ha, dec, timeJD, location, numberPoints)
 
-        generateUntilTarget(
-            generate,
-            self.autoDeletePoints,
-            lambda: len(self.app.buildPoint.buildP),
-            numberTarget,
-            stopWhenEmpty=True,
+    @Slot(object)
+    def storeDSOGenerationCandidates(self, candidates: list[list[float]] | None) -> None:
+        self.dsoGenerationCandidates = candidates
+
+    @Slot(str)
+    def handleDSOGenerationError(self, error: str) -> None:
+        self.dsoGenerationError = error
+
+    def startNextDSOGeneration(self) -> None:
+        if self.dsoGenerationParams is None:
+            self.finishDSOGeneration(
+                False,
+                "DSO path generation could not start because mount data is unavailable",
+                process=False,
+            )
+            return
+        if self.dsoGenerationPasses >= MAX_ITERATIONS - 1:
+            self.finishDSOGeneration(False, "Could not generate the requested number of DSO points")
+            return
+
+        remaining = self.dsoGenerationTarget - len(self.app.buildPoint.buildP)
+        self.dsoGenerationSamples += (
+            self.dsoGenerationTarget if self.dsoGenerationPasses == 0 else max(remaining, 1)
+        )
+        self.dsoGenerationPasses += 1
+        self.dsoGenerationCandidates = None
+        startWorker(
+            self.workerGenerateDSO,
+            self.app.threadPool,
+            self.runnerGenerateDSO,
+            *self.dsoGenerationParams,
+            self.dsoGenerationSamples,
+            resultMethod=self.storeDSOGenerationCandidates,
+            finishedMethod=self.finishDSOGenerationPass,
         )
 
-        if self.ui.ditherBuildPoints.isChecked():
-            self.app.buildPoint.ditherPoints()
-        self.processPoints()
+    @Slot()
+    def finishDSOGenerationPass(self) -> None:
+        if self.dsoGenerationError is not None:
+            self.finishDSOGeneration(False, "DSO path generation failed", process=False)
+            return
+
+        candidates = self.dsoGenerationCandidates
+        if candidates is None:
+            self.finishDSOGeneration(
+                False, "Could not generate enough above-horizon points for the requested DSO path"
+            )
+            return
+
+        if not self.dsoGenerationKeep:
+            self.app.buildPoint.clearBuildP()
+        for candidate in candidates:
+            self.app.buildPoint.addBuildP(candidate)
+        self.autoDeletePoints()
+        if len(self.app.buildPoint.buildP) >= self.dsoGenerationTarget:
+            self.finishDSOGeneration(True)
+        elif self.dsoGenerationPasses < MAX_ITERATIONS - 1:
+            self.startNextDSOGeneration()
+        else:
+            self.finishDSOGeneration(False, "Could not generate the requested number of DSO points")
+
+    def finishDSOGeneration(
+        self, success: bool, error: str | None = None, process: bool = True
+    ) -> None:
+        if error is not None:
+            self.msg.emit(2, "Model", "Buildpoints", error)
+        if process:
+            if not success and error is None:
+                self.msg.emit(
+                    2,
+                    "Model",
+                    "Buildpoints",
+                    f"Generated {len(self.app.buildPoint.buildP)} of "
+                    f"{self.dsoGenerationTarget} requested DSO points",
+                )
+            if self.ui.ditherBuildPoints.isChecked():
+                self.app.buildPoint.ditherPoints()
+            self.processPoints()
+
         self.ui.genBuildDSO.setEnabled(True)
         self.ui.numberDSOPoints.setEnabled(True)
         changeStyleDynamic(self.ui.genBuildDSO, "run", "false")
+        self.dsoGenerationParams = None
+        self.dsoGenerationError = None
 
     def genBuildGoldenSpiral(self) -> None:
         self.lastGenerator = "spiral"

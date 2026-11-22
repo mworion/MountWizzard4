@@ -8,6 +8,7 @@ from mw4.gui.mainWaddon.tabModel_BuildPoints import BuildPoints
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets.main_ui import Ui_MainWindow
+from mw4.logic.controllers.model.buildpointsSupport import MAX_ITERATIONS
 from pathlib import Path
 from skyfield.api import Angle
 from unittest import mock
@@ -25,7 +26,8 @@ def function(qapp, makeApp):
 
 
 @pytest.fixture(autouse=True)
-def resetBuildPointState(function):
+def resetBuildPointState(function, qapp):
+    waitForDSOWorker(function, qapp)
     function.app.buildPoint.buildP = []
     function.app.dReg.d["dome"].stat = False
     for checkbox in (
@@ -37,8 +39,21 @@ def resetBuildPointState(function):
         function.ui.sortALT,
         function.ui.sortDomeAZ,
         function.ui.ditherBuildPoints,
+        function.ui.keepGeneratedPoints,
     ):
         checkbox.setChecked(False)
+    yield
+    waitForDSOWorker(function, qapp)
+
+
+def waitForDSOWorker(function, qapp):
+    for _ in range(MAX_ITERATIONS + 5):
+        qapp.processEvents()
+        if function.dsoGenerationParams is None:
+            return
+        function.app.threadPool.waitForDone(1000)
+    qapp.processEvents()
+    assert function.dsoGenerationParams is None
 
 
 def test_initConfig_1(function):
@@ -113,7 +128,7 @@ def test_genBuildDSO_1(function):
     function.genBuildDSO()
 
 
-def test_genBuildDSO_2(function):
+def test_genBuildDSO_2(function, qapp):
     def test():
         function.app.data.buildP = [1] * 20
 
@@ -124,12 +139,15 @@ def test_genBuildDSO_2(function):
     function.simbadDec = Angle(degrees=0)
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(function.app.data, "generateDSOPath"):
+    with mock.patch.object(
+        function.app.buildPoint, "generateDSOPath", return_value=[[10, 20, 0]] * 20
+    ):
         function.genBuildDSO()
+        waitForDSOWorker(function, qapp)
     function.autoDeletePoints = t
 
 
-def test_genBuildDSO_3(function):
+def test_genBuildDSO_3(function, qapp):
     def test():
         function.app.data.buildP = [1] * 20
 
@@ -140,12 +158,15 @@ def test_genBuildDSO_3(function):
     function.simbadDec = None
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(function.app.buildPoint, "generateDSOPath"):
+    with mock.patch.object(
+        function.app.buildPoint, "generateDSOPath", return_value=[[10, 20, 0]] * 20
+    ):
         function.genBuildDSO()
+        waitForDSOWorker(function, qapp)
     function.autoDeletePoints = t
 
 
-def test_genBuildDSO_4(function):
+def test_genBuildDSO_4(function, qapp):
     def test():
         function.app.data.buildP = [1] * 20
 
@@ -156,12 +177,15 @@ def test_genBuildDSO_4(function):
     function.simbadDec = None
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(function.app.buildPoint, "generateDSOPath"):
+    with mock.patch.object(
+        function.app.buildPoint, "generateDSOPath", return_value=[[10, 20, 0]] * 20
+    ):
         function.genBuildDSO()
+        waitForDSOWorker(function, qapp)
     function.autoDeletePoints = t
 
 
-def test_genBuildDSO_5(function):
+def test_genBuildDSO_5(function, qapp):
     def test():
         function.app.data.buildP = [1] * 20
 
@@ -172,12 +196,15 @@ def test_genBuildDSO_5(function):
     function.simbadDec = Angle(degrees=0)
     t = function.autoDeletePoints
     function.autoDeletePoints = test
-    with mock.patch.object(function.app.data, "generateDSOPath"):
+    with mock.patch.object(
+        function.app.buildPoint, "generateDSOPath", return_value=[[10, 20, 0]] * 20
+    ):
         function.genBuildDSO()
+        waitForDSOWorker(function, qapp)
     function.autoDeletePoints = t
 
 
-def test_genBuildDSO_6(function):
+def test_genBuildDSO_6(function, qapp):
     def test():
         function.app.data.buildP = []
         function.iteration = 0
@@ -191,14 +218,17 @@ def test_genBuildDSO_6(function):
     t = function.autoDeletePoints
     function.autoDeletePoints = test
     with (
-        mock.patch.object(function.app.data, "generateDSOPath"),
-        mock.patch.object(function.app.data, "ditherPoints"),
+        mock.patch.object(
+            function.app.buildPoint, "generateDSOPath", return_value=[[10, 20, 0]] * 20
+        ),
+        mock.patch.object(function.app.buildPoint, "ditherPoints"),
     ):
         function.genBuildDSO()
+        waitForDSOWorker(function, qapp)
     function.autoDeletePoints = t
 
 
-def test_genBuildDSO_7(function):
+def test_genBuildDSO_7(function, qapp):
     def test():
         function.app.data.buildP = [1]
         function.iteration = 0
@@ -212,11 +242,114 @@ def test_genBuildDSO_7(function):
     t = function.autoDeletePoints
     function.autoDeletePoints = test
     with (
-        mock.patch.object(function.app.data, "generateDSOPath"),
-        mock.patch.object(function.app.data, "ditherPoints"),
+        mock.patch.object(
+            function.app.buildPoint, "generateDSOPath", return_value=[[10, 20, 0]] * 20
+        ),
+        mock.patch.object(function.app.buildPoint, "ditherPoints"),
     ):
         function.genBuildDSO()
+        waitForDSOWorker(function, qapp)
     function.autoDeletePoints = t
+
+
+def test_genBuildDSO_incomplete_generation_restores_controls(function, qapp):
+    function.app.mount.obsSite.raJNow = 0
+    function.app.mount.obsSite.decJNow = 0
+    function.app.mount.obsSite.timeSidereal = Angle(hours=0)
+    function.app.buildPoint.buildP = [[20, 30, 0]]
+    function.ui.keepGeneratedPoints.setChecked(True)
+    with (
+        mock.patch.object(function.app.buildPoint, "generateDSOPath", return_value=None),
+        mock.patch.object(function, "processPoints"),
+        mock.patch.object(function, "msg") as message,
+    ):
+        function.genBuildDSO()
+        waitForDSOWorker(function, qapp)
+
+    assert function.app.buildPoint.buildP == [[20, 30, 0]]
+    assert function.ui.genBuildDSO.isEnabled()
+    assert function.ui.numberDSOPoints.isEnabled()
+    assert any("Could not generate enough" in call.args[3] for call in message.emit.call_args_list)
+
+
+def test_genBuildDSO_worker_error_restores_controls(function, qapp):
+    function.app.mount.obsSite.raJNow = 0
+    function.app.mount.obsSite.decJNow = 0
+    function.app.mount.obsSite.timeSidereal = Angle(hours=0)
+    with (
+        mock.patch.object(
+            function.app.buildPoint,
+            "generateDSOPath",
+            side_effect=RuntimeError("test generation failure"),
+        ),
+        mock.patch.object(function, "msg") as message,
+    ):
+        function.genBuildDSO()
+        waitForDSOWorker(function, qapp)
+
+    assert function.ui.genBuildDSO.isEnabled()
+    assert function.ui.numberDSOPoints.isEnabled()
+    assert any("DSO path generation failed" in call.args[3] for call in message.emit.call_args_list)
+
+
+def test_genBuildDSO_retries_after_filtering(function, qapp):
+    function.app.mount.obsSite.raJNow = 0
+    function.app.mount.obsSite.decJNow = 0
+    function.app.mount.obsSite.timeSidereal = Angle(hours=0)
+    function.ui.numberDSOPoints.blockSignals(True)
+    function.ui.numberDSOPoints.setValue(5)
+    function.ui.numberDSOPoints.blockSignals(False)
+    filteringCalls = 0
+
+    def filterPoints():
+        nonlocal filteringCalls
+        filteringCalls += 1
+        if filteringCalls == 1:
+            function.app.buildPoint.buildP = [[10, 20, 0]]
+
+    with (
+        mock.patch.object(
+            function.app.buildPoint, "generateDSOPath", return_value=[[10, 20, 0]] * 5
+        ) as generate,
+        mock.patch.object(function, "autoDeletePoints", side_effect=filterPoints),
+        mock.patch.object(function, "processPoints"),
+    ):
+        function.genBuildDSO()
+        waitForDSOWorker(function, qapp)
+
+    assert generate.call_count == 2
+    assert [call.args[4] for call in generate.call_args_list] == [5, 9]
+    assert function.ui.genBuildDSO.isEnabled()
+    assert function.ui.numberDSOPoints.isEnabled()
+
+
+def test_genBuildDSO_stops_after_maximum_passes(function, qapp):
+    function.app.mount.obsSite.raJNow = 0
+    function.app.mount.obsSite.decJNow = 0
+    function.app.mount.obsSite.timeSidereal = Angle(hours=0)
+    function.ui.numberDSOPoints.blockSignals(True)
+    function.ui.numberDSOPoints.setValue(2)
+    function.ui.numberDSOPoints.blockSignals(False)
+    with (
+        mock.patch.object(
+            function.app.buildPoint, "generateDSOPath", return_value=[[10, 20, 0]]
+        ) as generate,
+        mock.patch.object(
+            function, "autoDeletePoints", side_effect=function.app.buildPoint.clearBuildP
+        ),
+        mock.patch.object(function, "processPoints"),
+        mock.patch.object(function, "msg") as message,
+    ):
+        function.genBuildDSO()
+        waitForDSOWorker(function, qapp)
+
+    assert generate.call_count == MAX_ITERATIONS - 1
+    assert function.ui.genBuildDSO.isEnabled()
+    assert function.ui.numberDSOPoints.isEnabled()
+    assert any(
+        "Could not generate the requested number" in call.args[3]
+        for call in message.emit.call_args_list
+    )
 
 
 def test_genBuildGoldenSpiral_1(function):
@@ -482,7 +615,7 @@ def test_genBuildGrid_success(function):
         mockProc.assert_called_once()
 
 
-def test_genBuildDSO_iteration_zero(function):
+def test_genBuildDSO_iteration_zero(function, qapp):
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
     function.app.mount.obsSite.timeSidereal = Angle(hours=0)
@@ -490,11 +623,14 @@ def test_genBuildDSO_iteration_zero(function):
     function.simbadDec = None
     function.app.buildPoint.buildP = []
     with (
-        mock.patch.object(function.app.buildPoint, "generateDSOPath"),
+        mock.patch.object(
+            function.app.buildPoint, "generateDSOPath", return_value=[[10, 20, 0]] * 20
+        ),
         mock.patch.object(function, "autoDeletePoints"),
         mock.patch.object(function, "processPoints"),
     ):
         function.genBuildDSO()
+        waitForDSOWorker(function, qapp)
 
 
 def test_genBuildFile_loadFails(function):
@@ -517,7 +653,7 @@ def test_autoSortPoints_dome_active(function):
     function.ui.sortDomeAZ.setChecked(False)
 
 
-def test_genBuildDSO_iteration_exhausted(function):
+def test_genBuildDSO_iteration_exhausted(function, qapp):
     function.app.mount.obsSite.raJNow = 0
     function.app.mount.obsSite.decJNow = 0
     function.app.mount.obsSite.timeSidereal = Angle(hours=0)
@@ -533,8 +669,11 @@ def test_genBuildDSO_iteration_exhausted(function):
 
     t = function.autoDeletePoints
     function.autoDeletePoints = autoDelStub
-    with mock.patch.object(function.app.buildPoint, "generateDSOPath"):
+    with mock.patch.object(
+        function.app.buildPoint, "generateDSOPath", return_value=[[10, 20, 0]] * 20
+    ):
         function.genBuildDSO()
+        waitForDSOWorker(function, qapp)
     function.autoDeletePoints = t
 
 

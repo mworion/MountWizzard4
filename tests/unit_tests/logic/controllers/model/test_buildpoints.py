@@ -822,43 +822,137 @@ def test_generateDSOPath_1(function):
     dec = skyfield.api.Angle(degrees=0)
     loc = function.app.mount.obsSite.location
     timeJD = function.app.mount.obsSite.ts.tt_jd(2459580.5)
-    with mock.patch.object(function, "clearBuildP"):
-        function.generateDSOPath(
-            ha=ra, dec=dec, timeJD=timeJD, location=loc, numberPoints=1, keep=False
-        )
+    candidates = function.generateDSOPath(
+        ha=ra, dec=dec, timeJD=timeJD, location=loc, numberPoints=1
+    )
+    assert candidates is None or len(candidates) >= 1
 
 
 def test_generateDSOPath_2(function):
     ra = skyfield.api.Angle(hours=0)
     dec = skyfield.api.Angle(degrees=0)
+    ts = function.app.mount.obsSite.ts
+    timeJD = ts.tt_jd(2459580.5)
     with mock.patch.object(skyfield.almanac, "find_discrete", return_value=([], [])):
-        function.generateDSOPath(
+        candidates = function.generateDSOPath(
             ha=ra,
             dec=dec,
-            timeJD=function.app.mount.obsSite.timeJD,
+            timeJD=timeJD,
             location=function.app.mount.obsSite.location,
             numberPoints=1,
-            keep=True,
         )
+    assert candidates is None or len(candidates) >= 1
 
 
 def test_generateDSOPath_3(function):
     ra = skyfield.api.Angle(hours=0)
     dec = skyfield.api.Angle(degrees=0)
     ts = function.app.mount.obsSite.ts
-    ti = ts.tt_jd(2459580.5)
+    eventTime = ts.tt_jd(2459580.5)
+    laterTime = ts.tt_jd(2459580.75)
     with (
-        mock.patch.object(skyfield.almanac, "find_discrete", return_value=([ti, ti], [1, 0])),
-        mock.patch.object(function, "calcPath", return_value=[(0, 0), (0, 0), (0, 0)]),
+        mock.patch.object(
+            skyfield.almanac, "find_discrete", return_value=([eventTime, laterTime], [1, 0])
+        ),
+        mock.patch.object(function, "calcPath", return_value=[[10, 20, 0]]) as calcPath,
     ):
-        function.generateDSOPath(
+        candidates = function.generateDSOPath(
             ha=ra,
             dec=dec,
             numberPoints=1,
             timeJD=function.app.mount.obsSite.timeJD,
             location=function.app.mount.obsSite.location,
-            keep=True,
         )
+    assert candidates == [[10, 20, 0]]
+    assert calcPath.call_args.args[2] == eventTime.tt
+
+
+def test_generateDSOPath_single_rise_event(function):
+    ra = skyfield.api.Angle(hours=0)
+    dec = skyfield.api.Angle(degrees=0)
+    ts = function.app.mount.obsSite.ts
+    riseTime = ts.tt_jd(2459580.75)
+    with (
+        mock.patch.object(skyfield.almanac, "find_discrete", return_value=([riseTime], [1])),
+        mock.patch.object(function, "calcPath", return_value=[[10, 20, 0]]) as calcPath,
+    ):
+        candidates = function.generateDSOPath(
+            ha=ra,
+            dec=dec,
+            numberPoints=1,
+            timeJD=function.app.mount.obsSite.timeJD,
+            location=function.app.mount.obsSite.location,
+        )
+    assert candidates == [[10, 20, 0]]
+    assert calcPath.call_args.args[2] == riseTime.tt
+
+
+def test_generateDSOPath_returns_requested_number_evenly_sampled(function):
+    with (
+        mock.patch.object(skyfield.almanac, "find_discrete", return_value=([], [])),
+        mock.patch.object(
+            function,
+            "calcPath",
+            return_value=[[10, 0, 0], [20, 90, 0], [30, 180, 0], [40, 270, 0]],
+        ),
+    ):
+        candidates = function.generateDSOPath(
+            ha=skyfield.api.Angle(hours=0),
+            dec=skyfield.api.Angle(degrees=0),
+            timeJD=function.app.mount.obsSite.timeJD,
+            location=function.app.mount.obsSite.location,
+            numberPoints=2,
+        )
+    assert candidates == [[10, 0, 0], [40, 270, 0]]
+
+
+def test_generateDSOPath_no_visible_points_is_bounded(function):
+    ra = skyfield.api.Angle(hours=0)
+    dec = skyfield.api.Angle(degrees=0)
+    ts = function.app.mount.obsSite.ts
+    with (
+        mock.patch.object(skyfield.almanac, "find_discrete", return_value=([], [])),
+        mock.patch.object(function, "calcPath", return_value=[]) as calcPath,
+    ):
+        candidates = function.generateDSOPath(
+            ha=ra,
+            dec=dec,
+            timeJD=ts.tt_jd(2459580.5),
+            location=function.app.mount.obsSite.location,
+            numberPoints=3,
+        )
+    assert candidates is None
+    assert calcPath.call_count == 8
+    assert calcPath.call_args.args[1] == 3 * function.MAX_DSO_SAMPLES_PER_POINT
+
+
+def test_generateDSOPath_zero_points_does_not_search(function):
+    with mock.patch.object(skyfield.almanac, "find_discrete") as findDiscrete:
+        candidates = function.generateDSOPath(
+            ha=skyfield.api.Angle(hours=0),
+            dec=skyfield.api.Angle(degrees=0),
+            timeJD=function.app.mount.obsSite.timeJD,
+            location=function.app.mount.obsSite.location,
+            numberPoints=0,
+        )
+    assert candidates == []
+    findDiscrete.assert_not_called()
+
+
+def test_generateDSOPath_rejects_targets_above_sample_limit(function):
+    with (
+        mock.patch.object(skyfield.almanac, "find_discrete", return_value=([], [])),
+        mock.patch.object(function, "calcPath") as calcPath,
+    ):
+        candidates = function.generateDSOPath(
+            ha=skyfield.api.Angle(hours=0),
+            dec=skyfield.api.Angle(degrees=0),
+            timeJD=function.app.mount.obsSite.timeJD,
+            location=function.app.mount.obsSite.location,
+            numberPoints=function.MAX_DSO_SAMPLES + 1,
+        )
+    assert candidates is None
+    calcPath.assert_not_called()
 
 
 def test_generateGoldenSpiral_1(function):

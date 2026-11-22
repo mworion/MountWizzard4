@@ -456,7 +456,24 @@ def test_pollTime_success(function):
     ):
         connection.return_value.communicate.return_value = True, ["2458352.10403639"], 1
         function.pollTime()
+        function.pollTime()
     assert function._timeDiff[0] == pytest.approx(863.99)
+    assert function.timeGeneration == function.connectionGeneration
+
+
+def test_pollTime_ignoresPreviousConnection(function):
+    function._timeDiff = np.zeros(25)
+    function.timeGeneration = -1
+
+    def disconnect(*_args, **_kwargs):
+        function.connectionGeneration += 1
+        return True, ["2458352.10403639"], 1
+
+    with mock.patch("mw4.mountcontrol.mountTimeConn.Connection") as connection:
+        connection.return_value.communicate.side_effect = disconnect
+        function.pollTime()
+    assert np.all(function._timeDiff == 0)
+    assert function.timeGeneration == -1
 
 
 def test_pollTime_communication_failed(function):

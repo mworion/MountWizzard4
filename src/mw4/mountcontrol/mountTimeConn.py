@@ -34,6 +34,8 @@ class MountTimeConn:
         self.workerPollTimeState: Worker | None = None
         self.pollFailures: int = 0
         self.connectionGeneration = 0
+        self.rttGeneration = -1
+        self.timeGeneration = -1
 
     @property
     def timeDiff(self) -> float:
@@ -56,6 +58,7 @@ class MountTimeConn:
             self.log.info(logText)
 
     def pollTime(self) -> None:
+        generation = self.connectionGeneration
         conn = Connection(self.parent)
         commandString = ":GJD1#"
         suc, response, numberOfChunks = conn.communicate(commandString)
@@ -64,11 +67,16 @@ class MountTimeConn:
         if len(response) != numberOfChunks:
             self.log.warning("Wrong number of chunks")
             return
+        if generation != self.connectionGeneration:
+            return
         timeMount = valueToFloat(response[0])
         timeMount = self.ts.tt_jd(timeMount + self.parent.obsSite.UTC2TT)
         timeDelta = (self.ts.now() - timeMount) * 86400
+        if self.timeGeneration != generation:
+            self._timeDiff.fill(0)
         self._timeDiff = np.roll(self._timeDiff, 1)
         self._timeDiff[0] = timeDelta - self.rtt
+        self.timeGeneration = generation
 
     def runnerMountUp(self) -> None:
         generation = self.connectionGeneration
@@ -84,9 +92,12 @@ class MountTimeConn:
                 generation,
             )
             return
+        if self.rttGeneration != generation:
+            self.rtt_MA.fill(0)
         self.rtt_MA = np.roll(self.rtt_MA, 1)
         self.rtt_MA[0] = rttLocal
         self.rtt = np.mean(self.rtt_MA)
+        self.rttGeneration = generation
         if self.parent.mountIsUp:
             self.parent.signals.mountStatus.emit(generation, True)
             self.pollTime()

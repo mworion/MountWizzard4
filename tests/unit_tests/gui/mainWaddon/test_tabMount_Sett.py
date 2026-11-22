@@ -30,9 +30,15 @@ def function(qapp, makeApp):
 
     type(mount_time_mock).timeDiff = mock.PropertyMock(side_effect=get_timeDiff)
     type(mount_time_mock).rtt = mock.PropertyMock(side_effect=get_rtt)
+    mount_time_mock.connectionGeneration = 0
+    mount_time_mock.timeGeneration = 0
+    mount_time_mock.rttGeneration = 0
     mainW.app.dReg.mount.instance.mountTimeConn = mount_time_mock
+    mainW.app.dReg.mount.setting.staticRead = True
 
     window = MountSett(mainW)
+    window.mountConnected = True
+    window.pointReceived = True
     yield window
     mainW.app.threadPool.waitForDone(10000)
 
@@ -872,6 +878,96 @@ def test_init(function, makeApp):
     assert window.app is mainW.app
     assert window.msg is mainW.app.signals.ui.msg
     assert window.ui is mainW.ui
+
+
+def test_initConnected(function, makeApp):
+    mainW = QWidget()
+    mainW.app = makeApp()
+    mainW.app.dReg.mount.instance.mountIsUp = True
+    mainW.ui = Ui_MainWindow()
+    mainW.ui.setupUi(mainW)
+    window = MountSett(mainW)
+    assert window.mountConnected
+
+
+def test_disconnectClearsDisplaysAndPreservesLocation(function):
+    obs = function.app.mount.obsSite
+    sett = function.app.mount.setting
+    obs.location = wgs84.latlon(latitude_degrees=49, longitude_degrees=11, elevation_m=500)
+    function.updateLocGUI(obs)
+    locationFields = ("siteLatitude", "siteLongitude", "siteElevation")
+    location = tuple(getattr(function.ui, name).text() for name in locationFields)
+    fields = (
+        *function.POINT_TEXT_FIELDS,
+        *(name for name, _, _ in function.SETTING_TEXT_FIELDS),
+        *function.OTHER_TEXT_FIELDS,
+    )
+    for name in fields:
+        getattr(function.ui, name).setText("old")
+    function.ui.UTCExpire.setProperty("color", "red")
+    function.ui.timeDeltaPC2Mount.setProperty("color", "red")
+    for name in function.TRACKING_BUTTONS:
+        getattr(function.ui, name).setProperty("run", "true")
+    for name in ("tracking", "park", "stop"):
+        getattr(function.ui, name).setProperty("run", True)
+
+    function.onMountDisconnected("mount")
+
+    assert all(not getattr(function.ui, name).text() for name in fields)
+    assert tuple(getattr(function.ui, name).text() for name in locationFields) == location
+    assert function.app.mount.obsSite is obs
+    assert function.app.mount.setting is sett
+    assert function.ui.UTCExpire.property("color") == ""
+    assert function.ui.timeDeltaPC2Mount.property("color") == ""
+    assert all(
+        getattr(function.ui, name).property("run") == "false" for name in function.TRACKING_BUTTONS
+    )
+    assert all(
+        getattr(function.ui, name).property("run") is False for name in ("tracking", "park", "stop")
+    )
+
+    function.updatePointGUI(obs)
+    function.updateSettingGUI(sett)
+    function.showTimeDiff()
+    assert all(not getattr(function.ui, name).text() for name in fields)
+    function.onMountConnected("mount")
+
+
+def test_reconnectWaitsForFreshTimeAndPointing(function):
+    conn = function.app.mount.mountTimeConn
+    function.onMountStatus(False)
+    conn.connectionGeneration = 1
+    function.onMountStatus(True)
+    function.showTimeDiff()
+    assert not function.ui.timeUTC.text()
+    assert not function.ui.timeDeltaPC2Mount.text()
+    assert not function.ui.rtt.text()
+
+    conn.timeGeneration = 1
+    conn.rttGeneration = 1
+    function.updatePointGUI(function.app.mount.obsSite)
+    function.showTimeDiff()
+    assert function.ui.timeUTC.text()
+    assert function.ui.timeDeltaPC2Mount.text()
+    assert function.ui.rtt.text()
+    conn.connectionGeneration = 0
+    conn.timeGeneration = 0
+    conn.rttGeneration = 0
+
+
+def test_settingsHideStaticValuesUntilRead(function):
+    sett = function.app.mount.setting
+    sett.staticRead = False
+    function.ui.statusWOL.setText("old")
+    function.ui.mountTypeConnection.setText("old")
+    function.updateSettingGUI(sett)
+    assert not function.ui.statusWOL.text()
+    assert not function.ui.mountTypeConnection.text()
+    sett.staticRead = True
+    sett.typeConnection = 2
+    function.updateSettingGUI(sett)
+    assert function.ui.mountTypeConnection.text() == "LAN"
+    assert function.ui.statusWOL.text()
 
 
 def test_showOffset_5(function):

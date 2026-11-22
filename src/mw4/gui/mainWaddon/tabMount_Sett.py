@@ -33,6 +33,29 @@ if TYPE_CHECKING:
 
 
 class MountSett(TabAddon):
+    POINT_TEXT_FIELDS: ClassVar = (
+        "RA",
+        "RAfloat",
+        "DEC",
+        "DECfloat",
+        "HA",
+        "HAfloat",
+        "ALT",
+        "AZ",
+        "pierside",
+        "timeSidereal",
+    )
+    OTHER_TEXT_FIELDS: ClassVar = (
+        "UTCExpire",
+        "statusGPSSynced",
+        "statusWebInterface",
+        "mountTypeConnection",
+        "timeToMeridian",
+        "timeDeltaPC2Mount",
+        "rtt",
+        "timeUTC",
+        "mountText",
+    )
     TRACKING_BUTTONS: ClassVar = (
         "followSat",
         "setLunarTracking",
@@ -66,11 +89,16 @@ class MountSett(TabAddon):
         self.ui = mainW.ui
         self.typeConnectionTexts = ["RS-232", "GPS/RS-232", "LAN", "WiFi"]
         self.controller = MountSettingsController(self.app.dReg.mount.setting, self.msg.emit)
+        self.mountConnected = self.app.dReg.mount.instance.mountIsUp
+        self.pointReceived = False
 
         ms = self.app.dReg.mount.signals
         ms.locationDone.connect(self.updateLocGUI)
         ms.pointDone.connect(self.updatePointGUI)
         ms.settingDone.connect(self.updateSettingGUI)
+        ms.mountIsUp.connect(self.onMountStatus)
+        ms.deviceConnected.connect(self.onMountConnected)
+        ms.deviceDisconnected.connect(self.onMountDisconnected)
         self.app.timeMgr.update1s.connect(self.showTimeDiff)
         clickable(self.ui.refractionTemp).connect(self.setRefractionTemp)
         clickable(self.ui.refractionPress).connect(self.setRefractionPress)
@@ -91,6 +119,34 @@ class MountSett(TabAddon):
         clickable(self.ui.settleTimeMount).connect(self.setSettleTimeMount)
         self.app.dReg.mount.signals.firmwareDone.connect(self.setWOLorAPO)
         self.updateLocGUI(self.app.dReg.mount.obsSite)
+        if not self.mountConnected:
+            self.clearMountDisplay()
+
+    @Slot(bool)
+    def onMountStatus(self, connected: bool) -> None:
+        self.mountConnected = connected
+        if not connected:
+            self.clearMountDisplay()
+
+    @Slot(str)
+    def onMountConnected(self, _name: str) -> None:
+        self.onMountStatus(True)
+
+    @Slot(str)
+    def onMountDisconnected(self, _name: str) -> None:
+        self.onMountStatus(False)
+
+    def clearMountDisplay(self) -> None:
+        self.pointReceived = False
+        settingFields = (name for name, _, _ in self.SETTING_TEXT_FIELDS)
+        for name in (*self.POINT_TEXT_FIELDS, *settingFields, *self.OTHER_TEXT_FIELDS):
+            getattr(self.ui, name).clear()
+        changeStyleDynamic(self.ui.UTCExpire, "color", "")
+        changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "")
+        for name in self.TRACKING_BUTTONS:
+            changeStyleDynamic(getattr(self.ui, name), "run", "false")
+        for name in ("tracking", "park", "stop"):
+            changeStyleDynamic(getattr(self.ui, name), "run", False)
 
     @Slot(object)
     def setWOLorAPO(self, fw: Firmware) -> None:
@@ -105,6 +161,9 @@ class MountSett(TabAddon):
 
     @Slot(object)
     def updatePointGUI(self, obs: ObsSite) -> None:
+        if not self.mountConnected:
+            return
+        self.pointReceived = True
         isJ2000 = self.ui.coordsJ2000.isChecked()
         isValid = obs.raJNow is not None
         isValid = isValid and obs.decJNow is not None
@@ -150,14 +209,21 @@ class MountSett(TabAddon):
 
     @Slot(object)
     def updateSettingGUI(self, sett: Setting) -> None:
+        if not self.mountConnected:
+            return
         self.updateExpireGui(sett.UTCExpire)
         for uiName, fmt, attribute in self.SETTING_TEXT_FIELDS:
+            if uiName == "statusWOL" and not sett.staticRead:
+                self.ui.statusWOL.clear()
+                continue
             guiSetText(getattr(self.ui, uiName), fmt, getattr(sett, attribute))
 
         guiSetText(self.ui.statusGPSSynced, "s", ["OFF", "ON", "PPS"][sett.gpsSynced])
         guiSetText(self.ui.statusWebInterface, "s", "ON" if sett.webInterfaceStat else "OFF")
-        if sett.typeConnection is not None:
+        if sett.staticRead and sett.typeConnection is not None:
             self.ui.mountTypeConnection.setText(self.typeConnectionTexts[sett.typeConnection])
+        else:
+            self.ui.mountTypeConnection.clear()
         guiSetText(self.ui.timeToMeridian, "3.0f", sett.timeToMeridian())
         self.updateTrackingGui(sett)
 
@@ -295,14 +361,19 @@ class MountSett(TabAddon):
 
     @Slot()
     def showTimeDiff(self) -> None:
-        delta = self.app.dReg.mount.instance.mountTimeConn.timeDiff * 1000
-        rtt = self.app.dReg.mount.instance.mountTimeConn.rtt * 1000
-        guiSetText(self.ui.timeDeltaPC2Mount, "4.0f", delta)
-        guiSetText(self.ui.rtt, "4.1f", rtt)
-        if abs(delta) < 100:
-            changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "")
-        elif abs(delta) < 500:
-            changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "yellow")
-        else:
-            changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "red")
-        guiSetText(self.ui.timeUTC, "s", self.app.dReg.mount.timeJD.utc_strftime("%H:%M:%S"))
+        if not self.mountConnected:
+            return
+        conn = self.app.dReg.mount.instance.mountTimeConn
+        if conn.timeGeneration == conn.connectionGeneration:
+            delta = conn.timeDiff * 1000
+            guiSetText(self.ui.timeDeltaPC2Mount, "4.0f", delta)
+            if abs(delta) < 100:
+                changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "")
+            elif abs(delta) < 500:
+                changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "yellow")
+            else:
+                changeStyleDynamic(self.ui.timeDeltaPC2Mount, "color", "red")
+        if conn.rttGeneration == conn.connectionGeneration:
+            guiSetText(self.ui.rtt, "4.1f", conn.rtt * 1000)
+        if self.pointReceived:
+            guiSetText(self.ui.timeUTC, "s", self.app.dReg.mount.timeJD.utc_strftime("%H:%M:%S"))

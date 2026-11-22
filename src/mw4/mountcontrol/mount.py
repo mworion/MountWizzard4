@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2019-2026 mworion
 import logging
+from copy import copy
 from dataclasses import dataclass, field
 from mw4.base.appProtocol import AppProtocol
 from mw4.base.driverProtocol import FrameworkDriver
@@ -42,6 +43,66 @@ class MountDevice(QObject):
         {MountStatus.STOPPED, MountStatus.UNKNOWN, MountStatus.ERROR}
     )
     log = logging.getLogger("MW4")
+    POINTING_FIELDS: Final[tuple[str, ...]] = (
+        "_timeSidereal",
+        "_ut1_utc",
+        "_statusSat",
+        "_raJNow",
+        "_decJNow",
+        "_pierside",
+        "_Az",
+        "AzDirection",
+        "lastAz",
+        "_Alt",
+        "_timeJD",
+        "_status",
+        "_statusSlew",
+        "_angularPosRA",
+        "_angularPosDEC",
+        "_errorAngularPosRA",
+        "_errorAngularPosDEC",
+    )
+    STATIC_SETTING_FIELDS: Final[tuple[str, ...]] = (
+        "staticRead",
+        "_typeConnection",
+        "_addressLanMAC",
+        "_wakeOnLan",
+    )
+    SETTING_FIELDS: Final[tuple[str, ...]] = (
+        *STATIC_SETTING_FIELDS,
+        "changed",
+        "slewRate",
+        "slewRateMin",
+        "slewRateMax",
+        "timeToFlip",
+        "meridianLimitTrack",
+        "meridianLimitSlew",
+        "refractionTemp",
+        "refractionPress",
+        "telescopeTempDEC",
+        "statusRefraction",
+        "statusUnattendedFlip",
+        "statusDualAxisTracking",
+        "horizonLimitHigh",
+        "horizonLimitLow",
+        "UTCValid",
+        "UTCExpire",
+        "gpsSynced",
+        "_weatherStatus",
+        "weatherPressure",
+        "weatherTemperature",
+        "weatherHumidity",
+        "weatherDewPoint",
+        "weatherAge",
+        "trackingRate",
+        "webInterfaceStat",
+        "settleTime",
+        "_autoPowerOn",
+        "configEquatorial",
+        "configGerman",
+        "configHemisphere",
+        "configHoming",
+    )
 
     def __init__(
         self,
@@ -70,6 +131,7 @@ class MountDevice(QObject):
         self.model = Model(self)
         self.mountTimeConn = MountTimeConn(self)
         self.mountData = MountData(self.obsSite, self.mountTimeConn)
+        self.staticSettingGeneration = -1
 
         self.workerCycleSetting: Worker | None = None
         self.workerCycleStaticSetting: Worker | None = None
@@ -82,8 +144,7 @@ class MountDevice(QObject):
         self.workerGetModel: Worker | None = None
         self.workerGetNames: Worker | None = None
         self.workerTrajectory: Worker | None = None
-        self.statusAlert: bool = False
-        self.statusSlew: bool = False
+        self.statusAlert, self.statusSlew = False, False
 
         self.settlingWait = QTimer(self)
         self.settlingWait.setSingleShot(True)
@@ -160,8 +221,22 @@ class MountDevice(QObject):
             self.getTLE()
             self.signals.deviceConnected.emit("mount")
         elif not status and self.mountIsUp:
+            self.mountTimeConn.connectionGeneration += 1
             self.signals.deviceDisconnected.emit("mount")
             self.mountIsUp = False
+
+    def runnerCyclePointing(self, generation: int) -> tuple[int, bool, ObsSite]:
+        obsSite = copy(self.obsSite)
+        return generation, obsSite.pollPointing(), obsSite
+
+    @Slot(object)
+    def finishCyclePointing(self, result: tuple[int, bool, ObsSite]) -> None:
+        generation, success, obsSite = result
+        if self.mountIsUp and generation == self.mountTimeConn.connectionGeneration:
+            if success:
+                for name in self.POINTING_FIELDS:
+                    setattr(self.obsSite, name, getattr(obsSite, name))
+            self.resultCyclePointing(success)
 
     @Slot(bool)
     def resultCyclePointing(self, result: bool) -> None:
@@ -188,10 +263,34 @@ class MountDevice(QObject):
         self.workerCyclePointing = startWorker(
             self.workerCyclePointing,
             self.threadPool,
-            self.obsSite.pollPointing,
-            resultMethod=self.resultCyclePointing,
+            self.runnerCyclePointing,
+            self.mountTimeConn.connectionGeneration,
+            resultMethod=self.finishCyclePointing,
             guard=lambda: self.mountIsUp,
         )
+
+    def runnerCycleSetting(self, generation: int) -> tuple[int, bool, Setting]:
+        setting = copy(self.setting)
+        if self.staticSettingGeneration != generation:
+            setting.staticRead = False
+        return generation, setting.pollSetting(), setting
+
+    @Slot(object)
+    def finishCycleSetting(self, result: tuple[int, bool, Setting]) -> None:
+        generation, success, setting = result
+        if self.mountIsUp and generation == self.mountTimeConn.connectionGeneration:
+            if success:
+                for name in self.SETTING_FIELDS:
+                    if (
+                        name in self.STATIC_SETTING_FIELDS
+                        and not setting.staticRead
+                        and self.staticSettingGeneration == generation
+                    ):
+                        continue
+                    setattr(self.setting, name, getattr(setting, name))
+                if setting.staticRead:
+                    self.staticSettingGeneration = generation
+            self.resultCycleSetting(success)
 
     @Slot(bool)
     def resultCycleSetting(self, result: bool) -> None:
@@ -205,8 +304,9 @@ class MountDevice(QObject):
         self.workerCycleSetting = startWorker(
             self.workerCycleSetting,
             self.threadPool,
-            self.setting.pollSetting,
-            resultMethod=self.resultCycleSetting,
+            self.runnerCycleSetting,
+            self.mountTimeConn.connectionGeneration,
+            resultMethod=self.finishCycleSetting,
             guard=lambda: self.mountIsUp,
         )
 
@@ -215,9 +315,23 @@ class MountDevice(QObject):
         self.workerCycleStaticSetting = startWorker(
             self.workerCycleStaticSetting,
             self.threadPool,
-            self.setting.pollStaticSetting,
+            self.runnerCycleStaticSetting,
+            self.mountTimeConn.connectionGeneration,
+            resultMethod=self.finishCycleStaticSetting,
             guard=lambda: self.mountIsUp,
         )
+
+    def runnerCycleStaticSetting(self, generation: int) -> tuple[int, bool, Setting]:
+        setting = copy(self.setting)
+        return generation, setting.pollStaticSetting(), setting
+
+    @Slot(object)
+    def finishCycleStaticSetting(self, result: tuple[int, bool, Setting]) -> None:
+        generation, success, setting = result
+        if self.mountIsUp and generation == self.mountTimeConn.connectionGeneration and success:
+            for name in self.STATIC_SETTING_FIELDS:
+                setattr(self.setting, name, getattr(setting, name))
+            self.staticSettingGeneration = generation
 
     @Slot()
     def resultGetModel(self) -> None:

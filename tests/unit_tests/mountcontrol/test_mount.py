@@ -116,6 +116,109 @@ def test_processMountStatus_ignoresOldGeneration(function):
         mockSignal.emit.assert_called_once_with(True)
 
 
+@pytest.mark.parametrize(
+    ("runner", "poll", "finish", "result"),
+    [
+        ("runnerCyclePointing", "obsSite", "finishCyclePointing", "resultCyclePointing"),
+        ("runnerCycleSetting", "setting", "finishCycleSetting", "resultCycleSetting"),
+    ],
+)
+def test_cycleResultRequiresCurrentConnection(function, runner, poll, finish, result):
+    generation = function.mountTimeConn.connectionGeneration
+    method = "pollPointing" if poll == "obsSite" else "pollSetting"
+    with mock.patch.object(getattr(function, poll), method, return_value=True):
+        response = getattr(function, runner)(generation)
+    with mock.patch.object(function, result) as callback:
+        function.mountIsUp = False
+        getattr(function, finish)(response)
+        function.mountIsUp = True
+        getattr(function, finish)((generation - 1, True, response[2]))
+        callback.assert_not_called()
+        getattr(function, finish)(response)
+        callback.assert_called_once_with(True)
+
+
+@pytest.mark.parametrize(
+    ("runner", "finish", "objectName", "poll", "field"),
+    [
+        ("runnerCyclePointing", "finishCyclePointing", "obsSite", "pollPointing", "_status"),
+        ("runnerCycleSetting", "finishCycleSetting", "setting", "pollSetting", "slewRate"),
+        (
+            "runnerCycleStaticSetting",
+            "finishCycleStaticSetting",
+            "setting",
+            "pollStaticSetting",
+            "_typeConnection",
+        ),
+    ],
+)
+def test_stalePollCannotChangeMountValues(function, runner, finish, objectName, poll, field):
+    target = getattr(function, objectName)
+    original = getattr(target, field)
+    generation = function.mountTimeConn.connectionGeneration
+
+    def pollNewValue(staged):
+        setattr(staged, field, 123)
+        return True
+
+    with mock.patch.object(type(target), poll, pollNewValue):
+        response = getattr(function, runner)(generation)
+    assert getattr(target, field) == original
+    function.mountIsUp = True
+    function.mountTimeConn.connectionGeneration += 1
+    getattr(function, finish)(response)
+    assert getattr(target, field) == original
+    getattr(function, finish)((function.mountTimeConn.connectionGeneration, False, response[2]))
+    assert getattr(target, field) == original
+    if runner == "runnerCycleStaticSetting":
+        getattr(function, finish)((function.mountTimeConn.connectionGeneration, True, response[2]))
+        assert getattr(target, field) == 123
+        setattr(target, field, original)
+
+
+def test_settingPollRefreshesStaticValuesForNewConnection(function):
+    function.mountIsUp = True
+    generation = function.mountTimeConn.connectionGeneration
+    function.staticSettingGeneration = generation - 1
+    function.setting.staticRead = True
+
+    def pollSetting(staged):
+        assert not staged.staticRead
+        staged.staticRead = True
+        staged._typeConnection = 2
+        return True
+
+    with mock.patch.object(type(function.setting), "pollSetting", pollSetting):
+        response = function.runnerCycleSetting(generation)
+    with mock.patch.object(function, "resultCycleSetting"):
+        function.finishCycleSetting(response)
+    assert function.staticSettingGeneration == generation
+    assert function.setting.typeConnection == 2
+    with mock.patch.object(type(function.setting), "pollSetting", return_value=True):
+        response = function.runnerCycleSetting(generation)
+    assert response[2].staticRead
+
+
+def test_failedStaticReadDoesNotOverwriteNewerStaticResult(function):
+    function.mountIsUp = True
+    generation = function.mountTimeConn.connectionGeneration
+    function.staticSettingGeneration = generation - 1
+    function.setting.staticRead = True
+
+    def pollSetting(staged):
+        assert not staged.staticRead
+        return True
+
+    with mock.patch.object(type(function.setting), "pollSetting", pollSetting):
+        response = function.runnerCycleSetting(generation)
+    function.staticSettingGeneration = generation
+    function.setting.typeConnection = 3
+    with mock.patch.object(function, "resultCycleSetting"):
+        function.finishCycleSetting(response)
+    assert function.setting.staticRead
+    assert function.setting.typeConnection == 3
+
+
 def test_startupMountData_1(function):
     function.mountIsUp = False
     with (

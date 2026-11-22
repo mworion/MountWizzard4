@@ -13,7 +13,7 @@ package-data = ["data/**/*.*"]
 
 [project]
 name = "mountwizzard4"
-version = "4.0.0rc0"
+version = "4.0.0rc1"
 license = "Apache-2.0"
 description = "Tool for managing 10_micron mounts"
 readme = "README.rst"
@@ -73,8 +73,8 @@ dependencies = [
     "pyside6==6.12.0",
     "pyyaml==6.0.4",
     "pywin32>=312; platform_system == 'Windows'",
-    "types-python-dateutil==2.9.0.20261116",
-    "types-pyyaml==6.0.12.20261113",
+    "types-python-dateutil==2.9.0.20261122",
+    "types-pyyaml==6.0.12.20261122",
 ]
 
 [project.scripts]

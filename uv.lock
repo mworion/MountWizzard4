@@ -802,7 +802,7 @@ wheels = [
 
 [[package]]
 name = "mountwizzard4"
-version = "4.0.0rc0"
+version = "4.0.0rc1"
 source = { editable = "." }
 dependencies = [
     { name = "alpyca" },
@@ -882,8 +882,8 @@ requires-dist = [
     { name = "scipy", specifier = ">=1.18.1,<2" },
     { name = "sgp4", specifier = ">=2.27,<3" },
     { name = "skyfield", specifier = ">=1.55,<2" },
-    { name = "types-python-dateutil", specifier = "==2.9.0.20261116" },
-    { name = "types-pyyaml", specifier = "==6.0.12.20261113" },
+    { name = "types-python-dateutil", specifier = "==2.9.0.20261122" },
+    { name = "types-pyyaml", specifier = "==6.0.12.20261122" },
     { name = "wakeonlan", specifier = ">=4.0.0,<5" },
     { name = "websocket-client", specifier = ">=1.9.2,<2" },
     { name = "xisf", specifier = "==1.0.1" },
@@ -1780,20 +1780,20 @@ wheels = [
 
 [[package]]
 name = "types-python-dateutil"
-version = "2.9.0.20261116"
+version = "2.9.0.20261122"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/82/ba/a19d28610031ac9608586077f71a21add4c80639cf01e5920d5f9bc207c9/types_python_dateutil-2.9.0.20261116.tar.gz", hash = "sha256:4213748a3f699431a83edf71969de9caa79d0846a5e8785c8a49072ff1968613", size = 17879, upload-time = "2026-11-16T08:43:02.721Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9c/e1/061ae807e1d0dc1cd54ae2b43e04bbda4faa80d5ce2b81ed1bedd34d2c27/types_python_dateutil-2.9.0.20261122.tar.gz", hash = "sha256:1db0012e9e63028891e36fd8a9f685dc4e8cf89353fbefcf6b1eb55538e9f7ed", size = 17919, upload-time = "2026-11-22T08:59:23.569Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/70/fc/5644ed0d6ad3712e17d30762c32ccbf6014230c46c58eb324f1d3f6ecebf/types_python_dateutil-2.9.0.20261116-py3-none-any.whl", hash = "sha256:62e7c65849170a4847539573153d34f4007777dd62651ec8849ec8f08e8922a2", size = 18513, upload-time = "2026-11-16T08:43:01.246Z" },
+    { url = "https://files.pythonhosted.org/packages/a1/46/38042f56835e926128d129e1d327bef8bf3803ec791af393f9f5e827bc96/types_python_dateutil-2.9.0.20261122-py3-none-any.whl", hash = "sha256:c2c257d7ce04f8ede622bb2452223461ee3016872f59d2351522723073e226ff", size = 18519, upload-time = "2026-11-22T08:59:22.835Z" },
 ]
 
 [[package]]
 name = "types-pyyaml"
-version = "6.0.12.20261113"
+version = "6.0.12.20261122"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/4d/8b/ba599d956693dbc98e170f32097128bdea0a17f9d42b0b490fa749c12b1a/types_pyyaml-6.0.12.20261113.tar.gz", hash = "sha256:0828be2580fd94151182364f4d0158e4de62fdbeeb8d4296f7f7d2b6c22bb640", size = 19017, upload-time = "2026-11-13T08:51:21.488Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3d/fe/e4d32b089d06f3b5d2f3f1909b1cb450ce2e18ea6e2c1863d2b29ad0090e/types_pyyaml-6.0.12.20261122.tar.gz", hash = "sha256:7fa577c893a1db255cbb02320884ffcb97b7a219fe515bec6c5f15d5d3af41ed", size = 19093, upload-time = "2026-11-22T08:57:28.481Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fd/2e/36fc0941a40ef066dbc8abac41bbbefb41389f547c779aef832aea6b873d/types_pyyaml-6.0.12.20261113-py3-none-any.whl", hash = "sha256:3600749e613748afdc4327f0b17c3296cf880cdbc7335f320007abd9dd815f67", size = 21321, upload-time = "2026-11-13T08:51:20.417Z" },
+    { url = "https://files.pythonhosted.org/packages/4c/71/8dc5553ca25c3a4799ce789f8300d2c3933d427585222c431c77450ed60d/types_pyyaml-6.0.12.20261122-py3-none-any.whl", hash = "sha256:689fbbe883b60471166dede9dba6ac0dbdbcf0ea98062d7ec195430f5bbdb009", size = 21356, upload-time = "2026-11-22T08:57:27.509Z" },
 ]
 
 [[package]]

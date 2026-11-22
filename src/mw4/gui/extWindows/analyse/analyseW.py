@@ -3,12 +3,12 @@
 # Copyright (c) 2019-2026 mworion
 from mw4.base.appProtocol import AppProtocol
 from mw4.gui.extWindows.analyse.altAzPlots import AltAzPlots
+from mw4.gui.extWindows.analyse.analyseController import AnalyseController
 from mw4.gui.extWindows.analyse.generalPlots import GeneralPlots
 from mw4.gui.extWindows.analyse.raDecPlots import RaDecPlots
 from mw4.gui.utilities.nativeQt.qtFileDialog import MWFileDialog
 from mw4.gui.utilities.qtMain import MWidget
 from mw4.gui.widgets import analyse_ui
-from mw4.logic.controllers.analyse.analyseController import AnalyseController
 from mw4.logic.controllers.analyse.analyseData import AnalyseData
 from pathlib import Path
 from PySide6.QtGui import QCloseEvent

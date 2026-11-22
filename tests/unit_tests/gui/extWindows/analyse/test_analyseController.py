@@ -96,7 +96,7 @@ def test_queuedLoadsAndStaleResults(
     function.analyseController.invalidateAnalysis()
     revision = function.analyseController.analysisRevision
     with mock.patch(
-        "mw4.logic.controllers.analyse.analyseController.rebuildModel",
+        "mw4.gui.extWindows.analyse.analyseController.rebuildModel",
         side_effect=blockedRunner,
     ):
         function.analyseController.startModelAnalysis(modelRecords)
@@ -122,7 +122,7 @@ def test_workerFailureAndInvalidation(function: AnalyseWindow, qtbot: Any) -> No
     QApplication.processEvents()
     function.analyseController.invalidateAnalysis()
     with mock.patch(
-        "mw4.logic.controllers.analyse.analyseController.rebuildModel",
+        "mw4.gui.extWindows.analyse.analyseController.rebuildModel",
         side_effect=ValueError("test failure"),
     ):
         function.analyseController.startModelAnalysis([])
@@ -144,7 +144,7 @@ def test_undeliveredFailureDoesNotFailNewLoad(
     QApplication.processEvents()
     function.analyseController.invalidateAnalysis()
     with mock.patch(
-        "mw4.logic.controllers.analyse.analyseController.rebuildModel",
+        "mw4.gui.extWindows.analyse.analyseController.rebuildModel",
         side_effect=ValueError("old failure"),
     ):
         function.analyseController.startModelAnalysis(modelRecords)

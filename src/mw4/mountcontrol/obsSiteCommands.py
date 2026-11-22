@@ -34,7 +34,6 @@ class ObsSiteCommands:
     decJNow: Angle
     Az: Angle
     Alt: Angle
-    timeJD: Time
     statusSlew: bool
     angularPosRA: Angle
     angularPosDEC: Angle
@@ -44,6 +43,12 @@ class ObsSiteCommands:
     AzTarget: Angle
     raJNowTarget: Angle
     decJNowTarget: Angle
+
+    @property
+    def timeJD(self) -> Time: ...
+
+    @timeJD.setter
+    def timeJD(self, value: str | float | None) -> None: ...
 
     def sendCommand(self, commandString: str, responseCheck: str = "") -> bool:
         """Send a command to the mount and return only the success flag."""

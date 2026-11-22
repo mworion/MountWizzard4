@@ -103,7 +103,6 @@ class MountDevice(QObject):
         timeMgr.update0_5s.connect(self.cyclePointing)
         timeMgr.update3s.connect(self.cycleSetting)
         timeMgr.update30s.connect(self.cycleStaticSetting)
-        timeMgr.update3s.connect(self.mountTimeConn.pollTimeState)
         timeMgr.update1s.connect(self.collectData)
         timeMgr.start3s.connect(self.resetAfterStart)
 

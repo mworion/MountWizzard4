@@ -19,9 +19,9 @@ class ObsSiteCommands:
     pointing and target properties).
     """
 
-    parent: MountContext
     log = logging.getLogger("MW4")
     PIERSIDE_CODES: ClassVar[dict[int, str]] = {2: "W", 3: "E"}
+    parent: MountContext
     location: GeographicPosition | list | tuple
     status: int
     pierside: str
@@ -29,6 +29,7 @@ class ObsSiteCommands:
     flipped: bool
     ts: Timescale
     _timeJD: Time
+    UTC2TT: float
 
     def sendCommand(self, commandString: str, responseCheck: str = "") -> bool:
         """Send a command to the mount and return only the success flag."""
@@ -63,8 +64,11 @@ class ObsSiteCommands:
         if len(response) != numberOfChunks:
             self.log.warning("Wrong number of chunks")
             return False
-        infoSplit = response[0].split(",")
-        angularSplit = response[1].split(",")
+        self.timeSidereal = response[0]
+        self.ut1_utc = response[1].replace("L", "")
+        self.statusSat = response[2]
+        infoSplit = response[3].split(",")
+        angularSplit = response[4].split(",")
         if len(infoSplit) < 8 or len(angularSplit) < 5:
             self.log.warning("Wrong number of fields: [%s]", response)
             return False
@@ -74,7 +78,6 @@ class ObsSiteCommands:
         self.Az = infoSplit[3]
         self.Alt = infoSplit[4]
         self.timeJD = infoSplit[5]
-        self.timeDelta = (self.ts.now() - self._timeJD) * 86400
         self.status = infoSplit[6]
         self.statusSlew = infoSplit[7] == "1"
         self.angularPosRA = angularSplit[1]
@@ -85,27 +88,11 @@ class ObsSiteCommands:
 
     def pollPointing(self) -> bool:
         conn = Connection(self.parent)
-        commandString = ":Ginfo#:GaE#"
+        commandString = ":GS#:GDUT#:TLESCK#:Ginfo#:GaE#"
         suc, response, numberOfChunks = conn.communicate(commandString, priority=CYCLIC)
         if not suc:
             return False
         return self.parsePointing(response, numberOfChunks)
-
-    def parseTimeState(self, response: list, numberOfChunks: int) -> bool:
-        if len(response) != numberOfChunks or numberOfChunks != 3:
-            self.log.warning("Wrong number of chunks")
-            return False
-        self.timeSidereal = response[0]
-        self.ut1_utc = response[1].replace("L", "")
-        self.statusSat = response[2]
-        return True
-
-    def pollTimeState(self) -> bool:
-        conn = Connection(self.parent)
-        suc, response, numberOfChunks = conn.communicate(":GS#:GDUT#:TLESCK#", priority=CYCLIC)
-        if not suc:
-            return False
-        return self.parseTimeState(response, numberOfChunks)
 
     def startSlewing(self, slewType: str = "normal") -> bool:
         slewTypes = {

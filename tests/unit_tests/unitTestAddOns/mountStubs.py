@@ -338,9 +338,6 @@ class MountObsSite:
         self.UTC2TT = 69.184
         self.timeDelta = 0.0
 
-    def pollTimeState(self) -> bool:
-        return True
-
     @property
     def isTracking(self) -> bool:
         return self.status == 0

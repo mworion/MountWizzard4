@@ -7,6 +7,7 @@ import socket
 from datetime import UTC, datetime
 from mw4.base.tpool import Worker, startWorker
 from mw4.mountcontrol.connection import Connection
+from mw4.mountcontrol.convert import valueToFloat
 from mw4.mountcontrol.mountContext import MountContext
 from mw4.mountcontrol.mountStatus import MountStatus
 from ping3 import ping
@@ -54,6 +55,21 @@ class MountTimeConn:
             self.errorCounter -= 1
             self.log.info(logText)
 
+    def pollTime(self) -> None:
+        conn = Connection(self.parent)
+        commandString = ":GJD1#"
+        suc, response, numberOfChunks = conn.communicate(commandString)
+        if not suc:
+            return
+        if len(response) != numberOfChunks:
+            self.log.warning("Wrong number of chunks")
+            return
+        timeMount = valueToFloat(response[0])
+        timeMount = self.ts.tt_jd(timeMount + self.parent.obsSite.UTC2TT)
+        timeDelta = (self.ts.now() - timeMount) * 86400
+        self._timeDiff = np.roll(self._timeDiff, 1)
+        self._timeDiff[0] = timeDelta - self.rtt
+
     def runnerMountUp(self) -> None:
         generation = self.connectionGeneration
         if not self.parent.config.hostAddress:
@@ -73,6 +89,7 @@ class MountTimeConn:
         self.rtt = np.mean(self.rtt_MA)
         if self.parent.mountIsUp:
             self.parent.signals.mountStatus.emit(generation, True)
+            self.pollTime()
             return
         try:
             with socket.socket() as client:
@@ -135,27 +152,12 @@ class MountTimeConn:
             if not self.deltaAdjustClock(delta):
                 self.log.warning("Clock delta sync failed with %s ms", delta)
 
-    def updateTimeDiff(self) -> None:
-        """The clock difference derives from the cyclic :Ginfo# reply."""
-        self.timePC = self.ts.now()
-        self._timeDiff = np.roll(self._timeDiff, 1)
-        self._timeDiff[0] = self.parent.obsSite.timeDelta - self.rtt
-
     def registerPoll(self, result: bool) -> None:
         """A mount which fails to answer the cyclic poll repeatedly is down."""
         if result:
             self.pollFailures = 0
-            self.updateTimeDiff()
             return
         self.pollFailures += 1
         if self.pollFailures >= self.MAX_POLL_FAILURES:
             self.pollFailures = 0
             self.setMountStatusOff("Cyclic polling failed repeatedly")
-
-    def pollTimeState(self) -> None:
-        self.workerPollTimeState = startWorker(
-            self.workerPollTimeState,
-            self.threadPool,
-            self.parent.obsSite.pollTimeState,
-            guard=lambda: self.parent.mountIsUp,
-        )

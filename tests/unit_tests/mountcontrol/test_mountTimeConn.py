@@ -49,7 +49,6 @@ def test_mountTimeConn_init(mountContext):
     assert len(function.rtt_MA) == 25
     assert len(function._timeDiff) == 25
     assert function.workerCycleMountUp is None
-    assert function.workerPollTimeState is None
 
 
 def test_timeDiff_property_initial(mountContext):
@@ -202,10 +201,12 @@ def test_runnerMountUp_alreadyUp_noSocketCheck(function):
     with (
         mock.patch("mw4.mountcontrol.mountTimeConn.ping", return_value=0.05),
         mock.patch("socket.socket") as sock,
+        mock.patch.object(function, "pollTime") as pollTime,
     ):
         function.runnerMountUp()
         assert function.rtt_MA[0] == pytest.approx(0.05)
         sock.assert_not_called()
+        pollTime.assert_called_once_with()
 
 
 def test_runnerMountUp_rtt_moving_average(function):
@@ -215,6 +216,7 @@ def test_runnerMountUp_rtt_moving_average(function):
         mock.patch("mw4.mountcontrol.mountTimeConn.ping", return_value=0.1),
         mock.patch("socket.socket"),
         mock.patch.object(function.parent.signals, "mountIsUp"),
+        mock.patch.object(function, "pollTime"),
     ):
         function.runnerMountUp()
         assert function.rtt_MA[0] == pytest.approx(0.1)
@@ -443,42 +445,37 @@ def test_syncClock_absolutAdjustClock_failure(function):
         function.log.warning.assert_called_once()
 
 
-def test_pollTimeState_mount_not_up(function):
-    function.parent.mountIsUp = False
-    with mock.patch.object(QThreadPool, "start") as start:
-        function.pollTimeState()
-        assert not start.called
-
-
-def test_pollTimeState_locked(function):
-    worker = function.workerPollTimeState
-    if worker is None:
-        worker = tpool.setupWorker(lambda: None)
-    worker.tryAcquire()
-    function.workerPollTimeState = worker
-    with mock.patch.object(QThreadPool, "start") as start:
-        result = function.pollTimeState()
-        assert result is None
-        assert not start.called
-    worker.release()
-
-
-def test_pollTimeState_unlocked(function):
-    function.parent.mountIsUp = True
-    function.workerPollTimeState = None
-    with mock.patch.object(QThreadPool, "start"):
-        function.pollTimeState()
-        assert function.workerPollTimeState is not None
-    releaseWorker(function.workerPollTimeState)
-    function.workerPollTimeState = None
-
-
-def test_updateTimeDiff(function):
-    function.parent.obsSite.timeDelta = 0.5
+def test_pollTime_success(function):
+    function.parent.obsSite.UTC2TT = 69.184 / 86400
     function.rtt = 0.01
     function._timeDiff = np.zeros(25)
-    function.updateTimeDiff()
-    assert function._timeDiff[0] == pytest.approx(0.49)
+    with (
+        mock.patch("mw4.mountcontrol.mountTimeConn.Connection") as connection,
+        mock.patch.object(function.ts, "tt_jd", return_value=2458352.0),
+        mock.patch.object(function.ts, "now", return_value=2458352.01),
+    ):
+        connection.return_value.communicate.return_value = True, ["2458352.10403639"], 1
+        function.pollTime()
+    assert function._timeDiff[0] == pytest.approx(863.99)
+
+
+def test_pollTime_communication_failed(function):
+    function._timeDiff = np.zeros(25)
+    with mock.patch("mw4.mountcontrol.mountTimeConn.Connection") as connection:
+        connection.return_value.communicate.return_value = False, [], 0
+        function.pollTime()
+    assert np.all(function._timeDiff == 0)
+
+
+def test_pollTime_wrongNumberOfChunks(function):
+    function._timeDiff = np.zeros(25)
+    with (
+        mock.patch("mw4.mountcontrol.mountTimeConn.Connection") as connection,
+        mock.patch.object(function.log, "warning") as warning,
+    ):
+        connection.return_value.communicate.return_value = True, ["2458352.10403639"], 2
+        function.pollTime()
+    warning.assert_called_once_with("Wrong number of chunks")
 
 
 def test_registerPoll_success(function):
@@ -616,6 +613,7 @@ def test_runnerMountUp_reemits_up_while_connected(function):
     with (
         mock.patch("mw4.mountcontrol.mountTimeConn.ping", return_value=0.05),
         mock.patch.object(function.parent.signals, "mountStatus") as mockSignal,
+        mock.patch.object(function, "pollTime"),
     ):
         function.runnerMountUp()
         mockSignal.emit.assert_called_once_with(function.connectionGeneration, True)

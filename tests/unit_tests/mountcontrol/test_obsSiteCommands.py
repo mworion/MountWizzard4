@@ -115,21 +115,30 @@ def test_ObsSite_parsePointing_ok1():
     obsSite = ObsSite(parent=Parent())
 
     response = [
+        "13:15:35.68",
+        "0.12L",
+        "V",
         "19.44591,+88.0032,W,002.9803,+47.9945,2458352.10403639,5,0",
         "2458352.10403639, 100, 100, 0.1, 0.1",
     ]
-    suc = obsSite.parsePointing(response, 2)
+    suc = obsSite.parsePointing(response, 5)
     assert suc
+    assert isinstance(obsSite.timeSidereal, Angle)
+    assert obsSite.ut1_utc == pytest.approx(0.12 / 86400)
+    assert obsSite.statusSat == "V"
 
 
 def test_ObsSite_parsePointing_ok2():
     obsSite = ObsSite(parent=Parent())
 
     response = [
+        "13:15:35.68",
+        "0.12L",
+        "V",
         "19.44591,+88.0032,W,000.0000,+47.9945,2458352.10403639,5,0",
         "2458352.10403639, 100, 100, 0.1, 0.1",
     ]
-    suc = obsSite.parsePointing(response, 2)
+    suc = obsSite.parsePointing(response, 5)
     assert suc
     assert isinstance(obsSite.Az, Angle)
 
@@ -138,10 +147,13 @@ def test_ObsSite_parsePointing_ok3():
     obsSite = ObsSite(parent=Parent())
 
     response = [
+        "13:15:35.68",
+        "0.12L",
+        "V",
         "19.44591,+88.0032,W,000.0001,+00.0000,2458352.10403639,5,0",
         "2458352.10403639, 100, 100, 0.1, 0.1",
     ]
-    suc = obsSite.parsePointing(response, 2)
+    suc = obsSite.parsePointing(response, 5)
     assert suc
     assert isinstance(obsSite.Alt, Angle)
 
@@ -150,10 +162,13 @@ def test_ObsSite_parsePointing_shortInfo():
     obsSite = ObsSite(parent=Parent())
     obsSite.status = 0
     response = [
+        "13:15:35.68",
+        "0.12L",
+        "V",
         "19.44591,+88.0032,W,002.9803",
         "2458352.10403639, 100, 100, 0.1, 0.1",
     ]
-    suc = obsSite.parsePointing(response, 2)
+    suc = obsSite.parsePointing(response, 5)
     assert not suc
     assert obsSite.status == 0
 
@@ -161,10 +176,13 @@ def test_ObsSite_parsePointing_shortInfo():
 def test_ObsSite_parsePointing_shortAngular():
     obsSite = ObsSite(parent=Parent())
     response = [
+        "13:15:35.68",
+        "0.12L",
+        "V",
         "19.44591,+88.0032,W,002.9803,+47.9945,2458352.10403639,5,0",
         "2458352.10403639, 100",
     ]
-    suc = obsSite.parsePointing(response, 2)
+    suc = obsSite.parsePointing(response, 5)
     assert not suc
 
 
@@ -189,26 +207,35 @@ def test_ObsSite_pollPointing_ok4():
     obsSite = ObsSite(parent=Parent())
 
     response = [
+        "13:15:35.68",
+        "0.12L",
+        "V",
         "19.44591,+88.0032,W,002.9803,+47.9945,2458352.10403639,5,0",
         "2458352.10403639, 100, 100, 0.1, 0.1",
     ]
 
     with mock.patch("mw4.mountcontrol.obsSiteCommands.Connection") as mConn:
-        mConn.return_value.communicate.return_value = True, response, 2
+        mConn.return_value.communicate.return_value = True, response, 5
         suc = obsSite.pollPointing()
         assert suc
+        mConn.return_value.communicate.assert_called_once_with(
+            ":GS#:GDUT#:TLESCK#:Ginfo#:GaE#", priority=mock.ANY
+        )
 
 
 def test_ObsSite_pollPointing_not_ok1():
     obsSite = ObsSite(parent=Parent())
 
     response = [
+        "13:15:35.68",
+        "0.12L",
+        "V",
         "19.44591,+88.0032,W,002.9803,+47.9945,2458352.10403639,5,0",
         "2458352.10403639, 100, 100, 0.1, 0.1",
     ]
 
     with mock.patch("mw4.mountcontrol.obsSiteCommands.Connection") as mConn:
-        mConn.return_value.communicate.return_value = False, response, 2
+        mConn.return_value.communicate.return_value = False, response, 5
         suc = obsSite.pollPointing()
         assert not suc
 
@@ -217,6 +244,9 @@ def test_ObsSite_pollPointing_not_ok2():
     obsSite = ObsSite(parent=Parent())
 
     response = [
+        "13:15:35.68",
+        "0.12L",
+        "V",
         "19.44591,+88.0032,W,002.9803,+47.9945,2458352.10403639,5,0",
         "2458352.10403639, 100, 100, 0.1, 0.1",
     ]
@@ -874,28 +904,3 @@ def test_setElevation_zero_sign():
         obsSite.setElevation(0)
         args = mConn.return_value.communicate.call_args
         assert args.args[0] == ":Sev+0000.0#"
-
-
-def test_ObsSite_parseTimeState_ok():
-    obsSite = ObsSite(parent=Parent())
-    assert obsSite.parseTimeState(["13:15:35.68", "0.12L", "V"], 3)
-    assert obsSite.timeSidereal is not None
-
-
-def test_ObsSite_parseTimeState_wrongChunks():
-    obsSite = ObsSite(parent=Parent())
-    assert not obsSite.parseTimeState(["13:15:35.68"], 1)
-
-
-def test_ObsSite_pollTimeState_ok():
-    obsSite = ObsSite(parent=Parent())
-    with mock.patch("mw4.mountcontrol.obsSiteCommands.Connection") as mConn:
-        mConn.return_value.communicate.return_value = True, ["13:15:35.68", "0.12", "V"], 3
-        assert obsSite.pollTimeState()
-
-
-def test_ObsSite_pollTimeState_failed():
-    obsSite = ObsSite(parent=Parent())
-    with mock.patch("mw4.mountcontrol.obsSiteCommands.Connection") as mConn:
-        mConn.return_value.communicate.return_value = False, [], 0
-        assert not obsSite.pollTimeState()

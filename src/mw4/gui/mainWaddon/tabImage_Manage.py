@@ -150,8 +150,8 @@ class ImageManage(TabAddon):
             guiSetText(self.ui.gainCam, "3.0f", actValue)
 
     def updateCooler(self) -> None:
-        coolerTemp = self.app.dReg.camera.data.get(CCD_TEMPERATURE_CCD_TEMPERATURE_VALUE, 0)
-        coolerPower = self.app.dReg.camera.data.get(CCD_COOLER_POWER_CCD_COOLER_VALUE, 0)
+        coolerTemp = float(self.app.dReg.camera.data.get(CCD_TEMPERATURE_CCD_TEMPERATURE_VALUE, 0))
+        coolerPower = float(self.app.dReg.camera.data.get(CCD_COOLER_POWER_CCD_COOLER_VALUE, 0))
         coolerOn = self.app.dReg.camera.data.get(CCD_COOLER_COOLER_ON, False)
         guiSetText(self.ui.coolerTemp, "3.1f", coolerTemp)
         guiSetText(self.ui.coolerPower, "3.1f", coolerPower)

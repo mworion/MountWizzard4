@@ -4,16 +4,14 @@
 import numpy as np
 from mw4.gui.extWindows.analyse.plotHelpers import linkViews
 from numpy.typing import NDArray
-from PySide6.QtCore import QObject, Slot
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from mw4.gui.extWindows.analyse.analyseW import AnalyseWindow
 
 
-class AltAzPlots(QObject):
+class AltAzPlots:
     def __init__(self, parentWindow: "AnalyseWindow") -> None:
-        super().__init__(parentWindow)
         self.ui = parentWindow.ui
         self.app = parentWindow.app
         self.data = parentWindow.analyseData
@@ -55,7 +53,6 @@ class AltAzPlots(QObject):
             isoLevels=isoLevels,
         )
 
-    @Slot()
     def drawHorizon(self) -> None:
         if not self.ui.showHorizon.isChecked():
             return

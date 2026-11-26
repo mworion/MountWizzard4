@@ -66,7 +66,6 @@ class IERSTime(TabAddon):
         self.msg.emit(0, "IERS", "Uploading", "Upload to mount running")
         suc = UploadPopup.upload(self.mainW, url, dataTypes, self.tempDir)
         if suc:
-            self.msg.emit(1, "IERS", "Upload", "Successfully uploaded")
             self.workerReloadDeltaT = startWorker(
                 self.workerReloadDeltaT,
                 self.app.threadPool,
@@ -76,6 +75,7 @@ class IERSTime(TabAddon):
             self.msg.emit(2, "IERS", "Upload", "Upload failed")
 
     def runnerReloadDeltaT(self) -> bool:
+        self.msg.emit(1, "IERS", "Upload", "Successfully uploaded")
         return reloadDeltaT(self.app.dReg.mount.obsSite)
 
     def loadTimeDataFromSourceURLs(self) -> None:

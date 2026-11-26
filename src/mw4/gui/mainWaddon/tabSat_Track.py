@@ -210,7 +210,14 @@ class SatTrack(SatData):
         )
 
     def extractSatelliteData(self, satName: str) -> None:
-        if satName not in self.satellites.objects:
+        if not satName:
+            self.ui.satelliteNumber.setText("-----")
+            self.ui.satelliteDataAge.setText("-----")
+            self.ui.satelliteEpoch.setText("-----")
+            self.ui.satelliteName.setText("-----")
+            self.msg.emit(0, "Satellite", "Data", "No satellite loaded in mount")
+            return
+        elif satName not in self.satellites.objects:
             self.ui.satelliteNumber.setText("-----")
             self.ui.satelliteDataAge.setText("-----")
             self.ui.satelliteEpoch.setText("-----")

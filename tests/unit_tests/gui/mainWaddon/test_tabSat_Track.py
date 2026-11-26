@@ -285,6 +285,20 @@ def test_extractSatelliteData_0(function):
     function.extractSatelliteData(satName="Tjan")
 
 
+def test_extractSatelliteData_emptyName(function):
+    function.ui.satelliteNumber.setText("12345")
+    function.ui.satelliteDataAge.setText("1.23")
+    function.ui.satelliteEpoch.setText("2020-03-16, 21:42")
+    function.ui.satelliteName.setText("NOAA 8")
+
+    function.extractSatelliteData(satName="")
+
+    assert function.ui.satelliteNumber.text() == "-----"
+    assert function.ui.satelliteDataAge.text() == "-----"
+    assert function.ui.satelliteEpoch.text() == "-----"
+    assert function.ui.satelliteName.text() == "-----"
+
+
 def test_extractSatelliteData_1(function):
     function.satellites.objects = {"NOAA 8": "sat", "Test1": "sat"}
 

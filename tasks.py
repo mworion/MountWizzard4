@@ -160,7 +160,7 @@ def test_windows(c, user, work, scp):
     ps_script = """
         Set-Item -Path env:UV_PYTHON_INSTALL_DIR -Value 'C:\\uv-python'
         Set-Location C:\\Users\\mw\\test
-        uv venv -p 3.13
+        uv venv -p 3.14-x86_64
         uv pip install mountwizzard4.tar.gz
         Start-ScheduledTask -TaskName 'MW4'
     """
